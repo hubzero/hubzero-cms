@@ -39,15 +39,6 @@ $this->css('tools.css');
 	<h2><?php echo Lang::txt('COM_TOOLS_QUOTAEXCEEDED'); ?></h2>
 </header><!-- / #content-header -->
 
-<?php if ($this->config->get('access-manage-session')) { ?>
-	<nav>
-		<ul class="sub-menu">
-			<li id="sm-1"<?php if ($this->active == '') { echo ' class="active"'; } ?>><a class="tab" rel="mysessions" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded'); ?>"><span><?php echo Lang::txt('COM_TOOLS_MYSESSIONS'); ?></span></a></li>
-			<li id="sm-2"<?php if ($this->active == 'all') { echo ' class="active"'; } ?>><a class="tab" rel="allsessions" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded&active=all'); ?>"><span><?php echo Lang::txt('COM_TOOLS_ALL_SESSIONS'); ?></span></a></li>
-		</ul>
-	</nav>
-<?php } ?>
-
 <section class="main section<?php if (!$this->config->get('access-manage-session') && $this->active == 'all') { echo ' hide'; } else { echo ''; }?>" id="mysessions-section">
 	<p class="warning"><?php echo Lang::txt('COM_TOOLS_ERROR_QUOTAEXCEEDED'); ?></p>
 	<table class="sessions">
