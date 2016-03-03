@@ -57,13 +57,6 @@ class Media extends Base
 		// disable default task
 		$this->disableDefaultTask();
 
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			$this->loginTask(Lang::txt('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
-			return;
-		}
-
 		//get request vars
 		$this->cn = Request::getVar('cn', '');
 
@@ -76,15 +69,30 @@ class Media extends Base
 		// Load the group page
 		$this->group = Group::getInstance($this->cn);
 
+		// Load plugin access groups
+		$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
+
 		// Ensure we found the group info
 		if (!$this->group || !$this->group->get('gidNumber'))
 		{
 			$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
 		}
 
+		// Kick user out if not logged in and should be
+		if (User::isGuest() && $pluginAccess['files'] == 'registered')
+		{
+			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+		}
+
+		// Check if they're logged in and not everyone can view files
+		if (User::isGuest() && $pluginAccess['files'] != 'anyone')
+		{
+			$this->loginTask(Lang::txt('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
+			return;
+		}
+
 		// Check authorization
-		//if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.edit') && !$this->_authorizedForTask('group.pages'))
-		if (!in_array(User::get('id'), $this->group->get('members')))
+		if (!in_array(User::get('id'), $this->group->get('members')) && $pluginAccess['files'] == 'members')
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
