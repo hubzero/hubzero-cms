@@ -163,7 +163,7 @@
 		margin-right: 0.5em;
 	}
 	.requirement {
-		padding: 0 1em;
+		padding: 0;
 		margin: 0;
 		/*color: #ef7f08;*/
 		width: 70%;
@@ -260,6 +260,10 @@
 	.content-loader {
 		text-align: center;
 		padding: 3em 0;
+	}
+	.content-loader-slim {
+		text-align: center;
+		padding: 0;
 	}
 	#file-selector li.preselected {
 		background: #ebfcec;
