@@ -37,7 +37,7 @@ if (!$this->ajax)
 }
 
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
-$rUrl = $this->url . '?a=1' . $subdirlink;
+$rUrl = $this->url . '?action=browse&a=1' . $subdirlink;
 
 // Incoming
 $basic = Request::getInt('basic', 0);
