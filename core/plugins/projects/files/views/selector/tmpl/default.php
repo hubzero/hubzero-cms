@@ -36,13 +36,10 @@ if (!$this->ajax)
 }
 
 // Get attachment type model
-$attModel = new \Components\Publications\Models\Attachments($this->database);
-
-// Filter URL
-$route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
+$attModel  = new \Components\Publications\Models\Attachments($this->database);
+$route     = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
 $filterUrl = Route::url($route) . '?action=filter&amp;pid=' . $this->publication->get('id') . '&amp;vid=' . $this->publication->get('version_id') . '&amp;p=' . $this->props . '&amp;ajax=1&amp;no_html=1';
-
-$elId 	 = $this->element;
+$elId      = $this->element;
 
 // Get requirements
 $element = $this->publication->curation('blocks', $this->step, 'elements', $this->element);
@@ -131,8 +128,7 @@ if ($attachments)
 	}
 }
 
-// Refreshing file list
-if ($this->task == 'filter')
+if (!empty($this->directory))
 {
 	// Show files
 	$view = new \Hubzero\Plugin\View(
@@ -143,16 +139,16 @@ if ($this->task == 'filter')
 			'layout'	=>'selector'
 		)
 	);
-	$view->option 		= $this->option;
-	$view->model 		= $this->model;
-	$view->items		= $this->items;
-	//$view->showLevels 	= $this->filter ? false : true;
-	$view->showLevels = true;
+	$view->option       = $this->option;
+	$view->model        = $this->model;
+	$view->items        = $this->items;
 	$view->requirements = $params;
 	$view->publication  = $this->publication;
-	$view->selected		= $selected;
-	$view->allowed		= $allowed;
-	$view->used			= $used;
+	$view->selected     = $selected;
+	$view->allowed      = $allowed;
+	$view->used         = $used;
+	$view->noUl         = true;
+
 	echo $view->loadTemplate();
 
 	return;
@@ -161,14 +157,11 @@ if ($this->task == 'filter')
 // Get folder array
 $subdirOptions = array();
 $subdirOptions[] = array('path' => '', 'label' => 'home directory');
-if ($this->items)
+if ($this->folders)
 {
-	foreach ($this->items as $item)
+	foreach ($this->folders as $folder)
 	{
-		if ($item->get('type') == 'folder')
-		{
-			$subdirOptions[] = array('path' => $item->get('localPath'), 'label' => $item->get('localPath'));
-		}
+		$subdirOptions[] = array('path' => $folder->get('localPath'), 'label' => $folder->get('localPath'));
 	}
 }
 
@@ -208,23 +201,8 @@ if ($this->items)
 		<?php }  ?>
 	</fieldset>
 
-	<div id="search-filter" class="search-filter">
-		<label><input type="text" value="<?php echo $this->filter; ?>" name="filter" id="item-search" /></label>
-	</div>
-
-
 	<p class="requirement" id="req"><?php echo $req; ?></p>
-	<?php if (isset($this->folders)): ?>
-	<div id="directoryfilter">
-	<label>Directory:</label>
-	<select name="directory" id="directorySelect">
-		<option value="">/</option>
-		<?php foreach ($this->folders as $folder): ?>
-		<option value="<?php echo $folder; ?>"><?php echo $folder; ?></option>
-		<?php endforeach; ?>
-	</select>
-	</div>
-	<?php endif; ?>
+
 	<div id="content-selector" class="content-selector">
 		<?php
 			// Show files
@@ -239,7 +217,6 @@ if ($this->items)
 			$view->option 		= $this->option;
 			$view->model 		= $this->model;
 			$view->items		= $this->items;
-			$view->showLevels 	= $this->filter ? false : true;
 			$view->requirements = $params;
 			$view->publication  = $this->publication;
 			$view->selected		= $selected;

@@ -521,27 +521,24 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			// Set params
 			$params = array(
-				'filter'               => Request::getVar('filter', ''),
-				'limit'                => Request::getInt('limit', 0),
-				'start'                => Request::getInt('limitstart', 0),
-				'sortby'               => 'localpath', // important for selector!
-				'showFullMetadata'     => false,
-				'getParents'           => true, // show folders
-				'getChildren'          => true, // look inside directories
-				'selector'						 => true, // applies some limits to prevent JS from crashing
-				'subdir'							 => $directory,
+				'sortby'           => 'localpath',
+				'showFullMetadata' => false,
+				'subdir'           => $directory
 			);
 
 			// Retrieve items
-			$filelist = $this->repo->filelist($params);
+			$view->items     = $this->repo->filelistNew($params);
+			$view->directory = $directory;
 
-			/** Switch between the top-level consolidated view and the 
-			 ** regular view, related to performance issues when the project has
-			 ** an extraordinary number of files. -- Kevin <kevinw@purdue.edu>
-			 **/
-			$view->items = is_object($filelist[0]) ? $filelist : $filelist[0];
-		  $view->folders = is_array($filelist[0]) ? $filelist[1] : NULL;
+			// Get directories
+			$params = array(
+				'subdir'           => NULL,
+				'sortby'           => 'localpath',
+				'showFullMetadata' => false,
+				'dirsOnly'         => true,
+			);
 
+			$view->folders = $this->repo->filelistNew($params);
 		}
 
 		$view->option 		= $this->model->isProvisioned() ? 'com_publications' : $this->_option;
