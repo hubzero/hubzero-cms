@@ -699,32 +699,12 @@ class Git extends Object
 	}
 
 	/**
-	 * Ls files
-	 *
-	 * @param      string	$subdir			Local directory path
-	 * @param      boolean	$showUntracked	Show/hide untracked files
-	 *
-	 * @return     array
-	 */
-	public function getFiles ($subdir = '', $showUntracked = false)
-	{
-		$call = $showUntracked
-			? ' ls-files --others --exclude-standard ' . escapeshellarg($subdir)
-			: ' ls-files --exclude-standard ' . escapeshellarg($subdir);
-
-		// Get Git status
-		$out = $this->callGit($call);
-
-		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
-	}
-
-	/**
 	 * Lists files in the repository
 	 *
 	 * @param   string  $subdir  Local directory path
 	 * @return  array
 	 */
-	public function getFilesNew($subdir = '')
+	public function getFiles($subdir = '')
 	{
 		// Make sure subdir has a trailing slash
 		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
