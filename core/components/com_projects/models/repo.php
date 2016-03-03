@@ -248,17 +248,6 @@ class Repo extends Object
 	}
 
 	/**
-	 * Get file list (retrieve and sort), *new method
-	 *
-	 * @param   array  $params
-	 * @return  array
-	 */
-	public function filelistNew($params = array())
-	{
-		return $this->call('filelistnew', $params);
-	}
-
-	/**
 	 * Get changes for sync
 	 *
 	 * @param      array	$params
