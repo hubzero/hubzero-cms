@@ -41,7 +41,7 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 $sortbyDir = $this->params['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
 // Directory path breadcrumbs
-$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, Route::url($this->model->link('files')), $parent);
+$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, Route::url($this->model->link('files') . '&action=browse'), $parent);
 
 $min = $this->model->access('content') ? 1 : 0;
 
@@ -57,7 +57,7 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 <form action="<?php echo Route::url($this->model->link('files')); ?>" method="post" enctype="multipart/form-data" id="plg-form" class="file-browser submit-ajax">
 	<div id="plg-header">
 		<h3 class="files">
-			<?php if ($this->subdir) { ?><a href="<?php echo Route::url($this->model->link('files')); ?>"><?php } ?>
+			<?php if ($this->subdir) { ?><a href="<?php echo Route::url($this->model->link('files') . '&action=browse'); ?>"><?php } ?>
 			<?php echo $this->title; ?>
 			<?php if ($this->subdir) { ?></a><?php echo $bc; ?><?php } ?>
 		</h3>

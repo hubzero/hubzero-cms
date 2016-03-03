@@ -796,7 +796,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->model->link('files');
+		$url  = $this->model->link('files') . '&action=browse';
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -844,7 +844,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->model->link('files');
+		$url  = $this->model->link('files') . '&action=browse';
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -982,7 +982,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->model->link('files');
+		$url  = $this->model->link('files') . '&action=browse';
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -1072,7 +1072,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->model->link('files');
+		$url  = $this->model->link('files') . '&action=browse';
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -1221,7 +1221,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->model->link('files');
+		$url  = $this->model->link('files') . '&action=browse';
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -1586,7 +1586,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->model->link('files');
+		$url  = $this->model->link('files') . '&action=browse';
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -1870,7 +1870,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->model->link('files');
+		$url  = $this->model->link('files') . '&action=browse';
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
