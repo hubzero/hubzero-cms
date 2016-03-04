@@ -691,7 +691,7 @@ $this->css()
 
 						<input type="hidden" name="item_id" value="<?php echo $this->wish->get('id'); ?>" />
 						<input type="hidden" name="item_type" value="wish" />
-						<input type="hidden" name="parent" value="" />
+						<input type="hidden" name="parent" value="0" />
 
 						<?php echo Html::input('token'); ?>
 
