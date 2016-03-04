@@ -151,7 +151,7 @@ jQuery(document).ready(function(jq){
 								.text(like);
 						}
 
-						$('#b' + el.attr('data-id') + ' .likes').text(data);
+						$('#post_' + el.attr('data-id') + ' .likes').text(data);
 					});
 				});
 
