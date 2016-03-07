@@ -39,6 +39,7 @@ $this->css()
      ->js('connections');
 
 $layout = Request::getCmd('layout', 'list');
+$hasPrivate = false;
 ?>
 
 <ul id="page_options" class="layout">
@@ -59,7 +60,11 @@ $layout = Request::getCmd('layout', 'list');
 		<?php $imgRel = '/plugins/filesystem/' . $connection->provider->alias . '/assets/img/icon.png'; ?>
 		<?php $img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
 		<a class="connection <?php echo $layout; ?>" href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $connection->id); ?>">
-			<img src="<?php echo $img; ?>" alt="">
+			<?php if (!$connection->isShared()) : ?>
+				<?php $hasPrivate = true; ?>
+				<div class="private-connection"></div>
+			<?php endif; ?>
+			<img src="<?php echo $img; ?>" alt="" />
 			<div class="name"><?php echo $connection->name; ?></div>
 		</a>
 	<?php endforeach; ?>
@@ -75,4 +80,10 @@ $layout = Request::getCmd('layout', 'list');
 			</select>
 		</div>
 	</form>-->
+
+	<?php if ($hasPrivate) : ?>
+		<div class="info private-explanation clear">
+			<?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTIONS_PRIVATE_EXPLANATION'); ?>
+		</div>
+	<?php endif; ?>
 </div>
