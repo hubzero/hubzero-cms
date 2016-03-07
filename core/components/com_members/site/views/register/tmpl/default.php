@@ -334,7 +334,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 						</div>
 						<div class="col span4 omega">
 							<label for="last-name"<?php echo $fieldclass; ?>>
-								<?php echo Lang::txt('COM_MEMBERS_REGISTER_LAST_NAME'); ?>:
+								<?php echo Lang::txt('COM_MEMBERS_REGISTER_LAST_NAME'); ?>: <?php echo $required; ?>
 								<input type="text" name="name[last]" id="last-name" value="<?php echo $this->escape(trim($surname)); ?>" />
 							</label>
 						</div>
