@@ -74,6 +74,7 @@ Toolbar::cancel('cancelemail');
 						<input type="file" name="email_file" />
 					</td>
 				</tr>
+				<?php if (!empty($this->groups)): ?>
 				<tr>
 					<td colspan="2">
 						<span style="display:block;text-align:center;font-weight:bold;font-size:18px"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_AND_OR'); ?></span>
@@ -90,6 +91,7 @@ Toolbar::cancel('cancelemail');
 						</select>
 					</td>
 				</tr>
+				<?php endif; ?>
 				<tr>
 					<td colspan="2">
 						<span style="display:block;text-align:center;font-weight:bold;font-size:18px"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_AND_OR'); ?></span>
