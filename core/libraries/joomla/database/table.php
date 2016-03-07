@@ -801,7 +801,9 @@ abstract class JTable extends JObject
 			else
 			{
 				$this->setError($asset->getError());
-				return false;
+				// [!] Hubzero - Record doesn't exist. Since we're
+				//     deleting entries, it shouldn't matter.
+				//return false;
 			}
 		}
 
