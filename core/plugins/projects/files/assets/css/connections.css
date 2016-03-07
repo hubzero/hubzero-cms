@@ -16,6 +16,7 @@
 	padding: 10px;
 	border-radius: 4px;
 	text-align: center;
+	position: relative;
 }
 #project-wrap .connections .connection:hover {
 	background-color: #F1F1F1;
@@ -154,4 +155,26 @@
 .connections .connection-type:hover {
 	border: 1px solid #E9E9E9;
 	background-color: white;
+}
+.connections .private-connection:before {
+	font-family: "fontcons";
+	content: "\f023";
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	font-size: 15px;
+	line-height: 15px;
+	color: #999999;
+}
+.connections .small-icon .private-connection:before {
+	font-size: 20px;
+	line-height: 20px;
+}
+.connections .large-icon .private-connection:before {
+	font-size: 25px;
+	line-height: 25px;
+}
+.connections .private-explanation:before {
+	font-family: "fontcons";
+	content: "\f023";
 }

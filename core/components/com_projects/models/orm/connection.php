@@ -84,4 +84,25 @@ class Connection extends Relational
 
 		return $this->provider->name;
 	}
+
+	/**
+	 * Gets the connections that are mine or are public to my project
+	 *
+	 * @return  $this
+	 **/
+	public function thatICanView()
+	{
+		return $this->whereEquals('owner_id', User::get('id'), 1)
+		            ->orWhereRaw('owner_id IS NULL', [], 1);
+	}
+
+	/**
+	 * Checks to see if a given connection is shared or private
+	 *
+	 * @return  bool
+	 **/
+	public function isShared()
+	{
+		return is_null($this->owner_id) ? true : false;
+	}
 }
