@@ -128,6 +128,8 @@ function submitbutton(pressbutton)
 				}
 				?>
 			</select>
+		<?php } else { ?>
+			<input type="hidden" name="section_id" value="<?php echo $this->filters['section_id']; ?>" />
 		<?php } ?>
 	</fieldset>
 
