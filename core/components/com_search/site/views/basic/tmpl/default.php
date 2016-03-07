@@ -102,7 +102,11 @@ $show_weight = array_key_exists('show_weight', $_GET);
 										?>
 										Contributor(s):
 										<?php foreach ($contributors as $idx=>$contrib): ?>
+											<?php if (isset($contrib_ids[$idx])): ?>
 											<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
+											<?php else: ?>
+											<?php echo $contrib; ?>
+											<?php endif; ?>
 										<?php endforeach; ?>
 								</span>
 								<?php endif; ?>
