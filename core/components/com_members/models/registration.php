@@ -891,7 +891,7 @@ class Registration
 					}
 				}
 
-				if (!$givenName)
+				if (!$givenName || !$surname)
 				{
 					$this->_missing['name'] = 'Full Name';
 					$this->_invalid['name'] = 'Please provide a name.';
