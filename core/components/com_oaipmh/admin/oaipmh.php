@@ -33,16 +33,11 @@ namespace Components\Oaipmh\Admin;
 
 if (!\User::authorise('core.manage', 'com_oaipmh'))
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-$controllerName = \Request::getCmd('controller', 'config');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'config';
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'controllers' . DS . 'config.php');
 
 $task = \Request::getCmd('task');
 
@@ -66,6 +61,5 @@ if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
 }
 
 // Instantiate controller
-$controller = new $controllerName();
+$controller = new Controllers\Config();
 $controller->execute();
-$controller->redirect();

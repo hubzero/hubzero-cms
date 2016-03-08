@@ -25,34 +25,62 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
+namespace Components\Oaipmh\Helpers;
 
-$canDo = \Components\Oaipmh\Helpers\Permissions::getActions('component');
+use Hubzero\Base\Object;
+use User;
 
-Toolbar::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'generic.png');
-if ($canDo->get('core.admin'))
+/**
+ * Permissions helper
+ */
+class Permissions
 {
-	Toolbar::preferences('com_oaipmh', 500);
-	Toolbar::spacer();
+	/**
+	 * Name of the component
+	 *
+	 * @var string
+	 */
+	public static $extension = 'com_oaipmh';
+
+	/**
+	 * Gets a list of the actions that can be performed.
+	 *
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The asset ID.
+	 * @return  object   Object
+	 */
+	public static function getActions($assetType='component', $assetId = 0)
+	{
+		$assetName  = self::$extension;
+		$assetName .= '.' . $assetType;
+		if ($assetId)
+		{
+			$assetName .= '.' . (int) $assetId;
+		}
+
+		$user = User::getRoot();
+		$result = new Object;
+
+		$actions = array(
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
+		);
+
+		foreach ($actions as $action)
+		{
+			$result->set($action, $user->authorise($action, $assetName));
+		}
+
+		return $result;
+	}
 }
-Toolbar::help('oaipmh');
 
-$this->css();
-
-$lang = Lang::getTag();
-?>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="save" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="boxchecked" value="0" />
-
-	<?php include_once(JPATH_COMPONENT . DS . 'help' . DS . $lang . DS . 'oaipmh.phtml'); ?>
-
-	<?php echo Html::input('token'); ?>
-</form>

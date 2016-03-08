@@ -40,7 +40,7 @@ use Exception;
 use Event;
 use Lang;
 
-require_once(__DIR__ . '/../models/xml/response.php');
+require_once(__DIR__ . DS . 'xml' . DS . 'response.php');
 
 /**
  * OAIPMH Provider for building responses

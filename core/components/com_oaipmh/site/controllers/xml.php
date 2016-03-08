@@ -33,6 +33,7 @@ namespace Components\Oaipmh\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Oaipmh\Models\Service;
+use Document;
 use Request;
 use Session;
 use Lang;
@@ -54,27 +55,29 @@ class Xml extends SiteController
 		$from       = Request::getVar('from');
 		if ($from)
 		{
-			$from = Date::of($from)->toSql();
+			$from = \Date::of($from)->toSql();
 		}
 		$until      = Request::getVar('until');
 		if ($until)
 		{
-			$until = Date::of($until)->toSql();
+			$until = \Date::of($until)->toSql();
 		}
 		$set        = Request::getVar('set');
 		$resumption = urldecode(Request::getVar('resumptionToken'));
 		$identifier = urldecode(Request::getVar('identifier'));
 
-		$igran  = "YYYY-MM-DD";
-		$igran .= $this->config->get('gran', 'c') == 'c' ? "Thh:mm:ssZ" : '';
+		$igran  = 'YYYY-MM-DD';
+		$igran .= $this->config->get('gran', 'c') == 'c' ? 'Thh:mm:ssZ' : '';
 
 		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', Request::base())), '/');
 
 		$edate = $this->config->get('edate');
 		$edate = ($edate ? strtotime($edate) : time());
 
+		// Set the document type
 		Document::setType('xml');
 
+		// Initiate the service
 		$service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
 
 		$service->set('metadataPrefix', $metadata)
