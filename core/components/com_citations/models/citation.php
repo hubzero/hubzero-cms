@@ -109,7 +109,7 @@ class Citation extends Relational
 	 */
 	public function tags()
 	{
-		return $this->manyToMany('Tag', '#__tags_object', 'objectid', 'tagid');
+		return $this->oneToMany('TagObject', 'objectid', 'id');
 	}
 
 	/**
@@ -537,7 +537,6 @@ class Citation extends Relational
 	 */
 	public static function keyExistsOrIsNotEmpty($key, $row)
 	{
-		//$value = $row->$key;
 		$value = true;
 		if (isset($value))
 		{
@@ -593,9 +592,9 @@ class Citation extends Relational
 		$html = '<ul class="tags badges">';
 		foreach ($this->tags as $badge)
 		{
-			if ($badge->tagObject->label == "badge")
+			if ($badge->label == "badge" && $badge->tbl = 'citations')
 			{
-				$html .= '<li><a href="#" class="tag">' . stripslashes($badge['raw_tag']) . '</a></li>';
+				$html .= '<li><a href="#" class="tag">' . stripslashes($badge->tag->tag) . '</a></li>';
 			}
 		}
 
@@ -615,19 +614,19 @@ class Citation extends Relational
 
 		$tags = clone $this->tags;
 
-		if ($this->tags()->count() > 0)
+		if ($this->tags->count() > 0)
 		{
 			$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
 
 			$html  = '<ol class="tags">';
 			foreach ($tags as $tag)
 			{
-				if ($tag->tagObject->tbl == 'citations' && $tag->tagObject->label == '')
+				if ($tag->tbl == 'citations' && $tag->label == '')
 				{
 					//display tag if not admin tag or if admin tag and user is adminstrator
-					if (!$tag->admin || ($tag->admin && $isAdmin))
+					if (!$tag->tag->admin || ($tag->tag->admin && $isAdmin))
 					{
-						$html .= '<li' . ($tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
+						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag->tag) . '">' . stripslashes($tag->tag->raw_tag) . '</a></li>';
 					}
 				}
 			}
