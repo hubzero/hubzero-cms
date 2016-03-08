@@ -34,7 +34,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Cron events for courses</description>
+	<description>PLG_CRON_COURSES_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="courses">courses.php</filename>
 	</files>

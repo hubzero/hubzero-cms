@@ -213,94 +213,96 @@ jQuery(document).ready(function($){
 					<select name="fields[event]" id="field-event">
 						<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_SELECT'); ?></option>
 						<?php
-							if ($this->plugins)
+						if ($this->plugins)
+						{
+							foreach ($this->plugins as $plugin)
 							{
-								foreach ($this->plugins as $plugin)
-								{
-									?>
-									<optgroup label="<?php echo $this->escape($plugin->name); ?>">
+								?>
+								<optgroup label="<?php echo $this->escape(Lang::txt('plg_cron_' . $plugin->plugin)); ?>">
 									<?php
 									if ($plugin->events)
 									{
 										foreach ($plugin->events as $event)
 										{
-										?>
-										<option value="<?php echo $plugin->element; ?>::<?php echo $event['name']; ?>"<?php if ($this->row->get('event') == $event['name']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($event['label']); ?></option>
-										<?php
+											?>
+											<option value="<?php echo $plugin->plugin; ?>::<?php echo $event['name']; ?>"<?php if ($this->row->get('event') == $event['name']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($event['label']); ?></option>
+											<?php
 										}
 									}
 									?>
-									</optgroup>
-									<?php
-								}
+								</optgroup>
+								<?php
 							}
-							?>
+						}
+						?>
 					</select>
 				</div>
 			</fieldset>
 
 			<?php
-				if ($this->plugins)
+			if ($this->plugins)
+			{
+				foreach ($this->plugins as $plugin)
 				{
-					foreach ($this->plugins as $plugin)
+					if (!isset($plugin->events) || !$plugin->events)
 					{
-						if ($plugin->events)
+						continue;
+					}
+
+					foreach ($plugin->events as $event)
+					{
+						$data = '';
+						$style = 'none';
+						if ($event['name'] == $this->row->get('event'))
 						{
-							foreach ($plugin->events as $event)
-							{
-								$data = '';
-								$style = 'none';
-								if ($event['name'] == $this->row->get('event'))
-								{
-									$style = 'block';
-									$data = $this->row->get('params');
-								}
-
-								$out = null;
-								if ($event['params'])
-								{
-									$param = new \Hubzero\Html\Parameter(
-										(is_object($data) ? $data->toString() : $data),
-										PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . DS . $plugin->element . '.xml'
-									);
-									$param->addElementPath(PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->element);
-									//$out = $param->render('params', $event['params']);
-									$html = array();
-									if ($prm = $param->getParams('params', $event['params']))
-									{
-										foreach ($prm as $p)
-										{
-											$html[] = '<div class="input-wrap">';
-											if ($p[0])
-											{
-												$html[] = $p[0];
-												$html[] = $p[1];
-											}
-											else
-											{
-												$html[] = $p[1];
-											}
-											$html[] = '</div>';
-										}
-									}
-
-									$out = (!empty($html) ? implode("\n", $html) : $out);
-								}
-
-								if (!$out)
-								{
-									$out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
-								}
-								?>
-								<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
-									<legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
-									<?php echo $out; ?>
-								</fieldset>
-								<?php
-							}
+							$style = 'block';
+							$data = $this->row->get('params');
 						}
+
+						$out = null;
+						if ($event['params'])
+						{
+							$param = new \Hubzero\Html\Parameter(
+								(is_object($data) ? $data->toString() : $data),
+								PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->plugin . DS . $plugin->plugin . '.xml'
+							);
+							$param->addElementPath(PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->plugin);
+							//$out = $param->render('params', $event['params']);
+							$html = array();
+							if ($prm = $param->getParams('params', $event['params']))
+							{
+								foreach ($prm as $p)
+								{
+									$html[] = '<div class="input-wrap">';
+									if ($p[0])
+									{
+										$html[] = $p[0];
+										$html[] = $p[1];
+									}
+									else
+									{
+										$html[] = $p[1];
+									}
+									$html[] = '</div>';
+								}
+							}
+
+							$out = (!empty($html) ? implode("\n", $html) : $out);
+						}
+
+						if (!$out)
+						{
+							$out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
+						}
+						?>
+						<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->plugin . '--' . $event['name']; ?>">
+							<legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
+							<?php echo $out; ?>
+						</fieldset>
+						<?php
 					}
 				}
+			}
 			?>
 
 			<fieldset class="adminform">
@@ -322,7 +324,9 @@ jQuery(document).ready(function($){
 				<table class="admintable">
 					<tbody id="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? '' : ' class="hide"'; ?>>
 						<tr>
-							<td class="key"><label for="field-minute-c"><?php echo Lang::txt('COM_CRON_FIELD_MINUTE'); ?></label>:</td>
+							<th>
+								<label for="field-minute-c"><?php echo Lang::txt('COM_CRON_FIELD_MINUTE'); ?></label>:
+							</th>
 							<td>
 								<input type="text" name="fields[minute][c]" id="field-minute-c" value="<?php echo $this->row->get('minute'); ?>" />
 							</td>
@@ -334,19 +338,16 @@ jQuery(document).ready(function($){
 									<option value="*/10"<?php if ($this->row->get('minute') == '*/10') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_TEN'); ?></option>
 									<option value="*/15"<?php if ($this->row->get('minute') == '*/15') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FIFTEEN'); ?></option>
 									<option value="*/30"<?php if ($this->row->get('minute') == '*/30') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_THIRTY'); ?></option>
-									<?php
-									for ($i=0, $n=60; $i < $n; $i++)
-									{
-									?>
-									<option value="<?php echo $i; ?>"<?php if ($this->row->get('minute') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
-									<?php
-									}
-									?>
+									<?php for ($i=0, $n=60; $i < $n; $i++) { ?>
+										<option value="<?php echo $i; ?>"<?php if ($this->row->get('minute') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
+									<?php } ?>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td class="key"><label for="field-hour-c"><?php echo Lang::txt('COM_CRON_FIELD_HOUR'); ?></label>:</td>
+							<th>
+								<label for="field-hour-c"><?php echo Lang::txt('COM_CRON_FIELD_HOUR'); ?></label>:
+							</th>
 							<td style="width: 10%">
 								<input type="text" name="fields[hour][c]" id="field-hour-c" value="<?php echo $this->row->get('hour'); ?>" />
 							</td>
@@ -358,19 +359,16 @@ jQuery(document).ready(function($){
 									<option value="*/4"<?php if ($this->row->get('hour') == '*/4') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FOUR'); ?></option>
 									<option value="*/6"<?php if ($this->row->get('hour') == '*/6') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
 									<option value="0"<?php if ($this->row->get('hour') == "0") { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_MIDNIGHT'); ?></option>
-									<?php
-									for ($i=1, $n=24; $i < $n; $i++)
-									{
-									?>
-									<option value="<?php echo $i; ?>"<?php if ($this->row->get('hour') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
-									<?php
-									}
-									?>
+									<?php for ($i=1, $n=24; $i < $n; $i++) { ?>
+										<option value="<?php echo $i; ?>"<?php if ($this->row->get('hour') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
+									<?php } ?>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td class="key"><label for="field-day-c"><?php echo Lang::txt('COM_CRON_FIELD_DAY_OF_MONTH'); ?></label>:</td>
+							<th>
+								<label for="field-day-c"><?php echo Lang::txt('COM_CRON_FIELD_DAY_OF_MONTH'); ?></label>:
+							</th>
 							<td>
 								<input type="text" name="fields[day][c]" id="field-day-c" value="<?php echo $this->row->get('day'); ?>" />
 							</td>
@@ -378,19 +376,16 @@ jQuery(document).ready(function($){
 								<select name="fields[day][s]" id="field-day-s">
 									<option value=""<?php if ($this->row->get('day') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
 									<option value="*"<?php if ($this->row->get('day') == '*') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-									<?php
-									for ($i=1, $n=32; $i < $n; $i++)
-									{
-									?>
-									<option value="<?php echo $i; ?>"<?php if ($this->row->get('day') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
-									<?php
-									}
-									?>
+									<?php for ($i=1, $n=32; $i < $n; $i++) { ?>
+										<option value="<?php echo $i; ?>"<?php if ($this->row->get('day') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
+									<?php } ?>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td class="key"><label for="field-month-c"><?php echo Lang::txt('COM_CRON_FIELD_MONTH'); ?></label>:</td>
+							<th>
+								<label for="field-month-c"><?php echo Lang::txt('COM_CRON_FIELD_MONTH'); ?></label>:
+							</th>
 							<td>
 								<input type="text" name="fields[month][c]" id="field-month-c" value="<?php echo $this->row->get('month'); ?>" />
 							</td>
@@ -417,7 +412,9 @@ jQuery(document).ready(function($){
 							</td>
 						</tr>
 						<tr>
-							<td class="key"><label for="field-dayofweek-c"><?php echo Lang::txt('COM_CRON_FIELD_DAY_OF_WEEK'); ?></label>:</td>
+							<th>
+								<label for="field-dayofweek-c"><?php echo Lang::txt('COM_CRON_FIELD_DAY_OF_WEEK'); ?></label>:
+							</th>
 							<td>
 								<input type="text" name="fields[dayofweek][c]" id="field-dayofweek-c" value="<?php echo $this->row->get('dayofweek'); ?>" />
 							</td>

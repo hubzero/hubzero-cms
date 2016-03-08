@@ -86,7 +86,6 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo Lang::txt('COM_CRON_COL_RECURRENCE'); ?></th> -->
 			</tr>
 		</thead>
 		<tfoot>
@@ -202,11 +201,6 @@ function submitbutton(pressbutton)
 						<?php } ?>
 					</span>
 				</td>
-				<!-- <td>
-					<span class="recurrence">
-						<span><?php echo $row->get('recurrence'); ?></span>
-					</span>
-				</td> -->
 			</tr>
 			<?php
 		}
@@ -218,8 +212,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

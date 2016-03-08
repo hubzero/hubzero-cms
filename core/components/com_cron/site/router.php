@@ -48,32 +48,10 @@ class Router extends Base
 	{
 		$segments = array();
 
-		if (!empty($query['controller']))
-		{
-			//$segments[] = $query['controller'];
-			unset($query['controller']);
-		}
-		if (!empty($query['post']))
-		{
-			$segments[] = 'post';
-			$segments[] = $query['post'];
-			unset($query['post']);
-		}
-		if (!empty($query['board']))
-		{
-			//$segments[] = 'collection';
-			$segments[] = $query['board'];
-			unset($query['board']);
-		}
 		if (!empty($query['task']))
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
-		}
-		if (!empty($query['file']))
-		{
-			$segments[] = $query['file'];
-			unset($query['file']);
 		}
 
 		return $segments;
@@ -96,36 +74,7 @@ class Router extends Base
 
 		if (isset($segments[0]))
 		{
-			if (is_numeric($segments[0]))
-			{
-				$vars['board'] = $segments[0];
-				$vars['controller'] = 'posts';
-				if (isset($segments[1]))
-				{
-					$vars['task'] = $segments[1];
-				}
-			}
-			else
-			{
-				$vars['task'] = $segments[0];
-				if (isset($segments[1]))
-				{
-					if (is_numeric($segments[1]))
-					{
-						$vars['post'] = $segments[1];
-						$vars['controller'] = 'posts';
-					}
-					if (isset($segments[2]))
-					{
-						$vars['task'] = $segments[2];
-					}
-				}
-			}
-		}
-		if (isset($segments[3]))
-		{
-			$vars['file'] = $segments[3];
-			$vars['controller'] = 'media';
+			$vars['task'] = $segments[0];
 		}
 
 		return $vars;

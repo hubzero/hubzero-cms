@@ -44,7 +44,7 @@ use Date;
 use App;
 
 /**
- * Cron controller class for jobs
+ * Controller class for cron jobs
  */
 class Jobs extends AdminController
 {
@@ -66,12 +66,12 @@ class Jobs extends AdminController
 	/**
 	 * Displays a form for editing an entry
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Filters
-		$this->view->filters = array(
+		$filters = array(
 			'sort' => trim(Request::getState(
 				$this->_option . '.jobs.sort',
 				'filter_order',
@@ -84,17 +84,17 @@ class Jobs extends AdminController
 			))
 		);
 
-		/*if ($this->view->filters['search'])
-		{
-			$record->whereLike('fullname', $this->view->filters['search']);
-		}*/
-
-		$record = Job::all();
-
-		$this->view->rows = $record->ordered('filter_order', 'filter_order_Dir')->paginated();
+		// Get records
+		$rows = Job::all()
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated()
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -126,6 +126,8 @@ class Jobs extends AdminController
 			$row->set('created_by', User::get('id'));
 			$row->set('recurrence', '');
 		}
+
+		// Set individual recurrence values for the edit form
 		$row->set('minute', '*');
 		$row->set('hour', '*');
 		$row->set('day', '*');
@@ -155,38 +157,24 @@ class Jobs extends AdminController
 			$row->set('recurrence', 'custom');
 		}
 
-		$e = array();
+		// Get the lsit of available cron tasks
+		$plugins = array();
 
 		$events = Event::trigger('cron.onCronEvents');
-		if ($events)
+		if ($events && is_array($events))
 		{
 			foreach ($events as $event)
 			{
-				$e[$event->plugin] = $event->events;
+				$plugins[$event->plugin] = $event;
 			}
 		}
-
-		$database = App::get('db');
-		$database->setQuery("SELECT p.* FROM `#__extensions` AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering");
-		$this->view->plugins = $database->loadObjectList();
-		if ($this->view->plugins)
-		{
-			foreach ($this->view->plugins as $key => $plugin)
-			{
-				$this->view->plugins[$key]->events = (isset($e[$plugin->element])) ? $e[$plugin->element] : array();
-			}
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		ksort($plugins);
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('plugins', $plugins)
+			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();
 	}
@@ -256,6 +244,8 @@ class Jobs extends AdminController
 
 		Notify::success(Lang::txt('COM_CRON_ITEM_SAVED'));
 
+		// If the task was "apply",
+		// fall back through to the edit form.
 		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
@@ -268,7 +258,7 @@ class Jobs extends AdminController
 	}
 
 	/**
-	 * Deletes one or more records and redirects to listing
+	 * Force run a specified cron task
 	 *
 	 * @return  void
 	 */
@@ -332,14 +322,10 @@ class Jobs extends AdminController
 			$output->jobs[] = $job->toArray();
 		}
 
-		$this->view->output = $output;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('output', $output)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -372,6 +358,7 @@ class Jobs extends AdminController
 		{
 			$row = Job::oneOrFail(intval($id));
 
+			// Attempt to delete
 			if (!$row->destroy())
 			{
 				Notify::error($row->getError());
@@ -421,6 +408,7 @@ class Jobs extends AdminController
 			// Update record(s)
 			$row = Job::oneOrFail(intval($id));
 			$row->set('state', $state);
+
 			if (!$row->save())
 			{
 				Notify::error($row->getError());

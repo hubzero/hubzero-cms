@@ -41,7 +41,7 @@ use Event;
 use stdClass;
 
 /**
- * Controller class for bulletin boards
+ * Controller class for cron jobs
  */
 class Jobs extends SiteController
 {
@@ -58,12 +58,15 @@ class Jobs extends SiteController
 	}
 
 	/**
-	 * Display a list of latest whiteboard entries
+	 * Run any scheduled cron tasks
 	 *
 	 * @return  void
 	 */
 	public function displayTask()
 	{
+		// If the current user doesn't have access to manage the component,
+		// try to see if their IP address is in the whtielist.
+		// Otherwise, we stop any further code execution.
 		if (!User::authorise('core.manage', $this->_option))
 		{
 			$ip = Request::ip();
@@ -88,11 +91,14 @@ class Jobs extends SiteController
 			}
 		}
 
+		// Forcefully do NOT render the template
+		// (extra processing that's not needed)
 		Request::setVar('no_html', 1);
 		Request::setVar('tmpl', 'component');
 
 		$now = Date::toSql();
 
+		// Get the list of jobs that should be run
 		$results = Job::all()
 			->whereEquals('state', 1)
 			->where('next_run', '<=', Date::toLocal('Y-m-d H:i:s'))
@@ -142,6 +148,8 @@ class Jobs extends SiteController
 			}
 		}
 
+		// Output any data from the jobs that ran
+		// Largely used for debugging/monitoring purposes
 		$this->view
 			->set('no_html', Request::getInt('no_html', 0))
 			->set('output', $output)
