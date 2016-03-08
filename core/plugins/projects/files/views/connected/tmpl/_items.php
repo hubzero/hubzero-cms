@@ -49,7 +49,7 @@ defined('_HZEXEC_') or die();
 		<td class="middle_valign nobsp is-relative">
 			<?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
 			<?php if ($item->isFile()) : ?>
-				<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($item->getPath())) ? ' hasMultiple' : ''; ?>">
+				<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile(DS . 'srv' . DS . 'projects' . DS . $this->model->get('alias') . DS . $item->getPath())) ? ' hasMultiple' : ''; ?>">
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
 						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getName(), 60); ?>
 					</a>
