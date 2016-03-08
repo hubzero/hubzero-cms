@@ -413,7 +413,7 @@ class Sessions extends SiteController
 								continue;
 							}
 
-							$wl = rtrim($wl,'/') . '/';  // make sure we compare against a full path element
+							$wl = rtrim(trim($wl),'/') . '/';  // make sure we compare against a full path element
 
 							if (strncmp($wl,$value,strlen($wl)) === 0)
 							{
