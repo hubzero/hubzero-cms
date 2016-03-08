@@ -82,9 +82,9 @@ class License extends \JTable
 
 		if (!$this->title)
 		{
-			$this->title = substr($this->text, 0, 70);
-			if (strlen($this->title >= 70))
+			if (strlen($this->title) >= 70)
 			{
+				$this->title  = substr($this->title, 0, 70);
 				$this->title .= '...';
 			}
 		}

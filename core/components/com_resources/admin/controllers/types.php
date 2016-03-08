@@ -32,14 +32,19 @@
 
 namespace Components\Resources\Admin\Controllers;
 
-use Components\Resources\Tables\Type;
+use Components\Resources\Models\Type;
+use Components\Resources\Models\Orm\Resource;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
 
 /**
  * Manage resource types
@@ -67,28 +72,16 @@ class Types extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.types.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.types.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
 			'sort' => Request::getState(
 				$this->_option . '.types.sort',
 				'filter_order',
-				'category'
+				'type'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.types.sortdir',
 				'filter_order_Dir',
-				'DESC'
+				'ASC'
 			),
 			'category' => Request::getState(
 				$this->_option . '.types.category',
@@ -98,25 +91,31 @@ class Types extends AdminController
 			)
 		);
 
-		// Instantiate an object
-		$rt = new Type($this->database);
-
-		// Get a record count
-		$this->view->total = $rt->getAllCount($this->view->filters);
+		// Get the categories
+		$categories = Type::all()
+			->whereEquals('category', 0)
+			->order('type', 'asc')
+			->rows();
 
 		// Get records
-		$this->view->rows = $rt->getAllTypes($this->view->filters);
-
-		// Get the category names
-		$this->view->cats = $rt->getTypes('0');
+		$rows = Type::all()
+			->whereEquals('category', $filters['category'])
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated()
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('cats', $categories)
+			->display();
 	}
 
 	/**
 	 * Edit a type
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -133,24 +132,26 @@ class Types extends AdminController
 			}
 
 			// Load the object
-			$row = new Type($this->database);
-			$row->load($id);
+			$row = Type::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
 		// Get the categories
-		$this->view->categories = $this->view->row->getTypes(0);
-		$this->view->config = $this->config;
+		$categories = Type::all()
+			->whereEquals('category', 0)
+			->order('type', 'asc')
+			->rows();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			\Notify::error($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('categories', $categories)
+			->set('config', $this->config)
 			->setLayout('edit')
 			->display();
 	}
@@ -165,14 +166,10 @@ class Types extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		$type = Request::getVar('type', array(), 'post');
+
 		// Initiate extended database class
-		$row = new Type($this->database);
-		if (!$row->bind($_POST))
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		$row = Type::oneOrNew($type['id'])->set($type);
 
 		// Get the custom fields
 		$fields = Request::getVar('fields', array(), 'post');
@@ -216,49 +213,34 @@ class Types extends AdminController
 				}
 			}
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php');
 			$re = new \Components\Resources\Models\Elements($elements);
-			$row->customFields = $re->toString();
+
+			$row->set('customFields', $re->toString());
 		}
 
 		// Get parameters
 		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
 
-		$row->params = $p->toString();
-
-		// Make sure a category is set
-		if (!$row->category)
-		{
-			$this->setError(Lang::txt('COM_RESOURCES_ERROR_SELECT_CATEGORY'));
-			$this->editTask($row);
-			return;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		$row->set('params', $p->toString());
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
-		if ($this->_task == 'apply')
+		Notify::success(Lang::txt('COM_RESOURCES_ITEM_SAVED'));
+
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_RESOURCES_ITEM_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -305,32 +287,37 @@ class Types extends AdminController
 			return;
 		}
 
-		$rt = new Type($this->database);
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Check if the type is being used
-			$total = $rt->checkUsage($id);
+			$rt = Type::oneOrFail($id);
 
-			if ($total > 0)
+			$usage = Resource::all()
+				->whereEquals('type', $id)
+				->total();
+
+			if ($usage)
 			{
-				// Redirect with error message
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_RESOURCES_TYPE_BEING_USED', $id),
-					'error'
-				);
-				return;
+				Notify::error(Lang::txt('COM_RESOURCES_TYPE_BEING_USED', $id));
+				continue;
 			}
 
 			// Delete the type
-			$rt->delete($id);
+			if (!$rt->destroy())
+			{
+				Notify::error($rt->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_RESOURCES_ITEMS_REMOVED', count($ids))
+			($i ? Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $i) : null)
 		);
 	}
 
@@ -360,7 +347,8 @@ class Types extends AdminController
 			$option
 		);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php');
+
 		$elements = new \Components\Resources\Models\Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}

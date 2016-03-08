@@ -57,12 +57,12 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo $this->editor()->save('field-description'); ?>
+
 	// form field validation
 	if ($('#field-type').val() == '') {
 		alert('<?php echo Lang::txt('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else {
-		<?php echo $this->editor()->save('field-description'); ?>
-
 		submitform(pressbutton);
 	}
 }
@@ -76,20 +76,20 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-type"><?php echo Lang::txt('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="type" id="field-type" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
+					<input type="text" name="type[type]" id="field-type" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
 					<label for="field-alias"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
-					<input type="text" name="alias" id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
+					<input type="text" name="type[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
 					<span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
-					<?php echo \Components\Resources\Helpers\Html::selectType($this->categories, 'category', $this->row->category, Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
+					<?php echo \Components\Resources\Helpers\Html::selectType($this->categories, 'type[category]', $this->row->category, Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="field-contributable"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
-					<input type="checkbox" name="contributable" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_RESOURCES_FIELD_CONTRIBUTABLE_EXPLANATION'); ?>
+					<input type="checkbox" name="type[contributable]" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_RESOURCES_FIELD_CONTRIBUTABLE_EXPLANATION'); ?>
 				</div>
 				<?php if ($this->row->category != 27) { ?>
 					<div class="input-wrap">
@@ -107,7 +107,7 @@ function submitbutton(pressbutton)
 					<?php echo $this->editor('description', stripslashes($this->row->description), 45, 10, 'field-description', array('class' => 'minimal')); ?>
 				</div>
 
-				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="type[id]" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="save" />

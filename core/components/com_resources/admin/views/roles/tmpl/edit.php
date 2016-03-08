@@ -90,11 +90,17 @@ function submitbutton(pressbutton)
 				<?php
 				if ($this->types)
 				{
+					$types = array();
+					foreach ($this->row->types()->rows() as $t)
+					{
+						$types[] = $t->get('id');
+					}
+
 					foreach ($this->types as $type)
 					{
 						?>
 						<div class="input-wrap">
-							<input type="checkbox" name="types[]" id="type-<?php echo $type->id; ?>"<?php if (in_array($type->id, $this->row->types)) { echo ' checked="checked"'; } ?> value="<?php echo $type->id; ?>" />
+							<input type="checkbox" name="types[]" id="type-<?php echo $type->id; ?>"<?php if (in_array($type->id, $types)) { echo ' checked="checked"'; } ?> value="<?php echo $type->id; ?>" />
 							<label for="type-<?php echo $type->id; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></label>
 						</div>
 						<?php
