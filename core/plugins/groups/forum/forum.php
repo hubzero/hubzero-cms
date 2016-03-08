@@ -1317,6 +1317,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			//$asset = 'post';
 		}
 
+		$moving = false;
+
+		// Already present
 		if ($fields['id'])
 		{
 			$old = new \Components\Forum\Tables\Post($this->database);
@@ -1325,6 +1328,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			{
 				$this->params->set('access-edit-thread', true);
 			}
+
+			// Determine if we are moving the category for email suppression
+			$new_category = $fields['category_id'];
+			if ($new_category != $old->category_id)
+			{
+					$moving = true;
+			}
+
 		}
 
 		if (($fields['id'] && !$this->params->get('access-edit-thread'))
@@ -1425,7 +1436,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Email the group and insert email tokens to allow them to respond to group posts via email
 
-		if ($params->get('email_comment_processing'))
+		if ($params->get('email_comment_processing') && (isset($moving) && $moving == false))
 		{
 			$esection = new \Components\Forum\Models\Section($sectionTbl);
 
