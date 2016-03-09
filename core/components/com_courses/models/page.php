@@ -204,7 +204,7 @@ class Page extends Base
 
 			if (!file_exists(PATH_APP . $dest))
 			{
-				if (!Filesystem::copyDirectory($src, $dest, PATH_APP))
+				if (!Filesystem::copyDirectory(PATH_APP . $src, PATH_APP . $dest))
 				{
 					$this->setError(Lang::txt('Failed to copy page files.'));
 				}
