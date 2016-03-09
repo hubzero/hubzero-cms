@@ -108,7 +108,8 @@ class Entries extends AdminController
 		// Get records
 		$rows = $model
 			->ordered('filter_order', 'filter_order_Dir')
-			->paginated();
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
@@ -267,7 +268,7 @@ class Entries extends AdminController
 	/**
 	 * Merge two tags into one
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function mergeTask()
 	{
@@ -387,7 +388,7 @@ class Entries extends AdminController
 	/**
 	 * Copy all tag associations from one tag to another
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function pierceTask()
 	{
@@ -494,4 +495,3 @@ class Entries extends AdminController
 		}
 	}
 }
-

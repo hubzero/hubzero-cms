@@ -34,23 +34,17 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<files>
-		<filename>tags.html.php</filename>
+	<files foler="site">
 		<filename>tags.php</filename>
-		<filename>tags.class.php</filename>
-		<filename>tags.tag.php</filename>
-		<filename>tags.css</filename>
-		<filename>tags.js</filename>
-		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>router.php</filename>
-			<filename>views/index.html</filename>
-			<filename>views/intro/tmpl/default.php</filename>
-			<filename>views/intro/tmpl/default.xml</filename>
+		<filename>assets/css/tags.css</filename>
+		<filename>assets/js/tags.js</filename>
+		<filename>controllers/tags.php</filename>
+		<filename>views/index.html</filename>
+		<filename>views/intro/tmpl/default.php</filename>
+		<filename>views/intro/tmpl/default.xml</filename>
 		<filename>views/intro/tmpl/index.html</filename>
-		<filename>images/tagnav-sprite.gif</filename>
-		<filename>images/tagnav-sprite2.gif</filename>
-		<filename>images/tags-large.gif</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_tags.ini</language>
@@ -72,12 +66,12 @@ HUBzero is a registered trademark of Purdue University.
 			<language tag="en-GB">en-GB.com_tags.menu.ini</language>
 		</languages>
 		<files>
-			<filename>admin.tags.html.php</filename>
-			<filename>admin.tags.php</filename>
-			<filename>admin.controller.php</filename>
+			<filename>controllers/entries.php</filename>
+			<filename>controllers/relationships.php</filename>
+			<filename>controllers/tagged.php</filename>
 			<filename>install.sql</filename>
 			<filename>index.html</filename>
-			<filename>toolbar.tags.php</filename>
+			<filename>tags.php</filename>
 		</files>
 	</administration>
 </extension>

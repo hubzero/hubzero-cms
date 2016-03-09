@@ -44,7 +44,7 @@ class Poll extends Relational
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'id';
 
@@ -69,7 +69,7 @@ class Poll extends Relational
 	 * Automatically fillable fields
 	 *
 	 * @var  array
-	 **/
+	 */
 	public $always = array(
 		'alias'
 	);
@@ -102,7 +102,7 @@ class Poll extends Relational
 	}
 
 	/**
-	 * Get a list of dates
+	 * Get a list of votes
 	 *
 	 * @return  object
 	 */
@@ -205,15 +205,15 @@ class Poll extends Relational
 			}
 		}
 
-		// Remove vote logs
-		foreach ($this->menus() as $menu)
+		// Remove menu entries
+		/*foreach ($this->menus() as $menu)
 		{
 			if (!$menu->destroy())
 			{
 				$this->setError($menu->getError());
 				return false;
 			}
-		}
+		}*/
 
 		// Attempt to delete the record
 		return parent::destroy();

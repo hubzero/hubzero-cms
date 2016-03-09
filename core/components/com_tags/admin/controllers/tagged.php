@@ -109,7 +109,8 @@ class Tagged extends AdminController
 		// Get records
 		$rows = $model
 			->ordered('filter_order', 'filter_order_Dir')
-			->paginated();
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		$types = $modelt
 			->ordered()
@@ -215,7 +216,11 @@ class Tagged extends AdminController
 		{
 			// Remove entry
 			$row = Object::oneOrFail(intval($id));
-			$row->destroy();
+
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+			}
 		}
 
 		App::redirect(
