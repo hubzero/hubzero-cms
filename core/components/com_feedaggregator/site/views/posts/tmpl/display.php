@@ -72,7 +72,7 @@ $this->js('posts')
 				<?php endforeach; ?>
 			<?php endif; ?>
 
-		<?php if (count($this->posts) > 0):?>
+		<?php if ($this->posts->count() > 0):?>
 			<div class="container">
 				<nav class="entries-filters">
 					<ul class="entries-menu filter-options">
@@ -130,7 +130,7 @@ $this->js('posts')
 									<div class="postpreview" id="content-fancybox<?php echo $post->id; ?>">
 										<h1><?php echo (string) html_entity_decode(strip_tags($post->title)); ?></h1>
 										<p class="description"><?php echo (string) html_entity_decode(strip_tags($post->description)); ?></p>
-										<p><a target="_blank" href="<?php echo urldecode($post->link); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_LINK_ORIGINAL_POST'); ?></a></p>
+										<p><a target="_blank" href="<?php echo urldecode($post->url); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_LINK_ORIGINAL_POST'); ?></a></p>
 										<div class="button-container">
 											<hr />
 											<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="btn-success btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'approved' ? 'disabled' : ''); ?> />

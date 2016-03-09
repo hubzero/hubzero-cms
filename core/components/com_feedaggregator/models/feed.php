@@ -28,58 +28,83 @@
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
+ * @since     Class available since release 1.3.2
  */
 
 namespace Components\Feedaggregator\Models;
 
-use Hubzero\Base\Model;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'feeds.php');
+use Hubzero\Database\Relational;
+use Hubzero\Utility\String;
+use Hubzero\Base\Object;
 
 /**
- * Feeds model
+ * Hubs database model
+ *
+ * @uses \Hubzero\Database\Relational
  */
-class Feeds extends Model
+class Feed extends Relational
 {
 	/**
-	 * Object scope
+	 * The table namespace
 	 *
-	 * @var string
-	 */
-	protected $_tbl_name = '\\Components\\FeedAggregator\\Tables\\Feeds';
-
+	 * @var  string
+	 **/
+	protected $namespace = 'feedaggregator';
 
 	/**
-	 * Returns all source feeds
+	 * Default order by for model
 	 *
-	 * @return  object  list of source feeds
+	 * @var  string
+	 **/
+	public $orderBy = 'id';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 **/
+	protected $rules = array(
+		'url'  => 'notempty',
+		'name' => 'notempty'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
 	 */
-	public function loadAll()
+	public $initiate = array(
+		'created'
+	);
+
+	/**
+	 * Get a list of posts
+	 *
+	 * @return  object
+	 */
+	public function posts()
 	{
-		return $this->_tbl->getRecords();
+		return $this->oneToMany('Post', 'feed_id');
 	}
 
 	/**
-	 * Returns feed as selected by ID
+	 * Delete the record and all associated data
 	 *
-	 * @param   integer  $id
-	 * @return  object   list of feed
+	 * @return  boolean  False if error, True on success
 	 */
-	public function loadbyId($id)
+	public function destroy()
 	{
-		return $this->_tbl->getById($id);
-	}
+		// Remove comments
+		foreach ($this->posts() as $post)
+		{
+			if (!$post->destroy())
+			{
+				$this->setError($post->getError());
+				return false;
+			}
+		}
 
-	/**
-	 * Enables or disables a feed
-	 *
-	 * @param   integer  $id      ID of feed
-	 * @param   integer  $status  Status of category
-	 * @return  void
-	 */
-	public function updateActive($id, $status)
-	{
-		return $this->_tbl->updateActive($id, $status);
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 }
-

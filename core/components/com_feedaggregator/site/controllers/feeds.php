@@ -32,11 +32,16 @@
 
 namespace Components\Feedaggregator\Site\Controllers;
 
-use Components\Feedaggregator\Models;
+use Components\Feedaggregator\Models\Feed;
 use Hubzero\Component\SiteController;
+use Request;
+use Notify;
+use Route;
+use Lang;
+use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feeds.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'posts.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feed.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'post.php');
 
 /**
  *  Feed Aggregator controller class
@@ -50,26 +55,7 @@ class Feeds extends SiteController
 	 */
 	public function displayTask()
 	{
-		$authlevel = \JAccess::getAuthorisedViewLevels(User::get('id'));
-		$access_level = 3; //author_level
-
-		if (in_array($access_level, $authlevel) && User::get('id'))
-		{
-			$model = new Models\Feeds;
-
-			$this->view->feeds = $model->loadAll();
-			$this->view->title = Lang::txt('COM_FEEDAGGREGATOR');
-			$this->view->display();
-		}
-		else if (User::get('id'))
-		{
-			App::redirect(
-				Route::url('index.php?option=com_feedaggregator'),
-				Lang::txt('COM_FEEDAGGREGATOR_NOT_AUTH'),
-				'warning'
-			);
-		}
-		else if (User::isguest()) // have person login
+		if (User::isGuest()) // have person login
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			App::redirect(
@@ -78,22 +64,46 @@ class Feeds extends SiteController
 				'warning'
 			);
 		}
+
+		$authlevel = User::getAuthorisedViewLevels();
+		$access_level = 3; //author_level
+
+		if (!in_array($access_level, $authlevel))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_feedaggregator'),
+				Lang::txt('COM_FEEDAGGREGATOR_NOT_AUTH'),
+				'warning'
+			);
+		}
+
+		$feeds = Feed::all()
+			->rows();
+
+		$this->view
+			->set('title', Lang::txt('COM_FEEDAGGREGATOR'))
+			->set('feeds', $feeds)
+			->display();
 	}
 
 	/**
 	 * Edit source feed form, load appropriate record
 	 *
+	 * @param   object  $feed
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($feed = null)
 	{
-		//isset ID kinda deal
-		$model = new Models\Feeds;
+		if (!is_object($feed))
+		{
+			$feed = Feed::oneOrNew(Request::getInt('id', 0));
+		}
 
-		$this->view->feed  = $model->loadbyId(Request::getInt('id', 0));
-		$this->view->user  = User::getRoot();
-		$this->view->title = Lang::txt('COM_FEEDAGGREGATOR_EDIT_FEEDS');
-		$this->view->display();
+		$this->view
+			->set('title', ($this->getTask() == 'new' ? Lang::txt('COM_FEEDAGGREGATOR_ADD_FEED') : Lang::txt('COM_FEEDAGGREGATOR_EDIT_FEEDS')))
+			->set('feed', $feed)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -103,10 +113,7 @@ class Feeds extends SiteController
 	 */
 	public function newTask()
 	{
-		$this->view
-			->set('title', Lang::txt('COM_FEEDAGGREGATOR_ADD_FEED'))
-			->setLayout('edit')
-			->display();
+		return $this->editTask();
 	}
 
 	/**
@@ -116,37 +123,29 @@ class Feeds extends SiteController
 	 */
 	public function statusTask()
 	{
-		$id = Request::getInt('id');
+		$id     = Request::getInt('id');
 		$action = Request::getVar('action');
-		$model = new Models\Feeds();
 
-		if ($action == 'enable')
-		{
-			$model->updateActive($id, 1);
-			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				Lang::txt('COM_FEEDAGGREGATOR_FEED_ENABLED')
-			);
-		}
-		elseif ($action == 'disable')
-		{
-			$model->updateActive($id, 0);
+		$enabled = ($action == 'enable' ? 1 : 0);
 
-			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				Lang::txt('COM_FEEDAGGREGATOR_FEED_DISABLED')
-			);
+		$model = Feed::oneOrFail($id);
+		$model->set('enabled', $enabled);
+
+		if (!$model->save())
+		{
+			Notify::error(Lang::txt('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'));
 		}
 		else
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				Lang::txt('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'),
-				'error'
+			Notify::success(
+				$enabled ? Lang::txt('COM_FEEDAGGREGATOR_FEED_ENABLED') : Lang::txt('COM_FEEDAGGREGATOR_FEED_DISABLED')
 			);
 		}
+
+		// Output messsage and redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+		);
 	}
 
 	/**
@@ -156,46 +155,31 @@ class Feeds extends SiteController
 	 */
 	public function saveTask()
 	{
-		//do a Request instead of a bind()
-		$feed = new Models\Feeds;
-
-		//get the URL first in order to validate
+		// get the URL first in order to validate
+		$feed = Feed::blank();
+		$feed->set('id', Request::getVar('id'));
 		$feed->set('url', Request::getVar('url'));
 		$feed->set('name', Request::getVar('name'));
-		$feed->set('id', Request::getVar('id'));
 		$feed->set('enabled', Request::getVar('enabled'));
 		$feed->set('description', Request::getVar('description'));
 
 		//validate url
 		if (!filter_var($feed->get('url'), FILTER_VALIDATE_URL))
 		{
-			$this->feed = $feed;
+			Notify::error(Lang::txt('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'));
+			return $this->editTask($feed);
+		}
 
-			//redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=feeds&task=new'),
-				Lang::txt('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'),
-				'warning'
-			);
-		}
-		else
+		if (!$feed->save())
 		{
-			if ($feed->store())
-			{
-				// Output messsage and redirect
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					Lang::txt('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
-				);
-			}
-			else
-			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					Lang::txt('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'),
-					'warning'
-				);
-			}
+			Notify::error(Lang::txt('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'));
+			return $this->editTask($feed);
 		}
+
+		// Output messsage and redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+			Lang::txt('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
+		);
 	}
 }

@@ -52,39 +52,39 @@ defined('_HZEXEC_') or die();
 <section class="main section">
 	<form class="contentForm">
 		<div id="page-main">
-		<?php if (count($this->feeds) > 0): ?>
-			<table class="entries">
-				<thead class="table-head">
-					<tr>
-						<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_NAME'); ?></th>
-						<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_URL'); ?></th>
-						<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_ACTIONS'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php foreach ($this->feeds as $feed): ?>
-					<tr class='shade-table'>
-						<td><?php echo $feed->name; ?></td>
-						<td><a href="<?php echo $feed->url; ?>"><?php echo $feed->url; ?></a></td>
-						<td>
-							<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&task=PostsById&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_POST'); ?>s</a>
-							<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=edit&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_EDIT'); ?></a>
-							<?php if ($feed->enabled == '1'):?>
-								<a class="btn disableBtn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=status&action=disable&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_DISABLE'); ?></a>
-							<?php elseif ($feed->enabled == '0'): ?>
-								<a class="btn enableBtn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=status&action=enable&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_ENABLE'); ?></a>
-							<?php endif; ?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-				</tbody>
-			</table>
-		<?php else: ?>
-			<p>
-				<?php echo Lang::txt('COM_FEEDAGGREGATOR_NO_RESULTS'); ?><br />
-				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
-			</p>
-		<?php endif; ?>
+			<?php if ($this->feeds->count() > 0): ?>
+				<table class="entries">
+					<thead class="table-head">
+						<tr>
+							<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_NAME'); ?></th>
+							<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_URL'); ?></th>
+							<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_ACTIONS'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php foreach ($this->feeds as $feed): ?>
+						<tr class='shade-table'>
+							<td><?php echo $feed->name; ?></td>
+							<td><a href="<?php echo $feed->url; ?>"><?php echo $this->escape($feed->url); ?></a></td>
+							<td>
+								<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&task=PostsById&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_POST'); ?>s</a>
+								<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=edit&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_EDIT'); ?></a>
+								<?php if ($feed->enabled == '1'):?>
+									<a class="btn disableBtn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=status&action=disable&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_DISABLE'); ?></a>
+								<?php elseif ($feed->enabled == '0'): ?>
+									<a class="btn enableBtn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=status&action=enable&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_ENABLE'); ?></a>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php else: ?>
+				<p>
+					<?php echo Lang::txt('COM_FEEDAGGREGATOR_NO_RESULTS'); ?><br />
+					<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
+				</p>
+			<?php endif; ?>
 		</div>
 	</form>
 </section><!-- /.main section -->

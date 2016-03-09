@@ -32,7 +32,8 @@
 
 namespace Components\Feedaggregator\Site\Controllers;
 
-use Components\Feedaggregator\Models;
+use Components\Feedaggregator\Models\Feed;
+use Components\Feedaggregator\Models\Post;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Guzzle\Http\Client;
@@ -45,8 +46,8 @@ use User;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feeds.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'posts.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feed.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'post.php');
 
 /**
  *  Feed Aggregator controller class
@@ -61,127 +62,7 @@ class Posts extends SiteController
 	 */
 	public function displayTask($posts = NULL)
 	{
-		$userId = User::get('id');
-		$authlevel = User::getAuthorisedViewLevels();
-		$access_level = 3; //author_level
-
-		if (in_array($access_level, $authlevel) && User::get('id'))
-		{
-			if (isset($posts))
-			{
-				$this->view->filters = array(
-					'limit'    => Request::getInt('limit', 25),
-					'start'    => Request::getInt('limitstart', 0),
-					'time'     => Request::getString('timesort', ''),
-					'filterby' => Request::getString('filterby', 'all')
-				);
-
-				$this->setView('posts','display');
-				$this->view->fromfeed = TRUE;
-			}
-			else
-			{
-				$this->view->fromfeed = FALSE;
-				$this->view->setLayout('display');
-				// Incoming
-				$this->view->filters = array(
-					'limit'    => Request::getInt('limit', 25),
-					'start'    => Request::getInt('limitstart', 0),
-					'time'     => Request::getString('timesort', ''),
-					'filterby' => Request::getString('filterby', 'all')
-				);
-
-				// Don't have a 0, because then it won't return anything. Doing mysql-workbench default
-				if ($this->view->filters['limit'] == 0)
-				{
-					$this->view->filters['limit'] = 1000;
-				}
-
-				$feeds = array(); //page on websites
-				$posts = array();
-
-				$model = new Models\Posts;
-
-				switch ($this->view->filters['filterby'])
-				{
-					case 'all':
-						$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
-						$this->view->total = intval($model->loadRowCount());
-					break;
-					case 'new':
-						$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],0);
-						$this->view->total = intval($model->loadRowCount(0));
-					break;
-					case 'approved':
-						$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],2);
-						$this->view->total = intval($model->loadRowCount(2));
-					break;
-					case 'review':
-						$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],1);
-						$this->view->total = intval($model->loadRowCount(1));
-					break;
-					case 'removed':
-						$posts = $model->getPostsByStatus($this->view->filters['limit'], $this->view->filters['start'],3);
-						$this->view->total = intval($model->loadRowCount(3));
-					break;
-					default:
-						//load stored posts
-						$model = new Models\Posts;
-						$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
-						$this->view->total = intval($model->loadRowCount());
-					break;
-				}
-			}
-
-			// Truncates the title to save screen real-estate. Full version shown in FancyBox
-			foreach ($posts as $post)
-			{
-				if (strlen($post->title) >= 60)
-				{
-					$string = substr($post->title, 0, 60);
-					$string = substr($string, 0, strrpos($string, ' ')) . '...';
-					$post->shortTitle = $string;
-				}
-				else
-				{
-					$post->shortTitle = $post->title;
-				}
-
-				// output = 2012-08-15 00:00:00
-				$post->created = Date::of($post->created)->toLocal();
-
-				$post->description = wordwrap($post->description,100,"<br>\n");
-				$post->title = wordwrap($post->title, 65, "<br>\n");
-
-				switch ($post->status)
-				{
-					case 0:
-						$post->status = 'new';
-					break;
-					case 1:
-						$post->status = 'under review';
-					break;
-					case 2:
-						$post->status = 'approved';
-					break;
-					case 3:
-						$post->status = 'removed';
-					break;
-				} //end switch
-			} //end foreach
-			$this->view->messages = Notify::messages($this->_option);
-			$this->view->posts = $posts;
-			$this->view->title = Lang::txt('COM_FEEDAGGREGATOR');
-			$this->view->display();
-		}
-		else if (User::get('id'))
-		{
-			$this->view
-				->set('title', Lang::txt('COM_FEEDAGGREGATOR'))
-				->setLayout('feedurl')
-				->display();
-		}
-		else if (User::isGuest()) // have person login
+		if (User::isGuest()) // have person login
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			App::redirect(
@@ -190,36 +71,157 @@ class Posts extends SiteController
 				'warning'
 			);
 		}
+
+		$userId = User::get('id');
+		$authlevel = User::getAuthorisedViewLevels();
+		$access_level = 3; //author_level
+
+		if (!in_array($access_level, $authlevel) && User::get('id'))
+		{
+			$this->view
+				->set('title', Lang::txt('COM_FEEDAGGREGATOR'))
+				->setLayout('feedurl')
+				->display();
+
+			return;
+		}
+
+		// Incoming
+		$filters = array(
+			'limit'    => Request::getInt('limit', 25),
+			'start'    => Request::getInt('limitstart', 0),
+			'time'     => Request::getString('timesort', ''),
+			'filterby' => Request::getString('filterby', 'all')
+		);
+
+		if (isset($posts))
+		{
+			$fromfeed = TRUE;
+		}
+		else
+		{
+			$fromfeed = FALSE;
+
+			// Don't have a 0, because then it won't return anything. Doing mysql-workbench default
+			if ($filters['limit'] == 0)
+			{
+				$filters['limit'] = 1000;
+			}
+
+			$model = Post::all();
+
+			switch ($filters['filterby'])
+			{
+				case 'new':
+					$posts = $model
+						->whereEquals('status', 0);
+				break;
+				case 'approved':
+					$posts = $model
+						->whereEquals('status', 2);
+				break;
+				case 'review':
+					$posts = $model
+						->whereEquals('status', 1);
+				break;
+				case 'removed':
+					$posts = $model
+						->whereEquals('status', 3);
+				break;
+				case 'all':
+				default:
+
+				break;
+			}
+
+			$posts = $model
+				->ordered()
+				->limit($filters['limit'])
+				->start($filters['start'])
+				->rows();
+
+			$total = intval($posts->count());
+		}
+
+		// Truncates the title to save screen real-estate. Full version shown in FancyBox
+		foreach ($posts as $post)
+		{
+			if (strlen($post->title) >= 60)
+			{
+				$string = substr($post->title, 0, 60);
+				$string = substr($string, 0, strrpos($string, ' ')) . '...';
+				$post->set('shortTitle', $string);
+			}
+			else
+			{
+				$post->set('shortTitle', $post->title);
+			}
+
+			// output = 2012-08-15 00:00:00
+			$post->created = Date::of($post->created)->toLocal();
+
+			$post->description = wordwrap($post->description, 100, "<br />\n");
+			$post->title = wordwrap($post->title, 65, "<br />\n");
+
+			switch ($post->status)
+			{
+				case 0:
+					$post->status = 'new';
+				break;
+				case 1:
+					$post->status = 'under review';
+				break;
+				case 2:
+					$post->status = 'approved';
+				break;
+				case 3:
+					$post->status = 'removed';
+				break;
+			} //end switch
+		} //end foreach
+
+		$messages = Notify::messages($this->_option);
+
+		$this->view
+			->set('messages', $messages)
+			->set('posts', $posts)
+			->set('filters', $filters)
+			->set('fromfeed', $fromfeed)
+			->set('total', $total)
+			->set('title', Lang::txt('COM_FEEDAGGREGATOR'))
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Updates a post's status
 	 *
-	 * @return     string $action_id."-".$action
+	 * @return  string
 	 */
 	public function updateStatusTask()
 	{
-		$id = Request::getVar('id', '');
+		$id     = Request::getVar('id', '');
 		$action = Request::getVar('action', '');
-		$model = new Models\Posts;
 
 		switch ($action)
 		{
-			case "new":
+			case 'new':
 				$action_id = 0;
 				break;
-			case "mark":
+			case 'mark':
 				$action_id = 1;
 				break;
-			case "approve":
+			case 'approve':
 				$action_id = 2;
 				break;
-			case "remove":
+			case 'remove':
 				$action_id = 3;
 		} //end switch
 
+		$model = Post::oneOrFail($id);
+		$model->set('status', $action_id);
+		$model->save();
 
-		$model->updateStatus($id, $action_id);
 		echo $action_id . '-' . $action;
 		exit();
 	}
@@ -231,8 +233,10 @@ class Posts extends SiteController
 	 */
 	public function PostsByIdTask()
 	{
-		$model = new Models\Posts;
-		$posts = $model->loadPostsByFeedId(Request::getVar('id', ''));
+		$posts = Post::all()
+			->whereEquals('feed_id', Request::getInt('id', 0))
+			->ordered()
+			->rows();
 
 		$this->displayTask($posts);
 	}
@@ -244,11 +248,18 @@ class Posts extends SiteController
 	 */
 	public function RetrieveNewPostsTask()
 	{
-		$model = new Models\Feeds;
-		$feeds = $model->loadAll();
+		$feeds = Feed::all()
+			->rows();
 
-		$model = new Models\Posts;
-		$savedURLS = $model->loadURLs();
+		$savedURLS = array();
+		$urls = Post::all()
+			->select('url')
+			->rows();
+
+		foreach ($urls as $url)
+		{
+			$savedURLS[] = $url->url;
+		}
 
 		foreach ($feeds as $feed)
 		{
@@ -297,7 +308,7 @@ class Posts extends SiteController
 
 							if (in_array($link, $savedURLS) == FALSE) //checks to see if we have this item
 							{
-								$post = new Models\Posts; //create post object
+								$post = new Post; //create post object
 								$post->set('title', html_entity_decode(strip_tags($item->title)));
 								$post->set('feed_id', (integer) $feed->id);
 								$post->set('status', 0);  //force new status
@@ -315,14 +326,14 @@ class Posts extends SiteController
 								}
 
 								$post->set('description', (string) html_entity_decode(strip_tags($item->content, '<img>')));
-								$post->store(); //save the post
+								$post->save(); //save the post
 							} // end check for prior existance
 						}
 						else if ($feedType == 'RSS')
 						{
 							if (in_array($item->link, $savedURLS) == FALSE) //checks to see if we have this item
 							{
-								$post = new Models\Posts; //create post object
+								$post = new Post; //create post object
 								$post->set('title',  (string) html_entity_decode(strip_tags($item->title)));
 								$post->set('feed_id', (integer) $feed->id);
 								$post->set('status', 0);  //force new status
@@ -330,7 +341,7 @@ class Posts extends SiteController
 								$post->set('description', (string) html_entity_decode(strip_tags($item->description, '<img>')));
 								$post->set('url', (string) $item->link);
 
-								$post->store(); //save the post
+								$post->save(); //save the post
 							}
 						}
 					} //end foreach
@@ -363,8 +374,11 @@ class Posts extends SiteController
 	public function generateFeedTask()
 	{
 		// Get the approved posts
-		$model = new Models\Posts;
-		$posts = $model->getPostsByStatus(1000,0,2);
+		$posts = Post::all()
+			->whereEquals('status', 2)
+			->ordered()
+			->limit(1000)
+			->rows();
 
 		// Set the mime encoding for the document
 		Document::setType('feed');

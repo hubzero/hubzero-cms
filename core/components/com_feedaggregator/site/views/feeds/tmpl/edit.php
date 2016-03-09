@@ -32,13 +32,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// this is a quick and dirty way to get the one single object
-$feed = '';
-if (isset($this->feed) == TRUE)
-{
-	$feed = $this->feed;
-}
-
 // load js
 $this->js('feeds');
 ?>
@@ -62,23 +55,23 @@ $this->js('feeds');
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-			<input type="hidden" name="id" value="<?php echo (is_object($feed) ? $feed->id : ''); ?>">
-			<input type="hidden" name="enabled" value="<?php echo (isset($feed->enabled) ? $feed->enabled : '1'); ?>">
+			<input type="hidden" name="id" value="<?php echo $this->feed->get('id', 0); ?>">
+			<input type="hidden" name="enabled" value="<?php echo $this->feed->get('enabled', 1); ?>">
 			<input type="hidden" name="task" value="save" />
 
 			<label for="feedTitle">
 				<?php echo Lang::txt('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-				<input type="text" class="required-field" name="name" id="feedTitle" size="25" value="<?php echo (is_object($feed) ? $this->escape($feed->name) : ''); ?>"/>
+				<input type="text" class="required-field" name="name" id="feedTitle" size="25" value="<?php echo $this->escape($this->feed->get('name')); ?>"/>
 			</label>
 
 			<label for="feedURL">
 				<?php echo Lang::txt('COM_FEEDAGGREGATOR_LABEL_FEEDURL'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-				<input type="text" class="required-field" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $this->escape($feed->url) : ''); ?>" />
+				<input type="text" class="required-field" name="url" id="feedURL" size="50" value="<?php echo $this->escape($this->feed->get('url')); ?>" />
 			</label>
 
 			<label for="feedDescription">
 				<?php echo Lang::txt('COM_FEEDAGGREGATOR_LABEL_DESCRIPTION'); ?>
-				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $this->escape($feed->description) : ''); ?>" />
+				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo $this->escape($this->feed->get('description')); ?>" />
 			</label>
 		</fieldset>
 		<p class="submit">

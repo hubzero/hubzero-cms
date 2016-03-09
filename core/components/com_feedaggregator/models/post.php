@@ -25,13 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author	Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since	 Class available since release 1.3.2
+ * @since     Class available since release 1.3.2
  */
 
-namespace Components\Feedaggregator\Models\Orm;
+namespace Components\Feedaggregator\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
@@ -47,37 +47,61 @@ class Post extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = 'feedaggregator';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'id';
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
-	 **/
+	 * @var  array
+	 */
 	protected $rules = array(
-		'title' => 'notempty'
+		'title'   => 'notempty',
+		'feed_id' => 'positive|notzero'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var array
-	 **/
-	public $always = array(
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
 	);
 
+	/**
+	 * Get parent feed
+	 *
+	 * @return  object
+	 */
+	public function feed()
+	{
+		return $this->belongsToOne('Feed', 'feed_id');
+	}
+
+	/**
+	 * Get a list of the latest records
+	 *
+	 * @param   integer  $limit
+	 * @param   string   $dateField
+	 * @param   string   $sort
+	 * @return  object
+	 */
 	public static function getLatest($limit = 10, $dateField = 'created', $sort = 'DESC')
 	{
-		$rows = Post::all()->where('status', '=', '2')->order($dateField, $sort)->limit($limit);
+		$rows = self::all()
+			->whereEquals('status', '2')
+			->order($dateField, $sort)
+			->limit($limit);
 
 		return $rows;
 	}
