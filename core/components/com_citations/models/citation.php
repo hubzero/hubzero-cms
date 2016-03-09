@@ -566,14 +566,17 @@ class Citation extends Relational
 		$html  = '';
 
 		// are we allowing downloading
-		$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
-		$html .= '<span> | </span>';
-		$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
+		$html .= '<a class="icon-download bibtex" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
+		$html .= '<span class="separator"> | </span>';
+		$html .= '<a class="icon-download endnote" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
 
 		// if we have an open url link and we want to use open urls
 		if ($openurl['link'])
 		{
-			$html .= '<span> | </span>' . self::citationOpenUrl($openurl, $this);
+			if ($open = self::citationOpenUrl($openurl, $this))
+			{
+				$html .= '<span class="separator"> | </span>' . $open;
+			}
 		}
 
 		// citation association - to HUB resources

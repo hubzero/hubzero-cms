@@ -47,8 +47,8 @@ if (isset($this->messages))
 }
 ?>
 
-<div id="content-header-extra"><!-- Citation management buttons -->
-	<?php if ($this->isManager) : ?>
+<?php if ($this->isManager) : ?>
+	<div id="content-header-extra"><!-- Citation management buttons -->
 		<a class="btn icon-add" href="<?php echo Route::url($base. '&action=add'); ?>">
 			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
 		</a>
@@ -58,8 +58,8 @@ if (isset($this->messages))
 		<a class="btn icon-settings" href="<?php echo Route::url($base. '&action=settings'); ?>">
 			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SET_FORMAT'); ?>
 		</a>
-	<?php endif; ?>
-</div><!-- / Citations management buttons -->
+	</div><!-- / Citations management buttons -->
+<?php endif; ?>
 
 <div class="frm" id="browsebox"><!-- .frm #browsebox -->
 	<form action="<?php echo Route::url(Request::current()); ?>" id="citeform" method="GET" class="withBatchDownload">
@@ -141,23 +141,25 @@ if (isset($this->messages))
 												/**
 												 * @TODO replace with Relational
 												 **/
-												$type = "";
-												foreach ($this->types as $t) {
-													if ($t->id == $cite->type) {
+												$type = '';
+												foreach ($this->types as $t)
+												{
+													if ($t->id == $cite->type)
+													{
 														$type = $t->type_title;
 													}
 												}
-												$type = ($type != "") ? $type : "Generic";
+												$type = ($type != '') ? $type : 'Generic';
 
 												switch ($this->label)
 												{
-													case "number":
+													case 'number':
 														echo "<span class=\"number\">{$cite->id}.</span>";
 														break;
-													case "type":
+													case 'type':
 														echo "<span class=\"type\">{$type}</span>";
 														break;
-													case "both":
+													case 'both':
 														echo "<span class=\"number\">{$cite->id}. </span>";
 														echo "<span class=\"type\">{$type}</span>";
 														break;
@@ -167,37 +169,32 @@ if (isset($this->messages))
 									<?php endif; ?>
 									<td class="citation-container">
 										<?php
-											$formatted = $cite->formatted($this->config->toArray(), $this->filters['search']);
+										$formatted = $cite->formatted($this->config->toArray(), $this->filters['search']);
 
-											if ($cite->doi)
-											{
-												$formatted = str_replace(
-													'doi:' . $cite->doi,
-													'<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>',
-													$formatted
-												);
-											}
+										if ($cite->doi)
+										{
+											$formatted = str_replace(
+												'doi:' . $cite->doi,
+												'<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>',
+												$formatted
+											);
+										}
 
-											echo $formatted;
+										echo $formatted;
 
-											//get this citations rollover param
-											//$params = new \Hubzero\Config\Registry($cite->params);
-											$citation_rollover = 0;
+										//get this citations rollover param
+										//$params = new \Hubzero\Config\Registry($cite->params);
+										$citation_rollover = 0;
 
-											$links = $cite->links()->rows();
+										$links = $cite->links()->rows();
 										?>
 										<?php if ($links->count() > 0) : ?>
 											<ul class="citation-links">
-												<?php
-												foreach ($links as $link)
-												{
-													?>
+												<?php foreach ($links as $link) { ?>
 													<li>
 														<a href="<?php echo $link->url; ?>"><?php echo $this->escape($link->title); ?></a>
 													</li>
-													<?php 
-												}
-												?>
+												<?php } ?>
 											</ul>
 										<?php endif; ?>
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
@@ -218,40 +215,39 @@ if (isset($this->messages))
 														}
 													}
 												?>
-												<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
-													<?php $final = substr($final, 0, -2); ?>
-													<p class="sponsor"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
+												<?php if ($final != '' && $this->config->get('citation_sponsors', 'yes') == 'yes') : ?>
+													<p class="sponsor"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo substr($final, 0, -2); ?></p>
 												<?php endif; ?>
 												<p><?php echo nl2br($cite->abstract); ?></p>
 											</div>
 										<?php endif; ?>
+										<div class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished-details' : ''); ?>">
+											<?php if ($this->config->get('citations_show_badges', 'yes') == 'yes'): ?>
+												<?php echo $cite->badgeCloud(); ?> 
+											<?php endif; ?>
+											<?php if ($this->config->get('citations_show_tags', 'yes') == 'yes'): ?>
+												<?php echo $cite->tagCloud(); ?>
+											<?php endif; ?>
+											<?php echo $cite->citationDetails($this->openurl); ?>
+										</div>
 									</td>
 									<?php if ($this->isManager === true && $cite->scope == 'group') : ?>
-										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&id=' .$cite->id ); ?>"></span>
-											<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?></span>
-										</a></td>
-										<td class="col-delete"><a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>">
-											<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?></span>
-										</a></td>
-										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>">
-											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'); ?></span>
-										</a></td>
-									<?php else: ?>
-										<td class="col"></td>
-										<td class="col"></td>
-										<td class="col"></td>
+										<td class="col-edit">
+											<a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&id=' .$cite->id ); ?>" title="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?>">
+												<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?></span>
+											</a>
+										</td>
+										<td class="col-delete">
+											<a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>" title="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?>">
+												<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?></span>
+											</a>
+										</td>
+										<td class="col-publish">
+											<a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>" title="<?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH')); ?>">
+												<span><?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'); ?></span>
+											</a>
+										</td>
 									<?php endif; ?>
-								</tr>
-								<tr>
-									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="6"'; } ?> class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished-details' : ''); ?>">
-										<?php if ($this->config->get('citations_show_badges', 'yes') == "yes"): ?>
-											<?php echo $cite->badgeCloud(); ?> 
-										 <?php endif; ?>
-										<?php if ($this->config->get('citations_show_tags', 'yes') == "yes"): ?>
-											<?php echo $cite->tagCloud(); ?>
-										<?php endif; ?>
-										<?php	echo $cite->citationDetails($this->openurl); ?>
-									</td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
@@ -271,9 +267,9 @@ if (isset($this->messages))
 					<input type="submit" name="download" class="download" id="download-endnote" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_ENDNOTE'); ?>" />
 					|
 					<input type="submit" name="download" class="download" id="download-bibtex" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_BIBTEX'); ?>" />
-				<!-- for serving up the file download -->
-					<iframe id="download-frame"></iframe>
-				<!-- end file serving -->
+					<!-- for serving up the file download -->
+						<iframe id="download-frame"></iframe>
+					<!-- end file serving -->
 				</fieldset>
 				<fieldset>
 					<label>

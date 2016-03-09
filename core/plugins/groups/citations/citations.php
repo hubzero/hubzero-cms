@@ -23,15 +23,15 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
-	*
-	* @package		hubzero-cms
-	* @author		Alissa Nedossekina <alisa@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
-	* @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
-	* @license		http://opensource.org/licenses/MIT MIT
-	*/
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
 
 // No direct access
 defined('_HZEXEC_') or die();
+
 // include needed libs
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'citation.php');
@@ -53,34 +53,34 @@ use Components\Citations\Models\Author;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
+
 /**
-	* Groups plugin class for citations
-	*/
+ * Groups plugin class for citations
+ */
 class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 {
-
 	const PLUGIN_SCOPE = 'group';
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var		 boolean
+	 * @var	 boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Get Tab
 	 *
-	 * @return array plugin tab details
+	 * @return  array  plugin tab details
 	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
-			'name'				 => $this->_name,
-			'title'				 => Lang::txt('PLG_GROUPS_CITATIONS'),
-			'default_access'	 => $this->params->get('plugin_access', 'members'),
+			'name'             => $this->_name,
+			'title'            => Lang::txt('PLG_GROUPS_CITATIONS'),
+			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
-			'icon'				 => '275D'
+			'icon'             => '275D'
 		);
 		return $area;
 	}
@@ -88,24 +88,24 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	* Return data on a group view (this will be some form of HTML)
 	*
-	* @param		 object  $group		 Current group
-	* @param		 string  $option		 Name of the component
-	* @param		 string  $authorized User's authorization level
-	* @param		 integer $limit		 Number of records to pull
-	* @param		 integer $limitstart Start of records to pull
-	* @param		 string  $action		 Action to perform
-	* @param		 array	 $access		 What can be accessed
-	* @param		 array	 $areas		 Active area(s)
-	* @return		 array
+	* @param   object  $group       Current group
+	* @param   string  $option      Name of the component
+	* @param   string  $authorized  User's authorization level
+	* @param   integer $limit       Number of records to pull
+	* @param   integer $limitstart  Start of records to pull
+	* @param   string  $action      Action to perform
+	* @param   array   $access      What can be accessed
+	* @param   array   $areas       Active area(s)
+	* @return  array
 	*/
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		$returnhtml = true;
-		$active		= 'citations';
+		$active     = 'citations';
 
 		// The output array we're returning
 		$arr = array(
-			'html'		 => '',
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -129,11 +129,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Set some variables so other functions have access
 		$this->authorized = $authorized;
-		$this->members		= $members;
-		$this->group		= $group;
-		$this->option		= $option;
-		$this->action		= $action;
-		$this->access		= $access;
+		$this->members    = $members;
+		$this->group      = $group;
+		$this->option     = $option;
+		$this->action     = $action;
+		$this->access     = $access;
 
 		$this->importer = new Importer(
 			App::get('db'),
@@ -141,7 +141,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			App::get('config')->get('tmp_path') . DS . 'citations',
 			App::get('session')->getId()
 		);
-
 
 		// if we want to return content
 		if ($returnhtml)
@@ -181,20 +180,25 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 			}
 
+			if ($this->group->isSuperGroup())
+			{
+				$this->path = PATH_APP . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . 'plg_' . $this->_type . '_' . $this->_name;
+			}
+
 			// run task based on action
 			switch ($this->action)
 			{
-				case 'save':	 $arr['html'] .= $this->_save();		break;
-				case 'add':		 $arr['html'] .= $this->_edit();		break;
-				case 'edit':	 $arr['html'] .= $this->_edit();		break;
-				case 'delete':	 $arr['html'] .= $this->_delete();		break;
-				case 'publish': $arr['html'] .= $this->_publish();	break;
-				case 'browse':	 $arr['html'] .= $this->_browse();		break;
-				case 'import':	 $arr['html'] .= $this->_import();		break;
-				case 'upload':	$arr['html'] .= $this->_upload();			break;
-				case 'settings': $arr['html'] .= $this->_settings();	break;
-				case 'process': $arr['html']	.= $this->_process();		break;
-				default:		 $arr['html'] .= $this->_browse();
+				case 'save':     $arr['html'] .= $this->_save();     break;
+				case 'add':      $arr['html'] .= $this->_edit();     break;
+				case 'edit':     $arr['html'] .= $this->_edit();     break;
+				case 'delete':   $arr['html'] .= $this->_delete();   break;
+				case 'publish':  $arr['html'] .= $this->_publish();  break;
+				case 'browse':   $arr['html'] .= $this->_browse();   break;
+				case 'import':   $arr['html'] .= $this->_import();   break;
+				case 'upload':   $arr['html'] .= $this->_upload();   break;
+				case 'settings': $arr['html'] .= $this->_settings(); break;
+				case 'process':  $arr['html'] .= $this->_process();  break;
+				default:         $arr['html'] .= $this->_browse();
 			}
 		}
 
@@ -213,17 +217,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of all citations, with filtering&search options.
 	 *
-	 * @return		 string HTML
+	 * @return  string  HTML
 	 */
 	private function _browse()
 	{
-		 // Instantiate a new citations object
+		// Instantiate a new citations object
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
 
 		$count = clone $obj['citations'];
 		$count = $count->count();
-		$isManager		 = ($this->authorized == 'manager') ? true : false;
-		$config =  new \Hubzero\Config\Registry($this->group->get('params'));
+		$isManager = ($this->authorized == 'manager') ? true : false;
+		$config  = new \Hubzero\Config\Registry($this->group->get('params'));
 		$display = $config->get('display');
 
 		$total = \Components\Citations\Models\Citation::all()
@@ -237,10 +241,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			// have a group manager set the settings
 			App::redirect(
-			 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=settings'),
-			 Lang::txt('Please select your settings for this group.'),
-			 'warning'
-			 );
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=settings'),
+				Lang::txt('Please select your settings for this group.'),
+				'warning'
+			);
 		}
 		elseif ((int) $count == 0 && $isManager && isset($display) && $total <= 0)
 		{
@@ -254,14 +258,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'browse');
 
 			// push objects to the view
-			$view->group			 = $this->group;
-			$view->option			 = $this->option;
-			$view->task				 = $this->_name;
-			$view->database			 = $this->database;
-			$view->title			 = Lang::txt(strtoupper($this->_name));
-			$view->isManager		 = ($this->authorized == 'manager') ? true : false;
-			$view->config			 = $config;
-
+			$view->group     = $this->group;
+			$view->option    = $this->option;
+			$view->task      = $this->_name;
+			$view->database  = $this->database;
+			$view->title     = Lang::txt(strtoupper($this->_name));
+			$view->isManager = ($this->authorized == 'manager') ? true : false;
+			$view->config    = $config;
 		}
 
 		// get applied filters
@@ -286,7 +289,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Contribution filter
 		$view->filterlist = array(
-			'all'	 => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
+			'all'    => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
 			'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB')
 		);
 
@@ -379,13 +382,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->setError($error);
 		}
 
+		if ($this->group->isSuperGroup())
+		{
+			$view->addTemplatePath($this->path . DS . 'browse');
+		}
+
 		return $view->loadTemplate();
 	}
 
 	/**
 	 * Display the form allowing to edit a citation
 	 *
-	 * @return		 string HTML
+	 * @return  string  HTML
 	 */
 	private function _edit()
 	{
@@ -399,10 +407,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// push objects to view
-		$view->group	 = $this->group;
+		$view->group     = $this->group;
 		$view->isManager = ($this->authorized == 'manager') ? true : false;
-		$view->config  = new \Hubzero\Config\Registry($this->group->get('params'));
-
+		$view->config    = new \Hubzero\Config\Registry($this->group->get('params'));
 
 		if ($view->isManager == false)
 		{
@@ -478,7 +485,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-
 		// Set the page title
 		Document::setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
 
@@ -486,7 +492,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view
-		$view->title	= Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->action));
+		$view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->action));
 
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
@@ -495,7 +501,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->row->uid = User::get('id');
 
 			// tags & badges
-			$view->tags		= array();
+			$view->tags   = array();
 			$view->badges = array();
 
 			$view->row->id = -time();
@@ -514,7 +520,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$authorString = '';
 				$totalAuths = count($authors);
 				$x = 0;
-
 
 				foreach ($authors as &$author)
 				{
@@ -542,7 +547,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					$view->authorString = $authorString;
 			}
 			// tags & badges
-			$view->tags		= \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
+			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
 			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
 		}
 
@@ -552,13 +557,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->setError($error);
 		}
 
+		if ($this->group->isSuperGroup())
+		{
+			$view->addTemplatePath($this->path . DS . 'edit');
+		}
+
 		return $view->loadTemplate();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @return		 void
+	 * @return  void
 	 */
 	private function _save()
 	{
@@ -715,30 +725,86 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Publish method for group citations
 	 *
-	 * @param null
-	 * @return void
-	 *
-	 **/
-	 private function _publish()
-	 {
-			// verify that the user is a manager.
-			$isManager = ($this->authorized == 'manager') ? true : false;
-			if (!$isManager)
+	 * @return  void
+	 */
+	private function _publish()
+	{
+		// verify that the user is a manager.
+		$isManager = ($this->authorized == 'manager') ? true : false;
+		if (!$isManager)
+		{
+			// redirect to browse with admonishment
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
+				'warning'
+			);
+			return;
+		}
+
+		$id = Request::getVar('id', 0);
+		$citationIDs = Request::getVar('citationIDs', array());
+		$bulk = Request::getVar('bulk', false);
+
+		if ($id != 0 && !$bulk)
+		{
+			$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+			// toggle the state
+			if ($citation->published != $citation::STATE_PUBLISHED)
 			{
-				// redirect to browse with admonishment
+				$citation->set('published',  $citation::STATE_PUBLISHED);
+				$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
+			}
+			else
+			{
+				$citation->set('published', $citation::STATE_UNPUBLISHED);
+				$string = 'PLG_GROUPS_CITATIONS_CITATION_UNPUBLISHED';
+			}
+
+			// save the state
+			if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
+					&& $citation->scope_id == $this->group->get('gidNumber'))
+			{
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-					Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
-					'warning'
+					Lang::txt($string),
+					'success'
 				);
 				return;
 			}
+			else
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+					'error'
+				);
+				return;
+			}
+		}
+		elseif ((bool)$bulk)
+		{
+			/***
+			 * @TODO move to API, possible use of whereIn()?
+			 ***/
 
-			$id = Request::getVar('id', 0);
-			$citationIDs = Request::getVar('citationIDs', array());
-			$bulk = Request::getVar('bulk', false);
+			// when no selection has been made
+			if ($bulk == true && $citationIDs == '')
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
+					'warning'
+				);
+					return;
+				}
+			$published = array();
+			$citationIDs = explode(',',$citationIDs);
+			$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
 
-			if ($id != 0 && !$bulk)
+			// error, no such citation
+			foreach ($citationIDs as $id)
 			{
 				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 
@@ -746,237 +812,99 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				if ($citation->published != $citation::STATE_PUBLISHED)
 				{
 					$citation->set('published',  $citation::STATE_PUBLISHED);
-					$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
 				}
 				else
 				{
 					$citation->set('published', $citation::STATE_UNPUBLISHED);
-					$string = 'PLG_GROUPS_CITATIONS_CITATION_UNPUBLISHED';
 				}
 
 				// save the state
-				if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
-						&& $citation->scope_id == $this->group->get('gidNumber'))
+				if ($citation->scope == self::PLUGIN_SCOPE
+					&& $citation->scope_id == $this->group->get('gidNumber') && $citation->save())
 				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt($string),
-						'success'
-					);
-					return;
-				}
-				else
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
-						'error'
-					);
-					return;
+					array_push($published, $id);
 				}
 			}
-			elseif ((bool)$bulk)
+
+			if (!empty($published))
 			{
-				/***
-				 * @TODO move to API, possible use of whereIn()?
-				 ***/
-
-				// when no selection has been made
-				if ($bulk == true && $citationIDs == '')
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
-						'warning'
-					);
-						return;
-					}
-				$published = array();
-				$citationIDs = explode(',',$citationIDs);
-				$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
-
-				// error, no such citation
-				foreach ($citationIDs as $id)
-				{
-					$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-
-					// toggle the state
-					if ($citation->published != $citation::STATE_PUBLISHED)
-					{
-						$citation->set('published',  $citation::STATE_PUBLISHED);
-					}
-					else
-					{
-						$citation->set('published', $citation::STATE_UNPUBLISHED);
-					}
-
-					// save the state
-					if ($citation->scope == self::PLUGIN_SCOPE
-						&& $citation->scope_id == $this->group->get('gidNumber') && $citation->save())
-					{
-						array_push($published, $id);
-					}
-				}
-
-				if (!empty($published))
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt($string),
-						'success'
-					);
-					return;
-				}
-				elseif ($citation->scope != self::PLUGIN_SCOPE)
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
-						'error'
-					);
-					return;
-				}
-				else
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
-						'error'
-					);
-					return;
-				}
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt($string),
+					'success'
+				);
+				return;
+			}
+			elseif ($citation->scope != self::PLUGIN_SCOPE)
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
+					'error'
+				);
+				return;
 			}
 			else
 			{
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-					Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+					Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
 					'error'
 				);
 				return;
 			}
-	 } // end _publish()
-
+		}
+		else
+		{
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+				'error'
+			);
+			return;
+		}
+	}
 
 	/**
 	 * Delete method for group citations
 	 *
-	 * @param null
-	 * @return void
-	 *
-	 **/
-	 private function _delete()
-	 {
-			// verify that the user is a manager.
-			$isManager = ($this->authorized == 'manager') ? true : false;
-			if (!$isManager)
+	 * @return  void
+	 */
+	private function _delete()
+	{
+		// verify that the user is a manager.
+		$isManager = ($this->authorized == 'manager') ? true : false;
+		if (!$isManager)
+		{
+			// redirect to browse with admonishment
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
+				'warning'
+			);
+			return;
+		}
+
+		// get the variables
+		$id = Request::getVar('id', 0);
+		$citationIDs = Request::getVar('citationIDs', '' );
+		$bulk = Request::getVar('bulk', false);
+
+		// for single citation operation
+		if ($id != 0 && !$bulk)
+		{
+			$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+			$citation->set('published', $citation::STATE_DELETED);
+
+			if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
+					&& $citation->scope_id == $this->group->get('gidNumber'))
 			{
-				// redirect to browse with admonishment
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-					Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
-					'warning'
+					Lang::txt('PLG_GROUPS_CITATIONS_CITATION_DELETED'),
+					'success'
 				);
 				return;
-			}
-
-			// get the variables
-			$id = Request::getVar('id', 0);
-			$citationIDs = Request::getVar('citationIDs', '' );
-			$bulk = Request::getVar('bulk', false);
-
-			// for single citation operation
-			if ($id != 0 && !$bulk)
-			{
-				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-				$citation->set('published', $citation::STATE_DELETED);
-
-				if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
-						&& $citation->scope_id == $this->group->get('gidNumber'))
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_DELETED'),
-						'success'
-					);
-					return;
-				}
-				else
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
-						'error'
-					);
-					return;
-				}
-			}
-			// for bulk citations operation
-			elseif ((bool)$bulk)
-			{
-				/***
-				 * @TODO move to API, possible use of whereIn()?
-				 ***/
-
-				// when no selection has been made
-				if ($bulk == true && $citationIDs == '')
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
-						'warning'
-					);
-						return;
-					}
-
-				$deleted = array();
-				$citationIDs = explode(',',$citationIDs);
-				$string = 'PLG_GROUPS_CITATIONS_CITATION_DELETED';
-
-				// error, no such citation
-				foreach ($citationIDs as $id)
-				{
-					$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-
-
-					// toggle the state
-					$citation->set('published',  $citation::STATE_DELETED);
-
-					// save the state
-					if ($citation->scope == self::PLUGIN_SCOPE
-						&& $citation->scope_id == $this->group->get('gidNumber') && $citation->save())
-					{
-						array_push($deleted, $id);
-					}
-				}
-
-				if (!empty($deleted))
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt($string),
-						'success'
-					);
-					return;
-				}
-				elseif ($citation->scope != self::PLUGIN_SCOPE)
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
-						'error'
-					);
-					return;
-				}
-				else
-				{
-					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
-						'error'
-					);
-					return;
-				}
 			}
 			else
 			{
@@ -987,15 +915,89 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				);
 				return;
 			}
-		} // end _delete()
+		}
+		// for bulk citations operation
+		elseif ((bool)$bulk)
+		{
+			/***
+			 * @TODO move to API, possible use of whereIn()?
+			 ***/
+
+			// when no selection has been made
+			if ($bulk == true && $citationIDs == '')
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
+					'warning'
+				);
+					return;
+				}
+
+			$deleted = array();
+			$citationIDs = explode(',',$citationIDs);
+			$string = 'PLG_GROUPS_CITATIONS_CITATION_DELETED';
+
+			// error, no such citation
+			foreach ($citationIDs as $id)
+			{
+				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+
+				// toggle the state
+				$citation->set('published',  $citation::STATE_DELETED);
+
+				// save the state
+				if ($citation->scope == self::PLUGIN_SCOPE
+					&& $citation->scope_id == $this->group->get('gidNumber') && $citation->save())
+				{
+					array_push($deleted, $id);
+				}
+			}
+
+			if (!empty($deleted))
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt($string),
+					'success'
+				);
+				return;
+			}
+			elseif ($citation->scope != self::PLUGIN_SCOPE)
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
+					'error'
+				);
+				return;
+			}
+			else
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
+					'error'
+				);
+				return;
+			}
+		}
+		else
+		{
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+				'error'
+			);
+			return;
+		}
+	}
 
 	/**
 	 * Settings for group citations
 	 *
-	 * @param null
-	 * @return void
-	 *
-	 *
+	 * @return  void
 	 */
 	private function _settings()
 	{
@@ -1011,7 +1013,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 
 			// craft a clever name
-			$name =  "custom-group-" . $this->group->cn;
+			$name = "custom-group-" . $this->group->cn;
 
 			// fetch or create new format
 			$citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
@@ -1020,8 +1022,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew()))
 			{
 				$citationFormat->set(array(
-					'format'		=> Request::getVar('template'),
-					'style'			=> $name
+					'format' => Request::getVar('template'),
+					'style'  => $name
 				));
 
 				// save format
@@ -1075,7 +1077,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges: "true");
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
-						// intended for the case that the group's custom
+			// intended for the case that the group's custom
 			// format is removed from the jos_citations_format
 			try
 			{
@@ -1123,9 +1125,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Import task
-	* @return [object] [description]
-	*/
+	 * Import task
+	 *
+	 * @return  string
+	 */
 	private function _import()
 	{
 		// instansiate the view
@@ -1144,13 +1147,20 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			);
 		}
 
+		if ($this->group->isSuperGroup())
+		{
+			$view->addTemplatePath($this->path . DS . 'import');
+		}
+
 		return $view->loadTemplate();
 
 	}
+
 	/**
-	* Upload task
-	* @return [object] [description]
-	*/
+	 * Upload task
+	 *
+	 * @return  string
+	 */
 	private function _upload()
 	{
 		// instansiate the view
@@ -1233,14 +1243,20 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// get group ID
 		$group = Request::getVar('group');
 
+		if ($this->group->isSuperGroup())
+		{
+			$view->addTemplatePath($this->path . DS . 'import');
+		}
+
 		return $view->loadTemplate();
 
 	}
 
 	/**
-	* Upload task
-	* @return [object] [description]
-	**/
+	 * Upload task
+	 *
+	 * @return  string
+	 */
 	private function _process()
 	{
 		// instansiate the view
@@ -1344,14 +1360,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'success'
 			);
 			return;
-	 }
-}
+		}
+	}
 
 	/**
-	* Redirect to login form
-	*
-	* @return	void
-	*/
+	 * Redirect to login form
+	 *
+	 * @return  void
+	 */
 	private function _loginTask()
 	{
 		App::redirect(
@@ -1363,10 +1379,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Uses URL to determine OpenURL server
-	*
-	* @return	object $openURL
-	*/
+	 * Uses URL to determine OpenURL server
+	 *
+	 * @return  object  $openURL
+	 */
 	private function _handleOpenURL()
 	{
 		// get the users id to make lookup
@@ -1436,10 +1452,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Applies filters to Citations model and returns applied filters
-	* @param array  $filters array of POST values
-	* @return	array sanitized and validated filter values
-	*/
+	 * Applies filters to Citations model and returns applied filters
+	 *
+	 * @param   array  $filters  array of POST values
+	 * @return  array  sanitized and validated filter values
+	 */
 	private function _filterHandler($filters = array(),  $scope_id = 0)
 	{
 		$citations = \Components\Citations\Models\Citation::all();
@@ -1629,13 +1646,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return a list of citations for a specific user
 	 *
-	 * @param	object	$group		Current group
-	 * @param	object	$profile	USer profile
-	 * @return	string
+	 * @param   object  $group    Current group
+	 * @param   object  $profile  USer profile
+	 * @return  string
 	 */
 	public function onGroupMemberAfter($group, $profile)
 	{
 		return;
+
 		$view = $this->view('default', 'member');
 		$view->group	= $group;
 		$view->option	= 'com_groups';
@@ -1689,6 +1707,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->openurl['icon'] = $openURL['icon'];
 
 		$view->citations = array();
+
+		if ($this->group->isSuperGroup())
+		{
+			$view->addTemplatePath($this->path . DS . 'member');
+		}
 
 		return $view->loadTemplate();
 	}

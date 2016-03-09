@@ -31,10 +31,8 @@
 	font-weight: bold;
 }
 .citation-details {
-	background-color: rgba(245, 245, 245, 0.33);
-}
-.citation-details a {
-	margin-top: 5px;
+	background-color: rgba(0, 0, 0, 0.03);
+	padding: 0.2em 0.5em;
 }
 .citation-details .badges {
 	float: right;
@@ -57,14 +55,10 @@
 	background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10px, #F9F3AD 20px );
 }
 .admin {
-	padding: 10px 10px 10px 10px;
+	padding: 1em;
+	margin: 1em 0;
 	background-color: #C1C1C1;
-	margin: 25px 0 15px 0;
-}
-
-.admin a.btn,
-.btn {
-	border-color: #5F5E5E;
+	background-color: rgba(0, 0, 0, 0.05);
 }
 
 a.btn.icon-delete:hover{
@@ -269,6 +263,7 @@ a.btn.icon-delete:hover{
 }
 .citation-links li {
 	margin-right: 2em;
+	padding: 0;
 	display: inline;
 	border: none;
 }
@@ -279,6 +274,17 @@ a.btn.icon-delete:hover{
 	font-size: 0.85em;
 	color: #ccc;
 	color: rgba(0, 0, 0, 0.3);
+}
+
+.citation-details .icon-download:before {
+	color: #ccc;
+	color: rgba(0, 0, 0, 0.3);
+	content: "\f019";
+	margin-right: 0.5em;
+	font-size: 0.85em;
+}
+.citation-details .separator {
+	color: transparent;
 }
 
 .btn-cluster {
