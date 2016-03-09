@@ -83,6 +83,9 @@ function submitbutton(pressbutton)
 							<td>
 								<input type="text" name="fields[<?php echo $i; ?>][subid]" maxlength="250" size="4" value="<?php echo $this->escape(stripslashes($row->subid)); ?>" />
 								<input type="hidden" name="fields[<?php echo $i; ?>][ordering]" value="<?php echo $this->escape(stripslashes($row->ordering)); ?>" />
+								<input type="hidden" name="fields[<?php echo $i; ?>][subtable]" value="<?php echo $this->escape(stripslashes($row->subtable)); ?>" />
+								<input type="hidden" name="fields[<?php echo $i; ?>][authorid]" value="<?php echo $this->escape($this->authorid); ?>" />
+								<input type="hidden" name="fields[<?php echo $i; ?>][id]" value="<?php echo $this->escape(stripslashes($row->id)); ?>" />
 							</td>
 							<td>
 								<input type="text" name="fields[<?php echo $i; ?>][name]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->name)); ?>" />

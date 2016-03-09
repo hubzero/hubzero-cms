@@ -34,6 +34,7 @@ namespace Components\Resources\Admin\Controllers;
 
 use Components\Resources\Helpers\Utilities;
 use Hubzero\Component\AdminController;
+use Filesystem;
 use Request;
 use Lang;
 
@@ -57,8 +58,7 @@ class Media extends AdminController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming sub-directory
@@ -80,7 +80,7 @@ class Media extends AdminController
 			{
 				if (!is_dir($path . DS . $foldername))
 				{
-					if (!\Filesystem::makeDirectory($path . DS . $foldername))
+					if (!Filesystem::makeDirectory($path . DS . $foldername))
 					{
 						$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
@@ -97,11 +97,10 @@ class Media extends AdminController
 			// Make sure the upload path exist
 			if (!is_dir($path))
 			{
-				if (!\Filesystem::makeDirectory($path))
+				if (!Filesystem::makeDirectory($path))
 				{
 					$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-					$this->displayTask();
-					return;
+					return $this->displayTask();
 				}
 			}
 
@@ -110,14 +109,13 @@ class Media extends AdminController
 			if (!$file['name'])
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 
 			// Make the filename safe
-			$file['name'] = \Filesystem::clean($file['name']);
+			$file['name'] = Filesystem::clean($file['name']);
 			// Ensure file names fit.
-			$ext = \Filesystem::extension($file['name']);
+			$ext = Filesystem::extension($file['name']);
 			$file['name'] = str_replace(' ', '_', $file['name']);
 			if (strlen($file['name']) > 230)
 			{
@@ -126,7 +124,7 @@ class Media extends AdminController
 			}
 
 			// Perform the upload
-			if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+			if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_UPLOADING'));
 			}
@@ -155,19 +153,19 @@ class Media extends AdminController
 					if ($result = shell_exec($cmd))
 					{
 						// Remove original archive
-						\Filesystem::delete( $path . $file['name'] );
+						Filesystem::delete( $path . $file['name'] );
 
 						// Remove MACOSX dirs if there
-						if (\Filesystem::exists($path . '__MACOSX'))
+						if (Filesystem::exists($path . '__MACOSX'))
 						{
-							\Filesystem::deleteDirectory($path . '__MACOSX');
+							Filesystem::deleteDirectory($path . '__MACOSX');
 						}
 
 						//remove ._ files
-						$dotFiles = \Filesystem::files($path, '._[^\s]*', true, true);
+						$dotFiles = Filesystem::files($path, '._[^\s]*', true, true);
 						foreach ($dotFiles as $dotFile)
 						{
-							\Filesystem::delete($dotFile);
+							Filesystem::delete($dotFile);
 						}
 					}
 				}
@@ -193,8 +191,7 @@ class Media extends AdminController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Make sure the listdir follows YYYY/MM/#
@@ -202,8 +199,7 @@ class Media extends AdminController
 		if (count($parts) < 3)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming sub-directory
@@ -217,8 +213,7 @@ class Media extends AdminController
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_DIRECTORY'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		$folder = Utilities::normalizePath($folder);
@@ -231,7 +226,7 @@ class Media extends AdminController
 		else
 		{
 			// Attempt to delete the file
-			if (!\Filesystem::deleteDirectory($path . $folder))
+			if (!Filesystem::deleteDirectory($path . $folder))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -256,8 +251,7 @@ class Media extends AdminController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Make sure the listdir follows YYYY/MM/#
@@ -265,8 +259,7 @@ class Media extends AdminController
 		if (count($parts) < 3)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming sub-directory
@@ -280,8 +273,7 @@ class Media extends AdminController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Check if the file even exists
@@ -292,7 +284,7 @@ class Media extends AdminController
 		else
 		{
 			// Attempt to delete the file
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_DELETE_FILE'));
 			}
@@ -310,25 +302,25 @@ class Media extends AdminController
 	public function displayTask()
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$this->view->listdir = Request::getVar('listdir', '');
-		if (!$this->view->listdir)
+		$listdir = Request::getVar('listdir', '');
+		if (!$listdir)
 		{
 			echo '<p class="error">' . Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR') . '</p>';
 			return;
 		}
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
-		if (!$this->view->subdir)
+		$subdir = Request::getVar('subdir', '');
+		if (!$subdir)
 		{
-			$this->view->subdir = Request::getVar('dirPath', '', 'post');
+			$subdir = Request::getVar('dirPath', '', 'post');
 		}
 
 		// Build the path
-		$this->view->path = Utilities::buildUploadPath($this->view->listdir, $this->view->subdir);
+		$path = Utilities::buildUploadPath($listdir, $subdir);
 
 		// Get list of directories
-		$dirs = $this->_recursiveListDir($this->view->path);
+		$dirs = $this->_recursiveListDir($path);
 
 		$folders   = array();
 		$folders[] = \Html::select('option', '/');
@@ -336,30 +328,30 @@ class Media extends AdminController
 		{
 			foreach ($dirs as $dir)
 			{
-				$folders[] = \Html::select('option', substr($dir, strlen($this->view->path)));
+				$folders[] = \Html::select('option', substr($dir, strlen($path)));
 			}
 		}
 		sort($folders);
 
 		// Create folder <select> list
-		$this->view->dirPath = \Html::select(
+		$dirPath = \Html::select(
 			'genericlist',
 			$folders,
 			'dirPath',
 			'onchange="goUpDir()" ',
 			'value',
 			'text',
-			$this->view->subdir
+			$subdir
 		);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
 
 		// Output the HTML
 		$this->view
+			->set('listdir', $listdir)
+			->set('subdir', $subdir)
+			->set('path', $path)
+			->set('dirPath', $dirPath)
+			->set('config', $this->config)
+			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
 	}
@@ -372,18 +364,18 @@ class Media extends AdminController
 	public function listTask()
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$this->view->listdir = Request::getVar('listdir', '');
-		if (!$this->view->listdir)
+		$listdir = Request::getVar('listdir', '');
+		if (!$listdir)
 		{
 			echo '<p class="error">' . Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR') . '</p>';
 			return;
 		}
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
+		$subdir = Request::getVar('subdir', '');
 
 		// Build the path
-		$path = Utilities::buildUploadPath($this->view->listdir, $this->view->subdir);
+		$path = Utilities::buildUploadPath($listdir, $subdir);
 
 		$folders = array();
 		$docs    = array();
@@ -392,6 +384,7 @@ class Media extends AdminController
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
 			$dirIterator = new \DirectoryIterator($path);
+
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())
@@ -399,18 +392,17 @@ class Media extends AdminController
 					continue;
 				}
 
+				$name = $file->getFilename();
+
 				if ($file->isDir())
 				{
-					$name = $file->getFilename();
 					$folders[$path . DS . $name] = $name;
 					continue;
 				}
 
 				if ($file->isFile())
 				{
-					$name = $file->getFilename();
-					if (('cvs' == strtolower($name))
-					 || ('.svn' == strtolower($name)))
+					if (in_array(strtolower($name), array('cvs', '.svn', '.git', '.ds_store')))
 					{
 						continue;
 					}
@@ -423,16 +415,15 @@ class Media extends AdminController
 			ksort($docs);
 		}
 
-		$this->view->docs = $docs;
-		$this->view->folders = $folders;
-		$this->view->config = $this->config;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('listdir', $listdir)
+			->set('subdir', $subdir)
+			->set('docs', $docs)
+			->set('folders', $folders)
+			->set('config', $this->config)
+			->setErrors($this->getErrors())
+			->setLayout('list')
+			->display();
 	}
 
 	/**
@@ -463,4 +454,3 @@ class Media extends AdminController
 		return $dirlist;
 	}
 }
-

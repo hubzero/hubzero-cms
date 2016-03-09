@@ -37,6 +37,7 @@ use Components\Resources\Helpers\Tags as TagCloud;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use User;
@@ -54,24 +55,21 @@ class Tags extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->id = Request::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Get resource title
-		$this->view->row = new Resource($this->database);
-		$this->view->row->load($this->view->id);
+		$row = new Resource($this->database);
+		$row->load($id);
 
-		// Get all tags
-		$query  = "SELECT id, tag, raw_tag, admin FROM `#__tags` ORDER BY raw_tag ASC";
-		$this->database->setQuery($query);
-		$this->view->tags = $this->database->loadObjectList();
-		if ($this->database->getErrorNum())
+		if (!$row->get('id'))
 		{
-			echo $this->database->stderr();
-			return false;
+			Notify::error(Lang::txt('COM_RESOURCES_NOTFOUND'));
+
+			return $this->cancelTask();
 		}
 
 		// Get tags for this resource
-		$rt = new TagCloud($this->view->id);
+		$rt = new TagCloud($id);
 
 		$mytagarray    = array();
 		$myrawtagarray = array();
@@ -80,19 +78,25 @@ class Tags extends AdminController
 			$mytagarray[]    = $tagMen->get('tag');
 			$myrawtagarray[] = $tagMen->get('raw_tag');
 		}
-		$this->view->mytagarray = $mytagarray;
 
-		$this->view->objtags = new stdClass;
-		$this->view->objtags->tagMen = implode(', ', $myrawtagarray);
+		// Get all tags
+		$tags = $rt->tags('list', array(
+			'scope'    => null,
+			'scope_id' => 0
+		), true);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$objtags = new stdClass;
+		$objtags->tagMen = implode(', ', $myrawtagarray);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('id', $id)
+			->set('row', $row)
+			->set('tags', $tags)
+			->set('mytagarray', $mytagarray)
+			->set('objtags', $objtags)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -113,6 +117,7 @@ class Tags extends AdminController
 
 		// Process tags
 		$tagging = new TagCloud($id);
+
 		$tagArray  = $tagging->parseTags($entered);
 		$tagArray2 = $tagging->parseTags($entered, 1);
 
@@ -122,6 +127,7 @@ class Tags extends AdminController
 			array_push($selected, $tagArray2[$diffed]);
 		}
 		$tags = implode(',', $selected);
+
 		$tagging->setTags($tags, User::get('id'), 1);
 
 		// Redirect
@@ -143,4 +149,3 @@ class Tags extends AdminController
 		);
 	}
 }
-

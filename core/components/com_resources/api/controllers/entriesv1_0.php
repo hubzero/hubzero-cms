@@ -47,7 +47,7 @@ class Entriesv1_0 extends ApiController
 	 * Get a list of new content for a given time period
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /newsletters/list
+	 * @apiUri    /resources/list
 	 * @apiParameter {
 	 * 		"name":          "limit",
 	 * 		"description":   "Number of result to return.",
@@ -76,7 +76,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"required":      false,
 	 * 		"default":       "resources"
 	 * }
-	 * @return    void
+	 * @return  void
 	 */
 	public function whatsnewTask()
 	{
@@ -94,15 +94,31 @@ class Entriesv1_0 extends ApiController
 
 		$this->send($object);
 	}
+
+	/**
+	 * Render an image of a LaTeX expression
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /resources/renderlatex
+	 * @apiParameter {
+	 * 		"name":          "expression",
+	 * 		"description":   "LaTeX expression",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @return  void
+	 */
 	public function renderlatexTask()
 	{
 		$expression = Request::getVar('expression', '');
-		$dir = PATH_APP .DS. 'cache' .DS. 'ckeditor' .DS. 'hubzeroequation' .DS;
-		$filename = uniqid("equation_");
+
+		$dir = PATH_APP . DS . 'cache' . DS . 'ckeditor' . DS . 'hubzeroequation' . DS;
+		$filename = uniqid('equation_');
 		$error = null;
 
-		//build tex document
-		$doc = '\documentclass[12pt]{article}'."\n";
+		// build tex document
+		$doc  = '\documentclass[12pt]{article}'."\n";
 		$doc .= '\usepackage[utf8]{inputenc}'."\n";
 		$doc .= '\usepackage{amssymb,amsmath}'."\n";
 		$doc .= '\usepackage{color}'."\n";
@@ -116,28 +132,37 @@ class Entriesv1_0 extends ApiController
 		$doc .= '\end{displaymath}'."\n";
 		$doc .= '\end{document}'."\n";
 
-		//if cache doesn't exist, create it
-		if (!is_dir($dir)) {
+		// if cache doesn't exist, create it
+		if (!is_dir($dir))
+		{
 			\Hubzero\Filesystem::makeDirectory($dir);
 		}
-		if (file_put_contents($dir .DS. $filename . '.tex', $doc) === false) {
+
+		if (file_put_contents($dir .DS. $filename . '.tex', $doc) === false)
+		{
 			throw new \Exception('Failed to open target file');
 		}
-		try {
-			//execute latex to build dvi
+
+		try
+		{
+			// execute latex to build dvi
 			$command = 'cd ' . $dir . '; /usr/bin/latex ' . $filename . '.tex < /dev/null |grep ^!|grep -v Emergency > ' . $dir . DS . $filename . '.error 2> /dev/null 2>&1';
 			exec($command, $output_lines, $exit_status);
 
-			//execute dvi2png to build png
+			// execute dvi2png to build png
 			$command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o " . $dir .DS. $filename . '.png '. $dir .DS. $filename . '.dvi 2>&1';
 			exec($command, $output_lines, $exit_status);
-			if ($exit_status != 0) {
+			if ($exit_status != 0)
+			{
 				throw new \Exception("dvi2png failed");
 			}
-		} catch (\Exception $e) {
+		}
+		catch (\Exception $e)
+		{
 			$error = $e->getMessage();
 		}
-		//build response
+
+		// build response
 		$object = new stdClass();
 
 		if ($error)
@@ -147,7 +172,7 @@ class Entriesv1_0 extends ApiController
 		}
 		else
 		{
-			//no errors - send base64 encoded image
+			// no errors - send base64 encoded image
 			$object->error = "";
 			$imgbinary = fread(fopen($dir .DS. $filename . '.png', 'r'), filesize($dir .DS. $filename .'.png'));
 			$base64img = 'data:image/png;base64,'.base64_encode($imgbinary);
@@ -156,9 +181,9 @@ class Entriesv1_0 extends ApiController
 
 		$object->expression = $expression;
 
-		//clean up our cache mess
+		// clean up our cache mess
 		shell_exec('rm ' . $dir . $filename . '.*');
-		$this->send($object);
 
+		$this->send($object);
 	}
 }

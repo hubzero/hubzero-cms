@@ -74,6 +74,7 @@ function addtag(tag)
 
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_RESOURCES_TAGS_EXISTING'); ?></span></legend>
+
 		<p><?php echo Lang::txt('COM_RESOURCES_TAGS_EXISTING_HELP'); ?></p>
 
 		<table class="adminlist">
@@ -86,27 +87,23 @@ function addtag(tag)
 				</tr>
 			</thead>
 			<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->tags); $i < $n; $i++)
-{
-	$thistag = &$this->tags[$i];
-	$check = '';
-	if ($thistag->admin == 1)
-	{
-		$check = '<span class="check">admin</span>';
-	}
-?>
+			<?php
+			$k = 0;
+			$i = 0;
+			foreach ($this->tags as $tag)
+			{
+				?>
 				<tr class="<?php echo "row$k"; ?>">
-					<td><input type="checkbox" name="tgs[]" id="cb<?php echo $i;?>" <?php if (in_array($thistag->tag, $this->mytagarray)) { echo 'checked="checked"'; } ?> value="<?php echo $this->escape($thistag->tag); ?>" /></td>
-					<td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo $this->escape($thistag->raw_tag); ?></a></td>
-					<td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo $this->escape($thistag->tag); ?></a></td>
-					<td><?php echo $check; ?></td>
+					<td><input type="checkbox" name="tgs[]" id="cb<?php echo $i; ?>" <?php if (in_array($tag->tag, $this->mytagarray)) { echo 'checked="checked"'; } ?> value="<?php echo $this->escape($tag->tag); ?>" /></td>
+					<td><a href="#" onclick="addtag('<?php echo stripslashes($tag->tag); ?>');"><?php echo $this->escape($tag->raw_tag); ?></a></td>
+					<td><a href="#" onclick="addtag('<?php echo stripslashes($tag->tag); ?>');"><?php echo $this->escape($tag->tag); ?></a></td>
+					<td><?php if ($tag->admin == 1) { echo '<span class="check">admin</span>'; } ?></td>
 				</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+				<?php
+				$k = 1 - $k;
+				$i++;
+			}
+			?>
 			</tbody>
 		</table>
 	</fieldset>

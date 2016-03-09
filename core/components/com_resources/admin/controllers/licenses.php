@@ -98,7 +98,7 @@ class Licenses extends AdminController
 		// Get records
 		$rows = $entries
 			->ordered('filter_order', 'filter_order_Dir')
-			->paginated()
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// Output the HTML

@@ -43,7 +43,7 @@ use Lang;
 use App;
 
 /**
- * Resource importer
+ * Resource importer hooks
  */
 class ImportHooks extends AdminController
 {
@@ -55,13 +55,15 @@ class ImportHooks extends AdminController
 	public function displayTask()
 	{
 		// get all imports from archive
-		$hooksArchive = Models\Import\Hook\Archive::getInstance();
-		$this->view->hooks = $hooksArchive->hooks('list', array(
+		$archive = Models\Import\Hook\Archive::getInstance();
+
+		$hooks = $archive->hooks('list', array(
 			'state' => array(1)
 		));
 
 		// Output the HTML
 		$this->view
+			->set('hooks', $hooks)
 			->setLayout('display')
 			->display();
 	}
@@ -89,20 +91,21 @@ class ImportHooks extends AdminController
 		$id = Request::getVar('id', array(0));
 		if (is_array($id))
 		{
-			$id = (!empty($id)) ? $id[0] : null;
+			$id = (!empty($id)) ? $id[0] : 0;
 		}
 
 		// get the import object
-		$this->view->hook = new Models\Import\Hook($id);
+		$hook = new Models\Import\Hook($id);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('hook', $hook)
 			->setLayout('edit')
 			->display();
 	}
@@ -115,37 +118,37 @@ class ImportHooks extends AdminController
 	public function saveTask()
 	{
 		// check token
-		\Session::checkToken();
+		Request::checkToken();
 
 		// get request vars
-		$hook = Request::getVar('hook', array());
+		$data = Request::getVar('hook', array());
 		$file = Request::getVar('file', array(), 'FILES');
 
 		// create hook model object
-		$this->hook = new Models\Import\Hook();
+		$hook = new Models\Import\Hook();
 
 		// bind input to model
-		if (!$this->hook->bind( $hook ))
+		if (!$hook->bind($data))
 		{
-			$this->setError($this->hook->getError());
+			$this->setError($hook->getError());
 			return $this->editTask();
 		}
 
 		// is this a new import
 		$isNew = false;
-		if (!$this->hook->get('id'))
+		if (!$hook->get('id'))
 		{
 			$isNew = true;
 
 			// set the created by/at
-			$this->hook->set('created_by', User::get('id'));
-			$this->hook->set('created', Date::toSql());
+			$hook->set('created_by', User::get('id'));
+			$hook->set('created', Date::toSql());
 		}
 
 		// attempt to save
-		if (!$this->hook->store(true))
+		if (!$hook->store(true))
 		{
-			$this->setError($this->hook->getError());
+			$this->setError($hook->getError());
 			return $this->editTask();
 		}
 
@@ -153,16 +156,16 @@ class ImportHooks extends AdminController
 		if ($isNew)
 		{
 			// create folder for files
-			$this->_createImportFilespace($this->hook);
+			$this->_createImportFilespace($hook);
 		}
 
 		// if we have a file
 		if ($file['size'] > 0 && $file['error'] == 0)
 		{
-			move_uploaded_file($file['tmp_name'], $this->hook->fileSpacePath() . DS . $file['name']);
+			move_uploaded_file($file['tmp_name'], $hook->fileSpacePath() . DS . $file['name']);
 
-			$this->hook->set('file', $file['name']);
-			$this->hook->store();
+			$hook->set('file', $file['name']);
+			$hook->store();
 		}
 
 		//inform user & redirect
@@ -184,14 +187,14 @@ class ImportHooks extends AdminController
 		$id = Request::getVar('id', array());
 		if (is_array($id))
 		{
-			$id = (!empty($id)) ? $id[0] : null;
+			$id = (!empty($id)) ? $id[0] : 0;
 		}
 
 		// create hook model object
-		$this->hook = new Models\Import\Hook($id);
+		$hook = new Models\Import\Hook($id);
 
 		// get path to file
-		$file = $this->hook->fileSpacePath() . DS . $this->hook->get('file');
+		$file = $hook->fileSpacePath() . DS . $hook->get('file');
 
 		// default contents
 		$contents = '';
@@ -216,7 +219,7 @@ class ImportHooks extends AdminController
 	public function removeTask()
 	{
 		// check token
-		\Session::checkToken();
+		Request::checkToken();
 
 		// get request vars
 		$ids = Request::getVar('id', array());
@@ -244,7 +247,7 @@ class ImportHooks extends AdminController
 			}
 		}
 
-		//inform user & redirect
+		// inform user & redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_RESOURCES_IMPORTHOOK_REMOVED'),

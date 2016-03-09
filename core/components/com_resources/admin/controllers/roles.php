@@ -101,7 +101,7 @@ class Roles extends AdminController
 		// Get records
 		$rows = $model
 			->ordered('filter_order', 'filter_order_Dir')
-			->paginated()
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// Output the HTML

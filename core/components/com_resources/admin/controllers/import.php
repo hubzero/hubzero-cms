@@ -36,6 +36,7 @@ use Components\Resources\Models;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
+use Filesystem;
 use Session;
 use Request;
 use Route;
@@ -68,24 +69,17 @@ class Import extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// get all imports from archive
-		$importArchive = Models\Import\Archive::getInstance();
-		$imports = $importArchive->imports('list', array(
+		$archive = Models\Import\Archive::getInstance();
+
+		$imports = $archive->imports('list', array(
 			'state'   => array(1),
 			'orderby' => 'created_at DESC'
 		));
 
-		// pass vars to view
-		$this->view->imports = $imports;
-
 		// Output the HTML
 		$this->view
+			->set('imports', $imports)
 			->setLayout('display')
 			->display();
 	}
@@ -101,39 +95,39 @@ class Import extends AdminController
 
 		// get request vars
 		$ids = Request::getVar('id', array());
-		$id  = (isset($ids[0])) ? $ids[0] : null;
+		$id  = (isset($ids[0])) ? $ids[0] : 0;
 
 		// get the import object
-		$this->view->import = new Models\Import($id);
+		$import = new Models\Import($id);
 
 		// import params
-		$this->view->params = new \Hubzero\Config\Registry($this->view->import->get('params'));
+		$params = new \Hubzero\Config\Registry($import->get('params'));
 
 		// get all files in import filespace
-		$this->view->files = \Filesystem::files($this->view->import->fileSpacePath(), '.');
+		$files = Filesystem::files($import->fileSpacePath(), '.');
 
 		// get all imports from archive
 		$hooksArchive = Models\Import\Hook\Archive::getInstance();
-		$this->view->hooks = $hooksArchive->hooks('list', array(
+		$hooks = $hooksArchive->hooks('list', array(
 			'state' => array(1)
 		));
 
 		// Get groups
-		$this->view->groups = Group::find(array(
+		$groups = Group::find(array(
 			'authorized' => 'admin',
 			'fields'     => array('cn','description','published','gidNumber','type'),
 			'type'       => array(1,3),
 			'sortby'     => 'description'
 		));
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
+			->set('import', $import)
+			->set('params', $params)
+			->set('files', $files)
+			->set('hooks', $hooks)
+			->set('groups', $groups)
+			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();
 	}
@@ -214,16 +208,20 @@ class Import extends AdminController
 		if (is_array($file) && $file['size'] > 0 && $file['error'] == 0)
 		{
 			$ext = strtolower(Filesystem::extension($file['name']));
+
 			if (!in_array($ext, array('csv', 'xml')))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_IMPORT_UNSUPPORTED_FILE_TYPE'));
 				return $this->editTask();
 			}
+
 			if (!is_dir($this->import->fileSpacePath()))
 			{
 				Filesystem::makeDirectory($this->import->fileSpacePath());
 			}
+
 			move_uploaded_file($file['tmp_name'], $this->import->fileSpacePath() . DS . $file['name']);
+
 			$this->import->set('file', $file['name']);
 		}
 
@@ -285,7 +283,7 @@ class Import extends AdminController
 			}
 		}
 
-		//inform user & redirect
+		// inform user & redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_RESOURCES_IMPORT_REMOVED'),
@@ -306,29 +304,23 @@ class Import extends AdminController
 	/**
 	 * Run Import
 	 *
-	 * @param   integer $dryRun
+	 * @param   integer  $dryRun  Run in test mode?
 	 * @return  void
 	 */
 	public function runTask($dryRun = 0)
 	{
 		// get request vars
 		$ids = Request::getVar('id', array());
-		$id  = (isset($ids[0])) ? $ids[0] : null;
-
-		// are we test mode
-		$this->view->dryRun = $dryRun;
+		$id  = (isset($ids[0])) ? $ids[0] : 0;
 
 		// create import model object
-		$this->view->import = new Models\Import($id);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$import = new Models\Import($id);
 
 		// force layout
 		$this->view
+			->set('dryRun', $dryRun)
+			->set('import', $import)
+			->setErrors($this->getErrors())
 			->setLayout('run')
 			->display();
 	}
@@ -336,7 +328,7 @@ class Import extends AdminController
 	/**
 	 * Actually Run Import
 	 * 
-	 * @return   string  JSON encoded records that just got inserted or would be
+	 * @return  string  JSON encoded records that just got inserted or would be
 	 */
 	public function doRunTask()
 	{
@@ -484,7 +476,7 @@ class Import extends AdminController
 		// if we dont have a filespace, create it
 		if (!is_dir($uploadPath))
 		{
-			\Filesystem::makeDirectory($uploadPath, 0775);
+			Filesystem::makeDirectory($uploadPath, 0775);
 		}
 
 		// all set

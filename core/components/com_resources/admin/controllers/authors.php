@@ -32,12 +32,14 @@
 
 namespace Components\Resources\Admin\Controllers;
 
-use Components\Resources\Tables\Contributor\Role;
-use Components\Resources\Tables\Contributor;
+use Components\Resources\Models\Author;
+use Components\Resources\Models\Author\Role;
 use Hubzero\Component\AdminController;
 use Request;
 use Route;
 use App;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author.php');
 
 /**
  * Manage resource authors
@@ -65,7 +67,7 @@ class Authors extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
@@ -81,46 +83,43 @@ class Authors extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
-			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
 			)
 		);
 
-		$obj = new Contributor($this->database);
-
-		// Get record count
-		$this->view->total = $obj->getAuthorCount($this->view->filters);
-
 		// Get records
-		$this->view->rows = $obj->getAuthorRecords($this->view->filters);
+		$model = Author::all();
 
-		$this->view->display();
+		if ($filters['search'])
+		{
+			$model->whereLike('name', strtolower($filters['search']));
+		}
+
+		$rows = $model
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		// Output the HTML
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Edit an entry
 	 *
+	 * @param   array  $rows
 	 * @return  void
 	 */
 	public function editTask($rows=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor' . DS . 'role.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php');
 
 		$authorid = 0;
+
 		if (!is_array($rows))
 		{
 			// Incoming
@@ -130,25 +129,26 @@ class Authors extends AdminController
 				$authorid = (!empty($authorid) ? $authorid[0] : 0);
 			}
 
-			// Load category
-			$obj = new Contributor($this->database);
-			$rows = $obj->getRecordsForAuthor($authorid);
+			$rows = Author::all()
+				->whereEquals('authorid', $authorid)
+				->rows();
 		}
 
-		$this->view->rows = $rows;
-		$this->view->authorid = $authorid;
-
-		$model = new Role($this->database);
-		$this->view->roles = $model->getRecords(array('sort' => 'title'));
+		$roles = Role::all()
+			->ordered()
+			->rows();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			\Notify::error($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('rows', $rows)
+			->set('authorid', $authorid)
+			->set('roles', $roles)
 			->setLayout('edit')
 			->display();
 	}
@@ -177,45 +177,25 @@ class Authors extends AdminController
 		}
 
 		$rows = array();
+
 		if (is_array($fields))
 		{
 			foreach ($fields as $fieldset)
 			{
-				$rc = new Contributor($this->database);
-				$rc->subtable     = 'resources';
-				$rc->subid        = trim($fieldset['subid']);
-				$rc->authorid     = $authorid;
-				$rc->name         = trim($fieldset['name']);
-				$rc->organization = trim($fieldset['organization']);
-				$rc->role         = $fieldset['role'];
-				$rc->ordering     = $fieldset['ordering'];
-				if ($authorid != $id)
+				$fieldset['authorid'] = $authorid;
+
+				$row = Role::oneOrNew($fieldset['id'])->set($fieldset);
+
+				if (!$row->save())
 				{
-					if (!$rc->createAssociation())
-					{
-						$this->setError($rc->getError());
-					}
-					if (!$rc->deleteAssociation($id, $rc->subid, $rc->subtable))
-					{
-						$this->setError($rc->getError());
-					}
-				}
-				else
-				{
-					if (!$rc->updateAssociation())
-					{
-						$this->setError($rc->getError());
-					}
+					$this->setError($row->getError());
 				}
 
-				$rows[] = $rc;
+				$rows[] = $row;
 			}
 		}
 
-		// Instantiate a resource/contributor association object
-		$rc = new Contributor($this->database);
-
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($rows);
 		}
