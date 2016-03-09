@@ -44,7 +44,7 @@ class Quote extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'feedback';
 
@@ -62,7 +62,7 @@ class Quote extends Relational
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'date';
 
@@ -76,7 +76,7 @@ class Quote extends Relational
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $rules = array(
 		'quote' => 'notempty'
@@ -127,6 +127,7 @@ class Quote extends Relational
 	/**
 	 * Return the path for uploads
 	 *
+	 * @param   bool    $root
 	 * @return  string
 	 */
 	public function filespace($root = true)
@@ -182,4 +183,3 @@ class Quote extends Relational
 		return $files;
 	}
 }
-

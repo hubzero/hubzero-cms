@@ -118,16 +118,23 @@ class Articles extends AdminController
 			$articles->whereEquals('access', (int)$filters['access']);
 		}
 
-		$this->view->filters = $filters;
-
 		// Get records
-		$this->view->rows = $articles->ordered('filter_order', 'filter_order_Dir')->paginated();
+		$rows = $articles
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Get the sections
-		$this->view->categories = Category::all()->ordered();
+		$categories = Category::all()
+			->ordered()
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->set('categories', $categories)
+			->display();
 	}
 
 	/**
@@ -153,10 +160,8 @@ class Articles extends AdminController
 			$row = Article::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
 		// Fail if checked out not by 'me'
-		if ($this->view->row->get('checked_out') && $this->view->row->get('checked_out') != User::get('id'))
+		if ($row->get('checked_out') && $row->get('checked_out') != User::get('id'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -166,27 +171,32 @@ class Articles extends AdminController
 			return;
 		}
 
-		if ($this->view->row->isNew())
+		if ($row->isNew())
 		{
-			$this->view->row->set('created_by', User::get('id'));
-			$this->view->row->set('created', Date::toSql());
+			$row->set('created_by', User::get('id'));
+			$row->set('created', Date::toSql());
 		}
 
-		$this->view->params = new Parameter(
-			$this->view->row->get('params'),
+		$params = new Parameter(
+			$row->get('params'),
 			dirname(dirname(__DIR__)) . DS . 'kb.xml'
 		);
 
 		// Get the sections
-		$this->view->categories = Category::all()->ordered();
+		$categories = Category::all()
+			->ordered()
+			->rows();
 
 		/*
 		$m = new KbModelAdminArticle();
-		$this->view->form = $m->getForm();
+		$form = $m->getForm();
 		*/
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('params', $params)
+			->set('categories', $categories)
 			->setLayout('edit')
 			->display();
 	}
@@ -235,7 +245,7 @@ class Articles extends AdminController
 			User::get('id')
 		);
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
 			return $this->editTask($row);
@@ -445,4 +455,3 @@ class Articles extends AdminController
 		);
 	}
 }
-

@@ -35,18 +35,35 @@ HUBzero is a registered trademark of Purdue University.
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Capture and manage user success stories. </description>
+	<files folder="config">
+		<filename>access.xml</filename>
+		<filename>config.xml</filename>
+	</files>
+	<files folder="helpers">
+		<filename>permissions.php</filename>
+	</files>
+	<files folder="models">
+		<filename>quote.php</filename>
+	</files>
 	<files folder="site">
-		<filename>feedback.css</filename>
+		<filename>assets/css/feedback.css</filename>
+		<filename>assets/js/feedback.js</filename>
+		<filename>assets/js/quotes.js</filename>
+		<filename>controllers/feedback.php</filename>
+		<filename>controllers/media.php</filename>
 		<filename>feedback.php</filename>
-		<filename>feedback.html.php</filename>
-		<filename>controller.php</filename>
 		<filename>router.php</filename>
 		<filename>index.html</filename>
-		<filename>images/contributor.gif</filename>
-		<filename>images/poll-large.gif</filename>
-		<filename>images/quotes-large.gif</filename>
-		<filename>images/wishbone-large.gif</filename>
-		<filename>images/alert-large.gif</filename>
+		<filename>views/feedback/tmpl/display.php</filename>
+		<filename>views/feedback/tmpl/display.xml</filename>
+		<filename>views/feedback/tmpl/poll.php</filename>
+		<filename>views/feedback/tmpl/poll.xml</filename>
+		<filename>views/feedback/tmpl/quotes.php</filename>
+		<filename>views/feedback/tmpl/quotes.xml</filename>
+		<filename>views/feedback/tmpl/story.php</filename>
+		<filename>views/feedback/tmpl/story.xml</filename>
+		<filename>views/feedback/tmpl/thanks.php</filename>
+		<filename>views/feedback/tmpl/thanks.xml</filename>
 	</files>
 	<languages folder="site">
 		<language tag="en-GB">en-GB.com_feedback.ini</language>
@@ -54,15 +71,9 @@ HUBzero is a registered trademark of Purdue University.
 	<administration>
 		<menu>Feedback</menu>
 		<files folder="admin">
-			<filename>admin.controller.php</filename>
-			<filename>admin.feedback.html.php</filename>
-			<filename>admin.feedback.php</filename>
-			<filename>config.xml</filename>
+			<filename>controllers/quotes.php</filename>
 			<filename>index.html</filename>
-			<filename>quotes.class.php</filename>
-			<filename>selectedquotes.class.php</filename>
-			<filename>toolbar.feedback.html.php</filename>
-			<filename>toolbar.feedback.php</filename>
+			<filename>feedback.php</filename>
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_feedback.ini</language>

@@ -34,7 +34,7 @@ namespace Components\Kb\Admin;
 
 if (!\User::authorise('core.manage', 'com_kb'))
 {
-	throw new \Exception(\Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+	\App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
@@ -64,5 +64,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

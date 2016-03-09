@@ -67,7 +67,7 @@ class Quotes extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'search' => urldecode(Request::getState(
 				$this->_option . '.search',
 				'search',
@@ -88,15 +88,21 @@ class Quotes extends AdminController
 
 		$record = Quote::all();
 
-		if ($this->view->filters['search'])
+		if ($filters['search'])
 		{
-			$record->whereLike('fullname', $this->view->filters['search']);
+			$record->whereLike('fullname', $filters['search']);
 		}
 
-		$this->view->rows = $record->ordered('filter_order', 'filter_order_Dir')->paginated();
+		$rows = $record
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -131,16 +137,9 @@ class Quotes extends AdminController
 			}
 		}
 
-		$this->view->row = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -214,7 +213,7 @@ class Quotes extends AdminController
 		// Notify the user that the entry was saved
 		Notify::success(Lang::txt('COM_FEEDBACK_QUOTE_SAVED', $row->get('fullname')));
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			// Display the edit form
 			return $this->editTask($row);
@@ -269,4 +268,3 @@ class Quotes extends AdminController
 		);
 	}
 }
-

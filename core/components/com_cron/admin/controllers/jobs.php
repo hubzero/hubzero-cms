@@ -87,7 +87,7 @@ class Jobs extends AdminController
 		// Get records
 		$rows = Job::all()
 			->ordered('filter_order', 'filter_order_Dir')
-			->paginated()
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// Output the HTML

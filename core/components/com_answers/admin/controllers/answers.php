@@ -106,7 +106,7 @@ class Answers extends AdminController
 
 		$question = new Question;
 
-		if ($filters['question_id'] >= 0)
+		if ($filters['question_id'] > 0)
 		{
 			$question = Question::oneOrFail($filters['question_id']);
 
@@ -128,7 +128,8 @@ class Answers extends AdminController
 
 		$rows = $records
 			->ordered('filter_order', 'filter_order_Dir')
-			->paginated();
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
@@ -388,4 +389,3 @@ class Answers extends AdminController
 		);
 	}
 }
-
