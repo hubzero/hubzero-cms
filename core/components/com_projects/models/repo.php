@@ -1008,6 +1008,7 @@ class Repo extends Object
 
 		$file         = Filesystem::clean(basename($dataPath));
 		$localPath    = $dirPath ? $dirPath . DS . $file : $file;
+		$tempPath     = false;
 
 		$where  = $target . DS . $file;
 		$exists = is_file($where) ? true : false;
