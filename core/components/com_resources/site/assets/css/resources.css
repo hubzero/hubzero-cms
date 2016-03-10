@@ -853,6 +853,10 @@
 	#level-2 h3 {
 		position: relative;
 	}
+	#tagbrowser h3 select,
+	#tagbrowser h3 input {
+		font-size: 0.7em;
+	}
 	#filteroptions {
 		padding: 1em 0;
 		font-size:85%;
