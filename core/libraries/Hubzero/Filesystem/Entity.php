@@ -386,6 +386,23 @@ class Entity extends Object
 	}
 
 	/**
+	 * Computes the depth of the entity
+	 *
+	 * @return  int
+	 */
+	public function getDirLevel()
+	{
+		if (!trim($this->getPath()))
+		{
+			return 0;
+		}
+
+		$dirParts = explode('/', $this->getPath());
+
+		return count($dirParts);
+	}
+
+	/**
 	 * Grabs the absolute path to the entity (not relative to instance root)
 	 *
 	 * @return  string
