@@ -55,7 +55,7 @@ if ($data->get('viewer') != 'freeze')
 				<span><a href="<?php echo $data->get('downloadUrl'); ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a></span>
 			<?php } ?>
 		</span>
-		<span class="item-title">
+		<span class="item-title" id="<?php echo 'file-'.$data->get('id'); ?>">
 			<?php echo $data::drawIcon($data->get('ext')); ?> <?php echo $data->get('title'); ?>
 		</span>
 		<span class="item-details"><?php echo $details; ?></span>
