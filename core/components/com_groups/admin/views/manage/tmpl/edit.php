@@ -96,6 +96,7 @@ jQuery(document).ready(function($){
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <div id="item-form">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
@@ -115,7 +116,6 @@ jQuery(document).ready(function($){
 	<div id="section-document">
 		<div id="page-details" class="tab">
 
-			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 			<div class="col width-60 fltlft">
 				<fieldset class="adminform">
 					<legend><span><?php echo Lang::txt('COM_GROUPS_DETAILS'); ?></span></legend>
@@ -311,7 +311,6 @@ jQuery(document).ready(function($){
 				<?php endif; ?>
 			</div>
 			<div class="clr"></div>
-			</form>
 		</div>
 
 		<div id="page-files" class="tab">
@@ -338,4 +337,5 @@ jQuery(document).ready(function($){
 	<?php endif;*/ ?>
 
 	<?php echo Html::input('token'); ?>
+	</form>
 </div>
