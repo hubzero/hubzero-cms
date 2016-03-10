@@ -325,7 +325,7 @@ class File extends Base
 				// File model
 				$file = new \Components\Projects\Models\File($filePath);
 
-				$list .= '<li class="' . $class . '"><span class="item-title">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span>';
+				$list .= '<li class="' . $class . '"><span class="item-title" id="file-' . $attach->id . '">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span>';
 				$list .= '<span class="item-details">' . $attach->path . '</span>';
 				$list .= '</li>';
 			}
