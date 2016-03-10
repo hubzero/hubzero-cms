@@ -900,7 +900,7 @@ class File extends Base
 					if (!$conFile->isLocal())
 					{
 						// Create a temp file and write to it
-						$tempFile = Manager::getTempPath($identifier);
+						$tempFile = Manager::getTempPath($conFile->getName());
 						Manager::copy($conFile, $tempFile);
 					}
 					else
@@ -912,7 +912,7 @@ class File extends Base
 
 					// Insert the file into the repo
 					$result = $pub->_project->repo()->insert([
-						'subdir'   => $dest,
+						'subdir'   => $dest . DS . $conFile->getParent(),
 						'dataPath' => $tempFile->getAbsolutePath(),
 						'update'   => false
 					]);
