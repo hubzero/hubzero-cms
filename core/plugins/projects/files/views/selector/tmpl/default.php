@@ -207,6 +207,10 @@ if ($this->folders)
 
 	<p class="requirement" id="req"><?php echo $req; ?></p>
 
+	<?php if ($this->showCons) : ?>
+		<p class="info connection-message"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTION_NOTE'); ?></p>
+	<?php endif; ?>
+
 	<div id="content-selector" class="content-selector">
 		<?php
 			if ($this->showCons && empty($this->directory) && !Request::getInt('cid'))
