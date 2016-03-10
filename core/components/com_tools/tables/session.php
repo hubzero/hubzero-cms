@@ -370,4 +370,52 @@ class Session extends \JTable
 		$this->_db->setQuery($this->buildQuery($filters));
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Get a list of unique appnames
+	 *
+	 * @return  array
+	 */
+	public function getAppnames()
+	{
+		$query = "SELECT DISTINCT `appname`
+				FROM $this->_tbl
+				ORDER BY `appname` ASC";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get a list of unique exechosts
+	 *
+	 * @return  array
+	 */
+	public function getExechosts()
+	{
+		$query = "SELECT DISTINCT `exechost`
+				FROM $this->_tbl
+				ORDER BY `exechost` ASC";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get a list of unique usernames
+	 *
+	 * @return  array
+	 */
+	public function getUsernames()
+	{
+		$mv = new Viewperm($this->_db);
+
+		$query = "SELECT DISTINCT v.viewuser
+				FROM $mv->_tbl AS v
+				INNER JOIN $this->_tbl AS s ON v.sessnum = s.sessnum
+				ORDER BY v.viewuser ASC";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
 }
