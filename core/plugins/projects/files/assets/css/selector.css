@@ -268,4 +268,10 @@
 	#file-selector li.preselected {
 		background: #ebfcec;
 	}	
-	
+
+/* Connections
+---------------------------- */
+.file-selector .connection img {
+	height: 20px;
+	width: 20px;
+}

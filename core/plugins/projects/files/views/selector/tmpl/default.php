@@ -30,6 +30,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+use Components\Projects\Models\Orm\Project;
+
 if (!$this->ajax)
 {
 	$this->css('selector');
@@ -131,12 +134,13 @@ if ($attachments)
 if (!empty($this->directory))
 {
 	// Show files
+	$layout = (Request::getInt('cid') && Request::getInt('cid') > 0) ? 'selector-remote' : 'selector';
 	$view = new \Hubzero\Plugin\View(
 		array(
 			'folder'	=>'projects',
 			'element'	=>'files',
 			'name'		=>'selector',
-			'layout'	=>'selector'
+			'layout'	=>$layout
 		)
 	);
 	$view->option       = $this->option;
@@ -205,24 +209,44 @@ if ($this->folders)
 
 	<div id="content-selector" class="content-selector">
 		<?php
-			// Show files
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'	=>'projects',
-					'element'	=>'files',
-					'name'		=>'selector',
-					'layout'	=>'selector'
-				)
-			);
-			$view->option 		= $this->option;
-			$view->model 		= $this->model;
-			$view->items		= $this->items;
-			$view->requirements = $params;
-			$view->publication  = $this->publication;
-			$view->selected		= $selected;
-			$view->allowed		= $allowed;
-			$view->used			= $used;
-			echo $view->loadTemplate();
+			if ($this->showCons && empty($this->directory) && !Request::getInt('cid'))
+			{
+				// Show files
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'projects',
+						'element' => 'files',
+						'name'    => 'selector',
+						'layout'  => 'connections'
+					)
+				);
+				$view->model       = $this->model;
+				$view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
+
+				echo $view->loadTemplate();
+			}
+			else
+			{
+				// Show files
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'projects',
+						'element' => 'files',
+						'name'    => 'selector',
+						'layout'  => 'selector'
+					)
+				);
+				$view->option       = $this->option;
+				$view->model        = $this->model;
+				$view->items        = $this->items;
+				$view->requirements = $params;
+				$view->publication  = $this->publication;
+				$view->selected     = $selected;
+				$view->allowed      = $allowed;
+				$view->used         = $used;
+
+				echo $view->loadTemplate();
+			}
 		?>
 	</div>
 	</form>
