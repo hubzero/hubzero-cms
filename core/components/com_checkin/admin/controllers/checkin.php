@@ -4,31 +4,35 @@
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Checkin\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Checkin\Models\Inspector;
 use Exception;
 use Submenu;
 use Request;
@@ -48,7 +52,7 @@ class Checkin extends AdminController
 	 */
 	public function execute()
 	{
-		$this->model = new \Components\Checkin\Models\Checkin();
+		$this->model = new Inspector();
 
 		parent::execute();
 	}
@@ -63,17 +67,10 @@ class Checkin extends AdminController
 		// Load the submenu.
 		$this->addSubmenu(Request::getWord('option', 'com_checkin'));
 
-		$this->view->items      = $this->model->getItems();
-		$this->view->pagination = $this->model->getPagination();
-		$this->view->state      = $this->model->getState();
-
-		// Check for errors.
-		if (count($errors = $this->model->getErrors()))
-		{
-			throw new Exception(implode("\n", $errors), 500);
-		}
-
 		$this->view
+			->set('state', $this->model->state())
+			->set('items', $this->model->items())
+			->set('total', $this->model->total())
 			->setLayout('default')
 			->display();
 	}
@@ -86,26 +83,30 @@ class Checkin extends AdminController
 	public function checkinTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit(Lang::txt('JInvalid_Token'));
+		Request::checkToken();
 
 		// Initialise variables.
 		$ids = Request::getVar('cid', array(), '', 'array');
 
 		$msg = null;
+		$cls = null;
 
 		if (empty($ids))
 		{
-			throw new Exception(Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'), 500);
+			$msg = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+			$cls = 'warning';
 		}
 		else
 		{
 			// Checked in the items.
 			$msg = Lang::txts('COM_CHECKIN_N_ITEMS_CHECKED_IN', $this->model->checkin($ids));
+			$cls = 'success';
 		}
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			($msg ?: null)
+			($msg ?: null),
+			($cls ?: null)
 		);
 	}
 
