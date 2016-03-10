@@ -93,26 +93,26 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <div id="item-form">
-	<nav role="navigation" class="sub-navigation">
-		<div id="submenu-box">
-			<div class="submenu-box">
-				<div class="submenu-pad">
-					<ul id="submenu" class="coursesection">
-						<li><a href="#page-details" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-						<li><a href="#page-files" onclick="return false;" id="files"><?php echo Lang::txt('COM_GROUPS_MEDIA'); ?></a></li>
-						<!-- <li><a href="#" onclick="return false;" id="pages"><?php echo Lang::txt('COM_COURSES_FIELDSET_PAGES'); ?></a></li> -->
-					</ul>
-					<div class="clr"></div>
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
+		<nav role="navigation" class="sub-navigation">
+			<div id="submenu-box">
+				<div class="submenu-box">
+					<div class="submenu-pad">
+						<ul id="submenu" class="coursesection">
+							<li><a href="#page-details" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+							<li><a href="#page-files" onclick="return false;" id="files"><?php echo Lang::txt('COM_GROUPS_MEDIA'); ?></a></li>
+							<!-- <li><a href="#" onclick="return false;" id="pages"><?php echo Lang::txt('COM_COURSES_FIELDSET_PAGES'); ?></a></li> -->
+						</ul>
+						<div class="clr"></div>
+					</div>
 				</div>
+				<div class="clr"></div>
 			</div>
-			<div class="clr"></div>
-		</div>
-	</nav><!-- / .sub-navigation -->
+		</nav><!-- / .sub-navigation -->
 
-	<div id="section-document">
-		<div id="page-details" class="tab">
+		<div id="section-document">
+			<div id="page-details" class="tab">
 
-			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 				<div class="grid">
 					<div class="col span7">
 						<fieldset class="adminform">
@@ -310,31 +310,31 @@ function submitbutton(pressbutton)
 						<?php endif; ?>
 					</div>
 				</div><!-- / .grid -->
-			</form>
+			</div>
+
+			<div id="page-files" class="tab">
+				<fieldset class="adminform">
+					<?php if ($this->group->gidNumber) { ?>
+						<legend><span><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH', substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber')); ?></span></legend>
+						<iframe width="100%" height="500" name="media" id="media" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&gidNumber=' . $this->group->gidNumber); ?>"></iframe>
+					<?php } else { ?>
+						<p class="warning"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILES_WARNING'); ?></p>
+					<?php } ?>
+				</fieldset>
+			</div>
 		</div>
 
-		<div id="page-files" class="tab">
-			<fieldset class="adminform">
-				<?php if ($this->group->gidNumber) { ?>
-					<legend><span><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH', substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber')); ?></span></legend>
-					<iframe width="100%" height="500" name="media" id="media" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&gidNumber=' . $this->group->gidNumber); ?>"></iframe>
-				<?php } else { ?>
-					<p class="warning"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILES_WARNING'); ?></p>
-				<?php } ?>
+		<?php /*if ($canDo->get('core.admin')): ?>
+		<div class="col width-100 fltlft">
+			<fieldset class="panelform">
+				<legend><span><?php echo Lang::txt('COM_GROUPS_FIELDSET_RULES'); ?></span></legend>
+				<?php echo $this->form->getLabel('rules'); ?>
+				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>
 		</div>
-	</div>
+		<div class="clr"></div>
+		<?php endif;*/ ?>
 
-	<?php /*if ($canDo->get('core.admin')): ?>
-	<div class="col width-100 fltlft">
-		<fieldset class="panelform">
-			<legend><span><?php echo Lang::txt('COM_GROUPS_FIELDSET_RULES'); ?></span></legend>
-			<?php echo $this->form->getLabel('rules'); ?>
-			<?php echo $this->form->getInput('rules'); ?>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
-	<?php endif;*/ ?>
-
-	<?php echo Html::input('token'); ?>
+		<?php echo Html::input('token'); ?>
+	</form>
 </div>
