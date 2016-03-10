@@ -47,8 +47,17 @@ HUB.ProjectFilesFileSelect = {
 		target = $(target);
 
 		var url  = $('#filterUrl').length ? $('#filterUrl').val() : '';
-			url += "&directory=" + encodeURI(target.data('path'));
 			url += "&parent=" + parent;
+
+		if (target.data('path'))
+		{
+			url += "&directory=" + encodeURI(target.data('path'));
+		}
+
+		if (target.data('connection'))
+		{
+			url += "&cid=" + encodeURI(target.data('connection'));
+		}
 
 		target.after('<p class="content-loader-slim"> ' + HUB.Projects.loadingIma('') + '</p>');
 
@@ -88,7 +97,7 @@ HUB.ProjectFilesFileSelect = {
 		});
 	},
 
-	refetchData: function ( directory )
+	refetchData: function ( directory, connection )
 	{
 		var $ = this.jQuery;
 
@@ -100,19 +109,26 @@ HUB.ProjectFilesFileSelect = {
 		}
 		else
 		{
-			var target = $('.type-folder[data-path="' + directory + '"]'),
-				parent = target.attr('id').replace('dir-', ''),
+			var target = $('.type-folder[data-path="' + directory + '"]');
+
+			if ($.type(connection) !== "undefined")
+			{
+				target = target.filter('.type-folder[data-connection="' + connection + '"]');
+			}
+
+			var parent = target.attr('id').replace('dir-', ''),
 				action = target.hasClass('collapsed') ? 'uncollapse' : 'collapse';
 
 			// If the dir has already been fetched, clear it out
 			var loc = $.inArray(parent, HUB.ProjectFilesFileSelect.fetched);
 			if (loc >= 0)
 			{
+				HUB.ProjectFilesFileSelect.fetched.splice(loc, 1);
+
 				// If it's open, close it and clear out its immediate children
 				if (action == 'collapse')
 				{
 					// Clear this item from fetched data (so we refetch)
-					HUB.ProjectFilesFileSelect.fetched.splice(loc, 1);
 					HUB.ProjectFilesFileSelect.collapseElements(parent, action, function ( )
 					{
 						HUB.ProjectFilesFileSelect.clearFolder(target);
@@ -122,7 +138,6 @@ HUB.ProjectFilesFileSelect = {
 				else
 				{
 					// It's closed, so silently clear out the children so we refresh next time
-					HUB.ProjectFilesFileSelect.fetched.splice(loc, 1);
 					HUB.ProjectFilesFileSelect.clearFolder(target);
 				}
 			}
@@ -267,7 +282,20 @@ HUB.ProjectFilesFileSelect = {
 					// Success or error
 					if (success)
 					{
-						HUB.ProjectFilesFileSelect.refetchData(form.find('select[name="subdir"]').val());
+						if ($('.type-folder[data-connection="-1"]').length)
+						{
+							var val = form.find('select[name="subdir"]').val();
+							if (!val)
+							{
+								val = '.';
+							}
+
+							HUB.ProjectFilesFileSelect.refetchData(val, '-1');
+						}
+						else
+						{
+							HUB.ProjectFilesFileSelect.refetchData(form.find('select[name="subdir"]').val());
+						}
 						statusBox.html('<p class="status-success">Upload successful</p>');
 						HUB.ProjectFilesFileSelect.fadeMessage();
 					}
