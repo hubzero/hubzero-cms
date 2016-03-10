@@ -156,20 +156,34 @@ div.current {
 	}
 
 	fieldset.radio {
-		float: left;
+		margin: 0;
+		//float: left;
 
 		input {
 			clear: none;
 			min-width: 15px;
-			float: left;
+			//float: left;
+			display: inline-block;
 			margin: 3px 0 0 2px;
 		}
 		label {
 			clear: none;
 			min-width: 45px;
-			width: 5em;
-			float: left;
+			display: inline-block;
+			width: auto;
+			float: none;
+			//width: 5em;
+			//float: left;
 			margin: 3px 0 0 5px;
+		}
+
+		ul {
+			margin: 0;
+		}
+		li {
+			padding: 0;
+			display: inline-block;
+			border-bottom: none;
 		}
 	}
 
