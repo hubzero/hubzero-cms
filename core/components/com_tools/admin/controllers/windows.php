@@ -98,18 +98,6 @@ class Windows extends AdminController
 
 		// Get a list of tools
 		$rows = array();
-		$rows[] = array(
-			'id' => uniqid(),
-			'name' => 'test',
-			'title' => 'An awesome application',
-			'status' => 'up'
-		);
-		$rows[] = array(
-			'id' => uniqid(),
-			'name' => 'test2',
-			'title' => 'An awesome application',
-			'status' => 'up'
-		);
 
 		// Get a total of all tools (for pagination)
 		$total = count($rows);
@@ -261,12 +249,6 @@ class Windows extends AdminController
 
 		// Get the list of sessions
 		$rows = array();
-		$rows[] = new \Hubzero\Base\Object(array(
-			'id' => uniqid(),
-			'url' => 'http://appstream.us-east-1.amazom.com/dsfsafdsafdas',
-			'status' => 'up',
-			'availability' => 'yes'
-		));
 
 		// Get a count of all sessions (for pagination)
 		$total = count($rows);
