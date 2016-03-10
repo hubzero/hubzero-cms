@@ -29,18 +29,51 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Cache\Admin;
+namespace Components\Cache\Api;
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_cache'))
+use Hubzero\Component\Router\Base;
+
+/**
+ * Routing class for the component
+ */
+class Router extends Base
 {
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
+	{
+		$segments = array();
+
+		if (!empty($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+
+		return $segments;
+	}
+
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
+	{
+		$vars = array();
+
+		$vars['controller'] = 'cache';
+
+		if (isset($segments[0]))
+		{
+			$vars['task'] = $segments[0];
+		}
+
+		return $vars;
+	}
 }
-
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'cleanser.php');
-
-// Instantiate controller
-$controller = new Controllers\Cleanser();
-$controller->execute();

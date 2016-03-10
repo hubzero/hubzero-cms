@@ -4,34 +4,36 @@
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cache\Admin\Controllers;
 
-use Components\Cache\Helpers\Cache as Helper;
-use Components\Cache\Models\Cache as Handler;
+use Components\Cache\Helpers\Helper;
+use Components\Cache\Models\Manager;
 use Hubzero\Component\AdminController;
-use Exception;
 use Request;
 use Route;
 use Lang;
@@ -49,7 +51,7 @@ class Cleanser extends AdminController
 	 */
 	public function execute()
 	{
-		$this->model = new Handler();
+		$this->model = new Manager();
 
 		parent::execute();
 	}
@@ -64,33 +66,25 @@ class Cleanser extends AdminController
 		// Set the default view name and format from the Request.
 		$vName = Request::getCmd('view', 'cache');
 
-		// Get and render the view.
-		switch ($vName)
+		$data       = $this->model->data();
+		$client     = $this->model->client();
+		$pagination = $this->model->pagination();
+		$state      = $this->model->state();
+
+		// Check for errors.
+		if (count($errors = $this->model->getErrors()))
 		{
-			case 'purge':
-			break;
-
-			case 'cache':
-			default:
-				$this->view->model      = $this->model;
-				$this->view->data       = $this->model->getData();
-				$this->view->client     = $this->model->getClient();
-				$this->view->pagination = $this->model->getPagination();
-				$this->view->state      = $this->model->getState();
-
-				// Check for errors.
-				if (count($errors = $this->model->getErrors()))
-				{
-					throw new Exception(implode("\n", $errors), 500);
-				}
-			break;
+			App::abort(500, implode("\n", $errors));
 		}
 
 		Helper::addSubmenu($vName);
 
 		$this->view
-			->setName($vName)
-			->setLayout('default')
+			->set('data', $data)
+			->set('client', $client)
+			->set('state', $state)
+			->set('pagination', $pagination)
+			->setLayout($vName)
 			->display();
 	}
 
@@ -102,13 +96,13 @@ class Cleanser extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit(Lang::txt('JInvalid_Token'));
+		Request::checkToken();
 
 		$cid = Request::getVar('cid', array(), 'post', 'array');
 
 		if (empty($cid))
 		{
-			throw new Exception(Lang::txt('JERROR_NO_ITEMS_SELECTED'), 500);
+			App::abort(500, Lang::txt('JERROR_NO_ITEMS_SELECTED'));
 		}
 		else
 		{
@@ -116,7 +110,7 @@ class Cleanser extends AdminController
 		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&client=' . $this->model->getClient()->id, false)
+			Route::url('index.php?option=' . $this->_option . '&client=' . $this->model->client()->id, false)
 		);
 	}
 
@@ -128,7 +122,7 @@ class Cleanser extends AdminController
 	public function purgeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit(Lang::txt('JInvalid_Token'));
+		Request::checkToken();
 
 		$ret = $this->model->purge();
 

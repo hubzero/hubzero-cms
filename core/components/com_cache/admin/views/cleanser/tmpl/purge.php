@@ -29,18 +29,27 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Cache\Admin;
+// no direct access
+defined('_HZEXEC_') or die();
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_cache'))
+Toolbar::title(Lang::txt('COM_CACHE_PURGE_EXPIRED_CACHE'), 'purge.png');
+Toolbar::custom('purge', 'delete.png', 'delete_f2.png', 'COM_CACHE_PURGE_EXPIRED', false);
+Toolbar::divider();
+if (User::authorise('core.admin', 'com_cache'))
 {
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	Toolbar::preferences('com_cache');
+	Toolbar::divider();
 }
+Toolbar::help('purge_expired');
+?>
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'cleanser.php');
+<form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="item-form">
 
-// Instantiate controller
-$controller = new Controllers\Cleanser();
-$controller->execute();
+	<p class="mod-purge-instruct"><?php echo Lang::txt('COM_CACHE_PURGE_INSTRUCTIONS'); ?></p>
+	<p class="warning"><?php echo Lang::txt('COM_CACHE_RESOURCE_INTENSIVE_WARNING'); ?></p>
+
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="option" value="com_cache" />
+
+	<?php echo Html::input('token'); ?>
+</form>
