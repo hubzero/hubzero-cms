@@ -118,6 +118,12 @@ class Sessions extends AdminController
 
 		$this->view->rows = $model->getAllRecords($this->view->filters);
 
+		$this->view->appnames = $model->getAppnames();
+
+		$this->view->exechosts = $model->getExechosts();
+
+		$this->view->usernames = $model->getUsernames();
+
 		// Display results
 		$this->view->display();
 	}

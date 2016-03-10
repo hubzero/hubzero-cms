@@ -87,6 +87,15 @@ if (\Component::params('com_tools')->get('zones'))
 	$controllerName == 'handlers'
 );
 
+if (\Component::params('com_tools')->get('windows_key_id'))
+{
+	\Submenu::addEntry(
+		\Lang::txt('COM_TOOLS_WINDOWS'),
+		\Route::url('index.php?option=com_tools&controller=windows'),
+		$controllerName == 'windows'
+	);
+}
+
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 

@@ -61,6 +61,60 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
+		<label for="filter_appname"><?php echo Lang::txt('COM_TOOLS_APPNAME'); ?>:</label>
+		<select name="appname" id="filter_appname" onchange="document.adminForm.submit();">
+			<option value=""><?php echo Lang::txt('COM_TOOLS_APPNAME_SELECT'); ?></option>
+			<?php
+				foreach ($this->appnames as $record)
+				{
+					$html  = ' <option value="' . $record->appname . '"';
+					if ($this->filters['appname'] == $record->appname)
+					{
+						$html .= ' selected="selected"';
+					}
+					$html .= '>' . $this->escape(stripslashes($record->appname)) . '</option>' . "\n";
+
+					echo $html;
+				}
+			?>
+		</select>
+
+		<label for="filter_exechost"><?php echo Lang::txt('COM_TOOLS_EXECHOST'); ?>:</label>
+		<select name="exechost" id="filter_exechost" onchange="document.adminForm.submit();">
+			<option value=""><?php echo Lang::txt('COM_TOOLS_EXECHOST_SELECT'); ?></option>
+			<?php
+				foreach ($this->exechosts as $record)
+				{
+					$html  = ' <option value="' . $record->exechost . '"';
+					if ($this->filters['exechost'] == $record->exechost)
+					{
+						$html .= ' selected="selected"';
+					}
+					$html .= '>' . $this->escape(stripslashes($record->exechost)) . '</option>' . "\n";
+
+					echo $html;
+				}
+			?>
+		</select>
+
+		<label for="filter_username"><?php echo Lang::txt('COM_TOOLS_USERNAME'); ?>:</label>
+		<select name="username" id="filter_username" onchange="document.adminForm.submit();">
+			<option value=""><?php echo Lang::txt('COM_TOOLS_USERNAME_SELECT'); ?></option>
+			<?php
+				foreach ($this->usernames as $record)
+				{
+					$html  = ' <option value="' . $record->viewuser . '"';
+					if ($this->filters['username'] == $record->viewuser)
+					{
+						$html .= ' selected="selected"';
+					}
+					$html .= '>' . $this->escape(stripslashes($record->viewuser)) . '</option>' . "\n";
+
+					echo $html;
+				}
+			?>
+		</select>
+
 		<a class="refresh button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&username=&appname=&exechost=&start=0'); ?>">
 			<span><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></span>
 		</a>
