@@ -908,11 +908,9 @@ class File extends Base
 						$tempFile = $conFile;
 					}
 
-					$dest = "{$connection->name} ({$connection->id})";
-
 					// Insert the file into the repo
 					$result = $pub->_project->repo()->insert([
-						'subdir'   => $dest . DS . $conFile->getParent(),
+						'subdir'   => $conFile->getParent(),
 						'dataPath' => $tempFile->getAbsolutePath(),
 						'update'   => false
 					]);
@@ -921,8 +919,6 @@ class File extends Base
 					{
 						$tempFile->delete();
 					}
-
-					$identifier = $dest . DS . $identifier;
 				}
 			}
 
