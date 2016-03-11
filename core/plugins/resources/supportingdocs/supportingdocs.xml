@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/resources/supportingdocs.xml
+@file           plugins/resources/supportingdocs/supportingdocs.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -31,10 +31,10 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="resources">
 	<name>Resource - Supporting Documents</name>
-	<author>Alissa Nedossekina</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display supporting documents</description>
+	<description>PLG_RESOURCES_SUPPORTINGDOCS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="supportingdocs">supportingdocs.php</filename>
 	</files>
