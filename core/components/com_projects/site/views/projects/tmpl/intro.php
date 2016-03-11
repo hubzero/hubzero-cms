@@ -67,7 +67,6 @@ $rows = $this->model->entries('list', $this->filters);
 			<div class="col span4 omega">
 				<h3><?php echo Lang::txt('COM_PROJECTS_INTRO_WHAT_YOU_GET'); ?></h3>
 				<ul>
-					<li><?php echo Lang::txt('COM_PROJECTS_INTRO_GET_REPOSITORY'); ?></li>
 					<li><?php echo Lang::txt('COM_PROJECTS_INTRO_GET_WIKI'); ?></li>
 					<li><?php echo Lang::txt('COM_PROJECTS_INTRO_GET_TODO'); ?></li>
 					<li><?php echo Lang::txt('COM_PROJECTS_INTRO_GET_BLOG'); ?></li>
