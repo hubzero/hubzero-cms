@@ -112,7 +112,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$view = $this->view('mini', 'display')
 			->set('option', $option)
 			->set('resource', $resource)
-			->set('params', $params)
+			->set('params', $this->params)
 			->set('data', $data)
 			->setErrors($this->getErrors());
 
