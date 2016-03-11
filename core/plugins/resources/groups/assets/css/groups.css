@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/resources/abouttool/abouttool.css
+ * @file        plugins/resources/groups/assets/css/groups.css
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
@@ -12,14 +12,6 @@
 	-- -- -- -- -- -- --
 
 */
-
-	/*#group-owner .group-img {
-		float: left;
-		padding: 0 1em 0 0;
-	}
-	#group-owner .group-img img {
-		border: 1px solid #ccc;
-	}*/
 
 	#group-owner .group-img {
 		padding: 0;
@@ -54,25 +46,25 @@
 		padding: .618em 5%;
 		background: rgba(67, 67, 67, 0.92);
 		-webkit-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
-		-moz-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
-		-ms-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
-		-o-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
-		box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
+		   -moz-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
+		    -ms-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
+		     -o-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
+		        box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
 		filter: alpha(opacity=@opacity * 100);
 		-khtml-opacity: 0;
-		-moz-opacity: 0;
-		opacity: 0;
+		  -moz-opacity: 0;
+		       opacity: 0;
 		-webkit-transition: all ease-in-out 0.2s;
-		-moz-transition: all ease-in-out 0.2s;
-		-ms-transition: all ease-in-out 0.2s;
-		-o-transition: all ease-in-out 0.2s;
-		transition: all ease-in-out 0.2s;
+		   -moz-transition: all ease-in-out 0.2s;
+		    -ms-transition: all ease-in-out 0.2s;
+		     -o-transition: all ease-in-out 0.2s;
+		        transition: all ease-in-out 0.2s;
 		color: #fff;
 		text-shadow: 0 1px 0 #121212;
 	}
 	#group-owner .group-content:hover .group-withlogo {
 		filter: alpha(opacity=@opacity * 100);
 		-khtml-opacity: 1;
-		-moz-opacity: 1;
-		opacity: 1;
+		  -moz-opacity: 1;
+		       opacity: 1;
 	}
