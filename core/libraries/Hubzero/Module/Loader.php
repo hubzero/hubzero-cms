@@ -163,7 +163,7 @@ class Loader
 		{
 			if ($this->outline())
 			{
-				$result[0] = $this->get('mod_' . $position);
+				$result[0] = $this->byName('mod_' . $position);
 				$result[0]->title    = $position;
 				$result[0]->content  = $position;
 				$result[0]->position = $position;
