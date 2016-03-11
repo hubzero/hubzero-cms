@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/resources/recommendations.xml
+@file           plugins/resources/groups/groups.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -34,15 +34,11 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display group ownership for a resource</description>
+	<description>PLG_RESOURCES_GROUPS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="groups">groups.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_resources_groups.ini</language>
 	</languages>
-	<config>
-		<fields name="params">
-		</fields>
-	</config>
 </extension>

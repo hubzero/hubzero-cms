@@ -34,22 +34,22 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Display sponsors on a resource page
+ * Display groups associated with a resource
  */
 class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesSubAreas($resource)
 	{
@@ -62,10 +62,10 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      integer $miniview  View style
-	 * @return     array
+	 * @param   object   $resource  Current resource
+	 * @param   string   $option    Name of the component
+	 * @param   integer  $miniview  View style
+	 * @return  array
 	 */
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
@@ -81,37 +81,29 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 		}
 
 		$group = \Hubzero\User\Group::getInstance($resource->group_owner);
+
 		if (!$group || !$group->get('gidNumber'))
 		{
 			return $arr;
 		}
 
-		// Get recommendations
-		$this->database = App::get('db');
-
-		// Instantiate a view
-		$this->view = $this->view('default', 'display');
+		// Pass the view some info
+		$view = $this->view('default', 'display')
+			->set('option', $option)
+			->set('resource', $resource)
+			->set('params', $this->params)
+			->set('group', $group);
 
 		if ($miniview)
 		{
-			$this->view->setLayout('mini');
-		}
-
-		// Pass the view some info
-		$this->view->option   = $option;
-		$this->view->resource = $resource;
-		$this->view->params   = $this->params;
-		$this->view->group    = $group;
-
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$view->setLayout('mini');
 		}
 
 		// Return the output
-		$arr['html'] = $this->view->loadTemplate();
+		$arr['html'] = $view
+			->setErrors($this->getErrors())
+			->loadTemplate();
 
 		return $arr;
 	}
 }
-
