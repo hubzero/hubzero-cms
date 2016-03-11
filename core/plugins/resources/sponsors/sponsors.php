@@ -41,15 +41,15 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesSubAreas($resource)
 	{
@@ -62,10 +62,10 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      integer $miniview  View style
-	 * @return     array
+	 * @param   object   $resource  Current resource
+	 * @param   string   $option    Name of the component
+	 * @param   integer  $miniview  View style
+	 * @return  array
 	 */
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
@@ -75,40 +75,24 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		// Get recommendations
-		$this->database = App::get('db');
+		require_once(__DIR__ . DS . 'models' . DS . 'sponsor.php');
 
-		// Instantiate a view
-		$this->view = $this->view('mini', 'display');
+		$records = \Plugins\Resources\Sponsors\Models\Sponsor::all()
+			->whereEquals('state', 1)
+			->rows();
 
-		if ($miniview)
-		{
-			$this->view->setLayout('mini');
-		}
-
-		// Pass the view some info
-		$this->view->option   = $option;
-		$this->view->resource = $resource;
-		$this->view->params   = $this->params;
-		$this->view->data     = '';
-
-		require_once(__DIR__ . DS . 'tables' . DS . 'sponsor.php');
-
-		$this->sponsors = array();
-
-		$model = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
-		$records = $model->getRecords(array('state' => 1));
 		if (!$records)
 		{
 			return $arr;
 		}
 
+		$data = '';
+		$sponsors = array();
 		foreach ($records As $record)
 		{
-			$this->sponsors[$record->alias] = $record;
+			$sponsors[$record->alias] = $record;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		$rt = new \Components\Resources\Helpers\Tags($resource->id);
 		$tags = $rt->tags();
 
@@ -116,21 +100,29 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($tags as $tag)
 			{
-				if (isset($this->sponsors[$tag->get('tag')]))
+				if (isset($sponsors[$tag->get('tag')]))
 				{
-					$this->view->data = $this->sponsors[$tag->get('tag')]->description;
+					$data = $sponsors[$tag->get('tag')]->description;
 					break;
 				}
 			}
 		}
 
-		if ($this->getError())
+		// Instantiate a view
+		$view = $this->view('mini', 'display')
+			->set('option', $option)
+			->set('resource', $resource)
+			->set('params', $params)
+			->set('data', $data)
+			->setErrors($this->getErrors());
+
+		if ($miniview)
 		{
-			$this->view->setError($this->getError());
+			$view->setLayout('mini');
 		}
 
 		// Return the output
-		$arr['html'] = $this->view->loadTemplate();
+		$arr['html'] = $view->loadTemplate();
 
 		return $arr;
 	}
@@ -138,7 +130,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return plugin name if this plugin has an admin interface
 	 *
-	 * @return	string
+	 * @return  string
 	 */
 	public function onCanManage()
 	{
@@ -148,16 +140,16 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Determine task and execute it
 	 *
-	 * @param     string $option     Component name
-	 * @param     string $controller Controller name
-	 * @param     string $task       Task to perform
-	 * @return    void
+	 * @param   string  $option      Component name
+	 * @param   string  $controller  Controller name
+	 * @param   string  $task        Task to perform
+	 * @return  void
 	 */
 	public function onManage($option, $controller='plugins', $task='default')
 	{
 		$task = ($task) ?  $task : 'default';
 
-		require_once(__DIR__ . DS . 'tables' . DS . 'sponsor.php');
+		require_once(__DIR__ . DS . 'models' . DS . 'sponsor.php');
 
 		$this->_option     = $option;
 		$this->_controller = $controller;
@@ -172,18 +164,12 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of sponsors
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function defaultTask()
 	{
-		// Instantiate a view
-		$this->view = $this->view('default', 'admin');
-		$this->view->option = $this->_option;
-		$this->view->controller = $this->_controller;
-		$this->view->task = $this->_task;
-
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'limit'    => Request::getState(
 				$this->_option . '.plugins.sponsors.limit',
 				'limit',
@@ -208,26 +194,30 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$model = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
+		$model = \Plugins\Resources\Sponsors\Models\Sponsor::all();
 
-		// Get a record count
-		$this->view->total = $model->getCount($this->view->filters);
+		$rows = $model
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
-		// Get records
-		$this->view->rows = $model->getRecords($this->view->filters);
+		// Instantiate a view
+		$view = $this->view('default', 'admin')
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('option', $this->_option)
+			->set('controller', $this->_controller)
+			->set('task', $this->_task);
 
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		return $this->view->loadTemplate();
+		return $view
+			->setErrors($this->getErrors())
+			->loadTemplate();
 	}
 
 	/**
 	 * Add a new type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -237,43 +227,36 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Edit a type
 	 *
-	 * @return     void
+	 * @param   object  $row
+	 * @return  string
 	 */
 	public function editTask($row=null)
 	{
-		$this->view = $this->view('edit', 'admin');
-		$this->view->option = $this->_option;
-		$this->view->controller = $this->_controller;
-		$this->view->task = $this->_task;
-
-		if ($row)
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
 			$id = Request::getInt('id', 0);
 
 			// Load the object
-			$this->view->row = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
-			$this->view->row->load($id);
+			$row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrNew($id);
 		}
 
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
+		$view = $this->view('edit', 'admin')
+			->set('row', $row)
+			->set('option', $this->_option)
+			->set('controller', $this->_controller)
+			->set('task', $this->_task);
 
 		// Output the HTML
-		return $this->view->loadTemplate();
+		return $view
+			->setErrors($this->getErrors())
+			->loadTemplate();
 	}
 
 	/**
 	 * Save a type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -284,22 +267,10 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
-		$row = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
+		$row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
@@ -307,12 +278,13 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
-		$t = \Components\Tags\Models\Tag::oneByTag($row->alias);
+		$t = \Components\Tags\Models\Tag::oneByTag($row->get('alias'));
 		if ($t->isNew())
 		{
 			// Add new tag!
-			$t->set('tag', $row->alias);
-			$t->set('raw_tag', addslashes($row->title));
+			$t->set('tag', $row->get('alias'));
+			$t->set('raw_tag', addslashes($row->get('title')));
+
 			if (!$t->save())
 			{
 				$this->setError($t->getError());
@@ -329,7 +301,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Remove one or more types
 	 *
-	 * @return     void Redirects back to main listing
+	 * @return  void  Redirects back to main listing
 	 */
 	public function removeTask()
 	{
@@ -351,12 +323,15 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$rt = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
-
 		foreach ($ids as $id)
 		{
 			// Delete the type
-			$rt->delete($id);
+			$row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrFail((int)$id);
+
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+			}
 		}
 
 		// Redirect
@@ -369,7 +344,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -379,7 +354,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -389,8 +364,8 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @param   integer  The state to set entries to
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
@@ -416,10 +391,10 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
-			$row->load(intval($id));
-			$row->state = $state;
-			if (!$row->store())
+			$row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrFail((int)$id);
+			$row->set('state', $state);
+
+			if (!$row->save())
 			{
 				$this->setError($row->getError());
 				return $this->defaultTask();
@@ -445,7 +420,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -454,4 +429,3 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		);
 	}
 }
-

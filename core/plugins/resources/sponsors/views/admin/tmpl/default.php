@@ -41,53 +41,47 @@ Toolbar::deleteList();
 		<caption><?php echo Lang::txt('PLG_RESOURCES_SPONSORS'); ?></caption>
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'PLG_RESOURCES_SPONSORS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'PLG_RESOURCES_SPONSORS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td colspan="5"><?php
 				// initiate paging
-				$pageNav = $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				echo $pageNav;
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-
-	switch ($row->state)
-	{
-		case '2':
-			$task = 'publish';
-			$alt = Lang::txt('JTRASHED');
-			$cls = 'trashed';
-		break;
-		case '1':
-			$task = 'unpublish';
-			$alt = Lang::txt('JPUBLISHED');
-			$cls = 'publish';
-		break;
-		case '0':
-		default:
-			$task = 'publish';
-			$alt = Lang::txt('JUNPUBLISHED');
-			$cls = 'unpublish';
-		break;
-	}
-?>
+		<?php
+		$k = 0;
+		$i = 0;
+		foreach ($this->rows as $row)
+		{
+			switch ($row->state)
+			{
+				case '2':
+					$task = 'publish';
+					$alt = Lang::txt('JTRASHED');
+					$cls = 'trashed';
+				break;
+				case '1':
+					$task = 'unpublish';
+					$alt = Lang::txt('JPUBLISHED');
+					$cls = 'publish';
+				break;
+				case '0':
+				default:
+					$task = 'publish';
+					$alt = Lang::txt('JUNPUBLISHED');
+					$cls = 'unpublish';
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
@@ -109,10 +103,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+			$i++;
+		}
+		?>
 		</tbody>
 	</table>
 
@@ -122,8 +117,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="plugin" value="sponsors" />
 	<input type="hidden" name="action" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="sort_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="sort_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
