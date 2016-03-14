@@ -213,14 +213,14 @@ class Cloud extends \Hubzero\Base\Object
 
 		$results = Tag::all();
 		$results
-			->select($results->getTableName() . '.*');
+			->select($results->getTableName() . '.*')
+			->group($results->getTableName() . '.id');
 
 		if (isset($filters['sort']) && $filters['sort'] == 'taggedon')
 		{
 			$results
 				->select($tbl . '.taggedon')
-				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id')
-				->group($results->getTableName() . '.id');
+				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id');
 		}
 
 		if (isset($filters['tagger_id'])
