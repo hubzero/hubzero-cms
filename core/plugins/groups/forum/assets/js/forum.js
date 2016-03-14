@@ -44,7 +44,9 @@ jQuery(document).ready(function(jq){
 
 	$('.edit-forum-options-cancel').click(function (e) {
 		e.preventDefault();
-		$('.edit-forum-options-panel').fadeOut();
+		$('.edit-forum-options-panel').fadeOut(function () {
+			$('.response-message').removeClass('passed message error').html('');
+		});
 	});
 
 	$('.edit-forum-options-receive-emails').click(function (e) {
@@ -78,7 +80,7 @@ jQuery(document).ready(function(jq){
 			type: 'POST',
 			url: form.attr("action")+"?no_html=1",
 			data: form.serialize(),
-			success: function(data, status, xhr)
+			success: function (data, status, xhr)
 			{
 				var response = {};
 				try {
@@ -86,19 +88,30 @@ jQuery(document).ready(function(jq){
 					response = jQuery.parseJSON(data);
 				} catch (err) {
 					// Print error
+					$('.response-message').addClass('error').html('Save failed!');
 				}
 
 				// If all went well
 				if(response.success)
 				{
+					$('.response-message').addClass('passed message').html('Settings saved!');
 					// Close dialog
-					$('.edit-forum-options-panel').fadeOut();
+					setTimeout(function() {
+						$('.edit-forum-options-panel').fadeOut(function () {
+							$('.response-message').removeClass('passed message').html('');
+						});
+					}, 2000);
 				}
 				// If there were errors
 				else if(response.error)
 				{
 					// Print error
+					$('.response-message').addClass('error').html('Save failed!');
 				}
+			},
+			error: function () {
+				// Print error
+				$('.response-message').addClass('error').html('Save failed!');
 			}
 		});
 	});
