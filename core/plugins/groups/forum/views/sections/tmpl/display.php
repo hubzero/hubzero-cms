@@ -257,6 +257,7 @@ if ($this->config->get('access-manage-section')) {
 						</a>
 					</p>
 					<div class="edit-forum-options-panel">
+						<p class="response-message"></p>
 						<form method="post" action="<?php echo Route::url($base); ?>" id="forum-options-extended">
 							<div>
 								<input type="checkbox" class="edit-forum-options-receive-emails" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue >= 1) { echo ' checked="checked"'; } ?> />

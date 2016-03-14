@@ -194,7 +194,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		if (!$row->store())
 		{
 			$this->setError($row->getError());
-			return $this->edit();
+			return $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
 		}
 
 		if (Request::getInt('no_html'))
