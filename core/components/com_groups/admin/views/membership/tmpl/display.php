@@ -218,6 +218,7 @@ foreach ($this->rows as $row)
 					<span class="roles">
 						<?php
 						//echo Lang::txt('COM_GROUPS_ROLES') . ': ';
+						$r = array();
 						foreach ($roles as $role) :
 							$r[] = '<span class="role">' . $role['name'] . '</span>';
 						endforeach;
