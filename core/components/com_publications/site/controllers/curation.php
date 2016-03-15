@@ -209,8 +209,9 @@ class Curation extends SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : Request::getInt('id', 0);
-		$version 	= Request::getVar( 'version', 'default' );
+		$pid     = $this->_id ? $this->_id : Request::getInt('id', 0);
+		$version = Request::getVar('version', 'default');
+		$vid     = Request::getInt('vid');
 
 		if (!$pid)
 		{
@@ -227,7 +228,7 @@ class Curation extends SiteController
 		}
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, $version );
+		$this->_pub = new \Components\Publications\Models\Publication( $pid, $version, $vid );
 
 		// If publication not found, raise error
 		if (!$this->_pub->exists())
