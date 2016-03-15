@@ -1027,6 +1027,8 @@ HUB.ProjectFiles = {
 		var in_preview = 0;
 		var subtract = $('.main-content').offset();
 
+		subtract.left -= $('.main-content').css('margin-left').replace('px', '');
+
 		if ($('#plg-content').length > 0 && div.length > 0)
 		{
 			$('#plg-content').on('mouseout', function(e) {
