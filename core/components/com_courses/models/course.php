@@ -850,6 +850,10 @@ class Course extends Base
 					return $this->link() . '&active=logo';
 				}
 			}
+			else
+			{
+				return null;
+			}
 		}
 
 		// Return just the upload path?
