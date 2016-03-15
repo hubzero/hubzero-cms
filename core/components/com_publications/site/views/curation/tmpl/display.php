@@ -134,7 +134,10 @@ $this->css()
 								<?php	}
 								?>
 								</td>
-								<td class="nowrap"><?php if ($row->state == 5) { ?><a href="<?php echo Route::url($route . '&id=' . $row->id); ?>" class="btn icon-next btn-secondary btn-primary" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_OVER_REVIEW'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a><?php } ?>
+								<td class="nowrap">
+									<?php if ($row->state == 5) : ?>
+										<a href="<?php echo Route::url($route . '&id=' . $row->id . '&vid=' . $row->version_id); ?>" class="btn icon-next btn-secondary btn-primary" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_OVER_REVIEW'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a>
+									<?php endif; ?>
 									<?php if ($row->state == 7) { echo $reviewed; } ?>
 									<a href="<?php echo Route::url($route . '&id=' . $row->id . '&task=history&ajax=1&no_html=1'); ?>" class="btn btn-secondary icon-history fancybox" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_OVER_HISTORY'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY'); ?></a>
 									<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VIEW_PUB_PAGE'); ?>">&nbsp;</a>
