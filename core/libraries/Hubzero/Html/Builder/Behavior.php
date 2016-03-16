@@ -271,7 +271,8 @@ class Behavior
 		if ($type == 'core')
 		{
 			Asset::script('assets/flot/jquery.flot.min.js', true, true);
-			Asset::script('assets/flot/jquery.flot.tooltip.min.js', true, true);
+			Asset::script('assets/flot/jquery.flot.canvas.min.js', true, true);
+			Asset::script('assets/flot/jquery.flot.time.min.js', true, true);
 		}
 		else
 		{
