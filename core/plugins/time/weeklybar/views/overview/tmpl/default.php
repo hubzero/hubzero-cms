@@ -36,6 +36,7 @@ use Components\Time\Models\Proxy;
 defined('_HZEXEC_') or die();
 
 \Hubzero\Document\Assets::addSystemScript('jquery.flot.min', 'flot');
+\Hubzero\Document\Assets::addSystemScript('jquery.flot.time.min', 'flot');
 \Hubzero\Document\Assets::addSystemScript('jquery.flot.stack.min', 'flot');
 \Hubzero\Document\Assets::addSystemScript('moment.min');
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.ui');

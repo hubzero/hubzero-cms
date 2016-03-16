@@ -222,7 +222,7 @@ function getMonthName($month)
 				}
 
 				$this->js('flot/jquery.flot.min.js', 'system')
-				     ->js('flot/jquery.flot.tooltip.min.js', 'system')
+				     ->js('flot/jquery.flot.time.min.js', 'system')
 				     ->js('flot/jquery.flot.pie.min.js', 'system')
 				     ->js('flot/jquery.flot.resize.js', 'system');
 			?>

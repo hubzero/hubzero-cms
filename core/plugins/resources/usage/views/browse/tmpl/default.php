@@ -38,7 +38,8 @@ $base = rtrim(Request::base(true), '/');
 // Push scripts to document
 $this->css()
      ->js('flot/jquery.flot.min.js', 'system')
-     ->js('flot/jquery.flot.selection.js', 'system')
+     ->js('flot/jquery.flot.time.js', 'system')
+     ->js('flot/jquery.flot.selection.min.js', 'system')
      ->js('flot/jquery.flot.resize.min.js', 'system')
      ->js('flot/jquery.flot.crosshair.min.js', 'system');
 

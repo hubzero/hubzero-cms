@@ -100,7 +100,7 @@ $base = rtrim(Request::base(true), '/');
 <p class="pubstats-overall"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES'); ?>.</p>
 <?php } ?>
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.min.js"></script>
-<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.tooltip.min.js"></script>
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.time.min.js"></script>
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.pie.min.js"></script>
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.resize.js"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
