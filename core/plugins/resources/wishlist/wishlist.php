@@ -41,22 +41,21 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_' . $this->_name)
-			&& $model->access('view-all'))
+		if ($model->type->params->get('plg_' . $this->_name) && $model->access('view-all'))
 		{
 			$areas['wishlist'] = Lang::txt('PLG_RESOURCES_WISHLIST');
 		}
@@ -67,11 +66,11 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @param   string  $option    Name of the component
+	 * @param   array   $areas     Active area(s)
+	 * @param   string  $rtrn      Data to be returned
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -82,6 +81,11 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
+		if (!$model->type->params->get('plg_' . $this->_name))
+		{
+			return $arr;
+		}
+
 		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
@@ -89,10 +93,6 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			{
 				$rtrn = 'metadata';
 			}
-		}
-		if (!$model->type->params->get('plg_' . $this->_name))
-		{
-			return $arr;
 		}
 
 		$this->config = Component::params('com_wishlist');
@@ -194,15 +194,14 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 				// HTML output
 				// Instantiate a view
-				$view = $this->view('default', 'browse');
-				// Pass the view some info
-				$view->option   = $option;
-				$view->resource = $model->resource;
-				$view->title    = $title;
-				$view->wishlist = $wishlist;
-				$view->filters  = $filters;
-				$view->admin    = $admin;
-				$view->config   = $this->config;
+				$view = $this->view('default', 'browse')
+					->set('option', $option)
+					->set('resource', $model->resource)
+					->set('title', $title)
+					->set('wishlist', $wishlist)
+					->set('filters', $filters)
+					->set('admin', $admin)
+					->set('config', $this->config);
 
 				foreach ($this->getErrors() as $error)
 				{
@@ -217,10 +216,10 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = $this->view('default', 'metadata');
-			$view->resource   = $model->resource;
-			$view->items      = $items;
-			$view->wishlistid = $id;
+			$view = $this->view('default', 'metadata')
+				->set('resource', $model->resource)
+				->set('items', $items)
+				->set('wishlistid', $id);
 
 			$arr['metadata'] = $view->loadTemplate();
 		}

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/resources/wishlist.xml
+@file           plugins/resources/wishlist/wishlist.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="resources">
 	<name>Resource - Wishlist</name>
-	<author>snowwitje</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Display wishlist for a resource</description>
@@ -49,4 +49,3 @@ HUBzero is a registered trademark of Purdue University.
 		</fields>
 	</config>
 </extension>
-
