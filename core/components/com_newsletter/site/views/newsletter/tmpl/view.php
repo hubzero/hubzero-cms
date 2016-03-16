@@ -38,7 +38,7 @@ $this->css()
 ?>
 
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt(strtoupper($this->option)); ?></h2>
 
 	<div id="content-header-extra">
 		<ul>
@@ -61,15 +61,17 @@ $this->css()
 <section class="main section">
 	<div class="subject newsletter">
 		<?php
-			if ($this->getError())
-			{
-				echo '<p class="error">' . $this->getError() . '</p>';
-			}
+		if ($this->getError())
+		{
+			echo '<p class="error">' . $this->getError() . '</p>';
+		}
 		?>
+
+		<h3><?php echo $this->escape($this->title); ?></h3>
 
 		<?php if ($this->newsletter != '') : ?>
 			<div class="container">
-				<iframe id="newsletter-iframe" width="100%" height="0" src="index.php?option=com_newsletter&amp;id=<?php echo $this->id; ?>&amp;no_html=1"></iframe>
+				<iframe id="newsletter-iframe" width="100%" height="0" src="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>"></iframe>
 			</div>
 		<?php else : ?>
 			<p class="info">
@@ -84,7 +86,7 @@ $this->css()
 				<?php foreach ($this->newsletters as $newsletter) : ?>
 					<?php if ($newsletter->published) : ?>
 						<li>
-							<a class="<?php if ($this->id == $newsletter->id) { echo "active"; } ?>" href="<?php echo Route::url('index.php?option=com_newsletter&id='.$newsletter->id); ?>">
+							<a class="<?php if ($this->id == $newsletter->id) { echo "active"; } ?>" href="<?php echo Route::url('index.php?option=com_newsletter&id=' . $newsletter->id); ?>">
 								<?php echo $newsletter->name; ?>
 							</a>
 						</li>

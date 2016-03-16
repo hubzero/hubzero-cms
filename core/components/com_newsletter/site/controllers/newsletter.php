@@ -101,7 +101,7 @@ class Newsletter extends SiteController
 		//add campaign
 		if (is_object($newsletter) && $newsletter->id)
 		{
-			Pathway::append(Lang::txt($newsletter->name), 'index.php?option=' . $this->_option . '&id=' . $newsletter->id);
+			Pathway::append($newsletter->name, 'index.php?option=' . $this->_option . '&id=' . $newsletter->id);
 		}
 	}
 
@@ -173,7 +173,7 @@ class Newsletter extends SiteController
 		$this->_buildPathway($currentNewsletter);
 
 		//set vars for view
-		$this->view->title = $this->_title;
+		$this->view->title = $currentNewsletter->name;
 
 		//get errors if any
 		if ($this->getError())
