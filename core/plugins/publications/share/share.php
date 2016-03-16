@@ -79,22 +79,43 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 		);
 
 		// Hide if version not published
-		if (!$extended || $publication->state == 4 || $publication->state == 5 || $publication->state == 6)
+		if (!$extended || in_array($publication->state, array(4, 5, 6)))
 		{
 			return $arr;
 		}
 
 		$sef = Route::url('index.php?option=' . $option . '&id=' . $publication->id);
-		$url = Request::base() . trim($sef, DS);
-		$url = $url . DS . '?v=' . $publication->version_number;
+		$sef = rtrim($sef, '/') . '/?v=' . $publication->version_number;
+		$url = Request::base() . ltrim($sef, '/');
 
-		$mediaUrl = Request::base() . trim($sef, DS) . DS . $publication->version_id . DS . 'Image:master';
+		$mediaUrl = Request::base() . trim($sef, '/') . '/' . $publication->version_id . '/Image:master';
 
 		// Incoming action
 		$sharewith = Request::getVar('sharewith', '');
 
 		if ($sharewith)
 		{
+			// Log the activity
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'shared',
+					'scope'       => 'publication',
+					'scope_id'    => $publication->id,
+					'description' => Lang::txt('PLG_PUBLICATIONS_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $publication->title . '</a>', $sharewith),
+					'details'     => array(
+						'with'    => $sharewith,
+						'title'   => $publication->title,
+						'url'     => $sef,
+						'version' => $publication->version_number
+					)
+				],
+				'recipients' => [
+					['publication', $publication->id],
+					['user', $publication->created_by],
+					['user', User::get('id')]
+				]
+			]);
+
 			return $this->share($sharewith, $url, $mediaUrl, $publication, $version);
 		}
 

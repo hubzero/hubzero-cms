@@ -85,30 +85,53 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$sef = Route::url('index.php?option=' . $option . '&id=' . $model->resource->id);
+		$resource = $model->resource;
+
+		$sef = Route::url('index.php?option=com_resources&' . ($resource->alias ? 'alias=' . $resource->alias : 'id=' . $resource->id));
 		$url = Request::base() . ltrim($sef, '/');
 
 		// Incoming action
 		$sharewith = Request::getVar('sharewith', '');
-		if ($sharewith && $sharewith != 'email')
-		{
-			return $this->share($sharewith, $url, $model->resource);
-		}
 
-		// Email form
-		if ($sharewith == 'email')
+		if ($sharewith)
 		{
-			// Instantiate a view
-			$view = $this->view('email', 'options')
-				->set('option', $option)
-				->set('resource', $model->resource)
-				->set('_params', $this->params)
-				->set('url', $url)
-				->setErrors($this->getErrors());
+			// Log the activity
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'shared',
+					'scope'       => 'resource',
+					'scope_id'    => $resource->id,
+					'description' => Lang::txt('PLG_RESOURCES_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $resource->title . '</a>', $sharewith),
+					'details'     => array(
+						'with'  => $sharewith,
+						'title' => $resource->title,
+						'url'   => $sef
+					)
+				],
+				'recipients' => [
+					['resource', $resource->id], // The resource itself
+					['user', $resource->created_by], // The creator
+					['user', User::get('id')] // The sharer
+				]
+			]);
 
-			// Return the output
-			$view->display();
-			exit();
+			// Email form
+			if ($sharewith == 'email')
+			{
+				// Instantiate a view
+				$view = $this->view('email', 'options')
+					->set('option', $option)
+					->set('resource', $resource)
+					->set('_params', $this->params)
+					->set('url', $url)
+					->setErrors($this->getErrors());
+
+				// Return the output
+				$view->display();
+				exit();
+			}
+
+			return $this->share($sharewith, $url, $resource);
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
@@ -117,7 +140,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			// Instantiate a view
 			$view = $this->view('default', 'options')
 				->set('option', $option)
-				->set('resource', $model->resource)
+				->set('resource', $resource)
 				->set('_params', $this->params)
 				->set('url', $url)
 				->setErrors($this->getErrors());
@@ -140,9 +163,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	public function share($with, $url, $resource)
 	{
 		$link = '';
-		$description = $resource->introtext
-			? \Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 250)
-			: '';
+		$description = \Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 250);
 		$description = urlencode($description);
 		$title = stripslashes($resource->title);
 		$title = urlencode($title);
