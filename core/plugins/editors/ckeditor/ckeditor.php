@@ -359,7 +359,9 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 				array('NumberedList', 'BulletedList')
 			);
 			$config->toolbarCanCollapse = false;
-			$config->resize_enabled     = false;
+
+			// [QUBES][#561] SPW: always show resize, even in minimal mode
+			//$config->resize_enabled = false;
 			//$config->hubzeroAutogrow_autoStart = false;
 		}
 
