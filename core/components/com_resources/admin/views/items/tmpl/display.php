@@ -37,7 +37,7 @@ $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 Toolbar::title(Lang::txt('COM_RESOURCES'), 'resources.png');
 if ($canDo->get('core.admin'))
 {
-	Toolbar::custom('check', 'scan', '', 'COM_RESOURCES_CHECK_PATHS', false);
+	Toolbar::custom('check', 'scan', '', 'COM_RESOURCES_AUDIT', false);
 	Toolbar::spacer();
 	Toolbar::preferences($this->option, '550');
 	Toolbar::spacer();

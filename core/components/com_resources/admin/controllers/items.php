@@ -1783,63 +1783,38 @@ class Items extends AdminController
 	 */
 	public function checkTask()
 	{
-		// hold missing
-		$this->view->missing = array();
-		$this->view->warning = array();
-		$this->view->good    = array();
+		include_once(dirname(dirname(__DIR__)) . '/helpers/tests/links.php');
+		//include_once(dirname(dirname(__DIR__)) . '/helpers/tests/abstracts.php');
 
-		// get all resources
-		$db  = \App::get('db');
-		$sql = "SELECT id, title, type, path FROM `#__resources` ORDER BY id";
-		$db->setQuery($sql);
-		$results = $db->loadObjectList();
+		$auditor = new \Hubzero\Content\Auditor('resource');
+		$auditor->registerTest(new \Components\Resources\Helpers\Tests\Links);
+		//$auditor->registerTest(new \Components\Resources\Helpers\Tests\Abstracts);
 
-		// get upload path
-		$params = Component::params('com_resources');
-		$base = $params->get('uploadpath', '/site/resources');
-		$base = PATH_APP . DS . trim($base, DS) . DS;
+		$test   = Request::getVar('test');
+		$status = Request::getVar('status', 'failed');
 
-		// loop through each resource
-		foreach ($results as $result)
+		if (!in_array($status, array('skipped', 'passed', 'failed')))
 		{
-			// make sure we have a path
-			if (isset($result->path) && $result->path != '')
-			{
-				// trim our result
-				$path = ltrim($result->path, DS);
-				$path = trim($path);
-
-				if (preg_match('/^(https?:|mailto:|ftp:|gopher:|news:)/i', $path)
-				 || substr($path, 0, strlen('://')) == '://')
-				{
-					$this->view->good[] = '<span style="color: blue">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_NO_PROBLEMS_FOUND', $path) . '</span>';
-					continue;
-				}
-
-				// checks
-				try
-				{
-					if (is_dir($path))
-					{
-						$this->view->warning[] = '<span style="color: yellow;">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_PATH_IS_DIRECTORY') . ' ' . $path . '</span>';
-					}
-					elseif (\JURI::isInternal($path) && !file_exists($base . $path) && $result->type != 12)
-					{
-						$this->view->missing[] = '<span style="color: red">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_MISSING_RESOURCE_AT', $base . $path) . '</span>';
-					}
-					else
-					{
-						$this->view->good[] = '<span style="color: green">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_NO_PROBLEMS_FOUND', $path) . '</span>';
-					}
-				}
-				catch (\Exception $e)
-				{
-					$this->view->warning[] = '<span style="color: yellow;">#' . $result->id . ': ' . $path . '</span>';
-				}
-			}
+			$status = 'failed';
 		}
 
-		$this->view->display();
+		$audits = $auditor->getTests();
+
+		if (count($audits) == 1)
+		{
+			foreach ($audits as $key => $tester)
+			{
+				$test = $key;
+			}
+			$status = $status ? $status : 'failed';
+		}
+
+		$this->view
+			->set('test', $test)
+			->set('status', $status)
+			->set('tests', $auditor->getReport())
+			->setLayout('check')
+			->display();
 	}
 }
 

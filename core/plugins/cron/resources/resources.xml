@@ -54,4 +54,17 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="30">PLG_CRON_RESOURCES_FREQ_ONE_MONTH</option>
 		</param>
 	</params>
+	<params group="audit">
+		<param name="audit_limit" type="text" default="500" label="PLG_CRON_RESOURCES_LIMIT_LABEL" description="PLG_CRON_RESOURCES_LIMIT_DESC" />
+		<param name="audit_frequency" type="list" default="1 MONTH" label="PLG_CRON_RESOURCES_FREQ_LABEL" description="PLG_CRON_RESOURCES_FREQ_DESC">
+			<option value="1 WEEK">PLG_CRON_RESOURCES_FREQ_ONE_WEEK</option>
+			<option value="2 WEEK">PLG_CRON_RESOURCES_FREQ_TWO_WEEKS</option>
+			<option value="3 WEEK">PLG_CRON_RESOURCES_FREQ_THREE_WEEKS</option>
+			<option value="1 MONTH">PLG_CRON_RESOURCES_FREQ_ONE_MONTH</option>
+			<option value="2 MONTH">PLG_CRON_RESOURCES_FREQ_TWO_MONTH</option>
+			<option value="3 MONTH">PLG_CRON_RESOURCES_FREQ_THREE_MONTH</option>
+			<option value="4 MONTH">PLG_CRON_RESOURCES_FREQ_FOUR_MONTH</option>
+			<option value="6 MONTH">PLG_CRON_RESOURCES_FREQ_SIX_MONTH</option>
+		</param>
+	</params>
 </extension>
