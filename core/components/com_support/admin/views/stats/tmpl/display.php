@@ -40,6 +40,9 @@ Toolbar::spacer();
 Toolbar::help('stats');
 
 Html::behavior('framework');
+Html::behavior('chart');
+Html::behavior('chart', 'pie');
+Html::behavior('chart', 'resize');
 
 $this->css('stats');
 
@@ -189,10 +192,6 @@ $base = rtrim($base, '/');
 					$openeddata = implode(',', $o);
 				}
 			?>
-			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.min.js"></script>
-			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.tooltip.min.js"></script>
-			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.pie.min.js"></script>
-			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.resize.js"></script>
 			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
 			<script type="text/javascript">
 				if (!jq) {
@@ -246,7 +245,7 @@ $base = rtrim($base, '/');
 								show: true,
 								noColumns: 2,
 								position: "nw",
-								margin: [50, 5]
+								margin: [5, 5]
 							},
 							xaxis: { mode: "time", tickLength: 0, tickDecimals: 0, <?php if (count($o) <= 12) { echo 'ticks: ' . count($o) . ','; } ?>
 								tickFormatter: function (val, axis) {
@@ -379,7 +378,7 @@ $base = rtrim($base, '/');
 								hoverable: false
 							}
 						});
-				    });
+					});
 				}
 				</script>
 			</fieldset>

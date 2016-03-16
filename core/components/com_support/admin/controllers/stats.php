@@ -116,7 +116,7 @@ class Stats extends AdminController
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM #__support_tickets
 				WHERE report!=''
-				AND type=" . $this->database->quote($this->view->type) . " AND open=1";
+				AND type=" . $this->database->quote($this->view->type);
 		if (!$this->view->group)
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
