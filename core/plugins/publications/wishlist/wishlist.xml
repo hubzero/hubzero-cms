@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="publications">
 	<name>Publication - Wishlist</name>
-	<author>Alissa Nedossekina</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Displays publication wishlist</description>

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/publications/groups.xml
+@file           plugins/publications/groups/groups.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="resources">
 	<name>Publication - Group</name>
-	<author>Alissa Nedossekina</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Display group ownership for a publication</description>
@@ -41,8 +41,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.plg_publications_groups.ini</language>
 	</languages>
-	<config>
-		<fields name="params">
-		</fields>
-	</config>
 </extension>

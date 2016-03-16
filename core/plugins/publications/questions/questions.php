@@ -41,56 +41,53 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @param      string $version 		Version name
-	 * @param      boolean $extended 	Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
+	public function &onPublicationAreas($publication, $version = 'default', $extended = true)
 	{
+		$areas = array();
+
 		if ($publication->_category->_params->get('plg_questions') && $extended)
 		{
-			$areas = array(
-				'questions' => Lang::txt('PLG_PUBLICATION_QUESTIONS')
-			);
+			$areas['questions'] = Lang::txt('PLG_PUBLICATION_QUESTIONS');
 		}
-		else
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  	$publication 	Current publication
-	 * @param      string  	$option    		Name of the component
-	 * @param      array   	$areas     		Active area(s)
-	 * @param      string  	$rtrn      		Data to be returned
-	 * @param      string 	$version 		Version name
-	 * @param      boolean 	$extended 		Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   array    $areas        Active area(s)
+	 * @param   string   $rtrn         Data to be returned
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
+	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
 	{
 		$arr = array(
-			'html'    =>'',
-			'metadata'=>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
+			if (!array_intersect($areas, $this->onPublicationAreas($publication))
+			 && !array_intersect($areas, array_keys($this->onPublicationAreas($publication))))
 			{
 				$rtrn = 'metadata';
 			}
@@ -101,25 +98,25 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$this->database 		= App::get('db');
-		$this->publication    	= $publication;
-		$this->option   		= $option;
+		$this->publication = $publication;
+		$this->option      = $option;
 
 		// Get a needed library
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this publication
-		$this->filters = array('sort_Dir' => 'desc');
-		$this->filters['limit']     = Request::getInt( 'limit', 0 );
-		$this->filters['start']     = Request::getInt( 'limitstart', 0 );
+		$this->filters = array(
+			'sort_Dir' => 'desc',
+			'limit'    => Request::getInt('limit', 0),
+			'start'    => Request::getInt('limitstart', 0),
+			'search'   => Request::getVar('q', ''),
+			'filterby' => Request::getVar('filterby', ''),
+			'sortby'   => Request::getVar('sortby', 'withinplugin')
+		);
+
 		$identifier = $this->publication->identifier();
-		$this->filters['tag']       = $this->publication->isTool()
-									? 'tool:' . $identifier : 'publication:' . $identifier;
-		$this->filters['rawtag']    = $this->publication->isTool()
-									?  'tool:' . $identifier : 'publication:' . $identifier;
-		$this->filters['search']    = Request::getVar( 'q', '' );
-		$this->filters['filterby']  = Request::getVar( 'filterby', '' );
-		$this->filters['sortby']    = Request::getVar( 'sortby', 'withinplugin' );
+		$this->filters['tag']    = $this->publication->isTool() ? 'tool:' . $identifier : 'publication:' . $identifier;
+		$this->filters['rawtag'] = $this->publication->isTool() ? 'tool:' . $identifier : 'publication:' . $identifier;
 
 		$this->count = $this->_find()->count();
 
@@ -153,9 +150,9 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = $this->view('default', 'metadata');
-			$view->publication = $this->publication;
-			$view->count       = $this->count;
+			$view = $this->view('default', 'metadata')
+				->set('publication', $this->publication)
+				->set('count', $this->count);
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
@@ -243,7 +240,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'browse')
 			->setError($this->getErrors())
 			->set('option', $this->option)
-			->set('resource', $this->model->resource)
+			->set('publication', $this->publication)
 			->set('banking', Component::params('com_members')->get('bankAccounts'))
 			->set('infolink', Component::params('com_answers')->get('infolink', '/kb/points/'))
 			->set('rows', $results)
@@ -263,35 +260,40 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Login required
 		if (User::isGuest())
 		{
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=' . $this->_name, false, true), 'server');
+
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('PLG_PUBLICATIONS_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
 				'warning'
 			);
 			return;
 		}
 
-		$view = $this->view('new', 'question');
-		$view->option      = $this->option;
-		$view->publication = $this->publication;
 		if (!is_object($row))
 		{
 			$row  = new \Components\Answers\Models\Question();
 		}
-		$view->row = $row;
-		$view->tag = $this->filters['tag'];
 
 		// Are we banking?
-		$upconfig = Component::params('com_members');
-		$view->banking = $upconfig->get('bankAccounts');
+		$banking = Component::params('com_members')->get('bankAccounts');
 
-		$view->funds = 0;
-		if ($view->banking)
+		$funds = 0;
+
+		if ($banking)
 		{
 			$BTL = new \Hubzero\Bank\Teller(User::get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
-			$view->funds = ($funds > 0) ? $funds : 0;
+			$funds = ($funds > 0) ? $funds : 0;
 		}
+
+		$view = $this->view('new', 'question')
+			->set('option', $this->option)
+			->set('publication', $this->publication)
+			->set('row', $row)
+			->set('tag', $this->filters['tag'])
+			->set('banking', $banking)
+			->set('funds', $funds);
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -304,7 +306,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a question and redirect to the main listing when done
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _save()
 	{
@@ -322,31 +324,34 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$funds  = Request::getInt('funds', 0);
 		$reward = Request::getInt('reward', 0);
 
+		// Initiate class and bind posted items to database fields
+		$fields = Request::getVar('question', array(), 'post', 'none', 2);
+
+		$row = \Components\Answers\Models\Question::oneOrNew($fields['id'])->set($fields);
+
+		$banking = Component::params('com_members')->get('bankAccounts');
+
+		if ($reward && $banking)
+		{
+			$row->set('reward', 1);
+		}
+
 		// If offering a reward, do some checks
 		if ($reward)
 		{
 			// Is it an actual number?
 			if (!is_numeric($reward))
 			{
-				App::abort(500, Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
-				return;
+				$this->setError(Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
+				return $this->_new($row);
 			}
+
 			// Are they offering more than they can afford?
 			if ($reward > $funds)
 			{
-				App::abort(500, Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
-				return;
+				$this->setError(Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
+				return $this->_new($row);
 			}
-		}
-
-		// Initiate class and bind posted items to database fields
-		$fields = Request::getVar('question', array(), 'post', 'none', 2);
-
-		$row = \Components\Answers\Models\Question::oneOrNew($fields['id'])->set($fields);
-
-		if ($reward && $this->banking)
-		{
-			$row->set('reward', 1);
 		}
 
 		// Store new content
@@ -357,7 +362,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Hold the reward for this question if we're banking
-		if ($reward && $this->banking)
+		if ($reward && $banking)
 		{
 			$BTL = new \Hubzero\Bank\Teller(User::get('id'));
 			$BTL->hold($reward, Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
@@ -368,7 +373,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 
 		// Add the tag to link to the publication
 		$identifier = $this->publication->get('alias') ? $this->publication->get('alias') : $this->publication->get('id');
-		$tag = $this->publication->isTool() ?  'tool' . $identifier : 'publication' . $identifier;
+		$tag = $this->publication->isTool() ?  'tool:' . $identifier : 'publication:' . $identifier;
 
 		$row->addTag($tag, User::get('id'), ($this->publication->isTool() ? 0 : 1));
 

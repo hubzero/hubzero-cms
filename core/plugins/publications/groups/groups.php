@@ -34,44 +34,44 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Display sponsors on a resource page
+ * Display groups associated with a publication
  */
 class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @return     array
+	 * @param   object  $publication  Current publication
+	 * @return  array
 	 */
-	public function &onPublicationSubAreas( $publication )
+	public function &onPublicationSubAreas($publication)
 	{
 		$areas = array();
+
 		if ($publication->category()->_params->get('plg_groups', 1) == 1)
 		{
-			$areas = array(
-				'groups' => Lang::txt('PLG_PUBLICATIONS_GROUPS')
-			);
+			$areas['groups'] = Lang::txt('PLG_PUBLICATIONS_GROUPS');
 		}
+
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
 	 *
-	 * @param      object $publication 	Current publication
-	 * @param      string  $option    Name of the component
-	 * @param      integer $miniview  View style
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   integer  $miniview     View style
+	 * @return  array
 	 */
-	public function onPublicationSub( $publication, $option, $miniview=0 )
+	public function onPublicationSub($publication, $option, $miniview=0)
 	{
 		$arr = array(
 			'html'     => '',
@@ -79,46 +79,27 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		$areas = array('groups');
-		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
-		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
-		{
-			return false;
-		}
-
 		if (!$publication->groupOwner())
 		{
 			return $arr;
 		}
 
-		// Get recommendations
-		$this->database = App::get('db');
-
 		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(array(
-			'folder'  => $this->_type,
-			'element' => $this->_name,
-			'name'    => 'display'
-		));
+		$view = $this->view('default', 'display')
+			->set('option', $option)
+			->set('publication', $publication)
+			->set('params', $this->params)
+			->set('group', $publication->groupOwner());
 
 		if ($miniview)
 		{
-			$this->view->setLayout('mini');
-		}
-
-		// Pass the view some info
-		$this->view->option   		= $option;
-		$this->view->publication 	= $publication;
-		$this->view->params   		= $this->params;
-		$this->view->group    		= $publication->groupOwner();
-
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$view->setLayout('mini');
 		}
 
 		// Return the output
-		$arr['html'] = $this->view->loadTemplate();
+		$arr['html'] = $view
+			->setErrors($this->getErrors())
+			->loadTemplate();
 
 		return $arr;
 	}

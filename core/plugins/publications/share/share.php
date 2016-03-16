@@ -34,26 +34,24 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Short description for 'plgPublicationsShare'
- *
- * Long description (if any) ...
+ * Publication Plugin class for showing social sharing options
  */
 class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Short description for 'onPublicationsAreas'
+	 * Return the alias and name for this category of content
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $publication Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   object   $publication
+	 * @param   string   $version
+	 * @param   boolean  $extended
+	 * @return  array
 	 */
 	public function &onPublicationAreas($publication, $version = 'default', $extended = true)
 	{
@@ -62,22 +60,22 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'onPublications'
+	 * Return data on a publication view (this will be some form of HTML)
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      mixed $publication Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      unknown $areas Parameter description (if any) ...
-	 * @param      string $rtrn Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   object   $publication
+	 * @param   string   $option
+	 * @param   array    $areas
+	 * @param   string   $rtrn
+	 * @param   string   $version
+	 * @param   boolean  $extended
+	 * @return  array
 	 */
 	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
 	{
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'name'=>'share'
+			'html'     => '',
+			'metadata' => '',
+			'name'     => 'share'
 		);
 
 		// Hide if version not published
@@ -94,28 +92,23 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 
 		// Incoming action
 		$sharewith = Request::getVar('sharewith', '');
-		if ($sharewith && $sharewith != 'email')
+
+		if ($sharewith)
 		{
-			$this->share($sharewith, $url, $mediaUrl, $publication, $version);
-			return;
+			return $this->share($sharewith, $url, $mediaUrl, $publication, $version);
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			// Instantiate a view
-			$view = $this->view('default', 'options');
-
-			// Pass the view some info
-			$view->option      = $option;
-			$view->publication = $publication;
-			$view->version     = $version;
-			$view->_params     = $this->params;
-			$view->url         = $url;
-			if ($this->getError())
-			{
-				$view->setError($this->getError());
-			}
+			$view = $this->view('default', 'options')
+				->set('option', $option)
+				->set('publication', $publication)
+				->set('version', $version)
+				->set('_params', $this->params)
+				->set('url', $url)
+				->setErrors($this->getErrors());
 
 			// Return the output
 			$arr['metadata'] = $view->loadTemplate();
@@ -125,20 +118,19 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'share'
+	 * Redirect to social sharer
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $with Parameter description (if any) ...
-	 * @param      string $url Parameter description (if any) ...
-	 * @param      mixed $publication Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $with
+	 * @param   string  $url
+	 * @param   string  $mediaUrl
+	 * @param   object  $publication
+	 * @param   object  $version
+	 * @return  void
 	 */
 	public function share($with, $url, $mediaUrl, $publication, $version)
 	{
 		$link = '';
-		$description = $publication->abstract
-			? \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250) : '';
+		$description = \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250);
 		$description = urlencode($description);
 		$title = stripslashes($publication->title);
 		$title = urlencode($title);
@@ -150,9 +142,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . urlencode(Lang::txt('PLG_PUBLICATION_SHARE_VIEWING',
-						Config::get('sitename'),
-						stripslashes($publication->title) . ' ' . $url));
+				$link = 'http://twitter.com/home?status=' . urlencode(Lang::txt('PLG_PUBLICATION_SHARE_VIEWING', Config::get('sitename'), stripslashes($publication->title) . ' ' . $url));
 				break;
 
 			case 'google':
@@ -168,13 +158,11 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'linkedin':
-				$link = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title='
-				. $title . '&summary=' . $description;
+				$link = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&summary=' . $description;
 				break;
 
 			case 'pinterest':
-				$link = 'https://pinterest.com/pin/create/button/?url=' . $url . '&media='
-				. $mediaUrl . '&description=' . $title . ': ' . $description;
+				$link = 'https://pinterest.com/pin/create/button/?url=' . $url . '&media=' . $mediaUrl . '&description=' . $title . ': ' . $description;
 				break;
 		}
 
@@ -184,4 +172,3 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-

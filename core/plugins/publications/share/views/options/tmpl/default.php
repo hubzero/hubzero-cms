@@ -49,13 +49,14 @@ $sharing = array('facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'deli
 
 foreach ($sharing as $shared)
 {
-	if ($this->_params->get('share_' . $shared, 1) == 1) {
+	if ($this->_params->get('share_' . $shared, 1) == 1)
+	{
 		// Show activity
 		$link = $this->view('_item')
-	     ->set('option', $this->option)
-	     ->set('publication', $this->publication)
-		 ->set('name', $shared)
-	     ->loadTemplate();
+			->set('option', $this->option)
+			->set('publication', $this->publication)
+			->set('name', $shared)
+			->loadTemplate();
 
 		$metadata .= (!$limit || $i <= $limit) ? $link : '';
 		$popup 	  .= '<li class="';
@@ -89,4 +90,3 @@ if ($limit > 0)
 $metadata .= '</div>'."\n";
 
 echo $metadata;
-?>

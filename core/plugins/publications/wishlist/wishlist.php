@@ -41,17 +41,17 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @param      string $version 		Version name
-	 * @param      boolean $extended 	Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
 	public function &onPublicationAreas($publication, $version = 'default', $extended = true)
 	{
@@ -68,26 +68,26 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  	$publication 	Current publication
-	 * @param      string  	$option    		Name of the component
-	 * @param      array   	$areas     		Active area(s)
-	 * @param      string  	$rtrn      		Data to be returned
-	 * @param      string 	$version 		Version name
-	 * @param      boolean 	$extended 		Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   array    $areas        Active area(s)
+	 * @param   string   $rtrn         Data to be returned
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
 	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
 	{
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
+			if (!array_intersect($areas, $this->onPublicationAreas($publication))
+			 && !array_intersect($areas, array_keys($this->onPublicationAreas($publication))))
 			{
 				$rtrn = 'metadata';
 			}
@@ -134,8 +134,8 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			if ($publication->title && $publication->state == 1)
 			{
 				$rtitle = isset($publication->alias) && $publication->alias
-				? Lang::txt('COM_WISHLIST_NAME_RESOURCE') . ' ' . $publication->alias
-				: Lang::txt('COM_WISHLIST_NAME_PUB_ID') . ' ' . $publication->id;
+					? Lang::txt('COM_WISHLIST_NAME_RESOURCE') . ' ' . $publication->alias
+					: Lang::txt('COM_WISHLIST_NAME_PUB_ID') . ' ' . $publication->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $publication->title);
 			}
 		}
@@ -174,8 +174,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			elseif (!$wishlist->public && $rtrn != 'metadata')
 			{
 				// not authorized
-				throw new Exception(Lang::txt('COM_WISHLIST_ERROR_ALERTNOTAUTH'), 403);
-				return;
+				App::abort(403, Lang::txt('COM_WISHLIST_ERROR_ALERTNOTAUTH'));
 			}
 
 			$items = $objWish->get_count($id, $filters, $admin);
@@ -197,22 +196,15 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 
 				// HTML output
 				// Instantiate a view
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'publications',
-						'element' => 'wishlist',
-						'name'    => 'browse'
-					)
-				);
+				$view = $this->view('default', 'browse')
+					->set('option', $option)
+					->set('publication', $publication)
+					->set('title', $title)
+					->set('wishlist', $wishlist)
+					->set('filters', $filters)
+					->set('admin', $admin)
+					->set('config', $this->config);
 
-				// Pass the view some info
-				$view->option      = $option;
-				$view->publication = $publication;
-				$view->title       = $title;
-				$view->wishlist    = $wishlist;
-				$view->filters     = $filters;
-				$view->admin       = $admin;
-				$view->config      = $this->config;
 				if ($this->getError())
 				{
 					$view->setError($this->getError());
@@ -228,16 +220,10 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'publications',
-					'element' => 'wishlist',
-					'name'    => 'metadata'
-				)
-			);
-			$view->publication = $publication;
-			$view->items       = $items;
-			$view->wishlistid  = $id;
+			$view = $this->view('default', 'metadata')
+				->set('publication', $publication)
+				->set('items', $items)
+				->set('wishlistid', $id);
 
 			$metadata = $view->loadTemplate();
 		}

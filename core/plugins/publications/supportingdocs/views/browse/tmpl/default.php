@@ -31,24 +31,22 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database  = App::get('db');
-
-$this->css('assets/css/supportingdocs.css');
-
+$this->css();
 ?>
-<div class="supportingdocs">
-<h3>
-	<a name="supportingdocs"></a>
-	<?php echo Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS'); ?>
-</h3>
+<div class="supportingdocs" id="supportingdocs">
+	<h3>
+		<?php echo Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS'); ?>
+	</h3>
 
-<?php
+	<?php
 	// Get elements in primary and supporting role
 	$prime    = $this->publication->_curationModel->getElements(1);
 	$second   = $this->publication->_curationModel->getElements(2);
 	$elements = array_merge($prime, $second);
 
 	// Get attachment type model
+	$database = App::get('db');
+
 	$attModel = new \Components\Publications\Models\Attachments($database);
 
 	if ($elements)
@@ -65,6 +63,7 @@ $this->css('assets/css/supportingdocs.css');
 	{
 		?>
 		<p class="noresults"><?php echo Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
-<?php } ?>
-
+		<?php
+	}
+	?>
 </div><!-- / .supportingdocs -->

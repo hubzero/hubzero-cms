@@ -35,13 +35,13 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 ?>
-<h3 class="section-header">
-	<a name="questions"></a>
+<h3 class="section-header" id="questions">
 	<?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
 </h3>
+
 <div class="section">
 	<?php foreach ($this->getErrors() as $error) { ?>
-	<p class="error"><?php echo $error; ?></p>
+		<p class="error"><?php echo $error; ?></p>
 	<?php } ?>
 	<form action="<?php echo Route::url($this->publication->link('questions')); ?>" method="post" id="hubForm" class="full">
 		<fieldset id="ask">
@@ -83,24 +83,22 @@ $this->css();
 
 			<label for="field-question">
 				<?php echo Lang::txt('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
-				<?php
-				echo $this->editor('question[question]', $this->escape(stripslashes($this->row->get('question'))),  50, 10, 'field-question', array('class' => 'minimal no-footer'));
-				?>
-				<span class="hint"><a class="popup" href="<?php echo Route::url('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<?php echo $this->editor('question[question]', $this->escape(stripslashes($this->row->get('question'))),  50, 10, 'field-question', array('class' => 'minimal no-footer')); ?>
 			</label>
 
-			</label>
-		<?php if ($this->banking) { ?>
-			<label for="field-reward">
-				<?php echo Lang::txt('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-				<input type="text" name="question[reward]" id="field-reward" value="" size="5" <?php if ((int) $this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
-				<?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
-			</label>
-		<?php } else { ?>
-			<input type="hidden" name="question[reward]" value="0" />
-		<?php } ?>
+			<?php if ($this->banking) { ?>
+				<label for="field-reward">
+					<?php echo Lang::txt('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
+					<input type="text" name="question[reward]" id="field-reward" value="" size="5" <?php if ((int) $this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
+					<?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
+				</label>
+			<?php } else { ?>
+				<input type="hidden" name="question[reward]" value="0" />
+			<?php } ?>
 		</fieldset>
 
-		<p class="submit"><input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" /></p>
+		<p class="submit">
+			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
+		</p>
 	</form>
 </div><!-- / .section -->

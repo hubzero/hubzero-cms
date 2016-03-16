@@ -6,7 +6,7 @@
 
 	.supportingdocs { 
 		margin: 0 0 1em 0;
-		}
+	}
 	.aside .supportingdocs h3 {
 		margin: 0;
 		padding: 0.4em 1em;
@@ -14,7 +14,7 @@
 		font-size: 1em;
 		background: #d6ccc4; 
 		display: block;
-		}
+	}
 	.supportingdocs ul {
 		margin: 0;
 		padding: 0;
@@ -22,7 +22,7 @@
 		background: #F7F4F2;
 		border-top: 1px solid #E7DFD8;
 		border-bottom: 1px solid #E7DFD8;
-		}
+	}
 	.supportingdocs ul li {
 		margin: 0 1px;
 		padding: 0.6em 1em;
@@ -31,21 +31,20 @@
 		background-position: 1em 0.5em;
 		position: relative;
 		list-style: none;
-		}
+	}
 	.supportingdocs ul li a {
 		background: none;
 		color: #CC9666;
 		border: none;
-		}
+	}
 	.supportingdocs ul li a:hover {
 		color: #f60;
 		border: none;
-		}
+	}
 	.supportingdocs small,
 	.supportingdocs span {
 		color: #999;
-		/* display: block; */
-		}
+	}
 	.supportingdocs span.ext {
 		display: inline;
 		font-size: 75%;
@@ -63,7 +62,7 @@
 		top: 0.6em; 
 		right: 0;
 		border: none;
-		}
+	}
 	.extras {
 		float: right;
 		color: #CCC;

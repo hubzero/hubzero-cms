@@ -41,29 +41,25 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @param      string $version 		Version name
-	 * @param      boolean $extended 	Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
+	public function &onPublicationAreas($publication, $version = 'default', $extended = true)
 	{
+		$areas = array();
+
 		if ($publication->_category->_params->get('plg_supportingdocs'))
 		{
-			$areas = array(
-				'supportingdocs' => Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS')
-			);
-		}
-		else
-		{
-			$areas = array();
+			$areas['supportingdocs'] = Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS');
 		}
 
 		return $areas;
@@ -72,32 +68,32 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  	$publication 	Current publication
-	 * @param      string  	$option    		Name of the component
-	 * @param      array   	$areas     		Active area(s)
-	 * @param      string  	$rtrn      		Data to be returned
-	 * @param      string 	$version 		Version name
-	 * @param      boolean 	$extended 		Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   array    $areas        Active area(s)
+	 * @param   string   $rtrn         Data to be returned
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function onPublication( $publication, $option, $areas, $rtrn='all',
-		$version = 'default', $extended = true, $authorized = true )
+	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true, $authorized = true)
 	{
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
+			if (!array_intersect($areas, $this->onPublicationAreas($publication))
+			 && !array_intersect($areas, array_keys($this->onPublicationAreas($publication))))
 			{
 				// do nothing
 				return $arr;
 			}
 		}
+
 		if (!$publication->_category->_params->get('plg_supportingdocs'))
 		{
 			return $arr;
@@ -108,45 +104,41 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 		{
 			$database = App::get('db');
 
-			$config = Component::params( $option );
-
-			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'	=>'publications',
-					'element'	=>'supportingdocs',
-					'name'		=>'browse'
-				)
-			);
+			$config = Component::params($option);
 
 			// Get docs
-			$pContent = new \Components\Publications\Tables\Attachment( $database );
-			$view->docs = $pContent->getAttachments( $publication->version_id, $filters = array('role' => array(1,0,2), 'order' => 'a.role DESC, a.ordering ASC'));
+			$pContent = new \Components\Publications\Tables\Attachment($database);
+			$docs = $pContent->getAttachments(
+				$publication->version_id,
+				array(
+					'role'  => array(1, 0, 2),
+					'order' => 'a.role DESC, a.ordering ASC'
+				)
+			);
 
 			// Get projects html helper
 			require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
 
 			// Build publication path
-			$base_path 	= $config->get('webpath');
-			$view->path = \Components\Publications\Helpers\Html::buildPubPath(
+			$path = \Components\Publications\Helpers\Html::buildPubPath(
 				$publication->id,
 				$publication->version_id,
-				$base_path,
+				$config->get('webpath'),
 				$publication->secret,
 				$root = 1
 			);
 
 			// Pass the view some info
-			$view->option 		= $option;
-			$view->publication 	= $publication;
-			$view->config 		= $config;
-			$view->version 		= $version;
-			$view->live_site 	= Request::base();
-			$view->authorized	= $authorized;
-			if ($this->getError())
-			{
-				$view->setError( $this->getError() );
-			}
+
+			$view = $this->view('default', 'browse')
+				->set('option', $option)
+				->set('publication', $publication)
+				->set('config', $config)
+				->set('version', $version)
+				->set('authorized', $authorized)
+				->set('path', $path)
+				->set('docs', $docs)
+				->set('live_site', rtrim(Request::base(), '/'));
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();

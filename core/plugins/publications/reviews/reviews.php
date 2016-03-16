@@ -33,8 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once( PATH_CORE . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'review.php');
+require_once(PATH_CORE . DS . 'components'.DS .'com_publications' . DS . 'tables' . DS . 'review.php');
 
 /**
  * Publications Plugin class for reviews
@@ -44,16 +43,16 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -71,14 +70,13 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
 	 */
-	public function &onPublicationAreas( $model, $version = 'default', $extended = true )
+	public function &onPublicationAreas($model, $version = 'default', $extended = true)
 	{
 		$areas = array();
+
 		if ($model->_category->_params->get('plg_reviews') && $extended && $model->access('view-all'))
 		{
-			$areas = array(
-				'reviews' => Lang::txt('PLG_PUBLICATIONS_REVIEWS')
-			);
+			$areas['reviews'] = Lang::txt('PLG_PUBLICATIONS_REVIEWS');
 		}
 
 		return $areas;
@@ -87,10 +85,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Rate item (AJAX)
 	 *
-	 * @param      string $option
-	 * @return     array
+	 * @param   string  $option
+	 * @return  array
 	 */
-	public function onPublicationRateItem( $option )
+	public function onPublicationRateItem($option)
 	{
 		$arr = array(
 			'html'    =>'',
@@ -108,15 +106,15 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  	$publication 	Current publication
-	 * @param      string  	$option    		Name of the component
-	 * @param      array   	$areas     		Active area(s)
-	 * @param      string  	$rtrn      		Data to be returned
-	 * @param      string 	$version 		Version name
-	 * @param      boolean 	$extended 		Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   array    $areas        Active area(s)
+	 * @param   string   $rtrn         Data to be returned
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function onPublication( $model, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
+	public function onPublication($model, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
 	{
 		$arr = array(
 			'area'     => $this->_name,
@@ -125,10 +123,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $model ) )
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $model ) ) ))
+			if (!array_intersect($areas, $this->onPublicationAreas($model))
+			 && !array_intersect($areas, array_keys($this->onPublicationAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
@@ -149,7 +147,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 		// Get reviews for this publication
 		$database = App::get('db');
-		$r = new \Components\Publications\Tables\Review( $database );
+		$r = new \Components\Publications\Tables\Review($database);
 		$reviews = $r->getRatings($model->get('id'));
 		if (!$reviews)
 		{
@@ -174,30 +172,21 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				);
 				return;
 			}
-			else
-			{
-				// Instantiate a view
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  =>'publications',
-						'element' =>'reviews',
-						'name'    =>'browse'
-					)
-				);
-			}
 
-			// Pass the view some info
-			$view->option 		= $option;
-			$view->publication 	= $model;
-			$view->reviews 		= $reviews;
-			$view->voting 		= $this->params->get('voting', 1);
-			$view->h 			= $h;
-			$view->banking 		= $this->banking;
-			$view->infolink 	= $this->infolink;
-			$view->config   	= $this->params;
+			// Instantiate a view
+			$view = $this->view('default', 'browse')
+				->set('option', $option)
+				->set('publication', $model)
+				->set('reviews', $reviews)
+				->set('voting', $this->params->get('voting', 1))
+				->set('h', $h)
+				->set('banking', $this->banking)
+				->set('infolink', $this->infolink)
+				->set('config', $this->params);
+
 			if ($h->getError())
 			{
-				$view->setError( $h->getError() );
+				$view->setError($h->getError());
 			}
 
 			// Return the output
@@ -207,17 +196,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder' =>'publications',
-					'element'=>'reviews',
-					'name'   =>'metadata'
-				)
-			);
-
-			$view->url     = Route::url($model->link($this->_name));
-			$view->url2    = Route::url($model->link($this->_name) . '&action=addreview#reviewform');
-			$view->reviews = $reviews;
+			$view = $this->view('default', 'metadata')
+				->set('url', Route::url($model->link($this->_name)))
+				->set('url2', Route::url($model->link($this->_name) . '&action=addreview#reviewform'))
+				->set('reviews', $reviews);
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
@@ -228,16 +210,14 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get all replies for an item
 	 *
-	 * @param      object  $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @param      integer $level    Depth
-	 * @param      boolean $abuse    Abuse flag
-	 * @return     array
+	 * @param   object   $item      Item to look for reports on
+	 * @param   string   $category  Item type
+	 * @param   integer  $level     Depth
+	 * @param   boolean  $abuse     Abuse flag
+	 * @return  array
 	 */
 	public function getComments($id, $item, $category, $level, $abuse=false)
 	{
-		$database = App::get('db');
-
 		$level++;
 
 		$comments = \Hubzero\Item\Comment::all()
@@ -265,16 +245,16 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get abuse reports for a comment
 	 *
-	 * @param      integer $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @return     integer
+	 * @param   integer  $item      Item to look for reports on
+	 * @param   string   $category  Item type
+	 * @return  integer
 	 */
 	public function getAbuseReports($item, $category)
 	{
 		$database = App::get('db');
 
-		$ra = new \Components\Support\Tables\ReportAbuse( $database );
-		return $ra->getCount( array('id' => $item, 'category' => $category) );
+		$ra = new \Components\Support\Tables\ReportAbuse($database);
+		return $ra->getCount(array('id' => $item, 'category' => $category));
 	}
 }
 
@@ -286,12 +266,12 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Execute an action
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		// Incoming action
-		$action = Request::getVar( 'action', '' );
+		$action = Request::getVar('action', '');
 
 		$this->loggedin = true;
 
@@ -306,22 +286,22 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Perform an action
-		switch ( $action )
+		switch ($action)
 		{
 			case 'addreview':    $this->editreview();   break;
 			case 'editreview':   $this->editreview();   break;
 			case 'savereview':   $this->savereview();   break;
 			case 'deletereview': $this->deletereview(); break;
-			case 'savereply': 	 $this->savereply(); 	break;
+			case 'savereply':    $this->savereply();    break;
 			case 'deletereply':  $this->deletereply();  break;
-			case 'rateitem':   	 $this->rateitem();  	break;
+			case 'rateitem':     $this->rateitem();     break;
 		}
 	}
 
 	/**
 	 * Save a reply
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function savereply()
 	{
@@ -331,7 +311,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -343,7 +323,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		if (!$publication->exists())
 		{
 			// Cannot proceed
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
 			return;
 		}
 
@@ -372,7 +352,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Delete a reply
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletereply()
 	{
@@ -384,14 +364,14 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		// Do we have a review ID?
 		if (!$replyid)
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
 			return;
 		}
 
 		// Do we have a publication ID?
 		if (!$publication->exists())
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -416,17 +396,17 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Rate an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function rateitem()
 	{
 		$database = App::get('db');
 		$publication =& $this->publication;
 
-		$id   = Request::getInt( 'refid', 0 );
-		$ajax = Request::getInt( 'no_html', 0 );
-		$cat  = Request::getVar( 'category', 'pubreview' );
-		$vote = Request::getVar( 'vote', '' );
+		$id   = Request::getInt('refid', 0);
+		$ajax = Request::getInt('no_html', 0);
+		$cat  = Request::getVar('category', 'pubreview');
+		$vote = Request::getVar('vote', '');
 		$ip   = Request::ip();
 
 		if (!$id || !$publication->exists())
@@ -438,7 +418,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -449,7 +429,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 
 		if ($vote)
 		{
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php' );
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 			$v = new \Components\Answers\Tables\Vote($database);
 			if ($voted)
 			{
@@ -464,12 +444,12 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 
 			if (!$v->check())
 			{
-				$this->setError( $v->getError() );
+				$this->setError($v->getError());
 				return;
 			}
 			if (!$v->store())
 			{
-				$this->setError( $v->getError() );
+				$this->setError($v->getError());
 				return;
 			}
 		}
@@ -477,7 +457,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		// update display
 		if ($ajax)
 		{
-			$response = $rev->getRating( $publication->get('id'), User::get('id'));
+			$response = $rev->getRating($publication->get('id'), User::get('id'));
 			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder' =>'publications',
@@ -500,14 +480,14 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Edit a review
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editreview()
 	{
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -517,17 +497,17 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		if (!$publication->exists())
 		{
 			// No - fail! Can't do anything else without an ID
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
 		// Incoming
-		$myr = Request::getInt( 'myrating', 0 );
+		$myr = Request::getInt('myrating', 0);
 
 		$database = App::get('db');
 
-		$review = new \Components\Publications\Tables\Review( $database );
-		$review->loadUserReview( $publication->get('id'), User::get('id'), $publication->get('version_id') );
+		$review = new \Components\Publications\Tables\Review($database);
+		$review->loadUserReview($publication->get('id'), User::get('id'), $publication->get('version_id'));
 
 		if (!$review->id)
 		{
@@ -556,14 +536,14 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Save a review
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savereview()
 	{
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -573,22 +553,22 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		if (!$publication->exists())
 		{
 			// No ID - fail! Can't do anything else without an ID
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
 		$database = App::get('db');
 
 		// Bind the form data to our object
-		$row = new \Components\Publications\Tables\Review( $database );
-		if (!$row->bind( $_POST ))
+		$row = new \Components\Publications\Tables\Review($database);
+		if (!$row->bind($_POST))
 		{
-			$this->setError( $row->getError() );
+			$this->setError($row->getError());
 			return;
 		}
 
 		// Perform some text cleaning, etc.
-		$row->id         = Request::getInt( 'reviewid', 0 );
+		$row->id         = Request::getInt('reviewid', 0);
 		$row->state      = 1;
 		$row->comment    = \Hubzero\Utility\Sanitize::stripAll($row->comment);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
@@ -600,13 +580,13 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		// Check for missing (required) fields
 		if (!$row->check())
 		{
-			$this->setError( $row->getError() );
+			$this->setError($row->getError());
 			return;
 		}
 		// Save the data
 		if (!$row->store())
 		{
-			$this->setError( $row->getError() );
+			$this->setError($row->getError());
 			return;
 		}
 
@@ -615,15 +595,15 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		$publication->table()->updateRating();
 
 		// Process tags
-		$tags = trim(Request::getVar( 'review_tags', '' ));
+		$tags = trim(Request::getVar('review_tags', ''));
 		if ($tags)
 		{
-			$rt = new \Components\Publications\Helpers\Tags( $database );
+			$rt = new \Components\Publications\Helpers\Tags($database);
 			$rt->tag_object($row->created_by, $publication->get('id'), $tags, 1, 0);
 		}
 
 		// Get version authors
-		$users = $publication->table('Author')->getAuthors($publication->get('version_id'), 1, 1, true );
+		$users = $publication->table('Author')->getAuthors($publication->get('version_id'), 1, 1, true);
 
 		// Build the subject
 		$subject = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONTRIBUTIONS');
@@ -648,7 +628,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		$from['email'] = Config::get('mailfrom');
 
 		// Send message
-		if (!Event::trigger( 'xmessage.onSendMessage', array(
+		if (!Event::trigger('xmessage.onSendMessage', array(
 				'publications_new_comment',
 				$subject,
 				$message,
@@ -658,7 +638,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 			)
 		))
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_FAILED_TO_MESSAGE') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_FAILED_TO_MESSAGE'));
 		}
 
 		App::redirect(Route::url($publication->link('reviews')), $message);
@@ -668,7 +648,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Delete a review
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletereview()
 	{
@@ -676,23 +656,23 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		$publication =& $this->publication;
 
 		// Incoming
-		$reviewid = Request::getInt( 'comment', 0 );
+		$reviewid = Request::getInt('comment', 0);
 
 		// Do we have a review ID?
 		if (!$reviewid)
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_ID') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_ID'));
 			return;
 		}
 
 		// Do we have a publication ID?
 		if (!$publication->exists())
 		{
-			$this->setError( Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
-		$review = new \Components\Publications\Tables\Review( $database );
+		$review = new \Components\Publications\Tables\Review($database);
 		$review->load($reviewid);
 
 		// Permissions check

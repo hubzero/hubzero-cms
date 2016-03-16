@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="publications">
 	<name>Publication - Reviews</name>
-	<author>Alissa Nedossekina</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Displays reviews for a publication</description>
@@ -46,8 +46,8 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
 				<field name="voting" type="radio" default="1" label="Voting Enabled" description="Allow voting on reviews and comments">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>

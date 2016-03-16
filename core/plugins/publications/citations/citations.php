@@ -41,19 +41,19 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @param      string $version 		Version name
-	 * @param      boolean $extended 	Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true)
+	public function &onPublicationAreas($publication, $version = 'default', $extended = true)
 	{
 		if ($publication->_category->_params->get('plg_citations'))
 		{
@@ -71,27 +71,26 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  	$publication 	Current publication
-	 * @param      string  	$option    		Name of the component
-	 * @param      array   	$areas     		Active area(s)
-	 * @param      string  	$rtrn      		Data to be returned
-	 * @param      string 	$version 		Version name
-	 * @param      boolean 	$extended 		Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   array    $areas        Active area(s)
+	 * @param   string   $rtrn         Data to be returned
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function onPublication( $publication, $option, $areas,
-		$rtrn='all', $version = 'default', $extended = true  )
+	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
+			if (!array_intersect($areas, $this->onPublicationAreas($publication))
+			 && !array_intersect($areas, array_keys($this->onPublicationAreas($publication))))
 			{
 				$rtrn = 'metadata';
 			}
@@ -102,8 +101,6 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$database = App::get('db');
-
 		// Get a needed library
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
@@ -111,8 +108,9 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
 		// Get citations for this publication
-		$c = new \Components\Citations\Tables\Citation( $database );
-		$citations = $c->getCitations( 'publication', $publication->id );
+		$database = App::get('db');
+		$c = new \Components\Citations\Tables\Citation($database);
+		$citations = $c->getCitations('publication', $publication->id);
 
 		$arr['count'] = $citations ? count($citations) : 0;
 		$arr['name']  = 'citations';
@@ -121,41 +119,26 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			$config = Component::params($option);
-			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'publications',
-					'element'=>'citations',
-					'name'=>'browse'
-				)
-			);
 
-			// Pass the view some info
-			$view->option 		= $option;
-			$view->publication 	= $publication;
-			$view->citations 	= $citations;
-			$view->format 		= $config->get('citation_format', 'apa');
-			if ($this->getError())
-			{
-				$view->setError( $this->getError() );
-			}
+			// Instantiate a view
+			$view = $this->view('default', 'browse')
+				->set('option', $option)
+				->set('publication', $publication)
+				->set('citations', $citations)
+				->set('format', $config->get('citation_format', 'apa'));
 
 			// Return the output
-			$arr['html'] = $view->loadTemplate();
+			$arr['html'] = $view
+				->setErrors($this->getErrors())
+				->loadTemplate();
 		}
 
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'metadata'
-				)
-			);
-			$view->url = Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' . $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' . $publication->version_number);
-			$view->citations = $citations;
+			$view = $this->view('default', 'metadata')
+				->set('url', Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' . $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' . $publication->version_number))
+				->set('citations', $citations);
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
