@@ -138,6 +138,8 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	private function _subscribe()
 	{
+		$url = Route::url($this->publication->link());
+
 		// Incoming
 		$confirm = Request::getInt('confirm', 0);
 		$email   = Request::getVar('email', '');
@@ -146,55 +148,71 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 		if (User::isGuest() || !$this->publication->exists())
 		{
 			App::redirect(
-				Route::url($this->publication->link())
+				$url
 			);
 		}
 
 		// Save subscription
-		if ($confirm)
+		if (!$confirm)
 		{
-			$watch = \Hubzero\Item\Watch::oneByScope(
-				$this->publication->get('id'),
-				'publication',
-				User::get('id'),
-				$email
-			);
-
-			if ($this->action == 'unsubscribe' && !$watch->get('id'))
-			{
-				App::redirect(
-					Route::url($this->publication->link()),
-					Lang::txt('PLG_PUBLICATIONS_WATCH_FAIL_UNSUBSCRIBE'),
-					'error'
-				);
-			}
-
-			$watch->set('item_id', $this->publication->get('id'));
-			$watch->set('item_type', 'publication');
-			$watch->set('created_by', User::get('id'));
-			$watch->set('state', ($this->action == 'subscribe' ? 1 : 2));
-			$watch->save();
-
-			if ($err = $watch->getError())
-			{
-				App::redirect(
-					Route::url($this->publication->link()),
-					$err,
-					'error'
-				);
-			}
-			else
-			{
-				$msg = $this->action == 'subscribe'
-					? Lang::txt('PLG_PUBLICATIONS_WATCH_SUCCESS_SUBSCRIBED')
-					: Lang::txt('PLG_PUBLICATIONS_WATCH_SUCCESS_UNSUBSCRIBED');
-
-				App::redirect(
-					Route::url($this->publication->link()),
-					$msg
-				);
-			}
+			return;
 		}
+
+		$watch = \Hubzero\Item\Watch::oneByScope(
+			$this->publication->get('id'),
+			'publication',
+			User::get('id'),
+			$email
+		);
+
+		if ($this->action == 'unsubscribe' && !$watch->get('id'))
+		{
+			App::redirect(
+				$url,
+				Lang::txt('PLG_PUBLICATIONS_WATCH_FAIL_UNSUBSCRIBE'),
+				'error'
+			);
+		}
+
+		$watch->set('item_id', $this->publication->get('id'));
+		$watch->set('item_type', 'publication');
+		$watch->set('created_by', User::get('id'));
+		$watch->set('state', ($this->action == 'subscribe' ? 1 : 2));
+		$watch->save();
+
+		if ($err = $watch->getError())
+		{
+			App::redirect(
+				$url,
+				$err,
+				'error'
+			);
+		}
+
+		// Log the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => $this->action . 'd',
+				'scope'       => 'publication',
+				'scope_id'    => $this->publication->get('id'),
+				'description' => Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . $this->publication->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $this->publication->get('title'),
+					'url'   => $url
+				)
+			],
+			'recipients' => [User::get('id')]
+		]);
+
+		// Redirect back to the publication
+		$msg = $this->action == 'subscribe'
+			? Lang::txt('PLG_PUBLICATIONS_WATCH_SUCCESS_SUBSCRIBED')
+			: Lang::txt('PLG_PUBLICATIONS_WATCH_SUCCESS_UNSUBSCRIBED');
+
+		App::redirect(
+			$url,
+			$msg
+		);
 	}
 
 	/**

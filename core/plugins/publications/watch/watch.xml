@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/publications/watch.xml
+@file           plugins/publications/watch/watch.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -41,10 +41,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.plg_publications_watch.ini</language>
 	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-			</fieldset>
-		</fields>
-	</config>
 </extension>

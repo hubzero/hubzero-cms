@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -41,14 +40,14 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -65,6 +64,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return content that is to be displayed before group main area
 	 *
+	 * @param   object  $group
+	 * @param   string  $authorized
 	 * @return  string
 	 */
 	public function onBeforeGroup($group, $authorized)
@@ -86,7 +87,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$rows = \Hubzero\Item\Announcement::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $group->get('gidNumber'))
-			->whereEquals('state', 1)
+			->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED)
 			->whereEquals('sticky', 1)
 			->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
 				->orWhere('publish_up', '<=', Date::toSql(), 1)
@@ -114,15 +115,15 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -199,11 +200,11 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			//run task based on action
 			switch ($this->action)
 			{
-				case 'save':     $arr['html'] .= $this->_save();     break;
-				case 'new':      $arr['html'] .= $this->_edit();     break;
-				case 'edit':     $arr['html'] .= $this->_edit();     break;
-				case 'delete':   $arr['html'] .= $this->_delete();   break;
-				default:         $arr['html'] .= $this->_list();
+				case 'save':   $arr['html'] .= $this->_save();   break;
+				case 'new':    $arr['html'] .= $this->_edit();   break;
+				case 'edit':   $arr['html'] .= $this->_edit();   break;
+				case 'delete': $arr['html'] .= $this->_delete(); break;
+				default:       $arr['html'] .= $this->_list();
 			}
 		}
 
@@ -255,7 +256,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$model = \Hubzero\Item\Announcement::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $this->group->get('gidNumber'))
-			->whereEquals('state', 1);
+			->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED);
 
 		if ($filters['search'])
 		{
@@ -343,7 +344,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//verify were authorized
 		if ($this->authorized != 'manager')
 		{
-			$this->setError( Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_CREATE') );
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_CREATE'));
 			return $this->_list();
 		}
 
@@ -401,7 +402,6 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		if (!$model->save())
 		{
 			$this->setError($model->setError());
-
 			return $this->_edit($model);
 		}
 
@@ -416,12 +416,38 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$model->save();
 		}
 
+		$url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'announcement',
+				'scope_id'    => $model->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+				'details'     => array(
+					'url'   => Route::url($url),
+					'id'    => $this->group->get('gidNumber'),
+					'alias' => $this->group->get('cn'),
+					'title' => $this->group->get('description')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Redirect to the main listing
 		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
-			Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_CREATED'),
+			Route::url($url),
+			Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_SAVED'),
 			'success'
 		);
-		return;
 	}
 
 	/**
@@ -451,7 +477,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set to deleted state
-		$model->set('state', 2);
+		$model->set('state', \Hubzero\Item\Announcement::STATE_DELETED);
 
 		// Attempt to delete announcement
 		if (!$model->save())
@@ -460,12 +486,38 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
+		$url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'announcement',
+				'scope_id'    => $model->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+				'details'     => array(
+					'url'   => Route::url($url),
+					'id'    => $this->group->get('gidNumber'),
+					'alias' => $this->group->get('cn'),
+					'title' => $this->group->get('description')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Redirect to the main listing
 		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
+			Route::url($url),
 			Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED'),
 			'success'
 		);
-		return;
 	}
 
 	/**
@@ -537,4 +589,3 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-
