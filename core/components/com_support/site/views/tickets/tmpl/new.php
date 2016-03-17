@@ -100,7 +100,7 @@ $group = Request::getVar('group', '');
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="verified" value="<?php echo $this->row->get('verified'); ?>" />
 
-			<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->row->get('referer')); ?>" />
+			<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->row->get('referrer')); ?>" />
 			<input type="hidden" name="problem[tool]" value="<?php echo $this->escape($this->row->get('tool')); ?>" />
 			<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->row->get('osver')); ?>" />
 			<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->row->get('browserver')); ?>" />

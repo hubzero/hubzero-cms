@@ -827,6 +827,11 @@ class Tickets extends SiteController
 				->set('tool', Request::getVar('tool', ''))
 				->set('verified', 0);
 
+			if ($referrer = Request::getVar('referrer'))
+			{
+				$row->set('referrer', base64_encode($referrer));
+			}
+
 			if (!User::isGuest())
 			{
 				$row->set('name', User::get('name'));
