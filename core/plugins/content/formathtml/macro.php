@@ -225,6 +225,17 @@ class Macro
 	}
 
 	/**
+	 * Prost process the text
+	 *
+	 * @param   string   $text
+	 * @return  string
+	 */
+	public function postProcess($text)
+	{
+		return $text;
+	}
+
+	/**
 	 * Get macro argumentss
 	 *
 	 * @return  array  List of arguments
