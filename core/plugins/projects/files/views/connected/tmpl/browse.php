@@ -132,6 +132,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 					     ->set('subdir', $this->subdir)
 					     ->set('items', $this->items)
 					     ->set('connection', $this->connection)
+					     ->set('config', $this->fileparams)
 					     ->display();
 				}
 			?>
