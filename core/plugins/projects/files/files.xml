@@ -78,6 +78,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="browse">Browse (browse local files)</option>
 					<option value="connections">Connections (view available connections)</option>
 				</field>
+				<field name="handler_base_path" type="text" menu="hide" default="/srv/projects/" label="Handler Base Path" description="The base path to use when constructing tool launch links for files within the browse view." />
 			</fieldset>
 		</fields>
 	</config>
