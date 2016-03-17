@@ -271,7 +271,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 * Parse an SEF URL into its component bits
 	 * stripping out the path leading up to the blog plugin
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _parseUrl()
 	{
@@ -329,7 +329,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of latest blog entries
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _browse()
 	{
@@ -386,12 +386,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			->set('task', $this->action)
 			->set('filters', $filters)
 			->set('canpost', $this->_getPostingPermissions())
-			->set('authorized', $this->authorized);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+			->set('authorized', $this->authorized)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -596,12 +592,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			->set('row', $row)
 			->set('filters', $filters)
 			->set('canpost', $this->_getPostingPermissions())
-			->set('authorized', $this->authorized);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+			->set('authorized', $this->authorized)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -665,12 +657,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			->set('group', $this->group)
 			->set('task', $this->action)
 			->set('config', $this->params)
-			->set('entry', $entry);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+			->set('entry', $entry)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -736,7 +724,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				$this->model->get('scope_id')
 			);
 
-
 			if ($item->get('id'))
 			{
 				$this->setError(Lang::txt('PLG_GROUPS_BLOG_ERROR_ALIAS_EXISTS'));
@@ -757,6 +744,33 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$this->setError($row->getError());
 			return $this->_edit($row);
 		}
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+
+		if (!in_array($row->get('created_by'), $this->group->get('managers')))
+		{
+			$recipients[] = ['user', $entry->get('created_by')];
+		}
+
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($entry['id'] ? 'updated' : 'created'),
+				'scope'       => 'blog.entry',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $row->get('title'),
+					'url'   => Route::url($row->link())
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		App::redirect(
 			Route::url($row->link())
@@ -816,12 +830,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				->set('task', $this->action)
 				->set('config', $this->params)
 				->set('entry', $entry)
-				->set('authorized', $this->authorized);
-
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+				->set('authorized', $this->authorized)
+				->setErrors($this->getErrors());
 
 			return $view->loadTemplate();
 		}
@@ -833,6 +843,33 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError($entry->getError());
 		}
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+
+		if (!in_array($entry->get('created_by'), $this->group->get('managers')))
+		{
+			$recipients[] = ['user', $entry->get('created_by')];
+		}
+
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'blog.entry',
+				'scope_id'    => $id,
+				'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $entry->get('title'),
+					'url'   => Route::url($entry->link())
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Return the topics list
 		return $this->_browse();
@@ -862,17 +899,55 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$data = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = \Components\Blog\Models\Comment::oneOrNew($comment['id'])->set($comment);
+		$comment = \Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
 
 		// Store new content
-		if (!$row->save())
+		if (!$comment->save())
 		{
-			$this->setError($row->getError());
+			$this->setError($comment->getError());
 			return $this->_entry();
 		}
+
+		// Record the activity
+		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+
+		if (!in_array($comment->get('created_by'), $this->group->get('managers')))
+		{
+			$recipients[] = ['user', $comment->get('created_by')];
+		}
+
+		if ($comment->get('parent'))
+		{
+			if (!in_array($comment->parent()->get('created_by'), $this->group->get('managers')))
+			{
+				$recipients[] = ['user', $comment->parent()->get('created_by')];
+			}
+		}
+
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($data['id'] ? 'updated' : 'created'),
+				'scope'       => 'blog.entry.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $entry->get('title'),
+					'entry_id' => $entry->get('id'),
+					'url'      => $entry->link() . '#c' . $comment->get('id')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		return $this->_entry();
 	}
@@ -902,13 +977,43 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$comment = \Components\Blog\Models\Comment::oneOrFail($id);
 
 		// Delete all comments on an entry
-		$comment->set('state', 2);
+		$comment->set('state', $comment::STATE_DELETED);
 
 		// Delete the entry itself
 		if (!$comment->save())
 		{
 			$this->setError($comment->getError());
 		}
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+
+		if (!in_array($comment->get('created_by'), $this->group->get('managers')))
+		{
+			$recipients[] = ['user', $comment->get('created_by')];
+		}
+
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'blog.entry.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $entry->get('title'),
+					'entry_id' => $entry->get('id'),
+					'url'      => $entry->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Return the topics list
 		return $this->_entry();
@@ -917,7 +1022,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display blog settings
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _settings()
 	{
@@ -933,23 +1038,22 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
+		$settings = \Hubzero\Plugin\Params::oneByPlugin(
+			$this->group->gidNumber,
+			$this->_type,
+			$this->_name
+		);
+
 		// Output HTML
-		$view = $this->view('default', 'settings');
-		$view->option     = $this->option;
-		$view->group      = $this->group;
-		$view->task       = $this->action;
-		$view->config     = $this->params;
-		$view->model      = $this->model;
-
-		$view->settings   = \Hubzero\Plugin\Params::oneByPlugin($this->group->gidNumber, $this->_type, $this->_name);
-
-		$view->authorized = $this->authorized;
-		$view->message    = (isset($this->message)) ? $this->message : '';
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view = $this->view('default', 'settings')
+			->set('option', $this->option)
+			->set('group', $this->group)
+			->set('task', $this->task)
+			->set('config', $this->params)
+			->set('settings', $settings)
+			->set('model', $this->model)
+			->set('authorized', $this->authorized)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -973,6 +1077,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$settings = Request::getVar('settings', array(), 'post');
 
 		$row = \Hubzero\Plugin\Params::blank()->set($settings);
@@ -988,6 +1095,23 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$this->setError($row->getError());
 			return $this->_settings();
 		}
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'updated',
+				'scope'       => 'blog.settings',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_SETTINGS_UPDATED')
+			],
+			'recipients' => $recipients
+		]);
 
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),

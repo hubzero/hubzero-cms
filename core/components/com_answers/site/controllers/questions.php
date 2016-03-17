@@ -133,20 +133,14 @@ class Questions extends SiteController
 		// Save the data
 		if (!$row->save())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// For email
 		// Load question
 		$question = Question::oneOrFail($questionID);
 
-		// Get users who need to be notified on updates
-		$apu = $this->config->get('notify_users', '');
-		$apu = explode(',', $apu);
-		$apu = array_map('trim', $apu);
-
-		$receivers = array();
-
+		/*
 		// Build the "from" info
 		$from = array(
 			'email'     => Config::get('mailfrom'),
@@ -182,24 +176,7 @@ class Questions extends SiteController
 
 		$authorid = $question->get('created_by');
 
-		$apu = $this->config->get('notify_users', '');
-		$apu = explode(',', $apu);
-		$apu = array_map('trim', $apu);
-
-		$receivers = array();
-
-		if (!empty($apu))
-		{
-			foreach ($apu as $u)
-			{
-				$user = User::getInstance($u);
-				if ($user)
-				{
-					$receivers[] = $user->get('id');
-				}
-			}
-			$receivers = array_unique($receivers);
-		}
+		$receivers = $this->recipients();
 
 		// send the response, unless the author is also in the admin list.
 		if (!in_array($authorid, $receivers) && $question->get('email'))
@@ -218,6 +195,35 @@ class Questions extends SiteController
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
+		*/
+
+		// Log activity
+		$recipients = array($question->get('created_by'));
+		$recipients[] = $row->get('created_by');
+		if ($row->get('parent'))
+		{
+			$recipients[] = $row->parent()->get('created_by');
+		}
+		else
+		{
+			$response = Response::oneOrFail($row->get('item_id'));
+			$recipients[] = $response->get('created_by');
+		}
+		$recipients = $this->recipients($recipients);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'question.answer.comment',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
+				'details'     => array(
+					'title' => $question->get('title'),
+					'url'   => $question->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $questionID)
@@ -275,7 +281,7 @@ class Questions extends SiteController
 			{
 				App::redirect(
 					Route::url('index.php?option=' . $this->_option),
-					Lang::txt('No ID provided.'),
+					Lang::txt('COM_ANSWERS_ERROR_ID_NOT_FOUND'),
 					'error'
 				);
 			}
@@ -285,14 +291,17 @@ class Questions extends SiteController
 		if ($type == 'question')
 		{
 			$row = Question::oneOrFail($id);
+			$scope = 'question';
 		}
 		elseif ($type == 'response')
 		{
 			$row = Response::oneOrFail($id);
+			$scope = 'question.answer';
 		}
 		elseif ($type == 'comment')
 		{
 			$row = Comment::oneOrFail($id);
+			$scope = 'question.answer.comment';
 		}
 
 		// Can't vote for your own comment
@@ -302,7 +311,7 @@ class Questions extends SiteController
 			{
 				App::redirect(
 					Route::url($row->link()),
-					Lang::txt('Cannot vote for your own entries.'),
+					Lang::txt('COM_ANSWERS_ERROR_CANNOT_VOTE_FOR_OWN'),
 					'warning'
 				);
 			}
@@ -315,7 +324,7 @@ class Questions extends SiteController
 			{
 				App::redirect(
 					Route::url($row->link()),
-					Lang::txt('No vote provided.'),
+					Lang::txt('COM_ANSWERS_ERROR_VOTE_NOT_FOUND'),
 					'warning'
 				);
 			}
@@ -325,6 +334,42 @@ class Questions extends SiteController
 		if (!$row->vote($vote, User::get('id'), $ip))
 		{
 			$this->setError($row->getError());
+		}
+
+		if (!$this->getError())
+		{
+			// Log activity
+			$recipients = array(User::get('id'));
+
+			if ($row instanceof Question)
+			{
+				$txt = $row->get('subject');
+			}
+			if ($row instanceof Response)
+			{
+				$question = Question::oneOrFail($row->get('question_id'));
+				$txt = Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ON', $row->get('id'), $question->get('subject'));
+			}
+			if ($row instanceof Comment)
+			{
+				$question = Question::oneOrFail($row->get('question_id'));
+				$txt = Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_ON', $row->get('id'), $question->get('subject'));
+			}
+
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'voted',
+					'scope'       => $scope,
+					'scope_id'    => $id,
+					'description' => Lang::txt('COM_ANSWERS_ACTIVITY_VOTED_' . ($vote == 'yes' ? 'UP' : 'DOWN'), '<a href="' . Route::url($row->link()) . '">' . $txt . '</a>'),
+					'details'     => array(
+						'title'       => $question->get('title'),
+						'question_id' => $question->get('id'),
+						'url'         => $question->link()
+					)
+				],
+				'recipients' => $recipients
+			]);
 		}
 
 		// update display
@@ -427,7 +472,7 @@ class Questions extends SiteController
 				$response
 					->select('id')
 					->select('question_id')
-					->where('state', '!=', 2);
+					->where('state', '!=', Question::STATE_DELETED);
 			}]);
 
 		if ($filters['tag'] || $filters['area'] == 'interest' || $filters['area'] == 'assigned')
@@ -462,7 +507,7 @@ class Questions extends SiteController
 		}
 		if (!$filters['filterby'] || $filters['filterby'] == 'both')
 		{
-			$records->where('state', '<', 2);
+			$records->where('state', '<', Question::STATE_DELETED);
 		}
 
 		if ($filters['area'] == 'mine')
@@ -570,7 +615,6 @@ class Questions extends SiteController
 
 		if ($this->config->get('banking'))
 		{
-			$db = App::get('db');
 			$BTL = new Teller(User::get('id'));
 
 			$funds = $BTL->summary() - $BTL->credit_summary();
@@ -591,7 +635,7 @@ class Questions extends SiteController
 	/**
 	 * Save a question
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveqTask()
 	{
@@ -626,12 +670,12 @@ class Questions extends SiteController
 			// Is it an actual number?
 			if (!is_numeric($fields['reward']))
 			{
-				throw new Exception(Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'), 500);
+				App::abort(500, Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
 			}
 			// Are they offering more than they can afford?
 			if ($fields['reward'] > $fields['funds'])
 			{
-				throw new Exception(Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'), 500);
+				App::abort(500, Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
 			}
 		}
 		unset($fields['funds']);
@@ -676,8 +720,6 @@ class Questions extends SiteController
 		// Hold the reward for this question if we're banking
 		if ($fields['reward'] && $this->config->get('banking'))
 		{
-			$db = App::get('db');
-
 			$BTL = new Teller(User::get('id'));
 			$BTL->hold(
 				$fields['reward'],
@@ -690,12 +732,9 @@ class Questions extends SiteController
 		// Add the tags
 		$row->tag($tags);
 
+		/*
 		// Get users who need to be notified on every question
-		$apu = $this->config->get('notify_users', '');
-		$apu = explode(',', $apu);
-		$apu = array_map('trim',$apu);
-
-		$receivers = array();
+		$receivers = $this->recipients();
 
 		// Get tool contributors if question is about a tool
 		if ($tags)
@@ -737,19 +776,6 @@ class Questions extends SiteController
 			}
 		}
 
-		if (!empty($apu))
-		{
-			foreach ($apu as $u)
-			{
-				$user = User::getInstance($u);
-				if ($user)
-				{
-					$receivers[] = $user->get('id');
-				}
-			}
-		}
-		$receivers = array_unique($receivers);
-
 		// Send the message
 		if (!empty($receivers))
 		{
@@ -790,6 +816,25 @@ class Questions extends SiteController
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
+		*/
+
+		// Log activity
+		$recipients = array($question->get('created_by'));
+		$recipients = $this->recipients($recipients);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'question',
+				'scope_id'    => $question->get('id'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
+				'details'     => array(
+					'title' => $question->get('title'),
+					'url'   => $question->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Redirect to the question
 		App::redirect(
@@ -821,7 +866,6 @@ class Questions extends SiteController
 		// Incoming
 		$id = Request::getInt('qid', 0);
 		$ip = (!User::isGuest()) ? Request::ip() : '';
-		$db = App::get('db');
 
 		$reward = 0;
 		if ($this->config->get('banking'))
@@ -830,17 +874,18 @@ class Questions extends SiteController
 		}
 
 		$question = Question::oneOrFail($id);
-		$question->set('state', 2);
+		$question->set('state', Question::STATE_DELETED);
 		$question->set('reward', 0);
 
 		// Store new content
 		if (!$question->save())
 		{
-			throw new Exception($question->getError(), 500);
+			App::abort(500, $question->getError());
 		}
 
 		if ($reward && $this->config->get('banking'))
 		{
+			/*
 			// Get all the answers for this question
 			$responses = $question->responses()->rows();
 
@@ -890,6 +935,7 @@ class Questions extends SiteController
 					$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 				}
 			}
+			*/
 
 			// Remove hold
 			$transaction->deleteRecords('answers', 'hold', $id);
@@ -899,6 +945,24 @@ class Questions extends SiteController
 			$adjusted = $teller->credit_summary() - $reward;
 			$teller->credit_adjustment($adjusted);
 		}
+
+		// Log activity
+		$recipients = array($question->get('created_by'));
+		$recipients = $this->recipients($recipients);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'question',
+				'scope_id'    => $question->get('id'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_DELETED', '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
+				'details'     => array(
+					'title' => $question->get('title'),
+					'url'   => $question->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Redirect to the question
 		App::redirect(
@@ -938,14 +1002,13 @@ class Questions extends SiteController
 		// Store new content
 		if (!$row->save())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Load the question
 		$question = Question::oneOrFail($row->get('question_id'));
 
-		// ---
-
+		/*
 		// Build the "from" info
 		$from = array(
 			'email'     => Config::get('mailfrom'),
@@ -983,24 +1046,7 @@ class Questions extends SiteController
 
 		$authorid = $question->get('created_by');
 
-		$apu = $this->config->get('notify_users', '');
-		$apu = explode(',', $apu);
-		$apu = array_map('trim', $apu);
-
-		$receivers = array();
-
-		if (!empty($apu))
-		{
-			foreach ($apu as $u)
-			{
-				$user = User::getInstance($u);
-				if ($user)
-				{
-					$receivers[] = $user->get('id');
-				}
-			}
-			$receivers = array_unique($receivers);
-		}
+		$receivers = $this->recipients();
 
 		// Send the message
 		if (!in_array($authorid, $receivers) && $question->get('email'))
@@ -1030,6 +1076,30 @@ class Questions extends SiteController
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
+		*/
+
+		// Log activity
+		$recipients = array($row->get('created_by'));
+		if ($row->get('created_by') != $question->get('created_by'))
+		{
+			$recipients[] = $question->get('created_by');
+		}
+		$recipients = $this->recipients($recipients);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($response['id'] ? 'updated' : 'created'),
+				'scope'       => 'question.answer',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_SUBMITTED', '<a href="' . Route::url($question->link() . '#a' . $row->get('id')) . '">' . $question->get('subject') . '</a>'),
+				'details'     => array(
+					'title'       => $question->get('title'),
+					'question_id' => $question->get('id'),
+					'url'         => $question->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Redirect to the question
 		App::redirect(
@@ -1075,10 +1145,31 @@ class Questions extends SiteController
 			$this->setError($question->getError());
 		}
 
-		// Call the plugin
-		if (!Event::trigger('xmessage.onTakeAction', array('answers_reply_submitted', array(User::get('id')), $this->_option, $rid)))
+		// Log the activity
+		if (!$this->getError())
 		{
-			$this->setError(Lang::txt('COM_ANSWERS_ACTION_FAILED'));
+			$answer = Answer::oneOrFail($rid);
+
+			$recipients = array($answer->get('created_by'));
+			if ($answer->get('created_by') != $question->get('created_by'))
+			{
+				$recipients[] = $question->get('created_by');
+			}
+
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'accepted',
+					'scope'       => 'question.answer',
+					'scope_id'    => $rid,
+					'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ACCEPTED', $rid, '<a href="' . Route::url($question->link() . '#a' . $rid) . '">' . $question->get('subject') . '</a>'),
+					'details'     => array(
+						'title'       => $question->get('title'),
+						'question_id' => $question->get('id'),
+						'url'         => $question->link()
+					)
+				],
+				'recipients' => $recipients
+			]);
 		}
 
 		// Redirect to the question
@@ -1120,7 +1211,7 @@ class Questions extends SiteController
 		}
 		if (!$state || $state == 'both')
 		{
-			$records->where('state', '<', 2);
+			$records->where('state', '<', Question::STATE_DELETED);
 		}
 
 		$questions = $records
@@ -1152,11 +1243,36 @@ class Questions extends SiteController
 			$item->link        = Route::url($question->link());
 			$item->description = html_entity_decode(Sanitize::stripAll(stripslashes($question->question)));
 			$item->date        = date("r", strtotime($question->get('created')));
-			$item->category    = 'Recent Question';
+			$item->category    = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_CATEGORY_ITEM');
 			$item->author      = $question->creator()->get('name', Lang::txt('COM_ANSWERS_ANONYMOUS'));
 
 			$doc->addItem($item);
 		}
 	}
-}
 
+	/**
+	 * Get a list of people to be notified of updates
+	 *
+	 * @param   array  $recipients
+	 * @return  array
+	 */
+	protected function recipients($recipients = array())
+	{
+		$apu = explode(',', $this->config->get('notify_users', ''));
+		$apu = array_map('trim', $apu);
+
+		foreach ($apu as $u)
+		{
+			$user = User::getInstance($u);
+
+			if ($user)
+			{
+				$recipients[] = $user->get('id');
+			}
+		}
+
+		$recipients = array_unique($recipients);
+
+		return $recipients;
+	}
+}

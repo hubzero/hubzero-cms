@@ -168,7 +168,7 @@ class Entries extends SiteController
 			'scope'      => 'site',
 			'scope_id'   => 0,
 			'authorized' => false,
-			'state'      => 1,
+			'state'      => Entry::STATE_PUBLISHED,
 			'access'     => User::getAuthorisedViewLevels()
 		);
 
@@ -216,7 +216,7 @@ class Entries extends SiteController
 		if ($entry->isNew())
 		{
 			$entry->set('allow_comments', 1);
-			$entry->set('state', 1);
+			$entry->set('state', Entry::STATE_PUBLISHED);
 			$entry->set('scope', 'site');
 			$entry->set('created_by', User::get('id'));
 		}
@@ -258,7 +258,7 @@ class Entries extends SiteController
 		$fields = Request::getVar('entry', array(), 'post', 'none', 2);
 
 		// Make sure we don't want to turn off comments
-		//$fields['allow_comments'] = (isset($fields['allow_comments'])) ? : 0;
+		//$fields['allow_comments'] = (isset($fields['allow_comments'])) ? 1 : 0;
 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
@@ -285,6 +285,24 @@ class Entries extends SiteController
 			return $this->editTask($row);
 		}
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'blog.entry',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $row->get('title'),
+					'url'   => Route::url($row->link())
+				)
+			],
+			'recipients' => [
+				$row->get('created_by')
+			]
+		]);
+
+		// Redirect to the entry
 		App::redirect(
 			Route::url($row->link())
 		);
@@ -364,11 +382,27 @@ class Entries extends SiteController
 			Notify::error($entry->getError());
 		}
 
-		// Return the topics list
+		// Log the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'blog.entry',
+				'scope_id'    => $id,
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $entry->get('title'),
+					'url'   => Route::url($entry->link())
+				)
+			],
+			'recipients' => [
+				$entry->get('created_by')
+			]
+		]);
+
+		// Return the entries lsit
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
-		return;
 	}
 
 	/**
@@ -495,17 +529,45 @@ class Entries extends SiteController
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$data = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = Comment::oneOrNew($comment['id'])->set($comment);
+		$comment = Comment::oneOrNew($data['id'])->set($data);
 
 		// Store new content
-		if (!$row->save())
+		if (!$comment->save())
 		{
-			$this->setError($row->getError());
+			$this->setError($comment->getError());
 			return $this->entryTask();
 		}
+
+		// Log the activity
+		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+
+		$recipients = array($comment->get('created_by'));
+		if ($comment->get('created_by') != $entry->get('created_by'))
+		{
+			$recipients[] = $entry->get('created_by');
+		}
+		if ($comment->get('parent'))
+		{
+			$recipients[] = $comment->parent()->get('created_by');
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($data['id'] ? 'updated' : 'created'),
+				'scope'       => 'blog.entry.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $entry->get('title'),
+					'entry_id' => $entry->get('id'),
+					'url'      => $entry->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		return $this->entryTask();
 	}
@@ -533,7 +595,7 @@ class Entries extends SiteController
 		if (!$id)
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false)
 			);
 			return;
 		}
@@ -544,14 +606,38 @@ class Entries extends SiteController
 		if (User::get('id') != $comment->get('created_by') && !$this->config->get('access-delete-comment'))
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false)
 			);
 			return;
 		}
 
 		// Mark all comments as deleted
-		$comment->set('state', 2);
+		$comment->set('state', Comment::STATE_DELETED);
 		$comment->save();
+
+		// Log the activity
+		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+
+		$recipients = array($comment->get('created_by'));
+		if ($comment->get('created_by') != $entry->get('created_by'))
+		{
+			$recipients[] = $entry->get('created_by');
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'blog.entry.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $entry->get('title'),
+					'entry_id' => $entry->get('id'),
+					'url'      => $entry->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Return the topics list
 		App::redirect(

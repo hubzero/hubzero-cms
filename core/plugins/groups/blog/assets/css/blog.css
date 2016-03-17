@@ -301,6 +301,40 @@
 		background: #efefef;
 	}
 
+/* Instructions */
+	.introduction {
+		max-width: 32em;
+		margin: 3em auto;
+		background-color: #fff;
+		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		   -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		    -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		border: 1px solid #ddd\9; /* [!] IE 8 */
+	}
+	.introduction .introduction-message {
+		padding: 1em 1.4em;
+		text-align: center;
+		font-size: 1.2em;
+	}
+	.introduction .introduction-message:before {
+		content: "\2298";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 7em;
+		line-height: 1;
+		color: #ccc;
+		margin: 0.1em 0;
+	}
+	.introduction .introduction-questions {
+		padding: 1em 1.4em;
+		background-color: #f0f0f0;
+	}
+	.introduction ol {
+		list-style: decimal;
+	}
+
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1080px) {
 	.group_blog .aside,

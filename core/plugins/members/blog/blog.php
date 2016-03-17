@@ -600,6 +600,23 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_edit($row);
 		}
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($entry['id'] ? 'updated' : 'created'),
+				'scope'       => 'blog.entry',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $row->get('title'),
+					'url'   => Route::url($row->link())
+				)
+			],
+			'recipients' => [
+				$this->member->get('uidNumber')
+			]
+		]);
+
 		App::redirect(Route::url($row->link()));
 	}
 
@@ -656,12 +673,29 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Delete the entry itself
-		$entry->set('state', 2);
+		$entry->set('state', $entry::STATE_DELETED);
 
 		if (!$entry->save())
 		{
 			$this->setError($entry->getError());
 		}
+
+		// Log the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'blog.entry',
+				'scope_id'    => $id,
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $entry->get('title'),
+					'url'   => Route::url($entry->link())
+				)
+			],
+			'recipients' => [
+				$this->member->get('uidNumber')
+			]
+		]);
 
 		// Return the topics list
 		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name));
@@ -684,17 +718,45 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$data = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = \Components\Blog\Models\Comment::oneOrNew($comment['id'])->set($comment);
+		$comment = \Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
 
 		// Store new content
-		if (!$row->save())
+		if (!$comment->save())
 		{
-			$this->setError($row->getError());
+			$this->setError($comment->getError());
 			return $this->_entry();
 		}
+
+		// Log the activity
+		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+
+		$recipients = array($comment->get('created_by'));
+		if ($comment->get('created_by') != $entry->get('created_by'))
+		{
+			$recipients[] = $entry->get('created_by');
+		}
+		if ($comment->get('parent'))
+		{
+			$recipients[] = $comment->parent()->get('created_by');
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($data['id'] ? 'updated' : 'created'),
+				'scope'       => 'blog.entry.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $entry->get('title'),
+					'entry_id' => $entry->get('id'),
+					'url'      => $entry->link() . '#c' . $comment->get('id')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		return $this->_entry();
 	}
@@ -724,13 +786,37 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$comment = \Components\Blog\Models\Comment::oneOrFail($id);
 
 		// Delete all comments on an entry
-		$comment->set('state', 2);
+		$comment->set('state', $comment::STATE_DELETED);
 
 		// Delete the entry itself
 		if (!$comment->save())
 		{
 			$this->setError($comment->getError());
 		}
+
+		// Log the activity
+		$recipients = array($comment->get('created_by'));
+		if ($comment->get('created_by') != $this->member->get('uidNumber'))
+		{
+			$recipients[] = $this->member->get('uidNumber');
+		}
+
+		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'blog.entry.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $entry->get('title'),
+					'entry_id' => $entry->get('id'),
+					'url'      => $entry->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Return the topics list
 		return $this->_entry();
@@ -785,7 +871,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') != $this->member->get("uidNumber"))
+		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
@@ -795,6 +881,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
+		// Incoming
 		$settings = Request::getVar('settings', array(), 'post');
 
 		$row = \Hubzero\Plugin\Params::blank()->set($settings);
@@ -809,6 +896,19 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$this->setError($row->getError());
 			return $this->_settings();
 		}
+
+		// Log the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'updated',
+				'scope'       => 'blog.settings',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_SETTINGS_UPDATED')
+			],
+			'recipients' => [
+				$this->member->get('uidNumber')
+			]
+		]);
 
 		App::redirect(
 			Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=settings'),
