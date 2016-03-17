@@ -40,14 +40,14 @@ class Parser
 	/**
 	 * A unique token
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_tokenPrefix = null;
 
 	/**
 	 * Configuration options
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_config = array(
 		'option'   => null,
@@ -62,7 +62,7 @@ class Parser
 	/**
 	 * Data store
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_data = array(
 		'input'  => null,
@@ -73,7 +73,7 @@ class Parser
 	/**
 	 * Parsed content temp storage
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_tokens = array(
 		'pre'    => array(),
@@ -82,10 +82,17 @@ class Parser
 	);
 
 	/**
+	 * List of used macros
+	 *
+	 * @var  array
+	 */
+	private static $macros = array();
+
+	/**
 	 * Constructor
 	 *
-	 * @param      array $config Configuration options
-	 * @return     void
+	 * @param   array  $config  Configuration options
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
@@ -107,7 +114,7 @@ class Parser
 	 *
 	 * @param   string  $property  The name of the property.
 	 * @param   mixed   $value     The value of the property to set.
-	 * @return  mixed   Previous value of the property.
+	 * @return  object  Chainable
 	 */
 	public function set($property, $value = null)
 	{
@@ -134,7 +141,7 @@ class Parser
 	/**
 	 * Get the unique string
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function token()
 	{
@@ -144,7 +151,7 @@ class Parser
 	/**
 	 * Get the raw input
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function input()
 	{
@@ -154,7 +161,7 @@ class Parser
 	/**
 	 * Get the parsed output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function output()
 	{
@@ -164,7 +171,7 @@ class Parser
 	/**
 	 * Generate a unique prefix
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	private function _randomString()
 	{
@@ -172,14 +179,13 @@ class Parser
 	}
 
 	/**
-	 * Where all the magic takes place
-	 * Turns raw wiki text to HTML
+	 * Parse macros
 	 *
-	 * @param      string  $text      Raw wiki markup
-	 * @param      boolean $fullparse Full or limited parse? Limited does not parse macros
-	 * @param      integer $linestart Parameter description (if any) ...
-	 * @param      integer $camelcase Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string   $text       Raw markup
+	 * @param   boolean  $fullparse  Full or limited parse? Limited does not parse macros
+	 * @param   integer  $linestart
+	 * @param   integer  $camelcase
+	 * @return  string
 	 */
 	public function parse($text, $fullparse=true, $linestart=0, $camelcase=1)
 	{
@@ -217,6 +223,8 @@ class Parser
 		// Put back removed blocks <pre>, <code>, <a>, <math>
 		$text = $this->unstrip($text);
 
+		$text = $this->post($text);
+
 		$this->_data['output'] = $text;
 
 		if (trim($this->_data['input']) && !trim($this->_data['output']))
@@ -231,8 +239,8 @@ class Parser
 	/**
 	 * Strip <pre> and <code> blocks from text
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string
+	 * @param   string  $text  markup
+	 * @return  string
 	 */
 	private function strip($text)
 	{
@@ -247,8 +255,8 @@ class Parser
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
 	 *
-	 * @param      string $val Content to store
-	 * @return     integer Unique ID
+	 * @param   string   $val  Content to store
+	 * @return  integer  Unique ID
 	 */
 	private function _dataPush($matches)
 	{
@@ -271,8 +279,8 @@ class Parser
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
 	 *
-	 * @param      string $val Content to store
-	 * @return     integer Unique ID
+	 * @param   string   $val  Content to store
+	 * @return  integer  Unique ID
 	 */
 	private function _dataPull($matches)
 	{
@@ -293,9 +301,9 @@ class Parser
 	/**
 	 * Put <pre> blocks back into the main content flow
 	 *
-	 * @param      string  $text Wiki markup
-	 * @param      boolean $html Escape HTML?
-	 * @return     string
+	 * @param   string   $text  Markup
+	 * @param   boolean  $html  Escape HTML?
+	 * @return  string
 	 */
 	private function unstrip($text, $html=true)
 	{
@@ -311,8 +319,8 @@ class Parser
 	/**
 	 * Restores <pre></pre> blocks to their actual content
 	 *
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     string
+	 * @param   string  $txt
+	 * @return  string
 	 */
 	private function _restorePre($txt)
 	{
@@ -322,8 +330,8 @@ class Parser
 	/**
 	 * Restores <pre></pre> blocks to their actual content
 	 *
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     string
+	 * @param   string  $txt
+	 * @return  string
 	 */
 	private function _restoreCode($txt)
 	{
@@ -334,8 +342,8 @@ class Parser
 	 * Parse macro tags
 	 * [[MacroName(args)]]
 	 *
-	 * @param      string $text Raw wiki markup
-	 * @return     string
+	 * @param   string  $text  Raw markup
+	 * @return  string
 	 */
 	private function macros($text)
 	{
@@ -352,8 +360,6 @@ class Parser
 			return $text;
 		}
 
-		$this->macros = array();
-
 		// Get macros [[name(args)]]
 		return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
 	}
@@ -361,13 +367,11 @@ class Parser
 	/**
 	 * Attempt to load a specific macro class and return its contents
 	 *
-	 * @param      array $matches Result form [[Macro()]] pattern matching
-	 * @return     string
+	 * @param   array  $matches  Result form [[Macro()]] pattern matching
+	 * @return  string
 	 */
 	private function _getMacro($matches)
 	{
-		static $_macros;
-
 		if (isset($matches[1]) && $matches[1] != '')
 		{
 			// split macro by . (dot) char
@@ -386,7 +390,7 @@ class Parser
 				$macropath_alt = $this->get('alt_macro_path') . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
 			}
 
-			if (!isset($_macros[$matches[1]]))
+			if (!isset(self::$macros[$matches[1]]))
 			{
 				if (is_file($macropath_alt))
 				{
@@ -410,16 +414,16 @@ class Parser
 						return '<strong>Macro "' . $matches[1] . '" not allowed.</strong>';
 					}
 
-					$_macros[$matches[1]] =& $macro;
+					self::$macros[$matches[1]] =& $macro;
 				}
 				else
 				{
-					$_macros[$matches[1]] = false;
+					self::$macros[$matches[1]] = false;
 				}
 			}
 			else
 			{
-				$macro =& $_macros[$matches[1]];
+				$macro =& self::$macros[$matches[1]];
 			}
 
 			if (!isset($macro) || !is_object($macro))
@@ -469,11 +473,30 @@ class Parser
 	/**
 	 * Put macro output back into the text
 	 *
-	 * @param      string $txt
-	 * @return     string
+	 * @param   string  $txt
+	 * @return  string
 	 */
 	private function _restoreMacro($txt)
 	{
 		return $txt;
+	}
+
+	/**
+	 * Post process the text
+	 *
+	 * @param   string  $text  Raw markup
+	 * @return  string
+	 */
+	private function post($text)
+	{
+		foreach (self::$macros as $macro)
+		{
+			if ($macro)
+			{
+				$text = $macro->postProcess($text);
+			}
+		}
+
+		return $text;
 	}
 }
