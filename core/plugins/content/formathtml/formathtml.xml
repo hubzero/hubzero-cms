@@ -63,6 +63,10 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
+				<field name="unlink" type="list" default="0" label="Unlink links" description="Turn HTML links into plain text.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
