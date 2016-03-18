@@ -39,6 +39,11 @@ $filters = array(
 	'limit' => Request::getInt('limit', 25),
 	'start' => Request::getInt('limitstart', Request::getInt('start', 0))
 );
+$tokens = $this->application->accessTokens()
+	->limit($filters['limit'], $filters['start'])
+	->ordered()
+	->paginated()
+	->rows();
 ?>
 
 <div class="subject full">
@@ -53,7 +58,7 @@ $filters = array(
 			</h3>
 			<ul class="entries-list tokens access-tokens">
 				<?php if ($total > 0) : ?>
-					<?php foreach ($this->application->accessTokens($filters) as $token) : ?>
+					<?php foreach ($tokens as $token) : ?>
 						<li>
 							<h4>
 								<?php echo Hubzero\User\Profile::getInstance($token->get('uidNumber'))->get('name'); ?>
@@ -77,12 +82,7 @@ $filters = array(
 			</ul>
 			<?php
 				// Initiate paging
-				$pageNav = $this->pagination(
-					$total,
-					$filters['start'],
-					$filters['limit']
-				);
-				echo $pageNav->render();
+				echo $tokens->pagination;
 			?>
 		</div>
 	</form>

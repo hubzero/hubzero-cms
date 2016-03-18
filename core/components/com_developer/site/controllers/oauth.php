@@ -25,14 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Developer\Site\Controllers;
 
-use Components\Developer\Models;
+use Components\Developer\Models\Application;
 use Hubzero\Component\SiteController;
 use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Exception;
@@ -78,10 +77,6 @@ class Oauth extends SiteController
 		$request  = OAuth2\Request::createFromGlobals();
 		$response = new OAuth2\Response();
 
-		// get the application model (by client ID)
-		$model = new Models\Api\Application();
-		$this->view->application = $model->loadByClientId($request->query('client_id'));
-
 		// force query string redirect param
 		if (!$request->query('redirect_uri'))
 		{
@@ -94,19 +89,26 @@ class Oauth extends SiteController
 			throw new Exception($response->getParameter('error_description'), 400);
 		}
 
+		// get the application model (by client ID)
+		$application = Application::all();
+			->whereEquals('client_id', $request->query('client_id'))
+			->row();
+
 		// make sure were logged in
 		if (User::isGuest())
 		{
 			// redirect to login
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
-				Lang::txt('You must be logged in to authorize %s', $this->view->application->get('name')),
+				Lang::txt('You must be logged in to authorize %s', $application->get('name')),
 				'warning'
 			);
 		}
 
 		// display authorize form
-		$this->view->display();
+		$this->view
+			->set('application', $application)
+			->display();
 	}
 
 	/**

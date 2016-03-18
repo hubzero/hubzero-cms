@@ -25,28 +25,61 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Developer\Models\Api\Application\Team;
+namespace Components\Developer\Models\Application;
 
-use Hubzero\Base\Model;
-
-require_once dirname(dirname(dirname(dirname(__DIR__)))) . DS . 'tables/api/application/team/member.php';
+use Hubzero\Database\Relational;
+use Hubzero\User\Profile;
 
 /**
- * Team member model
+ * Model class for a team member
  */
-class Member extends Model
+class Member extends Relational
 {
 	/**
-	 * Table name
+	 * The table namespace
+	 *
+	 * @var string
+	 */
+	protected $namespace = 'developer';
+
+	/**
+	 * The table to which the class pertains
+	 *
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
 	 *
 	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Developer\\Tables\\Api\\Application\\Team\\Member';
+	protected $table = '#__developer_application_team_members';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var string
+	 */
+	public $orderBy = 'application_id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'application_id' => 'positive|nonzero',
+		'uidNumber'      => 'positive|nonzero'
+	);
 
 	/**
 	 * Get Profile Object from user id
@@ -55,7 +88,7 @@ class Member extends Model
 	 */
 	public function getProfile()
 	{
-		return \Hubzero\User\Profile::getInstance($this->get('uidNumber'));
+		return Profile::getInstance($this->get('uidNumber'));
 	}
 
 	/**

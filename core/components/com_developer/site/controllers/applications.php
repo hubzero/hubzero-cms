@@ -25,14 +25,15 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Developer\Site\Controllers;
 
-use Components\Developer\Models;
+use Components\Developer\Models\Application\Member;
+use Components\Developer\Models\Application;
+use Components\Developer\Models\Accesstoken;
 use Hubzero\Component\SiteController;
 use Request;
 use Route;
@@ -52,9 +53,6 @@ class Applications extends SiteController
 	 */
 	public function execute()
 	{
-		// create new developer model
-		$this->developer = new Models\Developer();
-
 		// authorize application usage
 		$this->_authorize('application', Request::getInt('id', null));
 
@@ -80,23 +78,26 @@ class Applications extends SiteController
 		}
 
 		// get developers apps
-		$this->view->applications = $this->developer->applications('list', array(
-			'uidNumber' => User::get('id'),
-			'state'     => array(0,1)
-		));
+		$applications = Application::all()
+			->whereEquals('created_by', User::get('id'))
+			->whereIn('state', array(0,1))
+			->rows();
 
 		// get developers authorized apps
-		$this->view->token = $this->developer->accessTokens('list', array(
-			'uidNumber' => User::get('id'),
-			'state'     => array(1)
-		));
+		$tokens = Accesstoken::all()
+			->whereEquals('uidNumber', User::get('id'))
+			->whereIn('state', array(1))
+			->rows();
 
 		// build pathway
 		$this->_buildPathway();
 		$this->_buildTitle();
 
 		// render view
-		$this->view->display();
+		$this->view
+			->set('applications', $applications)
+			->set('tokens', $tokens)
+			->display();
 	}
 
 	/**
@@ -109,9 +110,6 @@ class Applications extends SiteController
 		// get the app id
 		$id = Request::getInt('id', 0);
 
-		// get developers apps
-		$this->view->application = $this->developer->application($id);
-
 		// must be logged in
 		if (User::isGuest())
 		{
@@ -122,8 +120,11 @@ class Applications extends SiteController
 			return;
 		}
 
+		// get developers apps
+		$application = Application::oneOrFail($id);
+
 		// is the app available
-		if ($this->view->application->isDeleted())
+		if ($application->isDeleted())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_developer&controller=applications'),
@@ -148,7 +149,9 @@ class Applications extends SiteController
 		$this->_buildPathway();
 
 		// render view
-		$this->view->display();
+		$this->view
+			->set('application', $application)
+			->display();
 	}
 
 	/**
@@ -169,20 +172,6 @@ class Applications extends SiteController
 	 */
 	public function editTask($application = null)
 	{
-		// check to see if we are passing in a model
-		// most likely from a failed save attempt
-		if ($application instanceof Models\Api\Application)
-		{
-			$this->view->application = $application;
-		}
-		else
-		{
-			// Grab the incoming ID and load the record for editing
-			$id = Request::getInt('id', 0);
-
-			$this->view->application = new Models\Api\Application($id);
-		}
-
 		// must be logged in
 		if (User::isGuest())
 		{
@@ -193,8 +182,18 @@ class Applications extends SiteController
 			return;
 		}
 
+		// check to see if we are passing in a model
+		// most likely from a failed save attempt
+		if (!($application instanceof Application))
+		{
+			// Grab the incoming ID and load the record for editing
+			$id = Request::getInt('id', 0);
+
+			$application = Application::oneOrNew($id);
+		}
+
 		// is the app available
-		if ($this->view->application->isDeleted())
+		if ($application->isDeleted())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_developer&controller=applications'),
@@ -207,7 +206,8 @@ class Applications extends SiteController
 		// make sure its ours
 		// or we can create
 		if (!$this->config->get('access-edit-application', 0)
-			&& (!$this->config->get('access-create-application', 0) && $id > 0))
+		 && !$this->config->get('access-create-application', 0)
+		 && $id > 0)
 		{
 			App::redirect(
 				Route::url('index.php?option=com_developer&controller=applications'),
@@ -233,6 +233,7 @@ class Applications extends SiteController
 		// render view
 		// forcing edit view
 		$this->view
+			->set('application', $application)
 			->setLayout('edit')
 			->display();
 	}
@@ -251,9 +252,6 @@ class Applications extends SiteController
 		$data = Request::getVar('application', array(), 'post', 2, 'none');
 		$team = Request::getVar('team', array(), 'post', 2, 'none');
 
-		// bind data to model
-		$model = new Models\Api\Application($data);
-
 		// must be logged in
 		if (User::isGuest())
 		{
@@ -263,6 +261,9 @@ class Applications extends SiteController
 			);
 			return;
 		}
+
+		// bind data to model
+		$model = Application::oneOrNew($data['id'])->set($data);
 
 		// is the app available
 		if ($model->isDeleted())
@@ -277,7 +278,8 @@ class Applications extends SiteController
 
 		// make sure its ours
 		if (!$this->config->get('access-edit-application', 0)
-			&& (!$this->config->get('access-create-application', 0) && $data['id'] > 0))
+		 && !$this->config->get('access-create-application', 0)
+		 && $data['id'] > 0)
 		{
 			App::redirect(
 				Route::url('index.php?option=com_developer&controller=applications'),
@@ -288,11 +290,10 @@ class Applications extends SiteController
 		}
 
 		// attempt to save model
-		if (!$model->store(true))
+		if (!$model->save())
 		{
-			$this->setError($model->getError());
-			$this->editTask($model);
-			return;
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
 		// parse incoming team
@@ -333,22 +334,22 @@ class Applications extends SiteController
 		$team[] = User::get('id');
 
 		// get current team
-		$currentTeam = $model->team()->lists('uidNumber');
-
-		// add each non-team member to team
-		foreach (array_diff($team, $currentTeam) as $uidNumber)
+		$found = array();
+		foreach ($model->team()->rows() as $member)
 		{
-			if ($uidNumber < 1)
-			{
-				continue;
-			}
+			$found[] = $member->get('uidNumber');
+		}
 
-			// new team member object
-			$teamMember = new Models\Api\Application\Team\Member(array(
-				'uidNumber'      => $uidNumber,
-				'application_id' => $model->get('id')
-			));
-			$teamMember->store();
+		// Add each non-team member to team
+		foreach ($team as $uidNumber)
+		{
+			if (!in_array($uidNumber, $found))
+			{
+				$member = Member::blank();
+				$member->set('uidNumber', $uidNumber);
+				$member->set('application_id', $model->get('id'));
+				$member->save();
+			}
 		}
 
 		// Redirect back to the main listing with a success message
@@ -372,9 +373,6 @@ class Applications extends SiteController
 		// get the app id
 		$id = Request::getInt('id', 0);
 
-		// get developers apps
-		$application = $this->developer->application($id);
-
 		// must be logged in
 		if (User::isGuest())
 		{
@@ -384,6 +382,9 @@ class Applications extends SiteController
 			);
 			return;
 		}
+
+		// get developers apps
+		$application = Application::oneOrFail($id);
 
 		// is the app available
 		if ($application->isDeleted())
@@ -408,7 +409,9 @@ class Applications extends SiteController
 		}
 
 		// attempt to delete app
-		if (!$application->delete())
+		$application->set('state', Application::STATE_DELETED);
+
+		if (!$application->save())
 		{
 			App::redirect(
 				Route::url($application->link()),
@@ -450,14 +453,15 @@ class Applications extends SiteController
 		}
 
 		// get developers app
-		$application = $this->developer->application($id);
+		$application = Application::oneOrFail($id);
 
 		// generate new client secret
 		$clientSecret = $application->newClientSecret();
 
 		// set our new values on application & store
 		$application->set('client_secret', $clientSecret);
-		if (!$application->store(false))
+
+		if (!$application->save())
 		{
 			App::redirect(
 				Route::url($application->link()),
@@ -500,12 +504,12 @@ class Applications extends SiteController
 		}
 
 		// get access tokens apps
-		$accessToken = $this->developer->accessToken($token);
+		$accessToken = Accesstoken::oneOrFail($token);
 
 		// delete the access token
 		if ($accessToken->get('application_id') == $id)
 		{
-			$accessToken->delete();
+			$accessToken->destroy();
 		}
 
 		$return = Route::url('index.php?option=com_developer&controller=applications');
@@ -546,26 +550,13 @@ class Applications extends SiteController
 		}
 
 		// get access tokens apps
-		$accessTokens = $this->developer->accessTokens('list', array(
-			'application_id' => $id
-		));
-
-		// get access tokens apps
-		$refreshTokens = $this->developer->refreshTokens('list', array(
-			'application_id' => $id
-		));
+		$application = Application::oneOrFail($id);
 
 		// expire access tokens
-		$accessTokens->map(function($token)
-		{
-			$token->delete();
-		});
+		$application->revokeAccessTokens();
 
 		// expire refresh tokens
-		$refreshTokens->map(function($token)
-		{
-			$token->delete();
-		});
+		$application->revokeRefreshTokens();
 
 		// Redirect back to the main listing with a success message
 		App::redirect(
@@ -587,7 +578,7 @@ class Applications extends SiteController
 		$uidNumber = Request::getInt('uidNumber', 0);
 
 		// get the app
-		$application = $this->developer->application($id);
+		$application = Application::oneOrFail($id);
 
 		// make sure we can remove members from app
 		if (!$this->config->get('access-remove-member-application', 0))
@@ -601,25 +592,23 @@ class Applications extends SiteController
 		}
 
 		// get team member
-		if (!$member = $application->team($uidNumber))
-		{
-			App::redirect(
-				Route::url($application->link('edit')),
-				Lang::txt('COM_DEVELOPER_API_APPLICATION_MEMBER_NOT_FOUND'),
-				'warning'
-			);
-			return;
-		}
+		$team = $application->team()->rows();
 
-		// delete team member
-		if (!$member->delete())
+		foreach ($team as $member)
 		{
-			App::redirect(
-				Route::url($application->link('edit')),
-				Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_DELETE_MEMBER'),
-				'error'
-			);
-			return;
+			if ($member->get('uidNumber') == $uidNumber)
+			{
+				// delete team member
+				if (!$member->destroy())
+				{
+					App::redirect(
+						Route::url($application->link('edit')),
+						Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_DELETE_MEMBER'),
+						'error'
+					);
+					return;
+				}
+			}
 		}
 
 		// Redirect back to the main listing with a success message
@@ -649,8 +638,13 @@ class Applications extends SiteController
 		// do we have an application?
 		if ($assetId != null)
 		{
-			$app = new Models\Api\Application($assetId);
-			$team = $app->team()->lists('uidNumber');
+			$app = Application::oneOrNew($assetId);
+
+			$team = array();
+			foreach ($app->team()->rows() as $member)
+			{
+				$team[] = $member->get('uidNumber');
+			}
 
 			if (in_array(User::get('id'), $team) || User::get('id') == $app->get('created_by'))
 			{
@@ -694,7 +688,7 @@ class Applications extends SiteController
 		// do we have an application
 		if ($appid = Request::getInt('id', 0))
 		{
-			$application = new Models\Api\Application($appid);
+			$application = Application::oneOrFail($appid);
 
 			// add "Applications"
 			Pathway::append(

@@ -25,14 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Developer\Site;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'developer.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'application.php');
 
 $controllerName = \Request::getCmd('controller', 'developer');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -45,4 +44,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 // Instantiate the controller
 $component = new $controllerName();
 $component->execute();
-$component->redirect();

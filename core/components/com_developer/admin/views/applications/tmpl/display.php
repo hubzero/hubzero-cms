@@ -104,7 +104,7 @@ Joomla.submitbutton = function(pressbutton) {
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_DEVELOPER_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_DEVELOPER_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_COL_STATE'); ?></th>
@@ -118,12 +118,7 @@ Joomla.submitbutton = function(pressbutton) {
 				<td colspan="7">
 					<?php
 					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					echo $pageNav->render();
+					echo $this->rows->pagination;
 					?>
 				</td>
 			</tr>
@@ -176,7 +171,7 @@ Joomla.submitbutton = function(pressbutton) {
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -186,13 +181,13 @@ Joomla.submitbutton = function(pressbutton) {
 					<?php } ?>
 				</td>
 				<td class="priority-5">
-					<?php echo $row->created('relative'); ?>
+					<?php echo Date::of($row->get('created'))->toLocal(); ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $row->creator('name'); ?>
+					<?php echo $row->creator()->get('name'); ?>
 				</td>
 				<td class="priority-3">
-					<?php echo ($row->isHubAccount()) ? '<span class="state default"><span>'.Lang::txt('COM_DEVELOPER_COL_HUB_ACCOUNT').'</span></span>' : ''; ?>
+					<?php echo ($row->isHubAccount()) ? '<span class="state default"><span>' . Lang::txt('COM_DEVELOPER_COL_HUB_ACCOUNT') . '</span></span>' : ''; ?>
 				</td>
 			</tr>
 			<?php
@@ -207,8 +202,8 @@ Joomla.submitbutton = function(pressbutton) {
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

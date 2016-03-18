@@ -98,7 +98,7 @@ Joomla.submitbutton = function(pressbutton) {
 
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_DEVELOPER_FIELD_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->description()); ?></textarea>
+					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_DEVELOPER_FIELD_REDIRECT_URI_HINT'); ?>">
@@ -118,7 +118,7 @@ Joomla.submitbutton = function(pressbutton) {
 						<tr>
 							<th><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:</th>
 							<td>
-								<?php echo $this->escape(stripslashes($this->row->creator('name'))); ?>
+								<?php echo $this->escape(stripslashes($this->row->creator()->get('name', 'System User'))); ?>
 								<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 							</td>
 						</tr>

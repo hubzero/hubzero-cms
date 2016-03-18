@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Chris Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,7 +32,8 @@
 namespace Components\Developer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Developer\Models;
+use Components\Developer\Models\Application\Member;
+use Components\Developer\Models\Application;
 use Request;
 use Config;
 use Lang;
@@ -47,14 +47,28 @@ use App;
 class Applications extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of entries
 	 *
 	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
-			'state'    => array(0,1,2), //all states
+		$filters = array(
 			'sort'     => trim(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
@@ -64,38 +78,22 @@ class Applications extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
-			)),
-			'limit'    => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start'    => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			)
+			))
 		);
 
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$entries = Application::all();
 
-		// Get our model
-		// This is the entry point to the database and the 
-		// table of characters we'll be retrieving data from
-		$model = new Models\Developer();
+		// Get records
+		$rows = $entries
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
-		// Get a total record count
-		// This is used for pagination and detemrining the total number of pages
-		$this->view->total = $model->applications('count', $this->view->filters);
-
-		// Get a list of records
-		$this->view->rows  = $model->applications('list', $this->view->filters);
-
-		// Output the view
-		$this->view->display();
+		// Output the HTML
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -111,7 +109,7 @@ class Applications extends AdminController
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @param   object  $row  DrwhoModelSeason
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -121,14 +119,7 @@ class Applications extends AdminController
 		// To leave the form, one must explicitely call the "cancel" task.
 		Request::setVar('hidemainmenu', 1);
 
-		// If we're being passed an object, use it instead
-		// Thsi means we came from saveTask() and some error occurred.
-		// Most likely a missing or incorrect field.
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Grab the incoming ID and load the record for editing
 			//
@@ -141,50 +132,29 @@ class Applications extends AdminController
 				$id = $id[0];
 			}
 
-			$this->view->row = new Models\Api\Application($id);
+			$row = Application::oneOrNew($id);
 		}
 
 		// If this is a new record, we'll set the creator data
-		if (!$this->view->row->exists())
+		if ($row->isNew())
 		{
-			$this->view->row->set('created_by', User::get('id'));
-			$this->view->row->set('created', Date::of('now')->toSql());
-		}
-
-		// Get the show model.
-		// We will need this in the form to output a list of seasons.
-		$this->view->model = new Models\Developer();
-
-		// Pass any received errors to the view
-		// These will be coming from the editTask()
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row->set('created_by', User::get('id'));
+			$row->set('created', Date::of('now')->toSql());
 		}
 
 		// Output the view
 		$this->view
-		     ->setLayout('edit')
-		     ->display();
-	}
-
-	/**
-	 * Save an entry and show the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
+			->set('row', $row)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @param      boolean $redirect Redirect after save?
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// [SECURITY] Check for request forgeries
 		Request::checkToken();
@@ -194,14 +164,13 @@ class Applications extends AdminController
 		$team   = Request::getVar('team', '', 'post', 2, 'none');
 
 		// Bind the incoming data to our mdoel
-		$row = new Models\Api\Application($fields);
+		$row = Application::oneOrNew($fields['id'])->set($fields);
 
 		// Validate and save the data
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// parse incoming team
@@ -242,46 +211,43 @@ class Applications extends AdminController
 		$team[] = User::get('id');
 
 		// get current team
-		$currentTeam = $row->team()->lists('uidNumber');
+		$currentTeam = $row->team()->rows();
 
-		// remove members not included now
-		foreach (array_diff($currentTeam, $team) as $uidNumber)
-		{
-			$member = $row->team($uidNumber);
-			$member->delete();
-		}
+		$found = array();
 
-		// add each non-team member to team
-		foreach (array_diff($team, $currentTeam) as $uidNumber)
+		// Remove members not included now
+		foreach ($currentTeam as $member)
 		{
-			if ($uidNumber < 1)
+			if (!in_array($member->get('uidNumber'), $team))
 			{
-				continue;
+				$member->destroy();
 			}
 
-			// new team member object
-			$teamMember = new Models\Api\Application\Team\Member(array(
-				'uidNumber'      => $uidNumber,
-				'application_id' => $row->get('id')
-			));
-			$teamMember->store();
+			$found[] = $member->get('uidNumber');
 		}
 
-		// Are we redirecting?
-		// This will happen if a user clicks the "save & close" button.
-		if ($redirect)
+		// Add each non-team member to team
+		foreach ($team as $uidNumber)
 		{
-			// Set the redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_DEVELOPER_APPLICATION_SAVED')
-			);
-			return;
+			if (!in_array($uidNumber, $found))
+			{
+				$member = Member::blank();
+				$member->set('uidNumber', $uidNumber);
+				$member->set('application_id', $row->get('id'));
+				$member->save();
+			}
 		}
 
-		// Display the edit form. This will happen if the user clicked
-		// the "save" or "apply" button.
-		$this->editTask($row);
+		Notify::success(Lang::txt('COM_DEVELOPER_APPLICATION_SAVED'));
+
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($row);
+		}
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
@@ -305,15 +271,11 @@ class Applications extends AdminController
 			foreach ($ids as $id)
 			{
 				// Get the model for this entry
-				$entry = new Models\Api\Application(intval($id));
+				$entry = Application::oneOrFail(intval($id));
 
 				// Delete the entry
-				if (!$entry->delete())
+				if (!$entry->destroy())
 				{
-					// If the deletion process fails for any reason, we'll take the 
-					// error message passed from the model and assign it to the message
-					// handler to be displayed by the template after we redirect back
-					// to the main listing.
 					Notify::error($entry->getError());
 				}
 			}
@@ -327,35 +289,17 @@ class Applications extends AdminController
 	}
 
 	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return  void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return  void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
 	 * Sets the state of one or more entries
 	 *
 	 * @param   integer  $state  The state to set entries to
 	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
 		// [SECURITY] Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		$state = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
@@ -376,19 +320,16 @@ class Applications extends AdminController
 
 		// Loop through all the IDs
 		$success = 0;
+
 		foreach ($ids as $id)
 		{
 			// Load the entry and set its state
-			$row = new Models\Api\Application(intval($id));
+			$row = Application::oneOrFail(intval($id));
 			$row->set('state', $state);
 
 			// Store the changes
-			if (!$row->store())
+			if (!$row->save())
 			{
-				// If the store() process fails for any reason, we'll take the 
-				// error message passed from the model and assign it to the message
-				// handler to be displayed by the template after we redirect back
-				// to the main listing.
 				Notify::error($row->getError());
 				continue;
 			}
@@ -424,7 +365,7 @@ class Applications extends AdminController
 	/**
 	 * Regenerate Client Id & Secret for application
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function resetClientSecretTask()
 	{
@@ -452,14 +393,15 @@ class Applications extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the entry and set its state
-			$row = new Models\Api\Application(intval($id));
+			$row = Application::oneOrFail(intval($id));
 
 			// generate new client secret
-			$clientSecret = $row->newClientSecret();
+			$row->set('client_secret', $row->newClientSecret());
 
-			// set our new value on application & store
-			$row->set('client_secret', $clientSecret);
-			$row->store(false);
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+			}
 		}
 
 		// Set the redirect URL to the main entries listing.
@@ -472,7 +414,7 @@ class Applications extends AdminController
 	/**
 	 * Remove any existing tokens for applications
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function removeTokensTask()
 	{
@@ -500,7 +442,7 @@ class Applications extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the entry and revoke tokens/codes
-			$row = new Models\Api\Application(intval($id));
+			$row = Application::oneOrFail(intval($id));
 			$row->revokeAccessTokens();
 			$row->revokeRefreshTokens();
 			$row->revokeAuthorizationCodes();

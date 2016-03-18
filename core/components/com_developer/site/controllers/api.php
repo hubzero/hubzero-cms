@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,7 +32,10 @@
 namespace Components\Developer\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Hubzero\Api\Doc\Generator;
+use Request;
 use Pathway;
+use Config;
 use Lang;
 
 /**
@@ -64,11 +66,12 @@ class Api extends SiteController
 		$this->_buildPathway();
 
 		// generate documentation
-		$generator = new \Hubzero\Api\Doc\Generator(!\Config::get('debug'));
-		$this->view->documentation = $generator->output('array');
+		$generator = new Generator(!Config::get('debug'));
 
 		// render view
-		$this->view->display();
+		$this->view
+			->set('documentation', $generator->output('array'))
+			->display();
 	}
 
 	/**
@@ -84,7 +87,7 @@ class Api extends SiteController
 		$active = Request::getVar('active', '');
 
 		// generate documentation
-		$generator = new \Hubzero\Api\Doc\Generator(!\Config::get('debug'));
+		$generator = new Generator(!Config::get('debug'));
 		$documentation = $generator->output('array');
 
 		if (!isset($documentation['sections'][$active]))
@@ -92,11 +95,11 @@ class Api extends SiteController
 			throw new \Exception(Lang::txt('Endpoint not found'), 404);
 		}
 
-		$this->view->active = $active;
-		$this->view->documentation = $documentation;
-
 		// render view
-		$this->view->display();
+		$this->view
+			->set('active', $active)
+			->set('documentation', $documentation)
+			->display();
 	}
 
 	/**

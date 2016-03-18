@@ -68,7 +68,7 @@ $this->css('applications')
 								<dd><?php echo $application->created('time'); ?></dd>
 								<dd><?php echo $application->users(); ?> active users</dd>
 							</dl>
-							<p><?php echo $this->escape($application->description(500)); ?></p>
+							<p><?php echo $this->escape(\Hubzero\Utility\String::truncate($application->get('description'), 500)); ?></p>
 						</li>
 					<?php endforeach; ?>
 				<?php else : ?>
@@ -84,8 +84,8 @@ $this->css('applications')
 		<div class="container" id="authorized">
 			<h3><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS_AUTHORIZED'); ?></h3>
 			<ul class="entries-list applications authorized-applications">
-				<?php if ($this->token->count() > 0) : ?>
-					<?php foreach ($this->token as $token) : ?>
+				<?php if ($this->tokens->count() > 0) : ?>
+					<?php foreach ($this->tokens as $token) : ?>
 						<li>
 							<?php $application = $token->application(); ?>
 							<h4>
@@ -97,7 +97,7 @@ $this->css('applications')
 							<dl class="meta">
 								<dd><?php echo Lang::txt('Authorization Date: %s', $token->created('m/d/Y @ g:ia')); ?></dd>
 							</dl>
-							<p><?php echo $this->escape($application->description(500)); ?></p>
+							<p><?php echo $this->escape(\Hubzero\Utility\String::truncate($application->get('description'), 500)); ?></p>
 						</li>
 					<?php endforeach; ?>
 				<?php else : ?>

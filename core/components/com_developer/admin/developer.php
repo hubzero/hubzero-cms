@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Chris Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,11 +34,11 @@ namespace Components\Developer\Admin;
 // permissions check
 if (!\User::authorise('core.manage', 'com_developer'))
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'developer.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'application.php');
 
 // Make extra sure that controller exists
 $controllerName = \Request::getCmd('controller', 'applications');
@@ -62,4 +61,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 // Instantiate controller
 $component = new $controllerName();
 $component->execute();
-$component->redirect();
