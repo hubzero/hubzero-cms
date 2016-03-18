@@ -41,14 +41,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Custom params
 	 *
-	 * @var    object
+	 * @var  object
 	 */
 	protected $_params = null;
 
@@ -120,7 +120,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -137,15 +137,15 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -405,7 +405,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Redirect to the login form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _login()
 	{
@@ -422,19 +422,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of collections
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _followers()
 	{
-		$view = $this->view('followers', 'follow');
-		$view->name        = $this->_name;
-		$view->option      = $this->option;
-		$view->group       = $this->group;
-		$view->params      = $this->params;
-		$view->model       = $this->model;
-
 		// Filters for returning results
-		$view->filters = array(
+		$filters = array(
 			'limit' => Request::getInt('limit', Config::get('list_limit')),
 			'start' => Request::getInt('limitstart', 0)
 		);
@@ -445,23 +438,33 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+			$filters['access'] = (User::isGuest() ? 0 : array(0, 1));
 			if (in_array(User::get('id'), $this->group->get('members')))
 			{
-				$view->filters['access'] = array(0, 1, 4);
+				$filters['access'] = array(0, 1, 4);
 			}
-			$count['access'] = $view->filters['access'];
+			$count['access'] = $filters['access'];
 		}
 
-		$view->collections = $this->model->collections($count);
+		$collections = $this->model->collections($count);
+		$posts       = $this->model->posts($count);
+		$following   = $this->model->following($count);
 
-		$view->posts       = $this->model->posts($count);
+		$total       = $this->model->followers($count);
+		$rows        = $this->model->followers($filters);
 
-		$view->following   = $this->model->following($count);
-
-		$view->total = $this->model->followers($count);
-
-		$view->rows  = $this->model->followers($view->filters);
+		$view = $this->view('followers', 'follow')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('group', $this->group)
+			->set('params', $this->params)
+			->set('model', $this->model)
+			->set('filters', $filters)
+			->set('collections', $collections)
+			->set('posts', $posts)
+			->set('following', $following)
+			->set('total', $total)
+			->set('rows', $rows);
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -478,12 +481,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _collections()
 	{
-		$view = $this->view('collections', 'collection');
-		$view->name        = $this->_name;
-		$view->option      = $this->option;
-		$view->group       = $this->group;
-		$view->params      = $this->params;
-		$view->model       = $this->model;
+		$view = $this->view('collections', 'collection')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('group', $this->group)
+			->set('params', $this->params)
+			->set('model', $this->model);
 
 		// Filters for returning results
 		$view->filters = array(
@@ -549,12 +552,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _collection()
 	{
-		$view = $this->view('default', 'collection');
-		$view->name    = $this->_name;
-		$view->option  = $this->option;
-		$view->group   = $this->group;
-		$view->params  = $this->params;
-		$view->model   = $this->model;
+		$view = $this->view('default', 'collection')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('group', $this->group)
+			->set('params', $this->params)
+			->set('model', $this->model);
 
 		// Filters for returning results
 		$view->filters = array(
@@ -627,9 +630,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Display a list of items in a collection
+	 * Start following something
 	 *
-	 * @return     string
+	 * @param   string  $what
+	 * @return  string
 	 */
 	private function _follow($what='collection')
 	{
@@ -680,16 +684,15 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			echo json_encode($response);
 			exit;
 		}
-		else
-		{
-			return $this->_collection();
-		}
+
+		return $this->_collection();
 	}
 
 	/**
-	 * Display a list of items in a collection
+	 * Stop following soemthing
 	 *
-	 * @return     string
+	 * @param   string  $what
+	 * @return  string
 	 */
 	private function _unfollow($what='collection')
 	{
@@ -740,25 +743,23 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			echo json_encode($response);
 			exit;
 		}
-		else
-		{
-			return $this->_collection();
-		}
+
+		return $this->_collection();
 	}
 
 	/**
 	 * Display a list of posts for all collections
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _posts()
 	{
-		$view = $this->view('default', 'collection');
-		$view->name    = $this->_name;
-		$view->group   = $this->group;
-		$view->option  = $this->option;
-		$view->params  = $this->params;
-		$view->model   = $this->model;
+		$view = $this->view('default', 'collection')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('group', $this->group)
+			->set('params', $this->params)
+			->set('model', $this->model);
 
 		// Filters for returning results
 		$view->filters = array(
@@ -803,8 +804,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->collection = \Components\Collections\Models\Collection::getInstance();
 
-		//$view->filters['user_id'] = User::get('id');
-
 		$view->count = $view->posts;
 		$view->rows  = $view->collection->posts($view->filters);
 		$view->scope = 'posts';
@@ -820,43 +819,41 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a post
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _post()
 	{
-		$view = $this->view('default', 'post');
-		$view->option      = $this->option;
-		$view->group       = $this->group;
-		$view->params      = $this->params;
-		$view->name        = $this->_name;
-		$view->model       = $this->model;
-
 		$post_id = Request::getInt('post', 0);
 
-		$view->post = \Components\Collections\Models\Post::getInstance($post_id);
+		$post = \Components\Collections\Models\Post::getInstance($post_id);
 
-		if (!$view->post->exists())
+		if (!$post->exists())
 		{
 			return $this->_collections();
 		}
 
-		$view->collection = $this->model->collection($view->post->get('collection_id'));
+		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Check authorization
 		if (!$this->params->get('access-view-item'))
 		{
-			App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-			return;
+			return App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 		}
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$no_html = Request::getInt('no_html', 0);
 
-		$view->no_html = Request::getInt('no_html', 0);
+		$view = $this->view('default', 'post')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('group', $this->group)
+			->set('params', $this->params)
+			->set('model', $this->model)
+			->set('no_html', $no_html)
+			->set('collection', $collection)
+			->set('post', $post)
+			->setErrors($this->getErrors());
 
-		if ($view->no_html)
+		if ($no_html)
 		{
 			$view->display();
 			exit;
@@ -868,7 +865,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for creating an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _new()
 	{
@@ -878,7 +875,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing an entry
 	 *
-	 * @return     string
+	 * @param   object  $row
+	 * @return  string
 	 */
 	private function _edit($entry=null)
 	{
@@ -962,7 +960,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _save()
 	{
@@ -991,33 +989,33 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get model
-		$row = new \Components\Collections\Models\Item(intval($fields['id']));
+		$item = new \Components\Collections\Models\Item(intval($fields['id']));
 
 		// Bind content
-		if (!$row->bind($fields))
+		if (!$item->bind($fields))
 		{
-			$this->setError($row->getError());
-			return $this->_edit($row);
+			$this->setError($item->getError());
+			return $this->_edit($item);
 		}
 
 		// Add some data
 		if ($files  = Request::getVar('fls', '', 'files', 'array'))
 		{
-			$row->set('_files', $files);
+			$item->set('_files', $files);
 		}
-		$row->set('_assets', Request::getVar('assets', null, 'post'));
-		$row->set('_tags', trim(Request::getVar('tags', '')));
-		$row->set('state', 1);
-		if (!$row->exists())
+		$item->set('_assets', Request::getVar('assets', null, 'post'));
+		$item->set('_tags', trim(Request::getVar('tags', '')));
+		$item->set('state', 1);
+		if (!$item->exists())
 		{
-			$row->set('access', 0);
+			$item->set('access', 0);
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$item->store())
 		{
-			$this->setError($row->getError());
-			return $this->_edit($row);
+			$this->setError($item->getError());
+			return $this->_edit($item);
 		}
 
 		// Create a post entry linking the item to the board
@@ -1026,7 +1024,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
 		{
-			$post->set('item_id', $row->get('id'));
+			$post->set('item_id', $item->get('id'));
 			$post->set('original', 1);
 		}
 
@@ -1064,15 +1062,41 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_edit($post->item()->bind($fields));
 		}
 
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $item->get('created_by')];
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		$url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias');
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'collections.item',
+				'scope_id'    => $item->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $item->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $item->get('title'),
+					'post_id'  => $post->get('id'),
+					'url'      => $url
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias'))
+			Route::url($url)
 		);
 	}
 
 	/**
 	 * Repost an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _repost()
 	{
@@ -1176,10 +1200,39 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
+
 		if ($this->getError())
 		{
 			return $this->getError();
 		}
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $post->get('created_by')];
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		if (!isset($collection))
+		{
+			$collection = new \Components\Collections\Models\Collection($collection_id);
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'created',
+				'scope'       => 'collections.post',
+				'scope_id'    => $post->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_CREATED', '<a href="' . Route::url($collection->link()) . '">' . $post->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $post->get('title'),
+					'post_id'  => $post->get('id'),
+					'url'      => $collection->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Display updated bulletin stats if called via AJAX
 		if ($no_html)
@@ -1195,7 +1248,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Repost an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _remove()
 	{
@@ -1225,9 +1278,33 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$type = 'error';
 		}
 
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $item->get('created_by')];
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
 		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
-		if (($no_html = Request::getInt('no_html', 0)))
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.post',
+				'scope_id'    => $post->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_DELETED', '<a href="' . $route . '">' . $post->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $post->get('title'),
+					'entry_id' => $post->get('id'),
+					'url'      => $route
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Redirect
+		if (Request::getInt('no_html', 0))
 		{
 			echo $route;
 			exit;
@@ -1243,7 +1320,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Move a post to another collection
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _move()
 	{
@@ -1270,7 +1347,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
-		if (($no_html = Request::getInt('no_html', 0)))
+		if ($no_html = Request::getInt('no_html', 0))
 		{
 			echo $route;
 			exit;
@@ -1282,7 +1359,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _delete()
 	{
@@ -1362,9 +1439,32 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$type = 'error';
 		}
 
-		// Redirect to collection
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $item->get('created_by')];
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
 		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.item',
+				'scope_id'    => $item->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_DELETED', '<a href="' . $route . '">' . $item->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $item->get('title'),
+					'entry_id' => $item->get('id'),
+					'url'      => $route
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Redirect to collection
 		if ($no_html)
 		{
 			echo $route;
@@ -1377,7 +1477,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _savecomment()
 	{
@@ -1391,17 +1491,47 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post');
+		$data = Request::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		$row = \Hubzero\Item\Comment::blank()->set($comment);
+		$comment = \Hubzero\Item\Comment::oneOrNew($data['id'])->set($data);
 
 		// Store new content
-		if (!$row->save())
+		if (!$comment->save())
 		{
-			$this->setError($row->getError());
+			$this->setError($comment->getError());
 			return $this->_post();
 		}
+
+		// Log activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $comment->get('created_by')];
+		if ($comment->get('parent'))
+		{
+			$recipients[] = ['user', $comment->parent()->get('created_by')];
+		}
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		$post = \Components\Collections\Models\Post::getInstance($comment->get('item_id'));
+		$url = Route::url('index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment');
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($data['id'] ? 'updated' : 'created'),
+				'scope'       => 'collections.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . $url . '#c' . $comment->get('id') . '">' . $post->get('title', '#' . $post->get('id')) . '</a>'),
+				'details'     => array(
+					'title'    => $post->get('title'),
+					'entry_id' => $post->get('id'),
+					'url'      => $url . '#c' . $comment->get('id')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		return $this->_post();
 	}
@@ -1409,7 +1539,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _deletecomment()
 	{
@@ -1436,6 +1566,29 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$this->setError($comment->getError());
 		}
 
+		// Record the activity
+		/*$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $comment->get('created_by')];
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $entry->get('title'),
+					'entry_id' => $entry->get('id'),
+					'url'      => $entry->link()
+				)
+			],
+			'recipients' => $recipients
+		]);*/
+
 		// Return the topics list
 		return $this->_post();
 	}
@@ -1443,7 +1596,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Vote for an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _vote()
 	{
@@ -1470,16 +1623,37 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Get the collection model
 		$collection = $this->model->collection($post->get('collection_id'));
 
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', User::get('id')];
+
+		$url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'voted',
+				'scope'       => 'collections.item',
+				'scope_id'    => $id,
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_VOTED', '<a href="' . $url . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $collection->get('title'),
+					'entry_id' => $collection->get('id'),
+					'url'      => $url
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// Display the main listing
 		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'))
+			$url
 		);
 	}
 
 	/**
 	 * Display a form for creating a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _newcollection()
 	{
@@ -1489,7 +1663,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing a collection
 	 *
-	 * @return     string
+	 * @param   object  $row
+	 * @return  string
 	 */
 	private function _editcollection($row=null)
 	{
@@ -1549,7 +1724,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _savecollection()
 	{
@@ -1572,30 +1747,56 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$fields['id'] = intval($fields['id']);
 
 		// Bind new content
-		$row = new \Components\Collections\Models\Collection();
-		if (!$row->bind($fields))
+		$collection = new \Components\Collections\Models\Collection();
+
+		if (!$collection->bind($fields))
 		{
-			$this->setError($row->getError());
-			return $this->_editcollection($row);
+			$this->setError($collection->getError());
+			return $this->_editcollection($collection);
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$collection->store())
 		{
-			$this->setError($row->getError());
-			return $this->_editcollection($row);
+			$this->setError($collection->getError());
+			return $this->_editcollection($collection);
 		}
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $collection->get('created_by')];
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		$url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'collections.collection',
+				'scope_id'    => $collection->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . $url . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $collection->get('title'),
+					'entry_id' => $collection->get('id'),
+					'url'      => $url
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Redirect to collection
 		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $row->get('alias'))
+			$url
 		);
 	}
 
 	/**
 	 * Delete a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _deletecollection()
 	{
@@ -1637,21 +1838,19 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = $this->view('delete', 'collection');
-			$view->option     = $this->option;
-			$view->group      = $this->group;
-			$view->task       = $this->action;
-			$view->params     = $this->params;
-			$view->collection = $collection;
-			$view->no_html    = $no_html;
-			$view->name       = $this->_name;
+			$view = $this->view('delete', 'collection')
+				->set('name', $this->_name)
+				->set('option', $this->option)
+				->set('group', $this->group)
+				->set('params', $this->params)
+				->set('action', $this->action)
+				->set('settings', $settings)
+				->set('collection', $collection)
+				->set('no_html', $this->no_html);
 
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
-
-			return $view->loadTemplate();
+			return $view
+				->setErrors($this->getErrors())
+				->loadTemplate();
 		}
 
 		Request::checkToken();
@@ -1662,6 +1861,29 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError($collection->getError());
 		}
+
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients[] = ['user', $collection->get('created_by')];
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.collection',
+				'scope_id'    => $collection->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED', '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $collection->get('title'),
+					'entry_id' => $collection->get('id'),
+					'url'      => $collection->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Redirect to main view
 		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
@@ -1678,7 +1900,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display settings
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _settings()
 	{
@@ -1693,30 +1915,27 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 		}
 
+		$settings = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
+
 		// Output HTML
-		$view = $this->view('default', 'settings');
-		$view->option      = $this->option;
-		$view->group       = $this->group;
-		$view->action      = $this->action;
-		$view->params      = $this->params;
+		$view = $this->view('default', 'settings')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('group', $this->group)
+			->set('params', $this->params)
+			->set('action', $this->action)
+			->set('settings', $settings)
+			->set('authorized', $this->authorized);
 
-		$view->settings    = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
-
-		$view->authorized  = $this->authorized;
-		$view->message     = (isset($this->message)) ? $this->message : '';
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
-
-		return $view->loadTemplate();
+		return $view
+			->setErrors($this->getErrors())
+			->loadTemplate();
 	}
 
 	/**
 	 * Save blog settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _savesettings()
 	{
@@ -1728,7 +1947,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
-			$this->setError(Lang::txt('PLG_COLLECTIONS_BLOG_NOT_AUTH'));
+			$this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
 		}
 
@@ -1757,6 +1976,23 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_settings();
 		}
 
+		// Record the activity
+		$recipients = array(['group', $this->group->get('gidNumber')]);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'updated',
+				'scope'       => 'collections.settings',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_SETTINGS_UPDATED')
+			],
+			'recipients' => $recipients
+		]);
+
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
 			Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_SAVED'),
@@ -1767,8 +2003,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get the group's custom params
 	 *
-	 * @param      integer  $group_id
-	 * @return     object
+	 * @param   integer  $group_id
+	 * @return  object
 	 */
 	protected function _params($group_id)
 	{
@@ -1782,9 +2018,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set permissions
 	 *
-	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
-	 * @param      integer $assetId   Specific object to check permissions for
-	 * @return     void
+	 * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
+	 * @param   integer  $assetId    Specific object to check permissions for
+	 * @return  void
 	 */
 	protected function _authorize($assetType='plugin', $assetId=null)
 	{

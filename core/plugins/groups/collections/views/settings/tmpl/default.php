@@ -37,9 +37,7 @@ defined('_HZEXEC_') or die();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<?php if ($this->message) { ?>
-	<p class="passed"><?php echo $this->message; ?></p>
-<?php } ?>
+
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .'&active=collections&action=savesettings'); ?>" method="post" id="hubForm" class="full">
 
 		<fieldset class="settings">
