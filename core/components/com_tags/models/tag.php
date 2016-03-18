@@ -674,5 +674,34 @@ class Tag extends Relational
 
 		return true;
 	}
-}
 
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param   string  $type  The type of link to return
+	 * @return  string
+	 */
+	public function link($type='')
+	{
+		$link = 'index.php?option=com_tags&tag=' . $this->get('tag');
+
+		switch (strtolower($type))
+		{
+			case 'edit':
+				$link .= '&task=edit';
+			break;
+
+			case 'delete':
+				$link .= '&task=delete';
+			break;
+
+			case 'permalink':
+			default:
+
+			break;
+		}
+
+		return $link;
+	}
+}
