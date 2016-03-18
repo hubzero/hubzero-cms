@@ -77,7 +77,7 @@ class TemplatesModelTemplates extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.extension_id, a.name, a.element, a.client_id'
+				'a.extension_id, a.name, a.element, a.client_id, a.protected'
 			)
 		);
 		$query->from($db->quoteName('#__extensions').' AS a');

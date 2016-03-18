@@ -70,7 +70,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<?php foreach ($this->items as $i => $item) : ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="priority-3">
-					<?php echo Html::templates('thumb', $item->element, $item->client_id); ?>
+					<?php echo Html::templates('thumb', $item->element, $item->protected); ?>
 				</td>
 				<td class="template-name">
 					<a href="<?php echo Route::url('index.php?option=com_templates&view=template&id='.(int) $item->extension_id); ?>">

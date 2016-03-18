@@ -16,26 +16,26 @@ class JHtmlTemplates
 	/**
 	 * Display the thumb for the template.
 	 *
-	 * @param	string	The name of the active view.
+	 * @param   string   $template   The name of the active view.
+	 * @param   integer  $protected
+	 * @return  string
 	 */
-	public static function thumb($template, $clientId = 0)
+	public static function thumb($template, $protected = 0)
 	{
-		$client   = JApplicationHelper::getClientInfo($clientId);
-		$basePath = $client->path.'/templates/'.$template;
-		$baseUrl  = ($clientId == 0) ? Request::root(true) : Request::root(true).'/administrator';
-		$thumb    = $basePath.'/template_thumbnail.png';
-		$preview  = $basePath.'/template_preview.png';
+		$basePath = ($protected == 0 ? PATH_APP : PATH_CORE) . '/templates/' . $template;
+		$baseUrl  = Request::root(true) . ($protected == 0 ? '/app' : '/core');
+		$thumb    = $basePath . '/template_thumbnail.png';
+		$preview  = $basePath . '/template_preview.png';
 		$html     = '';
 
 		if (file_exists($thumb))
 		{
-			$clientPath = ($clientId == 0) ? '' : 'administrator/';
-			$thumb = $clientPath.'templates/'.$template.'/template_thumbnail.png';
-			$html  = Html::asset('image', $thumb, Lang::txt('COM_TEMPLATES_PREVIEW'));
+			$html = Html::asset('image', ltrim(substr($thumb, strlen(PATH_ROOT)), DS) , Lang::txt('COM_TEMPLATES_PREVIEW'));
+
 			if (file_exists($preview))
 			{
-				$preview = $baseUrl.'/templates/'.$template.'/template_preview.png';
-				$html    = '<a href="'.$preview.'" class="modal" title="'.Lang::txt('COM_TEMPLATES_CLICK_TO_ENLARGE').'">'.$html.'</a>';
+				$preview = $baseUrl . '/templates/' . $template . '/template_preview.png';
+				$html    = '<a href="' . $preview . '" class="modal" title="' . Lang::txt('COM_TEMPLATES_CLICK_TO_ENLARGE') . '">' . $html . '</a>';
 			}
 		}
 
