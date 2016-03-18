@@ -101,15 +101,6 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">JNo</option>
 				</field>
 
-				<field name="css" type="radio"
-					default="0"
-					description="PLG_DEBUG_FIELD_CSS_DESC"
-					label="PLG_DEBUG_FIELD_CSS_LABEL"
-				>
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-
 				<field name="theme" type="list"
 					default="dark"
 					description="PLG_DEBUG_FIELD_THEME_DESC"
@@ -176,24 +167,6 @@ HUBzero is a registered trademark of Purdue University.
 
 			<fieldset name="logging"
 				label="PLG_DEBUG_LOGGING_FIELDSET_LABEL">
-
-				<field name="log-deprecated" type="radio"
-					default="0"
-					description="PLG_DEBUG_FIELD_LOG_DEPRECATED_DESC"
-					label="PLG_DEBUG_FIELD_LOG_DEPRECATED_LABEL"
-				>
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-
-				<field name="log-database-errors" type="radio"
-					default="0"
-					description="PLG_DEBUG_FIELD_LOG_DATABASE_ERROR_DESC"
-					label="PLG_DEBUG_FIELD_LOG_DATABASE_ERROR_LABEL"
-				>
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
 
 				<field name="log-database-queries" type="radio"
 					default="0"
