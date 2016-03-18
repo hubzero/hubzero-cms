@@ -139,12 +139,33 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 
 			include_once(__DIR__ . '/parser.php');
 
+			if ($this->params->get('unlink', 0))
+			{
+				$content = preg_replace_callback('/<a.*(?=href="([^"]*)")[^>]*>([^<]*)<\/a>/uiUs', array(&$this, 'delink'), $content);
+			}
+
 			$parser = new \Plugins\Content\Formathtml\Parser($params);
 
 			$content = $parser->parse($content);
 		}
 
 		$article->set($key, $content);
+	}
+
+	/**
+	 * Replace links with text
+	 *
+	 * @param   array   $matches
+	 * @return  string
+	 */
+	private function delink($matches)
+	{
+		if ($matches[1] == $matches[2])
+		{
+			return trim($matches[1]);
+		}
+
+		return trim($matches[2]) . ' (' . trim($matches[1]) . ')';
 	}
 
 	/**
