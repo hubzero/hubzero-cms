@@ -93,6 +93,21 @@ class Application extends Relational
 	);
 
 	/**
+	 * Load entry by client_id
+	 * 
+	 * @param   string  $client_id
+	 * @return  object
+	 */
+	public static function oneByClientId($client_id)
+	{
+		$code = self::all()
+			->whereEquals('client_id', $client_id)
+			->row();
+
+		return $code;
+	}
+
+	/**
 	 * Sets up additional custom rules
 	 *
 	 * @return  void

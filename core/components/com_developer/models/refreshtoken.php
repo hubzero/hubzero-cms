@@ -108,6 +108,16 @@ class Refreshtoken extends Relational
 	}
 
 	/**
+	 * Is this application published
+	 * 
+	 * @return  bool
+	 */
+	public function isPublished()
+	{
+		return $this->get('state') == self::STATE_PUBLISHED;
+	}
+
+	/**
 	 * Generates automatic expires field
 	 *
 	 * @param   array   $data  the data being saved
