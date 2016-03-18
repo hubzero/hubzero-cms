@@ -90,7 +90,7 @@ class Oauth extends SiteController
 		}
 
 		// get the application model (by client ID)
-		$application = Application::all();
+		$application = Application::all()
 			->whereEquals('client_id', $request->query('client_id'))
 			->row();
 
