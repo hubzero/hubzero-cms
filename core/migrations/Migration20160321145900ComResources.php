@@ -17,6 +17,8 @@ class Migration20160321145900ComResources extends Base
 	{
 		if ($this->db->tableExists('#__resource_types'))
 		{
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+
 			$query = "SELECT id FROM `#__resource_types` WHERE alias=" . $this->db->quote('windowstools');
 			$this->db->setQuery($query);
 			$id = $this->db->loadResult();
@@ -47,6 +49,8 @@ class Migration20160321145900ComResources extends Base
 	{
 		if ($this->db->tableExists('#__resource_types'))
 		{
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+
 			$query = "SELECT id FROM `#__resource_types` WHERE alias=" . $this->db->quote('windowstools');
 			$this->db->setQuery($query);
 			$id = $this->db->loadResult();
