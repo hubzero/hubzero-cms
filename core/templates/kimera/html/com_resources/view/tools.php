@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$txt = '';
+$txt  = '';
 $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
@@ -51,17 +51,11 @@ if ($mode != 'preview')
 	}
 }
 
-	/* Tool page view  */
-
-	$tconfig 		= $this->tconfig;
-
-	//$usersgroups 	= $this->usersgroups;
-	$helper 		= $this->helper;
-	$thistool 		= $this->thistool;
-	$curtool 		= $this->curtool;
-	$alltools 		= $this->alltools;
-	$revision 		= $this->revision;
-
+$tconfig  = $this->tconfig;
+$helper   = $this->helper;
+$thistool = $this->thistool;
+$curtool  = $this->curtool;
+$revision = $this->revision;
 ?>
 <div id="content-header">
 	<section class="main section upperpane">
@@ -79,17 +73,20 @@ if ($mode != 'preview')
 						<div id="authorslist">
 							<?php
 							$this->view('_contributors')
-							     ->set('option', $this->option)
-							     ->set('contributors', $this->model->contributors('tool'))
-							     ->display();
+								->set('option', $this->option)
+								->set('contributors', $this->model->contributors('tool'))
+								->display();
 							?>
 						</div>
 					<?php } ?>
 
 					<p class="ataglance">
-						<?php echo $this->model->resource->introtext
-								? \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->introtext), 255)
-								: \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->fulltxt), 255);
+						<?php
+						if (!$this->model->resource->introtext)
+						{
+							$this->model->resource->introtext = $this->model->resource->fulltxt;
+						}
+						echo \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->introtext), 255);
 						?>
 					</p>
 					<?php if ($this->model->params->get('access-edit-resource')) { ?>
@@ -107,16 +104,15 @@ if ($mode != 'preview')
 						{
 							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 						}
-					?>
-					<p class="warning">
-						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
-					</p>
-					<?php
+						?>
+						<p class="warning">
+							<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						</p>
+						<?php
 					}
 					else
 					{
 						// get launch button
-						//$helper->getFirstChild();
 						$firstChild = $this->model->children(0);
 						echo \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, $firstChild, '');
 
@@ -163,7 +159,7 @@ if ($mode != 'preview')
 						if ($revision != 'dev' && ($this->model->resource->doi || $this->model->resource->doi_label)) {
 							if ($this->model->resource->doi && $tconfig->get('doi_shoulder'))
 							{
-								$doi = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($this->model->resource->doi);
+								$doi = 'doi:' . $tconfig->get('doi_shoulder') . '/' . strtoupper($this->model->resource->doi);
 							}
 							else
 							{
@@ -217,9 +213,9 @@ if ($mode != 'preview')
 			<?php
 			// Display canonical
 			$this->view('_canonical')
-			     ->set('option', $this->option)
-			     ->set('model', $this->model)
-			     ->display();
+				->set('option', $this->option)
+				->set('model', $this->model)
+				->display();
 			?>
 		</div><!-- / .subject -->
 		<aside class="aside rankarea">
@@ -230,15 +226,15 @@ if ($mode != 'preview')
 				if ($this->model->params->get('show_metadata', 1))
 				{
 					$this->view('_metadata')
-					     ->set('option', $this->option)
-					     ->set('sections', $this->sections)
-					     ->set('model', $this->model)
-					     ->display();
+						->set('option', $this->option)
+						->set('sections', $this->sections)
+						->set('model', $this->model)
+						->display();
 				}
 			}
 			else if ($revision == 'dev' or !$this->model->resource->toolpublished)
 			{
-			?>
+				?>
 				<div class="metaplaceholder">
 					<p>
 						<?php echo ($revision=='dev')
@@ -252,7 +248,7 @@ if ($mode != 'preview')
 						?>
 					</p>
 				</div>
-			<?php
+				<?php
 			}
 			?>
 		</aside><!-- / .aside -->
@@ -262,8 +258,21 @@ if ($mode != 'preview')
 <?php if ($this->model->access('view-all')) { ?>
 	<section class="main section">
 		<div class="subject tabbed">
-			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php
+			$this->view('_tabs')
+				->set('option', $this->option)
+				->set('cats', $this->cats)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+
+			$this->view('_sections')
+				->set('option', $this->option)
+				->set('sections', $this->sections)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+			?>
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php

@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$txt = '';
+$txt  = '';
 $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
@@ -50,7 +50,6 @@ if ($mode != 'preview')
 		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
 	}
 }
-
 ?>
 <div id="content-header">
 	<section class="main section upperpane">
@@ -69,9 +68,9 @@ if ($mode != 'preview')
 							<?php
 							// Display authors
 							$this->view('_contributors')
-							     ->set('option', $this->option)
-							     ->set('contributors', $this->model->contributors('!submitter'))
-							     ->display();
+								->set('option', $this->option)
+								->set('contributors', $this->model->contributors('!submitter'))
+								->display();
 							?>
 						</div><!-- / #authorslist -->
 					<?php } ?>
@@ -84,7 +83,6 @@ if ($mode != 'preview')
 
 				<div class="col span4 omega launcharea">
 					<?php
-					$html = '';
 					// Private/Public resource access check
 					if (!$this->model->access('view-all'))
 					{
@@ -93,31 +91,32 @@ if ($mode != 'preview')
 						{
 							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 						}
-					?>
-					<p class="warning">
-						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
-					</p>
-					<?php
+						?>
+						<p class="warning">
+							<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						</p>
+						<?php
 					}
 					else
 					{
 						// get launch button
 						$firstchild = $this->model->children(0);
 
-						$html .= $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
+						$html  = $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
 
 						// Display some supporting documents
 						$children = $this->model->children();
 
 						// Sort out supporting docs
 						$html .= $children && count($children) > 1
-							   ? \Components\Resources\Helpers\Html::sortSupportingDocs( $this->model->resource, $this->option, $children )
+							   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model->resource, $this->option, $children)
 							   : '';
 
 						//$html .= $feeds ? $feeds : '';
 						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+
+						echo $html;
 					} // --- end else (if group check passed)
-					echo $html;
 					?>
 				</div><!-- / .aside launcharea -->
 			</div>
@@ -125,9 +124,9 @@ if ($mode != 'preview')
 			<?php
 			// Display canonical
 			$this->view('_canonical')
-			     ->set('option', $this->option)
-			     ->set('model', $this->model)
-			     ->display();
+				->set('option', $this->option)
+				->set('model', $this->model)
+				->display();
 			?>
 		</div><!-- / .subject -->
 		<aside class="aside rankarea">
@@ -136,10 +135,10 @@ if ($mode != 'preview')
 			if ($this->model->params->get('show_metadata', 1))
 			{
 				$this->view('_metadata')
-				     ->set('option', $this->option)
-				     ->set('sections', $this->sections)
-				     ->set('model', $this->model)
-				     ->display();
+					->set('option', $this->option)
+					->set('sections', $this->sections)
+					->set('model', $this->model)
+					->display();
 			}
 			?>
 		</aside><!-- / .aside -->
@@ -149,8 +148,21 @@ if ($mode != 'preview')
 <?php if ($this->model->access('view')) { ?>
 	<section class="main section">
 		<div class="subject tabbed">
-			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php
+			$this->view('_tabs')
+				->set('option', $this->option)
+				->set('cats', $this->cats)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+
+			$this->view('_sections')
+				->set('option', $this->option)
+				->set('sections', $this->sections)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+			?>
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php

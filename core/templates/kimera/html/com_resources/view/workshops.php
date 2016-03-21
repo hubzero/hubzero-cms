@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 
-$txt = '';
+$txt  = '';
 $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
@@ -50,7 +50,6 @@ if ($mode != 'preview')
 		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
 	}
 }
-
 ?>
 <div id="content-header">
 	<section class="main section upperpane">
@@ -68,9 +67,9 @@ if ($mode != 'preview')
 						<div id="authorslist">
 							<?php
 							$this->view('_contributors')
-							     ->set('option', $this->option)
-							     ->set('contributors', $this->model->contributors('!submitter'))
-							     ->display();
+								->set('option', $this->option)
+								->set('contributors', $this->model->contributors('!submitter'))
+								->display();
 							?>
 						</div><!-- / #authorslist -->
 					<?php } ?>
@@ -81,19 +80,19 @@ if ($mode != 'preview')
 
 				<div class="col span4 omega launcharea">
 					<?php
-						// Private/Public resource access check
-						if (!$this->model->access('view-all'))
+					// Private/Public resource access check
+					if (!$this->model->access('view-all'))
+					{
+						$ghtml = array();
+						foreach ($this->model->resource->getGroups() as $allowedgroup)
 						{
-							$ghtml = array();
-							foreach ($this->model->resource->getGroups() as $allowedgroup)
-							{
-								$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
-							}
-					?>
-					<p class="warning">
-						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
-					</p>
-					<?php
+							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+						}
+						?>
+						<p class="warning">
+							<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						</p>
+						<?php
 					}
 					else
 					{
@@ -166,15 +165,15 @@ if ($mode != 'preview')
 						{
 							?>
 							<p>
-							<?php if ($audio) { ?>
-								<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
-							<?php } ?>
-							<?php if ($video) { ?>
-								<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
-							<?php } ?>
-							<?php if ($notes) { ?>
-								<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
-							<?php } ?>
+								<?php if ($audio) { ?>
+									<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
+								<?php } ?>
+								<?php if ($video) { ?>
+									<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
+								<?php } ?>
+								<?php if ($notes) { ?>
+									<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
+								<?php } ?>
 							</p>
 							<?php
 						}
@@ -190,9 +189,9 @@ if ($mode != 'preview')
 			<?php
 			// Display canonical
 			$this->view('_canonical')
-			     ->set('option', $this->option)
-			     ->set('model', $this->model)
-			     ->display();
+				->set('option', $this->option)
+				->set('model', $this->model)
+				->display();
 			?>
 		</div><!-- / .subject -->
 		<aside class="aside rankarea">
@@ -201,10 +200,10 @@ if ($mode != 'preview')
 			if ($this->model->params->get('show_metadata', 1))
 			{
 				$this->view('_metadata')
-				     ->set('option', $this->option)
-				     ->set('sections', $this->sections)
-				     ->set('model', $this->model)
-				     ->display();
+					->set('option', $this->option)
+					->set('sections', $this->sections)
+					->set('model', $this->model)
+					->display();
 			}
 			?>
 		</aside><!-- / .aside -->
@@ -214,8 +213,21 @@ if ($mode != 'preview')
 <?php if ($this->model->access('view-all')) { ?>
 	<section class="main section">
 		<div class="subject tabbed">
-			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php
+			$this->view('_tabs')
+				->set('option', $this->option)
+				->set('cats', $this->cats)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+
+			$this->view('_sections')
+				->set('option', $this->option)
+				->set('sections', $this->sections)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+			?>
 		</div><!-- / .subject -->
 		<div class="aside extracontent">
 			<?php
@@ -275,9 +287,9 @@ if ($mode != 'preview')
 
 					<?php
 					$this->view('_list', 'browse')
-					     ->set('lines', $children)
-					     ->set('show_edit', $this->model->access('edit'))
-					     ->display();
+						->set('lines', $children)
+						->set('show_edit', $this->model->access('edit'))
+						->display();
 					?>
 
 					<div class="clear"></div><!-- / .clear -->

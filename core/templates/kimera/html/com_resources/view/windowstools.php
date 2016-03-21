@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$txt = '';
+$txt  = '';
 $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
@@ -73,9 +73,9 @@ if ($mode != 'preview')
 							<?php
 							// Display authors
 							$this->view('_contributors')
-							     ->set('option', $this->option)
-							     ->set('contributors', $this->model->contributors('!submitter'))
-							     ->display();
+								->set('option', $this->option)
+								->set('contributors', $this->model->contributors('!submitter'))
+								->display();
 							?>
 						</div><!-- / #authorslist -->
 					<?php } ?>
@@ -112,9 +112,9 @@ if ($mode != 'preview')
 			<?php
 			// Display canonical
 			$this->view('_canonical')
-			     ->set('option', $this->option)
-			     ->set('model', $this->model)
-			     ->display();
+				->set('option', $this->option)
+				->set('model', $this->model)
+				->display();
 			?>
 		</div><!-- / .subject -->
 		<aside class="aside rankarea">
@@ -123,10 +123,10 @@ if ($mode != 'preview')
 			if ($this->model->params->get('show_metadata', 1))
 			{
 				$this->view('_metadata')
-				     ->set('option', $this->option)
-				     ->set('sections', $this->sections)
-				     ->set('model', $this->model)
-				     ->display();
+					->set('option', $this->option)
+					->set('sections', $this->sections)
+					->set('model', $this->model)
+					->display();
 			}
 			?>
 		</aside><!-- / .aside -->
@@ -136,8 +136,21 @@ if ($mode != 'preview')
 <?php if ($this->model->access('view')) { ?>
 	<section class="main section <?php echo $this->model->params->get('pageclass_sfx', ''); ?>">
 		<div class="subject tabbed">
-			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php
+			$this->view('_tabs')
+				->set('option', $this->option)
+				->set('cats', $this->cats)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+
+			$this->view('_sections')
+				->set('option', $this->option)
+				->set('sections', $this->sections)
+				->set('resource', $this->model->resource)
+				->set('active', $this->tab)
+				->display();
+			?>
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php
@@ -152,6 +165,11 @@ if ($mode != 'preview')
 						echo $ou['html'];
 					}
 				}
+			}
+			// Show what's popular
+			if ($this->tab == 'about')
+			{
+				echo \Hubzero\Module\Helper::renderModules('extracontent');
 			}
 			?>
 		</aside><!-- / .aside extracontent -->
