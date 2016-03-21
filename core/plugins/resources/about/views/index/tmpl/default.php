@@ -41,13 +41,17 @@ $sef = Route::url('index.php?option=' . $this->option . '&' . ($this->model->res
 switch ($this->model->params->get('show_date'))
 {
 	case 0: $thedate = ''; break;
-	case 1: $thedate = $this->model->resource->created;    break;
-	case 2: $thedate = $this->model->resource->modified;   break;
-	case 3: $thedate = $this->model->resource->publish_up; break;
+	case 1: $thedate = $this->model->resource->created; break;
+	case 2: $thedate = ($this->model->resource->modified && $this->model->resource->modified != '0000-00-00 00:00:00' ? $this->model->resource->modified : $this->model->resource->created);   break;
+	case 3: $thedate = ($this->model->resource->publish_up && $this->model->resource->publish_up != '0000-00-00 00:00:00' ? $this->model->resource->publish_up : $this->model->resource->created); break;
 }
 if ($this->model->isTool() && $this->model->curtool)
 {
 	$thedate = $this->model->curtool->released;
+}
+if ($thedate == '0000-00-00 00:00:00')
+{
+	$thedate = '';
 }
 
 $this->model->resource->introtext = stripslashes($this->model->resource->introtext);
@@ -182,7 +186,7 @@ $maintext = $this->model->description('parsed');
 					// Build our citation object
 					$cite = new stdClass();
 					$cite->title    = $this->model->resource->title;
-					$cite->year     = Date::of($thedate)->toLocal('Y');
+					$cite->year     = ($thedate ? Date::of($thedate)->toLocal('Y') : Date::of('now')->toLocal('Y'));
 					$cite->location = Request::base() . ltrim($sef, '/');
 					$cite->date     = Date::toSql();
 					$cite->url      = '';
@@ -206,7 +210,7 @@ $maintext = $this->model->description('parsed');
 
 						if (isset($this->model->resource->doi) && $this->model->resource->doi && $tconfig->get('doi_shoulder'))
 						{
-							$doi = $tconfig->get('doi_shoulder') . DS . strtoupper($this->model->resource->doi);
+							$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($this->model->resource->doi);
 						}
 						else if (isset($this->model->resource->doi_label) && $this->model->resource->doi_label)
 						{
