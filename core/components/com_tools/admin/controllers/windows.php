@@ -33,12 +33,17 @@
 namespace Components\Tools\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Resources\Models\Orm\Resource;
 use Request;
 use Config;
 use Notify;
 use Route;
 use Lang;
+use User;
+use Date;
 use App;
+
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'orm' . DS . 'resource.php');
 
 /**
  * Controller class for Windows tools
@@ -65,6 +70,14 @@ class Windows extends AdminController
 	 */
 	public function displayTask()
 	{
+		if (!$this->config->get('windows_type'))
+		{
+			$this->view
+				->setLayout('unconfigured')
+				->display();
+			return;
+		}
+
 		// Get filters
 		$filters = array(
 			// Sorting
@@ -77,35 +90,19 @@ class Windows extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
-			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
 			)
 		);
 
-		// In case limit has been changed, adjust limitstart accordingly
-		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
-
 		// Get a list of tools
-		$rows = array();
-
-		// Get a total of all tools (for pagination)
-		$total = count($rows);
+		$rows = Resource::all()
+			->whereEquals('type', $this->config->get('windows_type'))
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Display results
 		$this->view
 			->set('filters', $filters)
-			->set('total', 0)
 			->set('rows', $rows)
 			->display();
 	}
@@ -131,7 +128,12 @@ class Windows extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$row = new \Hubzero\Base\Object;
+			$row = Resource::oneOrNew($id);
+		}
+
+		if ($row->isNew())
+		{
+			$row->set('type', $this->config->get('windows_type'));
 		}
 
 		// Output the HTML
@@ -153,13 +155,46 @@ class Windows extends AdminController
 
 		// Incoming fields
 		$fields = Request::getVar('fields', array(), 'post');
+		$fields['standalone'] = 1;
 
 		// Load the profile
-		$row = new \Hubzero\Base\Object;
+		$row = Resource::oneOrNew($fields['id'])->set($fields);
 
-		// Save logic here
+		if ($row-isNew())
+		{
+			$row->set('access', 0);
+			$row->set('published', 1);
+			$row->set('created', Date::toSql());
+			$row->set('created_by', User::get('id'));
+		}
 
-		Notify::success(Lang::txt('COM_TOOLS_WINDOWS_SAVE_SUCCESSFUL'));
+		if (!$row->get('alias'))
+		{
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_ALIAS'));
+			return $this->editTask($row);
+		}
+
+		$row->set('alias', preg_replace('/[^a-z0-9_\-]/i', '', strtolower($row->get('alias'))));
+
+		if (!$row->get('title'))
+		{
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'));
+			return $this->editTask($row);
+		}
+
+		if (!$row->get('path'))
+		{
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
+			return $this->editTask($row);
+		}
+
+		if (!$row->save())
+		{
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
+			return $this->editTask($row);
+		}
+
+		Notify::success(Lang::txt('COM_TOOLS_SAVE_SUCCESSFUL'));
 
 		// Redirect
 		if ($this->getTask() == 'apply')
@@ -169,7 +204,7 @@ class Windows extends AdminController
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -195,6 +230,14 @@ class Windows extends AdminController
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
+				$row = Resource::oneOrFail($id);
+
+				if (!$row->destroy())
+				{
+					Notify::error($row->getError());
+					continue;
+				}
+
 				// Remove
 				$i++;
 			}
@@ -203,7 +246,7 @@ class Windows extends AdminController
 		// Output messsage and redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			($i ? Lang::txt('COM_TOOLS_WINDOWS_DELETE_SUCCESSFUL') : null)
+			($i ? Lang::txt('COM_TOOLS_DELETE_SUCCESSFUL') : null)
 		);
 	}
 

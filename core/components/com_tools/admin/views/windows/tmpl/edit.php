@@ -61,16 +61,20 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-name"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[name]" id="field-name" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
+				<label for="field-alias"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_TOOLS_FIELD_TITLE'); ?>:</label>
+				<label for="field-title"><?php echo Lang::txt('COM_TOOLS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-description"><?php echo Lang::txt('COM_TOOLS_FIELD_DESCRIPTION'); ?>:</label>
-				<input type="text" name="fields[description]" id="field-description" size="30" maxlength="250" value="<?php echo $this->escape($this->row->get('description')); ?>" />
+				<label for="field-path"><?php echo Lang::txt('COM_TOOLS_FIELD_UUID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[path]" id="field-path" value="<?php echo $this->escape(stripslashes($this->row->get('path'))); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-introtext"><?php echo Lang::txt('COM_TOOLS_FIELD_DESCRIPTION'); ?>:</label>
+				<textarea name="fields[introtext]" id="field-introtext" cols="35" rows="5"><?php echo $this->escape($this->row->get('introtext')); ?></textarea>
 			</div>
 		</fieldset>
 	</div>
@@ -91,6 +95,7 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+	<input type="hidden" name="fields[type]" value="<?php echo $this->row->get('type'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />

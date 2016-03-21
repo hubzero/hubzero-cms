@@ -64,59 +64,58 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_UUID', 'path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="9">
+				<td colspan="6">
 					<?php
 					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					echo $this->rows->pagination;
 					?>
 				</td>
 			</tr>
 		</tfoot>
 		<tbody>
 		<?php
-		if ($this->rows)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$i = 0;
-			foreach ($this->rows as $row)
-			{
-				?>
-				<tr>
-					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row['id'] ?>" onclick="isChecked(this.checked);" />
-					</td>
-					<td class="priority-5">
-						<?php echo $this->escape($row['id']); ?>
-					</td>
-					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']); ?>">
-							<?php echo $this->escape(stripslashes($row['name'])); ?>
-						</a>
-					</td>
-					<td class="priority-4">
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']); ?>">
-							<?php echo $this->escape(stripslashes($row['title'])); ?>
-						</a>
-					</td>
-					<td>
-						<span><?php echo $this->escape($row['status']); ?></span>
-					</td>
-				</tr>
-				<?php
-				$i++;
-			}
+			?>
+			<tr>
+				<td>
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+				</td>
+				<td class="priority-5">
+					<?php echo $this->escape($row->get('id')); ?>
+				</td>
+				<td>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
+					</a>
+				</td>
+				<td class="priority-4">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</td>
+				<td class="priority-3">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<?php echo $this->escape(stripslashes($row->get('path'))); ?>
+					</a>
+				</td>
+				<td>
+					<span><?php echo $this->escape($row->get('published')); ?></span>
+				</td>
+			</tr>
+			<?php
+			$i++;
 		}
 		?>
 		</tbody>
