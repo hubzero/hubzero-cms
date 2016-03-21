@@ -172,7 +172,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$params = new \Hubzero\Config\Registry($page->attribs);
 							$results = Event::trigger('content.onContentPrepare', array ('com_content.article', &$page, &$params, 0));
-							echo $page->introtext;
+							echo $page->text;
 						}
 						?>
 					</div>
