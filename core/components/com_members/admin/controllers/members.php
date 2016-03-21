@@ -717,6 +717,55 @@ class Members extends AdminController
 	}
 
 	/**
+	 * Resets the terms of use agreement for all users (requiring re-agreement)
+	 *
+	 * @return  void
+	 */
+	public function clearTermsTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		// Get db object
+		$dbo = App::get('db');
+
+		// Update registration config value to require re-agreeing upon next login
+		$params     = \Component::params('com_members');
+		$currentTOU = $params->get('registrationTOU', 'RHRH');
+		$newTOU     = substr_replace($currentTOU, 'R', 2, 1);
+		$params->set('registrationTOU', $newTOU);
+
+		$migration = new \Hubzero\Content\Migration\Base($dbo);
+		if (!$migration->saveParams('com_members', $params))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_MEMBERS_FAILED_TO_UPDATE_REGISTRATION_TOU'),
+				'error'
+			);
+			return;
+		}
+
+		// Clear all old TOU states (move this to a model at some point!)
+		$profiles = new \Components\Members\Tables\Profile($dbo);
+		if (!$profiles->clearTerms())
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_MEMBERS_FAILED_TO_CLEAR_TOU'),
+				'error'
+			);
+			return;
+		}
+
+		// Output message to let admin know everything went well
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_MEMBERS_SUCESSFULLY_CLEARED_TOU')
+		);
+	}
+
+	/**
 	 * Return results for autocompleter
 	 *
 	 * @return     string JSON
