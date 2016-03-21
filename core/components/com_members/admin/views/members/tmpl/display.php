@@ -39,6 +39,9 @@ if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
 	Toolbar::spacer();
+
+	Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
@@ -65,6 +68,15 @@ Html::behavior('tooltip');
 function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
+
+	if (pressbutton == 'clearTerms') {
+		var res = confirm('Are you sure? Make sure you know what you\'re doing, as this action cannot be undone!');
+
+		if (!res) {
+			return;
+		}
+	}
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;

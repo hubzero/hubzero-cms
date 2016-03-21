@@ -89,6 +89,20 @@ class Profile extends \JTable
 	}
 
 	/**
+	 * Clears all terms of use agreements
+	 *
+	 * @return  bool
+	 **/
+	public function clearTerms()
+	{
+		$query  = "UPDATE " . $this->_db->quoteName($this->_tbl) . " SET `usageAgreement` = 0";
+
+		$this->_db->setQuery($query);
+
+		return $this->_db->query();
+	}
+
+	/**
 	 * Construct a query from filters
 	 *
 	 * @param   array    $filters  Filters to construct query from
