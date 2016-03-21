@@ -771,7 +771,8 @@ class Base
 
 		$query = "UPDATE `#__extensions` SET `params` = " . $this->baseDb->quote($params) . " WHERE `extension_id` = " . $this->baseDb->quote($id);
 		$this->baseDb->setQuery($query);
-		$this->baseDb->query();
+
+		return $this->baseDb->query();
 	}
 
 	/**
