@@ -212,9 +212,10 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 	</fieldset>
-	<fieldset name="windows">
+	<fieldset name="windows" addfieldpath="/core/components/com_tools/config/fields">
 		<field name="windows_key_id" type="text" menu="hide" default="" label="Access Key ID" description="Amazon Web Services (AWS) Access Key ID" />
 		<field name="windows_secret_key" type="text" menu="hide" default="" label="Secret Access Key" description="Amazon Web Services (AWS) Secret Access Key" />
+		<field name="windows_type" type="resourcetype" menu="hide" default="" label="Resource Type" description="Resource type to use for tool information" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_tools" section="component" />
