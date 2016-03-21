@@ -160,7 +160,7 @@ class Windows extends AdminController
 		// Load the profile
 		$row = Resource::oneOrNew($fields['id'])->set($fields);
 
-		if ($row-isNew())
+		if ($row->isNew())
 		{
 			$row->set('access', 0);
 			$row->set('published', 1);
