@@ -55,7 +55,7 @@ if ($this->resource->id)
 
 	$authors = $rc->getCount($this->resource->id, 'resources');
 
-	$tags = $rt->tags('count');
+	$tags = $rt->tags()->count();
 }
 ?>
 <div class="meta-container">

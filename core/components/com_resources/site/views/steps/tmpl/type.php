@@ -66,9 +66,9 @@ $this->css('create.css')
 			{
 				continue;
 			}
-			if ($type->id == 7)
+			if ($type->alias == 'tools')
 			{
-				if (!JComponentHelper::isEnabled('com_tools', true))
+				if (!Component::isEnabled('com_tools', true))
 				{
 					continue;
 				}

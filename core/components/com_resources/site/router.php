@@ -33,6 +33,7 @@
 namespace Components\Resources\Site;
 
 use Hubzero\Component\Router\Base;
+use Components\Resources\Models\Type;
 
 /**
  * Routing class for the component
@@ -137,25 +138,20 @@ class Router extends Base
 		}
 		else
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'type.php');
 
-			$database = \App::get('db');
-
-			$t = new \Components\Resources\Tables\Type($database);
-			$types = $t->getMajorTypes();
+			$types = Type::getMajorTypes();
 
 			// Normalize the title
 			// This is so we can determine the type of resource to display from the URL
-			// For example, /resources/learningmodules => Learning Modules
-			for ($i = 0; $i < count($types); $i++)
+			// For example, /resources/teachingmaterials => Teaching Materials
+			foreach ($types as $type)
 			{
-				//$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $types[$i]->type);
-				//$normalized = strtolower($normalized);
-
-				if (trim($segments[0]) == $types[$i]->alias)
+				if (trim($segments[0]) == $type->alias)
 				{
 					$vars['type'] = $segments[0];
 					$vars['task'] = 'browsetags';
+					break;
 				}
 			}
 

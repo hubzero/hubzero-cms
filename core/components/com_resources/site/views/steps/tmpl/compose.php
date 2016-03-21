@@ -44,7 +44,7 @@ if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
-		$data[$match[1]] = \Components\Resources\Site\Controllers\Create::_txtUnpee($match[2]);
+		$data[$match[1]] = trim($match[2]);
 	}
 }
 

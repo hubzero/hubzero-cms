@@ -39,6 +39,10 @@ use Components\Resources\Tables\Contributor\RoleType;
 use Components\Resources\Helpers\Helper;
 use Hubzero\Component\SiteController;
 use Hubzero\User\Profile;
+use Request;
+use User;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'resource.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'type.php');
@@ -54,19 +58,14 @@ class Authors extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		if (User::isGuest())
 		{
 			App::abort(403, Lang::txt('You must be logged in to access.'));
-			return;
 		}
-
-		// Load the com_resources component config
-		$rconfig = Component::params('com_resources');
-		$this->rconfig = $rconfig;
 
 		parent::execute();
 	}
@@ -74,10 +73,10 @@ class Authors extends SiteController
 	/**
 	 * Save one or more authors
 	 *
-	 * @param      integer $show       Display author list when done?
-	 * @param      integer $id         Resource ID
-	 * @param      array   $authorsNew Authors to add
-	 * @return     void
+	 * @param   integer  $show        Display author list when done?
+	 * @param   integer  $id          Resource ID
+	 * @param   array    $authorsNew  Authors to add
+	 * @return  void
 	 */
 	public function saveTask($show = 1, $id = 0, $authorsNew = array())
 	{
@@ -254,8 +253,8 @@ class Authors extends SiteController
 	/**
 	 * Split a user's name into its parts if not already done
 	 *
-	 * @param      integer $id User ID
-	 * @return     void
+	 * @param   integer  $id  User ID
+	 * @return  void
 	 */
 	private function _authorCheck($id)
 	{
@@ -292,8 +291,7 @@ class Authors extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Ensure we have the contributor's ID ($id)
@@ -325,8 +323,7 @@ class Authors extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Ensure we have the contributor's ID ($id)
@@ -362,16 +359,14 @@ class Authors extends SiteController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_CHILD_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// Get the element moving down - item 1
@@ -419,8 +414,6 @@ class Authors extends SiteController
 	 */
 	public function displayTask($id=null)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
 		if (!$id)
 		{
@@ -430,7 +423,7 @@ class Authors extends SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			throw new Exception(Lang::txt('CONTRIBUTE_NO_ID'), 500);
+			App::abort(404, Lang::txt('CONTRIBUTE_NO_ID'));
 		}
 
 		// Get all contributors of this resource
@@ -449,17 +442,15 @@ class Authors extends SiteController
 		$rt = new RoleType($this->database);
 
 		// Output HTML
-		$this->view->config = $this->config;
-		$this->view->contributors = $helper->_contributors;
-		$this->view->id = $id;
+		$roles = $rt->getRolesForType($resource->type);
 
-		$this->view->roles = $rt->getRolesForType($resource->type);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->set('id', $id)
+			->set('contributors', $helper->_contributors)
+			->set('roles', $roles)
+			->setErrors($this->getErrors())
+			->setLayout('display')
+			->display();
 	}
 }

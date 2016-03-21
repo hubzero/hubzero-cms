@@ -25,10 +25,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author	Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since	 Class available since release 1.3.2
+ * @since     Class available since release 1.3.2
  */
 
 namespace Components\Resources\Models\Orm;
@@ -38,7 +38,7 @@ use Hubzero\Utility\String;
 use Hubzero\Base\Object;
 
 /**
- * Hubs database model
+ * Resource association model
  *
  * @uses \Hubzero\Database\Relational
  */
@@ -47,49 +47,82 @@ class Association extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	protected $namespace = 'resource';
 
 	/**
 	 * The table name, non-standard naming 
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	protected $table = '#__resource_assoc';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	public $orderBy = 'id';
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
-	 **/
+	 * @var  array
+	 */
 	protected $rules = array(
-		'title' => 'notempty'
+		'parent_id' => 'positive|nonzero',
+		'child_id'  => 'positive|nonzero'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var array
-	 **/
-	public $always = array(
+	 * @var  array
+	 */
+	public $initiate = array(
+		'ordering'
 	);
 
 	/**
-	 * Defines the inverse relationship between a record and a task
+	 * Generates automatic ordering field value
 	 *
-	 * @return \Hubzero\Database\Relationship\belongsToOne
-	 * @author
-	 **/
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->whereEquals('parent_id', $data['parent_id'])
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
+
+	/**
+	 * Get the parent this resource is attached to
+	 *
+	 * @return  object
+	 */
 	public function parent()
 	{
 		return $this->belongsToOne('Resource', 'parent_id', 'id');
+	}
+
+	/**
+	 * Get the resource this represents
+	 *
+	 * @return  object
+	 */
+	public function resource()
+	{
+		return $this->belongsToOne('Resource', 'child_id', 'id');
 	}
 }

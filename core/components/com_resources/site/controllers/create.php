@@ -32,10 +32,10 @@
 
 namespace Components\Resources\Site\Controllers;
 
+use Components\Resources\Models\License;
+use Components\Resources\Models\Type;
 use Components\Resources\Tables\Resource;
-use Components\Resources\Tables\License;
 use Components\Resources\Tables\Assoc;
-use Components\Resources\Tables\Type;
 use Components\Resources\Tables\Contributor;
 use Components\Resources\Tables\Contributor\Role;
 use Components\Resources\Tables\Contributor\RoleType;
@@ -46,15 +46,17 @@ use Components\Resources\Helpers\Html;
 use Hubzero\Component\SiteController;
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
-use Exception;
 use Pathway;
 use Request;
 use Route;
+use Event;
 use Lang;
 use User;
 use Date;
 use App;
 
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'license.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor.php');
 
 /**
@@ -72,7 +74,7 @@ class Create extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -112,7 +114,8 @@ class Create extends SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @return	void
+	 * @param   object  $row
+	 * @return  void
 	 */
 	public function _buildPathway($row)
 	{
@@ -156,7 +159,8 @@ class Create extends SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return	void
+	 * @param   object  $row
+	 * @return  void
 	 */
 	public function _buildTitle($row)
 	{
@@ -184,7 +188,7 @@ class Create extends SiteController
 	/**
 	 * Redirect to the login page with the return set
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function loginTask()
 	{
@@ -198,7 +202,7 @@ class Create extends SiteController
 	/**
 	 * Component landing page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -249,7 +253,7 @@ class Create extends SiteController
 	/**
 	 * Call the current step
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function draftTask()
 	{
@@ -312,7 +316,7 @@ class Create extends SiteController
 	/**
 	 * Display a list of contributable resource types and let the user pick
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_type()
 	{
@@ -321,25 +325,22 @@ class Create extends SiteController
 		$this->view->step++;
 
 		// Get available resource types
-		$rt = new Type($this->database);
-		$this->view->types = $rt->getMajorTypes();
+		$this->view->types = Type::getMajorTypes();
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
 	/**
 	 * Display a form for composing the title, abstract, etc.
 	 *
-	 * @param      object $row Resource
-	 * @return     void
+	 * @param   object  $row  Resource
+	 * @return  void
 	 */
 	public function step_compose($row=null)
 	{
@@ -401,8 +402,9 @@ class Create extends SiteController
 
 	/**
 	 * Show form for adding attachments to a resource
-	 * @vars       boolean $check
-	 * @return     void
+	 *
+	 * @param   boolean  $check
+	 * @return  void
 	 */
 	public function step_attach($check = FALSE)
 	{
@@ -444,7 +446,7 @@ class Create extends SiteController
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			throw new Exception(Lang::txt('COM_CONTRIBUTE_NO_ID'), 500);
+			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
 		// Load the resource
@@ -466,7 +468,7 @@ class Create extends SiteController
 	/**
 	 * Show form for adding authors to a resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_authors()
 	{
@@ -476,7 +478,7 @@ class Create extends SiteController
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			throw new Exception(Lang::txt('COM_CONTRIBUTE_NO_ID'), 500);
+			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
 		// Load the resource
@@ -507,11 +509,11 @@ class Create extends SiteController
 	/**
 	 * Recursive method for loading hierarchical focus areas (tags)
 	 *
-	 * @param      integer $id           Resource type ID
-	 * @param      array   $labels       Tags
-	 * @param      integer $parent_id    Tag ID
-	 * @param      string  $parent_label Tag
-	 * @return     void
+	 * @param   integer  $id            Resource type ID
+	 * @param   array    $labels        Tags
+	 * @param   integer  $parent_id     Tag ID
+	 * @param   string   $parent_label  Tag
+	 * @return  void
 	 */
 	private function _loadFocusAreas($type, $labels = null, $parent_id = NULL, $parent_label = NULL)
 	{
@@ -582,7 +584,7 @@ class Create extends SiteController
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			throw new Exception(Lang::txt('COM_CONTRIBUTE_NO_ID'), 500);
+			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
 		if (!isset($this->progress))
@@ -597,7 +599,7 @@ class Create extends SiteController
 		$this->view->row = new Resource($this->database);
 		$this->view->row->load($this->view->id);
 
-		$this->database->setQuery('SELECT type FROM #__resources WHERE id = ' . $this->view->id);
+		$this->database->setQuery('SELECT type FROM `#__resources` WHERE id = ' . $this->view->id);
 		$fas = $this->_loadFocusAreas($this->database->loadResult());
 		$this->view->fas = array();
 		foreach ($fas as $tag => $fa)
@@ -649,7 +651,7 @@ class Create extends SiteController
 	/**
 	 * Show final review form for setting license and agreeing to terms of submission
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_review()
 	{
@@ -673,7 +675,7 @@ class Create extends SiteController
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			throw new Exception(Lang::txt('COM_CONTRIBUTE_NO_ID'), 500);
+			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
 		// Get some needed libraries
@@ -699,8 +701,11 @@ class Create extends SiteController
 		$this->view->next_step = $this->step + 1;
 		$this->view->task = 'submit';
 
-		$rl = new License($this->database);
-		$this->view->licenses = $rl->getLicenses($this->view->id);
+		$this->view->licenses = License::all()
+			->whereEquals('name', 'custom' . $this->view->id)
+			->orWhere('name', 'NOT LIKE', 'custom%')
+			->ordered()
+			->rows();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -713,8 +718,8 @@ class Create extends SiteController
 	/**
 	 * Generate an array of just group aliases
 	 *
-	 * @param      array $groups Array of group objects
-	 * @return     array
+	 * @param   array  $groups  Array of group objects
+	 * @return  array
 	 */
 	private function _getUsersGroups($groups)
 	{
@@ -735,7 +740,7 @@ class Create extends SiteController
 	/**
 	 * Process the type step
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_type_process()
 	{
@@ -745,17 +750,19 @@ class Create extends SiteController
 	/**
 	 * Process the compose step
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_compose_process()
 	{
 		// Initiate extended database class
 		$row = new Resource($this->database);
 		$row->load(Request::getInt('id', 0));
+
 		if (!$row->bind($_POST))
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
+
 		$isNew = $row->id < 1 || substr($row->id, 0, 4) == '9999';
 
 		$row->created    = ($row->created)    ? $row->created    : Date::toSql();
@@ -778,11 +785,9 @@ class Create extends SiteController
 
 		$row->fulltxt   = trim(preg_replace('/\\\/', "%5C", $row->fulltxt));
 		$row->introtext = String::truncate(strip_tags($row->fulltxt), 500);
-		//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
-		$type = new Type($this->database);
-		$type->load($row->type);
+		$type = Type::oneOrFail($row->type);
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 		$elements = new Elements(array(), $type->customFields);
@@ -826,7 +831,7 @@ class Create extends SiteController
 				$f = trim($tagcontent);
 				if ($f)
 				{
-					$row->fulltxt .= trim($tagcontent); //(isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
+					$row->fulltxt .= trim($tagcontent);
 				}
 			}
 			$row->fulltxt .= '</nb:' . $tagname . '>' . "\n";
@@ -854,9 +859,8 @@ class Create extends SiteController
 		// Strip any scripting there may be
 		if (trim($row->fulltxt))
 		{
-			$row->fulltxt   = \Components\Resources\Helpers\Html::stripStyles($row->fulltxt);
-			$row->fulltxt   = $this->_txtClean($row->fulltxt);
-			//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
+			$row->fulltxt    = \Components\Resources\Helpers\Html::stripStyles($row->fulltxt);
+			$row->fulltxt    = $this->_txtClean($row->fulltxt);
 			$row->footertext = $this->_txtClean($row->footertext);
 		}
 
@@ -937,12 +941,29 @@ class Create extends SiteController
 			$authors = new Authors();
 			$authors->saveTask(0);
 		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($isNew ? 'updated' : 'created'),
+				'scope'       => 'resource',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . $row->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $row->get('title'),
+					'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
+				)
+			],
+			'recipients' => [
+				$row->get('created_by')
+			]
+		]);
 	}
 
 	/**
 	 * Process the attach step
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_attach_process()
 	{
@@ -952,7 +973,7 @@ class Create extends SiteController
 	/**
 	 * Process the authors step
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_authors_process()
 	{
@@ -1198,7 +1219,7 @@ class Create extends SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			throw new Exception(Lang::txt('COM_CONTRIBUTE_NO_ID'), 500);
+			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
 		// Load resource info
@@ -1225,6 +1246,8 @@ class Create extends SiteController
 		// Is this a newly submitted resource?
 		if (!$published)
 		{
+			$activity = 'submitted';
+
 			// 0 = unpublished, 1 = published, 2 = composing, 3 = pending (submitted), 4 = deleted
 			// Are submissions auto-approved?
 			if ($this->config->get('autoapprove') == 1)
@@ -1246,6 +1269,8 @@ class Create extends SiteController
 				// Set status to published
 				$resource->published = 1;
 				$resource->publish_up = Date::toSql();
+
+				$activity = 'published';
 			}
 			else
 			{
@@ -1335,6 +1360,23 @@ class Create extends SiteController
 					}
 				}
 			}
+
+			// Log activity
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => $activity,
+					'scope'       => 'resource',
+					'scope_id'    => $resource->title,
+					'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->id) . '">' . $resource->title . '</a>'),
+					'details'     => array(
+						'title' => $resource->title,
+						'url'   => Route::url('index.php?option=com_resources&id=' . $resource->id)
+					)
+				],
+				'recipients' => [
+					$resource->created_by
+				]
+			]);
 		}
 
 		// Is this resource licensed under Creative Commons?
@@ -1355,20 +1397,17 @@ class Create extends SiteController
 					return;
 				}
 
-				include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'license.php');
-
-				$rl = new License($this->database);
-				$rl->load($license);
-				$rl->name = $license;
-				$rl->text = $licenseText;
-				$rl->info = $resource->id;
-				$rl->check();
-				$rl->store();
+				$rl = License::oneOrNew($license);
+				$rl->set('name', $license);
+				$rl->set('text', $licenseText);
+				$rl->set('info', $resource->id);
+				$rl->save();
 			}
 
 			// set license
 			$params = new \Hubzero\Config\Registry($resource->params);
 			$params->set('license', $license);
+
 			$resource->params = $params->toString();
 		}
 
@@ -1379,15 +1418,9 @@ class Create extends SiteController
 		// If a previously published resource, redirect to the resource page
 		if ($published == 1)
 		{
-			if ($resource->alias)
-			{
-				$url = Route::url('index.php?option=com_resources&alias=' . $resource->alias);
-			}
-			else
-			{
-				$url = Route::url('index.php?option=com_resources&id=' . $resource->id);
-			}
-			App::redirect($url);
+			App::redirect(
+				Route::url('index.php?option=com_resources&alias=' . ($resource->alias ? 'alias=' . $resource->alias : 'id=' . $resource->id))
+			);
 			return;
 		}
 
@@ -1408,7 +1441,7 @@ class Create extends SiteController
 	/**
 	 * Show a confirmation form for deleting a contribution
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -1498,7 +1531,7 @@ class Create extends SiteController
 					// It was, so we can only mark it as "deleted"
 					if (!$this->_markRemovedContribution($id))
 					{
-						throw new Exception($this->getError(), 500);
+						App::abort(500, $this->getError());
 					}
 				}
 				else
@@ -1506,9 +1539,26 @@ class Create extends SiteController
 					// It wasn't. Attempt to delete the resource
 					if (!$this->_deleteContribution($id))
 					{
-						throw new Exception($this->getError(), 500);
+						App::abort(500, $this->getError());
 					}
 				}
+
+				// Log activity
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'deleted',
+						'scope'       => 'resource',
+						'scope_id'    => $resource->id,
+						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->id) . '">' . $resource->title . '</a>'),
+						'details'     => array(
+							'title' => $resource->title,
+							'url'   => Route::url('index.php?option=com_resources&id=' . $resource->id)
+						)
+					],
+					'recipients' => [
+						$resource->created_by
+					]
+				]);
 
 				// Redirect to the start page
 				App::redirect(
@@ -1521,7 +1571,7 @@ class Create extends SiteController
 	/**
 	 * Retract a submission
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function retractTask()
 	{
@@ -1559,8 +1609,8 @@ class Create extends SiteController
 	/**
 	 * Set the state on an item to "deleted" (4)
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean False if errors, True on success
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  False if errors, True on success
 	 */
 	private function _markRemovedContribution($id)
 	{
@@ -1590,8 +1640,8 @@ class Create extends SiteController
 	/**
 	 * Delete a contribution and associated content
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean False if errors, True on success
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  False if errors, True on success
 	 */
 	private function _deleteContribution($id)
 	{
@@ -1715,9 +1765,9 @@ class Create extends SiteController
 	/**
 	 * Build the absolute path to a resource's file upload
 	 *
-	 * @param      string $listdir Primary upload directory
-	 * @param      string $subdir  Sub directory of $listdir
-	 * @return     string
+	 * @param   string  $listdir  Primary upload directory
+	 * @param   string  $subdir   Sub directory of $listdir
+	 * @return  string
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
@@ -1750,8 +1800,8 @@ class Create extends SiteController
 	/**
 	 * Check if the type step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     void
+	 * @param   integer  $id  Resource ID
+	 * @return  void
 	 */
 	public function step_type_check($id)
 	{
@@ -1761,8 +1811,8 @@ class Create extends SiteController
 	/**
 	 * Check if the compose step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     integer # > 1 = step completed, 0 = not completed
+	 * @param   integer  $id  Resource ID
+	 * @return  integer  # > 1 = step completed, 0 = not completed
 	 */
 	public function step_compose_check($id)
 	{
@@ -1772,39 +1822,36 @@ class Create extends SiteController
 	/**
 	 * Check if the attach step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     integer # > 1 = step completed, 0 = not completed
+	 * @param   integer  $id  Resource ID
+	 * @return  integer  # > 1 = step completed, 0 = not completed
 	 */
 	public function step_attach_check($id)
 	{
+		$total = 0;
+
 		if ($id)
 		{
 			$ra = new Assoc($this->database);
 			$total = $ra->getCount($id);
 		}
-		else
-		{
-			$total = 0;
-		}
+
 		return $total;
 	}
 
 	/**
 	 * Check if the authors step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     integer # > 1 = step completed, 0 = not completed
+	 * @param   integer  $id  Resource ID
+	 * @return  integer  # > 1 = step completed, 0 = not completed
 	 */
 	public function step_authors_check($id)
 	{
+		$contributors = 0;
+
 		if ($id)
 		{
 			$rc = new Contributor($this->database);
 			$contributors = $rc->getCount($id, 'resources');
-		}
-		else
-		{
-			$contributors = 0;
 		}
 
 		return $contributors;
@@ -1813,13 +1860,13 @@ class Create extends SiteController
 	/**
 	 * Check if the tags step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     integer 1 = step completed, 0 = not completed
+	 * @param   integer  $id  Resource ID
+	 * @return  integer  1 = step completed, 0 = not completed
 	 */
 	public function step_tags_check($id)
 	{
 		$rt = new Tags($id);
-		$tags = $rt->tags('count');
+		$tags = $rt->tags()->count();
 
 		if ($tags > 0)
 		{
@@ -1832,8 +1879,8 @@ class Create extends SiteController
 	/**
 	 * Check if the review step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     integer 1 = step completed, 0 = not completed
+	 * @param   integer  $id  Resource ID
+	 * @return  integer  1 = step completed, 0 = not completed
 	 */
 	public function step_review_check($id)
 	{
@@ -1844,18 +1891,16 @@ class Create extends SiteController
 		{
 			return 1;
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 
 	/**
 	 * Convert Microsoft characters and strip disallowed content
 	 * This includes script tags, HTML comments, xhubtags, and style tags
 	 *
-	 * @param      string &$text Text to clean
-	 * @return     string
+	 * @param   string  &$text  Text to clean
+	 * @return  string
 	 */
 	private function _txtClean(&$text)
 	{
@@ -1872,83 +1917,6 @@ class Create extends SiteController
 		$text = preg_replace('/<!--.+?-->/', '', $text);
 
 		return $text;
-	}
-
-	/**
-	 * Try to determine and convert groups of text to paragraphs
-	 * Performs a little entity conversion first to normalize everything to UTF8
-	 *
-	 * @param      string  $pee Text to convert
-	 * @param      integer $br  Preserve break tags?
-	 * @return     string
-	 */
-	private function _txtAutoP($pee, $br = 1)
-	{
-		$trans_tbl = get_html_translation_table(HTML_ENTITIES);
-		foreach ($trans_tbl as $k => $v)
-		{
-			if ($k != '<' && $k != '>' && $k != '"' && $k != "'")
-			{
-				$ttr[utf8_encode($k)] = $v;
-			}
-		}
-		$pee = strtr($pee, $ttr);
-
-		$ent = array(
-			'Ć'=>'&#262;',
-			'ć'=>'&#263;',
-			'Č'=>'&#268;',
-			'č'=>'&#269;',
-			'Đ'=>'&#272;',
-			'đ'=>'&#273;',
-			'Š'=>'&#352;',
-			'š'=>'&#353;',
-			'Ž'=>'&#381;',
-			'ž'=>'&#382;'
-		);
-
-		$pee = strtr($pee, $ent);
-
-		// converts paragraphs of text into xhtml
-		$pee = $pee . "\n"; // just to make things a little easier, pad the end
-		$pee = preg_replace('|<br />\s*<br />|', "\n\n", $pee);
-		$pee = preg_replace('!(<(?:table|ul|ol|li|pre|form|blockquote|h[1-6])[^>]*>)!', "\n$1", $pee); // Space things out a little
-		$pee = preg_replace('!(</(?:table|ul|ol|li|pre|form|blockquote|h[1-6])>)!', "$1\n", $pee); // Space things out a little
-		$pee = preg_replace("/(\r\n|\r)/", "\n", $pee); // cross-platform newlines
-		$pee = preg_replace("/\n\n+/", "\n\n", $pee); // take care of duplicates
-		$pee = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "<p>$1</p>\n", $pee); // make paragraphs, including one at the end
-		$pee = preg_replace('|<p>\s*?</p>|', '', $pee); // under certain strange conditions it could create a P of entirely whitespace
-		$pee = preg_replace("|<p>(<li.+?)</p>|", "$1", $pee); // problem with nested lists
-		$pee = preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $pee);
-		$pee = str_replace('</blockquote></p>', '</p></blockquote>', $pee);
-		$pee = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $pee);
-		$pee = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $pee);
-		if ($br)
-		{
-			$pee = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $pee); // optionally make line breaks
-		}
-		$pee = preg_replace('!(</?(?:table|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*<br />!', "$1", $pee);
-		$pee = preg_replace('!<br />(\s*</?(?:p|li|div|th|pre|td|ul|ol)>)!', '$1', $pee);
-		//$pee = preg_replace('/&([^#])(?![a-z]{1,8};)/', '&#038;$1', $pee);
-
-		return $pee;
-	}
-
-	/**
-	 * Remove paragraph tags and break tags
-	 *
-	 * @param      string $pee Text to unparagraph
-	 * @return     string
-	 */
-	public static function _txtUnpee($pee)
-	{
-		$pee = str_replace("\t", '', $pee);
-		$pee = str_replace('</p><p>', '', $pee);
-		$pee = str_replace('<p>', '', $pee);
-		$pee = str_replace('</p>', "\n", $pee);
-		$pee = str_replace('<br />', '', $pee);
-		$pee = trim($pee);
-		return $pee;
 	}
 
 	/**
@@ -1982,4 +1950,3 @@ class Create extends SiteController
 		return $path;
 	}
 }
-
