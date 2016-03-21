@@ -1,12 +1,8 @@
 <?php
 /**
- * @package     HUBzero CMS
- * @author      Christopher <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
- * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -61,9 +62,10 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 							<option <?php echo $sel; ?> value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
 						<?php endforeach; ?>
 					</select>
-					<input type="text" id="page_view_dates" value="<?php echo date("m/d/Y", strtotime($this->start)) . " - " . date("m/d/Y", strtotime($this->end)); ?>" />
-					<input type="hidden" name="start" id="date_start" value="<?php echo date("Y-m-d",strtotime($this->start)); ?>" />
-					<input type="hidden" name="end" id="date_end" value="<?php echo date("Y-m-d",strtotime($this->end)); ?>" />
+					<span class="datepickers">
+						<input type="text" name="start" id="date_start" class="datepicker" value="<?php echo date("m/d/Y", strtotime($this->start)); ?>" />&nbsp;-&nbsp;
+						<input type="text" name="end" id="date_end" class="datepicker" value="<?php echo date("m/d/Y", strtotime($this->end)); ?>" />
+					</span>
 					<input type="submit" id="submit" value="Go" />
 				</form>
 			</div><!-- /.end page_view_settings -->

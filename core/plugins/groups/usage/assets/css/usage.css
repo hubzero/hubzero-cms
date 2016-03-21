@@ -46,14 +46,16 @@
 		float: left;
 		margin-right: 10px;
 	}
-	#page_view_settings #page_view_dates {
+	#page_view_settings .datepickers {
 		float: left;
-		width: 200px;
+	}
+	#page_view_settings .datepicker {
+		width: 8em;
 		padding: 3px 0 4px 0;
 		text-align: center;
 		border: 1px solid #ccc;
 		font-weight: bold;
-		background: #FFF url('../img/calendar_icon.png') no-repeat 183px 50%;
+		background: #FFF;
 	}
 	#page_view_settings input[type=submit] {
 		margin: 2px 0 0 10px;

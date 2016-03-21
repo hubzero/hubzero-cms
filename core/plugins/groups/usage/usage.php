@@ -1,12 +1,8 @@
 <?php
 /**
- * @package     HUBzero CMS
- * @author      Christopher <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
- * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -39,14 +40,14 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -63,15 +64,15 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -144,7 +145,8 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$this->css();
 
 			//add datepicker stylesheet to view
-			$this->css('datepicker.css');
+			$this->css('jquery.datepicker.css', 'system')
+			->css('jquery.timepicker.css', 'system');
 
 			//add google js-api
 			Document::addScript('https://www.google.com/jsapi');
@@ -156,14 +158,22 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$this->js('usage.js');
 
 			//add datepicker script
-			$this->js('datepicker.js');
+			//$this->js('datepicker.js');
 
 			//get the page id if we want to view stats on a specific page
 			$pid = Request::getVar('pid', '');
 
 			//get start and end dates
-			$start = Request::getVar('start', date("Y-m-d 00:00:00",strtotime('-30 DAYS')));
-			$end = Request::getVar('end', date("Y-m-d 23:59:59"));
+			$start = Request::getVar('start', gmdate("Y-m-d 00:00:00", strtotime('-30 DAYS')));
+			$end   = Request::getVar('end', gmdate("Y-m-d 23:59:59"));
+			if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $start))
+			{
+				$start = Date::of($start)->format('Y-m-d') . ' 00:00:00';
+			}
+			if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $end))
+			{
+				$end = Date::of($end)->format('Y-m-d') . ' 00:00:00';
+			}
 
 			//make sure start date is a full php datetime
 			if (strlen($start) != 19)
@@ -350,10 +360,10 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a list of all page views over a time period
 	 *
-	 * @param      string $gid    Group ID
-	 * @param      string $pageid Page ID
-	 * @param      string $start  Start date
-	 * @param      string $end    End date
+	 * @param      string  $gid     Group ID
+	 * @param      string  $pageid  Page ID
+	 * @param      string  $start   Start date
+	 * @param      string  $end     End date
 	 * @return     array
 	 */
 	public function getGroupPageViews($gid, $pageid = null, $start, $end)
@@ -408,10 +418,10 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Draw a chart of page views over time for a specific page
 	 *
-	 * @param      integer $pid   Page ID
-	 * @param      string  $start Start date
-	 * @param      string  $end   End date
-	 * @return     string
+	 * @param   integer  $pid    Page ID
+	 * @param   string   $start  Start date
+	 * @param   string   $end    End date
+	 * @return  string
 	 */
 	public function drawChart($pid, $start, $end)
 	{
@@ -442,10 +452,10 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 			function drawChart() {
 				var data = new google.visualization.DataTable();
-		       	data.addColumn('string', 'Day');
-		       	data.addColumn('number', 'Views');
-		       	data.addRows([
-		         	{$jsObj}
+				data.addColumn('string', 'Day');
+				data.addColumn('number', 'Views');
+				data.addRows([
+					{$jsObj}
 				]);
 
 				var options = {
@@ -471,8 +481,8 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-		       	var chart = new google.visualization.AreaChart(document.getElementById('page_views_chart'));
-		       	chart.draw(data, options);
+				var chart = new google.visualization.AreaChart(document.getElementById('page_views_chart'));
+				chart.draw(data, options);
 			}";
 
 		return $script;
