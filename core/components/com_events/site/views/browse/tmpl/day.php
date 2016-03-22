@@ -62,7 +62,7 @@ $this->css();
 		<ul class="events">
 			<li>
 				<dl class="event-details">
-					<dt><?php echo Date::of($this->year.'-'.$this->month.'-'.$this->day.' 00:00:00', 'UTC')->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></dt>
+					<dt><?php echo Date::of($this->year.'-'.$this->month.'-'.$this->day.' 00:00:00', date('T'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></dt>
 				</dl>
 				<div class="ewrap">
 					<ul class="events">
