@@ -425,25 +425,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				$event->end = $down;
 			}
 
-
-			//daylight compensation
-			$dstCreated = date('I' , strtotime($rawEvent->get('created')));
-
-			if (!$dstCreated && date('I'))
-			{
-				if ((int) date('I', strtotime($event->end)))
-				{
-					$end = strtotime($event->end . '- 1 hour');
-					$event->end = date('Y-m-d H:i:s', $end);
-				}
-
-				if ((int) date('I', strtotime($event->start)))
-				{
-					$start = strtotime($event->start . '- 1 hour');
-					$event->start = date('Y-m-d H:i:s', $start);
-				}
-			}
-				array_push($events, $event);
+			array_push($events, $event);
 		}
 		// output events
 		echo json_encode($events);

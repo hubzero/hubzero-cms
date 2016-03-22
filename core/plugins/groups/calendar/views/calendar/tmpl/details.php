@@ -107,16 +107,6 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			$start = Request::getInt('start', NULL, 'get');
 			$end   = Request::getInt('end', NULL, 'get');
 
-
-			// daylight savings time compensation
-			// this removes the adjustment based if the timezone is set correctly on the hub
-			// I don't particularly agree with this, but I have work to do.
-			if ((int) date('I', $start) && (int) date('I', $end))
-			{
-				$end = strtotime($end . '- 1 hour');
-				$start = strtotime($start . '- 1 hour');
-			}
-
 			if ($start || ($start && $end))
 			{
 				$publish_up   = Date::of($start)->toSql();
