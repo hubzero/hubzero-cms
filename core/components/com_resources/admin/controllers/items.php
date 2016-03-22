@@ -44,6 +44,7 @@ use Hubzero\Component\AdminController;
 use Request;
 use Config;
 use Route;
+use Event;
 use Lang;
 use App;
 
@@ -1088,6 +1089,30 @@ class Items extends AdminController
 			if ($row->published == 1 && $old->published == 3)
 			{
 				$this->_emailContributors($row, $this->database);
+
+				// Log activity
+				$recipients = array(
+					['resource', $row->get('id')],
+					['user', $row->get('created_by')]
+				);
+				foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+				{
+					$recipients[] = ['user', $author->get('authorid')];
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'published',
+						'scope'       => 'resource',
+						'scope_id'    => $row->title,
+						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED', '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->id) . '">' . $row->title . '</a>'),
+						'details'     => array(
+							'title' => $row->title,
+							'url'   => Route::url('index.php?option=com_resources&id=' . $row->id)
+						)
+					],
+					'recipients' => $recipients
+				]);
 			}
 		}
 
@@ -1102,7 +1127,7 @@ class Items extends AdminController
 	 * Sends a message to all contributors on a resource
 	 *
 	 * @param      object $row      Resource
-	 * @param      object $database JDatabase
+	 * @param      object $database Database
 	 * @return     void
 	 */
 	private function _emailContributors($row, $database)

@@ -878,6 +878,15 @@ class Create extends SiteController
 		}
 
 		// Log activity
+		$recipients = array(
+			['resource', $row->get('id')],
+			['user', $row->get('created_by')]
+		);
+		foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+		{
+			$recipients[] = ['user', $author->get('authorid')];
+		}
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($isNew ? 'updated' : 'created'),
@@ -889,9 +898,7 @@ class Create extends SiteController
 					'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
 				)
 			],
-			'recipients' => [
-				$row->get('created_by')
-			]
+			'recipients' => $recipients
 		]);
 	}
 
@@ -1207,9 +1214,9 @@ class Create extends SiteController
 			}
 
 			// Get the resource's contributors
-			$contributors = $resource->authors()->rows();
+			$authors = $resource->authors()->rows();
 
-			if (!$contributors || $contributors->count() <= 0)
+			if ($authors->count() <= 0)
 			{
 				$this->setError(Lang::txt('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
 				$this->_checkProgress($id);
@@ -1273,6 +1280,18 @@ class Create extends SiteController
 			}
 
 			// Log activity
+			$recipients = array(
+				['resource', $resource->get('id')],
+				['user', $resource->get('created_by')]
+			);
+			foreach ($authors as $author)
+			{
+				if ($author->get('authorid') > 0)
+				{
+					$recipients[] = ['user', $author->get('authorid')];
+				}
+			}
+
 			Event::trigger('system.logActivity', [
 				'activity' => [
 					'action'      => $activity,
@@ -1284,9 +1303,7 @@ class Create extends SiteController
 						'url'   => Route::url($resource->link())
 					)
 				],
-				'recipients' => [
-					$resource->get('created_by')
-				]
+				'recipients' => $recipients
 			]);
 		}
 
@@ -1435,6 +1452,15 @@ class Create extends SiteController
 				}
 
 				// Log activity
+				$recipients = array(
+					['resource', $resource->get('id')],
+					['user', $resource->get('created_by')]
+				);
+				foreach ($resource->authors()->where('authorid', '>', 0)->rows() as $author)
+				{
+					$recipients[] = ['user', $author->get('authorid')];
+				}
+
 				Event::trigger('system.logActivity', [
 					'activity' => [
 						'action'      => 'deleted',
@@ -1446,9 +1472,7 @@ class Create extends SiteController
 							'url'   => Route::url($resource->link())
 						)
 					],
-					'recipients' => [
-						$resource->get('created_by')
-					]
+					'recipients' => $recipients
 				]);
 
 				// Redirect to the start page
