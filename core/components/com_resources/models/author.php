@@ -80,7 +80,7 @@ class Author extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'authorid' => 'positive|nonzero',
+		'subtable' => 'notempty',
 		'subid'    => 'positive|nonzero'
 	);
 
@@ -132,6 +132,49 @@ class Author extends Relational
 	}
 
 	/**
+	 * Get profile for author ID
+	 *
+	 * @return  object
+	 */
+	public function profile()
+	{
+		if ($this->get('authorid') > 0)
+		{
+			if ($profile = Profile::getInstance($this->get('authorid')))
+			{
+				return $profile;
+			}
+		}
+
+		return new Profile;
+	}
+
+	/**
+	 * Populate record with profile info
+	 *
+	 * @return  boolean
+	 */
+	public function populateFromProfile()
+	{
+		$profile = $this->profile();
+
+		if (!$profile->get('uidNumber'))
+		{
+			return false;
+		}
+
+		if (!$profile->get('name'))
+		{
+			$profile->set('name', $profile->get('givenName') . ' ' . $profile->get('surname'));
+		}
+
+		$this->set('name', $profile->get('name'));
+		$this->set('organization', $profile->get('organization'));
+
+		return true;
+	}
+
+	/**
 	 * Method to move a row in the ordering sequence of a group of rows defined by an SQL WHERE clause.
 	 * Negative numbers move the row up in the sequence and positive numbers move it down.
 	 *
@@ -148,7 +191,9 @@ class Author extends Relational
 		}
 
 		// Select the primary key and ordering values from the table.
-		$query = self::all();
+		$query = self::all()
+			->whereEquals('subid', $this->get('subid'))
+			->whereEquals('subtable', $this->get('subtable'));
 
 		// If the movement delta is negative move the row up.
 		if ($delta < 0)
@@ -175,6 +220,7 @@ class Author extends Relational
 		// If a row is found, move the item.
 		if ($row->get('id'))
 		{
+
 			$prev = $this->get('ordering');
 
 			// Update the ordering field for this instance to the row's ordering value.
@@ -192,6 +238,7 @@ class Author extends Relational
 			// Check for a database error.
 			if (!$row->save())
 			{
+				$this->setError($row->getError());
 				return false;
 			}
 		}
@@ -208,5 +255,92 @@ class Author extends Relational
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the user ID for a name
+	 *
+	 * @param   string   $name  Name to look up
+	 * @return  integer
+	 */
+	public function getUserId($name)
+	{
+		$row = self::all()
+			->where('authorid', '<', 0)
+			->whereEquals('name', $name)
+			->row();
+
+		$uid = $row->get('authorid');
+
+		if (!$uid || $uid > 0)
+		{
+			$row = self::all()
+				->select('authorid')
+				->ordered('authorid', 'asc')
+				->row();
+
+			$uid = $row->get('authorid');
+
+			// Check for potentially conflicting profile
+			$row = $this->getQuery()
+				->select('uidNumber')
+				->from('#__xprofiles')
+				->order('uidNumber', 'asc')
+				->limit(1)
+				->execute();
+
+			$pid = $row->uidNumber;
+			if ($pid < $uid)
+			{
+				$uid = $pid;
+			}
+
+			if ($uid > 0)
+			{
+				$uid = 0;
+			}
+			$uid--;
+		}
+
+		return $uid;
+	}
+
+	/**
+	 * Get a record by its relationship
+	 *
+	 * @param   integer  $resource_id
+	 * @param   integer  $user_id
+	 * @return  object
+	 */
+	public static function oneByRelationship($resource_id, $user_id)
+	{
+		$row = self::all()
+			->whereEquals('subid', $resource_id)
+			->whereEquals('authorid', $user_id)
+			->whereEquals('subtable', 'resources')
+			->order('ordering', 'asc')
+			->row();
+
+		return $row;
+	}
+
+	/**
+	 * Get a record by its relationship and author name
+	 *
+	 * @param   integer  $resource_id
+	 * @param   string   $name
+	 * @return  object
+	 */
+	public static function oneByName($resource_id, $name)
+	{
+		$row = self::all()
+			->whereEquals('subid', $resource_id)
+			->where('authorid', '<', 0)
+			->whereEquals('subtable', 'resources')
+			->whereEquals('name', $name)
+			->order('ordering', 'asc')
+			->row();
+
+		return $row;
 	}
 }

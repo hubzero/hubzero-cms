@@ -32,16 +32,20 @@
 
 namespace Components\Resources\Site\Controllers;
 
-use Components\Resources\Tables\Resource;
+use Components\Resources\Models\Orm\Resource;
 use Components\Resources\Tables\MediaTracking;
 use Components\Resources\Tables\MediaTrackingDetailed;
-use Components\Resources\Helpers\Html;
 use Hubzero\Component\SiteController;
 use Filesystem;
 use stdClass;
 use Request;
 use Date;
+use User;
 use Lang;
+use App;
+
+// Include need media tracking library
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 
 /**
  * Resources controller class for media
@@ -51,7 +55,7 @@ class Media extends SiteController
 	/**
 	 * Upload a file or create a new folder
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -60,26 +64,22 @@ class Media extends SiteController
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$resource = Request::getInt('resource', 0, 'post');
+
 		if (!$resource)
 		{
 			$this->setError(Lang::txt('RESOURCES_NO_LISTDIR'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
-		// Incoming sub-directory
-		//$subdir = Request::getVar('dirPath', '', 'post');
+		$row = Resource::oneOrFail($resource);
 
-		$row = new Resource($this->database);
-		$row->load($resource);
-
-		// allow for temp resource uploads
+		// Allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
 			$row->created = Date::of('now')->format('Y-m-d 00:00:00');
 		}
 
-		$path =  PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $resource, '') . DS . 'media';
+		$path = $row->filespace() . DS . 'media';
 
 		// Make sure the upload path exist
 		if (!is_dir($path))
@@ -87,8 +87,7 @@ class Media extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 		}
 
@@ -97,12 +96,12 @@ class Media extends SiteController
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('RESOURCES_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Make the filename safe
 		$file['name'] = Filesystem::clean($file['name']);
+
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
@@ -112,21 +111,21 @@ class Media extends SiteController
 			$file['name'] .= '.' . $ext;
 		}
 
+		$path .= DS . $file['name'];
+
 		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path))
 		{
 			$this->setError(Lang::txt('ERROR_UPLOADING'));
 		}
 
-		$fpath = $path . DS . $file['name'];
-
-		if (!Filesystem::isSafe($fpath))
+		// Virus check
+		if (!Filesystem::isSafe($path))
 		{
-			Filesystem::delete($fpath);
+			Filesystem::delete($path);
 
 			$this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Push through to the media view
@@ -136,7 +135,7 @@ class Media extends SiteController
 	/**
 	 * Deletes a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -148,53 +147,45 @@ class Media extends SiteController
 		if (!$resource)
 		{
 			$this->setError(Lang::txt('RESOURCES_NO_LISTDIR'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
-		// Incoming sub-directory
-		//$subdir = Request::getVar('dirPath', '', 'post');
-		$row = new Resource($this->database);
-		$row->load($resource);
+		$row = Resource::oneOrFail($resource);
 
-		// Incoming sub-directory
-		//$subdir = Request::getVar('subdir', '');
-
-		// allow for temp resource uploads
+		// Allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
 			$row->created = Date::format('Y-m-d 00:00:00');
 		}
 
-		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $resource, '') . DS . 'media';
+		$path = $row->filespace() . DS . 'media';
 
-		// Make sure the listdir follows YYYY/MM/#
-		$parts = explode('/', $path);
+		// Make sure the listdir follows YYYY/MM/##/media
+		$parts = explode(DS, $path);
 		if (count($parts) < 4)
 		{
 			$this->setError(Lang::txt('DIRECTORY_NOT_FOUND'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file to delete
 		$file = Request::getVar('file', '');
+
 		if (!$file)
 		{
 			$this->setError(Lang::txt('RESOURCES_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Check if the file even exists
-		if (!file_exists($path . DS . $file) or !$file)
+		if (!file_exists($path . DS . $file))
 		{
 			$this->setError(Lang::txt('FILE_NOT_FOUND'));
 		}
 		else
 		{
 			// Attempt to delete the file
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 			}
@@ -207,43 +198,40 @@ class Media extends SiteController
 	/**
 	 * Display an upload form and file listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$this->view->resource = Request::getInt('resource', 0);
-		if (!$this->view->resource)
+		$resource = Request::getInt('resource', 0);
+
+		if (!$resource)
 		{
 			echo '<p class="error">' . Lang::txt('No resource ID provided.') . '</p>';
 			return;
 		}
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
+		$subdir = Request::getVar('subdir', '');
 
-		// Build the path
-		//$this->view->path = Utilities::buildUploadPath($this->view->listdir, $this->view->subdir);
-		$row = new Resource($this->database);
-		$row->load($this->view->resource);
+		$row = Resource::oneOrFail($resource);
 
-		// allow for temp resource uploads
+		// Allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
 			$row->created = Date::format('Y-m-d 00:00:00');
 		}
 
-		$this->view->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $this->view->resource, '') . DS . 'media';
+		$path = $row->filespace() . DS . 'media';
 
 		$folders = array();
 		$docs    = array();
 
-		if (is_dir($this->view->path))
+		if (is_dir($path))
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
-			$dirIterator = new \DirectoryIterator($this->view->path);
+			$dirIterator = new \DirectoryIterator($path);
+
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())
@@ -251,23 +239,23 @@ class Media extends SiteController
 					continue;
 				}
 
+				$name = $file->getFilename();
+
 				if ($file->isDir())
 				{
-					$name = $file->getFilename();
 					$folders[$path . DS . $name] = $name;
 					continue;
 				}
 
 				if ($file->isFile())
 				{
-					$name = $file->getFilename();
 					if (('cvs' == strtolower($name))
 					 || ('.svn' == strtolower($name)))
 					{
 						continue;
 					}
 
-					$docs[$this->view->path . DS . $name] = $name;
+					$docs[$path . DS . $name] = $name;
 				}
 			}
 
@@ -275,28 +263,24 @@ class Media extends SiteController
 			ksort($docs);
 		}
 
-		$this->view->row = $row;
-		$this->view->docs = $docs;
-		$this->view->folders = $folders;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('resource', $resource)
+			->set('row', $row)
+			->set('subdir', $subdir)
+			->set('path', $path)
+			->set('docs', $docs)
+			->set('folders', $folders)
+			->setErrors($this->getErrors())
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Scans directory and builds multi-dimensional array of all files and sub-directories
 	 *
-	 * @param      string $base Directory to scan
-	 * @return     array
+	 * @param   string  $base  Directory to scan
+	 * @return  array
 	 */
 	private function _recursiveListDir($base)
 	{
@@ -308,7 +292,10 @@ class Media extends SiteController
 			$dh = opendir($base);
 			while (false !== ($dir = readdir($dh)))
 			{
-				if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs')
+				if (is_dir($base . DS . $dir)
+				 && $dir !== '.'
+				 && $dir !== '..'
+				 && strtolower($dir) !== 'cvs')
 				{
 					$subbase    = $base . DS . $dir;
 					$dirlist[]  = $subbase;
@@ -317,22 +304,22 @@ class Media extends SiteController
 			}
 			closedir($dh);
 		}
+
 		return $dirlist;
 	}
 
 	/**
 	 * Record information for video tracking
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function trackingTask()
 	{
-		// Include need media tracking library
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mediatracking.php';
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mediatrackingdetailed.php';
 
 		// Instantiate objects
-		$database = \App::get('db');
+		$database = App::get('db');
 		$session  = App::get('session');
 
 		// Get request vars
@@ -341,7 +328,7 @@ class Media extends SiteController
 		$event      = Request::getVar('event', 'update');
 		$resourceid = Request::getVar('resourceid', 0);
 		$detailedId = Request::getVar('detailedTrackingId', 0);
-		$ipAddress  = $_SERVER['REMOTE_ADDR'];
+		$ipAddress  = Request::ip();
 
 		// Check for resource id
 		if (!$resourceid)
@@ -361,7 +348,7 @@ class Media extends SiteController
 		// Are we creating a new tracking record?
 		if (!is_object($trackingInformation))
 		{
-			$trackingInformation                              = new stdClass;
+			$trackingInformation = new stdClass;
 			$trackingInformation->user_id                     = User::get('id');
 			$trackingInformation->session_id                  = $session->getId();
 			$trackingInformation->ip_address                  = $ipAddress;
@@ -421,7 +408,7 @@ class Media extends SiteController
 		// Save detailed tracking info
 		if ($event == 'start' || !$trackingInformationDetailed)
 		{
-			$trackingInformationDetailed                              = new stdClass;
+			$trackingInformationDetailed = new stdClass;
 			$trackingInformationDetailed->user_id                     = User::get('id');
 			$trackingInformationDetailed->session_id                  = $session->getId();
 			$trackingInformationDetailed->ip_address                  = $ipAddress;
@@ -471,6 +458,7 @@ class Media extends SiteController
 				$trackingInformation->id = $mediaTracking->id;
 			}
 			$trackingInformation->detailedId = $mediaTrackingDetailed->id;
+
 			echo json_encode($trackingInformation);
 		}
 	}

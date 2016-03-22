@@ -35,8 +35,7 @@ defined('_HZEXEC_') or die();
 
 $this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt): stripslashes($this->row->introtext);
 
-$type = new \Components\Resources\Tables\Type($this->database);
-$type->load($this->row->type);
+$type = $this->row->type();
 
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
@@ -53,7 +52,7 @@ $this->row->fulltxt = trim($this->row->fulltxt);
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 
-$elements = new \Components\Resources\Models\Elements($data, $type->customFields);
+$elements = new \Components\Resources\Models\Elements($data, $type->get('customFields'));
 $fields = $elements->render();
 
 $this->css('create.css')

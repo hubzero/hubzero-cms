@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,22 +32,23 @@
 namespace Components\Resources\Site\Controllers;
 
 use Components\Resources\Models\Orm\Resource;
-use Components\Resources\Helpers\Helper;
+use Components\Resources\Models\Orm\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Number;
+use Filesystem;
 use Component;
 use Request;
 use Date;
 use Lang;
+use User;
 use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 
 /**
- * Controller class for contributing a tool
+ * Controller class for adding attachments to a parent resource
  */
 class Attachments extends SiteController
 {
@@ -62,79 +62,73 @@ class Attachments extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			App::abort(403, Lang::txt('You must be logged in to access.'));
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'));
 		}
 
 		parent::execute();
 	}
 
 	/**
-	 * Upload a file to the wiki
+	 * Create a placeholder attachment for a URL
 	 *
 	 * @return  void
 	 */
 	public function createTask()
 	{
+		// Push through to a different method if
+		// being created via AJAX
 		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
-		}
-
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			return $this->displayTask();
 		}
 
 		// Ensure we have an ID to work with
 		$pid = Request::getInt('pid', 0, 'post');
 		if (!$pid)
 		{
-			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
+			$this->setError(Lang::txt('COM_RESOURCES_NO_ID'));
 			return $this->displayTask();
 		}
 
-		// Create database entry
-		$asset = Resource::blank();
-		$asset->title        = 'A link';
-		$asset->introtext    = $row->title;
-		$asset->created      = Date::toSql();
-		$asset->created_by   = User::get('id');
-		$asset->published    = 1;
-		$asset->publish_up   = Date::toSql();
-		$asset->publish_down = '0000-00-00 00:00:00';
-		$asset->standalone   = 0;
-		$asset->path         = 'http://'; // make sure no path is specified just yet
-		$asset->type         = 11;
-		if (!$asset->save())
+		// Create new record
+		$resource = Resource::blank()->set(array(
+			'title'        => 'A link',
+			'introtext'    => 'A link',
+			'created'      => Date::toSql(),
+			'created_by'   => User::get('id'),
+			'published'    => 1,
+			'publish_up'   => Date::toSql(),
+			'publish_down' => '0000-00-00 00:00:00',
+			'standalone'   => 0,
+			'access'       => 0,
+			'path'         => 'http://', // make sure no path is specified just yet
+			'type'         =>  11
+		));
+
+		// Save record
+		if (!$resource->save())
 		{
-			$this->setError($asset->getError());
+			$this->setError($resource->getError());
 			return $this->displayTask();
 		}
 
 		// Create new parent/child association
-		if (!$asset->makeChildOf($pid))
+		if (!$resource->makeChildOf($pid))
 		{
-			$this->setError($asset->getError());
+			$this->setError($resource->getError());
 		}
 
+		// Display attachments list
 		$this->displayTask();
 	}
 
 	/**
-	 * Upload a file to the wiki via AJAX
+	 * Create a URL attachment via AJAX
 	 *
-	 * @return  string
+	 * @return  void
 	 */
 	public function ajaxCreateTask()
 	{
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			echo json_encode(array('error' => Lang::txt('Must be logged in.')));
-			return;
-		}
-
 		// Ensure we have an ID to work with
 		$pid = strtolower(Request::getInt('pid', 0));
 		if (!$pid)
@@ -143,38 +137,43 @@ class Attachments extends SiteController
 			return;
 		}
 
-		// Create database entry
-		$asset = Resource::blank();
-		$asset->title        = 'A link';
-		$asset->introtext    = $asset->title;
-		$asset->created      = Date::toSql();
-		$asset->created_by   = User::get('id');
-		$asset->published    = 1;
-		$asset->publish_up   = Date::toSql();
-		$asset->publish_down = '0000-00-00 00:00:00';
-		$asset->standalone   = 0;
-		$asset->access       = 0;
-		$asset->path         = Request::getVar('url', 'http://');
-		$asset->type         = 11;
+		// Create new record
+		$resource = Resource::blank()->set(array(
+			'title'        => 'A link',
+			'introtext'    => 'A link',
+			'created'      => Date::toSql(),
+			'created_by'   => User::get('id'),
+			'published'    => 1,
+			'publish_up'   => Date::toSql(),
+			'publish_down' => '0000-00-00 00:00:00',
+			'standalone'   => 0,
+			'access'       => 0,
+			'path'         => Request::getVar('url', 'http://'),
+			'type'         => 11
+		));
 
-		$asset->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $asset->path);
-		if (!Validate::url($asset->path))
+		// Clean and validate path
+		$resource->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $resource->path);
+
+		if (!Validate::url($resource->path))
 		{
 			echo json_encode(array(
 				'success'   => false,
 				'errors'    => array(Lang::txt('Link provided is not a valid URL.')),
-				'file'      => $asset->path,
+				'file'      => $resource->path,
 				'directory' => '',
 				'parent'    => $pid,
 				'id'        => 0
 			));
 			return;
 		}
-		if (!$asset->save())
+
+		// Save record
+		if (!$resource->save())
 		{
 			echo json_encode(array(
 				'success'   => false,
-				'errors'    => $asset->getErrors(),
+				'errors'    => $resource->getErrors(),
 				'file'      => 'http://',
 				'directory' => '',
 				'parent'    => $pid,
@@ -184,44 +183,37 @@ class Attachments extends SiteController
 		}
 
 		// Create new parent/child association
-		if (!$asset->makeChildOf($pid))
+		if (!$resource->makeChildOf($pid))
 		{
 			echo json_encode(array(
 				'success'   => false,
-				'errors'    => $asset->getErrors(),
-				'file'      => $asset->path,
+				'errors'    => $resource->getErrors(),
+				'file'      => $resource->path,
 				'directory' => '',
 				'parent'    => $pid,
-				'id'        => $asset->id
+				'id'        => $resource->id
 			));
 			return;
 		}
 
-		//echo result
+		// Output results
 		echo json_encode(array(
 			'success'   => true,
 			'errors'    => array(),
-			'file'      => $asset->path,
+			'file'      => $resource->path,
 			'directory' => '',
 			'parent'    => $pid,
-			'id'        => $asset->id
+			'id'        => $resource->id
 		));
 	}
 
 	/**
-	 * Upload a file to the wiki via AJAX
+	 * Upload a file via AJAX
 	 *
 	 * @return  string
 	 */
 	public function ajaxUploadTask()
 	{
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			echo json_encode(array('error' => Lang::txt('Must be logged in.')));
-			return;
-		}
-
 		// Ensure we have an ID to work with
 		$pid = strtolower(Request::getInt('pid', 0));
 		if (!$pid)
@@ -287,48 +279,51 @@ class Attachments extends SiteController
 		}*/
 
 		// Instantiate a new resource object
-		$row = Resource::blank();
-		$row->title        = $filename . '.' . $ext;
-		$row->introtext    = $row->title;
-		$row->created      = Date::toSql();
-		$row->created_by   = User::get('id');
-		$row->published    = 1;
-		$row->publish_up   = Date::toSql();
-		$row->publish_down = '0000-00-00 00:00:00';
-		$row->standalone   = 0;
-		$row->access       = 0;
-		$row->path         = ''; // make sure no path is specified just yet
-		$row->type         = $this->_getChildType($filename . '.' . $ext);
+		$resource = Resource::blank()->set(array(
+			'title'        => $filename . '.' . $ext,
+			'introtext'    => $filename . '.' . $ext,
+			'created'      => Date::toSql(),
+			'created_by'   => User::get('id'),
+			'published'    => 1,
+			'publish_up'   => Date::toSql(),
+			'publish_down' => '0000-00-00 00:00:00',
+			'standalone'   => 0,
+			'access'       => 0,
+			'path'         => '', // make sure no path is specified just yet
+			'type'         => $this->_getChildType($filename . '.' . $ext)
+		));
 
-		// setup videos to auto-play in hub
+		// Setup videos to auto-play in hub
 		if ($this->config->get('file_video_html5', 1))
 		{
 			if (in_array($ext, array('mp4', 'webm', 'ogv')))
 			{
-				$row->type = 41; // Video type
+				$resource->type = 41; // Video type
 			}
 		}
 
 		// File already exists
-		/*if ($row->loadByFile($filename, $pid))
+		$parent = Resource::oneOrFail($pid);
+
+		if ($parent->hasChild($filename))
 		{
 			echo json_encode(array(
 				'error' => Lang::txt('A file with this name and type appears to already exist.')
 			));
 			return;
-		}*/
+		}
 
 		// Store new content
-		if (!$row->save())
+		if (!$resource->save())
 		{
 			echo json_encode(array(
-				'error' => $row->getError()
+				'error' => $resource->getError()
 			));
 			return;
 		}
 
 		// Define upload directory and make sure its writable
-		$path = $row->filespace();
+		$path = $resource->filespace();
 
 		if (!is_dir($path))
 		{
@@ -353,13 +348,13 @@ class Attachments extends SiteController
 
 		if ($stream)
 		{
-			//read the php input stream to upload file
-			$input = fopen("php://input", "r");
-			$temp = tmpfile();
+			// Read the php input stream to upload file
+			$input    = fopen("php://input", "r");
+			$temp     = tmpfile();
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
 
-			//move from temp location to target location which is user folder
+			// Move from temp location to target location which is user folder
 			$target = fopen($file , "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
@@ -371,11 +366,11 @@ class Attachments extends SiteController
 		}
 
 		// Create new parent/child association
-		if (!$row->makeChildOf($pid))
+		if (!$resource->makeChildOf($pid))
 		{
 			echo json_encode(array(
 				'success'   => false,
-				'errors'    => $assoc->getErrors(),
+				'errors'    => $resource->getErrors(),
 				'file'      => $filename . '.' . $ext,
 				'directory' => '',
 				'parent'    => $pid
@@ -383,12 +378,13 @@ class Attachments extends SiteController
 			return;
 		}
 
-		if (!\Filesystem::isSafe($file))
+		// Virus scan
+		if (!Filesystem::isSafe($file))
 		{
-			if (\Filesystem::delete($file))
+			if (Filesystem::delete($file))
 			{
 				// Delete resource
-				$row->destroy();
+				$resource->destroy();
 			}
 
 			$this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
@@ -403,31 +399,18 @@ class Attachments extends SiteController
 			return;
 		}
 
-		if (!$row->path)
+		// Set the path
+		if (!$resource->path)
 		{
-			$row->path = $listdir . DS . $filename . '.' . $ext;
+			$resource->path = $listdir . DS . $filename . '.' . $ext;
 		}
-		$row->path = ltrim($row->path, DS);
-		$row->save();
+		$resource->path = ltrim($resource->path, DS);
+		$resource->save();
 
-		if (is_readable($file))
-		{
-			$hash = @sha1_file($file);
+		// Textifier
+		$this->textifier($file, $row->id);
 
-			if (!empty($hash))
-			{
-				$this->database->setQuery('SELECT id FROM `#__document_text_data` WHERE hash = \'' . $hash . '\'');
-				if (!($doc_id = $this->database->loadResult()))
-				{
-					$this->database->execute('INSERT INTO `#__document_text_data` (hash) VALUES (\'' . $hash . '\')');
-					$doc_id = $this->database->insertId();
-				}
-
-				$this->database->execute('INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
-				system('/usr/bin/textifier ' . escapeshellarg($file) . ' >/dev/null');
-			}
-		}
-
+		// Output results
 		echo json_encode(array(
 			'success'   => true,
 			'errors'    => $this->getErrors(),
@@ -447,7 +430,7 @@ class Attachments extends SiteController
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
-		$move = 'order' . Request::getVar('move', 'down');
+		$move = Request::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -463,38 +446,24 @@ class Attachments extends SiteController
 			return $this->displayTask($pid);
 		}
 
-		// Get the element moving down - item 1
-		$resource1 = new \Components\Resources\Tables\Assoc($this->database);
-		$resource1->loadAssoc($pid, $id);
-
-		// Get the element directly after it in ordering - item 2
-		$resource2 = clone($resource1);
-		$resource2->getNeighbor($move);
-
 		switch ($move)
 		{
-			case 'orderup':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $resource2->ordering;
-				$orderdn = $resource1->ordering;
-
-				$resource1->ordering = $orderup;
-				$resource2->ordering = $orderdn;
+			case 'up':
+				$move = -1;
 			break;
 
-			case 'orderdown':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $resource1->ordering;
-				$orderdn = $resource2->ordering;
-
-				$resource1->ordering = $orderdn;
-				$resource2->ordering = $orderup;
+			case 'down':
+				$move = 1;
 			break;
 		}
 
-		// Save changes
-		$resource1->store();
-		$resource2->store();
+		// Move the record
+		$association = Association::oneByRelationship($pid, $id);
+
+		if (!$association->move($move))
+		{
+			$this->setError($association->getError());
+		}
 
 		// Push through to the attachments view
 		$this->displayTask($pid);
@@ -512,11 +481,11 @@ class Attachments extends SiteController
 		$name = Request::getVar('name', '');
 
 		// Ensure we have everything we need
-		if ($id && $name != '')
+		if ($id && $name)
 		{
-			$r = Resource::oneOrFail($id);
-			$r->set('title', $name);
-			$r->save();
+			$resource = Resource::oneOrFail($id);
+			$resource->set('title', (string)$name);
+			$resource->save();
 		}
 
 		// Echo the name
@@ -552,68 +521,56 @@ class Attachments extends SiteController
 		}
 
 		// Make the filename safe
-		$file['name'] = \Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
+
 		// Ensure file names fit.
-		$ext = \Filesystem::extension($file['name']);
+		$ext = Filesystem::extension($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
-			$file['name'] = substr($file['name'], 0, 230);
+			$file['name']  = substr($file['name'], 0, 230);
 			$file['name'] .= '.' . $ext;
 		}
 
 		// Instantiate a new resource object
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		if (!$row->bind($_POST))
-		{
-			$this->setError($row->getError());
-			$this->displayTask($pid);
-			return;
-		}
-		$row->title        = ($row->title) ? $row->title : $file['name'];
-		$row->introtext    = $row->title;
-		$row->created      = Date::toSql();
-		$row->created_by   = User::get('id');
-		$row->published    = 1;
-		$row->publish_up   = Date::toSql();
-		$row->publish_down = '0000-00-00 00:00:00';
-		$row->standalone   = 0;
-		$row->path         = ''; // make sure no path is specified just yet
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->displayTask($pid);
-		}
+		$resource = Resource::blank()->set(array(
+			'title'        => $file['name'],
+			'introtext'    => $file['name'],
+			'created'      => Date::toSql(),
+			'created_by'   => User::get('id'),
+			'published'    => 1,
+			'publish_up'   => Date::toSql(),
+			'publish_down' => '0000-00-00 00:00:00',
+			'standalone'   => 0,
+			'access'       => 0,
+			'path'         => '', // make sure no path is specified just yet
+			'type'         => $this->_getChildType($file['name'])
+		));
 
 		// File already exists
-		if ($row->loadByFile($file['name'], $pid))
+		$parent = Resource::oneOrFail($pid);
+
+		if ($parent->hasChild($file['name']))
 		{
 			$this->setError(Lang::txt('A file with this name and type appears to already exist.'));
 			return $this->displayTask($pid);
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$resource->save())
 		{
-			$this->setError($row->getError());
+			$this->setError($resource->getError());
 			return $this->displayTask($pid);
 		}
 
-		if (!$row->id)
-		{
-			$row->id = $row->insertid();
-		}
-
 		// Build the path
-		$listdir = $this->_buildPathFromDate($row->created, $row->id, '');
-		$path = $this->_buildUploadPath($listdir, '');
+		$listdir = $this->_buildPathFromDate($resource->created, $resource->id, '');
+		$path    = $this->_buildUploadPath($listdir, '');
 
 		// Make sure the upload path exist
 		if (!is_dir($path))
 		{
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($pid);
@@ -622,7 +579,7 @@ class Attachments extends SiteController
 		}
 
 		// Perform the upload
-		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_CONTRIBUTE_ERROR_UPLOADING'));
 		}
@@ -630,85 +587,86 @@ class Attachments extends SiteController
 		{
 			// File was uploaded
 			// Check the file type
-			$row->type = $this->_getChildType($file['name']);
+			$resource->type = $this->_getChildType($file['name']);
 		}
 
 		// Scan for viruses
 		$fpath = $path . DS . $file['name'];
 
-		if (!\Filesystem::isSafe($fpath))
+		if (!Filesystem::isSafe($fpath))
 		{
-			if (\Filesystem::delete($fpath))
+			if (Filesystem::delete($fpath))
 			{
-				// Delete associations to the resource
-				$row->deleteExistence();
-
 				// Delete resource
-				$row->delete();
+				$resource->destroy();
 			}
 
 			$this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
 			return $this->displayTask($pid);
 		}
 
-		if (!$row->path)
+		// Set path value
+		//
+		// NOTE: This is relative to the base resources upload path
+		if (!$resource->path)
 		{
-			$row->path = $listdir . DS . $file['name'];
+			$resource->path = $listdir . DS . $file['name'];
 		}
-		$row->path = ltrim($row->path, DS);
+		$resource->path = ltrim($resource->path, DS);
 
 		// Store new content
-		if (!$row->store())
+		if (!$resource->save())
 		{
-			$this->setError($row->getError());
+			$this->setError($resource->getError());
 			return $this->displayTask($pid);
 		}
 
-		// Instantiate a Resources Assoc object
-		$assoc = new \Components\Resources\Tables\Assoc($this->database);
-
-		// Get the last child in the ordering
-		$assoc->ordering = $assoc->getLastOrder($pid);
-		$assoc->ordering = ($assoc->ordering) ? $assoc->ordering : 0;
-
-		// Increase the ordering - new items are always last
-		$assoc->ordering++;
-
 		// Create new parent/child association
-		$assoc->parent_id = $pid;
-		$assoc->child_id  = $row->id;
-		$assoc->grouping  = 0;
-		if (!$assoc->check())
+		if (!$resource->makeChildOf($pid))
 		{
-			$this->setError($assoc->getError());
+			$this->setError($resource->getError());
+			return $this->displayTask($pid);
 		}
-		if (!$assoc->store(true))
-		{
-			$this->setError($assoc->getError());
-		}
-		else
-		{
-			if (is_readable($path . DS . $file['name']))
-			{
-				$hash = @sha1_file($path . DS . $file['name']);
 
-				if (!empty($hash))
-				{
-					$this->database->setQuery('SELECT id FROM `#__document_text_data` WHERE hash = \'' . $hash . '\'');
-					if (!($doc_id = $this->database->loadResult()))
-					{
-						$this->database->execute('INSERT INTO `#__document_text_data` (hash) VALUES (\'' . $hash . '\')');
-						$doc_id = $this->database->insertId();
-					}
-
-					$this->database->execute('INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
-					system('/usr/bin/textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
-				}
-			}
-		}
+		// Textifier
+		$this->textifier($fpath, $resource->id);
 
 		// Push through to the attachments view
 		$this->displayTask($pid);
+	}
+
+	/**
+	 * Textifier
+	 *
+	 * This scans files, such as PDFs, for
+	 * search results.
+	 *
+	 * @param   string   $path
+	 * @param   integer  $id
+	 * @return  void
+	 */
+	protected function textifier($path, $id)
+	{
+		if (is_readable($path))
+		{
+			$hash = @sha1_file($path);
+
+			if (!empty($hash))
+			{
+				$this->database->setQuery("SELECT id FROM `#__document_text_data` WHERE hash = " . $this->database->quote($hash));
+				$doc_id = $this->database->loadResult();
+
+				if (!$doc_id)
+				{
+					$this->database->execute("INSERT INTO `#__document_text_data` (hash) VALUES (" . $this->database->quote($hash) . ")");
+					$doc_id = $this->database->insertId();
+				}
+
+				$this->database->execute("INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (" . (int)$doc_id . ", " . (int)$id . ")");
+
+				system('/usr/bin/textifier ' . escapeshellarg($path) . ' >/dev/null');
+			}
+		}
 	}
 
 	/**
@@ -735,43 +693,38 @@ class Attachments extends SiteController
 		}
 
 		// Load resource info
-		$row = Resource::oneOrFail($id);
+		$resource = Resource::oneOrFail($id);
 
 		// Check for stored file
-		if ($row->path != '')
+		if ($resource->path != '')
 		{
-			$listdir = $row->path;
+			$listdir = $resource->path;
 		}
 		else
 		{
 			// No stored path, derive from created date
-			$listdir = $this->_buildPathFromDate($row->created, $id, '');
+			$listdir = $resource->relativepath();
 		}
 
 		// Build the path
-		$path = $this->_buildUploadPath($listdir, '');
+		$path = $resource->basepath() . DS . $listdir;
 
-		$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-		$baseY = $base . '/'. Date::of($row->created)->format("Y");
-		$baseM = $baseY . '/' . Date::of($row->created)->format("m");
-
-		// Check if the folder even exists
-		if (!file_exists($path) or !$path or substr($row->path, 0, strlen('http')) == 'http')
+		// Check if the path is a URL or exists
+		if (!file_exists($path) or !$path or substr($resource->path, 0, strlen('http')) == 'http')
 		{
 			//$this->setError(Lang::txt('COM_CONTRIBUTE_FILE_NOT_FOUND'));
 		}
 		else
 		{
-			if ($path == $base
-			 || $path == $baseY
-			 || $path == $baseM)
+			if ($path == $resource->basepath()
+			 || $path == $resource->relativepath())
 			{
-				$this->setError(Lang::txt('Invalid directory.'));
+				$this->setError(Lang::txt('Invalid file path.'));
 			}
 			else
 			{
-				// Attempt to delete the folder
-				if (!\Filesystem::delete($path))
+				// Attempt to delete the file
+				if (!Filesystem::delete($path))
 				{
 					$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_DELETE_FILE'));
 				}
@@ -781,7 +734,7 @@ class Attachments extends SiteController
 		if (!$this->getError())
 		{
 			// Delete resource
-			$row->destroy();
+			$resource->destroy();
 		}
 
 		// Push through to the attachments view
@@ -812,27 +765,21 @@ class Attachments extends SiteController
 		}
 
 		// Load resource info
-		$row = Resource::oneOrFail($id);
+		$resource = Resource::oneOrFail($id);
 
-		if (!$row)
-		{
-			$this->setError(Lang::txt('CONTRIBUTE_NO_CHILD_ID'));
-			return $this->displayTask($pid);
-		}
-
+		// Set value
 		$access = Request::getInt('access', 0);
 		if (!in_array($access, array(0, 1)))
 		{
 			$access = 0;
 		}
 
-		$row->set('access', $access);
+		$resource->set('access', $access);
 
 		// Store new content
-		if (!$row->save())
+		if (!$resource->save())
 		{
-			$this->setError($row->getError());
-			return $this->displayTask($pid);
+			$this->setError($resource->getError());
 		}
 
 		// Push through to the attachments view
@@ -862,7 +809,7 @@ class Attachments extends SiteController
 		// Initiate a resource
 		$resource = Resource::oneOrFail($id);
 
-		$children = $resource->children()->rows();
+		$children = $resource->children()->ordered()->rows();
 
 		// Output HTML
 		$this->view

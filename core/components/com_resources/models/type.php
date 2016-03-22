@@ -31,9 +31,13 @@
 
 namespace Components\Resources\Models;
 
+use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Base\Object;
+
+include_once(__DIR__ . DS . 'author' . DS . 'role.php');
+include_once(__DIR__ . DS . 'author' . DS . 'role' . DS . 'type.php');
 
 /**
  * Resource type model
@@ -100,6 +104,17 @@ class Type extends Relational
 		$alias = str_replace(' ', '-', $alias);
 
 		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+	}
+
+	/**
+	 * Get a list of roles for this type
+	 *
+	 * @return  object
+	 */
+	public function roles()
+	{
+		$model = new RoleType();
+		return $this->manyToMany('\Components\Resources\Models\Author\Role', $model->getTableName(), 'role_id', 'type_id');
 	}
 
 	/**

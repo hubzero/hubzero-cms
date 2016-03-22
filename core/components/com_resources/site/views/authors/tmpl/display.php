@@ -35,64 +35,63 @@ defined('_HZEXEC_') or die();
 
 $this->css('create.css');
 ?>
- <div id="small-page">
-<?php if ($this->getError()) { ?>
+<div id="small-page">
+	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
-		<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="authors-form" method="post" enctype="multipart/form-data">
-			<fieldset>
-				<div class="grid">
-					<div class="col span8">
-						<label>
-							<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
-							<?php
-							$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
-							if (count($mc) > 0) {
-								echo $mc[0];
-							} else { ?> <span class="hint"><?php echo Lang::txt('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
-							<input type="text" name="new_authors" id="acmembers" value="" />
-							<?php } ?>
-						</label>
-					</div>
-					<div class="col span2">
-						<label for="new-authors-role">
-							<span id="new-authors-role-label"><?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ROLE'); ?></span>
-							<select name="role" id="new-authors-role">
-								<option value=""><?php echo Lang::txt('COM_CONTRIBUTE_AUTHOR'); ?></option>
-								<?php
-								if ($this->roles)
-								{
-									foreach ($this->roles as $role)
-									{
-										?>
-										<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
-										<?php
-									}
-								}
-								?>
-							</select>
-						</label>
-					</div>
-					<div class="col span2 omega">
-						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('COM_CONTRIBUTE_ADD'); ?>" />
-						</p>
-					</div>
+	<?php } ?>
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="authors-form" method="post" enctype="multipart/form-data">
+		<fieldset>
+			<div class="grid">
+				<div class="col span8">
+					<label>
+						<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
+						<?php
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
+						if (count($mc) > 0) {
+							echo $mc[0];
+						} else { ?> <span class="hint"><?php echo Lang::txt('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+						<input type="text" name="new_authors" id="acmembers" value="" />
+						<?php } ?>
+					</label>
 				</div>
+				<div class="col span2">
+					<label for="new-authors-role">
+						<span id="new-authors-role-label"><?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ROLE'); ?></span>
+						<select name="role" id="new-authors-role">
+							<option value=""><?php echo Lang::txt('COM_CONTRIBUTE_AUTHOR'); ?></option>
+							<?php
+							if ($this->roles)
+							{
+								foreach ($this->roles as $role)
+								{
+									?>
+									<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+									<?php
+								}
+							}
+							?>
+						</select>
+					</label>
+				</div>
+				<div class="col span2 omega">
+					<p class="submit">
+						<input type="submit" value="<?php echo Lang::txt('COM_CONTRIBUTE_ADD'); ?>" />
+					</p>
+				</div>
+			</div>
 
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				<input type="hidden" name="tmpl" value="component" />
-				<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
-				<input type="hidden" name="task" value="save" />
-			</fieldset>
-		</form>
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			<input type="hidden" name="tmpl" value="component" />
+			<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
+			<input type="hidden" name="task" value="save" />
+		</fieldset>
+	</form>
 <?php
 // Do we have any contributors associated with this resource?
 if ($this->contributors) {
 	$i = 0;
-	$n = count( $this->contributors );
-
+	$n = $this->contributors->count();
 ?>
 	<form action="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -116,23 +115,20 @@ if ($this->contributors) {
 				<td></td>
 			</tfoot>
 			<tbody>
-<?php
-	foreach ($this->contributors as $contributor)
-	{
-		if ($contributor->lastname || $contributor->firstname) {
-			$name  = stripslashes($contributor->firstname) . ' ';
-			if ($contributor->middlename != NULL) {
-				$name .= stripslashes($contributor->middlename) . ' ';
-			}
-			$name .= stripslashes($contributor->lastname);
-		} else {
-			$name  = stripslashes($contributor->name);
-		}
-?>
+			<?php
+			foreach ($this->contributors as $contributor)
+			{
+				if (!$contributor->name)
+				{
+					$contributor->populateFromProfile();
+				}
+
+				$name = stripslashes($contributor->name);
+				?>
 				<tr class="author-<?php echo $contributor->authorid; ?>">
 					<td>
 						<span class="author-name"><?php echo $this->escape($name); ?></span><br />
-						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" id="organization-<?php echo $contributor->authorid; ?>" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION'); ?>" />
+						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" id="organization-<?php echo $contributor->authorid; ?>" size="35" value="<?php echo $this->escape(stripslashes($contributor->organization)); ?>" placeholder="<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION'); ?>" />
 						<?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
 					</td>
 					<td>
@@ -171,10 +167,10 @@ if ($this->contributors) {
 						</a>
 					</td>
 				</tr>
-<?php
-		$i++;
-	}
-?>
+				<?php
+				$i++;
+			}
+			?>
 			</tbody>
 		</table>
 	</form>

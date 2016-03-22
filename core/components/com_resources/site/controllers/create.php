@@ -32,20 +32,15 @@
 
 namespace Components\Resources\Site\Controllers;
 
+use Components\Resources\Models\Orm\Resource;
 use Components\Resources\Models\License;
 use Components\Resources\Models\Type;
-use Components\Resources\Tables\Resource;
-use Components\Resources\Tables\Assoc;
-use Components\Resources\Tables\Contributor;
-use Components\Resources\Tables\Contributor\Role;
-use Components\Resources\Tables\Contributor\RoleType;
 use Components\Resources\Models\Elements;
-use Components\Resources\Helpers\Helper;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Html;
 use Hubzero\Component\SiteController;
-use Hubzero\User\Profile;
 use Hubzero\Utility\String;
+use Hubzero\User\Profile;
 use Pathway;
 use Request;
 use Route;
@@ -55,9 +50,9 @@ use User;
 use Date;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'license.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'license.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor.php');
 
 /**
  * Resources controller for creating a resource
@@ -95,12 +90,7 @@ class Create extends SiteController
 			Request::setVar('task', 'login');
 		}
 
-		$row = new Resource($this->database);
-		if ($id = Request::getInt('id', 0))
-		{
-			// Instantiate a new resource object
-			$row->load($id);
-		}
+		$row = Resource::oneOrNew(Request::getInt('id', 0));
 
 		// Build the title
 		$this->_buildTitle($row);
@@ -206,21 +196,17 @@ class Create extends SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->title = $this->_title;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('title', $this->_title)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
 	 * Check how many steps have been completed for a resource
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     void
+	 * @param   integer  $id  Resource ID
+	 * @return  void
 	 */
 	protected function _checkProgress($id)
 	{
@@ -320,20 +306,18 @@ class Create extends SiteController
 	 */
 	public function step_type()
 	{
-		$this->view->group = Request::getVar('group', '');
-		$this->view->step = $this->step;
-		$this->view->step++;
+		$step = $this->step;
+		$step++;
 
 		// Get available resource types
-		$this->view->types = Type::getMajorTypes();
+		$types = Type::getMajorTypes();
 
-		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('group', Request::getVar('group', ''))
+			->set('step', $step)
+			->set('types', $types)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -355,49 +339,42 @@ class Create extends SiteController
 		$this->view->next_step = $this->step + 1;
 
 		// Incoming
-		$this->view->id = Request::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		if (!is_object($row))
 		{
 			// Instantiate a new resource object
-			$row = new Resource($this->database);
-			if ($this->view->id)
-			{
-				// Load the resource
-				$row->load($this->view->id);
-			}
-			else
+			$row = Resource::oneOrNew($id);
+
+			if (!$id)
 			{
 				// Load the type and set the state
-				$row->type = $type;
-				$row->published = 2;
-				$row->group_owner = $group;
+				$row->set('type', $type);
+				$row->set('published', 2);
+				$row->set('group_owner', $group);
 
 				// generate a random number for file uploader
 				$session = App::get('session');
 				if (!$session->get('resources_temp_id'))
 				{
-					$row->id = '9999' . rand(1000,10000);
-					$session->set('resources_temp_id', $row->id);
+					$row->set('id', '9999' . rand(1000,10000));
+					$session->set('resources_temp_id', $row->get('id'));
 				}
 				else
 				{
-					$row->id = $session->get('resources_temp_id');
+					$row->set('id', $session->get('resources_temp_id'));
 				}
 			}
 		}
 
 		// Output HTML
-		$this->view->row  = $row;
-		$this->view->task = 'draft';
-		$this->view->progress = $this->progress;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->set('id', $id)
+			->set('progress', $this->progress)
+			->set('task', 'draft')
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -408,8 +385,6 @@ class Create extends SiteController
 	 */
 	public function step_attach($check = FALSE)
 	{
-		//$step = $this->step;
-		//$next_step = $step+1;
 		if ($this->view->getName() != 'steps')
 		{
 			$this->setView('steps', 'attachments');
@@ -441,28 +416,25 @@ class Create extends SiteController
 		}
 
 		// Incoming
-		$this->view->id = Request::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id)
+		if (!$id)
 		{
 			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
 		// Load the resource
-		$this->view->row = new Resource($this->database);
-		$this->view->row->load($this->view->id);
+		$row = Resource::oneOrFail($id);
 
 		// Output HTML
-		$this->view->next_step = $this->step + 1;
-		$this->view->task = 'draft';
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->set('id', $id)
+			->set('next_step', $this->step + 1)
+			->set('task', 'draft')
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -473,37 +445,33 @@ class Create extends SiteController
 	public function step_authors()
 	{
 		// Incoming
-		$this->view->id = Request::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id)
+		if (!$id)
 		{
 			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
 		// Load the resource
-		$this->view->row = new Resource($this->database);
-		$this->view->row->load($this->view->id);
+		$row = Resource::oneOrFail($id);
 
 		// Get groups
 		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-		$this->view->groups = $profile->getGroups('members');
+		$groups = $profile->getGroups('members');
+
+		$this->_checkProgress($id);
 
 		// Output HTML
-		$this->view->next_step = $this->step + 1;
-		$this->view->task = 'draft';
-		if (!isset($this->view->progress) || !$this->view->progress)
-		{
-			$this->_checkProgress($this->view->id);
-			$this->view->progress = $this->progress;
-		}
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->set('id', $id)
+			->set('groups', $groups)
+			->set('next_step', $this->step + 1)
+			->set('task', 'draft')
+			->set('progress', $this->progress)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -570,7 +538,8 @@ class Create extends SiteController
 	/**
 	 * Show form for adding tags to an entry
 	 *
-	 * @return     void
+	 * @param   array  $existing
+	 * @return  void
 	 */
 	public function step_tags($existing = array())
 	{
@@ -578,42 +547,37 @@ class Create extends SiteController
 		{
 			$this->setView('steps', 'tags');
 		}
+
 		// Incoming
-		$this->view->id = Request::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id)
+		if (!$id)
 		{
 			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
-		if (!isset($this->progress))
-		{
-			// Check the progress
-			$this->_checkProgress($this->view->id);
-
-			$this->view->progress = $this->progress;
-		}
+		// Check the progress
+		$this->_checkProgress($id);
 
 		// Load the resource
-		$this->view->row = new Resource($this->database);
-		$this->view->row->load($this->view->id);
+		$row = Resource::oneOrFail($id);
 
-		$this->database->setQuery('SELECT type FROM `#__resources` WHERE id = ' . $this->view->id);
+		// Get focus areas
+		$this->database->setQuery('SELECT type FROM `#__resources` WHERE id = ' . $this->database->quote($id));
 		$fas = $this->_loadFocusAreas($this->database->loadResult());
-		$this->view->fas = array();
+		$focusareas = array();
 		foreach ($fas as $tag => $fa)
 		{
-			if (!isset($this->view->fas[$fa['label']]))
+			if (!isset($focusareas[$fa['label']]))
 			{
-				$this->view->fas[$fa['label']] = array();
+				$focusareas[$fa['label']] = array();
 			}
-			$this->view->fas[$fa['label']][$tag] = $fa;
+			$focusareas[$fa['label']][$tag] = $fa;
 		}
 
-
 		// Get all the tags on this resource
-		$tagcloud = new Tags($this->view->id);
+		$tagcloud = new Tags($id);
 		$tags_men = $tagcloud->tags();
 
 		$mytagarray = array();
@@ -623,10 +587,9 @@ class Create extends SiteController
 		}
 		$tags = implode(', ', $mytagarray);
 
-		$etags = Request::getVar('tags', '');
 		if (!$tags)
 		{
-			$tags = $etags;
+			$tags = Request::getVar('tags', '');
 		}
 
 		if ($err = Request::getInt('err', 0))
@@ -635,17 +598,17 @@ class Create extends SiteController
 		}
 
 		// Output HTML
-		$this->view->tags      = $tags;
-		$this->view->next_step = $this->step + 1;
-		$this->view->task      = 'draft';
-		$this->view->existing  = $existing;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->set('id', $id)
+			->set('tags', $tags)
+			->set('fas', $focusareas)
+			->set('next_step', $this->step + 1)
+			->set('task', 'draft')
+			->set('progress', $this->progress)
+			->set('existing', $existing)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -670,49 +633,42 @@ class Create extends SiteController
 		}
 
 		// Incoming
-		$this->view->id = Request::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id)
+		if (!$id)
 		{
 			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
-		// Get some needed libraries
-		include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'license.php');
-
 		// Load resource info
-		$this->view->resource = new Resource($this->database);
-		$this->view->resource->load($this->view->id);
+		$row = Resource::oneOrFail($id);
 
+		$usersgroups = array();
 		if (!User::isGuest())
 		{
 			$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 			// Get the groups the user has access to
-			$this->view->usersgroups = $this->_getUsersGroups($xgroups);
-		}
-		else
-		{
-			$this->view->usersgroups = array();
+			$usersgroups = $this->_getUsersGroups($xgroups);
 		}
 
 		// Output HTML
-		$this->view->next_step = $this->step + 1;
-		$this->view->task = 'submit';
-
-		$this->view->licenses = License::all()
-			->whereEquals('name', 'custom' . $this->view->id)
+		$licenses = License::all()
+			->whereEquals('name', 'custom' . $id)
 			->orWhere('name', 'NOT LIKE', 'custom%')
 			->ordered()
 			->rows();
 
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->set('id', $id)
+			->set('licenses', $licenses)
+			->set('usersgroups', $usersgroups)
+			->set('next_step', $this->step + 1)
+			->set('task', 'submit')
+			->set('progress', $this->progress)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -755,13 +711,9 @@ class Create extends SiteController
 	public function step_compose_process()
 	{
 		// Initiate extended database class
-		$row = new Resource($this->database);
-		$row->load(Request::getInt('id', 0));
+		$fields = Request::getVar('fields', array(), 'post');
 
-		if (!$row->bind($_POST))
-		{
-			App::abort(500, $row->getError());
-		}
+		$row = Resource::oneOrNew($fields['id'])->set($fields);
 
 		$isNew = $row->id < 1 || substr($row->id, 0, 4) == '9999';
 
@@ -802,7 +754,7 @@ class Create extends SiteController
 			}
 		}
 
-		$nbtag = (isset($_POST['nbtag'])) ? $_POST['nbtag'] : array();
+		$nbtag = Request::getVar('nbtag', array(), 'post');
 		$found = array();
 		foreach ($nbtag as $tagname => $tagcontent)
 		{
@@ -864,20 +816,13 @@ class Create extends SiteController
 			$row->footertext = $this->_txtClean($row->footertext);
 		}
 
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-		}
-
 		// Fall back to step if any errors found
 		if ($this->getError())
 		{
 			$this->step--;
 			$this->view->step = $this->step;
 			$this->view->setLayout('compose');
-			$this->step_compose($row);
-			return;
+			return $this->step_compose($row);
 		}
 
 		// reset id
@@ -887,21 +832,20 @@ class Create extends SiteController
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError(Lang::txt('Error: Failed to store changes.'));
 			$this->step--;
 			$this->view->step = $this->step;
 			$this->view->setLayout('compose');
-			$this->step_compose($row);
-			return;
+			return $this->step_compose($row);
 		}
 
 		// build path to temp upload folder and future permanent folder
 		$session = App::get('session');
 		$created = Date::format('Y-m-d 00:00:00');
-		$oldPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($created, $session->get('resources_temp_id') ,'');
-		$newPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $row->id, '');
+		$oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id') ,'');
+		$newPath = $row->filespace();
 
 		// if we have a temp dir, move it to permanent location
 		if (is_dir($oldPath))
@@ -920,18 +864,9 @@ class Create extends SiteController
 			$session->clear('resources_temp_id');
 		}
 
-		// Checkin the resource
-		$row->checkin();
-
 		// Is it a new resource?
 		if ($isNew)
 		{
-			// Get the resource ID
-			if (!$row->id)
-			{
-				$row->id = $row->insertid();
-			}
-
 			// Automatically attach this user as the first author
 			Request::setVar('pid', $row->id);
 			Request::setVar('id', $row->id);
@@ -987,50 +922,36 @@ class Create extends SiteController
 		}
 
 		// Load the resource
-		$row = new Resource($this->database);
-		$row->load($id);
+		$row = Resource::oneOrFail($id);
 
 		// Set the group and access level
-		$row->group_owner = Request::getVar('group_owner', '');
-		$row->access = Request::getInt('access', 0);
+		$row->set('group_owner', Request::getVar('group_owner', ''));
+		$row->set('access', Request::getInt('access', 0));
 
-		if ($row->access > 2 && !$row->group_owner)
+		if ($row->get('access') > 2 && !$row->get('group_owner'))
 		{
 			$this->setError(Lang::txt('Please select a group to restrict access to.'));
 			$this->step--;
-			$this->view->step = $this->step;
+			$this->view->set('step', $this->step);
 			$this->view->setLayout('authors');
-			$this->step_authors();
-			return;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->step--;
-			$this->view->step = $this->step;
-			$this->view->setLayout('authors');
-			$this->step_authors();
-			return;
+			return $this->step_authors();
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError(Lang::txt('Error: Failed to store changes.'));
 			$this->step--;
-			$this->view->step = $this->step;
+			$this->view->set('step', $this->step);
 			$this->view->setLayout('authors');
-			$this->step_authors();
-			return;
+			return $this->step_authors();
 		}
 	}
 
 	/**
 	 * Process the tags step
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function step_tags_process()
 	{
@@ -1209,7 +1130,7 @@ class Create extends SiteController
 	/**
 	 * Final submission
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function submitTask()
 	{
@@ -1223,12 +1144,11 @@ class Create extends SiteController
 		}
 
 		// Load resource info
-		$resource = new Resource($this->database);
-		$resource->load($id);
+		$resource = Resource::oneOrFail($id);
 
 		// Set a flag for if the resource was already published or not
 		$published = 0;
-		if ($resource->published != 2)
+		if ($resource->get('published') != 2)
 		{
 			$published = 1;
 		}
@@ -1239,8 +1159,7 @@ class Create extends SiteController
 		{
 			$this->setError(Lang::txt('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
 			$this->_checkProgress($id);
-			$this->step_review();
-			return;
+			return $this->step_review();
 		}
 
 		// Is this a newly submitted resource?
@@ -1255,20 +1174,16 @@ class Create extends SiteController
 				//checks if autoapproved content has children (configurable in options on backend)
 				if ($this->config->get('autoapprove_content_check') == 1)
 				{
-					require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'resource.php');
-					$item = new \Components\Resources\Models\Resource($id);
-
-					if (count($item->children()) < 1)
+					if ($resource->children()->total() < 1)
 					{
 						$this->setError(Lang::txt('COM_CONTRIBUTE_NO_CONTENT'));
-						$this->step_review();
-						return;
+						return $this->step_review();
 					}
 				}
 
 				// Set status to published
-				$resource->published = 1;
-				$resource->publish_up = Date::toSql();
+				$resource->set('published', 1);
+				$resource->set('publish_up', Date::toSql());
 
 				$activity = 'published';
 			}
@@ -1281,28 +1196,24 @@ class Create extends SiteController
 				if (in_array(User::get('username'), $apu))
 				{
 					// Set status to published
-					$resource->published = 1;
-					$resource->publish_up = Date::toSql();
+					$resource->set('published', 1);
+					$resource->set('publish_up', Date::toSql());
 				}
 				else
 				{
 					// Set status to pending review (submitted)
-					$resource->published = 3;
+					$resource->set('published', 3);
 				}
 			}
 
 			// Get the resource's contributors
-			$helper = new Helper($id, $this->database);
-			$helper->getCons();
+			$contributors = $resource->authors()->rows();
 
-			$contributors = $helper->_contributors;
-
-			if (!$contributors || count($contributors) <= 0)
+			if (!$contributors || $contributors->count() <= 0)
 			{
 				$this->setError(Lang::txt('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
 				$this->_checkProgress($id);
-				$this->step_review();
-				return;
+				return $this->step_review();
 			}
 
 			// Get any set emails that should be notified of ticket submission
@@ -1366,15 +1277,15 @@ class Create extends SiteController
 				'activity' => [
 					'action'      => $activity,
 					'scope'       => 'resource',
-					'scope_id'    => $resource->title,
-					'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->id) . '">' . $resource->title . '</a>'),
+					'scope_id'    => $resource->get('title'),
+					'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . $resource->get('title') . '</a>'),
 					'details'     => array(
-						'title' => $resource->title,
-						'url'   => Route::url('index.php?option=com_resources&id=' . $resource->id)
+						'title' => $resource->get('title'),
+						'url'   => Route::url($resource->link())
 					)
 				],
 				'recipients' => [
-					$resource->created_by
+					$resource->get('created_by')
 				]
 			]);
 		}
@@ -1386,56 +1297,52 @@ class Create extends SiteController
 
 			if ($license == 'custom')
 			{
-				$license .= $resource->id;
+				$license .= $resource->get('id');
 
 				$licenseText = Request::getVar('license-text', '');
+
 				if ($licenseText == '[ENTER LICENSE HERE]')
 				{
 					$this->setError(Lang::txt('Please enter a license.'));
 					$this->_checkProgress($id);
-					$this->step_review();
-					return;
+					return $this->step_review();
 				}
 
 				$rl = License::oneOrNew($license);
 				$rl->set('name', $license);
 				$rl->set('text', $licenseText);
-				$rl->set('info', $resource->id);
+				$rl->set('info', $resource->get('id'));
 				$rl->save();
 			}
 
 			// set license
-			$params = new \Hubzero\Config\Registry($resource->params);
+			$params = new \Hubzero\Config\Registry($resource->get('params'));
 			$params->set('license', $license);
 
-			$resource->params = $params->toString();
+			$resource->set('params', $params->toString());
 		}
 
-		// Save and checkin the resource
-		$resource->store();
-		$resource->checkin();
+		// Save the resource
+		$resource->save();
 
 		// If a previously published resource, redirect to the resource page
 		if ($published == 1)
 		{
 			App::redirect(
-				Route::url('index.php?option=com_resources&alias=' . ($resource->alias ? 'alias=' . $resource->alias : 'id=' . $resource->id))
+				Route::url($resource->link())
 			);
 			return;
 		}
 
 		// Output HTML
 		$this->setView($this->_controller, 'thanks');
-		$this->view->title    = $this->_title;
-		$this->view->config   = $this->config;
-		$this->view->resource = $resource;
 
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('title', $this->_title)
+			->set('config', $this->config)
+			->set('resource', $resource)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -1457,6 +1364,9 @@ class Create extends SiteController
 			return;
 		}
 
+		// Load the resource
+		$resource = Resource::oneOrNew($id);
+
 		// Incoming step
 		$step = Request::getVar('step', 1);
 
@@ -1467,25 +1377,16 @@ class Create extends SiteController
 				// Check progress
 				$this->_checkProgress($id);
 
-				// Load the resource
-				$this->view->row = new \Components\Resources\Tables\Resource($this->database);
-				$this->view->row->load($id);
-				$this->view->row->typetitle = $this->view->row->getTypeTitle(0);
-
 				// Output HTML
-				$this->view->title    = $this->_title;
-				$this->view->step     = 'discard';
-				$this->view->steps    = $this->steps;
-				$this->view->id       = $id;
-				$this->view->progress = $this->progress;
-				if ($this->getError())
-				{
-					foreach ($this->getErrors() as $error)
-					{
-						$this->view->setError($error);
-					}
-				}
-				$this->view->display();
+				$this->view
+					->set('title', $this->_title)
+					->set('step', 'discard')
+					->set('steps', $this->steps)
+					->set('row', $resource)
+					->set('id', $id)
+					->set('progress', $this->progress)
+					->setErrors($this->getErrors())
+					->display();
 			break;
 
 			case 2:
@@ -1500,46 +1401,36 @@ class Create extends SiteController
 					// Check progress
 					$this->_checkProgress($id);
 
-					// Load the resource
-					$this->view->row = new Resource($this->database);
-					$this->view->row->load($id);
-					$this->view->row->typetitle = $this->view->row->getTypeTitle(0);
-
 					// Output HTML
-					$this->view->title    = $this->_title;
-					$this->view->step     = 'discard';
-					$this->view->steps    = $this->steps;
-					$this->view->id       = $id;
-					$this->view->progress = $this->progress;
-
-					foreach ($this->getErrors() as $error)
-					{
-						$this->view->setError($error);
-					}
-
-					$this->view->display();
+					$this->view
+						->set('title', $this->_title)
+						->set('step', 'discard')
+						->set('steps', $this->steps)
+						->set('row', $resource)
+						->set('id', $id)
+						->set('progress', $this->progress)
+						->setErrors($this->getErrors())
+						->display();
 					return;
 				}
 
-				// Load the resource
-				$resource = new Resource($this->database);
-				$resource->load($id);
-
 				// Check if the resource was "published"
-				if ($resource->published == 1)
+				if ($resource->get('published') == 1)
 				{
 					// It was, so we can only mark it as "deleted"
-					if (!$this->_markRemovedContribution($id))
+					$resource->set('published', 4);
+
+					if (!$resource->save())
 					{
-						App::abort(500, $this->getError());
+						App::abort(500, $resource->getError());
 					}
 				}
 				else
 				{
 					// It wasn't. Attempt to delete the resource
-					if (!$this->_deleteContribution($id))
+					if (!$resource->destroy())
 					{
-						App::abort(500, $this->getError());
+						App::abort(500, $resource->getError());
 					}
 				}
 
@@ -1548,15 +1439,15 @@ class Create extends SiteController
 					'activity' => [
 						'action'      => 'deleted',
 						'scope'       => 'resource',
-						'scope_id'    => $resource->id,
-						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->id) . '">' . $resource->title . '</a>'),
+						'scope_id'    => $resource->get('id'),
+						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . $resource->get('title') . '</a>'),
 						'details'     => array(
-							'title' => $resource->title,
-							'url'   => Route::url('index.php?option=com_resources&id=' . $resource->id)
+							'title' => $resource->get('title'),
+							'url'   => Route::url($resource->link())
 						)
 					],
 					'recipients' => [
-						$resource->created_by
+						$resource->get('created_by')
 					]
 				]);
 
@@ -1579,222 +1470,26 @@ class Create extends SiteController
 		$id = Request::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id)
+		if ($id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=new')
-			);
-			return;
-		}
+			// Load the resource
+			$resource = Resource::oneOrFail($id);
 
-		// Load the resource
-		$resource = new Resource($this->database);
-		$resource->load($id);
+			// Check if it's in pending status
+			if ($resource->get('published') == 3)
+			{
+				// Set it back to "draft" status
+				$resource->set('published', 2);
 
-		// Check if it's in pending status
-		if ($resource->published == 3)
-		{
-			// Set it back to "draft" status
-			$resource->published = 2;
-			// Save changes
-			$resource->store();
+				// Save changes
+				$resource->save();
+			}
 		}
 
 		// Redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=new')
 		);
-	}
-
-	/**
-	 * Set the state on an item to "deleted" (4)
-	 *
-	 * @param   integer  $id  Resource ID
-	 * @return  boolean  False if errors, True on success
-	 */
-	private function _markRemovedContribution($id)
-	{
-		// Make sure we have a record to pull
-		if (!$id)
-		{
-			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
-			return false;
-		}
-
-		// Load resource info
-		$row = new Resource($this->database);
-		$row->load($id);
-
-		// Mark resource as deleted
-		$row->published = 4;
-		if (!$row->store())
-		{
-			$this->setError($row->getError());
-			return false;
-		}
-
-		// Return success
-		return true;
-	}
-
-	/**
-	 * Delete a contribution and associated content
-	 *
-	 * @param   integer  $id  Resource ID
-	 * @return  boolean  False if errors, True on success
-	 */
-	private function _deleteContribution($id)
-	{
-		// Make sure we have a record to pull
-		if (!$id)
-		{
-			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
-			return false;
-		}
-
-		// Load resource info
-		$row = new Resource($this->database);
-		$row->load($id);
-
-		// Get the resource's children
-		$helper = new Helper($id, $this->database);
-		$helper->getChildren();
-		$children = $helper->children;
-
-		// Were there any children?
-		if ($children)
-		{
-			// Loop through each child and delete its files and associations
-			foreach ($children as $child)
-			{
-				// Skip standalone children
-				if ($child->standalone == 1)
-				{
-					continue;
-				}
-
-				// Get path and delete directories
-				if ($child->path != '')
-				{
-					$listdir = $child->path;
-				}
-				else
-				{
-					// No stored path, derive from created date
-					$listdir = $this->_buildPathFromDate($child->created, $child->id, '');
-				}
-
-				// Build the path
-				$path = $this->_buildUploadPath($listdir, '');
-
-				$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-				$baseY = $base . '/'. Date::of($child->created)->format("Y");
-				$baseM = $baseY . '/' . Date::of($child->created)->format("m");
-
-				// Check if the folder even exists
-				if (!is_dir($path) or !$path)
-				{
-					$this->setError(Lang::txt('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
-				}
-				else
-				{
-					if ($path == $base
-					 || $path == $baseY
-					 || $path == $baseM)
-					{
-						$this->setError(Lang::txt('Invalid directory.'));
-					}
-					else
-					{
-						// Attempt to delete the folder
-						if (!\Filesystem::deleteDirectory($path))
-						{
-							$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
-						}
-					}
-				}
-
-				// Delete associations to the resource
-				$row->deleteExistence($child->id);
-
-				// Delete the resource
-				$row->delete($child->id);
-			}
-		}
-
-		// Get path and delete directories
-		if ($row->path != '')
-		{
-			$listdir = $row->path;
-		}
-		else
-		{
-			// No stored path, derive from created date
-			$listdir = $this->_buildPathFromDate($row->created, $id, '');
-		}
-
-		// Build the path
-		$path = $this->_buildUploadPath($listdir, '');
-
-		// Check if the folder even exists
-		if (!is_dir($path) or !$path)
-		{
-			$this->setError(Lang::txt('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
-		}
-		else
-		{
-			// Attempt to delete the folder
-			if (!\Filesystem::deleteDirectory($path))
-			{
-				$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
-			}
-		}
-
-		$row->id = $id;
-
-		// Delete associations to the resource
-		$row->deleteExistence();
-
-		// Delete the resource
-		$row->delete();
-
-		// Return success (null)
-		return true;
-	}
-
-	/**
-	 * Build the absolute path to a resource's file upload
-	 *
-	 * @param   string  $listdir  Primary upload directory
-	 * @param   string  $subdir   Sub directory of $listdir
-	 * @return  string
-	 */
-	private function _buildUploadPath($listdir, $subdir='')
-	{
-		if ($subdir)
-		{
-			$subdir = DS . trim($subdir, DS);
-		}
-
-		// Get the configured upload path
-		$base = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
-
-		// Make sure the path doesn't end with a slash
-		$listdir = DS . trim($listdir, DS);
-
-		// Does the beginning of the $listdir match the config path?
-		if (substr($listdir, 0, strlen($base)) == $base)
-		{
-			// Yes - ... this really shouldn't happen
-		}
-		else
-		{
-			// No - append it
-			$listdir = $base . $listdir;
-		}
-
-		// Build the path
-		return PATH_APP . $listdir . $subdir;
 	}
 
 	/**
@@ -1831,8 +1526,8 @@ class Create extends SiteController
 
 		if ($id)
 		{
-			$ra = new Assoc($this->database);
-			$total = $ra->getCount($id);
+			$resource = Resource::oneOrNew($id);
+			$total = $resource->children()->total();
 		}
 
 		return $total;
@@ -1850,8 +1545,8 @@ class Create extends SiteController
 
 		if ($id)
 		{
-			$rc = new Contributor($this->database);
-			$contributors = $rc->getCount($id, 'resources');
+			$resource = Resource::oneOrNew($id);
+			$total = $resource->authors()->total();
 		}
 
 		return $contributors;
@@ -1884,10 +1579,9 @@ class Create extends SiteController
 	 */
 	public function step_review_check($id)
 	{
-		$row = new Resource($this->database);
-		$row->load($id);
+		$resource = Resource::oneOrNew($id);
 
-		if ($row->published == 1)
+		if ($resource->get('published') == 1)
 		{
 			return 1;
 		}
@@ -1917,36 +1611,5 @@ class Create extends SiteController
 		$text = preg_replace('/<!--.+?-->/', '', $text);
 
 		return $text;
-	}
-
-	/**
-	 * Build a path from a creation date (0000-00-00 00:00:00)
-	 *
-	 * @param      string  $date Resource created date
-	 * @param      integer $id   Resource ID
-	 * @param      string  $base Base path to prepend
-	 * @return     string
-	 */
-	private function _buildPathFromDate($date, $id, $base='')
-	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
-		{
-			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
-		}
-		if ($date)
-		{
-			$dir_year  = Date::of($date)->format('Y');
-			$dir_month = Date::of($date)->format('m');
-		}
-		else
-		{
-			$dir_year  = Date::format('Y');
-			$dir_month = Date::format('m');
-		}
-		$dir_id = String::pad($id);
-
-		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
-
-		return $path;
 	}
 }
