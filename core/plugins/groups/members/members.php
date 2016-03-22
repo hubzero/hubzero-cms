@@ -448,6 +448,34 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				// They user is not already a member, so we can go ahead and add them
 				$users[] = $uid;
 
+				// Log activity
+				$recipients = array(
+					['group', $this->group->get('gidNumber')],
+					['user', $uid]
+				);
+				foreach ($this->group->get('managers') as $recipient)
+				{
+					$recipients[] = ['user', $recipient];
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'approved',
+						'scope'       => 'group.membership',
+						'scope_id'    => $this->group->get('gidNumber'),
+						'description' => Lang::txt(
+							'PLG_GROUPS_MEMBERS_ACTIVITY_APPROVED',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+						),
+						'details'     => array(
+							'user_id'  => $uid,
+							'group_id' => $this->group->get('gidNumber')
+						)
+					],
+					'recipients' => $recipients
+				]);
+
 				// E-mail the user, letting them know they've been approved
 				$this->notifyUser($targetuser);
 			}
@@ -524,6 +552,34 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 				// They user is not already a manager, so we can go ahead and add them
 				$users[] = $uid;
+
+				// Log activity
+				$recipients = array(
+					['group', $this->group->get('gidNumber')],
+					['user', $uid]
+				);
+				foreach ($this->group->get('managers') as $recipient)
+				{
+					$recipients[] = ['user', $recipient];
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'promoted',
+						'scope'       => 'group.membership',
+						'scope_id'    => $this->group->get('gidNumber'),
+						'description' => Lang::txt(
+							'PLG_GROUPS_MEMBERS_ACTIVITY_PROMOTED',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+						),
+						'details'     => array(
+							'user_id'  => $uid,
+							'group_id' => $this->group->get('gidNumber')
+						)
+					],
+					'recipients' => $recipients
+				]);
 			}
 			else
 			{
@@ -537,16 +593,16 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Save changes
 		$this->group->update();
 
-		// log invites
+		// log promotions
 		\Components\Groups\Models\Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'membership_promoted',
 			'comments'  => $users
 		));
 
-		$start  = Request::getVar("limitstart", 0);
-		$limit  = Request::getVar("limit", 25);
-		$filter = Request::getVar("filter", "members");
+		$start  = Request::getVar('limitstart', 0);
+		$limit  = Request::getVar('limit', 25);
+		$filter = Request::getVar('filter', 'members');
 
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start)
@@ -556,7 +612,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Demote one or more users
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function demote()
 	{
@@ -603,6 +659,34 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 
 				$users[] = $targetuser->get('id');
+
+				// Log activity
+				$recipients = array(
+					['group', $this->group->get('gidNumber')],
+					['user', $targetuser->get('id')]
+				);
+				foreach ($this->group->get('managers') as $recipient)
+				{
+					$recipients[] = ['user', $recipient];
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'demoted',
+						'scope'       => 'group.membership',
+						'scope_id'    => $this->group->get('gidNumber'),
+						'description' => Lang::txt(
+							'PLG_GROUPS_MEMBERS_ACTIVITY_DEMOTED',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id'))  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+						),
+						'details'     => array(
+							'user_id'  => $targetuser->get('id'),
+							'group_id' => $this->group->get('gidNumber')
+						)
+					],
+					'recipients' => $recipients
+				]);
 			}
 			else
 			{
@@ -642,7 +726,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for sending a message to users being removed
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	private function remove()
 	{
@@ -677,7 +761,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Remove one or more users
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function confirmremove()
 	{
@@ -741,6 +825,34 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 				GroupsMembersRole::deleteRolesForUserWithId($uid);
 
+				// Log activity
+				$recipients = array(
+					['group', $this->group->get('gidNumber')],
+					['user', $uid]
+				);
+				foreach ($this->group->get('managers') as $recipient)
+				{
+					$recipients[] = ['user', $recipient];
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'removed',
+						'scope'       => 'group.membership',
+						'scope_id'    => $this->group->get('gidNumber'),
+						'description' => Lang::txt(
+							'PLG_GROUPS_MEMBERS_ACTIVITY_REMOVED',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+						),
+						'details'     => array(
+							'user_id'  => $uid,
+							'group_id' => $this->group->get('gidNumber')
+						)
+					],
+					'recipients' => $recipients
+				]);
+
 				$this->notifyUser($targetuser);
 			}
 			else
@@ -779,7 +891,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Add members
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function add()
 	{
@@ -794,7 +906,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for a message to send to users that are denied membership
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function deny()
 	{
@@ -875,6 +987,34 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				// Add them to the array of users to deny
 				$users[] = $targetuser->get('id');
 
+				// Log activity
+				$recipients = array(
+					['group', $this->group->get('gidNumber')],
+					['user', $uid]
+				);
+				foreach ($this->group->get('managers') as $recipient)
+				{
+					$recipients[] = ['user', $recipient];
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'denied',
+						'scope'       => 'group.membership',
+						'scope_id'    => $this->group->get('gidNumber'),
+						'description' => Lang::txt(
+							'PLG_GROUPS_MEMBERS_ACTIVITY_DENIED',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+						),
+						'details'     => array(
+							'user_id'  => $uid,
+							'group_id' => $this->group->get('gidNumber')
+						)
+					],
+					'recipients' => $recipients
+				]);
+
 				// E-mail the user, letting them know they've been denied
 				$this->notifyUser($targetuser);
 			}
@@ -935,7 +1075,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Cancel membership of one or more users
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function confirmcancel()
 	{
@@ -985,6 +1125,34 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 					// Add them to the array of users to cancel invitations
 					$users[] = $targetuser->get('id');
+
+					// Log activity
+					$recipients = array(
+						['group', $this->group->get('gidNumber')],
+						['user', $uid]
+					);
+					foreach ($this->group->get('managers') as $recipient)
+					{
+						$recipients[] = ['user', $recipient];
+					}
+
+					Event::trigger('system.logActivity', [
+						'activity' => [
+							'action'      => 'denied',
+							'scope'       => 'group.membership',
+							'scope_id'    => $this->group->get('gidNumber'),
+							'description' => Lang::txt(
+								'PLG_GROUPS_MEMBERS_ACTIVITY_CANCELLED',
+								'<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
+								'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+							),
+							'details'     => array(
+								'user_id'  => $uid,
+								'group_id' => $this->group->get('gidNumber')
+							)
+						],
+						'recipients' => $recipients
+					]);
 
 					// E-mail the user, letting them know the invitation has been cancelled
 					$this->notifyUser($targetuser);
@@ -1099,6 +1267,33 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($role['id'] ? 'updated' : 'created'),
+				'scope'       => 'group.role',
+				'scope_id'    => $this->role->id,
+				'description' => Lang::txt(
+					'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_' . ($role['id'] ? 'UPDATED' : 'CREATED'),
+					$this->role->name,
+					'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'role_id'  => $uid,
+					'group_id' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn='. $this->group->get('cn').'&active=members'),
 			Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SUCCESS'),
@@ -1134,6 +1329,33 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError('An error occurred while trying to remove the member role. Please try again.');
 		}
+
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'group.role',
+				'scope_id'    => $role,
+				'description' => Lang::txt(
+					'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_DELETED',
+					$role,
+					'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'role_id'  => $uid,
+					'group_id' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
