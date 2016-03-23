@@ -308,6 +308,45 @@ class Posts extends SiteController
 			return $this->displayTask();
 		}
 
+		// Log activity
+		$post = new Post(Request::getInt('post', 0));
+
+		$title = $post->item()->get('title');
+		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
+		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
+
+		$item = '<a href="' . Route::url($url) . '">' . $title . '</a>';
+
+		$recipients = array(
+			['collection', $post->get('collection_id')],
+			['user', $row->get('created_by')],
+			['user', $post->item()->get('created_by')]
+		);
+
+		if ($row->get('parent'))
+		{
+			$parent = Comment::oneOrFail($row->get('parent'));
+			$recipients[] = ['user', $parent->get('created_by')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($comment['id'] ? 'updated' : 'created'),
+				'scope'       => 'collections.comment',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), $row->get('id'), $item),
+				'details'     => array(
+					'collection_id' => $post->get('collection_id'),
+					'post_id' => $post->get('id'),
+					'item_id' => $row->get('item_id'),
+					'url'     => Route::url($url)
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		$this->displayTask();
 	}
 
@@ -341,6 +380,36 @@ class Posts extends SiteController
 			$this->setError($comment->getError());
 		}
 
+		// Log activity
+		$post = new Post(Request::getInt('post', 0));
+
+		$title = $post->item()->get('title');
+		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
+		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
+		$item = '<a href="' . Route::url($url) . '">' . $title . '</a>';
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_COMMENT_DELETED', $comment->get('id'), $item),
+				'details'     => array(
+					'collection_id' => $post->get('collection_id'),
+					'post_id' => $post->get('id'),
+					'item_id' => $comment->get('item_id'),
+					'url'     => Route::url($url)
+				)
+			],
+			'recipients' => array(
+				['collection', $post->get('collection_id')],
+				['user', $row->get('created_by')],
+				['user', $post->item()->get('created_by')]
+			)
+		]);
+
 		// Return the topics list
 		return $this->displayTask();
 	}
@@ -369,6 +438,32 @@ class Posts extends SiteController
 			$this->setError($post->item()->getError());
 		}
 
+		// Log activity
+		$title = $post->item()->get('title');
+		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
+		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'voted',
+				'scope'       => 'collections.item',
+				'scope_id'    => $post->get('item_id'),
+				'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_VOTED', $post->get('item_id'), '<a href="' . Route::url($url) . '">' . $title . '</a>'),
+				'details'     => array(
+					'collection_id' => $post->get('collection_id'),
+					'post_id' => $post->get('id'),
+					'item_id' => $post->get('item_id'),
+					'url'     => Route::url($url)
+				)
+			],
+			'recipients' => array(
+				['collection', $post->get('collection_id')],
+				['user', $post->item()->get('created_by')]
+			)
+		]);
+
 		// Display updated item stats if called via AJAX
 		$no_html = Request::getInt('no_html', 0);
 		if ($no_html)
@@ -386,7 +481,7 @@ class Posts extends SiteController
 	/**
 	 * Repost an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function collectTask()
 	{
@@ -483,6 +578,31 @@ class Posts extends SiteController
 			return $this->getError();
 		}
 
+		// Log activity
+		$collection = new Collection($collection_id);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'created',
+				'scope'       => 'collections.post',
+				'scope_id'    => $post->id,
+				'description' => Lang::txt(
+					'COM_COLLECTIONS_ACTIVITY_COLLECTED',
+					'<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'
+				),
+				'details'     => array(
+					'collection_id' => $post->collection_id,
+					'post_id' => $post->id,
+					'item_id' => $post->item_id
+				)
+			],
+			'recipients' => array(
+				['collection', $post->collection_id],
+				['user', $collection->created_by],
+				['user', $post->created_by]
+			)
+		]);
+
 		// Display updated item stats if called via AJAX
 		if ($no_html)
 		{
@@ -499,7 +619,7 @@ class Posts extends SiteController
 	/**
 	 * Save post reordering
 	 *
-	 * @return   void
+	 * @return  void
 	 */
 	public function reorderTask()
 	{
