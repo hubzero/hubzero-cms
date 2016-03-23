@@ -94,19 +94,21 @@ if ($this->config->get('access-manage-section')) {
 		}
 		?>
 		<div class="container">
-			<span class="ordering-controls">
-				<?php if ($i != 0) { ?>
-					<a class="order-up reorder" href="<?php echo Route::url($base . '&section=' . $section->get('alias') . '&action=orderup'); ?>" title="<?php echo Lang::txt('Move up'); ?>"><?php echo Lang::txt('Move up'); ?></a>
-				<?php } else { ?>
-					<span class="order-up reorder"><?php echo Lang::txt('Move up'); ?></span>
-				<?php } ?>
+			<?php if ($this->config->get('access-edit-section') { ?>
+				<span class="ordering-controls">
+					<?php if ($i != 0) { ?>
+						<a class="order-up reorder" href="<?php echo Route::url($base . '&section=' . $section->get('alias') . '&action=orderup'); ?>" title="<?php echo Lang::txt('Move up'); ?>"><?php echo Lang::txt('Move up'); ?></a>
+					<?php } else { ?>
+						<span class="order-up reorder"><?php echo Lang::txt('Move up'); ?></span>
+					<?php } ?>
 
-				<?php if ($i < $ct) { ?>
-					<a class="order-down reorder" href="<?php echo Route::url($base . '&section=' . $section->get('alias') . '&action=orderdown'); ?>" title="<?php echo Lang::txt('Move down'); ?>"><?php echo Lang::txt('Move down'); ?></a>
-				<?php } else { ?>
-					<span class="order-down reorder"><?php echo Lang::txt('Move down'); ?></span>
-				<?php } ?>
-			</span>
+					<?php if ($i < $ct) { ?>
+						<a class="order-down reorder" href="<?php echo Route::url($base . '&section=' . $section->get('alias') . '&action=orderdown'); ?>" title="<?php echo Lang::txt('Move down'); ?>"><?php echo Lang::txt('Move down'); ?></a>
+					<?php } else { ?>
+						<span class="order-down reorder"><?php echo Lang::txt('Move down'); ?></span>
+					<?php } ?>
+				</span>
+			<?php } ?>
 
 			<table class="entries categories">
 				<caption>
