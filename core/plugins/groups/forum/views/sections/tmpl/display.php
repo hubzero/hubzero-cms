@@ -94,7 +94,7 @@ if ($this->config->get('access-manage-section')) {
 		}
 		?>
 		<div class="container">
-			<?php if ($this->config->get('access-edit-section') { ?>
+			<?php if ($this->config->get('access-edit-section')) { ?>
 				<span class="ordering-controls">
 					<?php if ($i != 0) { ?>
 						<a class="order-up reorder" href="<?php echo Route::url($base . '&section=' . $section->get('alias') . '&action=orderup'); ?>" title="<?php echo Lang::txt('Move up'); ?>"><?php echo Lang::txt('Move up'); ?></a>
