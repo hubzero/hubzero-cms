@@ -32,9 +32,9 @@
 
 function request($name, $default = '')
 {
-	$var = isset($_GET[$name]) ? $_GET[$name] : $default;
+	$var = isset($_GET[$name]) ? urldecode($_GET[$name]) : $default;
 	$var = str_replace('#', '', $var);
-	$var = preg_replace('/[^a-zA-Z0-9]/', '', $var);
+	$var = preg_replace('/[^a-zA-Z0-9\.\/_\-]/', '', $var);
 
 	return $var;
 }
@@ -343,6 +343,24 @@ switch ($bground)
 
 	default:
 		$opacity = '1';
+		if ($bground)
+		{
+			$opacity = '0';
+			$styles .= '
+			#outer-wrap {
+				background-image: url(' . $bground . ');
+				background-size: 100% auto;
+				background-position: 0 0;
+				background-repeat: no-repeat;
+			}
+			@media (max-width: 700px) {
+				#outer-wrap {
+					background-size: 700px auto;
+					background-position: 50% 0;
+				}
+			}
+			';
+		}
 	break;
 }
 
@@ -364,10 +382,6 @@ $styles .= '
 	#wrap {
 		background-color: rgba(' . hex2rgb($color1) . ', ' . $opacity . ');
 	}
-	/*#features {
-		background-color: #' . $color2 . ' !important;
-		color: #fff;
-	}*/
 ';
 
 $patterns = array(

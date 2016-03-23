@@ -39,11 +39,11 @@ $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?
 // Load theme
 $color1  = str_replace('#', '', $this->params->get('colorPrimary', '2f8dc9')); // 2f8dc9  171a1f
 $color2  = str_replace('#', '', $this->params->get('colorSecondary', '2f8dc9'));
-$bground = $this->params->get('background', 'delauney');
+$bground = $this->params->get('backgroundImage', $this->params->get('background', 'delauney'));
 
 $hash = md5($color1 . $bground . $color2);
 $p = substr(PATH_APP, strlen(PATH_ROOT));
-$path = '/templates/' . $this->template . '/css/theme.php?path=' . urlencode($p) . '&color1=' . $color1 . '&color2=' . $color2 . '&background=' . $bground;
+$path = '/templates/' . $this->template . '/css/theme.php?path=' . urlencode($p) . '&color1=' . urlencode($color1) . '&color2=' . urlencode($color2) . '&background=' . urlencode($bground);
 if (file_exists(PATH_APP . '/cache/site/' . $hash . '.css'))
 {
 	$path = '/cache/site/' . $hash . '.css';

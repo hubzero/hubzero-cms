@@ -81,6 +81,7 @@
 					<option value="delauney">TPL_KIMERA_FIELD_BACKGROUND_DELAUNEY</option>
 					<option value="bokeh">TPL_KIMERA_FIELD_BACKGROUND_BOKEH</option>
 				</field>
+				<field name="backgroundImage" type="text" default="" label="TPL_KIMERA_FIELD_BACKGROUNDIMG_LABEL" description="TPL_KIMERA_FIELD_BACKGROUNDIMG_DESC" />
 				<field name="colorPrimary" type="color" default="" label="TPL_KIMERA_FIELD_COLORPRIMARY_LABEL" description="TPL_KIMERA_FIELD_COLORPRIMARY_DESC" />
 				<field name="colorSecondary" type="color" default="" label="TPL_KIMERA_FIELD_COLORSECONDARY_LABEL" description="TPL_KIMERA_FIELD_COLORSECONDARY_DESC" />
 			</fieldset>
