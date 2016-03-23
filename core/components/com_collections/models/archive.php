@@ -456,8 +456,23 @@ class Archive extends Object
 				$member = Profile::getInstance($user->get('id'));
 
 				$usergroups = $member->getGroups('members');
+				$usergroups_manager = $member->getGroups('managers');
+
 				if ($usergroups)
 				{
+					if ($usergroups_manager)
+					{
+						foreach ($usergroups_manager as $manager_group)
+						{
+							foreach ($usergroups as $user_group)
+							{
+								if ($user_group->gidNumber == $manager_group->gidNumber)
+								{
+									$user_group->manager = $manager_group->manager;
+								}
+							}
+						}
+					}
 					foreach ($usergroups as $usergroup)
 					{
 						$groups = $tbl->getRecords(array(
@@ -477,7 +492,7 @@ class Archive extends Object
 								{
 									$collections[$s->group_alias] = array();
 								}
-								if ($usergroup->params->get('create_post', 0) && !$usergroup->manager)
+								if ($usergroup->params->get('create_post', 0) == 1 && !$usergroup->manager)
 								{
 									continue;
 								}
