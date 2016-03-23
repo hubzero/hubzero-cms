@@ -73,118 +73,134 @@ if ($this->config->get('access-manage-section')) {
 		</form>
 
 	<?php
-		$filters = array('access' => 0);
-		if (!User::isGuest())
+	$filters = array('access' => 0);
+	if (!User::isGuest())
+	{
+		$filters['access'] = array(0, 1, 3);
+		if ($this->config->get('access-view-section'))
 		{
-			$filters['access'] = array(0, 1, 3);
-			if ($this->config->get('access-view-section'))
-			{
-				$filters['access'] = array(0, 1, 3, 4);
-			}
+			$filters['access'] = array(0, 1, 3, 4);
 		}
+	}
 
-		foreach ($this->sections as $section)
+	$ct = count($this->sections);
+
+	$ct--;
+	foreach ($this->sections as $i => $section)
+	{
+		if (!$section->exists())
 		{
-			if (!$section->exists())
-			{
-				continue;
-			}
-	?>
+			continue;
+		}
+		?>
 		<div class="container">
+			<span class="ordering-controls">
+				<?php if ($i != 0) { ?>
+					<a class="order-up reorder" href="<?php echo Route::url($base . '&section=' . $section->get('alias') . '&action=orderup'); ?>" title="<?php echo Lang::txt('Move up'); ?>"><?php echo Lang::txt('Move up'); ?></a>
+				<?php } else { ?>
+					<span class="order-up reorder"><?php echo Lang::txt('Move up'); ?></span>
+				<?php } ?>
+
+				<?php if ($i < $ct) { ?>
+					<a class="order-down reorder" href="<?php echo Route::url($base . '&section=' . $section->get('alias') . '&action=orderdown'); ?>" title="<?php echo Lang::txt('Move down'); ?>"><?php echo Lang::txt('Move down'); ?></a>
+				<?php } else { ?>
+					<span class="order-down reorder"><?php echo Lang::txt('Move down'); ?></span>
+				<?php } ?>
+			</span>
+
 			<table class="entries categories">
 				<caption>
-				<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias')) { ?>
-					<a name="s<?php echo $section->get('id'); ?>"></a>
-					<form action="<?php echo Route::url($base); ?>" method="post">
-						<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
-						<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
+					<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias')) { ?>
+						<form action="<?php echo Route::url($base); ?>" method="post" id="s<?php echo $section->get('id'); ?>">
+							<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
 
-						<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
-						<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
-						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
-						<input type="hidden" name="action" value="savesection" />
-						<input type="hidden" name="active" value="forum" />
-						<?php echo Html::input('token'); ?>
-					</form>
-				<?php } else { ?>
-					<?php echo $this->escape(stripslashes($section->get('title'))); ?>
-				<?php } ?>
-			<?php if ($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) { ?>
-				<?php if ($this->config->get('access-delete-section')) { ?>
-					<a class="icon-delete delete" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/delete'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>">
-						<span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span>
-					</a>
-				<?php } ?>
-				<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias')) { ?>
-					<a class="icon-edit edit" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>">
-						<span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>
-					</a>
-				<?php } ?>
-			<?php } ?>
-				</caption>
-			<?php if ($this->config->get('access-create-category')) { ?>
-				<tfoot>
-					<tr>
-						<td<?php if ($section->categories()->total() > 0) { echo ' colspan="5"'; } ?>>
-							<a class="icon-add add btn" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/new'); ?>">
-								<span><?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_CATEGORY'); ?></span>
-							</a>
-						</td>
-					</tr>
-				</tfoot>
-			<?php } ?>
-				<tbody>
-			<?php if ($section->categories('list', $filters)->total() > 0) { ?>
-				<?php foreach ($section->categories() as $row) { ?>
-					<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
-						<th class="priority-5" scope="row">
-							<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
-						</th>
-						<td>
-							<a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
-								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-							</a>
-							<span class="entry-details">
-								<span class="entry-description">
-									<?php echo $this->escape(stripslashes($row->get('description'))); ?>
-								</span>
-							</span>
-						</td>
-						<td class="priority-4">
-							<span><?php echo $row->count('threads'); ?></span>
-							<span class="entry-details">
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_DISCUSSIONS'); ?>
-							</span>
-						</td>
-						<td class="priority-4">
-							<span><?php echo ($row->count('threads') ? $row->count('posts') : 0); ?></span>
-							<span class="entry-details">
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_POSTS'); ?>
-							</span>
-						</td>
-					<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
-						<td class="entry-options">
-							<?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) { ?>
-								<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>">
-									<span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>
-								</a>
-							<?php } ?>
-							<?php if ($this->config->get('access-delete-category')) { ?>
-								<a class="icon-delete delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>">
-									<span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span>
-								</a>
-							<?php } ?>
-						</td>
+							<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
+							<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
+							<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
+							<input type="hidden" name="action" value="savesection" />
+							<input type="hidden" name="active" value="forum" />
+							<?php echo Html::input('token'); ?>
+						</form>
+					<?php } else { ?>
+						<?php echo $this->escape(stripslashes($section->get('title'))); ?>
 					<?php } ?>
-					</tr>
+					<?php if ($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) { ?>
+						<?php if ($this->config->get('access-delete-section')) { ?>
+							<a class="icon-delete delete" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/delete'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>">
+								<span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span>
+							</a>
+						<?php } ?>
+						<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias')) { ?>
+							<a class="icon-edit edit" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>">
+								<span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>
+							</a>
+						<?php } ?>
+					<?php } ?>
+				</caption>
+				<?php if ($this->config->get('access-create-category')) { ?>
+					<tfoot>
+						<tr>
+							<td<?php if ($section->categories()->total() > 0) { echo ' colspan="5"'; } ?>>
+								<a class="icon-add add btn" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/new'); ?>">
+									<span><?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_CATEGORY'); ?></span>
+								</a>
+							</td>
+						</tr>
+					</tfoot>
 				<?php } ?>
-			<?php } else { ?>
-					<tr>
-						<td><?php echo Lang::txt('PLG_GROUPS_FORUM_NO_CATEGORIES'); ?></td>
-					</tr>
-			<?php } ?>
+				<tbody>
+					<?php if ($section->categories('list', $filters)->total() > 0) { ?>
+						<?php foreach ($section->categories() as $row) { ?>
+							<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
+								<th class="priority-5" scope="row">
+									<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
+								</th>
+								<td>
+									<a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
+										<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+									</a>
+									<span class="entry-details">
+										<span class="entry-description">
+											<?php echo $this->escape(stripslashes($row->get('description'))); ?>
+										</span>
+									</span>
+								</td>
+								<td class="priority-4">
+									<span><?php echo $row->count('threads'); ?></span>
+									<span class="entry-details">
+										<?php echo Lang::txt('PLG_GROUPS_FORUM_DISCUSSIONS'); ?>
+									</span>
+								</td>
+								<td class="priority-4">
+									<span><?php echo ($row->count('threads') ? $row->count('posts') : 0); ?></span>
+									<span class="entry-details">
+										<?php echo Lang::txt('PLG_GROUPS_FORUM_POSTS'); ?>
+									</span>
+								</td>
+							<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
+								<td class="entry-options">
+									<?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) { ?>
+										<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>">
+											<span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>
+										</a>
+									<?php } ?>
+									<?php if ($this->config->get('access-delete-category')) { ?>
+										<a class="icon-delete delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>">
+											<span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span>
+										</a>
+									<?php } ?>
+								</td>
+							<?php } ?>
+							</tr>
+						<?php } ?>
+					<?php } else { ?>
+							<tr>
+								<td><?php echo Lang::txt('PLG_GROUPS_FORUM_NO_CATEGORIES'); ?></td>
+							</tr>
+					<?php } ?>
 				</tbody>
 			</table>
 		</div>

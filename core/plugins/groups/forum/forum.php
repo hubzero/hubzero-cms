@@ -275,6 +275,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				case 'editthread':     $arr['html'] .= $this->editthread();     break;
 				case 'deletethread':   $arr['html'] .= $this->deletethread();   break;
 
+				case 'orderup':        $arr['html'] .= $this->orderup();        break;
+				case 'orderdown':      $arr['html'] .= $this->orderdown();      break;
+
 				case 'download':       $arr['html'] .= $this->download();       break;
 				case 'search':         $arr['html'] .= $this->search();         break;
 
@@ -468,7 +471,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope_id'   => $this->model->get('scope_id'),
 			'search'     => Request::getVar('q', ''),
 			'state'      => 1,
-			'access'     => array(0)
+			'access'     => array(0),
+			'sort'       => 'ordering',
+			'sort_Dir'   => 'ASC'
 		);
 
 		if (!User::isGuest())
@@ -505,7 +510,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			{
 				$this->setError($this->model->getError());
 			}
-			$this->view->sections = $this->model->sections('list', array('state' => 1));
+			$this->view->sections = $this->model->sections('list', $this->view->filters); //array('state' => 1));
 		}
 
 		$this->view->model  = $this->model;
@@ -2105,6 +2110,61 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
 			Lang::txt('PLG_GROUPS_FORUM_UNSUBSCRIBE_SUCCESSFULLY_UNSUBSCRIBED')
+		);
+	}
+
+	/**
+	 * Reorder a record up
+	 *
+	 * @return  void
+	 */
+	public function orderup()
+	{
+		return $this->reorder(-1);
+	}
+
+	/**
+	 * Reorder a record up
+	 *
+	 * @return  void
+	 */
+	public function orderdown()
+	{
+		return $this->reorder(1);
+	}
+
+	/**
+	 * Reorder a plugin
+	 *
+	 * @param   integer  $access  Access level to set
+	 * @return  void
+	 */
+	public function reorder($inc=1)
+	{
+		if (User::isGuest())
+		{
+			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
+			return;
+		}
+
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
+			return $this->sections();
+		}
+
+		$alias = Request::getVar('section', '');
+
+		$row = new \Components\Forum\Tables\Section($this->database);
+
+		if ($row->loadByAlias($alias, $this->group->get('gidNumber'), 'group'))
+		{
+			$row->move($inc, 'scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
+			$row->reorder('scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
+		}
+
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name)
 		);
 	}
 }
