@@ -161,9 +161,29 @@ class Sections extends SiteController
 			return;
 		}
 
+		$url = 'index.php?option=' . $this->_option;
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'forum.section',
+				'scope_id'    => $section->get('id'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $section->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $section->get('title'),
+					'url'   => Route::url($url)
+				)
+			],
+			'recipients' => array(
+				['forum.site', 1],
+				['user', $section->get('created_by')]
+			)
+		]);
+
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option)
+			Route::url($url)
 		);
 	}
 
@@ -225,9 +245,29 @@ class Sections extends SiteController
 			return;
 		}
 
+		$url = 'index.php?option=' . $this->_option;
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'forum.section',
+				'scope_id'    => $section->get('id'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($url) . '">' . $section->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $section->get('title'),
+					'url'   => Route::url($url)
+				)
+			],
+			'recipients' => array(
+				['forum.site', 1],
+				['user', $section->get('created_by')]
+			)
+		]);
+
 		// Redirect to main listing
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option),
+			Route::url($url),
 			Lang::txt('COM_FORUM_SECTION_DELETED'),
 			'message'
 		);

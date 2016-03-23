@@ -401,9 +401,29 @@ class Categories extends SiteController
 			return;
 		}
 
+		$url = 'index.php?option=' . $this->_option;
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'forum.category',
+				'scope_id'    => $model->get('id'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $model->get('title'),
+					'url'   => Route::url($url)
+				)
+			],
+			'recipients' => array(
+				['forum.site', 1],
+				['user', $model->get('created_by')]
+			)
+		]);
+
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option)
+			Route::url($url)
 		);
 	}
 
@@ -414,11 +434,13 @@ class Categories extends SiteController
 	 */
 	public function deleteTask()
 	{
+		$url = 'index.php?option=' . $this->_option;
+
 		// Is the user logged in?
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($url, false, true))),
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -435,7 +457,7 @@ class Categories extends SiteController
 		if (!$category->exists())
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option),
+				Route::url($url),
 				Lang::txt('COM_FORUM_MISSING_ID'),
 				'error'
 			);
@@ -447,7 +469,7 @@ class Categories extends SiteController
 		if (!$this->config->get('access-delete-category'))
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option),
+				Route::url($url),
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
@@ -466,16 +488,34 @@ class Categories extends SiteController
 		if (!$category->store())
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option),
+				Route::url($url),
 				$category->getError(),
 				'error'
 			);
 			return;
 		}
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'forum.category',
+				'scope_id'    => $model->get('id'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $model->get('title'),
+					'url'   => Route::url($url)
+				)
+			],
+			'recipients' => array(
+				['forum.site', 1],
+				['user', $model->get('created_by')]
+			)
+		]);
+
 		// Redirect to main listing
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option),
+			Route::url($url),
 			Lang::txt('COM_FORUM_CATEGORY_DELETED'),
 			'message'
 		);

@@ -550,9 +550,50 @@ class Threads extends SiteController
 
 		$category = new Category($model->get('category_id'));
 
+		$url = 'index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $parent . '#c' . $model->get('id');
+
+		// Record the activity
+		$recipients = array(
+			['forum.site', 1],
+			['user', $model->get('created_by')]
+		);
+		$type = 'thread';
+		$desc = Lang::txt(
+			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+			'<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'
+		);
+		if ($model->get('parent'))
+		{
+			$thread = new Post($model->get('thread'));
+
+			$type = 'post';
+			$desc = Lang::txt(
+				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+				$model->get('id'),
+				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
+			);
+
+			$parent = new Post($model->get('parent'));
+			$recipients[] = ['user', $parent->get('created_by')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'forum.' . $type,
+				'scope_id'    => $model->get('id'),
+				'description' => $desc,
+				'details'     => array(
+					'thread' => $model->get('thread'),
+					'url'    => Route::url($url)
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $parent . '#c' . $model->get('id')),
+			Route::url($url),
 			$message,
 			'message'
 		);
@@ -632,6 +673,41 @@ class Threads extends SiteController
 
 		// Delete the attachment associated with the post
 		$this->markForDelete($id);
+
+		// Record the activity
+		$type = 'thread';
+		$desc = Lang::txt(
+			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
+			'<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'
+		);
+		if ($model->get('parent'))
+		{
+			$thread = new Post($model->get('thread'));
+
+			$type = 'post';
+			$desc = Lang::txt(
+				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
+				$model->get('id'),
+				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
+			);
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'forum.' . $type,
+				'scope_id'    => $model->get('id'),
+				'description' => $desc,
+				'details'     => array(
+					'thread' => $model->get('thread'),
+					'url'    => Route::url($url)
+				)
+			],
+			'recipients' => array(
+				['forum.site', 1],
+				['user', $model->get('created_by')]
+			)
+		]);
 
 		// Redirect to main listing
 		App::redirect(
