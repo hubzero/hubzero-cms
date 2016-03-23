@@ -619,7 +619,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
 					'url'   => Route::url($this->base)
@@ -1623,7 +1623,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.post',
 				'scope_id'    => $epost->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_THREAD_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $ethread->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_THREAD_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $ethread->get('title') . '</a>'),
 				'details'     => array(
 					'thread' => $epost->get('thread'),
 					'url'    => Route::url($url)
