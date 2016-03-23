@@ -151,7 +151,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			//group vars
 			//$this->members = $members;
 			//get the plugins params
-			$this->params = \Hubzero\Plugin\Params::getParams($this->group->get('gidNumber'), 'groups', $this->_name);
+			$p = new \Hubzero\Plugin\Params($this->database);
+			$this->params = $p->getParams($this->group->get('gidNumber'), 'groups', $this->_name);
 
 			$this->params->set('access-plugin', $group_plugin_acl);
 
@@ -273,6 +274,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				case 'savethread':     $arr['html'] .= $this->savethread();     break;
 				case 'editthread':     $arr['html'] .= $this->editthread();     break;
 				case 'deletethread':   $arr['html'] .= $this->deletethread();   break;
+
+				case 'orderup':        $arr['html'] .= $this->orderup();        break;
+				case 'orderdown':      $arr['html'] .= $this->orderdown();      break;
 
 				case 'download':       $arr['html'] .= $this->download();       break;
 				case 'search':         $arr['html'] .= $this->search();         break;
@@ -445,22 +449,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Display a warning message
-	 *
-	 * @return  string
-	 */
-	protected function login()
-	{
-		$return = base64_encode(Route::url($this->base, false, true));
-
-		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-			Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
-			'warning'
-		);
-	}
-
-	/**
 	 * Show sections in this forum
 	 *
 	 * @return     string
@@ -483,7 +471,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope_id'   => $this->model->get('scope_id'),
 			'search'     => Request::getVar('q', ''),
 			'state'      => 1,
-			'access'     => array(0)
+			'access'     => array(0),
+			'sort'       => 'ordering',
+			'sort_Dir'   => 'ASC'
 		);
 
 		if (!User::isGuest())
@@ -520,7 +510,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			{
 				$this->setError($this->model->getError());
 			}
-			$this->view->sections = $this->model->sections('list', array('state' => 1));
+			$this->view->sections = $this->model->sections('list', $this->view->filters); //array('state' => 1));
 		}
 
 		$this->view->model  = $this->model;
@@ -604,30 +594,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Log activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')],
-			['user', $model->created_by]
-		);
-		foreach ($this->group->get('managers') as $recipient)
-		{
-			$recipients[] = ['user', $recipient];
-		}
-
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
-				'scope'       => 'forum.section',
-				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
-				'details'     => array(
-					'title' => $section->get('title'),
-					'url'   => Route::url($this->base)
-				)
-			],
-			'recipients' => $recipients
-		]);
-
 		// Set the redirect
 		App::redirect(
 			Route::url($this->base)
@@ -644,7 +610,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			return $this->login();
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base))),
+				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
 		}
 
 		// Incoming
@@ -690,30 +661,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Log activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')],
-			['user', $model->created_by]
-		);
-		foreach ($this->group->get('managers') as $recipient)
-		{
-			$recipients[] = ['user', $recipient];
-		}
-
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => 'deleted',
-				'scope'       => 'forum.section',
-				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
-				'details'     => array(
-					'title' => $section->get('title'),
-					'url'   => Route::url($this->base)
-				)
-			],
-			'recipients' => $recipients
-		]);
-
 		// Redirect to main listing
 		App::redirect(
 			Route::url($this->base),
@@ -723,14 +670,23 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Display threads in a category
+	 * Short description for 'topics'
 	 *
-	 * @return  string
+	 * @return     string
 	 */
 	public function categories()
 	{
+		$this->view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'groups',
+				'element' => $this->_name,
+				'name'    => 'categories',
+				'layout'  => 'display'
+			)
+		);
+
 		// Incoming
-		$filters = array(
+		$this->view->filters = array(
 			'authorized' => 1,
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
@@ -745,83 +701,87 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		);
 		if (!User::isGuest())
 		{
-			$filters['access'] = array(0, 1, 3);
+			$this->view->filters['access'] = array(0, 1, 3);
 		}
 		if (in_array(User::get('id'), $this->members))
 		{
-			$filters['access'] = array(0, 1, 3, 4);
+			$this->view->filters['access'] = array(0, 1, 3, 4);
 		}
 
-		$filters['sortby'] = Request::getWord('sortby', 'activity');
-		switch ($filters['sortby'])
+		$this->view->filters['sortby']   = Request::getWord('sortby', 'activity');
+		switch ($this->view->filters['sortby'])
 		{
 			case 'title':
-				$filters['sort'] = 'c.sticky DESC, c.title';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
+				$this->view->filters['sort'] = 'c.sticky DESC, c.title';
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
-				$filters['sort'] = 'c.sticky DESC, replies';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort'] = 'c.sticky DESC, replies';
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'created':
-				$filters['sort'] = 'c.sticky DESC, c.created';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort'] = 'c.sticky DESC, c.created';
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
-				$filters['sort'] = 'c.sticky DESC, activity';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort'] = 'c.sticky DESC, activity';
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 		}
 
-		$section = $this->model->section($filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
-
-		if (!$section->exists())
+		$this->view->section  = $this->model->section($this->view->filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
+		if (!$this->view->section->exists())
 		{
 			App::abort(404, Lang::txt('Section not found.'));
+			return;
 		}
 
-		if ($section->get('scope_id') != $this->model->get('scope_id')
-		 || $section->get('scope') != $this->model->get('scope'))
+		if ($this->view->section->get('scope_id') != $this->model->get('scope_id')
+		 || $this->view->section->get('scope') != $this->model->get('scope'))
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_SECTION_NOT_FOUND'));
+			return;
 		}
 
-		$category = $section->category($filters['category']);
-
-		if (!$category->exists())
+		$this->view->category = $this->view->section->category($this->view->filters['category']);
+		if (!$this->view->category->exists())
 		{
-			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
+			App::abort(404, Lang::txt('Category not found.'));
+			return;
 		}
 
-		if ($category->get('scope_id') != $this->model->get('scope_id')
-		 || $category->get('scope') != $this->model->get('scope'))
+		if ($this->view->category->get('scope_id') != $this->model->get('scope_id')
+		 || $this->view->category->get('scope') != $this->model->get('scope'))
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
+			return;
 		}
 
 		//get authorization
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		if ($category->get('access') == 4 && !$this->params->get('access-view-category'))
+		if ($this->view->category->get('access') == 4 && !$this->params->get('access-view-category'))
 		{
 			App::abort(403, Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
+			return;
 		}
 
-		$this->view = $this->view('display', 'categories')
-			->set('model', $this->model)
-			->set('config', $this->params)
-			->set('group', $this->group)
-			->set('option', $this->option)
-			->set('section', $section)
-			->set('category', $category)
-			->set('filters', $filters)
-			->set('notifications', $this->getPluginMessage()) // DELETE
-			->setErrors($this->getErrors());
+		$this->view->model  = $this->model;
+		$this->view->config = $this->params;
+		$this->view->group  = $this->group;
+		$this->view->option = $this->option;
+		$this->view->notifications = $this->getPluginMessage();
+
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
 
 		return $this->view->loadTemplate();
 	}
@@ -829,12 +789,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Search forum entries and display results
 	 *
-	 * @return  string
+	 * @return     string
 	 */
 	public function search()
 	{
+		$this->view = $this->view('search', 'categories');
+
 		// Incoming
-		$filters = array(
+		$this->view->filters = array(
 			'authorized' => 1,
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
@@ -846,57 +808,59 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		);
 		if (!User::isGuest())
 		{
-			$filters['access'] = array(0, 1, 3);
+			$this->view->filters['access'] = array(0, 1, 3);
 		}
 		if (in_array(User::get('id'), $this->members))
 		{
-			$filters['access'] = array(0, 1, 3, 4);
+			$this->view->filters['access'] = array(0, 1, 3, 4);
 		}
 
-		// We need to create a pseudo section
-		$section = $this->model->section(0);
-		$section->set('title', Lang::txt('Posts'));
-		$section->set('alias', str_replace(' ', '-', $section->get('title')));
-		$section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($section->get('title'))));
+		$this->view->section = $this->model->section(0);
+		$this->view->section->set('title', Lang::txt('Posts'));
+		$this->view->section->set('alias', str_replace(' ', '-', $this->view->section->get('title')));
+		$this->view->section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->get('title'))));
 
 		// Get all sections
+		$sections = $this->model->sections();
 		$s = array();
-		foreach ($this->model->sections() as $sect)
+		foreach ($sections as $section)
 		{
-			$s[$sect->get('id')] = $sect;
+			$s[$section->get('id')] = $section;
 		}
+		$this->view->sections = $s;
 
-		$category = $section->category(0);
-		$category->set('title', Lang::txt('Search'));
-		$category->set('alias', str_replace(' ', '-', $category->get('title')));
-		$category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($category->get('title'))));
+		$this->view->category = $this->view->section->category(0);
+		$this->view->category->set('title', Lang::txt('Search'));
+		$this->view->category->set('alias', str_replace(' ', '-', $this->view->category->get('title')));
+		$this->view->category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->get('title'))));
+
+		$this->view->thread = $this->view->category->thread(0);
 
 		// Get all categories
-		$categories = $section->categories('list', array('section_id' => -1));
+		$categories = $this->view->section->categories('list', array('section_id' => -1));
 		$c = array();
-		foreach ($categories as $cat)
+		foreach ($categories as $category)
 		{
-			$c[$cat->get('id')] = $cat;
+			$c[$category->get('id')] = $category;
 		}
+		$this->view->categories = $c;
 
-		// Set up a pseudo thread to retrieve posts from
-		$thread = $category->thread(0);
-
-		// get authorization
+		//get authorization
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		$this->view = $this->view('search', 'categories')
-			->set('model', $this->model)
-			->set('config', $this->params)
-			->set('group', $this->group)
-			->set('option', $this->option)
-			->set('section', $section)
-			->set('category', $category)
-			->set('sections', $s)
-			->set('categories', $c)
-			->set('thread', $thread)
-			->setErrors($this->getErrors());
+		$this->view->model  = $this->model;
+		$this->view->config = $this->params;
+		$this->view->group  = $this->group;
+		$this->view->option = $this->option;
+
+		$this->view->notifications = $this->getPluginMessage();
+
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
 
 		return $this->view->loadTemplate();
 	}
@@ -904,35 +868,44 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show a form for editing a category
 	 *
-	 * @param   object  $category
-	 * @return  string
+	 * @return     string
 	 */
-	public function editcategory($category=null)
+	public function editcategory($model=null)
 	{
 		if (User::isGuest())
 		{
-			return $this->login();
+			$return = Route::url($this->base);
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+			);
+			return;
 		}
 
-		$section = $this->model->section(Request::getVar('section', ''));
+		$this->view = $this->view('edit', 'categories');
+
+		$this->view->section = $this->model->section(Request::getVar('section', ''));
 
 		// Incoming
-		if (!is_object($model))
+		if (is_object($model))
 		{
-			$category = new \Components\Forum\Models\Category(
+			$this->view->category = $model;
+		}
+		else
+		{
+			$this->view->category = new \Components\Forum\Models\Category(
 				Request::getVar('category', ''),
-				$section->get('id')
+				$this->view->section->get('id')
 			);
 		}
 
-		$this->_authorize('category', $category->get('id'));
+		$this->_authorize('category', $this->view->category->get('id'));
 
-		if (!$category->exists())
+		if (!$this->view->category->exists())
 		{
-			$category->set('created_by', User::get('id'));
-			$category->set('section_id', $section->get('id'));
+			$this->view->category->set('created_by', User::get('id'));
+			$this->view->category->set('section_id', $this->view->section->get('id'));
 		}
-		elseif ($category->get('created_by') != User::get('id') && !$this->params->get('access-create-category'))
+		elseif ($this->view->category->get('created_by') != User::get('id') && !$this->params->get('access-create-category'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
@@ -940,14 +913,18 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view = $this->view('edit', 'categories')
-			->set('model', $this->model)
-			->set('config', $this->params)
-			->set('group', $this->group)
-			->set('option', $this->option)
-			->set('section', $section)
-			->set('category', $category)
-			->setErrors($this->getErrors());
+		$this->view->model  = $this->model;
+		$this->view->config = $this->params;
+		$this->view->group  = $this->group;
+		$this->view->option = $this->option;
+
+		$this->view->notifications = $this->getPluginMessage();
+
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
 
 		return $this->view->loadTemplate();
 	}
@@ -955,15 +932,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a category
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function savecategory()
 	{
-		if (User::isGuest())
-		{
-			return $this->login();
-		}
-
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -971,11 +943,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$fields = array_map('trim', $fields);
 
 		$model = new \Components\Forum\Models\Category($fields['id']);
-
 		if (!$model->bind($fields))
 		{
-			$this->setError($model->getError());
-
+			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
 		}
 
@@ -995,33 +965,30 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			// lowercase
 			$alias = strtolower($model->get('title'));
 
-			// remove whitespaces
+			//remove whitespaces
 			$alias = preg_replace('/\s+/', '', $alias);
 
-			// append -category
+			//append -category
 			$alias = $alias . '-category';
 
-			// set it
+			//set it
 			$model->set('alias', $alias);
+
 		}
 
 		if ($model->get('section_id') == NULL || $model->get('section_id') == 0)
 		{
-			$this->setError(Lang::txt('PLG_GROUPS_FORUM_SECTION_REQUIRED'));
-
+			$this->addPluginMessage(Lang::txt('PLG_GROUPS_FORUM_SECTION_REQUIRED'), 'error');
 			return $this->editcategory($model);
 		}
 
-		// Check for alias duplicates within section?
+		//check for alias duplicates within section?
 		if ($model->uniqueAliasCheck($model->get('id')))
 		{
 			$model->set('alias', ''); //reset alias
 			$model->set('section_id', (int) $model->get('section_id'));
-
 			Request::setVar('section_id', $model->get('section_id'));
-
-			$this->setError($model->getError());
-
+			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
 		}
 
@@ -1030,34 +997,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Store new content
 		if (!$model->store(true))
 		{
-			$this->setError($model->getError());
-
+			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
 		}
-
-		// Log activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')],
-			['user', $model->created_by]
-		);
-		foreach ($this->group->get('managers') as $recipient)
-		{
-			$recipients[] = ['user', $recipient];
-		}
-
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
-				'scope'       => 'forum.category',
-				'scope_id'    => $model->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $model->get('title') . '</a>'),
-				'details'     => array(
-					'title' => $model->get('title'),
-					'url'   => Route::url($this->base)
-				)
-			],
-			'recipients' => $recipients
-		]);
 
 		// Set the redirect
 		App::redirect(
@@ -1068,14 +1010,19 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a category
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function deletecategory()
 	{
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			return $this->login();
+			App::redirect(
+				Route::url($this->base),
+				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
 		}
 
 		// Load the section
@@ -1116,7 +1063,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Set the category to "deleted"
 		$category->set('state', 2);  /* 0 = unpublished, 1 = published, 2 = deleted */
-
 		if (!$category->store())
 		{
 			App::redirect(
@@ -1126,30 +1072,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			);
 			return;
 		}
-
-		// Log activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')],
-			['user', $model->created_by]
-		);
-		foreach ($this->group->get('managers') as $recipient)
-		{
-			$recipients[] = ['user', $recipient];
-		}
-
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => 'deleted',
-				'scope'       => 'forum.category',
-				'scope_id'    => $model->id,
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . $model->title . '</a>'),
-				'details'     => array(
-					'title' => $model->title,
-					'url'   => Route::url($this->base)
-				)
-			],
-			'recipients' => $recipients
-		]);
 
 		// Redirect to main listing
 		App::redirect(
@@ -1162,7 +1084,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show a thread
 	 *
-	 * @return  string
+	 * @return     string
 	 */
 	public function threads()
 	{
@@ -1295,31 +1217,41 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show a form for editing a post
 	 *
-	 * @return  string
+	 * @return     string
 	 */
 	public function editthread($post=null)
 	{
-		if (User::isGuest())
-		{
-			return $this->login();
-		}
-
 		$this->view = $this->view('edit', 'threads');
 
 		$id           = Request::getInt('thread', 0);
 		$category     = Request::getVar('category', '');
 		$sectionAlias = Request::getVar('section', '');
 
+		if (User::isGuest())
+		{
+			$return = Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category . '/new');
+			if ($id)
+			{
+				$return = Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category . '/' . $id . '/edit');
+			}
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+			);
+			return;
+		}
+
 		$this->view->section  = $this->model->section($sectionAlias, $this->model->get('scope'), $this->model->get('scope_id'));
 		if (!$this->view->section->exists())
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_SECTION_NOT_FOUND'));
+			return;
 		}
 
 		$this->view->category = $this->view->section->category($category);
 		if (!$this->view->category->exists())
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
+			return;
 		}
 
 		// Incoming
@@ -1390,6 +1322,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			//$asset = 'post';
 		}
 
+		$moving = false;
+
+		// Already present
 		if ($fields['id'])
 		{
 			$old = new \Components\Forum\Tables\Post($this->database);
@@ -1398,6 +1333,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			{
 				$this->params->set('access-edit-thread', true);
 			}
+
+			// Determine if we are moving the category for email suppression
+			$new_category = $fields['category_id'];
+			if ($new_category != $old->category_id)
+			{
+					$moving = true;
+			}
+
 		}
 
 		if (($fields['id'] && !$this->params->get('access-edit-thread'))
@@ -1496,22 +1439,23 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$params = Component::params('com_groups');
 
-		$esection = new \Components\Forum\Models\Section($sectionTbl);
-
-		$ecategory = new \Components\Forum\Models\Category($category);
-		$ecategory->set('section_alias', $esection->get('alias'));
-
-		$ethread = new \Components\Forum\Models\Thread(intval($thread));
-		$ethread->set('section', $esection->get('alias'));
-		$ethread->set('category', $ecategory->get('alias'));
-
-		$epost = new \Components\Forum\Models\Thread($model);
-		$epost->set('section', $esection->get('alias'));
-		$epost->set('category', $ecategory->get('alias'));
-
 		// Email the group and insert email tokens to allow them to respond to group posts via email
-		if ($params->get('email_comment_processing'))
+
+		if ($params->get('email_comment_processing') && (isset($moving) && $moving == false))
 		{
+			$esection = new \Components\Forum\Models\Section($sectionTbl);
+
+			$ecategory = new \Components\Forum\Models\Category($category);
+			$ecategory->set('section_alias', $esection->get('alias'));
+
+			$ethread = new \Components\Forum\Models\Thread(intval($thread));
+			$ethread->set('section', $esection->get('alias'));
+			$ethread->set('category', $ecategory->get('alias'));
+
+			$epost = new \Components\Forum\Models\Thread($model);
+			$epost->set('section', $esection->get('alias'));
+			$epost->set('category', $ecategory->get('alias'));
+
 			// Figure out who should be notified about this comment (all group members for now)
 			$userIDsToEmail = array();
 
@@ -1601,40 +1545,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$url = $this->base . '&scope=' . $section . '/' . $category->alias . '/' . $thread;
-
-		// Record the activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')],
-			['user', $epost->get('created_by')]
-		);
-		foreach ($this->group->get('managers') as $recipient)
-		{
-			$recipients[] = ['user', $recipient];
-		}
-		if ($model->parent)
-		{
-			$parent = new \Components\Forum\Models\Post($epost->get('parent'));
-			$recipients[] = ['user', $parent->get('created_by')];
-		}
-
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
-				'scope'       => 'forum.post',
-				'scope_id'    => $epost->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_THREAD_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $ethread->get('title') . '</a>'),
-				'details'     => array(
-					'thread' => $epost->get('thread'),
-					'url'    => Route::url($url)
-				)
-			],
-			'recipients' => $recipients
-		]);
-
 		// Set the redirect
 		App::redirect(
-			Route::url($url), // . '#c' . $model->id),
+			Route::url($this->base . '&scope=' . $section . '/' . $category->alias . '/' . $thread), // . '#c' . $model->id),
 			$message,
 			'passed'
 		);
@@ -1643,18 +1556,23 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Remove a thread
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function deletethread()
 	{
+		$section  = Request::getVar('section', '');
+		$category = Request::getVar('category', '');
+
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			return $this->login();
+			App::redirect(
+				Route::url($this->base . '&scope=' . $section . '/' . $category),
+				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
 		}
-
-		$section  = Request::getVar('section', '');
-		$category = Request::getVar('category', '');
 
 		// Incoming
 		$id = Request::getInt('thread', 0);
@@ -1678,7 +1596,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
-
 		if (!$this->params->get('access-delete-thread'))
 		{
 			App::redirect(
@@ -1700,7 +1617,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Delete the topic itself
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
-
 		if (!$model->store())
 		{
 			App::redirect(
@@ -1711,35 +1627,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$url = $this->base . '&scope=' . $section . '/' . $category;
-
-		// Log activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')],
-			['user', $model->created_by]
-		);
-		foreach ($this->group->get('managers') as $recipient)
-		{
-			$recipients[] = ['user', $recipient];
-		}
-
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => 'deleted',
-				'scope'       => 'forum.post',
-				'scope_id'    => $model->id,
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_THREAD_DELETED', '<a href="' . Route::url($url) . '">' . $model->title . '</a>'),
-				'details'     => array(
-					'thread' => $model->thread,
-					'url'    => Route::url($url)
-				)
-			],
-			'recipients' => $recipients
-		]);
-
 		// Redirect to main listing
 		App::redirect(
-			Route::url($url),
+			Route::url($this->base . '&scope=' . $section . '/' . $category),
 			Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED'),
 			'passed'
 		);
@@ -1749,16 +1639,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
 	 *
-	 * @param   string   $listdir  Directory to upload files to
-	 * @param   integer  $post_id  Post ID
-	 * @return  string   A string that gets appended to messages
+	 * @param      string $listdir Directory to upload files to
+	 * @return     string A string that gets appended to messages
 	 */
 	public function upload($listdir, $post_id)
 	{
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			return $this->login();
+			return;
 		}
 
 		if (!$listdir)
@@ -1832,41 +1721,42 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Marks a file for deletion
 	 *
-	 * @param   integer  $post_id  The ID of the post which is associated with the attachment
-	 * @return  void
+	 * @param      integer the ID of the post which is associated with the attachment
+	 * @return     NULL
 	 */
 	public function markForDelete($post_id)
 	{
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			return $this->login();
+			return;
 		}
 
 		// Load attachment object
 		$row = new \Components\Forum\Tables\Attachment($this->database);
 		$row->loadByPost($post_id);
 
-		// Mark for deletion
+		//mark for deletion
 		$row->set('status', 2);
 
 		if (!$row->store())
 		{
 			$this->setError($row->getError());
 		}
+
 	}
 
 	/**
 	 * Serves up files only after passing access checks
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function download()
 	{
 		// Incoming
-		$section  = Request::getVar('section', '');
+		$section = Request::getVar('section', '');
 		$category = Request::getVar('category', '');
-		$thread   = Request::getInt('thread', 0);
+		$thread = Request::getInt('thread', 0);
 		$post = Request::getInt('post', 0);
 		$file = Request::getVar('file', '');
 
@@ -1982,8 +1872,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Remove all items associated with the gorup being deleted
 	 *
-	 * @param   object  $group  Group being deleted
-	 * @return  string  Log of items removed
+	 * @param      object $group Group being deleted
+	 * @return     string Log of items removed
 	 */
 	public function onGroupDelete($group)
 	{
@@ -1994,9 +1884,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
 
-		$database = App::get('db');
+		$this->database = App::get('db');
 
-		$sModel = new \Components\Forum\Tables\Section($database);
+		$sModel = new \Components\Forum\Tables\Section($this->database);
 		$sections = $sModel->getRecords(array(
 			'scope'    => 'group',
 			'scope_id' => $group->get('gidNumber')
@@ -2009,7 +1899,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			foreach ($sections as $section)
 			{
 				// Get the categories in this section
-				$cModel = new \Components\Forum\Tables\Category($database);
+				$cModel = new \Components\Forum\Tables\Category($this->database);
 				$categories = $cModel->getRecords(array(
 					'section_id' => $section->id,
 					'scope'      => 'group',
@@ -2026,7 +1916,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					}
 
 					// Set all the threads/posts in all the categories to "deleted"
-					$tModel = new \Components\Forum\Tables\Post($database);
+					$tModel = new \Components\Forum\Tables\Post($this->database);
 					if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 					{
 						$this->setError($tModel->getError());
@@ -2063,39 +1953,39 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display blog settings
 	 *
-	 * @return  string
+	 * @return     string
 	 */
 	private function settings()
 	{
 		if (User::isGuest())
 		{
-			return $this->login();
+			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
+			return;
 		}
 
-		if ($this->authorized != 'manager'
-		 && $this->authorized != 'admin')
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
-
 			return $this->sections();
 		}
 
-		$settings = \Hubzero\Plugin\Params::oneByPlugin(
-			$this->group->get('gidNumber'),
-			$this->_type,
-			$this->_name
-		);
-
 		// Output HTML
-		$view = $this->view('default', 'settings')
-			->set('model', $this->model)
-			->set('config', $this->params)
-			->set('group', $this->group)
-			->set('option', $this->option)
-			->set('settings', $settings)
-			->set('category', $category)
-			->set('authorized', $this->authorized)
-			->setErrors($this->getErrors());
+		$view = $this->view('default', 'settings');
+		$view->option     = $this->option;
+		$view->group      = $this->group;
+		$view->config     = $this->params;
+		$view->model      = $this->model;
+
+		$view->settings   = new \Hubzero\Plugin\Params($this->database);
+		$view->settings->loadPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
+
+		$view->authorized = $this->authorized;
+		$view->message    = (isset($this->message)) ? $this->message : '';
+
+		foreach ($this->getErrors() as $error)
+		{
+			$view->setError($error);
+		}
 
 		return $view->loadTemplate();
 	}
@@ -2109,14 +1999,13 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	{
 		if (User::isGuest())
 		{
-			return $this->login();
+			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
+			return;
 		}
 
-		if ($this->authorized != 'manager'
-		 && $this->authorized != 'admin')
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
-
 			return $this->sections();
 		}
 
@@ -2125,23 +2014,34 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$settings = Request::getVar('settings', array(), 'post');
 
-		$row = \Hubzero\Plugin\Params::blank()->set($settings);
+		$row = new \Hubzero\Plugin\Params($this->database);
+		if (!$row->bind($settings))
+		{
+			$this->setError($row->getError());
+			return $this->settings();
+		}
 
 		// Get parameters
 		$p = new \Hubzero\Config\Registry(Request::getVar('params', '', 'post'));
 
-		$row->set('params', $p->toString());
+		$row->params = $p->toString();
 
-		// Store new content
-		if (!$row->save())
+		// Check content
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
+			return $this->_settings();
+		}
 
-			return $this->settings();
+		// Store new content
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
+			return $this->_settings();
 		}
 
 		App::redirect(
-			Route::url($this->base . '&action=settings'),
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),
 			Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SAVED')
 		);
 	}
@@ -2210,6 +2110,61 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
 			Lang::txt('PLG_GROUPS_FORUM_UNSUBSCRIBE_SUCCESSFULLY_UNSUBSCRIBED')
+		);
+	}
+
+	/**
+	 * Reorder a record up
+	 *
+	 * @return  void
+	 */
+	public function orderup()
+	{
+		return $this->reorder(-1);
+	}
+
+	/**
+	 * Reorder a record up
+	 *
+	 * @return  void
+	 */
+	public function orderdown()
+	{
+		return $this->reorder(1);
+	}
+
+	/**
+	 * Reorder a plugin
+	 *
+	 * @param   integer  $access  Access level to set
+	 * @return  void
+	 */
+	public function reorder($inc=1)
+	{
+		if (User::isGuest())
+		{
+			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
+			return;
+		}
+
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
+			return $this->sections();
+		}
+
+		$alias = Request::getVar('section', '');
+
+		$row = new \Components\Forum\Tables\Section($this->database);
+
+		if ($row->loadByAlias($alias, $this->group->get('gidNumber'), 'group'))
+		{
+			$row->move($inc, 'scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
+			$row->reorder('scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
+		}
+
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name)
 		);
 	}
 }
