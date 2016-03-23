@@ -1062,26 +1062,35 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_edit($post->item()->bind($fields));
 		}
 
+		if (!isset($collection))
+		{
+			$collection = new \Components\Collections\Models\Collection($p['collection_id']);
+		}
+
+		$url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias');
+
 		// Record the activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', $item->get('created_by')];
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $collection->get('id')],
+			['user', $item->get('created_by')]
+		);
 		foreach ($this->group->get('managers') as $recipient)
 		{
 			$recipients[] = ['user', $recipient];
 		}
 
-		$url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias');
-
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'action'      => ($p['id'] ? 'updated' : 'created'),
 				'scope'       => 'collections.item',
 				'scope_id'    => $item->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $item->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $collection->get('title') . '</a>'),
 				'details'     => array(
-					'title'    => $item->get('title'),
-					'post_id'  => $post->get('id'),
-					'url'      => $url
+					'collection_id' => $collection->get('id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $post->get('item_id'),
+					'url'           => $url
 				)
 			],
 			'recipients' => $recipients
@@ -1207,8 +1216,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Record the activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', $post->get('created_by')];
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $collection_id],
+			['user', $post->get('created_by')]
+		);
 		foreach ($this->group->get('managers') as $recipient)
 		{
 			$recipients[] = ['user', $recipient];
@@ -1223,12 +1235,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			'activity' => [
 				'action'      => 'created',
 				'scope'       => 'collections.post',
-				'scope_id'    => $post->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_CREATED', '<a href="' . Route::url($collection->link()) . '">' . $post->get('title') . '</a>'),
+				'scope_id'    => $post->id,
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_CREATED', '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'),
 				'details'     => array(
-					'title'    => $post->get('title'),
-					'post_id'  => $post->get('id'),
-					'url'      => $collection->link()
+					'collection_id' => $post->collection_id,
+					'item_id'       => $post->item_id,
+					'post_id'       => $post->id
 				)
 			],
 			'recipients' => $recipients
@@ -1278,26 +1290,29 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$type = 'error';
 		}
 
+		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+
 		// Record the activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', $item->get('created_by')];
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $collection->get('id')],
+			['user', $post->get('created_by')]
+		);
 		foreach ($this->group->get('managers') as $recipient)
 		{
 			$recipients[] = ['user', $recipient];
 		}
-
-		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'deleted',
 				'scope'       => 'collections.post',
 				'scope_id'    => $post->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_DELETED', '<a href="' . $route . '">' . $post->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_DELETED', '<a href="' . $route . '">' . $collection->get('title') . '</a>'),
 				'details'     => array(
-					'title'    => $post->get('title'),
-					'entry_id' => $post->get('id'),
-					'url'      => $route
+					'collection_id' => $post->get('collection_id'),
+					'item_id'       => $post->get('item_id'),
+					'post_id'       => $post->get('id')
 				)
 			],
 			'recipients' => $recipients
@@ -1439,15 +1454,18 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$type = 'error';
 		}
 
+		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+
 		// Record the activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', $item->get('created_by')];
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $post->get('collection_id')],
+			['user', $item->get('created_by')]
+		);
 		foreach ($this->group->get('managers') as $recipient)
 		{
 			$recipients[] = ['user', $recipient];
 		}
-
-		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
@@ -1456,9 +1474,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				'scope_id'    => $item->get('id'),
 				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_DELETED', '<a href="' . $route . '">' . $item->get('title') . '</a>'),
 				'details'     => array(
-					'title'    => $item->get('title'),
-					'entry_id' => $item->get('id'),
-					'url'      => $route
+					'collection_id' => $post->get('collection_id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $item->get('id'),
+					'url'           => $route
 				)
 			],
 			'recipients' => $recipients
@@ -1504,8 +1523,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Log activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', $comment->get('created_by')];
+		$post = new \Components\Collections\Models\Post(Request::getInt('post', 0));
+
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $post->get('collection_id')],
+			['user', $comment->get('created_by')]
+		);
 		if ($comment->get('parent'))
 		{
 			$recipients[] = ['user', $comment->parent()->get('created_by')];
@@ -1515,7 +1539,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$recipients[] = ['user', $recipient];
 		}
 
-		$post = \Components\Collections\Models\Post::getInstance($comment->get('item_id'));
+		$title = $post->item()->get('title');
+		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
+		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
 		$url = Route::url('index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment');
 
 		Event::trigger('system.logActivity', [
@@ -1523,11 +1549,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				'action'      => ($data['id'] ? 'updated' : 'created'),
 				'scope'       => 'collections.comment',
 				'scope_id'    => $comment->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . $url . '#c' . $comment->get('id') . '">' . $post->get('title', '#' . $post->get('id')) . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . $url . '#c' . $comment->get('id') . '">' . $title . '</a>'),
 				'details'     => array(
-					'title'    => $post->get('title'),
-					'entry_id' => $post->get('id'),
-					'url'      => $url . '#c' . $comment->get('id')
+					'collection_id' => $post->get('collection_id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $row->get('item_id'),
+					'url'           => $url . '#c' . $comment->get('id')
 				)
 			],
 			'recipients' => $recipients
@@ -1567,23 +1594,31 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Record the activity
-		/*$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', $comment->get('created_by')];
+		/*$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $post->get('collection_id')],
+			['user', $comment->get('created_by')],
+			['user', $post->item()->get('created_by')]
+		);
 		foreach ($this->group->get('managers') as $recipient)
 		{
 			$recipients[] = ['user', $recipient];
 		}
+
+		$title = $post->item()->get('title');
+		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
+		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'deleted',
 				'scope'       => 'collections.comment',
 				'scope_id'    => $comment->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . $title . '</a>'),
 				'details'     => array(
-					'title'    => $entry->get('title'),
-					'entry_id' => $entry->get('id'),
-					'url'      => $entry->link()
+					'collection_id' => $post->get('collection_id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $comment->get('item_id')
 				)
 			],
 			'recipients' => $recipients
@@ -1623,22 +1658,26 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Get the collection model
 		$collection = $this->model->collection($post->get('collection_id'));
 
-		// Record the activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', User::get('id')];
-
 		$url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+
+		// Record the activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $collection->get('id')],
+			['user', $post->item()->get('created_by')],
+			['user', User::get('id')]
+		);
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'voted',
 				'scope'       => 'collections.item',
-				'scope_id'    => $id,
+				'scope_id'    => $post->item()->get('id'),
 				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_VOTED', '<a href="' . $url . '">' . $collection->get('title') . '</a>'),
 				'details'     => array(
-					'title'    => $collection->get('title'),
-					'entry_id' => $collection->get('id'),
-					'url'      => $url
+					'collection_id' => $collection->get('id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $post->item()->get('id')
 				)
 			],
 			'recipients' => $recipients
@@ -1762,15 +1801,19 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($collection);
 		}
 
+		$url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+
 		// Record the activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $collection->get('id')],
+			['user', $collection->get('created_by')]
+		);
 		$recipients[] = ['user', $collection->get('created_by')];
 		foreach ($this->group->get('managers') as $recipient)
 		{
 			$recipients[] = ['user', $recipient];
 		}
-
-		$url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
@@ -1779,9 +1822,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				'scope_id'    => $collection->get('id'),
 				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . $url . '">' . $collection->get('title') . '</a>'),
 				'details'     => array(
-					'title'    => $collection->get('title'),
-					'entry_id' => $collection->get('id'),
-					'url'      => $url
+					'title' => $collection->get('title'),
+					'id'    => $collection->get('id'),
+					'url'   => $url
 				)
 			],
 			'recipients' => $recipients
@@ -1863,8 +1906,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Record the activity
-		$recipients = array(['group', $this->group->get('gidNumber')]);
-		$recipients[] = ['user', $collection->get('created_by')];
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['collection', $collection->get('id')],
+			['user', $collection->get('created_by')]
+		);
 		foreach ($this->group->get('managers') as $recipient)
 		{
 			$recipients[] = ['user', $recipient];
@@ -1877,9 +1923,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				'scope_id'    => $collection->get('id'),
 				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED', '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'),
 				'details'     => array(
-					'title'    => $collection->get('title'),
-					'entry_id' => $collection->get('id'),
-					'url'      => $collection->link()
+					'title' => $collection->get('title'),
+					'id'    => $collection->get('id'),
+					'url'   => $collection->link()
 				)
 			],
 			'recipients' => $recipients
