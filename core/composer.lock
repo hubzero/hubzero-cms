@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "208708d384bf9bf22fd53583a131a919",
-    "content-hash": "d73266ed5543acdd44f6b5f5a56f9ddc",
+    "hash": "08d371b05c62becea8217e1920c71834",
+    "content-hash": "efc03d18d49292950a34a47f69833990",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -764,6 +764,68 @@
             "time": "2015-12-04 15:09:31"
         },
         {
+            "name": "knplabs/github-api",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/php-github-api.git",
+                "reference": "5720f828ea241eded6c6263249fa00b0a37650f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/5720f828ea241eded6c6263249fa00b0a37650f4",
+                "reference": "5720f828ea241eded6c6263249fa00b0a37650f4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "guzzle/guzzle": "~3.7",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "sllh/php-cs-fixer-styleci-bridge": "~1.3"
+            },
+            "suggest": {
+                "knplabs/gaufrette": "Needed for optional Gaufrette cache"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Github\\": "lib/Github/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com",
+                    "homepage": "http://ornicar.github.com"
+                },
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                }
+            ],
+            "description": "GitHub API v3 client",
+            "homepage": "https://github.com/KnpLabs/php-github-api",
+            "keywords": [
+                "api",
+                "gh",
+                "gist",
+                "github"
+            ],
+            "time": "2016-02-24 05:52:33"
+        },
+        {
             "name": "leafo/lessphp",
             "version": "v0.5.0",
             "source": {
@@ -1502,6 +1564,78 @@
             "time": "2015-12-19 16:00:15"
         },
         {
+            "name": "spwilson806/flysystem-github",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spwilson806/flysystem-github.git",
+                "reference": "9c8efcd2b141a7cf473c850c789c5df21b587b1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spwilson806/flysystem-github/zipball/9c8efcd2b141a7cf473c850c789c5df21b587b1a",
+                "reference": "9c8efcd2b141a7cf473c850c789c5df21b587b1a",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/github-api": "^1.4",
+                "league/flysystem": "^1.0",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.7.7",
+                "satooshi/php-coveralls": "^0.6.1",
+                "scrutinizer/ocular": "^1.1",
+                "whatthejeff/nyancat-phpunit-resultprinter": "^1.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Potherca\\Flysystem\\Github\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Potherca\\Flysystem\\Github\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Potherca",
+                    "email": "potherca@gmail.com",
+                    "homepage": "http://pother.ca/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flysystem adapter for Github",
+            "homepage": "https://github.com/potherca/flysystem-github",
+            "keywords": [
+                "adapter",
+                "flysystem",
+                "flysystem-adapter",
+                "flysystem-github",
+                "github",
+                "potherca"
+            ],
+            "support": {
+                "source": "https://github.com/spwilson806/flysystem-github/tree/develop"
+            },
+            "time": "2016-03-24 15:12:44"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.0.2",
             "source": {
@@ -1950,6 +2084,7 @@
         "guzzle/guzzle": 20,
         "pelago/emogrifier": 20,
         "hubzero/framework": 20,
+        "spwilson806/flysystem-github": 20,
         "mockery/mockery": 20
     },
     "prefer-stable": false,

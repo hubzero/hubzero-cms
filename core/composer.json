@@ -54,6 +54,12 @@
         "issues": "http://hubzero.org/support/ticket/new",
         "source": "http://hubzero.org/download"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/spwilson806/flysystem-github"
+        }
+    ],
     "require": {
         "ezyang/htmlpurifier": "4.5.0",
         "facebook/php-sdk": "3.2.2",
@@ -82,7 +88,8 @@
         "league/flysystem": "1.0.*",
         "league/flysystem-dropbox": "1.0.*",
         "hubzero/framework": "dev-master",
-				"solarium/solarium": "3.5.1"
+        "solarium/solarium": "3.5.1",
+        "spwilson806/flysystem-github": "dev-develop"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"
