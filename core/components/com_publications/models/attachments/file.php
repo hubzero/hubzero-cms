@@ -928,6 +928,8 @@ class File extends Base
 			if ($this->addAttachment($identifier, $pub, $configs, User::get('id'), $elementId, $element, $ordering))
 			{
 				$i++;
+
+				Event::trigger('filesystem.onAfterAddFileAttachment', [$identifier, $pub]);
 			}
 		}
 
