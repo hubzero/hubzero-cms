@@ -69,4 +69,54 @@ class Callback extends SiteController
 		// Redirect to the local endpoint
 		App::redirect(base64_decode($urlState));
 	}
+
+	/**
+	 * Processes the github callback from oauth authorize requests
+	 *
+	 * @return    void
+	 **/
+	public function githubAuthorizeTask()
+	{
+		$params = \Plugin::params('filesystem', 'github');
+
+		if (!$code = Request::getVar('code'))
+		{
+			throw new \Exception("No code found", 400);
+		}
+		if (!$state = Request::getVar('state'))
+		{
+			throw new \Exception("No state found", 400);
+		}
+		if ($state != Session::get('github.state'))
+		{
+			throw new \Exception("State mismatch", 500);
+		}
+
+		$url = 'https://github.com/login/oauth/access_token';
+		$fields = array(
+			'client_id'     => $params->get('app_key'),
+			'client_secret' => $params->get('app_secret'),
+			'code'          => $code,
+			'state'         => $state
+		);
+
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+
+		$result = curl_exec($ch);
+
+		curl_close($ch);
+
+		$data = json_decode($result);
+
+		\Session::set('github.token', $data->access_token);
+
+		// Redirect to the local endpoint
+		App::redirect(base64_decode($state));
+	}
 }
