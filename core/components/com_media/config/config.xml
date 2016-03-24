@@ -5,7 +5,7 @@
 			name="upload_extensions"
 			type="text"
 			size="50"
-			default="bmp,csv,doc,gif,ico,jpg,jpeg,odg,odp,ods,odt,pdf,png,ppt,swf,txt,xcf,xls,BMP,CSV,DOC,GIF,ICO,JPG,JPEG,ODG,ODP,ODS,ODT,PDF,PNG,PPT,SWF,TXT,XCF,XLS"
+			default="bmp,BMP,csv,CSV,doc,DOC,docx,DOCX,epg,EPG,eps,EPS,gif,GIF,ico,ICO,jpg,JPG,jpeg,JPEG,key,KEY,keynote,KEYNOTE,mp4,MP4,mp3,MP3,m4a,M4A,m4v,M4V,odg,ODG,odp,ODP,ods,ODS,odt,ODT,pdf,PDF,png,PNG,ppt,PPT,pptx,PPTX,swf,SWF,txt,TXT,xcf,XCF,xls,XLS,xlsx,XLSX,svg,SVG"
 			label="COM_MEDIA_FIELD_LEGAL_EXTENSIONS_LABEL"
 			description="COM_MEDIA_FIELD_LEGAL_EXTENSIONS_DESC" />
 
