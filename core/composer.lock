@@ -1569,20 +1569,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/spwilson806/flysystem-github.git",
-                "reference": "9c8efcd2b141a7cf473c850c789c5df21b587b1a"
+                "reference": "7fcea5f660266c54cb6debe58b948f7d1ed965e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spwilson806/flysystem-github/zipball/9c8efcd2b141a7cf473c850c789c5df21b587b1a",
-                "reference": "9c8efcd2b141a7cf473c850c789c5df21b587b1a",
+                "url": "https://api.github.com/repos/spwilson806/flysystem-github/zipball/7fcea5f660266c54cb6debe58b948f7d1ed965e5",
+                "reference": "7fcea5f660266c54cb6debe58b948f7d1ed965e5",
                 "shasum": ""
             },
             "require": {
                 "knplabs/github-api": "^1.4",
                 "league/flysystem": "^1.0",
-                "php": ">=5.5"
+                "php": ">=5.4"
             },
             "require-dev": {
+                "php": ">=5.5",
                 "phpunit/phpunit": "^4.7.7",
                 "satooshi/php-coveralls": "^0.6.1",
                 "scrutinizer/ocular": "^1.1",
@@ -1633,7 +1634,7 @@
             "support": {
                 "source": "https://github.com/spwilson806/flysystem-github/tree/develop"
             },
-            "time": "2016-03-24 15:12:44"
+            "time": "2016-03-24 20:00:49"
         },
         {
             "name": "swiftmailer/swiftmailer",
