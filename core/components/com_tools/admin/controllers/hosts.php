@@ -373,10 +373,17 @@ class Hosts extends AdminController
 		// Get the middleware database
 		$mwdb = Utils::getMWDBO();
 
-		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) . ";" .
-				" UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
-		$mwdb->setQuery($query);
-		if (!$mwdb->queryBatch())
+		$query1 = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) . ";";
+		$query2 = "UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
+
+		$mwdb->setQuery($query1);
+		if (!$mwdb->query())
+		{
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_PROVISION_UPDATE_FAILED'));
+		}
+
+		$mwdb->setQuery($query2);
+		if (!$mwdb->query())
 		{
 			Notify::error(Lang::txt('COM_TOOLS_ERROR_PROVISION_UPDATE_FAILED'));
 		}
