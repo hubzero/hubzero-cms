@@ -749,6 +749,11 @@ class Sessionsv1_0 extends ApiController
 		$command = 'start user=' . $profile->get('username') . " ip={$app->ip} app={$app->name} version={$app->version}" . $encoded;
 		$status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
+		if (!$status)
+		{
+			throw new Exception(Lang::txt('Tool invocation failed'), 500);
+		}
+
 		$this->send(array(
 			'success' => true,
 			'session' => $output->session
