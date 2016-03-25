@@ -33,6 +33,14 @@ HUB.Publications = {
 			$('#resourcesform').submit();
 		});
 
+		$('a.showBundle').fancybox({
+			type: 'ajax',
+			width: 800,
+			height: 'auto',
+			autoSize: false,
+			fitToView: false
+		});
+
 		$('a.play').fancybox({
 			type: 'ajax',
 			width: 800,

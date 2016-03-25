@@ -124,7 +124,8 @@ $schema 	= $metaElements->getSchema();
 
 			$showArchive = isset($this->publication->_curationModel->_manifest->params->show_archival)
 					? $this->publication->_curationModel->_manifest->params->show_archival :  0;
-			$archiveUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number . '&render=archive');
+			$archiveBase = 'index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number;
+			$archiveUrl = Route::url($archiveBase . '&render=archive');
 			$showArchive = ($showArchive && file_exists($archPath)) ? true : false;
 
 			// Draw list
@@ -135,7 +136,21 @@ $schema 	= $metaElements->getSchema();
 				$append
 			);
 			?>
-			<h4 class="list-header"><?php echo $listLabel ? $listLabel : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive && $authorized) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
+			<h4 class="list-header">
+				<?php echo $listLabel ? $listLabel : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST'); ?>
+				<?php if ($showArchive && $authorized) : ?>
+					<span class="browsebundle">
+						(<a class="showBundle" href="<?php echo Route::url($archiveBase . '&render=showcontents&tmpl=component'); ?>" target="_blank">
+							<?php echo Lang::txt('COM_PUBLICATIONS_BROWSE_ARCHIVE_PACKAGE'); ?>
+						</a>)
+					</span>
+					<span class="viewalltypes archival-package">
+						<a href="<?php echo $archiveUrl; ?>">
+							<?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?>
+						</a>
+					</span>
+				<?php endif; ?>
+			</h4>
 			<div class="pub-content">
 				<?php echo $list; ?>
 			</div>

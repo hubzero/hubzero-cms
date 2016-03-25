@@ -423,6 +423,9 @@
 		font-size: 85%;
 		float: right;
 	}
+	.browsebundle {
+		font-size: 85%;
+	}
 	.metaplaceholder {
 		background: #FFFFFF url("../img/metaplaceholder.gif") 0 0 no-repeat;
 		padding: 1em 3em 1em 3.5em;
