@@ -68,7 +68,8 @@ class plgFilesystemGithub extends \Hubzero\Plugin\Plugin
 				$params = '?client_id=' . $pparams->get('app_key');
 				$scope  = '&scope=user,repo';
 
-				$return = base64_encode(Request::current(true));
+				$return = (Request::getVar('return')) ? Request::getVar('return') : Request::current(true);
+				$return = base64_encode($return);
 				$state  = '&state=' . $return;
 
 				Session::set('github.state', $return);

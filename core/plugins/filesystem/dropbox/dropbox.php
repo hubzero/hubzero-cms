@@ -66,7 +66,8 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 			// Redirect to dropbox
 			// We hide the return url in the state field...that's not exactly what
 			// it was intended for, but it does the trick
-			$return = base64_encode(Request::current(true));
+			$return = (Request::getVar('return')) ? Request::getVar('return') : Request::current(true);
+			$return = base64_encode($return);
 			App::redirect($oauth->start($return));
 		}
 

@@ -74,6 +74,25 @@ HUB.ProjectFilesFileSelect = {
 				target.next('.content-loader-slim').remove();
 				target.after(data);
 			},
+			error    : function ( jqXHR, textStatus, errorThrown ) {
+				// We're going to assume we get here because the user isn't authorized to the remote client
+				// Open up a new window to handle the oauth transaction
+				url += '&return=' + encodeURI(window.location.origin);
+				var auth = window.open(url, "_blank", "toolbar=no, scrollbars=no, resizable=no, width=500, height=600");
+
+				// Remove the loader and recollapse the folder
+				target.next('.content-loader-slim').remove();
+				target.find('.collapsor').first().trigger('click');
+
+				// Listen for the oauth process to land back on the hub
+				$(auth).load(function () {
+					if (this.location.hostname == window.location.hostname) {
+						// Close the oauth window and refetch the providers fields
+						auth.close();
+						target.find('.collapsor').first().trigger('click');
+					}
+				});
+			}
 		});
 	},
 
