@@ -755,6 +755,30 @@ class Publications extends SiteController
 			}
 		}
 
+		// Bundle requested?
+		if ($render == 'showcontents')
+		{
+			// Produce archival package
+			if ($this->model->_curationModel->package())
+			{
+				// Build the HTML of the "about" tab
+				$view = new \Hubzero\Component\View([
+					'name'   => 'view',
+					'layout' => '_contents'
+				]);
+				$view->model  = $this->model;
+				$view->option = $this->_option;
+				$view->display();
+
+				return;
+			}
+			else
+			{
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
+				return;
+			}
+		}
+
 		// Serving data file (dataview)
 		if ($file)
 		{
