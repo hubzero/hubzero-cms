@@ -52,7 +52,10 @@ class plgSystemPassword extends \Hubzero\Plugin\Plugin
 				'com_users.userlogout',
 				'com_support.tickets.save.index',
 				'com_members.changepassword',
-				'com_members.media.download.profiles'
+				'com_members.media.download.profiles',
+				'com_members.save.profiles',
+				'com_members.profiles.save',
+				'com_members.profiles.save.profiles'
 			];
 
 			$current  = Request::getWord('option', '');
