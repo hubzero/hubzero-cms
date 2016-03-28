@@ -612,8 +612,14 @@ class connections
 		{
 			foreach ($items as $item)
 			{
+				// Keep track of the old location for the move event below
+				$oldName = $item->getAbsolutePath();
+
 				if ($item->move($dest))
 				{
+					// Trigger the move event
+					Event::trigger('metadata.onFileMove', [$oldName, $item->getAbsolutePath()]);
+
 					// Store in session
 					$this->registerUpdate('moved', $item->getName());
 					$moved++;
@@ -696,10 +702,14 @@ class connections
 		}
 
 		// Rename
-		$entity = Entity::fromPath(trim($this->subdir, '/') . '/' . Request::getVar('oldname', ''), $this->connection->adapter());
+		$entity  = Entity::fromPath(trim($this->subdir, '/') . '/' . Request::getVar('oldname', ''), $this->connection->adapter());
+		$oldName = $entity->getAbsolutePath();
 
 		if ($entity->rename(Request::getVar('newname', '')))
 		{
+			// Trigger the move event
+			Event::trigger('metadata.onFileMove', [$oldName, $entity->getAbsolutePath()]);
+
 			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'success', 'projects');
 		}
 		else
