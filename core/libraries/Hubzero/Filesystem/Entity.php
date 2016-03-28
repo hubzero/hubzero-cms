@@ -454,7 +454,16 @@ class Entity extends Object
 	 **/
 	public function move($to)
 	{
-		return $this->hasAdapterOrFail()->adapter->rename($this->getPath(), $to . '/' . $this->getName());
+		$dest   = $to . '/' . $this->getName();
+		$return = $this->hasAdapterOrFail()->adapter->rename($this->getPath(), $dest);
+
+		// Update the internal path
+		if ($return)
+		{
+			$this->path = $dest;
+		}
+
+		return $return;
 	}
 
 	/**
@@ -465,7 +474,16 @@ class Entity extends Object
 	 **/
 	public function rename($to)
 	{
-		return $this->hasAdapterOrFail()->adapter->rename($this->getPath(), $to);
+		$dest   = $this->getParent() . '/' . $to;
+		$return = $this->hasAdapterOrFail()->adapter->rename($this->getPath(), $dest);
+
+		// Update the internal path
+		if ($return)
+		{
+			$this->path = $dest;
+		}
+
+		return $return;
 	}
 
 	/**
