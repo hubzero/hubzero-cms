@@ -60,9 +60,9 @@ function hex2rgb($hex)
 	return implode(',', $rgb);
 }
 
-$color1  = request('color1', '000000');
-$color2  = request('color2', '000000');
-$bground = request('background', 'delauney');
+$color1  = request('c1', '000000');
+$color2  = request('c2', '000000');
+$bground = request('bg', 'delauney');
 
 $tmpl = dirname(__DIR__);
 $base = dirname(dirname(dirname($tmpl)));
@@ -72,7 +72,7 @@ $styles = '';
 switch ($bground)
 {
 	case 'delauney':
-		$opacity = '0.75';
+		$opacity = request('o1', '0.75');
 		$styles .= '
 		#outer-wrap {
 			background: transparent url("' . $tmpl . '/img/delauney.svg") 0 0 no-repeat;
@@ -88,7 +88,7 @@ switch ($bground)
 	break;
 
 	case 'triangles':
-		$opacity = '0.75';
+		$opacity = request('o1', '0.75');
 		$styles .= '
 		#outer-wrap {
 			background: #c1c1c1 url("' . $tmpl . '/img/triangles.svg") 0 0;
@@ -103,7 +103,7 @@ switch ($bground)
 	break;
 
 	case 'plaid':
-		$opacity = '0.9';
+		$opacity = request('o1', '0.9');
 		$styles .='
 		#outer-wrap {
 			background: -webkit-repeating-linear-gradient(45deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 120px, rgba(10,35,45,0.498039) 120px, rgba(10,35,45,0.498039) 140px), -webkit-repeating-linear-gradient(-45deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 140px, rgba(10,35,45,0.498039) 140px, rgba(10,35,45,0.498039) 160px), rgb(234, 213, 185);
@@ -126,7 +126,7 @@ switch ($bground)
 	break;
 
 	case 'picnic':
-		$opacity = '0.75';
+		$opacity = request('o1', '0.75');
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), rgb(153, 153, 153);
@@ -147,7 +147,7 @@ switch ($bground)
 	break;
 
 	case 'blueprint':
-		$opacity = '0.9';
+		$opacity = request('o1', '0.9');
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(90deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -webkit-linear-gradient(0deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -webkit-linear-gradient(90deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), -webkit-linear-gradient(0deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), rgb(153, 153, 153);
@@ -168,7 +168,7 @@ switch ($bground)
 	break;
 
 	case 'checkered':
-		$opacity = '0.9';
+		$opacity = request('o1', '0.9');
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), -webkit-linear-gradient(45deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(140,140,140,0) 25%, rgba(255,255,255,0) 100%), -webkit-linear-gradient(135deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 100%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), rgb(255, 255, 255);
@@ -189,7 +189,7 @@ switch ($bground)
 	break;
 
 	case 'stripes':
-		$opacity = '0.9';
+		$opacity = request('o1', '0.9');
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(153, 153, 153,1);
@@ -210,7 +210,7 @@ switch ($bground)
 	break;
 
 	case 'hubbub2015':
-		$opacity = '0';
+		$opacity = request('o1', '0');
 		$styles .='
 		#outer-wrap {
 			background-color: #f7b82b;
@@ -231,7 +231,7 @@ switch ($bground)
 	break;
 
 	case 'bokeh':
-		$opacity = '0.7';
+		$opacity = request('o1', '0.7');
 		$styles .='
 		#outer-wrap {
 			background-color: transparent;
@@ -305,11 +305,6 @@ switch ($bground)
 							radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px),
 							radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px),
 							radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px);
-			/*background-position: 197px 251px, 313px 499px, 419px 359px,263px 433px,449px 197px,389px 317px,439px 281px,541px 263px,397px 449px,191px 463px,271px 271px,491px 397px,211px 349px;
-			-webkit-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
-			-moz-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
-			-ms-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
-			-o-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;*/
 			background-size: 593px 483px,
 							549px 847px,
 							581px 867px,
@@ -342,10 +337,10 @@ switch ($bground)
 	break;
 
 	default:
-		$opacity = '1';
+		$opacity = request('o1', '1');
 		if ($bground)
 		{
-			$opacity = '0';
+			$opacity = request('o1', '0');
 			$styles .= '
 			#outer-wrap {
 				background-image: url(' . $bground . ');
@@ -364,11 +359,13 @@ switch ($bground)
 	break;
 }
 
+$opacity2 = request('o2');
+
 $styles .= '
 	a,
 	a:active,
 	a:visited {
-		color: #' . $color2 . ';
+		color: ' . ($opacity2 ? 'rgba(' . hex2rgb($color2) . ', ' . $opacity2 . ')' : '#' . $color2) . ';
 	}
 	a.btn,
 	a.btn:active,
