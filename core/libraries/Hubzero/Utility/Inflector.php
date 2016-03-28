@@ -37,7 +37,7 @@ class Inflector
 {
 	protected static $uncountable_words = array(
 		'equipment', 'information', 'rice', 'money',
-		'species', 'series', 'fish', 'meta'
+		'species', 'series', 'fish', 'meta', 'metadata'
 	);
 
 	protected static $plural_rules = array(
