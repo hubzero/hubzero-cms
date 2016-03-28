@@ -255,7 +255,7 @@ if (isset($this->messages))
 					<?php else : ?>
 						<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
-					<?php echo $this->citations->pagination; ?>
+					<?php echo $this->citations->pagination->setLimits(array(10,25,50,100)); ?>
 					<div class="clearfix"></div>
 				</div><!-- /.container -->
 			</div><!-- /.subject -->
