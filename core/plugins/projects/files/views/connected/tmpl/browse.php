@@ -37,6 +37,8 @@ $this->css()
      ->css('uploader')
      ->js();
 
+$metadata = Plugin::byType('metadata');
+
 $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 ?>
@@ -77,7 +79,9 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=move'     . $subdirlink); ?>" class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span></a>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=delete'   . $subdirlink); ?>" class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span></a>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=rename'   . $subdirlink); ?>" class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span></a>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink); ?>" class="fmanage js" id="a-annotate" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span></a>
+					<?php if (count($metadata)) : ?>
+						<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink); ?>" class="fmanage js" id="a-annotate" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span></a>
+					<?php endif; ?>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=compile'  . $subdirlink); ?>" class="fmanage js" id="a-handle" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span></a>
 				</span>
 				<noscript>
