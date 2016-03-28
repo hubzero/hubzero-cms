@@ -46,7 +46,7 @@ You have <?php echo $posts; ?> new post<?php if ($posts > 1) echo 's'; ?> across
 <?php $group = Hubzero\User\Group::getInstance($group); ?>
 <?php echo $group->description; ?>
 <?php foreach ($posts as $post) : ?>
-<?php $inst = \Components\Forum\Models\Post::getInstance($post->id); ?>
+<?php $inst = $post; ?>
 
 
 <?php echo User::getInstance($post->created_by)->get('name'); ?> | <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>

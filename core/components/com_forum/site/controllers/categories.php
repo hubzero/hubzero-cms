@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,8 +34,8 @@ namespace Components\Forum\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Components\Forum\Models\Manager;
+use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
-use Components\Forum\Tables;
 use Exception;
 use Pathway;
 use Request;
@@ -58,7 +57,7 @@ class Categories extends SiteController
 	 */
 	public function execute()
 	{
-		$this->model = new Manager('site', 0);
+		$this->forum = new Manager('site', 0);
 
 		parent::execute();
 	}
@@ -66,9 +65,11 @@ class Categories extends SiteController
 	/**
 	 * Method to set the document path
 	 *
+	 * @param   object  $section
+	 * @param   object  $category
 	 * @return  void
 	 */
-	protected function _buildPathway()
+	protected function buildPathway($section=null, $category=null)
 	{
 		if (Pathway::count() <= 0)
 		{
@@ -77,18 +78,18 @@ class Categories extends SiteController
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (isset($this->view->section))
+		if ($section)
 		{
 			Pathway::append(
-				String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true)),
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias')
+				String::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
+				'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
 			);
 		}
-		if (isset($this->view->category))
+		if ($category)
 		{
 			Pathway::append(
-				String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true)),
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias')
+				String::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
+				'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
 			);
 		}
 	}
@@ -96,18 +97,20 @@ class Categories extends SiteController
 	/**
 	 * Method to build and set the document title
 	 *
+	 * @param   object  $section
+	 * @param   object  $category
 	 * @return	void
 	 */
-	protected function _buildTitle()
+	protected function buildTitle($section=null, $category=null)
 	{
 		$this->_title = Lang::txt(strtoupper($this->_option));
-		if (isset($this->view->section))
+		if ($section)
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . String::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
 		}
-		if (isset($this->view->category))
+		if ($category)
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . String::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
 		}
 
 		App::get('document')->setTitle($this->_title);
@@ -120,172 +123,170 @@ class Categories extends SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->title = Lang::txt('COM_FORUM');
-
 		// Incoming
-		$this->view->filters = array(
-			'authorized' => 1,
-			'limit'      => Request::getInt('limit', 25),
-			'start'      => Request::getInt('limitstart', 0),
+		$filters = array(
 			'section'    => Request::getVar('section', ''),
 			'category'   => Request::getCmd('category', ''),
 			'search'     => Request::getVar('q', ''),
-			'scope'      => $this->model->get('scope'),
-			'scope_id'   => $this->model->get('scope_id'),
-			'state'      => 1,
+			'scope'      => $this->forum->get('scope'),
+			'scope_id'   => $this->forum->get('scope_id'),
+			'state'      => Category::STATE_PUBLISHED,
 			'parent'     => 0,
-			// Show based on if logged in or not
-			'access'     => (User::isGuest() ? 0 : array(0, 1))
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		$this->view->filters['sortby'] = Request::getWord('sortby', 'activity');
-		switch ($this->view->filters['sortby'])
+		$filters['sortby'] = Request::getWord('sortby', 'activity');
+		switch ($filters['sortby'])
 		{
 			case 'title':
-				$this->view->filters['sort'] = 'c.sticky DESC, c.title';
-				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
+				$filters['sort'] = 'sticky` DESC, `title';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
-				$this->view->filters['sort'] = 'c.sticky DESC, replies';
-				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort'] = 'sticky` DESC, `rgt';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'created':
-				$this->view->filters['sort'] = 'c.sticky DESC, c.created';
-				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort'] = 'sticky` DESC, `created';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
-				$this->view->filters['sort'] = 'c.sticky DESC, activity';
-				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort'] = 'sticky` DESC, `activity';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 		}
 
-		$this->view->section  = $this->model->section($this->view->filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
-		if (!$this->view->section->exists())
+		// Section
+		$section = Section::all()
+			->whereEquals('alias', $filters['section'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$section->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_SECTION_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_FORUM_SECTION_NOT_FOUND'));
 		}
 
-		$this->view->category = $this->view->section->category($this->view->filters['category']);
-		if (!$this->view->category->exists())
+		// Get the category
+		$category = Category::all()
+			->whereEquals('alias', $filters['category'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$category->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'));
 		}
 
-		//get authorization
+		// Get authorization
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
 		// Check logged in status
-		if ($this->view->category->get('access') > 0 && User::isGuest())
+		if ($category->get('access') > 0 && User::isGuest())
 		{
-			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'], false, true));
+			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $filters['section'] . '&category=' . $filters['category'], false, true));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
 			return;
 		}
 
-		$this->view->config = $this->config;
-
-		$this->view->model = $this->model;
+		$threads = $category->threads()
+			->select("*, (CASE WHEN last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
+			->whereEquals('state', $filters['state'])
+			->whereIn('access', $filters['access'])
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated()
+			->rows();
 
 		// Set the page title
-		$this->_buildTitle();
+		$this->buildTitle($section, $category);
 
 		// Set the pathway
-		$this->_buildPathway();
+		$this->buildPathway($section, $category);
 
-		$this->view->notifications = Notify::messages('forum');
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		// Output view
+		$this->view
+			->set('config', $this->config)
+			->set('forum', $this->forum)
+			->set('section', $section)
+			->set('category', $category)
+			->set('threads', $threads)
+			->set('filters', $filters)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
 	 * Search threads and display a list of results
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function searchTask()
 	{
-		$this->view->title = Lang::txt('COM_FORUM');
-
 		// Incoming
-		$this->view->filters = array(
-			'authorized' => 1,
-			'limit'      => Request::getInt('limit', 25),
-			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('q', ''),
-			'scope'      => $this->model->get('scope'),
-			'scope_id'   => $this->model->get('scope_id'),
-			'state'      => 1,
-			// Show based on if logged in or not
-			'access'     => (User::isGuest() ? 0 : array(0, 1))
+		$filters = array(
+			'scope'      => $this->forum->get('scope'),
+			'scope_id'   => $this->forum->get('scope_id'),
+			'state'      => Category::STATE_PUBLISHED,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		$this->view->section = $this->model->section(0);
-		$this->view->section->set('scope', $this->model->get('scope'));
-		$this->view->section->set('title', Lang::txt('COM_FORUM_POSTS'));
-		$this->view->section->set('alias', str_replace(' ', '-', $this->view->section->get('title')));
-		$this->view->section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->get('title'))));
+		$section = Section::blank();
+		$section->set('scope', $this->forum->get('scope'));
+		$section->set('title', Lang::txt('COM_FORUM_POSTS'));
+		$section->set('alias', str_replace(' ', '-', $section->get('title')));
+		$section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($section->get('title'))));
 
 		// Get all sections
-		$sections = $this->model->sections();
-		$s = array();
-		foreach ($sections as $section)
+		$sections = array();
+		foreach ($this->forum->sections($filters)->rows() as $section)
 		{
-			$s[$section->get('id')] = $section;
+			$sections[$section->get('id')] = $section;
 		}
-		$this->view->sections = $s;
 
-		$this->view->category = $this->view->section->category(0);
-		$this->view->category->set('scope', $this->model->get('scope'));
-		$this->view->category->set('title', Lang::txt('COM_FORUM_SEARCH'));
-		$this->view->category->set('alias', str_replace(' ', '-', $this->view->category->get('title')));
-		$this->view->category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->get('title'))));
+		$category = Category::blank();
+		$category->set('scope', $this->forum->get('scope'));
+		$category->set('scope_id', $this->forum->get('scope_id'));
+		$category->set('title', Lang::txt('COM_FORUM_SEARCH'));
+		$category->set('alias', str_replace(' ', '-', $category->get('title')));
+		$category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($category->get('title'))));
 
-		$this->view->thread = $this->view->category->thread(0);
-
-		// Get all categories
-		$categories = $this->view->section->categories('list', array('section_id' => -1));
-		$c = array();
-		foreach ($categories as $category)
+		$categories = array();
+		foreach ($this->forum->categories($filters)->rows() as $category)
 		{
-			$c[$category->get('id')] = $category;
+			$categories[$category->get('id')] = $category;
 		}
-		$this->view->categories = $c;
 
-		//get authorization
+		$filters['search'] = Request::getVar('q', '');
+
+		if (!$filters['search'])
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option));
+		}
+
+		// Get authorization
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		$this->view->config = $this->config;
-		$this->view->model  = $this->model;
-
 		// Set the page title
-		$this->_buildTitle();
+		$this->buildTitle($section, $category);
 
 		// Set the pathway
-		$this->_buildPathway();
+		$this->buildPathway($section, $category);
 
-		$this->view->notifications = Notify::messages('forum');
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->set('forum', $this->forum)
+			->set('sections', $sections)
+			->set('categories', $categories)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -301,9 +302,10 @@ class Categories extends SiteController
 	/**
 	 * Show a form for editing an entry
 	 *
+	 * @param   object  $category
 	 * @return  void
 	 */
-	public function editTask($model=null)
+	public function editTask($category=null)
 	{
 		if (User::isGuest())
 		{
@@ -314,29 +316,31 @@ class Categories extends SiteController
 			return;
 		}
 
-		$this->view->section = $this->model->section(Request::getVar('section', ''));
+		// Get the section
+		$section = Section::all()
+			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
 
 		// Incoming
-		if (is_object($model))
+		if (!is_object($category))
 		{
-			$this->view->category = $model;
-		}
-		else
-		{
-			$this->view->category = new Category(
-				Request::getVar('category', ''),
-				$this->view->section->get('id')
-			);
+			$category = Category::all()
+				->whereEquals('alias', Request::getVar('category', ''))
+				->whereEquals('scope', $this->forum->get('scope'))
+				->whereEquals('scope_id', $this->forum->get('scope_id'))
+				->row();
 		}
 
-		$this->_authorize('category', $this->view->category->get('id'));
+		$this->_authorize('category', $category->get('id'));
 
-		if (!$this->view->category->exists())
+		if ($category->isNew())
 		{
-			$this->view->category->set('created_by', User::get('id'));
-			$this->view->category->set('section_id', $this->view->section->get('id'));
+			$category->set('created_by', User::get('id'));
+			$category->set('section_id', $section->get('id'));
 		}
-		elseif ($this->view->category->get('created_by') != User::get('id') && !$this->config->get('access-create-category'))
+		elseif ($category->get('created_by') != User::get('id') && !$this->config->get('access-create-category'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
@@ -344,18 +348,12 @@ class Categories extends SiteController
 			return;
 		}
 
-		$this->view->config = $this->config;
-		$this->view->model  = $this->model;
-
-		$this->view->notifications = Notify::messages('forum');
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
+		// Output the view
 		$this->view
+			->set('config', $this->config)
+			->set('forum', $this->forum)
+			->set('category', $category)
+			->set('section', $section)
 			->setLayout('edit')
 			->display();
 	}
@@ -363,61 +361,73 @@ class Categories extends SiteController
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
+		if (User::isGuest())
+		{
+			$return = Route::url('index.php?option=' . $this->_option, false, true);
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+			);
+			return;
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
+		$url = 'index.php?option=' . $this->_option;
+
+		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$model = new Category($fields['id']);
-		if (!$model->bind($fields))
-		{
-			Notify::error($model->getError());
-			$this->editTask($model);
-			return;
-		}
+		// Instantiate a category
+		$category = Category::oneOrNew($fields['id'])->set($fields);
 
-		$this->_authorize('category', $model->get('id'));
+		// Double-check that the user is authorized
+		$this->_authorize('category', $category->get('id'));
 
 		if (!$this->config->get('access-edit-category'))
 		{
-			// Set the redirect
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
+				Route::url($url)
 			);
 		}
 
-		$model->set('closed', (isset($fields['closed']) && $fields['closed']) ? 1 : 0);
+		$category->set('closed', (isset($fields['closed']) && $fields['closed']) ? 1 : 0);
 
-		// Store new content
-		if (!$model->store(true))
+		// Check for alias duplicates
+		if (!$category->isUnique())
 		{
-			Notify::error($model->getError());
-			$this->editTask($model);
-			return;
+			Notify::error(Lang::txt('COM_FORUM_ERROR_CATEGORY_ALREADY_EXISTS'));
+			return $this->editTask($category);
 		}
 
-		$url = 'index.php?option=' . $this->_option;
+		// Store new content
+		if (!$category->save())
+		{
+			Notify::error($category->getError());
+			return $this->editTask($category);
+		}
 
 		// Log activity
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.category',
-				'scope_id'    => $model->get('id'),
-				'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'),
+				'scope_id'    => $category->get('id'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $category->get('title') . '</a>'),
 				'details'     => array(
-					'title' => $model->get('title'),
+					'title' => $category->get('title'),
 					'url'   => Route::url($url)
 				)
 			],
 			'recipients' => array(
 				['forum.site', 1],
-				['user', $model->get('created_by')]
+				['forum.section', $category->get('section_id')],
+				['user', $category->get('created_by')]
 			)
 		]);
 
@@ -430,7 +440,7 @@ class Categories extends SiteController
 	/**
 	 * Delete a category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -447,14 +457,15 @@ class Categories extends SiteController
 			return;
 		}
 
-		// Load the section
-		$section = $this->model->section(Request::getVar('section', ''));
-
 		// Load the category
-		$category = $section->category(Request::getVar('category', ''));
+		$category = Category::all()
+			->whereEquals('alias', Request::getVar('category', ''))
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
 
 		// Make the sure the category exist
-		if (!$category->exists())
+		if (!$category->get('id'))
 		{
 			App::redirect(
 				Route::url($url),
@@ -466,6 +477,7 @@ class Categories extends SiteController
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('category', $category->get('id'));
+
 		if (!$this->config->get('access-delete-category'))
 		{
 			App::redirect(
@@ -476,16 +488,10 @@ class Categories extends SiteController
 			return;
 		}
 
-		// Set all the threads/posts in all the categories to "deleted"
-		$tModel = new Tables\Post($this->database);
-		if (!$tModel->setStateByCategory($category->get('id'), 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
-		{
-			$this->setError($tModel->getError());
-		}
-
 		// Set the category to "deleted"
-		$category->set('state', 2);  /* 0 = unpublished, 1 = published, 2 = deleted */
-		if (!$category->store())
+		$category->set('state', $category::STATE_DELETED);
+
+		if (!$category->save())
 		{
 			App::redirect(
 				Route::url($url),
@@ -500,16 +506,17 @@ class Categories extends SiteController
 			'activity' => [
 				'action'      => 'deleted',
 				'scope'       => 'forum.category',
-				'scope_id'    => $model->get('id'),
-				'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'),
+				'scope_id'    => $category->get('id'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($url) . '">' . $category->get('title') . '</a>'),
 				'details'     => array(
-					'title' => $model->get('title'),
+					'title' => $category->get('title'),
 					'url'   => Route::url($url)
 				)
 			],
 			'recipients' => array(
 				['forum.site', 1],
-				['user', $model->get('created_by')]
+				['forum.section', $category->get('section_id')],
+				['user', $category->get('created_by')]
 			)
 		]);
 
@@ -524,7 +531,9 @@ class Categories extends SiteController
 	/**
 	 * Set the authorization level for the user
 	 *
-	 * @return     void
+	 * @param   string   $assetType
+	 * @param   integer  $assetId
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{

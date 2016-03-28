@@ -46,6 +46,8 @@ if (!function_exists('sortDir'))
 	}
 }
 
+$this->category->set('section_alias', $this->filters['section']);
+
 $this->css()
      ->js();
 ?>
@@ -59,10 +61,6 @@ $this->css()
 </ul>
 
 <section class="main section">
-	<?php foreach ($this->notifications as $notification) { ?>
-		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-	<?php } ?>
-
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=search'); ?>" method="get">
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH'); ?>" />
@@ -70,12 +68,6 @@ $this->css()
 				<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
 				<label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
 				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
-				<!--
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
-				<input type="hidden" name="active" value="forum" />
-				<input type="hidden" name="action" value="search" />
-				-->
 			</fieldset>
 		</div><!-- / .container -->
 
@@ -114,131 +106,140 @@ $this->css()
 			<table class="entries">
 				<caption>
 					<?php
-						if ($this->filters['search']) {
-							if ($this->category->exists()) {
-								echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_FOR_IN', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
-							} else {
-								echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_FOR', $this->escape($this->filters['search']));
-							}
-						} else {
-							if ($this->category->exists()) {
-								echo Lang::txt('PLG_GROUPS_FORUM_DISCUSSIONS_IN', $this->escape(stripslashes($this->category->get('title'))));
-							} else {
-								echo Lang::txt('PLG_GROUPS_FORUM_DISCUSSIONS');
-							}
+					if ($this->filters['search'])
+					{
+						if ($this->category->get('title'))
+						{
+							echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_FOR_IN', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
 						}
+						else
+						{
+							echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_FOR', $this->escape($this->filters['search']));
+						}
+					}
+					else
+					{
+						echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_IN', $this->escape(stripslashes($this->category->get('title'))));
+					}
 					?>
 				</caption>
-			<?php if (!$this->category->get('closed') && $this->config->get('access-create-thread')) { ?>
-				<tfoot>
-					<tr>
-						<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
-							<a class="icon-add add btn" href="<?php echo Route::url($base . '/new'); ?>">
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
-							</a>
-						</td>
-					</tr>
-				</tfoot>
-			<?php } ?>
-				<tbody>
-			<?php
-			if ($this->category->threads('list', $this->filters)->total() > 0) {
-				foreach ($this->category->threads() as $row)
-				{
-					$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
-					if (!$row->get('anonymous'))
-					{
-						$name = $this->escape(stripslashes($row->creator('name')));
-						$name = ($row->creator('public') ? '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>' : $name);
-					}
-					$cls = array();
-					if ($row->get('closed'))
-					{
-						$cls[] = 'closed';
-					}
-					if ($row->get('sticky'))
-					{
-						$cls[] = 'sticky';
-					}
-					?>
-					<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
-						<th class="priority-5">
-							<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
-						</th>
-						<td>
-							<a class="entry-title" href="<?php echo Route::url($base . '/' . $row->get('id')); ?>">
-								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-							</a>
-							<span class="entry-details">
-								<span class="entry-date">
-									<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
-								</span>
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
-							</span>
-						</td>
-						<td class="priority-4">
-							<span><?php echo ($row->posts('count')); ?></span>
-							<span class="entry-details">
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_COMMENTS'); ?>
-							</span>
-						</td>
-						<td class="priority-3">
-							<span><?php echo Lang::txt('PLG_GROUPS_FORUM_LAST_POST'); ?></span>
-							<span class="entry-details">
-						<?php
-							$lastpost = $row->lastActivity();
-							if ($lastpost->exists())
-							{
-									$lname = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
-									if (!$lastpost->get('anonymous'))
-									{
-										$lname = $this->escape(stripslashes($lastpost->creator('name')));
-										$lname = ($lastpost->creator('public') ? '<a href="' . Route::url($lastpost->creator()->getLink()) . '">' . $lname . '</a>' : $lname);
-									}
-								?>
-								<span class="entry-date">
-									<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
-								</span>
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
-						<?php } else { ?>
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_NONE'); ?>
-						<?php } ?>
-							</span>
-						</td>
-					<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread') || User::get('id') == $row->get('created_by')) { ?>
-						<td class="entry-options">
-							<?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
-								<a class="icon-edit edit" href="<?php echo Route::url($base . '/' . $row->get('id') . '/edit'); ?>">
-									<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>
+				<?php if (!$this->category->get('closed') && $this->config->get('access-create-thread')) { ?>
+					<tfoot>
+						<tr>
+							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+								<a class="icon-add add btn" href="<?php echo Route::url($base . '/new'); ?>">
+									<?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
 								</a>
-							<?php } ?>
-							<?php if ($this->config->get('access-delete-thread')) { ?>
-								<a class="icon-delete delete" href="<?php echo Route::url($base . '/' . $row->get('id') . '/delete'); ?>">
-									<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>
-								</a>
-							<?php } ?>
-						</td>
-					<?php } ?>
-					</tr>
+							</td>
+						</tr>
+					</tfoot>
 				<?php } ?>
-			<?php } else { ?>
-					<tr>
-						<td><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY_EMPTY'); ?></td>
-					</tr>
-			<?php } ?>
+				<tbody>
+					<?php
+					if ($this->threads->count() > 0)
+					{
+						foreach ($this->threads as $row)
+						{
+							$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+							if (!$row->get('anonymous'))
+							{
+								$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
+								if ($row->creator('public'))
+								{
+									$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
+								}
+							}
+							$cls = array();
+							if ($row->isClosed())
+							{
+								$cls[] = 'closed';
+							}
+							if ($row->isSticky())
+							{
+								$cls[] = 'sticky';
+							}
+
+							$row->set('category', $this->filters['category']);
+							$row->set('section', $this->filters['section']);
+							?>
+							<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
+								<th class="priority-5">
+									<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
+								</th>
+								<td>
+									<a class="entry-title" href="<?php echo Route::url($base . '/' . $row->get('id')); ?>">
+										<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+									</a>
+									<span class="entry-details">
+										<span class="entry-date">
+											<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+										</span>
+										<?php echo Lang::txt('PLG_GROUPS_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
+									</span>
+								</td>
+								<td class="priority-4">
+									<span><?php
+									echo $row->thread()
+										->whereEquals('state', $row->get('state'))
+										->whereIn('access', $this->filters['access'])
+										->total();
+									?></span>
+									<span class="entry-details">
+										<?php echo Lang::txt('PLG_GROUPS_FORUM_COMMENTS'); ?>
+									</span>
+								</td>
+								<td class="priority-3">
+									<span><?php echo Lang::txt('PLG_GROUPS_FORUM_LAST_POST'); ?></span>
+									<span class="entry-details">
+										<?php
+										$lastpost = $row->lastActivity();
+										if ($lastpost->get('id'))
+										{
+											$lname = Lang::txt('COM_FORUM_ANONYMOUS');
+											if (!$lastpost->get('anonymous'))
+											{
+												$lname = ($lastpost->creator()->get('public') ? '<a href="' . Route::url($lastpost->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($lastpost->creator()->get('name'))) . ($lastpost->creator()->get('public') ? '</a>' : '');
+											}
+											?>
+											<span class="entry-date">
+												<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
+											</span>
+											<?php echo Lang::txt('PLG_GROUPS_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
+										<?php } else { ?>
+											<?php echo Lang::txt('PLG_GROUPS_FORUM_NONE'); ?>
+										<?php } ?>
+									</span>
+								</td>
+								<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread') || User::get('id') == $row->get('created_by')) { ?>
+									<td class="entry-options">
+										<?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
+											<a class="icon-edit edit" href="<?php echo Route::url($base . '/' . $row->get('id') . '/edit'); ?>">
+												<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>
+											</a>
+										<?php } ?>
+										<?php if ($this->config->get('access-delete-thread')) { ?>
+											<a class="icon-delete delete" href="<?php echo Route::url($base . '/' . $row->get('id') . '/delete'); ?>">
+												<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>
+											</a>
+										<?php } ?>
+									</td>
+								<?php } ?>
+							</tr>
+						<?php } ?>
+					<?php } else { ?>
+							<tr>
+								<td><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY_EMPTY'); ?></td>
+							</tr>
+					<?php } ?>
 				</tbody>
 			</table>
 
 			<?php
-			$pageNav = $this->pagination(
-				$this->category->threads('count', $this->filters),
-				$this->filters['start'],
-				$this->filters['limit']
-			);
+			$pageNav = $this->threads->pagination;
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 			$pageNav->setAdditionalUrlParam('active', 'forum');
 			$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
-			echo $pageNav->render();
+			echo $pageNav;
 			?>
 		</div><!-- / .container -->
 	</form>

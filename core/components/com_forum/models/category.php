@@ -25,284 +25,352 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Forum\Models;
 
-use Components\Forum\Tables;
-use Hubzero\Base\ItemList;
-use LogicException;
+use Hubzero\Database\Relational;
+use Hubzero\User\Profile;
 use Lang;
+use Date;
+use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'thread.php');
+require_once(__DIR__ . DS . 'post.php');
 
 /**
- * Forum model class for a forum category
+ * Forum model for a category
  */
-class Category extends Base
+class Category extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var  object
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Forum\\Tables\\Category';
+	protected $namespace = 'forum';
 
 	/**
-	 * Container for properties
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'ordering';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
 	 *
 	 * @var  array
 	 */
-	private $_cache = array(
-		'thread'        => null,
-		'threads_count' => null,
-		'threads'       => null,
-		'last'          => null
+	protected $rules = array(
+		'title'      => 'notempty',
+		'section_id' => 'positive|nonzero'
 	);
 
 	/**
-	 * Constructor
+	 * Automatically fillable fields
 	 *
-	 * @param   mixed    $oid         ID (integer), alias (string), array or object
-	 * @param   integer  $section_id  Section ID
-	 * @return  void
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias',
+		'modified',
+		'modified_by',
+		'scope'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
 	 */
-	public function __construct($oid, $section_id=0)
+	public $initiate = array(
+		'created',
+		'created_by',
+		'ordering',
+		'asset_id'
+	);
+
+	/**
+	 * ACL asset rules
+	 *
+	 * @var  array
+	 */
+	public $assetRules = null;
+
+	/**
+	 * Scope adapter
+	 *
+	 * @var  object
+	 */
+	protected $adapter = null;
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
 	{
-		$this->_db = \App::get('db');
-
-		$cls = $this->_tbl_name;
-		$this->_tbl = new $cls($this->_db);
-
-		if (!($this->_tbl instanceof \JTable))
-		{
-			$this->_logError(
-				__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
-			);
-			throw new LogicException(Lang::txt('Table class must be an instance of JTable.'));
-		}
-
-		if ($oid)
-		{
-			if (is_numeric($oid) || is_string($oid))
-			{
-				if ($section_id)
-				{
-					$this->_tbl->loadByAlias($oid, $section_id);
-				}
-				else
-				{
-					$this->_tbl->load($oid);
-				}
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = str_replace(' ', '-', $alias);
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 	}
 
 	/**
-	 * Returns a reference to a forum category model
+	 * Generates automatic ordering field value
 	 *
-	 * @param   mixed  $oid  ID (int) or alias (string)
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
+
+	/**
+	 * Generates automatic scope field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticScope($data)
+	{
+		if (!isset($data['scope']))
+		{
+			$data['scope'] = 'site';
+		}
+		return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($data['scope']));
+	}
+
+	/**
+	 * Generates automatic created field value
+	 *
+	 * @return  string
+	 */
+	public function automaticModified()
+	{
+		return Date::of('now')->toSql();
+	}
+
+	/**
+	 * Generates automatic created by field value
+	 *
+	 * @return  int
+	 */
+	public function automaticModifiedBy()
+	{
+		return User::get('id');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between category and creator
+	 *
 	 * @return  object
 	 */
-	static function &getInstance($oid=null, $section_id=0)
+	public function creator()
 	{
-		static $instances;
-
-		if (!isset($instances))
+		if ($profile = Profile::getInstance($this->get('created_by')))
 		{
-			$instances = array();
+			return $profile;
 		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $section_id . '_' . $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $section_id . '_' . $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $section_id . '_' . $oid['id'];
-		}
-
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($oid, $section_id);
-		}
-
-		return $instances[$key];
+		return new Profile;
 	}
 
 	/**
-	 * Is the category closed?
+	 * Return a formatted created timestamp
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function created($as='')
+	{
+		$as = strtolower($as);
+
+		if ($as == 'date')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('created');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between category and modifier
+	 *
+	 * @return  object
+	 */
+	public function modifier()
+	{
+		if ($profile = Profile::getInstance($this->get('modified_by')))
+		{
+			return $profile;
+		}
+		return new Profile;
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function modified($as='')
+	{
+		$as = strtolower($as);
+
+		if ($as == 'date')
+		{
+			return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('modified');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between category and section
+	 *
+	 * @return  object
+	 */
+	public function section()
+	{
+		return $this->belongsToOne('Section', 'section_id')->row();
+	}
+
+	/**
+	 * Get a list of posts
+	 *
+	 * @return  object
+	 */
+	public function posts()
+	{
+		return $this->oneToMany('Post', 'category_id');
+	}
+
+	/**
+	 * Get a list of threads
+	 *
+	 * @return  object
+	 */
+	public function threads()
+	{
+		return $this->posts()->whereEquals('parent', 0);
+	}
+
+	/**
+	 * Is this thread closed?
 	 *
 	 * @return  boolean
 	 */
 	public function isClosed()
 	{
-		if ($this->get('closed', 0) == 1)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('closed') == 1);
 	}
 
 	/**
-	 * Set and get a specific thread
+	 * Is the record with the given alias unique?
 	 *
-	 * @param   mixed  $id  ID (integer) or alias (string)
-	 * @return  object
+	 * @return  bool
 	 */
-	public function thread($id=null)
+	public function isUnique()
 	{
-		if (!isset($this->_cache['thread'])
-		 || ($id !== null && (int) $this->_cache['thread']->get('id') != $id))
+		$entries = self::all()
+			->whereEquals('alias', $this->get('alias'))
+			->whereEquals('scope', $this->get('scope'))
+			->whereEquals('scope_id', $this->get('scope_id'))
+			->where('state', '!=', self::STATE_DELETED);
+
+		if (!$this->isNew())
 		{
-			$this->_cache['thread'] = null;
-
-			if (isset($this->_cache['threads']) && ($this->_cache['threads'] instanceof ItemList))
-			{
-				foreach ($this->_cache['threads'] as $key => $thread)
-				{
-					if ((int) $thread->get('id') == $id)
-					{
-						$this->_cache['thread'] = $thread;
-						break;
-					}
-				}
-			}
-
-			if (!$this->_cache['thread'])
-			{
-				$this->_cache['thread'] = Thread::getInstance($id);
-			}
-			if (!$this->_cache['thread']->exists())
-			{
-				$this->_cache['thread']->set('scope', $this->get('scope'));
-				$this->_cache['thread']->set('scope_id', $this->get('scope_id'));
-			}
+			$entries->where('id', '!=', $this->get('id'));
 		}
-		return $this->_cache['thread'];
+
+		$row = $entries->row();
+
+		return ($row->get('id') <= 0);
 	}
 
 	/**
-	 * Get a list of threads for a forum category
+	 * Delete the record and all associated data
 	 *
-	 * @param   string   $rtrn     What data to return?
-	 * @param   array    $filters  Filters to apply to data fetch
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  boolean  False if error, True on success
 	 */
-	public function threads($rtrn='list', $filters=array(), $clear=false)
+	public function destroy()
 	{
-		$filters['category_id'] = isset($filters['category_id']) ? $filters['category_id'] : $this->get('id');
-		$filters['state']       = isset($filters['state'])       ? $filters['state']       : array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
-		$filters['parent']      = isset($filters['parent'])      ? $filters['parent']      : 0;
-
-		switch (strtolower($rtrn))
+		// Remove posts
+		foreach ($this->posts()->rows() as $post)
 		{
-			case 'count':
-				if (!isset($this->_cache['threads_count']) || $clear)
-				{
-					$tbl = new Tables\Post($this->_db);
-					$this->_cache['threads_count'] = $tbl->getCount($filters);
-				}
-				return $this->_cache['threads_count'];
-			break;
-
-			case 'first':
-				return $this->threads('list', $filters)->first();
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['threads'] instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Post($this->_db);
-
-					if (($results = $tbl->getRecords($filters)))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Thread($result);
-							$results[$key]->set('category', $this->get('alias'));
-							$results[$key]->set('section', $this->adapter()->get('section'));
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-
-					$this->_cache['threads'] = new ItemList($results);
-				}
-
-				return $this->_cache['threads'];
-			break;
-		}
-	}
-
-	/**
-	 * Return a count for the type of data specified
-	 *
-	 * @param   string   $what  What to count
-	 * @return  integer
-	 */
-	public function count($what='threads')
-	{
-		$what = strtolower(trim($what));
-		$key  = 'stats.' . $what;
-
-		if (!isset($this->_cache[$key]))
-		{
-			$this->_cache[$key] = 0;
-
-			switch ($what)
+			if (!$post->destroy())
 			{
-				case 'threads':
-					if ($this->get('threads', null) !== null)
-					{
-						$this->_cache[$key] += (int) $this->get('threads');
-					}
-					else
-					{
-						$this->_cache[$key] += (int) $this->threads('count');
-					}
-				break;
-
-				case 'posts':
-					if ($this->get('posts', null) !== null)
-					{
-						$this->_cache[$key] += (int) $this->get('posts');
-					}
-					else
-					{
-						foreach ($this->threads() as $thread)
-						{
-							$this->_cache[$key] += (int) $thread->posts('count');
-						}
-					}
-				break;
-
-				default:
-					$this->setError(Lang::txt('Property value of "%" not accepted', $what));
-					return $this->_cache[$key];
-				break;
+				$this->setError($post->getError());
+				return false;
 			}
 		}
 
-		return $this->_cache[$key];
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+
+	/**
+	 * Save the record
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function save()
+	{
+		if (!$this->get('access'))
+		{
+			$this->set('access', (int) \Config::get('access'));
+		}
+
+		$result = parent::save();
+
+		// Make sure state changes carry through to posts
+		if ($result)
+		{
+			foreach ($this->posts()->rows() as $post)
+			{
+				// If it's marked as deleted, skip it
+				if ($post->get('state') == self::STATE_DELETED)
+				{
+					continue;
+				}
+
+				$post->set('state', $this->get('state'));
+				$post->save();
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -319,76 +387,55 @@ class Category extends Base
 	}
 
 	/**
-	 * Get the most recent post
-	 *
-	 * @return  object
-	 */
-	public function lastActivity()
-	{
-		if (!($this->_cache['last'] instanceof Post))
-		{
-			$post = new Tables\Post($this->_db);
-			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'), $this->get('id'))))
-			{
-				$last = 0;
-			}
-			$this->_cache['last'] = new Post($last);
-		}
-		return $this->_cache['last'];
-	}
-
-	/**
 	 * Get the adapter
 	 *
 	 * @return  object
 	 */
 	public function adapter()
 	{
-		if (!$this->_adapter)
+		if (!$this->adapter)
 		{
-			$this->_adapter = $this->_adapter();
+			// Get the adapter
+			$scope = strtolower($this->get('scope', 'site'));
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->adapter = new $cls($this->get('scope_id'));
+
+			// Set some needed info
 			if (!$this->get('section_alias'))
 			{
-				$this->set('section_alias', Section::getInstance($this->get('section_id'))->get('alias'));
+				$this->set('section_alias', $this->section()->get('alias'));
 			}
-			$this->_adapter->set('section', $this->get('section_alias'));
-			$this->_adapter->set('category', $this->get('alias'));
+			$this->adapter->set('section', $this->get('section_alias'));
+			$this->adapter->set('category', $this->get('alias'));
 		}
 
-		return $this->_adapter;
+		return $this->adapter;
 	}
 
 	/**
-	* Verifies no duplicate aliases within a secton's categories listing.
-	* Returns true if duplicate detected.
-	*
-	* @param integer $id the id of the category object
-	*
-	* @return boolean
-	*/
-	public function uniqueAliasCheck($id = null)
+	 * Get the most recent post made in the thread
+	 *
+	 * @return  object
+	 */
+	public function lastActivity()
 	{
-		$alias = $this->get('alias');
-		$section = new Section($this->get('section_id'));
+		$last = $this->posts()
+			->whereEquals('state', self::STATE_PUBLISHED)
+			->whereIn('access', User::getAuthorisedViewLevels());
 
-		// all categories within a section
-		$categories = $section->categories('list');
-
-		// check for duplicate aliases within the same section;
-		foreach ($categories as $category)
-		{
-			$existing = $category->get('alias');
-			if ($alias == $existing
-				&& ($category->get('id') != $id))
-			{
-				$this->setError(Lang::txt('The alias must be unique within a section.'));
-				return true;
-			}
-			else
-			{
-				continue;
-			}
-		}
-		return false;
+		return $last->order('created', 'desc')
+			->limit(1)
+			->row();
 	}
 }

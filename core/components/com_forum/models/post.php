@@ -25,218 +25,338 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Forum\Models;
 
-use Components\Forum\Tables;
-use Hubzero\Base\ItemList;
-use Hubzero\Utility\String;
+use Hubzero\Database\Relational;
+use Hubzero\Database\Value\Raw;
+use Hubzero\User\Profile;
 use Lang;
 use Date;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'post.php');
-require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'attachment.php');
+require_once(__DIR__ . DS . 'tags.php');
 
 /**
- * Forum model class for a forum post
+ * Forum model for a post
  */
-class Post extends Base
+class Post extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Forum\\Tables\\Post';
+	protected $namespace = 'forum';
 
 	/**
-	 * Model context
+	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_context = 'com_forum.post.comment';
+	public $orderBy = 'lft';
 
 	/**
-	 * Attachment
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	protected $_attachment = null;
+	public $orderDir = 'asc';
 
 	/**
-	 * Returns a reference to a forum post model
+	 * Fields and their validation criteria
 	 *
-	 * @param   mixed  $oid  ID (int) or array or object
-	 * @return  object
+	 * @var  array
 	 */
-	static function &getInstance($oid=0)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
-	}
+	protected $rules = array(
+		'comment' => 'notempty'
+	);
 
 	/**
-	 * Get a post attachment
+	 * Automatically fillable fields
 	 *
-	 * @return  object
-	 */
-	public function attachment()
-	{
-		if (!isset($this->_attachment))
-		{
-			$this->_attachment = Attachment::getInstance(0, $this->get('id'));
-		}
-		return $this->_attachment;
-	}
+	 * @var  array
+	 **/
+	public $always = array(
+		'title',
+		'scope',
+		'modified',
+		'modified_by'
+	);
 
 	/**
-	 * Has this post been reported?
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @return  boolean True if reported, False if not
+	 * @var  array
 	 */
-	public function isReported()
-	{
-		if ($this->get('state') == self::APP_STATE_FLAGGED)
-		{
-			return true;
-		}
-		return false;
-	}
+	public $initiate = array(
+		'created',
+		'created_by',
+		'lft',
+		'rgt',
+		'asset_id'
+	);
 
 	/**
-	 * Return a formatted timestamp
+	 * Fields to be parsed
 	 *
-	 * @param   string $rtrn Format to return
+	 * @var array
+	 */
+	protected $parsed = array(
+		'comment'
+	);
+
+	/**
+	 * ACL asset rules
+	 *
+	 * @var  array
+	 */
+	public $assetRules = null;
+
+	/**
+	 * Scope adapter
+	 *
+	 * @var  object
+	 */
+	protected $adapter = null;
+
+	/**
+	 * Generates automatic scope value
+	 *
+	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function modified($rtrn='')
+	public function automaticTitle($data)
 	{
-		switch (strtolower($rtrn))
+		if (!isset($data['title']) || !$data['title'])
 		{
-			case 'date':
-				return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('modified');
-			break;
+			$data['title'] = substr(strip_tags($data['comment']), 0, 70);
+			if (strlen($data['title']) >= 70)
+			{
+				$data['title'] .= '...';
+			}
 		}
+		return $data['title'];
+	}
+
+	/**
+	 * Generates automatic scope value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticScope($data)
+	{
+		if (!isset($data['scope']))
+		{
+			$data['scope'] = 'site';
+		}
+		return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($data['scope']));
+	}
+
+	/**
+	 * Generates automatic lft value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticLft($data)
+	{
+		if (!$data['parent'])
+		{
+			$data['lft'] = 0;
+		}
+		return $data['lft'];
+	}
+
+	/**
+	 * Generates automatic lft value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticRgt($data)
+	{
+		if (!isset($data['rgt']))
+		{
+			if (!isset($data['lft']))
+			{
+				$data['lft'] = $this->automaticLft($data);
+			}
+			$data['rgt'] = $data['lft'] + 1;
+		}
+		return $data['rgt'];
+	}
+
+	/**
+	 * Generates automatic created field value
+	 *
+	 * @return  string
+	 */
+	public function automaticModified()
+	{
+		return Date::of('now')->toSql();
+	}
+
+	/**
+	 * Generates automatic created by field value
+	 *
+	 * @return  int
+	 */
+	public function automaticModifiedBy()
+	{
+		return User::get('id');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between category and creator
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		if ($profile = Profile::getInstance($this->get('created_by')))
+		{
+			return $profile;
+		}
+		return new Profile;
+	}
+
+	/**
+	 * Return a formatted created timestamp
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function created($as='')
+	{
+		$as = strtolower($as);
+
+		if ($as == 'date')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('created');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between category and modifier
+	 *
+	 * @return  object
+	 */
+	public function modifier()
+	{
+		if ($profile = Profile::getInstance($this->get('modified_by')))
+		{
+			return $profile;
+		}
+		return new Profile;
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function modified($as='')
+	{
+		$as = strtolower($as);
+
+		if ($as == 'date')
+		{
+			return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('modified');
 	}
 
 	/**
 	 * Determine if record was modified
-	 *
-	 * @return  boolean True if modified, false if not
+	 * 
+	 * @return  boolean
 	 */
 	public function wasModified()
 	{
-		if ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00')
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00');
 	}
 
 	/**
-	 * Store changes to this entry
+	 * Defines a belongs to one relationship between category and post
 	 *
-	 * @param   boolean $check Perform data validation check?
-	 * @return  boolean False if error, True on success
+	 * @return  object
 	 */
-	public function store($check=true)
+	public function category()
 	{
-		$new = true;
-		if ($this->get('id'))
-		{
-			$old = new self($this->get('id'));
-			$new = false;
-		}
-
-		if (!$this->get('anonymous'))
-		{
-			$this->set('anonymous', 0);
-		}
-
-		if (!parent::store($check))
-		{
-			return false;
-		}
-
-		if (!$new)
-		{
-			$fields = array();
-
-			// If this is a thread (first post), update the access levels
-			// of all posts in this thread.
-			if (!$this->get('parent') && $old->get('access') != $this->get('access'))
-			{
-				$fields['access'] = $this->get('access');
-			}
-
-			// If the category has changed
-			if ($old->get('category_id') != $this->get('category_id'))
-			{
-				$fields['category_id'] = $this->get('category_id');
-			}
-
-			if (!empty($fields))
-			{
-				$this->_tbl->updateReplies(
-					$fields,
-					$this->get('id')
-				);
-			}
-		}
-
-		return true;
+		return $this->belongsToOne('Category', 'category_id')->row();
 	}
 
 	/**
-	 * Get tags on the entry
-	 * Optional first agument to determine format of tags
+	 * Get a list of attachments
 	 *
-	 * @param   string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
-	 * @param   integer $admin Include amdin tags? (defaults to no)
-	 * @return  boolean
+	 * @return  object
 	 */
-	public function tags($as='cloud', $admin=0)
+	public function attachments()
 	{
-		if (!$this->exists())
+		return $this->oneToMany('Attachment', 'post_id');
+	}
+
+	/**
+	 * Get a list of replies
+	 *
+	 * @return  object
+	 */
+	public function replies()
+	{
+		return self::all()->whereEquals('parent', $this->get('id'));
+	}
+
+	/**
+	 * Get a list of replies
+	 *
+	 * @return  object
+	 */
+	public function thread()
+	{
+		return self::all()->whereEquals('thread', $this->get('thread'));
+	}
+
+	/**
+	 * Get parent entry
+	 *
+	 * @return  object
+	 */
+	public function parent()
+	{
+		return self::one($this->get('parent'));
+	}
+
+	/**
+	 * Get tags on an entry
+	 *
+	 * @param   string   $what   Data format to return (string, array, cloud)
+	 * @param   integer  $admin  Get admin tags? 0=no, 1=yes
+	 * @return  mixed
+	 */
+	public function tags($what='cloud', $admin=0)
+	{
+		if (!$this->get('id'))
 		{
-			switch (strtolower($as))
+			switch (strtolower($what))
 			{
 				case 'array':
 					return array();
@@ -251,19 +371,22 @@ class Post extends Base
 			}
 		}
 
-		$cloud = new Tags($this->get('thread'));
+		$cloud = new Tags($this->get('id'));
 
-		return $cloud->render($as, array('admin' => $admin));
+		return $cloud->render($what, array('admin' => $admin));
 	}
 
 	/**
 	 * Tag the entry
 	 *
+	 * @param   string   $tags     Tags to apply
+	 * @param   integer  $user_id  ID of tagger
+	 * @param   integer  $admin    Tag as admin? 0=no, 1=yes
 	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new Tags($this->get('thread'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -272,8 +395,8 @@ class Post extends Base
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string $type   The type of link to return
-	 * @param   mixed  $params Optional string or associative array of params to append
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
 	 * @return  string
 	 */
 	public function link($type='', $params=null)
@@ -288,98 +411,369 @@ class Post extends Base
 	 */
 	public function adapter()
 	{
-		if (!$this->_adapter)
+		if (!$this->adapter)
 		{
-			$this->_adapter = $this->_adapter();
-			$this->_adapter->set('thread', $this->get('thread'));
-			$this->_adapter->set('parent', $this->get('parent'));
-			$this->_adapter->set('post', $this->get('id'));
+			// Get the adapter
+			$scope = strtolower($this->get('scope', 'site'));
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->adapter = new $cls($this->get('scope_id'));
+
+			// Set some needed info
+			$this->adapter->set('thread', $this->get('thread'));
+			$this->adapter->set('parent', $this->get('parent'));
+			$this->adapter->set('post', $this->get('id'));
 
 			if (!$this->get('category'))
 			{
-				$category = Category::getInstance($this->get('category_id'));
+				$category = $this->category();
 				$this->set('category', $category->get('alias'));
 			}
-			$this->_adapter->set('category', $this->get('category'));
+			$this->adapter->set('category', $this->get('category'));
 
 			if (!$this->get('section'))
 			{
-				$category = Category::getInstance($this->get('category_id'));
-				$this->set('section', Section::getInstance($category->get('section_id'))->get('alias'));
+				$category = $this->category();
+				$this->set('section', $category->section()->get('alias'));
 			}
-			$this->_adapter->set('section', $this->get('section'));
+			$this->adapter->set('section', $this->get('section'));
 		}
 
-		return $this->_adapter;
+		return $this->adapter;
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Is this thread closed?
 	 *
-	 * @param   string  $as      Format to return state in [text, number]
-	 * @param   integer $shorten Number of characters to shorten text to
-	 * @return  mixed   String or Integer
+	 * @return  boolean
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function isClosed()
 	{
-		$as = strtolower($as);
-		$options = array();
+		return ($this->get('closed') == 1);
+	}
 
-		switch ($as)
+	/**
+	 * Is this thread sticky?
+	 *
+	 * @return  boolean
+	 */
+	public function isSticky()
+	{
+		return ($this->get('sticky') == 1);
+	}
+
+	/**
+	 * Has this post been reported?
+	 *
+	 * @return  boolean
+	 */
+	public function isReported()
+	{
+		return ($this->get('state') == 3);
+	}
+
+	/**
+	 * Get the most recent post made in the thread
+	 *
+	 * @param   array  $filters
+	 * @return  object
+	 */
+	public function lastActivity($filters=array())
+	{
+		$last = self::all()
+			->whereEquals('state', self::STATE_PUBLISHED)
+			->whereEquals('thread', $this->get('thread'))
+			->whereIn('access', User::getAuthorisedViewLevels());
+
+		return $last->order('created', 'desc')
+			->limit(1)
+			->row();
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove replies
+		foreach ($this->replies()->rows() as $post)
 		{
-			case 'parsed':
-				$content = $this->get('content.parsed', null);
+			if (!$post->destroy())
+			{
+				$this->setError($post->getError());
+				return false;
+			}
+		}
 
-				if ($content === null)
+		// Remove attachments
+		foreach ($this->attachments()->rows() as $attachment)
+		{
+			if (!$attachment->destroy())
+			{
+				$this->setError($attachment->getError());
+				return false;
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+
+	/**
+	 * Save the record
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function save()
+	{
+		if (!$this->get('access'))
+		{
+			$this->set('access', (int) \Config::get('access'));
+		}
+
+		if ($this->isNew() && $this->get('parent'))
+		{
+			$parent = $this->parent();
+
+			if (!$parent)
+			{
+				$this->setError(Lang::txt('Parent node does not exist.'));
+				return false;
+			}
+
+			// Get the reposition data for shifting the tree and re-inserting the node.
+			if (!($reposition = $this->getTreeRepositionData($parent, 2, 'last-child')))
+			{
+				// Error message set in getNode method.
+				return false;
+			}
+
+			// Shift left values.
+			$query = $this->getQuery()
+				->update($this->getTableName())
+				->set(['lft' => new Raw('lft + 2')])
+				->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val'])
+				->whereEquals('scope', $parent->get('scope'))
+				->whereEquals('scope_id', $parent->get('scope_id'))
+				->whereEquals('object_id', $parent->get('object_id'));
+			if (!$query->execute())
+			{
+				$this->setError($query->getError());
+				return false;
+			}
+
+			// Shift right values.
+			$query = $this->getQuery()
+				->update($this->getTableName())
+				->set(['rgt' => new Raw('rgt + 2')])
+				->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val'])
+				->whereEquals('scope', $parent->get('scope'))
+				->whereEquals('scope_id', $parent->get('scope_id'))
+				->whereEquals('object_id', $parent->get('object_id'));
+			if (!$query->execute())
+			{
+				$this->setError($query->getError());
+				return false;
+			}
+
+			$this->set('lft', $reposition->new_lft);
+			$this->set('rgt', $reposition->new_rgt);
+		}
+
+		$result = parent::save();
+
+		if ($result)
+		{
+			// Set the thread ID
+			if (!$this->get('parent'))
+			{
+				$this->set('thread', $this->get('id'));
+
+				$result = parent::save();
+			}
+
+			// Make sure state and category changes carry through to replies
+			foreach ($this->replies()->rows() as $reply)
+			{
+				// If it's marked as deleted, skip it
+				if ($reply->get('state') != self::STATE_DELETED)
 				{
-					$config = array(
-						'option'   => 'com_forum',
-						'scope'    => 'forum',
-						'pagename' => 'forum',
-						'pageid'   => $this->get('thread'),
-						'filepath' => '',
-						'domain'   => $this->get('thread')
-					);
+					$reply->set('state', $this->get('state'));
+				}
+				$reply->set('category_id', $this->get('category_id'));
+				$reply->save();
+			}
 
-					$attach = new Tables\Attachment($this->_db);
+			// Make sure state changes carry through to attachments
+			foreach ($this->attachments()->rows() as $attachment)
+			{
+				$attachment->set('state', $this->get('state'));
+				$attachment->save();
+			}
+		}
 
-					$content = (string) stripslashes($this->get('comment', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
+		return $result;
+	}
 
-					$this->set('content.parsed', (string) $this->get('comment', ''));
-					$this->set('content.parsed', $this->get('content.parsed') . $attach->getAttachment(
-						$this->get('id'),
-						$this->link('download'),
-						$this->_config
-					));
-					$this->set('comment', $content);
+	/**
+	 * Method to get various data necessary to make room in the tree at a location
+	 * for a node and its children.  The returned data object includes conditions
+	 * for SQL WHERE clauses for updating left and right id values to make room for
+	 * the node as well as the new left and right ids for the node.
+	 *
+	 * @param   object   $referenceNode  A node object with at least a 'lft' and 'rgt' with
+	 *                                   which to make room in the tree around for a new node.
+	 * @param   integer  $nodeWidth      The width of the node for which to make room in the tree.
+	 * @param   string   $position       The position relative to the reference node where the room
+	 *                                   should be made.
+	 * @return  mixed    Boolean false on failure or data object on success.
+	 */
+	protected function getTreeRepositionData($referenceNode, $nodeWidth, $position = 'before')
+	{
+		// Make sure the reference an object with a left and right id.
+		if (!is_object($referenceNode) && isset($referenceNode->lft) && isset($referenceNode->rgt))
+		{
+			return false;
+		}
 
-					return $this->content($as, $shorten);
+		// A valid node cannot have a width less than 2.
+		if ($nodeWidth < 2)
+		{
+			return false;
+		}
+
+		// Initialise variables.
+		$k = $this->pk;
+
+		$data = new \stdClass;
+
+		// Run the calculations and build the data object by reference position.
+		switch ($position)
+		{
+			case 'first-child':
+				$data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->lft);
+				$data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft);
+
+				$data->new_lft = $referenceNode->lft + 1;
+				$data->new_rgt = $referenceNode->lft + $nodeWidth;
+			break;
+
+			case 'last-child':
+				$data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt);
+				$data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->rgt);
+
+				$data->new_lft = $referenceNode->rgt;
+				$data->new_rgt = $referenceNode->rgt + $nodeWidth - 1;
+			break;
+
+			case 'before':
+				$data->left_where  = array('col' => 'lft', 'op' => '>=', 'val' => $referenceNode->lft);
+				$data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft);
+
+				$data->new_lft = $referenceNode->lft;
+				$data->new_rgt = $referenceNode->lft + $nodeWidth - 1;
+			break;
+
+			default:
+			case 'after':
+				$data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt);
+				$data->right_where = array('col' => 'rgt', 'op' => '>', 'val' => $referenceNode->rgt);
+
+				$data->new_lft = $referenceNode->rgt + 1;
+				$data->new_rgt = $referenceNode->rgt + $nodeWidth;
+			break;
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Get a list of participants from a thread
+	 *
+	 * @return  object
+	 */
+	public function participants()
+	{
+		$user = new \Hubzero\User\User;
+
+		return self::all()
+			->select($this->getTableName() . '.anonymous')
+			->select($this->getTableName() . '.created_by')
+			->select($user->getTableName() . '.name')
+			->join($user->getTableName(), $user->getTableName() . '.id', $this->getTableName() . '.created_by', 'left')
+			->whereEquals('thread', $this->get('thread'))
+			->group('created_by');
+	}
+
+	/**
+	 * Turn a list of rows into a tree
+	 *
+	 * @param   object  $rows
+	 * @return  array
+	 */
+	public function toTree($rows)
+	{
+		$results = array();
+
+		if ($rows->count() > 0)
+		{
+			$children = array(
+				0 => array()
+			);
+
+			foreach ($rows as $row)
+			{
+				$pt   = $row->get('parent');
+				$list = @$children[$pt] ? $children[$pt] : array();
+
+				array_push($list, $row);
+
+				$children[$pt] = $list;
+			}
+
+			$results = $this->treeRecurse($children[0], $children);
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Recursive function to build tree
+	 *
+	 * @param   array    $children  Container for parent/children mapping
+	 * @param   array    $list      List of records
+	 * @param   integer  $maxlevel  Maximum levels to descend
+	 * @param   integer  $level     Indention level
+	 * @return  void
+	 */
+	protected function treeRecurse($children, $list, $maxlevel=9999, $level=0)
+	{
+		if ($level <= $maxlevel)
+		{
+			foreach ($children as $v => $child)
+			{
+				$replies = array();
+
+				if (isset($list[$child->get('id')]))
+				{
+					$replies = $this->treeRecurse($list[$child->get('id')], $list, $maxlevel, $level+1);
 				}
 
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-			break;
-
-			case 'raw':
-			default:
-				$content = $this->get('comment');
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
+				$children[$v]->set('replies', $replies);
+			}
 		}
-
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-		return $content;
+		return $children;
 	}
 }
-

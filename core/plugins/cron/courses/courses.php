@@ -228,6 +228,8 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 						if (isset($managers) && count($managers) > 0)
 						{
+							require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php';
+
 							foreach ($managers as $manager)
 							{
 								// Get the user's account
@@ -250,19 +252,14 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 								}
 
 								// Get discussion stats and posts
-								require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php';
-
-								$postsTbl  = new \Components\Forum\Tables\Post($database);
-								$filters   = array(
-									'scope'    => 'course',
-									'scope_id' => $offering->get('id'),
-									'state'    => 1,
-									'sort'     => 'created',
-									'sort_Dir' => 'DESC',
-									'limit'    => 100
-								);
-								$posts      = $postsTbl->find($filters);
-								$posts_cnt  = count($posts);
+								$posts = \Components\Forum\Models\Post::all()
+									->whereEquals('scope', 'course')
+									->whereEquals('scope_id', $offering->get('id'))
+									->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED)
+									->order('created', 'desc')
+									->limit(100)
+									->rows();
+								$posts_cnt  = $posts->count();
 								$latest     = array();
 								$latest_cnt = 0;
 

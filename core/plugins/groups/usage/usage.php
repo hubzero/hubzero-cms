@@ -308,12 +308,10 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = App::get('db');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
 
 		$filters = array();
-		$filters['authorized'] = $authorized;
 		switch ($state)
 		{
 			case 'sticky':
@@ -328,10 +326,10 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			break;
 		}
 		$filters['start'] = 0;
-		$filters['group'] = $gid;
 
-		$forum = new \Components\Forum\Tables\Post($database);
-		return $forum->getCount($filters);
+		$forum = new \Components\Forum\Models\Manager('group', $gid);
+
+		return $forum->posts($filters)->total();
 	}
 
 	/**
@@ -501,17 +499,13 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			return 0;
 		}
 
-		$database = App::get('db');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
-
-		$filters = array();
-		$filters['scope'] = 'group';
-		$filters['scope_id'] = $gid;
-
-		$gb = new \Components\Blog\Tables\Entry($database);
-
-		$total = $gb->find('count', $filters);
+		$total = \Components\Blog\Models\Entry::all()
+			->whereEquals('scope', 'group')
+			->whereEquals('scope_id', $gid)
+			->where('state', '!=', \Components\Blog\Models\Entry::STATE_DELETED)
+			->total();
 
 		return $total;
 	}

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +33,11 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
-if ($this->post->exists())
+$this->category->set('section_alias', $this->section->get('alias'));
+$this->post->set('section', $this->section->get('alias'));
+$this->post->set('category', $this->category->get('alias'));
+
+if ($this->post->get('id'))
 {
 	$action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias') . '/' . $this->post->get('thread');
 }
@@ -59,12 +62,9 @@ $this->css()
 	<?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
 	<div class="subject">
 	<?php } ?>
-		<?php foreach ($this->notifications as $notification) { ?>
-			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } ?>
 
 		<h3 class="post-comment-title">
-			<?php if ($this->post->exists()) { ?>
+			<?php if ($this->post->get('id')) { ?>
 				<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT_DISCUSSION'); ?>
 			<?php } else { ?>
 				<?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
@@ -74,22 +74,22 @@ $this->css()
 		<form action="<?php echo Route::url($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
-				$jxuser = new \Hubzero\User\Profile();
-				$jxuser->load(User::get('id'));
+				$user = new \Hubzero\User\Profile();
+				$user->load(User::get('id'));
 				?>
-				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
+				<img src="<?php echo $user->getPicture(); ?>" alt="" />
 			</p>
 
 			<fieldset>
 			<?php if ($this->config->get('access-edit-thread') && !$this->post->get('parent')) { ?>
 				<div class="grid">
-					<div class="col span-half">
+					<div class="col span6">
 						<label for="field-sticky">
 							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> />
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
 						</label>
 					</div>
-					<div class="col span-quarter">
+					<div class="col span6 omega">
 						<label for="field-closed">
 							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> />
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
@@ -106,10 +106,9 @@ $this->css()
 				<label for="field-access">
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
 					<select name="fields[access]" id="field-access">
-						<option value="0"<?php if ($this->post->get('access', 0) == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-						<option value="1"<?php if ($this->post->get('access', 0) == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
-						<?php /*<option value="3"<?php if ($this->post->get('access', 0) == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PROTECTED'); ?></option>*/ ?>
-						<option value="4"<?php if ($this->post->get('access', 0) == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+						<option value="1"<?php if ($this->post->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+						<option value="2"<?php if ($this->post->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+						<option value="5"<?php if ($this->post->get('access') == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
 					</select>
 				</label>
 				<?php } else { ?>
@@ -120,12 +119,22 @@ $this->css()
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<select name="fields[category_id]" id="field-category_id">
 						<option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
-						<?php foreach ($this->model->sections() as $section) { ?>
-							<?php if ($section->categories('list')->total() > 0) { ?>
+						<?php
+						$filters = array(
+							'state'  => 1,
+							'access' => User::getAuthorisedViewLevels()
+						);
+						foreach ($this->forum->sections($filters)->rows() as $section)
+						{
+							$categories = $section->categories()
+								->whereEquals('state', $filters['state'])
+								->whereIn('access', $filters['access'])
+								->rows();
+							if ($categories->count() > 0) { ?>
 								<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
-								<?php foreach ($section->categories() as $category) { ?>
-									<option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
-								<?php } ?>
+									<?php foreach ($categories as $category) { ?>
+										<option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+									<?php } ?>
 								</optgroup>
 							<?php } ?>
 						<?php } ?>
@@ -144,7 +153,7 @@ $this->css()
 				<label for="field_comment">
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
-					echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), 35, 15, 'field_comment', array('class' => 'minimal no-footer'));
+					echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->get('comment'))), 35, 15, 'field_comment', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
@@ -157,22 +166,25 @@ $this->css()
 
 				<fieldset>
 					<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
+
+					<?php $attachment = $this->post->attachments()->row(); ?>
+
 					<div class="grid">
 						<div class="col span-half">
 							<label for="upload">
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php if ($this->post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($this->post->attachment()->get('filename'))) . '</strong>'; } ?>
+								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php if ($attachment->get('filename')) { echo '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>'; } ?>
 								<input type="file" name="upload" id="upload" />
 							</label>
 						</div>
 						<div class="col span-half omega">
 							<label for="field-attach-descritpion">
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
-								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($this->post->attachment()->get('description'))); ?>" />
+								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description'))); ?>" />
 							</label>
 						</div>
-						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($this->post->attachment()->get('id'))); ?>" />
+						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($attachment->get('id'))); ?>" />
 					</div>
-					<?php if ($this->post->attachment()->exists()) { ?>
+					<?php if ($attachment->get('id')) { ?>
 						<p class="warning">
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE_WARNING'); ?>
 						</p>
@@ -197,8 +209,8 @@ $this->css()
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->post->get('parent')); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->post->get('id')); ?>" />
-			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
-			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
+			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />

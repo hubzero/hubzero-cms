@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,18 +32,17 @@
 namespace Components\Forum\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Forum\Tables\Section;
-use Components\Forum\Tables\Category;
-use Components\Forum\Tables\Post;
-use Components\Forum\Tables\Attachment;
-use Components\Forum\Admin\Models\AdminThread;
-use Components\Forum\Models\Tags;
 use Components\Forum\Models\Manager;
+use Components\Forum\Models\Section;
+use Components\Forum\Models\Category;
+use Components\Forum\Models\Post;
+use Components\Forum\Models\Attachment;
+use Components\Forum\Models\Tags;
+use Components\Forum\Admin\Models\AdminThread;
 use Filesystem;
 use Exception;
 use Request;
 use Notify;
-use Config;
 use Route;
 use Lang;
 use App;
@@ -55,6 +53,23 @@ use App;
 class Threads extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->banking = \Component::params('com_members')->get('bankAccounts');
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display all threads in a category
 	 *
 	 * @return  void
@@ -62,23 +77,17 @@ class Threads extends AdminController
 	public function displayTask()
 	{
 		// Filters
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
+		$filters = array(
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'-1',
 				'int'
 			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
-			'group' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.group',
-				'group',
-				-1,
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
+				'-1',
 				'int'
 			),
 			'section_id' => Request::getState(
@@ -103,104 +112,138 @@ class Threads extends AdminController
 				'filter_order_Dir',
 				'DESC'
 			),
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
 			'scopeinfo' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scopeinfo',
 				'scopeinfo',
 				''
-			),
-			'sticky' => false,
-			'parent' => 0,
-			'admin' => true
+			)
 		);
-		if (strstr($this->view->filters['scopeinfo'], ':'))
+		if (strstr($filters['scopeinfo'], ':'))
 		{
-			$bits = explode(':', $this->view->filters['scopeinfo']);
-			$this->view->filters['scope'] = $bits[0];
-			$this->view->filters['scope_id'] = intval(end($bits));
+			$bits = explode(':', $filters['scopeinfo']);
+			$filters['scope']    = $bits[0];
+			$filters['scope_id'] = intval(end($bits));
 		}
 		else
 		{
-			$this->view->filters['scope'] = '';
-			$this->view->filters['scope_id'] = -1;
+			$filters['scope']    = '';
+			$filters['scope_id'] = -1;
 		}
 
 		// Get the category
-		$this->view->category = new Category($this->database);
-		if (!$this->view->filters['category_id'] || $this->view->filters['category_id'] <= 0)
-		{
-			// No category? Load a default blank catgory
-			$this->view->category->loadDefault();
-		}
-		else
-		{
-			$this->view->category->load($this->view->filters['category_id']);
+		$category = Category::oneOrNew($filters['category_id']);
 
-			$this->view->filters['scope'] = $this->view->category->scope;
-			$this->view->filters['scope_id'] = $this->view->category->scope_id;
-			$this->view->filters['scopeinfo'] = $this->view->filters['scope'] . ':' . $this->view->filters['scope_id'];
-			$this->view->filters['section_id'] = $this->view->category->section_id;
+		// Get the category
+		if ($category->get('id'))
+		{
+			$filters['scope']      = $category->get('scope');
+			$filters['scope_id']   = $category->get('scope_id');
+			$filters['scopeinfo']  = $filters['scope'] . ':' . $filters['scope_id'];
+			$filters['section_id'] = $category->get('section_id');
 		}
 
 		// Get the section
-		$this->view->section = new Section($this->database);
-		if (!$this->view->filters['section_id'] || $this->view->filters['section_id'] <= 0)
+		$section = Section::oneOrNew($filters['section_id']);
+		if ($section->get('id') && !$filters['scopeinfo'])
 		{
-			// No section? Load a default blank section
-			$this->view->section->loadDefault();
+			$filters['scope']     = $section->get('scope');
+			$filters['scope_id']  = $section->get('scope_id');
+			$filters['scopeinfo'] = $filters['scope'] . ':' . $filters['scope_id'];
 		}
-		else
-		{
-			$this->view->section->load($this->view->filters['section_id']);
 
-			if (!$this->view->filters['scopeinfo'])
+		// Get sections
+		$sections = array();
+		if ($filters['scopeinfo'])
+		{
+			$sections = Section::all()
+				->whereEquals('scope', $filters['scope'])
+				->whereEquals('scope_id', $filters['scope_id'])
+				->ordered('title', 'ASC')
+				->rows();
+		}
+
+		// Get categories
+		$categories = array();
+		if ($filters['section_id'])
+		{
+			$categories = Category::all()
+				->whereEquals('section_id', $filters['section_id'])
+				->rows();
+
+			if (!$filters['category_id'] || $filters['category_id'] <= 0)
 			{
-				$this->view->filters['scope'] = $this->view->section->scope;
-				$this->view->filters['scope_id'] = $this->view->section->scope_id;
-				$this->view->filters['scopeinfo'] = $this->view->filters['scope'] . ':' . $this->view->filters['scope_id'];
-			}
-		}
-
-		$this->view->sections = array();
-		if ($this->view->filters['scopeinfo'])
-		{
-			$this->view->sections = $this->view->section->getRecords(array(
-				'scope'    => $this->view->filters['scope'],
-				'scope_id' => $this->view->filters['scope_id'],
-				'sort'     => 'title',
-				'sort_Dir' => 'ASC'
-			));
-		}
-
-		$this->view->categories = array();
-		if ($this->view->filters['section_id'])
-		{
-			$this->view->categories = $this->view->category->getRecords(array(
-				'section_id'    => $this->view->filters['section_id']
-			));
-			if (!$this->view->filters['category_id'] || $this->view->filters['category_id'] <= 0)
-			{
-				$this->view->filters['category_id'] = array();
-				foreach ($this->view->categories as $cat)
+				$filters['category_id'] = array();
+				foreach ($categories as $cat)
 				{
-					$this->view->filters['category_id'][] = $cat->id;
+					$filters['category_id'][] = $cat->id;
 				}
 			}
 		}
 
-		$model = new Post($this->database);
+		// Get threads
+		$entries = Post::all()
+			->whereEquals('parent', 0);
 
-		// Get a record count
-		$this->view->total = $model->getCount($this->view->filters);
+		if ($filters['search'])
+		{
+			$entries->whereLike('comment', strtolower((string)$filters['search']));
+		}
 
-		// Get records
-		$this->view->results = $model->getRecords($this->view->filters);
+		if ($filters['scope'])
+		{
+			$entries->whereEquals('scope', $filters['scope']);
+		}
 
-		$this->view->forum = new Manager($this->view->filters['scope'], $this->view->filters['scope_id']);
+		if ($filters['scope_id'] >= 0)
+		{
+			$entries->whereEquals('scope_id', (int)$filters['scope_id']);
+		}
 
-		$this->view->filters['category_id'] = is_array($this->view->filters['category_id']) ? -1 : $this->view->filters['category_id'];
+		if ($filters['state'] >= 0)
+		{
+			$entries->whereEquals('state', (int)$filters['state']);
+		}
+
+		if ($filters['access'] >= 0)
+		{
+			$entries->whereEquals('access', (int)$filters['access']);
+		}
+
+		if (is_array($filters['category_id']))
+		{
+			if (!empty($filters['category_id']))
+			{
+				$entries->whereIn('category_id', $filters['category_id']);
+			}
+			$filters['category_id'] = -1;
+		}
+		elseif ($filters['category_id'] > 0)
+		{
+			$entries->whereEquals('category_id', (int)$filters['category_id']);
+		}
+
+		$rows = $entries
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		$forum = new Manager($filters['scope'], $filters['scope_id']);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('section', $section)
+			->set('category', $category)
+			->set('sections', $sections)
+			->set('categories', $categories)
+			->set('scopes', $forum->scopes())
+			->display();
 	}
 
 	/**
@@ -211,22 +254,21 @@ class Threads extends AdminController
 	public function threadTask()
 	{
 		// Filters
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.thread.limit',
-				'limit',
-				Config::get('list_limit'),
+		$filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				-1,
 				'int'
 			),
-			'start' => Request::getState(
-				$this->_option . '.thread.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
-			'group' => Request::getState(
-				$this->_option . '.thread.group',
-				'group',
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
 				-1,
 				'int'
 			),
@@ -257,86 +299,88 @@ class Threads extends AdminController
 				$this->_option . '.thread.sortdir',
 				'filter_order_Dir',
 				'ASC'
-			),
-			'sticky' => false
+			)
 		);
 
-		// Get the section
-		$this->view->section = new Section($this->database);
-		$this->view->section->load($this->view->filters['section_id']);
-		if (!$this->view->section->id)
+		// Get the categories
+		$categories = array();
+		foreach (Category::all()->rows() as $c)
 		{
-			// No section? Load a default blank section
-			$this->view->section->loadDefault();
-		}
-
-		// Get the category
-		$this->view->category = new Category($this->database);
-		$this->view->category->load($this->view->filters['category_id']);
-		if (!$this->view->category->id)
-		{
-			// No category? Load a default blank catgory
-			$this->view->category->loadDefault();
-		}
-
-		$this->view->cateories = array();
-		$categories = $this->view->category->getRecords();
-		if ($categories)
-		{
-			foreach ($categories as $c)
+			if (!isset($cateories[$c->section_id]))
 			{
-				if (!isset($this->view->cateories[$c->section_id]))
-				{
-					$this->view->cateories[$c->section_id] = array();
-				}
-				$this->view->cateories[$c->section_id][] = $c;
-				asort($this->view->cateories[$c->section_id]);
+				$cateories[$c->section_id] = array();
 			}
+			$cateories[$c->section_id][] = $c;
+			asort($cateories[$c->section_id]);
 		}
 
-		// Get the sections for this group
-		$this->view->sections = array();
-		$sections = $this->view->section->getRecords();
-		if ($sections)
+		// Get the sections
+		$sections = array();
+		foreach (Section::all()->rows() as $s)
 		{
-			foreach ($sections as $s)
+			$ky = $s->scope . ' (' . $s->scope_id . ')';
+			if ($s->scope == 'site')
 			{
-				$ky = $s->scope . ' (' . $s->scope_id . ')';
-				if ($s->scope == 'site')
-				{
-					$ky = '[ site ]';
-				}
-				if (!isset($this->view->sections[$ky]))
-				{
-					$this->view->sections[$ky] = array();
-				}
-				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
-				$this->view->sections[$ky][] = $s;
-				asort($this->view->sections[$ky]);
+				$ky = '[ site ]';
 			}
+			if (!isset($sections[$ky]))
+			{
+				$sections[$ky] = array();
+			}
+			$s->categories = (isset($cateories[$s->id])) ? $cateories[$s->id] : array();
+			$sections[$ky][] = $s;
+			asort($sections[$ky]);
 		}
-		else
-		{
-			$default = new Section($this->database);
-			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
-
-			$this->view->sections[] = $default;
-		}
-		asort($this->view->sections);
-
-		$model = new Post($this->database);
-
-		// Get a record count
-		$this->view->total = $model->getCount($this->view->filters);
 
 		// Get records
-		$this->view->results = $model->getRecords($this->view->filters);
+		$entries = Post::oneOrFail($filters['thread']);
 
-		$model->load($this->view->filters['thread']);
-		$this->view->thread = $model;
+		if ($filters['search'])
+		{
+			$entries->whereLike('comment', strtolower((string)$filters['search']));
+		}
+
+		if ($filters['state'] >= 0)
+		{
+			$entries->whereEquals('state', (int)$filters['state']);
+		}
+
+		if ($filters['access'] >= 0)
+		{
+			$entries->whereEquals('access', (int)$filters['access']);
+		}
+
+		if ($filters['thread'])
+		{
+			$entries->whereEquals('thread', (int)$filters['thread']);
+		}
+
+		if ($filters['category_id'])
+		{
+			if (is_array($filters['category_id']))
+			{
+				$entries->whereIn('category_id', (int)$filters['category_id']);
+				$filters['category_id'] = -1;
+			}
+			else
+			{
+				$entries->whereEquals('category_id', (int)$filters['category_id']);
+			}
+		}
+
+		// Get records
+		$rows = $entries
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('sections', $sections)
+			->set('thread', $entries)
+			->display();
 	}
 
 	/**
@@ -360,124 +404,82 @@ class Threads extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = Request::getVar('id', array(0));
 		$parent = Request::getInt('parent', 0);
-		$this->view->parent = $parent;
-		if (is_array($id))
-		{
-			$id = intval($id[0]);
-		}
 
-		// Incoming
 		if (!is_object($post))
 		{
-			$post = new Post($this->database);
-			$post->load($id);
+			$id = Request::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = intval($id[0]);
+			}
+
+			$post = Post::oneOrNew($id);
 		}
 
-		$this->view->row = $post;
-
-		if (!$id)
+		if ($post->isNew())
 		{
-			$this->view->row->parent = $parent;
-			$this->view->row->created_by = User::get('id');
+			$post->set('parent', $parent);
+			$post->set('created_by', User::get('id'));
 		}
 
-		if ($this->view->row->parent)
+		if ($post->get('parent'))
 		{
-			$filters = array(
-				'category_id' => $this->view->row->category_id,
-				'sort'        => 'title',
-				'sort_Dir'    => 'ASC',
-				'limit'       => 100,
-				'start'       => 0,
-				'parent'      => 0
-			);
-
-			$this->view->threads = $this->view->row->getRecords($filters);
+			$threads = Post::all()
+				->whereEquals('category_id', $post->get('category_id'))
+				->whereEquals('parent', 0)
+				->ordered()
+				->rows();
 		}
 
 		// Get the category
-		$this->view->category = new Category($this->database);
-		$this->view->category->load($this->view->row->category_id);
-		if (!$this->view->category->id)
-		{
-			// No category? Load a default blank catgory
-			$this->view->category->loadDefault();
-		}
+		$category = Category::oneOrNew($post->get('category_id'));
 
-		$this->view->cateories = array();
-		$categories = $this->view->category->getRecords();
-		if ($categories)
+		$categories = array();
+		foreach (Category::all()->rows() as $c)
 		{
-			foreach ($categories as $c)
+			if (!isset($categories[$c->section_id]))
 			{
-				if (!isset($this->view->cateories[$c->section_id]))
-				{
-					$this->view->cateories[$c->section_id] = array();
-				}
-				$this->view->cateories[$c->section_id][] = $c;
-				asort($this->view->cateories[$c->section_id]);
+				$categories[$c->section_id] = array();
 			}
+			$categories[$c->section_id][] = $c;
+			asort($categories[$c->section_id]);
 		}
 
 		// Get the section
-		$this->view->section = new Section($this->database);
-		$this->view->section->load($this->view->category->section_id);
-		if (!$this->view->section->id)
-		{
-			// No section? Load a default blank section
-			$this->view->section->loadDefault();
-		}
+		$section = Section::oneOrNew($category->get('section_id'));
 
 		// Get the sections for this group
-		$this->view->sections = array();
-		$sections = $this->view->section->getRecords();
-		if ($sections)
+		$sections = array();
+		foreach (Section::all()->rows() as $s)
 		{
-			foreach ($sections as $s)
+			$ky = $s->scope . ' (' . $s->scope_id . ')';
+			if ($s->scope == 'site')
 			{
-				$ky = $s->scope . ' (' . $s->scope_id . ')';
-				if ($s->scope == 'site')
-				{
-					$ky = '[ site ]';
-				}
-				if (!isset($this->view->sections[$ky]))
-				{
-					$this->view->sections[$ky] = array();
-				}
-				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
-				$this->view->sections[$ky][] = $s;
-				asort($this->view->sections[$ky]);
+				$ky = '[ site ]';
 			}
+			if (!isset($sections[$ky]))
+			{
+				$sections[$ky] = array();
+			}
+			$s->categories = (isset($categories[$s->id])) ? $categories[$s->id] : array();
+			$sections[$ky][] = $s;
+			asort($sections[$ky]);
 		}
-		else
-		{
-			$default = new Section($this->database);
-			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
-
-			$this->view->sections[] = $default;
-		}
-		asort($this->view->sections);
 
 		\User::setState('com_forum.edit.thread.data', array(
-			'id'       => $this->view->row->get('id'),
-			'asset_id' => $this->view->row->get('asset_id')
+			'id'       => $post->get('id'),
+			'asset_id' => $post->get('asset_id')
 		));
 		$m = new AdminThread();
-		$this->view->form = $m->getForm();
+		$form = $m->getForm();
 
 		// Get tags on this article
-		$this->view->tModel = new Tags($this->view->row->id);
-		$this->view->tags = $this->view->tModel->render('string');
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
 		$this->view
+			->set('row', $post)
+			->set('sections', $sections)
+			->set('categories', $categories)
+			->set('form', $form)
 			->setLayout('edit')
 			->display();
 	}
@@ -485,85 +487,70 @@ class Threads extends AdminController
 	/**
 	 * Save a post and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
-		\User::setState('com_forum.edit.thread.data', null);
+		User::setState('com_forum.edit.thread.data', null);
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
-
-		// Bind the rules.
-		$data = Request::getVar('jform', array(), 'post');
-		if (isset($data['rules']) && is_array($data['rules']))
-		{
-			$model = new AdminThread();
-			$form = $model->getForm($data, false);
-			$validData = $model->validate($form, $data);
-
-			$fields['rules'] = $validData['rules'];
-		}
-
-		if ($fields['id'])
-		{
-			$old = new Post($this->database);
-			$old->load(intval($fields['id']));
-		}
 
 		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
 		$fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
 		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
 		// Initiate extended database class
-		$model = new Post($this->database);
-		if (!$model->bind($fields))
-		{
-			Notify::error($model->getError());
-			return $this->editTask($model);
-		}
+		$post = Post::oneOrNew(intval($fields['id']))->set($fields);
 
-		// Check content
-		if (!$model->check())
+		// Bind the rules.
+		$data = Request::getVar('jform', array(), 'post');
+		if (isset($data['rules']) && is_array($data['rules']))
 		{
-			Notify::error($model->getError());
-			return $this->editTask($model);
+			$model = new AdminThread();
+			$form      = $model->getForm($data, false);
+			$validData = $model->validate($form, $data);
+
+			$post->assetRules = $validData['rules'];
 		}
 
 		// Store new content
-		if (!$model->store())
+		if (!$post->save())
 		{
-			Notify::error($model->getError());
-			return $this->editTask($model);
+			Notify::error($post->getError());
+			return $this->editTask($post);
 		}
 
-		if ($fields['id'])
+		// Handle attachments
+		if (!$this->uploadTask($post->get('thread', $post->get('id')), $post->get('id')))
 		{
-			if ($old->category_id != $fields['category_id'])
-			{
-				$model->updateReplies(array('category_id' => $fields['category_id']), $model->id);
-			}
+			Notify::error($this->getError());
+			return $this->editTask($post);
 		}
 
-		$this->uploadTask(($model->thread ? $model->thread : $model->id), $model->id);
+		// Process tags
+		$post->tag(trim(Request::getVar('tags', '')));
 
-		$msg = Lang::txt('COM_FORUM_THREAD_SAVED');
-		$p = '';
-		if (($parent = Request::getInt('parent', 0)))
+		Notify::success(Lang::txt('COM_FORUM_POST_SAVED'));
+
+		if ($this->getTask() == 'apply')
 		{
-			$msg = Lang::txt('COM_FORUM_POST_SAVED');
-			$p = '&task=thread&parent=' . $parent;
+			return $this->editTask($post);
 		}
 
 		// Redirect
+		$p = '';
+		if ($thread = Request::getInt('thread', 0))
+		{
+			$p = '&task=thread&thread=' . $thread;
+		}
+
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false),
-			$msg,
-			'message'
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false)
 		);
 	}
 
@@ -571,85 +558,57 @@ class Threads extends AdminController
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
 	 *
-	 * @param   string   $listdir  Directory to upload files to
-	 * @param   integer  $post_id  Post ID
-	 * @return  string   A string that gets appended to messages
+	 * @param   integer  $thread_id  Directory to upload files to
+	 * @param   integer  $post_id    Post ID
+	 * @return  boolean
 	 */
-	public function uploadTask($listdir, $post_id)
+	public function uploadTask($thread_id, $post_id)
 	{
-		if (!$listdir)
+		if (!$thread_id)
 		{
 			$this->setError(Lang::txt('COM_FORUM_NO_UPLOAD_DIRECTORY'));
-			return;
+			return false;
 		}
 
-		$row = new Attachment($this->database);
-		$row->load(Request::getInt('attachment', 0));
-		$row->description = trim(Request::getVar('description', ''));
-		$row->post_id = $post_id;
-		$row->parent = $listdir;
+		// Instantiate an attachment record
+		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
+		$attachment->set('description', trim(Request::getVar('description', '')));
+		$attachment->set('parent', $thread_id);
+		$attachment->set('post_id', $post_id);
+		if ($attachment->isNew())
+		{
+			$attachment->set('state', 1);
+		}
 
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
-			if ($row->id)
+			if ($attachment->get('id'))
 			{
-				if (!$row->check())
+				// Only updating the description
+				if (!$attachment->save())
 				{
-					$this->setError($row->getError());
-				}
-				if (!$row->store())
-				{
-					$this->setError($row->getError());
+					$this->setError($attachment->getError());
+					return false;
 				}
 			}
-			return;
+			return true;
 		}
 
-		// Construct our file path
-		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS . $listdir;
-		if ($post_id)
+		// Upload file
+		if (!$attachment->upload($file['name'], $file['tmp_name']))
 		{
-			$path .= DS . $post_id;
+			$this->setError($attachment->getError());
 		}
 
-		// Build the path if it doesn't exist
-		if (!is_dir($path))
+		// Save entry
+		if (!$attachment->save())
 		{
-			if (!Filesystem::makeDirectory($path))
-			{
-				$this->setError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return;
-			}
+			$this->setError($attachment->getError());
 		}
 
-		// Make the filename safe
-		$file['name'] = Filesystem::clean($file['name']);
-		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(Filesystem::extension($file['name']));
-
-		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
-		{
-			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
-			return;
-		}
-		else
-		{
-			// File was uploaded
-			// Create database entry
-			$row->filename = $file['name'];
-
-			if (!$row->check())
-			{
-				$this->setError($row->getError());
-			}
-			if (!$row->store())
-			{
-				$this->setError($row->getError());
-			}
-		}
+		return true;
 	}
 
 	/**
@@ -668,114 +627,73 @@ class Threads extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Do we have any IDs?
-		if (count($ids) > 0)
+		// Loop through each ID
+		$i = 0;
+
+		foreach ($ids as $id)
 		{
-			$thread = new Post($this->database);
+			$post = Post::oneOrFail(intval($id));
 
-			// Loop through each ID
-			foreach ($ids as $id)
+			if (!$post->destroy())
 			{
-				$id = intval($id);
-
-				// deletes attachments
-				$this->markForDelete($id);
-
-				if (!$thread->delete($id))
-				{
-					throw new Exception($thread->getError(), 500);
-				}
+				Notify::error($post->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
 		// Redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			Lang::txt('COM_FORUM_POSTS_DELETED')
+			($i ? Lang::txt('COM_FORUM_POSTS_DELETED') : null)
 		);
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return     void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return     void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
 	}
 
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param   integer  $state  The state to set entries to
 	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		$state = $this->getTask() == 'publish' ? Post::STATE_PUBLISHED : Post::STATE_UNPUBLISHED;
 
 		// Incoming
 		$category = Request::getInt('category_id', 0);
 
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-		//attachment state
-		$attachment_state = 0;
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			$action = ($state == 1) ? Lang::txt('COM_FORUM_UNPUBLISH') : Lang::txt('COM_FORUM_PUBLISH');
-
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-				Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action),
-				'error'
-			);
-			return;
-		}
+		// Loop through each record
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new Post($this->database);
-			$row->load(intval($id));
-			$row->state = $state;
-			if (!$row->store())
+			$post = Post::oneOrFail(intval($id));
+			$post->set('state', $state);
+
+			if (!$post->save())
 			{
-				throw new Exception($row->getError(), 500);
+				Notify::error($post->getError());
+				continue;
 			}
 
-			if ($state == 1)
-			{
-				$this->markForPublish($id);
-			}
-			elseif ($state == 0)
-			{
-				$this->markForDelete($id);
-			}
+			$i++;
 		}
 
-		// set message
-		if ($state == 1)
+		// Set message
+		if ($state == Post::STATE_PUBLISHED)
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', count($ids));
+			$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
 		}
 		else
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
+			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
 		}
 
 		App::redirect(
@@ -796,44 +714,37 @@ class Threads extends AdminController
 
 		// Incoming
 		$category = Request::getInt('category_id', 0);
-		$state    = Request::getInt('sticky', 0);
+		$sticky   = Request::getInt('sticky', 0);
 
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			$action = ($state == 1) ? Lang::txt('COM_FORUM_MAKE_NOT_STICKY') : Lang::txt('COM_FORUM_MAKE_STICKY');
-
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-				Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action),
-				'error'
-			);
-			return;
-		}
+		// Loop through each record
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new Post($this->database);
-			$row->load(intval($id));
-			$row->sticky = $state;
-			if (!$row->store())
+			$post = Post::oneOrFail(intval($id));
+			$post->set('stick', $sticky);
+
+			if (!$post->save())
 			{
-				throw new Exception($row->getError(), 500);
+				Notify::error($post->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
-		// set message
-		if ($state == 1)
+		// Set message
+		if ($sticky == 1)
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_STUCK', count($ids));
+			$message = Lang::txt('COM_FORUM_ITEMS_STUCK', $i);
 		}
 		else
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_UNSTUCK', count($ids));
+			$message = Lang::txt('COM_FORUM_ITEMS_UNSTUCK', $i);
 		}
 
 		App::redirect(
@@ -854,38 +765,33 @@ class Threads extends AdminController
 
 		// Incoming
 		$category = Request::getInt('category_id', 0);
-		$state    = Request::getInt('access', 0);
+		$access   = Request::getInt('access', 0);
 
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-				Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
-				'error'
-			);
-			return;
-		}
+		// Loop through each record
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new Post($this->database);
-			$row->load(intval($id));
-			$row->access = $state;
-			if (!$row->store())
+			$post = Post::oneOrFail(intval($id));
+			$post->set('access', $access);
+
+			if (!$post->save())
 			{
-				throw new Exception($row->getError(), 500);
+				Notify::error($post->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
-		// set message
+		// Set message
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
+			Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', $i)
 		);
 	}
 
@@ -897,64 +803,10 @@ class Threads extends AdminController
 	public function cancelTask()
 	{
 		$fields = Request::getVar('fields', array());
-		$parent = ($fields['parent']) ? $fields['parent'] : $fields['id'];
+		$thread = ($fields['thread']) ? $fields['thread'] : $fields['id'];
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&thread=' . $thread, false)
 		);
-	}
-
-	/**
-	 * Marks a file for deletion
-	 *
-	 * @param   integer  $post_id  The ID of the post which is associated with the attachment
-	 * @return  void
-	 */
-	public function markForDelete($post_id)
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			return;
-		}
-
-		// Load attachment object
-		$row = new Attachment($this->database);
-		$row->loadByPost($post_id);
-
-		//mark for deletion
-		$row->set('status', 2);
-
-		if (!$row->store())
-		{
-			$this->setError($row->getError());
-		}
-	}
-
-	/**
-	 * Marks a file for deletion
-	 *
-	 * @param   integer  $post_id  The ID of the post which is associated with the attachment
-	 * @return  void
-	 */
-	public function markForPublish($post_id)
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			return;
-		}
-
-		// Load attachment object
-		$row = new Attachment($this->database);
-		$row->loadByPost($post_id);
-
-		//mark for deletion
-		$row->set('status', 0);
-
-		if (!$row->store())
-		{
-			$this->setError($row->getError());
-		}
 	}
 }

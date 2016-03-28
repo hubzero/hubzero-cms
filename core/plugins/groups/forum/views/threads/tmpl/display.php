@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -58,50 +57,56 @@ $this->css()
 			<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
 		</h3>
 
-		<?php foreach ($this->notifications as $notification) { ?>
-			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } ?>
+		<?php
+		$threading = $this->config->get('threading', 'list');
 
-			<?php
-			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0)
+		$posts = $this->thread->thread()
+			->whereIn('state', $this->filters['state'])
+			->whereIn('access', $this->filters['access'])
+			->order(($threading == 'tree' ? 'lft' : 'created'), 'asc')
+			->paginated()
+			->rows();
+
+		if ($posts->count() > 0)
+		{
+			if ($threading == 'tree')
 			{
-				$this->view('_list')
-				     ->set('option', $this->option)
-				     ->set('group', $this->group)
-				     ->set('comments', $this->thread->posts($this->config->get('threading', 'list')))
-				     ->set('thread', $this->thread)
-				     ->set('parent', 0)
-				     ->set('config', $this->config)
-				     ->set('depth', 0)
-				     ->set('cls', 'odd')
-				     ->set('filters', $this->filters)
-				     ->set('category', $this->category)
-				     ->display();
+				$posts = $this->thread->toTree($posts);
 			}
-			else
-			{
-				?>
-				<ol class="comments">
-					<li>
-						<p><?php echo Lang::txt('PLG_GROUPS_FORUM_NO_REPLIES_FOUND'); ?></p>
-					</li>
-				</ol>
-				<?php
-			}
+
+			$this->view('_list')
+			     ->set('option', $this->option)
+			     ->set('group', $this->group)
+			     ->set('comments', $posts)
+			     ->set('thread', $this->thread)
+			     ->set('parent', 0)
+			     ->set('config', $this->config)
+			     ->set('depth', 0)
+			     ->set('cls', 'odd')
+			     ->set('filters', $this->filters)
+			     ->set('category', $this->category)
+			     ->display();
+		}
+		else
+		{
 			?>
+			<ol class="comments">
+				<li>
+					<p><?php echo Lang::txt('PLG_GROUPS_FORUM_NO_REPLIES_FOUND'); ?></p>
+				</li>
+			</ol>
+			<?php
+		}
+		?>
 
 		<form action="<?php echo Route::url($this->thread->link()); ?>" method="get">
 			<?php
-			$pageNav = $this->pagination(
-				$this->thread->posts('count', $this->filters),
-				$this->filters['start'],
-				$this->filters['limit']
-			);
+			$pageNav = $posts->pagination;
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 			$pageNav->setAdditionalUrlParam('active', 'forum');
 			$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id'));
 
-			echo $pageNav->render();
+			echo $pageNav;
 			?>
 		</form>
 	</div><!-- / .subject -->
@@ -115,68 +120,84 @@ $this->css()
 			<?php } ?>
 		</div><!-- / .container -->
 
-		<?php if ($this->thread->participants()->total() > 0) { ?>
+		<?php
+		$participants = $this->thread->participants()
+			->whereIn('state', $this->filters['state'])
+			->whereIn('access', $this->filters['access'])
+			->rows();
+
+		if ($participants->count() > 0) { ?>
 			<div class="container">
 				<h4><?php echo Lang::txt('PLG_GROUPS_FORUM_PARTICIPANTS'); ?></h4>
 				<ul>
-				<?php
+					<?php
 					$anon = false;
-					foreach ($this->thread->participants() as $participant)
+					foreach ($participants as $participant)
 					{
-						if (!$participant->anonymous) {
-				?>
-					<li>
-						<a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->created_by); ?>">
-							<?php echo $this->escape(stripslashes($participant->name)); ?>
-						</a>
-					</li>
-				<?php
-						} else if (!$anon) {
+						if (!$participant->get('anonymous'))
+						{
+							?>
+							<li>
+								<a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
+									<?php echo $this->escape(stripslashes($participant->get('name'))); ?>
+								</a>
+							</li>
+							<?php
+						}
+						// Only display "anonymous" once
+						elseif (!$anon)
+						{
 							$anon = true;
-				?>
-					<li>
-						<span class="member">
-							<?php echo Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'); ?>
-						</span>
-					</li>
-				<?php
+							?>
+							<li>
+								<span class="member">
+									<?php echo Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'); ?>
+								</span>
+							</li>
+							<?php
 						}
 					}
-				?>
+					?>
 				</ul>
 			</div><!-- / .container -->
 		<?php } ?>
 
-		<?php if ($this->thread->attachments()->total() > 0) { ?>
+		<?php
+		$attachments = Components\Forum\Models\Attachment::all()
+			->whereEquals('parent', $this->thread->get('thread'))
+			->whereIn('state', $this->filters['state'])
+			->rows();
+
+		if ($attachments->count() > 0) { ?>
 			<div class="container">
 				<h4><?php echo Lang::txt('PLG_GROUPS_FORUM_ATTACHMENTS'); ?></h4>
 				<ul class="attachments">
-				<?php
-				foreach ($this->thread->attachments() as $attachment)
-				{
-					if ($attachment->get('status') != 2)
+					<?php
+					foreach ($attachments as $attachment)
 					{
-						$cls = 'file';
-						$title = trim($attachment->get('description'));
-						$title = $title ?: $attachment->get('filename');
-
-						// trims long titles
-						$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
-
-						if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
+						if ($attachment->get('status') != $attachment::STATE_DELETED)
 						{
-							$cls = 'img';
-						}
-				?>
-					<li>
-						<a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($base . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
-							<?php echo $this->escape(stripslashes($title)); ?>
-						</a>
-					</li>
-			<?php
-					} //end status check
-				}
-			?>
+							$cls = 'file';
+							$title = trim($attachment->get('description', $attachment->get('filename')));
+							$title = ($title ? $title : $attachment->get('filename'));
+
+							// trims long titles
+							$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
+
+							if ($attachment->isImage())
+							{
+								$cls = 'img';
+							}
+							?>
+							<li>
+								<a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($base . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
+									<?php echo $this->escape(stripslashes($title)); ?>
+								</a>
+							</li>
+							<?php
+						} //end status check
+					}
+					?>
 				</ul>
 			</div><!-- / .container -->
 		<?php } ?>
@@ -263,8 +284,8 @@ $this->css()
 			<input type="hidden" name="fields[thread]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
-			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
-			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
+			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
 			<input type="hidden" name="fields[id]" value="" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

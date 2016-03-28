@@ -73,75 +73,91 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="scopeinfo"><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE'); ?>:</label>
-		<select name="scopeinfo" id="scopeinfo" style="max-width: 20em;" onchange="document.adminForm.submit();">
-			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
-			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_NONE'); ?></option>
-			<?php
-			$results = $this->forum->scopes();
-
-			$list = array();
-
-			foreach ($results as $result)
-			{
-				if (!isset($list[$result->scope]))
-				{
-					$list[$result->scope] = array();
-				}
-				$list[$result->scope][$result->scope_id] = $result;
-			}
-
-			$html = '';
-			foreach ($list as $label => $optgroup)
-			{
-				if ($label == 'site')
-				{
-					continue;
-				}
-				$html .= ' <optgroup label="' . $label . '">';
-				foreach ($optgroup as $result)
-				{
-					$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
-					if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id)
-					{
-						$html .= ' selected="selected"';
-					}
-					$html .= '>' . $this->escape(stripslashes($result->caption));
-					$html .= '</option>'."\n";
-				}
-				$html .= '</optgroup>'."\n";
-			}
-			echo $html;
-			?>
-		</select>
-
-		<?php if ($this->filters['scopeinfo']) { ?>
-			<label for="field-section_id"><?php echo Lang::txt('COM_FORUM_FILTER_SECTION'); ?>:</label>
-			<select name="section_id" id="field-section_id" onchange="document.adminForm.submit( );">
-				<option value="-1"><?php echo Lang::txt('COM_FORUM_FILTER_SECTION_SELECT'); ?></option>
-				<?php
-				foreach ($this->sections as $section)
-				{
-					?>
-					<option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+		<div class="grid">
+			<div class="col span6">
+				<label for="scopeinfo"><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE'); ?>:</label>
+				<select name="scopeinfo" id="scopeinfo" style="max-width: 20em;" onchange="document.adminForm.submit();">
+					<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
+					<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_NONE'); ?></option>
 					<?php
-				}
-				?>
-			</select>
-		<?php } else { ?>
-			<input type="hidden" name="section_id" value="<?php echo $this->filters['section_id']; ?>" />
-		<?php } ?>
+					$list = array();
+					foreach ($this->scopes as $result)
+					{
+						if (!isset($list[$result->scope]))
+						{
+							$list[$result->scope] = array();
+						}
+						$list[$result->scope][$result->scope_id] = $result;
+					}
+
+					$html = '';
+					foreach ($list as $label => $optgroup)
+					{
+						if ($label == 'site')
+						{
+							continue;
+						}
+						$html .= ' <optgroup label="' . $label . '">';
+						foreach ($optgroup as $result)
+						{
+							$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
+							if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id)
+							{
+								$html .= ' selected="selected"';
+							}
+							$html .= '>' . $this->escape(stripslashes($result->caption));
+							$html .= '</option>'."\n";
+						}
+						$html .= '</optgroup>'."\n";
+					}
+					echo $html;
+					?>
+				</select>
+
+				<?php if ($this->filters['scopeinfo']) { ?>
+					<label for="field-section_id"><?php echo Lang::txt('COM_FORUM_FILTER_SECTION'); ?>:</label>
+					<select name="section_id" id="field-section_id" onchange="document.adminForm.submit( );">
+						<option value="-1"><?php echo Lang::txt('COM_FORUM_FILTER_SECTION_SELECT'); ?></option>
+						<?php
+						foreach ($this->sections as $section)
+						{
+							?>
+							<option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+							<?php
+						}
+						?>
+					</select>
+				<?php } else { ?>
+					<input type="hidden" name="section_id" value="<?php echo $this->filters['section_id']; ?>" />
+				<?php } ?>
+			</div>
+			<div class="col span6 align-right">
+				<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['state'] == '-1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_ALL_STATES'); ?></option>
+					<option value="0"<?php if ($this->filters['state'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->filters['state'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->filters['state'] === 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+				</select>
+
+				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
+				<select name="access" id="filter-access" onchange="this.form.submit()">
+					<option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_FORUM_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_FORUM_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_FORUM_THREADS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_FORUM_POSTS'); ?></th>
 			</tr>
@@ -150,22 +166,16 @@ function submitbutton(pressbutton)
 			<tr>
 				<td colspan="8"><?php
 				// initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php
-		if ($this->results)
-		{
+			<?php
 			$k = 0;
-			for ($i=0, $n=count($this->results); $i < $n; $i++)
+			$i = 0;
+			foreach ($this->rows as $row)
 			{
-				$row =& $this->results[$i];
 				switch ($row->state)
 				{
 					case '2':
@@ -188,34 +198,37 @@ function submitbutton(pressbutton)
 
 				switch ($row->access)
 				{
-					case 0:
+					case 1:
 						$color_access = 'public';
 						$task_access  = '1';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PUBLIC');
 						break;
-					case 1:
+					case 2:
 						$color_access = 'registered';
 						$task_access  = '2';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_REGISTERED');
 						break;
-					case 2:
+					case 3:
 						$color_access = 'special';
 						$task_access  = '3';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_SPECIAL');
 						break;
-					case 3:
+					case 4:
 						$color_access = 'protected';
 						$task_access  = '4';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PROTECTED');
 						break;
-					case 4:
+					case 5:
 						$color_access = 'private';
 						$task_access  = '0';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PRIVATE');
 						break;
 				}
+
+				$row->threads = $row->threads()->total();
+				$row->posts   = $row->posts->count();
 				?>
-				<tr class="<?php echo "row$k" . ($row->state ==2 ? ' archived' : ''); ?>">
+				<tr class="<?php echo "row$k" . ($row->state == 2 ? ' archived' : ''); ?>">
 					<td>
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
 					</td>
@@ -280,8 +293,7 @@ function submitbutton(pressbutton)
 				<?php
 				$k = 1 - $k;
 			}
-		}
-		?>
+			?>
 		</tbody>
 	</table>
 
@@ -289,8 +301,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

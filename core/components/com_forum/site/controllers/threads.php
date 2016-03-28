@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,12 +34,10 @@ namespace Components\Forum\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Components\Forum\Models\Manager;
+use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
-use Components\Forum\Models\Thread;
 use Components\Forum\Models\Post;
-use Components\Forum\Tables;
-use Exception;
-use Filesystem;
+use Components\Forum\Models\Attachment;
 use Document;
 use Pathway;
 use Request;
@@ -59,11 +56,11 @@ class Threads extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$this->model = new Manager('site', 0);
+		$this->forum = new Manager('site', 0);
 
 		$this->registerTask('latest', 'feed');
 		$this->registerTask('latest', 'feed.rss');
@@ -75,9 +72,12 @@ class Threads extends SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @return	void
+	 * @param   object  $section
+	 * @param   object  $category
+	 * @param   object  $thread
+	 * @return  void
 	 */
-	protected function _buildPathway()
+	protected function buildPathway($section=null, $category=null, $thread=null)
 	{
 		if (Pathway::count() <= 0)
 		{
@@ -86,25 +86,25 @@ class Threads extends SiteController
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (isset($this->view->section))
+		if (isset($section))
 		{
 			Pathway::append(
-				String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true)),
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias')
+				String::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
+				'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
 			);
 		}
-		if (isset($this->view->category))
+		if (isset($category))
 		{
 			Pathway::append(
-				String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true)),
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias')
+				String::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
+				'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
 			);
 		}
-		if (isset($this->view->thread) && $this->view->thread->exists())
+		if (isset($thread) && $thread->get('id'))
 		{
 			Pathway::append(
-				'#' . $this->view->thread->get('id') . ' - ' . String::truncate(stripslashes($this->view->thread->get('title')), 100, array('exact' => true)),
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias') . '&thread=' . $this->view->thread->get('id')
+				'#' . $thread->get('id') . ' - ' . String::truncate(stripslashes($thread->get('title')), 100, array('exact' => true)),
+				'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')
 			);
 		}
 	}
@@ -112,22 +112,25 @@ class Threads extends SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return	void
+	 * @param   object  $section
+	 * @param   object  $category
+	 * @param   object  $thread
+	 * @return  void
 	 */
-	protected function _buildTitle()
+	protected function buildTitle($section=null, $category=null, $thread=null)
 	{
 		$this->_title = Lang::txt(strtoupper($this->_option));
-		if (isset($this->view->section))
+		if (isset($section))
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . String::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
 		}
-		if (isset($this->view->category))
+		if (isset($category))
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . String::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
 		}
-		if (isset($this->view->thread) && $this->view->thread->exists())
+		if (isset($thread) && $thread->get('id'))
 		{
-			$this->_title .= ': #' . $this->view->thread->get('id') . ' - ' . String::truncate(stripslashes($this->view->thread->get('title')), 100, array('exact' => true));
+			$this->_title .= ': #' . $thread->get('id') . ' - ' . String::truncate(stripslashes($thread->get('title')), 100, array('exact' => true));
 		}
 
 		Document::setTitle($this->_title);
@@ -140,37 +143,46 @@ class Threads extends SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->title = Lang::txt('COM_FORUM');
-
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'limit'    => Request::getInt('limit', 25),
 			'start'    => Request::getInt('limitstart', 0),
 			'section'  => Request::getVar('section', ''),
 			'category' => Request::getCmd('category', ''),
-			'parent'   => Request::getInt('thread', 0),
-			'state'    => 1
+			'thread'   => Request::getInt('thread', 0),
+			'state'    => Post::STATE_PUBLISHED,
+			'access'   => User::getAuthorisedViewLevels()
 		);
 
-		$this->view->section  = $this->model->section($this->view->filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
-		if (!$this->view->section->exists())
+		// Section
+		$section = Section::all()
+			->whereEquals('alias', $filters['section'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$section->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_SECTION_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_FORUM_SECTION_NOT_FOUND'));
 		}
 
-		$this->view->category = $this->view->section->category($this->view->filters['category']);
-		if (!$this->view->category->exists())
+		// Get the category
+		$category = Category::all()
+			->whereEquals('alias', $filters['category'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$category->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'));
 		}
 
-		$this->view->filters['category_id'] = $this->view->category->get('id');
+		$filters['category_id'] = $category->get('id');
 
 		// Load the topic
-		$this->view->thread = $this->view->category->thread($this->view->filters['parent']);
+		$thread = Post::oneOrFail($filters['thread']);
 
 		// Check logged in status
-		if ($this->view->thread->get('access') > 0 && User::isGuest())
+		if (User::isGuest() && !in_array($thread->get('access'), User::getAuthorisedViewLevels()))
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent'], false, true));
 			App::redirect(
@@ -179,39 +191,37 @@ class Threads extends SiteController
 			return;
 		}
 
-		$this->view->filters['state'] = array(1, 3);
+		$filters['state'] = array(1, 3);
 
 		// Get authorization
-		$this->_authorize('category', $this->view->category->get('id'));
-		$this->_authorize('thread', $this->view->thread->get('id'));
+		$this->_authorize('category', $category->get('id'));
+		$this->_authorize('thread', $thread->get('id'));
 		$this->_authorize('post');
 
-		$this->view->config = $this->config;
-		$this->view->model  = $this->model;
-
-		$this->view->notifications = \Notify::messages('forum');
-
 		// Set the page title
-		$this->_buildTitle();
+		$this->buildTitle($section, $category, $thread);
 
 		// Set the pathway
-		$this->_buildPathway();
+		$this->buildPathway($section, $category, $thread);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		// Output the view
+		$this->view
+			->set('config', $this->config)
+			->set('forum', $this->forum)
+			->set('section', $section)
+			->set('category', $category)
+			->set('thread', $thread)
+			->set('filters', $filters)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
-	 * Show a form for creating a new entry
+	 * Produce a feed of the latest entries
 	 *
 	 * @return  void
 	 */
-	public function latestTask()
+	/*public function latestTask()
 	{
 		// Set the mime encoding for the document
 		Document::setType('feed');
@@ -344,7 +354,7 @@ class Threads extends SiteController
 				$doc->addItem($item);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Show a form for creating a new entry
@@ -382,36 +392,42 @@ class Threads extends SiteController
 			return;
 		}
 
-		$this->view->section  = $this->model->section($section, $this->model->get('scope'), $this->model->get('scope_id'));
-		if (!$this->view->section->exists())
+		// Section
+		$section = Section::all()
+			->whereEquals('alias', $section)
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$section->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_SECTION_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_FORUM_SECTION_NOT_FOUND'));
 		}
 
-		$this->view->category = $this->view->section->category($category);
-		if (!$this->view->category->exists())
+		// Get the category
+		$category = Category::all()
+			->whereEquals('alias', $category)
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$category->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'));
 		}
 
 		// Incoming
-		if (is_object($post))
+		if (!is_object($post))
 		{
-			$this->view->post = $post;
-		}
-		else
-		{
-			$this->view->post = new Thread($id);
+			$post = Post::oneOrNew($id);
 		}
 
 		$this->_authorize('thread', $id);
 
-		if (!$id)
+		if ($post->isNew())
 		{
-			$this->view->post->set('scope', $this->model->get('scope'));
-			$this->view->post->set('created_by', User::get('id'));
+			$post->set('scope', $this->forum->get('scope'));
+			$post->set('created_by', User::get('id'));
 		}
-		elseif ($this->view->post->get('created_by') != User::get('id') && !$this->config->get('access-edit-thread'))
+		elseif ($post->get('created_by') != User::get('id') && !$this->config->get('access-edit-thread'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -422,23 +438,18 @@ class Threads extends SiteController
 		}
 
 		// Set the page title
-		$this->_buildTitle();
+		$this->buildTitle($section, $category, $post);
 
 		// Set the pathway
-		$this->_buildPathway();
-
-		$this->view->config = $this->config;
-		$this->view->model  = $this->model;
-
-		$this->view->notifications = \Notify::messages('forum');
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$this->buildPathway($section, $category, $post);
 
 		$this->view
+			->set('config', $this->config)
+			->set('forum', $this->forum)
+			->set('section', $section)
+			->set('category', $category)
+			->set('post', $post)
+			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();
 	}
@@ -446,14 +457,15 @@ class Threads extends SiteController
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		if (User::isGuest())
 		{
+			$return = Route::url('index.php?option=' . $this->_option, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option)))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -463,128 +475,139 @@ class Threads extends SiteController
 
 		// Incoming
 		$section = Request::getVar('section', '');
-
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
-		$fields = array_map('trim', $fields);
-
-		$assetType = 'thread';
-		if ($fields['parent'])
-		{
-			$assetType = 'post';
-		}
-
-		if ($fields['id'])
-		{
-			$old = new Post(intval($fields['id']));
-			if ($old->get('created_by') == User::get('id'))
-			{
-				$this->config->set('access-edit-' . $assetType, true);
-			}
-		}
-
-		$this->_authorize($assetType, intval($fields['id']));
-		if (!$this->config->get('access-edit-' . $assetType) && !$this->config->get('access-create-' . $assetType))
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
-			);
-			return;
-		}
+		$fields  = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields  = array_map('trim', $fields);
 
 		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
 		$fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
 		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
-		// Bind data
-		$model = new Post($fields['id']);
-		if ($model->get('parent'))
+		// Instantiate a Post record
+		$post = Post::oneOrNew($fields['id']);
+
+		// Set authorization if the current user is the creator
+		// of an existing post.
+		$assetType = $fields['parent'] ? 'post' : 'thread';
+
+		if ($post->get('id'))
 		{
-			$fields['thread'] = isset($fields['thread']) ? $fields['thread'] : $model->get('parent');
-			$thread = new Thread($fields['thread']);
-			if (!$thread->exists() || $thread->get('closed'))
+			if ($post->get('created_by') == User::get('id'))
 			{
-				Notify::error(Lang::txt('COM_FORUM_ERROR_THREAD_CLOSED'), 'forum');
-				$this->editTask($model);
-				return;
+				$this->config->set('access-edit-' . $assetType, true);
 			}
 		}
-		if (!$model->bind($fields))
+
+		// Authorization check
+		$this->_authorize($assetType, intval($fields['id']));
+
+		if (!$this->config->get('access-edit-' . $assetType)
+		 && !$this->config->get('access-create-' . $assetType))
 		{
-			Notify::error($model->getError(), 'forum');
-			$this->editTask($model);
-			return;
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		// Bind data
+		$post->set($fields);
+
+		// Make sure the thread exists and is accepting new posts
+		if ($post->get('parent') && isset($fields['thread']))
+		{
+			$thread = Post::oneOrFail($fields['thread']);
+
+			if (!$thread->get('id') || $thread->get('closed'))
+			{
+				Notify::error(Lang::txt('COM_FORUM_ERROR_THREAD_CLOSED'));
+				return $this->editTask($post);
+			}
+		}
+
+		// Make sure the category exists and is accepting new posts
+		$category = Category::oneOrFail($post->get('category_id'));
+
+		if ($category->get('closed'))
+		{
+			Notify::error(Lang::txt('COM_FORUM_ERROR_CATEGORY_CLOSED'));
+			return $this->editTask($post);
 		}
 
 		// Store new content
-		if (!$model->store(true))
+		if (!$post->save())
 		{
-			Notify::error($model->getError(), 'forum');
-			$this->editTask($model);
-			return;
+			Notify::error($post->getError());
+			return $this->editTask($post);
 		}
 
-		$parent = $model->get('thread', $model->get('id'));
-
 		// Upload files
-		$this->uploadTask($parent, $model->get('id'));
+		if (!$this->uploadTask($post->get('thread', $post->get('id')), $post->get('id')))
+		{
+			Notify::error($this->getError());
+			return $this->editTask($post);
+		}
 
 		// Save tags
-		$model->tag(Request::getVar('tags', '', 'post'), User::get('id'));
+		$post->tag(Request::getVar('tags', '', 'post'), User::get('id'));
 
 		// Determine message
 		if (!$fields['id'])
 		{
+			$message = Lang::txt('COM_FORUM_POST_ADDED');
+
 			if (!$fields['parent'])
 			{
 				$message = Lang::txt('COM_FORUM_THREAD_STARTED');
 			}
-			else
-			{
-				$message = Lang::txt('COM_FORUM_POST_ADDED');
-			}
 		}
 		else
 		{
-			$message = ($model->get('modified_by')) ? Lang::txt('COM_FORUM_POST_EDITED') : Lang::txt('COM_FORUM_POST_ADDED');
+			$message = ($post->get('modified_by')) ? Lang::txt('COM_FORUM_POST_EDITED') : Lang::txt('COM_FORUM_POST_ADDED');
 		}
 
-		$category = new Category($model->get('category_id'));
-
-		$url = 'index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $parent . '#c' . $model->get('id');
+		$url = 'index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $post->get('thread') . '#c' . $post->get('id');
 
 		// Record the activity
 		$recipients = array(
 			['forum.site', 1],
-			['user', $model->get('created_by')]
+			['forum.section', $category->get('section_id')],
+			['user', $post->get('created_by')]
 		);
 		$type = 'thread';
 		$desc = Lang::txt(
 			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-			'<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'
+			'<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'
 		);
-		if ($model->get('parent'))
+		// If this is a post in a thread and not the thread starter...
+		if ($post->get('parent'))
 		{
-			$thread = new Post($model->get('thread'));
+			$thread = isset($thread) ? $thread : Post::oneOrFail($post->get('thread'));
+			$thread->set('last_activity', ($fields['id'] ? $post->get('modified') : $post->get('created')));
+			$thread->save();
 
 			$type = 'post';
 			$desc = Lang::txt(
 				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-				$model->get('id'),
+				$post->get('id'),
 				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
 			);
 
-			$parent = new Post($model->get('parent'));
-			$recipients[] = ['user', $parent->get('created_by')];
+			// If the parent post is not the same as the
+			// thread starter (i.e., this is a reply)
+			if ($post->get('parent') != $post->get('thread'))
+			{
+				$parent = Post::oneOrFail($post->get('parent'));
+				$recipients[] = ['user', $parent->get('created_by')];
+			}
 		}
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.' . $type,
-				'scope_id'    => $model->get('id'),
+				'scope_id'    => $post->get('id'),
 				'description' => $desc,
 				'details'     => array(
-					'thread' => $model->get('thread'),
+					'thread' => $post->get('thread'),
 					'url'    => Route::url($url)
 				)
 			],
@@ -602,7 +625,7 @@ class Threads extends SiteController
 	/**
 	 * Delete an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -624,11 +647,10 @@ class Threads extends SiteController
 		$id = Request::getInt('thread', 0);
 
 		// Load the post
-		$model = new Tables\Post($this->database);
-		$model->load($id);
+		$post = Post::oneOrFail($id);
 
 		// Make the sure the category exist
-		if (!$model->id)
+		if (!$post->get('id'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -640,6 +662,7 @@ class Threads extends SiteController
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
+
 		if (!$this->config->get('access-delete-thread'))
 		{
 			App::redirect(
@@ -650,44 +673,35 @@ class Threads extends SiteController
 			return;
 		}
 
-		// Update replies if this is a parent (thread starter)
-		if (!$model->parent)
-		{
-			if (!$model->updateReplies(array('state' => 2), $model->id))  /* 0 = unpublished, 1 = published, 2 = deleted */
-			{
-				$this->setError($model->getError());
-			}
-		}
+		// Trash the post
+		// Note: this will carry through to all replies
+		//       and attachments
+		$post->set('state', $post::STATE_DELETED);
 
-		// Delete the topic itself
-		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
-		if (!$model->store())
+		if (!$post->save())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
-				$model->getError(),
+				$post->getError(),
 				'error'
 			);
 			return;
 		}
 
-		// Delete the attachment associated with the post
-		$this->markForDelete($id);
-
 		// Record the activity
 		$type = 'thread';
 		$desc = Lang::txt(
 			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
-			'<a href="' . Route::url($url) . '">' . $model->get('title') . '</a>'
+			'<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'
 		);
-		if ($model->get('parent'))
+		if ($post->get('parent'))
 		{
-			$thread = new Post($model->get('thread'));
+			$thread = Post::oneOrFail($post->get('thread'));
 
 			$type = 'post';
 			$desc = Lang::txt(
 				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
-				$model->get('id'),
+				$post->get('id'),
 				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
 			);
 		}
@@ -696,16 +710,16 @@ class Threads extends SiteController
 			'activity' => [
 				'action'      => 'deleted',
 				'scope'       => 'forum.' . $type,
-				'scope_id'    => $model->get('id'),
+				'scope_id'    => $post->get('id'),
 				'description' => $desc,
 				'details'     => array(
-					'thread' => $model->get('thread'),
+					'thread' => $post->get('thread'),
 					'url'    => Route::url($url)
 				)
 			],
 			'recipients' => array(
 				['forum.site', 1],
-				['user', $model->get('created_by')]
+				['user', $post->get('created_by')]
 			)
 		]);
 
@@ -725,48 +739,39 @@ class Threads extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$section  = Request::getVar('section', '');
-		$category = Request::getVar('category', '');
-		$thread   = Request::getInt('thread', 0);
-		$post     = Request::getInt('post', 0);
-		$file     = Request::getVar('file', '');
-
-		// Ensure we have a database object
-		if (!$this->database)
-		{
-			throw new Exception(Lang::txt('COM_FORUM_DATABASE_NOT_FOUND'), 500);
-		}
+		$section   = Request::getVar('section', '');
+		$category  = Request::getVar('category', '');
+		$thread_id = Request::getInt('thread', 0);
+		$post_id   = Request::getInt('post', 0);
+		$file      = Request::getVar('file', '');
 
 		// Instantiate an attachment object
-		$attach = new Tables\Attachment($this->database);
-		if (!$post)
+		if (!$post_id)
 		{
-			$attach->loadByThread($thread, $file);
+			$attach = Attachment::oneByThread($thread_id, $file);
 		}
 		else
 		{
-			$attach->loadByPost($post);
+			$attach = Attachment::oneByPost($post_id);
 		}
 
-		if (!$attach->filename)
+		if (!$attach->get('filename'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_FILE_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_FORUM_FILE_NOT_FOUND'));
 		}
-		$file = $attach->filename;
 
 		// Get the parent ticket the file is attached to
-		$row = new Tables\Post($this->database);
-		$row->load($attach->post_id);
+		$post = $attach->post();
 
-		if (!$row->id)
+		if (!$post->get('id') || $post->get('state') == $post::STATE_DELETED)
 		{
-			throw new Exception(Lang::txt('COM_FORUM_POST_NOT_FOUND'), 404);
+			App::abort(404, ang::txt('COM_FORUM_POST_NOT_FOUND'));
 		}
 
 		// Check logged in status
-		if ($row->access > 0 && User::isGuest())
+		if (User::isGuest() && !in_array($post->get('access'), User::getAuthorisedViewLevels()))
 		{
-			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread . '&post=' . $post . '&file=' . $file));
+			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread_id . '&post=' . $post_id . '&file=' . $file));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
@@ -774,46 +779,21 @@ class Threads extends SiteController
 		}
 
 		// Load ACL
-		$this->_authorize('thread', $row->id);
+		$this->_authorize('thread', $post->get('thread'));
 
 		// Ensure the user is authorized to view this file
 		if (!$this->config->get('access-view-thread'))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_NOT_AUTH_FILE'), 403);
-		}
-
-		// Ensure we have a path
-		if (empty($file))
-		{
-			throw new Exception(Lang::txt('COM_FORUM_FILE_NOT_FOUND'), 404);
+			App::abort(403, Lang::txt('COM_FORUM_NOT_AUTH_FILE'));
 		}
 
 		// Get the configured upload path
-		$basePath  = DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS  . $attach->parent . DS . $attach->post_id;
-
-		// Does the path start with a slash?
-		if (substr($file, 0, 1) != DS)
-		{
-			$file = DS . $file;
-			// Does the beginning of the $attachment->filename match the config path?
-			if (substr($file, 0, strlen($basePath)) == $basePath)
-			{
-				// Yes - this means the full path got saved at some point
-			}
-			else
-			{
-				// No - append it
-				$file = $basePath . $file;
-			}
-		}
-
-		// Add PATH_CORE
-		$filename = PATH_APP . $file;
+		$filename = $attach->path();
 
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			throw new Exception(Lang::txt('COM_FORUM_FILE_NOT_FOUND') . ' ' . $filename, 404);
+			App::abort(404, Lang::txt('COM_FORUM_FILE_NOT_FOUND') . ' ' . substr($filename, strlen(PATH_ROOT)));
 		}
 
 		// Initiate a new content server and serve up the file
@@ -825,137 +805,73 @@ class Threads extends SiteController
 		if (!$server->serve())
 		{
 			// Should only get here on error
-			throw new Exception(Lang::txt('COM_FORUM_SERVER_ERROR'), 500);
+			App::abort(500, Lang::txt('COM_FORUM_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 
 	/**
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
 	 *
-	 * @param   string  $listdir  Directory to upload files to
-	 * @return  string  A string that gets appended to messages
+	 * @param   integer  $thread_id  Directory to upload files to
+	 * @param   integer  $post_id    Post ID
+	 * @return  boolean
 	 */
-	public function uploadTask($listdir, $post_id)
+	public function uploadTask($thread_id, $post_id)
 	{
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			return;
+			return false;
 		}
 
-		if (!$listdir)
+		if (!$thread_id)
 		{
 			$this->setError(Lang::txt('COM_FORUM_NO_UPLOAD_DIRECTORY'));
-			return;
+			return false;
 		}
 
-		$row = new Tables\Attachment($this->database);
-		$row->load(Request::getInt('attachment', 0));
-		$row->description = trim(Request::getVar('description', ''));
-		$row->post_id = $post_id;
-		$row->parent = $listdir;
+		// Instantiate an attachment record
+		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
+		$attachment->set('description', trim(Request::getVar('description', '')));
+		$attachment->set('parent', $thread_id);
+		$attachment->set('post_id', $post_id);
+		if ($attachment->isNew())
+		{
+			$attachment->set('state', Attachment::STATE_PUBLISHED);
+		}
 
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
-		if (!$file['name'])
+		if (!$file || !isset($file['name']) || !$file['name'])
 		{
-			if ($row->id)
+			if ($attachment->get('id'))
 			{
-				if (!$row->check())
+				// Only updating the description
+				if (!$attachment->save())
 				{
-					$this->setError($row->getError());
-				}
-				if (!$row->store())
-				{
-					$this->setError($row->getError());
+					$this->setError($attachment->getError());
+					return false;
 				}
 			}
-			return;
+			return true;
 		}
 
-		// Construct our file path
-		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS . $listdir;
-		if ($post_id)
+		// Upload file
+		if (!$attachment->upload($file['name'], $file['tmp_name']))
 		{
-			$path .= DS . $post_id;
+			$this->setError($attachment->getError());
 		}
 
-		// Build the path if it doesn't exist
-		if (!is_dir($path))
+		// Save entry
+		if (!$attachment->save())
 		{
-			if (!Filesystem::makeDirectory($path))
-			{
-				$this->setError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return;
-			}
+			$this->setError($attachment->getError());
 		}
 
-		// Make the filename safe
-		$file['name'] = Filesystem::clean($file['name']);
-		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(Filesystem::extension($file['name']));
-
-		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
-		{
-			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
-			return;
-		}
-		else
-		{
-			// Perform the upload
-			if (!Filesystem::isSafe($path . DS . $file['name']))
-			{
-				$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
-				return;
-			}
-
-			// File was uploaded
-			// Create database entry
-			$row->filename = $file['name'];
-
-			if (!$row->check())
-			{
-				$this->setError($row->getError());
-			}
-			if (!$row->store())
-			{
-				$this->setError($row->getError());
-			}
-		}
-	}
-
-	/**
-	 * Marks a file for deletion
-	 *
-	 * @param   integer  $post_id  The ID of the post which is associated with the attachment
-	 * @return  void
-	 */
-	public function markForDelete($post_id)
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			return;
-		}
-
-		// Load attachment object
-		$row = new Tables\Attachment($this->database);
-		$row->loadByPost($post_id);
-
-		//mark for deletion
-		$row->set('status', 2);
-
-		if (!$row->store())
-		{
-			$this->setError($row->getError());
-		}
+		return true;
 	}
 
 	/**

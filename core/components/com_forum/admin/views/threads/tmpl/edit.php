@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,26 +34,19 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Forum\Helpers\Permissions::getActions('thread');
 
-$text = ($this->row->parent ? Lang::txt('COM_FORUM_THREADS') : Lang::txt('COM_FORUM_POSTS')) . ': ';
-$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
+$text  = ($this->row->get('parent') ? Lang::txt('COM_FORUM_POSTS') : Lang::txt('COM_FORUM_THREADS')) . ': ';
+$text .= ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_FORUM') . ': ' . $text, 'forum.png');
 if ($canDo->get('core.edit'))
 {
+	Toolbar::apply();
 	Toolbar::save();
 	Toolbar::spacer();
 }
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('post');
-
-$post = new \Components\Forum\Models\Post($this->row);
-
-$create_date = NULL;
-if (intval($this->row->created) <> 0)
-{
-	$create_date = Date::of($this->row->created)->toSql();
-}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -101,34 +93,44 @@ function submitbutton(pressbutton)
 					<input type="text" name="fields[object_id]" id="field-object_id" maxlength="11" value="<?php echo $this->escape($this->row->object_id); ?>" />
 				</div>
 
-				<?php if (!$this->row->parent) { ?>
+				<?php if (!$this->row->get('parent')) { ?>
 					<div class="input-wrap">
-						<label for="field-section_id"><?php echo Lang::txt('COM_FORUM_FIELD_SECTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+						<label for="field-category_id"><?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 						<select name="fields[category_id]" id="field-category_id">
 							<option value="-1"><?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
-					<?php foreach ($this->sections as $group => $sections) { ?>
-							<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
-							<?php foreach ($sections as $section) { ?>
-								<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
-								<?php foreach ($section->categories as $category) { ?>
-									<option value="<?php echo $category->id; ?>"<?php if ($this->row->category_id == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
-								<?php } ?>
+							<?php foreach ($this->sections as $group => $sections) { ?>
+								<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
+									<?php foreach ($sections as $section) { ?>
+										<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
+											<?php foreach ($section->categories as $category) { ?>
+												<option value="<?php echo $category->id; ?>"<?php if ($this->row->category_id == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
+											<?php } ?>
+										</optgroup>
+									<?php } ?>
 								</optgroup>
 							<?php } ?>
-							</optgroup>
-					<?php } ?>
 						</select>
 					</div>
 				<?php } ?>
 
-				<?php if ($this->row->parent) { ?>
+				<?php if ($this->row->get('parent')) { ?>
 					<div class="input-wrap">
 						<label for="field-title"><?php echo Lang::txt('COM_FORUM_FIELD_PARENT'); ?>:</label><br />
 						<select name="fields[parent]" id="field-parent">
 							<option value="0"><?php echo Lang::txt('COM_FORUM_FIELD_PARENT_SELECT'); ?></option>
-						<?php foreach ($this->threads as $thread) { ?>
-							<option value="<?php echo $thread->id; ?>"<?php if ($this->row->parent == $thread->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($thread->title)); ?></option>
-						<?php } ?>
+							<?php
+							$posts = \Components\Forum\Models\Post::all()->whereEquals('thread', $this->row->get('thread'))->ordered()->rows();
+							foreach ($posts as $post)
+							{
+								if ($post->get('id') == $this->row->get('id'))
+								{
+									continue;
+								}
+								?>
+								<option value="<?php echo $post->id; ?>"<?php if ($this->row->get('parent') == $post->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($post->get('title'))); ?></option>
+								<?php
+							}
+							?>
 						</select>
 					</div>
 				<?php } ?>
@@ -140,25 +142,34 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-comment"><?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape($post->content('raw')); ?></textarea>
+					<textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape($this->row->get('comment')); ?></textarea>
 				</div>
+
+				<?php if (!$this->row->get('parent')) { ?>
+					<div class="input-wrap">
+						<label for="field-tags"><?php echo Lang::txt('COM_FORUM_FIELD_TAGS'); ?></label><br />
+						<textarea name="tags" id="field-tags" cols="35" rows="5"><?php echo $this->escape($this->row->tags('string')); ?></textarea>
+					</div>
+				<?php } ?>
 			</fieldset>
 
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_FORUM_LEGEND_ATTACHMENTS'); ?></span></legend>
 
+				<?php $attachment = $this->row->attachments()->row(); ?>
+
 				<div class="input-wrap">
-					<label for="upload"><?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?> <?php if ($post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($post->attachment()->get('filename'))) . '</strong>'; } ?></label><br />
-					<input type="file" name="upload" id="upload" />
+					<label for="upload"><?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?> <?php if ($attachment->get('filename')) { echo '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>'; } ?></label><br />
+					<input type="file" name="upload" id="upload<" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-attach-descritpion"><?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?></label><br />
-					<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($post->attachment()->get('description'))); ?>" />
-					<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($post->attachment()->get('id'))); ?>" />
+					<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description'))); ?>" />
+					<input type="hidden" name="attachment" value="<?php echo $this->escape($attachment->get('id')); ?>" />
 				</div>
 
-				<?php if ($post->attachment()->exists()) { ?>
+				<?php if ($attachment->get('id')) { ?>
 					<p class="warning">
 						<?php echo Lang::txt('COM_FORUM_FIELD_FILE_WARNING'); ?>
 					</p>
@@ -168,6 +179,16 @@ function submitbutton(pressbutton)
 		<div class="col span5">
 			<table class="meta">
 				<tbody>
+					<?php if ($this->row->get('parent')) { ?>
+						<tr>
+							<th><?php echo Lang::txt('COM_FORUM_FIELD_THREAD'); ?>:</th>
+							<td>
+								<?php
+								echo $this->row->get('thread');
+								?>
+							</td>
+						</tr>
+					<?php } ?>
 					<tr>
 						<th><?php echo Lang::txt('COM_FORUM_FIELD_CREATOR'); ?>:</th>
 						<td>
@@ -181,7 +202,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->created; ?>
+							<?php echo $this->row->get('created', Date::of('now')->toSql()); ?>
 							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
 						</td>
 					</tr>
@@ -234,11 +255,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-access"><?php echo Lang::txt('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
 					<select name="fields[access]" id="field-access">
-						<option value="0"<?php echo ($this->row->access == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PUBLIC'); ?></option>
-						<option value="1"<?php echo ($this->row->access == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_REGISTERED'); ?></option>
-						<option value="2"<?php echo ($this->row->access == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_SPECIAL'); ?></option>
-						<option value="3"<?php echo ($this->row->access == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PROTECTED'); ?></option>
-						<option value="4"<?php echo ($this->row->access == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PRIVATE'); ?></option>
+						<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')); ?>
 					</select>
 				</div>
 			</fieldset>
@@ -260,9 +277,11 @@ function submitbutton(pressbutton)
 	<?php } else { ?>
 		<input type="hidden" name="fields[parent]" value="<?php echo $this->row->parent; ?>" />
 	<?php } ?>
-
+	<input type="hidden" name="fields[thread]" value="<?php echo $this->row->thread; ?>" />
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-	<input type="hidden" name="parent" value="<?php echo $this->parent; ?>" />
+
+	<input type="hidden" name="thread" value="<?php echo $this->row->thread; ?>" />
+	<input type="hidden" name="parent" value="<?php echo $this->row->parent; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

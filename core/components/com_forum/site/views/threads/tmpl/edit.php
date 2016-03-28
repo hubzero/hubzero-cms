@@ -38,7 +38,7 @@ $this->category->set('section_alias', $this->section->get('alias'));
 $this->post->set('section', $this->section->get('alias'));
 $this->post->set('category', $this->category->get('alias'));
 
-if ($this->post->exists())
+if ($this->post->get('id'))
 {
 	$action = $this->post->link('edit');
 }
@@ -60,30 +60,19 @@ else
 	</div>
 </header>
 
-<?php
-	foreach ($this->notifications as $notification)
-	{
-		echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
-	}
-?>
-
 <section class="main section">
 	<div class="subject">
 		<h3>
-		<?php if ($this->post->exists()) { ?>
-			<?php echo Lang::txt('COM_FORUM_EDIT_DISCUSSION'); ?>
-		<?php } else { ?>
-			<?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?>
-		<?php } ?>
+			<?php if ($this->post->get('id')) { ?>
+				<?php echo Lang::txt('COM_FORUM_EDIT_DISCUSSION'); ?>
+			<?php } else { ?>
+				<?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?>
+			<?php } ?>
 		</h3>
 		<form action="<?php echo Route::url($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
-				<?php
-				$jxuser = new \Hubzero\User\Profile();
-				$jxuser->load($this->post->get('created_by', User::get('id')));
-				?>
-				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
+				<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="" />
 			</p>
 
 			<fieldset>
@@ -111,23 +100,33 @@ else
 				<label for="field-access">
 					<?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS'); ?>
 					<select name="fields[access]" id="field-access">
-						<option value="0"<?php if ($this->post->get('access', 0) == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-						<option value="1"<?php if ($this->post->get('access', 0) == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+						<option value="1"<?php if ($this->post->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+						<option value="2"<?php if ($this->post->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
 					</select>
 				</label>
 
 				<label for="field-category_id">
 					<?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
 					<select name="fields[category_id]" id="field-category_id">
-				<?php foreach ($this->model->sections() as $section) { ?>
-					<?php if ($section->categories('list')->total() > 0) { ?>
-						<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
-						<?php foreach ($section->categories() as $category) { ?>
-							<option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+						<?php
+						$filters = array(
+							'state'  => 1,
+							'access' => User::getAuthorisedViewLevels()
+						);
+						foreach ($this->forum->sections($filters)->rows() as $section)
+						{
+							$categories = $section->categories()
+								->whereEquals('state', $filters['state'])
+								->whereIn('access', $filters['access'])
+								->rows();
+							if ($categories->count() > 0) { ?>
+								<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
+									<?php foreach ($categories as $category) { ?>
+										<option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+									<?php } ?>
+								</optgroup>
+							<?php } ?>
 						<?php } ?>
-						</optgroup>
-					<?php } ?>
-				<?php } ?>
 					</select>
 				</label>
 
@@ -143,7 +142,7 @@ else
 				<label for="fieldcomment">
 					<?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
 					<?php
-					echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), 35, 15, 'fieldcomment', array('class' => 'minimal no-footer'));
+					echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->get('comment'))), 35, 15, 'fieldcomment', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
@@ -157,22 +156,24 @@ else
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 
+					<?php $attachment = $this->post->attachments()->row(); ?>
+
 					<div class="grid">
 						<div class="col span-half">
 							<label for="upload">
-								<?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?> <?php if ($this->post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($this->post->attachment()->get('filename'))) . '</strong>'; } ?>
+								<?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?> <?php if ($attachment->get('filename')) { echo '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>'; } ?>
 								<input type="file" name="upload" id="upload" />
 							</label>
 						</div>
 						<div class="col span-half omega">
 							<label for="field-attach-descritpion">
 								<?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?>
-								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($this->post->attachment()->get('description'))); ?>" />
+								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description'))); ?>" />
 							</label>
 						</div>
-						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($this->post->attachment()->get('id'))); ?>" />
+						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($attachment->get('id'))); ?>" />
 					</div>
-					<?php if ($this->post->attachment()->exists()) { ?>
+					<?php if ($attachment->get('id')) { ?>
 						<p class="warning">
 							<?php echo Lang::txt('COM_FORUM_FIELD_FILE_WARNING'); ?>
 						</p>

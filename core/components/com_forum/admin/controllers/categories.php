@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,15 +32,12 @@
 namespace Components\Forum\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Forum\Tables\Section;
-use Components\Forum\Tables\Category;
-use Components\Forum\Tables\Post;
-use Components\Forum\Admin\Models\AdminCategory;
 use Components\Forum\Models\Manager;
-use Exception;
+use Components\Forum\Models\Section;
+use Components\Forum\Models\Category;
+use Components\Forum\Admin\Models\AdminCategory;
 use Request;
 use Notify;
-use Config;
 use Route;
 use Lang;
 use App;
@@ -52,29 +48,38 @@ use App;
 class Categories extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display all categories in a section
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Filters
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
+		$filters = array(
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				-1,
 				'int'
 			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
-			'group' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.group',
-				'group',
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
 				-1,
 				'int'
 			),
@@ -94,91 +99,125 @@ class Categories extends AdminController
 				'filter_order_Dir',
 				'DESC'
 			),
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
 			'scopeinfo' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scopeinfo',
 				'scopeinfo',
 				''
 			)
 		);
-		if (strstr($this->view->filters['scopeinfo'], ':'))
+		if (strstr($filters['scopeinfo'], ':'))
 		{
-			$bits = explode(':', $this->view->filters['scopeinfo']);
-			$this->view->filters['scope'] = $bits[0];
-			$this->view->filters['scope_id'] = intval(end($bits));
+			$bits = explode(':', $filters['scopeinfo']);
+			$filters['scope']    = $bits[0];
+			$filters['scope_id'] = intval(end($bits));
 		}
 		else
 		{
-			$this->view->filters['scope'] = '';
-			$this->view->filters['scope_id'] = -1;
+			$filters['scope']    = '';
+			$filters['scope_id'] = -1;
 		}
 
-		$this->view->filters['admin'] = true;
+		$filters['admin'] = true;
 
 		// Load the current section
-		$this->view->section = new Section($this->database);
-		if (!$this->view->filters['section_id'] || $this->view->filters['section_id'] <= 0)
+		if (!$filters['section_id'] || $filters['section_id'] <= 0)
 		{
 			// No section? Load a default blank section
-			$this->view->section->loadDefault();
+			$section = Section::blank();
 		}
 		else
 		{
-			$this->view->section->load($this->view->filters['section_id']);
+			$section = Section::oneOrFail($filters['section_id']);
+			$filters['scope']    = $section->get('scope');
+			$filters['scope_id'] = $section->get('scope_id');
+			$filters['scopeinfo'] = $filters['scope'] . ':' . $filters['scope_id'];
 		}
 
-		$this->view->sections = array();
+		$sections = array();
 
-		if ($this->view->filters['scopeinfo'])
+		if ($filters['scope_id'] >= 0)
 		{
-			$this->view->sections = $this->view->section->getRecords(array(
-				'scope'    => $this->view->filters['scope'],
-				'scope_id' => $this->view->filters['scope_id'],
-				'sort'     => 'title',
-				'sort_Dir' => 'ASC'
-			));
+			$sections = Section::all()
+				->whereEquals('scope' , $filters['scope'])
+				->whereEquals('scope_id', $filters['scope_id'])
+				->ordered('title', 'ASC')
+				->rows();
 		}
 
-		$model = new Category($this->database);
+		$entries = Category::all()
+			->including(['posts', function ($post){
+				$post
+					->select('id')
+					->select('category_id');
+			}]);
 
-		// Get a record count
-		$this->view->total = $model->getCount($this->view->filters);
+		if ($filters['search'])
+		{
+			$entries->whereLike('title', strtolower((string)$filters['search']));
+		}
+
+		if ($filters['scope'])
+		{
+			$entries->whereEquals('scope', $filters['scope']);
+		}
+
+		if ($filters['scope_id'] >= 0)
+		{
+			$entries->whereEquals('scope_id', (int)$filters['scope_id']);
+		}
+
+		if ($filters['state'] >= 0)
+		{
+			$entries->whereEquals('state', (int)$filters['state']);
+		}
+
+		if ($filters['access'] >= 0)
+		{
+			$entries->whereEquals('access', (int)$filters['access']);
+		}
+
+		if ($filters['section_id'] > 0)
+		{
+			$entries->whereEquals('section_id', (int)$filters['section_id']);
+		}
 
 		// Get records
-		$this->view->results = $model->getRecords($this->view->filters);
+		$rows = $entries
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
-		$this->view->forum = new Manager($this->view->filters['scope'], $this->view->filters['scope_id']);
+		$forum = new Manager($filters['scope'], $filters['scope_id']);
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Create a new ticket
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('section', $section)
+			->set('sections', $sections)
+			->set('scopes', $forum->scopes())
+			->display();
 	}
 
 	/**
 	 * Displays a question response for editing
 	 *
-	 * @param   mixed  $row
+	 * @param   object  $category
 	 * @return  void
 	 */
-	public function editTask($row=null)
+	public function editTask($category=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$section = Request::getInt('section_id', 0);
+		$section = Section::oneOrNew(Request::getInt('section_id', 0));
 
-		$this->view->section = new Section($this->database);
-		$this->view->section->load($section);
-
-		if (!is_object($row))
+		if (!is_object($category))
 		{
 			$id = Request::getVar('id', array(0));
 			if (is_array($id))
@@ -186,58 +225,50 @@ class Categories extends AdminController
 				$id = (!empty($id) ? intval($id[0]) : 0);
 			}
 
-			$row = new Category($this->database);
-			$row->load($id);
+			$category = Category::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->id)
+		if ($category->isNew())
 		{
-			$this->view->row->created_by = User::get('id');
-			$this->view->row->section_id = $section;
-			$this->view->row->scope      = $this->view->section->scope;
-			$this->view->row->scope_id   = $this->view->section->scope_id;
+			$category->set('created_by', User::get('id'));
+			$category->set('section_id', $section->get('id'));
+			$category->set('scope', $section->get('scope'));
+			$category->set('scope_id', $section->get('scope_id'));
 		}
 
-		$this->view->sections = array();
+		$data = Section::all()
+			->ordered()
+			->rows();
 
-		$sections = $this->view->section->getRecords();
-		if ($sections)
+		$sections = array();
+
+		foreach ($data as $s)
 		{
-			foreach ($sections as $s)
+			$ky = $s->scope . ' (' . $s->scope_id . ')';
+			if ($s->scope == 'site')
 			{
-				$ky = $s->scope . ' (' . $s->scope_id . ')';
-				if ($s->scope == 'site')
-				{
-					$ky = '[ site ]';
-				}
-				if (!isset($this->view->sections[$ky]))
-				{
-					$this->view->sections[$ky] = array();
-				}
-				$this->view->sections[$ky][] = $s;
-				asort($this->view->sections[$ky]);
+				$ky = '[ site ]';
 			}
+			if (!isset($sections[$ky]))
+			{
+				$sections[$ky] = array();
+			}
+			$sections[$ky][] = $s;
+			asort($sections[$ky]);
 		}
-		else
-		{
-			$default = new Section($this->database);
-			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
-			$this->view->sections[] = $default;
-		}
-		asort($this->view->sections);
-
-		\User::setState('com_forum.edit.category.data', array(
-			'id'       => $this->view->row->get('id'),
-			'asset_id' => $this->view->row->get('asset_id')
+		User::setState('com_forum.edit.category.data', array(
+			'id'       => $category->get('id'),
+			'asset_id' => $category->get('asset_id')
 		));
 		$m = new AdminCategory();
-		$this->view->form = $m->getForm();
 
 		// Output the HTML
 		$this->view
+			->set('row', $category)
+			->set('section', $section)
+			->set('sections', $sections)
+			->set('form', $m->getForm())
 			->setLayout('edit')
 			->display();
 	}
@@ -245,7 +276,7 @@ class Categories extends AdminController
 	/**
 	 * Save a category record and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -258,51 +289,45 @@ class Categories extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
+		// Initiate extended database class
+		$category = Category::oneOrNew($fields['id'])->set($fields);
+
 		// Bind the rules.
 		$data = Request::getVar('jform', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
 			$model = new AdminCategory();
-			$form = $model->getForm($data, false);
+			$form      = $model->getForm($data, false);
 			$validData = $model->validate($form, $data);
 
-			$fields['rules'] = $validData['rules'];
+			$category->assetRules = new \JAccessRules($validData['rules']);
 		}
 
-		// Initiate extended database class
-		$model = new Category($this->database);
-		if (!$model->bind($fields))
+		if (!$category->get('scope'))
 		{
-			Notify::error($model->getError());
-			return $this->editTask($model);
-		}
+			$section = Section::oneOrFail($fields['section_id']);
 
-		if (!$model->scope)
-		{
-			$section = new Section($this->database);
-			$section->load($fields['section_id']);
-			$model->scope    = $section->scope;
-			$model->scope_id = $section->scope_id;
-		}
-
-		// Check content
-		if (!$model->check())
-		{
-			Notify::error($model->getError());
-			return $this->editTask($model);
+			$category->set('scope', $section->get('scope'));
+			$category->set('scope_id', $section->get('scope_id'));
 		}
 
 		// Store new content
-		if (!$model->store())
+		if (!$category->save())
 		{
-			Notify::error($model->getError());
-			return $this->editTask($model);
+			Notify::error($category->getError());
+			return $this->editTask($category);
+		}
+
+		Notify::success(Lang::txt('COM_FORUM_CATEGORY_SAVED'));
+
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($category);
 		}
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false),
-			Lang::txt('COM_FORUM_CATEGORY_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false)
 		);
 	}
 
@@ -322,66 +347,36 @@ class Categories extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Do we have any IDs?
-		if (count($ids) > 0)
+		$i = 0;
+
+		// Loop through each ID
+		foreach ($ids as $id)
 		{
-			// Instantiate some objects
-			$category = new Category($this->database);
+			// Remove this category
+			$category = Category::oneOrFail(intval($id));
 
-			// Loop through each ID
-			foreach ($ids as $id)
+			if (!$category->destroy())
 			{
-				$id = intval($id);
-
-				// Remove the posts in this category
-				$tModel = new Post($this->database);
-				if (!$tModel->deleteByCategory($id))
-				{
-					throw new Exception($tModel->getError(), 500);
-				}
-
-				// Remove this category
-				if (!$category->delete($id))
-				{
-					throw new Exception($category->getError(), 500);
-				}
+				Notify::error($category->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
 		// Redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
-			Lang::txt('COM_FORUM_CATEGORIES_DELETED')
+			($i ? Lang::txt('COM_FORUM_CATEGORIES_DELETED') : null)
 		);
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return  void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return  void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
 	}
 
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param   integer  $state  The state to set entries to
 	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
@@ -392,10 +387,12 @@ class Categories extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
+		$state = ($this->getTask() == 'publish' ? Category::STATE_PUBLISHED : Category::STATE_UNPUBLISHED);
+
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($state == 1) ? Lang::txt('COM_FORUM_UNPUBLISH') : Lang::txt('COM_FORUM_PUBLISH');
+			$action = ($state == Category::STATE_PUBLISHED) ? Lang::txt('COM_FORUM_PUBLISH') : Lang::txt('COM_FORUM_UNPUBLISH');
 
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
@@ -405,26 +402,31 @@ class Categories extends AdminController
 			return;
 		}
 
+		$i = 0;
+
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new Category($this->database);
-			$row->load(intval($id));
-			$row->state = $state;
-			if (!$row->store())
+			$row = Category::oneOrFail(intval($id));
+			$row->set('state', $state);
+
+			if (!$row->save())
 			{
-				throw new Exception($row->getError(), 500);
+				Notify::error($row->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
 		// set message
-		if ($state == 1)
+		if ($state == Category::STATE_PUBLISHED)
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', count($ids));
+			$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
 		}
 		else
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
+			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
 		}
 
 		App::redirect(
@@ -446,7 +448,6 @@ class Categories extends AdminController
 		// Incoming
 		$section = Request::getInt('section_id', 0);
 		$state   = Request::getInt('access', 0);
-
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -461,16 +462,21 @@ class Categories extends AdminController
 			return;
 		}
 
+		$i = 0;
+
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new Category($this->database);
-			$row->load(intval($id));
-			$row->access = $state;
-			if (!$row->store())
+			$row = Category::oneOrFail(intval($id));
+			$row->set('access', $state);
+
+			if (!$row->save())
 			{
-				throw new Exception($row->getError(), 500);
+				Notify::error($row->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
 		// set message
@@ -487,11 +493,10 @@ class Categories extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$fields = Request::getVar('fields', array());
+		$fields = Request::getVar('fields', array('section_id' => 0));
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false)
 		);
 	}
 }
-

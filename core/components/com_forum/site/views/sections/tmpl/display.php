@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -48,13 +47,9 @@ $this->css()
 </header>
 
 <section class="main section">
-<?php if ($this->sections->total()) { ?>
+<?php if ($this->sections->count()) { ?>
 	<div class="section-inner">
 		<div class="subject">
-			<?php foreach ($this->notifications as $notification) { ?>
-				<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-			<?php } ?>
-
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_FORUM_SEARCH'); ?>" />
@@ -70,11 +65,11 @@ $this->css()
 			<?php
 			foreach ($this->sections as $section)
 			{
-				$t = $section->categories('list', array('access' => (User::isGuest() ? 0 : array(0, 1))), true)->total();
-				if (!$section->exists() && $t)
-				{
-					continue;
-				}
+				$categories = $section
+					->categories()
+					->whereEquals('state', $this->filters['state'])
+					->whereIn('access', $this->filters['access'])
+					->rows();
 				?>
 				<div class="container" id="section-<?php echo $section->get('id'); ?>">
 					<table class="entries categories">
@@ -121,8 +116,8 @@ $this->css()
 							</tfoot>
 						<?php } ?>
 						<tbody>
-							<?php if ($section->categories()->total() > 0) { ?>
-								<?php foreach ($section->categories() as $row) { ?>
+							<?php if ($categories->count() > 0) { ?>
+								<?php foreach ($categories as $row) { ?>
 									<?php
 									$row->set('section_alias', $section->get('alias'));
 									?>
@@ -141,13 +136,19 @@ $this->css()
 											</span>
 										</td>
 										<td class="priority-3">
-											<span><?php echo $row->count('threads'); ?></span>
+											<span><?php echo $row->threads()
+												->whereEquals('state', $this->filters['state'])
+												->whereIn('access', $this->filters['access'])
+												->total(); ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_DISCUSSIONS'); ?>
 											</span>
 										</td>
 										<td  class="priority-3">
-											<span><?php echo $row->count('posts'); ?></span>
+											<span><?php echo $row->posts()
+												->whereEquals('state', $this->filters['state'])
+												->whereIn('access', $this->filters['access'])
+												->total(); ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_POSTS'); ?>
 											</span>
@@ -187,15 +188,15 @@ $this->css()
 					<tbody>
 						<tr>
 							<th><?php echo Lang::txt('COM_FORUM_CATEGORIES'); ?></th>
-							<td><span class="item-count"><?php echo $this->model->count('categories'); ?></span></td>
+							<td><span class="item-count"><?php echo $this->forum->count('categories', $this->filters); ?></span></td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_FORUM_DISCUSSIONS'); ?></th>
-							<td><span class="item-count"><?php echo $this->model->count('threads'); ?></span></td>
+							<td><span class="item-count"><?php echo $this->forum->count('threads', $this->filters); ?></span></td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_FORUM_POSTS'); ?></th>
-							<td><span class="item-count"><?php echo $this->model->count('posts'); ?></span></td>
+							<td><span class="item-count"><?php echo $this->forum->count('posts', $this->filters); ?></span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -204,15 +205,15 @@ $this->css()
 				<h3><?php echo Lang::txt('COM_FORUM_LAST_POST'); ?></h3>
 				<p>
 					<?php
-					if ($this->model->lastActivity()->exists())
-					{
-						$post = $this->model->lastActivity();
+					$post = $this->forum->lastActivity();
 
+					if ($post->get('id'))
+					{
 						$lname = Lang::txt('COM_FORUM_ANONYMOUS');
 						if (!$post->get('anonymous'))
 						{
-							$lname = $this->escape(stripslashes($post->creator('name', $lname)));
-							if ($post->creator('public'))
+							$lname = $this->escape(stripslashes($post->creator()->get('name', $lname)));
+							if ($post->creator()->get('public'))
 							{
 								$lname = '<a href="' . Route::url($post->creator()->getLink()) . '">' . $lname . '</a>';
 							}
@@ -221,7 +222,7 @@ $this->css()
 						{
 							if ($section->categories()->total() > 0)
 							{
-								foreach ($section->categories() as $row)
+								foreach ($section->categories()->rows() as $row)
 								{
 									if ($row->get('id') == $post->get('category_id'))
 									{
@@ -234,7 +235,7 @@ $this->css()
 						}
 						?>
 						<a class="entry-comment" href="<?php echo Route::url($post->link()); ?>">
-							<?php echo $post->content('clean', 170); ?>
+							<?php echo \Hubzero\Utility\String::truncate(strip_tags($post->get('comment')), 170); ?>
 						</a>
 						<span class="entry-author">
 							<?php echo $lname; ?>

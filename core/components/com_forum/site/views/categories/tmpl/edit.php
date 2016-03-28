@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -46,12 +45,6 @@ $this->css();
 		</div>
 	</header>
 
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>">
-		<?php echo $this->escape($notification['message']); ?>
-	</p>
-<?php } ?>
-
 	<section class="main section">
 		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 			<div class="explaination">
@@ -60,7 +53,7 @@ $this->css();
 			</div><!-- / .explaination -->
 			<fieldset>
 				<legend>
-					<?php if ($this->category->exists()) { ?>
+					<?php if ($this->category->get('id')) { ?>
 						<?php echo Lang::txt('COM_FORUM_EDIT_CATEGORY'); ?>
 					<?php } else { ?>
 						<?php echo Lang::txt('COM_FORUM_NEW_CATEGORY'); ?>
@@ -78,8 +71,8 @@ $this->css();
 						<label for="field-access">
 							<?php echo Lang::txt('COM_FORUM_FIELD_VIEW_ACCESS'); ?>
 							<select name="fields[access]" id="field-access">
-								<option value="0"<?php if ($this->category->get('access', 0) == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-								<option value="1"<?php if ($this->category->get('access', 0) == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+								<option value="1"<?php if ($this->category->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+								<option value="2"<?php if ($this->category->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
 							</select>
 						</label>
 					</div>
@@ -88,9 +81,9 @@ $this->css();
 				<label for="field-section_id">
 					<?php echo Lang::txt('COM_FORUM_FIELD_SECTION'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
 					<select name="fields[section_id]" id="field-section_id">
-					<?php foreach ($this->model->sections('list', array('state' => 1)) as $section) { ?>
-						<option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-					<?php } ?>
+						<?php foreach ($this->forum->sections(array('state' => 1))->rows() as $section) { ?>
+							<option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+						<?php } ?>
 					</select>
 				</label>
 

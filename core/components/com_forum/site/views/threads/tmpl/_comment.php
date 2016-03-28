@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -53,7 +52,7 @@ defined('_HZEXEC_') or die();
 	}
 	else
 	{
-		$comment = $this->comment->content('parsed');
+		$comment = $this->comment->comment;
 	}
 ?>
 	<li class="comment <?php echo $cls; ?><?php if (!$this->comment->get('parent')) { echo ' start'; } ?>" id="c<?php echo $this->comment->get('id'); ?>">
@@ -80,6 +79,37 @@ defined('_HZEXEC_') or die();
 			<div class="comment-body">
 				<?php echo $comment; ?>
 			</div>
+			<div class="comment-attachments">
+				<?php
+				foreach ($this->comment->attachments()->whereEquals('state', Components\Forum\Models\Attachment::STATE_PUBLISHED)->rows() as $attachment)
+				{
+					if (!trim($attachment->get('description')))
+					{
+						$attachment->set('description', $attachment->get('filename'));
+					}
+
+					$link = $this->comment->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename');
+
+					if ($attachment->isImage())
+					{
+						if ($attachment->width() > 400)
+						{
+							$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+						}
+						else
+						{
+							$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+						}
+					}
+					else
+					{
+						$html = '<p class="attachment"><a href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">' . $attachment->get('description') . '</a></p>';
+					}
+
+					echo $html;
+				}
+				?>
+			</div><!-- / .comment-attachments -->
 			<?php if (
 						$this->config->get('access-manage-thread')
 						||

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -41,10 +40,10 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get items reported as abusive
 	 *
-	 * @param      integer $refid    Comment ID
-	 * @param      string  $category Item type (kb)
-	 * @param      integer $parent   Parent ID
-	 * @return     array
+	 * @param   integer  $refid     Comment ID
+	 * @param   string   $category  Item type (kb)
+	 * @param   integer  $parent    Parent ID
+	 * @return  array
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
@@ -65,7 +64,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 		$rows = $database->loadObjectList();
 		if ($rows)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
 
 			foreach ($rows as $key => $row)
 			{
@@ -110,31 +109,21 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get the thread ID
 	 *
-	 * @param      integer $parent Parent comment to load
-	 * @return     array
+	 * @param   integer  $parent  Parent comment to load
+	 * @return  array
 	 */
 	private function _getThread($parent=0)
 	{
-		$database = App::get('db');
-
-		$comment = new \Components\Forum\Tables\Post($database);
-		$comment->load($parent);
-		if (!$comment->parent)
-		{
-			return $comment->id;
-		}
-		else
-		{
-			return $this->_getThread($comment->parent);
-		}
+		$comment = \Components\Forum\Models\Post::oneOrFail($parent);
+		return $comment->get('thread');
 	}
 
 	/**
 	 * Mark an item as flagged
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     string
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  string
 	 */
 	public function onReportItem($refid, $category)
 	{
@@ -143,14 +132,11 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
 
-		$database = App::get('db');
-
-		$comment = new \Components\Forum\Tables\Post($database);
-		$comment->load($refid);
-		$comment->state = 3;
-		$comment->store();
+		$comment = \Components\Forum\Models\Post::oneOrFail($refid);
+		$comment->set('state', 3);
+		$comment->save();
 
 		return '';
 	}
@@ -158,10 +144,10 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Release a reported item
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $parent    If the element has a parent element
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  array
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
@@ -170,14 +156,11 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
 
-		$database = App::get('db');
-
-		$comment = new \Components\Forum\Tables\Post($database);
-		$comment->load($refid);
-		$comment->state = 1;
-		$comment->store();
+		$comment = \Components\Forum\Models\Post::oneOrFail($refid);
+		$comment->set('state', $comment::STATE_PUBLISHED);
+		$comment->save();
 
 		return '';
 	}
@@ -185,11 +168,11 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieves a row from the database
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $message  If the element has a parent element
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $parent    If the element has a parent element
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @param   string  $message   If the element has a parent element
+	 * @return  array
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
@@ -198,14 +181,11 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
 
-		$database = App::get('db');
-
-		$comment = new \Components\Forum\Tables\Post($database);
-		$comment->load($refid);
-		$comment->state = 2;
-		$comment->store();
+		$comment = \Components\Forum\Models\Post::oneOrFail($refid);
+		$comment->set('state', $comment::STATE_DELETED);
+		$comment->save();
 
 		return '';
 	}

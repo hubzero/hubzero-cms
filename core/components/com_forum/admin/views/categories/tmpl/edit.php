@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -25,6 +23,10 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -94,13 +96,13 @@ function submitbutton(pressbutton)
 					<label for="field-section_id"><?php echo Lang::txt('COM_FORUM_FIELD_SECTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<select name="fields[section_id]" id="field-section_id">
 						<option value="-1"><?php echo Lang::txt('COM_FORUM_FIELD_SECTION_SELECT'); ?></option>
-					<?php foreach ($this->sections as $group => $sections) { ?>
-						<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
-						<?php foreach ($sections as $section) { ?>
-							<option value="<?php echo $section->id; ?>"<?php if ($this->row->section_id == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+						<?php foreach ($this->sections as $group => $sections) { ?>
+							<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
+								<?php foreach ($sections as $section) { ?>
+									<option value="<?php echo $section->id; ?>"<?php if ($this->row->section_id == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+								<?php } ?>
+							</optgroup>
 						<?php } ?>
-						</optgroup>
-					<?php } ?>
 					</select>
 				</div>
 
@@ -183,11 +185,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-access"><?php echo Lang::txt('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
 					<select name="fields[access]" id="field-access">
-						<option value="0"<?php echo ($this->row->access == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PUBLIC'); ?></option>
-						<option value="1"<?php echo ($this->row->access == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_REGISTERED'); ?></option>
-						<option value="2"<?php echo ($this->row->access == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_SPECIAL'); ?></option>
-						<option value="3"<?php echo ($this->row->access == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PROTECTED'); ?></option>
-						<option value="4"<?php echo ($this->row->access == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PRIVATE'); ?></option>
+						<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')); ?>
 					</select>
 				</div>
 			</fieldset>

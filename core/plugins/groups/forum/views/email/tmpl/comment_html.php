@@ -164,12 +164,12 @@ $bdcolor = '#e1e1e1';
 	<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
 			<tr>
-				<th style="text-align: left;" align="left"><?php echo (!$this->post->get('anonymous') ? $this->post->creator('name') : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')); ?></th>
+				<th style="text-align: left;" align="left"><?php echo (!$this->post->get('anonymous') ? $this->post->creator()->get('name') : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')); ?></th>
 				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('PLG_GROUPS_FORUM_CREATED', $this->post->created('time'), $this->post->created('date')); ?></span></th>
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 0 2em;">
-					<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->post->content('parsed'); ?></p>
+					<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->post->comment; ?></p>
 					<?php /*if ($this->post->attachments()->total()) { ?>
 						<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
 							<?php

@@ -25,332 +25,335 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Forum\Models;
 
-use Components\Forum\Tables;
-use Hubzero\Base\ItemList;
-use Hubzero\Utility\String;
-use LogicException;
+use Hubzero\Database\Relational;
+use Hubzero\User\Profile;
 use Lang;
+use Date;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'section.php');
-require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'category.php');
 
 /**
- * Model class for a forum section
+ * Forum model for a section
  */
-class Section extends Base
+class Section extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Forum\\Tables\\Section';
+	protected $namespace = 'forum';
 
 	/**
-	 * Container for instance data
+	 * Default order by for model
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	private $_cache = array(
-		'categories_count' => null,
-		'categories'       => null,
-		'category'         => null
+	public $orderBy = 'ordering';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'title' => 'notempty'
 	);
 
 	/**
-	 * Constructor
+	 * Automatically fillable fields
 	 *
-	 * @param      integer $id       Section ID (integer), alias (string), array, or object
-	 * @param      string  $scope    Forum scope [site, group, course]
-	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     void
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias',
+		'scope'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
 	 */
-	public function __construct($oid, $scope='site', $scope_id=0)
+	public $initiate = array(
+		'created',
+		'created_by',
+		'ordering',
+		'asset_id'
+	);
+
+	/**
+	 * ACL asset rules
+	 *
+	 * @var  array
+	 */
+	public $assetRules = null;
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
 	{
-		$this->_db = \App::get('db');
-
-		$cls = $this->_tbl_name;
-		$this->_tbl = new $cls($this->_db);
-
-		if (!($this->_tbl instanceof \JTable))
-		{
-			$this->_logError(
-				__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
-			);
-			throw new LogicException(Lang::txt('Table class must be an instance of JTable.'));
-		}
-
-		if ($oid)
-		{
-			if (is_numeric($oid))
-			{
-				$this->_tbl->load($oid);
-			}
-			else if (is_string($oid))
-			{
-				$this->_tbl->loadByAlias($oid, $scope, $scope_id);
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
-
-		if (!$this->get('scope'))
-		{
-			$this->set('scope', $scope);
-		}
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = str_replace(' ', '-', $alias);
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 	}
 
 	/**
-	 * Returns a reference to a forum section model
+	 * Generates automatic scope value
 	 *
-	 * @param      integer $id       Section ID (integer), alias (string), array, or object
-	 * @param      string  $scope    Forum scope [site, group, course]
-	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     object
+	 * @param   array   $data  the data being saved
+	 * @return  string
 	 */
-	static function &getInstance($oid=0, $scope='site', $scope_id=0)
+	public function automaticScope($data)
 	{
-		static $instances;
-
-		if (!isset($instances))
+		if (!isset($data['scope']))
 		{
-			$instances = array();
+			$data['scope'] = 'site';
 		}
-
-		$key = $scope . '_' . $scope_id . '_';
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key .= $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key .= $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key .= $oid['id'];
-		}
-
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($oid, $scope_id, $scope);
-		}
-
-		return $instances[$key];
+		return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($data['scope']));
 	}
 
 	/**
-	 * Set and get a specific category
+	 * Generates automatic ordering field value
 	 *
-	 * @param   mixed  $id Integer or string (ID or alias) for a category
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
+
+	/**
+	 * Defines a belongs to one relationship between article and user
+	 *
 	 * @return  object
 	 */
-	public function category($id=null)
+	public function creator()
 	{
-		if (!isset($this->_cache['category'])
-		 || ($id !== null && (int) $this->_cache['category']->get('id') != $id && (string) $this->_cache['category']->get('alias') != $id))
+		if ($profile = Profile::getInstance($this->get('created_by')))
 		{
-			$this->_cache['category'] = null;
-
-			if ($this->_cache['categories'] instanceof ItemList)
-			{
-				foreach ($this->_cache['categories'] as $key => $category)
-				{
-					if ((int) $category->get('id') == $id || (string) $category->get('alias') == $id)
-					{
-						$this->_cache['category'] = $category;
-						break;
-					}
-				}
-			}
-
-			if (!$this->_cache['category']);
-			{
-				$this->_cache['category'] = Category::getInstance($id, $this->get('id')); //, $this->get('scope'), $this->get('scope_id'));
-			}
-			if (!$this->_cache['category']->exists())
-			{
-				$this->_cache['category']->set('scope', $this->get('scope'));
-				$this->_cache['category']->set('scope_id', $this->get('scope_id'));
-			}
-			$this->_cache['category']->set('section_alias', $this->get('alias'));
+			return $profile;
 		}
-		return $this->_cache['category'];
+		return new Profile;
 	}
 
 	/**
-	 * Get a count or list of categories
+	 * Return a formatted timestamp
 	 *
-	 * @param   string  $rtrn    Data type to return?
-	 * @param   array   $filters Filters to apply to query
-	 * @param   boolean $clear   Clear cached data?
-	 * @return  mixed
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
-	public function categories($rtrn='', $filters=array(), $clear=false)
+	public function created($as='')
 	{
-		$filters['section_id'] = (isset($filters['section_id'])) ? $filters['section_id'] : (int) $this->get('id');
-		$filters['state']      = (isset($filters['state']))      ? $filters['state']      : self::APP_STATE_PUBLISHED;
-		$filters['scope']      = (isset($filters['scope']))      ? $filters['scope']      : (string) $this->get('scope');
-		$filters['scope_id']   = (isset($filters['scope_id']))   ? $filters['scope_id']   : (int) $this->get('scope_id');
+		$as = strtolower($as);
 
-		switch (strtolower($rtrn))
+		if ($as == 'date')
 		{
-			case 'count':
-				if (!isset($this->_cache['categories_count']) || $clear)
-				{
-					$tbl = new Tables\Category($this->_db);
-					$this->_cache['categories_count'] = (int) $tbl->getCount($filters);
-				}
-				return $this->_cache['categories_count'];
-			break;
-
-			case 'first':
-				return $this->categories('list', $filters)->first();
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['categories'] instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Category($this->_db);
-					if (($results = $tbl->getRecords($filters)))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Category($result, $this->get('id'), $this->get('scope'), $this->get('group_id'));
-							$results[$key]->set('section_alias', $this->get('alias'));
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_cache['categories'] = new ItemList($results);
-				}
-				return $this->_cache['categories'];
-			break;
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('created');
 	}
 
 	/**
-	 * Return a count for the type of data specified
+	 * Get a list of categories
 	 *
-	 * @param      string $what What to count
-	 * @return     integer
+	 * @return  object
 	 */
-	public function count($what='threads')
+	public function categories()
 	{
-		$what = strtolower(trim($what));
-		$key  = 'stats.' . $what;
-
-		if (!isset($this->_cache[$key]))
-		{
-			$this->_cache[$key] = 0;
-
-			switch ($what)
-			{
-				case 'categories':
-					$this->_cache[$key] = $this->categories()->total();
-				break;
-
-				case 'threads':
-					foreach ($this->categories() as $category)
-					{
-						$this->_cache[$key] += $category->count('threads');
-					}
-				break;
-
-				case 'posts':
-					foreach ($this->categories() as $category)
-					{
-						$this->_cache[$key] += $category->count('posts');
-					}
-				break;
-
-				default:
-					$this->setError(Lang::txt('Property value of "%" not accepted', $what));
-					return $this->_cache[$key];
-				break;
-			}
-		}
-
-		return $this->_cache[$key];
+		return $this->oneToMany('Category', 'section_id');
 	}
 
 	/**
-	 * Store changes to this entry
+	 * Is the record with the given alias unique?
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @return  bool
 	 */
-	public function store($check=true)
+	public function isUnique()
 	{
-		// Get the entry before changes were made
-		$old = new self($this->get('id'));
+		$entries = self::all()
+			->whereEquals('alias', $this->get('alias'))
+			->whereEquals('scope', $this->get('scope'))
+			->whereEquals('scope_id', $this->get('scope_id'))
+			->where('state', '!=', self::STATE_DELETED);
 
-		// Store entry
-		if (!parent::store($check))
+		if (!$this->isNew())
 		{
-			return false;
+			$entries->where('id', '!=', $this->get('id'));
 		}
 
-		// If the section is marked as "deleted" and it wasn't already marked as such
-		if ($this->get('state') == self::APP_STATE_DELETED
-		  && $old->get('state') != self::APP_STATE_DELETED)
+		$row = $entries->row();
+
+		return ($row->get('id') <= 0);
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove categories
+		foreach ($this->categories()->rows() as $category)
 		{
-			// Collect a list of category IDs
-			$cats = array();
-			foreach ($this->categories('list', array('state' => -1)) as $category)
+			if (!$category->destroy())
 			{
-				$cats[] = $category->get('id');
+				$this->setError($category->getError());
+				return false;
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+
+	/**
+	 * Save the record
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function save()
+	{
+		if (!$this->get('access'))
+		{
+			$this->set('access', (int) \Config::get('access'));
+		}
+
+		$result = parent::save();
+
+		// Make sure state changes carry through to categories
+		if ($result)
+		{
+			foreach ($this->categories()->rows() as $category)
+			{
+				// If it's marked as deleted, skip it
+				if ($category->get('state') == self::SATE_DELETED)
+				{
+					continue;
+				}
+
+				$category->set('state', $this->get('state'));
+				$category->save();
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Method to move a row in the ordering sequence of a group of rows defined by an SQL WHERE clause.
+	 * Negative numbers move the row up in the sequence and positive numbers move it down.
+	 *
+	 * @param   integer  $delta  The direction and magnitude to move the row in the ordering sequence.
+	 * @param   string   $where  WHERE clause to use for limiting the selection of rows to compact the ordering values.
+	 * @return  bool     True on success.
+	 */
+	public function move($delta, $where = '')
+	{
+		// If the change is none, do nothing.
+		if (empty($delta))
+		{
+			return true;
+		}
+
+		// Select the primary key and ordering values from the table.
+		$query = self::all()
+			->whereEquals('scope', $this->get('scope'))
+			->whereEquals('scope_id', $this->get('scope_id'));
+
+		// If the movement delta is negative move the row up.
+		if ($delta < 0)
+		{
+			$query->where('ordering', '<', (int) $this->get('ordering'));
+			$query->order('ordering', 'desc');
+		}
+		// If the movement delta is positive move the row down.
+		elseif ($delta > 0)
+		{
+			$query->where('ordering', '>', (int) $this->get('ordering'));
+			$query->order('ordering', 'asc');
+		}
+
+		// Add the custom WHERE clause if set.
+		if ($where)
+		{
+			$query->whereRaw($where);
+		}
+
+		// Select the first row with the criteria.
+		$row = $query->ordered()->row();
+
+		// If a row is found, move the item.
+		if ($row->get('id'))
+		{
+			$prev = $this->get('ordering');
+
+			// Update the ordering field for this instance to the row's ordering value.
+			$this->set('ordering', (int) $row->get('ordering'));
+
+			// Check for a database error.
+			if (!$this->save())
+			{
+				return false;
 			}
 
-			if (count($cats) > 0)
-			{
-				// Set all the threads/posts in all the categories to "deleted"
-				$post = new Tables\Post($this->_db);
-				if (!$post->setStateByCategory($cats, self::APP_STATE_DELETED))
-				{
-					$this->setError($post->getError());
-				}
+			// Update the ordering field for the row to this instance's ordering value.
+			$row->set('ordering', (int) $prev);
 
-				// Set all the categories to "deleted"
-				$cModel = new Tables\Category($this->_db);
-				if (!$cModel->setStateBySection($this->get('id'), self::APP_STATE_DELETED))
-				{
-					$this->setError($cModel->getError());
-				}
+			// Check for a database error.
+			if (!$row->save())
+			{
+				$this->setError($row->getError());
+				return false;
+			}
+		}
+		else
+		{
+			// Update the ordering field for this instance.
+			$this->set('ordering', (int) $this->get('ordering'));
+
+			// Check for a database error.
+			if (!$this->save())
+			{
+				return false;
 			}
 		}
 
 		return true;
 	}
-
-	/**
-	 * Get the adapter
-	 *
-	 * @return  object
-	 */
-	public function adapter()
-	{
-		if (!$this->_adapter)
-		{
-			$this->_adapter = $this->_adapter();
-			$this->_adapter->set('section', $this->get('alias'));
-		}
-
-		return $this->_adapter;
-	}
 }
-

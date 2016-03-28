@@ -25,109 +25,314 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Forum\Models;
 
-use LogicException;
-use Lang;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-require_once(__DIR__ . DS . 'base.php');
+use Hubzero\Database\Relational;
+use Hubzero\Filesystem\Util;
+use Filesystem;
+use Component;
 
 /**
- * Model class for a forum post attachment
+ * Class for comment files (attachments)
  */
-class Attachment extends Base
+class Attachment extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var  object
+	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Forum\\Tables\\Attachment';
+	protected $namespace = 'forum';
 
 	/**
-	 * Constructor
+	 * Upload path
 	 *
-	 * @param   mixed    $oid  ID (integer), alias (string), array or object
-	 * @param   integer  $pid  Post ID
-	 * @return  void
+	 * @var  string
 	 */
-	public function __construct($oid=null, $pid=null)
-	{
-		$this->_db = \App::get('db');
-
-		$cls = $this->_tbl_name;
-		$this->_tbl = new $cls($this->_db);
-
-		if (!($this->_tbl instanceof \JTable))
-		{
-			$this->_logError(
-				__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
-			);
-			throw new LogicException(Lang::txt('Table class must be an instance of JTable.'));
-		}
-
-		if ($oid)
-		{
-			if (is_numeric($oid))
-			{
-				$this->_tbl->load($oid);
-			}
-			else if (is_string($oid))
-			{
-				$this->_tbl->loadByAlias($oid, $section_id);
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
-		else if ($pid)
-		{
-			$this->_tbl->loadByPost($pid);
-		}
-	}
+	protected $uploadDir = null;
 
 	/**
-	 * Returns a reference to a forum post attachment model
+	 * File size
 	 *
-	 * @param   mixed    $oid  ID (int), alias (string), array, or object
-	 * @param   integer  $pid  Post ID
+	 * @var  string
+	 */
+	protected $size = null;
+
+	/**
+	 * Diemnsions for file (must be an image)
+	 *
+	 * @var  array
+	 */
+	protected $dimensions = null;
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'parent'   => 'positive|nonzero',
+		'post_id'  => 'positive|nonzero',
+		'filename' => 'notempty'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 **/
+	public $initiate = array(
+		'filename'
+	);
+
+	/**
+	 * Defines a belongs to one relationship between category and post
+	 *
 	 * @return  object
 	 */
-	static function &getInstance($oid=0, $pid=null)
+	public function post()
 	{
-		static $instances;
+		return $this->belongsToOne('Post', 'post_id')->row();
+	}
 
-		if (!isset($instances))
+	/**
+	 * Set the upload path
+	 *
+	 * @param   string  $path  Path to set to
+	 * @return  object
+	 */
+	public function setUploadDir($path)
+	{
+		$path = str_replace(' ', '_', trim($path));
+		$path = Util::normalizePath($path);
+
+		$this->uploadDir = ($path ? $path : $this->uploadDir);
+
+		return $this;
+	}
+
+	/**
+	 * Get the upload path
+	 *
+	 * @return  string
+	 */
+	public function getUploadDir()
+	{
+		if (!$this->uploadDir)
 		{
-			$instances = array();
+			$config = Component::params('com_forum');
+
+			$this->uploadDir = PATH_APP . DS . trim($config->get('filepath', '/site/forum'), DS);
 		}
 
-		if (is_numeric($oid) || is_string($oid))
+		return $this->uploadDir;
+	}
+
+	/**
+	 * Ensure no conflicting file names by
+	 * renaming the incoming file if the name
+	 * already exists
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticFilename($data)
+	{
+		$filename = $data['filename'];
+
+		$ext = strrchr($filename, '.');
+		$prefix = substr($filename, 0, -strlen($ext));
+
+		$i = 1;
+
+		while (is_file($this->getUploadDir() . DS . $data['parent'] . DS . $data['post_id'] . DS . $filename))
 		{
-			$key = $pid . '_' . $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $pid . '_' . $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $pid . '_' . $oid['id'];
+			$filename = $prefix . ++$i . $ext;
 		}
 
-		if (!isset($instances[$key]))
+		$data['filename'] = preg_replace("/[^A-Za-z0-9.]/i", '-', $filename);
+
+		return $data['filename'];
+	}
+
+	/**
+	 * Delete record
+	 *
+	 * @return  boolean  True if successful, False if not
+	 */
+	public function destroy()
+	{
+		$path = $this->path();
+
+		if (file_exists($path))
 		{
-			$instances[$key] = new self($oid, $pid);
+			if (!Filesystem::delete($path))
+			{
+				$this->setError('Unable to delete file.');
+
+				return false;
+			}
 		}
 
-		return $instances[$key];
+		return parent::destroy();
+	}
+
+	/**
+	 * Upload file
+	 *
+	 * @param   string  $name
+	 * @param   string  $temp
+	 * @return  bool
+	 */
+	public function upload($name, $temp)
+	{
+		$destination = $this->getUploadDir() . DS . $this->get('parent') . DS . $this->get('post_id');
+
+		if (!is_dir($destination))
+		{
+			if (!Filesystem::makeDirectory($destination))
+			{
+				$this->setError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH') . ': ' . substr($destination, strlen(PATH_ROOT)));
+
+				return false;
+			}
+		}
+
+		$filename = $this->automaticFilename(array(
+			'filename' => $name,
+			'parent'   => $this->get('parent'),
+			'post_id'  => $this->get('post_id')
+		));
+
+		$destination .= DS . $filename;
+
+		if (!Filesystem::upload($temp, $destination))
+		{
+			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
+
+			return false;
+		}
+
+		$this->set('filename', $filename);
+
+		return true;
+	}
+
+	/**
+	 * File path
+	 *
+	 * @return  integer
+	 */
+	public function path()
+	{
+		return $this->getUploadDir() . DS . $this->get('parent') . DS . $this->get('post_id') . DS . $this->get('filename');
+	}
+
+	/**
+	 * Is the file an image?
+	 *
+	 * @return  boolean
+	 */
+	public function isImage()
+	{
+		return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
+	}
+
+	/**
+	 * Is the file an image?
+	 *
+	 * @return  boolean
+	 */
+	public function size()
+	{
+		if ($this->size === null)
+		{
+			$this->size = 0;
+
+			$path = $this->path();
+
+			if (file_exists($path))
+			{
+				$this->size = filesize($path);
+			}
+		}
+
+		return $this->size;
+	}
+
+	/**
+	 * File width and height
+	 *
+	 * @return  array
+	 */
+	public function dimensions()
+	{
+		if (!$this->dimensions)
+		{
+			$this->dimensions = array(0, 0);
+
+			if ($this->isImage())
+			{
+				$this->dimensions = getimagesize($this->path());
+			}
+		}
+
+		return $this->dimensions;
+	}
+
+	/**
+	 * File width
+	 *
+	 * @return  integer
+	 */
+	public function width()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[0];
+	}
+
+	/**
+	 * File height
+	 *
+	 * @return  integer
+	 */
+	public function height()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[1];
+	}
+
+	/**
+	 * Load a record by thread ID and filename
+	 *
+	 * @param   integer  $thread_id
+	 * @param   string   $filename
+	 * @return  object
+	 */
+	public static function oneByThread($thread_id, $filename)
+	{
+		return self::all()
+			->whereEquals('parent', (int)$thread_id)
+			->whereEquals('filename', (string)$filename)
+			->row();
+	}
+
+	/**
+	 * Load a record by post ID
+	 *
+	 * @param   integer  $post_id
+	 * @return  object
+	 */
+	public static function oneByPost($post_id)
+	{
+		return self::all()
+			->whereEquals('post_id', (int)$post_id)
+			->row();
 	}
 }
-

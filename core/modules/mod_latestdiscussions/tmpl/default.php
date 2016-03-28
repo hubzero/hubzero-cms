@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -26,6 +23,10 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -68,7 +69,7 @@ $c = 0;
 								if ($post->get('anonymous')) {
 									echo '<em>' . Lang::txt('MOD_LATESTDISCUSSIONS_ANONYMOUS') . '</em>';
 								} else {
-									echo '<a href="' . Route::url('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
+									echo '<a href="' . Route::url('index.php?option=com_members&id=' . $post->creator()->get('id')) . '">' . $this->escape(stripslashes($post->creator()->get('name'))) . '</a>';
 								}
 								echo ', in&nbsp;'
 							?>
@@ -81,7 +82,7 @@ $c = 0;
 						</span>
 					<?php if ($this->charlimit > 0) : ?>
 						<span class="discussion-comment">
-							<?php echo $post->content('clean', $this->charlimit); ?>
+							<?php echo \Hubzero\Utility\String::truncate(strip_tags($post->get('comment')), $this->charlimit); ?>
 						</span>
 					<?php endif; ?>
 					</li>

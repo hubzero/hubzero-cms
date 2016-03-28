@@ -72,21 +72,40 @@ function submitbutton(pressbutton) {
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="field-category_id"><?php echo Lang::txt('COM_FORUM_FILTER_CATEGORY'); ?>:</label>
-		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
-			<option value="-1"><?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
-		<?php foreach ($this->sections as $group => $sections) { ?>
-			<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
-			<?php foreach ($sections as $section) { ?>
-				<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
-				<?php foreach ($section->categories as $category) { ?>
-					<option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
-				<?php } ?>
-				</optgroup>
-			<?php } ?>
-			</optgroup>
-		<?php } ?>
-		</select>
+		<div class="grid">
+			<div class="col span6">
+				<label for="field-category_id"><?php echo Lang::txt('COM_FORUM_FILTER_CATEGORY'); ?>:</label>
+				<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
+					<option value="-1"><?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
+					<?php foreach ($this->sections as $group => $sections) { ?>
+						<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
+							<?php foreach ($sections as $section) { ?>
+								<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
+									<?php foreach ($section->categories as $category) { ?>
+										<option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
+									<?php } ?>
+								</optgroup>
+							<?php } ?>
+						</optgroup>
+					<?php } ?>
+				</select>
+			</div>
+			<div class="col span6 align-right">
+				<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['state'] == '-1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FORUM_ALL_STATES'); ?></option>
+					<option value="0"<?php if ($this->filters['state'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->filters['state'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->filters['state'] === 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+				</select>
+
+				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
+				<select name="access" id="filter-access" onchange="this.form.submit()">
+					<option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<table class="adminlist">
@@ -95,35 +114,29 @@ function submitbutton(pressbutton) {
 		<?php } ?>
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_FORUM_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_FORUM_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_FORUM_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td colspan="7"><?php
 				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php
-		if ($this->results)
-		{
+			<?php
 			$k = 0;
-			for ($i=0, $n=count( $this->results ); $i < $n; $i++)
+			$i = 0;
+			foreach ($this->rows as $row)
 			{
-				$row =& $this->results[$i];
 				switch ($row->state)
 				{
 					case '2':
@@ -185,9 +198,9 @@ function submitbutton(pressbutton) {
 				</tr>
 				<?php
 				$k = 1 - $k;
+				$i++;
 			}
-		}
-		?>
+			?>
 		</tbody>
 	</table>
 
@@ -196,6 +209,8 @@ function submitbutton(pressbutton) {
 	<input type="hidden" name="thread" value="<?php echo $this->filters['thread']; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

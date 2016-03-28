@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,6 +33,7 @@ namespace Modules\LatestDiscussions;
 
 use Hubzero\Module\Module;
 use Components\Forum\Models\Manager;
+use Components\Forum\Models\Post;
 use Hubzero\User\Group;
 use Component;
 use User;
@@ -64,37 +64,40 @@ class Helper extends Module
 		switch ($this->params->get('forum', 'both'))
 		{
 			case 'site':
-				$posts = $forum->posts('list', array(
-					'scope'    => 'site',
-					'scope_id' => 0,
-					'state'    => 1,
-					'limit'    => 100,
-					'sort'     => 'created',
-					'sort_Dir' => 'DESC'
-				));
+				$posts = $forum->posts(array(
+						'scope'    => 'site',
+						'scope_id' => 0,
+						'state'    => Post::STATE_PUBLISHED,
+						'access'   => User::getAuthorisedViewLevels()
+					))
+					->order('created', 'desc')
+					->limit(100)
+					->rows();
 			break;
 
 			case 'group':
-				$posts = $forum->posts('list', array(
-					'scope'    => 'site',
-					'scope_id' => -1,
-					'state'    => 1,
-					'limit'    => 100,
-					'sort'     => 'created',
-					'sort_Dir' => 'DESC'
-				));
+				$posts = $forum->posts(array(
+						'scope'    => 'group',
+						'scope_id' => -1,
+						'state'    => Post::STATE_PUBLISHED,
+						'access'   => User::getAuthorisedViewLevels()
+					))
+					->order('created', 'desc')
+					->limit(100)
+					->rows();
 			break;
 
 			case 'both':
 			default:
-				$posts = $forum->posts('list', array(
-					'scope'    => array('site', 'group'),
-					'scope_id' => -1,
-					'state'    => 1,
-					'limit'    => 100,
-					'sort'     => 'created',
-					'sort_Dir' => 'DESC'
-				));
+				$posts = $forum->posts(array(
+						'scope'    => array('site', 'group'),
+						'scope_id' => -1,
+						'state'    => Post::STATE_PUBLISHED,
+						'access'   => User::getAuthorisedViewLevels()
+					))
+					->order('created', 'desc')
+					->limit(100)
+					->rows();
 			break;
 		}
 
@@ -120,13 +123,13 @@ class Helper extends Module
 					 || ($forum_access == 'registered' && User::isGuest())
 					 || ($forum_access == 'members' && !in_array(User::get('id'), $group->get('members'))))
 					{
-						$posts->remove($k);
+						//$posts->remove($k);
 						continue;
 					}
 				}
 				else
 				{
-					$posts->remove($k);
+					//$posts->remove($k);
 					continue;
 				}
 				$post->set('group_alias', $group->get('cn'));
@@ -150,19 +153,21 @@ class Helper extends Module
 			$p[] = $post;
 		}
 
-		$this->posts = new \Hubzero\Base\ItemList($p);
+		$this->posts = $p;
 
 		// Get any threads not found above
 		if (count($t) > 0)
 		{
-			$thrds = $forum->posts('list', array(
-				'scope'    => array('site', 'group'),
-				'scope_id' => -1,
-				'state'    => 1,
-				'sort'     => 'created',
-				'sort_Dir' => 'DESC',
-				'id'       => $t
-			));
+			$thrds = $forum->posts(array(
+					'scope'    => array('site', 'group'),
+					'scope_id' => -1,
+					'state'    => Post::STATE_PUBLISHED,
+					'access'   => User::getAuthorisedViewLevels()
+				))
+				->whereIn('id', $t)
+				->order('created', 'desc')
+				->limit(100)
+				->rows();
 			foreach ($thrds as $thread)
 			{
 				$threads[$thread->get('id')] = $thread->get('title');

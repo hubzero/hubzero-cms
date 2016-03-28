@@ -36,7 +36,7 @@ $this->css()
      ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->escape($this->title); ?></h2>
+	<h2><?php echo Lang::txt('COM_FORUM'); ?></h2>
 
 	<div id="content-header-extra">
 		<p>
@@ -50,12 +50,6 @@ $this->css()
 <section class="main section">
 	<div class="section-inner">
 		<div class="subject">
-			<?php foreach ($this->notifications as $notification) { ?>
-				<p class="<?php echo $notification['type']; ?>">
-					<?php echo $this->escape($notification['message']); ?>
-				</p>
-			<?php } ?>
-
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_FORUM_SEARCH'); ?>" />
@@ -74,9 +68,13 @@ $this->css()
 						</caption>
 						<tbody>
 							<?php
-							if ($this->filters['search'] && $this->thread->posts('list', $this->filters)->total() > 0)
+							$rows = $this->forum->posts($this->filters)
+								->paginated()
+								->rows();
+
+							if ($this->filters['search'] && $rows->count() > 0)
 							{
-								foreach ($this->thread->posts() as $row)
+								foreach ($rows as $row)
 								{
 									$title = $this->escape(stripslashes($row->get('title')));
 									$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
@@ -84,7 +82,7 @@ $this->css()
 									$name = Lang::txt('COM_FORUM_ANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
-										$name = ($row->creator('public') ? '<a href="' . Route::url($row->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($row->creator('name'))) . ($row->creator('public') ? '</a>' : '');
+										$name = ($row->creator()->get('public') ? '<a href="' . Route::url($row->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($row->creator()->get('name'))) . ($row->creator()->get('public') ? '</a>' : '');
 									}
 									$cls = array();
 									if ($row->get('closed'))
@@ -133,13 +131,9 @@ $this->css()
 						</tbody>
 					</table>
 					<?php
-						$pageNav = $this->pagination(
-							$this->thread->posts('count', $this->filters),
-							$this->filters['start'],
-							$this->filters['limit']
-						);
+						$pageNav = $rows->pagination;
 						$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-						echo $pageNav->render();
+						echo $pageNav;
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->
@@ -149,18 +143,12 @@ $this->css()
 			<?php if ($this->config->get('access-create-thread')) { ?>
 				<div class="container">
 					<h3><?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN'); ?></h3>
-					<?php if (!$this->category->isClosed()) { ?>
-						<p>
-							<?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
-						</p>
-						<p>
-							<a class="icon-add add btn" href="<?php echo Route::url($this->category->link('newthread')); ?>"><?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?></a>
-						</p>
-					<?php } else { ?>
-						<p class="warning">
-							<?php echo Lang::txt('COM_FORUM_CATEGORY_CLOSED'); ?>
-						</p>
-					<?php } ?>
+					<p>
+						<?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
+					</p>
+					<p>
+						<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?></a>
+					</p>
 				</div><!-- / .container -->
 			<?php } ?>
 		</aside><!-- / .aside -->

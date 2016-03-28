@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -37,6 +36,7 @@ use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Pathway;
 use Request;
+use Notify;
 use Route;
 use User;
 use Lang;
@@ -70,67 +70,82 @@ class Sections extends SiteController
 		$this->_authorize('section');
 		$this->_authorize('category');
 
-		$this->view->config = $this->config;
+		$forum = new Manager('site', 0);
 
-		$this->view->title = Lang::txt('COM_FORUM');
-
-		// Incoming
-		$this->view->filters = array(
-			//'authorized' => 1,
-			'scope'      => $this->model->get('scope'),
-			'scope_id'   => $this->model->get('scope_id'),
-			'search'     => Request::getVar('q', ''),
-			//'section_id' => 0,
-			'state'      => 1,
-			// Show based on if logged in or not
-			'access'     => (User::isGuest() ? 0 : array(0, 1))
+		// Filters
+		$filters = array(
+			'scope'    => $forum->get('scope'),
+			'scope_id' => $forum->get('scope_id'),
+			'state'    => Section::STATE_PUBLISHED,
+			'search'   => '',
+			'access'   => User::getAuthorisedViewLevels()
 		);
 
 		// Flag to indicate if a section is being put into edit mode
-		$this->view->edit = null;
-		if (($section = Request::getVar('section', '')) && $this->_task == 'edit')
+		$edit = null;
+		if ($this->getTask() == 'edit' && $this->config->get('access-edit-section'))
 		{
-			$this->view->edit = $section;
+			$edit = Request::getVar('section', '');
 		}
-		$this->view->sections = $this->model->sections('list', array('state' => 1));
 
-		$this->view->model = $this->model;
+		$sections = $forum->sections($filters);
 
-		if (!$this->view->sections->total()
+		if (!$sections->count()
 		 && $this->config->get('access-create-section')
 		 && Request::getWord('action') == 'populate')
 		{
-			if (!$this->model->setup())
+			if (!$forum->setup())
 			{
-				$this->setError($this->model->getError());
+				$this->setError($forum->getError());
 			}
-			$this->view->sections = $this->model->sections('list', array('state' => 1));
+			$sections = $forum->sections($filters);
 		}
 
 		// Set the page title
-		$this->_buildTitle();
+		App::get('document')->setTitle(Lang::txt(strtoupper($this->_option)));
 
 		// Set the pathway
-		$this->_buildPathway();
+		Pathway::append(
+			Lang::txt(strtoupper($this->_option)),
+			'index.php?option=' . $this->_option
+		);
 
-		$this->view->notifications = \Notify::messages('forum');
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('config', $this->config)
+			->set('forum', $forum)
+			->set('sections', $sections)
+			->set('edit', $edit)
+			->display();
 	}
 
 	/**
 	 * Saves a section and redirects to main page afterward
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
+		// Is the user logged in?
+		if (User::isGuest())
+		{
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
+				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
+				'warning'
+			);
+		}
+
+		// Permissions check
+		if (!$this->config->get('access-create-section'))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
+				'error'
+			);
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -139,29 +154,23 @@ class Sections extends SiteController
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a new table row and bind the incoming data
-		$section = new Section($fields['id']);
-		if (!$section->bind($fields))
+		$section = Section::oneOrNew($fields['id'])->set($fields);
+
+		// Check for alias duplicates
+		if (!$section->isUnique())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
-				$section->getError(),
+				Lang::txt('COM_FORUM_ERROR_SECTION_ALREADY_EXISTS'),
 				'error'
 			);
-			return;
 		}
 
 		// Store new content
-		if (!$section->store(true))
+		if (!$section->save())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option),
-				$section->getError(),
-				'error'
-			);
-			return;
+			Notify::error($section->getError());
 		}
-
-		$url = 'index.php?option=' . $this->_option;
 
 		// Log activity
 		Event::trigger('system.logActivity', [
@@ -169,28 +178,29 @@ class Sections extends SiteController
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . $section->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
-					'url'   => Route::url($url)
+					'url'   => Route::url('index.php?option=' . $this->_option)
 				)
 			],
 			'recipients' => array(
 				['forum.site', 1],
+				['forum.section', $section->get('id')],
 				['user', $section->get('created_by')]
 			)
 		]);
 
 		// Set the redirect
 		App::redirect(
-			Route::url($url)
+			Route::url('index.php?option=' . $this->_option)
 		);
 	}
 
 	/**
 	 * Deletes a section and redirects to main page afterwards
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -206,10 +216,14 @@ class Sections extends SiteController
 		}
 
 		// Load the section
-		$section = $this->model->section(Request::getVar('section', ''));
+		$section = Section::all()
+			->whereEquals('alias', Request::getVar('section'))
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
 
 		// Make the sure the section exist
-		if (!$section->exists())
+		if (!$section->get('id'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
@@ -233,19 +247,16 @@ class Sections extends SiteController
 		}
 
 		// Set the section to "deleted"
-		$section->set('state', 2);  /* 0 = unpublished, 1 = published, 2 = deleted */
+		$section->set('state', $section::STATE_DELETED);
 
-		if (!$section->store())
+		if (!$section->save())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option),
-				$model->getError(),
-				'error'
-			);
-			return;
+			Notify::error($model->getError());
 		}
-
-		$url = 'index.php?option=' . $this->_option;
+		else
+		{
+			Notify::success(Lang::txt('COM_FORUM_SECTION_DELETED'));
+		}
 
 		// Log activity
 		Event::trigger('system.logActivity', [
@@ -253,30 +264,31 @@ class Sections extends SiteController
 				'action'      => 'deleted',
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($url) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . $section->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
-					'url'   => Route::url($url)
+					'url'   => Route::url('index.php?option=' . $this->_option)
 				)
 			],
 			'recipients' => array(
 				['forum.site', 1],
+				['forum.section', $section->get('id')],
 				['user', $section->get('created_by')]
 			)
 		]);
 
 		// Redirect to main listing
 		App::redirect(
-			Route::url($url),
-			Lang::txt('COM_FORUM_SECTION_DELETED'),
-			'message'
+			Route::url('index.php?option=' . $this->_option)
 		);
 	}
 
 	/**
 	 * Set the authorization level for the user
 	 *
-	 * @return     void
+	 * @param   string   $assetType
+	 * @param   integer  $assetId
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -333,44 +345,5 @@ class Sections extends SiteController
 			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
 			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
 		}
-	}
-
-	/**
-	 * Method to set the document path
-	 *
-	 * @return	void
-	 */
-	protected function _buildPathway()
-	{
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-		}
-	}
-
-	/**
-	 * Method to build and set the document title
-	 *
-	 * @return	void
-	 */
-	protected function _buildTitle()
-	{
-		$this->_title = Lang::txt(strtoupper($this->_option));
-		if ($this->_task)
-		{
-			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
-		}
-
-		App::get('document')->setTitle($this->_title);
 	}
 }

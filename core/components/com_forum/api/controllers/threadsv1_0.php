@@ -34,6 +34,10 @@ namespace Components\Forum\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
+use Components\Forum\Models\Manager;
+use Components\Forum\Models\Section;
+use Components\Forum\Models\Category;
+use Components\Forum\Models\Post;
 use Component;
 use Exception;
 use stdClass;
@@ -89,21 +93,29 @@ class Threadsv1_0 extends ApiController
 		$filters = array(
 			'scope'      => Request::getWord('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0),
-			'state'      => 1
+			'state'      => Section::STATE_PUBLISHED,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		$model = new \Components\Forum\Models\Manager($filters['scope'], $filters['scope_id']);
+		$model = new Manager($filters['scope'], $filters['scope_id']);
 
 		$response = new stdClass;
 		$response->sections = array();
 
-		$response->total = $model->sections('count', array('state' => $filters['state']));
+		$sections = $model->sections(array(
+				'state'  => $filters['state'],
+				'access' => User::getAuthorisedViewLevels()
+			))
+			->ordered()
+			->rows();
+
+		$response->total = $sections->count();
 
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
 
-			foreach ($model->sections('list', array('state' => $filters['state'])) as $section)
+			foreach ($sections as $section)
 			{
 				$obj = new stdClass;
 				$obj->id         = $section->get('id');
@@ -112,10 +124,16 @@ class Threadsv1_0 extends ApiController
 				$obj->created    = $section->get('created');
 				$obj->scope      = $section->get('scope');
 				$obj->scope_id   = $section->get('scope_id');
-				$obj->categories = $section->count('categories');
-				$obj->threads    = $section->count('threads');
-				$obj->posts      = $section->count('posts');
-				//$obj->url        = str_replace('/api', '', $base . '/' . ltrim(Route::url($section->link()), '/'));
+
+				$obj->categories = $section->categories()
+					->whereEquals('state', $filters['state'])
+					->whereIn('access', $filters['access'])
+					->total();
+
+				//$obj->threads    = $section->count('threads');
+				//$obj->posts      = $section->count('posts');
+
+				$obj->url        = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias')), '/'));
 
 				$response->sections[] = $obj;
 			}
@@ -178,21 +196,26 @@ class Threadsv1_0 extends ApiController
 	public function categoriesTask()
 	{
 		$filters = array(
-			'authorized' => 1,
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'section'    => Request::getVar('section', ''),
 			'search'     => Request::getVar('search', ''),
 			'scope'      => Request::getWord('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0),
-			'state'      => 1,
-			'parent'     => 0
+			'state'      => Category::STATE_PUBLISHED,
+			'parent'     => 0,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		$model = new \Components\Forum\Models\Manager($filters['scope'], $filters['scope_id']);
+		$forum = new Manager($filters['scope'], $filters['scope_id']);
 
-		$section = $model->section($filters['section'], $model->get('scope'), $model->get('scope_id'));
-		if (!$section->exists())
+		$section = Section::all()
+			->whereEquals('alias', $filters['section'])
+			->whereEquals('scope', $forum->get('scope'))
+			->whereEquals('scope_id', $forum->get('scope_id'))
+			->row();
+
+		if (!$section->get('id'))
 		{
 			throw new Exception(Lang::txt('Section not found.'), 404);
 		}
@@ -206,15 +229,21 @@ class Threadsv1_0 extends ApiController
 		$response->section->created    = $section->get('created');
 		$response->section->scope      = $section->get('scope');
 		$response->section->scope_id   = $section->get('scope_id');
-
 		$response->categories = array();
-		$response->total = $section->categories('count', array('state' => 1));
+
+		$categories = $section->categories()
+			->whereEquals('state', $filters['state'])
+			->whereIn('access', $filters['access'])
+			->ordered()
+			->rows();
+
+		$response->total = $categories->count();
 
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
 
-			foreach ($section->categories('list', array('state' => 1)) as $category)
+			foreach ($categories as $category)
 			{
 				$obj = new stdClass;
 				$obj->id          = $category->get('id');
@@ -224,12 +253,18 @@ class Threadsv1_0 extends ApiController
 				$obj->created     = $category->get('created');
 				$obj->scope       = $category->get('scope');
 				$obj->scope_id    = $category->get('scope_id');
-				$obj->threads     = $category->count('threads');
-				$obj->posts       = $category->count('posts');
 
-				$category->set('section_alias', $section->get('alias'));
+				$obj->threads     = $category->threads()
+					->whereEquals('state', $filters['state'])
+					->whereIn('access', $filters['access'])
+					->total();
 
-				$obj->url         = str_replace('/api', '', $base . '/' . ltrim(Route::url($category->link()), '/'));
+				$obj->posts       = $category->posts()
+					->whereEquals('state', $filters['state'])
+					->whereIn('access', $filters['access'])
+					->total();
+
+				$obj->url         = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias')), '/'));
 
 				$response->categories[] = $obj;
 			}
@@ -299,7 +334,6 @@ class Threadsv1_0 extends ApiController
 	public function listTask()
 	{
 		$filters = array(
-			'authorized' => 1,
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'section'    => Request::getVar('section', ''),
@@ -307,25 +341,34 @@ class Threadsv1_0 extends ApiController
 			'search'     => Request::getVar('search', ''),
 			'scope'      => Request::getWord('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0),
-			'state'      => 1,
-			'parent'     => 0
+			'state'      => Post::STATE_PUBLISHED,
+			'parent'     => 0,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		$model = new \Components\Forum\Models\Manager($filters['scope'], $filters['scope_id']);
+		$forum = new Manager($filters['scope'], $filters['scope_id']);
 
-		$section = $model->section($filters['section'], $model->get('scope'), $model->get('scope_id'));
+		$section = Section::all()
+			->whereEquals('alias', $filters['section'])
+			->whereEquals('scope', $forum->get('scope'))
+			->whereEquals('scope_id', $forum->get('scope_id'))
+			->row();
+
 		if (!$section->exists())
 		{
 			throw new Exception(Lang::txt('Section not found.'), 404);
 		}
 
-		$category = $section->category($filters['category']);
+		$category = Category::all()
+			->whereEquals('alias', $filters['category'])
+			->whereEquals('scope', $forum->get('scope'))
+			->whereEquals('scope_id', $forum->get('scope_id'))
+			->row();
+
 		if (!$category->exists())
 		{
 			throw new Exception(Lang::txt('Category not found.'), 404);
 		}
-
-		$base = str_replace('/api', '', rtrim(Request::base(), '/'));
 
 		$response = new stdClass;
 
@@ -336,7 +379,6 @@ class Threadsv1_0 extends ApiController
 		$response->section->created    = $section->get('created');
 		$response->section->scope      = $section->get('scope');
 		$response->section->scope_id   = $section->get('scope_id');
-		//$response->section->url        = str_replace('/api', '', $base . '/' . ltrim(Route::url($section->link()), '/'));
 
 		$response->category = new stdClass;
 		$response->category->id          = $category->get('id');
@@ -346,14 +388,32 @@ class Threadsv1_0 extends ApiController
 		$response->category->created     = $category->get('created');
 		$response->category->scope       = $category->get('scope');
 		$response->category->scope_id    = $category->get('scope_id');
-		$response->category->url         = str_replace('/api', '', $base . '/' . ltrim(Route::url($category->link()), '/'));
 
 		$response->threads = array();
-		$response->total = $category->threads('count', array('state' => 1));
+
+		$entries = $category->threads()
+			->whereEquals('state', $filters['state'])
+			->whereIn('access', $filters['access']);
+
+		if ($filters['search'])
+		{
+			$entries->whereLike('comment', $filters['search'], 1)
+				->orWhereLike('title', $filters['search'], 1)
+				->resetDepth();
+		}
+
+		$threads = $entries
+			->ordered()
+			->paginated()
+			->rows();
+
+		$response->total = $threads->count();
 
 		if ($response->total)
 		{
-			foreach ($category->threads('list', array('state' => 1)) as $thread)
+			$base = str_replace('/api', '', rtrim(Request::base(), '/'));
+
+			foreach ($threads as $thread)
 			{
 				$obj = new stdClass;
 				$obj->id          = $thread->get('id');
@@ -368,15 +428,14 @@ class Threadsv1_0 extends ApiController
 
 				$obj->creator = new stdClass;
 				$obj->creator->id = $thread->get('created_by');
-				$obj->creator->name = $thread->creator('name');
+				$obj->creator->name = $thread->creator()->get('name');
 
-				$obj->posts       = $thread->posts('count');
+				$obj->posts       = $thread->thread()
+					->whereEquals('state', $filters['state'])
+					->whereIn('access', $filters['access'])
+					->total();
 
-				$category->set('section_alias', $section->get('alias'));
-				$thread->set('section', $section->get('alias'));
-				$thread->set('category', $category->get('alias'));
-
-				$obj->url         = $base . '/' . ltrim(Route::url($thread->link()), '/');
+				$obj->url         = $base . '/' . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')), '/');
 
 				$response->threads[] = $obj;
 			}
@@ -495,7 +554,7 @@ class Threadsv1_0 extends ApiController
 			'start'        => Request::getInt('limitstart', 0),
 			'section'      => Request::getCmd('section', ''),
 			'category'     => Request::getCmd('category', ''),
-			'state'        => Request::getInt('state', 1),
+			'state'        => Request::getInt('state', Post::STATE_PUBLISHED),
 			'scope'        => Request::getWord('scope', ''),
 			'scope_id'     => Request::getInt('scope_id', 0),
 			'scope_sub_id' => Request::getInt('scope_sub_id', 0),
@@ -504,6 +563,9 @@ class Threadsv1_0 extends ApiController
 			'start_at'     => Request::getVar('start_at', ''),
 			'sticky'       => false
 		);
+
+		$forum = new Manager($filters['scope'], $filters['scope_id']);
+
 		if ($thread = Request::getInt('thread', 0))
 		{
 			$filters['thread'] = $thread;
@@ -529,8 +591,6 @@ class Threadsv1_0 extends ApiController
 			$filters['start'] = 0;
 		}
 
-		$post = new \Components\Forum\Tables\Post($this->database);
-
 		$data = new stdClass();
 		$data->code = 0;
 
@@ -541,20 +601,24 @@ class Threadsv1_0 extends ApiController
 
 			if (isset($filters['thread']))
 			{
-				$data->count = $post->countTree($filters['thread'], $filters);
+				$data->count = $forum->posts($filters)->total();
 			}
 
-			$post->loadByObject($filters['object_id'], $filters['scope_id'], $filters['scope']);
-			if ($post->id)
+			$post = Post::all()
+				->whereEquals('object_id', $filters['object_id'])
+				->whereEquals('scope_id', $filters['scope_id'])
+				->whereEquals('scope', $filters['scope'])
+				->row();
+			if ($post->get('id'))
 			{
 				$filters['start_at'] = Request::getVar('threads_start', '');
 				$filters['parent']   = 0;
 			}
-			$data->threads = $post->count($filters);
+			$data->threads = $forum->posts($filters)->total();
 		}
 		else
 		{
-			$rows = $post->find($filters);
+			$rows = $forum->posts($filters)->rows();
 			if ($rows)
 			{
 				if ($filters['start_id'])
@@ -575,7 +639,7 @@ class Threadsv1_0 extends ApiController
 						$children[$pt] = $list;
 					}
 
-					$list = $this->_treeRecurse($view->post->get('id'), '', array(), $children, max(0, $levellimit-1));
+					$list = $this->treeRecurse($post->get('id'), '', array(), $children, max(0, $levellimit-1));
 
 					$inc = false;
 					$newlist = array();
@@ -615,7 +679,7 @@ class Threadsv1_0 extends ApiController
 	 * @param   integer  $type      Indention type
 	 * @return  void
 	 */
-	private function _treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
+	private function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
 	{
 		if (@$children[$id] && $level <= $maxlevel)
 		{
@@ -640,7 +704,7 @@ class Threadsv1_0 extends ApiController
 				$list[$id]->treename = "$indent$txt";
 				$list[$id]->children = count(@$children[$id]);
 
-				$list = $this->_treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
+				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
 			}
 		}
 		return $list;

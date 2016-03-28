@@ -70,10 +70,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 	public function emailGroupForumDigest(\Components\Cron\Models\Job $job)
 	{
 		// Require posts file
-		require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php';
 
 		// Load language files
 		Lang::load('plg_groups_forum') ||
@@ -175,21 +172,16 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($groups as $group)
 			{
-				$db      = App::get('db');
-				$posts   = new \Components\Forum\Tables\Post($db);
-				$filters = [
-					'scope'    => 'group',
-					'scope_id' => $group,
-					'state'    => 1,
-					'sort'     => 'created',
-					'start_at' => Date::of(strtotime("now -1 {$interval}"))->toSql(),
-					'sort_Dir' => 'DESC',
-					'limit'    => 10
-				];
+				$results = \Components\Forum\Models\Post::all()
+					->whereEquals('scope', 'group')
+					->whereEquals('scope_id', $group)
+					->whereEquals('state', 1)
+					->where('created', '>', Date::of(strtotime("now -1 {$interval}"))->toSql())
+					->order('created', 'desc')
+					->limit(10)
+					->rows();
 
-				$results = $posts->find($filters);
-
-				if (count($results) > 0)
+				if ($results->count() > 0)
 				{
 					$return[$group] = $results;
 				}

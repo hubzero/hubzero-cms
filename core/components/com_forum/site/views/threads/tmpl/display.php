@@ -57,24 +57,31 @@ $now = Date::of('now')->toSql();
 <section class="main section">
 	<div class="section-inner">
 		<div class="subject">
-			<?php
-				foreach ($this->notifications as $notification)
-				{
-					echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
-				}
-			?>
-
 			<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
 				<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
 			</h3>
 
 			<?php
-			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0)
+			$threading = $this->config->get('threading', 'list');
+
+			$posts = $this->thread->thread()
+				->whereIn('state', $this->filters['state'])
+				->whereIn('access', $this->filters['access'])
+				->order(($threading == 'tree' ? 'lft' : 'created'), 'asc')
+				->paginated()
+				->rows();
+
+			if ($posts->count() > 0)
 			{
+				if ($threading == 'tree')
+				{
+					$posts = $this->thread->toTree($posts);
+				}
+
 				$this->view('_list')
 				     ->set('option', $this->option)
 				     ->set('controller', $this->controller)
-				     ->set('comments', $this->thread->posts($this->config->get('threading', 'list')))
+				     ->set('comments', $posts)
 				     ->set('thread', $this->thread)
 				     ->set('parent', 0)
 				     ->set('config', $this->config)
@@ -97,16 +104,12 @@ $now = Date::of('now')->toSql();
 			?>
 			<form action="<?php echo Route::url($this->thread->link()); ?>" method="get">
 				<?php
-				$pageNav = $this->pagination(
-					$this->thread->posts('count', $this->filters),
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				$pageNav = $posts->pagination;
 				$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
 				$pageNav->setAdditionalUrlParam('category', $this->category->get('alias'));
 				$pageNav->setAdditionalUrlParam('thread', $this->thread->get('id'));
 
-				echo $pageNav->render();
+				echo $pageNav;
 				?>
 			</form>
 
@@ -218,44 +221,60 @@ $now = Date::of('now')->toSql();
 				<?php } ?>
 			</div><!-- / .container -->
 
-			<?php if ($this->thread->participants()->total() > 0) { ?>
+			<?php
+			$participants = $this->thread->participants()
+				->whereIn('state', $this->filters['state'])
+				->whereIn('access', $this->filters['access'])
+				->rows();
+
+			if ($participants->count() > 0) { ?>
 				<div class="container">
 					<h3><?php echo Lang::txt('COM_FORUM_PARTICIPANTS'); ?></h3>
 					<ul>
-					<?php
+						<?php
 						$anon = false;
-						foreach ($this->thread->participants() as $participant)
+						foreach ($participants as $participant)
 						{
-							if (!$participant->anonymous) {
-					?>
-						<li>
-							<a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->created_by); ?>">
-								<?php echo $this->escape(stripslashes($participant->name)); ?>
-							</a>
-						</li>
-					<?php
-							} else if (!$anon) {
+							if (!$participant->get('anonymous'))
+							{
+								?>
+								<li>
+									<a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
+										<?php echo $this->escape(stripslashes($participant->get('name'))); ?>
+									</a>
+								</li>
+								<?php
+							}
+							// Only display "anonymous" once
+							elseif (!$anon)
+							{
 								$anon = true;
-					?>
-						<li>
-							<span class="member">
-								<?php echo Lang::txt('COM_FORUM_ANONYMOUS'); ?>
-							</span>
-						</li>
-					<?php
+								?>
+								<li>
+									<span class="member">
+										<?php echo Lang::txt('COM_FORUM_ANONYMOUS'); ?>
+									</span>
+								</li>
+								<?php
 							}
 						}
-					?>
+						?>
 					</ul>
 				</div><!-- / .container -->
 			<?php } ?>
 
-			<?php if ($this->thread->attachments()->total() > 0) { ?>
+			<?php
+			$attachments = Components\Forum\Models\Attachment::all()
+				->whereEquals('parent', $this->thread->get('thread'))
+				->whereIn('state', $this->filters['state'])
+				->rows();
+
+			if ($attachments->count() > 0) { ?>
 				<div class="container">
 					<h3><?php echo Lang::txt('COM_FORUM_ATTACHMENTS'); ?></h3>
 					<ul class="attachments">
 						<?php
-						foreach ($this->thread->attachments() as $attachment)
+						foreach ($attachments as $attachment)
 						{
 							if ($attachment->get('status') != 2)
 							{
@@ -267,7 +286,7 @@ $now = Date::of('now')->toSql();
 								// trims long titles
 								$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
 
-								if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
+								if ($attachment->isImage())
 								{
 									$cls = 'img';
 								}
@@ -277,7 +296,7 @@ $now = Date::of('now')->toSql();
 									<?php echo $this->escape(stripslashes($title)); ?>
 								</a>
 							</li>
-				<?php
+							<?php
 							} // end status check
 						}
 						?>

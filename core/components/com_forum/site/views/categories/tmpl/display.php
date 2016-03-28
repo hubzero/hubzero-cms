@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -65,10 +64,6 @@ $this->category->set('section_alias', $this->filters['section']);
 <section class="main section">
 	<div class="section-inner">
 		<div class="subject">
-			<?php foreach ($this->notifications as $notification) { ?>
-				<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-			<?php } ?>
-
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_FORUM_SEARCH'); ?>" />
@@ -126,14 +121,14 @@ $this->category->set('section_alias', $this->filters['section']);
 						</caption>
 						<tbody>
 							<?php
-							if ($this->category->threads('list', $this->filters)->total() > 0)
+							if ($this->threads->count() > 0)
 							{
-								foreach ($this->category->threads() as $row)
+								foreach ($this->threads as $row)
 								{
 									$name = Lang::txt('COM_FORUM_ANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
-										$name = $this->escape(stripslashes($row->creator('name', $name)));
+										$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
 										if ($row->creator('public'))
 										{
 											$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
@@ -168,7 +163,12 @@ $this->category->set('section_alias', $this->filters['section']);
 											</span>
 										</td>
 										<td class="priority-4">
-											<span><?php echo ($row->posts('count')); ?></span>
+											<span><?php
+											echo $row->thread()
+												->whereEquals('state', $row->get('state'))
+												->whereIn('access', $this->filters['access'])
+												->total();
+											?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_COMMENTS'); ?>
 											</span>
@@ -177,21 +177,21 @@ $this->category->set('section_alias', $this->filters['section']);
 											<span><?php echo Lang::txt('COM_FORUM_LAST_POST'); ?></span>
 											<span class="entry-details">
 												<?php
-													$lastpost = $row->lastActivity();
-													if ($lastpost->exists())
+												$lastpost = $row->lastActivity();
+												if ($lastpost->get('id'))
+												{
+													$lname = Lang::txt('COM_FORUM_ANONYMOUS');
+													if (!$lastpost->get('anonymous'))
 													{
-														$lname = Lang::txt('COM_FORUM_ANONYMOUS');
-														if (!$lastpost->get('anonymous'))
-														{
-															$lname = ($lastpost->creator('public') ? '<a href="' . Route::url($lastpost->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($lastpost->creator('name'))) . ($lastpost->creator('public') ? '</a>' : '');
-														}
-														?>
-														<span class="entry-date">
-															<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
-														</span>
-														<?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
+														$lname = ($lastpost->creator()->get('public') ? '<a href="' . Route::url($lastpost->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($lastpost->creator()->get('name'))) . ($lastpost->creator()->get('public') ? '</a>' : '');
+													}
+													?>
+													<span class="entry-date">
+														<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
+													</span>
+													<?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
 												<?php } else { ?>
-														<?php echo Lang::txt('COM_FORUM_NONE'); ?>
+													<?php echo Lang::txt('COM_FORUM_NONE'); ?>
 												<?php } ?>
 											</span>
 										</td>
@@ -220,15 +220,11 @@ $this->category->set('section_alias', $this->filters['section']);
 					</table>
 
 					<?php
-					$pageNav = $this->pagination(
-						$this->category->threads('count', $this->filters),
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					$pageNav = $this->threads->pagination;
 					$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
 					$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
 					$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-					echo $pageNav->render();
+					echo $pageNav;
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->
@@ -240,22 +236,22 @@ $this->category->set('section_alias', $this->filters['section']);
 				<p>
 					<?php
 					$last = $this->category->lastActivity();
-					if ($last->exists())
+					if ($last->get('id'))
 					{
 						$lname = Lang::txt('COM_FORUM_ANONYMOUS');
 						if (!$last->get('anonymous'))
 						{
-							$lname = $this->escape(stripslashes($last->creator('name', $lname)));
-							if ($last->creator('public'))
+							$lname = $this->escape(stripslashes($last->creator()->get('name', $lname)));
+							if ($last->creator()->get('public'))
 							{
 								$lname = '<a href="' . Route::url($last->creator()->getLink()) . '">' . $lname . '</a>';
 							}
 						}
 						$last->set('category', $this->filters['category']);
 						$last->set('section', $this->filters['section']);
-					?>
+						?>
 						<a class="entry-comment" href="<?php echo Route::url($last->link()); ?>">
-							<?php echo $last->content('clean', 170); ?>
+							<?php echo \Hubzero\Utility\String::truncate(strip_tags($last->get('comment')), 170); ?>
 						</a>
 						<span class="entry-author">
 							<?php echo $lname; ?>

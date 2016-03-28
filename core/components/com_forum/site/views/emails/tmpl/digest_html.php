@@ -39,7 +39,7 @@ $posts  = 0;
 
 array_walk($this->posts, function($val, $idx) use (&$posts)
 {
-	$posts += count($val);
+	$posts += $val->count();
 });
 ?>
 
@@ -231,8 +231,7 @@ array_walk($this->posts, function($val, $idx) use (&$posts)
 															<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
 																<tr>
 																	<td width="75" style="padding: 10px 0;">
-																		<?php $path = Hubzero\User\Profile::getInstance($post->created_by)->getPicture(0, true, false); ?>
-																		<img width="50" src="<?php echo Request::root() . $path; ?>" />
+																		<img width="50" src="<?php echo Request::root() . '/members/' . $post->created_by . '/Image:thumb.png'; ?>" />
 																	</td>
 																	<td style="padding: 10px 0;">
 																		<div style="position: relative; border: 1px solid #CCCCCC; padding: 12px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;">

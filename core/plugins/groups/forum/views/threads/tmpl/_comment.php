@@ -25,12 +25,12 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
+
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
@@ -58,7 +58,7 @@ defined('_HZEXEC_') or die();
 	}
 	else
 	{
-		$comment = $this->comment->content('parsed');
+		$comment = $this->comment->comment;
 	}
 ?>
 	<li class="comment <?php echo $cls; ?><?php if (!$this->comment->get('parent')) { echo ' start'; } ?>" id="c<?php echo $this->comment->get('id'); ?>">
@@ -85,6 +85,37 @@ defined('_HZEXEC_') or die();
 			<div class="comment-body">
 				<?php echo $comment; ?>
 			</div>
+			<div class="comment-attachments">
+				<?php
+				foreach ($this->comment->attachments()->whereEquals('state', Components\Forum\Models\Attachment::STATE_PUBLISHED)->rows() as $attachment)
+				{
+					if (!trim($attachment->get('description')))
+					{
+						$attachment->set('description', $attachment->get('filename'));
+					}
+
+					$link = $this->comment->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename');
+
+					if ($attachment->isImage())
+					{
+						if ($attachment->width() > 400)
+						{
+							$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+						}
+						else
+						{
+							$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+						}
+					}
+					else
+					{
+						$html = '<p class="attachment"><a href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">' . $attachment->get('description') . '</a></p>';
+					}
+
+					echo $html;
+				}
+				?>
+			</div><!-- / .comment-attachments -->
 			<p class="comment-options">
 			<?php if (
 						$this->config->get('access-manage-thread')
@@ -123,57 +154,56 @@ defined('_HZEXEC_') or die();
 			<?php } ?>
 			</p>
 
+			<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
+				<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+					<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
+						<fieldset>
+							<legend><span><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'))); ?></span></legend>
 
-		<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-			<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
-					<fieldset>
-						<legend><span><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'))); ?></span></legend>
+							<input type="hidden" name="fields[id]" value="0" />
+							<input type="hidden" name="fields[state]" value="1" />
+							<input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
+							<input type="hidden" name="fields[scope]" value="<?php echo $this->thread->get('scope'); ?>" />
+							<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
+							<input type="hidden" name="fields[scope_id]" value="<?php echo $this->thread->get('scope_id'); ?>" />
+							<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
+							<input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
+							<input type="hidden" name="fields[parent]" value="<?php echo $this->comment->get('id'); ?>" />
+							<input type="hidden" name="fields[thread]" value="<?php echo $this->comment->get('thread'); ?>" />
+							<input type="hidden" name="fields[created]" value="" />
+							<input type="hidden" name="fields[created_by]" value="<?php echo User::get('id'); ?>" />
 
-						<input type="hidden" name="fields[id]" value="0" />
-						<input type="hidden" name="fields[state]" value="1" />
-						<input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
-						<input type="hidden" name="fields[scope]" value="<?php echo $this->thread->get('scope'); ?>" />
-						<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
-						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->thread->get('scope_id'); ?>" />
-						<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
-						<input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
-						<input type="hidden" name="fields[parent]" value="<?php echo $this->comment->get('id'); ?>" />
-						<input type="hidden" name="fields[thread]" value="<?php echo $this->comment->get('thread'); ?>" />
-						<input type="hidden" name="fields[created]" value="" />
-						<input type="hidden" name="fields[created_by]" value="<?php echo User::get('id'); ?>" />
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
+							<input type="hidden" name="active" value="forum" />
+							<input type="hidden" name="action" value="savethread" />
 
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
-						<input type="hidden" name="active" value="forum" />
-						<input type="hidden" name="action" value="savethread" />
+							<?php echo Html::input('token'); ?>
 
-						<?php echo Html::input('token'); ?>
+							<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
+								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
+								<?php
+								echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'minimal no-footer'));
+								?>
+							</label>
 
-						<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
-							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
-							<?php
-							echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'minimal no-footer'));
-							?>
-						</label>
+							<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
+								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:</span>
+								<input type="file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+							</label>
 
-						<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:</span>
-							<input type="file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
-						</label>
+							<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+								<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+							</label>
 
-						<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-							<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
-						</label>
-
-						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
-						</p>
-					</fieldset>
-				</form>
-			</div><!-- / .addcomment -->
-		<?php } ?>
+							<p class="submit">
+								<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+							</p>
+						</fieldset>
+					</form>
+				</div><!-- / .addcomment -->
+			<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
 		if ($this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3))
