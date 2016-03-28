@@ -1274,7 +1274,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$post->set('scope', $this->forum->get('scope'));
 			$post->set('created_by', User::get('id'));
 		}
-		elseif ($post->get('created_by') != User::get('id') && !$this->config->get('access-edit-thread'))
+		elseif ($post->get('created_by') != User::get('id') && !$this->params->get('access-edit-thread'))
 		{
 			App::redirect(Route::url($this->base . '&scope=' . $section . '/' . $category));
 		}
