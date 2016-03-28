@@ -42,6 +42,7 @@
 		<field name="deposit_terms" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_TERMS_URL" description="COM_PUBLICATIONS_CONFIG_TERMS_URL_DESC" />
 	</fieldset>
 	<fieldset name="CURATION">
+		<field name="curatorreplyto" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO" description="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO_DESC" />
 		<field name="curatorgroup" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_CURATOR_GROUP" description="COM_PUBLICATIONS_CONFIG_CURATOR_GROUP_DESC" />
 		<field name="graceperiod" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_GRACE_PERIOD" description="COM_PUBLICATIONS_CONFIG_GRACE_PERIOD_DESC">
 			<option value="0">JNONE</option>

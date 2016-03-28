@@ -1150,10 +1150,22 @@ class Html
 			return false;
 		}
 
+		// Component params
+		$params = Component::params('com_publications');
+		$address = $params->get('curatorreplyto');
+
 		// Set up email config
 		$from = array();
 		$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
-		$from['email'] = Config::get('mailfrom');
+
+		if (!isset($address) || $address == '')
+		{
+			$from['email'] = Config::get('mailfrom');
+		}
+		else
+		{
+			$from['email'] = $address;
+		}
 
 		// Html email
 		$from['multipart'] = md5(date('U'));
