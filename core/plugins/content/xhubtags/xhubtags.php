@@ -127,7 +127,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		$attribs = array('style' => $this->params->def('style', 'none'));
+		$attribs = array('style' => $this->params->get('style', 'none'));
 
 		$regex = "/style\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
 
