@@ -251,7 +251,7 @@ class Sections extends SiteController
 
 		if (!$section->save())
 		{
-			Notify::error($model->getError());
+			Notify::error($section->getError());
 		}
 		else
 		{

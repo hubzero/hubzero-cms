@@ -417,16 +417,8 @@ class Manager extends Object
 		$last = Post::all()
 			->whereEquals('scope', $this->get('scope'))
 			->whereEquals('scope_id', $this->get('scope_id'))
-			->whereEquals('state', 1);
-
-		if (User::isGuest())
-		{
-			$last->whereEquals('access', 0);
-		}
-		else
-		{
-			$last->whereIn('access', array(0, 1));
-		}
+			->whereEquals('state', Post::STATE_PUBLISHED)
+			->whereIn('access', User::getAuthorisedViewLevels());
 
 		return $last->ordered('id', 'desc')
 			->limit(1)
