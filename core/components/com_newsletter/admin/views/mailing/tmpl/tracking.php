@@ -114,7 +114,7 @@ $this->js()
 						<tr>
 							<td>
 								<?php if ($country != 'undetermined') : ?>
-									<img src="<?php echo Request::base(); ?>/core/assets/images/flags/<?php echo strtolower($country); ?>.gif" alt="<?php echo $country; ?>" />
+									<img src="<?php echo '/core/assets/images/flags/' . strtolower($country); ?>.gif" alt="<?php echo $country; ?>" />
 								<?php endif; ?>
 							</td>
 							<td><?php echo strtoupper($country); ?></td>
