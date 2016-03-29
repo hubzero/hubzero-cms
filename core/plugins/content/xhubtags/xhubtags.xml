@@ -30,17 +30,19 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" group="content">
-	<name>Content - xHubTags</name>
-	<author>Nicholas J. Kisseberth</author>
+	<name>plg_content_xhubtags</name>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Process XHUB tags in com_content items</description>
+	<description>PLG_CONTENT_XHUBTAGS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="xhubtags">xhubtags.php</filename>
 	</files>
 	<config>
 		<fields name="params">
+			<fieldset name="basic">
+				<field name="style" type="text" default="none" label="PLG_CONTENT_XHUBTAGS_PARAM_MODSTYLE_LABEL" description="PLG_CONTENT_XHUBTAGS_PARAM_MODSTYLE_DESC" />
+			</fieldset>
 		</fields>
 	</config>
 </extension>
-
