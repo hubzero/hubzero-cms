@@ -45,7 +45,7 @@ jQuery(document).ready(function(jq){
 		});
 
 	//date/time picker for publish up/down
-	if ($('.datepicker').length && jQuery.datetimepicker) {
+	if ($('.datepicker').length && jQuery().datetimepicker) {
 		$('.datepicker').attr('autocomplete', 'OFF');
 		$('.datepicker').datetimepicker({
 			controlType: 'slider',
