@@ -525,8 +525,9 @@ class Publications extends SiteController
 		// Last public release
 		$lastPubRelease = $this->model->lastPublicRelease();
 
-		// Version invalid but publication exists?
-		if ($this->model->masterExists() && !$this->model->exists())
+		// Version invalid but publication exists or no version specified?
+		if ($this->model->masterExists() && !$this->model->exists()
+			|| ($this->_version == 'default' && isset($lastPubRelease->id)))
 		{
 			if ($lastPubRelease && $lastPubRelease->id)
 			{
