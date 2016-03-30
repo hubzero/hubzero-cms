@@ -262,10 +262,13 @@ class Media extends Base
 		$hubzeroGroup = Group::getInstance($this->cn);
 
 		$html  = '<select class="" name="folder">';
+		/*
 		if ($hubzeroGroup->get('type') == 3)
 		{
 			$html .= '<option value="/">(root)</option>';
 		}
+		*/
+
 		$html .= $this->_buildFolderTreeSelectOptionList($tree);
 		$html .= '</select>';
 		return $html;
@@ -985,9 +988,30 @@ class Media extends Base
 	 */
 	public function addFolderTask()
 	{
+		// Check to see if we are restricting groups to /uploads dir
+		$protected = Request::getBool('protected', false);
+
 		// get list of folders
 		$folders    = Filesystem::directoryTree($this->path, '.', 10);
 		$folderTree = $this->_buildFolderTree($folders);
+
+		// Find the uploads directory and rebase the tree
+		if ($protected === true)
+		{
+			$protectedDir = array();
+			foreach ($folderTree as $leaf)
+			{
+				if ($leaf['name'] == 'uploads')
+				{
+					array_push($protectedDir, $leaf);
+					break;
+				}
+			}
+		}
+
+		// Pick which tree to use
+		$folderTree = isset($protectedDir) && !empty($protectedDir) ? $protectedDir : $folderTree;
+
 		$folderList = $this->_buildFolderTreeSelect($folderTree);
 
 		// pass vars to view
