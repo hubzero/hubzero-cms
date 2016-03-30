@@ -67,7 +67,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 
 		$renderer = new \Hubzero\Error\Renderer\Page(
 			App::get('document'),
-			App::get('template')->template,
+			App::get('template.loader'),
 			App::get('config')->get('debug')
 		);
 
@@ -76,6 +76,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		{
 			// Render the error page.
 			$renderer->render($error);
+			return;
 		}
 
 		// Get the full current URI.
@@ -88,6 +89,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		{
 			// Render the error page.
 			$renderer->render($error);
+			return;
 		}
 
 		// See if the current url exists in the database as a redirect.
