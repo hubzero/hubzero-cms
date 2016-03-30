@@ -46,58 +46,59 @@ $c = 0;
 				?>
 					<li>
 						<?php if ($this->params->get('details', 1)) { ?>
-						<p class="entry-author-photo">
-							<img src="<?php echo $post->creator()->getPicture(); ?>" alt="" />
-						</p>
+							<p class="entry-author-photo">
+								<img src="<?php echo $post->creator()->getPicture(); ?>" alt="" />
+							</p>
 						<?php } ?>
 						<div class="entry-content">
 							<h4>
 								<a href="<?php echo Route::url($post->link()); ?>"><?php echo $this->escape(stripslashes($post->get('title'))); ?></a>
 							</h4>
-						<?php if ($this->params->get('details', 1)) { ?>
-							<dl class="entry-meta">
-								<dt>
-									<span>
-										<?php echo Lang::txt('MOD_LATESTBLOG_ENTRY_NUMBER', $post->get('id')); ?>
-									</span>
-								</dt>
-								<dd class="date">
-									<time datetime="<?php echo $post->published(); ?>">
-										<?php echo $post->published('date'); ?>
-									</time>
-								</dd>
-								<dd class="time">
-									<time datetime="<?php echo $post->published(); ?>">
-										<?php echo $post->published('time'); ?>
-									</time>
-								</dd>
-								<dd class="author">
-									<a href="<?php echo Route::url('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
-										<?php echo $this->escape(stripslashes($post->creator()->get('name'))); ?>
-									</a>
-								</dd>
-								<dd class="location">
-									<a href="<?php echo $post->link('base'); ?>">
-										<?php 
-										/*switch ($post->get('scope'))
-										{
-											case 'site':
-												echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_SITE');
-											break;
+							<?php if ($this->params->get('details', 1)) { ?>
+								<dl class="entry-meta">
+									<dt>
+										<span>
+											<?php echo Lang::txt('MOD_LATESTBLOG_ENTRY_NUMBER', $post->get('id')); ?>
+										</span>
+									</dt>
+									<dd class="date">
+										<time datetime="<?php echo $post->published(); ?>">
+											<?php echo $post->published('date'); ?>
+										</time>
+									</dd>
+									<dd class="time">
+										<time datetime="<?php echo $post->published(); ?>">
+											<?php echo $post->published('time'); ?>
+										</time>
+									</dd>
+									<dd class="author">
+										<a href="<?php echo Route::url('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
+											<?php echo $this->escape(stripslashes($post->creator()->get('name'))); ?>
+										</a>
+									</dd>
+									<dd class="location">
+										<a href="<?php echo $post->link('base'); ?>">
+											<?php 
+											/*switch ($post->get('scope'))
+											{
+												case 'site':
+													echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_SITE');
+												break;
 
-											case 'member':
-												echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_MEMBER');
-											break;
+												case 'member':
+													echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_MEMBER');
+												break;
 
-											case 'group':
-												echo $this->escape(stripslashes($post->item('title')));
-											break;
-										}*/
-										echo $this->escape(stripslashes($post->item('title')));
-										?>
-									</a>
-								</dd>
-							</dl>
+												case 'group':
+													echo $this->escape(stripslashes($post->item('title')));
+												break;
+											}*/
+											echo $this->escape(stripslashes($post->item('title')));
+											?>
+										</a>
+									</dd>
+								</dl>
+							<?php } ?>
 							<?php if ($this->params->get('preview', 1)) { ?>
 								<div class="entry-body">
 									<?php 
@@ -112,7 +113,6 @@ $c = 0;
 									?>
 								</div>
 							<?php } ?>
-						<?php } ?>
 						</div>
 					</li>
 				<?php 
