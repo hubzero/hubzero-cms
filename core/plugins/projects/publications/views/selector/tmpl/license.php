@@ -48,8 +48,9 @@ $pubParams = $this->publication->params;
 		$liId = 'choice-' . $item->id;
 
 		$info = $item->info;
-		if ($item->url) {
-			$info .= ' <a href="' . $item->url . '" target="_blank">Read license terms &rsaquo;</a>';
+		if ($item->url)
+		{
+			$info .= ' <a href="' . $item->url . '" target="_blank">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
 		}
 
 		$icon = $item->icon;

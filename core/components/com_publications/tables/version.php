@@ -66,7 +66,7 @@ class Version extends \JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-		if ($version == 'default' or $version == 'current' && $version == 'main')
+		if ($version == 'default' or $version == 'current' or $version == 'main')
 		{
 			$query.= " AND main=1 ";
 		}

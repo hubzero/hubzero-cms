@@ -74,10 +74,15 @@ function submitbutton(pressbutton)
 					<label for="field-el-<?php echo $elementId; ?>-label"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LABEL'); ?>:</label>
 					<input type="text" name="curation[blocks][<?php echo $blockId; ?>][elements][<?php echo $elementId; ?>][label]" id="field-el-<?php echo $elementId; ?>-label" maxlength="255" value="<?php echo $element->label;  ?>" />
 				</div>
-				<div class="input-wrap"><label for="field-el-<?php echo $elementId; ?>-about"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ELEMENT_ABOUT'); ?>:</label><textarea name="curation[blocks][<?php echo $blockId; ?>][elements][<?php echo $elementId; ?>][about]" id="field-el-<?php echo $elementId; ?>-about"><?php echo htmlspecialchars($element->about); ?></textarea></div>
 				<div class="input-wrap">
-					<label for="field-el-<?php echo $elementId; ?>-adminTips"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ELEMENT_ADMIN_TIPS'); ?>:</label><textarea name="curation[blocks][<?php echo $blockId; ?>][elements][<?php echo $elementId; ?>][adminTips]" id="field-el-<?php echo $elementId; ?>-adminTips"><?php echo htmlspecialchars($element->adminTips); ?></textarea>
+					<label for="field-el-<?php echo $elementId; ?>-about"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ELEMENT_ABOUT'); ?>:</label>
+					<textarea name="curation[blocks][<?php echo $blockId; ?>][elements][<?php echo $elementId; ?>][about]" id="field-el-<?php echo $elementId; ?>-about"><?php echo htmlspecialchars($element->about); ?></textarea>
 				</div>
+				<div class="input-wrap">
+					<label for="field-el-<?php echo $elementId; ?>-adminTips"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ELEMENT_ADMIN_TIPS'); ?>:</label>
+					<textarea name="curation[blocks][<?php echo $blockId; ?>][elements][<?php echo $elementId; ?>][adminTips]" id="field-el-<?php echo $elementId; ?>-adminTips"><?php echo htmlspecialchars($element->adminTips); ?></textarea>
+				</div>
+
 				<?php foreach ($element->params as $paramname => $paramvalue) { ?>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PARAMS_' . strtoupper($paramname)); ?></label>
@@ -88,6 +93,7 @@ function submitbutton(pressbutton)
 							<option value="file" <?php echo $paramvalue == 'file' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPE_FILE'); ?></option>
 							<option value="link" <?php echo $paramvalue == 'link' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPE_LINK'); ?></option>
 							<option value="data" <?php echo $paramvalue == 'data' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPE_DATA'); ?></option>
+							<option value="publication" <?php echo $paramvalue == 'publication' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPE_PUBLICATION'); ?></option>
 						</select>
 						<?php }
 						elseif ($paramname == 'required') {

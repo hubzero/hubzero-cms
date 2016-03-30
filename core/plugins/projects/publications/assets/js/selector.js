@@ -143,7 +143,7 @@ HUB.ProjectPublicationsSelector = {
 		checker = $('.selectedfilter').length;
 
 		// Check that we satisfy minimum/maximum requirements
-		if (checker == 1)
+		if (checker >= 1)
 		{
 			success = true;
 		}
@@ -154,7 +154,7 @@ HUB.ProjectPublicationsSelector = {
 	selector: function ()
 	{
 		var $ = this.jQuery;
-		var max = 1;
+		var max = $('#maxitems').length ? $('#maxitems').val() : 1;
 
 		if (!$('#pub-selector').length)
 		{
