@@ -229,7 +229,7 @@ class Mailing extends AdminController
 		foreach ($opens as $open)
 		{
 			$country = ($open->countrySHORT) ? strtolower($open->countrySHORT) : 'undetermined';
-			$state = ($open->ipREGION) ? 'us-' . strtolower($states[strtolower($open->ipREGION)]) : 'undetermined';
+			$state = ($open->ipREGION) && isset($states[strtolower($open->ipREGION)]) ? 'us-' . strtolower($states[strtolower($open->ipREGION)]) : 'undetermined';
 
 			$countryGeo[$country] = (isset($countryGeo[$country])) ? $countryGeo[$country] + 1 : 1;
 			$statesGeo[$state] = (isset($statesGeo[$state])) ? $statesGeo[$state] + 1 : 1;
