@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -53,75 +52,72 @@ if (isset($this->prfx))
 {
 	$prfx = $this->prfx;
 }
-//$prfx .= substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',5)),0,10);
 
 if ($this->unit)
-	{
-		$this->base .= '&unit=' . $this->unit;
-	}
-	if ($this->lecture)
-	{
-		$this->base .= '&b=' . $this->lecture;
-	}
+{
+	$this->base .= '&unit=' . $this->unit;
+}
+if ($this->lecture)
+{
+	$this->base .= '&b=' . $this->lecture;
+}
 
 if (!$this->thread->thread)
 {
 	$this->thread->thread = $this->thread->id;
 }
 ?>
-					<li class="thread thread<?php echo $this->thread->thread; if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . ($this->thread->parent ? $this->thread->id . '-' : '') . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
-						<?php
-							$name = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
-							$huser = '';
-							if (!$this->thread->anonymous)
-							{
-								$huser = \Hubzero\User\Profile::getInstance($this->thread->created_by);
-								if (is_object($huser) && $huser->get('name'))
-								{
-									$name = ($huser->get('public') ? '<a href="' . Route::url($huser->getLink()) . '">' : '') . $this->escape(stripslashes($huser->get('name'))) . ($huser->get('public') ? '</a>' : '');
-								}
-							}
+<li class="thread thread<?php echo $this->thread->thread; if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . ($this->thread->parent ? $this->thread->id . '-' : '') . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
+	<?php
+		$name = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+		$huser = '';
+		if (!$this->thread->anonymous)
+		{
+			$huser = \Hubzero\User\Profile::getInstance($this->thread->created_by);
+			if (is_object($huser) && $huser->get('name'))
+			{
+				$name = ($huser->get('public') ? '<a href="' . Route::url($huser->getLink()) . '">' : '') . $this->escape(stripslashes($huser->get('name'))) . ($huser->get('public') ? '</a>' : '');
+			}
+		}
 
-							if ($this->thread->state == 3)
-							{
-								$comment = '<p class="warning">' . Lang::txt('PLG_COURSES_DISCUSSIONS_CONTENT_REPORTED') . '</p>';
-							}
-							else
-							{
-								if ($this->search)
-								{
-									$this->thread->title = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $this->thread->title);
-								}
-								$comment = $this->thread->title . ' &hellip;';
-							}
+		if ($this->thread->state == 3)
+		{
+			$comment = '<p class="warning">' . Lang::txt('PLG_COURSES_DISCUSSIONS_CONTENT_REPORTED') . '</p>';
+		}
+		else
+		{
+			if ($this->search)
+			{
+				$this->thread->title = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $this->thread->title);
+			}
+			$comment = $this->thread->title . ' &hellip;';
+		}
 
-							$this->thread->instructor_replied = 0;
-							if (count($this->instructors))
-							{
-								$database = App::get('db');
-								$database->setQuery("SELECT COUNT(*) FROM `#__forum_posts` AS c WHERE c.thread=" . $this->thread->thread . " AND c.state=1 AND c.created_by IN (" . implode(',', $this->instructors) . ")");
-								$this->thread->instructor_replied = $database->loadResult();
-							}
-						?>
-						<div class="comment-content">
-							<?php //if ($this->thread->sticky) { ?>
-							<p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY'); ?>">
-								<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY') :  Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY'); ?>
-							</p>
-							<?php //} ?>
-							<?php if ($this->thread->instructor_replied) { ?>
-							<p class="instructor-commented" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED'); ?>">
-								<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR'); ?>
-							</p>
-							<?php } ?>
-							<p class="comment-title">
-								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
-							</p>
-							<p class="comment-body">
-								<a href="<?php echo Route::url($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
-							</p>
-							<p class="comment-author">
-								<strong><?php echo $name; ?></strong>
-							</p>
-						</div>
-					</li>
+		$this->thread->instructor_replied = 0;
+		if (count($this->instructors))
+		{
+			$database = App::get('db');
+			$database->setQuery("SELECT COUNT(*) FROM `#__forum_posts` AS c WHERE c.thread=" . $this->thread->thread . " AND c.state=1 AND c.created_by IN (" . implode(',', $this->instructors) . ")");
+			$this->thread->instructor_replied = $database->loadResult();
+		}
+	?>
+	<div class="comment-content">
+		<p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY'); ?>">
+			<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY') :  Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY'); ?>
+		</p>
+		<?php if ($this->thread->instructor_replied) { ?>
+			<p class="instructor-commented" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED'); ?>">
+				<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR'); ?>
+			</p>
+		<?php } ?>
+		<p class="comment-title">
+			<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+		</p>
+		<p class="comment-body">
+			<a href="<?php echo Route::url($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
+		</p>
+		<p class="comment-author">
+			<strong><?php echo $name; ?></strong>
+		</p>
+	</div>
+</li>

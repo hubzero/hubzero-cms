@@ -53,14 +53,6 @@ if (count($inst) > 0)
 ?>
 <div id="comments-container" data-action="<?php echo Route::url($base . '&active=discussions'); ?>">
 
-<?php if (count($this->notifications) > 0) { ?>
-	<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>">
-		<?php echo $this->escape($notification['message']); ?>
-	</p>
-	<?php } ?>
-<?php } ?>
-
 	<div class="comments-wrap">
 		<div class="comments-views">
 
@@ -100,75 +92,71 @@ if (count($inst) > 0)
 
 					<div class="category category-results" id="ctmyreplies">
 						<?php
-						$filters = array();
-						$filters['scope']      = $this->filters['scope'];
-						$filters['scope_id']   = $this->filters['scope_id'];
-						$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
-						$filters['state']      = 1;
-						$filters['sort_Dir']   = 'DESC';
-						$filters['limit']      = 100;
-						$filters['start']      = 0;
-						$filters['created_by'] = User::get('id');
-						//$filters['parent']     = 0;
-						$filters['replies']    = true;
+						$threads = \Components\Forum\Models\Post::all()
+							->whereEquals('scope', $this->filters['scope'])
+							->whereEquals('scope_id', $this->filters['scope_id'])
+							->whereEquals('scope_sub_id', $this->filters['scope_sub_id'])
+							->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED)
+							->whereEquals('created_by', User::get('id'))
+							->order('created', 'desc')
+							->limit(100)
+							->rows();
 						?>
 						<div class="category-header">
 							<span class="category-title"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLIES_TO_MY_COMMENTS'); ?></span>
-							<span class="category-discussions count"><?php echo $this->post->count($filters); ?></span>
+							<span class="category-discussions count"><?php echo $threads->count(); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
 							<?php
 							$this->view('_threads')
-							     ->set('category', 'categoryreplies')
-							     ->set('option', $this->option)
-							     ->set('threads', $this->post->find($filters))
-							     ->set('unit', '')
-							     ->set('lecture', 0)
-							     ->set('config', $this->config)
-							     ->set('instructors', $instructors)
-							     ->set('cls', 'odd')
-							     ->set('base', $base)
-							     ->set('course', $this->course)
-							     ->set('prfx', 'mine')
-							     ->set('active', $this->thread)
-							     ->display();
+								->set('category', 'categoryreplies')
+								->set('option', $this->option)
+								->set('threads', $threads)
+								->set('unit', '')
+								->set('lecture', 0)
+								->set('config', $this->config)
+								->set('instructors', $instructors)
+								->set('cls', 'odd')
+								->set('base', $base)
+								->set('course', $this->course)
+								->set('prfx', 'mine')
+								->set('active', $this->thread)
+								->display();
 							?>
 						</div><!-- / .category-content -->
 					</div><!-- / .category -->
 
 					<div class="category category-results closed" id="newcomments">
 						<?php
-						$filters = array();
-						$filters['scope']      = $this->filters['scope'];
-						$filters['scope_id']   = $this->filters['scope_id'];
-						$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
-						$filters['state']      = 1;
-						$filters['sort_Dir']   = 'DESC';
-						$filters['limit']      = 100;
-						$filters['start']      = 0;
-						//$filters['created_by'] = User::get('id');
-						//$filters['parent']     = 0;
+						$threads = \Components\Forum\Models\Post::all()
+							->whereEquals('scope', $this->filters['scope'])
+							->whereEquals('scope_id', $this->filters['scope_id'])
+							->whereEquals('scope_sub_id', $this->filters['scope_sub_id'])
+							->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED)
+							->order('created', 'desc')
+							->limit(100)
+							->rows();
 						?>
 						<div class="category-header">
 							<span class="category-title"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LATEST_COMMENTS'); ?></span>
-							<span class="category-discussions count"><?php echo $this->post->count($filters); ?></span>
+							<span class="category-discussions count"><?php echo $threads->count(); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
 							<?php
 							$this->view('_threads')
-							     ->set('category', 'categorynew')
-							     ->set('option', $this->option)
-							     ->set('threads', $this->post->find($filters))
-							     ->set('unit', '')
-							     ->set('lecture', 0)
-							     ->set('config', $this->config)
-							     ->set('instructors', $instructors)
-							     ->set('cls', 'odd')
-							     ->set('base', $base)
-							     ->set('course', $this->course)
-							     ->set('prfx', 'new')
-							     ->set('active', $this->thread)
-							     ->display();
+								->set('category', 'categorynew')
+								->set('option', $this->option)
+								->set('threads', $threads)
+								->set('unit', '')
+								->set('lecture', 0)
+								->set('config', $this->config)
+								->set('instructors', $instructors)
+								->set('cls', 'odd')
+								->set('base', $base)
+								->set('course', $this->course)
+								->set('prfx', 'new')
+								->set('active', $this->thread)
+								->display();
 							?>
 						</div><!-- / .category -->
 					</div><!-- / .category -->
@@ -187,7 +175,7 @@ if (count($inst) > 0)
 					$c = 0;
 					foreach ($this->sections as $section)
 					{
-						if ($section->categories)
+						if ($section->get('categories'))
 						{
 							$c++;
 						}
@@ -233,10 +221,10 @@ if (count($inst) > 0)
 
 							<div class="grid">
 								<div class="col span-half">
-							<label for="field-upload" id="comment-upload">
-								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
-								<input type="file" name="upload" id="field-upload" />
-							</label>
+									<label for="field-upload" id="comment-upload">
+										<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
+										<input type="file" name="upload" id="field-upload" />
+									</label>
 								</div>
 								<div class="col span-half omega">
 									<label for="field-category_id">
@@ -246,19 +234,19 @@ if (count($inst) > 0)
 										<?php
 										foreach ($this->sections as $section)
 										{
-											if ($section->categories)
+											if ($section->get('categories'))
 											{
 												?>
-												<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
+												<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
 												<?php
-												foreach ($section->categories as $category)
+												foreach ($section->get('categories') as $category)
 												{
-													if ($category->closed)
+													if ($category->get('closed'))
 													{
 														continue;
 													}
 													?>
-													<option value="<?php echo $category->id; ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
+													<option value="<?php echo $category->get('id'); ?>"><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
 													<?php
 												}
 												?>
@@ -285,8 +273,8 @@ if (count($inst) > 0)
 						<input type="hidden" name="fields[parent]" id="field-parent" value="0" />
 						<input type="hidden" name="fields[state]" id="field-state" value="1" />
 						<input type="hidden" name="fields[scope]" id="field-scope" value="course" />
-						<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_id'); ?>" />
-						<input type="hidden" name="fields[scope_sub_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
+						<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->filters['scope_id']; ?>" />
+						<input type="hidden" name="fields[scope_sub_id]" id="field-scope_id" value="<?php echo $this->filters['scope_sub_id']; ?>" />
 						<input type="hidden" name="fields[id]" id="field-id" value="" />
 						<input type="hidden" name="fields[object_id]" id="field-object_id" value="" />
 

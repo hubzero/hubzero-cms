@@ -1,22 +1,41 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
 defined('_HZEXEC_') or die();
 
 $base = $this->offering->link() . '&active=forum';
-
-/*<ul id="page_options">
-	<li>
-		<a class="categories btn" href="<?php echo Route::url($base); ?>">
-			<?php echo Lang::txt('All categories'); ?>
-		</a>
-	</li>
-</ul> */ ?>
+?>
 
 <section class="main section">
-	<!-- <div class="subject"> -->
-		<?php foreach ($this->notifications as $notification) { ?>
-			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } ?>
-
+	<div class="section-inner">
 		<form action="<?php echo Route::url($base); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
@@ -34,176 +53,156 @@ $base = $this->offering->link() . '&active=forum';
 				</fieldset>
 			</div><!-- / .container -->
 
-		<?php if ($this->category->closed) { ?>
-			<p class="warning">
-				<?php echo Lang::txt('This category is closed and no new discussions may be created.'); ?>
-			</p>
-		<?php } ?>
+			<?php if ($this->category->closed) { ?>
+				<p class="warning">
+					<?php echo Lang::txt('This category is closed and no new discussions may be created.'); ?>
+				</p>
+			<?php } ?>
 
 			<div class="container">
 				<table class="entries">
 					<caption>
-					<?php
-					if ($this->filters['search']) {
-						if ($this->category->id) {
-							echo Lang::txt('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->title)));
+						<?php
+						if ($this->filters['search']) {
+							if ($this->category->get('id')) {
+								echo Lang::txt('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
+							} else {
+								echo Lang::txt('Search for "%s"', $this->escape($this->filters['search']));
+							}
 						} else {
-							echo Lang::txt('Search for "%s"', $this->escape($this->filters['search']));
-						}
-					} else {
-						if ($this->category->id) {
-							echo Lang::txt('Discussions in "%s"', $this->escape(stripslashes($this->category->title)));
-						} else {
-							echo Lang::txt('Discussions');
-						}
-					}
-					?>
-					</caption>
-				<?php if (!$this->category->closed) { ?>
-					<tfoot>
-						<tr>
-							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
-								<a class="add btn" href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=new'); ?>">
-									<?php echo Lang::txt('Add Discussion'); ?>
-								</a>
-							</td>
-						</tr>
-					</tfoot>
-				<?php } ?>
-					<tbody>
-				<?php
-				if ($this->rows)
-				{
-					foreach ($this->rows as $row)
-					{
-						$name = Lang::txt('Anonymous');
-						if (!$row->anonymous)
-						{
-							$creator = User::getInstance($row->created_by);
-							if (is_object($creator))
-							{
-								$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
+							if ($this->category->get('id')) {
+								echo Lang::txt('Discussions in "%s"', $this->escape(stripslashes($this->category->get('title'))));
+							} else {
+								echo Lang::txt('Discussions');
 							}
 						}
 						?>
-						<tr<?php if ($row->sticky) { echo ' class="sticky"'; } ?>>
-							<th>
-								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
-							</th>
-							<td>
-								<a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=' . $row->id); ?>">
-									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-								</a>
-								<span class="entry-details">
-									<span class="entry-date">
-										<time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
-									</span>
-									<?php /*
-									<?php echo Lang::txt('by'); ?>
-									<span class="entry-author">
-										<?php echo $name; ?>
-									</span>
-									*/ ?>
-								</span>
-							</td>
-							<td>
-								<span><?php echo ($row->object_id ? $row->replies : $row->replies + 1); ?></span>
-								<span class="entry-details">
-									<?php echo Lang::txt('Comments'); ?>
-								</span>
-							</td>
-							<td>
-								<span><?php echo Lang::txt('Last Post:'); ?></span>
-								<span class="entry-details">
-								<?php
-									/*$lastpost = null;
-									if ($row->last_activity != '0000-00-00 00:00:00')
-									{*/
-										$lastpost = $this->forum->getLastPost($row->id);
-									//}
-									if (is_object($lastpost))
+					</caption>
+					<?php if (!$this->category->get('closed')) { ?>
+						<tfoot>
+							<tr>
+								<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+									<a class="add btn" href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=new'); ?>">
+										<?php echo Lang::txt('Add Discussion'); ?>
+									</a>
+								</td>
+							</tr>
+						</tfoot>
+					<?php } ?>
+					<tbody>
+						<?php
+						if ($this->threads->count() > 0)
+						{
+							foreach ($this->threads as $row)
+							{
+								$name = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+								if (!$row->get('anonymous'))
+								{
+									$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
+									if ($row->creator('public'))
 									{
-										$lname = Lang::txt('Anonymous');
-										$lastposter = User::getInstance($lastpost->created_by);
-										if (is_object($lastposter))
-										{
-											$lname = '<a href="' . Route::url('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
-										}
-									?>
-									<span class="entry-date">
-										<time datetime="<?php echo $lastpost->created; ?>"><?php echo Date::of($lastpost->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time>
-									</span>
-									<?php echo Lang::txt('by'); ?>
-									<span class="entry-author">
-										<?php echo $lname; ?>
-									</span>
-							<?php } else { ?>
-									<?php echo Lang::txt('none'); ?>
-							<?php } ?>
-								</span>
-							</td>
-						<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) { ?>
-							<td class="entry-options">
-								<?php if ($row->created_by == User::get('id') || $this->config->get('access-edit-thread')) { ?>
-									<a class="edit" href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->id . '&c=edit'); ?>">
-										<?php echo Lang::txt('PLG_COURSES_FORUM_EDIT'); ?>
-									</a>
-								<?php } ?>
-								<?php if ($this->config->get('access-delete-thread')) { ?>
-									<a class="delete" href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->id . '&c=delete'); ?>">
-										<?php echo Lang::txt('PLG_COURSES_FORUM_DELETE'); ?>
-									</a>
-								<?php } ?>
-							</td>
+										$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
+									}
+								}
+								$cls = array();
+								if ($row->isClosed())
+								{
+									$cls[] = 'closed';
+								}
+								if ($row->isSticky())
+								{
+									$cls[] = 'sticky';
+								}
+
+								$row->set('category', $this->filters['category']);
+								$row->set('section', $this->filters['section']);
+								?>
+								<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
+									<th>
+										<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
+									</th>
+									<td>
+										<a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=' . $row->get('id')); ?>">
+											<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+										</a>
+										<span class="entry-details">
+											<span class="entry-date">
+												<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+											</span>
+											<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
+										</span>
+									</td>
+									<td>
+										<span><?php
+										echo $row->thread()
+											->whereEquals('state', $row->get('state'))
+											->whereIn('access', $this->filters['access'])
+											->total();
+										?></span>
+										<span class="entry-details">
+											<?php echo Lang::txt('Comments'); ?>
+										</span>
+									</td>
+									<td>
+										<span><?php echo Lang::txt('Last Post:'); ?></span>
+										<span class="entry-details">
+											<?php
+											$lastpost = $row->lastActivity();
+											if ($lastpost->get('id'))
+											{
+												$lname = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+												if (!$lastpost->get('anonymous'))
+												{
+													$lname = ($lastpost->creator()->get('public') ? '<a href="' . Route::url($lastpost->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($lastpost->creator()->get('name'))) . ($lastpost->creator()->get('public') ? '</a>' : '');
+												}
+												?>
+												<span class="entry-date">
+													<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
+												</span>
+												<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
+											<?php } else { ?>
+												<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?>
+											<?php } ?>
+										</span>
+									</td>
+									<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) { ?>
+										<td class="entry-options">
+											<?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
+												<a class="edit" href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=edit'); ?>">
+													<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT'); ?>
+												</a>
+											<?php } ?>
+											<?php if ($this->config->get('access-delete-thread')) { ?>
+												<a class="delete" href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=delete'); ?>">
+													<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?>
+												</a>
+											<?php } ?>
+										</td>
+									<?php } ?>
+								</tr>
+						<?php
+							}
+						} else { ?>
+								<tr>
+									<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+										<?php echo Lang::txt('There are currently no discussions.'); ?>
+									</td>
+								</tr>
 						<?php } ?>
-						</tr>
-				<?php
-					}
-				} else { ?>
-						<tr>
-							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
-								<?php echo Lang::txt('There are currently no discussions.'); ?>
-							</td>
-						</tr>
-				<?php } ?>
 					</tbody>
 				</table>
 				<?php
-				if ($this->total > $this->filters['limit'])
+				if ($this->threads->count() > $this->filters['limit'])
 				{
-					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					$pageNav = $this->threads->pagination;
 					$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 					$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
 					$pageNav->setAdditionalUrlParam('active', 'forum');
 					$pageNav->setAdditionalUrlParam('unit', $this->filters['category']);
-					echo $pageNav->render();
+					echo $pageNav;
 				}
 				?>
 			</div><!-- / .container -->
 		</form>
-	<!-- </div>/.subject -->
-	<?php /*<aside class="aside">
-	<?php if ($this->config->get('access-create-thread')) { ?>
-		<div class="container">
-			<h3><?php echo Lang::txt('Start Your Own'); ?><span class="starter-point"></span></h3>
-		<?php if (!$this->category->closed) { ?>
-			<p>
-				<?php echo Lang::txt('Create your own discussion where you and other users can discuss related topics.'); ?>
-			</p>
-			<p>
-				<a class="icon-add btn" href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=new'); ?>"><?php echo Lang::txt('Add Discussion'); ?></a>
-			</p>
-		<?php } else { ?>
-			<p class="warning">
-				<?php echo Lang::txt('This category is closed and no new discussions may be created.'); ?>
-			</p>
-		<?php } ?>
-		</div>
-	<?php } ?>
-	</aside><!-- / .aside --> */ ?>
+	</div>
 </section><!-- /.main -->

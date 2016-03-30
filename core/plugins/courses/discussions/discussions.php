@@ -25,10 +25,15 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
+
+use Components\Forum\Models\Manager;
+use Components\Forum\Models\Section;
+use Components\Forum\Models\Category;
+use Components\Forum\Models\Post;
+use Components\Forum\Models\Attachment;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -106,76 +111,76 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Load the parent unit
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
-		$db = App::get('db');
 
 		// Attempt to load the category
-		$category = new \Components\Forum\Tables\Category($db);
-		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
+		$category = Category::all()
+			->whereEquals('object_id', $assetgroup->get('id'))
+			->whereEquals('scope', 'course')
+			->whereEquals('scope_id', $unit->get('offering_id'))
+			->whereEquals('state', Category::STATE_PUBLISHED)
+			->row();
 
 		// Is there a category already?
-		if (!$category->id)
+		if (!$category->get('id'))
 		{
 			// No category
 			// Is there a parent section?
-			$section = new \Components\Forum\Tables\Section($db);
-			$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
-			if (!$section->id)
+			$section = Section::all()
+				->whereEquals('object_id', $unit->get('id'))
+				->whereEquals('scope', 'course')
+				->whereEquals('scope_id', $unit->get('offering_id'))
+				->whereEquals('state', Section::STATE_PUBLISHED)
+				->row();
+
+			if (!$section->get('id'))
 			{
 				// No parent section
 				// Create it!
-				$section->title     = $unit->get('title');
-				$section->alias     = $unit->get('alias');
-				$section->state     = $unit->get('state');
-				$section->scope     = 'course';
-				$section->scope_id  = $unit->get('offering_id');
-				$section->object_id = $unit->get('id');
-				$section->ordering  = $unit->get('ordering');
-				if ($section->check())
-				{
-					$section->store();
-				}
+				$section->set('title', $unit->get('title'));
+				$section->set('alias', $unit->get('alias'));
+				$section->set('state', $unit->get('state'));
+				$section->set('scope', 'course');
+				$section->set('scope_id', $unit->get('offering_id'));
+				$section->set('object_id', $unit->get('id'));
+				$section->set('ordering', $unit->get('ordering'));
+				$section->save();
 			}
 			// Assign the section ID
-			$category->section_id = $section->id;
+			$category->set('section_id', $section->get('id'));
 		}
 
 		// Don't change "Deleted" items
-		if ($category->state == 2)
+		if ($category->get('state') == Category::STATE_DELETED)
 		{
-			return $category->id;
+			return $category->get('id');
 		}
 
 		// Assign asset group data to category to keep them in sync
-		$category->state = $assetgroup->get('state');
+		$category->set('state', $assetgroup->get('state'));
+		$category->set('title', $assetgroup->get('title'));
+
 		if ($assetgroup->get('title') == '--')
 		{
 			$ag = ($assetgroup->assets() ? $assetgroup->assets()->fetch('first') : null);
+
 			if ($ag)
 			{
-				$category->title = $ag->get('title');
+				$category->set('title', $ag->get('title'));
 			}
 		}
-		else
-		{
-			$category->title = $assetgroup->get('title');
-		}
-		$category->scope     = 'course';
-		$category->scope_id  = $unit->get('offering_id');
-		$category->object_id = $assetgroup->get('id');
-		$category->title     = ($category->title ? $category->title : $assetgroup->get('title'));
-		$category->alias     = $assetgroup->get('alias');
-		if (!$category->id)
-		{
-			$category->description = Lang::txt('Discussions for %s', $category->title);
-		}
-		$category->ordering  = $assetgroup->get('ordering');
-		if ($category->check())
-		{
-			$category->store();
-		}
 
+		$category->set('scope', 'course');
+		$category->set('scope_id', $unit->get('offering_id'));
+		$category->set('object_id', $assetgroup->get('id'));
+		$category->set('alias', $assetgroup->get('alias'));
+		if (!$category->get('id'))
+		{
+			$category->set('description', Lang::txt('Discussions for %s', $category->get('title')));
+		}
+		$category->set('ordering', $assetgroup->get('ordering'));
+		$category->save();
 
-		return $category->id;
+		return $category->get('id');
 	}
 
 	/**
@@ -193,26 +198,23 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
-		$db   = App::get('db');
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 
 		// Attempt to load an associated category
-		$category = new \Components\Forum\Tables\Category($db);
-		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
+		$category = Category::all()
+			->whereEquals('object_id', $assetgroup->get('id'))
+			->whereEquals('scope', 'course')
+			->whereEquals('scope_id', $unit->get('offering_id'))
+			->whereEquals('state', Category::STATE_PUBLISHED)
+			->row();
 
 		// Was a category found?
-		if ($category->id && $category->state != 2)
+		if ($category->get('id') && $category->get('state') != Category::STATE_DELETED)
 		{
 			// Mark as deleted
-			$category->state = 2;
-			if ($category->check())
-			{
-				$category->store();
-			}
-
-			// Mark all threads in category as deleted
-			$thread = new \Components\Forum\Tables\Post($db);
-			$thread->setStateByCategory($category->get('id'), 2);
+			// Note: State will carry through to threads under this category.
+			$category->set('state', Category::STATE_DELETED);
+			$category->save();
 		}
 
 		// Bit of recursion here for nested asset groups
@@ -238,21 +240,23 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db      = App::get('db');
-		$section = new \Components\Forum\Tables\Section($db);
-		$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
-		if ($section->id && $section->state != 2)
+		$section = Section::all()
+			->whereEquals('object_id', $unit->get('id'))
+			->whereEquals('scope', 'course')
+			->whereEquals('scope_id', $unit->get('offering_id'))
+			->whereEquals('state', Section::STATE_PUBLISHED)
+			->row();
+
+		if ($section->get('id') && $section->get('state') != Section::STATE_DELETED)
 		{
-			$section->state    = $unit->get('state');
-			$section->title    = $unit->get('title');
-			$section->alias    = $unit->get('alias');
-			$section->ordering = $unit->get('ordering');
-			if ($section->check())
-			{
-				$section->store();
-			}
+			$section->set('state', $unit->get('state'));
+			$section->set('title', $unit->get('title'));
+			$section->set('alias', $unit->get('alias'));
+			$section->set('ordering', $unit->get('ordering'));
+			$section->save();
 		}
-		return $section->id;
+
+		return $section->get('id');
 	}
 
 	/**
@@ -268,32 +272,20 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db      = App::get('db');
-		$section = new \Components\Forum\Tables\Section($db);
-		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
-		if ($section->id)
+		$section = Section::all()
+			->whereEquals('object_id', $unit->get('id'))
+			->whereEquals('scope', 'course')
+			->whereEquals('scope_id', $unit->get('offering_id'))
+			->whereEquals('state', Section::STATE_PUBLISHED)
+			->row();
+
+		if ($section->get('id'))
 		{
-			$section->state = 2;
-			if ($section->check())
-			{
-				$section->store();
-			}
-
-			$categories = $section->getRecords(array('section_id' => $section->id));
-			if ($categories)
-			{
-				$ids = array();
-				foreach ($categories as $category)
-				{
-					$ids[] = $category->id;
-					$cat   = new ForumTableCategory($db);
-					$cat->load($category->id);
-					$cat->setStateBySection($section->id, 2);
-				}
-
-				$thread = new \Components\Forum\Tables\Post($db);
-				$thread->setStateByCategory($ids, 2);
-			}
+			// Mark as deleted
+			// Note: State will carry through to categories and
+			//       threads under this section.
+			$section->set('state', Section::STATE_DELETED);
+			$section->save();
 		}
 	}
 
@@ -337,14 +329,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$this->_active = $this->_name;
 
-			$this->section = new \Components\Forum\Tables\Section($this->database);
-			$this->sections = $this->section->getRecords(array(
-				'state'    => 1,
-				'scope'    => 'course',
-				'scope_id' => $this->offering->get('id'),
-				'sort_Dir' => 'DESC',
-				'sort'     => 'ordering ASC, created ASC, title'
-			));
+			$this->sections = Section::all()
+				->whereEquals('scope', 'course')
+				->whereEquals('scope_id', $this->offering->get('id'))
+				->whereEquals('state', Section::STATE_PUBLISHED)
+				->order('ordering', 'asc') //'ordering ASC, created ASC, title'
+				->rows();
 
 			//option and paging vars
 			$this->option     = 'com_courses';
@@ -427,6 +417,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			$this->base = $this->offering->link() . '&active=' . $this->_name;
 
+			$this->forum = new Manager('course', $this->offering->get('id'));
+
 			Pathway::append(
 				Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
 				$this->base
@@ -461,15 +453,18 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$tModel = new \Components\Forum\Tables\Post($this->database);
+		$posts = Post::all()
+			->whereEquals('scope', 'course')
+			->whereEquals('scope_id', $offering->get('id'))
+			->whereIn('state', array(1, 3))
+			->whereEquals('parent', 0);
 
-		$response->set('meta_count', $tModel->getCount(array(
-			'scope'    => 'course',
-			'scope_id' => $offering->get('id'),
-			'state'    => array(1, 3),
-			'parent'   => 0,
-			'scope_sub_id' => ($this->params->get('discussions_threads', 'all') != 'all' ? $course->offering()->section()->get('id') : null)
-		)));
+		if ($this->params->get('discussions_threads', 'all') != 'all')
+		{
+			$posts->whereEquals('scope_sub_id', $course->offering()->section()->get('id'));
+		}
+
+		$response->set('meta_count', $posts->total());
 
 		// Return the output
 		return $response;
@@ -492,10 +487,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				'name'    => 'shared',
 				'layout'  => '_not_enrolled'
 			));
-
 			$view->set('course', $course)
-			     ->set('option', 'com_courses')
-			     ->set('message', 'You must be enrolled to utilize the discussion feature.');
+				->set('option', 'com_courses')
+				->set('message', Lang::txt('You must be enrolled to utilize the discussion feature.'));
 
 			return $view->loadTemplate();
 		}
@@ -509,139 +503,133 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->params->merge(new \Hubzero\Config\Registry($course->offering()->section()->get('params')));
 
 		$this->_active = 'outline';
-
 		$this->database = App::get('db');
+		$this->course = $course;
 		$this->offering = $course->offering();
-
+		$this->unit = $unit;
 		$this->base = $this->offering->link() . '&active=' . $this->_active;
 
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		$view = $this->view('lecture', 'threads');
-		$view->course  = $this->course = $course;
-		$view->unit    = $this->unit = $unit;
-		$view->lecture = $this->lecture = $lecture;
-		$view->option  = $this->option = 'com_courses';
-		$view->config  = $this->params;
-
 		// Incoming
-		$view->filters = array();
-		$view->filters['limit']    = Request::getInt('limit', 500);
-		$view->filters['start']    = Request::getInt('limitstart', 0);
-		$view->filters['section']  = Request::getVar('section', '');
-		$view->filters['category'] = Request::getVar('category', '');
-		$view->filters['state']    = 1;
-		$view->filters['scope']    = 'course';
-		$view->filters['scope_id'] = $course->offering()->get('id');
+		$filters = array(
+			'limit'     => Request::getInt('limit', 500),
+			'start'     => Request::getInt('limitstart', 0),
+			'section'   => Request::getVar('section', ''),
+			'category'  => Request::getVar('category', ''),
+			'state'     => array(1, 3),
+			'scope'     => 'course',
+			'scope_id'  => $course->offering()->get('id'),
+			'sticky'    => false,
+			'search'    => Request::getVar('search', ''),
+			'sort_Dir'  => 'DESC',
+			'sort'      => 'c.created',
+			'object_id' => $lecture->get('id')
+		);
 		if ($this->params->get('discussions_threads', 'all') != 'all')
 		{
-			$view->filters['scope_sub_id'] = $course->offering()->section()->get('id');
+			$filters['scope_sub_id'] = $course->offering()->section()->get('id');
 		}
-		$view->filters['sticky'] = false;
-		//$view->filters['start_id'] = Request::getInt('start_id', 0);
-		$view->filters['search']   = Request::getVar('search', '');
-
-		$view->no_html = Request::getInt('no_html', 0);
-
-		$view->filters['sort_Dir'] = 'DESC';
-		$view->filters['sort'] = 'c.created';
-		$view->filters['object_id'] = $lecture->get('id');
-
-		$view->post  = new \Components\Forum\Tables\Post($this->database);
-		$view->total = 0;
-		$view->rows  = null;
 
 		// Load the section
-		$section = new \Components\Forum\Tables\Section($this->database);
-		if (!$section->loadByAlias($unit->get('alias'), $view->filters['scope_id'], $view->filters['scope']))
+		// This should map to course Unit
+		$section = Section::all()
+			->whereEquals('alias', $unit->get('alias'))
+			->whereEquals('scope', $filters['scope'])
+			->whereEquals('scope_id', $filters['scope_id'])
+			->whereEquals('state', Section::STATE_PUBLISHED)
+			->row();
+
+		if (!$section->get('id'))
 		{
 			// Create a default section
-			$section->title     = $unit->get('title');
-			$section->alias     = $unit->get('alias');
-			$section->scope     = $view->filters['scope'];
-			$section->scope_id  = $view->filters['scope_id'];
-			$section->object_id = $unit->get('id');
-			$section->state     = 1;
-			if ($section->check())
-			{
-				$section->store();
-			}
+			$section->set('title', $unit->get('title'));
+			$section->set('alias', $unit->get('alias'));
+			$section->set('scope', $filters['scope']);
+			$section->set('scope_id', $filters['scope_id']);
+			$section->set('object_id', $unit->get('id'));
+			$section->set('state', Section::STATE_PUBLISHED);
+			$section->save();
 		}
 
-		$category = new \Components\Forum\Tables\Category($this->database);
-		$category->loadByObject($lecture->get('id'), $section->get('id'), $view->filters['scope_id'], $view->filters['scope']);
+		// Load category
+		// This should map to course asset group (lecture)
+		$category = Category::all()
+			->whereEquals('object_id', $lecture->get('id'))
+			->whereEquals('section_id', $section->get('id'))
+			->whereEquals('scope', $filters['scope'])
+			->whereEquals('scope_id', $filters['scope_id'])
+			->whereEquals('state', Category::STATE_PUBLISHED)
+			->row();
+
 		if (!$category->get('id'))
 		{
-			$category->section_id  = $section->get('id');
+			// Category doesn't exist yet, so create it
+			$category->set('section_id', $section->get('id'));
 			if ($lecture->get('title') == '--')
 			{
-				$category->title  = $lecture->assets()->fetch('first')->get('title');
+				$category->set('title', $lecture->assets()->fetch('first')->get('title'));
 			}
 			else
 			{
-				$category->title   = $lecture->get('title');
+				$category->set('title', $lecture->get('title'));
 			}
-			$category->alias       = $lecture->get('alias');
-			$category->description = Lang::txt('Discussions for %s', $unit->get('alias'));
-			$category->state       = 1;
-			$category->scope       = $view->filters['scope'];
-			$category->scope_id    = $view->filters['scope_id'];
-			$category->object_id   = $lecture->get('id');
-			$category->ordering    = $lecture->get('ordering');
-			if ($category->check())
-			{
-				$category->store();
-			}
+			$category->set('alias', $lecture->get('alias'));
+			$category->set('description', Lang::txt('Discussions for %s', $unit->get('alias')));
+			$category->set('state', Category::STATE_PUBLISHED);
+			$category->set('scope', $filters['scope']);
+			$category->set('scope_id', $filters['scope_id']);
+			$category->set('object_id', $lecture->get('id'));
+			$category->set('ordering', $lecture->get('ordering'));
+			$category->save();
 		}
 
-		$view->post->scope        = $view->filters['scope'];
-		$view->post->scope_id     = $view->filters['scope_id'];
-		$view->post->scope_sub_id = $course->offering()->section()->get('id');
-		$view->post->category_id  = $category->get('id');
-		$view->post->object_id    = $lecture->get('id');
-		$view->post->parent       = 0;
+		// Instantiate a blank Post
+		$post = Post::blank();
+		$post->set('scope', $filters['scope']);
+		$post->set('scope_id', $filters['scope_id']);
+		$post->set('scope_sub_id', $course->offering()->section()->get('id'));
+		$post->set('category_id', $category->get('id'));
+		$post->set('object_id', $lecture->get('id'));
+		$post->set('parent', 0);
 
 		// Get attachments
-		$view->attach = new \Components\Forum\Tables\Attachment($this->database);
-		$view->attachments = $view->attach->getAttachments($view->post->id);
+		//$view->attach = Attachment::blank();
+		//$view->attachments = $view->attach->getAttachments($view->post->id);
 
-		$view->filters['state'] = array(1, 3);
+		$thread = Request::getInt('thread', 0);
+		$thread = $thread ?: Request::getInt('thread', 0, 'get'); // No thread? Try being more specific
 
-		$view->thread = Request::getInt('thread', 0);
-		// No thread?
-		if (!$view->thread)
-		{
-			// Try being more specific
-			$view->thread = Request::getInt('thread', 0, 'get');
-		}
 		$action = strtolower(Request::getWord('action', ''));
 
-		if ($view->no_html == 1)
+		// Called via AJAX?
+		$no_html = Request::getInt('no_html', 0);
+		if ($no_html)
 		{
 			$data = new stdClass();
 			$data->success = true;
 
 			$data->threads = new stdClass;
 			$data->threads->lastchange = '0000-00-00 00:00:00';
-			$data->threads->lastid = 0;
-			$data->threads->total = 0;
-			$data->threads->posts = null;
-			$data->threads->html = null;
+			$data->threads->lastid     = 0;
+			$data->threads->total      = 0;
+			$data->threads->posts      = null;
+			$data->threads->html       = null;
 
 			$data->thread  = new stdClass;
 			$data->thread->lastchange = '0000-00-00 00:00:00';
-			$data->thread->lastid = 0;
-			$data->thread->posts = null;
-			$data->thread->total = 0;
-			$data->thread->html = null;
+			$data->thread->lastid     = 0;
+			$data->thread->posts      = null;
+			$data->thread->total      = 0;
+			$data->thread->html       = null;
 
-			if ($view->thread)
+			if ($thread)
 			{
-				$view->post->load($view->thread);
+				$post = Post::oneOrNew($thread);
 			}
 
-			if (!$action && $view->thread)
+			if (!$action && $thread)
 			{
 				$action = 'both';
 			}
@@ -649,10 +637,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			switch ($action)
 			{
 				case 'posts':
-					$view->filters['parent'] = $view->post->id;
-					$view->filters['start_at'] = Request::getVar('start_at', '');
+					$filters['parent']   = $post->get('id');
+					$filters['start_at'] = Request::getVar('start_at', '');
 
-					$data->thread = $this->_posts($view->post, $view->filters);
+					$data->thread = $this->_posts($post, $filters);
 				break;
 
 				case 'delete':
@@ -660,41 +648,41 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					{
 						$this->deletethread($pid, false);
 					}
-					$data->thread = $this->_thread($view->post, $view->filters);
+					$data->thread = $this->_thread($post, $filters);
 				break;
 
 				case 'thread':
-					$data->thread = $this->_thread($view->post, $view->filters);
+					$data->thread = $this->_thread($post, $filters);
 				break;
 
 				case 'search':
-					$view->filters['search'] = Request::getVar('search', '');
+					$filters['search'] = Request::getVar('search', '');
 
-					$data->threads = $this->_threadsSearch($view->post, $view->filters);
+					$data->threads = $this->_threadsSearch($post, $filters);
 				break;
 
 				case 'sticky':
-					$view->post->sticky = Request::getInt('sticky', 0);
-					$view->post->store();
+					$post->set('sticky', Request::getInt('sticky', 0));
+					$post->save();
 				break;
 
 				case 'both':
 				default:
-					$view->filters['start_at'] = Request::getVar('start_at', '');
+					$filters['start_at'] = Request::getVar('start_at', '');
 
-					$data->thread = $this->_thread($view->post, $view->filters);
+					$data->thread = $this->_thread($post, $filters);
 
-					$view->filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['start_at'] = Request::getVar('threads_start', '');
 
-					$data->threads = $this->_threads($view->post, $view->filters);
+					$data->threads = $this->_threads($post, $filters);
 				break;
 
 				case 'threads':
 				default:
-					$view->filters['parent'] = $view->post->id;
-					$view->filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['parent']   = $post->get('id');
+					$filters['start_at'] = Request::getVar('threads_start', '');
 
-					$data->threads = $this->_threads($view->post, $view->filters);
+					$data->threads = $this->_threads($post, $filters);
 				break;
 			}
 
@@ -713,9 +701,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		switch ($action)
 		{
 			case 'search':
-				$view->filters['search'] = Request::getVar('search', '');
-				$data = $this->_threadsSearch($view->post, $view->filters);
-				$view->threads = $data->posts;
+				$filters['search'] = Request::getVar('search', '');
+				$data = $this->_threadsSearch($post, $filters);
+				$threads = $data->posts;
 			break;
 
 			default:
@@ -727,26 +715,32 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-				$view->filters['parent'] = 0;
+				$filters['parent'] = 0;
 
-				$view->threads = $view->post->find($view->filters);
+				$threads = $forum->posts($filters)->rows();
 			break;
 		}
 
-		$view->data = null;
-		if ($view->thread)
+		$data = null;
+
+		if ($thread)
 		{
-			$view->post->load($view->thread);
-			$view->data = $this->_thread($view->post, $view->filters);
+			$post = Post::oneOrNew($thread);
+			$data = $this->_thread($post, $filters);
 		}
 
-		$view->notifications = $this->getPluginMessage();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$view = $this->view('lecture', 'threads')
+			->set('course', $course)
+			->set('unit', $unit)
+			->set('lecture', $lecture)
+			->set('option', 'com_courses')
+			->set('config', $this->params)
+			->set('filters', $filters)
+			->set('post', $post)
+			->set('data', $data)
+			->set('thread', $thread)
+			->set('threads', $threads)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -778,7 +772,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get an entire thread
 	 *
-	 * @param   object  $post     \Components\Forum\Tables\Post
+	 * @param   object  $post
 	 * @param   array   $filters  Filters to apply
 	 * @return  void
 	 */
@@ -786,65 +780,57 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	{
 		$thread = new stdClass;
 		$thread->lastchange = '0000-00-00 00:00:00';
-		$thread->lastid = $post->id;
-		$thread->posts = null;
-		$thread->total = 0;
-		$thread->html = null;
+		$thread->lastid     = $post->get('id');
+		$thread->posts      = null;
+		$thread->total      = 0;
+		$thread->html       = null;
 
-		$view = $this->view('list', 'threads');
-		$view->comments = null;
+		$comments = null;
 
-		if ($rows = $post->getTree($post->id)) //getTree
+		$rows = $post->thread()
+			->whereIn('state', $filters['state'])
+			->whereIn('access', $filters['access'])
+			->order('lft', 'asc')
+			->rows();
+
+		if ($rows->count())
 		{
-			$thread->total = count($rows);
-
-			$children = array(
-				0 => array()
-			);
-
-			$levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
+			$thread->total = $rows->count();
 
 			foreach ($rows as $v)
 			{
-				$pt      = $v->parent;
-				$list    = @$children[$pt] ? $children[$pt] : array();
-				array_push($list, $v);
-				$children[$pt] = $list;
-
-				$thread->lastchange = ($v->created > $thread->lastchange) ? $v->created : $thread->lastchange;
-				//$lastid     = ($v->id > $lastid)          ? $v->id      : $lastid;
-			}
-			$total = count($rows);
-
-			if (!isset($children[$post->get('parent')]))
-			{
-				$children[$post->get('parent')] = array();
+				if ($v->get('created') > $thread->lastchange)
+				{
+					$thread->lastchange = $v->get('created');
+				}
 			}
 
-			$view->comments = $this->treeRecurse($children[$post->get('parent')], $children);
+			$comments = $post->toTree($rows);
 		}
 
-		$view->parent = $post->parent;
-		$view->thread = $post->id;
-		$view->option = $this->option;
-		$view->config      = $this->params;
-		$view->depth      = 0;
-		$view->cls        = 'odd';
-		$view->base       = $this->base . '&thread=' . $post->id . ($filters['search'] ? '&action=search&search=' . $filters['search'] : '');
+		$view = $this->view('list', 'threads')
+			->set('parent', $post->get('parent'))
+			->set('thread', $post->get('id'))
+			->set('option', Request::getCmd('option'))
+			->set('config', $this->params)
+			->set('depth', 0)
+			->set('cls', 'odd')
+			->set('base', $this->base . '&thread=' . $post->get('id') . ($filters['search'] ? '&action=search&search=' . $filters['search'] : ''))
+			->set('comments', $comments)
+			->set('course', $this->course)
+			->set('search', $filters['search'])
+			->set('post', $post)
+			->set('thread', $post->get('thread'))
+			->set('unit', '')
+			->set('lecture', '');
 
-		$view->unit       = '';
-		$view->lecture    = '';
 		if ($this->_active == 'outline')
 		{
-			$view->unit       = $this->unit->get('alias');
-			$view->lecture    = $this->lecture->get('alias');
+			$view->set('unit', $this->unit->get('alias'));
+			$view->set('lecture', $this->lecture->get('alias'));
 		}
 
-		$view->attach     = new \Components\Forum\Tables\Attachment($this->database);
-		$view->course     = $this->course;
-		$view->search     = $filters['search'];
-		$view->post       = $post;
-		$view->thread     = (!$post->parent ? $post->id : $post->parent);
+		$view->attach     = Attachment::blank();
 
 		$thread->html = $view->loadTemplate();
 
@@ -854,7 +840,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a filtered list of threads
 	 *
-	 * @param   object  $post     \Components\Forum\Tables\Post
+	 * @param   object  $post     \Components\Forum\Models\Post
 	 * @param   array   $filters  Filters to apply
 	 * @return  void
 	 */
@@ -862,10 +848,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	{
 		$threads = new stdClass;
 		$threads->lastchange = '0000-00-00 00:00:00';
-		$threads->lastid = 0;
-		$threads->total = 0;
-		$threads->posts = null;
-		$threads->html = null;
+		$threads->lastid     = 0;
+		$threads->total      = 0;
+		$threads->posts      = null;
+		$threads->html       = null;
 
 		// If we have a search term
 		if (isset($filters['search']) && $filters['search'])
@@ -891,28 +877,28 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$filters['search'] = null;
 			$filters['parent'] = $post->get('id');
 
-			$cview = $this->view('_threads', 'threads');
-			$cview->category    = 'categorysearch';
-			$cview->option      = $this->option;
-			$cview->threads     = (isset($filters['id']) && count($filters['id']) > 0) ? $post->find($filters) : null;
-			$cview->config      = $this->params;
-			$cview->cls         = 'odd';
-			$cview->search      = $srch; // Pass the search term along so it can be highlighted in text
-			$cview->base        = $this->base;
-			$cview->unit        = '';
-			$cview->lecture     = '';
+			$cview = $this->view('_threads', 'threads')
+				->set('category', 'categorysearch')
+				->set('option', $this->option)
+				->set('threads', (isset($filters['id']) && count($filters['id']) > 0) ? $post->find($filters) : null)
+				->set('config', $this->params)
+				->set('cls', 'odd')
+				->set('search', $srch) // Pass the search term along so it can be highlighted in text
+				->set('base', $this->base)
+				->set('unit', '')
+				->set('lecture', '')
+				->set('course', $this->course)
+				->set('instructors', $this->_instructors());
+
 			if ($this->_active == 'outline')
 			{
-				$cview->unit    = $this->unit->get('alias');
-				$cview->lecture = $this->lecture->get('alias');
+				$cview->set('unit', $this->unit->get('alias'));
+				$cview->set('lecture', $this->lecture->get('alias'));
 			}
 
-			$cview->course      = $this->course;
-			$cview->instructors = $this->_instructors();
-
-			$threads->posts = $cview->threads;
-			$threads->total = count($cview->threads);
-			$threads->html = $cview->loadTemplate();
+			$threads->posts = $cview->get('threads');
+			$threads->total = $threads->posts->count();
+			$threads->html  = $cview->loadTemplate();
 		}
 
 		return $threads;
@@ -921,7 +907,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a filtered list of threads
 	 *
-	 * @param   object  $post     \Components\Forum\Tables\Post
+	 * @param   object  $post     \Components\Forum\Models\Post
 	 * @param   array   $filters  Filters to apply
 	 * @return  void
 	 */
@@ -929,43 +915,45 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	{
 		$threads = new stdClass;
 		$threads->lastchange = '0000-00-00 00:00:00';
-		$threads->lastid = 0;
-		$threads->posts  = null;
-		$threads->html   = null;
-		$threads->total  = 0;
+		$threads->lastid     = 0;
+		$threads->posts      = null;
+		$threads->html       = null;
+		$threads->total      = 0;
 
-		$filters['parent'] = 0;
-		$filters['sort'] = 'created';
-		$filters['sort_Dir'] = 'ASC'; // Needs to be reverse order that items are prepended with AJAX
+		$results = Post::all()
+			->whereEquals('parent', 0)
+			->order('created', 'asc') // Needs to be reverse order that items are prepended with AJAX
+			->rows();
 
-		if ($results = $post->find($filters))
+		if ($results->count())
 		{
 			foreach ($results as $key => $row)
 			{
-				$threads->lastid = $row->id > $threads->lastid
-								 ? $row->id
+				$threads->lastid = $row->get('id') > $threads->lastid
+								 ? $row->get('id')
 								 : $threads->lastid;
-				$threads->lastchange = ($row->created > $threads->lastchange)
-									 ? $row->created
+				$threads->lastchange = ($row->get('created') > $threads->lastchange)
+									 ? $row->get('created')
 									 : $threads->lastchange;
 
-				$cview = $this->view('_thread', 'threads');
-				$cview->option      = $this->option;
-				$cview->thread      = $row;
-				$cview->unit        = '';
-				$cview->lecture     = '';
+				$cview = $this->view('_thread', 'threads')
+					->set('option', $this->option)
+					->set('thread', $row)
+					->set('unit', '')
+					->set('lecture', '')
+					->set('cls', 'odd')
+					->set('base', $this->base)
+					->set('search', '')
+					->set('course', $this->course)
+					->set('instructors', $this->_instructors());
+
 				if ($this->_active == 'outline')
 				{
-					$cview->unit    = $this->unit->get('alias');
-					$cview->lecture = $this->lecture->get('alias');
+					$cview->set('unit', $this->unit->get('alias'));
+					$cview->set('lecture', $this->lecture->get('alias'));
 				}
-				$cview->cls         = 'odd';
-				$cview->base        = $this->base;
-				$cview->search      = '';
-				$cview->course      = $this->course;
-				$cview->instructors = $this->_instructors();
 
-				$results[$key]->mine = ($row->created_by == User::get('id')) ? true : false;
+				$results[$key]->mine = ($row->get('created_by') == User::get('id')) ? true : false;
 				$results[$key]->html = $cview->loadTemplate();
 			}
 			$threads->total = count($results);
@@ -978,7 +966,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a filtered list of posts for a thread
 	 *
-	 * @param   object  $post     \Components\Forum\Tables\Post
+	 * @param   object  $post     \Components\Forum\Models\Post
 	 * @param   array   $filters  Filters to apply
 	 * @return  void
 	 */
@@ -986,41 +974,44 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	{
 		$thread = new stdClass;
 		$thread->lastchange = '0000-00-00 00:00:00';
-		$thread->lastid = 0;
-		$thread->posts  = null;
-		$thread->html   = null;
-		$thread->total  = 0;
+		$thread->lastid     = 0;
+		$thread->posts      = null;
+		$thread->html       = null;
+		$thread->total      = 0;
 
-		if ($results = $post->getTree($post->id, $filters))
+		$results = $post->getTree($post->id, $filters);
+
+		if ($results->count())
 		{
+			$results = $post->toTree($results);
+
 			foreach ($results as $key => $row)
 			{
-				$thread->lastchange = ($row->created > $thread->lastchange)
-									? $row->created
+				$thread->lastchange = ($row->get('created') > $thread->lastchange)
+									? $row->get('created')
 									: $thread->lastchange;
 
 				$results[$key]->replies = null;
 
-				$cview = $this->view('comment', 'threads');
-				$cview->option     = $this->option;
-				$cview->comment    = $row;
-				$cview->post       = $post;
+				$cview = $this->view('comment', 'threads')
+					->set('option', $this->option)
+					->set('comment', $row)
+					->set('post', $post)
+					->set('config', $this->params)
+					->set('depth', Request::getInt('depth', 1, 'post'))
+					->set('cls', 'odd')
+					->set('base', $this->base)
+					->set('attach', Attachment::blank())
+					->set('course', $this->course)
+					->set('search', '')
+					->set('unit', '')
+					->set('lecture', '');
 
-				$cview->unit       = '';
-				$cview->lecture    = '';
 				if ($this->_active == 'outline')
 				{
-					$cview->unit       = $this->unit->get('alias');
-					$cview->lecture    = $this->lecture->get('alias');
+					$cview->set('unit', $this->unit->get('alias'));
+					$cview->set('lecture', $this->lecture->get('alias'));
 				}
-
-				$cview->config     = $this->params;
-				$cview->depth      = Request::getInt('depth', 1, 'post');
-				$cview->cls        = 'odd';
-				$cview->base       = $this->base;
-				$cview->attach     = new \Components\Forum\Tables\Attachment($this->database);
-				$cview->course     = $this->course;
-				$cview->search     = '';
 
 				$results[$key]->html = $cview->loadTemplate();
 			}
@@ -1135,73 +1126,64 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function panel()
 	{
-		// Instantiate a vew
-		$view = $this->view('display', 'panel');
-
 		// Incoming
-		$view->filters = array();
-		$view->filters['authorized'] = 1;
-		$view->filters['scope']      = 'course';
-		$view->filters['scope_id']   = $this->offering->get('id');
+		$filters = array(
+			'authorized' => 1,
+			'scope'      => 'course',
+			'scope_id'   => $this->offering->get('id'),
+			'search'     => Request::getVar('search', ''),
+			'section_id' => 0,
+			'state'      => 1,
+			'limit'      => Request::getInt('limit', 500),
+			'start'      => Request::getInt('limitstart', 0)
+		);
 		if ($this->params->get('discussions_threads', 'all') != 'all')
 		{
-			$view->filters['scope_sub_id'] = $this->offering->section()->get('id');
+			$filters['scope_sub_id'] = $this->offering->section()->get('id');
 		}
-		$view->filters['search']     = Request::getVar('search', '');
-		$view->filters['section_id'] = 0;
-		$view->filters['state']      = 1;
-		$view->filters['limit']      = Request::getInt('limit', 500);
-		$view->filters['start']      = Request::getInt('limitstart', 0);
 
-		$view->no_html = Request::getInt('no_html', 0);
-		$view->thread  = Request::getInt('thread', 0);
-		// No thread?
-		if (!$view->thread)
-		{
-			// Try being more specific
-			$view->thread = Request::getInt('thread', 0, 'get');
-		}
-		$action = strtolower(Request::getWord('action', ''));
+		$no_html = Request::getInt('no_html', 0);
+		$thread  = Request::getInt('thread', 0);
+		$thread  = $thread ?: Request::getInt('thread', 0, 'get');
+		$action  = strtolower(Request::getWord('action', ''));
 
 		//get authorization
 		$this->_authorize('section');
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		$view->filters['state'] = array(1, 3);
-
-		if ($view->no_html == 1)
+		if ($no_html)
 		{
-			$view->filters['sticky'] = false;
-			$view->filters['sort_Dir'] = 'DESC';
-			$view->filters['sort'] = 'c.created';
-			//$view->filters['object_id'] = 0;
+			$filters['sticky'] = false;
+			$filters['sort_Dir'] = 'DESC';
+			$filters['sort'] = 'c.created';
+			//$filters['object_id'] = 0;
 
-			$view->post = new \Components\Forum\Tables\Post($this->database);
+			$post = Post::blank();
 
 			$data = new stdClass();
 			$data->success = true;
 
 			$data->threads = new stdClass;
 			$data->threads->lastchange = '0000-00-00 00:00:00';
-			$data->threads->lastid = 0;
-			$data->threads->total = 0;
-			$data->threads->posts = null;
-			$data->threads->html = null;
+			$data->threads->lastid     = 0;
+			$data->threads->total      = 0;
+			$data->threads->posts      = null;
+			$data->threads->html       = null;
 
 			$data->thread  = new stdClass;
 			$data->thread->lastchange = '0000-00-00 00:00:00';
-			$data->thread->lastid = 0;
-			$data->thread->posts = null;
-			$data->thread->total = 0;
-			$data->thread->html = null;
+			$data->thread->lastid     = 0;
+			$data->thread->posts      = null;
+			$data->thread->total      = 0;
+			$data->thread->html       = null;
 
-			if ($view->thread)
+			if ($thread)
 			{
-				$view->post->load($view->thread);
+				$post = Post::oneOrNew($thread);
 			}
 
-			if (!$action && $view->thread)
+			if (!$action && $thread)
 			{
 				$action = 'both';
 			}
@@ -1209,10 +1191,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			switch ($action)
 			{
 				case 'posts':
-					$view->filters['parent'] = $view->post->id;
-					$view->filters['start_at'] = Request::getVar('start_at', '');
+					$filters['parent']   = $post->get('id');
+					$filters['start_at'] = Request::getVar('start_at', '');
 
-					$data->thread = $this->_posts($view->post, $view->filters);
+					$data->thread = $this->_posts($post, $filters);
 				break;
 
 				case 'delete':
@@ -1220,41 +1202,41 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					{
 						$this->deletethread($pid, false);
 					}
-					$data->thread = $this->_thread($view->post, $view->filters);
+					$data->thread = $this->_thread($post, $filters);
 				break;
 
 				case 'thread':
-					$data->thread = $this->_thread($view->post, $view->filters);
+					$data->thread = $this->_thread($post, $filters);
 				break;
 
 				case 'search':
-					$view->filters['search'] = Request::getVar('search', '');
+					$filters['search'] = Request::getVar('search', '');
 
-					$data->threads = $this->_threadsSearch($view->post, $view->filters);
+					$data->threads = $this->_threadsSearch($post, $filters);
 				break;
 
 				case 'sticky':
-					$view->post->sticky = Request::getInt('sticky', 0);
-					$view->post->store();
+					$post->set('sticky', Request::getInt('sticky', 0));
+					$post->save();
 				break;
 
 				case 'both':
 				default:
-					$view->filters['start_at'] = Request::getVar('start_at', '');
+					$filters['start_at'] = Request::getVar('start_at', '');
 
-					$data->thread = $this->_thread($view->post, $view->filters);
+					$data->thread = $this->_thread($post, $filters);
 
-					$view->filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['start_at'] = Request::getVar('threads_start', '');
 
-					$data->threads = $this->_threads($view->post, $view->filters);
+					$data->threads = $this->_threads($post, $filters);
 				break;
 
 				case 'threads':
 				default:
-					$view->filters['parent'] = $view->post->id;
-					$view->filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['parent']   = $post->get('id');
+					$filters['start_at'] = Request::getVar('threads_start', '');
 
-					$data->threads = $this->_threads($view->post, $view->filters);
+					$data->threads = $this->_threads($post, $filters);
 				break;
 			}
 
@@ -1270,100 +1252,125 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
-		$view->filters['state'] = 1;
+		$filters['state'] = 1;
 
 		// Get Sections
 		if (!isset($this->sections))
 		{
-			$view->sections = $this->section->getRecords(array(
-				'state'    => $view->filters['state'],
-				'scope'    => $view->filters['scope'],
-				'scope_id' => $view->filters['scope_id'],
-				'sort_Dir' => 'DESC',
-				'sort'     => 'ordering ASC, created ASC, title'
-			));
+			$sects = Section::all()
+				->whereEquals('state', $filters['state'])
+				->whereEquals('scope', $filters['scope'])
+				->whereEquals('scope_id', $filters['scope_id'])
+				->order('ordering', 'asc')
+				->rows();
 		}
 		else
 		{
-			$view->sections = $this->sections;
+			$sects = $this->sections;
 		}
 
-		$model = new \Components\Forum\Tables\Category($this->database);
-
-		$view->stats = new stdClass;
-		$view->stats->categories = 0;
-		$view->stats->threads = 0;
-		$view->stats->posts = 0;
+		$stats = new stdClass;
+		$stats->categories = 0;
+		$stats->threads    = 0;
+		$stats->posts      = 0;
 
 		// Collect all categories
-		$view->filters['section_id'] = -1;
 		$categories = array();
-		$view->filters['sort_Dir'] = 'DESC';
-		$view->filters['sort']     = 'ordering ASC, created ASC, title';
-		$results = $model->getRecords($view->filters);
-		if ($results)
+		$results = Category::all()
+			->whereEquals('scope', $filters['scope'])
+			->whereEquals('scope_id', $filters['scope_id'])
+			->whereEquals('state', Category::STATE_PUBLISHED)
+			->order('ordering', 'asc')
+			->rows();
+
+		if ($results->count())
 		{
 			foreach ($results as $category)
 			{
-				if (!isset($categories[$category->section_id]))
+				if (!isset($categories[$category->get('section_id')]))
 				{
-					$categories[$category->section_id] = array();
+					$categories[$category->get('section_id')] = array();
 				}
-				$categories[$category->section_id][] = $category;
+				$categories[$category->get('section_id')][] = $category;
 			}
 		}
 
 		// Loop through all sections and distribute categories
-		foreach ($view->sections as $key => $section)
+		$sections = array();
+		foreach ($sects as $key => $section)
 		{
-			$view->filters['section_id'] = $section->id;
+			$section->set('threads', 0);
+			$section->set('categories', isset($categories[$section->get('id')]) ? $categories[$section->get('id')] : array());
 
-			$view->sections[$key]->threads = 0;
-			$view->sections[$key]->categories = isset($categories[$section->id]) ? $categories[$section->id] : array();
-
-			if ((!$view->sections[$key]->categories || !count($view->sections[$key]->categories))
-			 && $view->sections[$key]->object_id)
+			if ((!$section->get('categories') || !count($section->get('categories')))
+			 && $section->get('object_id'))
 			{
-				$view->sections[$key]->categories = array();
+				$section->set('categories', array());
 			}
 
-			$view->stats->categories += count($view->sections[$key]->categories);
-			if ($view->sections[$key]->categories)
+			$stats->categories += count($section->get('categories'));
+
+			foreach ($section->get('categories') as $c)
 			{
-				foreach ($view->sections[$key]->categories as $c)
+				$entries = $c->posts()
+					->whereEquals('parent', 0)
+					->whereEquals('state', $filters['state'])
+					->whereEquals('scope', $filters['scope'])
+					->whereEquals('scope_id', $filters['scope_id']);
+				if ($filters['scope_sub_id'])
 				{
-					$view->sections[$key]->threads += $c->threads;
-					$view->stats->threads += $c->threads;
-					$view->stats->posts += $c->posts;
+					$entries->whereEquals('scope_sub_id', $filters['scope_sub_id']);
 				}
+				$threads = $entries->total();
+
+				$entries = $c->posts()
+					->whereEquals('state', $filters['state'])
+					->whereEquals('scope', $filters['scope'])
+					->whereEquals('scope_id', $filters['scope_id']);
+				if ($filters['scope_sub_id'])
+				{
+					$entries->whereEquals('scope_sub_id', $filters['scope_sub_id']);
+				}
+				$posts = $entries->total();
+
+				$c->set('threads', $threads);
+				$c->set('posts', $posts);
+
+				$section->set('threads', $section->get('threads') + $threads);
+
+				$stats->threads += $threads;
+				$stats->posts   += $posts;
 			}
+
+			$sections[] = $section;
 		}
 
-		$view->filters['state'] = array(1, 3);
+		$filters['state'] = array(1, 3);
 
-		$view->post = new \Components\Forum\Tables\Post($this->database);
-		$view->post->scope    = $view->filters['scope'];
-		$view->post->scope_id = $view->filters['scope_id'];
-		$view->post->scope_sub_id = $this->offering->section()->get('id');
+		$post = Post::blank()
+			->set('scope', $filters['scope'])
+			->set('scope_id', $filters['scope_id'])
+			->set('scope_sub_id', $this->offering->section()->get('id'));
 
-		$view->config = $this->params;
-		$view->course = $this->course;
-		$view->offering = $this->offering;
-		$view->option = $this->option;
-		$view->notifications = $this->getPluginMessage();
-
-		$view->data = null;
-		if ($view->thread)
+		$data = null;
+		if ($thread)
 		{
-			$view->post->load($view->thread);
-			$view->data = $this->_thread($view->post, $view->filters);
+			$post = Post::oneOrNew($thread);
+			$data = $this->_thread($post, $filters);
 		}
 
-		// Set any errors
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view = $this->view('display', 'panel')
+			->set('option', $this->option)
+			->set('name', 'courses')
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('config', $this->params)
+			->set('sections', $sections)
+			->set('filters', $filters)
+			->set('thread', $thread)
+			->set('stats', $stats)
+			->set('data', $data)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -1377,84 +1384,89 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseDashboard($course, $offering)
 	{
-		//$this->config = $config;
-		$this->course   = $course;
-		$this->offering = $offering;
-		$this->database = App::get('db');
-
-		$this->option = 'com_courses';
-		$this->name = 'courses';
-		$this->limitstart = Request::getInt('limitstart', 0);
-		$this->limit = Request::getInt('limit', 500);
-
-		// Instantiate a vew
-		$view = $this->view('dashboard', 'threads');
-
 		// Incoming
-		$view->filters = array();
-		$view->filters['authorized']   = 1;
-		$view->filters['scope']        = 'course';
-		$view->filters['scope_id']     = $this->offering->get('id');
-		$view->filters['scope_sub_id'] = $this->offering->section()->get('id');
-		$view->filters['search']       = Request::getVar('search', '');
-		$view->filters['section_id']   = 0;
-		$view->filters['state']        = 1;
-		$view->filters['limit']        = Request::getInt('limit', 500);
-		$view->filters['start']        = Request::getInt('limitstart', 0);
+		$filters = array(
+			'authorized'   => 1,
+			'scope'        => 'course',
+			'scope_id'     => $offering->get('id'),
+			'scope_sub_id' => $offering->section()->get('id'),
+			'search'       => Request::getVar('search', ''),
+			'section_id'   => 0,
+			'state'        => Section::STATE_PUBLISHED,
+			'limit'        => Request::getInt('limit', 500),
+			'start'        => Request::getInt('limitstart', 0)
+		);
 
-		$view->course = $this->course;
-		$view->offering = $this->offering;
-		$view->option = $this->option;
-		$view->config = $this->course->config();
-		$view->no_html = Request::getInt('no_html', 0);
-		$view->thread = Request::getInt('thread', 0);
-		$view->notifications = $this->getPluginMessage();
+		$post = Post::blank();
+		$post->set('scope', $filters['scope']);
+		$post->set('scope_id', $filters['scope_id']);
+		$post->set('scope_sub_id', $filters['scope_sub_id']);
 
-		$view->post = new \Components\Forum\Tables\Post($this->database);
-		$view->post->scope    = $view->filters['scope'];
-		$view->post->scope_id = $view->filters['scope_id'];
-		$view->post->scope_sub_id = $view->filters['scope_sub_id'];
+		$sects = Section::all()
+			->whereEquals('scope', $filters['scope'])
+			->whereEquals('scope_id', $filters['scope_id'])
+			->whereEquals('state', Section::STATE_PUBLISHED)
+			->ordered()
+			->rows();
 
-		$this->section = new \Components\Forum\Tables\Section($this->database);
-		$view->sections = $this->section->getRecords(array(
-			'state'    => $view->filters['state'],
-			'scope'    => $view->filters['scope'],
-			'scope_id' => $view->filters['scope_id']
-		));
+		$stats = new stdClass;
+		$stats->categories = 0;
+		$stats->threads    = 0;
+		$stats->posts      = 0;
 
-		$model = new \Components\Forum\Tables\Category($this->database);
-
-		$view->stats = new stdClass;
-		$view->stats->categories = 0;
-		$view->stats->threads = 0;
-		$view->stats->posts = 0;
-
-		foreach ($view->sections as $key => $section)
+		$sections = array();
+		foreach ($sects as $section)
 		{
-			$view->filters['section_id'] = $section->id;
+			$categories = $section->categories()
+				->whereEquals('state', $filters['state'])
+				->limit($filters['limit'])
+				->rows();
 
-			$view->sections[$key]->threads = 0;
-			$view->sections[$key]->categories = $model->getRecords($view->filters);
+			$section->set('threads', 0);
+			$section->set('categories', $categories);
 
-			$view->stats->categories += count($view->sections[$key]->categories);
-			if ($view->sections[$key]->categories)
+			$stats->categories += $categories->count();
+
+			if ($categories->count())
 			{
-				foreach ($view->sections[$key]->categories as $c)
+				foreach ($categories as $category)
 				{
-					$view->sections[$key]->threads += $c->threads;
-					$view->stats->threads += $c->threads;
-					$view->stats->posts += $c->posts;
+					$threads = $category->threads()
+						->whereEquals('scope_sub_id', $filters['scope_sub_id'])
+						->whereEquals('state', $filters['state'])
+						->total();
+
+					$posts = $category->posts()
+						->whereEquals('scope_sub_id', $filters['scope_sub_id'])
+						->whereEquals('state', $filters['state'])
+						->total();
+
+					$section->set('threads', $section->get('threads') + $threads);
+
+					$category->set('threads', $threads);
+					$category->set('posts', $posts);
+
+					$stats->threads += $threads;
+					$stats->posts   += $posts;
 				}
 			}
+
+			$sections[] = $section;
 		}
 
-		$view->data = null;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view = $this->view('dashboard', 'threads')
+			->set('option', 'com_courses')
+			->set('name', 'courses')
+			->set('course', $course)
+			->set('offering', $offering)
+			->set('config', $course->config())
+			->set('sections', $sections)
+			->set('no_html', Request::getInt('no_html', 0))
+			->set('thread', Request::getInt('thread', 0))
+			->set('filters', $filters)
+			->set('stats', $stats)
+			->set('data', null)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -1462,7 +1474,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show sections in this forum
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function sections()
 	{
@@ -1471,70 +1483,35 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		// Instantiate a vew
-		$view = $this->view('display', 'sections');
-
-		// Incoming
-		$view->filters = array();
-		$view->filters['authorized'] = 1;
-		$view->filters['scope']      = 'course';
-		$view->filters['scope_id']   = $this->offering->get('id');
-		$view->filters['search']     = Request::getVar('q', '');
-		$view->filters['section_id'] = 0;
-		$view->filters['state']      = 1;
-
-		$view->edit = Request::getVar('section', '');
-
-		// Get Sections
-		$view->sections = $this->section->getRecords(array(
-			'state'    => $view->filters['state'],
-			'scope'    => $view->filters['scope'],
-			'scope_id' => $view->filters['scope_id'],
-			'sort'     => 'ordering',
-			'sort_Dir' => 'ASC'
-		));
-
-		$model = new \Components\Forum\Tables\Category($this->database);
-
-		$view->stats = new stdClass;
-		$view->stats->categories = 0;
-		$view->stats->threads = 0;
-		$view->stats->posts = 0;
-
-		foreach ($view->sections as $key => $section)
-		{
-			$view->filters['section_id'] = $section->id;
-
-			$view->sections[$key]->categories = $model->getRecords($view->filters);
-
-			$view->stats->categories += count($view->sections[$key]->categories);
-			if ($view->sections[$key]->categories)
-			{
-				foreach ($view->sections[$key]->categories as $c)
-				{
-					$view->stats->threads += $c->threads;
-					$view->stats->posts += $c->posts;
-				}
-			}
-		}
-
-		$post = new \Components\Forum\Tables\Post($this->database);
-		$view->lastpost = $post->getLastActivity($this->offering->get('id'), 'course');
-
-		//get authorization
+		// Get authorization
 		$this->_authorize('section');
 		$this->_authorize('category');
-		$view->config = $this->params;
-		$view->course = $this->course;
-		$view->offering = $this->offering;
-		$view->option = $this->option;
-		$view->notifications = $this->getPluginMessage();
 
-		// Set any errors
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		// Filters
+		$filters = array(
+			'scope'    => $this->forum->get('scope'),
+			'scope_id' => $this->forum->get('scope_id'),
+			'state'    => Section::STATE_PUBLISHED,
+			'search'   => Request::getVar('q', ''),
+			'access'   => User::getAuthorisedViewLevels()
+		);
+
+		$edit = Request::getVar('section', '');
+
+		// Get Sections
+		$sections = $this->forum->sections($filters);
+
+		// Output view
+		$view = $this->view('display', 'sections')
+			->set('filters', $filters)
+			->set('config', $this->params)
+			->set('option', $this->option)
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('forum', $this->forum)
+			->set('sections', $sections)
+			->set('edit', $edit)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -1542,7 +1519,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Saves a section and redirects to main page afterward
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savesection()
 	{
@@ -1556,21 +1533,43 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a new table row and bind the incoming data
-		$model = new \Components\Forum\Tables\Section($this->database);
-		if (!$model->bind($fields))
+		$section = Section::oneOrNew($fields['id'])->set($fields);
+
+		// Check for alias duplicates
+		if (!$section->isUnique())
 		{
 			App::redirect(
-				Route::url($this->base . '&unit=manage')
+				Route::url($this->base . '&unit=manage'),
+				Lang::txt('COM_FORUM_ERROR_SECTION_ALREADY_EXISTS'),
+				'error'
 			);
-			return;
 		}
 
-		// Check content
-		if ($model->check())
+		// Store new content
+		if (!$section->save())
 		{
-			// Store new content
-			$model->store();
+			Notify::error($section->getError());
 		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'forum.section',
+				'scope_id'    => $section->get('id'),
+				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $section->get('title'),
+					'url'   => Route::url($this->base)
+				)
+			],
+			'recipients' => array(
+				['course', $this->offering->get('id')],
+				['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
+				['forum.section', $section->get('id')],
+				['user', $section->get('created_by')]
+			)
+		]);
 
 		// Set the redirect
 		App::redirect(
@@ -1581,7 +1580,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Deletes a section and redirects to main page afterwards
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletesection()
 	{
@@ -1590,15 +1589,15 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		// Incoming
-		$alias = Request::getVar('section', '');
-
 		// Load the section
-		$model = new \Components\Forum\Tables\Section($this->database);
-		$model->loadByAlias($alias, $this->offering->get('id'), 'course');
+		$section = Section::all()
+			->whereEquals('alias', Request::getVar('section'))
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
 
 		// Make the sure the section exist
-		if (!$model->id)
+		if (!$section->get('id'))
 		{
 			App::redirect(
 				Route::url($this->base . '&unit=manage'),
@@ -1610,6 +1609,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('section', $model->id);
+
 		if (!$this->params->get('access-delete-section'))
 		{
 			App::redirect(
@@ -1620,60 +1620,48 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Get all the categories in this section
-		$cModel = new \Components\Forum\Tables\Category($this->database);
-		$categories = $cModel->getRecords(array(
-			'section_id' => $model->id,
-			'scope'      => 'course',
-			'scope_id'   => $this->offering->get('id')
-		));
-		if ($categories)
-		{
-			// Build an array of category IDs
-			$cats = array();
-			foreach ($categories as $category)
-			{
-				$cats[] = $category->id;
-			}
-
-			// Set all the threads/posts in all the categories to "deleted"
-			$tModel = new \Components\Forum\Tables\Post($this->database);
-			if (!$tModel->setStateByCategory($cats, 2))  // 0 = unpublished, 1 = published, 2 = deleted
-			{
-				$this->setError($tModel->getError());
-			}
-
-			// Set all the categories to "deleted"
-			if (!$cModel->setStateBySection($model->id, 2))  // 0 = unpublished, 1 = published, 2 = deleted
-			{
-				$this->setError($cModel->getError());
-			}
-		}
-
 		// Set the section to "deleted"
-		$model->state = 2;  // 0 = unpublished, 1 = published, 2 = deleted
-		if (!$model->store())
+		$section->set('state', $section::STATE_DELETED);
+
+		if (!$section->save())
 		{
-			App::redirect(
-				Route::url($this->base . '&unit=manage'),
-				$model->getError(),
-				'error'
-			);
-			return;
+			Notify::error($section->getError());
 		}
+		else
+		{
+			Notify::success(Lang::txt('PLG_COURSES_DISCUSSIONS_SECTION_DELETED'));
+		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'forum.section',
+				'scope_id'    => $section->get('id'),
+				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $section->get('title'),
+					'url'   => Route::url($this->base)
+				)
+			],
+			'recipients' => array(
+				['course', $this->offering->get('id')],
+				['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
+				['forum.section', $section->get('id')],
+				['user', $section->get('created_by')]
+			)
+		]);
 
 		// Redirect to main listing
 		App::redirect(
-			Route::url($this->base . '&unit=manage'),
-			Lang::txt('PLG_COURSES_DISCUSSIONS_SECTION_DELETED'),
-			'passed'
+			Route::url($this->base . '&unit=manage')
 		);
 	}
 
 	/**
-	 * Short description for 'topics'
+	 * Display a list of threads for a category
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function categories()
 	{
@@ -1682,89 +1670,104 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		$view = $this->view('display', 'categories');
+		/// Incoming
+		$filters = array(
+			'section'    => Request::getVar('section', ''),
+			'category'   => Request::getCmd('category', ''),
+			'search'     => Request::getVar('q', ''),
+			'scope'      => $this->forum->get('scope'),
+			'scope_id'   => $this->forum->get('scope_id'),
+			'state'      => Category::STATE_PUBLISHED,
+			'parent'     => 0,
+			'access'     => User::getAuthorisedViewLevels()
+		);
 
-		// Incoming
-		$view->filters = array();
-		$view->filters['authorized'] = 1;
-		$view->filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
-		$view->filters['start']    = Request::getInt('limitstart', 0);
-		$view->filters['section']  = Request::getVar('section', '');
-		$view->filters['category'] = Request::getVar('category', '');
-		$view->filters['search']   = Request::getVar('q', '');
-		$view->filters['scope']    = 'course';
-		$view->filters['scope_id'] = $this->offering->get('id');
-		$view->filters['state']    = 1;
-		$view->filters['parent']   = 0;
-		$view->filters['sort_Dir'] = 'ASC';
-
-		$view->section = new \Components\Forum\Tables\Section($this->database);
-		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
-		$view->filters['section_id'] = $view->section->id;
-
-		$view->category = new \Components\Forum\Tables\Category($this->database);
-		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->offering->get('id'), 'course');
-		$view->filters['category_id'] = $view->category->id;
-
-		if (!$view->category->id)
+		$filters['sortby'] = Request::getWord('sortby', 'activity');
+		switch ($filters['sortby'])
 		{
-			$view->category->title = Lang::txt('Discussions');
-			$view->category->alias = str_replace(' ', '-', $view->category->title);
-			$view->category->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($view->category->title));
+			case 'title':
+				$filters['sort'] = 'sticky` DESC, `title';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
+			break;
+
+			case 'replies':
+				$filters['sort'] = 'sticky` DESC, `rgt';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+			break;
+
+			case 'created':
+				$filters['sort'] = 'sticky` DESC, `created';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+			break;
+
+			case 'activity':
+			default:
+				$filters['sort'] = 'sticky` DESC, `activity';
+				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+			break;
 		}
 
-		// Initiate a forum object
-		$view->forum = new \Components\Forum\Tables\Post($this->database);
-
-		// Get record count
-		$view->total = $view->forum->getCount($view->filters);
-
-		// Get records
-		$view->rows = $view->forum->getRecords($view->filters);
-		if ($view->rows)
+		// Section
+		$section = Section::all()
+			->whereEquals('alias', $filters['section'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$section->get('id'))
 		{
-			foreach ($view->rows as $i => $row)
-			{
-				$view->rows[$i] = new \Components\Forum\Models\Post($row);
-			}
+			App::abort(404, Lang::txt('COM_FORUM_SECTION_NOT_FOUND'));
 		}
 
-		//get authorization
+		// Get the category
+		$category = Category::all()
+			->whereEquals('alias', $filters['category'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$category->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'));
+		}
+
+		// Get authorization
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
-		$view->config = $this->params;
-		$view->course = $this->course;
-		$view->offering = $this->offering;
-		$view->option = $this->option;
-		$view->notifications = $this->getPluginMessage();
+		$threads = $category->threads()
+			->select("*, (CASE WHEN last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
+			->whereEquals('state', $filters['state'])
+			->whereIn('access', $filters['access'])
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated()
+			->rows();
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		return $view->loadTemplate();
+		return $this->view('display', 'categories')
+			->set('option', $this->option)
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('config', $this->params)
+			->set('forum', $this->forum)
+			->set('section', $section)
+			->set('category', $category)
+			->set('threads', $threads)
+			->set('filters', $filters)
+			->setErrors($this->getErrors())
+			->loadTemplate();
 	}
 
 	/**
 	 * Show a form for editing a category
 	 *
-	 * @param   object  $model
+	 * @param   object  $category
 	 * @return  string
 	 */
-	public function editcategory($model=null)
+	public function editcategory($category=null)
 	{
 		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
 
-		$this->view = $this->view('edit', 'categories');
-
-		$category = Request::getVar('category', '');
-		$section  = Request::getVar('section', '');
 		if (User::isGuest())
 		{
 			$return = Route::url($this->base . '&unit=manage');
@@ -1774,28 +1777,31 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$sModel = new \Components\Forum\Tables\Section($this->database);
-		$sModel->loadByAlias($section, $this->offering->get('id'), 'course');
+		// Get the section
+		$section = Section::all()
+			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
 
 		// Incoming
-		if (is_object($model))
+		if (!is_object($category))
 		{
-			$this->view->model = $model;
-		}
-		else
-		{
-			$this->view->model = new \Components\Forum\Tables\Category($this->database);
-			$this->view->model->loadByAlias($category, $sModel->id, $this->offering->get('id'), 'course');
+			$category = Category::all()
+				->whereEquals('alias', Request::getVar('category', ''))
+				->whereEquals('scope', $this->forum->get('scope'))
+				->whereEquals('scope_id', $this->forum->get('scope_id'))
+				->row();
 		}
 
-		$this->_authorize('category', $this->view->model->id);
+		$this->_authorize('category', $category->get('id'));
 
-		if (!$this->view->model->id)
+		if ($category->isNew())
 		{
-			$this->view->model->created_by = User::get('id');
-			$this->view->model->section_id = ($this->view->model->section_id) ? $this->view->model->section_id : $sModel->id;
+			$category->set('created_by', User::get('id'));
+			$category->set('section_id', $section->get('id'));
 		}
-		elseif ($this->view->model->created_by != User::get('id') && !$this->params->get('access-create-category'))
+		elseif ($category->get('created_by') != User::get('id') && !$this->params->get('access-create-category'))
 		{
 			App::redirect(
 				Route::url($this->base . '&unit=manage')
@@ -1803,43 +1809,22 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view->section = $sModel;
-		$this->view->sections = $sModel->getRecords(array(
-			'state'    => 1,
-			'scope_id' => $this->offering->get('id'),
-			'scope'    => 'course'
-		));
-		if (!$this->view->sections || count($this->view->sections) <= 0)
-		{
-			$this->view->sections = array();
-
-			$default = new \Components\Forum\Tables\Section($this->database);
-			$default->id = 0;
-			$default->title = Lang::txt('Categories');
-			$default->alias = str_replace(' ', '-', $default->title);
-			$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
-			$this->view->sections[] = $default;
-		}
-
-		$this->view->notifications = $this->getPluginMessage();
-		$this->view->config = $this->params;
-		$this->view->course = $this->course;
-		$this->view->offering = $this->offering;
-		$this->view->option = $this->option;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		return $this->view->loadTemplate();
+		return $this->view('edit', 'categories')
+			->set('option', $this->option)
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('config', $this->params)
+			->set('forum', $this->forum)
+			->set('section', $section)
+			->set('category', $category)
+			->setErrors($this->getErrors())
+			->loadTemplate();
 	}
 
 	/**
 	 * Save a category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savecategory()
 	{
@@ -1854,14 +1839,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$model = new \Components\Forum\Tables\Category($this->database);
-		if (!$model->bind($fields))
-		{
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->editcategory($model);
-		}
+		// Instantiate a category
+		$category = Category::oneOrNew($fields['id'])->set($fields);
 
-		$this->_authorize('category', $model->id);
+		// Double-check that the user is authorized
+		$this->_authorize('category', $category->get('id'));
+
 		if (!$this->params->get('access-edit-category'))
 		{
 			// Set the redirect
@@ -1869,20 +1852,53 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				Route::url($this->base . '&unit=manage')
 			);
 		}
-		$model->closed = (isset($fields['closed']) && $fields['closed']) ? 1 : 0;
-		// Check content
-		if (!$model->check())
+
+		$category->set('closed', (isset($fields['closed']) && $fields['closed']) ? 1 : 0);
+
+		// Forge an alias from the title
+		if ($category->get('alias') == '')
 		{
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->editcategory($model);
+			$alias = $category->automaticAlias(array('title' => $category->get('title')));
+			$category->set('alias', $alias);
+		}
+
+		// Check for alias duplicates within section?
+		if (!$category->isUnique())
+		{
+			$category->set('alias', ''); //reset alias
+			$category->set('section_id', (int) $category->get('section_id'));
+			Request::setVar('section_id', $category->get('section_id'));
+
+			Notify::error(Lang::txt('PLG_COURSES_FORUM_ERROR_CATEGORY_ALREADY_EXISTS'), 'courses_forum');
+			return $this->editcategory($category);
 		}
 
 		// Store new content
-		if (!$model->store())
+		if (!$category->save())
 		{
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->editcategory($model);
+			Notify::error($category->getError(), 'courses_forum');
+			return $this->editcategory($category);
 		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'forum.category',
+				'scope_id'    => $category->get('id'),
+				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $category->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $category->get('title'),
+					'url'   => Route::url($this->base)
+				)
+			],
+			'recipients' => array(
+				['course', $this->offering->get('id')],
+				['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
+				['forum.section', $category->get('section_id')],
+				['user', $category->get('created_by')]
+			)
+		]);
 
 		// Set the redirect
 		App::redirect(
@@ -1893,7 +1909,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletecategory()
 	{
@@ -1902,9 +1918,15 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
+		// Load the category
+		$category = Category::all()
+			->whereEquals('alias', Request::getVar('category', ''))
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+
 		// Incoming
-		$category = Request::getVar('category', '');
-		if (!$category)
+		if (!$category->get('id'))
 		{
 			App::redirect(
 				Route::url($this->base . '&unit=manage'),
@@ -1914,16 +1936,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$section = Request::getVar('section', '');
-		$sModel = new \Components\Forum\Tables\Section($this->database);
-		$sModel->loadByAlias($section, $this->offering->get('id'), 'course');
-
-		// Initiate a forum object
-		$model = new \Components\Forum\Tables\Category($this->database);
-		$model->loadByAlias($category, $sModel->id, $this->offering->get('id'), 'course');
-
 		// Check if user is authorized to delete entries
 		$this->_authorize('category', $model->id);
+
 		if (!$this->params->get('access-delete-category'))
 		{
 			App::redirect(
@@ -1934,24 +1949,38 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Set all the threads/posts in all the categories to "deleted"
-		$tModel = new \Components\Forum\Tables\Post($this->database);
-		if (!$tModel->setStateByCategory($model->id, 2))  // 0 = unpublished, 1 = published, 2 = deleted
-		{
-			$this->setError($tModel->getError());
-		}
-
 		// Set the category to "deleted"
-		$model->state = 2;  // 0 = unpublished, 1 = published, 2 = deleted
-		if (!$model->store())
+		$category->set('state', $category::STATE_DELETED);
+
+		if (!$category->save())
 		{
 			App::redirect(
 				Route::url($this->base . '&unit=manage'),
-				$model->getError(),
+				$category->getError(),
 				'error'
 			);
 			return;
 		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'forum.category',
+				'scope_id'    => $category->get('id'),
+				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . $category->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $category->get('title'),
+					'url'   => Route::url($this->base)
+				)
+			],
+			'recipients' => array(
+				['course', $this->offering->get('id')],
+				['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
+				['forum.section', $category->get('section_id')],
+				['user', $category->get('created_by')]
+			)
+		]);
 
 		// Redirect to main listing
 		App::redirect(
@@ -1973,107 +2002,100 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		$view = $this->view('display', 'threads');
-
 		// Incoming
-		$view->filters = array();
-		$view->filters['limit']    = null;
-		$view->filters['section']  = $this->offering->get('alias');
-		$view->filters['category'] = Request::getVar('category', '');
-		$view->filters['state']    = 1;
-		$view->filters['scope']    = 'course';
-		$view->filters['scope_id'] = $this->offering->get('id');
-		$view->filters['sort_Dir'] = 'ASC';
-		$view->filters['sort']     = 'c.created';
-
-		$thread   = Request::getInt('thread', 0);
-
-		$view->section = new \Components\Forum\Tables\Section($this->database);
-		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
-		$view->filters['section_id'] = $view->section->id;
-
-		$view->category = new \Components\Forum\Tables\Category($this->database);
-		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->offering->get('id'), 'course');
-		$view->filters['category_id'] = $view->category->id;
-
-		if (!$view->category->id)
-		{
-			$view->category->title = Lang::txt('Discussions');
-			$view->category->alias = 'discussions';
-		}
-
-		// Initiate a forum object
-		$view->post = new \Components\Forum\Tables\Post($this->database);
-
-		// Load the topic
-		$view->post->load($thread);
-		$view->filters['object_id'] = $view->post->object_id;
-
-		$view->unit = $this->offering->unit($view->filters['category']);
-		$view->lecture = $view->unit->assetgroup($view->filters['object_id']);
-
-		// Get reply count
-		$view->total = $view->post->getCount($view->filters);
-
-		$rows = $view->post->getRecords($view->filters);
-		if ($rows)
-		{
-			foreach ($rows as $i => $row)
-			{
-				$rows[$i] = new \Components\Forum\Models\Post($row);
-			}
-		}
-
-		$view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
-		$view->filters['start'] = Request::getInt('limitstart', 0);
-
-		$children = array(
-			0 => array()
+		$filters = array(
+			'limit'    => Request::getInt('limit', 25),
+			'start'    => Request::getInt('limitstart', 0),
+			'section'  => Request::getVar('section', $this->offering->get('alias')),
+			'category' => Request::getCmd('category', ''),
+			'thread'   => Request::getInt('thread', 0),
+			'scope'    => $this->forum->get('scope'),
+			'scope_id' => $this->forum->get('scope_id'),
+			'state'    => Post::STATE_PUBLISHED,
+			'access'   => User::getAuthorisedViewLevels()
 		);
 
-		$levellimit = ($view->filters['limit'] == 0) ? 500 : $view->filters['limit'];
-
-		foreach ($rows as $v)
+		// Section
+		$section = Section::all()
+			->whereEquals('alias', $filters['section'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$section->get('id'))
 		{
-			$pt      = $v->get('parent');
-			$list    = @$children[$pt] ? $children[$pt] : array();
-			array_push($list, $v);
-			$children[$pt] = $list;
+			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_SECTION_NOT_FOUND'));
 		}
 
-		// Get replies
-		$list = $this->_treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
+		// Category
+		$category = Category::all()
+			->whereEquals('alias', $filters['category'])
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$category->get('id'))
+		{
+			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_CATEGORY_NOT_FOUND'));
+		}
 
-		$view->rows = array_slice($list, $view->filters['start'], $view->filters['limit']);
+		$filters['category_id'] = $category->get('id');
 
-		$view->filters['parent']   = $view->post->id;
+		// Load the topic
+		$thread = Post::oneOrFail($filters['thread']);
+		$filters['object_id'] = $thread->get('object_id');
 
-		// Record the hit
-		$view->participants = $view->post->getParticipants($view->filters);
+		// Make sure thread belongs to this group
+		if ($thread->get('scope_id') != $this->forum->get('scope_id')
+		 || $thread->get('scope') != $this->forum->get('scope'))
+		{
+			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_THREAD_NOT_FOUND'));
+			return;
+		}
 
-		// Get attachments
-		$view->attach = new \Components\Forum\Tables\Attachment($this->database);
-		$view->attachments = $view->attach->getAttachments($view->post->id);
+		// Redirect if the thread is soft-deleted
+		if ($thread->get('state') == $thread::STATE_DELETED)
+		{
+			App::redirect(
+				Route::url($this->base),
+				Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_THREAD_NOT_FOUND'),
+				'error'
+			);
+			return;
+		}
 
-		// Get tags on this article
-		$view->tModel = new \Components\Forum\Models\Tags($view->post->id);
-		$view->tags = $view->tModel->tags('cloud');
+		$filters['state'] = array(1, 3);
 
 		// Get authorization
-		$this->_authorize('category', $view->category->id);
-		$this->_authorize('thread', $view->post->id);
+		$this->_authorize('category', $category->get('id'));
+		$this->_authorize('thread', $thread->get('id'));
+		$this->_authorize('post');
 
-		$view->config = $this->params;
-		$view->course = $this->course;
-		$view->offering = $this->offering;
-		$view->option = $this->option;
-		$view->notifications = $this->getPluginMessage();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		// If the access is anything beyond public,
+		// make sure they're logged in.
+		if (User::isGuest() && !in_array($thread->get('access'), User::getAuthorisedViewLevels()))
 		{
-			$this->view->setError($error);
+			$return = Route::url($this->base, false, true);
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+			);
+			return;
 		}
+
+		$unit = $this->offering->unit($filters['category']);
+		$lecture = $unit->assetgroup($filters['object_id']);
+
+		$view = $this->view('display', 'threads')
+			->set('option', $this->option)
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('unit', $unit)
+			->set('lecture', $lecture)
+			->set('config', $this->params)
+			->set('forum', $this->forum)
+			->set('section', $section)
+			->set('category', $category)
+			->set('thread', $thread)
+			->set('filters', $filters)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -2129,12 +2151,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function editthread($post=null)
 	{
-		$this->view = $this->view('edit', 'threads');
-		$this->view->name = $this->_name;
-
-		$id = Request::getInt('post', 0);
+		$id       = Request::getInt('post', 0);
 		$category = Request::getVar('category', '');
-		$sectionAlias = Request::getVar('section', '');
+		$section  = Request::getVar('section', '');
 
 		if (User::isGuest())
 		{
@@ -2149,83 +2168,48 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view->category = new \Components\Forum\Tables\Category($this->database);
-		$this->view->category->loadByAlias($category);
+		// Get the category
+		$category = Category::all()
+			->whereEquals('alias', $category)
+			->whereEquals('scope', $this->forum->get('scope'))
+			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->row();
+		if (!$category->get('id'))
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
+		}
 
 		// Incoming
-		if (is_object($post))
+		if (!is_object($post))
 		{
-			$this->view->post = $post;
-		}
-		else
-		{
-			$this->view->post = new \Components\Forum\Tables\Post($this->database);
-			$this->view->post->load($id);
+			$post = Post::oneOrNew($id);
 		}
 
 		// Get authorization
 		$this->_authorize('thread', $id);
 
-		if (!$id)
+		if ($post->isNew())
 		{
-			$this->view->post->created_by = User::get('id');
+			$post->set('scope', $this->forum->get('scope'));
+			$post->set('created_by', User::get('id'));
 		}
-		elseif ($this->view->post->created_by != User::get('id') && !$this->params->get('access-edit-thread'))
+		elseif ($post->get('created_by') != User::get('id') && !$this->params->get('access-edit-thread'))
 		{
-			App::redirect(
-				Route::url($this->base . '&unit=manage&b=' . $section . '&c=' . $category)
-			);
-			return;
+			App::redirect(Route::url($this->base . '&unit=manage&b=' . $section . '&c=' . $category));
 		}
 
-		$sModel = new \Components\Forum\Tables\Section($this->database);
-		$this->view->sections = $sModel->getRecords(array(
-			'state'    => 1,
-			'scope'    => 'course',
-			'scope_id' => $this->offering->get('id')
-		));
-
-		if (!$this->view->sections || count($this->view->sections) <= 0)
-		{
-			$this->view->sections = array();
-
-			$default = new stdClass;
-			$default->id = 0;
-			$default->title = Lang::txt('Categories');
-			$default->alias = str_replace(' ', '-', $default->title);
-			$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
-			$this->view->sections[] = $default;
-		}
-
-		$cModel = new \Components\Forum\Tables\Category($this->database);
-		foreach ($this->view->sections as $key => $section)
-		{
-			$this->view->sections[$key]->categories = $cModel->getRecords(array(
-				'section_id' => $section->id,
-				'scope'      => 'course',
-				'scope_id'   => $this->offering->get('id'),
-				'state'      => 1
-			));
-		}
-
-		// Get tags on this article
-		$this->view->tModel = new \Components\Forum\Models\Tags($this->view->post->id);
-		$this->view->tags = $this->view->tModel->tags('string');
-
-		$this->view->option = $this->option;
-		$this->view->config = $this->params;
-		$this->view->course = $this->course;
-		$this->view->offering = $this->offering;
-		$this->view->section = $sectionAlias;
-		$this->view->notifications = $this->getPluginMessage();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		return $this->view->loadTemplate();
+		return $this->view('edit', 'threads')
+			->set('option', $this->option)
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('config', $this->params)
+			->set('forum', $this->forum)
+			->set('section', $section)
+			->set('category', $category)
+			->set('post', $post)
+			->set('name', $this->_name)
+			->setErrors($this->getErrors())
+			->loadTemplate();
 	}
 
 	/**
@@ -2268,87 +2252,59 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if ($fields['id'])
-		{
-			$old = new \Components\Forum\Tables\Post($this->database);
-			$old->load(intval($fields['id']));
-		}
-
 		// Bind data
-		$model = new \Components\Forum\Tables\Post($this->database);
-		if (!$model->bind($fields))
-		{
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->editthread($model);
-		}
+		$post = Post::oneOrNew($fields['id']);
 
 		// Double comment?
-		$query  = "SELECT * FROM `#__forum_posts` WHERE object_id=" . $this->database->Quote($model->object_id);
-		$query .= " AND scope_id=" . $this->database->Quote($model->scope_id) . " AND scope=" . $this->database->Quote($model->scope);
-		$query .= " AND comment=" . $this->database->Quote($model->comment) . " AND created_by=" . $this->database->Quote($model->created_by);
-		$query .= " LIMIT 1";
+		$double = Post::all()
+			->whereEquals('object_id', $post->get('object_id'))
+			->whereEquals('scope', $post->get('scope'))
+			->whereEquals('scope_id', $post->get('scope_id'))
+			->whereEquals('created_by', $post->get('created_by'))
+			->whereEquals('comment', $post->get('comment'))
+			->row();
 
-		$this->database->setQuery($query);
-		if ($result = $this->database->loadAssoc())
+		if ($double->get('id'))
 		{
-			$model->bind($result);
+			$post->set($double->toArray());
 		}
+
+		$post->set($fields);
 
 		// Load the category
-		$category = new \Components\Forum\Tables\Category($this->database);
-		$category->load(intval($model->category_id));
-		if (!$model->object_id && $category->object_id)
-		{
-			$model->object_id = $category->object_id;
-		}
+		$category = Category::oneOrFail($post->get('category_id'));
 
-		// Check content
-		if (!$model->check())
+		if (!$post->get('object_id') && $category->get('object_id'))
 		{
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->editthread($model);
+			$post->set('object_id', $category->get('object_id'));
 		}
 
 		// Store new content
-		if (!$model->store())
+		if (!$post->save())
 		{
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->editthread($model);
-		}
-
-		// Determine parent ID
-		$parent = ($model->parent) ? $model->parent : $model->id;
-
-		// Get the thread ID
-		if (!$model->thread && !$model->parent)
-		{
-			$model->thread = $model->id;
+			Notify::error($post->getError());
+			return $this->editthread($post);
 		}
 
 		// Upload file
-		$this->upload($model->thread, $model->id);
-
-		// Update category ID if it was changed
-		if ($fields['id'])
+		if (!$this->upload($post->get('thread', $post->get('id')), $post->get('id')))
 		{
-			if ($old->category_id != $fields['category_id'])
-			{
-				$model->updateReplies(array('category_id' => $fields['category_id']), $model->id);
-			}
+			Notify::error($this->getError());
+			return $this->editthread($post);
 		}
 
 		// Save tags
-		$tags = Request::getVar('tags', '', 'post');
-		$tagger = new \Components\Forum\Models\Tags($model->id);
-		$tagger->setTags($tags, User::get('id'), 1);
+		$post->tag(Request::getVar('tags', '', 'post'), User::get('id'));
+
+		$thread = $post->get('thread');
 
 		// Being called through AJAX?
 		if ($no_html)
 		{
 			// Set the thread
-			Request::setVar('thread', $model->thread);
+			Request::setVar('thread', $thread);
 			// Is this a new post in a thread or new thread entirely?
-			if (!$model->parent)
+			if (!$post->get('parent'))
 			{
 				// New thread
 				// Update the thread list and get the contents of the thread
@@ -2363,9 +2319,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			// If we have a lecture set, push through to the lecture view
 			if (Request::getVar('group', ''))
 			{
-				$unit = $this->course->offering()->unit($category->alias);
+				$unit = $this->course->offering()->unit($category->get('alias'));
 
-				$lecture = new \Components\Courses\Models\Assetgroup($model->object_id);
+				$lecture = new \Components\Courses\Models\Assetgroup($post->get('object_id'));
 				return $this->onCourseAfterLecture($this->course, $unit, $lecture);
 			}
 			else
@@ -2415,12 +2371,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$id = ($id) ? $id : Request::getInt('thread', 0);
 
-		// Initiate a forum object
-		$model = new \Components\Forum\Tables\Post($this->database);
-		$model->load($id);
+		// Load the post
+		$post = Post::oneOrFail($id);
 
 		// Make the sure the category exist
-		if (!$model->id)
+		if (!$post->get('id'))
 		{
 			App::redirect(
 				Route::url($this->base),
@@ -2432,6 +2387,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
+
 		if (!$this->params->get('access-delete-thread'))
 		{
 			App::redirect(
@@ -2442,18 +2398,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Update replies if this is a parent (thread starter)
-		//if (!$model->parent)
-		//{
-			if (!$model->updateReplies(array('state' => 2), $model->id))  // 0 = unpublished, 1 = published, 2 = deleted
-			{
-				$this->setError($model->getError());
-			}
-		//}
+		// Trash the post
+		// Note: this will carry through to all replies
+		//       and attachments
+		$post->set('state', $post::STATE_DELETED);
 
-		// Delete the topic itself
-		$model->state = 2;  // 0 = unpublished, 1 = published, 2 = deleted
-		if (!$model->store())
+		if (!$post->save())
 		{
 			App::redirect(
 				Route::url($this->base),
@@ -2478,89 +2428,69 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
 	 *
-	 * @param   string   $listdir  Directory to upload files to
-	 * @param   integer  $post_id  ID of the post
-	 * @return  string   A string that gets appended to messages
+	 * @param   integer  $thread_id  Directory to upload files to
+	 * @param   integer  $post_id    Post ID
+	 * @return  boolean
 	 */
-	public function upload($listdir, $post_id)
+	public function upload($thread_id, $post_id)
 	{
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			return;
+			return false;
 		}
 
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('PLG_COURSES_DISCUSSIONS_NO_UPLOAD_DIRECTORY'));
-			return;
+			return false;
+		}
+
+		// Instantiate an attachment record
+		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
+		$attachment->set('description', trim(Request::getVar('description', '')));
+		$attachment->set('parent', $thread_id);
+		$attachment->set('post_id', $post_id);
+		if ($attachment->isNew())
+		{
+			$attachment->set('state', Attachment::STATE_PUBLISHED);
 		}
 
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
-		if (!$file['name'])
+		if (!$file || !isset($file['name']) || !$file['name'])
 		{
-			return;
-		}
-
-		// Incoming
-		$description = trim(Request::getVar('description', ''));
-
-		// Construct our file path
-		$path = PATH_APP . DS . trim($this->params->get('filepath', '/site/forum'), DS) . DS . $listdir;
-		if ($post_id)
-		{
-			$path .= DS . $post_id;
-		}
-
-		// Build the path if it doesn't exist
-		if (!is_dir($path))
-		{
-			if (!Filesystem::makeDirectory($path))
+			if ($attachment->get('id'))
 			{
-				$this->setError(Lang::txt('PLG_COURSES_DISCUSSIONS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return;
+				// Only updating the description
+				if (!$attachment->save())
+				{
+					$this->setError($attachment->getError());
+					return false;
+				}
 			}
+			return true;
 		}
 
-		// Make the filename safe
-		$file['name'] = Filesystem::clean($file['name']);
-		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(Filesystem::extension($file['name']));
+		// Upload file
+		if (!$attachment->upload($file['name'], $file['tmp_name']))
+		{
+			$this->setError($attachment->getError());
+		}
 
-		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		// Save entry
+		if (!$attachment->save())
 		{
-			$this->setError(Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_UPLOADING'));
-			return;
+			$this->setError($attachment->getError());
 		}
-		else
-		{
-			// File was uploaded
-			// Create database entry
-			$row = new \Components\Forum\Tables\Attachment($this->database);
-			$row->bind(array(
-				'id'          => 0,
-				'parent'      => $listdir,
-				'post_id'     => $post_id,
-				'filename'    => $file['name'],
-				'description' => $description
-			));
-			if (!$row->check())
-			{
-				$this->setError($row->getError());
-			}
-			if (!$row->store())
-			{
-				$this->setError($row->getError());
-			}
-		}
+
+		return true;
 	}
 
 	/**
 	 * Serves up files only after passing access checks
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function download()
 	{
@@ -2587,77 +2517,44 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate an attachment object
-		$attach = new \Components\Forum\Tables\Attachment($this->database);
-		if (!$post)
+		if (!$post_id)
 		{
-			$attach->loadByThread($thread, $file);
+			$attach = Attachment::oneByThread($thread_id, $file);
 		}
 		else
 		{
-			$attach->loadByPost($post);
+			$attach = Attachment::oneByPost($post_id);
 		}
 
-		if (!$attach->filename)
+		if (!$attach->get('filename'))
 		{
-			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
-			return;
+			App::abort(404, Lang::txt('PLG_COURSES_FORUM_FILE_NOT_FOUND'));
 		}
-		$file = $attach->filename;
 
 		// Get the parent ticket the file is attached to
-		$this->model = new \Components\Forum\Tables\Post($this->database);
-		$this->model->load($attach->post_id);
+		$post = $attach->post();
 
-		if (!$this->model->id)
+		if (!$post->get('id') || $post->get('state') == $post::STATE_DELETED)
 		{
-			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_POST_NOT_FOUND'));
-			return;
+			App::abort(404, Lang::txt('PLG_COURSES_FORUM_POST_NOT_FOUND'));
 		}
 
 		// Load ACL
-		$this->_authorize('thread', $this->model->id);
+		$this->_authorize('thread', $post->get('thread'));
 
 		// Ensure the user is authorized to view this file
 		if (!$this->course->access('view'))
 		{
 			App::abort(403, Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTH_FILE'));
-			return;
-		}
-
-		// Ensure we have a path
-		if (empty($file))
-		{
-			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
-			return;
 		}
 
 		// Get the configured upload path
-		$basePath  = DS . trim($this->params->get('filepath', '/site/forum'), DS) . DS  . $attach->parent . DS . $attach->post_id;
-
-		// Does the path start with a slash?
-		if (substr($file, 0, 1) != DS)
-		{
-			$file = DS . $file;
-			// Does the beginning of the $attachment->filename match the config path?
-			if (substr($file, 0, strlen($basePath)) == $basePath)
-			{
-				// Yes - this means the full path got saved at some point
-			}
-			else
-			{
-				// No - append it
-				$file = $basePath . $file;
-			}
-		}
-
-		// Add PATH_CORE
-		$filename = PATH_APP . $file;
+		$filename = $attach->path();
 
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
-			return;
+			App::abort(404, Lang::txt('PLG_COURSES_FILE_NOT_FOUND') . ' ' . substr($filename, strlen(PATH_ROOT)));
 		}
 
 		// Initiate a new content server and serve up the file
@@ -2671,11 +2568,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			// Should only get here on error
 			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 
 	/**
@@ -2699,28 +2593,51 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Reorder a plugin
+	 * Reorder a section
 	 *
-	 * @param   integer  $access  Access level to set
+	 * @param   integer  $dir  Direction
 	 * @return  void
 	 */
-	public function reorder($inc=1)
+	public function reorder($dir=1)
 	{
 		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
 
-		$alias = Request::getVar('section', '');
+		// Get the section
+		$section = Section::all()
+			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('scope', 'course')
+			->whereEquals('scope_id', $this->offering->get('id'))
+			->row();
 
-		$row = new \Components\Forum\Tables\Section($this->database);
-
-		if ($row->loadByAlias($alias, $this->offering->get('id'), 'course'))
+		// Move the section
+		if (!$section->move($dir))
 		{
-			$row->move($inc, 'scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
-			$row->reorder('scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
+			Notify::error($section->getError());
 		}
 
+		// Record the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'reordered',
+				'scope'       => 'forum.section',
+				'scope_id'    => $section->get('id'),
+				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $section->get('title'),
+					'url'   => Route::url($this->base)
+				)
+			],
+			'recipients' => array(
+				['course', $this->offering->get('id')],
+				['forum.course', $this->offering->get('id')],
+				['forum.section', $section->get('id')]
+			)
+		]);
+
+		// Redirect to main lsiting
 		App::redirect(
 			Route::url($this->base . '&unit=manage')
 		);
@@ -2741,9 +2658,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		$log = Lang::txt('PLG_COURSES_FORUM') . ': ';
 
-		$this->database = App::get('db');
-
-		$sModel = new \Components\Forum\Tables\Section($this->database);
 		$sections = array();
 		foreach ($course->offerings() as $offering)
 		{
@@ -2751,10 +2665,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			{
 				continue;
 			}
-			$sec = $sModel->getRecords(array(
-				'scope'    => 'course',
-				'scope_id' => $offering->get('id')
-			));
+
+			$sec = Section::all()
+				->whereEquals('scope', 'course')
+				->whereEquals('scope_id', $offering->get('id'))
+				->rows();
+
 			foreach ($sec as $s)
 			{
 				$sections[] = $s;
@@ -2768,47 +2684,30 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			foreach ($sections as $section)
 			{
 				// Get the categories in this section
-				$cModel = new \Components\Forum\Tables\Category($this->database);
-				$categories = $cModel->getRecords(array(
-					'section_id' => $section->id,
-					'scope'      => 'course',
-					'scope_id'   => $course->offering()->get('id')
-				));
+				$categories = $section->categories()->rows();
 
-				if ($categories)
+				if ($categories->count())
 				{
-					// Build an array of category IDs
-					$cats = array();
+					// Build a list of category IDs
 					foreach ($categories as $category)
 					{
-						$cats[] = $category->id;
+						$log .= 'forum.section.' . $section->get('id') . '.category.' . $category->get('id') . '.post' . "\n";
+						$log .= 'forum.section.' . $section->get('id') . '.category.' . $category->get('id') . "\n";
 					}
-
-					// Set all the threads/posts in all the categories to "deleted"
-					$tModel = new \Components\Forum\Tables\Post($this->database);
-					if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
-					{
-						$this->setError($tModel->getError());
-					}
-					$log .= 'forum.section.' . $section->id . '.category.' . $category->id . '.post' . "\n";
-
-					// Set all the categories to "deleted"
-					if (!$cModel->setStateBySection($section->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
-					{
-						$this->setError($cModel->getError());
-					}
-					$log .= 'forum.section.' . $section->id . '.category.' . $category->id . "\n";
 				}
 
+				$log .= 'forum.section.' . $section->get('id') . ' ' . "\n";
+
 				// Set the section to "deleted"
-				$sModel->load($section->id);
-				$sModel->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
-				if (!$sModel->store())
+				// Set all the categories to "deleted"
+				// Set all the threads/posts in all the categories to "deleted"
+				$section->set('state', $section::STATE_DELETED);
+
+				if (!$section->save())
 				{
 					$this->setError($sModel->getError());
 					return '';
 				}
-				$log .= 'forum.section.' . $section->id . ' ' . "\n";
 			}
 		}
 		else

@@ -1,13 +1,40 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
 defined('_HZEXEC_') or die();
 
 $base = $this->offering->alias() . '&active=forum';
 ?>
 <section class="main section">
-	<!-- <div class="subject"> -->
-		<?php foreach ($this->notifications as $notification) { ?>
-			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } ?>
+	<div class="section-inner">
 
 		<form action="<?php echo Route::url($base); ?>" method="post">
 			<div class="container data-entry">
@@ -32,108 +59,84 @@ $base = $this->offering->alias() . '&active=forum';
 						<?php echo Lang::txt('Search for "%s"', $this->escape($this->filters['search'])); ?>
 					</caption>
 					<tbody>
-				<?php
-				if ($this->rows)
-				{
-					foreach ($this->rows as $row)
-					{
-						$name = Lang::txt('Anonymous');
-						if (!$row->anonymous)
-						{
-							$creator = User::getInstance($row->created_by);
-							if (is_object($creator))
-							{
-								$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
-							}
-						}
+						<?php
+						$rows = $this->forum->posts($this->filters)
+							->paginated()
+							->rows();
 
-						if ($row->parent)
+						if ($this->filters['search'] && $rows->count() > 0)
 						{
-							$p = new \Components\Forum\Tables\Post(App::get('db'));
-							$thread = $p->getThread($row->parent);
-						}
-						else
-						{
-							$thread = $row;
-						}
-					?>
-						<tr<?php if ($row->sticky) { echo ' class="sticky"'; } ?>>
-							<th>
-								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
-							</th>
-							<td>
-								<a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->categories[$row->category_id]->alias . '&b=' . $thread->id . '#c' . $row->id); ?>">
-									<span><?php echo $this->escape(stripslashes($row->title)); ?> ...</span>
-								</a>
-								<span class="entry-details">
-									<span class="entry-date">
-										<time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time>
-									</span>
-									<?php echo Lang::txt('by'); ?>
-									<span class="entry-author">
-										<?php echo $name; ?>
-									</span>
-								</span>
-							</td>
-							<!-- <td>
-								<span><?php echo Lang::txt('Section'); ?></span>
-								<span class="entry-details section-name">
-									<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->category_id]->section_id]->title, 100, array('exact' => true))); ?>
-								</span>
-							</td> -->
-							<td>
-								<span><?php echo Lang::txt('Category'); ?></span>
-								<span class="entry-details category-name">
-									<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->category_id]->title, 100, array('exact' => true))); ?>
-								</span>
-							</td>
-							<td>
-								<span><?php echo Lang::txt('Thread'); ?></span>
-								<span class="entry-details thread-name">
-									<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($thread->title), 100, array('exact' => true))); ?>
-								</span>
-							</td>
-						</tr>
-				<?php
-					}
-				} else { ?>
-						<tr>
-							<td><?php echo Lang::txt('No discussions found.'); ?></td>
-						</tr>
-				<?php } ?>
+							foreach ($rows as $row)
+							{
+								$title = $this->escape(stripslashes($row->get('title')));
+								$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
+
+								$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+								if (!$row->get('anonymous'))
+								{
+									$name = ($row->creator()->get('public') ? '<a href="' . Route::url($row->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($row->creator()->get('name'))) . ($row->creator()->get('public') ? '</a>' : '');
+								}
+								$cls = array();
+								if ($row->get('closed'))
+								{
+									$cls[] = 'closed';
+								}
+								if ($row->get('sticky'))
+								{
+									$cls[] = 'sticky';
+								}
+								?>
+								<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
+									<th>
+										<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
+									</th>
+									<td>
+										<a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->categories[$row->get('category_id')]->get('alias') . '&b=' . $row->get('thread') . '#c' . $row->get('id')); ?>">
+											<span><?php echo $title; ?></span>
+										</a>
+										<span class="entry-details">
+											<span class="entry-date">
+												<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+											</span>
+											<?php echo Lang::txt('by'); ?>
+											<span class="entry-author">
+												<?php echo $name; ?>
+											</span>
+										</span>
+									</td>
+									<td class="priority-4">
+										<span><?php echo Lang::txt('Section'); ?></span>
+										<span class="entry-details section-name">
+											<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
+										</span>
+									</td>
+									<td>
+										<span><?php echo Lang::txt('Category'); ?></span>
+										<span class="entry-details category-name">
+											<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
+										</span>
+									</td>
+								</tr>
+								<?php
+							}
+						} else { ?>
+							<tr>
+								<td><?php echo Lang::txt('No discussions found.'); ?></td>
+							</tr>
+						<?php } ?>
 					</tbody>
 				</table>
 				<?php
-				if ($this->pageNav)
-				{
-					$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
-					$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
-					$this->pageNav->setAdditionalUrlParam('active', 'forum');
-					$this->pageNav->setAdditionalUrlParam('action', 'search');
-					$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-					echo $this->pageNav->getListFooter();
-				}
+				$pageNav = $rows->pagination;
+				$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+				$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+				$pageNav->setAdditionalUrlParam('active', 'forum');
+				$pageNav->setAdditionalUrlParam('action', 'search');
+				$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+				echo $pageNav;
 				?>
 			</div><!-- / .container -->
 		</form>
-	<?php /*</div><!-- /.subject -->
-	<aside class="aside">
-	<?php if ($this->config->get('access-create-thread')) { ?>
-		<div class="container">
-			<h3><?php echo Lang::txt('Start Your Own'); ?><span class="starter-point"></span></h3>
-		<?php if (!$this->category->closed) { ?>
-			<p>
-				<?php echo Lang::txt('Create your own discussion where you and other users can discuss related topics.'); ?>
-			</p>
-			<p class="add">
-				<a href="<?php echo Route::url($base . '&action=add'); ?>"><?php echo Lang::txt('Add Discussion'); ?></a>
-			</p>
-		<?php } else { ?>
-			<p class="warning">
-				<?php echo Lang::txt('This category is closed and no new discussions may be created.'); ?>
-			</p>
-		<?php } ?>
-		</div>
-	<?php } ?>
-	</aside><!-- / .aside -->*/ ?>
+
+	</div>
 </section><!-- /.main -->

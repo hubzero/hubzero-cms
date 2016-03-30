@@ -40,12 +40,6 @@ $base = $this->course->offering()->link();
 ?>
 <div id="comments-container" data-action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>">
 
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>">
-		<?php echo $this->escape($notification['message']); ?>
-	</p>
-<?php } ?>
-
 	<div class="comments-wrap">
 
 		<div class="comments-views">
@@ -83,8 +77,8 @@ $base = $this->course->offering()->link();
 							$threads_lastchange = '0000-00-00 00:00:00';
 							if ($this->threads)
 							{
-								$threads_lastchange = $this->threads[0]->created;
-								$category = $this->threads[0]->category_id;
+								$threads_lastchange = $this->threads[0]->get('created');
+								$category = $this->threads[0]->get('category_id');
 							}
 
 							$instructors = array();
@@ -97,19 +91,19 @@ $base = $this->course->offering()->link();
 								}
 							}
 							$this->view('_threads')
-							     ->set('category', 'category' . $this->post->category_id)
-							     ->set('option', $this->option)
-							     ->set('threads', $this->threads)
-							     ->set('unit', $this->unit->get('alias'))
-							     ->set('lecture', $this->lecture->get('alias'))
-							     ->set('config', $this->config)
-							     ->set('cls', 'odd')
-							     ->set('instructors', $instructors)
-							     ->set('base', $base . '&active=outline')
-							     ->set('course', $this->course)
-							     ->set('search', $this->filters['search'])
-							     ->set('active', $this->thread)
-							     ->display();
+								->set('category', 'category' . $this->post->get('category_id'))
+								->set('option', $this->option)
+								->set('threads', $this->threads)
+								->set('unit', $this->unit->get('alias'))
+								->set('lecture', $this->lecture->get('alias'))
+								->set('config', $this->config)
+								->set('cls', 'odd')
+								->set('instructors', $instructors)
+								->set('base', $base . '&active=outline')
+								->set('course', $this->course)
+								->set('search', $this->filters['search'])
+								->set('active', $this->thread)
+								->display();
 							?>
 							<input type="hidden" name="threads_lastchange" id="threads_lastchange" value="<?php echo $threads_lastchange; ?>" />
 						</div>

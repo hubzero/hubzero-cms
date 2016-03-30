@@ -1,4 +1,34 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
 defined('_HZEXEC_') or die();
 
 $this->js();
@@ -39,9 +69,6 @@ if (count($inst) > 0)
 	</div>
 <?php } ?>
 <div id="comments-container">
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-<?php } ?>
 	<div class="comments-wrap">
 		<div class="comments-views">
 
@@ -81,31 +108,32 @@ if (count($inst) > 0)
 
 					<div class="category category-results" id="ctmine">
 						<?php
-						$filters = array();
-						$filters['scope']      = $this->filters['scope'];
-						$filters['scope_id']   = $this->filters['scope_id'];
+						$posts = \Components\Forum\Models\Post::all()
+							->whereEquals('scope', $this->filters['scope'])
+							->whereEquals('scope_id', $this->filters['scope_id'])
+							->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED)
+							->whereEquals('created_by', User::get('id'));
+
 						if ($this->config->get('discussions_threads', 'all') != 'all')
 						{
-							$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
+							$posts->whereEquals('scope_sub_id', $this->filters['scope_sub_id']);
 						}
-						$filters['state']      = 1;
-						$filters['sort_Dir']   = 'DESC';
-						$filters['limit']      = 100;
-						$filters['start']      = 0;
-						$filters['created_by'] = User::get('id');
-						$filters['parent']     = 0;
-						$filters['sticky']     = false;
+
+						$threads = $posts
+							->order('created', 'desc')
+							->limit(100)
+							->rows();
 						?>
 						<div class="category-header">
 							<span class="category-title"><?php echo Lang::txt('Mine'); ?></span>
-							<span class="category-discussions count"><?php echo $this->post->getCount($filters); ?></span>
+							<span class="category-discussions count"><?php echo $threads->count(); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
 							<?php
 							$this->view('_threads', 'threads')
 							     ->set('category', 'categorymine')
 							     ->set('option', $this->option)
-							     ->set('threads', $this->post->getRecords($filters))
+							     ->set('threads', $threads)
 							     ->set('unit', '')
 							     ->set('lecture', 0)
 							     ->set('config', $this->config)
@@ -119,85 +147,84 @@ if (count($inst) > 0)
 							?>
 						</div><!-- / .category-content -->
 					</div><!-- / .category -->
-		<?php if (count($this->sections) > 0) { ?>
-			<?php
-				$tfilters = array();
-				$tfilters['scope']      = $this->filters['scope'];
-				$tfilters['scope_id']   = $this->filters['scope_id'];
-				if ($this->config->get('discussions_threads', 'all') != 'all')
-				{
-					$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
-				}
-				$tfilters['state']       = 1;
-				//$tfilters['category_id'] = $row->id;
-				$tfilters['sort_Dir']    = 'DESC';
-				$tfilters['limit']       = (100 * count($this->sections));
-				$tfilters['start']       = 0;
-				$tfilters['parent']      = 0;
-				$tfilters['sticky']     = false;
-
-				$threads = array();
-				$results = $this->post->getRecords($tfilters);
-				if ($results)
-				{
-					foreach ($results as $thread)
-					{
-						if (!isset($threads[$thread->category_id]))
-						{
-							$threads[$thread->category_id] = array();
-						}
-						$threads[$thread->category_id][] = $thread;
-					}
-				}
-			?>
-			<?php foreach ($this->sections as $section) { ?>
-					<div class="category category-results closed" id="sc<?php echo $section->id; ?>">
-						<div class="category-header">
-							<span class="category-title"><?php echo $this->escape(stripslashes($section->title)); ?></span>
-							<span class="category-discussions count"><?php echo $section->threads; ?></span>
-						</div><!-- / .category-header -->
-						<div class="category-content">
+					<?php if (count($this->sections) > 0) { ?>
 						<?php
-						if ($section->categories)
-						{
-							foreach ($section->categories as $row)
+							$threads = array();
+
+							$posts = \Components\Forum\Models\Post::all()
+								->whereEquals('scope', $this->filters['scope'])
+								->whereEquals('scope_id', $this->filters['scope_id'])
+								->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED);
+
+							if ($this->config->get('discussions_threads', 'all') != 'all')
 							{
-								?>
-								<div class="thread closed" id="ct<?php echo $row->id; ?>" data-category="<?php echo $row->id; ?>">
-									<div class="thread-header">
-										<span class="thread-title"><?php echo $this->escape(stripslashes($row->title)); ?></span>
-										<span class="thread-discussions count"><?php echo $row->threads; ?></span>
-									</div><!-- / .thread-header -->
-									<div class="thread-content">
-										<?php
-											$this->view('_threads', 'threads')
-											     ->set('category', 'category' . $row->id)
-											     ->set('option', $this->option)
-											     ->set('threads', isset($threads[$row->id]) ? $threads[$row->id] : null)
-											     ->set('unit', $row->alias)
-											     ->set('lecture', $row->id)
-											     ->set('config', $this->config)
-											     ->set('instructors', $instructors)
-											     ->set('cls', 'odd')
-											     ->set('base', $base)
-											     ->set('course', $this->course)
-											     ->set('active', $this->thread)
-											     ->display();
-										?>
-									</div><!-- / .thread-content -->
-								</div><!-- / .thread -->
-								<?php
+								$posts->whereEquals('scope_sub_id', $this->filters['scope_sub_id']);
 							}
-							?>
-						<?php } else { ?>
-							<p class="instructions">
-								There are no categories for this section.
-							</p>
+
+							$results = $posts
+								->order('created', 'desc')
+								->limit(100 * count($this->sections))
+								->rows();
+							if ($results->count())
+							{
+								foreach ($results as $thread)
+								{
+									if (!isset($threads[$thread->get('category_id')]))
+									{
+										$threads[$thread->get('category_id')] = array();
+									}
+									$threads[$thread->get('category_id')][] = $thread;
+								}
+							}
+						?>
+						<?php foreach ($this->sections as $section) { ?>
+								<div class="category category-results closed" id="sc<?php echo $section->get('id'); ?>">
+									<div class="category-header">
+										<span class="category-title"><?php echo $this->escape(stripslashes($section->get('title'))); ?></span>
+										<span class="category-discussions count"><?php echo $section->get('threads'); ?></span>
+									</div><!-- / .category-header -->
+									<div class="category-content">
+									<?php
+									if ($section->categories)
+									{
+										foreach ($section->categories as $row)
+										{
+											?>
+											<div class="thread closed" id="ct<?php echo $row->get('id'); ?>" data-category="<?php echo $row->get('id'); ?>">
+												<div class="thread-header">
+													<span class="thread-title"><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+													<span class="thread-discussions count"><?php echo $row->get('threads'); ?></span>
+												</div><!-- / .thread-header -->
+												<div class="thread-content">
+													<?php
+														$this->view('_threads', 'threads')
+														     ->set('category', 'category' . $row->get('id'))
+														     ->set('option', $this->option)
+														     ->set('threads', isset($threads[$row->get('id')]) ? $threads[$row->get('id')] : null)
+														     ->set('unit', $row->get('alias'))
+														     ->set('lecture', $row->get('id'))
+														     ->set('config', $this->config)
+														     ->set('instructors', $instructors)
+														     ->set('cls', 'odd')
+														     ->set('base', $base)
+														     ->set('course', $this->course)
+														     ->set('active', $this->thread)
+														     ->display();
+													?>
+												</div><!-- / .thread-content -->
+											</div><!-- / .thread -->
+											<?php
+										}
+										?>
+									<?php } else { ?>
+										<p class="instructions">
+											<?php echo Lang::txt('There are no categories for this section.'); ?>
+										</p>
+									<?php } ?>
+									</div><!-- / .category-content -->
+								</div><!-- / .category -->
 						<?php } ?>
-						</div><!-- / .category-content -->
-					</div><!-- / .category -->
-			<?php } ?>
-		<?php } ?>
+					<?php } ?>
 				</div><!-- / .comment-threads -->
 
 			</div><!-- / .comments-feed -->
@@ -268,30 +295,30 @@ if (count($inst) > 0)
 									<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
 									<select name="fields[category_id]" id="field-category_id">
 										<option value="0"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
-				<?php
-								foreach ($this->sections as $section)
-								{
-									if ($section->categories)
-									{
-				?>
-										<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
-				<?php
-										foreach ($section->categories as $category)
+										<?php
+										foreach ($this->sections as $section)
 										{
-											if ($category->closed)
+											if ($section->categories)
 											{
-												continue;
+												?>
+												<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
+												<?php
+												foreach ($section->categories as $category)
+												{
+													if ($category->get('closed'))
+													{
+														continue;
+													}
+													?>
+													<option value="<?php echo $category->get('id'); ?>"><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+													<?php
+												}
+												?>
+												</optgroup>
+												<?php
 											}
-				?>
-										<option value="<?php echo $category->id; ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
-				<?php
 										}
-				?>
-										</optgroup>
-				<?php
-									}
-								}
-				?>
+										?>
 									</select>
 								</label>
 								</div>
@@ -310,8 +337,8 @@ if (count($inst) > 0)
 						<input type="hidden" name="fields[parent]" id="field-parent" value="0" />
 						<input type="hidden" name="fields[state]" id="field-state" value="1" />
 						<input type="hidden" name="fields[scope]" id="field-scope" value="course" />
-						<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_id'); ?>" />
-						<input type="hidden" name="fields[scope_sub_id]" id="field-scope_sub_id" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
+						<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->filters['scope_id']; ?>" />
+						<input type="hidden" name="fields[scope_sub_id]" id="field-scope_sub_id" value="<?php echo $this->filters['scope_sub_id']; ?>" />
 						<input type="hidden" name="fields[id]" id="field-id" value="" />
 						<input type="hidden" name="fields[object_id]" id="field-object_id" value="" />
 

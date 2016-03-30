@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,124 +32,178 @@
 defined('_HZEXEC_') or die();
 
 $base = $this->offering->link() . '&active=forum';
+
+$this->category->set('section_alias', $this->filters['section']);
+
+$this->thread->set('section', $this->filters['section']);
+$this->thread->set('category', $this->category->get('alias'));
 ?>
 <div class="filters">
 	<div class="filters-inner">
 		<p>
-			<a class="comments btn" href="<?php echo Route::url($base . '&unit=' . $this->category->alias); ?>">
+			<a class="comments btn" href="<?php echo Route::url($base . '&unit=' . $this->category->get('alias')); ?>">
 				<?php echo Lang::txt('All discussions'); ?>
 			</a>
 		</p>
 		<h3 class="thread-title">
-			<?php echo $this->escape(stripslashes($this->post->title)); ?>
+			<?php echo $this->escape(stripslashes($this->post->get('title'))); ?>
 		</h3>
 	</div>
 </div>
 
 <section class="main section">
 	<div class="subject">
-		<?php foreach ($this->notifications as $notification) { ?>
-			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } ?>
+		<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
+			<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
+		</h3>
 
-		<form action="<?php echo Route::url($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="get">
+		<?php
+		$threading = $this->config->get('threading', 'list');
+
+		$posts = $this->thread->thread()
+			->whereIn('state', $this->filters['state'])
+			->whereIn('access', $this->filters['access'])
+			->order(($threading == 'tree' ? 'lft' : 'created'), 'asc')
+			->paginated()
+			->rows();
+
+		if ($posts->count() > 0)
+		{
+			if ($threading == 'tree')
+			{
+				$posts = $this->thread->toTree($posts);
+			}
+
+			$this->view('_list')
+			     ->set('option', $this->option)
+			     ->set('group', $this->group)
+			     ->set('comments', $posts)
+			     ->set('thread', $this->thread)
+			     ->set('parent', 0)
+			     ->set('config', $this->config)
+			     ->set('depth', 0)
+			     ->set('cls', 'odd')
+			     ->set('filters', $this->filters)
+			     ->set('category', $this->category)
+			     ->display();
+		}
+		else
+		{
+			?>
+			<ol class="comments">
+				<li>
+					<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NO_REPLIES_FOUND'); ?></p>
+				</li>
+			</ol>
 			<?php
-			if ($this->rows)
-			{
-				$last = '0000-00-00 00:00:00';
-				foreach ($this->rows as $row)
-				{
-					if ($row->created > $last)
-					{
-						$last = $row->created;
-					}
-				}
-				echo '<input type="hidden" name="lastchange" id="lastchange" value="' . $last . '" />';
-				$this->view('list')
-				     ->set('option', $this->option)
-				     ->set('comments', $this->rows)
-				     ->set('post', $this->post)
-				     ->set('unit', $this->category->alias)
-				     ->set('lecture', $this->post->id)
-				     ->set('config', $this->config)
-				     ->set('depth', 0)
-				     ->set('cls', 'odd')
-				     ->set('base', $base)
-				     ->set('attach', $this->attach)
-				     ->set('course', $this->course)
-				     ->display();
-			}
-			else
-			{
-				?>
-				<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NO_REPLIES_FOUND'); ?></p>
-				<?php
-			}
+		}
+		?>
 
+		<form action="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')); ?>" method="get">
+			<?php
 			// Initiate paging
-			$pageNav = $this->pagination(
-				$this->total,
-				$this->filters['start'],
-				$this->filters['limit']
-			);
+			$pageNav = $posts->pagination;
 			$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 			$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
-			$pageNav->setAdditionalUrlParam('active', 'forum');
-			$pageNav->setAdditionalUrlParam('unit', $this->category->alias);
-			$pageNav->setAdditionalUrlParam('b', $this->post->id);
+			$pageNav->setAdditionalUrlParam('active', 'discussions');
+			$pageNav->setAdditionalUrlParam('unit', $this->category->get('alias'));
+			$pageNav->setAdditionalUrlParam('b', $this->post->get('id'));
 
-			echo $pageNav->render();
+			echo $pageNav;
 			?>
 		</form>
 	</div><!-- / .subject -->
 	<aside class="aside">
 		<div class="container">
 			<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ALL_TAGS'); ?></h4>
-			<?php if ($this->tags) { ?>
-				<?php echo $this->tags; ?>
+			<?php if ($this->thread->tags('cloud')) { ?>
+				<?php echo $this->thread->tags('cloud'); ?>
 			<?php } else { ?>
 				<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?></p>
 			<?php } ?>
 		</div><!-- / .container -->
-		<div class="container">
-			<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_PARTICIPANTS'); ?></h4>
-			<?php if ($this->participants) { ?>
+
+		<?php
+		$participants = $this->thread->participants()
+			->whereIn('state', $this->filters['state'])
+			->whereIn('access', $this->filters['access'])
+			->rows();
+
+		if ($participants->count() > 0) { ?>
+			<div class="container">
+				<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_PARTICIPANTS'); ?></h4>
 				<ul>
-				<?php
+					<?php
 					$anon = false;
-					foreach ($this->participants as $participant)
+					foreach ($participants as $participant)
 					{
-						if (!$participant->anonymous) {
-						?>
-						<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
-						<?php
-						} else if (!$anon) {
+						if (!$participant->get('anonymous'))
+						{
+							?>
+							<li>
+								<a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
+									<?php echo $this->escape(stripslashes($participant->get('name'))); ?>
+								</a>
+							</li>
+							<?php
+						}
+						// Only display "anonymous" once
+						elseif (!$anon)
+						{
 							$anon = true;
-						?>
-						<li><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS'); ?></li>
-						<?php
+							?>
+							<li>
+								<span class="member">
+									<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS'); ?>
+								</span>
+							</li>
+							<?php
 						}
 					}
-				?>
-				</ul>
-			<?php } ?>
-		</div><!-- / .container -->
-		<div class="container">
-			<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ATTACHMENTS'); ?></h4>
-			<?php if ($this->attachments) { ?>
-				<ul class="attachments">
-				<?php
-				foreach ($this->attachments as $attachment)
-				{
-					$title = ($attachment->description) ? $attachment->description : $attachment->filename;
 					?>
-					<li><a href="<?php echo Route::url($base . '&unit=' . $this->category->alias . '&b=' . $attachment->parent . '&c=' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
-				<?php } ?>
 				</ul>
-			<?php } else { ?>
-				<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?></p>
-			<?php } ?>
-		</div><!-- / .container -->
+			</div><!-- / .container -->
+		<?php } ?>
+
+		<?php
+		$attachments = Components\Forum\Models\Attachment::all()
+			->whereEquals('parent', $this->thread->get('thread'))
+			->whereIn('state', $this->filters['state'])
+			->rows();
+
+		if ($attachments->count() > 0) { ?>
+			<div class="container">
+				<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ATTACHMENTS'); ?></h4>
+				<ul class="attachments">
+					<?php
+					foreach ($attachments as $attachment)
+					{
+						if ($attachment->get('status') != $attachment::STATE_DELETED)
+						{
+							$cls = 'file';
+							$title = trim($attachment->get('description', $attachment->get('filename')));
+							$title = ($title ? $title : $attachment->get('filename'));
+
+							// trims long titles
+							$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
+
+							if ($attachment->isImage())
+							{
+								$cls = 'img';
+							}
+							?>
+							<li>
+								<a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $attachment->get('parent') . '&c=' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
+									<?php echo $this->escape($title); ?>
+								</a>
+							</li>
+							<?php
+						} //end status check
+					}
+					?>
+				</ul>
+			</div><!-- / .container -->
+		<?php } ?>
 	</aside><!-- / .aside  -->
 </section><!-- / .main section -->
 
@@ -159,17 +212,17 @@ $base = $this->offering->link() . '&active=forum';
 		<h3 class="post-comment-title">
 			<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ADD_COMMENT'); ?>
 		</h3>
-		<form action="<?php echo Route::url($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
 				$anon = 1;
-				$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
+				$user = \Hubzero\User\Profile::getInstance(User::get('id'));
 				if (!User::isGuest())
 				{
 					$anon = 0;
 				}
 				?>
-				<img src="<?php echo $jxuser->getPicture($anon); ?>" alt="" />
+				<img src="<?php echo $user->getPicture($anon); ?>" alt="" />
 			</p>
 
 			<fieldset>
@@ -221,8 +274,8 @@ $base = $this->offering->link() . '&active=forum';
 			<?php } ?>
 
 			</fieldset>
-			<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->category_id; ?>" />
-			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->id; ?>" />
+			<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->get('category_id'); ?>" />
+			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->get('id'); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[scope]" value="course" />
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->offering->get('id'); ?>" />
@@ -231,7 +284,7 @@ $base = $this->offering->link() . '&active=forum';
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 			<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
-			<input type="hidden" name="active" value="forum" />
+			<input type="hidden" name="active" value="discussions" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
 
