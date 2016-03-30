@@ -687,7 +687,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/0936609de1f2f12ed8068f30a6b7430d2be8e77e",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/adb16500baeb7447741c90f3fb83fc15c198a08b",
                 "reference": "0936609de1f2f12ed8068f30a6b7430d2be8e77e",
                 "shasum": ""
             },
@@ -724,16 +724,16 @@
         },
         {
             "name": "hubzero/orcid-php",
-            "version": "v0.1.2",
+            "version": "v0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "1370539e4483a050a6c8766e093f64c4201dc647"
+                "reference": "15fb2dd2ba6586e9f38afd35a06bceb46e9fc533"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/1370539e4483a050a6c8766e093f64c4201dc647",
-                "reference": "1370539e4483a050a6c8766e093f64c4201dc647",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/15fb2dd2ba6586e9f38afd35a06bceb46e9fc533",
+                "reference": "15fb2dd2ba6586e9f38afd35a06bceb46e9fc533",
                 "shasum": ""
             },
             "require": {
@@ -743,7 +743,7 @@
             "require-dev": {
                 "mockery/mockery": "dev-master",
                 "phpunit/phpunit": "4.*",
-                "satooshi/php-coveralls": "dev-master"
+                "satooshi/php-coveralls": "1.0.*"
             },
             "type": "library",
             "autoload": {
@@ -761,7 +761,7 @@
                 "orcid",
                 "php"
             ],
-            "time": "2015-12-04 15:09:31"
+            "time": "2016-03-30 19:39:04"
         },
         {
             "name": "knplabs/github-api",
@@ -2023,7 +2023,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/e597b2047e5a722dc18d7a629a2964b4ca606441",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/64d0c313c5fa6db3c113f577b47da45a0591ef4e",
                 "reference": "ee88cd05073533b10678772fe954d042748393c3",
                 "shasum": ""
             },
