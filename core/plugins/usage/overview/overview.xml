@@ -43,6 +43,11 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
+			<fieldset name="basic">
+				<field name="currentYear" type="text" menu="hide" default="" label="PLG_USAGE_OVERVIEW_ENDYEAR_LABEL" description="PLG_USAGE_OVERVIEW_ENDYEAR_DESC" />
+				<field name="currentMonth" type="text" menu="hide" default="" label="PLG_USAGE_OVERVIEW_ENDMONTH_LABEL" description="PLG_USAGE_OVERVIEW_ENDMONTH_DESC" />
+				<field name="message" type="textarea" rows="5" cols="40" default="" label="PLG_USAGE_OVERVIEW_MESSAGE_LABEL" description="PLG_USAGE_OVERVIEW_MESSAGE_DESC" />
+			</fieldset>
 		</fields>
 	</config>
 </extension>
