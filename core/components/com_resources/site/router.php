@@ -122,7 +122,7 @@ class Router extends Base
 		{
 			$vars['id'] = $segments[0];
 		}
-		elseif (in_array($segments[0], array('browse', 'license', 'sourcecode')))
+		elseif (in_array($segments[0], array('browse', 'license', 'sourcecode', 'plugin')))
 		{
 			$vars['task'] = $segments[0];
 		}

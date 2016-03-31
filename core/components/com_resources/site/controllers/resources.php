@@ -2042,10 +2042,15 @@ class Resources extends SiteController
 		}
 
 		// Call the trigger
+		$html = '';
+
 		$results = Event::trigger('resources.' . $trigger, array($this->_option));
-		if (is_array($results))
+		if (is_array($results) && !empty($results))
 		{
-			$html = $results[0]['html'];
+			foreach ($results as $result)
+			{
+				$html .= (is_array($result) ? $result['html'] : (string)$result);
+			}
 		}
 
 		// Output HTML
