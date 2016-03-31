@@ -566,6 +566,7 @@ class Membership extends AdminController
 
 		// Incoming array of users to demote
 		$mbrs = Request::getVar('id', array());
+
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
@@ -590,8 +591,23 @@ class Membership extends AdminController
 			}
 			else
 			{
-				$this->setError(Lang::txt('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
+				// Check to see if removing an invite
+				$db = App::get('db');
+				$inviteEmail = new \Hubzero\User\Group\InviteEmail($db);
+				$invites = $inviteEmail->getInviteEmails($this->group->get('gidNumber'));
+				foreach ($invites as $invite)
+				{
+					if (in_array($invite['email'], $mbrs))
+					{
+						$arr = array($invite['email']);
+						$inviteEmail->removeInvites($this->group->get('gidNumber'), $arr);
+					}
+					else
+					{
+						$this->setError(Lang::txt('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+					}
+				} // end foreach
+			} // end else
 		}
 
 		// Remove users from members list
