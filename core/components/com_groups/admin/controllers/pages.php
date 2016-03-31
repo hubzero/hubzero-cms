@@ -456,7 +456,7 @@ class Pages extends AdminController
 		$currentVersion->set('scanned', 1);
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
-		$currentVersion->store(false, $this->group->isSuperGroup());
+		$currentVersion->store(false, 1);
 
 		// were all set
 		App::redirect(
@@ -534,7 +534,7 @@ class Pages extends AdminController
 		$currentVersion->set('checked_errors', 1);
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
-		$currentVersion->store(false, $this->group->isSuperGroup());
+		$currentVersion->store(false, 1);
 
 		// delete temp file
 		register_shutdown_function(function($file){
@@ -715,7 +715,7 @@ class Pages extends AdminController
 		$currentVersion->set('approved_by', User::get('id'));
 
 		// save version with approved status
-		if (!$currentVersion->store(false, $this->group->isSuperGroup()))
+		if (!$currentVersion->store(false, 1))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
