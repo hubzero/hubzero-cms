@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -875,7 +874,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing an entry
 	 *
-	 * @param   object  $row
+	 * @param   object  $entry
 	 * @return  string
 	 */
 	private function _edit($entry=null)
@@ -1258,7 +1257,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Repost an entry
+	 * Remove an entry
 	 *
 	 * @return  string
 	 */
@@ -1794,6 +1793,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($collection);
 		}
 
+		if ($collection->get('access') != 0 && $collection->get('access') != 4)
+		{
+			$collection->set('access', 0);
+		}
+
 		// Store new content
 		if (!$collection->store())
 		{
@@ -1886,14 +1890,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				->set('option', $this->option)
 				->set('group', $this->group)
 				->set('params', $this->params)
-				->set('action', $this->action)
-				->set('settings', $settings)
 				->set('collection', $collection)
 				->set('no_html', $this->no_html);
 
-			return $view
-				->setErrors($this->getErrors())
-				->loadTemplate();
+			return $view->loadTemplate();
 		}
 
 		Request::checkToken();

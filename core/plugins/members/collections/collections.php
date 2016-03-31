@@ -596,7 +596,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of items in a collection
 	 *
-	 * @return     string
+	 * @param   string  $what
+	 * @return  string
 	 */
 	private function _unfollow($what='collection')
 	{
@@ -664,7 +665,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of items in a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _feed()
 	{
@@ -723,16 +724,16 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of items in a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _posts()
 	{
-		$view = $this->view('default', 'collection');
-		$view->name       = $this->_name;
-		$view->member     = $this->member;
-		$view->option     = $this->option;
-		$view->params     = $this->params;
-		$view->model      = $this->model;
+		$view = $this->view('default', 'collection')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('member', $this->member)
+			->set('params', $this->params)
+			->set('model', $this->model);
 
 		// Filters for returning results
 		$view->filters = array(
@@ -789,24 +790,18 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _post()
 	{
-		$view = $this->view('default', 'post');
-		$view->option     = $this->option;
-		$view->member     = $this->member;
-		$view->params     = $this->params;
-		$view->name       = $this->_name;
-		$view->model      = $this->model;
-
 		$post_id = Request::getInt('post', 0);
 
-		$view->post = \Components\Collections\Models\Post::getInstance($post_id);
+		$post = \Components\Collections\Models\Post::getInstance($post_id);
 
-		if (!$view->post->exists())
+		if (!$post->exists())
 		{
 			return $this->_collections();
 		}
 
-		$view->collection = $this->model->collection($view->post->get('collection_id'));
-		if ($view->collection->get('access') == 4 // private collection
+		$collection = $this->model->collection($post->get('collection_id'));
+
+		if ($collection->get('access') == 4 // private collection
 		 && User::get('id') != $this->member->get('uidNumber')) // is user the collection owner?
 		{
 			$this->params->set('access-view-item', false);
@@ -819,14 +814,20 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$no_html = Request::getInt('no_html', 0);
 
-		$view->no_html = Request::getInt('no_html', 0);
+		$view = $this->view('default', 'post')
+			->set('name', $this->_name)
+			->set('option', $this->option)
+			->set('member', $this->member)
+			->set('params', $this->params)
+			->set('model', $this->model)
+			->set('no_html', $no_html)
+			->set('collection', $collection)
+			->set('post', $post)
+			->setErrors($this->getErrors());
 
-		if ($view->no_html)
+		if ($no_html)
 		{
 			$view->display();
 			exit;
@@ -838,7 +839,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for creating an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _new()
 	{
@@ -848,9 +849,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing an entry
 	 *
-	 * @return     string
+	 * @param   object  $entry
+	 * @return  string
 	 */
-	private function _edit()
+	private function _edit($entry=null)
 	{
 		if (User::isGuest())
 		{
@@ -901,7 +903,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$view->collection  = $this->model->collection(Request::getVar('board', 0));
 		}
 
-		$view->entry = $view->collection->post($id);
+		$view->entry = (is_object($entry) ? $entry : $view->collection->post($id));
 		if (!$view->collection->exists() && $view->entry->exists())
 		{
 			$view->collection = $this->model->collection($view->entry->get('collection_id'));
@@ -932,7 +934,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _save()
 	{
@@ -959,33 +961,33 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get model
-		$row = new \Components\Collections\Models\Item(intval($fields['id']));
+		$item = new \Components\Collections\Models\Item(intval($fields['id']));
 
 		// Bind content
-		if (!$row->bind($fields))
+		if (!$item->bind($fields))
 		{
-			$this->setError($row->getError());
-			return $this->_edit($row);
+			$this->setError($item->getError());
+			return $this->_edit($item);
 		}
 
 		// Add some data
 		if ($files  = Request::getVar('fls', '', 'files', 'array'))
 		{
-			$row->set('_files', $files);
+			$item->set('_files', $files);
 		}
-		$row->set('_assets', Request::getVar('assets', null, 'post'));
-		$row->set('_tags', trim(Request::getVar('tags', '')));
-		$row->set('state', 1);
-		if (!$row->exists())
+		$item->set('_assets', Request::getVar('assets', null, 'post'));
+		$item->set('_tags', trim(Request::getVar('tags', '')));
+		$item->set('state', 1);
+		if (!$item->exists())
 		{
-			$row->set('access', 0);
+			$item->set('access', 0);
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$item->store())
 		{
-			$this->setError($row->getError());
-			return $this->_edit($row);
+			$this->setError($item->getError());
+			return $this->_edit($item);
 		}
 
 		// Create a post entry linking the item to the board
@@ -994,7 +996,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
 		{
-			$post->set('item_id', $row->get('id'));
+			$post->set('item_id', $item->get('id'));
 			$post->set('original', 1);
 		}
 
@@ -1023,16 +1025,47 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Check for any errors
 		if ($this->getError())
 		{
-			return $this->_edit($row);
+			//return $this->_edit($row);
+			Request::setVar('post', $p['id']);
+			return $this->_edit($post->item()->bind($fields));
 		}
 
-		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $this->model->collection($p['collection_id'])->get('alias')));
+		if (!isset($collection))
+		{
+			$collection = new \Components\Collections\Models\Collection($p['collection_id']);
+		}
+
+		$url = $this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias');
+
+		// Record the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($p['id'] ? 'updated' : 'created'),
+				'scope'       => 'collections.item',
+				'scope_id'    => $item->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'collection_id' => $collection->get('id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $post->get('item_id'),
+					'url'           => $url
+				)
+			],
+			'recipients' => [
+				['collection', $collection->get('id')],
+				['user', $item->get('created_by')]
+			]
+		]);
+
+		App::redirect(
+			Route::url($url)
+		);
 	}
 
 	/**
 	 * Repost an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _repost()
 	{
@@ -1134,6 +1167,30 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->getError();
 		}
 
+		// Record the activity
+		if (!isset($collection))
+		{
+			$collection = new \Components\Collections\Models\Collection($collection_id);
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'created',
+				'scope'       => 'collections.post',
+				'scope_id'    => $post->id,
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_CREATED', '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'collection_id' => $post->collection_id,
+					'item_id'       => $post->item_id,
+					'post_id'       => $post->id
+				)
+			],
+			'recipients' => [
+				['collection', $collection_id],
+				['user', $post->get('created_by')]
+			]
+		]);
+
 		// Display updated item stats if called via AJAX
 		if ($no_html)
 		{
@@ -1146,9 +1203,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Repost an entry
+	 * Remove a post
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _remove()
 	{
@@ -1180,6 +1237,25 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
+		// Record the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.post',
+				'scope_id'    => $post->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_DELETED', '<a href="' . $route . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'collection_id' => $post->get('collection_id'),
+					'item_id'       => $post->get('item_id'),
+					'post_id'       => $post->get('id')
+				)
+			],
+			'recipients' => [
+				['collection', $collection->get('id')],
+				['user', $post->get('created_by')]
+			]
+		]);
+
 		if (Request::getInt('no_html', 0))
 		{
 			echo $route;
@@ -1192,7 +1268,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Move a post to another collection
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _move()
 	{
@@ -1231,7 +1307,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _delete()
 	{
@@ -1311,6 +1387,26 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Redirect to collection
 		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
+		// Record the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.item',
+				'scope_id'    => $item->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_DELETED', '<a href="' . $route . '">' . $item->get('title') . '</a>'),
+				'details'     => array(
+					'collection_id' => $post->get('collection_id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $item->get('id'),
+					'url'           => $route
+				)
+			],
+			'recipients' => [
+				['collection', $post->get('collection_id')],
+				['user', $item->get('created_by')]
+			]
+		]);
+
 		if ($no_html)
 		{
 			echo $route;
@@ -1323,7 +1419,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _savecomment()
 	{
@@ -1346,13 +1442,46 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_post();
 		}
 
+		// Log activity
+		$post = new \Components\Collections\Models\Post(Request::getInt('post', 0));
+
+		$recipients = array(
+			['collection', $post->get('collection_id')],
+			['user', $comment->get('created_by')]
+		);
+		if ($comment->get('parent'))
+		{
+			$recipients[] = ['user', $comment->parent()->get('created_by')];
+		}
+
+		$title = $post->item()->get('title');
+		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
+		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$url = Route::url('index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment');
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($data['id'] ? 'updated' : 'created'),
+				'scope'       => 'collections.comment',
+				'scope_id'    => $comment->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . $url . '#c' . $comment->get('id') . '">' . $title . '</a>'),
+				'details'     => array(
+					'collection_id' => $post->get('collection_id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $row->get('item_id'),
+					'url'           => $url . '#c' . $comment->get('id')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		return $this->_post();
 	}
 
 	/**
 	 * Delete a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _deletecomment()
 	{
@@ -1386,7 +1515,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Vote for an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _vote()
 	{
@@ -1413,14 +1542,38 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Get the collection model
 		$collection = $this->model->collection($post->get('collection_id'));
 
+		$url = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+
+		// Record the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'voted',
+				'scope'       => 'collections.item',
+				'scope_id'    => $post->item()->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_VOTED', '<a href="' . $url . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'collection_id' => $collection->get('id'),
+					'post_id'       => $post->get('id'),
+					'item_id'       => $post->item()->get('id')
+				)
+			],
+			'recipients' => [
+				['collection', $collection->get('id')],
+				['user', $post->item()->get('created_by')],
+				['user', User::get('id')]
+			]
+		]);
+
 		// Display the main listing
-		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
+		App::redirect(
+			$url
+		);
 	}
 
 	/**
 	 * Display a form for creating a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _newcollection()
 	{
@@ -1430,7 +1583,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing a collection
 	 *
-	 * @return     string
+	 * @param   object  $row
+	 * @return  string
 	 */
 	private function _editcollection($row=null)
 	{
@@ -1492,7 +1646,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _savecollection()
 	{
@@ -1517,32 +1671,57 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$fields['id'] = intval($fields['id']);
 
 		// Bind new content
-		$row = new \Components\Collections\Models\Collection();
-		if (!$row->bind($fields))
+		$collection = new \Components\Collections\Models\Collection();
+
+		if (!$collection->bind($fields))
 		{
-			$this->setError($row->getError());
-			return $this->_editcollection($row);
+			$this->setError($collection->getError());
+			return $this->_editcollection($collection);
 		}
-		if ($row->get('access') != 0 && $row->get('access') != 4)
+
+		if ($collection->get('access') != 0 && $collection->get('access') != 4)
 		{
-			$row->set('access', 0);
+			$collection->set('access', 0);
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$collection->store())
 		{
-			$this->setError($row->getError());
-			return $this->_editcollection($row);
+			$this->setError($collection->getError());
+			return $this->_editcollection($collection);
 		}
 
+		$url = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all');
+
+		// Record the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'collections.collection',
+				'scope_id'    => $collection->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . $url . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $collection->get('title'),
+					'id'    => $collection->get('id'),
+					'url'   => $url
+				)
+			],
+			'recipients' => [
+				['collection', $collection->get('id')],
+				['user', $collection->get('created_by')]
+			]
+		]);
+
 		// Redirect to collection
-		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all'));
+		App::redirect(
+			$url
+		);
 	}
 
 	/**
 	 * Delete a collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _deletecollection()
 	{
@@ -1584,19 +1763,16 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = $this->view('delete', 'collection');
-			$view->option     = $this->option;
-			$view->member     = $this->member;
 			$view->task       = $this->action;
-			$view->params     = $this->params;
-			$view->collection = $collection;
-			$view->no_html    = $no_html;
-			$view->name       = $this->_name;
 
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view = $this->view('delete', 'collection')
+				->set('name', $this->_name)
+				->set('option', $this->option)
+				->set('member', $this->member)
+				->set('params', $this->params)
+				->set('collection', $collection)
+				->set('no_html', $this->no_html)
+				->setErrors($this->getErrors());
 
 			return $view->loadTemplate();
 		}
@@ -1609,6 +1785,25 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError($collection->getError());
 		}
+
+		// Record the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'collections.collection',
+				'scope_id'    => $collection->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED', '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $collection->get('title'),
+					'id'    => $collection->get('id'),
+					'url'   => $collection->link()
+				)
+			],
+			'recipients' => [
+				['collection', $collection->get('id')],
+				['user', $collection->get('created_by')]
+			]
+		]);
 
 		// Redirect to main view
 		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all');
@@ -1625,9 +1820,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set permissions
 	 *
-	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
-	 * @param      integer $assetId   Specific object to check permissions for
-	 * @return     void
+	 * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
+	 * @param   integer  $assetId    Specific object to check permissions for
+	 * @return  void
 	 */
 	protected function _authorize($assetType='plugin', $assetId=null)
 	{
@@ -1708,7 +1903,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				//$this->_subject->setError($e->getMessage());
 				return false;
 			}
 		}
@@ -1759,7 +1953,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				//$this->_subject->setError($e->getMessage());
 				return false;
 			}
 		}
