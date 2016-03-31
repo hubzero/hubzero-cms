@@ -590,7 +590,20 @@ class Membership extends AdminController
 			}
 			else
 			{
-				$this->setError(Lang::txt('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				// Check to see if email is matching
+				$inviteEmail = new \Hubzero\User\Group\InviteEmail();
+				$invites = $inviteEmail->all()->where('gidNumber', '=', $this->group->get('gidNumber'))->rows();
+				foreach ($invites as $invite)
+				{
+					if ($invite->email ==  $mbr)
+					{
+						$invite->destroy();
+					}
+					else
+					{
+						$this->setError(Lang::txt('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+					}
+				}
 			}
 		}
 

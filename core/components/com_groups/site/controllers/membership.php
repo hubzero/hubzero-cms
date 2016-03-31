@@ -335,7 +335,10 @@ class Membership extends Base
 		foreach ($inviteemails as $ie)
 		{
 			$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
-			$group_inviteemails->save($ie);
+			$group_inviteemails->set('email', $ie['email']);
+			$group_inviteemails->set('gidNumber', $ie['gidNumber']);
+			$group_inviteemails->set('token', $ie['token']);
+			$group_inviteemails->save();
 		}
 
 		// log invites
