@@ -543,6 +543,12 @@ class Post extends Relational
 			$this->set('access', (int) \Config::get('access'));
 		}
 
+		if ($this->isNew() && !$this->get('parent'))
+		{
+			$this->set('lft', 0);
+			$this->set('rgt', 1);
+		}
+
 		if ($this->isNew() && $this->get('parent'))
 		{
 			$parent = $this->parent();
@@ -567,7 +573,7 @@ class Post extends Relational
 				->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val'])
 				->whereEquals('scope', $parent->get('scope'))
 				->whereEquals('scope_id', $parent->get('scope_id'))
-				->whereEquals('object_id', $parent->get('object_id'));
+				->whereEquals('thread', $parent->get('thread'));
 			if (!$query->execute())
 			{
 				$this->setError($query->getError());
@@ -581,7 +587,7 @@ class Post extends Relational
 				->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val'])
 				->whereEquals('scope', $parent->get('scope'))
 				->whereEquals('scope_id', $parent->get('scope_id'))
-				->whereEquals('object_id', $parent->get('object_id'));
+				->whereEquals('thread', $parent->get('thread'));
 			if (!$query->execute())
 			{
 				$this->setError($query->getError());
