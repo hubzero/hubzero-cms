@@ -44,7 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="browsers" type="textarea" rows="15" cols="40" default="" label="Minimum OS/Browsers" description="A list of minimum OS/Browser required. One entry per line, the pattern is 'OS, BROWSER MAJOR.MINOR'. If all OSes apply, us an asterisk." />
+				<field name="browsers" type="textarea" rows="15" cols="40" default="*, safari 1.0&#13;&#10;*, chrome 999999.0&#13;&#10;*, iceweasel 1.0&#13;&#10;*, firefox 1.0&#13;&#10;*, opera 1.0&#13;&#10;*, IE 3.0&#13;&#10;*, mozilla 5.0&#13;&#10;iOS, Safari 9999.9" label="Minimum OS/Browsers" description="A list of minimum OS/Browser required. One entry per line, the pattern is 'OS, BROWSER MAJOR.MINOR'. If all OSes apply, us an asterisk." />
 				<field name="regexes" type="textarea" rows="15" cols="40" default="" label="UAS Regexes" description="A list of regular expressions to run against the User Agent String. One entry per line. If a UAS matches a pattern, the plugin will no render." />
 			</fieldset>
 		</fields>
