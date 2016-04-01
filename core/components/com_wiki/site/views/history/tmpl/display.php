@@ -37,6 +37,8 @@ if (!$this->sub)
 {
 	$this->css();
 }
+
+$revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), true);
 ?>
 	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<?php if (count($this->parents)) { ?>
@@ -94,7 +96,7 @@ if (!$this->sub)
 
 		<form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post">
 			<p class="info">
-				<?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($this->page->revisions()), '<time datetime="' . $this->page->get('created') . '">' . $this->page->get('created') . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . $this->page->get('modified') . '</time>'); ?>
+				<?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . $this->page->get('created') . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . $this->page->get('modified') . '</time>'); ?>
 			</p>
 
 			<div class="container">
@@ -120,7 +122,7 @@ if (!$this->sub)
 					$i = 0;
 					$cur = 0;
 					$cls = 'even';
-					foreach ($this->page->revisions('list', array('sortby' => 'version DESC'), true) as $revision)
+					foreach ($revisions as $revision)
 					{
 						$i++;
 
