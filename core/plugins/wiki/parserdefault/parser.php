@@ -1654,6 +1654,9 @@ class WikiParser
 			'/(\b ?|\s|^)[([]TM[])]/i', 						 //  trademark
 			'/(\b ?|\s|^)[([]R[])]/i',							 //  registered
 			'/(\b ?|\s|^)[([]C[])]/i',							 //  copyright
+			'/(\b ?|\s|^)!([([]TM[])])/i', 						 //  NOT trademark
+			'/(\b ?|\s|^)!([([]R[])])/i',						 //  NOT registered
+			'/(\b ?|\s|^)!([([]C[])])/i',						 //  NOT copyright
 		);
 
 		$glyph = array(
@@ -1690,6 +1693,9 @@ class WikiParser
 			'$1' . $txt_trademark,               //  trademark
 			'$1' . $txt_registered,              //  registered
 			'$1' . $txt_copyright,               //  copyright
+			'$1$2',
+			'$1$2',
+			'$1$2'
 		);
 
 		$text = preg_split("@(<[\w/!?].*>)@Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
