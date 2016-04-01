@@ -587,11 +587,23 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// timezone
 		$timezone = new DateTimezone(Config::get('offset'));
 
+		// Handle all-day events, iCal is literal
+		// Interpreted as <up>12:00am - <down>11:59pm
+		$allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
+		if ($allday)
+		{
+			$event['publish_up'] = $event['publish_up'] . ' 12:00am';
+			$event['publish_up'] = Date::of($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
+
+			$event['publish_down'] = $event['publish_down'] . '11:59pm';
+			$event['publish_down'] = Date::of($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
+		}
+
 		//parse publish up date/time
-		if (isset($event['publish_up']) && $event['publish_up'] != '')
+		if (isset($event['publish_up']) && $event['publish_up'] != '' && !$allday)
 		{
 			// combine date & time
-			if (isset($event['publish_up_time']))
+			if (isset($event['publish_up_time']) && !$allday)
 			{
 				$event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
 			}
@@ -599,8 +611,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			unset($event['publish_up_time']);
 		}
 
+
 		//parse publish down date/time
-		if (isset($event['publish_down']) && $event['publish_down'] != '')
+		if (isset($event['publish_down']) && $event['publish_down'] != '' && !$allday)
 		{
 			// combine date & time
 			if (isset($event['publish_down_time']))
@@ -668,7 +681,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$up     = strtotime($event['publish_up']);
 			$down   = strtotime($event['publish_down']);
-			$allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
 
 			// make sure up greater than down when not all day
 			// when all day event up can equal down
