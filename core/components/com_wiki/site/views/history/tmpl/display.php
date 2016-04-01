@@ -96,7 +96,7 @@ $revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), t
 
 		<form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post">
 			<p class="info">
-				<?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . $this->page->get('created') . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . $this->page->get('modified') . '</time>'); ?>
+				<?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . Date::of($this->page->get('created'))->toSql(true) . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . Date::of($this->page->get('modified'))->toSql(true) . '</time>'); ?>
 			</p>
 
 			<div class="container">
@@ -189,7 +189,7 @@ $revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), t
 							<?php } ?>
 								<td>
 									<a href="<?php echo Route::url($this->page->link() . '&version=' . $revision->get('version')); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
-										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape($revision->get('created')); ?></time>
+										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toSql(true)); ?></time>
 									</a>
 									<a class="tooltips markup" href="<?php echo Route::url($this->page->link() . '&version=' . $revision->get('version') . '&format=raw'); ?>" title="<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE'); ?>">
 										<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP'); ?>
