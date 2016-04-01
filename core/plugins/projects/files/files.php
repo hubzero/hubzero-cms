@@ -1880,6 +1880,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
+					// Clean up the /tmp directory from zip files (download multiple files)
+					$temp_path = sys_get_temp_dir();
+					$matches = array();
+					preg_match('/^(\\/tmp.*?\\.zip)/is', $downloadPath, $matches);
+					if (!empty($matches))
+					{
+						\Hubzero\Filesystem::delete($downloadPath);
+					}
+
 					exit;
 				}
 			}
