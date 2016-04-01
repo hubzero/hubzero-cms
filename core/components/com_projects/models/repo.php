@@ -1211,12 +1211,15 @@ class Repo extends Object
 			{
 				chdir($tempPath);
 				exec('tar zxvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out );
+				\Filesystem::delete($tmp_name);
 			}
 			catch (Exception $e)
 			{
 				$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
+				\Filesystem::delete($tmp_name);
 				return false;
 			}
+
 		}
 		else
 		{
@@ -1237,10 +1240,17 @@ class Repo extends Object
 			{
 				$zip->extractTo($extractPath);
 				$zip->close();
+
+				// Remove original file
+				\Filesystem::delete($tmp_name);
 			}
 			else
 			{
 				$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
+
+				// Remove original file
+				\Filesystem::delete($tmp_name);
+
 				return false;
 			}
 		}
@@ -1362,6 +1372,9 @@ class Repo extends Object
 				$z++;
 			}
 		}
+
+		\Filesystem::delete($extractPath);
+		Filesystem::deleteDirectory($extractPath);
 
 		return $z;
 	}
