@@ -32,7 +32,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$base = rtrim(Request::base(true), '/');
+$base = Request::getVar('REQUEST_URI', rtrim(Request::base(true), '/'), 'server');
 
 ?>
 <?php if ($this->params->get('button', 0) == 1) { ?>
@@ -57,7 +57,7 @@ $base = rtrim(Request::base(true), '/');
 				<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
 					<div class="breadcrumbs">
 						<p>
-							<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
+							<a href="<?php echo rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?'); ?>" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
 							&rsaquo;
 							<strong><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></strong>
 						</p>
@@ -65,9 +65,7 @@ $base = rtrim(Request::base(true), '/');
 				<?php } ?>
 				<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 					<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
-						<p>
-							<?php echo $this->escape(stripslashes($quote->get('quote'))); ?>
-						</p>
+						<?php echo $this->escape(stripslashes($quote->get('quote'))); ?>
 					<?php } else { ?>
 						<p>
 							<?php
@@ -75,15 +73,17 @@ $base = rtrim(Request::base(true), '/');
 							{
 								$quote->set('short_quote', \Hubzero\Utility\String::truncate($quote->get('quote'), 250));
 							}
+							$quote->set('short_quote', html_entity_decode(stripslashes($quote->get('short_quote'))));
+							$quote->set('short_quote', strip_tags($quote->get('short_quote')));
 							?>
 							<?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
-								<?php echo $this->escape(rtrim(stripslashes($quote->get('short_quote')), '.')); ?>
+								<?php echo $this->escape(rtrim($quote->get('short_quote'), '.')); ?>
 								 &#8230;
-								<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->get('id'); ?>" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))); ?>">
+								<a href="<?php echo $base . (strstr($base, '?') ? '&amp;' : '?'); ?>quoteid=<?php echo $quote->get('id'); ?>" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))); ?>">
 									<?php echo Lang::txt('MOD_QUOTES_MORE'); ?>
 								</a>
 							<?php } else { ?>
-								<?php echo $this->escape(stripslashes($quote->get('short_quote'))); ?>
+								<?php echo $this->escape($quote->get('short_quote')); ?>
 							<?php } ?>
 						</p>
 					<?php } ?>
