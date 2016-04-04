@@ -170,11 +170,14 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$view->option = $option;
 				$view->group  = $group;
 
+				Lang::load('com_search', PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site');
+
 				ob_start();
 				$_GET['group'] = $group->gidNumber;
+				Request::setVar('group', $group->gidNumber);
 				define('HG_INLINE', 1);
-				require PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'controllers' . DS . 'hubgraph.php';
-				$controller = new \Components\Search\Controllers\Hubgraph();
+				require PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site' . DS . 'controllers' . DS . 'hubgraph.php';
+				$controller = new \Components\Search\Site\Controllers\Hubgraph();
 				$controller->execute();
 				$controller->redirect();
 
