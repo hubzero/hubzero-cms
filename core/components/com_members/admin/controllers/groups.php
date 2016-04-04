@@ -123,7 +123,7 @@ class Groups extends AdminController
 		$users_mem = array();
 		$users_man = array();
 
-		// Incoming array of users to remove
+		// User ID
 		$id = Request::getInt('id', 0);
 
 		// Ensure we found an account
@@ -150,6 +150,39 @@ class Groups extends AdminController
 
 		// Save changes
 		$group->update();
+
+		// Push through to the groups view
+		$this->displayTask($id);
+	}
+
+	/**
+	 * Update member option
+	 *
+	 * @return void
+	 */
+	public function updateTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$options = Request::getVar('memberoption', array());
+
+		// User ID
+		$id = Request::getInt('id', 0);
+
+		// Ensure we found an account
+		if (!$id)
+		{
+			\App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+		}
+
+		$db = \App::get('db');
+
+		foreach ($options as $key => $option)
+		{
+			$db->setQuery("UPDATE `#__xgroups_memberoption` SET `optionvalue`=" . $db->quote($option) . " WHERE `id`=" . $db->quote($key));
+			$db->query();
+		}
 
 		// Push through to the groups view
 		$this->displayTask($id);

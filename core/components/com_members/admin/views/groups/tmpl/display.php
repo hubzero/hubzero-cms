@@ -33,7 +33,7 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="groups">
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
 		<table>
 			<tbody>
 				<tr>
@@ -65,8 +65,16 @@ defined('_HZEXEC_') or die();
 				</tr>
 			</tbody>
 		</table>
+	</form>
 
-		<br />
+	<br />
+
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+		<input type="hidden" name="tmpl" value="component" />
+		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="task" value="update" />
 
 		<table class="paramlist admintable">
 			<tbody>
@@ -96,6 +104,8 @@ defined('_HZEXEC_') or die();
 					}
 				}
 
+				$db = App::get('db');
+
 				if (count($groups) > 0)
 				{
 					foreach ($groups as $group)
@@ -106,6 +116,23 @@ defined('_HZEXEC_') or die();
 								<a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn); ?>" target="_parent">
 									<?php echo $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')'; ?>
 								</a>
+								<?php
+								$db->setQuery("SELECT * FROM `#__xgroups_memberoption` WHERE userid=" . $db->quote($this->id) . " AND gidNumber=" . $db->quote($group->gidNumber));
+								$options = $db->loadObjectList();
+								if ($options)
+								{
+									foreach ($options as $option)
+									{
+										?>
+										<div style="padding-left:1em;">
+											<label for="memberoption-<?php echo $this->escape($option->id); ?>"><?php echo $this->escape($option->optionname); ?></label>
+											<input name="memberoption[<?php echo $this->escape($option->id); ?>]" id="memberoption-<?php echo $this->escape($option->id); ?>" size="3" value="<?php echo $this->escape($option->optionvalue); ?>" />
+											<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_UPDATE'); ?>" />
+										</div>
+										<?php
+									}
+								}
+								?>
 							</td>
 							<td>
 								<?php
@@ -131,7 +158,7 @@ defined('_HZEXEC_') or die();
 								?>
 							</td>
 							<td>
-								<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&' . Session::getFormToken() . '=1'); ?>">
+								<a class="state trash icon-trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&' . Session::getFormToken() . '=1'); ?>">
 									<span><?php echo Lang::txt('COM_MEMBERS_GROUPS_REMOVE'); ?></span>
 								</a>
 							</td>
