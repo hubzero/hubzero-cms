@@ -35,6 +35,11 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Services\Helpers\Permissions::getActions('service');
 
 Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES'), 'addedit.png');
+if ($canDo->get('core.admin'))
+{
+	Toolbar::preferences('com_services', '550');
+	Toolbar::spacer();
+}
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
