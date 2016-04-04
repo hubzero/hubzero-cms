@@ -225,6 +225,13 @@ class Provider extends AbstractService
 
 		// Check to see if the key is valid
 		$response = $this->_sendRequest('key=' . $this->apiKey . '&blog=' . $this->url, $this->akismetServer, '/' . $this->akismetVersion . '/verify-key');
+
+		if (!$response || !is_array($response) || !isset($response[1]))
+		{
+			// Service unavailable?
+			return false;
+		}
+
 		return ($response[1] == 'valid');
 	}
 
@@ -307,6 +314,12 @@ class Provider extends AbstractService
 		}
 
 		$response = $this->_sendRequest('blog=' . \Request::base() . '&' . $this->_getQueryString(), $this->apiKey . '.rest.akismet.com', '/' . $this->akismetVersion . '/comment-check');
+
+		if (!$response || !is_array($response) || !isset($response[1]))
+		{
+			// Service unavailable?
+			return false;
+		}
 
 		if ($response[1] == 'invalid' && !$this->isKeyValid())
 		{
