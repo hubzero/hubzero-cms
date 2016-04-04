@@ -56,4 +56,7 @@
 		<field name="acl_groups" type="text"    label="ACL Groups" description="" default="" />
 	</fieldset>
 
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_dataviewer" section="component" />
+	</fieldset>
 </config>

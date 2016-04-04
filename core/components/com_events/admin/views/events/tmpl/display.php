@@ -33,6 +33,8 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_EVENTS_MANAGER'), 'event.png');
+Toolbar::preferences('com_events', '550');
+Toolbar::spacer();
 Toolbar::custom('addpage', 'new', 'COM_EVENTS_PAGES_ADD', 'COM_EVENTS_PAGES_ADD', true, false);
 Toolbar::custom('respondents', 'user', 'COM_EVENTS_VIEW_RESPONDENTS', 'COM_EVENTS_VIEW_RESPONDENTS', true, false);
 Toolbar::spacer();

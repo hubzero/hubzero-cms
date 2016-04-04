@@ -120,4 +120,7 @@
 		<field name="aip_path" type="text" menu="hide" default="/srv/AIP" label="COM_PUBLICATIONS_AIP_PATH" description="COM_PUBLICATIONS_AIP_PATH_DESC" />
 		<field name="aip_group" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_AIP_GROUP" description="COM_PUBLICATIONS_CONFIG_AIP_GROUP_DESC" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_publications" section="component" />
+	</fieldset>
 </config>

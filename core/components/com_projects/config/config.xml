@@ -101,4 +101,7 @@
 		<field name="pubQuota" type="text" menu="hide" default="1" label="Publication quota (GB)" description="Default disk quota for published files in gigabytes" />
 		<field name="premiumPubQuota" type="text" menu="hide" default="30" label="Premium publication quota (GB)" description="Premium disk quota for published files in gigabytes" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_projects" section="component" />
+	</fieldset>
 </config>

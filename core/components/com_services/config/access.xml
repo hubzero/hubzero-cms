@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_services/config.xml
+@file           components/com_services/access.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -28,14 +28,15 @@ THE SOFTWARE.
 
 HUBzero is a registered trademark of Purdue University.
 -->
-<config>
-	<fieldset name="basic">
-		<field name="autoapprove" type="list" default="1" label="COM_SERVICES_AUTOAPPROVE_LABEL" description="COM_SERVICES_AUTOAPPROVE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-	</fieldset>
-	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_services" section="component" />
-	</fieldset>
-</config>
+
+<access component="com_services">
+	<section name="component">
+		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
+		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
+	</section>
+</access>
