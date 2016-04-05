@@ -53,6 +53,8 @@ jQuery(document).ready(function ( jq ) {
 				if (event.hub_id) {
 					$('#hub_id').val(event.hub_id);
 					fancy('#hub_id');
+
+					$('#hub_id').trigger('change', event.task_id);
 				}
 				if (event.description) {
 					$('#description').val(event.description);
@@ -191,11 +193,11 @@ jQuery(document).ready(function ( jq ) {
 			},
 			eventDrop : function ( event, delta, revertFunc ) {
 				setData(event);
-				data.submit();
+				data.trigger('submit', event);
 			},
 			eventResize : function ( event, delta, revertFunc ) {
 				setData(event);
-				data.submit();
+				data.trigger('submit', event);
 			},
 			eventAfterAllRender : function ( view ) {
 				// Set height of input box (minus margin and borders)
@@ -221,9 +223,33 @@ jQuery(document).ready(function ( jq ) {
 			$('.error-message').fadeOut();
 		});
 
-		data.submit(function ( e ) {
+		data.submit(function ( e, formData ) {
 			e.preventDefault();
-			var form = $(this);
+
+			if ($.type(formData) !== 'undefined') {
+				form = [];
+
+				if (formData.id) {
+					form.push({name : 'id', value : formData.id});
+				}
+				if (formData.start) {
+					form.push({name : 'start', value : formData.start});
+				}
+				if (formData.end) {
+					form.push({name : 'end', value : formData.end});
+				}
+				if (formData.task_id) {
+					form.push({name : 'task_id', value : formData.task_id});
+				}
+				if (formData.hub_id) {
+					form.push({name : 'hub_id', value : formData.hub_id});
+				}
+				if (formData.description) {
+					form.push({name : 'description', value : formData.description});
+				}
+			} else {
+				form = $(this).serializeArray();
+			}
 
 			if (!$('#hub_id').val()) {
 				$('.hub-error').fadeIn();
@@ -234,8 +260,8 @@ jQuery(document).ready(function ( jq ) {
 			} else {
 				$('.error-message').fadeOut();
 				$.ajax({
-					url      : form.attr('action'),
-					data     : form.serializeArray(),
+					url      : $(this).attr('action'),
+					data     : form,
 					method   : 'POST',
 					dataType : "json",
 					cache    : false,
@@ -270,7 +296,7 @@ jQuery(document).ready(function ( jq ) {
 		});
 
 		// Add change event to hub select box (filter tasks list by selected hub)
-		$('#hub_id').change(function ( event ) {
+		$('#hub_id').change(function ( event, task_id ) {
 			// First, grab the currently select task
 			var task = $('#task_id');
 
@@ -311,6 +337,11 @@ jQuery(document).ready(function ( jq ) {
 					}
 
 					task.html(options);
+
+					if ($.type(task_id) !== 'undefined') {
+						$('#task_id').val(task_id);
+					}
+
 					fancy('#task_id');
 
 					if (focused) {
