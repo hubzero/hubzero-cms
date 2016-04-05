@@ -294,10 +294,10 @@ class Html
 		foreach ($cats as $cat)
 		{
 			$name = key($cat);
-			if ($name == 'usage')
+			/*if ($name == 'usage')
 			{
 				continue;
-			}
+			}*/
 			if ($name != '')
 			{
 				if ($alias)

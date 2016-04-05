@@ -53,7 +53,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 	 * @param   boolean  $extended     Whether or not to show panel
 	 * @return  array
 	 */
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
+	public function &onPublicationAreas($publication, $version = 'default', $extended = true)
 	{
 		$areas = array();
 
@@ -72,7 +72,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 	 * @param   string   $option       Name of the component
 	 * @param   array    $areas        Active area(s)
 	 * @param   string   $rtrn         Data to be returned
-	 * @param   string   $version      Version name
+	 * @param   string 	 $version      Version name
 	 * @param   boolean  $extended     Whether or not to show panel
 	 * @return  array
 	 */
@@ -82,12 +82,13 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			'html'    => '',
 			'metadata'=>''
 		);
+		$rtrn = 'all';
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
+			if (!array_intersect($areas, $this->onPublicationAreas($publication))
+			 && !array_intersect($areas, array_keys($this->onPublicationAreas($publication))))
 			{
 				$rtrn = 'metadata';
 			}
@@ -98,14 +99,11 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		// Temporarily display only metadata
-		$rtrn = 'metadata';
-
 		// Check if we have a needed database table
 		$database = App::get('db');
 
 		$tables = $database->getTableList();
-		$table  = $database->getPrefix() . 'publication_stats';
+		$table = $database->getPrefix() . 'publication_stats';
 
 		if ($publication->alias)
 		{
@@ -127,8 +125,8 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
-		include_once( PATH_CORE . DS. 'components' . DS . $option . DS . 'tables' . DS . 'stats.php' );
-		require_once( PATH_CORE . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php' );
+		require_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php');
 
 		$stats = new \Components\Publications\Tables\Stats($database);
 		$stats->loadStats($publication->id, $period, $dthis);
@@ -144,10 +142,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 				->set('option', $option)
 				->set('publication', $publication)
 				->set('stats', $stats)
-				->set('chart_path', $this->params->get('chart_path',''))
-				->set('map_path', $this->params->get('map_path',''))
-				->set('dthis', $dthis)
-				->set('period', $period);
+				->setErrors($this->getErrors());
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
@@ -156,13 +151,11 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'metadata')
 		{
 			$stats->loadStats($publication->id, $period);
-
 			if ($stats->users)
 			{
 				$action = $publication->base == 'files' ? '%s download(s)' : '%s view(s)';
 
-				$arr['metadata']  = '<p class="usage">';
-				$arr['metadata'] .= Lang::txt('%s user(s)', $stats->users);
+				$arr['metadata']  = '<p class="usage">' . Lang::txt('%s user(s)',$stats->users);
 				$arr['metadata'] .= $stats->downloads ? ' | ' . Lang::txt($action, $stats->downloads) : '';
 				$arr['metadata'] .= '</p>';
 			}
