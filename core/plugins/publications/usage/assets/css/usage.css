@@ -1,0 +1,207 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/publications/usage/usage.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Publications Usage CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	/* Sparklines */
+	.sparkline {
+		float: left;
+		height: 2em;
+		margin: 0.2em 0 0 0;
+		color: #c7c7c7;
+		border-bottom: 1px solid #e3e3e3;
+	}
+	.sparkline .index {
+		position: relative;
+		float: left;
+		width: 3px;
+		height: 100%;
+	}
+	.sparkline .index .count { 
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 0;
+		background: #c7c7c7;
+		overflow: hidden;
+		text-indent: -9999px;
+	}
+
+	/* Totals */
+	h4 {
+		color: #aaa;
+		font-weight: normal;
+		font-size: 1.2em;
+	}
+	.total {
+		font-size: 3em;
+		line-height: 1;
+		margin: 0;
+		padding: 0.1em 0;
+	}
+	.total span {
+		display: block;
+		font-size: 0.35em;
+		margin: 0.2em 0;
+		line-height: 1.4em;
+	}
+
+	/* Containers */
+	.usage-wrap {
+		border-top: 1px solid #ddd;
+		margin: 2em 0 0 0;
+		padding: 2em 0 0 0;
+	}
+	.chart-wrap {
+		position: relative;
+	}
+
+	/* Download */
+	.chart-download {
+		font-size: 0.7em;
+		line-height: 1;
+		margin: 0;
+		padding: 0.5em 0.7em;
+		position: absolute;
+		bottom: 95px;
+		left: 50%;
+		margin-left: -2em;
+		display: none;
+	}
+	.chart-wrap:hover .chart-download {
+		display: block;
+	}
+
+	/*.usage-summary {
+		padding: 1em;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.usage-summary + .usage-summary {
+		margin-top: 30px;
+	}
+	.usage-summary h3 {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.grid .col {
+		padding: 1em 0;
+	}
+	.usage-stats {
+		padding: 2em 0;
+		background: rgba(0, 0, 0, 0.02);
+	}
+	.usage-stat {
+		text-align: center;
+	}
+	.usage-value {
+		font-size: 1.5em;
+		font-weight: 500;
+		line-height: 1;
+		display: block;
+		margin: 0;
+		padding: 0;
+	}
+	.usage-label {
+		display: block;
+		margin: 0.5em 2em 1em 2em;
+		padding: 0;
+		color: rgba(0, 0, 0, 0.4);
+	}*/
+	.chart {
+		margin: 1em 0;
+	}
+	.chart.line {
+		min-width: 300px;
+		height: 200px;
+	}
+	.chart.multi-line {
+		margin-top: 2em;
+		height: 220px;
+	}
+	.chart.overview {
+		margin-top: 0;
+		height: 100px;
+	}
+	.chart.overview .flot-y-axis {
+		color: transparent;
+	}
+	.chart.pie {
+		min-width: 13em;
+		height: 13em;
+	}
+	.chart table {
+		width: auto;
+		margin-top: 4em;
+	}
+	.chart table tbody td {
+		padding: 0.2em;
+	}
+	.chart table tbody td.legendColorBox {
+		padding-left: 1em;
+	}
+
+	#flotTip {
+		background: #111111;
+		background: rgba(0, 0, 0, 0.8);
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+		font-size: 0.85em;
+		padding: 0.25em 0.75em;
+		color: #fff;
+		text-shadow: 0 -1px 0 #000;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		border-radius: 0.25em;
+	}
+
+	#statistics .legend table {
+		border: none;
+		margin: 0;
+	}
+	#statistics .legend table td {
+		padding: 0.2em 0;
+		border: none;
+	}
+	#statistics .legend table td.legendColorBox {
+		padding: 0.2em 0.2em 0.2em 1em;
+	}
+
+	#statistics .charts table {
+		border-bottom: none;
+		margin-bottom: 0;
+	}
+	#statistics .charts caption {
+		padding: 0;
+	}
+	#statistics .charts tbody th,
+	#statistics .charts tbody td {
+		padding: 1em 0 0 0;
+		border: none;
+	}
+	#statistics .charts tbody td {
+		width: 20%;
+	}
+
+@media (max-width: 40em) {
+	.grid [class*="span"] {
+		float: none;
+		margin-right: 0;
+		width: auto;
+	}
+	.chart {
+		min-width: 200px;
+		height: 150px;
+	}
+}
