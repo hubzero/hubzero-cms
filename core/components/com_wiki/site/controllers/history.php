@@ -348,6 +348,18 @@ class History extends SiteController
 		$this->page->store(false, 'revision_removed');
 
 		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')],
+			['user', $revision->get('created_by')]
+		);
+		if ($this->page->get('group_cn'))
+		{
+			$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+			$recipients[]  = ['group', $group->get('gidNumber')];
+			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+		}
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'deleted',
@@ -361,11 +373,7 @@ class History extends SiteController
 					'revision' => $revision->get('id')
 				)
 			],
-			'recipients' => [
-				['wiki.site', 1],
-				['user', $this->page->get('created_by')],
-				['user', $revision->get('created_by')]
-			]
+			'recipients' => $recipients
 		]);
 
 		App::redirect(
@@ -424,6 +432,18 @@ class History extends SiteController
 		}
 
 		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')],
+			['user', $revision->get('created_by')]
+		);
+		if ($this->page->get('group_cn'))
+		{
+			$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+			$recipients[]  = ['group', $group->get('gidNumber')];
+			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+		}
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'approved',
@@ -437,11 +457,7 @@ class History extends SiteController
 					'revision' => $revision->get('id')
 				)
 			],
-			'recipients' => [
-				['wiki.site', 1],
-				['user', $this->page->get('created_by')],
-				['user', $revision->get('created_by')]
-			]
+			'recipients' => $recipients
 		]);
 
 		App::redirect(

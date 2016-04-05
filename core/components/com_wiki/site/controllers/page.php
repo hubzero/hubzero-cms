@@ -747,6 +747,18 @@ class Page extends SiteController
 		$this->page->tag(Request::getVar('tags', ''));
 
 		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')],
+			['user', $this->revision->get('created_by')]
+		);
+		if ($this->page->get('group_cn'))
+		{
+			$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+			$recipients[]  = ['group', $group->get('gidNumber')];
+			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+		}
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($rev['pageid'] ? 'updated' : 'created'),
@@ -760,11 +772,7 @@ class Page extends SiteController
 					'revision' => $this->revision->get('id')
 				)
 			],
-			'recipients' => [
-				['wiki.site', 1],
-				['user', $this->page->get('created_by')],
-				['user', $this->revision->get('created_by')]
-			]
+			'recipients' => $recipients
 		]);
 
 		// Redirect
@@ -828,6 +836,17 @@ class Page extends SiteController
 				Cache::clean('wiki');
 
 				// Log activity
+				$recipients = array(
+					['wiki.site', 1],
+					['user', $this->page->get('created_by')]
+				);
+				if ($this->page->get('group_cn'))
+				{
+					$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+					$recipients[]  = ['group', $group->get('gidNumber')];
+					$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+				}
+
 				Event::trigger('system.logActivity', [
 					'activity' => [
 						'action'      => 'deleted',
@@ -840,10 +859,7 @@ class Page extends SiteController
 							'name'  => $this->page->get('pagename')
 						)
 					],
-					'recipients' => [
-						['wiki.site', 1],
-						['user', $this->page->get('created_by')]
-					]
+					'recipients' => $recipients
 				]);
 			break;
 
@@ -1001,6 +1017,17 @@ class Page extends SiteController
 		}
 
 		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')]
+		);
+		if ($this->page->get('group_cn'))
+		{
+			$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+			$recipients[]  = ['group', $group->get('gidNumber')];
+			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+		}
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'updated',
@@ -1013,10 +1040,7 @@ class Page extends SiteController
 					'name'  => $this->page->get('pagename')
 				)
 			],
-			'recipients' => [
-				['wiki.site', 1],
-				['user', $this->page->get('created_by')]
-			]
+			'recipients' => $recipients
 		]);
 
 		// Redirect to the newly named page
@@ -1057,6 +1081,17 @@ class Page extends SiteController
 		}
 
 		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')]
+		);
+		if ($this->page->get('group_cn'))
+		{
+			$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+			$recipients[] = ['group', $group->get('gidNumber')];
+			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+		}
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'downloaded',
@@ -1069,10 +1104,7 @@ class Page extends SiteController
 					'name'  => $this->page->get('pagename')
 				)
 			],
-			'recipients' => [
-				['wiki.site', 1],
-				['user', $this->page->get('created_by')]
-			]
+			'recipients' => $recipients
 		]);
 
 		Request::setVar('format', 'pdf');

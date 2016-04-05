@@ -334,6 +334,12 @@ class Comments extends SiteController
 			$parent = new Comment($comment->get('parent'));
 			$recipients[] = ['user', $parent->get('created_by')];
 		}
+		if ($this->page->get('group_cn'))
+		{
+			$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+			$recipients[]  = ['group', $group->get('gidNumber')];
+			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+		}
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
@@ -381,6 +387,18 @@ class Comments extends SiteController
 				}
 
 				// Log activity
+				$recipients = array(
+					['wiki.site', 1],
+					['user', $this->page->get('created_by')],
+					['user', $comment->get('created_by')]
+				);
+				if ($this->page->get('group_cn'))
+				{
+					$group = \Hubzero\User\Group::getInstance($this->page->get('group_cn'));
+					$recipients[]  = ['group', $group->get('gidNumber')];
+					$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+				}
+
 				Event::trigger('system.logActivity', [
 					'activity' => [
 						'action'      => 'deleted',
@@ -394,11 +412,7 @@ class Comments extends SiteController
 							'comment'  => $comment->get('id')
 						)
 					],
-					'recipients' => [
-						['wiki.site', 1],
-						['user', $this->page->get('created_by')],
-						['user', $comment->get('created_by')]
-					]
+					'recipients' => $recipients
 				]);
 			}
 			else
