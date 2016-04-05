@@ -1209,6 +1209,30 @@ class Tickets extends SiteController
 			}
 		}
 
+		// Log activity
+		$creator = User::getInstance($row->get('login'));
+
+		if ($creator && $creator->get('id'))
+		{
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'created',
+					'scope'       => 'support.ticket',
+					'scope_id'    => $row->get('id'),
+					'description' => Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_CREATED', '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>'),
+					'details'     => array(
+						'id'      => $row->get('id'),
+						'summary' => $row->get('summary'),
+						'url'     => Route::url($row->link())
+					)
+				],
+				'recipients' => [
+					['support.tickets', 1],
+					['user', $creator->get('id')]
+				]
+			]);
+		}
+
 		if (!User::isGuest() && $this->acl->check('update', 'tickets') > 0)
 		{
 			// Only do the following if a comment was posted
@@ -1281,6 +1305,10 @@ class Tickets extends SiteController
 					$rowc->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 				}
 
+				$recipients = array(
+					['support.tickets', 1]
+				);
+
 				// Check if the notify list has eny entries
 				if (count($rowc->to()))
 				{
@@ -1335,6 +1363,8 @@ class Tickets extends SiteController
 					// Send e-mail to admin?
 					foreach ($rowc->to('ids') as $to)
 					{
+						$recipients[] = ['user', $to['id']];
+
 						if ($allowEmailResponses)
 						{
 							// The reply-to address contains the token
@@ -1393,10 +1423,38 @@ class Tickets extends SiteController
 						$this->setError($rowc->getError());
 					}
 				}
+
+				// Record the activity
+				if (!$rowc->isPrivate() && $creator->get('id'))
+				{
+					$recipients[] = ['user', $creator->get('id')];
+				}
+
+				$desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+				if ($rowc->get('comment'))
+				{
+					$desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'created',
+						'scope'       => 'support.ticket.comment',
+						'scope_id'    => $rowc->get('id'),
+						'description' => $desc,
+						'details'     => array(
+							'id'      => $row->get('id'),
+							'summary' => $row->get('summary'),
+							'url'     => Route::url($row->link()),
+							'comment' => $rowc->get('id')
+						)
+					],
+					'recipients' => $recipients
+				]);
 			}
 		}
 
-		// Trigger any events that need to be called before session stop
+		// Trigger any events that need to be called
 		Event::trigger('support.onTicketSubmission', array($row));
 
 		// Output Thank You message
@@ -1890,6 +1948,10 @@ class Tickets extends SiteController
 			}
 			$this->acl->setUser(User::get('id'));
 
+			$recipients = array(
+				['support.tickets', 1]
+			);
+
 			if (count($rowc->to()))
 			{
 				$allowEmailResponses = $this->config->get('email_processing');
@@ -1955,6 +2017,8 @@ class Tickets extends SiteController
 
 				foreach ($rowc->to('ids') as $to)
 				{
+					$recipients[] = ['user', $to['id']];
+
 					if ($allowEmailResponses)
 					{
 						// The reply-to address contains the token
@@ -2029,6 +2093,28 @@ class Tickets extends SiteController
 					throw new Exception($rowc->getError(), 500);
 				}
 			}
+
+			$desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+			if ($rowc->get('comment'))
+			{
+				$desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+			}
+
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'created',
+					'scope'       => 'support.ticket.comment',
+					'scope_id'    => $rowc->get('id'),
+					'description' => $desc,
+					'details'     => array(
+						'id'      => $row->get('id'),
+						'summary' => $row->get('summary'),
+						'url'     => Route::url($row->link()),
+						'comment' => $rowc->get('id')
+					)
+				],
+				'recipients' => $recipients
+			]);
 		}
 
 		// Display the ticket with changes, new comment
@@ -2077,9 +2163,40 @@ class Tickets extends SiteController
 			return;
 		}
 
-		// Delete ticket
+		// Load the record
 		$ticket = new Tables\Ticket($this->database);
-		$ticket->delete($id);
+		$ticket->load($id);
+
+		// Log the activity
+		$recipients = array(
+			['support.tickets', 1]
+		);
+
+		$creator = User::getInstance($ticket->get('login'));
+		if ($creator && $creator->get('id'))
+		{
+			$recipients[] = ['user', $creator->get('id')];
+		}
+		if ($ticket->get('owner'))
+		{
+			$recipients[] = ['user', $ticket->owner('id')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'support.ticket',
+				'scope_id'    => $id,
+				'description' => Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_DELETED', '<a href="' . Route::url($ticket->link()) . '">#' . $ticket->get('id') . ' - ' . $ticket->get('summary') . '</a>'),
+				'details'     => array(
+					'id'      => $id
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Delete ticket
+		$ticket->delete();
 
 		// Output messsage and redirect
 		App::redirect(
