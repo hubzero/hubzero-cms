@@ -36,10 +36,10 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Revision;
 use Hubzero\Component\SiteController;
-use Exception;
 use Document;
 use Pathway;
 use Request;
+use Event;
 use User;
 use Lang;
 use App;
@@ -52,8 +52,8 @@ class History extends SiteController
 	/**
 	 * Constructor
 	 *
-	 * @param      array $config Optional configurations
-	 * @return     void
+	 * @param   array  $config  Optional configurations
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
@@ -88,7 +88,7 @@ class History extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -125,7 +125,7 @@ class History extends SiteController
 	/**
 	 * Display a history of the current wiki page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -209,7 +209,7 @@ class History extends SiteController
 	/**
 	 * Compare two versions of a wiki page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function compareTask()
 	{
@@ -291,7 +291,7 @@ class History extends SiteController
 	/**
 	 * Delete a revision
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -347,6 +347,27 @@ class History extends SiteController
 		$this->page->set('version_id', $this->page->revisions()->current()->get('id'));
 		$this->page->store(false, 'revision_removed');
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'wiki.page.revision',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_DELETED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . $this->page->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $this->page->get('title'),
+					'url'      => Route::url($this->page->link()),
+					'name'     => $this->page->get('pagename'),
+					'revision' => $revision->get('id')
+				)
+			],
+			'recipients' => [
+				['wiki.site', 1],
+				['user', $this->page->get('created_by')],
+				['user', $revision->get('created_by')]
+			]
+		]);
+
 		App::redirect(
 			Route::url($this->page->link('history'))
 		);
@@ -355,7 +376,7 @@ class History extends SiteController
 	/**
 	 * Approve a revision
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function approveTask()
 	{
@@ -385,7 +406,7 @@ class History extends SiteController
 		$revision->set('approved', 1);
 		if (!$revision->store())
 		{
-			throw new Exception($revision->getError(), 500);
+			App::abort(500, $revision->getError());
 		}
 
 		// Get the most recent revision and compare to the set "current" version
@@ -402,9 +423,29 @@ class History extends SiteController
 			$this->page->log('revision_approved');
 		}
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'approved',
+				'scope'       => 'wiki.page.revision',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_APPROVED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . $this->page->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $this->page->get('title'),
+					'url'      => Route::url($this->page->link()),
+					'name'     => $this->page->get('pagename'),
+					'revision' => $revision->get('id')
+				)
+			],
+			'recipients' => [
+				['wiki.site', 1],
+				['user', $this->page->get('created_by')],
+				['user', $revision->get('created_by')]
+			]
+		]);
+
 		App::redirect(
 			Route::url($this->page->link())
 		);
 	}
 }
-

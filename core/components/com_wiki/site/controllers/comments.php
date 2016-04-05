@@ -36,10 +36,10 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
 use Hubzero\Component\SiteController;
-use Exception;
 use Document;
 use Pathway;
 use Request;
+use Event;
 use User;
 use Lang;
 use Date;
@@ -295,8 +295,7 @@ class Comments extends SiteController
 		if (!$comment->bind($fields))
 		{
 			$this->setError($comment->getError());
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Parse the wikitext and set some values
@@ -309,8 +308,7 @@ class Comments extends SiteController
 		if (!$comment->store(true))
 		{
 			$this->setError($comment->getError());
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Did they rate the page?
@@ -323,6 +321,35 @@ class Comments extends SiteController
 				$this->setError($this->page->getError());
 			}
 		}
+
+		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')],
+			['user', $comment->get('created_by')]
+		);
+
+		if ($comment->get('parent'))
+		{
+			$parent = new Comment($comment->get('parent'));
+			$recipients[] = ['user', $parent->get('created_by')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'wiki.comment',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . $this->page->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $this->page->get('title'),
+					'url'      => Route::url($this->page->link('comments')),
+					'name'     => $this->page->get('pagename'),
+					'comment'  => $comment->get('id')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// Redirect to Comments page
 		App::redirect(
@@ -341,7 +368,7 @@ class Comments extends SiteController
 		$cls = 'message';
 
 		// Make sure we have a comment to delete
-		if (($id = Request::getInt('comment', 0)))
+		if ($id = Request::getInt('comment', 0))
 		{
 			// Make sure they're authorized to delete (must be an author)
 			if ($this->page->access('delete', 'comment'))
@@ -352,6 +379,27 @@ class Comments extends SiteController
 				{
 					$msg = Lang::txt('COM_WIKI_COMMENT_DELETED');
 				}
+
+				// Log activity
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'deleted',
+						'scope'       => 'wiki.comment',
+						'scope_id'    => $this->page->get('id'),
+						'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . $this->page->get('title') . '</a>'),
+						'details'     => array(
+							'title'    => $this->page->get('title'),
+							'url'      => Route::url($this->page->link('comments')),
+							'name'     => $this->page->get('pagename'),
+							'comment'  => $comment->get('id')
+						)
+					],
+					'recipients' => [
+						['wiki.site', 1],
+						['user', $this->page->get('created_by')],
+						['user', $comment->get('created_by')]
+					]
+				]);
 			}
 			else
 			{
@@ -368,4 +416,3 @@ class Comments extends SiteController
 		);
 	}
 }
-

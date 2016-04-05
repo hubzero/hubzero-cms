@@ -38,7 +38,6 @@ use Components\Wiki\Models\Page as Article;
 use Components\Wiki\Models\Revision;
 use Components\Wiki\Helpers\Parser;
 use Components\Wiki\Tables;
-use Exception;
 use Pathway;
 use Request;
 use Event;
@@ -223,7 +222,7 @@ class Page extends SiteController
 		// Check if the page is group restricted and the user is authorized
 		if (!$this->page->access('view', 'page'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_WARNING_NOT_AUTH'), 403);
+			App::abort(403, Lang::txt('COM_WIKI_WARNING_NOT_AUTH'));
 		}
 
 		$parents = array();
@@ -372,7 +371,7 @@ class Page extends SiteController
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 			return;
 		}
@@ -563,7 +562,7 @@ class Page extends SiteController
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 			return;
 		}
@@ -577,8 +576,7 @@ class Page extends SiteController
 		if (!$this->revision->bind($rev))
 		{
 			$this->setError($this->revision->getError());
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 		$this->revision->set('id', 0);
 
@@ -589,8 +587,7 @@ class Page extends SiteController
 		if (!$this->page->bind($page))
 		{
 			$this->setError($this->page->getError());
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'post')));
 		$this->page->set('scope', trim(Request::getVar('scope', '', 'post')));
@@ -636,8 +633,7 @@ class Page extends SiteController
 			}
 
 			// Push on through to the edit form
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// Check content
@@ -645,24 +641,21 @@ class Page extends SiteController
 		if ($this->revision->get('pagetext') == '')
 		{
 			$this->setError(Lang::txt('COM_WIKI_ERROR_MISSING_PAGETEXT'));
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// Store new content
 		if (!$this->page->store(true))
 		{
 			$this->setError($this->page->getError());
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// Get allowed authors
 		if (!$this->page->updateAuthors(Request::getVar('authors', '', 'post')))
 		{
 			$this->setError($this->page->getError());
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// Get the upload path
@@ -729,8 +722,7 @@ class Page extends SiteController
 			if (!$this->revision->store(true))
 			{
 				$this->setError(Lang::txt('COM_WIKI_ERROR_SAVING_REVISION'));
-				$this->editTask();
-				return;
+				return $this->editTask();
 			}
 
 			if ($this->revision->get('approved'))
@@ -748,12 +740,32 @@ class Page extends SiteController
 		{
 			// This really shouldn't happen.
 			$this->setError(Lang::txt('COM_WIKI_ERROR_SAVING_PAGE'));
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// Process tags
 		$this->page->tag(Request::getVar('tags', ''));
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($rev['pageid'] ? 'updated' : 'created'),
+				'scope'       => 'wiki.page',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_' . ($rev['pageid'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->page->link()) . '">' . $this->page->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $this->page->get('title'),
+					'url'      => Route::url($this->page->link()),
+					'name'     => $this->page->get('pagename'),
+					'revision' => $this->revision->get('id')
+				)
+			],
+			'recipients' => [
+				['wiki.site', 1],
+				['user', $this->page->get('created_by')],
+				['user', $this->revision->get('created_by')]
+			]
+		]);
 
 		// Redirect
 		App::redirect(
@@ -773,7 +785,7 @@ class Page extends SiteController
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 			return;
 		}
@@ -814,6 +826,25 @@ class Page extends SiteController
 				}
 
 				Cache::clean('wiki');
+
+				// Log activity
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'deleted',
+						'scope'       => 'wiki.page',
+						'scope_id'    => $this->page->get('id'),
+						'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_DELETED', '<a href="' . Route::url($this->page->link()) . '">' . $this->page->get('title') . '</a>'),
+						'details'     => array(
+							'title' => $this->page->get('title'),
+							'url'   => Route::url($this->page->link()),
+							'name'  => $this->page->get('pagename')
+						)
+					],
+					'recipients' => [
+						['wiki.site', 1],
+						['user', $this->page->get('created_by')]
+					]
+				]);
 			break;
 
 			default:
@@ -875,7 +906,7 @@ class Page extends SiteController
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 			return;
 		}
@@ -949,7 +980,7 @@ class Page extends SiteController
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 			return;
 		}
@@ -966,9 +997,27 @@ class Page extends SiteController
 		if (!$this->page->rename($newpagename))
 		{
 			$this->setError($this->page->getError());
-			$this->renameTask();
-			return;
+			return $this->renameTask();
 		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'updated',
+				'scope'       => 'wiki.page',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_RENAMED', '<a href="' . Route::url($this->page->link()) . '">' . $this->page->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $this->page->get('title'),
+					'url'   => Route::url($this->page->link()),
+					'name'  => $this->page->get('pagename')
+				)
+			],
+			'recipients' => [
+				['wiki.site', 1],
+				['user', $this->page->get('created_by')]
+			]
+		]);
 
 		// Redirect to the newly named page
 		App::redirect(
@@ -981,7 +1030,7 @@ class Page extends SiteController
 	 *
 	 * Based on work submitted by Steven Maus <steveng4235@gmail.com> (2014)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function pdfTask()
 	{
@@ -989,24 +1038,6 @@ class Page extends SiteController
 		if (!$this->page->exists() || $this->page->isDeleted())
 		{
 			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
-
-			// No! Ask if they want to create a new page
-			/*$this->view->setLayout('doesnotexist');
-			if ($this->_group)
-			{
-				$this->page->set('group_cn', $this->_group);
-				$this->page->set('scope', $this->_group . '/wiki');
-			}
-
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-			$this->view->display();
-			return;*/
 		}
 
 		// Retrieve a specific version if given
@@ -1024,6 +1055,25 @@ class Page extends SiteController
 				->display();
 			return;
 		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'downloaded',
+				'scope'       => 'wiki.page',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_DOWNLOADED', '<a href="' . Route::url($this->page->link()) . '">' . $this->page->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $this->page->get('title'),
+					'url'   => Route::url($this->page->link()),
+					'name'  => $this->page->get('pagename')
+				)
+			],
+			'recipients' => [
+				['wiki.site', 1],
+				['user', $this->page->get('created_by')]
+			]
+		]);
 
 		Request::setVar('format', 'pdf');
 
