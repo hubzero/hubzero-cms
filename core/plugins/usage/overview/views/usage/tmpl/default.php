@@ -88,7 +88,7 @@ if ($this->message) { ?>
 
 	if ($results)
 	{
-		$visits[] = "[new Date('2000/01/01'),0]";
+		//$visits[] = "[new Date('2000/01/01'),0]";
 
 		foreach ($results as $result)
 		{
@@ -162,18 +162,25 @@ if ($this->message) { ?>
 
 					$i = 0;
 
+					$highest = 1;
+
 					foreach ($results as $row)
 					{
 						$i++;
 
 						if ($i == 2)
 						{
-							$res_iden = $row->value;
+							$highest = $row->value;
 						}
 
 						if ($i == 7)
 						{
-							$org_iden = $row->value;
+							$highest = $row->value;
+						}
+
+						if ($row->valfmt == 2 && $highest > 100)
+						{
+							$row->value = number_format(($row->value / $highest) * 100);
 						}
 
 						switch ($i)
@@ -298,18 +305,25 @@ if ($this->message) { ?>
 
 					$i = 0;
 
+					$highest = 1;
+
 					foreach ($results as $row)
 					{
 						$i++;
 
 						if ($i == 2)
 						{
-							$res_iden = $row->value;
+							$highest = $row->value;
 						}
 
 						if ($i == 7)
 						{
-							$org_iden = $row->value;
+							$highest = $row->value;
+						}
+
+						if ($row->valfmt == 2 && $highest > 100)
+						{
+							$row->value = number_format(($row->value / $highest) * 100);
 						}
 
 						switch ($i)
@@ -677,9 +691,7 @@ if ($this->message) { ?>
 								val = (val / 1000) + ' K';
 							}
 							return val;
-						}//,
-						//zoomRange: [0.1, 1],
-						//panRange: [0, <?php echo $highest; ?>]
+						}
 					},
 					zoom: {
 						//interactive: true
@@ -749,8 +761,6 @@ if ($this->message) { ?>
 						},
 						xaxis: {
 							mode: "time",
-							//min: new Date('<?php echo $min; ?>'),
-							//max: new Date('<?php echo $to; ?>'),
 							tickDecimals: 0,
 							tickFormatter: function (val, axis) {
 								var d = new Date(val);
