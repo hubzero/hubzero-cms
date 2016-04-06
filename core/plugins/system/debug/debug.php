@@ -115,6 +115,29 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Log profile info
+		if (Config::get('profile'))
+		{
+			// Debugging is on. Let errors bubble up.
+			if (Config::get('debug'))
+			{
+				$this->logProfile();
+			}
+			// Debugging is off.
+			else
+			{
+				// If, for some reason, logging fails
+				// let it happen silently
+				try
+				{
+					$this->logProfile();
+				}
+				catch (Exception $e)
+				{
+				}
+			}
+		}
+
 		// Do not render if debugging or language debug is not enabled
 		if (!Config::get('debug') && !Config::get('debug_lang'))
 		{
@@ -1105,5 +1128,73 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Log profiler info
+	 *
+	 * @return  void
+	 */
+	protected function logProfile()
+	{
+		if (!App::has('log'))
+		{
+			return;
+		}
+
+		// This method is only called once per request
+		App::get('log')->register('profile', array(
+			'file'       => 'cmsprofile.log',
+			'level'      => 'info',
+			'format'     => "%datetime% %message%\n",
+			'dateFormat' => "Y-m-d\TH:i:s.uP"
+		));
+		$logger = App::get('log')->logger('profile');
+
+		$hubname    = isset($_SERVER['SERVER_NAME'])  ? $_SERVER['SERVER_NAME']  : 'unknown';
+		$uri        = Request::path();
+		$uri        = strtr($uri, array(" "=>"%20"));
+		$ip         = isset($_SERVER['REMOTE_ADDR'])  ? $_SERVER['REMOTE_ADDR']  : 'unknown';
+		$query      = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown';
+		$memory     = memory_get_usage(true);
+		$querycount = App::get('db')->getCount();
+		$querytime  = App::get('db')->getTimer();
+		$client     = App::get('client')->name;
+		$time       = microtime(true) - App::get('profiler')->started;
+
+		// <timstamp> <hubname> <ip-address> <app> <url> <query> <memory> <querycount> <timeinqueries> <totaltime>
+		$logger->info("$hubname $ip $client $uri [$query] $memory $querycount $querytime $time");
+
+		// Now log post data if applicable
+		if (Request::method() == 'POST' && App::get('config')->get('log_post_data', false))
+		{
+			App::get('log')->register('post', array(
+				'file'       => 'cmspost.log',
+				'level'      => 'info',
+				'format'     => "%datetime% %message%\n",
+				'dateFormat' => "Y-m-d\TH:i:s.uP"
+			));
+			$logger = App::get('log')->logger('post');
+
+			$post     = json_encode($_POST);
+			$referrer = $_SERVER['HTTP_REFERER'];
+
+			// Encrypt for some reasonable level of obscurity
+			$key = md5(App::get('config')->get('secret'));
+
+			// Compute needed iv size and random iv
+			$ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+			$iv     = mcrypt_create_iv($ivSize, MCRYPT_RAND);
+
+			$ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $post, MCRYPT_MODE_CBC, $iv);
+
+			// Prepend iv for decoding later
+			$ciphertext = $iv . $ciphertext;
+
+			// Encode the resulting cipher text so it can be represented by a string
+			$ciphertextEncoded = base64_encode($ciphertext);
+
+			$logger->info("$uri $referrer $ciphertextEncoded");
+		}
 	}
 }
