@@ -76,6 +76,7 @@ if ($this->message) { ?>
 
 	$currentVisit = new stdClass;
 	$currentVisit->value = 0;
+	$currentVisit->datetime = $datetime;
 
 	$sql = "SELECT value, valfmt, datetime
 			FROM `summary_user_vals`
@@ -439,6 +440,7 @@ if ($this->message) { ?>
 			<?php
 			$currentSimuser = new stdClass;
 			$currentSimuser->value = 0;
+			$currentSimuser->datetime = $datetime;
 
 			$simusers = array();
 
@@ -471,6 +473,7 @@ if ($this->message) { ?>
 			<?php
 			$currentSimjob = new stdClass;
 			$currentSimjob->value = 0;
+			$currentSimjob->datetime = $datetime;
 
 			$simjobs = array();
 
