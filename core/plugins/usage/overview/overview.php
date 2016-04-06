@@ -166,18 +166,25 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 		$i = 0;
 
+		$highest = 1;
+
 		foreach ($results as $row)
 		{
 			$i++;
 
 			if ($i == 2)
 			{
-				$res_iden = $row->value;
+				$highest = $row->value;
 			}
 
 			if ($i == 7)
 			{
-				$org_iden = $row->value;
+				$highest = $row->value;
+			}
+
+			if ($row->valfmt == 2 && $highest > 100)
+			{
+				$row->value = number_format(($row->value / $highest) * 100);
 			}
 
 			switch ($i)
@@ -271,18 +278,25 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 		$i = 0;
 
+		$highest = 1;
+
 		foreach ($results as $row)
 		{
 			$i++;
 
 			if ($i == 2)
 			{
-				$res_iden = $row->value;
+				$highest = $row->value;
 			}
 
 			if ($i == 7)
 			{
-				$org_iden = $row->value;
+				$highest = $row->value;
+			}
+
+			if ($row->valfmt == 2 && $highest > 100)
+			{
+				$row->value = number_format(($row->value / $highest) * 100);
 			}
 
 			switch ($i)
