@@ -43,6 +43,7 @@ defined('_HZEXEC_') or die();
 						<input type="hidden" name="tmpl" value="component" />
 						<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 						<input type="hidden" name="task" value="add" />
+						<?php echo Html::input('token'); ?>
 
 						<select name="gid" style="max-width: 15em;">
 							<option value=""><?php echo Lang::txt('COM_MEMBERS_SELECT'); ?></option>
