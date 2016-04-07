@@ -1160,7 +1160,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		$querycount = App::get('db')->getCount();
 		$querytime  = App::get('db')->getTimer();
 		$client     = App::get('client')->name;
-		$time       = microtime(true) - App::get('profiler')->started;
+		$time       = microtime(true) - App::get('profiler')->started();
 
 		// <timstamp> <hubname> <ip-address> <app> <url> <query> <memory> <querycount> <timeinqueries> <totaltime>
 		$logger->info("$hubname $ip $client $uri [$query] $memory $querycount $querytime $time");
