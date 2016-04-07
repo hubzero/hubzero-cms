@@ -83,7 +83,7 @@ HUB.Modules.MySessions = {
 						session
 							.find('img.snapshot')
 							.addClass('refreshable')
-							.attr('src', data)
+							.attr('src', source)
 							.parent().addClass('loaded');
 					},
 					error: function(jqXHR, status, error) {
