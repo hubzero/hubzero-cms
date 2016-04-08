@@ -93,7 +93,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 				->where('created', '>=', $period->cStartDate)
 				->where('created', '<', $period->cEndDate)
 				->order('created', 'desc')
-				->total();
+				->count();
 		}
 		else
 		{
