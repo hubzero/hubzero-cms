@@ -317,7 +317,7 @@ jQuery(document).ready(function($){
 			<fieldset class="adminform">
 				<?php if ($this->group->gidNumber) { ?>
 					<legend><span><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH', substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber')); ?></span></legend>
-					<iframe width="100%" height="500" name="media" id="media" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&gidNumber=' . $this->group->gidNumber); ?>"></iframe>
+					<iframe width="100%" height="500" name="media" id="media" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&gidNumber=' . $this->group->gidNumber . '&t=' . Date::toUnix()); ?>"></iframe>
 				<?php } else { ?>
 					<p class="warning"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILES_WARNING'); ?></p>
 				<?php } ?>

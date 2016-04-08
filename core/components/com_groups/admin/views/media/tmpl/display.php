@@ -94,7 +94,7 @@ function goUpDir()
 				</label>
 			</div>
 
-			<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=list' . ($this->dir ? '&dir=' . $this->dir : '')); ?>" name="filer" id="filer" width="98%" height="400"></iframe>
+			<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=list' . ($this->dir ? '&dir=' . $this->dir : '') . '&t=' . Date::toUnix()); ?>" name="filer" id="filer" width="98%" height="400"></iframe>
 		</div>
 	</form>
 </div>

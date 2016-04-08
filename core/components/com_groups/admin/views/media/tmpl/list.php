@@ -94,7 +94,7 @@ $this->css('media.css');
 				<?php foreach ($this->docs as $k => $doc) { ?>
 					<tr>
 						<td width="100%">
-							<a target="_new" href="<?php echo substr($k, strlen(PATH_ROOT)); ?>" class="icon-file file <?php echo Filesystem::extension($doc); ?>">
+							<a download target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=download&file=' . urlencode(substr($k, strlen(PATH_ROOT))) . '&' . Session::getFormToken() . '=1'); ?>" class="icon-file file <?php echo Filesystem::extension($doc); ?>">
 								<?php
 								$k = substr($k, strlen($this->path));
 								echo $this->escape(trim($k, DS)); ?>

@@ -76,6 +76,51 @@ class Media extends AdminController
 	 *
 	 * @return  void
 	 */
+	public function downloadTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$file = urldecode(Request::getVar('file', '', 'get', 'none', 2));
+
+		if (!file_exists(PATH_ROOT . DS . $file))
+		{
+			App::abort(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND') . ' ' . PATH_ROOT . DS . $file);
+		}
+
+		$extension = Filesystem::extension($file);
+
+		// new content server
+		$contentServer = new \Hubzero\Content\Server();
+		$contentServer->filename(PATH_ROOT . DS . $file);
+		$contentServer->disposition('attachment');
+		$contentServer->acceptranges(false);
+
+		// do we need to manually set mime type
+		if ($extension == 'css')
+		{
+			$contentServer->setContentType('text/css');
+		}
+
+		if ($extension == 'php')
+		{
+			$contentServer->setContentType('text/plain');
+		}
+
+		// Serve up the file
+		if (!$contentServer->serve())
+		{
+			App::abort(500, Lang::txt('COM_GROUPS_SERVER_ERROR'));
+		}
+
+		exit();
+	}
+
+	/**
+	 * Upload a file
+	 *
+	 * @return  void
+	 */
 	public function uploadTask()
 	{
 		// Check for request forgeries
