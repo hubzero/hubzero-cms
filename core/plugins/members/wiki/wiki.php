@@ -41,14 +41,14 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return a list of categories
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onMembersContributionsAreas()
 	{
@@ -61,49 +61,35 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build SQL for returning the count of the number of contributions
 	 *
-	 * @param      string $user_id  Field to join on user ID
-	 * @param      string $username Field to join on username
-	 * @return     string
+	 * @param   string  $user_id   Field to join on user ID
+	 * @param   string  $username  Field to join on username
+	 * @return  string
 	 */
 	public function onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')
 	{
-		//$query  = "SELECT COUNT(*) FROM #__wiki_page AS w WHERE (w.created_by='".$user_id."' OR w.authors LIKE '%".$username."%')";
 		$username = ($username == 'm.username') ? $username : "'" . $username . "'";
-		$query = "SELECT COUNT(*) FROM #__wiki_page AS w
-					WHERE ((" . $user_id . " > 0 AND (w.created_by = " . $user_id . " OR " . $user_id . " IN (SELECT wpa.user_id FROM #__wiki_page_author AS wpa
+
+		$query = "SELECT COUNT(*) FROM `#__wiki_pages` AS w
+					WHERE ((" . $user_id . " > 0 AND (w.created_by = " . $user_id . " OR " . $user_id . " IN (SELECT wpa.user_id FROM `#__wiki_authors` AS wpa
 						WHERE wpa.page_id=w.id))) OR (" . $user_id . " <= 0 AND w.created_by = " . $user_id . "))";
-		//if (!$authorized) {
-		//	$query .= " AND w.access!=1";
-		//}
-		/*$query = "SELECT COUNT(*) FROM (
-			SELECT COUNT(DISTINCT v.pageid) FROM #__wiki_page AS w, #__wiki_version AS v
-			WHERE w.id=v.pageid
-			AND v.approved=1
-			AND (w.created_by=m.uidNumber OR w.authors LIKE '%m.username%') ";
-		if (!$authorized) {
-			$query .= " AND w.access!=1";
-		}
-		$query .= " GROUP BY pageid
-		) AS f";*/
+
 		return $query;
 	}
 
 	/**
 	 * Return either a count or an array of the member's contributions
 	 *
-	 * @param      object  $member     Current member
-	 * @param      string  $option     Component name
-	 * @param      string  $authorized Authorization level
-	 * @param      integer $limit      Number of record to return
-	 * @param      integer $limitstart Record return start
-	 * @param      string  $sort       Field to sort records on
-	 * @param      array   $areas      Areas to return data for
-	 * @return     array
+	 * @param   object   $member      Current member
+	 * @param   string   $option      Component name
+	 * @param   string   $authorized  Authorization level
+	 * @param   integer  $limit       Number of record to return
+	 * @param   integer  $limitstart  Record return start
+	 * @param   string   $sort        Field to sort records on
+	 * @param   array    $areas       Areas to return data for
+	 * @return  array
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
-		$database = App::get('db');
-
 		if (is_array($areas) && $limit)
 		{
 			if (!isset($areas[$this->_name])
@@ -124,7 +110,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$uidNumber = $member->get('uidNumber');
-				$username = $member->get('username');
+				$username  = $member->get('username');
 			}
 		}
 		else
@@ -136,55 +122,42 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$uidNumber = $member->uidNumber;
-				$username = $member->username;
+				$username  = $member->username;
 			}
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-
-		// Instantiate some needed objects
-		$wp = new \Components\Wiki\Tables\Page($database);
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
 
 		// Build query
-		$filters = array();
-		$filters['author'] = $uidNumber;
-		$filters['username'] = $username;
-		$filters['sortby'] = $sort;
-		//if ($authorized) {
-		//	$filters['authorized'] = 'admin';
-		//}
-
 		if (!$limit)
 		{
-			$filters['select'] = 'count';
-
-			$database->setQuery($wp->buildPluginQuery($filters));
-			return $database->loadResult();
+			return \Components\Wiki\Models\Version::all()
+				->whereEquals('created_by', $uidNumber)
+				->whereEquals('approved', 1)
+				->group('page_id')
+				->total();
 		}
 		else
 		{
-			$filters['select'] = 'records';
-			$filters['limit'] = $limit;
-			$filters['limitstart'] = $limitstart;
+			$versions = \Components\Wiki\Models\Version::all()
+				->whereEquals('created_by', $uidNumber)
+				->whereEquals('approved', 1)
+				->group('page_id')
+				->rows();
 
-			$database->setQuery($wp->buildPluginQuery($filters));
-			$rows = $database->loadObjectList();
+			$ids = array();
 
-			if ($rows)
+			foreach ($versions as $version)
 			{
-				foreach ($rows as $key => $row)
-				{
-					if ($row->area != '' && $row->category != '')
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_groups&scope=' . $row->category . '&pagename=' . $row->alias);
-					}
-					else
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
-					}
-					$rows[$key]->text = $rows[$key]->itext;
-				}
+				$ids[] = $version->get('page_id');
 			}
+
+			$rows = \Components\Wiki\Models\Page::all()
+				->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+				->whereIn('id', $ids)
+				->limit($limit)
+				->start($limitstart)
+				->rows();
 
 			return $rows;
 		}
@@ -193,33 +166,15 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
-		$database = App::get('db');
-
 		$html  = "\t" . '<li class="resource">' . "\n";
-		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		$html .= "\t\t" . '<p class="details">';
-		if (isset($row->area) && isset($row->category))
-		{
-			$html .= Lang::txt('PLG_MEMBERS_WIKI_GROUP_WIKI') . ': ' . $row->area;
-		}
-		else
-		{
-			$html .= Lang::txt('PLG_MEMBERS_WIKI');
-		}
-		$html .= '</p>' . "\n";
-		if ($row->text)
-		{
-			//if ($row->access == 1) {
-			//	$html .= "\t\t".'<p class="warning">' . Lang::txt('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED') . '</p>' ."\n";
-			//} else {
-				$html .= "\t\t<p>" . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->text)), 300) . "</p>\n";
-			//}
-		}
+		$html .= "\t\t" . '<p class="title"><a href="' . $row->link() . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+		$html .= "\t\t" . '<p class="details">' . $row->get('scope') . '</p>' . "\n";
+		$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->version->get('pagehtml'))), 300) . "</p>\n";
 		$html .= "\t" . '</li>' . "\n";
 		return $html;
 	}

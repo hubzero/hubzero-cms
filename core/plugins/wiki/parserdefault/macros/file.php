@@ -142,22 +142,21 @@ class FileMacro extends WikiMacro
 		// Is it numeric?
 		if (is_numeric($file))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
-			$attach->load(intval($file));
+			$attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
 			// Check for file existence
-			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true)))
+			if ($attach->get('filename') && file_exists($this->_path($attach->get('filename'))) || file_exists($this->_path($attach->get('filename'), true)))
 			{
 				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 				if (!$attr['desc'])
 				{
-					$attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
+					$attr['desc'] = $attach->get('description', '');
 				}
-				$attr['created'] = $attach->created;
-				$attr['created_by'] = $attach->created_by;
+				$attr['created']    = $attach->get('created');
+				$attr['created_by'] = $attach->get('created_by');
 
 				$ret = true;
 			}
@@ -165,15 +164,14 @@ class FileMacro extends WikiMacro
 		// Check for file existence
 		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
-			$attach->load($file, $this->pageid);
-			if ($attach->filename)
+			$attach = \Components\Wiki\Models\Attachment::oneByFilename($file, $this->pageid);
+			if ($attach->get('filename'))
 			{
-				$attr['created'] = $attach->created;
-				$attr['created_by'] = $attach->created_by;
+				$attr['created']    = $attach->get('created');
+				$attr['created_by'] = $attach->get('created_by');
 			}
 
 			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
@@ -184,16 +182,12 @@ class FileMacro extends WikiMacro
 		// Does the file exist?
 		if ($ret)
 		{
-			//$attr['desc'] = htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8');
-
 			// Return HTML
 			return $this->_embed($file, $attr);
 		}
-		else
-		{
-			// Return error message
-			return '(file:' . $file . ' not found)';
-		}
+
+		// Return error message
+		return '(file:' . $file . ' not found)';
 	}
 
 	/**

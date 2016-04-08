@@ -78,11 +78,6 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			$ids[] = $tag->get('id');
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-
-		// Instantiate some needed objects
-		$wp = new \Components\Wiki\Tables\Page($database);
-
 		// Build query
 		$filters = array();
 		$filters['tags'] = $ids;
@@ -173,8 +168,8 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
 						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
 						CASE
-							WHEN w.group_cn LIKE 'pr-%' THEN concat('index.php?option=com_projects&scope=', w.scope, '&pagename=', w.pagename)
-							WHEN w.group_cn != '' THEN CONCAT('index.php?option=com_groups&scope=', w.scope, '&pagename=', w.pagename)
+							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&scope=', w.path, '&pagename=', w.pagename)
+							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&scope=', w.path, '&pagename=', w.pagename)
 							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
 						END AS href,
 						'wiki' AS section ";
@@ -184,8 +179,8 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			}
 			$query .= ", w.params, NULL AS rcount, w.scope AS data1, NULL AS data2, NULL AS data3 ";
 		}
-		$query .= "FROM #__wiki_page AS w
-					INNER JOIN #__wiki_version AS v ON v.id=w.version_id
+		$query .= "FROM #__wiki_pages AS w
+					INNER JOIN #__wiki_versions AS v ON v.id=w.version_id
 					LEFT JOIN `#__xgroups` xg ON xg.cn = w.group_cn";
 		if (isset($filters['tags']))
 		{

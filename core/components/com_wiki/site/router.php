@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -49,11 +48,11 @@ class Router extends Base
 	{
 		$segments = array();
 
-		if (!empty($query['scope']))
+		if (isset($query['scope']))
 		{
-			$segments[] = $query['scope'];
+			unset($query['scope']);
 		}
-		unset($query['scope']);
+
 		if (!empty($query['pagename']))
 		{
 			$segments[] = $query['pagename'];
@@ -80,14 +79,7 @@ class Router extends Base
 			return $vars;
 		}
 
-		//$vars['task'] = 'view';
-		$e = array_pop($segments);
-		$s = implode(DS, $segments);
-		if ($s)
-		{
-			$vars['scope'] = $s;
-		}
-		$vars['pagename'] = $e;
+		$vars['pagename'] = end($segments);
 
 		if (!isset($vars['task']) || !$vars['task'])
 		{
@@ -138,6 +130,8 @@ class Router extends Base
 			$vars['controller'] = 'media';
 			$vars['task'] = 'download';
 		}
+
+		$vars['pagename'] = implode('/', $segments);
 
 		return $vars;
 	}

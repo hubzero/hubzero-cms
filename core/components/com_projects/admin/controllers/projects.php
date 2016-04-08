@@ -640,12 +640,8 @@ class Projects extends AdminController
 		$objB->deletePosts( $id, $permanent );
 
 		// Erase all notes
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+
 		$masterscope = 'projects' . DS . $alias . DS . 'notes';
 
 		// Get all notes
@@ -658,13 +654,9 @@ class Projects extends AdminController
 		{
 			foreach ($notes as $note)
 			{
-				$page = new \Components\Wiki\Tables\Page( $this->database );
-
-				// Delete the page's history, tags, comments, etc.
-				$page->deleteBits( $note->id );
-
+				$page = \Components\Wiki\Models\Page::oneOrFail($note->id);
 				// Finally, delete the page itself
-				$page->delete( $note->id );
+				$page->destroy();
 			}
 		}
 

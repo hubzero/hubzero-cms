@@ -25,69 +25,167 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Wiki\Models;
 
-use Components\Wiki\Tables;
-use Hubzero\Base\Model;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
+use Hubzero\Database\Relational;
+use Hubzero\User\Profile;
+use User;
 
 /**
- * Wiki model for a page author
+ * Wiki author model
  */
-class Author extends Model
+class Author extends Relational
 {
 	/**
-	 * Constructor
+	 * The table namespace
 	 *
-	 * @param   mixed  $oid  Integer, object, or array
-	 * @return  void
+	 * @var  string
 	 */
-	public function __construct($oid=null)
+	protected $namespace = 'wiki';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'user_id' => 'positive|nonzero',
+		'page_id' => 'positive|nonzero'
+	);
+
+	/**
+	 * Defines a belongs to one relationship between task and liaison
+	 *
+	 * @return  object
+	 */
+	public function user()
 	{
-		$this->_db = \App::get('db');
-
-		$this->_tbl = new Tables\Author($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
+		if ($profile = Profile::getInstance($this->get('user_id')))
 		{
-			if ($oid)
-			{
-				$this->_tbl->load($oid);
-			}
+			return $profile;
 		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
+		return new Profile;
 	}
 
 	/**
-	 * Returns a reference to this model
+	 * Defines a belongs to one relationship between task and liaison
 	 *
-	 * @param   mixed  $oid  Integer, object, or array
 	 * @return  object
 	 */
-	static function &getInstance($oid=0)
+	public function page()
 	{
-		static $instances;
+		return $this->belongsToOne('Page', 'page_id');
+	}
 
-		if (!isset($instances))
+		/**
+	 * Saves a string of comma-separated usernames or IDs to authors table
+	 *
+	 * @param   mixed    $authors  String or array of authors
+	 * @param   integer  $page_id  The id of the page
+	 * @return  boolean  True if authors successfully saved
+	 */
+	public static function setForPage($authors, $page_id)
+	{
+		if (!trim($authors))
 		{
-			$instances = array();
+			return true;
 		}
 
-		if (!isset($instances[$oid]))
+		// Get the list of existing authors
+		$ids = array();
+
+		$existing = self::all()
+			->whereEquals('page_id', (int)$page_id)
+			->rows();
+		foreach ($existing as $ex)
 		{
-			$instances[$oid] = new self($oid);
+			$ids[] = $ex->get('user_id');
 		}
 
-		return $instances[$oid];
+		$auths = array();
+
+		// Turn the comma-separated string of authors into an array and loop through it
+		if ($authors)
+		{
+			if (is_string($authors))
+			{
+				$authors = explode(',', $authors);
+				$authors = array_map('trim', $authors);
+			}
+
+			foreach ($authors as $author)
+			{
+				// Attempt to load each user
+				$targetuser = User::getInstance($author);
+
+				// Ensure we found an account
+				if (!is_object($targetuser))
+				{
+					// No account found for this username/ID
+					// Move on to next record
+					continue;
+				}
+
+				// Check if they're already an existing author
+				if (in_array($targetuser->get('id'), $ids))
+				{
+					// Add them to the existing authors array
+					$auths[] = $targetuser->get('id');
+					// Move on to next record
+					continue;
+				}
+
+				// Create a new author object and attempt to save the record
+				$wpa = self::blank();
+				$wpa->set('page_id', $page_id);
+				$wpa->set('user_id', $targetuser->get('id'));
+
+				if (!$wpa->save())
+				{
+					$err = $wpa->getError();
+				}
+
+				// Add them to the existing authors array
+				$auths[] = $targetuser->get('id');
+			}
+		}
+
+		// Loop through the old author list and check for nay entries not in the new list
+		// Remove any entries not found in the new list
+		foreach ($existing as $ex)
+		{
+			if (!in_array($ex->get('id'), $auths))
+			{
+				if (!$ex->destroy())
+				{
+					$err = $ex->getError();
+				}
+			}
+		}
+
+		if ($err)
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
-

@@ -33,8 +33,21 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$page = \Components\Wiki\Models\Page::getInstance(Request::getVar('page'), Request::getVar('scope'));
-$revision = $page->revision(Request::getInt('version', 0));
+$page = $this->book->pages()
+	->whereEquals('pagename', Request::getVar('page', ''))
+	->whereEquals('path', Request::getVar('scope', ''))
+	->row();
+
+if ($v = Request::getInt('version', 0))
+{
+	$revision = $page->versions()
+		->whereEquals('id', $v)
+		->row();
+}
+else
+{
+	$revision = $page->version();
+}
 
 $yFormat = 'Y';
 $apaFormat = 'Y, M d';
@@ -50,7 +63,7 @@ $amaFormatRetrieved = 'M d, Y';
 
 $now = Date::toSql();
 
-$permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), DS);
+$permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
 ?>
 <div class="admon-note">
 <p>
@@ -61,7 +74,7 @@ $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() 
 </p>
 </div>
 <div class="wiki-box highlight-box">
-	<h3>Bibliographic details for "<?php echo $this->escape(stripslashes($page->get('title'))); ?>"</h3>
+	<h3>Bibliographic details for "<?php echo $this->escape(stripslashes($page->title)); ?>"</h3>
 	<ul>
 		<li>
 			Page name: <?php echo $this->escape(stripslashes($page->get('pagename'))); ?>

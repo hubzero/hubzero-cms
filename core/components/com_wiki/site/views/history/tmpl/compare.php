@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,39 +37,35 @@ if (!$this->sub)
 	$this->css();
 }
 
-$orauthor = $this->or->creator('name') ? $this->or->creator('name') : Lang::txt('COM_WIKI_UNKNOWN');
-$drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : Lang::txt('COM_WIKI_UNKNOWN');
+$orauthor = $this->or->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
+$drauthor = $this->dr->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
 ?>
-	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-		<h2><?php echo $this->escape($this->title); ?></h2>
-		<?php
-		if (!$this->page->isStatic())
-		{
-			$this->view('authors', 'page')
-			     ->setBasePath($this->base_path)
-			     ->set('page', $this->page)
-			     ->display();
-		}
-		?>
-	</header><!-- /#content-header -->
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<h2><?php echo $this->escape($this->page->title); ?></h2>
+	<?php
+	if (!$this->page->isStatic())
+	{
+		$this->view('authors', 'pages')
+			//->setBasePath($this->base_path)
+			->set('page', $this->page)
+			->display();
+	}
+	?>
+</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if ($this->message) { ?>
-	<p class="passed"><?php echo $this->message; ?></p>
-<?php } ?>
-
 <?php
-	$this->view('submenu', 'page')
-	     ->setBasePath($this->base_path)
-	     ->set('option', $this->option)
-	     ->set('controller', $this->controller)
-	     ->set('page', $this->page)
-	     ->set('task', $this->task)
-	     ->set('sub', $this->sub)
-	     ->display();
+	$this->view('submenu', 'pages')
+		//->setBasePath($this->base_path)
+		->set('option', $this->option)
+		->set('controller', $this->controller)
+		->set('page', $this->page)
+		->set('task', $this->task)
+		->set('sub', $this->sub)
+		->display();
 ?>
 
 <section class="main section">

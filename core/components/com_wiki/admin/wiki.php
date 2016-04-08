@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,11 +34,10 @@ namespace Components\Wiki\Admin;
 // Authorization check
 if (!\User::authorise('core.manage', 'com_wiki'))
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(__DIR__ . DS . 'models' . DS . 'pagePermissions.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'parser.php');
 include_once(dirname(__DIR__) . DS . 'models' . DS . 'book.php');
@@ -71,5 +69,3 @@ if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

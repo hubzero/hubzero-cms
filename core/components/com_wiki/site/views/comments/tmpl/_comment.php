@@ -25,45 +25,40 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
 
-	$cls = isset($this->cls) ? $this->cls : 'odd';
+$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	if ($this->page->get('created_by') == $this->comment->get('created_by'))
-	{
-		$cls .= ' author';
-	}
-	$cls .= ($this->comment->isReported()) ? ' abusive' : '';
-	if ($this->comment->get('state') == 1)
-	{
-		$cls .= ' chosen';
-	}
+if ($this->page->get('created_by') == $this->comment->get('created_by'))
+{
+	$cls .= ' author';
+}
+$cls .= ($this->comment->isReported()) ? ' abusive' : '';
 
-	$name = Lang::txt('COM_WIKI_ANONYMOUS');
-	if (!$this->comment->get('anonymous'))
+$name = Lang::txt('COM_WIKI_ANONYMOUS');
+if (!$this->comment->get('anonymous'))
+{
+	$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
+	if ($this->comment->creator()->get('public'))
 	{
-		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
-		if ($this->comment->creator('public'))
-		{
-			$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
-		}
+		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 	}
+}
 
-	if ($this->comment->isReported())
-	{
-		$comment = '<p class="warning">' . Lang::txt('COM_WIKI_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
-	}
-	else
-	{
-		$comment  = $this->comment->content('parsed');
-	}
+if ($this->comment->isReported())
+{
+	$comment = '<p class="warning">' . Lang::txt('COM_WIKI_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
+}
+else
+{
+	$comment = $this->comment->content('parsed');
+}
 
-	$this->comment->set('category', 'answercomment');
+$this->comment->set('category', 'answercomment');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
@@ -120,22 +115,22 @@ defined('_HZEXEC_') or die();
 					--></a>
 				<?php } ?>
 
-			<?php if (!$this->comment->isReported()) { ?>
-				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_WIKI_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WIKI_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo Lang::txt('COM_WIKI_CANCEL'); ?><!--
-				--></a>
-					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_WIKI_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WIKI_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo Lang::txt('COM_WIKI_REPLY'); ?><!--
-				--></a>
+				<?php if (!$this->comment->isReported()) { ?>
+					<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
+						<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
+						<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_WIKI_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WIKI_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+						--><?php echo Lang::txt('COM_WIKI_CANCEL'); ?><!--
+					--></a>
+						<?php } else { ?>
+						<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_WIKI_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WIKI_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+						--><?php echo Lang::txt('COM_WIKI_REPLY'); ?><!--
+					--></a>
+						<?php } ?>
 					<?php } ?>
+					<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('COM_WIKI_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
+						--><?php echo Lang::txt('COM_WIKI_REPORT_ABUSE'); ?><!--
+					--></a>
 				<?php } ?>
-				<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('COM_WIKI_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
-					--><?php echo Lang::txt('COM_WIKI_REPORT_ABUSE'); ?><!--
-				--></a>
-			<?php } ?>
 			</p>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
@@ -152,17 +147,17 @@ defined('_HZEXEC_') or die();
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
-						<input type="hidden" name="comment[pageid]" value="<?php echo $this->page->get('id'); ?>" />
+						<input type="hidden" name="comment[page_id]" value="<?php echo $this->page->get('id'); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
-						<input type="hidden" name="comment[version]" value="<?php echo $this->page->revision()->get('version'); ?>" />
+						<input type="hidden" name="comment[version]" value="<?php echo $this->page->version->get('version'); ?>" />
 						<input type="hidden" name="comment[status]" value="1" />
 
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="comments" />
-						<input type="hidden" name="scope" value="<?php echo $this->page->get('scope'); ?>" />
-						<input type="hidden" name="pagename" value="<?php echo $this->page->get('pagename'); ?>" />
-						<input type="hidden" name="<?php echo $this->page->get('group_cn') ? 'action' : 'task'; ?>" value="savecomment" />
+						<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
+
+						<?php foreach ($this->page->adapter()->routing('savecomment') as $name => $val) { ?>
+							<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+						<?php } ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('COM_WIKI_ENTER_COMMENTS'); ?></span>
@@ -190,23 +185,30 @@ defined('_HZEXEC_') or die();
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3))
 		{
-			$filters = array('version' => '');
+			$model = $this->comment->replies()
+				->whereIn('state', array(
+					$this->comment::STATE_PUBLISHED,
+					$this->comment::STATE_FLAGGED
+				));
 			if ($this->version)
 			{
-				$filters['version'] = 'AND version=' . $this->version;
+				$model->whereEquals('version', $this->version);
 			}
+			$comments = $model
+				->ordered()
+				->rows();
 
 			$this->view('_list', 'comments')
-			     ->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
-			     ->set('parent', $this->comment->get('id'))
-			     ->set('page', $this->page)
-			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies('list', $filters))
-			     ->set('config', $this->config)
-			     ->set('depth', $this->depth)
-			     ->set('version', $this->version)
-			     ->set('cls', $cls)
-			     ->display();
+				//->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
+				->set('parent', $this->comment->get('id'))
+				->set('page', $this->page)
+				->set('option', $this->option)
+				->set('comments', $comments)
+				->set('config', $this->config)
+				->set('depth', $this->depth)
+				->set('version', $this->version)
+				->set('cls', $cls)
+				->display();
 		}
 		?>
 	</li>

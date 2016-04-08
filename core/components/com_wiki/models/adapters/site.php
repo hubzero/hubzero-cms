@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -42,7 +41,7 @@ class Site extends Base
 	/**
 	 * URL segments
 	 *
-	 * @var string
+	 * @var  array
 	 */
 	protected $_segments = array(
 		'option' => 'com_wiki',
@@ -51,25 +50,25 @@ class Site extends Base
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $pagename
-	 * @param   string  $scope
-	 * @param   string  $group_cn
+	 * @param   string   $pagename
+	 * @param   string   $path
+	 * @param   integer  $scope_id
 	 * @return  void
 	 */
-	public function __construct($pagename=null, $scope=null, $group_cn=null)
+	public function __construct($pagename=null, $path=null, $scope_id=null)
 	{
+		$pagename = ($path ? $path . '/' : '') . $pagename;
+
 		$this->_segments['pagename'] = $pagename;
-		$this->_segments['scope']    = $scope;
-		$this->_segments['option']   = 'com_wiki';
 	}
 
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{
@@ -127,5 +126,19 @@ class Site extends Base
 		$segments = array_merge($segments, (array) $params);
 
 		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+	}
+
+	/**
+	 * Get an array of routing inputs
+	 *
+	 * @param   string  $task
+	 * @return  array
+	 */
+	public function routing($task='save')
+	{
+		return array(
+			'option' => $this->_segments['option'],
+			'task'   => $task
+		);
 	}
 }

@@ -25,13 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Collections\Models\Item;
 
+use Hubzero\User\Group;
 use Components\Collections\Models\Item as GenericItem;
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
@@ -106,9 +106,18 @@ class Wiki extends GenericItem
 
 		if (!$id)
 		{
-			$group = Request::getVar('cn', '');
+			$scope = 'site';
+			$scope_id = 0;
 
-			$book = new Book(($group ? $group : '__site__'));
+			if ($group = Request::getVar('cn', ''))
+			{
+				$group = Group::getInstance($group);
+
+				$scope = 'group';
+				$scope_id = $group->get('gidNumber');
+			}
+
+			$book = new Book($scope, $scope_id);
 			$page = $book->page();
 
 			$id = $page->get('id');
@@ -123,7 +132,7 @@ class Wiki extends GenericItem
 
 		if (!$page)
 		{
-			$page = new Page($id);
+			$page = Page::oneOrFail($id);
 		}
 
 		if (!$page->exists())
@@ -136,8 +145,8 @@ class Wiki extends GenericItem
 		     ->set('object_id', $page->get('id'))
 		     ->set('created', $page->get('created'))
 		     ->set('created_by', $page->get('created_by'))
-		     ->set('title', $page->get('title'))
-		     ->set('description', $page->revision()->content('clean', 300))
+		     ->set('title', $page->title)
+		     ->set('description', strip_tags($page->version->content($page)))
 		     ->set('url', Route::url($page->link()));
 
 		if (!$this->store())

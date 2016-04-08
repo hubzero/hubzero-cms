@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,16 +33,16 @@ namespace Components\Wiki\Site\Controllers;
 
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
-use Components\Wiki\Tables;
+use Components\Wiki\Models\Attachment;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Number;
 use Filesystem;
-use Exception;
 use Request;
 use User;
 use Lang;
 use Date;
+use App;
 
 /**
  * Wiki controller class for media
@@ -53,30 +52,27 @@ class Media extends SiteController
 	/**
 	 * Constructor
 	 *
-	 * @param      array $config Optional configurations
-	 * @return     void
+	 * @param   array  $config  Optional configurations
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
-		$this->_base_path = dirname(__DIR__);
-		if (isset($config['base_path']))
+		if (!isset($config['scope']))
 		{
-			$this->_base_path = $config['base_path'];
+			$config['scope'] = 'site';
 		}
 
-		$this->_sub = false;
-		if (isset($config['sub']))
+		if (!isset($config['scope_id']))
 		{
-			$this->_sub = $config['sub'];
+			$config['scope_id'] = 0;
 		}
 
-		$this->_group = false;
-		if (isset($config['group']))
-		{
-			$this->_group = $config['group'];
-		}
+		$this->book = new Book($config['scope'], $config['scope_id']);
 
-		$this->book = new Book(($this->_group ? $this->_group : '__site__'));
+		if ($config['scope'] != 'site')
+		{
+			Request::setVar('task', Request::getWord('action'));
+		}
 
 		parent::__construct($config);
 	}
@@ -84,7 +80,7 @@ class Media extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -96,66 +92,59 @@ class Media extends SiteController
 	/**
 	 * Download a wiki file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
-		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'default', 'none', 2)));
-
-		// Instantiate an attachment object
-		$attachment = new Tables\Attachment($this->database);
-		if ($this->page->get('namespace') == 'image' || $this->page->get('namespace') == 'file')
-		{
-			$attachment->filename = $this->page->denamespaced();
-		}
-		$attachment->filename = urldecode($attachment->filename);
-
-		// Get the scope of the parent page the file is attached to
-		if (!$this->scope)
-		{
-			$this->scope = trim(Request::getVar('scope', ''));
-		}
-		$segments = explode('/', $this->scope);
-		$pagename = array_pop($segments);
-		$scope = implode('/', $segments);
+		$pagename = urldecode(Request::getVar('pagename', '', 'default', 'none', 2));
+		$pagename = explode('/', $pagename);
+		$filename = array_pop($pagename);
+		$pagename = implode('/', $pagename);
 
 		// Get the parent page the file is attached to
-		$this->page = new Page($pagename, $scope);
+		$this->page = Page::oneByPath($pagename, $this->page->get('scope'), $this->page->get('scope_id'));
 
 		// Load the page
 		if ($this->page->exists())
 		{
-			// Check if the page is group restricted and the user is authorized
-			if ($this->page->get('group_cn') != '' && $this->page->get('access') != 0 && !$this->page->access('view'))
+			// Check if the page is group restricted and the user is not authorized
+			if ($this->page->get('scope') != 'site'
+			 && $this->page->get('access') != 0
+			 && !$this->page->access('view'))
 			{
-				throw new Exception(Lang::txt('COM_WIKI_WARNING_NOT_AUTH'), 403);
+				App::abort(403, Lang::txt('COM_WIKI_WARNING_NOT_AUTH'));
 			}
 		}
-		else if ($this->page->get('namespace') == 'tmp')
+		else if ($this->page->getNamespace() == 'tmp')
 		{
-			$this->page->set('id', $this->page->denamespaced());
+			$this->page->set('id', $this->page->stripNamespace());
 		}
 		else
 		{
-			throw new Exception(Lang::txt('COM_WIKI_PAGE_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WIKI_PAGE_NOT_FOUND'));
 		}
+
+		$filename = $this->page->stripNamespace($filename);
+
+		// Instantiate an attachment object
+		$attachment = $this->page
+			->attachments()
+			->whereEquals('filename', $filename)
+			->row();
 
 		// Ensure we have a path
-		if (empty($attachment->filename))
+		if (!$attachment->get('filename'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_FILE_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WIKI_FILE_NOT_FOUND'));
 		}
 
-		// Does the path start with a slash?
-		$attachment->filename = DS . ltrim($attachment->filename, DS);
-
 		// Add root
-		$filename = $attachment->filespace() . DS . $this->page->get('id') . $attachment->filename;
+		$filename = $attachment->filespace() . DS . $this->page->get('id') . DS . ltrim($attachment->get('filename'), DS);
 
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_FILE_NOT_FOUND') . ' ' . $filename, 404);
+			App::abort(404, Lang::txt('COM_WIKI_FILE_NOT_FOUND') . ' ' . $attachment->get('filename'));
 		}
 
 		// Initiate a new content server and serve up the file
@@ -167,19 +156,16 @@ class Media extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			throw new Exception(Lang::txt('COM_WIKI_SERVER_ERROR'), 500);
+			App::abort(500, Lang::txt('COM_WIKI_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  void
 	 */
 	public function ajaxUploadTask()
 	{
@@ -220,7 +206,7 @@ class Media extends SiteController
 			return;
 		}
 
-		$attachment = new Tables\Attachment($this->database);
+		$attachment = Attachment::blank();
 
 		// define upload directory and make sure its writable
 		$path = $attachment->filespace() . DS . $listdir;
@@ -290,17 +276,13 @@ class Media extends SiteController
 		}
 
 		// Create database entry
-		$attachment->pageid      = $listdir;
-		$attachment->filename    = $filename . '.' . $ext;
-		$attachment->description = trim(Request::getVar('description', '', 'post'));
-		$attachment->created     = Date::toSql();
-		$attachment->created_by  = User::get('id');
+		$attachment->set('page_id', $listdir);
+		$attachment->set('filename', $filename . '.' . $ext);
+		$attachment->set('description', trim(Request::getVar('description', '', 'post')));
+		$attachment->set('created', Date::toSql());
+		$attachment->set('created_by', User::get('id'));
 
-		if (!$attachment->check())
-		{
-			$this->setError($attachment->getError());
-		}
-		if (!$attachment->store())
+		if (!$attachment->save())
 		{
 			$this->setError($attachment->getError());
 		}
@@ -316,15 +298,14 @@ class Media extends SiteController
 	/**
 	 * Upload a file to the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		if (Request::getVar('no_html', 0))
@@ -337,8 +318,7 @@ class Media extends SiteController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
@@ -346,11 +326,10 @@ class Media extends SiteController
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
-		$attachment = new Tables\Attachment($this->database);
+		$attachment = Attachment::blank();
 
 		// Build the upload path if it doesn't exist
 		$path = $attachment->filespace() . DS . $listdir;
@@ -360,8 +339,7 @@ class Media extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 		}
 
@@ -379,17 +357,13 @@ class Media extends SiteController
 		else
 		{
 			// Create database entry
-			$attachment->pageid      = $listdir;
-			$attachment->filename    = $file['name'];
-			$attachment->description = trim(Request::getVar('description', '', 'post'));
-			$attachment->created     = Date::toSql();
-			$attachment->created_by  = User::get('id');
+			$attachment->set('page_id', $listdir);
+			$attachment->set('filename', $file['name']);
+			$attachment->set('description', trim(Request::getVar('description', '', 'post')));
+			$attachment->set('created', Date::toSql());
+			$attachment->set('created_by', User::get('id'));
 
-			if (!$attachment->check())
-			{
-				$this->setError($attachment->getError());
-			}
-			if (!$attachment->store())
+			if (!$attachment->save())
 			{
 				$this->setError($attachment->getError());
 			}
@@ -402,15 +376,14 @@ class Media extends SiteController
 	/**
 	 * Delete a folder in the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefolderTask()
 	{
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming group ID
@@ -418,8 +391,7 @@ class Media extends SiteController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming folder
@@ -427,11 +399,10 @@ class Media extends SiteController
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_DIRECTORY'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
-		$attachment = new Tables\Attachment($this->database);
+		$attachment = Attachment::blank();
 
 		// Build the file path
 		$path = $attachment->filespace() . DS . $listdir . DS . $folder;
@@ -463,15 +434,14 @@ class Media extends SiteController
 	/**
 	 * Delete a file in the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefileTask()
 	{
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming
@@ -479,8 +449,7 @@ class Media extends SiteController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
@@ -488,17 +457,16 @@ class Media extends SiteController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
-		$attachment = new Tables\Attachment($this->database);
+		$attachment = Attachment::oneByFilename($file, $listdir);
 
 		// Build the file path
-		$path = $attachment->filespace() . DS . $listdir;
+		$path = $attachment->filespace() . DS . $listdir . DS . $file;
 
 		// Delete the file
-		if (!file_exists($path . DS . $file) or !$file)
+		if (!file_exists($path) or !$file)
 		{
 			$this->setError(Lang::txt('COM_WIKI_ERROR_NO_FILE'));
 			$this->displayTask();
@@ -506,14 +474,14 @@ class Media extends SiteController
 		else
 		{
 			// Attempt to delete the file
-			if (!Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path))
 			{
 				$this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $file));
 			}
 			else
 			{
 				// Delete the database entry for the file
-				$attachment->deleteFile($file, $listdir);
+				$attachment->destroy();
 			}
 		}
 
@@ -529,18 +497,14 @@ class Media extends SiteController
 	/**
 	 * Display a form for uploading files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		$this->view
 			->set('config', $this->config)
 			->set('listdir', Request::getInt('listdir', 0, 'request'))
+			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
 	}
@@ -548,7 +512,7 @@ class Media extends SiteController
 	/**
 	 * Display a list of files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function listTask()
 	{
@@ -560,7 +524,7 @@ class Media extends SiteController
 			$this->setError(Lang::txt('COM_WIKI_NO_ID'));
 		}
 
-		$attachment = new Tables\Attachment($this->database);
+		$attachment = Attachment::blank();
 
 		$path = $attachment->filespace() . DS . $listdir;
 
@@ -602,21 +566,14 @@ class Media extends SiteController
 			ksort($docs);
 		}
 
-		$this->view->docs    = $docs;
-		$this->view->folders = $folders;
-		$this->view->config  = $this->config;
-		$this->view->listdir = $listdir;
-		$this->view->name    = $this->_name;
-		$this->view->sub     = $this->_sub;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		$this->view
+			->set('docs', $docs)
+			->set('folders', $folders)
+			->set('config', $this->config)
+			->set('listdir', $listdir)
+			->set('sub', $this->page->get('scope') != 'site')
+			->setErrors($this->getErrors())
 			->setLayout('list')
 			->display();
 	}
 }
-

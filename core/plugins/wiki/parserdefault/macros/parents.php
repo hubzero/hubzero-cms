@@ -41,7 +41,7 @@ class ParentsMacro extends WikiMacro
 	/**
 	 * Returns a description of how to use the macro
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function description()
 	{
@@ -59,7 +59,7 @@ class ParentsMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -119,17 +119,15 @@ class ParentsMacro extends WikiMacro
 			// Return nested lists
 			return $this->_buildTree($rows);
 		}
-		else
-		{
-			return '';
-		}
+
+		return '';
 	}
 
 	/**
 	 * Build a tree of parents
 	 *
-	 * @param  array  $rows An array of objects
-	 * @return string
+	 * @param   array  $rows  An array of objects
+	 * @return  string
 	 */
 	private function _buildTree($rows)
 	{
@@ -140,12 +138,10 @@ class ParentsMacro extends WikiMacro
 			// Get the last element in the array
 			$row = array_pop($rows);
 
-			$row = new \Components\Wiki\Models\Page($row);
-
 			// Build the HTML
 			$html .= '<ul>';
 			$html .= '<li><a href="' . Route::url($row->link()) . '">';
-			$html .= stripslashes($row->get('title', $row->get('pagename')));
+			$html .= stripslashes($row->title);
 			$html .= '</a>';
 			$html .= $this->_buildTree($rows);
 			$html .= '</li>' . "\n";
@@ -158,9 +154,9 @@ class ParentsMacro extends WikiMacro
 	/**
 	 * Build a tree of parents
 	 *
-	 * @param  integer $depth How far back to look for ancestors
-	 * @param  string  $scope The URI path to traverse
-	 * @return array
+	 * @param   integer  $depth  How far back to look for ancestors
+	 * @param   string   $scope  The URI path to traverse
+	 * @return  array
 	 */
 	private function _fetchPointer($depth, $scope)
 	{
@@ -210,28 +206,20 @@ class ParentsMacro extends WikiMacro
 	/**
 	 * Retrieve a wiki page by alias
 	 *
-	 * @param  integer $depth How far back to look for ancestors
-	 * @param  string  $scope The URI path to traverse
-	 * @return array
+	 * @param   string  $alias
+	 * @param   string  $scope
+	 * @return  mixed
 	 */
 	private function _getPageByAlias($alias, $scope)
 	{
-		if (!class_exists('\\Components\\Wiki\\Tables\\Page') && is_file(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php'))
-		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-		}
-
-		$page = new \Components\Wiki\Tables\Page($this->_db);
-		$page->load($alias, $scope);
+		$page = \Components\Wiki\Models\Page::oneByPath(($scope ? $scope . '/' . $alias : ''), $this->doman, $this->domain_id);
 
 		// Check for a result
-		if ($page && $page->id)
+		if ($page->get('id'))
 		{
 			return $page;
 		}
-		else
-		{
-			return null;
-		}
+
+		return null;
 	}
 }

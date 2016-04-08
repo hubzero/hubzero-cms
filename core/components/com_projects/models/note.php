@@ -63,12 +63,10 @@ class Note extends \Components\Wiki\Models\Book
 	 * @param   string $scope
 	 * @return  void
 	 */
-	public function __construct($scope = '__site__', $group_cn = '', $project_id = 0)
+	public function __construct($scope = 'project', $group_cn = '', $project_id = 0)
 	{
 		$this->_db = \App::get('db');
 		$this->_scope = $scope;
-		$this->_tbl = new \Components\Wiki\Tables\Page($this->_db);
-		$this->_group_cn = $group_cn;
 		$this->_project_id = $project_id;
 
 		parent::__construct($scope);
@@ -83,7 +81,7 @@ class Note extends \Components\Wiki\Models\Book
 	public function page($id=null, $scope = '')
 	{
 		$scope = $scope ? $scope : $this->_scope;
-		$this->_cache['page'] = \Components\Wiki\Models\Page::getInstance($id, $scope);
+		$this->_cache['page'] = \Components\Wiki\Models\Page::oneOrFail($id);
 
 		return $this->_cache['page'];
 	}
@@ -95,8 +93,7 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function getPublicStamp( $id = 0, $register = false, $listed = NULL )
 	{
-		if (!is_file(PATH_CORE . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'publicstamp.php') )
+		if (!is_file(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'tables' . DS . 'publicstamp.php') )
 		{
 			return false;
 		}
@@ -108,8 +105,7 @@ class Note extends \Components\Wiki\Models\Book
 			return false;
 		}
 
-		require_once(PATH_CORE . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
+		require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 		$objSt = new Tables\Stamp( $this->_db );
 
@@ -149,9 +145,9 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function getFirstNote( $prefix = '' )
 	{
-		$query = "SELECT p.pagename FROM #__wiki_page AS p
-				  WHERE p.group_cn='" . $this->_group_cn . "' AND p.state!=2
-				  AND p.scope='" . $this->_scope . "'";
+		$query = "SELECT p.pagename FROM `#__wiki_pages` AS p
+				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "' AND p.state!=2
+				  AND p.path='" . $this->_scope . "'";
 		$query.= $prefix ? "AND p.pagename LIKE '" . $prefix . "%'" : "";
 		$query.= " ORDER BY p.times_rated, p.id ASC LIMIT 1";
 
@@ -172,9 +168,9 @@ class Note extends \Components\Wiki\Models\Book
 		$remaining = array_slice($parts, 3);
 		if ($remaining)
 		{
-			$query = "SELECT DISTINCT p.pagename, p.title, p.scope ";
-			$query.= "FROM #__wiki_page AS p ";
-			$query.= "WHERE p.group_cn='" . $this->_group_cn . "' AND p.state!=2 ";
+			$query = "SELECT DISTINCT p.pagename, p.title, p.path, p.scope, p.scope_id ";
+			$query.= "FROM `#__wiki_pages` AS p ";
+			$query.= "WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "' AND p.state!=2 ";
 			$k = 1;
 			$where = '';
 			foreach ($remaining as $r)
@@ -203,9 +199,9 @@ class Note extends \Components\Wiki\Models\Book
 	public function getNotes( $limit = 0, $orderby = 'p.scope, p.times_rated ASC, p.id' )
 	{
 		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated
-		          FROM #__wiki_page AS p
-				  WHERE p.group_cn='" . $this->_group_cn . "'
-				  AND p.scope LIKE '" . $this->_scope . "%'
+				  FROM `#__wiki_pages` AS p
+				  WHERE p.scope='group' AND p.scope_id='" . $this->_project_id . "'
+				  AND p.path LIKE '" . $this->_scope . "%'
 				  AND p.pagename NOT LIKE 'Template:%'
 				  AND p.state!=2
 				  ORDER BY $orderby ";
@@ -222,10 +218,10 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function getNoteCount()
 	{
-		$query = "SELECT COUNT(*) FROM #__wiki_page AS p
-				  WHERE p.group_cn='" . $this->_group_cn . "' AND p.state!=2
+		$query = "SELECT COUNT(*) FROM #__wiki_pages AS p
+				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "' AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
-		$query.= $this->_scope ? " AND p.scope LIKE '" . $this->_scope . "%'" : "";
+		$query.= $this->_scope ? " AND p.path LIKE '" . $this->_scope . "%'" : "";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -239,14 +235,14 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function getSelectedNote( $id = '' )
 	{
-		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated,
-	 		  	  (SELECT v.version FROM #__wiki_version as v WHERE v.pageid=p.id
+		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.path, p.scope_id, p.times_rated,
+				  (SELECT v.version FROM `#__wiki_versions` as v WHERE v.pageid=p.id
 				  ORDER by v.version DESC LIMIT 1) as version,
-				  (SELECT vv.id FROM #__wiki_version as vv WHERE vv.pageid=p.id
+				  (SELECT vv.id FROM `#__wiki_versions` as vv WHERE vv.pageid=p.id
 				  ORDER by vv.id DESC LIMIT 1) as instance
-			      FROM #__wiki_page AS p
-				  WHERE p.group_cn='" . $this->_group_cn . "'
-				  AND p.scope LIKE '" . $this->_scope . "%'
+				  FROM `#__wiki_pages` AS p
+				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'
+				  AND p.path LIKE '" . $this->_scope . "%'
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 		$query.=  is_numeric($id) ? " AND p.id='$id' LIMIT 1" : " AND p.pagename='$id' LIMIT 1";
@@ -266,9 +262,9 @@ class Note extends \Components\Wiki\Models\Book
 	public function getLastNoteOrder( $scope = '' )
 	{
 		$scope = $scope ? $scope : $this->_scope;
-		$query = "SELECT p.times_rated FROM #__wiki_page AS p
-				  WHERE p.group_cn='" . $this->_group_cn . "'
-				  AND p.scope='" . $scope . "'
+		$query = "SELECT p.times_rated FROM `#__wiki_pages` AS p
+				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'
+				  AND p.path='" . $scope . "'
 				  ORDER BY p.times_rated DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
@@ -285,8 +281,8 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function fixScopePaths( $scope, $oldpagename, $newpagename )
 	{
-		$query = "UPDATE #__wiki_page AS p SET p.scope=replace(p.scope, '/" . $oldpagename . "', '/" . $newpagename . "')
-				  WHERE p.group_cn='" . $this->_group_cn . "'";
+		$query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, '/" . $oldpagename . "', '/" . $newpagename . "')
+				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'";
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -305,9 +301,9 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function saveNoteOrder( $scope, $order = 0 )
 	{
-		$query = "UPDATE #__wiki_page AS p SET p.times_rated='" . $order . "'
-				  WHERE p.group_cn='" . $this->_group_cn . "'
-				  AND p.scope='" . $scope . "'
+		$query = "UPDATE `#__wiki_pages` AS p SET p.times_rated='" . $order . "'
+				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'
+				  AND p.path='" . $scope . "'
 				  AND p.times_rated='0'";
 
 		$this->_db->setQuery($query);

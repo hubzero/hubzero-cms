@@ -25,576 +25,579 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Wiki\Models;
 
-use Components\Wiki\Helpers\Parser;
-use Components\Wiki\Tables;
-use Hubzero\Base\Model;
-use Hubzero\Base\ItemList;
+use Hubzero\Database\Relational;
+use Hubzero\User\Profile;
 use Hubzero\Utility\String;
+use Hubzero\Config\Registry;
+use stdClass;
 use Request;
+use Route;
 use Lang;
-use User;
 use Date;
+use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-
-require_once(__DIR__ . DS . 'author.php');
-require_once(__DIR__ . DS . 'revision.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'attachment.php');
+require_once(__DIR__ . DS . 'version.php');
 require_once(__DIR__ . DS . 'comment.php');
+require_once(__DIR__ . DS . 'author.php');
+require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'log.php');
 
 /**
  * Wiki model for a page
  */
-class Page extends Model
+class Page extends Relational
 {
 	/**
-	 * Registry
+	 * The table namespace
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_params = null;
+	protected $namespace = 'wiki';
 
 	/**
-	 * Registry
+	 * Adapter type
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	private $_config = null;
+	protected $adapter = null;
 
 	/**
-	 * Iterator
+	 * Component config
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	private $_comments = NULL;
+	protected $config = null;
 
 	/**
-	 * Comment count
+	 * Page config
 	 *
-	 * @var integer
+	 * @var  object
 	 */
-	private $_comments_count = NULL;
+	protected $params = null;
 
 	/**
-	 * Revisions count
+	 * Default order by for model
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	private $_revisions_count = null;
+	public $orderBy = 'title';
 
 	/**
-	 * WikiModelIterator
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_revisions = null;
+	public $orderDir = 'asc';
 
 	/**
-	 * WikiModelRevision
+	 * Fields and their validation criteria
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_revision = null;
+	protected $rules = array(
+		'title' => 'notempty'
+	);
 
 	/**
-	 * User
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_creator = null;
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
 
 	/**
-	 * WikiModelIterator
+	 * Automatically fillable fields
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_authors = null;
+	public $always = array(
+		'pagename',
+		'namespace'
+	);
 
 	/**
-	 * WikiModelAdapter
+	 * Sets up additional custom rules
 	 *
-	 * @var object
-	 */
-	private $_adapter = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @param   integer $id    [ID, pagename, object, array]
-	 * @param   string  $scope Page scope
 	 * @return  void
 	 */
-	public function __construct($oid, $scope='')
+	public function setup()
 	{
-		$this->_db = \App::get('db');
-
-		$this->_tbl = new Tables\Page($this->_db);
-
-		$pagename = '';
-
-		if ($oid)
+		$this->addRule('pagename', function($data)
 		{
-			if (is_numeric($oid))
+			$ns = $this->getNamespace($data['pagename']);
+
+			$error = null;
+
+			if (in_array(strtolower($ns), array('special', 'image', 'file')))
 			{
-				$this->_tbl->load($oid);
+				$error = Lang::txt('COM_WIKI_ERROR_INVALID_TITLE');
 			}
-			else if (is_string($oid))
+
+			if (strlen($data['pagename']) > 250)
 			{
-				$this->_tbl->load($oid, $scope);
-				$pagename = $oid;
+				$error = Lang::txt('Pagename too long');
 			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-				$pagename = (is_object($oid) ? $oid->pagename : $oid['pagename']);
-			}
-		}
 
-		$space = strtolower(strstr($this->get('pagename', $pagename), ':', true));
-		$space = $space ? $space : '';
-		$this->set('namespace', $space);
-
-		if (!$this->get('group_cn'))
-		{
-			$this->set('group_cn', Request::getVar('cn', ''));
-		}
-
-		/*if ($space == 'special')
-		{
-			$this->set('title', ltrim(strstr($this->get('pagename'), ':'), ':'));
-		}*/
-
-		$this->set('title', $this->_tbl->getTitle());
-
-		$this->_params = new \Hubzero\Config\Registry($this->get('params'));
+			return $error ?: false;
+		});
 	}
 
 	/**
-	 * Returns a reference to a page model
-	 * Can be called with a numeric page ID, object, array, or
-	 * pagename + page scope
+	 * Get the namespace, if one exists
+	 * Namespaces are determined by a colon (e.g., Special:Cite)
 	 *
-	 * @param   mixed  $oid   [ID, pagename, object, array]
-	 * @param   string $scope Page scope
-	 * @return  object WikiModelPage
-	 */
-	static function &getInstance($pagename, $scope='')
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_object($pagename))
-		{
-			$key = $scope . '/' . $pagename->pagename;
-		}
-		else if (is_array($pagename))
-		{
-			$key = $scope . '/' . $pagename['pagename'];
-		}
-		else
-		{
-			$key = $scope . '/' . $pagename;
-		}
-
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($pagename, $scope);
-		}
-
-		return $instances[$key];
-	}
-
-	/**
-	 * Strip punctuation, spaces, make lowercase
-	 *
-	 * @param   string $data Text to normalize
+	 * @param   string   $pagename  Name to get namespace from
 	 * @return  string
 	 */
-	public function normalize($data)
+	public function getNamespace($pagename=null)
 	{
-		return $this->_tbl->normalize($data);
+		if (is_null($pagename))
+		{
+			$pagename = $this->get('pagename');
+		}
+		if (strstr($pagename, ':'))
+		{
+			return strtolower(strstr($pagename, ':', true));
+		}
+		return '';
 	}
 
 	/**
-	 * Has the offering started?
+	 * Strip the namespace, if one exists
+	 * Namespaces are determined by a colon (e.g., Special:Cite)
+	 *
+	 * @param   string   $pagename  Name to get namespace from
+	 * @return  string
+	 */
+	public function stripNamespace($pagename=null)
+	{
+		if (is_null($pagename))
+		{
+			$pagename = $this->get('pagename');
+		}
+		if (strstr($pagename, ':'))
+		{
+			return ltrim(strstr($pagename, ':'), ':');
+		}
+		return '';
+	}
+
+	/**
+	 * Generates automatic pagename field value
+	 *
+	 * @param   array  $data  The data being saved
+	 * @return  string
+	 */
+	public function automaticPagename($data)
+	{
+		if (!isset($data['pagename']) || !$data['pagename'])
+		{
+			$data['pagename'] = $data['title'];
+		}
+		return self::normalize($data['pagename']);
+	}
+
+	/**
+	 * Generates automatic namespace field value
+	 *
+	 * @param   array  $data  The data being saved
+	 * @return  string
+	 */
+	public function automaticNamespace($data)
+	{
+		if (!isset($data['namespace']))
+		{
+			$data['namespace'] = $this->getNamespace($data['title']);
+		}
+		return self::normalize($data['namespace']);
+	}
+
+	/**
+	 * Get revision
+	 *
+	 * @return  object
+	 */
+	public function version()
+	{
+		return $this->oneToOne('Version', 'id', 'version_id');
+	}
+
+	/**
+	 * Get parent page
+	 *
+	 * @return  object
+	 */
+	public function parent()
+	{
+		return self::oneOrNew($this->get('parent'));
+	}
+
+	/**
+	 * Get all aprents
+	 *
+	 * @return  array
+	 */
+	public function ancestors()
+	{
+		$page = $this->parent();
+
+		$ancestors = array();
+
+		if ($page->get('id'))
+		{
+			$ancestors[] = $page;
+
+			if ($page->get('parent'))
+			{
+				foreach ($page->ancestors() as $ancestor)
+				{
+					array_unshift($ancestors, $ancestor);
+				}
+				//$ancestors += $page->ancestors();
+			}
+		}
+
+		return $ancestors;
+	}
+
+	/**
+	 * Get revisions
+	 *
+	 * @return  object
+	 */
+	public function versions()
+	{
+		return $this->oneToMany('Version', 'page_id');
+	}
+
+	/**
+	 * Get comments
+	 *
+	 * @return  object
+	 */
+	public function comments()
+	{
+		return $this->oneToMany('Comment', 'page_id');
+	}
+
+	/**
+	 * Get attachments
+	 *
+	 * @return  object
+	 */
+	public function attachments()
+	{
+		return $this->oneToMany('Attachment', 'page_id');
+	}
+
+	/**
+	 * Get suthors
+	 *
+	 * @return  object
+	 */
+	public function authors()
+	{
+		return $this->oneToMany('Author', 'page_id');
+	}
+
+	/**
+	 * Get links
+	 *
+	 * @return  object
+	 */
+	public function links()
+	{
+		return $this->oneToMany('Link', 'page_id');
+	}
+
+	/**
+	 * Does the page exist?
+	 *
+	 * @return  boolean
+	 */
+	public function exists()
+	{
+		return ! $this->isNew();
+	}
+
+	/**
+	 * Is the page locked?
 	 *
 	 * @return  boolean
 	 */
 	public function isLocked()
 	{
-		if ($this->get('state') == 1)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('protected') == 1);
 	}
 
 	/**
-	 * Has the offering started?
+	 * Is the page locked?
+	 *
+	 * @return  boolean
+	 */
+	public function isDeleted()
+	{
+		return ($this->get('state') == self::STATE_DELETED);
+	}
+
+	/**
+	 * Is the page static?
 	 *
 	 * @return  boolean
 	 */
 	public function isStatic()
 	{
-		if ($this->param('mode') == 'static')
-		{
-			return true;
-		}
-		return false;
+		return ($this->param('mode') == 'static');
 	}
 
 	/**
 	 * Returns whether a user is an author for a given page
 	 *
-	 * @param   integer $user_id
-	 * @return  boolean True if user is an author
+	 * @param   integer  $user_id
+	 * @return  boolean  True if user is an author
 	 */
 	public function isAuthor($user_id=0)
 	{
-		if ($this->get('author-' . $user_id, null) === null)
+		if (!$user_id)
 		{
-			if (!$user_id)
-			{
-				$user_id = User::get('id');
-			}
-			$wpa = new Tables\Author($this->_db);
-			$this->set('author-' . $user_id, $wpa->isAuthor($this->get('id'), $user_id));
+			$user_id = User::get('id');
 		}
 
-		return $this->get('author-' . $user_id, false);
+		foreach ($this->authors()->rows() as $author)
+		{
+			if ($author->get('user_id') == $user_id)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string $property Property to find
-	 * @param   mixed  $default  Value to return if property not found
-	 * @return  mixed
+	 * @param   string   $path
+	 * @param   string   $scope
+	 * @param   integer  $scope_id
+	 * @return  object
 	 */
-	public function creator($property=null, $default=null)
+	public static function oneByPath($path, $scope=null, $scope_id=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		$path = explode('/', $path);
+		$pagename = array_pop($path);
+		$path = implode('/', $path);
+
+		$instance = self::blank()
+			->whereEquals('pagename', $pagename);
+		if ($path)
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new \Hubzero\User\Profile();
-			}
+			$instance->whereEquals('path', $path);
 		}
-		if ($property)
+		if (!is_null($scope))
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
-			if ($property == 'picture')
-			{
-				return $this->_creator->getPicture();
-			}
-			return $this->_creator->get($property, $default);
+			$instance->whereEquals('scope', $scope);
 		}
-		return $this->_creator;
+		if (!is_null($scope_id))
+		{
+			$instance->whereEquals('scope_id', $scope_id);
+		}
+		return $instance->row();
 	}
 
 	/**
-	 * Get the pagename without the namespace
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
+	 * @param   string   $title
+	 * @param   string   $scope
+	 * @param   integer  $scope_id
+	 * @return  object
+	 */
+	public static function oneByTitle($title, $scope=null, $scope_id=null)
+	{
+		$instance = self::blank()
+			->whereEquals('title', $title);
+		if (!is_null($scope))
+		{
+			$instance->whereEquals('scope', $scope);
+		}
+		if (!is_null($scope_id))
+		{
+			$instance->whereEquals('scope_id', $scope_id);
+		}
+		return $instance->row();
+	}
+
+	/**
+	 * Strip unwanted characters
+	 *
+	 * @param   string  $txt  Text to normalize
 	 * @return  string
 	 */
-	public function denamespaced()
+	public static function normalize($txt)
 	{
-		return ltrim(strstr($this->get('pagename'), ':'), ':');
+		return preg_replace("/[^\:a-zA-Z0-9_]/", '', $txt);
 	}
 
 	/**
-	 * Set and get a specific revision
-	 * Defaults to current revision if no version is specified
+	 * Defines a belongs to one relationship between task and liaison
 	 *
-	 * @return  void
+	 * @return  object
 	 */
-	public function revision($version=null)
+	public function creator()
 	{
-		// If no revision is set AND no specific version is passed ...
-		if (!isset($this->_revision) && !$version)
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
+
+	/**
+	 * Return a formatted timestamp for created date
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function created($as='')
+	{
+		return $this->_datetime($as, 'created');
+	}
+
+	/**
+	 * Return a formatted timestamp for modified date
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function modified($as='')
+	{
+		if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00')
 		{
-			// Set the revision to the current version
-			$this->_revision = new Revision((int) $this->get('version_id'));
+			$this->set('modified', $this->get('created'));
+		}
+		return $this->_datetime($as, 'modified');
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 *
+	 * @param   string  $as   What data to return
+	 * @param   string  $key  Field name
+	 * @return  string
+	 */
+	private function _datetime($as='', $key='created')
+	{
+		$as = strtolower($as);
+
+		if ($as == 'date')
+		{
+			return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		// If version is specified AND (no revision set or (revision is set and version doesn't match)) ...
-		if ($version
-		 && (
-				!isset($this->_revision)
-			|| (isset($this->_revision) && $version != $this->_revision->get('version'))
-			)
-		)
+		if ($as == 'time')
 		{
-			$this->_revision = null;
+			return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
 
-			if (isset($this->_revisions))
+		return $this->get($key);
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param   string   $type    The type of link to return
+	 * @param   string   $params
+	 * @return  boolean
+	 */
+	public function link($type='', $params=null)
+	{
+		return $this->adapter()->link($type, $params);
+	}
+
+	/**
+	 * Get the adapter
+	 *
+	 * @return  object
+	 */
+	public function adapter()
+	{
+		if (!($this->adapter instanceof BaseAdapter))
+		{
+			$scope = $this->get('scope', 'site');
+			$scope = $scope ?: 'site';
+
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
+
+			if (!class_exists($cls))
 			{
-				switch ($version)
+				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
+
+				if (!is_file($path))
 				{
-					case 'first':
-						$this->revisions()->first();
-						$this->_revision = $this->revisions()->current();
-					break;
-
-					case 'current':
-						$this->revisions()->last();
-						$this->_revision = $this->revisions()->current();
-					break;
-
-					default:
-						foreach ($this->revisions('list') as $key => $revision)
-						{
-							if ($revision->get('version') == $version)
-							{
-								$this->_revision = $revision;
-								break;
-							}
-						}
-					break;
+					throw new \InvalidArgumentException(Lang::txt('Invalid adapter type of "%s"', $scope));
 				}
+
+				include_once($path);
 			}
 
-			if (!$this->_revision)
+			$this->adapter = new $cls(
+				$this->get('pagename'),
+				$this->get('path'),
+				$this->get('scope_id')
+			);
+		}
+
+		return $this->adapter;
+	}
+
+	/**
+	 * Get tags on the entry
+	 * Optinal first agument to determine format of tags
+	 *
+	 * @param   string   $as     Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param   integer  $admin  Include amdin tags? (defaults to no)
+	 * @return  mixed
+	 */
+	public function tags($as='cloud', $admin=0)
+	{
+		if (!$this->get('id'))
+		{
+			switch (strtolower($as))
 			{
-				switch ($version)
-				{
-					case 'first':
-						$this->_revision = new Revision($this->_tbl->getRevision('first'));
-					break;
+				case 'array':
+					return array();
+				break;
 
-					case 'current':
-						$this->_revision = new Revision((int) $this->get('version_id'));
-					break;
-
-					default:
-						$this->_revision = new Revision((int) $version, $this->get('id'));
-					break;
-				}
+				case 'string':
+				case 'cloud':
+				case 'html':
+				default:
+					return '';
+				break;
 			}
 		}
 
-		return $this->_revision;
-	}
+		$cloud = new Tags($this->get('id'));
 
-	/**
-	 * Get a count or list of revisions
-	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
-	 * @return  mixed
-	 */
-	public function revisions($what='list', $filters=array(), $clear=false)
-	{
-		if (!isset($filters['pageid']))
-		{
-			$filters['pageid'] = $this->get('id');
-		}
-		if (!isset($filters['approved']))
-		{
-			$filters['approved'] = array(0, 1);
-		}
-		if (!isset($filters['sortby']))
-		{
-			$filters['sortby'] = 'version ASC';
-		}
-
-		switch (strtolower($what))
-		{
-			case 'count':
-				if (!is_numeric($this->_revisions_count) || $clear)
-				{
-					$tbl = new Tables\Revision($this->_db);
-					$this->_revisions_count = $tbl->getRecordsCount($filters);
-				}
-				return $this->_revisions_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_revisions instanceof ItemList) || $clear)
-				{
-					$results = array();
-
-					$tbl = new Tables\Revision($this->_db);
-					if (($results = $tbl->getRecords($filters)))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Revision($result);
-						}
-					}
-
-					$this->_revisions = new ItemList($results);
-				}
-
-				return $this->_revisions;
-			break;
-		}
-	}
-
-	/**
-	 * Get a count or list of authors
-	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
-	 * @return  mixed
-	 */
-	public function authors($what='list', $filters=array(), $clear=false)
-	{
-		if (!isset($filters['pageid']))
-		{
-			$filters['pageid'] = $this->get('id');
-		}
-
-		switch (strtolower($what))
-		{
-			case 'string':
-				$authors = array();
-				foreach ($this->authors('list') as $author)
-				{
-					$authors[] = $author->get('username');
-				}
-				return implode(', ', $authors);
-			break;
-
-			case 'count':
-				if (!isset($this->_revisions_count) || $clear)
-				{
-					$this->_revisions_count = $this->authors('list')->total();
-				}
-				return $this->_revisions_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_revisions instanceof ItemList) || $clear)
-				{
-					$results = array();
-
-					$tbl = new Tables\Author($this->_db);
-					if (($results = $tbl->getAuthors($this->get('id'))))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Author($result);
-						}
-					}
-
-					$this->_revisions = new ItemList($results);
-				}
-
-				return $this->_revisions;
-			break;
-		}
-	}
-
-	/**
-	 * Get a count or list of comments
-	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
-	 * @return  mixed   Returns an integer or array depending upon format chosen
-	 */
-	public function comments($rtrn='list', $filters=array(), $clear=false)
-	{
-		if (!isset($filters['pageid']))
-		{
-			$filters['pageid'] = $this->get('id');
-		}
-		if (!isset($filters['parent']))
-		{
-			$filters['parent'] = '0';
-		}
-		if (!isset($filters['status']))
-		{
-			$filters['status'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!is_numeric($this->_comments_count) || $clear)
-				{
-					$tbl = new Tables\Comment($this->_db);
-
-					$this->_comments_count = $tbl->find('count', $filters);
-				}
-				return $this->_comments_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_comments instanceof ItemList) || $clear)
-				{
-					if (!isset($filters['parent']))
-					{
-						$filters['parent'] = 0;
-					}
-
-					$tbl = new Tables\Comment($this->_db);
-
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Comment($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_comments = new ItemList($results);
-				}
-				return $this->_comments;
-			break;
-		}
-	}
-
-	/**
-	 * Get tags on this entry
-	 *
-	 * @param   string  $what  Data format to return
-	 * @param   integer $admin Return admin tags?
-	 * @return  mixed
-	 */
-	public function tags($what='cloud', $admin=0)
-	{
-		$cloud = new Tags(($this->get('id') ? $this->get('id') : -1));
-
-		return $cloud->render($what, array('admin' => $admin));
+		return $cloud->render($as, array('admin' => $admin));
 	}
 
 	/**
 	 * Tag the entry
 	 *
-	 * @param   string  $tags    Tags to apply
-	 * @param   integer $user_id ID of tagger
-	 * @param   integer $admin   Tag as admin? 0=no, 1=yes
+	 * @param   string   $tags
+	 * @param   integer  $user_id
+	 * @param   integer  $admin
 	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -605,164 +608,182 @@ class Page extends Model
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Save the entry
 	 *
-	 * @param   string  $type The type of link to return
-	 * @return  boolean
+	 * @return  boolean  False if error, True on success
 	 */
-	public function link($type='', $params=null)
+	public function save()
 	{
-		return $this->_adapter()->link($type, $params);
-	}
+		$action = ($this->isNew() ? 'page_created' : 'page_edited');
 
-	/**
-	 * Return a formatted timestamp for created date
-	 *
-	 * @param   string $as What data to return
-	 * @return  string
-	 */
-	public function created($as='')
-	{
-		return $this->_date($as, 'created');
-	}
-
-	/**
-	 * Return a formatted timestamp for modified date
-	 *
-	 * @param   string $as What data to return
-	 * @return  string
-	 */
-	public function modified($as='')
-	{
-		return $this->_date($as, 'modified');
-	}
-
-	/**
-	 * Return a formatted timestamp
-	 *
-	 * @param   string $as What data to return
-	 * @return  string
-	 */
-	private function _date($as='', $property)
-	{
-		switch (strtolower($as))
+		// Make sure the path is updated
+		if ($this->get('parent'))
 		{
-			case 'date':
-				return Date::of($this->get($property))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
+			$path = array();
 
-			case 'time':
-				return Date::of($this->get($property))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
+			foreach ($this->ancestors() as $ancestor)
+			{
+				$path[] = $ancestor->get('pagename');
+			}
 
-			default:
-				return $this->get($property);
-			break;
+			$this->set('path', implode('/', $path));
 		}
+
+		// Save
+		$result = parent::save();
+
+		// Log the action upon success
+		if ($result)
+		{
+			$this->log($action);
+		}
+
+		return $result;
 	}
 
 	/**
-	 * Get the content of the record.
-	 * Optional argument to determine how content should be handled
+	 * Delete the record and all associated data
 	 *
-	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
-	 * clean  - parses content and then strips tags
-	 * raw    - as is, no parsing
-	 *
-	 * @param   string  $as      Format to return content in [parsed, clean, raw]
-	 * @param   integer $shorten Number of characters to shorten text to
-	 * @return  mixed   String or Integer
+	 * @return  boolean  False if error, True on success
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function destroy()
 	{
-		$as = strtolower($as);
-
-		switch ($as)
+		// Can't delete what doesn't exist
+		if (!$this->get('id'))
 		{
-			case 'parsed':
-				if ($this->get('pagetext_parsed'))
-				{
-					return $this->get('pagetext_parsed');
-				}
+			return true;
+		}
 
-				$p = Parser::getInstance();
+		// Remove comments
+		foreach ($this->comments()->rows() as $comment)
+		{
+			if (!$comment->destroy())
+			{
+				$this->addError($comment->getError());
+				return false;
+			}
+		}
 
-				$wikiconfig = array(
-					'option'   => 'com_wiki',
-					'scope'    => $this->get('scope'),
-					'pagename' => $this->get('pagename'),
-					'pageid'   => $this->get('id'),
-					'filepath' => $this->config('uploadpath'),
-					'domain'   => ''
-				);
+		// Remove all attachments
+		foreach ($this->attachments()->rows() as $attachment)
+		{
+			if (!$attachment->destroy())
+			{
+				$this->addError($attachment->getError());
+				return false;
+			}
+		}
 
-				$this->set('pagetext_parsed', $p->parse(stripslashes($this->get('pagetext')), $wikiconfig));
+		// Remove all links
+		foreach ($this->links()->rows() as $link)
+		{
+			if (!$link->destroy())
+			{
+				$this->addError($link->getError());
+				return false;
+			}
+		}
 
-				if ($shorten)
-				{
-					$content = String::truncate($this->get('pagetext_parsed'), $shorten, array('html' => true));
-					return $content;
-				}
+		// Remove all aurhors
+		foreach ($this->authors()->rows() as $author)
+		{
+			if (!$author->destroy())
+			{
+				$this->addError($author->getError());
+				return false;
+			}
+		}
 
-				return $this->get('pagetext_parsed');
-			break;
+		// Remove all revisions
+		foreach ($this->versions()->rows() as $version)
+		{
+			if (!$version->destroy())
+			{
+				$this->addError($version->getError());
+				return false;
+			}
+		}
 
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = String::truncate($content, $shorten);
-				}
-				return $content;
-			break;
+		// Remove all tags
+		$this->tag('');
 
-			case 'raw':
-			default:
-				$content = $this->get('pagetext');
-				if ($shorten)
-				{
-					$content = String::truncate($content, $shorten);
-				}
-				return $content;
-			break;
+		$this->log('page_deleted');
+
+		// Clear cached data
+		\Cache::clean('wiki');
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+
+	/**
+	 * Log an action
+	 *
+	 * @param   string   $action   Action taken
+	 * @param   integer  $user_id  Optional ID of user the action was taken on/with
+	 * @return  void
+	 */
+	public function log($action='page_created', $user_id=0)
+	{
+		$log = Log::blank();
+		$log->set('page_id', (int) $this->get('id'));
+		$log->set('user_id', ($user_id ? $user_id : User::get('id')));
+		$log->set('timestamp', Date::toSql());
+		$log->set('action', (string) $action);
+		$log->set('actorid', User::get('id'));
+		$log->set('comments', json_encode($this->toObject()));
+
+		if (!$log->save())
+		{
+			$this->setErrors($log->getErrors());
 		}
 	}
 
 	/**
 	 * Get a param value
 	 *
-	 * @param   string $key     Property to return
-	 * @param   mixed  $default Value to return if key isn't found
+	 * @param   string  $key      Property to return
+	 * @param   mixed   $default  Value to return if key is not found
 	 * @return  mixed
 	 */
 	public function param($key='', $default=null)
 	{
+		if (!is_object($this->params))
+		{
+			$params = new Registry($this->get('params'));
+
+			$this->params = $this->config();
+			$this->params->merge($params);
+		}
+
 		if ($key)
 		{
-			return $this->_params->get((string) $key, $default);
+			return $this->params->get((string) $key, $default);
 		}
-		return $this->_params;
+
+		return $this->params;
 	}
 
 	/**
 	 * Get a configuration value
 	 *
-	 * @param   string $key     Property to return
-	 * @param   mixed  $default Value to return if key isn't found
+	 * @param   string  $key      Property to return
+	 * @param   mixed   $default  Value to return if key isn't found
 	 * @return  mixed
 	 */
 	public function config($key='', $default=null)
 	{
-		if (!isset($this->_config))
+		if (!isset($this->config))
 		{
-			$this->_config = Component::params('com_wiki');
+			$this->config = Component::params('com_wiki');
 		}
+
 		if ($key)
 		{
-			return $this->_config->get((string) $key, $default);
+			return $this->config->get((string) $key, $default);
 		}
-		return $this->_config;
+
+		return $this->config;
 	}
 
 	/**
@@ -801,7 +822,7 @@ class Page extends Model
 			if (!$this->config('access-check-done', false))
 			{
 				// Is a group set?
-				if (trim($this->get('group_cn', '')))
+				/*if (trim($this->get('group_cn', '')))
 				{
 					$group = \Hubzero\User\Group::getInstance($this->get('group_cn'));
 
@@ -869,7 +890,7 @@ class Page extends Model
 					}
 				}
 				// Check if they're a site admin
-				else if (User::authorise('core.manage', $option))
+				else */if (User::authorise('core.manage', $option))
 				{
 					$this->config()->set('access-page-admin', true);
 					$this->config()->set('access-page-manage', true);
@@ -934,235 +955,174 @@ class Page extends Model
 	}
 
 	/**
-	 * Rename a page
+	 * Get the page title
+	 * If title isn't set, it will split the camelcase pagename into a spaced title
 	 *
-	 * @param   string  $newpagename New page name
-	 * @return  boolean True on success, False on error
+	 * @return  string
 	 */
-	public function rename($newpagename)
+	public function transformTitle()
 	{
-		// Are they just changing case of characters?
-		if (!trim($newpagename))
+		if (!$this->get('title'))
 		{
-			$this->setError(Lang::txt('No new name provided.'));
-			return false;
+			$this->set('title', $this->splitPagename($this->get('pagename')));
 		}
-
-		$newpagename = $this->_tbl->normalize($newpagename);
-
-		// Are they just changing case of characters?
-		if (strtolower($this->get('pagename')) == strtolower($newpagename))
-		{
-			$this->setError(Lang::txt('New name matches old name.'));
-			return false;
-		}
-
-		// Check that no other pages are using the new title
-		$p = new self($newpagename, $this->get('scope'));
-		if ($p->exists())
-		{
-			$this->setError(Lang::txt('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . Lang::txt('CHOOSE_ANOTHER_PAGENAME'));
-			return false;
-		}
-
-		$this->set('pagename', $newpagename);
-
-		if (!$this->store(true, 'page_renamed'))
-		{
-			return false;
-		}
-
-		return true;
+		return $this->get('title');
 	}
 
 	/**
-	 * Store changes to this entry
+	 * Get the pagename with path
 	 *
-	 * @param   boolean $check  Perform data validation check?
-	 * @param   string  $action Action beign performed
-	 * @return  boolean False if error, True on success
+	 * @return  string
 	 */
-	public function store($check=true, $action='page_edited')
+	public function transformPagename()
 	{
-		// Validate data?
-		if ((bool) $check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		$action = (!$this->exists() ? 'page_created' : $action);
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		$this->log($action);
-
-		return true;
+		return ($this->get('path') ? $this->get('path') . '/' : '') . $this->get('pagename');
 	}
 
 	/**
-	 * Delete a record
+	 * Splits camel-case page names
+	 * e.g., MyPageName => My Page Name
 	 *
-	 * @return  boolean True on success, false on error
+	 * @param   string  $page  Wiki page name
+	 * @return  string
 	 */
-	public function delete()
+	public function splitPagename($page)
 	{
-		// Remove authors
-		foreach ($this->authors() as $author)
+		if (preg_match("/\s/", $page) || !$page)
 		{
-			if (!$author->delete())
+			// Already split --- don't split any more.
+			return $page;
+		}
+
+		// This algorithm is specialized for several languages.
+		// (Thanks to Pierrick MEIGNEN)
+		// Improvements for other languages welcome.
+		static $RE;
+
+		if (!isset($RE))
+		{
+			$language = strtolower(Lang::getTag());
+
+			// This mess splits between a lower-case letter followed by
+			// either an upper-case or a numeral; except that it wont
+			// split the prefixes 'Mc', 'De', or 'Di' off of their tails.
+			switch ($language)
 			{
-				$this->setError($author->getError());
-				return false;
+				case 'fr':
+				case 'french':
+				case 'fr-fr':
+					$RE[] = '/([[:lower:]])((?<!Mc|Di)[[:upper:]]|\d)/';
+				break;
+
+				case 'en':
+				case 'english':
+				case 'en-us':
+				case 'en-gb':
+				case 'en-au':
+
+				case 'it':
+				case 'italian':
+				case 'it-IT':
+
+				case 'es':
+				case 'spanish':
+				case 'es-es':
+
+
+				case 'de':
+				case 'german':
+				case 'de-de':
+					$RE[] = '/([[:lower:]])((?<!Mc|De|Di)[[:upper:]]|\d)/';
+				break;
+			}
+
+			$sep = preg_quote('/', '/');
+
+			// This the single-letter words 'I' and 'A' from any following
+			// capitalized words.
+			switch ($language)
+			{
+				case 'fr':
+				case 'french':
+					$RE[] = "/(?<= |${sep}|^)([�])([[:upper:]][[:lower:]])/";
+				break;
+
+				case 'en':
+				case 'english':
+				default:
+					$RE[] = "/(?<= |${sep}|^)([AI])([[:upper:]][[:lower:]])/";
+				break;
+			}
+
+			// Split numerals from following letters.
+			$RE[] = '/(\d)([[:alpha:]])/';
+
+			// Split at subpage seperators.
+			$RE[] = "/([^${sep}]+)(${sep})/";
+			$RE[] = "/(${sep})([^${sep}]+)/";
+
+			foreach ($RE as $key)
+			{
+				$RE[$key] = $this->pcreFixPosixClasses($key);
 			}
 		}
 
-		// Remove comments
-		foreach ($this->comments() as $comment)
+		foreach ($RE as $regexp)
 		{
-			if (!$comment->delete())
-			{
-				$this->setError($comment->getError());
-				return false;
-			}
+			$page = preg_replace($regexp, '\\1 \\2', $page);
 		}
 
-		// Remove revisions
-		foreach ($this->revisions() as $revision)
-		{
-			if (!$revision->delete())
-			{
-				$this->setError($revision->getError());
-				return false;
-			}
-		}
+		$r = '/(.+?)\:(.+?)/';
+		$page = preg_replace($r, '\\1: \\2', $page);
+		$page = str_replace('_', ' ', $page);
 
-		// Remove tags
-		$this->tag('');
-
-		// Remove files
-		$path = PATH_APP . DS . trim($this->config('filepath', '/site/wiki'), DS);
-		if (is_dir($path . DS . $this->get('id')))
-		{
-			if (!\Filesystem::deleteDirectory($path . DS . $this->get('id')))
-			{
-				$this->setError(Lang::txt('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
-			}
-		}
-
-		// Remove record from the database
-		if (!$this->_tbl->delete())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		$this->log('page_deleted');
-
-		// Clear cached data
-		\Cache::clean('wiki');
-
-		// Hey, no errors!
-		return true;
+		return $page;
 	}
 
 	/**
-	 * Log an action
+	 * This is a helper function which can be used to convert a regexp
+	 * which contains POSIX named character classes to one that doesn't.
 	 *
-	 * @param   string  $action  Action taken
-	 * @param   integer $user_id Optional ID of user the action was taken on/with
-	 * @return  void
+	 * Older version (pre 3.x?) of the PCRE library do not support
+	 * POSIX named character classes (e.g. [[:alnum:]]).
+	 *
+	 * All instances of strings like '[:<class>:]' are replaced by the equivalent
+	 * enumerated character class.
+	 *
+	 * Implementation Notes:
+	 *
+	 * Currently we use hard-coded values which are valid only for
+	 * ISO-8859-1.  Also, currently on the classes [:alpha:], [:alnum:],
+	 * [:upper:] and [:lower:] are implemented.  (The missing classes:
+	 * [:blank:], [:cntrl:], [:digit:], [:graph:], [:print:], [:punct:],
+	 * [:space:], and [:xdigit:] could easily be added if needed.)
+	 *
+	 * This is a hack.  I tried to generate these classes automatically
+	 * using ereg(), but discovered that in my PHP, at least, ereg() is
+	 * slightly broken w.r.t. POSIX character classes.  (It includes
+	 * "\xaa" and "\xba" in [:alpha:].)
+	 *
+	 * @param   string  $regexp  Regular expression
+	 * @return  string
 	 */
-	public function log($action='page_created', $user_id=0)
+	private function pcreFixPosixClasses($regexp)
 	{
-		$data = new \stdClass();
-		foreach ($this->_tbl->getProperties() as $property)
+		// First check to see if our PCRE lib supports POSIX character
+		// classes.  If it does, there's nothing to do.
+		if (preg_match('/[[:upper:]]/', ''))
 		{
-			if ($this->get($property))
-			{
-				$data->$property = $this->get($property);
-			}
+			return $regexp;
 		}
 
-		$log = new Tables\Log($this->_db);
-		$log->pid       = (int) $this->get('id');
-		$log->uid       = ($user_id ? $user_id : User::get('id'));
-		$log->timestamp = Date::toSql();
-		$log->action    = (string) $action;
-		$log->actorid   = User::get('id');
-		$log->comments  = json_encode($data);
-		if (!$log->store())
-		{
-			$this->setError($log->getError());
-		}
-	}
+		static $classes = array(
+			'alnum' => "0-9A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
+			'alpha' => "A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
+			'upper' => "A-Z\xc0-\xd6\xd8-\xde",
+			'lower' => "a-z\xdf-\xf6\xf8-\xff"
+		);
 
-	/**
-	 * Calculate the average rating for the page
-	 *
-	 * @return  integer
-	 */
-	public function calculateRating()
-	{
-		return $this->_tbl->calculateRating();
-	}
+		$keys = join('|', array_keys($classes));
 
-	/**
-	 * Update the list of authors
-	 *
-	 * @param   array   $authors List of authors
-	 * @return  boolean
-	 */
-	public function updateAuthors($authors)
-	{
-		return $this->_tbl->updateAuthors($authors);
-	}
-
-	/**
-	 * Get the adapter
-	 *
-	 * @return  object
-	 */
-	protected function _adapter()
-	{
-		if (!($this->_adapter instanceof BaseAdapter))
-		{
-			$scope = 'site';
-			if ($this->get('group_cn'))
-			{
-				$scope = strtolower(Request::getCmd('option'));
-				$scope = ($scope ? substr($scope, 4) : 'site');
-				$scope = ($scope == 'wiki' || $scope == 'topics' ? 'site' : $scope);
-			}
-			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
-
-			if (!class_exists($cls))
-			{
-				$path = __DIR__ . '/adapters/' . $scope . '.php';
-				if (!is_file($path))
-				{
-					throw new \InvalidArgumentException(Lang::txt('Invalid adapter type of "%s"', $scope));
-				}
-				include_once($path);
-			}
-
-			$this->_adapter = new $cls(
-				$this->get('pagename'),
-				$this->get('scope'),
-				$this->get('group_cn')
-			);
-		}
-
-		return $this->_adapter;
+		return preg_replace_callback("/\[:($keys):]/", function($matches) use ($classes) { return $classes[$matches[1]]; }, $regexp);
 	}
 }
-

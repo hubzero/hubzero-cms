@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
 	Lang::txt('COM_WIKI_SEARCH'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'
+	$this->page->link('base') . '&pagename=Special:Search'
 );
 
 $database = App::get('db');
@@ -44,41 +43,30 @@ $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 $term  = Request::getVar('q', '');
 
-$weight = '(match(wp.title) against (' . $database->Quote($term) . ') + match(wv.pagetext) against (' . $database->Quote($term) . '))';
+$filters = array('state' => array(0, 1));
 
-$query = "SELECT COUNT(*)
-			FROM `#__wiki_version` AS wv
-			INNER JOIN `#__wiki_page` AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				AND wp.group_cn = " . $database->Quote($this->page->get('group_cn')) . "
-				AND $weight > 0
-				AND wp.state < 2
-				AND wv.id = wp.version_id
-			ORDER BY $weight DESC";
-
-$database->setQuery($query);
-$total = $database->loadResult();
-
-$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created AS modified, wv.summary
-			FROM `#__wiki_version` AS wv
-			INNER JOIN `#__wiki_page` AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				AND wp.group_cn = " . $database->Quote($this->page->get('group_cn')) . "
-				AND $weight > 0
-				AND wp.state < 2
-				AND wv.id = wp.version_id
-			ORDER BY $weight DESC";
-if ($limit && $limit != 'all')
+if ($space = Request::getVar('namespace', ''))
 {
-	$query .= " LIMIT $start, $limit";
+	$filters['namespace'] = urldecode($space);
 }
 
-$database->setQuery($query);
-$rows = $database->loadObjectList();
+$pages    = \Components\Wiki\Models\Page::blank()->getTableName();
+$versions = \Components\Wiki\Models\Version::blank()->getTableName();
+
+$weight = '(match(' . $pages . '.title) against (' . $database->Quote($term) . ') + match(' . $versions . '.pagetext) against (' . $database->Quote($term) . '))';
+
+$rows = $this->book->pages($filters)
+	->select($pages . '.*')
+	->select($versions . '.created_by')
+	->select($versions . '.summary')
+	->select($weight, 'weight')
+	->join($versions, $versions . '.id', $pages . '.version_id')
+	->whereRaw($weight . ' > 0')
+	->order('weight', 'desc')
+	->paginated()
+	->rows();
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="get">
+<form action="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Search'); ?>" method="get">
 	<div class="container data-entry">
 		<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_WIKI_SEARCH'); ?>" />
 		<fieldset class="entry-search">
@@ -110,51 +98,47 @@ $rows = $database->loadObjectList();
 				</tr>
 			</thead>
 			<tbody>
-			<?php
-			if ($rows)
-			{
-				foreach ($rows as $row)
+				<?php
+				if ($rows->count())
 				{
-			?>
-				<tr>
-					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
-						</a>
-					</td>
-					<td>
-						<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>
-					</td>
-					<td>
-						<time datetime="<?php echo $row->modified; ?>"><?php echo $row->modified; ?></time>
-					</td>
-				</tr>
-			<?php
+					foreach ($rows as $row)
+					{
+						?>
+						<tr>
+							<td>
+								<a href="<?php echo Route::url($row->link()); ?>">
+									<?php echo $this->escape(stripslashes($row->title)); ?>
+								</a>
+							</td>
+							<td>
+								<?php echo Route::url($row->link()); ?>
+							</td>
+							<td>
+								<time datetime="<?php echo $row->get('modified'); ?>"><?php echo $row->get('modified'); ?></time>
+							</td>
+						</tr>
+						<?php
+					}
 				}
-			}
-			else
-			{
-			?>
-				<tr>
-					<td colspan="3">
-						<?php echo Lang::txt('COM_WIKI_NONE'); ?>
-					</td>
-				</tr>
-			<?php
-			}
-			?>
+				else
+				{
+					?>
+					<tr>
+						<td colspan="3">
+							<?php echo Lang::txt('COM_WIKI_NONE'); ?>
+						</td>
+					</tr>
+					<?php
+				}
+				?>
 			</tbody>
 		</table>
 		<?php
-		$pageNav = $this->pagination(
-			$total,
-			$start,
-			$limit
-		);
+		$pageNav = $rows->pagination;
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-		echo $pageNav->render();
+		echo $pageNav;
 		?>
 		<div class="clear"></div>
 	</div>

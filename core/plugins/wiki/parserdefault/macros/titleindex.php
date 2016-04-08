@@ -81,60 +81,35 @@ class TitleIndexMacro extends WikiMacro
 			}
 		}
 
-		// What pages are we getting?
-		switch ($sort)
-		{
-			case 'sort=modified':
-				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group_cn`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, MAX(v.`created`) AS `modified`, MAX(v.`version`) FROM `#__wiki_page` AS p, `#__wiki_version` AS v WHERE v.pageid=p.id AND v.approved=1 AND p.state < 2 AND ";
-			break;
-			case 'sort=created':
-			case 'sort=title':
-			default:
-				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group_cn`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created`, MAX(v.`version`) FROM `#__wiki_page` AS p, `#__wiki_version` AS v WHERE v.pageid=p.id AND v.approved=1 AND p.state < 2 AND ";
-			break;
-		}
+		$pages = \Components\Models\Wiki\Page::all()
+			->whereEquals('state', 1);
 
 		if ($et)
 		{
-			// Get pages with a prefix
-			if ($this->domain && substr(strtolower($et), 0, 4) != 'help')
-			{
-				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND p.`group_cn`=" . $this->_db->quote($this->domain);
-			}
-			else
-			{
-				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND (p.`group_cn`='' OR p.`group_cn` IS NULL)";
-			}
+			$pages->whereLike('pagename', strtolower($et) . '%');
 		}
-		else
+
+		if ($this->domain && substr(strtolower($et), 0, 4) != 'help')
 		{
-			// Get all pages
-			if ($this->domain)
-			{
-				$sql .= "p.`group_cn`=" . $this->_db->quote($this->domain);
-			}
-			else
-			{
-				$sql .= "(p.`group_cn`='' OR p.`group_cn` IS NULL)";
-			}
+			$pages->whereEquals('scope', $this->domain);
+			$pages->whereEquals('scope_id', $this->domain_id);
 		}
+
 		switch ($sort)
 		{
 			case 'sort=created':
-				$sql .= " GROUP BY v.pageid ORDER BY `created` ASC";
+				$pages->order('created', 'asc');
 			break;
 			case 'sort=modified':
-				$sql .= " GROUP BY v.pageid ORDER BY `modified` DESC";
+				$pages->order('modified', 'asc');
 			break;
 			case 'sort=title':
 			default:
-				$sql .= " GROUP BY v.pageid ORDER BY `title` ASC, `pagename` ASC";
+				$pages->order('title', 'asc');
 			break;
 		}
 
-		// Perform query
-		$this->_db->setQuery($sql);
-		$rows = $this->_db->loadObjectList();
+		$rows = $pages->rows();
 
 		// Did we get a result from the database?
 		if ($rows)
@@ -143,16 +118,16 @@ class TitleIndexMacro extends WikiMacro
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				if ($row->pagename == $this->pagename)
+				if ($row->get('pagename') == $this->get('pagename'))
 				{
 					continue;
 				}
 
-				$row = new \Components\Wiki\Models\Page($row);
-				if ($row->get('namespace') == 'help')
+				if ($row->get('namespace') == 'Help')
 				{
-					$row->set('scope', ($row->get('scope') ? rtrim($this->scope, '/') . '/' . ltrim($row->get('scope'), '/') : $this->scope));
-					$row->set('group_cn', $this->domain);
+					$row->set('path', ($row->get('path') ? rtrim($this->scope, '/') . '/' . ltrim($row->get('path'), '/') : $this->scope));
+					$row->set('scope', $this->domain);
+					$row->set('scope_id', $this->domain_id);
 				}
 
 				$html .= '<li><a href="' . Route::url($row->link()) . '">';
@@ -163,11 +138,8 @@ class TitleIndexMacro extends WikiMacro
 
 			return $html;
 		}
-		else
-		{
-			// Return error message
-			return '(No ' . $et . ' pages to display)';
-		}
+
+		// Return error message
+		return '(No ' . $et . ' pages to display)';
 	}
 }
-

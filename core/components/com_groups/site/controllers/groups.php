@@ -1362,12 +1362,12 @@ class Groups extends Base
 			}
 
 			//load wiki page from db
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-			$page = new \Components\Wiki\Tables\Page($this->database);
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+			$page = new \Components\Wiki\Models\Page($this->database);
 
 			$pagename = Request::getVar('pagename');
 			$scope = Request::getVar('scope', $group->get('cn') . DS . 'wiki');
-			if ($scope)
+			/*if ($scope)
 			{
 				$parts = explode('/', $scope);
 				if (count($parts) > 2)
@@ -1379,8 +1379,8 @@ class Groups extends Base
 					}
 					$scope = implode('/', $parts);
 				}
-			}
-			$page->load($pagename, $scope);
+			}*/
+			$page = \Components\Wiki\Models\Page::oneByPath($pagename, 'group', $group->get('gidNumber'));
 
 			//check specific wiki page access
 			if ($page->get('access') == 1 && !in_array(User::get('id'), $group->get('members')) && $authorized != 'admin')
@@ -1494,11 +1494,8 @@ class Groups extends Base
 		{
 			App::abort(404, Lang::txt('COM_GROUPS_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 
 	/**

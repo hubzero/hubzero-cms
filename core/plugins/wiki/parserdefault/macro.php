@@ -42,28 +42,28 @@ class WikiMacro
 	/**
 	 * Name of the macro
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_name  = NULL;
+	protected $_name = NULL;
 
 	/**
 	 * Container for internal data
 	 *
-	 * @var array
+	 * @var  array
 	 */
-	protected $_data  = array();
+	protected $_data = array();
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	protected $_db    = NULL;
+	protected $_db = NULL;
 
 	/**
 	 * Container for errors
 	 *
-	 * @var unknown
+	 * @var  array
 	 */
 	protected $_error = NULL;
 
@@ -77,29 +77,29 @@ class WikiMacro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $allowPartial = false;
 
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $linkLog = array();
 
 	/**
 	 * Instance of a macro
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	static protected $thisInstance = NULL;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      array $config Configuration options
-	 * @return     void
+	 * @param   array  $config  Configuration options
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
@@ -140,9 +140,9 @@ class WikiMacro
 	/**
 	 * Set a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @param   mixed   $value     Value to set property to
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -156,8 +156,8 @@ class WikiMacro
 	/**
 	 * Get a property
 	 *
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
+	 * @param   string  $property  Name of property to retrieve
+	 * @return  mixed
 	 */
 	public function __get($property)
 	{
@@ -170,8 +170,8 @@ class WikiMacro
 	/**
 	 * Get an instance of this macro, creating it if not found
 	 *
-	 * @param      array $config Configuration parameters
-	 * @return     object
+	 * @param   array   $config  Configuration parameters
+	 * @return  object
 	 */
 	static public function getInstance($config=array())
 	{
@@ -194,7 +194,7 @@ class WikiMacro
 	 * Render macro output
 	 * this should be overriden by extended classes
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function render()
 	{

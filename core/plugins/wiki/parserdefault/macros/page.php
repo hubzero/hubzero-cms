@@ -54,7 +54,7 @@ class PageMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -85,26 +85,14 @@ class PageMacro extends WikiMacro
 		if (is_numeric($page))
 		{
 			// Yes
-			$page = intval($page);
+			$row = \Components\Wiki\Models\Page::oneOrNew(intval($page));
 		}
 		else
 		{
-			$page = trim($page, DS);
-			if (strstr($page, '/'))
-			{
-				$bits = explode('/', $page);
-				$page = array_pop($bits);
-				$scope = implode('/', $bits);
-			}
-		}
+			$page = rtrim($page, '/');
 
-		if ($this->domain != '' && $scope == '')
-		{
-			$scope = $this->scope;
+			$row = \Components\Wiki\Models\Page::oneByPagename($page, $this->domain, $this->domain_id);
 		}
-
-		// No, get resource by alias
-		$row = new \Components\Wiki\Models\Page($page, $scope);
 
 		if (!$row->exists())
 		{
@@ -115,11 +103,8 @@ class PageMacro extends WikiMacro
 		{
 			return stripslashes($row->get('title', $row->get('pagename')));
 		}
-		else
-		{
-			// Build and return the link
-			return '<a href="' . Route::url($row->link()) . '">' . stripslashes($row->get('title', $row->get('pagename'))) . '</a>';
-		}
+
+		// Build and return the link
+		return '<a href="' . Route::url($row->link()) . '">' . stripslashes($row->get('title', $row->get('pagename'))) . '</a>';
 	}
 }
-

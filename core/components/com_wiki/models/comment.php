@@ -25,159 +25,172 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Wiki\Models;
 
-use Components\Wiki\Helpers\Parser;
-use Hubzero\Base\Model;
+use Hubzero\Database\Relational;
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
-use Hubzero\Base\ItemList;
 use Request;
-use Date;
 use Lang;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
+use Date;
+use User;
 
 /**
  * Wiki model for a comment
  */
-class Comment extends Model
+class Comment extends Relational
 {
 	/**
-	 * Table class name
+	 * Flagged state
 	 *
-	 * @var string
+	 * @var  integer
 	 */
-	protected $_tbl_name = '\\Components\\Wiki\\Tables\\Comment';
+	const STATE_FLAGGED = 3;
 
 	/**
-	 * \Hubzero\User\Profile
+	 * The table namespace
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_creator = NULL;
+	protected $namespace = 'wiki';
 
 	/**
-	 * ItemList
+	 * Default order by for model
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_comments = NULL;
+	public $orderBy = 'id';
 
 	/**
-	 * Comment count
+	 * Default order direction for select queries
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	private $_comments_count = NULL;
+	public $orderDir = 'desc';
 
 	/**
-	 * Returns a reference to a wiki comment model
+	 * Fields and their validation criteria
 	 *
-	 * @param   mixed   $oid  ID (int) or alias (string)
-	 * @return  object
+	 * @var  array
 	 */
-	static function &getInstance($oid=0)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
-	}
+	protected $rules = array(
+		'page_id' => 'positive|nonzero',
+		'ctext'   => 'notempty'
+	);
 
 	/**
-	 * Has the offering started?
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @return  boolean
+	 * @var  array
 	 */
-	public function isReported()
-	{
-		if ($this->get('status') == self::APP_STATE_FLAGGED)
-		{
-			return true;
-		}
-		return false;
-	}
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
 
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string  $as What data to return
-	 * @return  boolean
+	 * @param   string  $as
+	 * @param   string  $format
+	 * @return  string
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		if ($format)
+		{
+			return Date::of($this->get('created'))->toLocal($format);
+		}
+
+		return $this->get('created');
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Was the entry reported?
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string $property What data to return
-	 * @param   mixed  $default  Default value
-	 * @return  mixed
+	 * @return  boolean  True if reported, False if not
 	 */
-	public function creator($property=null, $default=null)
+	public function isReported()
 	{
-		if (!($this->_creator instanceof Profile))
-		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
-			if ($property == 'picture')
-			{
-				return $this->_creator->getPicture($this->get('anonymous'));
-			}
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
+		return ($this->get('state') == self::STATE_FLAGGED);
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get a list of responses
 	 *
-	 * @param   string  $as      Format to return state in [text, number]
-	 * @param   integer $shorten Number of characters to shorten text to
-	 * @return  mixed   String or Integer
+	 * @param   array   $filters  Filters to apply to query
+	 * @return  object
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function replies($filters = array())
+	{
+		$replies = self::blank()
+			->whereEquals('parent', $this->get('id'));
+
+		if (isset($filters['version']))
+		{
+			$replies->whereEquals('version', (int)$filters['version']);
+		}
+
+		if (isset($filters['created_by']))
+		{
+			$replies->whereEquals('created_by', (int)$filters['created_by']);
+		}
+
+		if (isset($filters['state']))
+		{
+			if (!is_array($filters['state']))
+			{
+				$filters['state'] = array($filters['state']);
+			}
+			$replies->whereIn('state', $filters['state']);
+		}
+
+		if (isset($filters['access']))
+		{
+			if (!is_array($filters['access']))
+			{
+				$filters['access'] = array($filters['access']);
+			}
+			$replies->whereIn('access', $filters['access']);
+		}
+
+		return $replies;
+	}
+
+	/**
+	 * Get parent section
+	 *
+	 * @return  object
+	 */
+	public function parent()
+	{
+		return self::oneOrFail($this->get('parent', 0));
+	}
+
+	/**
+	 * Get the content of the entry
+	 *
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  string
+	 */
+	/*public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
 		$options = array();
@@ -185,34 +198,33 @@ class Comment extends Model
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('chtml'))
+				$content = $this->get('content.parsed', null);
+
+				if ($content === null)
 				{
-					return $this->get('chtml');
-				}
-				if ($this->get('parsed'))
-				{
-					return $this->get('parsed');
-				}
+					$config = array(
+						'option'   => 'com_kb',
+						'scope'    => '',
+						'pagename' => $this->get('article'),
+						'pageid'   => $this->get('id'),
+						'filepath' => '',
+						'domain'   => ''
+					);
 
-				$p = Parser::getInstance();
+					$content = (string) stripslashes($this->get('content', ''));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
 
-				$wikiconfig = array(
-					'option'   => Request::getCmd('option', 'com_wiki'),
-					'scope'    => Request::getVar('scope'),
-					'pagename' => Request::getVar('pagename'),
-					'pageid'   => $this->get('pageid'),
-					'filepath' => '',
-					'domain'   => Request::getVar('group', '')
-				);
+					$this->set('content.parsed', (string) $this->get('content', ''));
+					$this->set('content', $content);
 
-				$this->set('parsed', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
-				if ($shorten)
-				{
-					$content = String::truncate($this->get('parsed'), $shorten, array('html' => true));
-					return $content;
+					return $this->content($as, $shorten);
 				}
 
-				return $this->get('parsed');
+				$options['html'] = true;
 			break;
 
 			case 'clean':
@@ -221,7 +233,8 @@ class Comment extends Model
 
 			case 'raw':
 			default:
-				$content = $this->get('ctext');
+				$content = stripslashes($this->get('content'));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}
 
@@ -229,131 +242,32 @@ class Comment extends Model
 		{
 			$content = String::truncate($content, $shorten, $options);
 		}
-
 		return $content;
-	}
+	}*/
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Delete the record and all associated data
 	 *
-	 * @param   string $type The type of link to return
-	 * @return  boolean
+	 * @return  boolean  False if error, True on success
 	 */
-	public function link($type='')
+	public function destroy()
 	{
-		if (!isset($this->_base))
+		// Can't delete what doesn't exist
+		if (!$this->get('id'))
 		{
-			$this->_base  = 'index.php?option=' . Request::getCmd('option', 'com_wiki') . '&scope=' . Request::getVar('scope') . '&pagename=' . Request::getVar('pagename');
-		}
-		$task = Request::getVar('cn', '') ? 'action' : 'task';
-
-		$link = $this->_base;
-
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'edit':
-				$link .= '&' . $task . '=editcomment&comment=' . $this->get('id');
-			break;
-
-			case 'delete':
-				$link .= '&' . $task . '=removecomment&comment=' . $this->get('id');
-			break;
-
-			case 'reply':
-				$link .= '&' . $task . '=addcomment&parent=' . $this->get('id');
-			break;
-
-			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=wikicomment&id=' . $this->get('id') . '&parent=' . $this->get('pageid');
-			break;
-
-			case 'permalink':
-			default:
-				$link .= '&' . $task . '=comments#c' . $this->get('id');
-			break;
+			return true;
 		}
 
-		return $link;
-	}
-
-	/**
-	 * Get a list or count of replies
-	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
-	 * @return  mixed
-	 */
-	public function replies($rtrn='list', $filters=array(), $clear=false)
-	{
-		if (!isset($filters['pageid']))
+		// Remove comments
+		foreach ($this->replies()->rows() as $comment)
 		{
-			$filters['pageid'] = $this->get('pageid');
-		}
-		if (!isset($filters['parent']))
-		{
-			$filters['parent'] = $this->get('id');
-		}
-		if (!isset($filters['status']))
-		{
-			$filters['status'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
+			if (!$comment->destroy())
+			{
+				$this->addError($comment->getError());
+				return false;
+			}
 		}
 
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!is_numeric($this->_comments_count) || $clear)
-				{
-					$this->_comments_count = 0;
-
-					if (!$this->_comments)
-					{
-						$c = $this->comments('list', $filters);
-					}
-					foreach ($this->_comments as $com)
-					{
-						$this->_comments_count++;
-						if ($com->replies())
-						{
-							foreach ($com->replies() as $rep)
-							{
-								$this->_comments_count++;
-								if ($rep->replies())
-								{
-									$this->_comments_count += $rep->replies()->total();
-								}
-							}
-						}
-					}
-				}
-				return $this->_comments_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_comments instanceof ItemList) || $clear)
-				{
-					$results = $this->_tbl->find('list', $filters);
-
-					if ($results)
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Comment($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_comments = new ItemList($results);
-				}
-				return $this->_comments;
-			break;
-		}
+		return parent::delete();
 	}
 }
-

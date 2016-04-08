@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,54 +34,30 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
 	Lang::txt('COM_WIKI_SPECIAL_LONG_PAGES'),
-	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'
+	$this->page->link('base') . '&pagename=Special:LongPages'
 );
-
-$database = App::get('db');
 
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
-$query = "SELECT COUNT(*)
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
-				AND wp.state < 2
-				AND wp.access != 2
-				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
+$filters = array('state' => array(0, 1));
 
-$database->setQuery($query);
-$total = $database->loadResult();
+$pages    = \Components\Wiki\Models\Page::blank()->getTableName();
+$versions = \Components\Wiki\Models\Version::blank()->getTableName();
 
-$query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
-				AND wp.state < 2
-				AND wp.access != 2
-				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
-			ORDER BY length DESC";
-if ($limit && $limit != 'all')
-{
-	$query .= " LIMIT $start, $limit";
-}
-
-$database->setQuery($query);
-$rows = $database->loadObjectList();
-
-$pageNav = $this->pagination(
-	$total,
-	$start,
-	$limit
-);
+$rows = $this->book->pages($filters)
+	->select($pages . '.*')
+	->select($versions . '.created_by')
+	->select($versions . '.length')
+	->join($versions, $versions . '.id', $pages . '.version_id')
+	->order('length', 'desc')
+	->ordered()
+	->paginated()
+	->rows();
 ?>
-<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'); ?>">
+<form method="get" action="<?php echo Route::url($this->page->link('base') . '&pagename=Special:LongPages'); ?>">
 	<p>
-		<?php echo Lang::txt('COM_WIKI_SPECIAL_LONG_PAGES_ABOUT', Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:ShortPages')); ?>
+		<?php echo Lang::txt('COM_WIKI_SPECIAL_LONG_PAGES_ABOUT', Route::url($this->page->link('base') . '&pagename=Special:ShortPages')); ?>
 	</p>
 	<div class="container">
 		<table class="file entries">
@@ -103,59 +78,59 @@ $pageNav = $this->pagination(
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	foreach ($rows as $row)
-	{
-		$name = Lang::txt('COM_WIKI_UNKNOWN');
-		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
-		if (is_object($xprofile))
-		{
-			$name = $this->escape(stripslashes($xprofile->get('name')));
-			$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
-		}
+			<?php
+			if ($rows->count())
+			{
+				foreach ($rows as $row)
+				{
+					$name = Lang::txt('COM_WIKI_UNKNOWN');
 
-		$row = new \Components\Wiki\Models\Page($row);
-?>
-				<tr>
-					<td>
-						<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
-					</td>
-					<td>
-						<a href="<?php echo Route::url($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title', $row->get('pagename')))); ?>
-						</a>
-					</td>
-					<td>
-						<?php echo $name; ?>
-					</td>
-					<td>
-						<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($row->get('length'))); ?>
-					</td>
-				</tr>
-<?php
-	}
-}
-else
-{
-?>
+					$xprofile = \Hubzero\User\Profile::getInstance($row->get('created_by'));
+					if (is_object($xprofile))
+					{
+						$name = $this->escape(stripslashes($xprofile->get('name')));
+						$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
+					}
+					?>
+					<tr>
+						<td>
+							<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+						</td>
+						<td>
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->title)); ?>
+							</a>
+						</td>
+						<td>
+							<?php echo $name; ?>
+						</td>
+						<td>
+							<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($row->get('length'))); ?>
+						</td>
+					</tr>
+					<?php
+				}
+			}
+			else
+			{
+				?>
 				<tr>
 					<td colspan="4">
 						<?php echo Lang::txt('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+				<?php
+			}
+			?>
 			</tbody>
 		</table>
-<?php
-$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
-$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
+		<?php
+		$pageNav = $rows->pagination;
+		$pageNav->setAdditionalUrlParam('scope', $this->page->get('path'));
+		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-echo $pageNav->render();
-?>
+		echo $pageNav;
+		?>
 		<div class="clearfix"></div>
 	</div>
 </form>

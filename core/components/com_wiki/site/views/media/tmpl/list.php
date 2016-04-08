@@ -76,7 +76,7 @@ if (!$no_html) {
 <?php } ?>
 	<div id="attachments">
 <?php if (!$no_html) { ?>
-		<form action="<?php echo $base; ?>/index.php" method="post" id="filelist">
+		<form action="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>" method="post" id="filelist">
 <?php } ?>
 <?php if (count($this->docs) == 0) { ?>
 			<p><?php echo Lang::txt('COM_WIKI_ERROR_NO_FILES_FOUND'); ?></p>
@@ -89,18 +89,18 @@ if (!$no_html) {
 					foreach ($this->docs as $path => $name)
 					{
 						$ext = Filesystem::extension($name);
-				?>
-					<tr>
-						<td>
-							<span><?php echo $this->escape(stripslashes($name)); ?></span>
-						</td>
-						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-								<?php echo Lang::txt('JACTION_DELETE'); ?>
-							</a>
-						</td>
-					</tr>
-				<?php
+						?>
+						<tr>
+							<td>
+								<span><?php echo $this->escape(stripslashes($name)); ?></span>
+							</td>
+							<td>
+								<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+									<?php echo Lang::txt('JACTION_DELETE'); ?>
+								</a>
+							</td>
+						</tr>
+						<?php
 					}
 				}
 				?>

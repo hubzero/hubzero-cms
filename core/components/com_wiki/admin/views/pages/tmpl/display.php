@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -80,25 +79,27 @@ function submitbutton(pressbutton)
 				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7">
-				<label for="filter_group"><?php echo Lang::txt('COM_WIKI_FILTER_GROUP'); ?>:</label>
-				<select name="group" id="filter_group" onchange="document.adminForm.submit( );">
-					<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_GROUP_SELECT'); ?></option>
-					<?php
-					if ($this->groups) {
-						foreach ($this->groups as $group) {
+				<label for="filter_scope"><?php echo Lang::txt('COM_WIKI_FILTER_SCOPE'); ?>:</label>
+				<select name="scope" id="filter_scope" onchange="document.adminForm.submit( );">
+					<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_SCOPE_SELECT'); ?></option>
+					<?php foreach ($this->scopes as $scope) {
+						$val = $scope->get('scope') . ':' . $scope->get('scope_id');
 					?>
-					<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($group->cn == $this->filters['group']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->cn)); ?></option>
-					<?php
-						}
-					}
-					?>
+						<option value="<?php echo $this->escape($val); ?>"<?php if ($val == $this->filters['scope']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($val); ?></option>
+					<?php } ?>
 				</select>
 
 				<label for="filter_namespace"><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE'); ?>:</label>
 				<select name="namespace" id="filter_namespace" onchange="document.adminForm.submit( );">
 					<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE_SELECT'); ?></option>
-					<option value="Help"<?php if (strtolower($this->filters['namespace']) == 'help') { echo ' selected="selected"'; } ?>>Help</option>
-					<option value="Template"<?php if (strtolower($this->filters['namespace']) == 'template') { echo ' selected="selected"'; } ?>>Template</option>
+					<?php foreach ($this->namespaces as $nspace) {
+						if (!trim($nspace->get('namespace')))
+						{
+							continue;
+						}
+						?>
+						<option value="<?php echo $nspace->get('namespace'); ?>"<?php if ($this->filters['namespace'] == $nspace->get('namespace')) { echo ' selected="selected"'; } ?>><?php echo $nspace->get('namespace'); ?></option>
+					<?php } ?>
 				</select>
 			</div>
 		</div>
@@ -107,25 +108,22 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_WIKI_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_WIKI_COL_MODE'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_WIKI_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_WIKI_COL_GROUP', 'group_cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WIKI_COL_LOCKED', 'protected', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_WIKI_COL_SCOPE', 'group_cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_WIKI_COL_REVISIONS', 'revisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_WIKI_COL_COMMENTS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php
+				<td colspan="9"><?php
 				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
@@ -139,25 +137,22 @@ function submitbutton(pressbutton)
 			switch ($row->get('state'))
 			{
 				case 2:
-					$color_access = 'trashed';
-					$class = 'trash';
-					$task = '0';
-					$alt = Lang::txt('COM_WIKI_STATE_TRASHED');
+					$cls  = 'trash';
+					$task = 0;
+					$alt  = Lang::txt('COM_WIKI_STATE_TRASHED');
 				break;
 
 				case 1:
-					$color_access = 'private';
-					$class = 'locked';
-					$task = '0';
-					$alt = Lang::txt('COM_WIKI_STATE_LOCKED');
+					$alt  = Lang::txt('JPUBLISHED');
+					$task = 0;
+					$cls  = 'publish';
 				break;
 
 				case 0:
 				default:
-					$color_access = 'public';
-					$class = 'open';
-					$task = '1';
-					$alt = Lang::txt('COM_WIKI_STATE_OPEN');
+					$alt  = Lang::txt('JUNPUBLISHED');
+					$task = 1;
+					$cls  = 'unpublish';
 				break;
 			}
 			?>
@@ -178,46 +173,53 @@ function submitbutton(pressbutton)
 							<?php echo $this->escape(stripslashes($row->get('title', Lang::txt('COM_WIKI_NONE')))); ?>
 						</span>
 					<?php } ?>
-					<br /><?php if ($row->get('scope')) { ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('scope'))); ?>/</span> &nbsp; <?php } ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('pagename'))); ?></span>
+					<br />
+					<span style="color: #999; font-size: 90%">/wiki/</span> &nbsp;
+					<span style="color: #999; font-size: 90%"><?php echo ($row->get('path') ? $row->get('path') . '/' : '') . $this->escape(stripslashes($row->get('pagename'))); ?></span>
 				</td>
 				<td class="priority-4">
 					<?php echo $this->escape($row->param('mode')); ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . $task . '&' . Session::getFormToken() . '=1'); ?>">
-							<?php echo $alt; ?>
+						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . $task . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
-						<span class="access <?php echo $color_access; ?>">
-							<?php echo $alt; ?>
+						<span class="state <?php echo $cls; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
+				</td>
+				<td class="priority-5">
+					<?php if ($row->get('protected')) { ?>
+						<span class="access private">
+							<span><?php echo Lang::txt('COM_WIKI_STATE_LOCKED'); ?></span>
+						</span>
+					<?php } else { ?>
+						<span class="access public">
+							<span><?php echo Lang::txt('COM_WIKI_STATE_OPEN'); ?></span>
 						</span>
 					<?php } ?>
 				</td>
 				<td class="priority-4">
 					<span class="group">
-						<span><?php echo $this->escape($row->get('group_cn')); ?></span>
+						<span><?php echo $this->escape($row->get('scope') . ':' . $row->get('scope_id')); ?></span>
 					</span>
 				</td>
 				<td class="priority-2">
-					<?php if ($row->get('revisions') > 0) { ?>
-						<a class="revisions" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=revisions&pageid=' . $row->get('id')); ?>">
-							<span><?php echo Lang::txt('COM_WIKI_NUM_REVISIONS', $this->escape($row->get('revisions'))); ?></span>
-						</a>
-					<?php } else { ?>
-						<span class="revisions">
-							<span><?php echo $this->escape($row->get('revisions')); ?></span>
-						</span>
-					<?php } ?>
+					<a class="revisions" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=versions&pageid=' . $row->get('id')); ?>">
+						<span><?php echo Lang::txt('COM_WIKI_NUM_REVISIONS', $row->versions->count()); ?></span>
+					</a>
 				</td>
 				<td class="priority-3">
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&pageid=' . $row->get('id')); ?>">
-							<?php echo Lang::txt('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
+						<a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&page_id=' . $row->get('id')); ?>">
+							<?php echo Lang::txt('COM_WIKI_NUM_COMMENTS', $row->comments->count()); ?>
 						</a>
 					<?php } else { ?>
 						<span class="comment">
-							<?php echo Lang::txt('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
+							<?php echo Lang::txt('COM_WIKI_NUM_COMMENTS', $row->comments->count()); ?>
 						</span>
 					<?php } ?>
 				</td>

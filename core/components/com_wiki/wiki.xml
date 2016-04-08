@@ -45,21 +45,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.com_wiki.ini</language>
 	</languages>
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">install.sql</file>
-		</sql>
-	</install>
-	<uninstall>
-	</uninstall>
-	<install>
-	</install>
-	<installfile>
-		<filename></filename>
-	</installfile>
-	<uninstallfile>
-		<filename></filename>
-	</uninstallfile>
 	<administration>
 		<menu>Wiki</menu>
 		<files>
@@ -80,11 +65,4 @@ HUBzero is a registered trademark of Purdue University.
 			<language tag="en-GB">en-GB.com_wiki.ini</language>
 		</languages>
 	</administration>
-	<params>
-		<param name="mode" type="list" default="wiki" label="COM_WIKI_MODE_LABEL" description="COM_WIKI_MODE_DESC">
-			<option value="wiki">COM_WIKI_MODE_WIKI</option>
-			<option value="knol">COM_WIKI_MODE_KNOL</option>
-			<option value="static">COM_WIKI_MODE_STATIC</option>
-		</param>
-	</params>
 </extension>

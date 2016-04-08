@@ -641,9 +641,8 @@ class Media extends SiteController
 			}
 
 			//load wiki page from db
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-			$page = new \Components\Wiki\Tables\Page($this->database);
-			$page->load(Request::getVar('pagename'), $course->get('cn') . DS . 'wiki');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+			$page = \Components\Wiki\Models\Page::oneByPath(Request::getVar('pagename'), 'course', $course->get('id'));
 
 			//check specific wiki page access
 			if ($page->get('access') == 1 && !in_array(User::get('id'), $course->get('members')) && $authorized != 'admin')
@@ -682,15 +681,12 @@ class Media extends SiteController
 		$xserver->filename(PATH_APP . DS . $file_path);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
+
 		if (!$xserver->serve())
 		{
 			return App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 }
-

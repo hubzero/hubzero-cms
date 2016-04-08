@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,53 +37,52 @@ if (!$this->sub)
 	$this->css();
 }
 
-$revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), true);
+$revisions = $this->page->versions()
+	->where('approved', '!=', \Components\Wiki\Models\Version::STATE_DELETED)
+	->order('id', 'desc')
+	->rows();
 ?>
-	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-		<?php if (count($this->parents)) { ?>
-			<p class="wiki-crumbs">
-				<?php foreach ($this->parents as $parent) { ?>
-					<a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->get('title'); ?></a> /
-				<?php } ?>
-			</p>
-		<?php } ?>
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<?php if (count($this->parents)) { ?>
+		<p class="wiki-crumbs">
+			<?php foreach ($this->parents as $parent) { ?>
+				<a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->title; ?></a> /
+			<?php } ?>
+		</p>
+	<?php } ?>
 
-		<h2><?php echo $this->escape($this->title); ?></h2>
-		<?php
-		if (!$this->page->isStatic())
-		{
-			$this->view('authors', 'page')
-			     ->setBasePath($this->base_path)
-			     ->set('page', $this->page)
-			     ->display();
-		}
-		?>
-	</header><!-- /#content-header -->
+	<h2><?php echo $this->escape($this->page->title); ?></h2>
+	<?php
+	if (!$this->page->isStatic())
+	{
+		$this->view('authors', 'pages')
+			//->setBasePath($this->base_path)
+			->set('page', $this->page)
+			->display();
+	}
+	?>
+</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if ($this->message) { ?>
-	<p class="passed"><?php echo $this->message; ?></p>
-<?php } ?>
-
 <?php
-	$this->view('submenu', 'page')
-	     ->setBasePath($this->base_path)
-	     ->set('option', $this->option)
-	     ->set('controller', $this->controller)
-	     ->set('page', $this->page)
-	     ->set('task', $this->task)
-	     ->set('sub', $this->sub)
-	     ->display();
+	$this->view('submenu', 'pages')
+		//->setBasePath($this->base_path)
+		->set('option', $this->option)
+		->set('controller', $this->controller)
+		->set('page', $this->page)
+		->set('task', $this->task)
+		->set('sub', $this->sub)
+		->display();
 ?>
 
 <section class="main section">
 	<div class="section-inner">
 		<div class="grid">
 			<div class="col span-half">
-				<p><?php echo Lang::txt('COM_WIKI_HISTORY_EXPLANATION', Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:PageHistory')); ?></p>
+				<p><?php echo Lang::txt('COM_WIKI_HISTORY_EXPLANATION', Route::url($this->page->link('base') . '&pagename=Help:PageHistory')); ?></p>
 			</div><!-- / .aside -->
 			<div class="col span-half omega">
 				<p>
@@ -112,50 +110,55 @@ $revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), t
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_MADE_BY'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_LENGTH'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_STATUS'); ?></th>
-						<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
-							<th scope="col"></th>
-						<?php } ?>
+							<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
+								<th scope="col"></th>
+							<?php } ?>
 						</tr>
 					</thead>
 					<tbody>
-					<?php
-					$i = 0;
-					$cur = 0;
-					$cls = 'even';
-					foreach ($revisions as $revision)
-					{
-						$i++;
+						<?php
+						$i = 0;
+						$cur = 0;
+						$cls = 'even';
+						$total = $revisions->count();
 
-						$cls = ($cls == 'odd') ? 'even' : 'odd';
-						$level = ($revision->get('minor_edit')) ? 'minor' : 'major';
-
-						$xname = $revision->creator('name') ? $revision->creator('name') : Lang::txt('COM_WIKI_AUTHOR_UNKNOWN');
-
-						$summary = ($revision->get('summary')) ? $this->escape($revision->get('summary')) : Lang::txt('COM_WIKI_REVISION_NO_SUMMARY');
-
-						switch ($revision->get('approved'))
+						$lengths = array();
+						foreach ($revisions as $revision)
 						{
-							case 1: $status = '<span class="approved icon-approved">approved</span>'; break;
-							case 0:
-							default:
-								$status = '<span class="suggested icon-suggested">suggested</span>';
-								break;
+							$lengths[] = $revision->get('length');
 						}
 
-						$prvLength = 0;
-						$this->page->revisions()->next();
-						$nxt = $this->page->revisions()->current();
-						if ($nxt)
+						foreach ($revisions as $revision)
 						{
-							$prvLength = $nxt->get('length');
-						}
-						$this->page->revisions()->prev();
+							$i++;
 
-						$diff = $revision->get('length') - $prvLength;
-					?>
+							$cls = ($cls == 'odd') ? 'even' : 'odd';
+							$level = ($revision->get('minor_edit')) ? 'minor' : 'major';
+
+							$xname = $revision->creator()->get('name', Lang::txt('COM_WIKI_AUTHOR_UNKNOWN'));
+
+							$summary = (trim($revision->get('summary')) ? $revision->get('summary') : Lang::txt('COM_WIKI_REVISION_NO_SUMMARY'));
+
+							switch ($revision->get('approved'))
+							{
+								case 1: $status = '<span class="approved icon-approved">approved</span>'; break;
+								case 0:
+								default:
+									$status = '<span class="suggested icon-suggested">suggested</span>';
+									break;
+							}
+
+							$prvLength = 0;
+							if (isset($lengths[$i]))
+							{
+								$prvLength = $lengths[$i];
+							}
+
+							$diff = $revision->get('length') - $prvLength;
+							?>
 							<tr class="<?php echo $cls; ?>">
 								<td>
-									<?php if ($this->page->revisions()->isFirst()) {
+									<?php if ($i == 1) {
 										$cur = $revision->get('version'); ?>
 										( cur )
 									<?php } else { ?>
@@ -164,7 +167,7 @@ $revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), t
 										</a>)
 									<?php } ?>
 										&nbsp;
-									<?php if (!$this->page->revisions()->isLast()) { ?>
+									<?php if ($i != $total) { ?>
 										(<a href="<?php echo Route::url($this->page->link('compare') . '&oldid=' . ($revision->get('version') - 1) . '&diff=' . $revision->get('version')); ?>">
 											<?php echo Lang::txt('COM_WIKI_HISTORY_LAST'); ?>
 										</a>)
@@ -172,21 +175,21 @@ $revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), t
 										( last )
 									<?php } ?>
 								</td>
-							<?php if ($i == 1) { ?>
-								<td>
+								<?php if ($i == 1) { ?>
+									<td>
 
-								</td>
-								<td>
-									<input type="radio" name="diff" value="<?php echo $revision->get('version'); ?>" checked="checked" />
-								</td>
-							<?php } else { ?>
-								<td>
-									<input type="radio" name="oldid" value="<?php echo $revision->get('version'); ?>"<?php if ($i == 2) { echo ' checked="checked"'; } ?> />
-								</td>
-								<td>
+									</td>
+									<td>
+										<input type="radio" name="diff" value="<?php echo $revision->get('version'); ?>" checked="checked" />
+									</td>
+								<?php } else { ?>
+									<td>
+										<input type="radio" name="oldid" value="<?php echo $revision->get('version'); ?>"<?php if ($i == 2) { echo ' checked="checked"'; } ?> />
+									</td>
+									<td>
 
-								</td>
-							<?php } ?>
+									</td>
+								<?php } ?>
 								<td>
 									<a href="<?php echo Route::url($this->page->link() . '&version=' . $revision->get('version')); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
 										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toSql(true)); ?></time>
@@ -210,15 +213,18 @@ $revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), t
 										</a>
 									<?php } ?>
 								</td>
-							<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
-								<td>
-									<a class="delete" href="<?php echo Route::url($this->page->link('deleterevision') . '&oldid=' . $revision->get('id')); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
-										<?php echo Lang::txt('JACTION_DELETE'); ?>
-									</a>
-								</td>
-							<?php } ?>
+								<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
+									<td>
+										<a class="icon-trash delete" href="<?php echo Route::url($this->page->link('deleterevision') . '&oldid=' . $revision->get('id')); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
+											<?php echo Lang::txt('JACTION_DELETE'); ?>
+										</a>
+									</td>
+								<?php } ?>
 							</tr>
-					<?php } ?>
+							<?php
+							$prvLength = $revision->get('length');
+						}
+						?>
 					</tbody>
 				</table>
 				<p><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
@@ -229,13 +235,9 @@ $revisions = $this->page->revisions('list', array('sortby' => 'version DESC'), t
 			<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
 			<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
 			<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
-			<?php if ($this->sub) { ?>
-				<input type="hidden" name="active" value="<?php echo $this->escape($this->sub); ?>" />
-				<input type="hidden" name="action" value="compare" />
-			<?php } else { ?>
-				<input type="hidden" name="task" value="compare" />
+
+			<?php foreach ($this->page->adapter()->routing('compare') as $name => $val) { ?>
+				<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
 			<?php } ?>
 		</form>
 	</div>

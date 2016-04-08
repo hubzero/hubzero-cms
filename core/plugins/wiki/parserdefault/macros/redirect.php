@@ -41,7 +41,7 @@ class RedirectMacro extends WikiMacro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $allowPartial = false;
 
@@ -114,7 +114,6 @@ class RedirectMacro extends WikiMacro
 	 */
 	protected function getArgs()
 	{
-		//get the args passed in
 		return explode(',', $this->args);
 	}
 }

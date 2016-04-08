@@ -41,14 +41,14 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -101,8 +101,8 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
-		$book = new Components\Wiki\Models\Book($group->get('cn'));
-		$arr['metadata']['count'] = $book->pages('count');
+		$book = new Components\Wiki\Models\Book('group', $group->get('gidNumber'));
+		$arr['metadata']['count'] = $book->pages()->total();
 
 		if ($arr['metadata']['count'] <= 0)
 		{
@@ -111,7 +111,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				$this->setError($result);
 			}
 
-			$arr['metadata']['count'] = $book->pages('count', array(), true);
+			$arr['metadata']['count'] = $book->pages()->total();
 		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
@@ -158,11 +158,11 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			}
 
 			// Set some variables for the wiki
-			$scope = trim(Request::getVar('scope', ''));
+			/*$scope = trim(Request::getVar('scope', ''));
 			if (!$scope)
 			{
 				Request::setVar('scope', $group->get('cn') . DS . $active);
-			}
+			}*/
 
 			// Import some needed libraries
 			switch ($action)
@@ -197,7 +197,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				case 'rename':
 				case 'saverename':
 				default:
-					$controllerName = 'page';
+					$controllerName = 'pages';
 				break;
 			}
 
@@ -212,22 +212,21 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 
 			Request::setVar('task', $action);
 
-			Lang::load('com_wiki') || Lang::load('com_wiki', PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site');
+			Lang::load('com_wiki') ||
+			Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
 
-			//$controllerName = Request::getCmd('controller', 'page');
-			if (!file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php'))
+			if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php'))
 			{
-				$controllerName = 'page';
+				$controllerName = 'pages';
 			}
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php');
+			require_once(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php');
 			$controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);
 
 			// Instantiate controller
 			$controller = new $controllerName(array(
 				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site',
-				'name'      => 'groups',
-				'sub'       => 'wiki',
-				'group'     => $group->get('cn')
+				'scope'     => 'group',
+				'scope_id'  => $group->get('gidNumber')
 			));
 
 			// Catch any echoed content with ob
@@ -249,81 +248,28 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Update wiki pages if a group changes its CN
-	 *
-	 * @param      object $before Group before changed
-	 * @param      object $after  Group after changed
-	 */
-	public function onGroupAfterSave($before, $after)
-	{
-		if (!$before->get('cn') || $after->get('cn') == $before->get('cn'))
-		{
-			return;
-		}
-
-		$database = App::get('db');
-		$database->setQuery("UPDATE `#__wiki_page` SET `group_cn`=" . $database->quote($after->get('cn')) . " WHERE `group_cn`=" . $database->quote($before->get('cn')));
-		if (!$database->query())
-		{
-			return;
-		}
-
-		$database->setQuery("SELECT id, scope FROM `#__wiki_page` WHERE `group_cn`=" . $database->quote($after->get('cn')));
-		if ($results = $database->loadObjectList())
-		{
-			$pattern = '^' . str_replace(array('-', ':'), array('\-', '\:'), $before->get('cn'));
-			foreach ($results as $result)
-			{
-				$result->scope = preg_replace("/$pattern/i", $after->get('cn'), $result->scope);
-				$database->setQuery("UPDATE `#__wiki_page` SET `scope`=" . $database->quote($result->scope) . " WHERE `id`=" . $database->quote($result->id));
-				if (!$database->query())
-				{
-					$this->setError($database->getErrorMsg());
-				}
-			}
-		}
-	}
-
-	/**
 	 * Remove any associated resources when group is deleted
 	 *
-	 * @param      object $group Group being deleted
-	 * @return     string Log of items removed
+	 * @param   object  $group  Group being deleted
+	 * @return  string  Log of items removed
 	 */
 	public function onGroupDelete($group)
 	{
-		// Get all the IDs for pages associated with this group
-		$ids = $this->getPageIDs($group->get('cn'));
-
-		// Import needed libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-
-		// Instantiate a object
-		$database = App::get('db');
-
 		// Start the log text
 		$log = Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ';
 
-		if (count($ids) > 0)
+		$pages = $this->getPages($group->get('gidNumber'));
+
+		if ($pages->count() > 0)
 		{
 			// Loop through all the IDs for pages associated with this group
-			foreach ($ids as $id)
+			foreach ($pages as $page)
 			{
-				$wp = new \Components\Wiki\Tables\Page($database);
-				$wp->load($id->id);
-				// Delete all items linked to this page
-				//$wp->deleteBits($id->id);
-
-				// Delete the wiki page last in case somehting goes wrong
-				//$wp->delete($id->id);
-				if ($wp->id)
-				{
-					$wp->state = 2;
-					$wp->store();
-				}
+				$page->set('state', \Components\Wiki\Models\Page::STATE_DELETED);
+				$page->save();
 
 				// Add the page ID to the log
-				$log .= $id->id . ' ' . "\n";
+				$log .= $page->get('id') . ' ' . "\n";
 			}
 		}
 		else
@@ -338,28 +284,33 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return a count of items that will be removed when group is deleted
 	 *
-	 * @param      object $group Group to delete
-	 * @return     string
+	 * @param   object  $group  Group to delete
+	 * @return  string
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		return Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ' . count($this->getPageIDs($group->get('cn')));
+		return Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ' . $this->getPages($group->get('gidNumber'))->count();
 	}
 
 	/**
 	 * Get a list of page IDs associated with this group
 	 *
-	 * @param      string $gid Group alias
-	 * @return     array
+	 * @param   integer  $gid
+	 * @return  array
 	 */
-	public function getPageIDs($gid=NULL)
+	public function getPages($gid=NULL)
 	{
-		if (!$gid)
-		{
-			return array();
-		}
-		$database = App::get('db');
-		$database->setQuery("SELECT id FROM `#__wiki_page` AS p WHERE p.group_cn=" . $database->quote($gid));
-		return $database->loadObjectList();
+		// Import needed libraries
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+
+		// Start the log text
+		$log = Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ';
+
+		$pages = \Components\Wiki\Models\Page::all()
+			->whereEquals('scope', 'group')
+			->whereEquals('scope_id', $gid)
+			->rows();
+
+		return $pages;
 	}
 }

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -41,32 +40,11 @@ Pathway::append(
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
-$database = App::get('db');
+$filters = array('state' => array(0, 1));
 
-$query = "SELECT COUNT(*)
-			FROM #__wiki_page AS wp
-			INNER JOIN #__wiki_version AS wv ON wp.version_id = wv.id";
-
-$database->setQuery($query);
-$total = $database->loadResult();
-
-$query = "SELECT wp.id, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.created_by, wv.created, wv.pagetext
-			FROM #__wiki_page AS wp
-			INNER JOIN #__wiki_version AS wv ON wp.version_id = wv.id
-			ORDER BY created DESC";
-		if ($limit && $limit != 'all')
-		{
-			$query .= " LIMIT $start, $limit";
-		}
-
-$database->setQuery($query);
-$rows = $database->loadObjectList();
-
-$pageNav = $this->pagination(
-	$total,
-	$start,
-	$limit
-);
+$rows = $this->book->pages($filters)
+	->paginated()
+	->rows();
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link()); ?>">
 	<p>
@@ -91,62 +69,65 @@ $pageNav = $this->pagination(
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	$p = \Components\Wiki\Helpers\Parser::getInstance();
+			<?php
+			if ($rows->count())
+			{
+				//$p = \Components\Wiki\Helpers\Parser::getInstance();
 
-	foreach ($rows as $row)
-	{
-		$wikiconfig = array(
-			'option'   => $this->option,
-			'scope'    => $row->scope,
-			'pagename' => $row->pagename,
-			'pageid'   => $row->id,
-			'filepath' => '',
-			'domain'   => $row->group_cn,
-			'loglinks' => true
-		);
+				foreach ($rows as $row)
+				{
+					/*$wikiconfig = array(
+						'option'    => $this->option,
+						'scope'     => $row->get('path'),
+						'pagename'  => $row->get('pagename'),
+						'pageid'    => $row->get('id'),
+						'filepath'  => '',
+						'domain'    => $row->get('scope'),
+						'domain_id' => $row->get('scope_id'),
+						'loglinks'  => true
+					);
 
-		$row->pagehtml = $p->parse($row->pagetext, $wikiconfig, true, true);
-?>
-				<tr>
-					<td>
-						<?php echo $row->version_id; ?>
-					</td>
-					<td>
-						<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
-					</td>
-					<td>
-						<?php echo $row->id; ?>
-					</td>
-					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
-						</a>
-					</td>
-				</tr>
-<?php
-	}
-}
-else
-{
-?>
+					$row->pagehtml = $p->parse($row->pagetext, $wikiconfig, true, true);*/
+					$content = $row->version()->content();
+					?>
+					<tr>
+						<td>
+							<?php echo $row->get('version_id'); ?>
+						</td>
+						<td>
+							<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+						</td>
+						<td>
+							<?php echo $row->get('id'); ?>
+						</td>
+						<td>
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->title)); ?>
+							</a>
+						</td>
+					</tr>
+					<?php
+				}
+			}
+			else
+			{
+				?>
 				<tr>
 					<td colspan="4">
 						<?php echo Lang::txt('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+				<?php
+			}
+			?>
 			</tbody>
 		</table>
 		<?php
+		$pageNav = $rows->pagination;
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', 'Special:' . $this->page->get('pagename'));
 
-		echo $pageNav->render();
+		echo $pageNav;
 		?>
 		<div class="clearfix"></div>
 	</div>

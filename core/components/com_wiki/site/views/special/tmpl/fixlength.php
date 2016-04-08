@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,11 +37,11 @@ Pathway::append(
 	$this->page->link()
 );
 
-$database = App::get('db');
-
-$query = "SELECT wv.id, wv.pageid, wv.pagetext FROM `#__wiki_version` AS wv WHERE wv.length = '0'";
-$database->setQuery($query);
-$rows = $database->loadObjectList();
+$rows = \Components\Wiki\Models\Version::all()
+	->whereEquals('length', 0)
+	->whereEquals('scope', $this->page->get('scope'))
+	->whereEquals('scope_id', $this->page->get('scope_id'))
+	->rows();
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link()); ?>">
 	<p>
@@ -65,40 +64,36 @@ $rows = $database->loadObjectList();
 			</thead>
 			<tbody>
 			<?php
-			if ($rows)
+			if ($rows->count())
 			{
 				foreach ($rows as $row)
 				{
-					$lngth = strlen($row->pagetext);
-					$database->setQuery("UPDATE `#__wiki_version` SET `length` = " . $database->quote($lngth) . " WHERE `id`=" . $database->quote($row->id));
-					if (!$database->query())
-					{
-						$this->setError($database->getErrorMsg());
-					}
-			?>
-				<tr>
-					<td>
-						<?php echo $row->id; ?>
-					</td>
-					<td>
-						<?php echo $row->pageid; ?>
-					</td>
-					<td>
-						<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', $lngth); ?>
-					</td>
-				</tr>
-			<?php
+					$row->set('length', strlen($row->get('pagetext')));
+					$row->save();
+					?>
+					<tr>
+						<td>
+							<?php echo $row->get('id'); ?>
+						</td>
+						<td>
+							<?php echo $row->get('pageid'); ?>
+						</td>
+						<td>
+							<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', $row->get('length')); ?>
+						</td>
+					</tr>
+					<?php
 				}
 			}
 			else
 			{
-			?>
+				?>
 				<tr>
 					<td colspan="3">
 						<?php echo Lang::txt('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-			<?php
+				<?php
 			}
 			?>
 			</tbody>

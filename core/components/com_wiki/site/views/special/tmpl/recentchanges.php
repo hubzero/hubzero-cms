@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -44,39 +43,29 @@ if (!in_array($dir, array('ASC', 'DESC')))
 	$dir = 'DESC';
 }
 
-$limit = Request::getInt('limit', Config::get('list_limit'));
-$start = Request::getInt('limitstart', 0);
+$filters = array('state' => array(0, 1));
 
-$database = App::get('db');
-
-$query = "SELECT COUNT(*)
-			FROM `#__wiki_version` AS wv
-			INNER JOIN `#__wiki_page` AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
-				AND wp.state < 2
-				AND wp.access != 2";
-
-$database->setQuery($query);
-$total = $database->loadResult();
-
-$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.summary
-			FROM `#__wiki_version` AS wv
-			INNER JOIN `#__wiki_page` AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
-				AND wp.state < 2
-				AND wp.access != 2
-			ORDER BY created DESC";
-if ($limit && $limit != 'all')
+if ($space = Request::getVar('namespace', ''))
 {
-	$query .= " LIMIT $start, $limit";
+	$filters['namespace'] = urldecode($space);
 }
 
-$database->setQuery($query);
-$rows = $database->loadObjectList();
+$rows = $this->book->pages($filters)
+	->including([
+		'versions',
+		function ($version)
+		{
+			$version
+				->select('id')
+				->select('page_id')
+				->select('version')
+				->select('created_by')
+				->select('summary');
+		}
+	])
+	->order('modified', $dir)
+	->paginated()
+	->rows();
 
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
@@ -112,65 +101,61 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 				foreach ($rows as $row)
 				{
 					$name = Lang::txt('(unknown)');
-					$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
+					$xprofile = \Hubzero\User\Profile::getInstance($row->version->get('created_by'));
 					if (is_object($xprofile))
 					{
 						$name = $this->escape(stripslashes($xprofile->get('name')));
 						$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
 					}
-			?>
-				<tr>
-					<td>
-						(
-						<?php if ($row->version > 1) { ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=compare&oldid=' . ($row->version - 1). '&diff=' . $row->version); ?>"><?php echo Lang::txt('COM_WIKI_DIFF'); ?></a> |
-						<?php } else { ?>
-							<?php echo Lang::txt('COM_WIKI_DIFF'); ?> |
-						<?php } ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=history'); ?>"><?php echo Lang::txt('COM_WIKI_HIST'); ?></a>
-						)
-					</td>
-					<td>
-						<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
-					</td>
-					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
-						</a>
-					</td>
-					<td>
-						<?php echo $name; ?>
-					</td>
-					<td>
-						<span><?php echo $this->escape(stripslashes($row->summary)); ?></span>
-					</td>
-				</tr>
-			<?php
+					?>
+					<tr>
+						<td>
+							(
+							<?php if ($row->version->get('version') > 1) { ?>
+								<a href="<?php echo Route::url($row->link() . '&task=compare&oldid=' . ($row->version->get('version') - 1). '&diff=' . $row->version->get('version')); ?>"><?php echo Lang::txt('COM_WIKI_DIFF'); ?></a> |
+							<?php } else { ?>
+								<?php echo Lang::txt('COM_WIKI_DIFF'); ?> |
+							<?php } ?>
+								<a href="<?php echo Route::url($row->link() . '&task=history'); ?>"><?php echo Lang::txt('COM_WIKI_HIST'); ?></a>
+							)
+						</td>
+						<td>
+							<time datetime="<?php echo $row->get('modified'); ?>"><?php echo $row->get('modified'); ?></time>
+						</td>
+						<td>
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->title)); ?>
+							</a>
+						</td>
+						<td>
+							<?php echo $name; ?>
+						</td>
+						<td>
+							<span><?php echo $this->escape(stripslashes($row->version->get('summary'))); ?></span>
+						</td>
+					</tr>
+					<?php
 				}
 			}
 			else
 			{
-			?>
+				?>
 				<tr>
 					<td colspan="5">
 						<?php echo Lang::txt('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-			<?php
+				<?php
 			}
 			?>
 			</tbody>
 		</table>
 		<?php
-		$pageNav = $this->pagination(
-			$total,
-			$start,
-			$limit
-		);
+		$pageNav = $rows->pagination;
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-		echo $pageNav->render();
+		echo $pageNav;
 		?>
 		<div class="clearfix"></div>
 	</div>

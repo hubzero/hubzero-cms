@@ -190,19 +190,17 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		// Is it numeric?
 		if (is_numeric($file))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
-
 			// Get resource by ID
-			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
-			$attach->load(intval($file));
+			$attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
 			// Check for file existence
-			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true)))
+			if ($attach->get('filename') && file_exists($this->_path($attach->get('filename')))
+			 || file_exists($this->_path($attach->get('filename'), true)))
 			{
 				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 				if (!$attr['desc'])
 				{
-					$attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
+					$attr['desc'] = $attach->get('description', '');
 				}
 
 				$ret = true;
@@ -217,7 +215,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		// Check for file existence
 		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
 		{
-			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
+			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 
 			$ret = true;
 		}
@@ -233,19 +231,17 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			// Return HTML
 			return $this->_embed($file, $attr);
 		}
-		else
-		{
-			// Return error message
-			return '(Image(' . $content . ') failed - File not found)'; // . $this->_path($file);
-		}
+
+		// Return error message
+		return '(Image(' . $content . ') failed - File not found)';
 	}
 
 	/**
 	 * Parse attribute=value pairs
 	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
 	 *
-	 * @param      array $matches Values matching attr=val pairs
-	 * @return     void
+	 * @param   array  $matches  Values matching attr=val pairs
+	 * @return  void
 	 */
 	public function parseAttributeValuePair($matches)
 	{
@@ -359,8 +355,8 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	 * Handle single attribute values
 	 * EX: [[Image(myimage.png, nolink, right)]]
 	 *
-	 * @param      array $matches Values matching the single attribute pattern
-	 * @return     void
+	 * @param   array  $matches  Values matching the single attribute pattern
+	 * @return  void
 	 */
 	public function parseSingleAttribute($matches)
 	{
@@ -426,8 +422,8 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	 * Generate an absolute path to a file stored on the system
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
 	 *
-	 * @param      string $file Filename
-	 * @return     string
+	 * @param   string  $file  Filename
+	 * @return  string
 	 */
 	private function _path($file, $alt=false)
 	{
@@ -467,8 +463,8 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	 * Generate a link to a file
 	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
 	 *
-	 * @param      string $file Filename
-	 * @return     string
+	 * @param   string  $file  Filename
+	 * @return  string
 	 */
 	private function _link($file)
 	{
@@ -484,6 +480,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		{
 			return $this->_path($file);
 		}
+
 		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
 		if ($this->scope)
 		{
@@ -499,9 +496,9 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	/**
 	 * Generates HTML to embed an <img>
 	 *
-	 * @param      string $file File to embed
-	 * @param      array  $attr Attributes to apply to the HTML
-	 * @return     string
+	 * @param   string  $file  File to embed
+	 * @param   array   $attr  Attributes to apply to the HTML
+	 * @return  string
 	 */
 	private function _embed($file, $attr=array())
 	{
@@ -557,4 +554,3 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		return $html;
 	}
 }
-

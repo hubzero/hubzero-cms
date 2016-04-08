@@ -41,7 +41,7 @@ class PageNameMacro extends WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -54,7 +54,7 @@ class PageNameMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -63,10 +63,9 @@ class PageNameMacro extends WikiMacro
 		switch (trim($et))
 		{
 			case 'title':
-				$sql = "SELECT title FROM `#__wiki_page` WHERE `pagename`=" . $this->_db->quote($this->pagename) . " AND `group_cn`=" . $this->_db->quote($this->domain) . " AND `scope`=" . $this->_db->quote($this->scope);
-				// Perform query
-				$this->_db->setQuery($sql);
-				return stripslashes($this->_db->loadResult());
+				$page = \Components\Wiki\Models\Page::oneByPath($this->pagename, $this->domain, $this->domain_id);
+
+				return stripslashes($row->title);
 			break;
 
 			case 'alias':
@@ -76,4 +75,3 @@ class PageNameMacro extends WikiMacro
 		}
 	}
 }
-

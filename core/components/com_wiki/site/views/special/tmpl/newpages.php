@@ -52,44 +52,29 @@ if (!in_array($dir, array('ASC', 'DESC')))
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
-$database = App::get('db');
+$filters = array('state' => array(0, 1));
 
-$query = "SELECT COUNT(*)
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
-				AND wp.access != 2
-				AND wp.state < 2
-				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
-
-$database->setQuery($query);
-$total = $database->loadResult();
-
-$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.summary
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
-				ON wp.id = wv.pageid
-			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
-				AND wp.access != 2
-				AND wp.state < 2
-				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
-			ORDER BY $sort $dir";
-if ($limit && $limit != 'all')
+if ($space = Request::getVar('namespace', ''))
 {
-	$query .= " LIMIT $start, $limit";
+	$filters['namespace'] = urldecode($space);
 }
 
-$database->setQuery($query);
-$rows = $database->loadObjectList();
-
-$pageNav = $this->pagination(
-	$total,
-	$start,
-	$limit
-);
+$rows = $this->book->pages($filters)
+	->including([
+		'versions',
+		function ($version)
+		{
+			$version
+				->select('id')
+				->select('page_id')
+				->select('version')
+				->select('created_by')
+				->select('summary');
+		}
+	])
+	->order('created', $dir)
+	->paginated()
+	->rows();
 
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
@@ -124,56 +109,57 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	foreach ($rows as $row)
-	{
-		$name = Lang::txt('COM_WIKI_UNKNOWN');
-		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
-		if (is_object($xprofile))
-		{
-			$name = $this->escape(stripslashes($xprofile->get('name')));
-			$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
-		}
-?>
-				<tr>
-					<td>
-						<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
-					</td>
-					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
-						</a>
-					</td>
-					<td>
-						<?php echo $name; ?>
-					</td>
-					<td>
-						<span><?php echo $this->escape(stripslashes($row->summary)); ?></span>
-					</td>
-				</tr>
-<?php
-	}
-}
-else
-{
-?>
+			<?php
+			if ($rows)
+			{
+				foreach ($rows as $row)
+				{
+					$name = Lang::txt('COM_WIKI_UNKNOWN');
+					$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
+					if (is_object($xprofile))
+					{
+						$name = $this->escape(stripslashes($xprofile->get('name')));
+						$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
+					}
+					?>
+					<tr>
+						<td>
+							<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+						</td>
+						<td>
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->title)); ?>
+							</a>
+						</td>
+						<td>
+							<?php echo $name; ?>
+						</td>
+						<td>
+							<span><?php echo $this->escape(stripslashes($row->version->get('summary'))); ?></span>
+						</td>
+					</tr>
+					<?php
+				}
+			}
+			else
+			{
+				?>
 				<tr>
 					<td colspan="4">
 						<?php echo Lang::txt('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+				<?php
+			}
+			?>
 			</tbody>
 		</table>
 		<?php
+		$pageNav = $rows->pagination;
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-		echo $pageNav->render();
+		echo $pageNav;
 		?>
 		<div class="clearfix"></div>
 	</div>

@@ -41,8 +41,8 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Is the category one this plugin handles?
 	 *
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     boolean
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  boolean
 	 */
 	private function _canHandle($category)
 	{
@@ -56,10 +56,10 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieves a row from the database
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $parent   If the element has a parent element
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @param   string  $parent    If the element has a parent element
+	 * @return  array
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
@@ -87,9 +87,9 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
 
-				$entry = new \Components\Wiki\Models\Comment($rows[$key]->entry_id);
+				$entry = \Components\Wiki\Models\Comment::oneOrFail($rows[$key]->entry_id);
 
-				$rows[$key]->text = $rows[$key]->text; //$entry->content('raw');
+				$rows[$key]->text = $rows[$key]->text;
 				$rows[$key]->href = Route::url($entry->link() . '#c' . $rows[$key]->id);
 			}
 		}
@@ -99,9 +99,9 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark an item as flagged
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     string
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  string
 	 */
 	public function onReportItem($refid, $category)
 	{
@@ -112,12 +112,9 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
-		$database = App::get('db');
-
-		$comment = new \Components\Wiki\Tables\Comment($database);
-		$comment->load($refid);
-		$comment->status = 3;
-		$comment->store();
+		$comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
+		$comment->set('state', \Components\Wiki\Models\Comment::STATE_FLAGGED);
+		$comment->save();
 
 		return '';
 	}
@@ -125,10 +122,10 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Release a reported item
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $parent    If the element has a parent element
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  array
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
@@ -139,12 +136,9 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
-		$database = App::get('db');
-
-		$comment = new \Components\Wiki\Tables\Comment($database);
-		$comment->load($refid);
-		$comment->status = 1;
-		$comment->store();
+		$comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
+		$comment->set('state', \Components\Wiki\Models\Comment::STATE_PUBLISHED);
+		$comment->save();
 
 		return '';
 	}
@@ -152,11 +146,11 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark an item as deleted
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $message  If the element has a parent element
-	 * @return     string
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $parent    If the element has a parent element
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @param   string  $message   If the element has a parent element
+	 * @return  string
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
@@ -167,12 +161,9 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
-		$database = App::get('db');
-
-		$comment = new \Components\Wiki\Tables\Comment($database);
-		$comment->load($refid);
-		$comment->status = 2;
-		$comment->store();
+		$comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
+		$comment->set('state', \Components\Wiki\Models\Comment::STATE_DELETED);
+		$comment->save();
 
 		return '';
 	}

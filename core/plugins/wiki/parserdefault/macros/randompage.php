@@ -58,18 +58,15 @@ class RandomPageMacro extends WikiMacro
 	 */
 	public function render()
 	{
-		// Perform query
-		$this->_db->setQuery("SELECT * FROM `#__wiki_page` WHERE state < 2 ORDER BY rand() LIMIT 1");
-		$a = $this->_db->loadObject();
+		$row = \Components\Wiki\Models\Page::all()
+			->whereEquals('scope', $this->domain)
+			->whereEquals('scope_id', $this->domain_id)
+			->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+			->order('rand()')
+			->row();
 
-		// Did we get a result from the database?
-		if ($a)
-		{
-			$row = new \Components\Wiki\Models\Page($a);
-
-			// Build and return the link
-			return '<a href="' . Route::url($row->link()) . '">' . $row->get('title', $row->get('pagename')) . '</a>';
-		}
+		// Build and return the link
+		return '<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>';
 	}
 }
 

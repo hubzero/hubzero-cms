@@ -54,29 +54,25 @@ class FileIndexMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 		$live_site = rtrim(Request::base(), '/');
 
-		// What pages are we getting?
+		// Get resource by ID
+		$attach = \Components\Wiki\Models\Attachment::all()
+			->whereEquals('page_id', $this->pageid);
+
 		if ($et)
 		{
 			$et = strip_tags($et);
-			// Get pages with a prefix
-			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE '" . strtolower($et) . "%' AND pageid='" . $this->pageid . "' ORDER BY created ASC";
-		}
-		else
-		{
-			// Get all pages
-			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE pageid='" . $this->pageid . "' ORDER BY created ASC";
+
+			$attach->whereLike('filename', strtolower($et) . '%');
 		}
 
-		// Perform query
-		$this->_db->setQuery($sql);
-		$rows = $this->_db->loadObjectList();
+		$rows = $attach->rows();
 
 		// Did we get a result from the database?
 		if ($rows)
@@ -87,44 +83,41 @@ class FileIndexMacro extends WikiMacro
 				$config->set('filepath', $this->filepath);
 			}
 
-			$page = new \Components\Wiki\Models\Page($this->pageid);
+			$page = \Components\Wiki\Models\Page::oneOrFail($this->pageid);
+
 			if ($page->get('namespace') == 'help')
 			{
-				$page->set('scope', ($page->get('scope') ? rtrim($this->scope, '/') . '/' . ltrim($page->get('scope'), '/') : $this->scope));
-				$page->set('group_cn', $this->domain);
+				$page->set('path', ($page->get('path') ? rtrim($this->scope, '/') . '/' . ltrim($page->get('path'), '/') : $this->scope));
 			}
 
 			// Build and return the link
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				$page->set('pagename', $page->get('pagename') . '/' . 'File:' . $row->filename);
-				$link  = $page->link(); //$live_site . substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
-				$fpath = PATH_APP . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
+				$page->set('pagename', $page->get('pagename') . '/' . 'File:' . $row->get('filename'));
 
-				$html .= '<li><a href="' . Route::url($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
-				$huser = User::getInstance($row->created_by);
+				$link  = $page->link();
+				$fpath = $row->filespace() . DS . $this->pageid . DS . $row->get('filename');
+
+				$html .= '<li><a href="' . Route::url($link) . '">' . $row->get('filename') . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
+				$huser = $row->creator();
 				if ($huser->get('id'))
 				{
 					$html .= '- added by <a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
 				}
-				if ($row->created && $row->created != '0000-00-00 00:00:00')
+				if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00')
 				{
-					$html .= Date::of($row->created)->relative() . '. ';
+					$html .= Date::of($row->get('created'))->relative() . '. ';
 				}
-				$html .= ($row->description) ? '<span>"' . stripslashes($row->description) . '"</span>' : '';
+				$html .= $row->get('description') ? '<span>"' . stripslashes($row->get('description')) . '"</span>' : '';
 				$html .= '</li>' . "\n";
 			}
 			$html .= '</ul>';
 
 			return $html;
 		}
-		else
-		{
-			// Return error message
-			//return '(TitleIndex('.$et.') failed)';
-			return '(No ' . $et . ' files to display)';
-		}
+
+		// Return error message
+		return '(No ' . $et . ' files to display)';
 	}
 }
-

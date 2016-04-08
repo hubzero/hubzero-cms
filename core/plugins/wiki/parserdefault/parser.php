@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,8 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 /**
  * Wiki parser class
@@ -81,13 +79,15 @@ class WikiParser
 	 * @var array
 	 */
 	private $_config = array(
-		'option'   => null,
-		'scope'    => null,
-		'pagename' => null,
-		'pageid'   => null,
-		'filepath' => null,
-		'domain'   => null,
-		'macros'   => true,
+		'option'    => null,
+		'scope'     => null,
+		'pagename'  => null,
+		'pageid'    => null,
+		'filepath'  => null,
+		'path'      => null,
+		'macros'    => true,
+		'domain'    => '',
+		'domain_id' => 0,
 
 		'fullparse' => true,
 		'camelcase' => true,
@@ -165,13 +165,12 @@ class WikiParser
 	 *
 	 * @param   string  $property  The name of the property.
 	 * @param   mixed   $value     The value of the property to set.
-	 * @return  mixed   Previous value of the property.
+	 * @return  object  Method chaining
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->_config[$property]) ? $this->_config[$property] : null;
 		$this->_config[$property] = $value;
-		return $previous;
+		return $this;
 	}
 
 	/**
@@ -374,7 +373,7 @@ class WikiParser
 		// If full parse and we have a page ID (i.e., this is a *wiki* page) and link logging is turned on...
 		if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks'))
 		{
-			$links = new \Components\Wiki\Tables\Link(App::get('db'));
+			$links = \Components\Wiki\Models\Link::blank();
 			$links->updateLinks($this->get('pageid'), $this->_data['links']);
 		}
 
@@ -689,43 +688,54 @@ class WikiParser
 
 		if (substr($scope, 0, strlen($this->get('scope'))) != $this->get('scope'))
 		{
-			$scope = $this->get('scope') . DS . ltrim($scope, DS);
+			$scope = $this->get('scope') . '/' . ltrim($scope, '/');
 		}
 
 		if ($namespace == 'help')
 		{
-			$p = \Components\Wiki\Tables\Page::getInstance($pagename, '');
-			$p->scope = $scope;
+			$p = \Components\Wiki\Models\Page::oneByPath($pagename, 'site', 0);
 		}
 		else
 		{
-			$p = \Components\Wiki\Tables\Page::getInstance($pagename, $scope);
+			$p = \Components\Wiki\Models\Page::oneByPath(($scope ? $scope . '/' . $pagename : $pagename), $this->get('domain'), $this->get('domain_id'));
 		}
+
+		$p->set('scope', $this->get('domain'));
+		$p->set('scope_id', $this->get('domain_id'));
 
 		switch (substr($href, 0, 1))
 		{
 			case '#':  // Anchors
 			case '?':  // Links that start with just a query string
-				$p->pagename = '';
-				$p->scope = $scope;
+				$p->set('pagename', '');
+				$p->set('path', $scope);
 
-				$href = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
+				$sef = Route::url($p->link());
+
+				if (strstr($sef, '?'))
+				{
+					$href = $sef . str_replace('?', '&amp;', $href);
+				}
+				else
+				{
+					$href = $sef . $href;
+				}
 			break;
 
 			case '@':  // Wiki page linked by title [wiki:"My Title"]
 				// Page not found
-				if (!$p->id)
+				if (!$p->get('id'))
 				{
-					$p->scope = $scope;
+					$p->set('path', $scope);
 					$href = '#';
 
 					if (in_array($namespace, array('wiki', 'page')))
 					{
 						$cls .= ' missing';
 					}
-					if (!$p->pagename && $title)
+					if (!$p->get('pagename') && $title)
 					{
-						$p->pagename = urlencode($title);
+						$p->set('pagename', urlencode($title));
 					}
 				}
 				else
@@ -733,7 +743,7 @@ class WikiParser
 					$href = '';
 				}
 
-				$href = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
+				$href = Route::url($p->link() . $href);
 			break;
 
 			case '/':  // Absolute paths
@@ -742,7 +752,7 @@ class WikiParser
 
 			default:   // Everything else
 				// Page not found
-				if (!$p->id)
+				if (!$p->get('id'))
 				{
 					// Check reserved and dynamic namespaces
 					if (in_array($namespace, array('special', 'help', 'image', 'file', 'template')))
@@ -755,16 +765,16 @@ class WikiParser
 						$cls .= ' missing';
 					}
 
-					$p->scope    = ($p->scope) ? $p->scope : $scope;
-					$p->pagename = $href;
+					$p->set('path', $p->get('path', $scope));
+					$p->set('pagename', $href);
 				}
 				else
 				{
 					//$title = ($title == $href) ? $p->title;
-					$p->scope = $scope;
+					$p->set('path', $scope);
 				}
 
-				$href = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
+				$href = Route::url($p->link());
 			break;
 		}
 
@@ -773,7 +783,7 @@ class WikiParser
 			'url'      => $href,
 			'page_id'  => $this->get('pageid'),
 			'scope'    => 'internal',
-			'scope_id' => $p->id
+			'scope_id' => $p->get('id')
 		);
 
 		return $this->_dataPush(array(
@@ -790,8 +800,8 @@ class WikiParser
 	 * This is to ensure links aren't parsed twice. We put the links back in place
 	 * towards the end of parsing.
 	 *
-	 * @param      array $matches Text matching internal link pattern
-	 * @return     string Placeholder tag
+	 * @param   array   $matches  Text matching internal link pattern
+	 * @return  string  Placeholder tag
 	 */
 	public function linkExternal($matches)
 	{
@@ -826,9 +836,8 @@ class WikiParser
 	/**
 	 * Generate a link to a wiki page based on page name
 	 *
-	 * @param      string $name   Page name
-	 * @param      string $anchor Anchor
-	 * @return     string
+	 * @param   array  $matches
+	 * @return  string
 	 */
 	public function linkWikiName($matches)
 	{
@@ -842,33 +851,22 @@ class WikiParser
 			return ltrim($name, '!');
 		}
 
-		$bits = explode('/', $name);
-		if (count($bits) > 1)
-		{
-			$pagename = array_pop($bits);
-			$scope = implode('/', $bits);
-		}
-		else
-		{
-			$pagename = end($bits);
-			$scope = $this->get('scope');
-		}
+		$p = \Components\Wiki\Models\Page::oneByPath($name, $this->get('domain'), $this->get('domain_id'));
 
-		$p = \Components\Wiki\Tables\Page::getInstance($pagename, $scope);
-
-		if ((!is_object($p) || !$p->id) && substr($name, 0, 1) != '?')
+		if (!$p->get('id') && substr($name, 0, 1) != '?')
 		{
+			$p->set('pagename', $name);
 			$cls .= ' missing';
 		}
 
-		$link = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $scope . '&pagename=' . $pagename);
+		$link = Route::url($p->link());
 
 		$this->_data['links'][] = array(
 			'link'     => $name,
 			'url'      => $link,
 			'page_id'  => $this->get('pageid'),
 			'scope'    => 'internal',
-			'scope_id' => $p->id
+			'scope_id' => $p->get('id')
 		);
 
 		return $this->_dataPush(array(
@@ -1276,8 +1274,8 @@ class WikiParser
 	/**
 	 * Clean potential Cross-Site Scripting hazards from a strong
 	 *
-	 * @param      string $string Content to be cleaned
-	 * @return     string
+	 * @param   string  $string  Content to be cleaned
+	 * @return  string
 	 */
 	private function cleanXss($string)
 	{
@@ -1326,8 +1324,8 @@ class WikiParser
 	/**
 	 * Admonitions
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string Parsed wiki content
+	 * @param   string  $text  Wiki markup
+	 * @return  string  Parsed wiki content
 	 */
 	private function admonitions($text)
 	{
@@ -1338,8 +1336,8 @@ class WikiParser
 	/**
 	 * Convert the admonition content to HTML
 	 *
-	 * @param      array $matches Content matching {admonition} ... {/admonition}
-	 * @return     string Parsed wiki content
+	 * @param   array   $matches  Content matching {admonition} ... {/admonition}
+	 * @return  string  Parsed wiki content
 	 */
 	private function _getAdmonition($matches)
 	{
@@ -1349,16 +1347,17 @@ class WikiParser
 	/**
 	 * Convert math forumlas
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string Parsed wiki content
+	 * @param   string  $text  Wiki markup
+	 * @return  string  Parsed wiki content
 	 */
 	private function math($text)
 	{
 		$path = __DIR__;
-		if (is_file($path . DS . 'math.php'))
+
+		if (is_file($path . DS . 'forumla.php'))
 		{
-			include_once($path . DS . 'math.php');
-			include_once($path . DS . 'math' . DS . 'math.php');
+			include_once($path . DS . 'forumla.php');
+			include_once($path . DS . 'math' . DS . 'mathrenderer.php');
 		}
 		else
 		{
@@ -1372,8 +1371,8 @@ class WikiParser
 	 * Render a math forumla
 	 * Output depends on complexity of formula. HTML is tried first with image used for complex formulas
 	 *
-	 * @param      array $mtch_arr Wiki markup matching a <math>formula</math>
-	 * @return     string
+	 * @param   array  $mtch_arr  Wiki markup matching a <math>formula</math>
+	 * @return  string
 	 */
 	private function _getMath($matches)
 	{
@@ -1392,8 +1391,8 @@ class WikiParser
 	/**
 	 * Format math output before injecting back into primary text
 	 *
-	 * @param      string $txt Math output
-	 * @return     string
+	 * @param   string  $txt  Math output
+	 * @return  string
 	 */
 	private function _restoreMath($txt)
 	{
@@ -1404,8 +1403,8 @@ class WikiParser
 	 * Search for include syntax and replace with any included text
 	 *   [[Include(SomePage)]]
 	 *
-	 * @param      string $text Raw wiki markup
-	 * @return     string
+	 * @param   string  $text  Raw wiki markup
+	 * @return  string
 	 */
 	private function includes($text)
 	{
@@ -1416,8 +1415,8 @@ class WikiParser
 	 * Retrieve an included page
 	 * This is recursive and should look for inclusions in any included page.
 	 *
-	 * @param      array $matches Pattern matches from includes() method
-	 * @return     string
+	 * @param   array  $matches  Pattern matches from includes() method
+	 * @return  string
 	 */
 	private function _getInclude($matches)
 	{
@@ -1432,7 +1431,7 @@ class WikiParser
 				return "'''Includes not allowed.'''";
 			}
 
-			$scope = ($this->get('domain')) ? $this->get('domain') . DS . 'wiki' : $this->get('scope');
+			/*$scope = ($this->get('scope')) ? $this->get('scope') . DS . 'wiki' : $this->get('path');
 			if (strstr($matches[3], '/'))
 			{
 				$bits = explode('/', $matches[3]);
@@ -1441,24 +1440,23 @@ class WikiParser
 				$scope .= DS . trim($s, DS);
 			}
 			else
-			{
+			{*/
 				$pagename = $matches[3];
-			}
+			//}
 
 			// Don't include this page (infinite loop!)
-			if ($pagename == $this->get('pagename')
-				&& $scope == $this->get('scope'))
+			if ($pagename == $this->get('pagename')) //&& $scope == $this->get('scope'))
 			{
 				return '';
 			}
 
 			// Load the page
-			$p = \Components\Wiki\Tables\Page::getInstance($pagename, $scope);
-			if ($p->id)
+			$p = \Components\Wiki\Models\Page::oneByPath($pagename, $this->get('domain'), $this->get('domain_id'));
+			if ($p->get('id'))
 			{
 				// Parse any nested includes
 				return $this->includes(
-					$p->getCurrentRevision()->pagetext
+					$p->version->get('pagetext')
 				);
 			}
 		}
@@ -1469,8 +1467,8 @@ class WikiParser
 	 * Parse macro tags
 	 * [[MacroName(args)]]
 	 *
-	 * @param      string $text Raw wiki markup
-	 * @return     string
+	 * @param   string  $text  Raw wiki markup
+	 * @return  string
 	 */
 	private function macros($text)
 	{
@@ -1496,8 +1494,8 @@ class WikiParser
 	/**
 	 * Attempt to load a specific macro class and return its contents
 	 *
-	 * @param      array $matches Result form [[Macro()]] pattern matching
-	 * @return     string
+	 * @param   array  $matches  Result form [[Macro()]] pattern matching
+	 * @return  string
 	 */
 	private function _getMacro($matches)
 	{
@@ -1584,7 +1582,9 @@ class WikiParser
 			$macro->option     = $this->get('option');
 			$macro->scope      = $this->get('scope');
 			$macro->pagename   = $this->get('pagename');
+			$macro->pageid     = $this->get('pageid');
 			$macro->domain     = $this->get('domain');
+			$macro->domain_id  = $this->get('domain_id');
 			$macro->uniqPrefix = $this->token();
 			if ($this->get('pageid') > 0)
 			{
@@ -1594,7 +1594,7 @@ class WikiParser
 			{
 				$macro->pageid = Request::getInt('lid', 0, 'post');
 			}
-			$macro->filepath   = $this->get('filepath');
+			$macro->filepath = $this->get('filepath');
 
 			// Push contents to a container -- we'll retrieve this later
 			// This is done to prevent any further wiki parsing of contents macro may return
@@ -1618,8 +1618,8 @@ class WikiParser
 	/**
 	 * Put macro output back into the text
 	 *
-	 * @param      string $txt
-	 * @return     string
+	 * @param   string  $txt
+	 * @return  string
 	 */
 	private function _restoreMacro($txt)
 	{
@@ -1629,8 +1629,8 @@ class WikiParser
 	/**
 	 * Convert common special characters to their HTML entity counterpart
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string
+	 * @param   string  $text  Wiki markup
+	 * @return  string
 	 */
 	public function glyphs($text)
 	{
@@ -1716,10 +1716,10 @@ class WikiParser
 	/**
 	 * Parse Block Attributes
 	 *
-	 * @param      string  $in         Wiki markup for attributes
-	 * @param      string  $element    HTML element type
-	 * @param      integer $include_id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string   $in          Wiki markup for attributes
+	 * @param   string   $element     HTML element type
+	 * @param   integer  $include_id
+	 * @return  string
 	 */
 	private function pba($in, $element = '', $include_id = 1)
 	{
@@ -1811,8 +1811,8 @@ class WikiParser
 	 * Horizontal alignment
 	 * markup => value
 	 *
-	 * @param      string $in Markup
-	 * @return     string Value
+	 * @param   string  $in  Markup
+	 * @return  string
 	 */
 	private function hAlign($in)
 	{
@@ -1829,8 +1829,8 @@ class WikiParser
 	 * Vertical alignment
 	 * markup => value
 	 *
-	 * @param      string $in Markup
-	 * @return     string Value
+	 * @param   string  $in  Markup
+	 * @return  string
 	 */
 	private function vAlign($in)
 	{
@@ -1846,8 +1846,8 @@ class WikiParser
 	 * Parse markup syntax for several inline elements and their allowed attributes
 	 * [cite, u, del, span, ins, sub, sup]
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string
+	 * @param   string  $text  Wiki markup
+	 * @return  string
 	 */
 	private function spans($text)
 	{
@@ -1885,8 +1885,8 @@ class WikiParser
 	/**
 	 * Convert wiki markup to HTML for common inline elements
 	 *
-	 * @param      array $m Pattern matches
-	 * @return     string
+	 * @param   array  $m  Pattern matches
+	 * @return  string
 	 */
 	private function _getSpan($m)
 	{
@@ -1925,8 +1925,8 @@ class WikiParser
 	/**
 	 * Headings h[1-6]
 	 *
-	 * @param      string $text Raw wiki markup
-	 * @return     string
+	 * @param   string  $text  Raw wiki markup
+	 * @return  string
 	 */
 	private function headings($text)
 	{
@@ -1953,8 +1953,8 @@ class WikiParser
 	 * '''   => <b>
 	 * ''''' => <b><i>
 	 *
-	 * @param      string $text Raw wiki markup
-	 * @return     string
+	 * @param   string  $text  Raw wiki markup
+	 * @return  string
 	 */
 	private function quotes($text)
 	{
@@ -1969,10 +1969,10 @@ class WikiParser
 	}
 
 	/**
-	 * Convert quotes to HMTL
+	 * Convert quotes to HTML
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string
+	 * @param   string  $text  Wiki markup
+	 * @return  string
 	 */
 	private function _getQuotes($text)
 	{
@@ -2217,8 +2217,8 @@ class WikiParser
 	 *   ||Cell 1||Cell 2||Cell 3||
 	 *   ||Cell 4||Cell 5||Cell 6||
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string
+	 * @param   string  $text  Wiki markup
+	 * @return  string
 	 */
 	private function tables($text)
 	{
@@ -2232,8 +2232,8 @@ class WikiParser
 	/**
 	 * Convert a string for wiki table syntax into a table
 	 *
-	 * @param      array $matches Pattern matches for table syntax
-	 * @return     string
+	 * @param   array  $matches  Pattern matches for table syntax
+	 * @return  string
 	 */
 	private function _getTable($matches)
 	{
@@ -2330,7 +2330,7 @@ class WikiParser
 	/**
 	 * Generate a closed paragraph tag
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _closeParagraph()
 	{
@@ -2348,9 +2348,9 @@ class WikiParser
 	 * Returns the length of the longest common substring
 	 * of both arguments, starting at the beginning of both.
 	 *
-	 * @param      string $st1
-	 * @param      string $st2
-	 * @return     integer
+	 * @param   string  $st1
+	 * @param   string  $st2
+	 * @return  integer
 	 */
 	private function _getCommon($st1, $st2)
 	{
@@ -2374,8 +2374,8 @@ class WikiParser
 	/**
 	 * Open a list
 	 *
-	 * @param      string $char List type indicator
-	 * @return     string
+	 * @param   string  $char  List type indicator
+	 * @return  string
 	 */
 	private function _openList($char)
 	{
@@ -2414,8 +2414,8 @@ class WikiParser
 	/**
 	 * Close the current list item and continue to the next list item
 	 *
-	 * @param      string $char List type indicator
-	 * @return     string
+	 * @param   string  $char  List type indicator
+	 * @return  string
 	 */
 	private function _nextItem($char)
 	{
@@ -2447,8 +2447,8 @@ class WikiParser
 	/**
 	 * Close a list
 	 *
-	 * @param      string $char List type indicator
-	 * @return     string
+	 * @param   string  $char  List type indicator
+	 * @return  string
 	 */
 	private function _closeList($char)
 	{
@@ -2484,8 +2484,8 @@ class WikiParser
 	 *  term::
 	 *    definition
 	 *
-	 * @param      string $text Wiki markup
-	 * @return     string
+	 * @param   string  $text  Wiki markup
+	 * @return  string
 	 */
 	private function definitions($text)
 	{
@@ -2550,16 +2550,16 @@ class WikiParser
 				}
 			}
 		}
-		//echo $output;
+
 		return $output;
 	}
 
 	/**
 	 * Make lists from lines starting with 'some text::', '*', '#', etc.
 	 *
-	 * @param      string  $text      Wiki markup
-	 * @param      integer $linestart Parameter description (if any) ...
-	 * @return     string
+	 * @param   string   $text       Wiki markup
+	 * @param   integer  $linestart
+	 * @return  string
 	 */
 	private function blocks($text, $linestart=0)
 	{
@@ -2807,8 +2807,8 @@ class WikiParser
 	/**
 	 * Builds a Table of Contents and links to headings
 	 *
-	 * @param      string  $text   Text to build TOC from
-	 * @return     string
+	 * @param   string  $text  Text to build TOC from
+	 * @return  string
 	 */
 	public function toc($text)
 	{
@@ -3050,12 +3050,12 @@ class WikiParser
 	/**
 	 * Generate an HTML header with an anchor for the table of contents to jump to
 	 *
-	 * @param      string $level   TOC level
-	 * @param      string $attribs Header attributes
-	 * @param      string $anchor  Link anchor name #anchor
-	 * @param      string $text    Header text
-	 * @param      string $link    Link
-	 * @return     string
+	 * @param   string  $level    TOC level
+	 * @param   string  $attribs  Header attributes
+	 * @param   string  $anchor   Link anchor name #anchor
+	 * @param   string  $text     Header text
+	 * @param   string  $link     Link
+	 * @return  string
 	 */
 	private function _makeHeadline($level, $attribs, $anchor, $text, $link)
 	{
@@ -3065,7 +3065,7 @@ class WikiParser
 	/**
 	 * Start a sub-list
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _tocIndent()
 	{
@@ -3075,8 +3075,8 @@ class WikiParser
 	/**
 	 * Close a sub-list
 	 *
-	 * @param      integer $level Nested list depth
-	 * @return     string
+	 * @param   integer  $level  Nested list depth
+	 * @return  string
 	 */
 	private function _tocUnindent($level)
 	{
@@ -3086,11 +3086,11 @@ class WikiParser
 	/**
 	 * Open a list item and generate link
 	 *
-	 * @param      string $anchor    Link anchor #anchor
-	 * @param      string $tocLine   TOC item Text
-	 * @param      string $tocnumber TOC item number
-	 * @param      string $level     TOC level
-	 * @return     string
+	 * @param   string  $anchor     Link anchor #anchor
+	 * @param   string  $tocLine    TOC item Text
+	 * @param   string  $tocnumber  TOC item number
+	 * @param   string  $level      TOC level
+	 * @return  string
 	 */
 	private function _tocLine($anchor, $tocLine, $tocnumber, $level)
 	{
@@ -3104,11 +3104,10 @@ class WikiParser
 	/**
 	 * Close a list item
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _tocLineEnd()
 	{
 		return "</li>\n";
 	}
 }
-

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,32 +33,32 @@
 defined('_HZEXEC_') or die();
 ?>
 <ol class="comments" id="t<?php echo (isset($this->parent) ? $this->parent : '0'); ?>">
-<?php
-if ($this->comments instanceof \Hubzero\Base\ItemList)
-{
-	$cls = 'odd';
-	if (isset($this->cls))
+	<?php
+	if ($this->comments)
 	{
-		$cls = ($this->cls == 'odd') ? 'even' : 'odd';
+		$cls = 'odd';
+		if (isset($this->cls))
+		{
+			$cls = ($this->cls == 'odd') ? 'even' : 'odd';
+		}
+
+		$this->depth++;
+
+		foreach ($this->comments as $comment)
+		{
+			$comment->set('page_id', $this->page->get('id'));
+
+			$this->view('_comment', 'comments')
+				//->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
+				->set('option', $this->option)
+				->set('comment', $comment)
+				->set('config', $this->config)
+				->set('depth', $this->depth)
+				->set('page', $this->page)
+				->set('version', $this->version)
+				->set('cls', $cls)
+				->display();
+		}
 	}
-
-	$this->depth++;
-
-	foreach ($this->comments as $comment)
-	{
-		$comment->set('pageid', $this->page->get('id'));
-
-		$this->view('_comment', 'comments')
-		     ->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
-		     ->set('option', $this->option)
-		     ->set('comment', $comment)
-		     ->set('config', $this->config)
-		     ->set('depth', $this->depth)
-		     ->set('page', $this->page)
-		     ->set('version', $this->version)
-		     ->set('cls', $cls)
-		     ->display();
-	}
-}
-?>
+	?>
 </ol>

@@ -82,7 +82,7 @@ class MainMacro extends WikiMacro
 			}
 			else
 			{
-				$page = trim($page, DS);
+				$page = trim($page, '/');
 				if (strstr($page, '/') && !strstr($page, ' '))
 				{
 					$bits = explode('/', $page);
@@ -96,38 +96,29 @@ class MainMacro extends WikiMacro
 				$scope = $this->scope;
 			}
 			// No, get resource by alias
-			$g = new \Components\Wiki\Tables\Page($this->_db);
-
 			if (strstr($page, ' '))
 			{
-				$g->loadByTitle($page, $scope);
+				$g = \Components\Wiki\Models\Page::oneByTitle($page, $this->domain, $this->domain_id);
 			}
 			else
 			{
-				$g->load($page, $scope);
+				$g = \Components\Wiki\Models\Page::oneByPath(($scope ? $scope . '/' : '') . $page, $this->domain, $this->domain_id);
 			}
-			if (!$g->id)
+			if (!$g->get('id'))
 			{
-				$g->pagename = $page;
+				$g->set('pagename', $page);
+				$g->set('scope', $this->domain);
+				$g->set('scope_id', $this->domain_id);
 			}
 
 			// Build and return the link
-			if ($g->group_cn != '' && $g->scope != '')
+			if (!$g->get('id'))
 			{
-				$link = 'index.php?option=com_groups&scope=' . $g->scope . '&pagename=' . $g->pagename;
+				$l[] = '<a href="' . Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
 			}
 			else
 			{
-				$link = 'index.php?option=com_wiki&scope=' . $g->scope . '&pagename=' . $g->pagename;
-			}
-
-			if (!$g->id)
-			{
-				$l[] = '<a href="' . Route::url($link) . '">' . stripslashes($g->getTitle()) . '</a>';
-			}
-			else
-			{
-				$l[] = '<a class="int-link" href="' . Route::url($link) . '">' . stripslashes($g->getTitle()) . '</a>';
+				$l[] = '<a class="int-link" href="' . Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
 			}
 		}
 
@@ -146,4 +137,3 @@ class MainMacro extends WikiMacro
 		return $html . '</div>';
 	}
 }
-

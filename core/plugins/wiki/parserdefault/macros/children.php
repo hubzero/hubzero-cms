@@ -41,7 +41,7 @@ class ChildrenMacro extends WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -61,7 +61,7 @@ class ChildrenMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -106,20 +106,18 @@ class ChildrenMacro extends WikiMacro
 			}
 		}
 
-		$scope = ($this->scope) ? $this->scope . DS . $this->pagename : $this->pagename;
-
-		return $this->listChildren(1, $depth, $scope);
+		return $this->listChildren(1, $depth, $this->pageid);
 	}
 
 	/**
 	 * List children of a page
 	 *
-	 * @param      integer $currentDepth How far down the tree we are
-	 * @param      integer $targetDepth  How far down the tree to go
-	 * @param      string  $scope        Page scope
-	 * @return     string HMTL
+	 * @param   integer  $currentDepth  How far down the tree we are
+	 * @param   integer  $targetDepth   How far down the tree to go
+	 * @param   integer  $pageid
+	 * @return  string   HMTL
 	 */
-	private function listChildren($currentDepth, $targetDepth, $scope='')
+	private function listChildren($currentDepth, $targetDepth, $pageid)
 	{
 		$html = '';
 
@@ -128,9 +126,14 @@ class ChildrenMacro extends WikiMacro
 			return $html;
 		}
 
+		$rows = \Components\Wiki\Models\Page::all()
+			->whereEquals('parent', $pageid)
+			->whereEquals('state', 1)
+			->rows();
+
 		$rows = $this->getchildren($scope);
 
-		if ($rows)
+		if ($rows->count())
 		{
 			$html = '<ul>';
 			foreach ($rows as $row)
@@ -140,7 +143,7 @@ class ChildrenMacro extends WikiMacro
 				$html .= '<li><a href="' . Route::url($row->link()) . '">';
 				$html .= stripslashes($row->get('title', $row->get('pagename')));
 				$html .= '</a>';
-				$html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->get('scope') . '/' . $row->get('pagename'));
+				$html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->get('id'));
 				$html .= '</li>'."\n";
 			}
 			$html .= '</ul>';
@@ -153,21 +156,4 @@ class ChildrenMacro extends WikiMacro
 
 		return $html;
 	}
-
-	/**
-	 * Get the children of a page
-	 *
-	 * @param      string $scope Page scope
-	 * @return     array
-	 */
-	private function getChildren($scope)
-	{
-		// Get all pages
-		$sql = "SELECT * FROM `#__wiki_page` WHERE `scope`=" . $this->_db->quote($scope) . " AND `group_cn`=" . $this->_db->quote($this->domain) . " ORDER BY pagename ASC";
-
-		// Perform query
-		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
-	}
 }
-

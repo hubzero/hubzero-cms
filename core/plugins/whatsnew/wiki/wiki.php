@@ -84,70 +84,42 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = App::get('db');
-
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-
-		// Instantiate some needed objects
-		$wp = new \Components\Wiki\Tables\Page($database);
-
-		// Build query
-		$filters = array();
-		$filters['startdate']  = $period->cStartDate;
-		$filters['enddate']    = $period->cEndDate;
-		$filters['sortby']     = 'date';
-
-		$filters['authorized'] = false;
-		if (!User::isGuest())
-		{
-			$filters['authorized'] = true;
-		}
-
-		if (count($tagids) > 0)
-		{
-			$filters['tags'] = $tagids;
-		}
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
 
 		if (!$limit)
 		{
-			// Get a count
-			$filters['select'] = 'count';
-
-			$database->setQuery($wp->buildPluginQuery($filters));
-			return $database->loadResult();
+			return \Components\Wiki\Models\Page::all()
+				->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+				->where('created', '>=', $period->cStartDate)
+				->where('created', '<', $period->cEndDate)
+				->order('created', 'desc')
+				->total();
 		}
 		else
 		{
-			// Get results
-			$filters['select'] = 'records';
-			$filters['limit'] = $limit;
-			$filters['limitstart'] = $limitstart;
+			$pages = \Components\Wiki\Models\Page::all()
+				->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+				->order('created', 'desc')
+				->where('created', '>=', $period->cStartDate)
+				->where('created', '<', $period->cEndDate)
+				->limit($limit)
+				->start($limitstart)
+				->rows();
 
-			$database->setQuery($wp->buildPluginQuery($filters));
-			$rows = $database->loadObjectList();
+			$rows = array();
 
-			if ($rows)
+			foreach ($pages as $page)
 			{
-				foreach ($rows as $key => $row)
-				{
-					if ($row->area != '' && $row->category != '')
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_groups&scope=' . $row->category . '&pagename=' . $row->alias);
-					}
-					else
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
-					}
-					$rows[$key]->text = strip_tags($rows[$key]->itext);
-					if ($row->title == '')
-					{
-						$rows[$key]->title = $rows[$key]->alias;
-					}
-				}
+				$row = new stdClass;
+				$row->title = $page->title;
+				$row->href  = Route::url($page->link());
+				$row->text  = strip_tags($page->version->get('pagehtml'));
+				$row->category = $page->get('scope');
+
+				$rows[] = $row;
 			}
 
 			return $rows;
 		}
 	}
 }
-

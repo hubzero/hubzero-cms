@@ -143,11 +143,10 @@ class File extends Macro
 		// Is it numeric?
 		if (is_numeric($file))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
-			$attach->load(intval($file));
+			$attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
 			// Check for file existence
 			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true)))
@@ -166,11 +165,10 @@ class File extends Macro
 		// Check for file existence
 		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
-			$attach->load($file, $this->pageid);
+			$attach = \Components\Wiki\Models\Attachment::oneByFilename($file, $this->pageid);
 			if ($attach->filename)
 			{
 				$attr['created'] = $attach->created;

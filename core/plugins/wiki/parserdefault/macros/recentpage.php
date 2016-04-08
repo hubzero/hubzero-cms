@@ -41,7 +41,7 @@ class RecentPageMacro extends WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -66,7 +66,7 @@ class RecentPageMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -99,22 +99,19 @@ class RecentPageMacro extends WikiMacro
 			}
 		}
 
-		$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.pagehtml
-					FROM `#__wiki_version` AS wv
-					INNER JOIN `#__wiki_page` AS wp
-						ON wp.id = wv.pageid
-					WHERE wv.approved = 1
-						AND wp.group_cn = '$this->domain'
-						AND wp.scope = '$this->scope'
-						AND wp.access != 1
-						AND wp.state < 2
-						AND wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` AS wv2 WHERE wv2.pageid = wv.pageid)
-					ORDER BY created DESC
-					LIMIT $limitstart, $limit";
+		$pages = \Components\Wiki\Models\Page::all()
+			->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+			->order('modified', 'desc')
+			->limit($limit)
+			->start($limitstart);
 
-		// Perform query
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
+		if ($this->domain)
+		{
+			$pages->whereEquals('scope', $this->domain);
+			$pages->whereEquals('scope_id', $this->domain_id);
+		}
+
+		$rows = $pages->rows();
 
 		$html = '';
 
@@ -123,7 +120,9 @@ class RecentPageMacro extends WikiMacro
 		{
 			foreach ($rows as $row)
 			{
-				$row = new \Components\Wiki\Models\Page($row);
+				$txt = strip_tags($row->version->get('pagehtml'));
+				$txt = str_replace(array("\n", "\r", "\t", '   '), ' ', $txt);
+				$txt = trim($txt);
 
 				$html .= '<div';
 				if ($cls)
@@ -131,7 +130,7 @@ class RecentPageMacro extends WikiMacro
 					$html .= ' class="' . $cls . '"';
 				}
 				$html .= '>' . "\n";
-				$html .= "\t" . '<h3><a href="' . Route::url($row->link()) . '">' . stripslashes($row->get('title', $row->get('pagename'))) . '</a></h3>' . "\n";
+				$html .= "\t" . '<h3><a href="' . Route::url($row->link()) . '">' . stripslashes($row->title) . '</a></h3>' . "\n";
 				$html .= "\t" . '<p class="modified-date">';
 				if ($row->get('version') > 1)
 				{
@@ -142,7 +141,7 @@ class RecentPageMacro extends WikiMacro
 					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_CREATED_ON', Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
 				}
 				$html .= '</p>' . "\n";
-				$html .= $this->_shortenText($row->get('pagehtml'));
+				$html .= '<p>' . \Hubzero\Utility\String::truncate($txt, 300) . '</p>' . "\n";
 				$html .= "\t" . '<p><a href="' . Route::url($row->link()) . '">' . Lang::txt('PLG_WIKI_PARSERDEFAULT_READ_MORE') . '</a></p>' . "\n";
 				$html .= '</div>' . "\n";
 			}
@@ -155,43 +154,4 @@ class RecentPageMacro extends WikiMacro
 
 		return $html;
 	}
-
-	/**
-	 * Shorten a string to a max length, preserving whole words
-	 *
-	 * @param      string  $text      String to shorten
-	 * @param      integer $chars     Max length to allow
-	 * @param      integer $p         Wrap content in a paragraph tag?
-	 * @return     string
-	 */
-	private function _shortenText($text, $chars=300, $p=1)
-	{
-		$text = strip_tags($text);
-		$text = str_replace("\n", ' ', $text);
-		$text = str_replace("\r", ' ', $text);
-		$text = str_replace("\t", ' ', $text);
-		$text = str_replace('   ', ' ', $text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars)
-		{
-			$text = $text . ' ';
-			$text = substr($text, 0, $chars);
-			$text = substr($text, 0, strrpos($text, ' '));
-			$text = $text . ' &#8230;';
-		}
-
-		if ($text == '')
-		{
-			$text = '&#8230;';
-		}
-
-		if ($p)
-		{
-			$text = '<p>' . $text . '</p>';
-		}
-
-		return $text;
-	}
 }
-

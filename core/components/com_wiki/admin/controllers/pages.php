@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,10 +32,8 @@
 namespace Components\Wiki\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Request;
-use Config;
 use User;
 use Lang;
 use App;
@@ -53,9 +50,6 @@ class Pages extends AdminController
 	 */
 	public function execute()
 	{
-		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
-		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
-
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
 		$this->registerTask('accesspublic', 'access');
@@ -72,21 +66,7 @@ class Pages extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
-			'authorized' => true,
-			// Paging
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
 			// Sorting
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -109,41 +89,108 @@ class Pages extends AdminController
 				'namespace',
 				''
 			),
-			'group' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.group',
-				'group',
+			'scope' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.scope',
+				'scope',
 				''
 			),
-			'state' => array(0, 1, 2)
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				-1,
+				'int'
+			),
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
+				0,
+				'int'
+			)
 		);
-		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$scopes = Page::all()
+			->select('scope')
+			->select('scope_id')
+			->group('scope, scope_id')
+			->rows();
 
-		$p = new Book();
+		$namespaces = Page::all()
+			->select('namespace')
+			->group('namespace')
+			->order('namespace', 'asc')
+			->rows();
 
-		// Get record count
-		$this->view->total = $p->pages('count', $this->view->filters);
+		$results = Page::all()
+			->including(['versions', function ($version){
+				$version
+					->select('id')
+					->select('page_id');
+			}])
+			->including(['comments', function ($comment){
+				$comment
+					->select('id')
+					->select('page_id');
+			}]);
 
-		// Get records
-		$this->view->rows  = $p->pages('list', $this->view->filters);
-
-		$this->view->groups = $p->groups();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		if ($filters['scope'])
 		{
-			$this->view->setError($error);
+			if (strstr($filters['scope'], ':'))
+			{
+				$bits = explode(':', $filters['scope']);
+				$filters['scope']    = $bits[0];
+				$filters['scope_id'] = $bits[1];
+			}
+			$results->whereEquals('scope', $filters['scope']);
+
+			$filters['scope'] .= ':' . $filters['scope_id'];
 		}
 
+		if (isset($filters['scope_id']))
+		{
+			$results->whereEquals('scope_id', (int)$filters['scope_id']);
+		}
+
+		if ($filters['namespace'])
+		{
+			$results->whereEquals('namespace', $filters['namespace']);
+		}
+
+		if ($filters['access'] > 0)
+		{
+			$results->whereEquals('access', $filters['access']);
+		}
+
+		if ($filters['state'] >= 0)
+		{
+			$results->whereEquals('state', $filters['state']);
+		}
+
+		if ($filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
+
+			$records->whereLike('title', $filters['search']);
+		}
+
+		// Get records
+		$rows = $results
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('scopes', $scopes)
+			->set('namespaces', $namespaces)
+			->display();
 	}
 
 	/**
 	 * Edit an entry
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row = null)
@@ -160,25 +207,18 @@ class Pages extends AdminController
 			}
 
 			// Load the article
-			$row = new Page(intval($id));
+			$row = Page::oneOrNew(intval($id));
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->exists())
+		if (!$row->get('id'))
 		{
 			// Creating new
-			$this->view->row->set('created_by', User::get('id'));
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row->set('created_by', User::get('id'));
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -194,57 +234,48 @@ class Pages extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$page = Request::getVar('page', array(), 'post');
-		$page = array_map('trim', $page);
+		$fields = Request::getVar('page', array(), 'post');
+		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Page(intval($page['id']));
-		if (!$row->bind($page))
-		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+		$page = Page::oneOrNew($fields['id'])->set($fields);
 
 		// Get parameters
 		$params = Request::getVar('params', array(), 'post');
 		if (is_array($params))
 		{
-			$pparams = new \Hubzero\Config\Registry($row->get('params'));
+			$pparams = new \Hubzero\Config\Registry($page->get('params'));
 			$pparams->merge($params);
 
-			$row->set('params', $pparams->toString());
+			$page->set('params', $pparams->toString());
 		}
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$page->save())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($page->getError());
+			return $this->editTask($page);
 		}
 
-		if (!$row->updateAuthors($page['authors']))
+		if (!$page->updateAuthors($fields['authors']))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($page->getError());
+			return $this->editTask($page);
 		}
 
-		$row->tag($page['tags']);
+		$page->tag($fields['tags']);
+
+		Notify::success(Lang::txt('COM_WIKI_PAGE_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
-			Request::setVar('id', $row->get('id'));
+			Request::setVar('id', $page->get('id'));
 
-			return $this->editTask($row);
+			return $this->editTask($page);
 		}
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_WIKI_PAGE_SAVED')
-		);
+		// Redirect to main listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -265,7 +296,6 @@ class Pages extends AdminController
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
-			return;
 		}
 
 		$step = Request::getInt('step', 1);
@@ -277,17 +307,10 @@ class Pages extends AdminController
 			case 1:
 				Request::setVar('hidemainmenu', 1);
 
-				// Instantiate a new view
-				$this->view->ids = $ids;
-
-				// Set any errors
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
-
 				// Output the HTML
-				$this->view->display();
+				$this->view
+					->set('ids', $ids)
+					->display();
 			break;
 
 			case 2:
@@ -298,33 +321,41 @@ class Pages extends AdminController
 				$confirmed = Request::getInt('confirm', 0);
 				if (!$confirmed)
 				{
-					// Instantiate a new view
-					$this->view->ids = $ids;
-
-					$this->setMessage(Lang::txt('COM_WIKI_CONFIRM_DELETE'), 'error');
+					Notify::error(Lang::txt('COM_WIKI_CONFIRM_DELETE'));
 
 					// Output the HTML
-					$this->view->display();
+					$this->view
+						->set('ids', $ids)
+						->display();
 					return;
 				}
+
+				$i = 0;
 
 				if (!empty($ids))
 				{
 					foreach ($ids as $id)
 					{
 						// Finally, delete the page itself
-						$page = new Page(intval($id));
-						if (!$page->delete())
+						$page = Page::oneOrFail(intval($id));
+
+						if (!$page->destroy())
 						{
-							$this->setError($page->getError());
+							Notify::error($page->getError());
+							continue;
 						}
+
+						$i++;
 					}
 				}
 
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_WIKI_PAGES_DELETED', count($ids))
-				);
+				if ($i)
+				{
+					Notify::success(Lang::txt('COM_WIKI_PAGES_DELETED', $i));
+				}
+
+				// Redirect to main listing
+				$this->cancelTask();
 			break;
 		}
 	}
@@ -345,39 +376,30 @@ class Pages extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
-				'warning'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_WIKI_ERROR_MISSING_ID'));
 		}
-
-		switch ($this->getTask())
+		else
 		{
-			case 'accesspublic':     $access = 0; break;
-			case 'accessregistered': $access = 1; break;
-			case 'accessspecial':    $access = 2; break;
+			switch ($this->getTask())
+			{
+				case 'accesspublic':     $access = 0; break;
+				case 'accessregistered': $access = 1; break;
+				case 'accessspecial':    $access = 2; break;
+			}
+
+			// Load the article
+			$page = Page::oneOrFail(intval($id));
+			$page->set('access', $access);
+
+			// Check and store the changes
+			if (!$page->save())
+			{
+				Notify::error($page->getError());
+			}
 		}
 
-		// Load the article
-		$row = new Page(intval($id));
-		$row->set('access', $access);
-
-		// Check and store the changes
-		if (!$row->store())
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
-
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		// Redirect to main listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -396,32 +418,22 @@ class Pages extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
-				'warning'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_WIKI_ERROR_MISSING_ID'));
 		}
-
-		// Load and reset the article's hits
-		$page = new Page(intval($id));
-		$page->set('hits', 0);
-
-		if (!$page->store())
+		else
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$page->getError(),
-				'error'
-			);
-			return;
+			// Load and reset the page hits
+			$page = Page::oneOrFail(intval($id));
+			$page->set('hits', 0);
+
+			if (!$page->save())
+			{
+				Notify::error($page->getError());
+			}
 		}
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		// Redirect to main listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -440,27 +452,21 @@ class Pages extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
-				'warning'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_WIKI_ERROR_MISSING_ID'));
 		}
-
-		// Load and reset the article's hits
-		$page = new Page(intval($id));
-		$page->set('state', Request::getInt('state', 0));
-
-		if (!$page->store())
+		else
 		{
-			$this->setMessage($page->getError(), 'error');
+			// Load and set state
+			$page = Page::oneOrFail(intval($id));
+			$page->set('state', Request::getInt('state', 0));
+
+			if (!$page->save())
+			{
+				Notify::error($page->getError());
+			}
 		}
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		// Redirect to main listing
+		$this->cancelTask();
 	}
 }
-

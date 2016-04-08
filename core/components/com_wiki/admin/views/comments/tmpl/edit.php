@@ -58,7 +58,7 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if ($('#field-content').value == ''){
+	if ($('#field-ctext').value == ''){
 		alert(<?php echo Lang::txt('COM_WIKI_ERROR_MISSING_COMMENT'); ?>);
 	} else {
 		submitform(pressbutton);
@@ -106,9 +106,9 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_WIKI_FIELD_PAGE'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('pageid'); ?>
-							<input type="hidden" name="fields[pageid]" id="field-pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
-							<input type="hidden" name="pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
+							<?php echo $this->row->get('page_id'); ?>
+							<input type="hidden" name="fields[page_id]" id="field-page_id" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
+							<input type="hidden" name="pageid" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
 						</td>
 					</tr>
 				</tbody>

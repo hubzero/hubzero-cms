@@ -823,14 +823,13 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'publicstamp.php');
+		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 		$database 	= App::get('db');
 		$objSt 		= new \Components\Projects\Tables\Stamp( $database );
 
 		$view->items = $objSt->getPubList($model->get('id'), 'notes');
-		$view->page  = new \Components\Wiki\Tables\Page( $database );
+		$view->page  = \Components\Wiki\Models\Page::blank();
 		$view->model = $model;
 		return $view->loadTemplate();
 	}

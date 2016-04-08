@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -49,22 +48,32 @@ abstract class Base extends Object
 	/**
 	 * URL segments
 	 *
-	 * @var  string
+	 * @var  array
 	 */
 	protected $_segments = array();
 
 	/**
+	 * Scope ID
+	 *
+	 * @var  integer
+	 */
+	protected $_scope_id = 0;
+
+	/**
 	 * Constructor
 	 *
-	 * @param   string  $pagename
-	 * @param   string  $scope
-	 * @param   string  $group_cn
+	 * @param   string   $pagename
+	 * @param   string   $path
+	 * @param   integer  $scope_id
 	 * @return  void
 	 */
-	public function __construct($pagename=null, $scope=null, $group_cn=null)
+	public function __construct($pagename=null, $path=null, $scope_id=0)
 	{
+		$pagename = ($path ? $path . '/' : '') . $pagename;
+
 		$this->_segments['pagename'] = $pagename;
-		$this->_segments['scope']    = $scope;
+
+		$this->_scope_id = $scope_id;
 	}
 
 	/**
@@ -94,5 +103,18 @@ abstract class Base extends Object
 			$bits[] = $key . '=' . $param;
 		}
 		return implode('&', $bits);
+	}
+
+	/**
+	 * Get an array of routing inputs
+	 *
+	 * @param   string  $task
+	 * @return  array
+	 */
+	public function routing($task='save')
+	{
+		return array(
+			'task' => $task
+		);
 	}
 }

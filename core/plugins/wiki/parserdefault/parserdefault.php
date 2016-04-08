@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -41,23 +40,23 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Holds the parser for re-use
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $parser;
 
 	/**
 	 * Get the wiki parser, creating a new one if not already existing or $getnew is set
 	 *
-	 * @param      array   $config Options for initializing a parser
-	 * @param      boolean $getnew Init a new parser?
-	 * @return     object
+	 * @param   array    $config  Options for initializing a parser
+	 * @param   boolean  $getnew  Init a new parser?
+	 * @return  object
 	 */
 	public function onGetWikiParser($config, $getnew=false)
 	{
@@ -79,6 +78,7 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 			$config['pageid']   = (isset($config['pageid']))   ? $config['pageid']   : 0;
 			$config['filepath'] = (isset($config['filepath'])) ? $config['filepath'] : '';
 			$config['domain']   = (isset($config['domain']))   ? $config['domain']   : null;
+			$config['domain_id'] = (isset($config['domain_id']))   ? $config['domain_id']   : null;
 			$config['loglinks'] = (isset($config['loglinks'])) ? $config['loglinks'] : null;
 
 			$this->parser = new WikiParser($config);
@@ -89,11 +89,11 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 	/**
 	 * Turns wiki markup to HTML
 	 *
-	 * @param      string  $text      Text to convert
-	 * @param      array   $config    Options for initializing a parser
-	 * @param      boolean $fullparse Do a full parse or ignore some things like macros?
-	 * @param      boolean $getnew    Init a new parser?
-	 * @return     string
+	 * @param   string   $text       Text to convert
+	 * @param   array    $config     Options for initializing a parser
+	 * @param   boolean  $fullparse  Do a full parse or ignore some things like macros?
+	 * @param   boolean  $getnew     Init a new parser?
+	 * @return  string
 	 */
 	public function onWikiParseText($text, $config, $fullparse=true, $getnew=false)
 	{

@@ -51,39 +51,20 @@ if (!in_array($dir, array('ASC', 'DESC')))
 	$dir = 'DESC';
 }
 
-$limit = Request::getInt('limit', Config::get('list_limit'));
-$start = Request::getInt('limitstart', 0);
+$pages  = \Components\Wiki\Models\Page::blank()->getTableName();
+$attach = \Components\Wiki\Models\Attachment::blank()->getTableName();
 
-$where = " AND (wp.group_cn='' OR wp.group_cn IS NULL) ";
-if ($this->sub)
-{
-	$parts = explode('/', $this->page->get('scope'));
-	$where = " AND wp.group_cn=" . $database->Quote(trim($parts[0])) . " ";
-}
-
-$query = "SELECT COUNT(*)
-		FROM #__wiki_attachments AS wa
-		INNER JOIN #__wiki_page AS wp
-			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " $where";
-
-$database->setQuery($query);
-$total = $database->loadResult();
-
-$query = "SELECT wa.*, wp.scope, wp.pagename
-		FROM #__wiki_attachments AS wa
-		INNER JOIN #__wiki_page AS wp
-			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . "
-			$where
-		ORDER BY $sort $dir";
-if ($limit && $limit != 'all')
-{
-	$query .= " LIMIT $start, $limit";
-}
-
-$database->setQuery($query);
-$rows = $database->loadObjectList();
+$rows = \Components\Wiki\Models\Attachment::all()
+	->select($attach . '.*')
+	->select($pages . '.pagename')
+	->select($pages . '.path')
+	->select($pages . '.scope')
+	->select($pages . '.scope_id')
+	->join($pages, $pages . '.id', $attach . '.page_id')
+	->whereEquals($pages . '.scope', $this->book->get('scope'))
+	->whereEquals($pages . '.scope_id', $this->book->get('scope_id'))
+	->paginated()
+	->rows();
 
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
@@ -125,85 +106,75 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			</thead>
 			<tbody>
 			<?php
-			if ($rows)
+			if ($rows->count())
 			{
-				$database = \App::get('db');
-				$asset = new \Components\Wiki\Tables\Attachment($database);
-
 				foreach ($rows as $row)
 				{
 					$fsize = Lang::txt('COM_WIKI_UNKNOWN');
-					if (is_file($asset->filespace() . DS . $row->pageid . DS . $row->filename))
+					if (is_file($row->filespace() . DS . $row->get('page_id') . DS . $row->get('filename')))
 					{
-						$fsize = \Hubzero\Utility\Number::formatBytes(filesize($asset->filespace() . DS . $row->pageid . DS . $row->filename));
+						$fsize = \Hubzero\Utility\Number::formatBytes(filesize($row->filespace() . DS . $row->get('page_id') . DS . $row->get('filename')));
 					}
 
 					$name = Lang::txt('COM_WIKI_UNKNOWN');
-					$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
+
+					$xprofile = \Hubzero\User\Profile::getInstance($row->get('created_by'));
 					if (is_object($xprofile))
 					{
 						$name = $this->escape(stripslashes($xprofile->get('name')));
 						$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
 					}
-			?>
-				<tr>
-					<td>
-						<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
-					</td>
-					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>">
-							<?php echo $this->escape(stripslashes($row->filename)); ?>
-						</a>
-					</td>
-					<td>
-						<?php
-						if (in_array(strtolower(Filesystem::extension($row->filename)), array('png', 'gif', 'jpg', 'jpeg', 'jpe'))) {
-						?>
-						<a rel="lightbox" href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>">
-							<img src="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>" width="50" alt="<?php echo $this->escape(stripslashes($row->filename)); ?>" />
-						</a>
-						<?php
-						}
-						?>
-					</td>
-					<td>
-						<span><?php echo $fsize; ?></span>
-					</td>
-					<td>
-						<?php echo $name; ?>
-					</td>
-					<td>
-						<span><?php echo $this->escape(stripslashes($row->description)); ?></span>
-					</td>
-				</tr>
-			<?php
+					?>
+					<tr>
+						<td>
+							<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+						</td>
+						<td>
+							<a href="<?php echo Route::url($this->page->link('base') . '&pagename=' . ($row->get('path') ? $row->get('path') . '/' : '') . $row->get('pagename') . '/File:' . $row->get('filename')); ?>">
+								<?php echo $this->escape(stripslashes($row->get('filename'))); ?>
+							</a>
+						</td>
+						<td>
+							<?php if ($row->isImage()) { ?>
+								<a rel="lightbox" href="<?php echo Route::url($this->page->link('base') . '&pagename=' . ($row->get('path') ? $row->get('path') . '/' : '') . $row->get('pagename') . '/File:' . $row->get('filename')); ?>">
+									<img src="<?php echo Route::url($this->page->link('base') . '&pagename=' . ($row->get('path') ? $row->get('path') . '/' : '') . $row->get('pagename') . '/File:' . $row->get('filename')); ?>" width="50" alt="<?php echo $this->escape(stripslashes($row->get('filename'))); ?>" />
+								</a>
+							<?php } ?>
+						</td>
+						<td>
+							<span><?php echo $fsize; ?></span>
+						</td>
+						<td>
+							<?php echo $name; ?>
+						</td>
+						<td>
+							<span><?php echo $this->escape(stripslashes($row->get('description'))); ?></span>
+						</td>
+					</tr>
+					<?php
 				}
 			}
 			else
 			{
-			?>
+				?>
 				<tr>
 					<td colspan="6">
 						<?php echo Lang::txt('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-			<?php
+				<?php
 			}
 			?>
 			</tbody>
 		</table>
 		<?php
-		$pageNav = $this->pagination(
-			$total,
-			$start,
-			$limit
-		);
-		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+		$pageNav = $rows->pagination;
+		$pageNav->setAdditionalUrlParam('scope', $this->page->get('path'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 		$pageNav->setAdditionalUrlParam('sort', $sort);
 		$pageNav->setAdditionalUrlParam('dir', $dir);
 
-		echo $pageNav->render();
+		echo $pageNav;
 		?>
 		<div class="clearfix"></div>
 	</div>

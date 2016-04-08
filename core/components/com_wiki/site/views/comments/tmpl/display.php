@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -39,44 +38,40 @@ if (!$this->sub)
 	     ->js();
 }
 ?>
-	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-		<?php if (count($this->parents)) { ?>
-			<p class="wiki-crumbs">
-				<?php foreach ($this->parents as $parent) { ?>
-					<a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->get('title'); ?></a> /
-				<?php } ?>
-			</p>
-		<?php } ?>
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<?php if (count($this->parents)) { ?>
+		<p class="wiki-crumbs">
+			<?php foreach ($this->parents as $parent) { ?>
+				<a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->title; ?></a> /
+			<?php } ?>
+		</p>
+	<?php } ?>
 
-		<h2><?php echo $this->escape($this->title); ?></h2>
-		<?php
-		if (!$this->page->isStatic())
-		{
-			$this->view('authors', 'page')
-			     ->setBasePath($this->base_path)
-			     ->set('page', $this->page)
-			     ->display();
-		}
-		?>
-	</header><!-- /#content-header -->
+	<h2><?php echo $this->escape($this->page->title); ?></h2>
+	<?php
+	if (!$this->page->isStatic())
+	{
+		$this->view('authors', 'pages')
+			//->setBasePath($this->base_path)
+			->set('page', $this->page)
+			->display();
+	}
+	?>
+</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if ($this->message) { ?>
-	<p class="passed"><?php echo $this->message; ?></p>
-<?php } ?>
-
 <?php
-	$this->view('submenu', 'page')
-	     ->setBasePath($this->base_path)
-	     ->set('option', $this->option)
-	     ->set('controller', $this->controller)
-	     ->set('page', $this->page)
-	     ->set('task', $this->task)
-	     ->set('sub', $this->sub)
-	     ->display();
+	$this->view('submenu', 'pages')
+		//->setBasePath($this->base_path)
+		->set('option', $this->option)
+		->set('controller', $this->controller)
+		->set('page', $this->page)
+		->set('task', $this->task)
+		->set('sub', $this->sub)
+		->display();
 ?>
 
 <?php if (!$this->sub) { ?>
@@ -103,29 +98,36 @@ if (!$this->sub)
 			<h3 id="commentlist-title"><?php echo Lang::txt('COM_WIKI_COMMENTS'); ?></h3>
 
 			<?php
-			$filters = array('version' => '');
-			if ($this->v)
+			$model = $this->page->comments()
+				->whereIn('state', array(
+					\Components\Wiki\Models\Comment::STATE_PUBLISHED,
+					\Components\Wiki\Models\Comment::STATE_FLAGGED
+				));;
+			if ($this->version)
 			{
-				$filters['version'] = $this->v;
+				$model->whereEquals('version', $this->version);
 			}
+			$comments = $model
+				->ordered()
+				->rows();
 
-			if ($this->page->comments('list', $filters)->total())
+			if ($comments->count())
 			{
 				$this->view('_list', 'comments')
-				     ->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
-				     ->set('parent', 0)
-				     ->set('page', $this->page)
-				     ->set('option', $this->option)
-				     ->set('comments', $this->page->comments())
-				     ->set('config', $this->config)
-				     ->set('depth', 0)
-				     ->set('version', $this->v)
-				     ->set('cls', 'odd')
-				     ->display();
+					//->setBasePath($this->base_path)
+					->set('parent', 0)
+					->set('page', $this->page)
+					->set('option', $this->option)
+					->set('comments', $comments)
+					->set('config', $this->config)
+					->set('depth', 0)
+					->set('version', $this->version)
+					->set('cls', 'odd')
+					->display();
 			}
 			else
 			{
-				if ($this->v)
+				if ($this->version)
 				{
 					echo '<p>' . Lang::txt('COM_WIKI_NO_COMMENTS_FOR_VERSION') . '</p>';
 				}
@@ -144,11 +146,15 @@ if (!$this->sub)
 						<select name="version" id="filter-version">
 							<option value=""><?php echo Lang::txt('COM_WIKI_ALL'); ?></option>
 							<?php
-							foreach ($this->page->revisions('list') as $ver)
+							$versions = $this->page->versions()
+								->whereEquals('approved', 1)
+								->order('version', 'asc')
+								->rows();
+							foreach ($versions as $ver)
 							{
-							?>
-							<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WIKI_VERSION_NUM', $ver->get('version')); ?></option>
-							<?php
+								?>
+								<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->version == $ver->get('version')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WIKI_VERSION_NUM', $ver->get('version')); ?></option>
+								<?php
 							}
 							?>
 						</select>
@@ -180,16 +186,16 @@ if (!$this->sub)
 				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('COM_WIKI_MEMBER_PICTURE'); ?>" />
 			</p>
 			<fieldset>
-			<?php if (!$this->mycomment->get('parent')) { ?>
-				<fieldset>
-					<legend><?php echo Lang::txt('COM_WIKI_FIELD_RATING'); ?>:</legend>
-					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->get('rating') == 1) { echo ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_ONE'); ?></label>
-					<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->get('rating') == 2) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
-					<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->get('rating') == 3) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
-					<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->get('rating') == 4) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
-					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->get('rating') == 5) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
-				</fieldset>
-			<?php } ?>
+				<?php if (!$this->mycomment->get('parent')) { ?>
+					<fieldset>
+						<legend><?php echo Lang::txt('COM_WIKI_FIELD_RATING'); ?>:</legend>
+						<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->get('rating') == 1) { echo ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_ONE'); ?></label>
+						<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->get('rating') == 2) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
+						<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->get('rating') == 3) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
+						<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->get('rating') == 4) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
+						<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->get('rating') == 5) { echo ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
+					</fieldset>
+				<?php } ?>
 				<label>
 					<?php echo Lang::txt('COM_WIKI_FIELD_COMMENTS'); ?>:
 					<?php
@@ -203,19 +209,13 @@ if (!$this->sub)
 				<input type="hidden" name="comment[status]" value="<?php echo $this->escape($this->mycomment->get('status', 1)); ?>" />
 				<input type="hidden" name="comment[version]" value="<?php echo $this->escape($this->mycomment->get('version')); ?>" />
 				<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->mycomment->get('parent')); ?>" />
-				<input type="hidden" name="comment[pageid]" value="<?php echo $this->escape($this->mycomment->get('pageid')); ?>" />
+				<input type="hidden" name="comment[page_id]" value="<?php echo $this->escape($this->mycomment->get('page_id')); ?>" />
 
-				<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
-				<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
 
-			<?php if ($this->sub) { ?>
-				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
-				<input type="hidden" name="action" value="savecomment" />
-			<?php } else { ?>
-				<input type="hidden" name="task" value="savecomment" />
-			<?php } ?>
+				<?php foreach ($this->page->adapter()->routing('savecomment') as $name => $val) { ?>
+					<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+				<?php } ?>
 
 				<label id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />

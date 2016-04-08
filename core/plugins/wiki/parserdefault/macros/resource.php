@@ -41,14 +41,14 @@ class ResourceMacro extends WikiMacro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -61,7 +61,7 @@ class ResourceMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -149,11 +149,9 @@ class ResourceMacro extends WikiMacro
 				return '<a href="' . Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
 			}
 		}
-		else
-		{
-			// Return error message
-			return '(Resource(' . $et . ') failed)';
-		}
+
+		// Return error message
+		return '(Resource(' . $et . ') failed)';
 	}
 
 	/**
@@ -215,8 +213,8 @@ class ResourceMacro extends WikiMacro
 	/**
 	 * Generate a thumbnail name from a picture name
 	 *
-	 * @param      string $pic Picture name
-	 * @return     string
+	 * @param   string  $pic  Picture name
+	 * @return  string
 	 */
 	public function thumbnail($pic)
 	{
@@ -229,4 +227,3 @@ class ResourceMacro extends WikiMacro
 		return $tn;
 	}
 }
-
