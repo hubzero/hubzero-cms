@@ -187,8 +187,8 @@ $this->comment->set('category', 'answercomment');
 		{
 			$model = $this->comment->replies()
 				->whereIn('state', array(
-					$this->comment::STATE_PUBLISHED,
-					$this->comment::STATE_FLAGGED
+					\Components\Wiki\Models\Comment::STATE_PUBLISHED,
+					\Components\Wiki\Models\Commen::STATE_FLAGGED
 				));
 			if ($this->version)
 			{
