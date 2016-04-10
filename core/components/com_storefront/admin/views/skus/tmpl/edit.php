@@ -200,14 +200,39 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
 					<td>
 						<?php
-							echo $this->downloaded;
-							if ($this->downloaded == 0 || $this->downloaded > 1)
+						echo $this->downloaded;
+						if ($this->downloaded == 0 || $this->downloaded > 1)
+						{
+							echo(' times');
+						}
+						else {
+							echo 'time';
+						}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DIRECT_URL'); ?>:</th>
+					<td>
+						<?php
+						$directUrl = Request::root();
+						$directUrl .= 'storefront/product/' . (!empty($this->pInfo->pAlias) ? $this->pInfo->pAlias : $this->pInfo->pId);
+						if (!empty($this->options))
+						{
+							$directUrl .= '/';
+							$i = 0;
+							foreach ($this->options as $o)
 							{
-								echo(' times');
+								if ($i)
+								{
+									$directUrl .= ',';
+								}
+								$directUrl .= $o;
+								$i++;
 							}
-							else {
-								echo 'time';
-							}
+						}
+
+						echo $directUrl;
 						?>
 					</td>
 				</tr>

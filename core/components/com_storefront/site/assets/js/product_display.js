@@ -1,4 +1,8 @@
-$(document).ready(function(){
+$(document).ready(function() {
+
+	SF.PRODUCT.skus = (SF.OPTIONS.skus);
+	SF.PRODUCT.ops = (SF.OPTIONS.ops);
+	SF.PRODUCT.pId = (SF.OPTIONS.pId);
 	
 	SF.PRODUCT.deselectAll();
 
@@ -36,19 +40,55 @@ $(document).ready(function(){
 		
 		SF.PRODUCT.updateOptions();
 		SF.PRODUCT.updatePriceQty();
+
+		// update url
+		//console.log(SF.PRODUCT.selectedOptions);
+		var urlHash = '/storefront/product/' + SF.PRODUCT.pId + '/';
+		var hashInit = urlHash;
+		$.each(SF.PRODUCT.selectedOptions, function(key, val) {
+			if(urlHash !== hashInit) {
+				urlHash += ',';
+			}
+			urlHash += val;
+		});
+		history.replaceState(null, null, urlHash);
     });
 
 	$('.product-options li').click(function() {
 		$(this).find('input').prop("checked", true).trigger("change");
 	});
 
-	// Auto-select single product options (https://freedcamp.com/wl_14B/Shopping_Cart_Tk2/todos/2197226/)
-	$('#productOptions .product-options').each(function(index) {
-		var inputs = $(this).find('input');
-		if(inputs.length == 1) {
-			inputs.prop("checked", true).trigger("change");
-		}
-	});
+	// Check if specific product options are requested in the URL
+	var pathname = (window.location.pathname).replace('/storefront/product/' + SF.PRODUCT.pId + '/', '');
+	var pathname = pathname.replace('/', '');
+
+	//console.log(pathname);
+
+	if(pathname !== '') {
+		var productOptions = pathname.split(',');
+
+		$('#productOptions .product-options input').each(function(index) {
+			var input = $(this);
+			if(productOptions.indexOf($(input).val()) > -1) {
+				console.log(input);
+				input.prop("checked", true).trigger("change");
+			}
+
+		});
+	}
+	else {
+		console.log('q');
+		// Auto-select single product options (https://freedcamp.com/wl_14B/Shopping_Cart_Tk2/todos/2197226/)
+		$('#productOptions .product-options').each(function (index) {
+			var inputs = $(this).find('input');
+			if (inputs.length == 1) {
+				inputs.prop("checked", true).trigger("change");
+			}
+		});
+	}
+
+	SF.PRODUCT.updateOptions();
+	SF.PRODUCT.updatePriceQty();
 
 });
 
@@ -65,10 +105,11 @@ $(document).ready(function(){
 		selectedOptions: [],
 		skus: null,
 		ops: null,
+		pId: null,
 		
 		resetAllSelectedOptions: function(opt) {
 			SF.PRODUCT.selectedOptions.length = 0;
-			console.log(SF.PRODUCT.selectedOptions);
+			//console.log(SF.PRODUCT.selectedOptions);
 		},
 		
 		removeSelectedOption: function(opt) {
@@ -78,7 +119,7 @@ $(document).ready(function(){
 		},
 		
 		addSelectedOption: function(opt) {
-			SF.PRODUCT.selectedOptions.push(opt);			
+			SF.PRODUCT.selectedOptions.push(opt);
 		},
 		
 		deselectAll: function(opt) {
@@ -104,9 +145,6 @@ $(document).ready(function(){
 		},
 		
 		updateOptions: function() {
-			SF.PRODUCT.skus = (SF.OPTIONS.skus);
-			SF.PRODUCT.ops = (SF.OPTIONS.ops);
-						
 			var availableOptions = SF.PRODUCT._getAvailableOptions();
 						
 			// update options availability
@@ -219,12 +257,13 @@ $(document).ready(function(){
 				}
 
 				// enable 'add to cart' button
-				$('#addToCart').removeClass('disabled').addClass('enabled');
+				$('#addToCart').removeClass('disabled').prop('disabled', false).addClass('enabled');
 				
 			}
 			else {
-				$("#qty").remove();
-				$('#addToCart').removeClass('enabled').addClass('disabled');
+				$('#qtyWrap').html('');
+				//$("#qty").remove();
+				$('#addToCart').prop('disabled', true).removeClass('enabled').addClass('disabled');
 			}
 			
 		},
