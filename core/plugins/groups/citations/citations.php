@@ -638,6 +638,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'scope_id' => $scope_id,
 			));
 
+		$customID = Request::getVar('custom4', '');
+		if ($customID != '')
+		{
+			$citation->set('custom4', $customID);
+		}
+
 		// Store new content
 		if (!$citation->save())
 		{
