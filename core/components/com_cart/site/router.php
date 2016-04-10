@@ -28,55 +28,67 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_HZEXEC_') or die();
+namespace Components\Cart\Site;
+
+use Hubzero\Component\Router\Base;
 
 /**
- * Turn querystring parameters into an SEF route
- *
- * @param  array &$query Querystring
+ * Routing class for the component
  */
-function CartBuildRoute(&$query)
+class Router extends Base
 {
-	$segments = array();
 
-	if (!empty($query['controller']))
+	/**
+	 * Turn querystring parameters into an SEF route
+	 *
+	 * @param   array  &$query  Querystring
+	 * @return  array
+	 */
+	public function build(&$query)
 	{
-		unset($query['controller']);
-	}
+		$segments = array();
 
-	return $segments;
-}
-
-/**
- * Parse a SEF route
- *
- * @param  array $segments Exploded route
- * @return array
- */
-function CartParseRoute($segments)
-{
-	$vars = array();
-
-	$vars['controller'] = $segments[0];
-	if (!empty($segments[1]))
-	{
-		$vars['task'] = $segments[1];
-	}
-
-	foreach ($segments as $index => $value)
-	{
-		// skip first two segments -- these are controller and task
-		if ($index < 2)
+		if (!empty($query['controller']))
 		{
-			continue;
+			if ($query['controller'] == 'orders')
+			{
+				$segments[] = $query['controller'];
+			}
+			unset($query['controller']);
 		}
-		else
-		{
-			$vars['p' . ($index - 2)]	= $value;
-		}
+
+		return $segments;
 	}
 
-	//print_r($vars);
-	return $vars;
-}
+	/**
+	 * Parse a SEF route
+	 *
+	 * @param   array  $segments  Exploded route
+	 * @return  array
+	 */
+	public function parse(&$segments)
+	{
+		$vars = array();
 
+		$vars['controller'] = $segments[0];
+		if (!empty($segments[1]))
+		{
+			$vars['task'] = $segments[1];
+		}
+
+		foreach ($segments as $index => $value)
+		{
+			// skip first two segments -- these are controller and task
+			if ($index < 2)
+			{
+				continue;
+			}
+			else
+			{
+				$vars['p' . ($index - 2)] = $value;
+			}
+		}
+
+		return $vars;
+	}
+}
