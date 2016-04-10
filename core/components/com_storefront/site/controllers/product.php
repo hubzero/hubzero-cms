@@ -66,7 +66,8 @@ class Product extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$pInfo = $this->warehouse->checkProduct(Request::getVar('product', ''));
+		$productIdentifier = Request::getVar('product', '');
+		$pInfo = $this->warehouse->checkProduct($productIdentifier);
 
 		if (!$pInfo->status)
 		{
@@ -219,8 +220,8 @@ class Product extends \Hubzero\Component\SiteController
 		$this->view->price = $priceRange;
 
 		// Add custom page JS
-		if ($data && (count($data->options) > 1 || count($data->skus) > 1)) {
-			$js = $this->getDisplayJs($data->options, $data->skus);
+		if ($data && (count($data->options) > 0 || count($data->skus) > 1)) {
+			$js = $this->getDisplayJs($data->options, $data->skus, $productIdentifier);
 			//$doc =& JFactory::getDocument();
 			//$doc->addScriptDeclaration($js);
 			Document::addScriptDeclaration($js);
@@ -245,7 +246,7 @@ class Product extends \Hubzero\Component\SiteController
 	 * @param		void
 	 * @return     	void
 	 */
-	private function getDisplayJs($ops, $skus)
+	private function getDisplayJs($ops, $skus, $productIdentifier)
 	{
 		$js = "\tSF.OPTIONS = {\n";
 
@@ -371,6 +372,7 @@ class Product extends \Hubzero\Component\SiteController
 			}
 
 			$js .= "\t\t],\n";
+			$js .= "\n";
 
 			/*
 			ops: [
@@ -379,6 +381,9 @@ class Product extends \Hubzero\Component\SiteController
 				["6", "7", "8"]
 			]
 			*/
+
+			// Product id reference
+			$js .= "\t\tpId: " . '"' . $productIdentifier . '"' . "\n";
 
 		$js .= "\t}";
 		return $js;
