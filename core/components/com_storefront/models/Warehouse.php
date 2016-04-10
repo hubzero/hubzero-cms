@@ -1017,6 +1017,12 @@ class Warehouse extends \Hubzero\Base\Object
 	public function getSkuInfo($sId , $showInactive = true)
 	{
 		$sInfo = $this->getSkusInfo(array($sId), $showInactive);
+
+		if (empty($sInfo[$sId]))
+		{
+			return false;
+		}
+
 		$sInfo = $sInfo[$sId];
 
 		//print_r($sInfo);die;

@@ -104,12 +104,17 @@ class Browse extends \Hubzero\Component\SiteController
 	 */
 	private function browseCollection($cId)
 	{
-		$view = new \Hubzero\Component\View(array('name'=>'browse', 'layout' => 'collection') );
+		$view = new \Hubzero\Component\View(array('name'=>'browse', 'layout' => 'collection'));
+
+		// Get collection name
+		$collection = $this->warehouse->getCollectionInfo($cId);
+		$collectionName = $collection->cName;
 
 		// Get the collection products
 		$this->warehouse->addLookupCollection($cId);
 		$products = $this->warehouse->getProducts();
 
+		$view->collectionName = $collectionName;
 		$view->products = $products;
 
 		// Breadcrumbs
@@ -124,7 +129,7 @@ class Browse extends \Hubzero\Component\SiteController
 		}
 
 		Pathway::append(
-			Lang::txt('COM_STOREFRONT_BROWSING_COLLECTION')
+			Lang::txt($collectionName)
 		);
 
 		$view->display();

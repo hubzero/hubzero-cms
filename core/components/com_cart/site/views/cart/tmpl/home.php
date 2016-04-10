@@ -37,6 +37,12 @@ $this->css()
 
 <header id="content-header">
 	<h2><?php echo  Lang::txt('COM_CART'); ?></h2>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="btn" href="<?php echo Route::url('index.php?option=com_cart') . 'orders'; ?>"><?php echo Lang::txt('COM_CART_ORDERS'); ?></a>
+		</p>
+	</div>
 </header>
 
 <?php
@@ -198,7 +204,7 @@ if (!empty($errors))
 			<div id="cartInfo" class="col span4 omega">
 
 			<?php
-				if (!empty($this->cartInfo))
+				if (!empty($this->cartInfo) && $this->cartInfo->totalItems > 0)
 				{
 					echo '<div id="cartSummary" class="cartSection">';
 						echo '<h3>Cart summary:</h3>';

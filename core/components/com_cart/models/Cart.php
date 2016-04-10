@@ -147,6 +147,48 @@ abstract class Cart
 	}
 
 	/**
+	 * Gets all transactions for a a cart
+	 *
+	 * @param   int     Transaction ID
+	 * @return  object, false on no results
+	 */
+	public function getAllTransactions($filters = array(), $completedOnly = true)
+	{
+		// Get info
+		$sql = "SELECT `tId`, `tLastUpdated`, `tStatus` FROM `#__cart_transactions` WHERE `crtId` = {$this->crtId}";
+		if ($completedOnly)
+		{
+			$sql .= " AND `tStatus` = 'completed'";
+		}
+		if (isset($filters['limit']) && isset($filters['start']))
+		{
+			$sql .= ' ORDER BY `tLastUpdated` DESC';
+			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
+
+			//echo $sql; die;
+		}
+
+		//
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+
+		$totalRows= $this->_db->getNumRows();
+
+		if (!empty($filters['count']) && $filters['count'])
+		{
+			return $totalRows;
+		}
+
+		if (!$totalRows)
+		{
+			return false;
+		}
+
+		$transactions = $this->_db->loadObjectList();
+		return $transactions;
+	}
+
+	/**
 	 * Get cart items from the database
 	 *
 	 * @param void

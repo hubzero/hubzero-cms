@@ -23,74 +23,55 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    HUBzero <ishunko@purdue.edu>
+ * @author    HUBzero
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cart\Site;
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
-use Hubzero\Component\Router\Base;
+$this->css()
+	->js()
 
-/**
- * Routing class for the component
- */
-class Router extends Base
-{
+?>
 
-	/**
-	 * Turn querystring parameters into an SEF route
-	 *
-	 * @param  array &$query Querystring
-	 */
-	function build(&$query)
-	{
-		$segments = array();
+<header id="content-header">
+	<h2><?php echo Lang::txt('COM_CART_ORDERS') ?></h2>
+</header>
 
-		if (!empty($query['controller']))
-		{
-			if($query['controller'] == 'orders')
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="ordersform" method="get">
+<section class="main section">
+	<div class="section-inner">
+
+		<?php
+			if (!$this->transactions)
 			{
-				$segments[] = $query['controller'];
+				echo '<p class="no-results">You have not placed any orders yet. Is it time to <a href="/storefront">start shopping?</a>';
 			}
-			unset($query['controller']);
-		}
-
-		//var_dump($query); die;
-
-		return $segments;
-	}
-
-	/**
-	 * Parse a SEF route
-	 *
-	 * @param  array $segments Exploded route
-	 * @return array
-	 */
-	public function parse(&$segments)
-	{
-		$vars = array();
-
-		$vars['controller'] = $segments[0];
-		if (!empty($segments[1]))
-		{
-			$vars['task'] = $segments[1];
-		}
-
-		foreach ($segments as $index => $value)
-		{
-			// skip first two segments -- these are controller and task
-			if ($index < 2)
-			{
-				continue;
+			else {
+				echo '<ol class="entries">';
+				foreach ($this->transactions as $transaction)
+				{
+					// Instantiate a new view
+					$this->view('transaction', 'orders')
+						->set('transaction', $transaction)
+						->display();
+				}
+				echo '</ol>';
 			}
-			else
-			{
-				$vars['p' . ($index - 2)] = $value;
-			}
-		}
+		?>
 
-		//print_r($vars);
-		return $vars;
-	}
-}
+	</div>
+
+	<?php
+	// Initiate paging
+	$pageNav = $this->pagination(
+		$this->total,
+		$this->filters['start'],
+		$this->filters['limit']
+	);
+	echo $pageNav->render();
+	?>
+</section>
+</form>
