@@ -71,7 +71,7 @@
 	.sortable .tab_titles li {
 		float: left;
 		background-color: #656565;
-		padding: 4px 0 0 0;
+		padding: 0;
 		margin-right: 1%;
 		cursor: pointer;
 		height: 20px;
