@@ -476,6 +476,9 @@ class Date extends DateTime
 		// 1 to 59 minutes
 		if ($diff < 60 || $unit == 'minute')
 		{
+			if ($diff == 1) {
+				return \Lang::txt('JLIB_HTML_DATE_RELATIVE_MINUTES_1', $diff);
+			}
 			return \Lang::txt('JLIB_HTML_DATE_RELATIVE_MINUTES', $diff);
 		}
 
@@ -485,6 +488,9 @@ class Date extends DateTime
 		// 1 to 23 hours
 		if ($diff < 24 || $unit == 'hour')
 		{
+			if ($diff == 1) {
+				return \Lang::txt('JLIB_HTML_DATE_RELATIVE_HOURS_1', $diff);
+			}
 			return \Lang::txt('JLIB_HTML_DATE_RELATIVE_HOURS', $diff);
 		}
 
@@ -494,6 +500,9 @@ class Date extends DateTime
 		// 1 to 6 days
 		if ($diff < 7 || $unit == 'day')
 		{
+			if ($diff == 1) {
+				return \Lang::txt('JLIB_HTML_DATE_RELATIVE_DAYS_1', $diff);
+			}
 			return \Lang::txt('JLIB_HTML_DATE_RELATIVE_DAYS', $diff);
 		}
 
@@ -503,6 +512,9 @@ class Date extends DateTime
 		// 1 to 4 weeks
 		if ($diff <= 4 || $unit == 'week')
 		{
+			if ($diff == 1) {
+				return \Lang::txt('JLIB_HTML_DATE_RELATIVE_WEEKS_1', $diff);
+			}
 			return \Lang::txt('JLIB_HTML_DATE_RELATIVE_WEEKS', $diff);
 		}
 
