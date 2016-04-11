@@ -33,7 +33,7 @@ defined('_HZEXEC_') or die();
 ?>
 
 <div class="module-list">
-	<h2 class="section-header">
+	<h2>
 		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_TITLE'); ?>
 	</h2>
 	<ul class="module-list-triggers">
