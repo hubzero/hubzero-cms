@@ -4,8 +4,8 @@
  * Template used for Special Groups. Will now be auto-created 
  * when admin switches group from type HUB to type Special.
  *
- * @author 		Christopher Smoak
- * @copyright	December 2013
+ * @author     HUBzero
+ * @copyright  December 2015
 */
 
 #group-body,
@@ -56,8 +56,8 @@
 	text-transform: uppercase;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
 .error-options li:last-child a {
@@ -76,8 +76,8 @@
 	line-height: 120px;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
 .error-options .back:before {
@@ -96,7 +96,7 @@
 .error-options a:hover:before {
 	-webkit-transform: scale(1.1);
 	-moz-transform: scale(1.1);
-	-o-transform: scale(1.1);
 	-ms-transform: scale(1.1);
+	-o-transform: scale(1.1);
 	transform: scale(1.1);
 }

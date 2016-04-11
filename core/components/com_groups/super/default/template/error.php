@@ -5,8 +5,8 @@
  * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
  *
- * @author 		Christopher Smoak
- * @copyright	December 2013
+ * @author     HUBzero
+ * @copyright  December 2015
  */
 
 // define base path

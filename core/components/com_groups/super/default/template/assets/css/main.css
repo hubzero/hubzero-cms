@@ -4,16 +4,16 @@
  * Template used for Special Groups. Will now be auto-created 
  * when admin switches group from type HUB to type Special.
  *
- * @author 		Christopher Smoak
- * @copyright	December 2013
-*/
+ * @author     HUBzero
+ * @copyright  December 2015
+ */
 
 #group-body {
 	background: #666;
 	min-width: inherit;
 }
 .super-group-body-wrap {
-	font-family: 'Helvetica Neue';
+	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
 }
 .super-group-body {
 	background: #FFF;
@@ -23,7 +23,7 @@
 .super-group-header-wrap {
 	background: #444;
 	border-top: 1px solid #555;
-	height: 75px;
+	/*height: 75px;*/
 	padding: 0 20px;
 }
 .super-group-header {
@@ -32,19 +32,22 @@
 	position: relative;
 }
 .super-group-header h1 {
-	position: absolute;
+	/*position: absolute;
 	top: 18px;
-	left: 0;
-	margin: 0;
+	left: 0;*/
+	margin: 0.5em 0;
 	padding: 0;
 }
 .super-group-header h1 a {
 	display: block;
 	font-weight: 100;
-	font-size: 30px;
-	line-height: 36px;
+	/*font-size: 30px;
+	line-height: 36px;*/
+	font-size: 1.2em;
+	line-height: 1.2em;
 	color: #FFF;
-	font-family: 'Helvetica Neue';
+	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+	border: none !important;
 }
 .super-group-header h1 a span {
 	color: #777;
@@ -70,10 +73,10 @@
 }
 .super-group-menu a {
 	-webkit-transition: background 0.1s ease-in-out;
-	-moz-transition: background 0.1s ease-in-out;
-	-o-transition: background 0.1s ease-in-out;
-	-ms-transition: background 0.1s ease-in-out;
-	transition: background 0.1s ease-in-out;
+	   -moz-transition: background 0.1s ease-in-out;
+	    -ms-transition: background 0.1s ease-in-out;
+	     -o-transition: background 0.1s ease-in-out;
+	        transition: background 0.1s ease-in-out;
 }
 .super-group-menu > ul li {
 	float: left;
@@ -86,13 +89,13 @@
 }
 .super-group-menu > ul li .meta {
 	position: absolute;
-	top: 10px;
-	right: 10px;
+	top: 1em;
+	right: 1em;
 	color: rgba(255,255,255,0.5);
 	background: rgba(0,0,0,0.15);
-	padding: 0 4px;
-	font-size: 10px;
-	border-radius: 2px;
+	padding: 0 0.4em;
+	font-size: 0.9%;
+	border-radius: 0.2em;
 }
 .super-group-menu > ul li .alrt {
 	display: none;
@@ -247,4 +250,29 @@
 /* Login */
 .group_login > h2:first-child {
 	display: none;
+}
+
+/* Responsive */
+.super-group-menu>ul li.option-select {
+	padding: 1em 0;
+	float: none;
+}
+.super-group-menu>ul.js li {
+	display: none;
+}
+.super-group-menu>ul.js li.option-select,
+.super-group-menu>ul.js li.option-select select {
+	display: block;
+}
+.super-group-menu>ul.js li.option-select select {
+	width: 100%;
+}
+
+@media (min-width: 40em) {
+	.super-group-menu>ul.js li {
+		display: block;
+	}
+	.super-group-menu>ul.js li.option-select {
+		display: none;
+	}
 }
