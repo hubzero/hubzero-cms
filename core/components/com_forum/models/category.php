@@ -138,6 +138,8 @@ class Category extends Relational
 		{
 			$last = self::all()
 				->select('ordering')
+				->whereEquals('scope', $data['scope'])
+				->whereEquals('scope_id', (isset($data['scope_id']) ? $data['scope_id'] : 0))
 				->order('ordering', 'desc')
 				->row();
 
