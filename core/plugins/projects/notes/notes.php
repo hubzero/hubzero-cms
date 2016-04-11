@@ -45,49 +45,49 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var	   boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Name of project group
 	 *
-	 * @var	   array
+	 * @var  array
 	 */
 	protected $_group = NULL;
 
 	/**
 	 * Name of master scope
 	 *
-	 * @var	   array
+	 * @var  array
 	 */
 	protected $_masterScope = NULL;
 
 	/**
 	 * Name of page
 	 *
-	 * @var	   array
+	 * @var  array
 	 */
 	protected $_pagename = NULL;
 
 	/**
 	 * Tool record (tool wiki)
 	 *
-	 * @var	   array
+	 * @var  array
 	 */
 	protected $_tool = NULL;
 
 	/**
 	 * Controller name
 	 *
-	 * @var	   array
+	 * @var  array
 	 */
 	protected $_controllerName = NULL;
 
 	/**
 	 * Store internal message
 	 *
-	 * @var	   array
+	 * @var  array
 	 */
 	protected $_msg = NULL;
 
@@ -101,7 +101,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return     array   Plugin name and title
+	 * @param   string  $alias
+	 * @return  array   Plugin name and title
 	 */
 	public function &onProjectAreas($alias = NULL)
 	{
@@ -118,10 +119,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $model 		Project
-	 * @return     array   integer
+	 * @param   object  $model  Project
+	 * @return  array   integer
 	 */
-	public function &onProjectCount( $model )
+	public function &onProjectCount($model)
 	{
 		$group_prefix = $model->config()->get('group_prefix', 'pr-');
 		$groupname = $group_prefix . $model->get('alias');
@@ -138,13 +139,13 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $model           Project model
-	 * @param      string  $action			Plugin task
-	 * @param      string  $areas  			Plugins to return data
-	 * @param      string  $tool			Name of tool wiki belongs to
-	 * @return     array   Return array of html
+	 * @param   object  $model   Project model
+	 * @param   string  $action  Plugin task
+	 * @param   string  $areas   Plugins to return data
+	 * @param   string  $tool    Name of tool wiki belongs to
+	 * @return  array   Return array of html
 	 */
-	public function onProject ( $model, $action = '', $areas = null, $tool = NULL )
+	public function onProject ($model, $action = '', $areas = null, $tool = NULL)
 	{
 		$returnhtml = true;
 
@@ -157,7 +158,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
 			{
@@ -186,8 +187,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			Lang::load('com_wiki') || Lang::load('com_wiki', PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site');
 
 			// Set vars
-			$this->_database 	= App::get('db');
-			$this->_uid 		= User::get('id');
+			$this->_database = App::get('db');
+			$this->_uid      = User::get('id');
 
 			// Load component configs
 			$this->_config = $model->config();
@@ -252,7 +253,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				case 'rename':
 				case 'saverename':
 				default:
-					$this->_controllerName = 'page';
+					$this->_controllerName = 'pages';
 				break;
 			}
 
@@ -295,29 +296,29 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * View of project note
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function page()
 	{
 		// Incoming
-		$preview 	= trim(Request::getVar( 'preview', '' ));
-		$note 		= Request::getVar('page', array(), 'post', 'none', 2);
-		$scope 		= trim(Request::getVar( 'scope', $this->_masterScope ), DS);
+		$preview = trim(Request::getVar('preview', ''));
+		$note    = Request::getVar('page', array(), 'post', 'none', 2);
+		$scope   = trim(Request::getVar('scope', $this->_masterScope), '/');
 
 		$pagePrefix = '';
 
 		// Output HTML (wrap for notes)
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'notes',
-				'name'		=>'wrap',
-				'layout' 	=>'wrap'
+				'folder'  =>'projects',
+				'element' =>'notes',
+				'name'    =>'wrap',
+				'layout'  =>'wrap'
 			)
 		);
 
 		// Get first project note
-		$view->firstNote = $this->note->getFirstNote( $pagePrefix);
+		$view->firstNote = $this->note->getFirstNote($pagePrefix);
 
 		// Default view to first available note if no page is requested
 		if (!$this->_pagename && $this->_task != 'new' && $this->_task != 'save')
@@ -326,12 +327,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we saving?
-		$save 	= $this->_task == 'save' ? 1 : 0;
+		$save   = $this->_task == 'save' ? 1 : 0;
 		$rename = $this->_task == 'saverename' ? 1 : 0;
 		$canDelete = 1;
 
 		// Get page
-		$view->page    = $this->note->page($this->_pagename, $scope);
+		$view->page    = $this->note->page($this->_pagename);
 		$view->content = NULL;
 		$exists = $view->page->get('id') ? true : false;
 
@@ -349,16 +350,16 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			// Output HTML (wrap for notes)
 			$nview = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=>'projects',
-					'element'	=>'notes',
-					'name'		=>'page',
-					'layout' 	=>'doesnotexist'
+					'folder'  =>'projects',
+					'element' =>'notes',
+					'name'    =>'page',
+					'layout'  =>'doesnotexist'
 				)
 			);
-			$nview->scope 		= $scope;
-			$nview->option 		= $this->_option;
-			$nview->project 	= $this->model;
-			$view->content 		= $nview->loadTemplate();
+			$nview->scope   = $scope;
+			$nview->option  = $this->_option;
+			$nview->project = $this->model;
+			$view->content  = $nview->loadTemplate();
 		}
 
 		$basePath = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site';
@@ -368,18 +369,17 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			if (!$this->model->access('content'))
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-				return;
 			}
 		}
+
 		if (!$view->content)
 		{
 			$controllerName = "Components\Wiki\Site\Controllers\\"  . ucfirst($this->_controllerName);
 			// Instantiate controller
 			$controller = new $controllerName(array(
 				'base_path' => $basePath,
-				'name'      => 'projects',
-				'sub'       => 'notes',
-				'group'     => $this->_group
+				'scope'     => 'project',
+				'scope_id'  => $this->model->get('id')
 			));
 
 			// Catch any echoed content with ob
@@ -407,8 +407,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			if ($rename)
 			{
 				// Incoming
-				$oldpagename = trim(Request::getVar( 'oldpagename', '', 'post' ));
-				$newpagename = trim(Request::getVar( 'newpagename', '', 'post' ));
+				$oldpagename = trim(Request::getVar('oldpagename', '', 'post'));
+				$newpagename = trim(Request::getVar('newpagename', '', 'post'));
 				$this->note->fixScopePaths($scope, $oldpagename, $newpagename);
 			}
 
@@ -424,7 +424,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$view->msg = isset($this->_msg) ? $this->_msg : NULL;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		$view->title 		= $this->_area['title'];
@@ -441,18 +441,17 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$view->params		= $this->params;
 
 		return $view->loadTemplate();
-
 	}
 
 	/**
 	 * List/unlist on public project page
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	protected function _list()
 	{
 		// Incoming
-		$id = trim(Request::getInt( 'p', 0 ));
+		$id = trim(Request::getInt('p', 0));
 
 		// Load requested page
 		$page = $this->note->page($id);
@@ -472,30 +471,27 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			\Notify::message($this->_msg, 'success', 'projects');
 
 			App::redirect(Route::url('index.php?option=' . $this->_option . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename')));
-			return;
 		}
 
 		App::redirect(Route::url($this->model->link('notes')));
-		return;
 	}
 
 	/**
 	 * Get public link and list/unlist
 	 *
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	protected function _share()
 	{
 		// Incoming
-		$id = trim(Request::getInt( 'p', 0 ));
+		$id = trim(Request::getInt('p', 0));
 
 		// Load requested page
 		$page = $this->note->page($id);
 		if (!$page->get('id'))
 		{
 			App::redirect(Route::url($this->model->link('notes')));
-			return;
 		}
 
 		// Output HTML
@@ -508,7 +504,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get/update public stamp for page
-		$view->publicStamp = $this->note->getPublicStamp($page->get('id'), true);
+		$view->set('publicStamp', $this->note->getPublicStamp($page->get('id'), true));
+		$view->set('option', $this->_option);
 
 		if (!$view->publicStamp)
 		{
@@ -523,27 +520,21 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->title  = '';
-			$view->option = $this->_option;
-			$view->setError( $this->getError() );
+			$view->set('title', '');
+			$view->setErrors($this->getErrors());
+
 			return $view->loadTemplate();
 		}
 
-		$view->option 			= $this->_option;
-		$view->project			= $this->model;
-		$view->url				= $url;
-		$view->config 			= $this->model->config();
-		$view->page				= $page;
-		$view->revision 		= $page->revision('current');
-		$view->masterscope 		= 'projects' . DS . $this->model->get('alias') . DS . 'notes';
-		$view->params			= $this->params;
-		$view->ajax				= Request::getInt('ajax', 0);
-
-		// Output HTML
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
+		$view->set('project', $this->model);
+		$view->set('url', $url);
+		$view->set('config', $this->model->config());
+		$view->set('page', $page);
+		$view->set('revision', $page->revision('current'));
+		$view->set('masterscope', 'projects' . DS . $this->model->get('alias') . DS . 'notes');
+		$view->set('params', $this->params);
+		$view->set('ajax', Request::getInt('ajax', 0));
+		$view->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -624,14 +615,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * List project notes available for publishing
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function browser()
 	{
 		// Incoming
-		$ajax 		= Request::getInt('ajax', 0);
-		$primary 	= Request::getInt('primary', 1);
-		$versionid  = Request::getInt('versionid', 0);
+		$ajax      = Request::getInt('ajax', 0);
+		$primary   = Request::getInt('primary', 1);
+		$versionid = Request::getInt('versionid', 0);
 
 		if (!$ajax)
 		{
@@ -648,9 +639,9 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get current attachments
-		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
-		$role 	= $primary ? '1' : '0';
-		$other 	= $primary ? '0' : '1';
+		$pContent = new \Components\Publications\Tables\Attachment($this->_database);
+		$role  = $primary ? '1' : '0';
+		$other = $primary ? '0' : '1';
 
 		$view->attachments = $pContent->getAttachments(
 			$versionid,
@@ -658,22 +649,22 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		);
 
 		// Output HTML
-		$view->params 		= $this->model->params;
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->config 		= $this->_config;
-		$view->title		= $this->_area['title'];
-		$view->primary		= $primary;
-		$view->versionid	= $versionid;
+		$view->params = $this->model->params;
+		$view->option = $this->_option;
+		$view->database = $this->_database;
+		$view->model = $this->model;
+		$view->uid = $this->_uid;
+		$view->config = $this->_config;
+		$view->title = $this->_area['title'];
+		$view->primary = $primary;
+		$view->versionid = $versionid;
 
 		// Get messages	and errors
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
-		$html =  $view->loadTemplate();
+		$html = $view->loadTemplate();
 
 		$arr = array(
 			'html'     => $html,
@@ -686,10 +677,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Serve wiki page (usually via public link)
 	 *
-	 * @param   int  	$projectid
-	 * @return  void
+	 * @param   string   $type
+	 * @param   integer  $projectid
+	 * @param   string   $query
+	 * @return  boolean
 	 */
-	public function serve( $type = '', $projectid = 0, $query = '')
+	public function serve($type = '', $projectid = 0, $query = '')
 	{
 		$this->_area = $this->onProjectAreas();
 		if ($type != $this->_area['name'])
@@ -706,7 +699,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$this->loadLanguage();
 
 		$database = App::get('db');
-		$this->_option 	= 'com_projects';
+		$this->_option = 'com_projects';
 
 		// Instantiate a project
 		$this->model = new \Components\Projects\Models\Project($projectid);
@@ -737,27 +730,27 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 
 		// Write title & build pathway
-		Document::setTitle( Lang::txt(strtoupper($this->_option)) . ': '
-			. stripslashes($this->model->get('title')) . ' - ' . stripslashes($page->get('title')) );
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': '
+			. stripslashes($this->model->get('title')) . ' - ' . stripslashes($page->get('title')));
 
 		// Instantiate a new view
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'notes',
-				'name'		=>'pubview'
+				'folder'  =>'projects',
+				'element' =>'notes',
+				'name'    =>'pubview'
 			)
 		);
-		$view->option 			= $this->_option;
-		$view->model			= $this->model;
-		$view->page				= $page;
-		$view->revision 		= $page->revision('current');
-		$view->masterscope 		= 'projects' . DS . $this->model->get('alias') . DS . 'notes';
+		$view->option = $this->_option;
+		$view->model = $this->model;
+		$view->page = $page;
+		$view->revision = $page->revision('current');
+		$view->masterscope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 		// Output HTML
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		$view->display();
@@ -767,7 +760,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get side content for main project page
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @return  mixed
 	 */
 	public function onProjectMiniList($model)
 	{
@@ -795,13 +789,15 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		);
 		$view->notes = $note->getNotes();
 		$view->model = $model;
+
 		return $view->loadTemplate();
 	}
 
 	/**
 	 * Event call to get content for public project page
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @return  mixed
 	 */
 	public function onProjectPublicList($model)
 	{
@@ -823,14 +819,15 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
-		$database 	= App::get('db');
-		$objSt 		= new \Components\Projects\Tables\Stamp( $database );
+		$database = App::get('db');
+		$objSt    = new \Components\Projects\Tables\Stamp($database);
 
 		$view->items = $objSt->getPubList($model->get('id'), 'notes');
 		$view->page  = \Components\Wiki\Models\Page::blank();
 		$view->model = $model;
+
 		return $view->loadTemplate();
 	}
 }

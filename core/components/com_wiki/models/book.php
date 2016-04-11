@@ -32,7 +32,7 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Base\Object;
-use Components\Wiki\Helpers\Parser;
+use Hubzero\Config\Registry;
 use Filesystem;
 use Exception;
 use Component;
@@ -108,14 +108,12 @@ class Book extends Object
 	 */
 	public function scribe($option)
 	{
-		$pages = $this->_defaultPages();
+		$pages = $this->defaultPages();
 
 		if (count($pages) <= 0)
 		{
 			return Lang::txt('No default pages found');
 		}
-
-		$p = Parser::getInstance();
 
 		foreach ($pages as $f => $c)
 		{
@@ -124,22 +122,25 @@ class Book extends Object
 			// Instantiate a new page
 			$page = Page::blank();
 			$page->set('pagename', $f);
+			$page->set('namespace', $page->getNamespace());
 			$page->set('title', $page->title);
 			$page->set('access', 0);
+			$page->set('state', Page::STATE_PUBLISHED);
 			$page->set('scope', $this->get('scope'));
 			$page->set('scope_id', $this->get('scope_id'));
-			if ($this->get('scope') != 'site')
-			{
-				$page->set('path', $this->get('scope') . '/wiki');
-			}
+
+			$params = new Registry();
+
 			if ($this->get('scope') == 'site' && $page->get('pagename') == 'MainPage')
 			{
-				$page->set('params', 'mode=static' . "\n");
+				$params->set('mode', 'static');
 			}
 			else
 			{
-				$page->set('params', 'mode=wiki' . "\n");
+				$params->set('mode', 'wiki');
 			}
+
+			$page->set('params', $params->toString());
 
 			// Store content
 			if (!$page->save())
@@ -149,26 +150,16 @@ class Book extends Object
 
 			// Instantiate a new revision
 			$revision = Version::blank();
-			$revision->set('pageid', $page->get('id'));
+			$revision->set('page_id', $page->get('id'));
 			$revision->set('minor_edit', 0);
 			$revision->set('version', 1);
 			$revision->set('pagetext', $c);
 			$revision->set('approved', 1);
 
-			$wikiconfig = array(
-				'option'    => $option,
-				'scope'     => $page->get('path'),
-				'pagename'  => $page->get('pagename'),
-				'pageid'    => $page->get('id'),
-				'filepath'  => '',
-				'domain'    => $page->get('scope'),
-				'domain_id' => $page->get('scope_id')
-			);
-
 			// Transform the wikitext to HTML
 			if ($page->get('pagename') != 'Help:WikiMath')
 			{
-				$revision->set('pagehtml', $p->parse($revision->get('pagetext'), $wikiconfig, true, true));
+				$revision->set('pagehtml', $revision->content($page, $option));
 			}
 
 			// Store content
@@ -195,7 +186,7 @@ class Book extends Object
 	 *
 	 * @return  array
 	 */
-	private function _defaultPages()
+	private function defaultPages()
 	{
 		$path = dirname(__DIR__) . DS . 'default';
 
@@ -293,9 +284,13 @@ class Book extends Object
 			}
 
 			// Load the page
-			$this->page = Page::oneByPath(($path ? $path . '/' : '') . $pagename, $this->get('scope'), $this->get('scope_id'));
+			$this->page = Page::oneByPath(
+				($path ? $path . '/' : '') . $pagename,
+				$this->get('scope'),
+				$this->get('scope_id')
+			);
 
-			if (!$this->page->get('id') && $this->page->getNamespace() == 'help')
+			if (!$this->page->get('id') && $this->page->getNamespace($pagename) == 'help')
 			{
 				$this->page = Page::oneByPath($pagename, 'site', 0);
 				$this->page->set('scope', $this->get('scope'));
@@ -328,29 +323,10 @@ class Book extends Object
 	/**
 	 * Get the main page
 	 *
-	 * @return  object  WikiModelPage
+	 * @return  object
 	 */
 	public function main()
 	{
-		/*$this->page = null;
-
-		if (isset($this->_cache['pages']) && ($this->_cache['pages'] instanceof ItemList))
-		{
-			foreach ($this->_cache['pages'] as $page)
-			{
-				if ($page->get('main', 0) == 1)
-				{
-					$this->page = $page;
-					break;
-				}
-			}
-		}
-
-		if ($this->page)
-		{
-			return $this->page;
-		}*/
-
 		return $this->page($this->config('homepage', 'MainPage'));
 	}
 

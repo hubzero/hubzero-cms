@@ -102,7 +102,9 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
 		$book = new Components\Wiki\Models\Book('group', $group->get('gidNumber'));
-		$arr['metadata']['count'] = $book->pages()->total();
+		$arr['metadata']['count'] = $book->pages()
+			->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+			->total();
 
 		if ($arr['metadata']['count'] <= 0)
 		{
@@ -111,7 +113,9 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				$this->setError($result);
 			}
 
-			$arr['metadata']['count'] = $book->pages()->total();
+			$arr['metadata']['count'] = $book->pages()
+				->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+				->total();
 		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)

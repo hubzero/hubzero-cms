@@ -75,14 +75,14 @@ if ($pNotes)
 			    foreach ($note as $level => $parent) {
 				 foreach ($parent as $entry) { ?>
 					<li <?php if ($entry->pagename == $this->page->get('pagename')) { echo 'class="active"'; } ?>>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&scope='.$entry->scope . '&pagename=' . $entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?></a>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&pagename=' . $entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?></a>
 					</li>
 					<?php
 						// Third level of notes
 						if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) {
 							foreach ($thirdlevel[$entry->pagename] as $subpage) { ?>
 							<li <?php if ($subpage->pagename == $this->page->get('pagename')) { echo 'class="active"'; } ?>>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&scope=' . $subpage->scope . '&pagename='.$subpage->pagename); ?>" class="note wikilevel_3"><?php echo \Hubzero\Utility\String::truncate($subpage->title, 35); ?></a>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&pagename='.$subpage->pagename); ?>" class="note wikilevel_3"><?php echo \Hubzero\Utility\String::truncate($subpage->title, 35); ?></a>
 							</li>
 					<?php	}
 					 } ?>

@@ -104,7 +104,7 @@ if (!$this->sub)
 			</fieldset><div class="clear"></div>
 
 			<p class="submit">
-				<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
+				<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('COM_WIKI_DELETE'); ?>" />
 			</p>
 		</form>
 	<?php } ?>

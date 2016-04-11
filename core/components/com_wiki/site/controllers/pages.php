@@ -230,6 +230,7 @@ class Pages extends SiteController
 		{
 			$this->view
 				->set('page', $this->page)
+				->set('version', ($version ? $version : $this->page->get('version_id')))
 				->set('book', $this->book)
 				->set('sub', $this->page->get('scope') != 'site')
 				->setLayout('nosuchrevision')
@@ -399,14 +400,9 @@ class Pages extends SiteController
 			$this->page->link() . '&task=' . $this->_task
 		);
 
-		//$this->view->preview = NULL;
-
 		// Are we previewing?
 		if ($this->preview)
 		{
-			// Yes - get the preview so we can parse it and display
-			//$this->view->preview = $this->preview;
-
 			$pageid = $this->page->get('id');
 			$lid = Request::getInt('lid', 0, 'post');
 			if ($lid != $this->page->get('id'))
@@ -415,19 +411,6 @@ class Pages extends SiteController
 			}
 
 			// Parse the HTML
-			/*$wikiconfig = array(
-				'option'    => $this->_option,
-				'scope'     => $this->page->get('path'),
-				'pagename'  => ($this->page->exists() ? $this->page->get('pagename') : 'Tmp:' . $pageid),
-				'pageid'    => $pageid,
-				'filepath'  => '',
-				'domain'    => $this->page->get('scope'),
-				'domain_id' => $this->page->get('scope_id')
-			);
-
-			$p = Parser::getInstance();
-
-			$revision->set('pagehtml', $p->parse($revision->get('pagetext'), $wikiconfig, true, true));*/
 			$lid = Request::getInt('lid', 0, 'post');
 			$pagename = $this->page->get('pagename');
 
@@ -498,8 +481,6 @@ class Pages extends SiteController
 		}
 
 		// Incoming revision
-		//$rev['pageid'] = (isset($rev['pageid'])) ? intval($rev['pageid']) : 0;
-
 		$revision = $this->page->version;
 		$revision->set('version', $revision->get('version') + 1);
 		$revision->set(Request::getVar('revision', array(), 'post', 'none', 2));
@@ -507,11 +488,14 @@ class Pages extends SiteController
 
 		// Incoming page
 		$page = Request::getVar('page', array(), 'post', 'none', 2);
+		if (!isset($page['protected']) || !$page['protected'])
+		{
+			$page['protected'] = 0;
+		}
 
 		$this->page = Page::oneOrNew(intval($revision->get('page_id')));
 		$this->page->set($page);
 		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'post')));
-		//$this->page->set('scope', trim(Request::getVar('scope', '', 'post')));
 
 		// Get parameters
 		$params = new \Hubzero\Config\Registry($this->page->get('params', ''));

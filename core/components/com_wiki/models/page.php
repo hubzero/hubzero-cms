@@ -400,6 +400,7 @@ class Page extends Relational
 		$path = implode('/', $path);
 
 		$instance = self::blank()
+			->whereEquals('state', self::STATE_PUBLISHED)
 			->whereEquals('pagename', $pagename);
 		if ($path)
 		{
@@ -428,6 +429,7 @@ class Page extends Relational
 	public static function oneByTitle($title, $scope=null, $scope_id=null)
 	{
 		$instance = self::blank()
+			->whereEquals('state', self::STATE_PUBLISHED)
 			->whereEquals('title', $title);
 		if (!is_null($scope))
 		{
