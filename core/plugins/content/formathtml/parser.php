@@ -167,7 +167,7 @@ class Parser
 			$path = DS . trim($path, DS);
 
 			// If the path isn't absolute, make it so
-			if (substr($path, strlen(PATH_ROOT)) != PATH_ROOT)
+			if (substr($path, 0, strlen(PATH_ROOT)) != PATH_ROOT)
 			{
 				$path = PATH_ROOT . $path;
 			}
