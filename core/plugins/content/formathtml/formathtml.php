@@ -146,6 +146,11 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 
 			$parser = new \Plugins\Content\Formathtml\Parser($params);
 
+			if ($path = $this->params->get('macropath'))
+			{
+				$parser->addMacroPath($path);
+			}
+
 			$content = $parser->parse($content);
 		}
 
