@@ -68,6 +68,9 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">Yes</option>
 				</field>
 			</fieldset>
+			<fieldset name="advanced">
+				<field name="macropath" type="text" default="" label="Alt. Macro Path" description="Alternate path to laod macros from." />
+			</fieldset>
 		</fields>
 	</config>
 </extension>

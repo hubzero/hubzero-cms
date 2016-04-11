@@ -46,7 +46,7 @@ class Macro
 	 *
 	 * @var  string
 	 */
-	protected $_name  = NULL;
+	protected $_name = NULL;
 
 	/**
 	 * Container for internal data
@@ -60,7 +60,7 @@ class Macro
 	 *
 	 * @var  object
 	 */
-	protected $_db    = NULL;
+	protected $_db = NULL;
 
 	/**
 	 * Container for errors

@@ -50,12 +50,12 @@ class Parser
 	 * @var  array
 	 */
 	private $_config = array(
-		'option'   => null,
-		'scope'    => null,
-		'pagename' => null,
-		'pageid'   => null,
-		'filepath' => null,
-		'domain'   => null,
+		'option'    => null,
+		'scope'     => null,
+		'pagename'  => null,
+		'pageid'    => null,
+		'filepath'  => null,
+		'domain'    => null,
 		'fullparse' => true,
 	);
 
@@ -82,6 +82,13 @@ class Parser
 	);
 
 	/**
+	 * Configuration options
+	 *
+	 * @var  array
+	 */
+	private $_macroPaths = array();
+
+	/**
 	 * List of used macros
 	 *
 	 * @var  array
@@ -101,6 +108,12 @@ class Parser
 			// We need this info for links that may get generated
 			foreach ($config as $k => $s)
 			{
+				if ($k == 'alt_macro_path')
+				{
+					$this->addMacroPath($s);
+					continue;
+				}
+
 				$this->set($k, $s);
 			}
 		}
@@ -136,6 +149,55 @@ class Parser
 			return $this->_config[$property];
 		}
 		return $default;
+	}
+
+	/**
+	 * Add a macro path
+	 *
+	 * @param   string  $path
+	 * @return  object
+	 */
+	public function addMacroPath($path)
+	{
+		$path = trim((string)$path);
+
+		if ($path)
+		{
+			// Make sure paths start with a slash and do NOT end with one
+			$path = DS . trim($path, DS);
+
+			// If the path isn't absolute, make it so
+			if (substr($path, strlen(PATH_ROOT)) != PATH_ROOT)
+			{
+				$path = PATH_ROOT . $path;
+			}
+
+			$this->_macroPaths[] = $path;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Get macro paths
+	 *
+	 * @return  array
+	 */
+	public function getMacroPaths()
+	{
+		return $this->_macroPaths;
+	}
+
+	/**
+	 * Clear set macro paths
+	 *
+	 * @return  object
+	 */
+	public function clearMacroPaths()
+	{
+		$this->_macroPaths = array();
+
+		return $this;
 	}
 
 	/**
@@ -360,6 +422,8 @@ class Parser
 			return $text;
 		}
 
+		$this->addMacroPath(__DIR__ . DS . 'macros');
+
 		// Get macros [[name(args)]]
 		return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
 	}
@@ -380,27 +444,25 @@ class Parser
 			// build namespaced macro name
 			$macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
 
-			//build macro path
-			$macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
-
-			// alt path to macro
-			$macropath_alt = null;
-			if ($this->get('alt_macro_path'))
-			{
-				$macropath_alt = $this->get('alt_macro_path') . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
-			}
-
 			if (!isset(self::$macros[$matches[1]]))
 			{
-				if (is_file($macropath_alt))
+				// build macro path
+				$file = DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
+
+				$found = false;
+
+				foreach ($this->getMacroPaths() as $path)
 				{
-					include_once($macropath_alt);
+					if (is_file($path . $file))
+					{
+						$found = true;
+
+						include_once($path . $file);
+						break;
+					}
 				}
-				else if (is_file($macropath))
-				{
-					include_once($macropath);
-				}
-				else
+
+				if (!$found)
 				{
 					return '';
 				}
