@@ -12,7 +12,7 @@ class Migration20160412173638PlgResources extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('resources', 'googleschlar');
+		$this->addPluginEntry('resources', 'googlescholar');
 		$this->addPluginEntry('resources', 'opengraph');
 		$this->addPluginEntry('resources', 'dublincore');
 	}
@@ -22,7 +22,7 @@ class Migration20160412173638PlgResources extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('resources', 'googleschlar');
+		$this->deletePluginEntry('resources', 'googlescholar');
 		$this->deletePluginEntry('resources', 'opengraph');
 		$this->deletePluginEntry('resources', 'dublincore');
 	}
