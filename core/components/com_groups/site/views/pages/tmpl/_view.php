@@ -143,13 +143,13 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 								<span><?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE'); ?></span>
 							</a>
 						</li>
-						<?php if ($this->page->get('home') != 1) : ?>
+						<?php /*if ($this->page->get('home') != 1) : ?>
 							<li>
 								<a class="home" title="<?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?>" data-title="<?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?>" href="<?php echo $setPageHomeLink; ?>">
 									<span><?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?></span>
 								</a>
 							</li>
-						<?php endif; ?>
+						<?php endif;*/ ?>
 
 						<?php if ($category->get('id') != '') : ?>
 							<li>
