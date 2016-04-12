@@ -89,42 +89,43 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// Build the query that checks topic pages
-		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias,
-				v.pagetext AS abstract, NULL AS type, NULL AS published, NULL AS published_up,
-				w.scope, w.rating, w.times_rated, w.ranking, 'wiki' AS class, 'Topic' AS section, w.`group_cn`
-				FROM #__wiki_page AS w, #__wiki_version AS v
-				WHERE w.id=v.pageid AND v.approved=1 AND (v.pagetext LIKE '%[[Resource(".$publication->id.")]]%'
-				OR v.pagetext LIKE '%[[Resource(".$publication->id.",%' OR v.pagetext LIKE '%[/Resource/".$publication->id." %'";
-
-		$sql1 .= ($publication->alias) ? " OR v.pagetext LIKE '%[[Resource(".$publication->alias."%') " : ") ";
+		$sql1 = "SELECT v.id, v.page_id AS pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS abstract,
+					NULL AS category, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'wiki' AS class, 'Topic' AS section
+				FROM `#__wiki_pages` AS w
+				JOIN `#__wiki_versions` AS v ON w.id=v.page_id
+				JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
+				WHERE v.approved=1 AND wl.scope='publication' AND wl.scope_id=" . $database->quote($publication->id);
 
 		if (!User::isGuest())
 		{
-			if (User::authorize('com_publications', 'manage') || User::authorize('com_groups', 'manage'))
+			if (User::authorize('com_resources', 'manage')
+			 || User::authorize('com_groups', 'manage'))
 			{
 				$sql1 .= '';
 			}
 			else
 			{
-				$ugs = \Hubzero\User\Helper::getGroups( User::get('id'), 'members' );
+				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 				$groups = array();
+				$cns = array();
 				if ($ugs && count($ugs) > 0)
 				{
 					foreach ($ugs as $ug)
 					{
-						$groups[] = $ug->cn;
+						$cns[] = $database->quote($ug->cn);
+						$groups[] = $database->quote($ug->gidNumber);
 					}
 				}
-				$g = "'".implode("','",$groups)."'";
+				$g = implode(",", $groups);
+				$c = implode(",", $cns);
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='".User::get('id')."'))) ";
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 		}
 		else
 		{
 			$sql1 .= "AND w.access!=1 ";
 		}
-		$sql1 .= "AND w.`group_cn` IS NULL "; // only get topic pages
 		$sql1 .= "GROUP BY pageid ORDER BY ranking DESC, title LIMIT 10";
 
 		// Initiate a helper class
@@ -138,7 +139,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql2 = "SELECT DISTINCT r.publication_id as id, NULL AS pageid, r.id AS version,
 				r.title, C.alias, r.abstract, C.category, r.state as published,
 				r.published_up, NULL AS scope, C.rating, C.times_rated, C.ranking,
-				rt.alias AS class, rt.name AS section, NULL AS `group` "
+				rt.alias AS class, rt.name AS section"
 			 . "\n FROM #__publications as C, #__publication_categories AS rt, #__publication_versions AS r "
 			 . "\n JOIN #__tags_object AS a ON r.publication_id=a.objectid AND a.tbl='publications'"
 			 . "\n JOIN #__publication_authors AS PA ON PA.publication_version_id=r.id "

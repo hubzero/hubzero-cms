@@ -78,12 +78,12 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// Build the query that checks topic pages
-		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext,
-					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group_cn`
-				FROM `#__wiki_page` AS w
-				JOIN `#__wiki_version` AS v ON w.id=v.pageid
-				JOIN `#__wiki_page_links` AS wl ON wl.page_id=w.id
-				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->Quote($resource->id);
+		$sql1 = "SELECT v.id, v.page_id AS pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext,
+					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section
+				FROM `#__wiki_pages` AS w
+				JOIN `#__wiki_versions` AS v ON w.id=v.page_id
+				JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
+				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->quote($resource->id);
 
 		if (!User::isGuest())
 		{
@@ -96,16 +96,19 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			{
 				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 				$groups = array();
+				$cns = array();
 				if ($ugs && count($ugs) > 0)
 				{
 					foreach ($ugs as $ug)
 					{
-						$groups[] = $database->quote($ug->cn);
+						$cns[] = $database->quote($ug->cn);
+						$groups[] = $database->quote($ug->gidNumber);
 					}
 				}
 				$g = implode(",", $groups);
+				$c = implode(",", $cns);
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 		}
 		else
@@ -115,12 +118,12 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		$sql1 .= "GROUP BY pageid ORDER BY ranking DESC, title LIMIT 10";
 
 		// Build the query that checks resource parents
-		$sql2 = "SELECT DISTINCT r.id, NULL AS pageid, NULL AS version, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up, "
-			 . " NULL AS scope, r.rating, r.times_rated, r.ranking, rt.type AS section, NULL AS `group` "
-			 . " FROM #__resource_types AS rt, #__resources AS r"
-			 . " JOIN #__resource_assoc AS a ON r.id=a.parent_id"
-			 . " LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
-			 . " WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id AND r.type!=8 ";
+		$sql2 = "SELECT DISTINCT r.id, NULL AS pageid, NULL AS version, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,
+				NULL AS scope, r.rating, r.times_rated, r.ranking, rt.type AS section
+				FROM `#__resource_types` AS rt, `#__resources` AS r
+				JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
+				LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
+				WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id AND r.type!=8 ";
 		if (!User::isGuest())
 		{
 			if (User::authorize('com_resources', 'manage')
@@ -130,7 +133,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($g) OR r.created_by=" . $database->quote(User::get('id')) . "))) ";
+				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($c) OR r.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 		}
 		else
