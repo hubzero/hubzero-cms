@@ -30,13 +30,13 @@
 
 namespace Components\Storefront\Site\Controllers;
 
-use Components\Storefront\Models\Warehouse;
+//use Components\Storefront\Models\Warehouse;
 
 
 /**
  * Courses controller class
  */
-class Storefront extends ComponentController
+class Overview extends ComponentController
 {
 	/**
 	 * Execute a task
@@ -45,14 +45,12 @@ class Storefront extends ComponentController
 	 */
 	public function execute()
 	{
-		$this->warehouse = new Warehouse();
-
 		// Get the task
 		$this->_task  = Request::getVar('task', '');
 
 		if (empty($this->_task))
 		{
-			$this->_task = 'home';
+			$this->_task = 'default';
 			$this->registerTask('__default', $this->_task);
 		}
 
@@ -64,11 +62,9 @@ class Storefront extends ComponentController
 	 *
 	 * @return     void
 	 */
-	public function homeTask()
+	public function defaultTask()
 	{
-		// get categories
-		$categories = $this->warehouse->getRootCategories();
-		$this->view->categories = $categories;
+		$config = $this->config;
 
 		if (Pathway::count() <= 0)
 		{
@@ -78,6 +74,7 @@ class Storefront extends ComponentController
 			);
 		}
 
+		$this->view->config = $config;
 		$this->view->display();
 	}
 
