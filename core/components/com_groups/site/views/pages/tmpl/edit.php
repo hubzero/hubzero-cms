@@ -233,7 +233,7 @@ if ($this->page->get('id'))
 								<?php $sel = ($category == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
 								<option <?php echo $sel; ?> data-color="#<?php echo $pageCategory->get('color'); ?>" value="<?php echo $pageCategory->get('id'); ?>"><?php echo $pageCategory->get('title'); ?></option>
 							<?php endforeach; ?>
-							<option value="other"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_OTHER'); ?></a>
+							<option value="other"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_OTHER'); ?></option>
 						</select>
 						<span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_HINT'); ?></span>
 					</label>
