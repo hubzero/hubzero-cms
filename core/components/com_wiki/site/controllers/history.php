@@ -336,11 +336,10 @@ class History extends SiteController
 			['user', $this->page->get('created_by')],
 			['user', $revision->get('created_by')]
 		);
-		if ($this->page->get('scope') == 'group')
+		if ($this->page->get('scope') != 'site')
 		{
-			$group = \Hubzero\User\Group::getInstance($this->page->get('scope_id'));
-			$recipients[]  = ['group', $group->get('gidNumber')];
-			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+			$recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
+			$recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
 		}
 
 		Event::trigger('system.logActivity', [
@@ -420,11 +419,10 @@ class History extends SiteController
 			['user', $this->page->get('created_by')],
 			['user', $revision->get('created_by')]
 		);
-		if ($this->page->get('scope') == 'group')
+		if ($this->page->get('scope') != 'site')
 		{
-			$group = \Hubzero\User\Group::getInstance($this->page->get('scope_id'));
-			$recipients[]  = ['group', $group->get('gidNumber')];
-			$recipients[0] = ['wiki.group', $group->get('gidNumber')];
+			$recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
+			$recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
 		}
 
 		Event::trigger('system.logActivity', [

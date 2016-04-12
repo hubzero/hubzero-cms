@@ -102,7 +102,7 @@ class Categories extends Base
 	/**
 	 * Add Page Category
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -112,23 +112,19 @@ class Categories extends Base
 	/**
 	 * Edit Page Category
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function editTask()
 	{
-		//set to edit layout
-		$this->view->setLayout('edit');
-
-		// get request vars
-		$categoryid = Request::getInt('categoryid', 0);
-
-		// get the category object
-		$this->view->category = new Page\Category($categoryid);
-
 		// are we passing a category object
 		if ($this->category)
 		{
-			$this->view->category = $this->category;
+			$category = $this->category;
+		}
+		else
+		{
+			// get the category object
+			$category = new Page\Category(Request::getInt('categoryid', 0));
 		}
 
 		// build the title
@@ -138,17 +134,21 @@ class Categories extends Base
 		$this->_buildPathway();
 
 		// get view notifications
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
-		$this->view->group = $this->group;
+		$notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		//display layout
-		$this->view->display();
+		$this->view
+			->set('group', $this->group)
+			->set('category', $category)
+			->set('notifications', $notifications)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save Page Category
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -165,21 +165,50 @@ class Categories extends Base
 		if (!$this->category->bind($category))
 		{
 			$this->setNotification($this->category->getError(), 'error');
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// Store new content
 		if (!$this->category->store(true))
 		{
 			$this->setNotification($this->category->getError(), 'error');
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
+
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
+
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($category['id'] ? 'updated' : 'created'),
+				'scope'       => 'group.category',
+				'scope_id'    => $this->category->get('id'),
+				'description' => Lang::txt(
+					'COM_GROUPS_ACTIVITY_CATEGORY_' . ($this->_task == 'new' ? 'CREATED' : 'UPDATED'),
+					$this->category->get('title'),
+					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'title'     => $this->category->get('title'),
+					'url'       => $url,
+					'gidNumber' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		//inform user & redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_SAVED'), 'passed');
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
+		App::redirect($url);
 	}
 
 	/**
@@ -195,24 +224,53 @@ class Categories extends Base
 		// load category object
 		$category = new Page\Category($categoryid);
 
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
+
 		// make sure this is our groups cat
 		if ($category->get('gidNumber') != $this->group->get('gidNumber'))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_ERROR'), 'error');
-			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
-			return;
+			App::redirect($url);
 		}
 
 		// delete row
 		if (!$category->delete())
 		{
 			$this->setNotification($category->getError(), 'error');
-			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
-			return;
+			App::redirect($url);
 		}
+
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'group.category',
+				'scope_id'    => $category->get('id'),
+				'description' => Lang::txt(
+					'COM_GROUPS_ACTIVITY_CATEGORY_DELETED',
+					$category->get('title'),
+					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'title'     => $category->get('title'),
+					'url'       => $url,
+					'gidNumber' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		//inform user & redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETED'), 'passed');
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
+		App::redirect($url);
 	}
 }

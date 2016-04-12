@@ -51,7 +51,7 @@ class Pages extends Base
 	/**
 	 * Override Execute Method
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -92,11 +92,10 @@ class Pages extends Base
 		parent::execute();
 	}
 
-
 	/**
 	 * Display Group Pages
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -150,22 +149,20 @@ class Pages extends Base
 		$this->view->display();
 	}
 
-
 	/**
 	 * Add Group Page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
 		$this->editTask();
 	}
 
-
 	/**
 	 * Edit Group Page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -249,7 +246,7 @@ class Pages extends Base
 	/**
 	 * Apply group page changes
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -260,7 +257,7 @@ class Pages extends Base
 	/**
 	 * Save group page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function saveTask($apply = false)
 	{
@@ -281,16 +278,14 @@ class Pages extends Base
 		if (!$this->page->bind($page))
 		{
 			$this->setNotification($this->page->getError(), 'error');
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// bind new page version properties
 		if (!$this->version->bind($version))
 		{
 			$this->setNotification($this->version->getError(), 'error');
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// make sure page belongs to group
@@ -318,8 +313,7 @@ class Pages extends Base
 		{
 			$error = ($this->page->getError()) ? $this->page->getError() : $this->version->getError();
 			$this->setNotification($error, 'error');
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		// our start should be our left (order) or the parents right - 1
@@ -347,8 +341,7 @@ class Pages extends Base
 		if (!$this->page->store(true))
 		{
 			$this->setNotification($this->page->getError(), 'error');
-			$this->editTask();
-			return;
+			return $this->editTask();
 		}
 
 		if (!is_object($this->group->params))
@@ -404,8 +397,7 @@ class Pages extends Base
 			if (!$this->version->check())
 			{
 				$this->setNotification($this->version->getError(), 'error');
-				$this->editTask();
-				return;
+				return $this->editTask();
 			}
 
 			// save version settings
@@ -413,8 +405,7 @@ class Pages extends Base
 			if (!$this->version->store(false, $this->group->isSuperGroup()))
 			{
 				$this->setNotification($this->version->getError(), 'error');
-				$this->editTask();
-				return;
+				return $this->editTask();
 			}
 
 			// send to approvers
@@ -432,7 +423,6 @@ class Pages extends Base
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED', $task), 'passed');
 			App::redirect(base64_decode($return));
-			return;
 		}
 
 		// are we applying or saving?
@@ -447,6 +437,35 @@ class Pages extends Base
 			$redirect = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages');
 		}
 
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($page['id'] ? 'updated' : 'created'),
+				'scope'       => 'group.page',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt(
+					'COM_GROUPS_ACTIVITY_PAGE_' . ($page['id'] ? 'UPDATED' : 'CREATED'),
+					$this->page->get('title'),
+					'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages') . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'title'     => $this->page->get('title'),
+					'url'       => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages'),
+					'gidNumber' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// Push success message and redirect
 		$this->setNotification($notification, 'passed');
 		App::redirect($redirect);
@@ -455,7 +474,7 @@ class Pages extends Base
 	/**
 	 * Display page versions page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function versionsTask()
 	{
@@ -497,7 +516,7 @@ class Pages extends Base
 	/**
 	 * Publish Group Page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -507,7 +526,7 @@ class Pages extends Base
 	/**
 	 * Unpublish Group Page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -517,7 +536,7 @@ class Pages extends Base
 	/**
 	 * Delete Group Page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -527,7 +546,9 @@ class Pages extends Base
 	/**
 	 * Set page state
 	 *
-	 * @return 	void
+	 * @param   integer  $state
+	 * @param   string   $status
+	 * @return  void
 	 */
 	public function setStateTask($state = 1, $status = 'published')
 	{
@@ -562,8 +583,7 @@ class Pages extends Base
 		if (!$page->store(false))
 		{
 			$this->setNotification($page->getError(), 'error');
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// get page children
@@ -601,23 +621,51 @@ class Pages extends Base
 		}
 
 		//inform user & redirect
-		$return = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages');
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages');
 		if ($r = Request::getVar('return', '','get'))
 		{
-			$return = base64_decode($r);
+			$url = base64_decode($r);
 		}
 
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($state == 2 ? 'deleted' : 'updated'),
+				'scope'       => 'group.page',
+				'scope_id'    => $page->get('id'),
+				'description' => Lang::txt(
+					'COM_GROUPS_ACTIVITY_PAGE_' . ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED')),
+					$page->get('title'),
+					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'title'     => $page->get('title'),
+					'url'       => $url,
+					'gidNumber' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		App::redirect(
-			$return,
+			$url,
 			Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_CHANGE', $status)
 		);
 	}
 
-
 	/**
 	 * Reorder Pages Task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function reorderTask()
 	{
@@ -648,11 +696,10 @@ class Pages extends Base
 		echo json_encode(array('reordered'=>true));
 	}
 
-
 	/**
 	 * Set Group Home Page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function setHomeTask()
 	{
@@ -676,7 +723,6 @@ class Pages extends Base
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages')
 			);
-			return;
 		}
 
 		// remove any current home page
@@ -714,7 +760,7 @@ class Pages extends Base
 	/**
 	 * Preview Group Page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function previewTask()
 	{
@@ -739,7 +785,6 @@ class Pages extends Base
 		echo Helpers\Pages::generatePreview($page, $version);
 		exit();
 	}
-
 
 	/**
 	 * Output raw content
@@ -824,8 +869,7 @@ class Pages extends Base
 		if (!$newVersion->store(false, $this->group->isSuperGroup()))
 		{
 			$this->setNotification($newVersion->getError(), 'error');
-			$this->versionsTask();
-			return;
+			return $this->versionsTask();
 		}
 
 		// redirect

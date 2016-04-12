@@ -301,42 +301,70 @@ class Modules extends Base
 			Helpers\Pages::sendApproveNotification('module', $this->module);
 		}
 
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#modules');
+
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($module['id'] ? 'updated' : 'created'),
+				'scope'       => 'group.module',
+				'scope_id'    => $this->module->get('id'),
+				'description' => Lang::txt(
+					'COM_GROUPS_ACTIVITY_MODULE_' . ($module['id'] ? 'UPDATED' : 'CREATED'),
+					$this->module->get('title'),
+					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'title'     => $this->module->get('title'),
+					'url'       => $url,
+					'gidNumber' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// Push success message and redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#modules'));
+		App::redirect($url);
 		if ($return = Request::getVar('return', '','post'))
 		{
 			App::redirect(base64_decode($return));
 		}
 	}
 
-
 	/**
 	 * Publish Group Module
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
 		$this->setStateTask(1, 'published');
 	}
 
-
 	/**
 	 * Unpublish Group Module
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
 		$this->setStateTask(0, 'unpubished');
 	}
 
-
 	/**
 	 * Delete Module
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -346,7 +374,9 @@ class Modules extends Base
 	/**
 	 * Set page state
 	 *
-	 * @return 	void
+	 * @param   integer  $state
+	 * @param   string   $status
+	 * @return  void
 	 */
 	public function setStateTask($state = 1, $status = 'published')
 	{
@@ -386,6 +416,35 @@ class Modules extends Base
 		{
 			$url = base64_decode($return);
 		}
+
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($state == 2 ? 'deleted' : 'updated'),
+				'scope'       => 'group.module',
+				'scope_id'    => $module->get('id'),
+				'description' => Lang::txt(
+					'COM_GROUPS_ACTIVITY_MODULE_' . ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED')),
+					$module->get('title'),
+					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'title'     => $module->get('title'),
+					'url'       => $url,
+					'gidNumber' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		App::redirect($url, Lang::txt('COM_GROUPS_PAGES_MODULE_STATE_CHANGE', $status), 'passed');
 	}
