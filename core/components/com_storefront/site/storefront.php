@@ -53,10 +53,41 @@ elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php
 {
 	App::abort(404, Lang::txt('Page Not Found'));
 }
+
+$controllerRequested = $controllerName;
+
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
 $controller = new $controllerName();
+
+// See if user has to be logged in to see the component
+$loginRequired = $controller->config->get('requirelogin', 0);
+
+if ($loginRequired && $controllerRequested != 'overview')
+{
+	$juser = User::getRoot();
+
+	// Check if they're logged in
+	if ($juser->get('guest'))
+	{
+		$return = base64_encode($_SERVER['REQUEST_URI']);
+		// Redirect to the landing page
+		if ($controllerRequested == 'storefront')
+		{
+			App::redirect(
+				Route::url('index.php?option=com_storefront') . 'overview'
+			);
+		}
+		// Require login
+		App::redirect(
+			Route::url('index.php?option=com_users&view=login&return=' . $return),
+			'Please login to continue',
+			'warning'
+		);
+	}
+}
+
 $controller->execute();
 $controller->redirect();
