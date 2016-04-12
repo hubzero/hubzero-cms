@@ -774,15 +774,15 @@ class Groups extends Base
 
 		// Build the e-mail message
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
-		$eview = new \Hubzero\Component\View(array(
+		$eview = new \Hubzero\Mail\View(array(
 			'name'   => 'emails',
-			'layout' => 'saved'
+			'layout' => 'saved_plain'
 		));
 
 		$eview->option = $this->_option;
 		$eview->user   = User::getRoot();
 		$eview->group  = $group;
-		$message['plaintext'] = $eview->loadTemplate();
+		$message['plaintext'] = $eview->loadTemplate(false);
 		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 		$eview->setLayout('saved');
