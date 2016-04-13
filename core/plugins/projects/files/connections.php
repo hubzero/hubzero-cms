@@ -140,6 +140,7 @@ class connections
 
 		// Assign vars
 		$view->model       = $this->model;
+		$view->params      = $this->params;
 		$view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
 
 		// Load and return view content
