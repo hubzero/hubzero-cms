@@ -683,17 +683,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "0936609de1f2f12ed8068f30a6b7430d2be8e77e"
+                "reference": "aaf1c575c8085e2f3eff212d90ae8554febe58aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/adb16500baeb7447741c90f3fb83fc15c198a08b",
-                "reference": "0936609de1f2f12ed8068f30a6b7430d2be8e77e",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/aaf1c575c8085e2f3eff212d90ae8554febe58aa",
+                "reference": "aaf1c575c8085e2f3eff212d90ae8554febe58aa",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
-                "symfony/http-foundation": "2.5.5"
+                "symfony/http-foundation": "2.5.5",
+                "symfony/yaml": "2.5.*"
             },
             "require-dev": {
                 "hubzero/standards": "dev-master",
@@ -720,7 +721,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-03-28 15:57:21"
+            "time": "2016-04-13 11:18:45"
         },
         {
             "name": "hubzero/orcid-php",
@@ -2023,7 +2024,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/64d0c313c5fa6db3c113f577b47da45a0591ef4e",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/0b7e978fe5e1db01f799c73fbe32afeef001903b",
                 "reference": "ee88cd05073533b10678772fe954d042748393c3",
                 "shasum": ""
             },
