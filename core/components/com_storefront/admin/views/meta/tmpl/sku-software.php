@@ -4,7 +4,7 @@
 	<div class="input-wrap">
 		<label for="eula"><?php echo 'EULA (overrides product-level EULA)' ?>: </label><br />
 		<?php
-		$skuMeta = $this->row->getMeta();
+		$skuMeta = $this->skuMeta;
 
 		$eula = '';
 		if (isset($skuMeta['eula']) && !empty($skuMeta['eula']))

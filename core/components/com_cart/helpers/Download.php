@@ -86,6 +86,8 @@ class CartDownload
 			unset($filters['limit']);
 		}
 
+		$db = \App::get('db');
+
 		$sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
 		$sql .= ' LEFT JOIN `#__xprofiles` x ON (d.uId = x.uidNumber)';
 		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
@@ -97,6 +99,11 @@ class CartDownload
 		if (isset($filters['active']) && $filters['active'] == 1)
 		{
 			$sql .= " AND dActive = 1";
+		}
+
+		if (!empty($filters['skuRequested']))
+		{
+			$sql .= " AND s.sId = " . $db->quote($filters['skuRequested']);
 		}
 
 		if (isset($filters['sort']))
@@ -124,6 +131,88 @@ class CartDownload
 		}
 		else {
 			$sql .= " ORDER BY dDownloaded DESC";
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
+
+		$db->setQuery($sql);
+		$db->execute();
+		if ($rtrn == 'count')
+		{
+			return($db->getNumRows());
+		}
+		elseif ($rtrn == 'array')
+		{
+			return($db->loadAssocList());
+		}
+
+		$res = $db->loadObjectList();
+		return $res;
+	}
+
+	/**
+	 * Get a count or list of downloads by SKU
+	 *
+	 * @param      string  $rtrn    What data to return
+	 * @param      array   $filters Filters to apply to data retrieval
+	 * @return     mixed
+	 */
+	public static function getDownloadsSku($rtrn = 'list', $filters = array())
+	{
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'product';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir']  = 'ASC';
+		}
+
+		if (strtolower($rtrn) == 'count')
+		{
+			// no limit for count
+			unset($filters['limit']);
+		}
+
+		$sql  = 'SELECT p.pId, p.pName, s.sId, s.sSku, d.sId, COUNT(d.sId) AS downloaded FROM `#__cart_downloads` d';
+		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
+		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
+		$sql .= ' WHERE 1';
+		$sql .= ' GROUP BY d.sId';
+
+		// Filter by filters
+		//print_r($filters); die;
+		if (isset($filters['active']) && $filters['active'] == 1)
+		{
+			$sql .= " AND dActive = 1";
+		}
+
+		if (isset($filters['sort']))
+		{
+			if ($filters['sort'] == 'product')
+			{
+				$filters['sort'] = 'pName';
+			}
+
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+
+			if ($filters['sort'] == 'product')
+			{
+				$sql .= ', sSku';
+			}
 		}
 
 		if (isset($filters['limit']) && is_numeric($filters['limit']))

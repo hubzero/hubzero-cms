@@ -44,7 +44,7 @@ $controllerName = \Request::getCmd('controller', 'downloads');
 
 \Submenu::addEntry(
 		Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'),
-		\Route::url('index.php?option=com_storefront&controller=downloads'),
+		\Route::url('index.php?option=com_cart&controller=downloads'),
 		$controllerName == 'downloads'
 );
 
@@ -57,5 +57,6 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();
+
 $controller->execute();
 $controller->redirect();

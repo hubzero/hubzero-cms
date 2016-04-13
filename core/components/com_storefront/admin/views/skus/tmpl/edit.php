@@ -33,6 +33,15 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
+// get meta
+$skuMeta = $this->row->getMeta();
+
+$inventoryNotificationThreshold = '';
+if (isset($skuMeta['inventoryNotificationThreshold']) && !empty($skuMeta['inventoryNotificationThreshold']))
+{
+	$inventoryNotificationThreshold = $skuMeta['inventoryNotificationThreshold'];
+}
+
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_SKU') . ': ' . $text, 'storefront.png');
 if ($canDo->get('core.edit'))
 {
@@ -172,7 +181,7 @@ function submitbutton(pressbutton)
 		if ($this->pInfo->ptModel == 'software')
 		{
 			$view = new \Hubzero\Component\View(array('name'=>'meta', 'layout' => 'sku-software'));
-			$view->row = $this->row;
+			$view->skuMeta = $skuMeta;
 			$view->display();
 		}
 
@@ -260,7 +269,12 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap" data-hint="<?php echo 'Number of items available for sale in the inventory. Non-negative integer.'; ?>">
 				<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
-				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="100" value="<?php echo $this->row->getInventoryLevel(); ?>" />
+				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="10" value="<?php echo $this->row->getInventoryLevel(); ?>" />
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo 'Inventory threshold: when reached or below an email notification is sent to the admin on each inventory change'; ?>">
+				<label for="field-inventory-notification-threshold"><?php echo 'Inventory notification threshold'; ?>:</label>
+				<input type="text" name="fields[meta][inventoryNotificationThreshold]" id="field-inventory-notification-threshold" size="30" maxlength="10" value="<?php echo $inventoryNotificationThreshold; ?>" />
 			</div>
 		</fieldset>
 

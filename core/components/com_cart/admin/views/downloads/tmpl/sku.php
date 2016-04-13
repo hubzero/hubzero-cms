@@ -37,17 +37,11 @@ if ($canDo->get('core.admin'))
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state'))
-{
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
-}
 
-Toolbar::custom('download', 'download.png', '', 'Download CSV', false);
+Toolbar::custom('downloadSku', 'download.png', '', 'Download CSV', false);
 
-JToolBarHelper::spacer();
-JToolBarHelper::help('downloads');
+//JToolBarHelper::spacer();
+//JToolBarHelper::help('downloads');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -68,33 +62,11 @@ $this->view('_submenu')
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<?php
-	if (!empty($this->filters['skuRequested']))
-	{
-	?>
-	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			&nbsp;
-		</div>
-		<div class="col width-50 fltrt">
-			<select name="skuRequested" id="skuRequested" onchange="this.form.submit();">
-				<option value="0"<?php if ($this->filters['skuRequested'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('All SKUs'); ?></option>
-				<option value="<?php echo $this->filters['skuRequested']; ?>" selected="selected"><?php echo $this->skuRequestedName; ?></option>
-			</select>
-		</div>
-	</fieldset>
-	<?php
-	}
-	?>
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col">IP</th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_DOWNLOADED', 'downloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -118,25 +90,8 @@ $i = 0;
 foreach ($this->rows as $row)
 {
 	//print_r($row); die;
-	//$row =& $this->rows[$i];
-	switch ($row->dStatus)
-	{
-		case 1:
-			$class = 'publish';
-			$task = 'inactive';
-			$alt = Lang::txt('COM_CART_ACTIVE');
-			break;
-		case 0:
-			$class = 'unpublish';
-			$task = 'active';
-			$alt = Lang::txt('COM_CART_INACTIVE');
-			break;
-	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" onclick="isChecked(this.checked, this);" />
-				</td>
 				<td>
 					<?php
 					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '" target="_blank">' . $this->escape(stripslashes($row->pName)) . '</a>';
@@ -155,24 +110,10 @@ foreach ($this->rows as $row)
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>
-				<span><?php echo $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')'; ?></span>
-				</td>
-				<td>
-					<span><?php echo $this->escape(stripslashes($row->dDownloaded)); ?></span>
-				</td>
-				<td>
-					<span><?php echo $this->escape(stripslashes($row->dIp)); ?></span>
-				</td>
-				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->dId) ?>" title="<?php echo Lang::txt('COM_CART_SET_TASK', $task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php
+					$downloaded = '<a href="' . Route::url('index.php?option=com_cart&controller=downloads&task=display&sku=' . $row->sId) . '">' . $this->escape(stripslashes($row->downloaded)) . '</a>';
+					?>
+					<span><?php echo $downloaded; ?></span>
 				</td>
 			</tr>
 <?php
