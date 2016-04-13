@@ -40,6 +40,7 @@ $this->css()
 
 $layout = Request::getCmd('layout', 'list');
 $hasPrivate = false;
+$defaultName = $this->params->get('default_connection_name', '%s Master Repository');
 ?>
 
 <ul id="page_options" class="layout">
@@ -53,7 +54,7 @@ $hasPrivate = false;
 <div class="connections">
 	<a class="connection default <?php echo $layout; ?>" href="<?php echo Route::url($this->model->link('files') . '&action=browse'); ?>">
 		<img src="/core/plugins/filesystem/local/assets/img/icon.png" alt="">
-		<div class="name"><?php echo $this->model->get('title'); ?> Master Repository</div>
+		<div class="name"><?php echo Lang::txt($defaultName, $this->model->get('title')); ?></div>
 	</a>
 
 	<?php foreach ($this->connections as $connection) : ?>
