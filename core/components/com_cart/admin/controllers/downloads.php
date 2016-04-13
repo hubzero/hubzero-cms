@@ -32,8 +32,10 @@ namespace Components\Cart\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Cart\Helpers\CartDownload;
+use Components\Storefront\Models\Warehouse;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Controller class for knowledge base categories
@@ -41,7 +43,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
 class Downloads extends AdminController
 {
 	/**
-	 * Display a list of all categories
+	 * Display a list of all downloads
 	 *
 	 * @return  void
 	 */
@@ -50,37 +52,111 @@ class Downloads extends AdminController
 		// Get filters
 		$this->view->filters = array(
 			// Get sorting variables
-				'sort' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						'dDownloaded'
-				),
-				'sort_Dir' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						'ASC'
-				),
+			'sort' => Request::getState(
+					$this->_option . '.' . $this->_controller . '.sort',
+					'filter_order',
+					'dDownloaded'
+			),
+			'sort_Dir' => Request::getState(
+					$this->_option . '.' . $this->_controller . '.sortdir',
+					'filter_order_Dir',
+					'ASC'
+			),
 			// Get paging variables
-				'limit' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limit',
-						'limit',
-						Config::get('list_limit'),
-						'int'
-				),
-				'start' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limitstart',
-						'limitstart',
-						0,
-						'int'
-				)
+			'limit' => Request::getState(
+					$this->_option . '.' . $this->_controller . '.limit',
+					'limit',
+					Config::get('list_limit'),
+					'int'
+			),
+			'start' => Request::getState(
+					$this->_option . '.' . $this->_controller . '.limitstart',
+					'limitstart',
+					0,
+					'int'
+			),
+			'skuRequested' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.skuRequested',
+				'skuRequested',
+				0
+			),
 		);
-		//print_r($this->view->filters);
+
+		// Is a particular SKU requested?
+		$skuRequested = Request::getInt('sku', 0);
+		if (!$skuRequested && !empty($this->view->filters['skuRequested'])) {
+			$skuRequested = $this->view->filters['skuRequested'];
+		}
+		if ($skuRequested) {
+			$warehouse = new Warehouse();
+			$skuInfo = $warehouse->getSkuInfo($skuRequested);
+			$skuName = $skuInfo['info']->pName . ', ' . $skuInfo['info']->sSku;
+
+			$this->view->filters['skuRequested'] = $skuRequested;
+			$this->view->skuRequestedName = $skuName;
+		}
+
+		//print_r($this->view->filters); die;
+
+		// Clean filters -- reset to default if needed
+		$allowedSorting = array('product', 'dName', 'dDownloaded', 'dStatus');
+		if (!in_array($this->view->filters['sort'], $allowedSorting))
+		{
+			$this->view->filters['sort'] = 'dDownloaded';
+		}
 
 		// Get record count
 		$this->view->total = CartDownload::getDownloads('count', $this->view->filters);
 
 		// Get records
 		$this->view->rows = CartDownload::getDownloads('list', $this->view->filters);
+
+		// Output the HTML
+		//print_r($this->view); die;
+		$this->view->display();
+	}
+
+	/**
+	 * Display a list of SKUS with number of downloads
+	 *
+	 * @return  void
+	 */
+	public function skuTask()
+	{
+		// Get filters
+		$this->view->filters = array(
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'pName'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
+		);
+		//print_r($this->view->filters);
+
+		// Get record count
+		$this->view->total = CartDownload::getDownloadsSku('count', $this->view->filters);
+
+		// Get records
+		$this->view->rows = CartDownload::getDownloadsSku('list', $this->view->filters);
 
 		// Output the HTML
 		//print_r($this->view); die;
@@ -158,25 +234,25 @@ class Downloads extends AdminController
 	}
 
 	/**
-	 * Download CSV report
-	 *
-	 * @return     void
-	 */
+ * Download CSV report (default)
+ *
+ * @return     void
+ */
 	public function downloadTask()
 	{
 		// Get filters
 		$filters = array(
 			// Get sorting variables
-				'sort' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						'dDownloaded'
-				),
-				'sort_Dir' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						'ASC'
-				)
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'dDownloaded'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
 		$rowsRaw = CartDownload::getDownloads('array', $filters);
 		$date = date('d-m-Y');
@@ -204,6 +280,63 @@ class Downloads extends AdminController
 		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'IP', 'Status');
 		fputcsv($output, $row);
 		foreach ($rows as $row) {
+			fputcsv($output, $row);
+		}
+		fclose($output);
+		die;
+	}
+
+	/**
+	 * Download CSV report (default)
+	 *
+	 * @return     void
+	 */
+	public function downloadSkuTask()
+	{
+		// Get filters
+		$filters = array(
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'dDownloaded'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+		$rowsRaw = CartDownload::getDownloadsSku('array', $filters);
+
+		$rows = array();
+
+		foreach ($rowsRaw as $row)
+		{
+			$rows[] = array($row['pName'], $row['sSku'], $row['downloaded']);
+		}
+
+		$date = date('d-m-Y');
+
+		header("Content-Type: text/csv");
+		header("Content-Disposition: attachment; filename=cart-downloads-sku-" . $date . ".csv");
+		// Disable caching
+		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+		header("Pragma: no-cache"); // HTTP 1.0
+		header("Expires: 0"); // Proxies
+
+		$output = fopen("php://output", "w");
+		$row = array('Product', 'SKU', 'Downloaded (times)');
+		fputcsv($output, $row);
+		foreach ($rows as $row) {
+			// replace($row) empty vals with n/a
+			foreach ($row as $k => $val)
+			{
+				if (empty($val))
+				{
+					$row[$k] = 'n/a';
+				}
+			}
 			fputcsv($output, $row);
 		}
 		fclose($output);

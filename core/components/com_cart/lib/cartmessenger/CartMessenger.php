@@ -169,6 +169,9 @@ class CartMessenger
 		$summary .= "\n\nItems ordered:";
 		$summary .= "\n--------------------\n";
 
+		// Initialize low inventory notification
+		$lowInventoryNotifySummary = '';
+
 		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 		$warehouse = new \Components\Storefront\Models\Warehouse();
 
@@ -228,6 +231,26 @@ class CartMessenger
 			}
 
 			$summary .= "\n";
+
+			// Build low inventory level notifications if needed
+			if ($item['info']->sTrackInventory && $item['meta']['inventoryNotificationThreshold'])
+			{
+				// get the latest SKU info
+				$sInfo = $warehouse->getSkuInfo($item['info']->sId);
+
+				if ($sInfo['info']->sTrackInventory &&
+					$sInfo['meta']['inventoryNotificationThreshold'] &&
+					$sInfo['info']->sInventory <= $sInfo['meta']['inventoryNotificationThreshold']
+				)
+				{
+					$lowInventoryNotifySummary .= "\n\t" . $sInfo['info']->pName;
+					if (!empty($sInfo['info']->oName))
+					{
+						$lowInventoryNotifySummary .= ', ' . $sInfo['info']->oName;
+					}
+					$lowInventoryNotifySummary .= ': inventory level is ' . $sInfo['info']->sInventory;
+				}
+			}
 		}
 		//print_r($summary); die;
 
@@ -256,7 +279,7 @@ class CartMessenger
 
 		Event::trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
 
-		// Email notification extra
+		// Email notifications
 		$notifyTo = $params->get('sendNotificationTo');
 		if (!empty($notifyTo)) {
 
@@ -292,6 +315,40 @@ class CartMessenger
 			}
 			$message->setBody($plain);
 			$message->send();
+
+			// Send the low inventory notification if needed
+			if ($lowInventoryNotifySummary)
+			{
+				$lowInventoryNotifyEmail = 'Low inventory level notification from ' . Config::get('sitename') . "\n\n";
+				$lowInventoryNotifyEmail .= $lowInventoryNotifySummary;
+
+				// Plain text email
+				$eview = new \Hubzero\Component\View(array(
+					'name' => 'emails',
+					'layout' => 'order_notify'
+				));
+				$eview->message = $lowInventoryNotifySummary;
+
+				$plain = $eview->loadTemplate();
+				$plain = str_replace("\n", "\r\n", $plain);
+
+				$message = new \Hubzero\Mail\Message();
+				$message->setSubject('LOW INVENTORY NOTIFICATION: low inventory levels at ' . $from['name']);
+				$message->addFrom(
+					Config::get('mailfrom'),
+					Config::get('sitename')
+				);
+				$message->addPart($plain, 'text/plain');
+				foreach ($notifyTo as $email)
+				{
+					if (\Hubzero\Utility\Validate::email($email))
+					{
+						$message->addTo($email);
+					}
+				}
+				$message->setBody($plain);
+				$message->send();
+			}
 		}
 	}
 
