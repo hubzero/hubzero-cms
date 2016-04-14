@@ -71,7 +71,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 **/
 	const ACCESS_PUBLIC     = 1;
 	const ACCESS_REGISTERED = 2;
-	const ACCESS_PRIVATE    = 2;
+	const ACCESS_PRIVATE    = 4;
 
 	/**
 	 * The database model name
