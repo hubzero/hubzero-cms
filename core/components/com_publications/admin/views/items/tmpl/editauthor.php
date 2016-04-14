@@ -138,7 +138,7 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>: </label></td>
 						<td>
 							<input type="text" name="organization" value="<?php echo $this->author->organization; ?>" size="25" />
 						</td>

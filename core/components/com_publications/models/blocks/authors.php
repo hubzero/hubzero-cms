@@ -346,7 +346,7 @@ class Authors extends Base
 		$exists 	= 0;
 		$code 		= \Components\Projects\Helpers\Html::generateCode();
 
-		if (!$firstName || !$lastName || !$org)
+		if (!$firstName || !$lastName)
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
@@ -537,7 +537,7 @@ class Authors extends Base
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email = preg_match($regex, $email) ? $email : '';
 
-		if (!$firstName || !$lastName || !$org)
+		if (!$firstName || !$lastName)
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
