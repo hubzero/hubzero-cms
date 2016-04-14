@@ -91,10 +91,9 @@ class Orders extends AdminController
 		$this->view->filters['userInfo'] = true;
 		$this->view->rows = Cart::getAllTransactions($this->view->filters);
 
-		//print_r($this->view->rows); die;
-
 		// update with total and items ordered
-		foreach($this->view->rows as $r) {
+		foreach ($this->view->rows as $r)
+		{
 			$tInfo = Cart::getTransactionInfo($r->tId);
 			$r->tiTotal = $tInfo->tiTotal;
 			$tiItemsQty = sizeof(unserialize($tInfo->tiItems));
@@ -195,16 +194,15 @@ class Orders extends AdminController
 		// Get orders
 		$orders = CartOrders::getItemsOrdered('list', $this->view->filters);
 
-		foreach($orders as $order) {
+		foreach ($orders as $order)
+		{
 			$orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
 			$order->itemInfo = $orderItems[$order->sId];
 		}
 
 		$this->view->rows = $orders;
-		//print_r($this->view->rows); die;
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 
@@ -287,7 +285,8 @@ class Orders extends AdminController
 		// Get orders, request array to be returned
 		$orders = CartOrders::getItemsOrdered('list', $filters);
 
-		foreach($orders as $order) {
+		foreach ($orders as $order)
+		{
 			$orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
 			$order->itemInfo = $orderItems[$order->sId];
 		}
@@ -299,7 +298,6 @@ class Orders extends AdminController
 		foreach ($rowsRaw as $row)
 		{
 			$itemInfo = $row->itemInfo['info'];
-			//print_r($itemInfo); die;
 			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->Name, $row->uidNumber);
 		}
 
