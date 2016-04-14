@@ -31,19 +31,22 @@
 namespace Components\Cart\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Cart\Helpers\CartDownload;
+use Components\Cart\Helpers\CartOrders;
+use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
+use Hubzero\User\Profile;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Controller class for knowledge base categories
  */
-class Downloads extends AdminController
+class Orders extends AdminController
 {
 	/**
-	 * Display a list of all downloads
+	 * Display a list of all orders
 	 *
 	 * @return  void
 	 */
@@ -55,7 +58,7 @@ class Downloads extends AdminController
 			'sort' => Request::getState(
 					$this->_option . '.' . $this->_controller . '.sort',
 					'filter_order',
-					'dDownloaded'
+					'tLastUpdated'
 			),
 			'sort_Dir' => Request::getState(
 					$this->_option . '.' . $this->_controller . '.sortdir',
@@ -74,42 +77,29 @@ class Downloads extends AdminController
 					'limitstart',
 					0,
 					'int'
-			),
-			'skuRequested' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.skuRequested',
-				'skuRequested',
-				0
 			)
 		);
 
-		// Is a particular SKU requested?
-		$skuRequested = Request::getInt('sku', 0);
-		if (!$skuRequested && !empty($this->view->filters['skuRequested'])) {
-			$skuRequested = $this->view->filters['skuRequested'];
-		}
-		if ($skuRequested) {
-			$warehouse = new Warehouse();
-			$skuInfo = $warehouse->getSkuInfo($skuRequested);
-			$skuName = $skuInfo['info']->pName . ', ' . $skuInfo['info']->sSku;
-
-			$this->view->filters['skuRequested'] = $skuRequested;
-			$this->view->skuRequestedName = $skuName;
-		}
-
 		//print_r($this->view->filters); die;
 
-		// Clean filters -- reset to default if needed
-		$allowedSorting = array('product', 'dName', 'dDownloaded', 'dStatus');
-		if (!in_array($this->view->filters['sort'], $allowedSorting))
-		{
-			$this->view->filters['sort'] = 'dDownloaded';
-		}
-
 		// Get record count
-		$this->view->total = CartDownload::getDownloads('count', $this->view->filters);
+		$this->view->filters['count'] = true;
+		$this->view->total = Cart::getAllTransactions($this->view->filters);
 
 		// Get records
-		$this->view->rows = CartDownload::getDownloads('list', $this->view->filters);
+		$this->view->filters['count'] = false;
+		$this->view->filters['userInfo'] = true;
+		$this->view->rows = Cart::getAllTransactions($this->view->filters);
+
+		//print_r($this->view->rows); die;
+
+		// update with total and items ordered
+		foreach($this->view->rows as $r) {
+			$tInfo = Cart::getTransactionInfo($r->tId);
+			$r->tiTotal = $tInfo->tiTotal;
+			$tiItemsQty = sizeof(unserialize($tInfo->tiItems));
+			$r->tiItemsQty = $tiItemsQty;
+		}
 
 		// Output the HTML
 		//print_r($this->view); die;
@@ -117,11 +107,57 @@ class Downloads extends AdminController
 	}
 
 	/**
-	 * Display a list of SKUS with number of downloads
+	 * View the order
 	 *
 	 * @return  void
 	 */
-	public function skuTask()
+	public function viewTask()
+	{
+		// Incoming
+		$id = Request::getVar('id', array(0));
+
+		// Get transaction info
+		$tInfo = Cart::getTransactionInfo($id);
+
+		$tItems = unserialize($tInfo->tiItems);
+
+		foreach ($tItems as $item)
+		{
+			// Check if the product is still available
+			$warehouse = new Warehouse();
+			$skuInfo = $warehouse->getSkuInfo($item['info']->sId);
+			if (!$skuInfo)
+			{
+				// product no longer available
+				$item['info']->available = false;
+			}
+			else {
+				$item['info']->available = true;
+			}
+		}
+
+		$tInfo->tiItems = $tItems;
+
+		// Get user info
+		$userId = Cart::getCartUser($tInfo->crtId);
+		$user = Profile::getInstance($userId);
+		//print_r($user); die;
+
+		$this->view->user = $user;
+		$this->view->tInfo = $tInfo;
+		$this->view->tId = $id;
+
+		$this->view
+			->setLayout('view')
+			->display();
+	}
+
+	/**
+	 * Display a list of all orders
+	 *
+	 * @return  void
+	 */
+	public function itemsTask()
 	{
 		// Get filters
 		$this->view->filters = array(
@@ -129,7 +165,7 @@ class Downloads extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'pName'
+				'tLastUpdated'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
@@ -150,87 +186,26 @@ class Downloads extends AdminController
 				'int'
 			)
 		);
-		//print_r($this->view->filters);
 
-		// Get record count
-		$this->view->total = CartDownload::getDownloadsSku('count', $this->view->filters);
+		//print_r($this->view->filters); die;
 
-		// Get records
-		$this->view->rows = CartDownload::getDownloadsSku('list', $this->view->filters);
+		// Get orders count
+		$this->view->total = CartOrders::getItemsOrdered('count', $this->view->filters);
+
+		// Get orders
+		$orders = CartOrders::getItemsOrdered('list', $this->view->filters);
+
+		foreach($orders as $order) {
+			$orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
+			$order->itemInfo = $orderItems[$order->sId];
+		}
+
+		$this->view->rows = $orders;
+		//print_r($this->view->rows); die;
 
 		// Output the HTML
 		//print_r($this->view); die;
 		$this->view->display();
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return     void
-	 */
-	public function activeTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return     void
-	 */
-	public function inactiveTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
-	 * Set the state of an entry
-	 *
-	 * @param      integer $state State to set
-	 * @return     void
-	 */
-	public function stateTask($state = 0)
-	{
-		$ids = Request::getVar('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
-
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					($state == 1 ? Lang::txt('COM_CART_SELECT_ACTIVE') : Lang::txt('COM_CART_SELECT_INACTIVE')),
-					'error'
-			);
-			return;
-		}
-
-		// Save downloads
-		try {
-			CartDownload::setStatus($ids, $state);
-		}
-		catch (\Exception $e)
-		{
-			\Notify::error($e->getMessage());
-			return;
-		}
-
-		// Set message
-		switch ($state)
-		{
-			case '1':
-				$message = Lang::txt('COM_CART_ACTIVATED', count($ids));
-			break;
-			case '0':
-				$message = Lang::txt('COM_CART_DEACTIVATED', count($ids));
-			break;
-		}
-
-		// Redirect
-		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				$message
-		);
 	}
 
 	/**
@@ -254,30 +229,29 @@ class Downloads extends AdminController
 				'ASC'
 			)
 		);
-		$rowsRaw = CartDownload::getDownloads('array', $filters);
+
+		// request array to be returned
+		$filters['returnFormat'] = 'array';
+		$filters['userInfo'] = true;
+		$rowsRaw = Cart::getAllTransactions($filters);
 		$date = date('d-m-Y');
 
 		$rows = array();
 
 		foreach ($rowsRaw as $row)
 		{
-			$status = 'active';
-			if (!$row['dStatus'])
-			{
-				$status = 'inactive';
-			}
-			$rows[] = array($row['dDownloaded'], $row['pName'], $row['sSku'], $row['dName'], $row['username'], $row['uId'], $row['dIp'], $status);
+			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['Name'], $row['uidNumber']);
 		}
 
 		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=cart-downloads-" . $date . ".csv");
+		header("Content-Disposition: attachment; filename=cart-orders" . $date . ".csv");
 		// Disable caching
 		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 		header("Pragma: no-cache"); // HTTP 1.0
 		header("Expires: 0"); // Proxies
 
 		$output = fopen("php://output", "w");
-		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'IP', 'Status');
+		$row = array('Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)');
 		fputcsv($output, $row);
 		foreach ($rows as $row) {
 			fputcsv($output, $row);
@@ -287,11 +261,11 @@ class Downloads extends AdminController
 	}
 
 	/**
-	 * Download CSV report (SKU)
+	 * Download CSV report (default)
 	 *
 	 * @return     void
 	 */
-	public function downloadSkuTask()
+	public function downloadOrdersTask()
 	{
 		// Get filters
 		$filters = array(
@@ -307,36 +281,39 @@ class Downloads extends AdminController
 				'ASC'
 			)
 		);
-		$rowsRaw = CartDownload::getDownloadsSku('array', $filters);
+
+		//print_r($filters); die;
+
+		// Get orders, request array to be returned
+		$orders = CartOrders::getItemsOrdered('list', $filters);
+
+		foreach($orders as $order) {
+			$orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
+			$order->itemInfo = $orderItems[$order->sId];
+		}
+		$rowsRaw = $orders;
+		$date = date('d-m-Y');
 
 		$rows = array();
 
 		foreach ($rowsRaw as $row)
 		{
-			$rows[] = array($row['pName'], $row['sSku'], $row['downloaded']);
+			$itemInfo = $row->itemInfo['info'];
+			//print_r($itemInfo); die;
+			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->Name, $row->uidNumber);
 		}
 
-		$date = date('d-m-Y');
-
 		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=cart-downloads-sku-" . $date . ".csv");
+		header("Content-Disposition: attachment; filename=cart-items-ordered" . $date . ".csv");
 		// Disable caching
 		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 		header("Pragma: no-cache"); // HTTP 1.0
 		header("Expires: 0"); // Proxies
 
 		$output = fopen("php://output", "w");
-		$row = array('Product', 'SKU', 'Downloaded (times)');
+		$row = array('SKU ID', 'Product', 'QTY', 'Price', 'Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)');
 		fputcsv($output, $row);
 		foreach ($rows as $row) {
-			// replace($row) empty vals with n/a
-			foreach ($row as $k => $val)
-			{
-				if (empty($val))
-				{
-					$row[$k] = 'n/a';
-				}
-			}
 			fputcsv($output, $row);
 		}
 		fclose($output);

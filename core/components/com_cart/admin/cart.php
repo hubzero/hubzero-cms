@@ -48,6 +48,12 @@ $controllerName = \Request::getCmd('controller', 'downloads');
 		$controllerName == 'downloads'
 );
 
+\Submenu::addEntry(
+	Lang::txt('COM_CART_ORDERS'),
+	\Route::url('index.php?option=com_cart&controller=orders'),
+	$controllerName == 'orders'
+);
+
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'downloads';

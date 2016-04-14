@@ -29,19 +29,19 @@
 
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('download');
+$canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('orders');
 
-Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS') . ' by SKU', 'cart.png');
+Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'), 'cart.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
 
-Toolbar::custom('downloadSku', 'download.png', '', 'Download CSV', false);
+Toolbar::custom('download', 'download.png', '', 'Download CSV', false);
 
-//JToolBarHelper::spacer();
-//JToolBarHelper::help('downloads');
+JToolBarHelper::spacer();
+JToolBarHelper::help('downloads');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -65,8 +65,11 @@ $this->view('_submenu')
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_DOWNLOADED', 'downloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">Order total</th>
+				<th scope="col">Items ordered</th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -94,26 +97,21 @@ foreach ($this->rows as $row)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php
-					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '" target="_blank">' . $this->escape(stripslashes($row->pName)) . '</a>';
-					if (!stripslashes($row->pName))
-					{
-						$product = '<span class="missing">Product n/a</span>';
-					}
-					if (!stripslashes($row->sSku))
-					{
-						$product .= ', <span class="missing">SKU n/a</span>';
-					}
-					else {
-						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
-					}
+					$tId = '<a href="' . Route::url('index.php?option=com_cart&controller=orders&task=view&id=' . $row->tId) . '"">' . $this->escape(stripslashes($row->tId)) . '</a>';
 					?>
-					<span><?php echo $product; ?></span>
+					<span><?php echo $tId; ?></span>
 				</td>
 				<td>
-					<?php
-					$downloaded = '<a href="' . Route::url('index.php?option=com_cart&controller=downloads&task=display&sku=' . $row->sId) . '">' . $this->escape(stripslashes($row->downloaded)) . '</a>';
-					?>
-					<span><?php echo $downloaded; ?></span>
+					<span><?php echo $this->escape(stripslashes($row->tiTotal)); ?></span>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->tiItemsQty)); ?></span>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->tLastUpdated)); ?></span>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->Name)); ?></span>
 				</td>
 			</tr>
 <?php
@@ -127,7 +125,6 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 

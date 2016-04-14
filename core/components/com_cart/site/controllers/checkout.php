@@ -214,7 +214,7 @@ class Checkout extends ComponentController
 				// Save item's meta
 				$itemMeta = new \stdClass();
 				$itemMeta->eulaAccepted = true;
-				$itemMeta->machinesInstalled = 'n/a';
+				//$itemMeta->machinesInstalled = 'n/a';
 				$cart->setTransactionItemMeta($sId, json_encode($itemMeta));
 
 				// Mark this step as completed

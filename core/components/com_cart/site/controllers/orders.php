@@ -82,10 +82,10 @@ class Orders extends ComponentController
 		$cart = new CurrentCart();
 
 		// Get all completed transactions count
-		$this->view->total = $cart->getAllTransactions(array('count' => true));
+		$this->view->total = $cart->getTransactions(array('count' => true));
 
 		// Get all completed transactions
-		$transactions = $cart->getAllTransactions($this->view->filters);
+		$transactions = $cart->getTransactions($this->view->filters);
 
 		// Get transactions' info
 		if ($transactions)
