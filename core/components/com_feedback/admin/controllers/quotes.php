@@ -108,6 +108,7 @@ class Quotes extends AdminController
 	/**
 	 * Edit an entry
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -219,9 +220,7 @@ class Quotes extends AdminController
 			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -241,13 +240,12 @@ class Quotes extends AdminController
 		// Check for an ID
 		if (!count($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'));
+
+			return $this->cancelTask();
 		}
+
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
@@ -259,12 +257,16 @@ class Quotes extends AdminController
 				Notify::error($row->getError());
 				continue;
 			}
+
+			$i++;
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_FEEDBACK_REMOVED')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_FEEDBACK_REMOVED'));
+		}
+
+		$this->cancelTask();
 	}
 }
