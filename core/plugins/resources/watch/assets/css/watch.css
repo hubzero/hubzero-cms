@@ -1,0 +1,31 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/watch/assets/css/watch.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Resources Watch plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+.item-watch {
+	background: rgba(0, 0, 0, 0.05);
+	padding: 1em;
+}
+.item-watch p:first-child {
+	margin-top: 0;
+}
+.item-watch p:last-child {
+	margin-bottom: 0;
+}
+.item-watch.watching {
+	background-color: #f8ffff;
+}
+.item-watch .btn {
+	display: block;
+}

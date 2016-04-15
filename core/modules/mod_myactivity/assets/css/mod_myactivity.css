@@ -1,0 +1,105 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_myactivity/assets/css/mod_myactivity.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mycourses
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .compactlist li span {
+		margin-left: 0;
+	}
+	div.draggable .compactlist li.activity {
+		position: relative;
+		word-wrap: break-word;
+		padding-right: 0.6em;
+	}
+	div.draggable .compactlist li.activity span {
+		position: static;
+	}
+	div.draggable .compactlist li.activity:after { 
+		content: "\f056";
+		font-size: 1.4em;
+		line-height: 1;
+		display: block;
+		width: 1em;
+		height: 1em;
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-family: "Fontcons";
+		color: #ccc;
+	}
+	div.draggable .compactlist li.activity:hover:after {
+		color: #999;
+	}
+	div.draggable .compactlist li.activity.created:after {
+		content: "\271A";
+	}
+	div.draggable .compactlist li.activity.updated:after {
+		content: "\270E";
+	}
+	div.draggable .compactlist li.activity.deleted:after {
+		content: "\f014";
+	}
+	div.draggable .compactlist li.activity.published:after {
+		content: "\2714";
+	}
+	div.draggable .compactlist li.activity.unpublished:after {
+		content: "\2298";
+	}
+	div.draggable .compactlist li.activity.submitted:after {
+		content: "\f090";
+	}
+	div.draggable .compactlist li.activity.subscribed:after {
+		content: "\f06e";
+	}
+	div.draggable .compactlist li.activity.unsubscribed:after {
+		content: "\f070";
+	}
+	div.draggable .compactlist li.activity.voted:after {
+		content: "\f087";
+	}
+	div.draggable .compactlist li.activity.reviewed:after {
+		content: "\2605";
+	}
+	div.draggable .compactlist li.activity.joined:after {
+		content: "\f042";
+	}
+	div.draggable .compactlist li.activity.downloaded:after {
+		content: "\f019";
+	}
+	div.draggable .compactlist li.activity.notified:after {
+		content: "\f095";
+	}
+	div.draggable .compactlist li.activity.emailed:after {
+		content: "\2709";
+	}
+	div.draggable .compactlist li.activity.flagged:after {
+		content: "\2691";
+	}
+	div.draggable .compactlist li.activity.promoted:after {
+		content: "\f0a6";
+	}
+	div.draggable .compactlist li.activity.demoted:after {
+		content: "\f0a7";
+	}
+
+	div.draggable .compactlist li.activity span.activity-actor {
+		margin-right: 5em;
+	}
+	div.draggable .compactlist li.activity span.activity-time {
+		position: absolute;
+		top: 0.5em;
+		right: 0.5em;
+	}
+
+	.mod_myactivity .module-content .compactlist li a {
+		margin-right: 0;
+	}

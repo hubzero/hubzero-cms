@@ -1,0 +1,163 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/groups/activity/activity.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Group Activity plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#page_content.group_activity {
+		padding: 0;
+	}
+
+	.filters {
+		background-color: #fff;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		padding: 30px;
+	}
+	.filters h3 {
+		margin: 0;
+		padding: 0;
+	}
+
+	.activities ul {
+		list-style: none;
+		margin: 30px;
+		padding: 0;
+	}
+	.activities ul li {
+		padding: 0;
+		margin: 0 0 2px 0;
+		position: relative;
+		color: #666;
+		display: block;
+	}
+	.activities ul li .activity {
+		background-color: #fff;
+		padding: 1em 1em 1em 4em;
+		position: relative;
+	}
+	.activities ul li .activity:before {
+		position: absolute;
+		top: 1.2em;
+		left: 1em;
+		content: "";
+		font-family: "Fontcons";
+		color: #bbb;
+		font-size: 1.5em;
+	}
+	.activities ul li .activity.created:before {
+		content: "\271A";
+	}
+	.activities ul li .activity.updated:before {
+		content: "\270E";
+	}
+	.activities ul li .activity.deleted:before {
+		content: "\f014";
+	}
+	.activities ul li .activity.published:before {
+		content: "\2714";
+	}
+	.activities ul li .activity.unpublished:before {
+		content: "\2298";
+	}
+	.activities ul li .activity.submitted:before {
+		content: "\f090";
+	}
+	.activities ul li .activity.subscribed:before {
+		content: "\f06e";
+	}
+	.activities ul li .activity.unsubscribed:before {
+		content: "\f070";
+	}
+	.activities ul li .activity.voted:before {
+		content: "\f087";
+	}
+	.activities ul li .activity.reviewed:before {
+		content: "\2605";
+	}
+	.activities ul li .activity.joined:before {
+		content: "\f042";
+	}
+	.activities ul li .activity.downloaded:before {
+		content: "\f019";
+	}
+	.activities ul li .activity.notified:before {
+		content: "\f095";
+	}
+	.activities ul li .activity.emailed:before {
+		content: "\2709";
+	}
+	.activities ul li .activity.flagged:before {
+		content: "\2691";
+	}
+	.activities ul li .activity.promoted:before {
+		content: "\f0a6";
+	}
+	.activities ul li .activity.demoted:before {
+		content: "\f0a7";
+	}
+	.activities .activity-event {
+		font-weight: 400;
+	}
+	.activities .activity-details {
+		display: block;
+		margin: 0;
+		font-size: 0.85em;
+		color: #999;
+	}
+	.activities .activity-category {
+		display: none;
+	}
+	.activities .activity-details span {
+		margin-right: 1em;
+	}
+
+	/*.activity-actor {
+		font-weight: bold;
+	}*/
+	.activity-time {
+		position: absolute;
+		top: 1em;
+		right: 1em;
+	}
+
+	.activities ul li .com_support:before {
+		content: "\f055";
+	}
+	.activities ul li .com_answers:before {
+		content: "\f0e6";
+	}
+	.activities ul li .com_projects:before {
+		content: "\f03f";
+	}
+	.activities .selector {
+		margin-top: 0;
+	}
+
+	.activities .img-link {
+		float: left;
+		margin-top: 0.4em;
+		margin-right: 1em;
+		width: 2.4em;
+		border: none;
+	}
+	.activities .img-link img {
+		width: 2.4em;
+		height: 2.4em;
+		border-radius: 0.25em;
+	}
+
+	.img-link,
+	.activity-action,
+	.activity-channel,
+	.activity-context {
+		display: none;
+	}
