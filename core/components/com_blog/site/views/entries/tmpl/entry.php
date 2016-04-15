@@ -123,10 +123,17 @@ $first = $this->archive->entries(array(
 							<?php echo $this->row->published('time'); ?>
 						</time>
 					</dd>
-				<?php if ($this->row->get('allow_comments')) { ?>
+				<?php if ($this->row->get('allow_comments')) {
+					$comments = $this->row->comments()
+						->whereIn('state', array(
+							Components\Blog\Models\Comment::STATE_PUBLISHED,
+							Components\Blog\Models\Comment::STATE_FLAGGED
+						))
+						->count();
+					?>
 					<dd class="comments">
 						<a href="<?php echo Route::url($this->row->link('comments')); ?>">
-							<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $this->row->comments()->whereIn('state', array(1, 3))->count()); ?>
+							<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $comments); ?>
 						</a>
 					</dd>
 				<?php } else { ?>
@@ -301,10 +308,14 @@ $first = $this->archive->entries(array(
 
 		<?php
 		$comments = $this->row->comments()
-			->whereIn('state', array(1, 3))
+			->whereIn('state', array(
+				Components\Blog\Models\Comment::STATE_PUBLISHED,
+				Components\Blog\Models\Comment::STATE_FLAGGED
+			))
 			->whereEquals('parent', 0)
 			->ordered()
 			->rows();
+
 		if ($comments->count() > 0) { ?>
 			<?php
 				$this->view('_list')
@@ -342,7 +353,14 @@ $first = $this->archive->entries(array(
 				</p>
 				<fieldset>
 				<?php
-				$replyto = $this->row->comments()->whereEquals('id', Request::getInt('reply', 0))->row(); //$this->row->comment(Request::getInt('reply', 0));
+				$replyto = $this->row->comments()
+					->whereEquals('id', Request::getInt('reply', 0))
+					->whereIn('state', array(
+						Components\Blog\Models\Comment::STATE_PUBLISHED,
+						Components\Blog\Models\Comment::STATE_FLAGGED
+					))
+					->row();
+
 				if (!User::isGuest())
 				{
 					if ($replyto->get('id'))

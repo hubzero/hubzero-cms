@@ -185,15 +185,23 @@ else
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3))
 		{
+			$replies = $this->comment->replies()
+				->whereIn('state', array(
+					Components\Blog\Models\Comment::STATE_PUBLISHED,
+					Components\Blog\Models\Comment::STATE_FLAGGED
+				))
+				->ordered()
+				->rows();
+
 			$this->view('_list')
-			     ->set('parent', $this->comment->get('id'))
-			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->ordered()->rows())
-			     ->set('config', $this->config)
-			     ->set('depth', $this->depth)
-			     ->set('cls', $cls)
-			     ->set('base', $this->base)
-			     ->display();
+				->set('parent', $this->comment->get('id'))
+				->set('option', $this->option)
+				->set('comments', $replies)
+				->set('config', $this->config)
+				->set('depth', $this->depth)
+				->set('cls', $cls)
+				->set('base', $this->base)
+				->display();
 		}
 		?>
 	</li>

@@ -37,10 +37,15 @@ use Lang;
 use Date;
 
 /**
- * Knowledgebase model for a comment
+ * Blog model for a comment
  */
 class Comment extends Relational
 {
+	/**
+	 * Database state constants
+	 */
+	const STATE_FLAGGED = 3;
+
 	/**
 	 * The table namespace
 	 *
@@ -154,9 +159,9 @@ class Comment extends Relational
 	}
 
 	/**
-	 * Defines a belongs to one relationship between article and user
+	 * Get created_by user model
 	 *
-	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object
 	 */
 	public function creator()
 	{
@@ -241,4 +246,3 @@ class Comment extends Relational
 		return parent::destroy();
 	}
 }
-

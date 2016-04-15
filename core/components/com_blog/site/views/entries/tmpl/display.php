@@ -199,7 +199,10 @@ $rows = $this->archive->entries($this->filters)
 									<?php if ($row->get('allow_comments') == 1) { ?>
 										<dd class="comments">
 											<a href="<?php echo Route::url($row->link('comments')); ?>">
-												<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->comments()->whereIn('state', array(1, 3))->count()); ?>
+												<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->comments()->whereIn('state', array(
+													Components\Blog\Models\Comment::STATE_PUBLISHED,
+													Components\Blog\Models\Comment::STATE_FLAGGED
+												))->count()); ?>
 											</a>
 										</dd>
 									<?php } else { ?>
