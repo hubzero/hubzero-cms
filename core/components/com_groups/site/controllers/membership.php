@@ -275,7 +275,7 @@ class Membership extends Base
 				if (\Components\Members\Helpers\Utility::validemail($l))
 				{
 					// Try to find an account that might match this e-mail
-					$this->database->setQuery("SELECT u.id FROM `#__users` AS u WHERE u.email='" . $l . "' OR u.email LIKE '" . $l . "\'%' LIMIT 1;");
+					$this->database->setQuery("SELECT u.id FROM `#__users` AS u WHERE u.email=" . $this->database->quote($l) . " OR u.email LIKE " . $this->database->quote($l . '%') . " LIMIT 1;");
 					$uid = $this->database->loadResult();
 					if (!$this->database->query())
 					{
@@ -349,30 +349,43 @@ class Membership extends Base
 		));
 
 		// Build the "from" info for e-mails
-		$from = array();
-		$from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
-		$from['email'] = Config::get('mailfrom');
+		$from = array(
+			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+			'email' => Config::get('mailfrom')
+		);
 
 		// Message subject
 		$subject = Lang::txt('COM_GROUPS_INVITE_EMAIL_SUBJECT', $this->view->group->get('cn'));
 
 		// Message body for HUB user
-		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'invite'));
+		$eview = new \Hubzero\Mail\View(array(
+			'name'   => 'emails',
+			'layout' => 'invite_plain'
+		));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
 		$eview->user     = User::getRoot();
 		$eview->group    = $this->view->group;
 		$eview->msg      = $msg;
+
+		$plain = $eview->loadTemplate(false);
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		$eview->setLayout('invite');
+
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
 		// build array of group invites to send
 		$groupInvitees = array();
+		$activity = array();
 		foreach ($invitees as $invitee)
 		{
 			if ($profile = \Hubzero\User\Profile::getInstance($invitee))
 			{
 				$groupInvitees[$profile->get('email')] = $profile->get('name');
+
+				$activity[] = $profile->get('name')  . '(' . $profile->get('email') . ')';
 			}
 		}
 
@@ -389,21 +402,80 @@ class Membership extends Base
 					->addHeader('X-Mailer', 'PHP/' . phpversion())
 					->addHeader('X-Component', 'com_groups')
 					->addHeader('X-Component-Object', 'group_invite')
-					->addPart($html, 'text/plain')
+					->addPart($plain, 'text/plain')
+					->addPart($html, 'text/html')
 					->send();
 		}
+
+		// Log activity
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
+
+		foreach ($invitees as $invitee)
+		{
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'invited',
+					'scope'       => 'group',
+					'scope_id'    => $this->view->group->get('gidNumber'),
+					'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_INVITED', '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
+					'details'     => array(
+						'title'     => $this->view->group->get('description'),
+						'url'       => $url,
+						'cn'        => $this->view->group->get('cn'),
+						'gidNumber' => $this->view->group->get('gidNumber')
+					)
+				],
+				'recipients' => array(
+					['user', $invitee]
+				)
+			]);
+		}
+
+		$recipients = array(
+			['group', $this->view->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->view->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'invited',
+				'scope'       => 'group',
+				'scope_id'    => $this->view->group->get('gidNumber'),
+				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USERS_INVITED', $activity, '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
+				'details'     => array(
+					'title'     => $this->view->group->get('description'),
+					'url'       => $url,
+					'cn'        => $this->view->group->get('cn'),
+					'gidNumber' => $this->view->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// send message to users invited via email
 		foreach ($inviteemails as $mbr)
 		{
 			// Message body for HUB user
-			$eview2 = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'inviteemail'));
+			$eview2 = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'inviteemail'
+			));
 			$eview2->option   = $this->_option;
 			$eview2->sitename = Config::get('sitename');
 			$eview2->user     = User::getRoot();
 			$eview2->group    = $this->view->group;
 			$eview2->msg      = $msg;
 			$eview2->token    = $mbr['token'];
+
+			$plain = $eview2->loadTemplate(false);
+			$plain = str_replace("\n", "\r\n", $plain);
+
+			$eview2->setLayout('inviteemail');
+
 			$html = $eview2->loadTemplate();
 			$html = str_replace("\n", "\r\n", $html);
 
@@ -417,7 +489,8 @@ class Membership extends Base
 					->addHeader('X-Mailer', 'PHP/' . phpversion())
 					->addHeader('X-Component', 'com_groups')
 					->addHeader('X-Component-Object', 'group_inviteemail')
-					->addPart($html, 'text/plain')
+					->addPart($plain, 'text/plain')
+					->addPart($html, 'text/html')
 					->send();
 		}
 
