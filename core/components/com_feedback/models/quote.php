@@ -32,6 +32,7 @@
 namespace Components\Feedback\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\User\Profile;
 use Filesystem;
 use Lang;
 use Date;
@@ -81,6 +82,25 @@ class Quote extends Relational
 	protected $rules = array(
 		'quote' => 'notempty'
 	);
+
+	/**
+	 * Return user
+	 *
+	 * @return  object
+	 */
+	public function user()
+	{
+		$user = null;
+
+		if ($this->get('user_id'))
+		{
+			$user = Profile::getInstance($this->get('user_id'));
+		}
+
+		$user = $user ?: new Profile();
+
+		return $user;
+	}
 
 	/**
 	 * Defines a belongs to one relationship

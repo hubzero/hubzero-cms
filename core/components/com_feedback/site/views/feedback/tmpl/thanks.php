@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -55,19 +56,19 @@ $this->css();
 			<?php } ?>
 		<?php } ?>
 
-		<blockquote cite="<?php echo $this->escape($this->row->fullname); ?>">
-			<?php echo $this->escape(stripslashes($this->row->quote)); ?>
-		</div>
+		<blockquote cite="<?php echo $this->escape($this->row->get('fullname')); ?>">
+			<?php echo $this->escape(stripslashes($this->row->get('quote'))); ?>
+		</blockquote>
+
 		<p class="cite">
 			<?php
-			$profile = \Hubzero\User\Profile::getInstance($this->row->user_id);
-			if ($profile)
+			if ($this->row->get('user_id'))
 			{
-				echo '<img src="' . $profile->getPicture() . '" alt="' . $this->escape($this->row->fullname) . '" width="30" height="30" />';
+				echo '<img src="' . $this->row->user()->getPicture() . '" alt="' . $this->escape($this->row->get('fullname')) . '" width="30" height="30" />';
 			}
 			?>
-			<cite><?php echo $this->escape($this->row->fullname); ?></cite><br />
-			<?php echo $this->escape($this->row->org); ?>
+			<cite><?php echo $this->escape($this->row->get('fullname')); ?></cite><br />
+			<?php echo $this->escape($this->row->get('org')); ?>
 		</p>
 	</div>
 </section><!-- / .main section -->

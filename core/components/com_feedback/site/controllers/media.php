@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -62,23 +61,21 @@ class Media extends SiteController
 	/**
 	 * Upload an image
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-			$this->displayTask('', 0);
-			return;
+			return $this->displayTask('', 0);
 		}
 
 		// Incoming
 		if (!($id = Request::getInt('id', 0)))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_ID'));
-			$this->displayTask('', $id);
-			return;
+			return $this->displayTask('', $id);
 		}
 
 		// Incoming file
@@ -86,8 +83,7 @@ class Media extends SiteController
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_FILE'));
-			$this->displayTask('', $id);
-			return;
+			return $this->displayTask('', $id);
 		}
 
 		// Build upload path
@@ -98,8 +94,7 @@ class Media extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask('', $id);
-				return;
+				return $this->displayTask('', $id);
 			}
 		}
 
@@ -123,8 +118,7 @@ class Media extends SiteController
 				if (!Filesystem::delete($path . DS . $curfile))
 				{
 					$this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
-					$this->displayTask($file['name'], $id);
-					return;
+					return $this->displayTask($file['name'], $id);
 				}
 			}
 
@@ -138,38 +132,34 @@ class Media extends SiteController
 	/**
 	 * Delete an image
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-			$this->displayTask('', 0);
-			return;
+			return $this->displayTask('', 0);
 		}
 
 		// Incoming member ID
 		if (!($id = Request::getInt('id', 0)))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_ID'));
-			$this->displayTask('', $id);
-			return;
+			return $this->displayTask('', $id);
 		}
 
 		if (User::get('id') != $id)
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-			$this->displayTask('', User::get('id'));
-			return;
+			return $this->displayTask('', User::get('id'));
 		}
 
 		// Incoming file
 		if (!($file = Request::getVar('file', '')))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_FILE'));
-			$this->displayTask($file, $id);
-			return;
+			return $this->displayTask($file, $id);
 		}
 
 		$file = basename($file);
@@ -187,8 +177,7 @@ class Media extends SiteController
 			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
-				$this->displayTask($file, $id);
-				return;
+				return $this->displayTask($file, $id);
 			}
 
 			$file = '';
@@ -201,9 +190,9 @@ class Media extends SiteController
 	/**
 	 * Display a form for uploading an image and any data for current uploaded image
 	 *
-	 * @param      string  $file Image name
-	 * @param      integer $id   User ID
-	 * @return     void
+	 * @param   string   $file  Image name
+	 * @param   integer  $id    User ID
+	 * @return  void
 	 */
 	public function displayTask($file='', $id=0)
 	{
@@ -215,30 +204,22 @@ class Media extends SiteController
 		$dir = String::pad($id);
 
 		// Do we have a file or do we need to get one?
-		$file = ($file)
-			  ? $file
-			  : Request::getVar('file', '');
+		$file = $file ?: Request::getVar('file', '');
 
 		// Build the directory path
 		$path = $this->path . DS . $dir;
 
-		// Output form with error messages
-		$this->view->title     = $this->_title;
-		$this->view->webpath   = $this->config->get('uploadpath', '/site/quotes');
-		$this->view->default_picture = $this->config->get('defaultpic', '/core/components/com_feedback/site/assets/img/contributor.gif');
-		$this->view->path      = $dir;
-		$this->view->file      = $file;
-		$this->view->file_path = $path;
-		$this->view->id        = $id;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
+		// Output view
 		$this->view
+			->set('title', $this->_title)
+			->set('webpath', $this->config->get('uploadpath', '/site/quotes'))
+			->set('default_picture', $this->config->get('defaultpic', '/core/components/com_feedback/site/assets/img/contributor.gif'))
+			->set('path', $dir)
+			->set('file', $file)
+			->set('file_path', $path)
+			->set('id', $id)
+			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
 	}
 }
-

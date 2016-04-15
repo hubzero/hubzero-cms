@@ -52,7 +52,7 @@ $base = rtrim(Request::base(true), '/');
 
 <section class="main section">
 	<div class="section-inner">
-		<?php if (count($this->quotes) > 0) { ?>
+		<?php if ($this->quotes->count() > 0) { ?>
 			<?php foreach ($this->quotes as $quote) { ?>
 				<div class="quote" id="<?php echo $quote->get('id'); ?>">
 					<div class="grid">
@@ -64,9 +64,8 @@ $base = rtrim(Request::base(true), '/');
 									$quote->set('short_quote', $quote->get('quote'));
 								}
 								$quote->set('org', str_replace('<br>', '<br />', $quote->get('org')));
-								$user = $quote->get('user_id') ? \Hubzero\User\Profile::getInstance($quote->get('user_id')) : new \Hubzero\User\Profile();
-								$userPicture = $user ? $user->getPicture() : $user->getPicture(true);
-								echo '<img src="' . $userPicture . '" alt="' . $this->escape($user->get('name')) . '" width="50" height="50" /><br />';
+								$user = $quote->user();
+								echo '<img src="' . $user->getPicture() . '" alt="' . $this->escape($user->get('name')) . '" width="50" height="50" /><br />';
 								?>
 								<cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></cite>
 								<br /><?php echo $this->escape(stripslashes($quote->get('org'))); ?>

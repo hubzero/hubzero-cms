@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -113,26 +112,24 @@ class Feedback extends SiteController
 	public function displayTask()
 	{
 		// Check if wishlistcomponent entry is there
-		$this->view->wishlist = Component::isEnabled('com_wishlist', true);
+		$wishlist = Component::isEnabled('com_wishlist', true);
 
 		// Check if poll component entry is there
-		$this->view->poll = Component::isEnabled('com_poll', true);
+		$poll = Component::isEnabled('com_poll', true);
 
 		// Set page title
 		$this->_buildTitle();
-		$this->view->title = $this->_title;
 
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Set any messages
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->set('poll', $poll)
+			->set('wishlist', $wishlist)
+			->set('title', $this->_title)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -143,15 +140,23 @@ class Feedback extends SiteController
 	public function quotesTask()
 	{
 		// Get quotes
-		$this->view->quotes  = Quote::all()->whereEquals('notable_quote', 1);
-		$this->view->quoteId = Request::getInt('quoteid');
+		$quotes = Quote::all()
+			->whereEquals('notable_quote', 1)
+			->ordered()
+			->rows();
 
-		$this->view->display();
+		$quoteId = Request::getInt('quoteid');
+
+		$this->view
+			->set('quotes', $quotes)
+			->set('quoteId', $quoteId)
+			->display();
 	}
 
 	/**
 	 * Show a form for sending a success story
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function storyTask($row=null)
@@ -164,7 +169,6 @@ class Feedback extends SiteController
 				Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
 				'warning'
 			);
-			return;
 		}
 
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
@@ -174,37 +178,35 @@ class Feedback extends SiteController
 		}
 
 		// Incoming
-		$this->view->quote = array(
+		$quote = array(
 			'long'  => Request::getVar('quote', '', 'post'),
 			'short' => Request::getVar('short_quote', '', 'post')
 		);
 
 		// Set page title
 		$this->_buildTitle();
-		$this->view->title = $this->_title;
 
 		// Set the pathway
 		$this->_buildPathway();
 
-		$this->view->user = Profile::getInstance(User::get('id'));
+		// Get the curent user's profile
+		$user = Profile::getInstance(User::get('id'));
 
+		// Create the object if we weren't passed one
 		if (!is_object($row))
 		{
 			$row = Quote::oneOrNew(0);
-			$row->set('org', $this->view->user->get('organization'));
-			$row->set('fullname', $this->view->user->get('name'));
-		}
-
-		$this->view->row = $row;
-
-		// Set error messages
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row->set('org', $user->get('organization'));
+			$row->set('fullname', $user->get('name'));
 		}
 
 		// Output HTML
 		$this->view
+			->set('title', $this->_title)
+			->set('quote', $quote)
+			->set('row', $row)
+			->set('user', $user)
+			->setErrors($this->getErrors())
 			->setLayout('story')
 			->display();
 	}
@@ -218,19 +220,15 @@ class Feedback extends SiteController
 	{
 		// Set page title
 		$this->_buildTitle();
-		$this->view->title = $this->_title;
 
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Set error messages
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->set('title', $this->_title)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -242,10 +240,12 @@ class Feedback extends SiteController
 	{
 		if (User::isGuest())
 		{
+			$here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
+				Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
+				'warning'
 			);
-			return;
 		}
 
 		Request::checkToken();
@@ -253,8 +253,7 @@ class Feedback extends SiteController
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$fields['user_id']   = User::get('id');
-		//$fields['useremail'] = User::get('email');
+		$fields['user_id'] = User::get('id');
 
 		// Initiate class and bind posted items to database fields
 		$row = Quote::oneOrNew(0)->set($fields);
@@ -263,24 +262,21 @@ class Feedback extends SiteController
 		if (!$row->get('quote'))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_STORY'));
-			$this->storyTask($row);
-			return;
+			return $this->storyTask($row);
 		}
 
 		// Check for an author
 		if (!$row->get('fullname'))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_AUTHOR'));
-			$this->storyTask($row);
-			return;
+			return $this->storyTask($row);
 		}
 
 		// Check for an organization
 		if (!$row->get('org'))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_ORGANIZATION'));
-			$this->storyTask($row);
-			return;
+			return $this->storyTask($row);
 		}
 
 		// Code cleaner for xhtml transitional compliance
@@ -292,11 +288,9 @@ class Feedback extends SiteController
 		if (!$row->save())
 		{
 			$this->setError($row->getError());
-			$this->storyTask($row);
-			return;
+			return $this->storyTask($row);
 		}
 
-		//$files = $_FILES;
 		$addedPictures = array();
 
 		$path = $row->filespace() . DS . $row->get('id');
@@ -343,29 +337,21 @@ class Feedback extends SiteController
 			Filesystem::deleteDirectory($tempDir);
 		}
 
-		$this->view->addedPictures = $addedPictures;
-		$this->view->path   = substr($row->filespace(), strlen(PATH_ROOT)) . DS . $row->id;
-
-		// Output HTML
-		$this->view->user   = User::getRoot();
-		$this->view->row    = $row;
-		$this->view->config = $this->config;
+		$path = substr($row->filespace(), strlen(PATH_ROOT)) . DS . $row->get('id');
 
 		// Set page title
 		$this->_buildTitle();
-		$this->view->title = $this->_title;
 
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Set error messages
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output HTML
 		$this->view
+			->set('row', $row)
+			->set('path', $path)
+			->set('addedPictures', $addedPictures)
+			->set('title', $this->_title)
+			->setErrors($this->getErrors())
 			->setLayout('thanks')
 			->display();
 	}
@@ -516,4 +502,3 @@ class Feedback extends SiteController
 		return Config::get('tmp_path', PATH_APP . DS . '/tmp') . DS . 'feedback';
 	}
 }
-

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -79,28 +78,28 @@ $this->css('introduction.css', 'system')
 					</div>
 				</div><!-- / .col span6 omega -->
 			</div><!-- / .grid -->
-		<?php if ($this->wishlist || $this->xpoll) { ?>
-			<div class="grid">
-				<div class="col span6">
-				<?php if ($this->wishlist) { ?>
-					<div class="wish">
-						<h3><a href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_HEADER'); ?></a></h3>
-						<p><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_DESCRIPTION'); ?></p>
-						<p><a class="more btn" href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_BUTTON'); ?></a></p>
-					</div>
-				<?php } ?>
-				</div><!-- / .col span6 -->
-				<div class="col span6 omega">
-				<?php if ($this->poll) { ?>
-					<div class="poll">
-						<h3><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo Lang::txt('COM_FEEDBACK_POLL_HEADER'); ?></a></h3>
-						<p><?php echo Lang::txt('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
-						<p><a class="more btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo Lang::txt('COM_FEEDBACK_POLL_BUTTON'); ?></a></p>
-					</div>
-				<?php } ?>
-				</div><!-- / .col span6 omega -->
-			</div><!-- / .grid -->
-		<?php } ?>
+			<?php if ($this->wishlist || $this->xpoll) { ?>
+				<div class="grid">
+					<div class="col span6">
+					<?php if ($this->wishlist) { ?>
+						<div class="wish">
+							<h3><a href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_HEADER'); ?></a></h3>
+							<p><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_DESCRIPTION'); ?></p>
+							<p><a class="more btn" href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_BUTTON'); ?></a></p>
+						</div>
+					<?php } ?>
+					</div><!-- / .col span6 -->
+					<div class="col span6 omega">
+					<?php if ($this->poll) { ?>
+						<div class="poll">
+							<h3><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo Lang::txt('COM_FEEDBACK_POLL_HEADER'); ?></a></h3>
+							<p><?php echo Lang::txt('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
+							<p><a class="more btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo Lang::txt('COM_FEEDBACK_POLL_BUTTON'); ?></a></p>
+						</div>
+					<?php } ?>
+					</div><!-- / .col span6 omega -->
+				</div><!-- / .grid -->
+			<?php } ?>
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 </section><!-- / .section -->
