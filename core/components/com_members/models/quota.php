@@ -156,9 +156,9 @@ class Quota extends Relational
 	 */
 	public function restoreDefaultClass($id)
 	{
-		$default = Category::default();
+		$deflt = Category::defaultEntry();
 
-		if (!$default->get('id'))
+		if (!$deflt->get('id'))
 		{
 			return false;
 		}
@@ -176,7 +176,7 @@ class Quota extends Relational
 			{
 				// Update their class id, and their actual quota will be
 				// updated the next time they log in.
-				$record->set('class_id', (int)$default->get('id'));
+				$record->set('class_id', (int)$deflt->get('id'));
 				$record->save();
 			}
 		}
@@ -192,9 +192,9 @@ class Quota extends Relational
 	 */
 	public function setDefaultClass($users)
 	{
-		$default = Category::default();
+		$deflt = Category::defaultEntry();
 
-		if (!$default->get('id'))
+		if (!$deflt->get('id'))
 		{
 			return false;
 		}
@@ -205,7 +205,7 @@ class Quota extends Relational
 			// updated the next time they log in.
 			$result = $this->getQuery()
 				->update($this->getTableName())
-				->set(array('class_id' => (int)$default->get('id')))
+				->set(array('class_id' => (int)$deflt->get('id')))
 				->whereIn('id', $users)
 				->execute();
 

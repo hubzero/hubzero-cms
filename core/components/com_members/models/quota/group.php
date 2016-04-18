@@ -32,10 +32,9 @@
 namespace Components\Members\Models\Quota;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Group;
 
 /**
- * Password rule model
+ * Quota class group model
  */
 class Group extends Relational
 {
@@ -76,7 +75,7 @@ class Group extends Relational
 	 */
 	public function group()
 	{
-		return Group::getInstance($this->get('group_id'));
+		return \Hubzero\User\Group::getInstance($this->get('group_id'));
 	}
 
 	/**
@@ -86,6 +85,6 @@ class Group extends Relational
 	 */
 	public function category()
 	{
-		return $this->belongsToOne('Category', 'class_id')
+		return $this->belongsToOne('Category', 'class_id');
 	}
 }

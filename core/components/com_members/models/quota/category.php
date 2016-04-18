@@ -271,7 +271,7 @@ class Category extends Relational
 	 *
 	 * @return  object
 	 */
-	public static function default()
+	public static function defaultEntry()
 	{
 		return self::all()
 			->whereEquals('alias', 'default')
