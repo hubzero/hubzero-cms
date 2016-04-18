@@ -114,7 +114,7 @@ if ($assets->total() > 0)
 					</a>
 					<span class="file-meta">
 						<span class="file-size">
-				<?php if ($asset->get('type') != 'link') { ?>
+				<?php if ($asset->get('type') != 'link' && file_exists($path . DS . ltrim($asset->get('filename'), DS))) { ?>
 							<?php echo \Hubzero\Utility\Number::formatBytes(filesize($path . DS . ltrim($asset->get('filename'), DS))); ?>
 				<?php } else { ?>
 							<?php
