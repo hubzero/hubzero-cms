@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +33,8 @@ namespace Components\Wiki\Api\Controllers;
 
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
-use Components\Wiki\Models\Revision;
+use Components\Wiki\Models\Version;
+use Components\Wiki\Models\Author;
 use Hubzero\Component\ApiController;
 use stdClass;
 use Request;
@@ -92,45 +92,56 @@ class Pagesv1_0 extends ApiController
 	 * 		"default":       "asc",
 	 * 		"allowedValues": "asc, desc"
 	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope",
+	 * 		"description": "Page scope",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "site"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope_id",
+	 * 		"description": "Page scope ID",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
 	 * @return  void
 	 */
 	public function listTask()
 	{
-		$group = Request::getVar('group', '');
-
-		$book = new Book($group ? $group : '__site__');
-
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'search'     => Request::getVar('search', ''),
 			'sort'       => Request::getWord('sort', 'title'),
 			'sort_Dir'   => strtoupper(Request::getWord('sort_Dir', 'ASC')),
-			'state'      => array(0, 1),
-			'group'      => Request::getVar('group_cn', '')
+			'state'      => array(Page::STATE_PUBLISHED),
+			'scope'      => Request::getVar('scope', 'site'),
+			'scope_id'   => Request::getInt('scope_id', 0)
 		);
 
-		$filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
+		$book = new Book($filters['scope'], $filters['scope_id']);
 
 		$response = new stdClass;
 		$response->pages = array();
-		$response->total = $book->pages('count', $filters);
+		$response->total = $book->pages($filters)->count();
 
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
 
-			foreach ($book->pages('list', $filters) as $i => $entry)
+			$pages = $book->pages($filters)
+				->order($filters['sort'], $filters['sort_Dir'])
+				->rows();
+
+			foreach ($pages as $i => $entry)
 			{
-				$obj = new stdClass;
-				$obj->id         = $entry->get('id');
-				$obj->title      = $entry->get('title');
-				$obj->name       = $entry->get('name');
-				$obj->scope      = $entry->get('scope');
-				$obj->created    = $entry->get('created');
-				$obj->created_by = $entry->get('created_by');
-				$obj->uri        = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));
-				$obj->revisions  = $entry->revisions('count');
+				$obj = $entry->toObject();
+				$obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));
+				$obj->revisions = $entry->versions()
+					->whereEquals('approved', 1)
+					->count();
 
 				$response->pages[] = $obj;
 			}
@@ -198,14 +209,14 @@ class Pagesv1_0 extends ApiController
 	 * 		"description": "Page scope",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     null
+	 * 		"default":     "site"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "group_cn",
-	 * 		"description": "Group name the wiki page belongs to",
-	 * 		"type":        "string",
+	 * 		"name":        "scope_id",
+	 * 		"description": "Page scope ID",
+	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     ""
+	 * 		"default":     0
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "params",
@@ -233,7 +244,7 @@ class Pagesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "version_id",
-	 * 		"description":   "Optional revision ID",
+	 * 		"description":   "Optional revision ID. If none specified, page will default to most current approved revision.",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       0
@@ -244,32 +255,38 @@ class Pagesv1_0 extends ApiController
 	{
 		$id = Request::getInt('id', 0);
 
-		$tag = new Page($id);
+		$page = Page::oneOrFail($id);
 
-		if (!$tag->exists())
+		if (!$page->get('id'))
 		{
-			throw new Exception(Lang::txt('Specified page does not exist.'), 404);
+			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
 		}
 
-		$revision = $page->revision(Request::getInt('revision', 0));
+		$version_id = Request::getInt('revision', $page->get('version_id'));
 
-		$response = new stdClass;
-		$response->id = $page->get('id');
-		$response->pagename = $page->get('pagename');
-		$response->title = $page->get('title');
-		$response->scope = $page->get('scope');
-		$response->pagetext = $revision->content('raw');
-		$response->version_id = $page->get('version_id');
-		$response->created = $page->get('created');
-		$response->created_by = $page->get('created_by');
-		$response->group_cn = $page->get('group_cn');
-		$response->state = $page->get('state');
-		$response->access = $page->get('access');
-		$response->revisions = $page->revisions('count');
+		$page->set('version_id', $version_id);
 
-		$response->uri = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link()), '/'));
+		$version = $page->version;
 
-		$this->send($tag->toObject());
+		if (!$version->get('id'))
+		{
+			throw new Exception(Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $version_id), 404);
+		}
+
+		$response = $page->toObject();
+		$response->revisions = $page->versions()
+			->whereEquals('approved', 1)
+			->count();
+
+		$response->version = $version->toObject();
+
+		// Remove redundant info
+		unset($response->version->page_id);
+		unset($response->version_id);
+
+		$response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link()), '/'));
+
+		$this->send($response);
 	}
 
 	/**
@@ -336,14 +353,14 @@ class Pagesv1_0 extends ApiController
 	 * 		"description": "Page scope",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     null
+	 * 		"default":     "site"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "group_cn",
-	 * 		"description": "Group name the wiki page belongs to",
-	 * 		"type":        "string",
+	 * 		"name":        "scope_id",
+	 * 		"description": "Page scope ID",
+	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     ""
+	 * 		"default":     0
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "params",
@@ -368,36 +385,41 @@ class Pagesv1_0 extends ApiController
 		$fields = array(
 			'title'          => Request::getVar('title', null, '', 'none', 2),
 			'pagename'       => Request::getVar('pagename', null),
-			'scope'          => Request::getVar('scope', null),
+			'scope'          => Request::getVar('scope', 'site'),
+			'scope_id'       => Request::getInt('scope_id', 0),
 			'created'        => Request::getVar('created', null),
 			'created_by'     => Request::getInt('created_by', null),
-			'state'          => Request::getInt('state', null),
-			'access'         => Request::getInt('access', null),
-			'group_cn'       => Request::getVar('group_cn', null)
+			'state'          => Request::getInt('state', 0),
+			'access'         => Request::getInt('access', 0),
+			'params'         => Request::getVar('params', array())
 		);
 
 		if (!$id)
 		{
-			throw new Exception(Lang::txt('COM_TAGS_ERROR_MISSING_DATA'), 422);
+			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_SPECIFIED'), 422);
 		}
 
-		$page = new Page($id);
+		$page = Page::oneOrFail($id);
 
-		if (!$page->exists())
+		if (!$page->get('id'))
 		{
-			throw new Exception(Lang::txt('Specified page not found.'), 404);
+			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
 		}
 
-		$revision = $page->revision('current');
-		if (!$revision->bind($rev))
+		if ($page->isLocked() && !$page->access('manage'))
 		{
-			throw new Exception($revision->getError(), 500);
+			throw new Exception(Lang::txt('COM_WIKI_ERROR_NOTAUTH'), 403);
 		}
 
+		$revision = $page->version;
+
+		// Get parameters
 		$params = new \Hubzero\Config\Registry($page->get('params', ''));
 		$params->merge(Request::getVar('params', array(), 'post'));
+
 		$page->set('params', $params->toString());
 
+		// Set data
 		foreach ($fields as $key => $value)
 		{
 			if (!is_null($value))
@@ -405,67 +427,72 @@ class Pagesv1_0 extends ApiController
 				$page->set($key, $value);
 			}
 		}
+
 		$page->set('modified', Date::toSql());
 
-		if (!$page->store(true))
+		if (!$page->save())
 		{
 			throw new Exception($page->getError(), 500);
 		}
 
-		if (!$page->updateAuthors(Request::getVar('authors', '', 'post')))
+		// Set authors
+		if (!Author::setForPage(Request::getVar('authors', '', 'post'), $page->get('id')))
 		{
-			throw new Exception($page->getError(), 500);
+			throw new Exception(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'), 500);
 		}
 
+		$old = $revision->get('pagetext');
+
+		$revision->set('id', 0);
+		$revision->set('page_id', $page->get('id'));
 		$revision->set('pagetext', Request::getVar('pagetext', '', '', 'none', 2));
-		$revision->set('summary', Request::getVar('summary', null));
+		$revision->set('summary',  Request::getVar('summary', null));
+		$revision->set('version', $revision->get('version') + 1);
 
-		if ($revision->get('pagetext') == '')
+		if ($page->param('mode', 'wiki') == 'knol')
 		{
-			$revision->set('id', 0);
-			$revision->set('pageid',   $page->get('id'));
-			$revision->set('pagename', $page->get('pagename'));
-			$revision->set('scope',    $page->get('scope'));
-			$revision->set('group_cn', $page->get('group_cn'));
-			$revision->set('version',  $revision->get('version') + 1);
+			// Set revisions to NOT approved
+			$revision->set('approved', 0);
 
-			if ($page->param('mode', 'wiki') == 'knol')
+			// If an author or the original page creator, set to approved
+			if ($page->get('created_by') == User::get('id') || $page->isAuthor(User::get('id')))
 			{
-				// Set revisions to NOT approved
-				$revision->set('approved', 0);
-				// If an author or the original page creator, set to approved
-				if ($page->get('created_by') == User::get('id') || $page->isAuthor(User::get('id')))
-				{
-					$revision->set('approved', 1);
-				}
-			}
-			else
-			{
-				// Wiki mode, approve revision
 				$revision->set('approved', 1);
 			}
+		}
+		else
+		{
+			// Wiki mode, approve revision
+			$revision->set('approved', 1);
+		}
 
-			$revision->set('pagehtml', $revision->content('parsed'));
+		// Compare against previous revision
+		// We don't want to create a whole new revision if just the tags were changed
+		if (rtrim($old) != rtrim($revision->get('pagetext')))
+		{
+			$revision->set('pagehtml', $revision->content());
 
 			if ($page->access('manage') || $page->access('edit'))
 			{
 				$revision->set('approved', 1);
 			}
 
-			// Store content
-			if (!$revision->store(true))
+			if (!$revision->save())
 			{
 				throw new Exception(Lang::txt('COM_WIKI_ERROR_SAVING_REVISION'), 500);
 			}
 
 			$page->set('version_id', $revision->get('id'));
-
-			if (!$page->store(true))
-			{
-				throw new Exception($page->getError(), 500);
-			}
+			$page->set('modified', $revision->get('created'));
 		}
 
+		// Store changes
+		if (!$page->save())
+		{
+			throw new Exception($page->getError(), 500);
+		}
+
+		// Process tags
 		$page->tag(Request::getVar('tags', ''));
 
 		$this->send($page->toObject());
@@ -487,18 +514,23 @@ class Pagesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$id = Request::getInt('id', 0);
+		$page = Page::oneOrFail(Request::getInt('id', 0));
 
-		$record = new Page($id);
-
-		if (!$record->exists())
+		if (!$page->get('id'))
 		{
-			throw new Exception(Lang::txt('Specified page does not exist.'), 404);
+			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
 		}
 
-		if (!$record->delete())
+		if (!$page->access('delete'))
 		{
-			throw new Exception(Lang::txt('Failed to delete page.'), 500);
+			throw new Exception(Lang::txt('COM_WIKI_ERROR_NOTAUTH'), 403);
+		}
+
+		$page->set('state', Page::STATE_DELETED);
+
+		if (!$page->save()) //$page->destroy()
+		{
+			throw new Exception(Lang::txt('COM_WIKI_UNABLE_TO_DELETE'), 500);
 		}
 
 		$this->send(null, 202);

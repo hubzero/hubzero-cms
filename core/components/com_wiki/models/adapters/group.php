@@ -66,6 +66,11 @@ class Group extends Base
 		$this->_scope_id = $scope_id;
 
 		$group = \Hubzero\User\Group::getInstance($this->_scope_id);
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group();
+			$group->set('gidNumber', $this->_scope_id);
+		}
 
 		$this->_segments['cn'] = $group->get('cn');
 	}
