@@ -235,6 +235,8 @@ class Pagesv1_0 extends ApiController
 	/**
 	 * Display info for a page
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /wiki/{id}
 	 * @apiParameter {
 	 * 		"name":          "id",
 	 * 		"description":   "Page identifier",
@@ -292,6 +294,8 @@ class Pagesv1_0 extends ApiController
 	/**
 	 * Update a page
 	 *
+	 * @apiMethod PUT
+	 * @apiUri    /wiki/{id}
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Entry identifier",
@@ -501,6 +505,8 @@ class Pagesv1_0 extends ApiController
 	/**
 	 * Delete a page
 	 *
+	 * @apiMethod DELETE
+	 * @apiUri    /wiki/{id}
 	 * @apiParameter {
 	 * 		"name":          "id",
 	 * 		"description":   "Page identifier",
