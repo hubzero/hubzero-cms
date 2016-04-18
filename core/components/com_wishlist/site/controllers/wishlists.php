@@ -1103,6 +1103,24 @@ class Wishlists extends SiteController
 			$BTL->hold($reward, Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $this->_list_title, 'wish', $row->get('id'));
 		}
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($wishid ? 'updated' : 'created'),
+				'scope'       => 'wishlist.wish',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_' . ($wishid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link('permalink')) . '">' . $row->get('subject') . '</a>'),
+				'details'     => array(
+					'subject'    => $row->get('subject'),
+					'url'      => Route::url($row->link('permalink'))
+				)
+			],
+			'recipients' => array(
+				['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
+				['user', $row->get('proposed_by')]
+			)
+		]);
+
 		$saved = $wishid ? 2 : 3;
 		App::redirect(
 			Route::url($row->link('permalink', array('saved' => $saved)))
@@ -1652,6 +1670,24 @@ class Wishlists extends SiteController
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_WISH_DELETE_FAILED'));
 		}
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'wishlist.wish',
+				'scope_id'    => $wish->get('id'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_DELETED', '<a href="' . Route::url($wish->link('permalink')) . '">' . $wish->get('subject') . '</a>'),
+				'details'     => array(
+					'subject' => $wish->get('subject'),
+					'url'     => Route::url($wish->link('permalink'))
+				)
+			],
+			'recipients' => array(
+				['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
+				['user', $wish->get('proposed_by')]
+			)
+		]);
+
 		// go back to the wishlist
 		App::redirect(
 			$wishlist->link(),
@@ -1771,6 +1807,24 @@ class Wishlists extends SiteController
 		{
 			throw new Exception($wishlist->getError(), 500);
 		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'voted',
+				'scope'       => 'wishlist.wish',
+				'scope_id'    => $wish->get('id'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_VOTED', '<a href="' . Route::url($wish->link()) . '">' . $wish->get('subject') . '</a>'),
+				'details'     => array(
+					'subject' => $wish->get('subject'),
+					'url'     => Route::url($wish->link())
+				)
+			],
+			'recipients' => array(
+				['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
+				['user', $wish->get('proposed_by')]
+			)
+		]);
 
 		App::redirect(
 			Route::url($wish->link())
@@ -2007,6 +2061,33 @@ class Wishlists extends SiteController
 		{
 			throw new Exception($row->getError(), 500);
 		}
+
+		// Log activity
+		$wishlist = Wishlist::getInstance(Request::getInt('listid', 0));
+
+		if (!$wishlist->exists())
+		{
+			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+		}
+
+		$wish = new Wish(Request::getInt('wishid', 0));
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'wishlist.comment',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_DELETED', $row->get('id'), '<a href="' . Route::url($wish->link()) . '">' . $wish->get('subject') . '</a>'),
+				'details'     => array(
+					'id'  => $row->get('id'),
+					'url' => Route::url($wish->link())
+				)
+			],
+			'recipients' => array(
+				['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
+				['user', $row->get('created_by')]
+			)
+		]);
 
 		// Go back to the page
 		App::redirect(
