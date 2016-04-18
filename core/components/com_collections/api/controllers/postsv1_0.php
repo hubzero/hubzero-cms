@@ -64,15 +64,15 @@ class Postsv1_0 extends ApiController
 	}
 
 	/**
-	 * Display posts for a collection
+	 * Display posts
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /collections/{id}/posts
+	 * @apiUri    /collections/posts
 	 * @apiParameter {
 	 * 		"name":          "collection_id",
 	 * 		"description":   "Collection identifier",
 	 * 		"type":          "integer",
-	 * 		"required":      true,
+	 * 		"required":      false,
 	 * 		"default":       null
 	 * }
 	 * @apiParameter {
@@ -119,7 +119,6 @@ class Postsv1_0 extends ApiController
 		$model = new Collection();
 
 		$filters = array(
-			'collection_id' => Request::getInt('collection_id', -1),
 			'limit'         => Request::getInt('limit', 25),
 			'start'         => Request::getInt('limitstart', 0),
 			'search'        => Request::getVar('search', ''),
@@ -130,6 +129,10 @@ class Postsv1_0 extends ApiController
 			'access'        => 0,
 			'count'         => true
 		);
+		if ($collection_id = Request::getInt('collection_id'))
+		{
+			$filters['collection_id'] = $collection_id;
+		}
 		$filters['sort'] = 'p.' . $filters['sort'];
 
 		$response = new stdClass;
@@ -140,6 +143,7 @@ class Postsv1_0 extends ApiController
 		{
 			$href = 'index.php?option=com_collections&controller=media&post=';
 			$base = rtrim(Request::base(), '/');
+			$base = str_replace('/api', '', $base) . '/';
 
 			$filters['count'] = false;
 
@@ -149,11 +153,17 @@ class Postsv1_0 extends ApiController
 
 				$obj = new stdClass;
 				$obj->id        = $entry->get('id');
+				$obj->collection_id = $entry->get('collection_id');
+				$obj->item_id   = $entry->get('item_id');
+				$obj->original  = $entry->get('original');
+				$obj->ordering  = $entry->get('ordering');
 				$obj->title     = $entry->get('title', $item->get('title'));
 				$obj->type      = $item->get('type');
-				$obj->posted    = $entry->get('created');
-				$obj->author    = $entry->creator()->get('name');
-				$obj->uri       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));
+				$obj->created   = $entry->get('created');
+				$obj->created_by = new stdClass;
+				$obj->created_by->id   = $entry->get('created_by');
+				$obj->created_by->name = $entry->creator()->get('name');
+				$obj->url       = $base . ltrim(Route::url($entry->link()), '/');
 
 				$obj->tags      = $item->tags('string');
 				$obj->comments  = $item->get('comments', 0);
@@ -169,7 +179,7 @@ class Postsv1_0 extends ApiController
 						$a = new stdClass;
 						$a->title       = ltrim($asset->get('filename'), '/');
 						$a->description = $asset->get('description');
-						$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . '/' . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), '/'));
+						$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), '/'));
 
 						$obj->assets[] = $a;
 					}
@@ -186,7 +196,7 @@ class Postsv1_0 extends ApiController
 	 * Create a post
 	 *
 	 * @apiMethod POST
-	 * @apiUri    /collections/{id}/posts
+	 * @apiUri    /collections/posts
 	 * @apiParameter {
 	 * 		"name":        "collection_id",
 	 * 		"description": "Collection identifier",
@@ -310,7 +320,7 @@ class Postsv1_0 extends ApiController
 	 * Retrieve a post
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /collections/{id}/posts/{id}
+	 * @apiUri    /collections/posts/{id}
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Entry identifier",
@@ -324,21 +334,67 @@ class Postsv1_0 extends ApiController
 	{
 		$id = Request::getInt('id', 0);
 
-		$row = new Post($id);
+		$entry = new Post($id);
 
-		if (!$row->exists())
+		if (!$entry->exists())
 		{
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
 		}
 
-		$this->send($row);
+		$href = 'index.php?option=com_collections&controller=media&post=';
+		$base = rtrim(Request::base(), '/');
+		$base = str_replace('/api', '', $base) . '/';
+
+		$item = $entry->item();
+
+		$collection = new Collection($entry->get('collection_id'));
+
+		$entry->set('object_type', $collection->get('object_type'));
+		$entry->set('object_id', $collection->get('object_id'));
+
+		$obj = new stdClass;
+		$obj->id        = $entry->get('id');
+		$obj->collection_id = $entry->get('collection_id');
+		$obj->item_id   = $entry->get('item_id');
+		$obj->original  = $entry->get('original');
+		$obj->ordering  = $entry->get('ordering');
+		$obj->title     = $entry->get('title', $item->get('title'));
+		$obj->type      = $item->get('type');
+		$obj->created   = $entry->get('created');
+		$obj->created_by = new stdClass;
+		$obj->created_by->id   = $entry->get('created_by');
+		$obj->created_by->name = $entry->creator()->get('name');
+		$obj->url       = $base . ltrim(Route::url($entry->link()), '/');
+
+		$obj->tags      = $item->tags('string');
+		$obj->comments  = $item->get('comments', 0);
+		$obj->likes     = $item->get('positive', 0);
+		$obj->reposts   = $item->get('reposts', 0);
+		$obj->assets    = array();
+
+		$assets = $item->assets();
+
+		if ($assets->total() > 0)
+		{
+			foreach ($assets as $asset)
+			{
+				$a = new stdClass;
+				$a->title       = ltrim($asset->get('filename'), '/');
+				$a->description = $asset->get('description');
+				$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), '/'));
+
+				$obj->assets[] = $a;
+			}
+		}
+
+		$this->send($obj);
 	}
 
 	/**
 	 * Update a post
 	 *
 	 * @apiMethod PUT
-	 * @apiUri    /collections/{id}/posts/{id}
+	 * @apiUri    /collections/posts/{id}
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Entry identifier",
@@ -357,7 +413,7 @@ class Postsv1_0 extends ApiController
 	 * 		"name":        "title",
 	 * 		"description": "Entry title",
 	 * 		"type":        "string",
-	 * 		"required":    true,
+	 * 		"required":    false,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
@@ -460,7 +516,7 @@ class Postsv1_0 extends ApiController
 	 * Delete a post
 	 *
 	 * @apiMethod DELETE
-	 * @apiUri    /collections/{id}/posts/{id}
+	 * @apiUri    /collections/posts/{id}
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Entry identifier",

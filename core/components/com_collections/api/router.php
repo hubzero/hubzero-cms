@@ -94,17 +94,26 @@ class Router extends Base
 			}
 			else
 			{
-				$vars['task'] = $segments[0];
+				if ($segments[0] == 'posts')
+				{
+					$vars['controller'] = $segments[0];
+				}
+				else
+				{
+					$vars['task'] = $segments[0];
+				}
 			}
 
 			if (isset($segments[1]))
 			{
-				if ($segments[1] == 'posts')
+				if (is_numeric($segments[1]))
 				{
-					$vars['controller'] = $segments[1];
-					$vars['collection_id'] = $vars['id'];
-					unset($vars['id']);
-					unset($vars['task']);
+					$vars['id'] = $segments[1];
+
+					if (\App::get('request')->method() == 'GET')
+					{
+						$vars['task'] = 'read';
+					}
 				}
 				else
 				{
@@ -113,18 +122,7 @@ class Router extends Base
 
 				if (isset($segments[2]))
 				{
-					if (is_numeric($segments[2]))
-					{
-						$vars['id'] = $segments[2];
-						if (\App::get('request')->method() == 'GET')
-						{
-							$vars['task'] = 'read';
-						}
-					}
-					else
-					{
-						$vars['task'] = $segments[2];
-					}
+					$vars['task'] = $segments[2];
 				}
 			}
 		}

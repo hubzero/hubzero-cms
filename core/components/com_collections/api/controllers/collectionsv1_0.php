@@ -123,7 +123,10 @@ class Collectionsv1_0 extends ApiController
 				$collection = Collection::getInstance($entry->item()->get('object_id'));
 
 				$obj = $collection->toObject();
-				$obj->uri = str_replace('/api', '', $base . '/' . ltrim(Route::url($collection->link()), '/'));
+				$obj->created_by = new stdClass;
+				$obj->created_by->id   = $collection->get('created_by');
+				$obj->created_by->name = $collection->creator()->get('name');
+				$obj->url = str_replace('/api', '', $base . '/' . ltrim(Route::url($collection->link()), '/'));
 
 				$response->collections[] = $obj;
 			}
@@ -282,7 +285,10 @@ class Collectionsv1_0 extends ApiController
 		}
 
 		$response = $row->toObject();
-		$response->uri = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($row->link()), '/'));
+		$response->created_by = new stdClass;
+		$response->created_by->id   = $row->get('created_by');
+		$response->created_by->name = $row->creator()->get('name');
+		$response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($row->link()), '/'));
 
 		$this->send($response);
 	}
