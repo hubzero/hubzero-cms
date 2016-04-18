@@ -504,10 +504,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			else
 			{*/
 				\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $this->raw->password);
+				\Hubzero\User\Password::expirePassword($this->_profile->get('uidNumber'));
 			//}
 		}
-
-		\Hubzero\User\Password::expirePassword($this->_profile->get('uidNumber'));
 
 		if ($isNew && $this->_options['emailnew'] == 1)
 		{
@@ -616,7 +615,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				$group = \Hubzero\User\Group::getInstance($gid);
 				if (!$group || !$group->get('gidNumber'))
 				{
-					array_push($this->record->errors, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
+					array_push($this->record->notices, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
+					continue;
 				}
 			}
 		}
@@ -659,7 +659,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$group = \Hubzero\User\Group::getInstance($gid);
 			if (!$group || !$group->get('gidNumber'))
 			{
-				array_push($this->record->errors, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
+				array_push($this->record->notices, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
+				continue;
 			}
 
 			// Track groups added to
