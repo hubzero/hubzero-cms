@@ -67,7 +67,7 @@
 		margin-right: 0.2em;
 	}
 
-	.ideas .entry-id {
+	.ideas .entry-status {
 		display: block;
 		overflow: hidden;
 		width: 1.7em;
@@ -75,7 +75,7 @@
 		margin: .5em 0 0 0;
 		text-align: center;
 	}
-	.ideas .entry-id:before {
+	.ideas .entry-status:before {
 		content: "\f078";
 		font-family: "Fontcons";
 		font-size: 1.7em;
@@ -85,30 +85,30 @@
 		font-weight: normal;
 	}
 	/* Accepted */
-	.ideas tbody tr.accepted .entry-id:before {
+	.ideas tbody tr.accepted .entry-status:before {
 		content: "\f078";
 		color: #f9b96f;
 	}
 	/* Granted */
-	.ideas tbody tr.granted .entry-id:before {
+	.ideas tbody tr.granted .entry-status:before {
 		content: "\2714";
 		font-size: 1.2em;
 		color: #a3ca60;
 	}
 	/* Rejected */
-	.ideas tbody tr.rejected .entry-id:before {
+	.ideas tbody tr.rejected .entry-status:before {
 		content: "\2716";
 		font-size: 1.2em;
 		color: #dd5555;
 	}
 	/* Flagged */
-	.ideas tbody tr.flagged .entry-id:before {
+	.ideas tbody tr.flagged .entry-status:before {
 		content: "\2691";
 		font-size: 1.2em;
 		color: #dd5555;
 	}
 	/* Withdrawn */
-	.ideas tbody tr.withdrawn .entry-id:before {
+	.ideas tbody tr.withdrawn .entry-status:before {
 		content: "\2298";
 		font-size: 1.2em;
 		color: #ccc;
@@ -117,7 +117,7 @@
 	.ideas tbody tr.private {
 		background-image: none;
 	}
-	.ideas tbody tr.private .entry-id:before {
+	.ideas tbody tr.private .entry-status:before {
 		content: "\f023";
 		font-size: 1.2em;
 	}
