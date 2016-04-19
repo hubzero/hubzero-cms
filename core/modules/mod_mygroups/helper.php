@@ -163,6 +163,7 @@ class Helper extends Module
 		$recents = Recent::all()
 			->whereEquals('user_id', User::get('id'))
 			->order('created', 'desc')
+			->limit(5)
 			->rows();
 
 		foreach ($this->allgroups as $group)
