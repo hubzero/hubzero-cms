@@ -12,25 +12,25 @@
 	-- -- -- -- -- -- --
 
 */
-	.sortable .tab_panel {
+	.mod_mytools .tab_panel {
 		display: none;
 		position: relative;
 		padding: 0;
 		margin: 0;
 	}
-	.sortable .tab_panel ul {
+	.mod_mytools .tab_panel ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		background: #fff;
 	}
-	.sortable #alltools ul {
+	.mod_mytools #alltools ul {
 		overflow: auto;
 		position: relative; /* fix IE 6,7 - quirky support for overflow:auto, this line fixes it */
 		border-top: 1px solid #ddd;
 		border-bottom: 1px solid #ddd;
 	}
-	.sortable .tab_panel li {
+	.mod_mytools .tab_panel li {
 		border: none;
 		border-bottom: 1px solid #ddd;
 		margin: 0;
@@ -38,10 +38,10 @@
 		position: relative;
 		background-image: none;
 	}
-	.sortable .tab_panel li.supported {
+	.mod_mytools .tab_panel li.supported {
 		padding-left: 2em;
 	}
-	.sortable .tab_panel li.supported:before {
+	.mod_mytools .tab_panel li.supported:before {
 		font-family: "Fontcons";
 		content: "\f04e";
 		color: gold;
@@ -51,16 +51,16 @@
 		line-height: 1;
 		font-size: 1.4em;
 	}
-	.sortable .tab_panel p {
+	.mod_mytools .tab_panel p {
 		margin: 0.5em;
 		padding: 0;
 		font-size: 90%;
 		color: #999;
 	}
-	.sortable .tab_panel.active {
+	.mod_mytools .tab_panel.active {
 		display: block;
 	}
-	.sortable .tab_titles {
+	.mod_mytools .tab_titles {
 		list-style-image: none;
 		list-style-type: none;
 		margin: 0px;
@@ -68,7 +68,7 @@
 		height: 24px;
 		background: #333;
 	}
-	.sortable .tab_titles li {
+	.mod_mytools .tab_titles li {
 		float: left;
 		background-color: #656565;
 		padding: 0;
@@ -83,12 +83,12 @@
 		margin-top: 0;
 		margin-bottom: 0;
 	}
-	.sortable .tab_titles li.active {
+	.mod_mytools .tab_titles li.active {
 		background-color: #fff;
 		color: #333;
 	}
-	.sortable .fav,
-	.sortable .launchtool {
+	.mod_mytools .fav,
+	.mod_mytools .launchtool {
 		display: block;
 		width: 1em;
 		height: 1em;
@@ -99,44 +99,44 @@
 		top: 0.5em;
 		border: none;
 	}
-	.sortable .fav:before,
-	.sortable .launchtool:before {
+	.mod_mytools .fav:before,
+	.mod_mytools .launchtool:before {
 		font-family: "Fontcons";
 		margin-right: 1em;
 	}
-	.sortable .fav {
+	.mod_mytools .fav {
 		right: 2.5em;
 		color: pink;
 	}
-	.sortable .fav:before {
+	.mod_mytools .fav:before {
 		content: "\2665";
 	}
-	.sortable .fav:hover {
+	.mod_mytools .fav:hover {
 		color: red;
 	}
 
-	.sortable .launchtool {
+	.mod_mytools .launchtool {
 		right: 1em;
 		color: #666;
 	}
-	.sortable .launchtool:before {
+	.mod_mytools .launchtool:before {
 		content: "\f0c2";
 	}
-	.sortable .launchtool:hover {
+	.mod_mytools .launchtool:hover {
 		color: #222;
 	}
 
-	.sortable #recenttools .fav,
-	.sortable #favtools .fav {
+	.mod_mytools #recenttools .fav,
+	.mod_mytools #favtools .fav {
 		display: none;
 	}
-	.sortable .favd {
+	.mod_mytools .favd {
 		background-color: #FFFFEB;
 	}
-	.sortable .favd .fav:before {
+	.mod_mytools .favd .fav:before {
 		color: red;
 	}
-	.sortable #alltools li {
+	.mod_mytools #alltools li {
 		padding-right: 60px;
 	}
 

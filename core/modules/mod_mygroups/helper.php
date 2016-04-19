@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,6 +32,8 @@
 namespace Modules\MyGroups;
 
 use Hubzero\Module\Module;
+use Components\Groups\Models\Recent;
+use Hubzero\User\Group;
 use User;
 
 /**
@@ -47,16 +48,16 @@ class Helper extends Module
 	 * @param   string   $type  Membership type to return groups for
 	 * @return  array
 	 */
-	private function _getGroups($uid, $type='all')
+	private function _getGroups($uid, $type='all', $groups=array())
 	{
 		$db = \App::get('db');
 
 		// Get all groups the user is a member of
-		$query1 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager
+		$query1 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_applicants` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
-		$query2 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager
+		$query2 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_members` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN
 						(SELECT uidNumber
@@ -64,11 +65,11 @@ class Helper extends Module
 						 WHERE manager.gidNumber = m.gidNumber)
 				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
-		$query3 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager
+		$query3 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_managers` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
-		$query4 = "SELECT g.published, g.approved, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager
+		$query4 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_invitees` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
@@ -91,17 +92,15 @@ class Helper extends Module
 			break;
 		}
 
+		if (!empty($groups))
+		{
+			$query .= " WHERE g.cn IN (" . implode(',', $groups) . ")";
+		}
+
 		$db->setQuery($query);
 		$db->query();
 
-		$result = $db->loadObjectList();
-
-		if (empty($result))
-		{
-			return array();
-		}
-
-		return $result;
+		return $db->loadObjectList();
 	}
 
 	/**
@@ -153,17 +152,29 @@ class Helper extends Module
 	{
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');
-		$this->limit = intval($this->params->get('limit', 10));
+		$this->limit = intval($this->params->get('limit', 100));
+		$this->recentgroups = array();
 
 		// Get the user's groups
-		$members = $this->_getGroups(User::get('id'), 'all');
+		$this->allgroups = $this->_getGroups(User::get('id'), 'all');
 
-		$groups = array();
-		foreach ($members as $mem)
+		include_once(\Component::path('com_groups') . DS . 'models' . DS . 'recent.php');
+
+		$recents = Recent::all()
+			->whereEquals('user_id', User::get('id'))
+			->order('created', 'desc')
+			->rows();
+
+		foreach ($this->allgroups as $group)
 		{
-			$groups[] = $mem;
+			foreach ($recents as $recent)
+			{
+				if ($recent->get('group_id') == $group->gidNumber)
+				{
+					$this->recentgroups[] = $group;
+				}
+			}
 		}
-		$this->groups = $groups;
 
 		if (!User::authorise('core.create', 'com_groups'))
 		{

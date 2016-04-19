@@ -39,6 +39,7 @@ use Components\Groups\Models\Page;
 use Components\Groups\Helpers;
 use Components\Groups\Models\Tags;
 use Components\Groups\Models\Log;
+use Components\Groups\Models\Recent;
 use Filesystem;
 use Request;
 use Config;
@@ -297,6 +298,14 @@ class Groups extends Base
 		if ($this->view->group->get('approved') != 1 && $this->view->trueTab != 'overview')
 		{
 			return $this->unapprovedGroupTask();
+		}
+
+		// Record the user
+		if (!User::isGuest() && in_array(User::get('id'), $this->view->group->get('members')))
+		{
+			include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'recent.php';
+
+			Recent::hit(User::get('id'), $this->view->group->get('gidNumber'));
 		}
 
 		// get group pages if any

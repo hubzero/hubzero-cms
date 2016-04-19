@@ -12,83 +12,165 @@
 	-- -- -- -- -- -- --
 
 */
-.compactlist li.group {
-	padding-right: 5em;
-}
-.compactlist li.group a {
-}
-.compactlist li span span.status {
-}
-.compactlist li span span.member {
-	color: #66AA00;
-}
-.compactlist li span span.manager {
-	color: #ff1177;
-}
-.compactlist li span span.pending {
-	color: #AA3300;
-}
-.compactlist li span span.invitee {
-	color: #aaaaaa;
-}
-.compactlist li span.pending-approval {
-	background-color: #FF9900;
-	color: #FFF;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-ms-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-	margin: 0;
-	padding: 0.25em 0.5em;
-	font-weight: bold;
-	font-size: 0.9em;
-}
-.compactlist li.group .actions {
-	text-align: left;
-	display: block;
-	padding-right: 1em;
-	margin:0;
-}
-.compactlist li.group .actions a {
-	font-size: 90%;
-	border: none;
-	padding: 0.2em 0.5em;
-	background-color: #777;
-	color: #fff;
-	-webkit-border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-	-ms-border-radius: 0.5em;
-	-o-border-radius: 0.5em;
-	border-radius: 0.5em;
-	margin: 0;
-}
-.compactlist li.group .actions a:hover {
-	border: none;
-}
-.compactlist li.group .actions a.action-accept:hover {
-	background-color: #66AA00;
-}
-.compactlist li.group .actions a.action-cancel:hover {
-	background-color: #c30;
-}
-.compactlist .group { 
-	position: relative;
-}
-.compactlist .group:before {
-	content: "\f042";
-	font-family: "Fontcons";
-	position: absolute;
-	top: 0.6em;
-	left: 0.6em;
-	font-size: 1.2em;
-	line-height: 1;
-	color: #ccc;
-}
-.compactlist .group:hover:before {
-	color: #999;
-}
 
-p.note {
-	color: #aaa;
-}
+/* Status */
+	.mod_mygroups .compactlist li span span.status {
+		position: static;
+	}
+	.mod_mygroups .compactlist li span span.member {
+		color: #66AA00;
+	}
+	.mod_mygroups .compactlist li span span.manager {
+		color: #ff1177;
+	}
+	.mod_mygroups .compactlist li span span.pending {
+		color: #AA3300;
+	}
+	.mod_mygroups .compactlist li span span.invitee {
+		color: #aaaaaa;
+	}
+	.mod_mygroups .compactlist li span.pending-approval {
+		background-color: #FF9900;
+		color: #FFF;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		margin: 0;
+		padding: 0.25em 0.5em;
+		font-weight: bold;
+		font-size: 0.9em;
+	}
+/* Actions */
+	.mod_mygroups .compactlist li.group .actions {
+		text-align: left;
+		display: block;
+		padding-right: 1em;
+		margin:0;
+	}
+	.mod_mygroups .compactlist li.group .actions a {
+		font-size: 90%;
+		border: none;
+		padding: 0.2em 0.5em;
+		background-color: #777;
+		color: #fff;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
+		margin: 0;
+	}
+	.mod_mygroups .compactlist li.group .actions a:hover {
+		border: none;
+	}
+	.mod_mygroups .compactlist li.group .actions a.action-accept:hover {
+		background-color: #66AA00;
+	}
+	.mod_mygroups .compactlist li.group .actions a.action-cancel:hover {
+		background-color: #c30;
+	}
+/* Misc. */
+	.mod_mygroups p.note {
+		color: #aaa;
+	}
+/* Tabs */
+	.mod_mygroups .tab_panel {
+		display: none;
+		position: relative;
+		padding: 0;
+		margin: 0;
+	}
+	.mod_mygroups .tab_panel ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		background: #fff;
+		overflow: auto;
+		position: relative; /* fix IE 6,7 - quirky support for overflow:auto, this line fixes it */
+	}
+	.mod_mygroups .tab_panel li {
+		border: none;
+		border-bottom: 1px solid #ddd;
+		margin: 0;
+		padding: 0.6em 0.6em 0.6em 2.2em;
+		position: relative;
+		background-image: none;
+	}
+	.mod_mygroups .tab_panel li.group:before {
+		content: "\f042";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.2em;
+		line-height: 1;
+		color: #ccc;
+	}
+	.mod_mygroups .tab_panel li.group:hover:before {
+		color: #999;
+	}
+	.mod_mygroups .tab_panel p {
+		margin: 0.5em;
+		padding: 0;
+		font-size: 90%;
+		color: #999;
+	}
+	.mod_mygroups .tab_panel.active {
+		display: block;
+	}
+	.mod_mygroups .tab_titles {
+		list-style-image: none;
+		list-style-type: none;
+		margin: 0px;
+		padding: 4px 0 0 4px;
+		height: 24px;
+		background: #333;
+	}
+	.mod_mygroups .tab_titles li {
+		float: left;
+		background-color: #656565;
+		padding: 0;
+		margin-right: 1%;
+		cursor: pointer;
+		height: 20px;
+		width: 49%;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		background-image: none;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.mod_mygroups .tab_titles li.active {
+		background-color: #fff;
+		color: #333;
+	}
+	.mod_mygroups .compactlist li.group a {
+		margin-right: 2em;
+	}
+	.mod_mygroups .compactlist li.group a.fav {
+		margin: 0;
+		display: block;
+		width: 1em;
+		height: 1em;
+		font-size: 1.4em;
+		line-height: 1;
+		overflow: hidden;
+		position: absolute;
+		top: 0.5em;
+		border: none;
+		right: 0.6em;
+		color: pink;
+	}
+	.mod_mygroups .compactlist li.group a.fav:before {
+		font-family: "Fontcons";
+		margin-right: 1em;
+	}
+	.mod_mygroups .compactlist li.group a.fav:before {
+		content: "\2665";
+	}
+	.mod_mygroups .compactlist li.group a.fav:hover {
+		color: red;
+	}
