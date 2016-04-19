@@ -150,6 +150,9 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 		if ($row->ftext)
 		{
 			$row->ftext = str_replace('[[BR]]', '', $row->ftext);
+
+			// Remove tags to prevent tables from being displayed within a table.
+			$row->ftext = strip_tags($row->ftext);
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
