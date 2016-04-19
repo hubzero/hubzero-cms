@@ -1972,7 +1972,7 @@ class Curation extends Object
 		}
 
 		$bundle = $this->_pub->path('base', true) . DS . $this->getBundleName();
-		$serveas = $this->_pub->version->get('title') . ' v.' . $this->_pub->version->get('version_label') . '.zip';
+		$serveas = \Hubzero\Utility\Sanitize::paranoid($this->_pub->version->get('title')) . ' v.' . $this->_pub->version->get('version_label') . '.zip';
 
 		if (!is_file($bundle))
 		{
@@ -2030,7 +2030,7 @@ class Curation extends Object
 		}
 
 		// Set archival properties
-		$bundleDir  = $this->_pub->title;
+		$bundleDir  = \Hubzero\Utility\Sanitize::paranoid($this->_pub->title);
 		$tarname 	= $this->getBundleName();
 		$tarpath 	= $this->_pub->path('base', true) . DS . $tarname;
 		$licFile 	= $this->_pub->path('base', true) . DS . 'LICENSE.txt';
