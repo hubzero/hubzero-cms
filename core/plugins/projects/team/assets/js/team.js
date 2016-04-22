@@ -195,7 +195,16 @@ HUB.ProjectTeam = {
 						{
 							for (var k = 0; k < bselected.length; k++)
 							{
-								$(item).attr('href', $(item).attr('href') + '?owner[]=' + bselected[k]);
+								// Prevents a double ? in the URL building
+								if (k == 0)
+								{
+									$(item).attr('href', $(item).attr('href') + '?owner[]=' + bselected[k]);
+								}
+								else
+								{
+									$(item).attr('href', $(item).attr('href') + '&owner[]=' + bselected[k]);
+								}
+
 							}
 						}
 						// Add our selected groups variables
@@ -206,6 +215,7 @@ HUB.ProjectTeam = {
 								$(item).attr('href', $(item).attr('href') + '&group[]=' + bgroups[k]);
 							}
 						}
+
 						var href = $(item).attr('href');
 						if (href.search('&no_html=1') == -1) {
 							href = href + '&no_html=1';
