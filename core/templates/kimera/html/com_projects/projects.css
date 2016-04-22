@@ -173,6 +173,7 @@
 	}
 	#introduction .omega li {
 		border: none;
+		list-style: none;
 	}
 	#content .browse {
 		position: relative;
