@@ -37,14 +37,14 @@ class Migration20160328133847ComCitations extends Base
 	{
 		if ($this->db->tableExists('#__citations_secondary') && $this->db->tableHasKey('#__citations_secondary', 'idx_cid'))
 		{
-			$query = "ALTER ABLE `#__citations_secondary` DROP KEY `idx_cid`";
+			$query = "ALTER TABLE `#__citations_secondary` DROP KEY `idx_cid`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
 		if ($this->db->tableExists('#__citations_secondary') && $this->db->tableHasKey('#__citations_secondary', 'idx_scope_scope_id'))
 		{
-			$query = "ALTER ABLE `#__citations_secondary` DROP KEY `idx_scope_scope_id`";
+			$query = "ALTER TABLE `#__citations_secondary` DROP KEY `idx_scope_scope_id`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
