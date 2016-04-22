@@ -108,7 +108,7 @@ $c = 0;
 									}
 									else
 									{
-										echo \Hubzero\Utility\String::truncate(strip_tags($post->content_, $this->params->get('charlimit', 100));
+										echo \Hubzero\Utility\String::truncate(strip_tags($post->content), $this->params->get('charlimit', 100));
 									}
 									?>
 								</div>
