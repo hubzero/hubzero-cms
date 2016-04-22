@@ -38,6 +38,8 @@ require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'note.php');
 require_once(__DIR__ . DS . 'quota.php');
+//require_once(__DIR__ . DS . 'accessgroup.php');
+//require_once(__DIR__ . DS . 'accessgroup' . DS . 'map.php');
 
 /**
  * User model
@@ -90,6 +92,16 @@ class Member extends User
 	public function quota()
 	{
 		return $this->oneToOne('Quota', 'user_id');
+	}
+
+	/**
+	 * Get access groups
+	 *
+	 * @return  object
+	 */
+	public function accessgroups()
+	{
+		return $this->oneToMany('Hubzero\Access\Map', 'user_id');
 	}
 
 	/**
@@ -228,12 +240,15 @@ class Member extends User
 	 */
 	public function save()
 	{
+		// Trigger the onUserBeforeSave event.
+		//$result = Event::trigger('user.onUserBeforeSave', array($old, false, $table->getProperties()));
+
 		// Map set data to profile fields
-		$data    = $this->getAttributes();
+		$attribs = $this->getAttributes();
 		$columns = $this->getStructure()->getTableColumns($this->getTableName());
 		$profile = array();
 
-		foreach ($data as $key => $val)
+		foreach ($attribs as $key => $val)
 		{
 			if (!isset($columns[$key]))
 			{
@@ -266,7 +281,12 @@ class Member extends User
 		if (!$result)
 		{
 			// Reset the data to the way it was before save attempt
-			$this->set($data);
+			$this->set($attribs);
+		}
+		else
+		{
+			// Trigger the onAftereStoreUser event
+			//Event::trigger('user.onUserAfterSave', array($attribs, false, true, null));
 		}
 
 		return $result;
@@ -279,6 +299,10 @@ class Member extends User
 	 */
 	public function destroy()
 	{
+		$data = $this->toArray();
+
+		Event::trigger('user.onUserBeforeDelete', array($data));
+
 		// Remove profile fields
 		foreach ($this->profiles()->rows() as $field)
 		{
@@ -303,6 +327,27 @@ class Member extends User
 		$this->tag('');
 
 		// Attempt to delete the record
-		return parent::destroy();
+		$result = parent::destroy();
+
+		if ($result)
+		{
+			Event::trigger('user.onUserAfterDelete', array($data, true, $this->getError()));
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Clears all terms of use agreements
+	 *
+	 * @return  bool
+	 */
+	public static function clearTerms()
+	{
+		$query = $this->getQuery()
+			->update($this->getTableName())
+			->set(array('usageAgreement' => 0));
+
+		return $query->execute();
 	}
 }

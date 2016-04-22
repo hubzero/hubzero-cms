@@ -43,7 +43,18 @@ class Blacklist extends Relational
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'blacklist';
+	protected $namespace = 'password';
+
+	/**
+	 * The table to which the class pertains
+	 *
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__password_blacklist';
 
 	/**
 	 * Default order by for model

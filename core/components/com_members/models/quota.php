@@ -37,7 +37,7 @@ use Components\Members\Models\Quota\Log;
 use User;
 use Lang;
 
-include_once __DIR__ . DS . 'quota' . DS . 'log.php';
+include_once __DIR__ . DS . 'quota' . DS . 'category.php';
 
 /**
  * User quota model
