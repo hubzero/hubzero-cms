@@ -64,7 +64,7 @@ $this->css();
 			<?php
 			if ($this->row->get('user_id'))
 			{
-				echo '<img src="' . $this->row->user()->getPicture() . '" alt="' . $this->escape($this->row->get('fullname')) . '" width="30" height="30" />';
+				echo '<img src="' . $this->row->user->picture() . '" alt="' . $this->escape($this->row->get('fullname')) . '" width="30" height="30" />';
 			}
 			?>
 			<cite><?php echo $this->escape($this->row->get('fullname')); ?></cite><br />

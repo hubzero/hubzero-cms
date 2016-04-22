@@ -43,19 +43,19 @@ if ($this->getError()) { ?>
 			<?php } else { ?>
 				<h3><?php echo Lang::txt('MOD_FEATUREDMEMBER'); ?></h3>
 			<?php } ?>
-			<?php if (is_file(PATH_APP . $this->thumb)) { ?>
+			<?php if (is_file(PATH_APP . $this->row->picture())) { ?>
 				<p class="featured-img">
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->id); ?>">
-						<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="<?php echo $this->escape(stripslashes($this->title)); ?>" />
+					<a href="<?php echo Route::url($this->row->link()); ?>">
+						<img width="50" height="50" src="<?php echo $this->row->picture(); ?>" alt="<?php echo $this->escape(stripslashes($this->row->get('name', $this->row->get('givenName') . ' ' . $this->row->get('surname')))); ?>" />
 					</a>
 				</p>
 			<?php } ?>
 			<p>
-				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->id); ?>">
-					<?php echo $this->escape(stripslashes($this->title)); ?>
+				<a href="<?php echo Route::url($this->row->link()); ?>">
+					<?php echo $this->escape(stripslashes($this->row->get('name', $this->row->get('givenName') . ' ' . $this->row->get('surname')))); ?>
 				</a>:
-				<?php if ($this->txt) { ?>
-					<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->txt)), $this->txt_length); ?>
+				<?php if ($txt = $this->row->get('bio')) { ?>
+					<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($txt)), $this->txt_length); ?>
 				<?php } ?>
 			</p>
 		</div>

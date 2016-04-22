@@ -266,10 +266,10 @@ if (!$this->app->sess) {
 			<div class="col span8">
 				<p class="share-member-photo" id="shareform">
 					<?php
-					$jxuser = new \Hubzero\User\Profile();
-					$jxuser->load(User::get('id'));
+					include_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+					$jxuser = Components\Members\Models\Member::oneOrNew(User::get('id'));
 					?>
-					<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
+					<img src="<?php echo $jxuser->picture(); ?>" alt="" />
 				</p>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_TOOLS_SHARE_SESSION'); ?></legend>
@@ -339,12 +339,12 @@ if (!$this->app->sess) {
 					{
 						if ($row->viewuser != User::get('username'))
 						{
-							$user = \Hubzero\User\Profile::getInstance($row->viewuser);
+							$user = Components\Members\Models\Member::oneOrNew($row->viewuser);
 
 							$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
 
 							// User picture
-							$p = $user->getPicture();
+							$p = $user->picture();
 						?>
 						<tr>
 							<th class="entry-img">

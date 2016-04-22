@@ -599,36 +599,37 @@ $this->css('course.css')
 			</div>
 			<?php
 		}
+
 		$instructors = $this->course->instructors();
 		if (count($instructors) > 0)
 		{
-		?>
-		<div class="course-instructors" data-bio-length="200">
-			<h3>
-				<?php echo (count($instructors) > 1) ? Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTORS') : Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTOR'); ?>
-			</h3>
-			<?php
-			foreach ($instructors as $i)
-			{
-				$this->view('_instructor')
-				     ->set('biolength', 200)
-				     ->set('instructor', \Hubzero\User\Profile::getInstance($i->get('user_id')))
-				     ->display();
-			}
+			require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 			?>
-		</div>
-		<?php
+			<div class="course-instructors" data-bio-length="200">
+				<h3>
+					<?php echo (count($instructors) > 1) ? Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTORS') : Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTOR'); ?>
+				</h3>
+				<?php
+				foreach ($instructors as $i)
+				{
+					$this->view('_instructor')
+					     ->set('biolength', 200)
+					     ->set('instructor', Components\Members\Models\Member::oneOrNew($i->get('user_id')))
+					     ->display();
+				}
+				?>
+			</div>
+			<?php
 		}
 		else
 		{
-		?>
-		<div class="course-instructors-none">
-			<?php echo Lang::txt('COM_COURSES_NO_INSTRUCTORS_FOUND'); ?>
-		</div>
-		<?php
+			?>
+			<div class="course-instructors-none">
+				<?php echo Lang::txt('COM_COURSES_NO_INSTRUCTORS_FOUND'); ?>
+			</div>
+			<?php
 		}
-		?>
-		<?php
+
 		if ($this->plugins)
 		{
 			foreach ($this->plugins as $plugin)

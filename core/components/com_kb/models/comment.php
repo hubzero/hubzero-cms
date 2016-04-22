@@ -39,13 +39,19 @@ use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'vote.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'vote.php';
 
 /**
  * Knowledgebase model for a comment
  */
 class Comment extends Relational
 {
+	/**
+	 * Database state constants
+	 */
+	const STATE_FLAGGED = 3;
+
 	/**
 	 * The table namespace
 	 *
@@ -128,17 +134,13 @@ class Comment extends Relational
 	}
 
 	/**
-	 * Defines a belongs to one relationship between article and user
+	 * Defines a belongs to one relationship between comment and user
 	 *
-	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**

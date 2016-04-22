@@ -106,6 +106,7 @@ class Helper extends Module
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'host.php');
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'hosttype.php');
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'recent.php');
+		require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 		// Get database object
 		$this->database = \App::get('db');
@@ -143,4 +144,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-

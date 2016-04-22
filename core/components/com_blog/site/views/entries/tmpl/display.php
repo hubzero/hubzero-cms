@@ -106,9 +106,9 @@ $rows = $this->archive->entries($this->filters)
 <section class="main section">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="section-inner">
 		<div class="subject">
-		<?php if ($this->getError()) { ?>
-			<p class="error"><?php echo $this->getError(); ?></p>
-		<?php } ?>
+			<?php if ($this->getError()) { ?>
+				<p class="error"><?php echo $this->getError(); ?></p>
+			<?php } ?>
 
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_BLOG_SEARCH'); ?>" />
@@ -122,23 +122,23 @@ $rows = $this->archive->entries($this->filters)
 
 			<div class="container">
 				<h3>
-				<?php if (isset($this->filters['search']) && $this->filters['search']) { ?>
-					<?php echo Lang::txt('COM_BLOG_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
-				<?php } else if (!isset($this->filters['year']) || !$this->filters['year']) { ?>
-					<?php echo Lang::txt('COM_BLOG_LATEST_ENTRIES'); ?>
-				<?php } else {
-					$archiveDate  = $this->filters['year'];
-					$archiveDate .= ($this->filters['month']) ? '-' . $this->filters['month'] : '-01';
-					$archiveDate .= '-01 00:00:00';
-					if ($this->filters['month'])
-					{
-						echo Date::of($archiveDate)->format('M Y');
-					}
-					else
-					{
-						echo Date::of($archiveDate)->format('Y');
-					}
-				} ?>
+					<?php if (isset($this->filters['search']) && $this->filters['search']) { ?>
+						<?php echo Lang::txt('COM_BLOG_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
+					<?php } else if (!isset($this->filters['year']) || !$this->filters['year']) { ?>
+						<?php echo Lang::txt('COM_BLOG_LATEST_ENTRIES'); ?>
+					<?php } else {
+						$archiveDate  = $this->filters['year'];
+						$archiveDate .= ($this->filters['month']) ? '-' . $this->filters['month'] : '-01';
+						$archiveDate .= '-01 00:00:00';
+						if ($this->filters['month'])
+						{
+							echo Date::of($archiveDate)->format('M Y');
+						}
+						else
+						{
+							echo Date::of($archiveDate)->format('Y');
+						}
+					} ?>
 				</h3>
 
 				<?php if ($rows->count() > 0) { ?>
@@ -187,22 +187,19 @@ $rows = $this->archive->entries($this->filters)
 									</dd>
 									<?php if ($this->config->get('show_authors')) { ?>
 										<dd class="author">
-											<?php if ($row->creator()->get('public')) { ?>
-												<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
-													<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+											<?php if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+												<a href="<?php echo Route::url($row->creator->link()); ?>">
+													<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
 												</a>
 											<?php } else { ?>
-												<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+												<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
 											<?php } ?>
 										</dd>
 									<?php } ?>
 									<?php if ($row->get('allow_comments') == 1) { ?>
 										<dd class="comments">
 											<a href="<?php echo Route::url($row->link('comments')); ?>">
-												<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->comments()->whereIn('state', array(
-													Components\Blog\Models\Comment::STATE_PUBLISHED,
-													Components\Blog\Models\Comment::STATE_FLAGGED
-												))->count()); ?>
+												<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->comments->count()); ?>
 											</a>
 										</dd>
 									<?php } else { ?>
@@ -221,10 +218,10 @@ $rows = $this->archive->entries($this->filters)
 								<div class="entry-content">
 									<?php if ($this->config->get('cleanintro', 1)) { ?>
 										<p>
-											<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content()), $this->config->get('introlength', 300)); ?>
+											<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
 										</p>
 									<?php } else { ?>
-										<?php echo \Hubzero\Utility\String::truncate($row->content(), $this->config->get('introlength', 300), array('html' => true)); ?>
+										<?php echo \Hubzero\Utility\String::truncate($row->content, $this->config->get('introlength', 300), array('html' => true)); ?>
 									<?php } ?>
 								</div>
 							</article>

@@ -33,10 +33,10 @@ namespace Components\Developer\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Validate;
-use Hubzero\User\Profile;
 use Session;
 use Lang;
 
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 include_once(__DIR__ . DS . 'accesstoken.php');
 include_once(__DIR__ . DS . 'refreshtoken.php');
 include_once(__DIR__ . DS . 'authorizationcode.php');
@@ -197,11 +197,7 @@ class Application extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -284,7 +280,7 @@ class Application extends Relational
 	 */
 	public function team()
 	{
-		return $this->oneToMany('\Components\Developer\Models\Application\Member', 'application_id');
+		return $this->oneToMany('Components\Developer\Models\Application\Member', 'application_id');
 	}
 
 	/**

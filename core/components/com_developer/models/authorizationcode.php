@@ -33,9 +33,10 @@ namespace Components\Developer\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Validate;
-use Hubzero\User\Profile;
 use Hubzero\Utility\Date;
 use Lang;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Authorization code model
@@ -149,11 +150,7 @@ class Authorizationcode extends Relational
 	 */
 	public function user()
 	{
-		if ($profile = Profile::getInstance($this->get('uidNumber')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'uidNumber');
 	}
 
 	/**

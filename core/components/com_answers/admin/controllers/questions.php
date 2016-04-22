@@ -100,6 +100,9 @@ class Questions extends AdminController
 		);
 
 		$records = Question::all()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}])
 			->including(['responses', function ($response){
 				$response
 					->select('id')

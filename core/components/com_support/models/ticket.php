@@ -32,11 +32,11 @@
 
 namespace Components\Support\Models;
 
+use Components\Members\Models\Member;
 use Components\Support\Helpers\ACL;
 use Components\Support\Tables;
 use Hubzero\Base\Model;
 use Hubzero\Base\Object;
-use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
 use Component;
@@ -45,6 +45,7 @@ use Lang;
 use User;
 use Date;
 
+require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'watching.php');
@@ -143,13 +144,9 @@ class Ticket extends Model
 	 */
 	public function submitter($property=null, $default=null)
 	{
-		if (!($this->_data->get('submitter.profile') instanceof Profile))
+		if (!($this->_data->get('submitter.profile') instanceof Member))
 		{
-			$user = Profile::getInstance($this->get('login'));
-			if (!is_object($user) || !$user->get('uidNumber'))
-			{
-				$user = new Profile();
-			}
+			$user = Member::oneByUsername($this->get('login'));
 			$user->set('name', $this->get('name'));
 			$user->set('username', $this->get('login'));
 			$user->set('email', $this->get('email'));
@@ -158,7 +155,7 @@ class Ticket extends Model
 		}
 		if ($property)
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
+			$property = ($property == 'uidNumber') ? 'id' : $property;
 			return $this->_data->get('submitter.profile')->get($property, $default);
 		}
 		return $this->_data->get('submitter.profile');
@@ -177,18 +174,15 @@ class Ticket extends Model
 	 */
 	public function owner($property=null, $default=null)
 	{
-		if (!($this->_data->get('owner.profile') instanceof Profile))
+		if (!($this->_data->get('owner.profile') instanceof Member))
 		{
-			$user = Profile::getInstance($this->get('owner'));
-			if (!is_object($user) || !$user->get('uidNumber'))
-			{
-				$user = new Profile();
-			}
+			$user = Member::oneOrNew($this->get('owner'));
+
 			$this->_data->set('owner.profile', $user);
 		}
 		if ($property)
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
+			$property = ($property == 'uidNumber') ? 'id' : $property;
 			return $this->_data->get('owner.profile')->get($property, $default);
 		}
 		return $this->_data->get('owner.profile');

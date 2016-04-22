@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -82,7 +81,11 @@ $this->css()
 									$name = Lang::txt('COM_FORUM_ANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
-										$name = ($row->creator()->get('public') ? '<a href="' . Route::url($row->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($row->creator()->get('name'))) . ($row->creator()->get('public') ? '</a>' : '');
+										$name = $this->escape(stripslashes($row->creator->get('name')));
+										if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
+										{
+											$lname = '<a href="' . Route::url($row->creator->link()) . '">' . $lname . '</a>';
+										}
 									}
 									$cls = array();
 									if ($row->get('closed'))

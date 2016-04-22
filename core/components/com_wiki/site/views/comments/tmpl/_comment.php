@@ -42,10 +42,10 @@ $cls .= ($this->comment->isReported()) ? ' abusive' : '';
 $name = Lang::txt('COM_WIKI_ANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
-	$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
-	if ($this->comment->creator()->get('public'))
+	$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
+	if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()))
 	{
-		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+		$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 	}
 }
 
@@ -62,7 +62,7 @@ $this->comment->set('category', 'answercomment');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<?php
@@ -187,8 +187,8 @@ $this->comment->set('category', 'answercomment');
 		{
 			$model = $this->comment->replies()
 				->whereIn('state', array(
-					\Components\Wiki\Models\Comment::STATE_PUBLISHED,
-					\Components\Wiki\Models\Commen::STATE_FLAGGED
+					Components\Wiki\Models\Comment::STATE_PUBLISHED,
+					Components\Wiki\Models\Comment::STATE_FLAGGED
 				));
 			if ($this->version)
 			{

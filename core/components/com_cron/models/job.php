@@ -31,9 +31,7 @@
 
 namespace Components\Cron\Models;
 
-//use Components\Cron\Models\Expression;
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Hubzero\Debug\Profiler;
 use Hubzero\Config\Registry;
 use Lang;
@@ -211,13 +209,23 @@ class Job extends Relational
 	}
 
 	/**
-	 * Defines a belongs to one relationship
+	 * Defines a relationship to creator
 	 *
 	 * @return  object
 	 */
 	public function creator()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'user_id');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
+
+	/**
+	 * Defines a relationship to modifier
+	 *
+	 * @return  object
+	 */
+	public function modifier()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'modified_by');
 	}
 
 	/**
@@ -427,7 +435,6 @@ class Job extends Relational
 	 */
 	public function transformParams()
 	{
-		return new \Hubzero\Config\Registry($this->get('params'));
+		return new Registry($this->get('params'));
 	}
 }
-

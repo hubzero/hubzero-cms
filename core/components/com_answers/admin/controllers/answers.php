@@ -102,7 +102,10 @@ class Answers extends AdminController
 			)
 		);
 
-		$records = Response::all();
+		$records = Response::all()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}]);
 
 		$question = new Question;
 

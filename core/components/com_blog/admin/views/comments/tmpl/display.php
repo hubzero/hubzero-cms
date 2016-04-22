@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,9 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
+$canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
-Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS'), 'blog.png');
+Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS'), 'blog');
 if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();
@@ -134,16 +133,16 @@ function submitbutton(pressbutton)
 					<?php echo $row->get('treename'); ?>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content())), 90); ?>
+							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content)), 90); ?>
 						</a>
 					<?php } else { ?>
 						<span>
-							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content())), 90); ?>
+							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content)), 90); ?>
 						</span>
 					<?php } ?>
 				</td>
 				<td class="priority-2">
-					<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
 				</td>
 				<td class="priority-3">
 					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">

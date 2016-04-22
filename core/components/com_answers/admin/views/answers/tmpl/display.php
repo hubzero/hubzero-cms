@@ -32,9 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Answers\Helpers\Permissions::getActions('answer');
+$canDo = Components\Answers\Helpers\Permissions::getActions('answer');
 
-Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_RESPONSES'), 'answers.png');
+Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_RESPONSES'), 'answers');
 if ($canDo->get('core.create') && $this->filters['question_id'])
 {
 	Toolbar::addNew();
@@ -146,7 +146,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-3">
 					<a class="glyph user" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
-						<span><?php echo $this->escape(stripslashes($row->creator()->get('name'))).' ('.$row->get('created_by').')'; ?></span>
+						<span><?php echo $this->escape(stripslashes($row->creator->get('name'))).' ('.$row->get('created_by').')'; ?></span>
 					</a>
 					<?php if ($row->get('anonymous')) { ?>
 						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_ANONYMOUS'); ?>)</span>

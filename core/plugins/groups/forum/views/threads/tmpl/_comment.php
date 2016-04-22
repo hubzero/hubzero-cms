@@ -43,10 +43,10 @@ defined('_HZEXEC_') or die();
 	$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
-		$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
-		if ($this->comment->creator()->get('public'))
+		$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
+		if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()))
 		{
-			$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+			$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 		}
 	}
 
@@ -63,7 +63,7 @@ defined('_HZEXEC_') or die();
 ?>
 	<li class="comment <?php echo $cls; ?><?php if (!$this->comment->get('parent')) { echo ' start'; } ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">

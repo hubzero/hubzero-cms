@@ -36,7 +36,8 @@ use Hubzero\User\Profile;
 use Lang;
 use Date;
 
-require_once(__DIR__ . DS . 'category.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'category.php';
 
 /**
  * Forum model for a section
@@ -160,11 +161,7 @@ class Section extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -235,7 +232,7 @@ class Section extends Relational
 		{
 			if (!$category->destroy())
 			{
-				$this->setError($category->getError());
+				$this->addError($category->getError());
 				return false;
 			}
 		}
@@ -340,7 +337,7 @@ class Section extends Relational
 			// Check for a database error.
 			if (!$row->save())
 			{
-				$this->setError($row->getError());
+				$this->addError($row->getError());
 				return false;
 			}
 		}

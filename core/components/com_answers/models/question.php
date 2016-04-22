@@ -35,7 +35,6 @@ use Components\Answers\Helpers\Economy;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
-use Hubzero\User\Profile;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
 use Request;
@@ -44,8 +43,9 @@ use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'response.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'response.php';
 
 /**
  * Question model for Q&A
@@ -184,34 +184,29 @@ class Question extends Relational
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('created');
 	}
 
 	/**
-	 * Defines a belongs to one relationship between article and user
+	 * Defines a belongs to one relationship between question and user
 	 *
-	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -435,13 +430,13 @@ class Question extends Relational
 	{
 		if (!$this->get('id'))
 		{
-			$this->setError(Lang::txt('No record found'));
+			$this->addError(Lang::txt('No record found'));
 			return false;
 		}
 
 		if (!$vote)
 		{
-			$this->setError(Lang::txt('No vote provided'));
+			$this->addError(Lang::txt('No vote provided'));
 			return false;
 		}
 
@@ -455,7 +450,7 @@ class Question extends Relational
 
 		if ($this->get('created_by') == $user_id)
 		{
-			$this->setError(Lang::txt('Cannot vote for your own entry'));
+			$this->addError(Lang::txt('Cannot vote for your own entry'));
 			return false;
 		}
 
@@ -487,7 +482,7 @@ class Question extends Relational
 
 			if (!$al->save())
 			{
-				$this->setError($al->getError());
+				$this->addError($al->getError());
 				return false;
 			}
 		}
@@ -540,7 +535,7 @@ class Question extends Relational
 		{
 			if (!$response->destroy())
 			{
-				$this->setError($response->getError());
+				$this->addError($response->getError());
 				return false;
 			}
 		}
@@ -553,7 +548,7 @@ class Question extends Relational
 		{
 			if (!$vote->destroy())
 			{
-				$this->setError($vote->getError());
+				$this->addError($vote->getError());
 				return false;
 			}
 		}
@@ -595,7 +590,7 @@ class Question extends Relational
 	{
 		if (!$answer_id)
 		{
-			$this->setError(Lang::txt('No answer ID provided.'));
+			$this->addError(Lang::txt('No answer ID provided.'));
 			return false;
 		}
 
@@ -606,7 +601,7 @@ class Question extends Relational
 		$answer->set('state', 1);
 		if (!$answer->save())
 		{
-			$this->setError($answer->getError());
+			$this->addError($answer->getError());
 			return false;
 		}
 
@@ -679,4 +674,3 @@ class Question extends Relational
 		}
 	}
 }
-

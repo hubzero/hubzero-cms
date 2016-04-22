@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Forum\Helpers\Permissions::getActions('section');
+$canDo = Components\Forum\Helpers\Permissions::getActions('section');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_CATEGORIES') . ': ' . $text, 'forum.png');
+Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_CATEGORIES') . ': ' . $text, 'forum');
 Toolbar::spacer();
 if ($canDo->get('core.edit'))
 {
@@ -130,8 +130,7 @@ function submitbutton(pressbutton)
 						<th class="key"><?php echo Lang::txt('COM_FORUM_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
-							$editor = User::getInstance($this->row->created_by);
-							echo $this->escape($editor->get('name'));
+							echo $this->escape($this->row->creator->get('name'));
 							?>
 							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
 						</td>
@@ -148,8 +147,7 @@ function submitbutton(pressbutton)
 						<th class="key"><?php echo Lang::txt('COM_FORUM_FIELD_MODIFIER'); ?>:</th>
 						<td>
 							<?php
-							$modifier = User::getInstance($this->row->modified_by);
-							echo $this->escape($modifier->get('name'));
+							echo $this->escape($this->row->modifier->get('name'));
 							?>
 							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->modified_by; ?>" />
 						</td>

@@ -36,6 +36,8 @@ use Hubzero\Database\Relational;
 use Lang;
 use Date;
 
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 /**
  * Wiki model for a page version
  */
@@ -144,7 +146,7 @@ class Version extends Relational
 	 */
 	public function creator()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -187,42 +189,6 @@ class Version extends Relational
 	}
 
 	/**
-	 * Get the adapter
-	 *
-	 * @return  object
-	 */
-	/*protected function adapter()
-	{
-		if (!($this->adapter instanceof BaseAdapter))
-		{
-			$scope = $this->get('scope', 'site');
-			$scope = ($scope == 'wiki' ? 'site' : $scope);
-
-			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
-
-			if (!class_exists($cls))
-			{
-				$path = __DIR__ . '/adapters/' . $scope . '.php';
-
-				if (!is_file($path))
-				{
-					throw new \InvalidArgumentException(Lang::txt('Invalid adapter type of "%s"', $scope));
-				}
-
-				include_once($path);
-			}
-
-			$this->adapter = new $cls(
-				$this->get('pagename'),
-				$this->get('scope'),
-				$this->get('scope_id')
-			);
-		}
-
-		return $this->adapter;
-	}*/
-
-	/**
 	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
@@ -256,29 +222,4 @@ class Version extends Relational
 		// Parse the text
 		return $parser->parse($this->get('pagetext'), $wikiconfig, true, true);
 	}
-
-	/**
-	 * Get a param value
-	 *
-	 * @param   string  $key      Property to return
-	 * @param   mixed   $default  Value to return if key is not found
-	 * @return  mixed
-	 */
-	/*public function param($key='', $default=null)
-	{
-		if (!is_object($this->params))
-		{
-			$params = new Registry($this->get('params'));
-
-			$this->params = Component::params('com_wiki');
-			$this->params->merge($params);
-		}
-
-		if ($key)
-		{
-			return $this->params->get((string) $key, $default);
-		}
-
-		return $this->params;
-	}*/
 }

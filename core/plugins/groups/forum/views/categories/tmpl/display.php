@@ -143,10 +143,10 @@ $this->css()
 							$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
 							if (!$row->get('anonymous'))
 							{
-								$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
-								if ($row->creator('public'))
+								$name = $this->escape(stripslashes($row->creator->get('name', $name)));
+								if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
 								{
-									$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
+									$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 								}
 							}
 							$cls = array();
@@ -198,7 +198,11 @@ $this->css()
 											$lname = Lang::txt('COM_FORUM_ANONYMOUS');
 											if (!$lastpost->get('anonymous'))
 											{
-												$lname = ($lastpost->creator()->get('public') ? '<a href="' . Route::url($lastpost->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($lastpost->creator()->get('name'))) . ($lastpost->creator()->get('public') ? '</a>' : '');
+												$lname = $this->escape(stripslashes($lastpost->creator->get('name')));
+												if (in_array($lastpost->creator->get('access'), User::getAuthorisedViewLevels()))
+												{
+													$lname = '<a href="' . Route::url($lastpost->creator->link()) . '">' . $lname . '</a>';
+												}
 											}
 											?>
 											<span class="entry-date">

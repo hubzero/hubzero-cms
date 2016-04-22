@@ -32,7 +32,6 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use stdClass;
@@ -42,6 +41,8 @@ use Lang;
 use Date;
 use User;
 
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once(__DIR__ . DS . 'attachment.php');
 require_once(__DIR__ . DS . 'version.php');
 require_once(__DIR__ . DS . 'comment.php');
@@ -263,11 +264,20 @@ class Page extends Relational
 				{
 					array_unshift($ancestors, $ancestor);
 				}
-				//$ancestors += $page->ancestors();
 			}
 		}
 
 		return $ancestors;
+	}
+
+	/**
+	 * Defines a belongs to one relationship between comment and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -451,16 +461,6 @@ class Page extends Relational
 	public static function normalize($txt)
 	{
 		return preg_replace("/[^\:a-zA-Z0-9_]/", '', $txt);
-	}
-
-	/**
-	 * Defines a belongs to one relationship between task and liaison
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**

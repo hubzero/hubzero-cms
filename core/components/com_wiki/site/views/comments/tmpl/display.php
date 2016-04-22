@@ -99,10 +99,13 @@ if (!$this->sub)
 
 			<?php
 			$model = $this->page->comments()
+				->including(['creator', function ($creator){
+					$creator->select('*');
+				}])
 				->whereIn('state', array(
-					\Components\Wiki\Models\Comment::STATE_PUBLISHED,
-					\Components\Wiki\Models\Comment::STATE_FLAGGED
-				));;
+					Components\Wiki\Models\Comment::STATE_PUBLISHED,
+					Components\Wiki\Models\Comment::STATE_FLAGGED
+				));
 			if ($this->version)
 			{
 				$model->whereEquals('version', $this->version);

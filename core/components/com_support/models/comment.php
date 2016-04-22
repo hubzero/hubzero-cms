@@ -32,9 +32,9 @@
 
 namespace Components\Support\Models;
 
+use Components\Members\Models\Member;
 use Components\Support\Tables;
 use Hubzero\Base\Model;
-use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Validate;
@@ -48,6 +48,7 @@ use Date;
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 require_once(__DIR__ . DS . 'attachment.php');
 require_once(__DIR__ . DS . 'changelog.php');
+require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 
 /**
  * Support mdoel for a ticket comment
@@ -145,20 +146,16 @@ class Comment extends Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof Profile))
+		if (!($this->_creator instanceof Member))
 		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile;
-			}
+			$this->_creator = Member::oneOrNew($this->get('created_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
+			$property = ($property == 'uidNumber' ? 'id' : $property);
 			if ($property == 'picture')
 			{
-				return $this->_creator->getPicture(($this->_creator->get('uidNumber') ? 0 : 1));
+				return $this->_creator->picture(($this->_creator->get('id') ? 0 : 1));
 			}
 			return $this->_creator->get($property, $default);
 		}

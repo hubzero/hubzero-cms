@@ -362,7 +362,7 @@ class Threads extends AdminController
 				$entries->whereIn('category_id', (int)$filters['category_id']);
 				$filters['category_id'] = -1;
 			}
-			else
+			else if ($filters['category_id'] >= 0)
 			{
 				$entries->whereEquals('category_id', (int)$filters['category_id']);
 			}

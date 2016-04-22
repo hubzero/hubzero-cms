@@ -38,8 +38,9 @@ use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'vote.php');
-require_once(__DIR__ . DS . 'comment.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'vote.php';
+require_once __DIR__ . DS . 'comment.php';
 
 /**
  * Response model for Q&A
@@ -49,14 +50,14 @@ class Response extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'answers';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'created';
 
@@ -80,7 +81,7 @@ class Response extends Relational
 	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
-	 **/
+	 */
 	public $initiate = array(
 		'created',
 		'created_by'
@@ -90,7 +91,7 @@ class Response extends Relational
 	 * Fields to be parsed
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $parsed = array(
 		'answer'
 	);
@@ -120,34 +121,29 @@ class Response extends Relational
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('created');
 	}
 
 	/**
-	 * Defines a belongs to one relationship between article and user
+	 * Defines a belongs to one relationship between response and user
 	 *
-	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -233,13 +229,13 @@ class Response extends Relational
 	{
 		if (!$this->get('id'))
 		{
-			$this->setError(Lang::txt('No record found'));
+			$this->addError(Lang::txt('No record found'));
 			return false;
 		}
 
 		if (!$vote)
 		{
-			$this->setError(Lang::txt('No vote provided'));
+			$this->addError(Lang::txt('No vote provided'));
 			return false;
 		}
 
@@ -253,7 +249,7 @@ class Response extends Relational
 
 		if ($this->get('created_by') == $user_id)
 		{
-			$this->setError(Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
+			$this->addError(Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
 			return false;
 		}
 
@@ -285,7 +281,7 @@ class Response extends Relational
 
 			if (!$al->save())
 			{
-				$this->setError($al->getError());
+				$this->addError($al->getError());
 				return false;
 			}
 		}
@@ -352,7 +348,7 @@ class Response extends Relational
 
 		if (!$question->get('id'))
 		{
-			$this->setError(Lang::txt('Question not found.'));
+			$this->addError(Lang::txt('Question not found.'));
 			return false;
 		}
 
@@ -363,7 +359,7 @@ class Response extends Relational
 
 			if (!$question->save(true))
 			{
-				$this->setError($question->getError());
+				$this->addError($question->getError());
 				return false;
 			}
 		}
@@ -433,7 +429,7 @@ class Response extends Relational
 		{
 			if (!$vote->destroy())
 			{
-				$this->setError($vote->getError());
+				$this->addError($vote->getError());
 				return false;
 			}
 		}
@@ -453,7 +449,7 @@ class Response extends Relational
 		{
 			if (!$comment->destroy())
 			{
-				$this->setError($comment->getError());
+				$this->addError($comment->getError());
 				return false;
 			}
 		}
@@ -463,7 +459,7 @@ class Response extends Relational
 		{
 			if (!$vote->destroy())
 			{
-				$this->setError($vote->getError());
+				$this->addError($vote->getError());
 				return false;
 			}
 		}
@@ -472,4 +468,3 @@ class Response extends Relational
 		return parent::destroy();
 	}
 }
-

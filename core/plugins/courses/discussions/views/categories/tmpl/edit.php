@@ -45,10 +45,9 @@ defined('_HZEXEC_') or die();
 		<form action="<?php echo Route::url($this->offering->link() . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<?php
-				$user = new \Hubzero\User\Profile();
-				$user->load(User::get('id'));
+				$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
 				?>
-				<img src="<?php echo $user->getPicture(); ?>" alt="" />
+				<img src="<?php echo $user->picture(); ?>" alt="" />
 			</p>
 
 			<fieldset>

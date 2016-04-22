@@ -32,12 +32,13 @@
 
 namespace Components\Wishlist\Models;
 
-use Hubzero\User\Profile;
+use Components\Members\Models\Member;
 use Lang;
 use Date;
 
 require_once(__DIR__ . DS . 'base.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
+require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 
 /**
  * Wishlist model class for a vote
@@ -117,19 +118,16 @@ class Vote extends Base
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof Profile))
+		if (!($this->_creator instanceof Member))
 		{
-			$this->_creator = Profile::getInstance($this->get('userid'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
+			$this->_creator = Member::oneOrNew($this->get('userid'));
 		}
 		if ($property)
 		{
+			$property = ($property == 'uidNumber' ? 'id' : $property);
 			if ($property == 'picture')
 			{
-				return $this->_creator->getPicture();
+				return $this->_creator->picture();
 			}
 			return $this->_creator->get($property, $default);
 		}

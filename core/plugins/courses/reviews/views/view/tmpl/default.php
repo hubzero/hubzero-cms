@@ -102,14 +102,13 @@ $this->js();
 					<span class="comment-anchor"></span>
 					<?php
 					$anonymous = 1;
+					$jxuser = \Components\Members\Models\Member::oneOrNew(User::get('id'));
 					if (!User::isGuest())
 					{
-						$jxuser = new \Hubzero\User\Profile();
-						$jxuser->load(User::get('id'));
 						$anonymous = 0;
 					}
 					?>
-					<img src="<?php echo $jxuser->getPicture($anonymous); ?>" alt="" />
+					<img src="<?php echo $jxuser->picture($anonymous); ?>" alt="" />
 				</p>
 				<fieldset>
 				<?php
@@ -124,10 +123,10 @@ $this->js();
 						$name = Lang::txt('COM_KB_ANONYMOUS');
 						if (!$reply->get('anonymous'))
 						{
-							$xuser = $reply->creator();
-							if ($xuser->get('name'))
+							$name = $reply->creator->get('name');
+							if (in_array($reply->creator->get('access'), User::getAuthorisedViewLevels()))
 							{
-								$name = '<a href="' . Route::url($xuser->getLink()) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
+								$name = '<a href="' . Route::url($reply->creator->link()) . '">' . $this->escape(stripslashes($reply->creator->get('name'))) . '</a>';
 							}
 						}
 					?>

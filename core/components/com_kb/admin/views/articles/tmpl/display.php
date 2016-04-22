@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('article');
+$canDo = Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
 $ttle = Lang::txt('COM_KB_ARTICLES');
 
-Toolbar::title(Lang::txt('COM_KB') . ': ' . $ttle, 'kb.png');
+Toolbar::title(Lang::txt('COM_KB') . ': ' . $ttle, 'kb');
 if ($canDo->get('core.edit.state'))
 {
 	Toolbar::publishList();
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="col span7">
 				<label for="filter-category"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
-				<?php echo \Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'onchange="this.form.submit()"'); ?>
+				<?php echo Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'onchange="this.form.submit()"'); ?>
 
 				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
 				<select name="access" id="filter-access" onchange="this.form.submit()">

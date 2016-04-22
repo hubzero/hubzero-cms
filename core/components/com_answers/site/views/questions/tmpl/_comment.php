@@ -54,7 +54,7 @@ if (!$this->comment->get('item_id'))
 ?>
 	<li class="comment <?php echo $cls; ?>" id="<?php echo ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<?php if (!$this->comment->isReported() && $this->comment->get('qid')) { ?>
@@ -75,10 +75,10 @@ if (!$this->comment->get('item_id'))
 					$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
 					if (!$this->comment->get('anonymous'))
 					{
-						$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
-						if ($this->comment->creator()->get('public'))
+						$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
+						if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()))
 						{
-							$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+							$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 						}
 					}
 					echo $name;

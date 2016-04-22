@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Answers\Helpers\Permissions::getActions('answer');
+$canDo = Components\Answers\Helpers\Permissions::getActions('answer');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
+Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
-						<td><?php echo $this->escape(stripslashes($this->row->creator()->get('name'))); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->row->creator->get('name'))); ?></td>
 					</tr>
 				<?php } ?>
 					<tr>

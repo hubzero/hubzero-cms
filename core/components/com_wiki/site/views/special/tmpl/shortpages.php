@@ -83,12 +83,10 @@ $rows = $this->book->pages($filters)
 			{
 				foreach ($rows as $row)
 				{
-					$name = Lang::txt('COM_WIKI_UNKNOWN');
-					$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
-					if (is_object($xprofile))
+					$name = $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
+					if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
 					{
-						$name = $this->escape(stripslashes($xprofile->get('name')));
-						$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
+						$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 					}
 					?>
 					<tr>

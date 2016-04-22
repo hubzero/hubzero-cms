@@ -38,7 +38,7 @@ $database = App::get('db');
 $jt = new \Components\Jobs\Tables\JobType($database);
 $jc = new \Components\Jobs\Tables\JobCategory($database);
 
-$profile = \Hubzero\User\Profile::getInstance($this->seeker->uid);
+$profile = Components\Members\Models\Member::oneOrNew($this->seeker->uid);
 
 $jobtype = $jt->getType($this->seeker->sought_type, strtolower(Lang::txt('COM_JOBS_TYPE_ANY')));
 $jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(Lang::txt('COM_JOBS_CATEGORY_ANY')));
@@ -62,7 +62,7 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 ?>
 <div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
 	<div class="thumb">
-		<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
+		<img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
 	</div>
 	<div class="grid">
 		<div class="aboutlb col span5">

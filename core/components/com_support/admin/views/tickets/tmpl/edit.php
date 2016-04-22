@@ -32,8 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$user = new \Hubzero\User\Profile();
-$user->load(User::get('id'));
+$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
 
 $unknown  = true;
 $name     = '';
@@ -45,9 +44,9 @@ if ($this->row->get('login'))
 	if ($this->row->get('name'))
 	{
 		jimport('joomla.user.helper');
-		$usertype = implode(', ', JUserHelper::getUserGroups($this->row->submitter('id')));
+		$usertype = implode(', ', JUserHelper::getUserGroups($this->row->submitter()->get('id')));
 
-		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->submitter('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
+		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->submitter()->get('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
 		$unknown = false;
 
 		$notify[] = $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')';
@@ -67,12 +66,11 @@ if (!$name)
 	$notify[] = $name;
 }
 
-$owner = new \Hubzero\User\Profile();
 if ($this->row->isOwned())
 {
-	if ($this->row->owner('name'))
+	if ($this->row->owner()->get('name'))
 	{
-		$notify[] = $this->escape(stripslashes($this->row->owner('name'))) . ' (' . $this->escape(stripslashes($this->row->owner('username'))) . ')';
+		$notify[] = $this->escape(stripslashes($this->row->owner()->get('name'))) . ' (' . $this->escape(stripslashes($this->row->owner()->get('username'))) . ')';
 	}
 }
 
@@ -126,7 +124,7 @@ if (!$no_html)
 	<?php } ?>
 			<div class="ticket<?php echo ($no_html ? '-body' : ''); ?>" id="t<?php echo $this->row->get('id'); ?>">
 				<p class="ticket-member-photo">
-					<img src="<?php echo $this->row->submitter()->getPicture($unknown); ?>" alt="" />
+					<img src="<?php echo $this->row->submitter()->picture($unknown); ?>" alt="" />
 				</p>
 				<div class="ticket-head">
 					<strong>
@@ -296,10 +294,10 @@ if (!$no_html)
 					$name = Lang::txt('COM_SUPPORT_UNKNOWN');
 					$cite = $name;
 
-					if ($comment->creator())
+					if ($comment->creator()->get('id'))
 					{
-						$cite = $this->escape(stripslashes($comment->creator('name')));
-						$name = '<a href="' . Route::url('index.php?option=com_members&task=edit&id[]=' . $comment->creator('id')) . '">' . $cite . ' (' . $this->escape($comment->creator('username')) . ')</a>';
+						$cite = $this->escape(stripslashes($comment->creator()->get('name')));
+						$name = '<a href="' . Route::url('index.php?option=com_members&task=edit&id[]=' . $comment->creator()->get('id')) . '">' . $cite . ' (' . $this->escape($comment->creator()->get('username')) . ')</a>';
 					}
 
 					if ($comment->changelog()->format() != 'html')
@@ -310,7 +308,7 @@ if (!$no_html)
 					<li class="<?php echo $access .' comment'; ?>" id="c<?php echo $comment->get('id'); ?>">
 						<p class="comment-member-photo">
 							<span class="comment-anchor"></span>
-							<img src="<?php echo $comment->creator('picture'); ?>" alt="<?php echo Lang::txt('COM_SUPPORT_PROFILE_IMAGE'); ?>" />
+							<img src="<?php echo $comment->creator()->picture(); ?>" alt="<?php echo Lang::txt('COM_SUPPORT_PROFILE_IMAGE'); ?>" />
 						</p>
 						<p class="comment-head">
 							<strong>

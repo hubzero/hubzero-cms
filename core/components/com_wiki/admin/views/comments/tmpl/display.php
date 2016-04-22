@@ -32,9 +32,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Wiki\Helpers\Permissions::getActions('comment');
+$canDo = Components\Wiki\Helpers\Permissions::getActions('comment');
 
-Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS'), 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS'), 'wiki');
 
 if ($canDo->get('core.delete'))
 {
@@ -168,7 +168,7 @@ function submitbutton(pressbutton)
 					<?php } ?>
 				</td>
 				<td class="priority-3">
-					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
 				</td>
 				<td class="priority-5">
 					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state2 . '&id=' . $row->get('id') . '&pageid=' . $this->filters['page_id'] . '&' . Session::getFormToken() . '=1'); ?>">

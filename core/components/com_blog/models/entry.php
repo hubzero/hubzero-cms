@@ -32,7 +32,6 @@
 namespace Components\Blog\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use Component;
@@ -40,8 +39,9 @@ use Lang;
 use User;
 use Date;
 
-require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'comment.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'comment.php';
 
 /**
  * Model class for a blog entry
@@ -315,11 +315,7 @@ class Entry extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -649,7 +645,7 @@ class Entry extends Relational
 		{
 			if (!$comment->destroy())
 			{
-				$this->setError($comment->getError());
+				$this->addError($comment->getError());
 				return false;
 			}
 		}
@@ -676,4 +672,3 @@ class Entry extends Relational
 		return $data;
 	}
 }
-

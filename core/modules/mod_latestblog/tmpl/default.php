@@ -47,7 +47,7 @@ $c = 0;
 					<li>
 						<?php if ($this->params->get('details', 1)) { ?>
 							<p class="entry-author-photo">
-								<img src="<?php echo $post->creator()->getPicture(); ?>" alt="" />
+								<img src="<?php echo $post->creator->picture(); ?>" alt="" />
 							</p>
 						<?php } ?>
 						<div class="entry-content">
@@ -73,7 +73,7 @@ $c = 0;
 									</dd>
 									<dd class="author">
 										<a href="<?php echo Route::url('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
-											<?php echo $this->escape(stripslashes($post->creator()->get('name'))); ?>
+											<?php echo $this->escape(stripslashes($post->creator->get('name'))); ?>
 										</a>
 									</dd>
 									<dd class="location">
@@ -104,11 +104,11 @@ $c = 0;
 									<?php 
 									if ($this->pullout && $c == 0)
 									{
-										echo \Hubzero\Utility\String::truncate(strip_tags($post->content()), $this->params->get('pulloutlimit', 500));
+										echo \Hubzero\Utility\String::truncate(strip_tags($post->content), $this->params->get('pulloutlimit', 500));
 									}
 									else
 									{
-										echo \Hubzero\Utility\String::truncate(strip_tags($post->content()), $this->params->get('charlimit', 100));
+										echo \Hubzero\Utility\String::truncate(strip_tags($post->content_, $this->params->get('charlimit', 100));
 									}
 									?>
 								</div>

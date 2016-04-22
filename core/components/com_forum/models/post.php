@@ -33,12 +33,12 @@ namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Database\Value\Raw;
-use Hubzero\User\Profile;
 use Lang;
 use Date;
 
-require_once(__DIR__ . DS . 'attachment.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'attachment.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Forum model for a post
@@ -218,11 +218,7 @@ class Post extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -255,11 +251,7 @@ class Post extends Relational
 	 */
 	public function modifier()
 	{
-		if ($profile = Profile::getInstance($this->get('modified_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'modified_by');
 	}
 
 	/**
@@ -322,7 +314,11 @@ class Post extends Relational
 	 */
 	public function replies()
 	{
-		return self::all()->whereEquals('parent', $this->get('id'));
+		return self::all()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}])
+			->whereEquals('parent', $this->get('id'));
 	}
 
 	/**
@@ -332,7 +328,11 @@ class Post extends Relational
 	 */
 	public function thread()
 	{
-		return self::all()->whereEquals('thread', $this->get('thread'));
+		return self::all()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}])
+			->whereEquals('thread', $this->get('thread'));
 	}
 
 	/**
@@ -512,7 +512,7 @@ class Post extends Relational
 		{
 			if (!$post->destroy())
 			{
-				$this->setError($post->getError());
+				$this->addError($post->getError());
 				return false;
 			}
 		}
@@ -522,7 +522,7 @@ class Post extends Relational
 		{
 			if (!$attachment->destroy())
 			{
-				$this->setError($attachment->getError());
+				$this->addError($attachment->getError());
 				return false;
 			}
 		}
@@ -555,7 +555,7 @@ class Post extends Relational
 
 			if (!$parent)
 			{
-				$this->setError(Lang::txt('Parent node does not exist.'));
+				$this->addError(Lang::txt('Parent node does not exist.'));
 				return false;
 			}
 
@@ -576,7 +576,7 @@ class Post extends Relational
 				->whereEquals('thread', $parent->get('thread'));
 			if (!$query->execute())
 			{
-				$this->setError($query->getError());
+				$this->addError($query->getError());
 				return false;
 			}
 
@@ -590,7 +590,7 @@ class Post extends Relational
 				->whereEquals('thread', $parent->get('thread'));
 			if (!$query->execute())
 			{
-				$this->setError($query->getError());
+				$this->addError($query->getError());
 				return false;
 			}
 

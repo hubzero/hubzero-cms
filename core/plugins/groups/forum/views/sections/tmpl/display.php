@@ -329,10 +329,10 @@ if ($this->config->get('access-manage-section')) {
 					$lname = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
 					if (!$post->get('anonymous'))
 					{
-						$lname = $this->escape(stripslashes($post->creator()->get('name', $lname)));
-						if ($post->creator()->get('public'))
+						$lname = $this->escape(stripslashes($post->creator->get('name', $lname)));
+						if (in_array($post->creator->get('access'), User::getAuthorisedViewLevels()))
 						{
-							$lname = '<a href="' . Route::url($post->creator()->getLink()) . '">' . $lname . '</a>';
+							$lname = '<a href="' . Route::url($post->creator->link()) . '">' . $lname . '</a>';
 						}
 					}
 					foreach ($this->sections as $section)

@@ -167,6 +167,8 @@ $this->css('browse.css');
 				<?php
 				if ($this->courses->total() > 0)
 				{
+					require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 					foreach ($this->courses as $course)
 					{
 						//get status
@@ -215,10 +217,10 @@ $this->css('browse.css');
 											$names = array();
 											foreach ($instructors as $i)
 											{
-												$instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
+												$instructor = Components\Members\Models\Member::oneOrNew($i->get('user_id'));
 												$name = $this->escape(stripslashes($instructor->get('name')));
 
-												$names[] = ($instructor->get('public') ? '<a href="' . Route::url($instructor->getLink()) . '">' . $name . '</a>' : $name);
+												$names[] = (in_array($instructor->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($instructor->link()) . '">' . $name . '</a>' : $name);
 											}
 											echo Lang::txt('COM_COURSES_COURSE_INSTRUCTORS'); ?>: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span><?php
 										}

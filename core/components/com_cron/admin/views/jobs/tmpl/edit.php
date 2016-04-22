@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Cron\Helpers\Permissions::getActions('component');
+$canDo = Components\Cron\Helpers\Permissions::getActions('component');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_CRON') . ': ' . $text, 'cron.png');
+Toolbar::title(Lang::txt('COM_CRON') . ': ' . $text, 'cron');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -450,8 +450,7 @@ jQuery(document).ready(function($){
 						<th><?php echo Lang::txt('COM_CRON_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
-							$editor = User::getInstance($this->row->get('created_by'));
-							echo $this->escape($editor->get('name'));
+							echo $this->escape($this->row->creator->get('name'));
 							?>
 							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 						</td>
@@ -468,8 +467,7 @@ jQuery(document).ready(function($){
 						<th><?php echo Lang::txt('COM_CRON_FIELD_MODIFIER'); ?>:</th>
 						<td>
 							<?php
-							$modifier = User::getInstance($this->row->get('modified_by'));
-							echo $this->escape($modifier->get('name', Lang::txt('COM_CRON_UNKNOWN')));
+							echo $this->escape($this->row->modifier->get('name', Lang::txt('COM_CRON_UNKNOWN')));
 							?>
 							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />
 						</td>

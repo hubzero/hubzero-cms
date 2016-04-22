@@ -36,10 +36,10 @@ $cls = isset($this->cls) ? $this->cls : 'odd';
 $name = Lang::txt('PLG_MEMBERS_BLOG_ANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
-	$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
-	if ($this->comment->creator()->get('public'))
+	$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
+	if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()))
 	{
-		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+		$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 	}
 }
 
@@ -49,13 +49,13 @@ if ($this->comment->isReported())
 }
 else
 {
-	$comment  = $this->comment->content();
+	$comment  = $this->comment->content;
 }
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
 			<a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a>
-			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">
@@ -189,10 +189,21 @@ else
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3))
 		{
+			$replies = $this->comment->replies()
+				->including(['creator', function ($creator){
+					$creator->select('*');
+				}])
+				->whereIn('state', array(
+					Components\Blog\Models\Comment::STATE_PUBLISHED,
+					Components\Blog\Models\Comment::STATE_FLAGGED
+				))
+				->ordered()
+				->rows();
+
 			$this->view('_list')
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->ordered()->rows())
+			     ->set('comments', $replies)
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
 			     ->set('cls', $cls)

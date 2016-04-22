@@ -83,7 +83,7 @@ $this->css()
 		<div class="subject">
 			<div class="entry question" id="q<?php echo $this->question->get('id'); ?>">
 				<p class="entry-member-photo">
-					<img src="<?php echo $this->question->creator()->getPicture($this->question->get('anonymous')); ?>" alt="" />
+					<img src="<?php echo $this->question->creator->picture($this->question->get('anonymous')); ?>" alt="" />
 				</p><!-- / .question-member-photo -->
 				<div class="entry-content">
 					<?php if (!$this->question->isReported()) { ?>
@@ -103,7 +103,11 @@ $this->css()
 						$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
 						if (!$this->question->get('anonymous'))
 						{
-							$name = $this->escape(stripslashes($this->question->creator()->get('name', Lang::txt('COM_ANSWERS_UNKNOWN'))));
+							$name = $this->escape(stripslashes($this->question->creator->get('name', Lang::txt('COM_ANSWERS_UNKNOWN'))));
+							if (in_array($this->question->creator->get('access'), User::getAuthorisedViewLevels()))
+							{
+								$name = '<a href="' . Route::url($this->question->creator->link()) . '">' . $name . '</a>';
+							}
 						}
 						echo $name;
 						?></strong>
@@ -381,7 +385,14 @@ $this->css()
 			</section><!-- / .below section -->
 		<?php } ?>
 
-		<?php if ($this->question->chosen()->count()) { ?>
+		<?php
+		$chosen = $this->question->chosen()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}])
+			->rows();
+
+		if ($chosen->count()) { ?>
 			<!-- list of chosen answers -->
 			<section class="below section" id="bestanswer">
 				<div class="section-inner">
@@ -397,7 +408,7 @@ $this->css()
 							 ->set('depth', 0)
 							 ->set('option', $this->option)
 							 ->set('question', $this->question)
-							 ->set('comments', $this->question->chosen()->rows())
+							 ->set('comments', $chosen)
 							 ->set('base', $this->question->link())
 							 ->set('config', $this->question->config())
 							 ->display();
@@ -414,7 +425,14 @@ $this->css()
 		<section class="below section" id="answers">
 			<div class="section-inner">
 				<div class="subject">
-					<?php $responses = $this->question->responses()->whereIn('state', [0, 3])->rows(); ?>
+					<?php
+					$responses = $this->question->responses()
+						->including(['creator', function ($creator){
+							$creator->select('*');
+						}])
+						->whereIn('state', array(0, 3))
+						->rows();
+					?>
 					<h3>
 						<span class="comment-count"><?php echo $responses->count(); ?></span> <?php echo Lang::txt('COM_ANSWERS_RESPONSES'); ?>
 					</h3>

@@ -232,10 +232,10 @@ if ($this->wishlist->exists())
 								$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 								if (!$item->get('anonymous'))
 								{
-									$name = $this->escape(stripslashes($item->proposer('name', $name)));
-									if ($item->proposer('public'))
+									$name = $this->escape(stripslashes($item->proposer()->get('name', $name)));
+									if (in_array($item->proposer()->get('access'), User::getAuthorisedViewLevels()))
 									{
-										$name = '<a href="' . Route::url($item->proposer()->getLink()) . '">' . $name . '</a>';
+										$name = '<a href="' . Route::url($item->proposer()->link()) . '">' . $name . '</a>';
 									}
 								}
 								?>

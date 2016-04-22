@@ -45,11 +45,11 @@ $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
 if ($this->row->get('login'))
 {
 	$submitter = $this->row->submitter();
-	if ($submitter->get('uidNumber'))
+	if ($submitter->get('id'))
 	{
-		$usertype = implode(', ', \JUserHelper::getUserGroups($submitter->get('uidNumber')));
+		$usertype = implode(', ', \JUserHelper::getUserGroups($submitter->get('id')));
 
-		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&id=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
+		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&id=' . $submitter->get('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
 		$unknown = 0;
 	}
 	else
@@ -138,7 +138,7 @@ $cc = array();
 		<div class="ticket entry" id="t<?php echo $this->row->get('id'); ?>">
 			<p class="entry-member-photo">
 				<span class="entry-anchor"></span>
-				<img src="<?php echo $this->row->submitter()->getPicture($unknown); ?>" alt="" />
+				<img src="<?php echo $this->row->submitter()->picture($unknown); ?>" alt="" />
 			</p><!-- / .entry-member-photo -->
 			<div class="entry-content">
 				<p class="entry-title">
@@ -281,7 +281,7 @@ $cc = array();
 			{
 				$access = 'public';
 			}
-			if ($comment->get('created_by') == $this->row->submitter('username') && !$comment->isPrivate())
+			if ($comment->get('created_by') == $this->row->submitter()->get('username') && !$comment->isPrivate())
 			{
 				$access = 'submitter';
 			}
@@ -289,17 +289,17 @@ $cc = array();
 			$name = Lang::txt('COM_SUPPORT_UNKNOWN');
 			$cite = $name;
 
-			if ($comment->creator())
+			if ($comment->creator()->get('id'))
 			{
-				$cite = $this->escape(stripslashes($comment->creator('name')));
-				$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $comment->creator('id')) . '">' . $cite . ' (' . $this->escape(stripslashes($comment->creator('username'))) . ')</a>';
+				$cite = $this->escape(stripslashes($comment->creator()->get('name')));
+				$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $comment->creator()->get('id')) . '">' . $cite . ' (' . $this->escape(stripslashes($comment->creator()->get('username'))) . ')</a>';
 			}
 
 			$o = ($o == 'odd') ? 'even' : 'odd';
 			?>
 			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->get('id'); ?>">
 				<p class="comment-member-photo">
-					<img src="<?php echo $comment->creator('picture'); ?>" alt="" />
+					<img src="<?php echo $comment->creator()->picture(); ?>" alt="" />
 				</p>
 				<div class="comment-content">
 					<p class="comment-head">
@@ -381,16 +381,15 @@ $cc = array();
 			<p class="comment-member-photo">
 				<span class="comment-anchor"></span>
 				<?php
-					$jxuser = new \Hubzero\User\Profile();
+					$jxuser = \Components\Members\Models\Member::oneOrNew(User::get('id'));
 
 					$anon = 1;
 					if (!User::isGuest())
 					{
-						$jxuser->load(User::get('id'));
 						$anon = 0;
 					}
 				?>
-				<img src="<?php echo $jxuser->getPicture($anon); ?>" alt="" />
+				<img src="<?php echo $jxuser->picture($anon); ?>" alt="" />
 			</p>
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />

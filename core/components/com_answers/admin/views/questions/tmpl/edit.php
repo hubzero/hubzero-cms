@@ -125,7 +125,7 @@ function submitbutton(pressbutton)
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
-							<td><?php echo $this->escape(stripslashes($this->row->creator()->get('name'))); ?></td>
+							<td><?php echo $this->escape(stripslashes($this->row->creator->get('name'))); ?></td>
 						</tr>
 					<?php } ?>
 				</tbody>

@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
+$canDo = Components\Wiki\Helpers\Permissions::getActions('page');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') .': ' . $text, 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') .': ' . $text, 'wiki');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -148,7 +148,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?></th>
-						<td><?php echo $this->escape(stripslashes($this->row->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN')))); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')))); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_WIKI_FIELD_HITS'); ?></th>

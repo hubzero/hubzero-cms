@@ -216,13 +216,13 @@ $this->thread->set('category', $this->category->get('alias'));
 			<p class="comment-member-photo">
 				<?php
 				$anon = 1;
-				$user = \Hubzero\User\Profile::getInstance(User::get('id'));
+				$user = \Components\Members\Models\Member::oneOrNew(User::get('id'));
 				if (!User::isGuest())
 				{
 					$anon = 0;
 				}
 				?>
-				<img src="<?php echo $user->getPicture($anon); ?>" alt="" />
+				<img src="<?php echo $user->picture($anon); ?>" alt="" />
 			</p>
 
 			<fieldset>

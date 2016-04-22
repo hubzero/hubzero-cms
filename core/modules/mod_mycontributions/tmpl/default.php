@@ -113,6 +113,8 @@ if (!$contributions)
 }
 else
 {
+	require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 	$html .= '<ul class="expandedlist">' . "\n";
 	for ($i=0; $i < count($contributions); $i++)
 	{
@@ -128,13 +130,13 @@ else
 
 			// Get author login
 			$author_login = Lang::txt('MOD_MYCONTRIBUTIONS_UNKNOWN');
-			$author = \Hubzero\User\Profile::getInstance($contributions[$i]->created_by);
-			if (is_object($author))
+			$author = Components\Members\Models\Member::oneOrNew($contributions[$i]->created_by);
+			if ($author->get('id'))
 			{
 				$author_login = stripslashes($author->get('name'));
-				if ($author->get('public'))
+				if (in_array($author->get('access'), User::getAuthorisedViewLevels()))
 				{
-					$author_login = '<a href="' . Route::url($author->getLink()) . '">' . $author_login . '</a>';
+					$author_login = '<a href="' . Route::url($author->link()) . '">' . $author_login . '</a>';
 				}
 			}
 

@@ -32,9 +32,10 @@
 namespace Components\Blog\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Lang;
 use Date;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Blog model for a comment
@@ -151,25 +152,17 @@ class Comment extends Relational
 	 */
 	public function wasModified()
 	{
-		if ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00')
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00');
 	}
 
 	/**
-	 * Get created_by user model
+	 * Defines a belongs to one relationship between comment and user
 	 *
 	 * @return  object
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -179,7 +172,7 @@ class Comment extends Relational
 	 */
 	public function isReported()
 	{
-		return ($this->get('state') == 3);
+		return ($this->get('state') == self::STATE_FLAGGED);
 	}
 
 	/**
@@ -195,7 +188,11 @@ class Comment extends Relational
 			$filters['entry_id'] = $this->get('entry_id');
 		}
 
-		$entries = self::blank()->whereEquals('parent', (int) $this->get('id'));
+		$entries = self::blank()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}])
+			->whereEquals('parent', (int) $this->get('id'));
 
 		if (isset($filters['state']))
 		{
@@ -234,11 +231,11 @@ class Comment extends Relational
 		}
 
 		// Remove comments
-		foreach ($this->replies() as $comment)
+		foreach ($this->replies()->rows() as $comment)
 		{
 			if (!$comment->destroy())
 			{
-				$this->setError($comment->getError());
+				$this->addError($comment->getError());
 				return false;
 			}
 		}

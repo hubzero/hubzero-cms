@@ -115,7 +115,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 						</a>
 					</li>
 					<?php
-					$filters = array('state' => 1, 'access' => User::getAuthorisedViewLevels());
+					$filters = array('state' => Components\Kb\Models\Category::STATE_PUBLISHED, 'access' => User::getAuthorisedViewLevels());
 
 					$categories = $this->archive->categories($filters);
 
@@ -126,7 +126,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 							</a>
 							<?php if ($this->catid == $row->get('id') && count($row->children($filters)) > 0) { ?>
 								<ul class="categories">
-								<?php foreach ($row->children() as $cat) { ?>
+								<?php foreach ($row->children()->rows() as $cat) { ?>
 									<li>
 										<a <?php if ($this->category->get('id') == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($cat->link()); ?>">
 											<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
@@ -157,7 +157,12 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 			</h3>
 
 			<?php
-			$comments = $this->article->comments()->whereIn('state', array(1, 3))->rows();
+			$comments = $this->article->comments()
+				->whereIn('state', array(
+					Components\Kb\Models\Comment::STATE_PUBLISHED,
+					Components\Kb\Models\Comment::STATE_FLAGGED
+				))
+				->rows();
 
 			if ($comments->count() > 0)
 			{
@@ -197,10 +202,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 							$name = Lang::txt('COM_KB_ANONYMOUS');
 							if (!$replyto->get('anonymous'))
 							{
-								$name = $this->escape(stripslashes($replyto->creator()->get('name')));
-								if ($replyto->creator()->get('public'))
+								$name = $this->escape(stripslashes($replyto->creator->get('name')));
+								if (in_array($replyto->creator->get('access'), User::getAuthorisedViewLevels()))
 								{
-									$name = '<a href="' . Route::url($replyto->creator()->getLink()) . '">' . $name . '</a>';
+									$name = '<a href="' . Route::url($replyto->creator->link()) . '">' . $name . '</a>';
 								}
 							}
 							?>

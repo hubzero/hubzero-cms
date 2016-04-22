@@ -42,20 +42,20 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<div class="creator attribution clearfix">
 			<?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
 				<?php
-				$name = $this->escape(stripslashes($item->creator('name')));
+				$name = $this->escape(stripslashes($item->creator()->get('name')));
 
-				if ($item->creator('public')) { ?>
-					<a href="<?php echo Route::url($item->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
-						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+				if (in_array($item->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+					<a href="<?php echo Route::url($item->creator()->link()); ?>" title="<?php echo $name; ?>" class="img-link">
+						<img src="<?php echo $item->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 					</a>
 				<?php } else { ?>
 					<span class="img-link">
-						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+						<img src="<?php echo $item->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 					</span>
 				<?php } ?>
 				<p>
-					<a href="<?php echo Route::url($item->creator()->getLink()); ?>">
-						<?php echo $this->escape(stripslashes($item->creator('name'))); ?>
+					<a href="<?php echo Route::url($item->creator()->link()); ?>">
+						<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
 					</a> created this post <br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span>
@@ -127,15 +127,15 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		</div><!-- / .meta -->
 <?php //if ($this->post->created_by != $this->post->created_by) { ?>
 		<div class="convo attribution clearfix">
-			<a href="<?php echo Route::url($this->post->creator()->getLink()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
-				<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
+			<a href="<?php echo Route::url($this->post->creator()->link()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
+				<img src="<?php echo $this->post->creator()->picture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
 			</a>
 			<p>
 				<?php
-				$who = $this->escape(stripslashes($this->post->creator('name')));
-				if ($this->post->creator('public'))
+				$who = $this->escape(stripslashes($this->post->creator()->get('name')));
+				if (in_array($this->post->creator()->get('access'), User::getAuthorisedViewLevels()))
 				{
-					$who = '<a href="' . Route::url($this->post->creator()->getLink()) . '">' . $name . '</a>';
+					$who = '<a href="' . Route::url($this->post->creator()->link()) . '">' . $name . '</a>';
 				}
 
 				$where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';

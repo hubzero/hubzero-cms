@@ -64,8 +64,8 @@ $base = rtrim(Request::base(true), '/');
 									$quote->set('short_quote', $quote->get('quote'));
 								}
 								$quote->set('org', str_replace('<br>', '<br />', $quote->get('org')));
-								$user = $quote->user();
-								echo '<img src="' . $user->getPicture() . '" alt="' . $this->escape($user->get('name')) . '" width="50" height="50" /><br />';
+								$user = $quote->user;
+								echo '<img src="' . $user->picture() . '" alt="' . $this->escape($user->get('name')) . '" width="50" height="50" /><br />';
 								?>
 								<cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></cite>
 								<br /><?php echo $this->escape(stripslashes($quote->get('org'))); ?>

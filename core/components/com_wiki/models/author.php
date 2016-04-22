@@ -32,8 +32,9 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use User;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Wiki author model
@@ -78,11 +79,7 @@ class Author extends Relational
 	 */
 	public function user()
 	{
-		if ($profile = Profile::getInstance($this->get('user_id')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'user_id');
 	}
 
 	/**

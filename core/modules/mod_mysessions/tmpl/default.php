@@ -107,13 +107,13 @@ $base = rtrim(Request::base(true), '/');
 									<span><?php echo Lang::txt('MOD_MYSESSIONS_SESSION_OWNER'); ?></span>
 									<?php
 										$name = $session->username;
-										$user = \Hubzero\User\Profile::getInstance($session->username);
-										if ($user)
+										$user = Components\Members\Models\Member::oneByUsername($session->username);
+										if ($user->get('id'))
 										{
 											$name = $user->get('name');
-											if ($user->get('public'))
+											if (in_array($user->get('access'), User::getAuthorisedViewLevels()))
 											{
-												$name = '<a href="' . Route::url($user->getLink()) . '">' . $name . '</a>';
+												$name = '<a href="' . Route::url($user->link()) . '">' . $name . '</a>';
 											}
 										}
 										echo $name;

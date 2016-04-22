@@ -32,9 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
+$canDo = Components\Wiki\Helpers\Permissions::getActions('page');
 
-Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_REVISIONS'), 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_REVISIONS'), 'wiki');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -182,7 +182,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-3">
 					<span class="glyph user">
-						<?php echo $this->escape(stripslashes($row->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN')))); ?>
+						<?php echo $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')))); ?>
 					</span>
 				</td>
 			</tr>

@@ -32,11 +32,12 @@
 
 namespace Components\Jobs\Models;
 
+use Components\Members\Models\Member;
 use Hubzero\Base\Model;
-use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 
 require_once(dirname(__DIR__). DS . 'tables' . DS . 'job.php');
+require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 
 /**
  * Courses model class for a forum
@@ -75,20 +76,16 @@ class Job extends Model
 	 */
 	public function creator($property=null)
 	{
-		if (!($this->_creator instanceof Profile))
+		if (!($this->_creator instanceof Member))
 		{
-			$this->_creator = Profile::getInstance($this->get('addedBy'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
+			$this->_creator = Member::oneOrNew($this->get('addedBy'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
+			$property = ($property == 'uidNumber') ? 'id' : $property;
 			if ($property == 'picture')
 			{
-				return $this->_creator->getPicture();
+				return $this->_creator->picture();
 			}
 			return $this->_creator->get($property);
 		}

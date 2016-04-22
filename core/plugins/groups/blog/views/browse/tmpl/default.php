@@ -134,7 +134,7 @@ $this->css()
 								$live_site = 'https://' . $_SERVER['HTTP_HOST'];
 								if (substr($feed, 0, 4) != 'http')
 								{
-									$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+									$feed = rtrim($live_site, '/') . '/' . ltrim($feed, '/');
 								}
 								$feed = str_replace('https://', 'http://', $feed);
 						?>
@@ -195,18 +195,25 @@ $this->css()
 										</time>
 									</dd>
 									<dd class="author">
-										<?php if ($row->creator('public')) { ?>
-											<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
-												<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+										<?php if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+											<a href="<?php echo Route::url($row->creator->link()); ?>">
+												<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
 											</a>
 										<?php } else { ?>
-											<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+											<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
 										<?php } ?>
 									</dd>
 									<?php if ($row->get('allow_comments') == 1) { ?>
 										<dd class="comments">
 											<a href="<?php echo Route::url($row->link('comments')); ?>">
-												<?php echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS', $row->comments()->whereIn('state', array(1, 3))->count()); ?>
+												<?php
+												$comments = $row->comments()
+													->whereIn('state', array(
+														Components\Blog\Models\Comment::STATE_PUBLISHED,
+														Components\Blog\Models\Comment::STATE_FLAGGED
+													))
+													->count();
+												echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>
 											</a>
 										</dd>
 									<?php } else { ?>
@@ -235,10 +242,10 @@ $this->css()
 								<div class="entry-content">
 									<?php if ($this->config->get('cleanintro', 1)) { ?>
 										<p>
-											<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content()), $this->config->get('introlength', 300)); ?>
+											<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
 										</p>
 									<?php } else { ?>
-										<?php echo \Hubzero\Utility\String::truncate($row->content(), $this->config->get('introlength', 300)); ?>
+										<?php echo \Hubzero\Utility\String::truncate($row->content, $this->config->get('introlength', 300)); ?>
 									<?php } ?>
 								</div>
 							</article>
@@ -350,32 +357,6 @@ $this->css()
 						<p><?php echo Lang::txt('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 					<?php } ?>
 				</div><!-- / .blog-popular-entries -->
-
-				<?php
-					/*<div class="container blog-recent-entries">
-					<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
-					<?php
-					$recent = $this->model->entries('recent', $this->filters);
-					if ($recent->total() > 0) { ?>
-						<ol>
-						<?php foreach ($recent as $row) { ?>
-							<?php
-								if (!$row->isAvailable() && $row->get('created_by') != User::get('id'))
-								{
-									continue;
-								}
-							?>
-							<li>
-								<a href="<?php echo Route::url($row->link()); ?>">
-									<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-								</a>
-							</li>
-						<?php } ?>
-						</ol>
-					<?php } else { ?>
-						<p><?php echo Lang::txt('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-					<?php } ?>
-				</div><!-- / .blog-recent-entries -->*/ ?>
 			</aside><!-- / .aside -->
 		</section>
 	</form><!-- /.main -->

@@ -73,10 +73,10 @@ if (!$this->thread->thread)
 		$huser = '';
 		if (!$this->thread->anonymous)
 		{
-			$huser = \Hubzero\User\Profile::getInstance($this->thread->created_by);
-			if (is_object($huser) && $huser->get('name'))
+			$name = $this->escape(stripslashes($this->thread->creator->get('name')));
+			if (in_array($this->thread->creator->get('access'), User::geAuthorisedviewLevels()))
 			{
-				$name = ($huser->get('public') ? '<a href="' . Route::url($huser->getLink()) . '">' : '') . $this->escape(stripslashes($huser->get('name'))) . ($huser->get('public') ? '</a>' : '');
+				$name = '<a href="' . Route::url($this->thread->creator->link()) . '">' . $name . '</a>';
 			}
 		}
 

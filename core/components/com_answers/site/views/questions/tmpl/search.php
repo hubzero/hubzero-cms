@@ -180,10 +180,10 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
 						if (!$row->get('anonymous'))
 						{
-							$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
-							if ($row->creator()->get('public'))
+							$name = $this->escape(stripslashes($row->creator->get('name', $name)));
+							if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
 							{
-								$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
+								$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 							}
 						}
 						$cls  = ($row->isclosed())   ? 'answered' : '';
@@ -237,10 +237,10 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 								<td class="priority-4 voting">
 									<?php
 									$this->view('_vote')
-									     ->set('option', $this->option)
-									     ->set('item', $row)
-									     ->set('vote', $row->ballot())
-									     ->display();
+										->set('option', $this->option)
+										->set('item', $row)
+										->set('vote', $row->ballot())
+										->display();
 									?>
 								</td>
 							</tr>

@@ -229,8 +229,11 @@ class Helper extends Module
 					$filters['group_id'] = 0;
 					$filters['authorized'] = false;
 					$filters['sql'] = '';
-					$mp = new \Components\Blog\Tables\Entry($this->database);
-					$entry = $mp->getRecords($filters);
+					$entry = \Components\Blog\Models\Entry::all()
+						->whereEquals('scope', 'member')
+						->whereEquals('state', 1)
+						->whereIn('access', User::getAuthorisedViewLevels())
+						->row();
 
 					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $entry;
 				break;
@@ -296,14 +299,14 @@ class Helper extends Module
 				}
 
 				// Load their bio
-				$profile = \Hubzero\User\Profile::getInstance($row->uidNumber);
+				$profile = \Components\Members\Models\Member::onrOrNew($row->uidNumber);
 
 				$title = $row->name;
 				if (!trim($title))
 				{
 					$title = $row->givenName . ' ' . $row->surname;
 				}
-				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_members&id=' . $row->uidNumber) . '"><img width="30" height="30" src="' . $profile->getPicture() . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
+				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_members&id=' . $row->uidNumber) . '"><img width="30" height="30" src="' . $profile->picture() . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
 				$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_members&id=' . $row->uidNumber) . '">' . $title . '</a></span>, ' . $row->organization . "\n";
 				$out .= ' - ' . Lang::txt('Contributions') . ': ' . $this->_countContributions($row->uidNumber) . "\n";
 				$out .= '<div class="clear"></div>'."\n";
@@ -316,7 +319,7 @@ class Helper extends Module
 					$thumb = '/core/modules/mod_spotlight/assets/img/default.gif';
 				}
 
-				$profile = \Hubzero\User\Profile::getInstance($row->created_by);
+				$profile = \Components\Members\Models\Member::onrOrNew($row->created_by);
 
 				if ($getid)
 				{
@@ -368,11 +371,7 @@ class Helper extends Module
 				$name = Lang::txt('Anonymous');
 				if ($row->anonymous == 0)
 				{
-					$user = User::getInstance($row->created_by);
-					if (is_object($user))
-					{
-						$name = $user->get('name');
-					}
+					$name = \Components\Members\Models\Member::onrOrNew($row->created_by)->get('name');
 				}
 				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . rtrim(Request::base(true), '/') . $thumb . '" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
 				$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '">' . stripslashes($row->subject) . '</a></span> ';

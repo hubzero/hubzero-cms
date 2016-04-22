@@ -39,4 +39,3 @@ use Hubzero\Item\Vote as Base;
 class Vote extends Base
 {
 }
-

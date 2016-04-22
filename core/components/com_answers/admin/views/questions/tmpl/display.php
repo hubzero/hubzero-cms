@@ -32,9 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Answers\Helpers\Permissions::getActions('question');
+$canDo = Components\Answers\Helpers\Permissions::getActions('question');
 
-Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS'), 'answers.png');
+Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS'), 'answers');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -167,10 +167,10 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-3">
 					<a class="glyph user" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
-						<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+						<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
 					</a>
 					<?php if ($row->get('anonymous')) { ?>
-						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_FIELD_ANONYMOUS'); ?></span>
+						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_FIELD_ANONYMOUS'); ?>)</span>
 					<?php } ?>
 				</td>
 				<td class="priority-1">

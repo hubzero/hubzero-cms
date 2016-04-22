@@ -73,11 +73,7 @@ $this->css()
 
 		<form action="<?php echo Route::url($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
-				<?php
-				$user = new \Hubzero\User\Profile();
-				$user->load(User::get('id'));
-				?>
-				<img src="<?php echo $user->getPicture(); ?>" alt="" />
+				<img src="<?php echo $this->post->creator->picture(); ?>" alt="" />
 			</p>
 
 			<fieldset>

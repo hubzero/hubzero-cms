@@ -591,10 +591,9 @@ function getMonthName($month)
 					$closeddata = implode(',', $c);
 				}
 				$anon = 0;
-				$profile = \Hubzero\User\Profile::getInstance($user->id);
+				$profile = Components\Members\Models\Member::oneOrNew($user->id);
 				if (!$profile)
 				{
-					$profile = new \Hubzero\User\Profile();
 					$anon = 1;
 				}
 	?>
@@ -604,7 +603,7 @@ function getMonthName($month)
 				<strong>#<?php echo $j; ?></strong>
 			</p>
 			<p class="entry-member-photo">
-				<img src="<?php echo $profile->getPicture($anon); ?>" alt="<?php echo $this->escape(stripslashes($user->name)); ?>" />
+				<img src="<?php echo $profile->picture($anon); ?>" alt="<?php echo $this->escape(stripslashes($user->name)); ?>" />
 			</p>
 			<p class="entry-title">
 				<?php echo $this->escape(stripslashes($user->name)); ?><br />

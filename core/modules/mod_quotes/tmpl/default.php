@@ -90,8 +90,8 @@ $base = Request::getVar('REQUEST_URI', rtrim(Request::base(true), '/'), 'server'
 				</blockquote>
 				<p class="cite">
 					<?php
-					$user = $quote->get('user_id') ? \Hubzero\User\Profile::getInstance($quote->get('user_id')) : new \Hubzero\User\Profile();
-					$userPicture = $user ? $user->getPicture() : $user->getPicture(true);
+					$user = $quote->user;
+					$userPicture = $user->picture();
 					echo '<img src="' . $userPicture . '" alt="' . $this->escape($quote->get('fullname')) . '" width="40" height="40" />';
 					?>
 					<cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?> <span><?php echo $this->escape(stripslashes($quote->get('org'))); ?></span></cite>

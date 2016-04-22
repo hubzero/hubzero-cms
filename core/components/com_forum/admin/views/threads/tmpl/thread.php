@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,9 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Forum\Helpers\Permissions::getActions('thread');
+$canDo = Components\Forum\Helpers\Permissions::getActions('thread');
 
-Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_POSTS'), 'forum.png');
+Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_POSTS'), 'forum');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -137,7 +136,7 @@ function submitbutton(pressbutton) {
 			$i = 0;
 			foreach ($this->rows as $row)
 			{
-				switch ($row->state)
+				switch ($row->get('state'))
 				{
 					case '2':
 						$task = 'publish';
@@ -159,19 +158,19 @@ function submitbutton(pressbutton) {
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 					</td>
 					<td class="priority-5">
-						<?php echo $row->id; ?>
+						<?php echo $row->get('id'); ?>
 					</td>
 					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&thread=' . $this->filters['thread']); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					</td>
 					<td>
 						<?php if ($canDo->get('core.edit.state')) { ?>
-							<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
+							<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
 								<span><?php echo $alt; ?></span>
 							</a>
 						<?php } else { ?>
@@ -182,17 +181,17 @@ function submitbutton(pressbutton) {
 					</td>
 					<td class="priority-3">
 						<span class="scope">
-							<span><?php echo $this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : ''; ?></span>
+							<span><?php echo $this->escape($row->get('scope')); ?> <?php echo ($row->get('scope_id')) ? '(' . $this->escape($row->get('scope_id')) . ')' : ''; ?></span>
 						</span>
 					</td>
 					<td class="priority-5">
 						<span class="creator">
-							<span><?php echo $this->escape($row->created_by); ?></span>
+							<span><?php echo $this->escape($row->get('created_by')); ?></span>
 						</span>
 					</td>
 					<td class="priority-4">
 						<span class="created">
-							<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
+							<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
 						</span>
 					</td>
 				</tr>

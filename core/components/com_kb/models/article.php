@@ -41,9 +41,10 @@ use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'vote.php');
-require_once(__DIR__ . DS . 'comment.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'vote.php';
+require_once __DIR__ . DS . 'comment.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Knowledgebase model for an article
@@ -210,13 +211,13 @@ class Article extends Relational
 	}
 
 	/**
-	 * Defines a belongs to one relationship between article and user
+	 * Defines a belongs to one relationship between comment and user
 	 *
-	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object
 	 */
 	public function creator()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**

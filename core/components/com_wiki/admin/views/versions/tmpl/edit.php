@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
+$canDo = Components\Wiki\Helpers\Permissions::getActions('page');
 
 $text = ($this->task == 'editrevision' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_REVISION') . ': ' . $text, 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_REVISION') . ': ' . $text, 'wiki');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -92,23 +92,42 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_SCOPE'); ?>:</th>
-						<td><?php echo $this->escape(stripslashes($this->page->get('scope'))); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_GROUP'); ?>:</th>
-						<td><?php echo $this->escape(stripslashes($this->page->get('group_cn'))); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->page->get('scope') . ':' . $this->page->get('scope_id'))); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
-						<td><?php echo $this->escape($this->row->get('pageid')); ?><input type="hidden" name="revision[pageid]" id="pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" /></td>
+						<td>
+							<?php echo $this->escape($this->row->get('page_id')); ?>
+							<input type="hidden" name="revision[page_id]" id="revision-page_id" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
+						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
-						<td><?php echo $this->escape($this->row->get('id')); ?><input type="hidden" name="revision[id]" id="revid" value="<?php echo $this->escape($this->row->get('id')); ?>" /></td>
+						<td>
+							<?php echo $this->escape($this->row->get('id')); ?>
+							<input type="hidden" name="revision[id]" id="revision-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
+						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_WIKI_FIELD_REVISION'); ?>:</th>
-						<td><?php echo $this->escape($this->row->get('version')); ?><input type="hidden" name="revision[version]" id="version" value="<?php echo $this->escape($this->row->get('version')); ?>" /></td>
+						<td>
+							<?php echo $this->escape($this->row->get('version')); ?>
+							<input type="hidden" name="revision[version]" id="revision-version" value="<?php echo $this->escape($this->row->get('version')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
+						<td>
+							<?php echo $this->escape($this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))); ?>
+							<input type="hidden" name="revision[created_by]" id="revision-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('created'); ?>
+							<input type="hidden" name="revision[created]" id="revision-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -129,21 +148,11 @@ function submitbutton(pressbutton)
 						<option value="2"<?php echo $this->row->get('approved') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WIKI_STATE_TRASHED'); ?></option>
 					</select>
 				</div>
-
-				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</label><br />
-					<?php //echo JHTML::_('list.users', 'created_by', $this->row->get('created_by'), 0, '', 'name', 1); ?>
-				</div>
-
-				<div class="input-wrap">
-					<label for="field-created"><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</label><br />
-					<?php echo Html::input('calendar', 'revision[created]', $this->escape($this->row->get('created')), array('id' => 'field-created')); ?>
-				</div>
 			</fieldset>
 		</div>
 	</div>
 
-	<input type="hidden" name="page_id" value="<?php echo $this->row->get('page_id'); ?>" />
+	<input type="hidden" name="pageid" value="<?php echo $this->row->get('page_id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

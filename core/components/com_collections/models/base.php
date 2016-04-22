@@ -32,12 +32,14 @@
 
 namespace Components\Collections\Models;
 
+use Components\Members\Models\Member;
 use Hubzero\Base\Model;
-use Hubzero\User\Profile;
 use Component;
 use Date;
 use User;
 use Lang;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Abstract model for collections
@@ -88,17 +90,13 @@ class Base extends Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof Profile))
+		if (!($this->_creator instanceof Member))
 		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
+			$this->_creator = Member::oneOrNew($this->get('created_by'));
+
+			if (!trim($this->_creator->get('name')))
 			{
-				$this->_creator = new Profile();
-			}
-			if ($this->_creator->get('uidNumber') && !trim($this->_creator->get('name')))
-			{
-				$user = User::getInstance($this->_creator->get('uidNumber'));
-				$this->_creator->set('name', $user->get('name', Lang::txt('(unknown)')));
+				$this->_creator->set('name', Lang::txt('(unknown)'));
 			}
 		}
 		if ($property)

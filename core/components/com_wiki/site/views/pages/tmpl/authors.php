@@ -34,10 +34,10 @@ defined('_HZEXEC_') or die();
 
 if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0))
 {
-	$author = $this->escape(stripslashes($this->page->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
+	$author = $this->escape(stripslashes($this->page->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
 
 	$auths = array();
-	$auths[] = ($this->page->creator()->get('public') ? '<a href="' . Route::url($this->page->creator()->getLink()) . '">' . $author . '</a>' : $author);
+	$auths[] = (in_array($this->page->creator->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($this->page->creator->link()) . '">' . $author . '</a>' : $author);
 
 	foreach ($this->page->authors()->rows() as $auth)
 	{
@@ -47,7 +47,7 @@ if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_au
 		}
 
 		$name = $this->escape(stripslashes($auth->get('name')));
-		$name = ($auth->get('public') ? '<a href="' . Route::url($auth->getLink()) . '">' . $name . '</a>' : $name);
+		$name = (in_array($auth->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($auth->link()) . '">' . $name . '</a>' : $name);
 
 		$auths[] = $name;
 	}

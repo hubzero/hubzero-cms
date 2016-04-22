@@ -276,7 +276,7 @@ $this->css()
 								<td colspan="6">
 									<p>
 										<span class="ticket-author">
-											<?php echo $this->escape($row->get('name')); echo ($row->submitter('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
+											<?php echo $this->escape($row->get('name')); echo ($row->submitter()->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter()->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
 										</span>
 										<span class="ticket-datetime">
 											@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('local'); ?></time>
@@ -315,8 +315,8 @@ $this->css()
 											</span>
 										<?php } ?>
 										<?php if ($row->isOwned()) { ?>
-											<span class="ticket-owner hasTip" title="<?php echo Lang::txt('COM_SUPPORT_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->owner()->getPicture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->owner('username'))); ?><br /><?php echo $this->escape(stripslashes($row->owner('organization', Lang::txt('COM_SUPPORT_UNKNOWN')))); ?>">
-												<?php echo $this->escape(stripslashes($row->owner('name'))); ?>
+											<span class="ticket-owner hasTip" title="<?php echo Lang::txt('COM_SUPPORT_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->owner()->picture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->owner()->get('username'))); ?><br /><?php echo $this->escape(stripslashes($row->owner()->get('organization', Lang::txt('COM_SUPPORT_UNKNOWN')))); ?>">
+												<?php echo $this->escape(stripslashes($row->owner()->get('name'))); ?>
 											</span>
 										<?php } ?>
 										</p>

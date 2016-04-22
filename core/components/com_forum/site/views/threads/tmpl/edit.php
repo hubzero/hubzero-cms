@@ -71,8 +71,7 @@ else
 		</h3>
 		<form action="<?php echo Route::url($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
-				<a class="comment-anchor" name="commentform"></a>
-				<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="" />
+				<img src="<?php echo $this->post->creator->picture(); ?>" alt="" />
 			</p>
 
 			<fieldset>

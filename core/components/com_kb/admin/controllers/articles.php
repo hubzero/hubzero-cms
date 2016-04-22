@@ -36,7 +36,6 @@ use Hubzero\Html\Parameter;
 use Components\Kb\Models\Category;
 use Components\Kb\Models\Article;
 use Request;
-use Config;
 use Notify;
 use Route;
 use User;
@@ -163,12 +162,8 @@ class Articles extends AdminController
 		// Fail if checked out not by 'me'
 		if ($row->get('checked_out') && $row->get('checked_out') != User::get('id'))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_KB_CHECKED_OUT'),
-				'warning'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_KB_CHECKED_OUT'));
+			return $this->cancelTask();
 		}
 
 		if ($row->isNew())
@@ -245,17 +240,15 @@ class Articles extends AdminController
 			User::get('id')
 		);
 
+		Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
+
 		if ($this->getTask() == 'apply')
 		{
-			Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
 			return $this->editTask($row);
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_KB_ARTICLE_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -273,6 +266,8 @@ class Articles extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
+		$i = 0;
+
 		if (count($ids) > 0)
 		{
 			$row = Article::oneOrFail(intval($id));
@@ -280,14 +275,19 @@ class Articles extends AdminController
 			if (!$row->destroy())
 			{
 				Notify::error($row->getError());
+				continue;
 			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_KB_ITEMS_REMOVED', $i));
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_KB_ITEMS_REMOVED', count($ids))
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -307,12 +307,8 @@ class Articles extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				($state == 1 ? Lang::txt('COM_KB_SELECT_PUBLISH') : Lang::txt('COM_KB_SELECT_UNPUBLISH')),
-				'error'
-			);
-			return;
+			Notify::warning($state == 1 ? Lang::txt('COM_KB_SELECT_PUBLISH') : Lang::txt('COM_KB_SELECT_UNPUBLISH'));
+			return $this->cancelTask();
 		}
 
 		// Update record(s)
@@ -380,11 +376,8 @@ class Articles extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_KB_NO_ID'),
-				'error'
-			);
+			Notify::warning(Lang::txt('COM_KB_NO_ID'));
+			return $this->cancelTask();
 		}
 
 		// Load and reset the article's hits
@@ -393,18 +386,11 @@ class Articles extends AdminController
 
 		if (!$article->save())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$article->getError(),
-				'error'
-			);
-			return;
+			Notify::error($article->getError());
 		}
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		// Redirect
+		$this->cancelTask();
 	}
 
 	/**
@@ -421,11 +407,8 @@ class Articles extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_KB_NO_ID'),
-				'error'
-			);
+			Notify::warning(Lang::txt('COM_KB_NO_ID'));
+			return $this->cancelTask();
 		}
 
 		// Load and reset the article's ratings
@@ -435,23 +418,17 @@ class Articles extends AdminController
 
 		if (!$article->save())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$article->getError(),
-				'error'
-			);
-			return;
+			Notify::error($article->getError());
+			return $this->cancelTask();
 		}
 
 		// Delete all the entries associated with this article
-		foreach ($article->votes() as $vote)
+		foreach ($article->votes()->rows() as $vote)
 		{
 			$vote->destroy();
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 }

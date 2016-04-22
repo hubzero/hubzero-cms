@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
+$canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS') . ': ' . $text, 'blog.png');
+Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS') . ': ' . $text, 'blog');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -82,7 +81,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 15, 'field-content', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('fields[content]', $this->escape($this->row->get('content')), 50, 15, 'field-content', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 		</div>

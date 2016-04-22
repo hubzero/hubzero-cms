@@ -172,7 +172,7 @@ class Attachment extends Relational
 		{
 			if (!Filesystem::delete($path))
 			{
-				$this->setError('Unable to delete file.');
+				$this->addError('Unable to delete file.');
 
 				return false;
 			}
@@ -196,7 +196,7 @@ class Attachment extends Relational
 		{
 			if (!Filesystem::makeDirectory($destination))
 			{
-				$this->setError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH') . ': ' . substr($destination, strlen(PATH_ROOT)));
+				$this->addError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH') . ': ' . substr($destination, strlen(PATH_ROOT)));
 
 				return false;
 			}
@@ -212,7 +212,7 @@ class Attachment extends Relational
 
 		if (!Filesystem::upload($temp, $destination))
 		{
-			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
+			$this->addError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
 
 			return false;
 		}

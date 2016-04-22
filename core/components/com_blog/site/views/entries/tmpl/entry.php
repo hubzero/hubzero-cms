@@ -159,26 +159,26 @@ $first = $this->archive->entries(array(
 				</dl>
 
 				<div class="entry-content">
-					<?php echo $this->row->content(); ?>
+					<?php echo $this->row->content; ?>
 					<?php echo $this->row->tags('cloud'); ?>
 				</div>
 
 				<?php
 				if ($this->config->get('show_authors'))
 				{
-					if ($name = $this->row->creator()->get('name'))
+					if ($name = $this->row->creator->get('name'))
 					{
 						$name = $this->escape(stripslashes($name));
 						?>
 						<div class="entry-author">
 							<h3><?php echo Lang::txt('COM_BLOG_AUTHOR_ABOUT'); ?></h3>
 							<p class="entry-author-photo">
-								<img src="<?php echo $this->row->creator()->getPicture(); ?>" alt="" />
+								<img src="<?php echo $this->row->creator->picture(); ?>" alt="" />
 							</p>
 							<div class="entry-author-content">
 								<h4>
-									<?php if ($this->row->creator()->get('public')) { ?>
-										<a href="<?php echo Route::url($this->row->creator()->getLink()); ?>">
+									<?php if (in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+										<a href="<?php echo Route::url($this->row->creator->link()); ?>">
 											<?php echo $name; ?>
 										</a>
 									<?php } else { ?>
@@ -186,11 +186,11 @@ $first = $this->archive->entries(array(
 									<?php } ?>
 								</h4>
 								<div class="entry-author-bio">
-								<?php if ($this->row->creator()->get('bio')) { ?>
-									<?php echo $this->row->creator()->getBio('parsed', 300); ?>
-								<?php } else { ?>
-									<em><?php echo Lang::txt('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
-								<?php } ?>
+									<?php if ($this->row->creator->get('bio')) { ?>
+										<?php echo $this->row->creator->get('bio'); ?>
+									<?php } else { ?>
+										<em><?php echo Lang::txt('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
+									<?php } ?>
 								</div>
 								<div class="clearfix"></div>
 							</div><!-- / .entry-author-content -->
@@ -316,17 +316,16 @@ $first = $this->archive->entries(array(
 			->ordered()
 			->rows();
 
-		if ($comments->count() > 0) { ?>
-			<?php
-				$this->view('_list')
-					 ->set('parent', 0)
-					 ->set('option', $this->option)
-					 ->set('comments', $comments)
-					 ->set('config', $this->config)
-					 ->set('depth', 0)
-					 ->set('cls', 'odd')
-					 ->set('base', $this->row->link())
-					 ->display();
+		if ($comments->count() > 0) {
+			$this->view('_list')
+				->set('parent', 0)
+				->set('option', $this->option)
+				->set('comments', $comments)
+				->set('config', $this->config)
+				->set('depth', 0)
+				->set('cls', 'odd')
+				->set('base', $this->row->link())
+				->display();
 			?>
 		<?php } else { ?>
 			<p class="no-comments">
@@ -341,63 +340,58 @@ $first = $this->archive->entries(array(
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-					$jxuser = new \Hubzero\User\Profile;
-					if (!User::isGuest()) {
-						$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
-						$anonymous = 0;
-					} else {
-						$anonymous = 1;
-					}
+					$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
 					?>
-					<img src="<?php echo $jxuser->getPicture($anonymous); ?>" alt="" />
+					<img src="<?php echo $user->picture(User::isGuest() ? 1 : 0); ?>" alt="" />
 				</p>
 				<fieldset>
-				<?php
-				$replyto = $this->row->comments()
-					->whereEquals('id', Request::getInt('reply', 0))
-					->whereIn('state', array(
-						Components\Blog\Models\Comment::STATE_PUBLISHED,
-						Components\Blog\Models\Comment::STATE_FLAGGED
-					))
-					->row();
-
-				if (!User::isGuest())
-				{
-					if ($replyto->get('id'))
-					{
-						$name = Lang::txt('COM_BLOG_ANONYMOUS');
-						if (!$replyto->get('anonymous'))
-						{
-							$name = $this->escape(stripslashes($replyto->creator()->get('name', $name)));
-							if ($replyto->creator()->get('public'))
-							{
-								$name = '<a href="' . Route::url($replyto->creator()->getLink()) . '">' . $name . '</a>';
-							}
-						}
-					?>
-					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
-						<p>
-							<strong><?php echo $name; ?></strong>
-							<span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span>
-							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
-							<span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
-							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
-						</p>
-						<p>
-							<?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?>
-						</p>
-					</blockquote>
 					<?php
-					}
-				}
-				?>
-					<?php if (!User::isGuest()) { ?>
-					<label for="commentcontent">
-						Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>:
-						<?php
-							echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
+					$replyto = $this->row->comments()
+						->whereEquals('id', Request::getInt('reply', 0))
+						->whereIn('state', array(
+							Components\Blog\Models\Comment::STATE_PUBLISHED,
+							Components\Blog\Models\Comment::STATE_FLAGGED
+						))
+						->row();
+
+					if (!User::isGuest())
+					{
+						if ($replyto->get('id'))
+						{
+							$name = Lang::txt('COM_BLOG_ANONYMOUS');
+							if (!$replyto->get('anonymous'))
+							{
+								$name = $this->escape(stripslashes($replyto->creator->get('name', $name)));
+								if (in_array($replyto->creator->get('access'), User::getAuthorisedViewLevels()))
+								{
+									$name = '<a href="' . Route::url($replyto->creator->link()) . '">' . $name . '</a>';
+								}
+							}
 						?>
-					</label>
+						<blockquote cite="c<?php echo $replyto->get('id'); ?>">
+							<p>
+								<strong><?php echo $name; ?></strong>
+								<span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span>
+								<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
+								<span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
+								<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+							</p>
+							<p>
+								<?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?>
+							</p>
+						</blockquote>
+						<?php
+						}
+					}
+					?>
+
+					<?php if (!User::isGuest()) { ?>
+						<label for="commentcontent">
+							Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>:
+							<?php
+								echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
+							?>
+						</label>
 					<?php } else { ?>
 					<input type="hidden" name="comment[content]" id="commentcontent" value="" />
 
@@ -406,16 +400,17 @@ $first = $this->archive->entries(array(
 					</p>
 					<?php } ?>
 
-				<?php if (!User::isGuest()) { ?>
-					<label id="comment-anonymous-label">
-						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-						<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
-					</label>
+					<?php if (!User::isGuest()) { ?>
+						<label id="comment-anonymous-label">
+							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+							<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
+						</label>
 
-					<p class="submit">
-						<input type="submit" name="submit" value="<?php echo Lang::txt('COM_BLOG_SUBMIT'); ?>" />
-					</p>
-				<?php } ?>
+						<p class="submit">
+							<input type="submit" name="submit" value="<?php echo Lang::txt('COM_BLOG_SUBMIT'); ?>" />
+						</p>
+					<?php } ?>
+
 					<input type="hidden" name="comment[id]" value="0" />
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->get('id'); ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
@@ -449,7 +444,7 @@ $first = $this->archive->entries(array(
 						{
 							$live_site = rtrim(Request::base(), '/');
 
-							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+							$feed = rtrim($live_site, '/') . '/' . ltrim($feed, '/');
 						}
 						$feed = str_replace('https:://', 'http://', $feed);
 					?>
@@ -459,4 +454,4 @@ $first = $this->archive->entries(array(
 		</aside><!-- / .aside -->
 	</div><!-- / .section-inner -->
 </section><!-- / .below section -->
-<?php } ?>
+<?php }

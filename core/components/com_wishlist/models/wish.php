@@ -32,6 +32,7 @@
 
 namespace Components\Wishlist\Models;
 
+use Components\Members\Models\Member;
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Hubzero\Base\ItemList;
@@ -40,6 +41,7 @@ use User;
 use Lang;
 use Date;
 
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'attachment.php');
 require_once(__DIR__ . DS . 'comment.php');
@@ -241,20 +243,16 @@ class Wish extends Base
 	 */
 	public function proposer($property=null, $default=null)
 	{
-		if (!($this->_proposer instanceof Profile))
+		if (!($this->_proposer instanceof Member))
 		{
-			$this->_proposer = Profile::getInstance($this->get('proposed_by'));
-			if (!$this->_proposer)
-			{
-				$this->_proposer = new Profile();
-			}
+			$this->_proposer = Member::oneOrNew($this->get('proposed_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
+			$property = ($property == 'uidNumber') ? 'id' : $property;
 			if ($property == 'picture')
 			{
-				return $this->_proposer->getPicture($this->get('anonymous'));
+				return $this->_proposer->picture($this->get('anonymous'));
 			}
 			return $this->_proposer->get($property, $default);
 		}
@@ -274,20 +272,16 @@ class Wish extends Base
 	 */
 	public function owner($property=null, $default=null)
 	{
-		if (!($this->_owner instanceof Profile))
+		if (!($this->_owner instanceof Member))
 		{
-			$this->_owner = Profile::getInstance($this->get('assigned'));
-			if (!$this->_owner)
-			{
-				$this->_owner = new Profile();
-			}
+			$this->_owner = Member::oneOrNew($this->get('assigned'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
+			$property = ($property == 'uidNumber') ? 'id' : $property;
 			if ($property == 'picture')
 			{
-				return $this->_owner->getPicture();
+				return $this->_owner->picture();
 			}
 			return $this->_owner->get($property, $default);
 		}

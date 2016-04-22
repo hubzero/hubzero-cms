@@ -32,12 +32,12 @@
 namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'post.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'post.php';
 
 /**
  * Forum model for a category
@@ -191,11 +191,7 @@ class Category extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -228,11 +224,7 @@ class Category extends Relational
 	 */
 	public function modifier()
 	{
-		if ($profile = Profile::getInstance($this->get('modified_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'modified_by');
 	}
 
 	/**
@@ -333,7 +325,7 @@ class Category extends Relational
 		{
 			if (!$post->destroy())
 			{
-				$this->setError($post->getError());
+				$this->addError($post->getError());
 				return false;
 			}
 		}

@@ -32,9 +32,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
+$canDo = Components\Wiki\Helpers\Permissions::getActions('page');
 
-Toolbar::title(Lang::txt('COM_WIKI'), 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI'), 'wiki');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');

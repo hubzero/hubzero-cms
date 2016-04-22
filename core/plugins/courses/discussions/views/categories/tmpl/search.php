@@ -74,7 +74,11 @@ $base = $this->offering->alias() . '&active=forum';
 								$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
 								if (!$row->get('anonymous'))
 								{
-									$name = ($row->creator()->get('public') ? '<a href="' . Route::url($row->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($row->creator()->get('name'))) . ($row->creator()->get('public') ? '</a>' : '');
+									$name = $this->escape(stripslashes($row->creator->get('name')));
+									if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
+									{
+										$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
+									}
 								}
 								$cls = array();
 								if ($row->get('closed'))

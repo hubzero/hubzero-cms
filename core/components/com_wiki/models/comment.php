@@ -32,12 +32,13 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Request;
 use Lang;
 use Date;
 use User;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Wiki model for a comment
@@ -93,6 +94,16 @@ class Comment extends Relational
 	);
 
 	/**
+	 * Defines a belongs to one relationship between comment and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+	}
+
+	/**
 	 * Return a formatted timestamp
 	 *
 	 * @param   string  $as
@@ -140,6 +151,9 @@ class Comment extends Relational
 	public function replies($filters = array())
 	{
 		$replies = self::blank()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}])
 			->whereEquals('parent', $this->get('id'));
 
 		if (isset($filters['version']))

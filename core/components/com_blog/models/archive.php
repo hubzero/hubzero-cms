@@ -117,7 +117,19 @@ class Archive extends Object
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
-		$results = Entry::all();
+		$results = Entry::all()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}])
+			->including(['comments', function ($comment){
+				$comment
+					->select('id')
+					->select('entry_id')
+					->whereIn('state', array(
+						Comment::STATE_PUBLISHED,
+						Comment::STATE_FLAGGED
+					));
+			}]);
 
 		if ($filters['scope'])
 		{

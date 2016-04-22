@@ -41,6 +41,8 @@ use Lang;
 use Date;
 use User;
 
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 /**
  * Vote model for an article
  */
@@ -123,7 +125,7 @@ class Vote extends Relational
 	 */
 	public function voter()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'user_by');
+		return $this->belongsToOne('Components\Members\Models\Member', 'user_by');
 	}
 
 	/**

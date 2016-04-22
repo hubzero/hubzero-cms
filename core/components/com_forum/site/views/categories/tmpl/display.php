@@ -128,10 +128,10 @@ $this->category->set('section_alias', $this->filters['section']);
 									$name = Lang::txt('COM_FORUM_ANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
-										$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
-										if ($row->creator('public'))
+										$name = $this->escape(stripslashes($row->creator->get('name', $name)));
+										if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
 										{
-											$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
+											$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 										}
 									}
 									$cls = array();
@@ -183,7 +183,11 @@ $this->category->set('section_alias', $this->filters['section']);
 													$lname = Lang::txt('COM_FORUM_ANONYMOUS');
 													if (!$lastpost->get('anonymous'))
 													{
-														$lname = ($lastpost->creator()->get('public') ? '<a href="' . Route::url($lastpost->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($lastpost->creator()->get('name'))) . ($lastpost->creator()->get('public') ? '</a>' : '');
+														$lname = $this->escape(stripslashes($lastpost->creator->get('name')));
+														if (in_array($lastpost->creator->get('access'), User::getAuthorisedViewLevels()))
+														{
+															$lname = '<a href="' . Route::url($lastpost->creator->link()) . '">' . $lname . '</a>';
+														}
 													}
 													?>
 													<span class="entry-date">
@@ -241,10 +245,10 @@ $this->category->set('section_alias', $this->filters['section']);
 						$lname = Lang::txt('COM_FORUM_ANONYMOUS');
 						if (!$last->get('anonymous'))
 						{
-							$lname = $this->escape(stripslashes($last->creator()->get('name', $lname)));
-							if ($last->creator()->get('public'))
+							$lname = $this->escape(stripslashes($last->creator->get('name', $lname)));
+							if (in_array($last->creator->get('access'), User::getAuthorisedViewLevels()))
 							{
-								$lname = '<a href="' . Route::url($last->creator()->getLink()) . '">' . $lname . '</a>';
+								$lname = '<a href="' . Route::url($last->creator->link()) . '">' . $lname . '</a>';
 							}
 						}
 						$last->set('category', $this->filters['category']);

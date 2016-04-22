@@ -32,12 +32,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Forum\Helpers\Permissions::getActions('thread');
+$canDo = Components\Forum\Helpers\Permissions::getActions('thread');
 
 $text  = ($this->row->get('parent') ? Lang::txt('COM_FORUM_POSTS') : Lang::txt('COM_FORUM_THREADS')) . ': ';
 $text .= ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_FORUM') . ': ' . $text, 'forum.png');
+Toolbar::title(Lang::txt('COM_FORUM') . ': ' . $text, 'forum');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -77,20 +77,20 @@ function submitbutton(pressbutton)
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="field-scope"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE'); ?>:</label><br />
-							<input type="text" name="fields[scope]" id="field-scope" maxlength="150" value="<?php echo $this->escape($this->row->scope); ?>" />
+							<input type="text" name="fields[scope]" id="field-scope" maxlength="150" value="<?php echo $this->escape($this->row->get('scope')); ?>" />
 						</div>
 					</div>
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="field-scope_id"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE_ID'); ?>:</label><br />
-							<input type="text" name="fields[scope_id]" id="field-scope_id" maxlength="11" value="<?php echo $this->escape($this->row->scope_id); ?>" />
+							<input type="text" name="fields[scope_id]" id="field-scope_id" maxlength="11" value="<?php echo $this->escape($this->row->get('scope_id')); ?>" />
 						</div>
 					</div>
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-object_id"><?php echo Lang::txt('COM_FORUM_FIELD_OBJECT_ID'); ?>:</label><br />
-					<input type="text" name="fields[object_id]" id="field-object_id" maxlength="11" value="<?php echo $this->escape($this->row->object_id); ?>" />
+					<input type="text" name="fields[object_id]" id="field-object_id" maxlength="11" value="<?php echo $this->escape($this->row->get('object_id')); ?>" />
 				</div>
 
 				<?php if (!$this->row->get('parent')) { ?>
@@ -119,7 +119,10 @@ function submitbutton(pressbutton)
 						<select name="fields[parent]" id="field-parent">
 							<option value="0"><?php echo Lang::txt('COM_FORUM_FIELD_PARENT_SELECT'); ?></option>
 							<?php
-							$posts = \Components\Forum\Models\Post::all()->whereEquals('thread', $this->row->get('thread'))->ordered()->rows();
+							$posts = Components\Forum\Models\Post::all()
+								->whereEquals('thread', $this->row->get('thread'))
+								->ordered()
+								->rows();
 							foreach ($posts as $post)
 							{
 								if ($post->get('id') == $this->row->get('id'))
@@ -137,7 +140,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>:</label><br />
-					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
@@ -193,35 +196,33 @@ function submitbutton(pressbutton)
 						<th><?php echo Lang::txt('COM_FORUM_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
-							$editor = User::getInstance($this->row->created_by);
-							echo $this->escape($editor->get('name'));
+							echo $this->escape($this->row->creator->get('name'));
 							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('created', Date::of('now')->toSql()); ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
 						</td>
 					</tr>
-					<?php if ($this->row->modified_by) { ?>
+					<?php if ($this->row->get('modified_by')) { ?>
 						<tr>
 							<th><?php echo Lang::txt('COM_FORUM_FIELD_MODIFIER'); ?>:</th>
 							<td>
 								<?php
-								$modifier = User::getInstance($this->row->modified_by);
-								echo $this->escape($modifier->get('name'));
+								echo $this->escape($this->row->modifier->get('name'));
 								?>
-								<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->modified_by; ?>" />
+								<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->get('modified_by'); ?>" />
 							</td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_FORUM_FIELD_MODIFIED'); ?>:</th>
 							<td>
-								<?php echo $this->row->modified; ?>
-								<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->modified; ?>" />
+								<?php echo $this->row->get('modified'); ?>
+								<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->get('modified'); ?>" />
 							</td>
 						</tr>
 					<?php } ?>
@@ -232,13 +233,13 @@ function submitbutton(pressbutton)
 				<legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
 				<div class="input-wrap">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->anonymous) { echo ' checked="checked"'; } ?> />
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> />
 					<label for="field-anonymous"><?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?></label>
 				</div>
 
-				<?php if (!$this->row->parent) { ?>
+				<?php if (!$this->row->get('parent')) { ?>
 					<div class="input-wrap">
-						<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->row->sticky) { echo ' checked="checked"'; } ?> />
+						<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->row->get('sticky')) { echo ' checked="checked"'; } ?> />
 						<label for="field-sticky"><?php echo Lang::txt('COM_FORUM_FIELD_STICKY'); ?></label>
 					</div>
 				<?php } ?>
@@ -246,9 +247,9 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label><br />
 					<select name="fields[state]" id="field-state">
-						<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-						<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-						<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+						<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+						<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 					</select>
 				</div>
 
@@ -272,16 +273,16 @@ function submitbutton(pressbutton)
 		</div>
 	<?php endif; ?>
 
-	<?php if ($this->row->parent) { ?>
-		<input type="hidden" name="fields[category_id]" value="<?php echo $this->row->category_id; ?>" />
+	<?php if ($this->row->get('parent')) { ?>
+		<input type="hidden" name="fields[category_id]" value="<?php echo $this->row->get('category_id'); ?>" />
 	<?php } else { ?>
-		<input type="hidden" name="fields[parent]" value="<?php echo $this->row->parent; ?>" />
+		<input type="hidden" name="fields[parent]" value="<?php echo $this->row->get('parent'); ?>" />
 	<?php } ?>
-	<input type="hidden" name="fields[thread]" value="<?php echo $this->row->thread; ?>" />
-	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="fields[thread]" value="<?php echo $this->row->get('thread'); ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 
-	<input type="hidden" name="thread" value="<?php echo $this->row->thread; ?>" />
-	<input type="hidden" name="parent" value="<?php echo $this->row->parent; ?>" />
+	<input type="hidden" name="thread" value="<?php echo $this->row->get('thread'); ?>" />
+	<input type="hidden" name="parent" value="<?php echo $this->row->get('parent'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

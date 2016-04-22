@@ -156,23 +156,23 @@ $this->css()
 							</div><!-- / .meta -->
 							<div class="convo attribution">
 								<?php
-								$name = $this->escape(stripslashes($row->creator('name')));
+								$name = $this->escape(stripslashes($row->creator()->get('name')));
 
-								if ($row->creator('public')) { ?>
-									<a href="<?php echo Route::url($row->creator()->getLink() . '&active=collections'); ?>" title="<?php echo $name; ?>" class="img-link">
-										<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+								if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+									<a href="<?php echo Route::url($row->creator()->link() . '&active=collections'); ?>" title="<?php echo $name; ?>" class="img-link">
+										<img src="<?php echo $row->creator()->picture(); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 									</a>
 								<?php } else { ?>
 									<span class="img-link">
-										<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+										<img src="<?php echo $row->creator()->picture(); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 									</span>
 								<?php } ?>
 								<p>
 									<?php
 									$who = $name;
-									if ($row->creator('public'))
+									if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels()))
 									{
-										$who = '<a href="' . Route::url($row->creator()->getLink() . '&active=collections') . '">' . $name . '</a>';
+										$who = '<a href="' . Route::url($row->creator()->link() . '&active=collections') . '">' . $name . '</a>';
 									}
 
 									$where = '<a href="' . Route::url($row->link()) . '">' . $this->escape(stripslashes($row->get('title'))) . '</a>';

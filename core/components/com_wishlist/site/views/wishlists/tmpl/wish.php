@@ -46,10 +46,10 @@ $this->css()
 	$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 	if (!$this->wish->get('anonymous'))
 	{
-		$name = $this->escape(stripslashes($this->wish->proposer('name', $name)));
-		if ($this->wish->proposer('public'))
+		$name = $this->escape(stripslashes($this->wish->proposer()->get('name', $name)));
+		if (in_array($this->wish->proposer()->get('access'), User::getAuthorisedViewLevels()))
 		{
-			$name = '<a href="' . Route::url($this->wish->proposer()->getLink()) . '">' . $name . '</a>';
+			$name = '<a href="' . Route::url($this->wish->proposer()->link()) . '">' . $name . '</a>';
 		}
 	}
 
@@ -677,9 +677,9 @@ $this->css()
 					</h3>
 					<p class="comment-member-photo">
 						<?php
-							$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
+							$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
 						?>
-						<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
+						<img src="<?php echo $user->picture(); ?>" alt="" />
 					</p>
 					<fieldset>
 						<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />

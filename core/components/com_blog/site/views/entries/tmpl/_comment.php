@@ -36,10 +36,10 @@ $cls = isset($this->cls) ? $this->cls : 'odd';
 $name = Lang::txt('COM_BLOG_ANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
-	$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
-	if ($this->comment->creator()->get('public'))
+	$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
+	if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()))
 	{
-		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+		$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 	}
 }
 
@@ -54,7 +54,7 @@ else
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">
@@ -95,7 +95,7 @@ else
 					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 						<span class="label-text"><?php echo Lang::txt('COM_BLOG_FIELD_COMMENTS'); ?></span>
 						<?php
-						echo $this->editor('comment[content]', $this->comment->content('raw'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+						echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 						?>
 					</label>
 

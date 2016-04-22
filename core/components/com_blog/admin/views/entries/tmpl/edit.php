@@ -33,11 +33,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
+$canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . $text, 'blog.png');
+Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . $text, 'blog');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -81,7 +81,7 @@ Joomla.submitbutton = function(pressbutton) {
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_HINT'); ?>">
 							<label for="field-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label><br />
 							<?php if ($this->row->isNew()) { ?>
-								<?php echo \Components\Blog\Admin\Helpers\Html::scopes($this->row->get('scope'), 'fields[scope]', 'field-scope'); ?>
+								<?php echo Components\Blog\Admin\Helpers\Html::scopes($this->row->get('scope'), 'fields[scope]', 'field-scope'); ?>
 							<?php } else { ?>
 								<input type="text" name="fields[scope]" id="field-scope" disabled="disabled" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
 							<?php } ?>
@@ -112,7 +112,7 @@ Joomla.submitbutton = function(pressbutton) {
 
 				<div class="input-wrap">
 					<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content', array('buttons' => false)); ?>
+					<?php echo $this->editor('fields[content]', $this->escape($this->row->get('content')), 50, 30, 'field-content', array('buttons' => false)); ?>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?>">

@@ -41,8 +41,8 @@ defined('_HZEXEC_') or die();
 			$me      = ($profile->get('uidNumber') == User::get('id')) ? true : false;
 		?>
 		<li <?php echo ($me) ? 'class="me"' : ''; ?>>
-			<a href="<?php echo $profile->getLink(); ?>" class="tooltips" title="<?php echo $profile->get('name'); ?> <?php echo ($me) ? '(You)' : ''; ?>">
-				<img src="<?php echo $profile->getPicture(0, true); ?>" alt="" />
+			<a href="<?php echo $profile->link(); ?>" class="tooltips" title="<?php echo $profile->get('name'); ?> <?php echo ($me) ? '(You)' : ''; ?>">
+				<img src="<?php echo $profile->picture(0, true); ?>" alt="" />
 				<span><?php echo $profile->get('name'); ?></span>
 			</a>
 			<?php if (!$me) : ?>

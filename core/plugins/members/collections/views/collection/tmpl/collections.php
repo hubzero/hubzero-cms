@@ -179,18 +179,18 @@ $this->css()
 				<div class="convo attribution clearfix">
 					<?php
 					$name = $this->escape(stripslashes($row->creator('name')));
-					if ($row->creator('public')) { ?>
-						<a href="<?php echo Route::url($row->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
-							<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+					if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+						<a href="<?php echo Route::url($row->creator()->link()); ?>" title="<?php echo $name; ?>" class="img-link">
+							<img src="<?php echo $row->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 						</a>
 					<?php } else { ?>
 						<span class="img-link">
-							<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+							<img src="<?php echo $row->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 						</span>
 					<?php } ?>
 					<p>
-						<?php if ($row->creator('public')) { ?>
-							<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
+						<?php if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+							<a href="<?php echo Route::url($row->creator()->link()); ?>">
 								<?php echo $name; ?>
 							</a>
 						<?php } else { ?>

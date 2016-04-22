@@ -47,10 +47,10 @@ if ($this->comment->get('state') == 1)
 $name = Lang::txt('COM_KB_ANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
-	$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
-	if ($this->comment->creator()->get('public'))
+	$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
+	if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()))
 	{
-		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+		$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 	}
 }
 
@@ -60,12 +60,12 @@ if ($this->comment->isReported())
 }
 else
 {
-	$comment  = $this->comment->content('parsed');
+	$comment  = $this->comment->content;
 }
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 		<?php if (!$this->comment->isReported() && $this->comment->get('entry_id')) { ?>
@@ -184,13 +184,20 @@ else
 		<?php
 		if ($this->depth < $this->article->param('comments_depth', 3))
 		{
+			$comments = $this->comment->replies()
+				->whereIn('state', array(
+					Components\Kb\Models\Comment::STATE_PUBLISHED,
+					Components\Kb\Models\Comment::STATE_FLAGGED
+				))
+				->rows();
+
 			$this->view('_list')
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('cls', $cls)
 			     ->set('depth', $this->depth)
 			     ->set('option', $this->option)
 			     ->set('article', $this->article)
-			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->rows())
+			     ->set('comments', $comments)
 			     ->set('base', $this->base)
 			     ->display();
 		}

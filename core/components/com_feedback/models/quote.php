@@ -31,11 +31,13 @@
 
 namespace Components\Feedback\Models;
 
+use Components\Members\Models\Member;
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Filesystem;
 use Lang;
 use Date;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Feedback model for a quote
@@ -90,16 +92,7 @@ class Quote extends Relational
 	 */
 	public function user()
 	{
-		$user = null;
-
-		if ($this->get('user_id'))
-		{
-			$user = Profile::getInstance($this->get('user_id'));
-		}
-
-		$user = $user ?: new Profile();
-
-		return $user;
+		return $this->belongsToOne('Components\Members\Models\Member', 'user_id');
 	}
 
 	/**
@@ -109,7 +102,7 @@ class Quote extends Relational
 	 */
 	public function creator()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'user_id');
+		return $this->belongsToOne('Components\Members\Models\Member', 'user_id');
 	}
 
 	/**

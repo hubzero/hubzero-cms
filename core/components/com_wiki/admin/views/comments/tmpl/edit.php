@@ -32,11 +32,11 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Wiki\Helpers\Permissions::getActions('comment');
+$canDo = Components\Wiki\Helpers\Permissions::getActions('comment');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS') . ': ' . $text, 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS') . ': ' . $text, 'wiki');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -90,8 +90,7 @@ function submitbutton(pressbutton)
 						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
-							$editor = User::getInstance($this->row->get('created_by'));
-							echo $this->escape($editor->get('name'));
+							echo $this->escape($this->row->creator->get('name'));
 							?>
 							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 						</td>

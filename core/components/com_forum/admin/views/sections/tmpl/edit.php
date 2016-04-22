@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Forum\Helpers\Permissions::getActions('section');
+$canDo = Components\Forum\Helpers\Permissions::getActions('section');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_SECTIONS') . ': ' . $text, 'forum.png');
+Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_SECTIONS') . ': ' . $text, 'forum');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->escape($this->row->creator()->get('name')); ?>
+							<?php echo $this->escape($this->row->creator->get('name')); ?>
 							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
 						</td>
 					</tr>

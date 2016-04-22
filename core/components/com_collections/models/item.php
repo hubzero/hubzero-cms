@@ -32,8 +32,8 @@
 
 namespace Components\Collections\Models;
 
+use Components\Members\Models\Member;
 use Components\Collections\Tables;
-use Hubzero\User\Profile;
 use Hubzero\Item\Comment;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
@@ -43,6 +43,7 @@ use Date;
 use User;
 use Lang;
 
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'item.php');
 require_once(__DIR__ . DS . 'asset.php');
 require_once(__DIR__ . DS . 'tags.php');
@@ -247,13 +248,9 @@ class Item extends Base
 	 */
 	public function modifier($property=null, $default=null)
 	{
-		if (!($this->_modifier instanceof Profile))
+		if (!($this->_modifier instanceof Member))
 		{
-			$this->_modifier = Profile::getInstance($this->get('modified_by'));
-			if (!$this->_modifier)
-			{
-				$this->_modifier = new Profile();
-			}
+			$this->_modifier = Member::oneOrNew($this->get('modified_by'));
 		}
 		if ($property)
 		{

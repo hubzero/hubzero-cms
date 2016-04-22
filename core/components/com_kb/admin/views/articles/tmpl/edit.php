@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('article');
+$canDo = Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_KB_EDIT') : Lang::txt('COM_KB_NEW'));
 
-Toolbar::title(Lang::txt('COM_KB') . ': ' . Lang::txt('COM_KB_ARTICLE') . ': ' . $text, 'kb.png');
+Toolbar::title(Lang::txt('COM_KB') . ': ' . Lang::txt('COM_KB_ARTICLE') . ': ' . $text, 'kb');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -84,7 +84,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-section"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo \Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->row->get('category'), 'fields[category]', 'field-category'); ?>
+					<?php echo Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->row->get('category'), 'fields[category]', 'field-category'); ?>
 				</div>
 
 				<div class="input-wrap">
@@ -126,7 +126,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_KB_CREATOR'); ?>:</th>
-						<td><?php echo $this->escape($this->row->creator()->get('name', Lang::txt('COM_KB_UNKNOWN'))); ?></td>
+						<td><?php echo $this->escape($this->row->creator->get('name', Lang::txt('COM_KB_UNKNOWN'))); ?></td>
 					</tr>
 					<?php if (!$this->row->isNew() && $this->row->get('modified') != '0000-00-00 00:00:00') { ?>
 						<tr>

@@ -38,18 +38,18 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 <div class="course-instructor">
 	<p class="course-instructor-photo">
 		<?php if ($this->instructor->get('public')) { ?>
-			<a href="<?php echo Route::url($this->instructor->getLink()); ?>">
-				<img src="<?php echo $this->instructor->getPicture(); ?>" alt="<?php echo $name; ?>" />
+			<a href="<?php echo Route::url($this->instructor->link()); ?>">
+				<img src="<?php echo $this->instructor->picture(); ?>" alt="<?php echo $name; ?>" />
 			</a>
 		<?php } else { ?>
-			<img src="<?php echo $this->instructor->getPicture(); ?>" alt="<?php echo $name; ?>" />
+			<img src="<?php echo $this->instructor->picture(); ?>" alt="<?php echo $name; ?>" />
 		<?php } ?>
 	</p>
 
 	<div class="course-instructor-content cf">
 		<h4>
-			<?php if ($this->instructor->get('public')) { ?>
-				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')); ?>">
+			<?php if (in_array($this->instructor->get('access'), User::getAuthorisedViewLevels())) { ?>
+				<a href="<?php echo Route::url($this->instructor->link()); ?>">
 					<?php echo $name; ?>
 				</a>
 			<?php } else { ?>
@@ -68,8 +68,8 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 	) {
 	?>
 	<div class="course-instructor-bio">
-		<?php if ($this->instructor->get('bio')) { ?>
-			<?php echo $this->instructor->getBio('parsed'); ?>
+		<?php if ($bio = $this->instructor->get('bio')) { ?>
+			<?php echo $bio; ?>
 		<?php } else { ?>
 			<em><?php echo Lang::txt('COM_COURSES_INSTRUCTOR_NO_BIO'); ?></em>
 		<?php } ?>
