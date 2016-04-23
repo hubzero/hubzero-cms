@@ -35,13 +35,15 @@ defined('_HZEXEC_') or die();
 $cls = isset($this->cls) ? $this->cls : 'odd';
 
 $name = Lang::txt('PLG_RESOURCES_REVIEWS_ANONYMOUS');
-$huser = new \Hubzero\User\Profile;
+
 if (!$this->comment->get('anonymous'))
 {
 	$huser = $this->comment->creator();
-	if (is_object($huser) && $huser->get('name'))
+
+	$name = $this->escape(stripslashes($huser->get('name')));
+	if (in_array($huser->get('access'), User::getAuthorisedViewLevels()))
 	{
-		$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+		$name = '<a href="' . Route::url($huser->link()) . '">' . $name . '</a>';
 	}
 }
 
@@ -53,7 +55,7 @@ if ($this->comment->isReported())
 }
 else
 {
-	$comment  = $this->comment->content('parsed');
+	$comment  = $this->comment->content;
 }
 
 if ($this->comment->get('resource_id'))
@@ -82,7 +84,7 @@ if ($this->comment->get('resource_id'))
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $huser->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $huser->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 		<?php if (!$this->comment->isReported() && $this->comment->get('resource_id')) { ?>
@@ -148,7 +150,7 @@ if ($this->comment->get('resource_id'))
 					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 						<span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>
 						<?php
-						echo $this->editor('comment[content]', $this->comment->content('raw'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+						echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 						?>
 					</label>
 
@@ -246,11 +248,19 @@ if ($this->comment->get('resource_id'))
 		<?php
 		if ($this->depth < $this->config->get('comments_depth', 3))
 		{
+			$replies = $this->comment->replies()
+				->whereIn('state', array(
+					Components\Resources\Reviews\Models\Comment::STATE_PUBLISHED,
+					Components\Resources\Reviews\Models\Comment::STATE_FLAGGED
+				))
+				->ordered()
+				->rows();
+
 			$this->view('_list')
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('resource', $this->resource)
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies(array('state' => array(1, 3))))
+			     ->set('comments', $replies)
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
 			     ->set('cls', $cls)

@@ -25,292 +25,331 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Resources\Reviews\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
-require_once(__DIR__ . DS . 'comment.php');
+use Hubzero\Database\Relational;
+use Request;
+use Lang;
+use Date;
+//use User;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once __DIR__ . DS . 'comment.php';
 
 /**
- * Resources review mdoel
+ * Resource review
  */
-class ResourcesModelReview extends \Hubzero\Base\Model
+class Review extends Relational
 {
 	/**
-	 * ResourcesReview
+	 * Flagged state
 	 *
-	 * @var object
+	 * @var  integer
 	 */
-	protected $_tbl_name = '\\Components\\Resources\\Tables\\Review';
+	const STATE_FLAGGED = 3;
 
 	/**
-	 * Model context
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_context = 'com_resources.review.comment';
+	protected $namespace = 'resource';
 
 	/**
-	 * USer
+	 * The table to which the class pertains
 	 *
-	 * @var object
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
 	 */
-	private $_creator = NULL;
+	protected $table = '#__resource_ratings';
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * Default order by for model
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_comments = NULL;
+	public $orderBy = 'created';
 
 	/**
-	 * Commen count
+	 * Default order direction for select queries
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	private $_comments_count = NULL;
+	public $orderDir = 'desc';
 
 	/**
-	 * Returns a reference to a blog comment model
+	 * Fields and their validation criteria
 	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object
+	 * @var  array
 	 */
-	static function &getInstance($oid=0)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
-	}
+	protected $rules = array(
+		'comment' => 'notempty'
+	);
 
 	/**
-	 * HAs this comment been reported
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @return     boolean True if reported, False if not
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Fields to be parsed
+	 *
+	 * @var array
+	 */
+	protected $parsed = array(
+		'comment'
+	);
+
+	/**
+	 * Base URL
+	 *
+	 * @var  string
+	 */
+	protected $base = null;
+
+	/**
+	 * Is the question open?
+	 *
+	 * @return  boolean
 	 */
 	public function isReported()
 	{
-		if ($this->get('state') == self::APP_STATE_FLAGGED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_FLAGGED);
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Return a formatted timestamp for created date
 	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
-		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('user_id'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new \Hubzero\User\Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
-			if ($property == 'picture')
-			{
-				return $this->_creator->getPicture($this->get('anonymous'));
-			}
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
-	}
-
-	/**
-	 * Get a list or count of comments
-	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
-	 */
-	public function replies($rtrn='list', $filters=array(), $clear=false)
-	{
-		if (is_array($rtrn))
-		{
-			$filters = $rtrn;
-			$rtrn = 'list';
-		}
-
-		if (!isset($filters['item_id']))
-		{
-			$filters['item_id'] = $this->get('id');
-		}
-		if (!isset($filters['item_type']))
-		{
-			$filters['item_type'] = 'review';
-		}
-		if (!isset($filters['parent']))
-		{
-			$filters['parent'] = 0;
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear)
-				{
-					$this->_comments_count = Components\Resources\Reviews\Models\Comment::all()
-						->whereEquals('item_id', $filters['item_id'])
-						->whereEquals('item_type', $filters['item_type'])
-						->whereIn('state', $filters['state'])
-						->total();
-				}
-				return $this->_comments_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_comments || $clear)
-				{
-					$results = Components\Resources\Reviews\Models\Comment::all()
-						->whereEquals('parent', $filters['parent'])
-						->whereEquals('item_id', $filters['item_id'])
-						->whereEquals('item_type', $filters['item_type'])
-						->whereIn('state', $filters['state'])
-						->ordered()
-						->rows();
-
-					$this->_comments = $results;
-				}
-				return $this->_comments;
-			break;
-		}
-	}
-
-	/**
-	 * Get the content of the entry
-	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
-	 */
-	public function content($as='parsed', $shorten=0)
-	{
 		$as = strtolower($as);
-		$options = array();
 
-		switch ($as)
+		if ($as == 'date')
 		{
-			case 'parsed':
-				$content = $this->get('comment.parsed', null);
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
 
-				if ($content === null)
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('created');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between response and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+	}
+
+	/**
+	 * Get a list of comments
+	 *
+	 * @return  object
+	 */
+	public function replies()
+	{
+		return $this->oneShiftsToMany('Comment', 'item_id', 'item_type');
+	}
+
+	/**
+	 * Check if a user has voted for this entry
+	 *
+	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @param   string   $ip       IP Address
+	 * @return  integer
+	 */
+	/*public function ballot($user_id = 0, $ip = null)
+	{
+		if (User::isGuest())
+		{
+			$vote = new Vote();
+			$vote->set('item_type', 'response');
+			$vote->set('item_id', $this->get('id'));
+			$vote->set('created_by', $user_id);
+			$vote->set('ip', $ip);
+
+			return $vote;
+		}
+
+		$user = $user_id ? User::getInstance($user_id) : User::getRoot();
+		$ip   = $ip ?: Request::ip();
+
+		// See if a person from this IP has already voted in the last week
+		$votes = $this->votes();
+
+		if ($user->get('id'))
+		{
+			$votes->whereEquals('created_by', $user->get('id'));
+		}
+		elseif ($ip)
+		{
+			$votes->whereEquals('ip', $ip);
+		}
+
+		$vote = $votes
+			->ordered()
+			->limit(1)
+			->row();
+
+		if (!$vote || !$vote->get('id'))
+		{
+			$vote = new Vote();
+			$vote->set('item_type', 'response');
+			$vote->set('item_id', $this->get('id'));
+			$vote->set('created_by', $user_id);
+			$vote->set('ip', $ip);
+		}
+
+		return $vote;
+	}*/
+
+	/**
+	 * Vote for the entry
+	 *
+	 * @param   integer  $vote     The vote [0, 1]
+	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @return  boolean  False if error, True on success
+	 */
+	/*public function vote($vote = 0, $user_id = 0, $ip = null)
+	{
+		if (!$this->get('id'))
+		{
+			$this->addError(Lang::txt('No record found'));
+			return false;
+		}
+
+		if (!$vote)
+		{
+			$this->addError(Lang::txt('No vote provided'));
+			return false;
+		}
+
+		$al = $this->ballot($user_id, $ip);
+		$al->set('item_type', 'response');
+		$al->set('item_id', $this->get('id'));
+		$al->set('created_by', $user_id);
+		$al->set('ip', $ip);
+
+		$vote = $al->automaticVote(['vote' => $vote]);
+
+		if ($this->get('created_by') == $user_id)
+		{
+			$this->addError(Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
+			return false;
+		}
+
+		if ($vote != $al->get('vote', 0))
+		{
+			if ($vote > 0)
+			{
+				$this->set('helpful', (int) $this->get('helpful') + 1);
+				if ($al->get('id'))
 				{
-					$config = array(
-						'option'   => $this->get('option', \Request::getCmd('option', 'com_resources')),
-						'scope'    => 'reviews',
-						'pagename' => $this->get('resource_id'),
-						'pageid'   => 0,
-						'filepath' => '',
-						'domain'   => ''
-					);
-
-					$content = (string) stripslashes($this->get('comment', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('comment.parsed', (string) $this->get('comment', ''));
-					$this->set('comment', $content);
-
-					return $this->content($as, $shorten);
+					$this->set('nothelpful', (int) $this->get('nothelpful') - 1);
 				}
+			}
+			else
+			{
+				if ($al->get('id'))
+				{
+					$this->set('helpful', (int) $this->get('helpful') - 1);
+				}
+				$this->set('nothelpful', (int) $this->get('nothelpful') + 1);
+			}
 
-				$options['html'] = true;
-			break;
+			if (!$this->save())
+			{
+				return false;
+			}
 
-			case 'clean':
-				$content = strip_tags($this->content('comment.parsed'));
-			break;
+			$al->set('vote', $vote);
 
-			case 'raw':
-			default:
-				$content = stripslashes($this->get('comment'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
+			if (!$al->save())
+			{
+				$this->addError($al->getError());
+				return false;
+			}
 		}
 
-		if ($shorten)
+		return true;
+	}*/
+
+	/**
+	 * Transform comment
+	 *
+	 * @return  string
+	 */
+	public function transformContent()
+	{
+		return $this->comment;
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove comments
+		foreach ($this->replies()->rows() as $comment)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			if (!$comment->destroy())
+			{
+				$this->addError($comment->getError());
+				return false;
+			}
 		}
-		return $content;
+
+		// Remove vote logs
+		/*foreach ($this->votes()->rows() as $vote)
+		{
+			if (!$vote->destroy())
+			{
+				$this->addError($vote->getError());
+				return false;
+			}
+		}*/
+
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
-		if (!isset($this->_base))
+		if (!isset($this->base))
 		{
-			$this->_base = 'index.php?option=com_resources&id=' . $this->get('item_id') . '&active=reviews';
+			$this->base = 'index.php?option=com_resources&id=' . $this->get('item_id') . '&active=reviews';
 		}
-		$link = $this->_base;
+		$link = $this->base;
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
@@ -340,4 +379,3 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 		return $link;
 	}
 }
-

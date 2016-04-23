@@ -156,13 +156,14 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		$h->execute();
 
 		// Get reviews for this resource
-		$database = App::get('db');
-		$r = new \Components\Resources\Tables\Review($database);
-		$reviews = $r->getRatings($model->resource->id);
-		if (!$reviews)
-		{
-			$reviews = array();
-		}
+		$reviews = \Components\Resources\Reviews\Models\Review::all()
+			->whereEquals('resource_id', $model->resource->id)
+			->whereIn('state', array(
+				\Components\Resources\Reviews\Models\Review::STATE_PUBLISHED,
+				\Components\Resources\Reviews\Models\Review::STATE_FLAGGED
+			))
+			->ordered()
+			->rows();
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
@@ -176,37 +177,19 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
-				return;
 			}
 
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'browse'
-				)
-			);
-
-			// Thumbs voting CSS & JS
-			$view->voting = $this->params->get('voting', 1);
-
-			// Pass the view some info
-			$view->option   = $option;
-			$view->resource = $model->resource;
-			$view->reviews  = $reviews;
-			//$view->voting = $voting;
-			$view->h = $h;
-			$view->banking  = $this->banking;
-			$view->infolink = $this->infolink;
-			$view->config   = $this->params;
-			if ($h->getError())
-			{
-				foreach ($h->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
-			}
+			$view = $this->view('default', 'browse')
+				->set('voting', $this->params->get('voting', 1))
+				->set('option', $option)
+				->set('resource', $model->resource)
+				->set('reviews', $reviews)
+				->set('banking', $this->banking)
+				->set('infolink', $this->infolink)
+				->set('config', $this->params)
+				->set('h', $h)
+				->setErrors($h->getErrors());
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
@@ -215,13 +198,12 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = $this->view('default', 'metadata');
-
 			$url  = 'index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name;
 
-			$view->reviews = $reviews;
-			$view->url     = Route::url($url);
-			$view->url2    = Route::url($url . '&action=addreview#reviewform');
+			$view = $this->view('default', 'metadata')
+				->set('reviews', $reviews)
+				->set('url', Route::url($url))
+				->set('url2', Route::url($url . '&action=addreview#reviewform'));
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
@@ -238,10 +220,8 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	 * @param      boolean $abuse    Abuse flag
 	 * @return     array
 	 */
-	public static function getComments($id, $item, $category, $level, $abuse=false)
+	/*public static function getComments($id, $item, $category, $level, $abuse=false)
 	{
-		$database = App::get('db');
-
 		$level++;
 
 		$comments = \Hubzero\Item\Comment::all()
@@ -264,7 +244,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			}
 		}
 		return $comments;
-	}
+	}*/
 
 	/**
 	 * Get abuse reports for a comment
@@ -273,11 +253,11 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	 * @param      string  $category Item type
 	 * @return     integer
 	 */
-	public static function getAbuseReports($item, $category)
+	/*public static function getAbuseReports($item, $category)
 	{
 		$database = App::get('db');
 
 		$ra = new \Components\Support\Tables\ReportAbuse($database);
 		return $ra->getCount(array('id' => $item, 'category' => $category));
-	}
+	}*/
 }

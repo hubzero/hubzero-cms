@@ -103,32 +103,15 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$database = App::get('db');
-
-		$row = new \Hubzero\Item\Comment($database);
-		if (!$row->bind($comment))
-		{
-			$this->setError($row->getError());
-			return;
-		}
+		$row = \Hubzero\Item\Comment($comment['id'])->set($comment);
 
 		// Perform some text cleaning, etc.
-		$row->content    = \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->content));
-		//$row->content    = nl2br($row->content);
-		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created    = ($row->id ? $row->created : Date::toSql());
-		$row->state      = ($row->id ? $row->state : 0);
-		$row->created_by = ($row->id ? $row->created_by : User::get('id'));
-
-		// Check for missing (required) fields
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return;
-		}
+		$row->set('content', \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->get('content'))));
+		$row->set('anonymous', ($row->get('anonymous') == 1 || $row->get('anonymous') == '1') ? $row->get('anonymous') : 0);
+		$row->set('state', $row->isNew() ? 1 : $row->get('state'));
 
 		// Save the data
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return;
@@ -163,16 +146,16 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Delete the review
-		$reply = new \Hubzero\Item\Comment($database);
-		$reply->load($replyid);
+		$reply = \Hubzero\Item\Comment::oneOrFail($replyid);
 
 		// Permissions check
-		if ($reply->created_by != User::get('id') && !User::authorise('core.admin'))
+		if ($reply->get('created_by') != User::get('id') && !User::authorise('core.admin'))
 		{
 			return;
 		}
 
-		$reply->setState($replyid, 2);
+		$reply->set('state', \Hubzero\Item\Comment::STATE_DELETED);
+		$reply->save();
 
 		App::Redirect(
 			Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews', false)
@@ -209,8 +192,8 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Load answer
-		$rev = new \Components\Resources\Tables\Review($database);
-		$rev->load($id);
+		$rev = \Components\Resources\Reviews\Models\Review::oneOrNew($id);
+
 		$voted = $rev->getVote($id, $cat, User::get('id'));
 
 		if (!$voted && $vote) // && $rev->user_id != User::get('id'))
@@ -249,7 +232,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 				)
 			);
 			$view->option = $this->_option;
-			$view->item = new ResourcesModelReview($response[0]);
+			$view->item = \Components\Resources\Reviews\Models\Review::oneOrNew($response[0]);
 			$view->rid = $rid;
 
 			$view->display();
@@ -319,7 +302,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Save a review
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savereview()
 	{
@@ -337,34 +320,21 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$database = App::get('db');
+		$data = Request::getVar('review', array(), 'post', 'none', 2);
 
 		// Bind the form data to our object
-		$row = new \Components\Resources\Tables\Review($database);
-		if (!$row->bind($_POST))
-		{
-			$this->setError($row->getError());
-			return;
-		}
+		$row = \Components\Resources\Reviews\Models\Review::oneOrNew($data['id'])->set($data);
 
 		// Perform some text cleaning, etc.
-		$row->id        = Request::getInt('reviewid', 0);
-		if (!$row->id)
+		if ($row->isNew())
 		{
-			$row->state = 1;
+			$row->set('state', \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED);
 		}
 		$row->comment   = \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->comment));
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created   = ($row->created && $row->created != '0000-00-00 00:00:00') ? $row->created : Date::toSql();
 
-		// Check for missing (required) fields
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return;
-		}
 		// Save the data
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return;
@@ -445,33 +415,16 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$review = new \Components\Resources\Tables\Review($database);
-		$review->load($reviewid);
+		$review = \Components\Resources\Reviews\Models\Review::oneOrFail($reviewid);
 
 		// Permissions check
-		if ($review->user_id != User::get('id') && !User::authorise('core.admin'))
+		if ($review->get('user_id') != User::get('id') && !User::authorise('core.admin'))
 		{
 			return;
 		}
 
-		$review->state = 2;
-		$review->store();
-
-		// Delete the review's comments
-		$reply = new \Hubzero\Item\Comment($database);
-
-		$comments1 = $reply->find(array(
-			'parent'    => $reviewid,
-			'item_type' => 'review',
-			'item_id'   => $resource->id
-		));
-		if (count($comments1) > 0)
-		{
-			foreach ($comments1 as $comment1)
-			{
-				$reply->setState($comment1->id, 2);
-			}
-		}
+		$review->set('state', \Components\Resources\Reviews\Models\Review::STATE_DELETED);
+		$review->save();
 
 		// Recalculate the average rating for the parent resource
 		$resource->calculateRating();
@@ -482,4 +435,3 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		);
 	}
 }
-

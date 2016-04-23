@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,17 +34,6 @@ defined('_HZEXEC_') or die();
 
 $this->css()
      ->js();
-
-if (!isset($this->reviews) || !$this->reviews)
-{
-	$this->reviews = array();
-}
-
-foreach ($this->reviews as $k => $review)
-{
-	$this->reviews[$k] = new ResourcesModelReview($review);
-}
-$this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 ?>
 <h3 class="section-header">
 	<?php echo Lang::txt('PLG_RESOURCES_REVIEWS'); ?>
@@ -68,7 +56,7 @@ $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 <?php } ?>
 
 <?php
-if ($this->reviews->total() > 0)
+if ($this->reviews->count() > 0)
 {
 	$this->view('_list')
 	     ->set('parent', 0)

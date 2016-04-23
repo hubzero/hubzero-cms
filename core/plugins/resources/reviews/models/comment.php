@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,11 +33,30 @@ namespace Components\Resources\Reviews\Models;
 
 use \Hubzero\Item\Comment as ItemComment;
 
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 /**
  * Resources model for a comment
  */
 class Comment extends ItemComment
 {
+	/**
+	 * Flagged state
+	 *
+	 * @var  integer
+	 */
+	const STATE_FLAGGED = 3;
+
+	/**
+	 * Defines a belongs to one relationship between question and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+	}
+
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
