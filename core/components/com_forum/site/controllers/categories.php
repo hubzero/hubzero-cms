@@ -187,13 +187,12 @@ class Categories extends SiteController
 		$this->_authorize('thread');
 
 		// Check logged in status
-		if ($category->get('access') > 0 && User::isGuest())
+		if (!in_array($category->get('access'), User::getAuthorisedViewLevels()))
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $filters['section'] . '&category=' . $filters['category'], false, true));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
-			return;
 		}
 
 		$threads = $category->threads()
@@ -313,7 +312,6 @@ class Categories extends SiteController
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
-			return;
 		}
 
 		// Get the section
@@ -345,7 +343,6 @@ class Categories extends SiteController
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
-			return;
 		}
 
 		// Output the view
@@ -371,7 +368,6 @@ class Categories extends SiteController
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
-			return;
 		}
 
 		// Check for request forgeries
@@ -454,7 +450,6 @@ class Categories extends SiteController
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
-			return;
 		}
 
 		// Load the category
@@ -472,7 +467,6 @@ class Categories extends SiteController
 				Lang::txt('COM_FORUM_MISSING_ID'),
 				'error'
 			);
-			return;
 		}
 
 		// Check if user is authorized to delete entries
@@ -485,7 +479,6 @@ class Categories extends SiteController
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
-			return;
 		}
 
 		// Set the category to "deleted"
@@ -498,7 +491,6 @@ class Categories extends SiteController
 				$category->getError(),
 				'error'
 			);
-			return;
 		}
 
 		// Log activity

@@ -182,13 +182,12 @@ class Threads extends SiteController
 		$thread = Post::oneOrFail($filters['thread']);
 
 		// Check logged in status
-		if (User::isGuest() && !in_array($thread->get('access'), User::getAuthorisedViewLevels()))
+		if (!in_array($thread->get('access'), User::getAuthorisedViewLevels()))
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent'], false, true));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
-			return;
 		}
 
 		$filters['state'] = array(1, 3);
@@ -389,7 +388,6 @@ class Threads extends SiteController
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)) . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
-			return;
 		}
 
 		// Section
@@ -434,7 +432,6 @@ class Threads extends SiteController
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
-			return;
 		}
 
 		// Set the page title
@@ -467,7 +464,6 @@ class Threads extends SiteController
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
-			return;
 		}
 
 		// Check for request forgeries
@@ -640,7 +636,6 @@ class Threads extends SiteController
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
-			return;
 		}
 
 		// Incoming
@@ -657,7 +652,6 @@ class Threads extends SiteController
 				Lang::txt('COM_FORUM_MISSING_ID'),
 				'error'
 			);
-			return;
 		}
 
 		// Check if user is authorized to delete entries
@@ -670,7 +664,6 @@ class Threads extends SiteController
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
-			return;
 		}
 
 		// Trash the post
@@ -685,7 +678,6 @@ class Threads extends SiteController
 				$post->getError(),
 				'error'
 			);
-			return;
 		}
 
 		// Record the activity
@@ -775,7 +767,6 @@ class Threads extends SiteController
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
-			return;
 		}
 
 		// Load ACL
