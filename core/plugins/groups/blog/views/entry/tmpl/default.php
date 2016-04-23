@@ -151,7 +151,7 @@ $first = $this->archive->entries(array(
 			<div class="entry-author">
 				<h3><?php echo Lang::txt('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
 				<p class="entry-author-photo">
-					<img src="<?php echo $this->row->creator()->getPicture(); ?>" alt="" />
+					<img src="<?php echo $this->row->creator->picture(); ?>" alt="" />
 				</p>
 				<div class="entry-author-content">
 					<h4>
@@ -164,8 +164,8 @@ $first = $this->archive->entries(array(
 						<?php } ?>
 					</h4>
 					<p class="entry-author-bio">
-						<?php if ($bio = $this->row->creator->get('bio')) { ?>
-							<?php echo $bio; ?>
+						<?php if ($this->row->creator->get('bio')) { ?>
+							<?php echo $this->row->creator->get('bio'); ?>
 						<?php } else { ?>
 							<em><?php echo Lang::txt('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?></em>
 						<?php } ?>
@@ -255,7 +255,7 @@ $first = $this->archive->entries(array(
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-					$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
+					$user = \Components\Members\Models\Member::oneOrNew(User::get('id'));
 					?>
 					<img src="<?php echo $user->picture(User::isGuest() ? 1 : 0); ?>" alt="" />
 				</p>

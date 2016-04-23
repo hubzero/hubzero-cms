@@ -168,7 +168,7 @@ class Member extends User
 				return with(new \Hubzero\Content\Moderator($path . DS . $file))->getUrl();
 			}
 
-			$config = \Component::get('com_members');
+			$config = \Component::params('com_members');
 
 			// Do we have a picture processor?
 			if ($processor = $config->get('picture', 'initialcon'))
