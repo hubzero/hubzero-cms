@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -59,7 +58,7 @@ defined('_HZEXEC_') or die();
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 			<p class="comment-member-photo">
-				<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+				<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 			</p>
 			<div class="comment-content">
 				<?php
@@ -77,12 +76,12 @@ defined('_HZEXEC_') or die();
 				<p class="comment-title">
 					<strong>
 						<?php if (!$this->comment->get('anonymous')) { ?>
-							<?php if ($this->comment->creator()->get('public')) { ?>
-								<a href="<?php echo Route::url($this->comment->creator()->getLink()); ?>"><!--
-									--><?php echo $this->escape(stripslashes($this->comment->creator()->get('name'))); ?><!--
+							<?php if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+								<a href="<?php echo Route::url($this->comment->creator->link()); ?>"><!--
+									--><?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?><!--
 								--></a>
 							<?php } else { ?>
-								<?php echo $this->escape(stripslashes($this->comment->creator()->get('name'))); ?>
+								<?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?>
 							<?php } ?>
 						<?php } else { ?>
 							<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS'); ?>
@@ -212,7 +211,14 @@ defined('_HZEXEC_') or die();
 			<?php
 			if ($this->depth < $this->params->get('comments_depth', 3))
 			{
-				$replies = $this->comment->replies(array('state' => array(1, 3)));
+				$replies = $this->comment->replies()
+					->whereIn('state', array(
+						Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
+						Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+					))
+					->whereIn('access', User::getAuthorisedViewLevels())
+					->ordered()
+					->rows();
 
 				if ($replies->count())
 				{

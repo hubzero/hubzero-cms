@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -71,7 +70,7 @@ $this->css()
 								$comment->set('anonymous', (!User::isGuest() ? 0 : 1));
 							}
 							?>
-							<img src="<?php echo $comment->creator()->getPicture($comment->get('anonymous')); ?>" alt="" />
+							<img src="<?php echo $comment->creator->picture($comment->get('anonymous')); ?>" alt="" />
 						</p>
 						<fieldset>
 							<?php
@@ -84,7 +83,11 @@ $this->css()
 									$name = Lang::txt('COM_KB_ANONYMOUS');
 									if (!$reply->get('anonymous'))
 									{
-										$name = ($reply->creator()->get('public') ? '<a href="' . Route::url($reply->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($repy->creator()->get('name'))) . ($reply->creator()->get('public') ? '</a>' : '');
+										$name = $this->escape(stripslashes($repy->creator->get('name')));
+										if (in_array($reply->creator->get('access'), User::getAuthorisedViewLevels()))
+										{
+											$name = '<a href="' . Route::url($reply->creator->link()) . '">' . $name . '</a>';
+										}
 									}
 									?>
 									<blockquote cite="c<?php echo $reply->get('id'); ?>">
@@ -95,7 +98,7 @@ $this->css()
 											<span class="comment-date-on"><?php echo Lang::txt('COM_ANSWERS_ON'); ?></span>
 											<span class="date"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('date'); ?></time></span>
 										</p>
-										<p><?php echo $reply->content('clean', 300); ?></p>
+										<p><?php echo $reply->content; ?></p>
 									</blockquote>
 									<?php
 								}
@@ -106,7 +109,7 @@ $this->css()
 								<?php
 								if (!User::isGuest())
 								{
-									echo $this->editor('comment[content]', $this->escape($comment->content('raw')), 35, 15, 'commentcontent', array('class' => 'minimal no-footer'));
+									echo $this->editor('comment[content]', $this->escape($comment->get('content')), 35, 15, 'commentcontent', array('class' => 'minimal no-footer'));
 								}
 								?>
 							</label>

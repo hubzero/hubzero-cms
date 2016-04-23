@@ -41,24 +41,24 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * List of allowed extensions
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_allowedExtensions = null;
 
 	/**
 	 * Display comments on an object
 	 *
-	 * @param      type    $objType    Object type to pull comments for
-	 * @param      integer $objId      Object ID to pull comments for
-	 * @param      string  $authorized Authorization level
-	 * @return     string HTML
+	 * @param   type     $objType     Object type to pull comments for
+	 * @param   integer  $objId       Object ID to pull comments for
+	 * @param   string   $authorized  Authorization level
+	 * @return  string   HTML
 	 */
 	public function onAfterDisplayContent($obj, $option, $url=null, $params = null)
 	{
@@ -71,7 +71,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		include_once __DIR__ . DS . 'models' . DS . 'comment.php';
 
 		$this->view = $this->view('default', 'view');
-		$this->view->database = $this->database = App::get('db');
 		$this->view->option   = $this->option   = $option;
 		$this->view->obj      = $this->obj      = $obj;
 		$this->view->obj_id   = $this->obj_id   = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);
@@ -126,9 +125,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set permissions
 	 *
-	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
-	 * @param      integer $assetId   Specific object to check permissions for
-	 * @return     void
+	 * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
+	 * @param   integer  $assetId    Specific object to check permissions for
+	 * @return  void
 	 */
 	protected function _authorize($assetType='comment', $assetId=null)
 	{
@@ -164,21 +163,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
-			if ($this->obj instanceof \Hubzero\Base\Model)
-			{
-				$d = $this->obj->get('created', $this->obj->get('publish_up'));
-			}
-			else
-			{
-				if (isset($this->obj->publish_up) && $this->obj->publish_up)
-				{
-					$d = $this->obj->publish_up;
-				}
-				else
-				{
-					$d = $this->obj->created;
-				}
-			}
+			$d = $this->obj->get('created', $this->obj->get('publish_up'));
+
 			$year  = intval(substr($d, 0, 4));
 			$month = intval(substr($d, 5, 2));
 			$day   = intval(substr($d, 8, 2));
@@ -229,22 +215,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Method to add a message to the component message que
-	 *
-	 * @param   string $message The message to add
-	 * @return  void
-	 */
-	public function redirect($url, $msg='', $msgType='')
-	{
-		$url = ($url != '') ? $url : Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments'), 'server');
-
-		parent::redirect($url, $msg, $msgType);
-	}
-
-	/**
 	 * Show a list of comments
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	protected function _login()
 	{
@@ -253,7 +226,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			Lang::txt('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
 			'warning'
 		);
-		return;
 	}
 
 	/**
@@ -295,7 +267,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				$this->getError(),
 				'error'
 			);
-			return;
 		}
 
 		$item->set('vote', $how);
@@ -310,7 +281,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_SAVED'),
 				'message'
 			);
-			return;
 		}
 
 		foreach ($this->getErrors() as $error)
@@ -327,7 +297,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show a list of comments
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	protected function _view()
 	{
@@ -335,7 +305,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			->whereEquals('item_type', $this->obj_type)
 			->whereEquals('item_id', $this->obj_id)
 			->whereEquals('parent', 0)
-			->whereIn('state', array(1, 3))
+			->whereIn('state', array(
+				Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
+				Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+			))
 			->limit($this->params->get('display_limit', 25))
 			->ordered()
 			->paginated();
@@ -349,7 +322,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save an entry
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	protected function _save()
 	{
@@ -375,7 +348,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				Lang::txt('PLG_HUBZERO_COMMENTS_NOTAUTH'),
 				'warning'
 			);
-			return;
 		}
 
 		// Store new content
@@ -391,7 +363,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				$row->getError(),
 				'error'
 			);
-			return;
 		}
 
 		$upload = Request::getVar('comment_file', '', 'files', 'array');
@@ -431,7 +402,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 * Mark a comment as deleted
 	 * NOTE: Does not actually delete data. Simply marks record.
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	protected function _delete()
 	{
@@ -445,7 +416,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$id = Request::getInt('comment', 0);
 		if (!$id)
 		{
-			return $this->_redirect();
+			App::redirect(
+				$this->url
+			);
 		}
 
 		// Initiate a blog comment object
@@ -455,10 +428,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		 && !$this->params->get('access-delete-comment'))
 		{
 			App::redirect($this->url);
-			return;
 		}
 
-		$comment->set('state', $comment::STATE_DELETED);
+		$comment->set('state', \Plugins\Hubzero\Comments\Models\Comment::STATE_DELETED);
 
 		// Delete the entry itself
 		if (!$comment->save())
@@ -476,7 +448,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a feed of comments
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	protected function _feed()
 	{
@@ -490,14 +462,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// Set the mime encoding for the document
 		Document::setType('feed');
 
-		if ($this->obj instanceof \Hubzero\Base\Model)
-		{
-			$title = $this->obj->get('title');
-		}
-		else
-		{
-			$title = $this->obj->title;
-		}
+		$title = $this->obj->get('title');
 
 		// Start a new feed object
 		$doc = Document::instance();
@@ -516,7 +481,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			->whereEquals('parent', 0)
 			->limit($this->params->get('display_limit', 25))
 			->ordered()
-			->paginated();
+			->paginated()
+			->rows();
 
 		// Start outputing results if any found
 		foreach ($comments as $row)
@@ -527,7 +493,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
-				$author = $row->creator()->get('name');
+				$author = $row->creator->get('name');
 			}
 
 			// Prepare the title
@@ -558,7 +524,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$doc->addItem($item);
 
 			// Check for any replies
-			foreach ($row->replies() as $reply)
+			foreach ($row->replies()->rows() as $reply)
 			{
 				// URL link to article
 				$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
@@ -566,7 +532,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
 				if (!$reply->anonymous)
 				{
-					$author = $reply->creator()->get('name');
+					$author = $reply->creator->get('name');
 				}
 
 				// Prepare the title
@@ -597,7 +563,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				// Loads item info into rss array
 				$doc->addItem($item);
 
-				foreach ($reply->replies() as $response)
+				foreach ($reply->replies()->rows() as $response)
 				{
 					// URL link to article
 					$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
@@ -605,7 +571,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 					$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
 					if (!$response->anonymous)
 					{
-						$author = $response->creator()->get('name');
+						$author = $response->creator->get('name');
 					}
 
 					// Prepare the title
@@ -618,7 +584,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 					}
 					else
 					{
-						$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
+						$description = nl2br(stripslashes($response->content));
 					}
 					$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
 

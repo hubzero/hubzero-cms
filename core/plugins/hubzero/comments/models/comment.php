@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,12 +32,9 @@
 namespace Plugins\Hubzero\Comments\Models;
 
 use Hubzero\Item\Comment as ItemComment;
-use Hubzero\User\Profile;
-use Hubzero\Utility\String;
-use Hubzero\Item\Comment\File;
-use Hubzero\Item\Vote;
 
-include __DIR__ . DS . 'file.php';
+require_once __DIR__ . DS . 'file.php';
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Model for a comment
@@ -46,11 +42,28 @@ include __DIR__ . DS . 'file.php';
 class Comment extends ItemComment
 {
 	/**
+	 * Flagged state
+	 *
+	 * @var  integer
+	 */
+	const STATE_FLAGGED = 3;
+
+	/**
 	 * URL for this entry
 	 *
 	 * @var string
 	 */
 	private $_base = null;
+
+	/**
+	 * Defines a belongs to one relationship between question and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+	}
 
 	/**
 	 * Get a list of files
