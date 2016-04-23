@@ -38,8 +38,6 @@ require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'note.php');
 require_once(__DIR__ . DS . 'quota.php');
-//require_once(__DIR__ . DS . 'accessgroup.php');
-//require_once(__DIR__ . DS . 'accessgroup' . DS . 'map.php');
 
 /**
  * User model
@@ -152,7 +150,65 @@ class Member extends User
 	 */
 	public function picture($anonymous=0, $thumbnail=true, $serveFile=true)
 	{
-		return ProfileHelper::getMemberPhoto($this, $anonymous, $thumbnail, $serveFile);
+		// User doesn't exist? Force to anonymous
+		if (!$this->get('id'))
+		{
+			$anonymous = 1;
+		}
+
+		// Display picture only if not anonymous
+		if (!$anonymous)
+		{
+			$path = PATH_APP . DS . 'site' . DS . 'members' . DS . \Hubzero\Utility\String::pad($this->get('id'), 5);
+
+			$file = ($thumbnail ? 'thumb.png' : 'profile.png');
+
+			if (file_exists($path . DS . $file))
+			{
+				return with(new \Hubzero\Content\Moderator($path . DS . $file))->getUrl();
+			}
+
+			$config = \Component::get('com_members');
+
+			// Do we have a picture processor?
+			if ($processor = $config->get('picture', 'initialcon'))
+			{
+				// Build the class name
+				$cls = __NAMESPACE__ . '\\Picture\\' . ucfirst($processor);
+
+				// If the class doesn't exist, try to load it
+				if (!class_exists($cls))
+				{
+					$inc = __DIR__ . DS . 'picture' . DS . $processor . '.php';
+
+					if (file_exists($inc))
+					{
+						include_once $inc;
+					}
+				}
+
+				// If class exists, instantiate the processor
+				// and get the user picture
+				if (class_exists($cls))
+				{
+					$processor = new $cls([
+						'path'          => $path,
+						'name'          => $this->get('name'),
+						'pictureName'   => 'profile.png',
+						'thumbnailName' => 'thumb.png',
+						'fallback'      => $config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')
+					]);
+
+					if ($picture = $processor->picture($this->get('email'), $thumbnail))
+					{
+						return $picture;
+					}
+				}
+			}
+		}
+
+		// Return the default system pic
+		return parent::picture($anonymous, $thumbnail, $serveFile);
 	}
 
 	/**
