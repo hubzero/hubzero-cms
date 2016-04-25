@@ -57,7 +57,7 @@ class Migration20160425154200ComPoll extends Base
 			if ($this->db->tableHasField('#__poll_menus', 'pollid')
 			 && !$this->db->tableHasField('#__poll_menus', 'poll_id'))
 			{
-				$query = "ALTER TABLE `#__poll_options` CHANGE `pollid` `poll_id` int(11) default 0;";
+				$query = "ALTER TABLE `#__poll_menus` CHANGE `pollid` `poll_id` int(11) default 0;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -119,7 +119,7 @@ class Migration20160425154200ComPoll extends Base
 			if ($this->db->tableHasField('#__poll_menu', 'poll_id')
 			 && !$this->db->tableHasField('#__poll_menu', 'pollid'))
 			{
-				$query = "ALTER TABLE `#__poll_options` CHANGE `poll_id` `pollid` int(11) default 0;";
+				$query = "ALTER TABLE `#__poll_menu` CHANGE `poll_id` `pollid` int(11) default 0;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -127,7 +127,7 @@ class Migration20160425154200ComPoll extends Base
 			if ($this->db->tableHasField('#__poll_menu', 'menu_id')
 			 && !$this->db->tableHasField('#__poll_menu', 'menuid'))
 			{
-				$query = "ALTER TABLE `#__poll_menus` CHANGE `menu_id` `menuid` int(11) default 0;";
+				$query = "ALTER TABLE `#__poll_menu` CHANGE `menu_id` `menuid` int(11) default 0;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
