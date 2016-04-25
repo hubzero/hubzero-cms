@@ -216,7 +216,7 @@ class Versions extends AdminController
 			return $this->editTask($row);
 		}
 
-		$row->hostreq = (is_array($row->hostreq) ? explode(',', $row->hostreq[0]) : explode(',', $row->hostreq));
+		$row->hostreq = (is_array($row->hostreq) && !empty($row->hostreq) ? explode(',', $row->hostreq[0]) : []);
 
 		$hostreq = array();
 		foreach ($row->hostreq as $req)
