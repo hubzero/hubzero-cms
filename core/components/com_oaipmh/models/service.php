@@ -685,7 +685,7 @@ class Service extends Object
 
 		if (!$result)
 		{
-			return $this->error(self::ERROR_RECORD_NOT_FOUND, null, 'GetRecord');
+			return $this->error(self::ERROR_BAD_ID, null, 'GetRecord');
 		}
 
 		$this->response
