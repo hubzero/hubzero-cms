@@ -51,18 +51,9 @@ if (!$this->row->get('id') && $canDo->get('core.create'))
 {
 	Toolbar::save2copy();
 }
-
-if (empty($this->row->get('id')))
-{
-	Toolbar::cancel();
-}
-else
-{
-	Toolbar::cancel('cancel', 'JTOOLBAR_CLOSE');
-}
+Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('group');
-
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
