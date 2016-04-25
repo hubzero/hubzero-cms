@@ -76,7 +76,6 @@ class Rule extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'class'       => 'notempty',
 		'description' => 'notempty',
 		'rule'        => 'notempty'
 	);

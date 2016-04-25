@@ -29,30 +29,28 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Members\Models;
+namespace Components\Members\Models\Note;
 
 use Hubzero\Database\Relational;
 
-include_once __DIR__ . DS . 'note' . DS . 'category.php';
-
 /**
- * User note model
+ * Member notes model for a category
  */
-class Note extends Relational
+class Category extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'user';
+	protected $namespace = '';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'user_id';
+	public $orderBy = 'lft';
 
 	/**
 	 * Default order direction for select queries
@@ -62,92 +60,74 @@ class Note extends Relational
 	public $orderDir = 'asc';
 
 	/**
-	 * Fields and their validation criteria
+	 * Returns all rows (unless otherwise limited)
 	 *
-	 * @var  array
+	 * @param   string|array  $columns  The columns to select
+	 * @return  \Hubzero\Database\Relational|static
 	 */
-	protected $rules = array(
-		'user_id' => 'positive|nonzero',
-		'body'    => 'notempty'
-	);
+	public static function all($columns = null)
+	{
+		return self::blank()->whereEquals('extension', 'com_users');
+	}
 
 	/**
-	 * Automatic fields to populate every time a row is created
+	 * Get a list of responses
 	 *
-	 * @var  array
+	 * @param   array    $filters  Filters to apply to query
+	 * @return  object
 	 */
-	public $initiate = array(
-		'created_user_id',
-		'created_time'
-	);
+	public function children($filters = array())
+	{
+		$categories = self::blank()
+			->whereEquals('parent_id', $this->get('id'));
+
+		if (isset($filters['state']))
+		{
+			$categories->whereEquals('published', $filters['state']);
+		}
+
+		if (isset($filters['access']))
+		{
+			$categories->whereEquals('access', $filters['access']);
+		}
+
+		return $categories;
+	}
 
 	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'modified_time',
-		'modified_user_id'
-	);
-
-	/**
-	 * Get parent member
+	 * Get parent section
 	 *
 	 * @return  object
 	 */
-	public function member()
+	public function parent()
 	{
-		return $this->belongsToOne('Components\Members\Models\Member', 'user_id');
+		return self::oneOrFail($this->get('parent_id', 0));
 	}
 
 	/**
-	 * Get parent category
+	 * Delete the record and all associated data
 	 *
-	 * @return  object
+	 * @return  boolean  False if error, True on success
 	 */
-	public function category()
+	public function destroy()
 	{
-		return $this->belongsToOne('Components\Members\Models\Note\Category', 'catid');
-	}
+		// Can't delete what doesn't exist
+		if (!$this->get('id'))
+		{
+			return true;
+		}
 
-	/**
-	 * Generates automatic created field value
-	 *
-	 * @return  string
-	 */
-	public function automaticCreatedTime()
-	{
-		return Date::of('now')->toSql();
-	}
+		// Remove children
+		foreach ($this->children()->rows() as $category)
+		{
+			if (!$category->destroy())
+			{
+				$this->setError($category->getError());
+				return false;
+			}
+		}
 
-	/**
-	 * Generates automatic created by field value
-	 *
-	 * @return  int
-	 */
-	public function automaticCreatedUserId()
-	{
-		return User::get('id');
-	}
-
-	/**
-	 * Generates automatic created field value
-	 *
-	 * @return  string
-	 */
-	public function automaticModifiedTime()
-	{
-		return Date::of('now')->toSql();
-	}
-
-	/**
-	 * Generates automatic created by field value
-	 *
-	 * @return  int
-	 */
-	public function automaticModifiedUserId()
-	{
-		return User::get('id');
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 }
