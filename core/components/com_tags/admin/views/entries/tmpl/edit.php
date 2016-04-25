@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,11 +32,11 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Tags\Helpers\Permissions::getActions();
+$canDo = Components\Tags\Helpers\Permissions::getActions();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_TAGS') . ': ' . $text, 'tags.png');
+Toolbar::title(Lang::txt('COM_TAGS') . ': ' . $text, 'tags');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -129,7 +128,7 @@ function submitbutton(pressbutton)
 								}
 							}
 						}
-						$name = $this->tag->creator()->get('name');
+						$name = $this->tag->creator->get('name');
 						echo $this->escape(($name ? $name : Lang::txt('COM_TAGS_UNKNOWN')));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->tag->get('created_by')); ?>" />

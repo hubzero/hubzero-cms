@@ -32,14 +32,14 @@
 namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'object.php');
-require_once(__DIR__ . DS . 'substitute.php');
-require_once(__DIR__ . DS . 'log.php');
+require_once __DIR__ . DS . 'object.php';
+require_once __DIR__ . DS . 'substitute.php';
+require_once __DIR__ . DS . 'log.php';
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Tag model
@@ -269,11 +269,7 @@ class Tag extends Relational
 	 */
 	public function wasModified()
 	{
-		if ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00')
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00');
 	}
 
 	/**
@@ -283,11 +279,7 @@ class Tag extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**

@@ -35,7 +35,7 @@ namespace Components\Tags\Admin\Controllers;
 use Components\Tags\Models\Object;
 use Hubzero\Component\AdminController;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -183,9 +183,7 @@ class Tagged extends AdminController
 			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -204,13 +202,12 @@ class Tagged extends AdminController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
+
+			return $this->cancelTask();
 		}
+
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
@@ -220,12 +217,17 @@ class Tagged extends AdminController
 			if (!$row->destroy())
 			{
 				Notify::error($row->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TAGS_OBJECT_REMOVED')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_TAGS_OBJECT_REMOVED'));
+		}
+
+		$this->cancelTask();
 	}
 }

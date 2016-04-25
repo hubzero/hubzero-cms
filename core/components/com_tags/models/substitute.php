@@ -33,6 +33,8 @@ namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
 
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 /**
  * Tag substitute
  */
@@ -118,11 +120,7 @@ class Substitute extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
 	}
 
 	/**
@@ -133,20 +131,21 @@ class Substitute extends Relational
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
+		$timestamp = $this->get('created');
+
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			$timestamp = Date::of($timestamp)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			$timestamp = Date::of($timestamp)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $timestamp;
 	}
 
 	/**
@@ -315,4 +314,3 @@ class Substitute extends Relational
 		return true;
 	}
 }
-

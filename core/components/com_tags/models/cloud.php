@@ -659,4 +659,3 @@ class Cloud extends \Hubzero\Base\Object
 		return $parsed;
 	}
 }
-

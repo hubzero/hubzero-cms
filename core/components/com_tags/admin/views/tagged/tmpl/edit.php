@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,11 +32,11 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Tags\Helpers\Permissions::getActions();
+$canDo = Components\Tags\Helpers\Permissions::getActions();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_TAGGED') . ': ' . $text, 'tags.png');
+Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_TAGGED') . ': ' . $text, 'tags');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -119,9 +118,9 @@ if ($this->getError())
 						<td>
 							<?php
 							$name = Lang::txt('COM_TAGS_UNKNOWN');
-							if ($this->row->creator()->get('id'))
+							if ($this->row->creator->get('id'))
 							{
-								$name = $this->row->creator()->get('name');
+								$name = $this->row->creator->get('name');
 							}
 							echo $this->escape($name);
 							?>

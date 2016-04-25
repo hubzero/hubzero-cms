@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,9 +34,7 @@ namespace Components\Tags\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
-use Exception;
 use Request;
-use Config;
 use Notify;
 use Cache;
 use Event;
@@ -196,9 +193,7 @@ class Entries extends AdminController
 			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -217,12 +212,9 @@ class Entries extends AdminController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
+
+			return $this->cancelTask();
 		}
 
 		foreach ($ids as $id)
@@ -239,10 +231,9 @@ class Entries extends AdminController
 
 		$this->cleancacheTask(false);
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TAGS_TAG_REMOVED')
-		);
+		Notify::success(Lang::txt('COM_TAGS_TAG_REMOVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -260,9 +251,7 @@ class Entries extends AdminController
 			return true;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -283,10 +272,7 @@ class Entries extends AdminController
 		if ($step == 1
 		&& (!$ids || count($ids) < 1))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		$idstr = implode(',', $ids);
@@ -355,7 +341,7 @@ class Entries extends AdminController
 
 				if ($this->getError())
 				{
-					throw new Exception($this->getError(), 500);
+					App::abort(500, $this->getError());
 				}
 
 				foreach ($ids as $id)
@@ -366,6 +352,7 @@ class Entries extends AdminController
 					}
 
 					$oldtag = Tag::oneOrFail(intval($id));
+
 					if (!$oldtag->mergeWith($mtag))
 					{
 						$this->setError($oldtag->getError());
@@ -376,11 +363,12 @@ class Entries extends AdminController
 				{
 					Notify::error($this->getError());
 				}
+				else
+				{
+					Notify::success(Lang::txt('COM_TAGS_TAGS_MERGED'));
+				}
 
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_TAGS_TAGS_MERGED')
-				);
+				$this->cancelTask();
 			break;
 		}
 	}
@@ -403,10 +391,7 @@ class Entries extends AdminController
 		if ($step == 1
 		 && (!$ids || count($ids) < 1))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		$idstr = implode(',', $ids);
@@ -487,10 +472,16 @@ class Entries extends AdminController
 					}
 				}
 
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_TAGS_TAGS_COPIED')
-				);
+				if ($this->getError())
+				{
+					Notify::error($this->getError());
+				}
+				else
+				{
+					Lang::txt('COM_TAGS_TAGS_COPIED');
+				}
+
+				$this->cancelTask();
 			break;
 		}
 	}

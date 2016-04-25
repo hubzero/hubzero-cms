@@ -32,12 +32,12 @@
 namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use stdClass;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'log.php');
+require_once __DIR__ . DS . 'log.php';
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Tag object association
@@ -144,11 +144,7 @@ class Object extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('taggerid')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'taggerid');
 	}
 
 	/**
@@ -227,7 +223,7 @@ class Object extends Relational
 			$entries[] = $item->toArray();
 		}
 
-		$data = new \stdClass;
+		$data = new stdClass;
 		$data->old_id  = $oldtagid;
 		$data->new_id  = $newtagid;
 		$data->entries = $entries;
@@ -274,7 +270,7 @@ class Object extends Relational
 				$entries[] = $row->get('id');
 			}
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $entries;
@@ -291,4 +287,3 @@ class Object extends Relational
 		return true;
 	}
 }
-

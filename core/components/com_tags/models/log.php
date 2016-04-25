@@ -32,8 +32,9 @@
 namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Date;
+
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Tag log
@@ -120,11 +121,6 @@ class Log extends Relational
 	 */
 	public function actor()
 	{
-		if ($profile = Profile::getInstance($this->get('actorid')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->oneToOne('Components\Members\Models\Member', 'id', 'actorid');
 	}
 }
-
