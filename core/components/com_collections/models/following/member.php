@@ -32,7 +32,8 @@
 
 namespace Components\Collections\Models\Following;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once __DIR__ . DS . 'base.php';
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Model class for following a member
@@ -40,7 +41,7 @@ require_once(__DIR__ . DS . 'base.php');
 class Member extends Base
 {
 	/**
-	 * \Hubzero\User\Profile
+	 * \Hubzero\User\User
 	 *
 	 * @var  object
 	 */
@@ -68,9 +69,9 @@ class Member extends Base
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_obj = \Hubzero\User\Profile::getInstance($oid);
+		$this->_obj = \Components\Members\Models\Member::oneOrNew($oid);
 
-		$this->_baselink = 'index.php?option=com_members&id=' . $this->_obj->get('uidNumber') . '&active=collections';
+		$this->_baselink = $this->_obj->link() . '&active=collections';
 	}
 
 	/**
@@ -82,7 +83,7 @@ class Member extends Base
 	{
 		if (!isset($this->_image))
 		{
-			$this->_image = \Hubzero\User\Profile\Helper::getMemberPhoto($this->_obj, 0);
+			$this->_image = $this->_obj->picture(0);
 		}
 		return $this->_image;
 	}

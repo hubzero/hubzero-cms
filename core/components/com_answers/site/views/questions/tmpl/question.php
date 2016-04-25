@@ -333,10 +333,10 @@ $this->css()
 								<p class="comment-member-photo">
 									<span class="comment-anchor"></span>
 									<?php
-										$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
-										$anon = (!User::isGuest() ? 0 : 1);
+									$jxuser = Components\Members\Models\Member::oneOrNew(User::get('id'));
+									$anon = (!User::isGuest() ? 0 : 1);
 									?>
-									<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo Lang::txt('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
+									<img src="<?php echo $jxuser->picture($anon); ?>" alt="<?php echo Lang::txt('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
 								</p>
 								<fieldset>
 									<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

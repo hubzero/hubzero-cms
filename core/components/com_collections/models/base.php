@@ -39,7 +39,7 @@ use Date;
 use User;
 use Lang;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Abstract model for collections
@@ -47,9 +47,9 @@ require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php'
 class Base extends Model
 {
 	/**
-	 * \Hubzero\User\Profile
+	 * \Hubzero\User\User
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_creator = NULL;
 
@@ -101,7 +101,7 @@ class Base extends Model
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
+			$property = ($property == 'uidNumber' ? 'id' : $property);
 			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
@@ -124,4 +124,3 @@ class Base extends Model
 		return $path;
 	}
 }
-

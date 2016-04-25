@@ -32,7 +32,6 @@
 namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Lang;
 use Date;
 

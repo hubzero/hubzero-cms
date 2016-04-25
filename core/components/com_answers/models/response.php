@@ -32,7 +32,6 @@
 namespace Components\Answers\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Request;
 use Lang;
 use Date;

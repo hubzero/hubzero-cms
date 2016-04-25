@@ -37,7 +37,6 @@ use Hubzero\Base\Object;
 use Hubzero\Bank\Config;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
-use Hubzero\User\Profile;
 use Lang;
 use User;
 
@@ -258,7 +257,7 @@ class Economy extends Object
 			{
 				foreach ($eligible as $e)
 				{
-					$auser = Profile::getInstance($e);
+					$auser = User::getInstance($e);
 					if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id'))
 					{
 						$BTL_A = new Teller($auser->get('id'));

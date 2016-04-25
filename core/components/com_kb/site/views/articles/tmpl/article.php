@@ -126,7 +126,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 							</a>
 							<?php if ($this->catid == $row->get('id') && count($row->children($filters)) > 0) { ?>
 								<ul class="categories">
-								<?php foreach ($row->children()->rows() as $cat) { ?>
+								<?php foreach ($row->children() as $cat) { ?>
 									<li>
 										<a <?php if ($this->category->get('id') == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($cat->link()); ?>">
 											<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
@@ -189,7 +189,9 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 			</h3>
 			<form method="post" action="<?php echo Route::url($this->article->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), (!User::isGuest() ? 0 : 1)); ?>" alt="" />
+					<img src="<?php
+					$user = Components\Members\Models\Member::oneOrNew(User::getRoot());
+					echo $user->picture(!User::isGuest() ? 0 : 1); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php

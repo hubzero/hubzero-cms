@@ -119,9 +119,10 @@ $now = Date::of('now')->toSql();
 				<form action="<?php echo Route::url($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
 					<p class="comment-member-photo">
 						<?php
+						$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
 						$anon = (!User::isGuest() ? 0 : 1);
 						?>
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('COM_FORUM_USER_PHOTO'); ?>" />
+						<img src="<?php echo $user->picture($anon); ?>" alt="<?php echo Lang::txt('COM_FORUM_USER_PHOTO'); ?>" />
 					</p>
 
 					<fieldset>

@@ -32,7 +32,7 @@
 
 namespace Components\Blog\Models\Adapters;
 
-use Hubzero\User\Profile;
+use Hubzero\User\User;
 use Hubzero\Utility\String;
 use Plugin;
 use Date;
@@ -66,7 +66,7 @@ class Member extends Base
 		$this->_segments['id']     = $scope_id;
 		$this->_segments['active'] = 'blog';
 
-		$this->_item = Profile::getInstance($scope_id);
+		$this->_item = User::oneOrNew($scope_id);
 
 		$config = Plugin::params('members', 'blog');
 
@@ -96,8 +96,8 @@ class Member extends Base
 				$key = 'username';
 			break;
 
-			case 'id':
-				$key = 'uidNumber';
+			case 'uidNumber':
+				$key = 'id';
 			break;
 
 			default:
