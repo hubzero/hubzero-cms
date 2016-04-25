@@ -309,18 +309,18 @@ class Applications extends SiteController
 				if (strpos($t, '@'))
 				{
 					// load profile by email
-					$profile = \Hubzero\User\Profile\Helper::find_by_email($t);
+					$profile = \Hubzero\User\User::oneByEmail($t);
 				}
 				else
 				{
 					// load profile by username
-					$profile = \Hubzero\User\Profile::getInstance($t);
+					$profile = \Hubzero\User\User::oneOrNew($t);
 				}
 
 				// swap usernames for uidnumbers
 				if ($profile)
 				{
-					$team[$k] = $profile->get('uidNumber');
+					$team[$k] = $profile->get('id');
 				}
 				else
 				{

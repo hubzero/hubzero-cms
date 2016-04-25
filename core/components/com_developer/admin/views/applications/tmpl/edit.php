@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Get the permissions helper
-$canDo = \Components\Developer\Helpers\Permissions::getActions('application');
+$canDo = Components\Developer\Helpers\Permissions::getActions('application');
 
 // Title & toolbar
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
@@ -118,7 +118,7 @@ Joomla.submitbutton = function(pressbutton) {
 						<tr>
 							<th><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:</th>
 							<td>
-								<?php echo $this->escape(stripslashes($this->row->creator()->get('name', 'System User'))); ?>
+								<?php echo $this->escape(stripslashes($this->row->creator->get('name', 'System User'))); ?>
 								<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 							</td>
 						</tr>
@@ -165,23 +165,20 @@ Joomla.submitbutton = function(pressbutton) {
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_DEVELOPER_FIELD_ADD_TEAM_HINT'); ?>">
 						<label for="acmembers"><?php echo Lang::txt('COM_DEVELOPER_FIELD_ADD_TEAM'); ?>:</label><br />
 						<?php
-							// get team and format for autocompletor
-							$currentTeam = array();
-							foreach ($this->row->team() as $member)
-							{
-								$profile = \Hubzero\User\Profile::getInstance($member->get('uidNumber'));
-								if ($profile)
-								{
-									$currentTeam[] = $profile->get('name') . ' (' . $profile->get('uidNumber') . ')';
-								}
-							}
+						// get team and format for autocompletor
+						$currentTeam = array();
+						foreach ($this->row->team() as $member)
+						{
+							$profile = \Hubzero\User\User::oneOrNew($member->get('uidNumber'));
 
-							// output member autocompletor
-							$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'team', 'acmembers', '', implode(', ', $currentTeam))));
-							if (count($mc) > 0) {
-								echo $mc[0];
-							} else {
-						?>
+							$currentTeam[] = $profile->get('name') . ' (' . $profile->get('id') . ')';
+						}
+
+						// output member autocompletor
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'team', 'acmembers', '', implode(', ', $currentTeam))));
+						if (count($mc) > 0) {
+							echo $mc[0];
+						} else { ?>
 							<input type="text" name="team" id="acmembers" value="" size="35" />
 						<?php } ?>
 					</div>

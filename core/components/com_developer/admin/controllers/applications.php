@@ -35,7 +35,7 @@ use Hubzero\Component\AdminController;
 use Components\Developer\Models\Application\Member;
 use Components\Developer\Models\Application;
 use Request;
-use Config;
+use Notify;
 use Lang;
 use User;
 use Date;
@@ -94,16 +94,6 @@ class Applications extends AdminController
 			->set('rows', $rows)
 			->set('filters', $filters)
 			->display();
-	}
-
-	/**
-	 * Create a new entry
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -186,18 +176,18 @@ class Applications extends AdminController
 				if (strpos($t, '@'))
 				{
 					// load profile by email
-					$profile = \Hubzero\User\Profile\Helper::find_by_email($t);
+					$profile = \Hubzero\User\User::oneByEmail($t);
 				}
 				else
 				{
 					// load profile by username
-					$profile = \Hubzero\User\Profile::getInstance($t);
+					$profile = \Hubzero\User\User::oneOrNew($t);
 				}
 
 				// swap usernames for uidnumbers
 				if ($profile)
 				{
-					$team[$k] = $profile->get('uidNumber');
+					$team[$k] = $profile->get('id');
 				}
 				else
 				{
@@ -245,9 +235,7 @@ class Applications extends AdminController
 			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -267,6 +255,8 @@ class Applications extends AdminController
 		// Do we actually have any entries?
 		if (count($ids) > 0)
 		{
+			$i = 0;
+
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
@@ -277,15 +267,20 @@ class Applications extends AdminController
 				if (!$entry->destroy())
 				{
 					Notify::error($entry->getError());
+					continue;
 				}
+
+				$i++;
 			}
 		}
 
 		// Set the redirect URL to the main entries listing.
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_DEVELOPER_APPLICATIONS_DELETED')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_DEVELOPER_APPLICATIONS_DELETED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -310,12 +305,9 @@ class Applications extends AdminController
 		{
 			// No entries found, so go back to the entries list with
 			// a message scolding the user for not selecting anything. Tsk, tsk.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task));
+
+			return $this->cancelTask();
 		}
 
 		// Loop through all the IDs
@@ -339,27 +331,29 @@ class Applications extends AdminController
 			$success++;
 		}
 
-		// Get the appropriate message for the task called. We're
-		// passing in the number of successful state changes so it
-		// can be displayed in the message.
-		switch ($this->_task)
+		if ($success)
 		{
-			case 'publish':
-				$message = Lang::txt('COM_DEVELOPER_APPLICATION_PUBLISHED', $success);
-			break;
-			case 'unpublish':
-				$message = Lang::txt('COM_DEVELOPER_APPLICATION_UNPUBLISHED', $success);
-			break;
-			case 'archive':
-				$message = Lang::txt('COM_DEVELOPER_APPLICATION_ARCHIVED', $success);
-			break;
+			// Get the appropriate message for the task called. We're
+			// passing in the number of successful state changes so it
+			// can be displayed in the message.
+			switch ($this->_task)
+			{
+				case 'publish':
+					$message = Lang::txt('COM_DEVELOPER_APPLICATION_PUBLISHED', $success);
+				break;
+				case 'unpublish':
+					$message = Lang::txt('COM_DEVELOPER_APPLICATION_UNPUBLISHED', $success);
+				break;
+				case 'archive':
+					$message = Lang::txt('COM_DEVELOPER_APPLICATION_ARCHIVED', $success);
+				break;
+			}
+
+			// Set the redirect URL to the main entries listing.
+			Notify::success($message);
 		}
 
-		// Set the redirect URL to the main entries listing.
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -381,13 +375,12 @@ class Applications extends AdminController
 		{
 			// No entries found, so go back to the entries list with
 			// a message scolding the user for not selecting anything. Tsk, tsk.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task));
+
+			return $this->cancelTask();
 		}
+
+		$i = 0;
 
 		// loop through each id
 		foreach ($ids as $id)
@@ -401,14 +394,19 @@ class Applications extends AdminController
 			if (!$row->save())
 			{
 				Notify::error($row->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
 		// Set the redirect URL to the main entries listing.
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_DEVELOPER_REGENERATE_CLIENT_ID_AND_SECRET_SUCCESS')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_DEVELOPER_REGENERATE_CLIENT_ID_AND_SECRET_SUCCESS'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -430,12 +428,9 @@ class Applications extends AdminController
 		{
 			// No entries found, so go back to the entries list with
 			// a message scolding the user for not selecting anything. Tsk, tsk.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task));
+
+			return $this->cancelTask();
 		}
 
 		// loop through each application id
@@ -449,9 +444,8 @@ class Applications extends AdminController
 		}
 
 		// Set the redirect URL to the main entries listing.
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_DEVELOPER_REVOKE_TOKENS_SUCCESS')
-		);
+		Notify::success(Lang::txt('COM_DEVELOPER_REVOKE_TOKENS_SUCCESS'));
+
+		$this->cancelTask();
 	}
 }

@@ -45,18 +45,7 @@ class Member extends Relational
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'developer';
-
-	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__developer_application_team_members';
+	protected $namespace = 'developer_application_team';
 
 	/**
 	 * Default order by for model
