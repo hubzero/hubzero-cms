@@ -32,7 +32,6 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Request;
 use Lang;
@@ -55,14 +54,14 @@ class Comment extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'kb';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'created';
 
@@ -117,20 +116,20 @@ class Comment extends Relational
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+		$dt = $this->get('created');
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $dt;
 	}
 
 	/**
@@ -195,8 +194,8 @@ class Comment extends Relational
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -395,7 +394,7 @@ class Comment extends Relational
 		}
 
 		// Remove comments
-		foreach ($this->replies() as $comment)
+		foreach ($this->replies()->rows() as $comment)
 		{
 			if (!$comment->destroy())
 			{
@@ -404,7 +403,7 @@ class Comment extends Relational
 			}
 		}
 
-		foreach ($this->votes() as $vote)
+		foreach ($this->votes()->rows() as $vote)
 		{
 			if (!$vote->destroy())
 			{
@@ -416,4 +415,3 @@ class Comment extends Relational
 		return parent::destroy();
 	}
 }
-

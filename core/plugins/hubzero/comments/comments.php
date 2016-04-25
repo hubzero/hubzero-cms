@@ -260,12 +260,19 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$this->setError($item->getError());
 		}
 
-		if ($this->getError() && !$no_html)
+		if (!$no_html)
 		{
+			if ($this->getError())
+			{
+				Notify::error($this->getError());
+			}
+			else
+			{
+				Notify::success(Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_SAVED'));
+			}
+
 			App::redirect(
-				$this->url,
-				$this->getError(),
-				'error'
+				$this->url
 			);
 		}
 
@@ -273,20 +280,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		$this->view->setLayout('vote');
 		$this->view->set('item', $item);
-
-		if (!$no_html)
-		{
-			App::redirect(
-				$this->url,
-				Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_SAVED'),
-				'message'
-			);
-		}
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$this->view->setErrors($this->getErrors());
 
 		// Ugly brute force method of cleaning output
 		ob_clean();
@@ -301,7 +295,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view()
 	{
-		$this->view->comments = \Plugins\Hubzero\Comments\Models\Comment::all()
+		$comments = \Plugins\Hubzero\Comments\Models\Comment::all()
 			->whereEquals('item_type', $this->obj_type)
 			->whereEquals('item_id', $this->obj_id)
 			->whereEquals('parent', 0)
@@ -313,10 +307,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			->ordered()
 			->paginated();
 
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$this->view
+			->set('comments', $comments)
+			->setErrors(($this->getErrors());
 	}
 
 	/**

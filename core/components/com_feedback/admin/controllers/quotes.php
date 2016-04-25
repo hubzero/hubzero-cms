@@ -33,7 +33,7 @@ namespace Components\Feedback\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Feedback\Models\Quote;
-use Hubzero\User\Profile;
+use Components\Members\Models\Member;
 use Filesystem;
 use Request;
 use Notify;
@@ -129,8 +129,7 @@ class Quotes extends AdminController
 		{
 			if ($username = Request::getVar('username', ''))
 			{
-				$profile = new Profile();
-				$profile->load($username);
+				$profile = Member::oneByUsername($username);
 
 				$row->set('fullname', $profile->get('name'));
 				$row->set('org', $profile->get('organization'));

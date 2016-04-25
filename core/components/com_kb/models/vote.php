@@ -51,14 +51,14 @@ class Vote extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'kb';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'id';
 
@@ -148,4 +148,3 @@ class Vote extends Relational
 				->row();
 	}
 }
-

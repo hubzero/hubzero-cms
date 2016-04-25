@@ -165,7 +165,7 @@ if (!$no_html) {
 					?>
 						<li class="comment" id="c<?php echo $comment->id; ?>">
 							<p class="comment-member-photo">
-								<img src="<?php echo $cuser->getPicture($comment->anonymous); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $cname); ?>" />
+								<img src="<?php echo $cuser->picture($comment->anonymous); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $cname); ?>" />
 							</p>
 							<div class="comment-content">
 								<p class="comment-title">

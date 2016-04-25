@@ -142,12 +142,14 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$member = \Hubzero\User\Profile::getInstance($row->id);
+		require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
-		$row->href = Route::url('index.php?option=com_members&id=' . $row->id);
+		$member = \Components\Members\Models\Member::oneOrNew($row->id);
+
+		$row->href = Route::url($member->link());
 
 		$html  = "\t" . '<li class="member">' . "\n";
-		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . $member->getPicture() . '" alt="" /></p>' . "\n";
+		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . $member->picture() . '" alt="" /></p>' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		if ($row->ftext)
 		{

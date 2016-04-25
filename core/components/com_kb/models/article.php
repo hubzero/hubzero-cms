@@ -54,14 +54,14 @@ class Article extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'kb';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'title';
 
@@ -243,20 +243,20 @@ class Article extends Relational
 	 */
 	private function _datetime($as='', $key='created')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+		$dt = $this->get($key);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get($key);
-			break;
+			$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $dt;
 	}
 
 	/**
@@ -551,7 +551,7 @@ class Article extends Relational
 	public function destroy()
 	{
 		// Remove comments
-		foreach ($this->comments() as $comment)
+		foreach ($this->comments()->rows() as $comment)
 		{
 			if (!$comment->destroy())
 			{
@@ -564,7 +564,7 @@ class Article extends Relational
 		$this->tag('');
 
 		// Remove vote logs
-		foreach ($this->votes() as $vote)
+		foreach ($this->votes()->rows() as $vote)
 		{
 			if (!$vote->destroy())
 			{
@@ -603,4 +603,3 @@ class Article extends Relational
 		return $this->get('params');
 	}
 }
-

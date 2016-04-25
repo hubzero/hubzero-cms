@@ -32,8 +32,8 @@
 namespace Components\Feedback\Site\Controllers;
 
 use Components\Feedback\Models\Quote;
+use Components\Members\Models\Member;
 use Hubzero\Component\SiteController;
-use Hubzero\User\Profile;
 use Hubzero\Utility\Number;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
@@ -190,10 +190,10 @@ class Feedback extends SiteController
 		$this->_buildPathway();
 
 		// Get the curent user's profile
-		$user = Profile::getInstance(User::get('id'));
+		$user = Member::oneOrNew(User::get('id'));
 
 		// Create the object if we weren't passed one
-		if (!is_object($row))
+		if ($row->get('id'))
 		{
 			$row = Quote::oneOrNew(0);
 			$row->set('org', $user->get('organization'));
