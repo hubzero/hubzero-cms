@@ -34,13 +34,11 @@ namespace Components\Poll\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Poll\Models\Poll;
-//use Exception;
 use Document;
 use Request;
 use Pathway;
 use Notify;
 use Route;
-//use Date;
 use Lang;
 use Html;
 use App;
@@ -65,7 +63,7 @@ class Polls extends SiteController
 		Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->_option));
 
 		$polls = Poll::all()
-			->whereEquals('published', 1)
+			->whereEquals('state', 1)
 			->rows();
 
 		$this->view
@@ -85,7 +83,7 @@ class Polls extends SiteController
 		$poll = Poll::oneOrFail($poll_id);
 
 		// if id value is passed and poll not published then exit
-		if ($poll->id && $poll->published != 1)
+		if ($poll->get('id') && $poll->get('state') != 1)
 		{
 			App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -115,28 +113,34 @@ class Polls extends SiteController
 		Document::setTitle($params->get('page_title'));
 
 		//Set pathway information
-		Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->_option));
-		Pathway::append($poll->title, Route::url('index.php?option=' . $this->_option . '&id=' . $poll->id . ':' . $poll->alias));
+		Pathway::append(
+			Lang::txt('COM_POLL'),
+			Route::url('index.php?option=' . $this->_option)
+		);
+		Pathway::append(
+			$poll->get('title'),
+			Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias'))
+		);
 
 		$params->def('show_page_title', 1);
-		$params->def('page_title', $poll->title);
+		$params->def('page_title', $poll->get('title'));
 
 		$first_vote = '';
 		$last_vote  = '';
 		$votes      = array();
 
 		// Check if there is a poll corresponding to id and if poll is published
-		if ($poll->id)
+		if ($poll->get('id'))
 		{
 			$dates = $poll->dates()
 				->select('MIN(date)', 'mindate')
 				->select('MAX(date)', 'maxdate')
 				->row();
 
-			if (isset($dates->mindate))
+			if ($dates->get('mindate'))
 			{
-				$first_vote = \Date::of($dates->mindate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
-				$last_vote  = \Date::of($dates->maxdate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+				$first_vote = \Date::of($dates->get('mindate'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+				$last_vote  = \Date::of($dates->get('maxdate'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
 			}
 
 			$votes = $poll->options()
@@ -150,14 +154,16 @@ class Polls extends SiteController
 		}
 
 		// list of polls for dropdown selection
-		$pList = Poll::all()
-			->whereEquals('published', 1)
+		$ps = Poll::all()
+			->whereEquals('state', 1)
 			->rows()
 			->raw();
 
-		foreach ($pList as $k => $p)
+		$pList = array();
+		foreach ($ps as $k => $p)
 		{
-			$pList[$k]->url = Route::url('index.php?option=com_poll&id=' . $p->id . ':' . $p->alias);
+			$pList[$k] = $p;
+			$pList[$k]->set('url', Route::url('index.php?option=com_poll&id=' . $p->get('id') . ':' . $p->get('alias')));
 		}
 
 		array_unshift($pList, Html::select('option', '', Lang::txt('COM_POLL_SELECT_POLL'), 'url', 'title'));
@@ -167,7 +173,7 @@ class Polls extends SiteController
 			'polls' => Html::select('genericlist', $pList, 'id',
 				'class="inputbox" size="1" onchange="if (this.options[selectedIndex].value != \'\') {document.location.href=this.options[selectedIndex].value}"',
 				'url', 'title',
-				Route::url('index.php?option=com_poll&id=' . $poll->id . ':' . $poll->alias)
+				Route::url('index.php?option=com_poll&id=' . $poll->get('id') . ':' . $poll->get('alias'))
 			)
 		);
 
@@ -242,7 +248,7 @@ class Polls extends SiteController
 		$poll = Poll::current();
 
 		// if id value is passed and poll not published then exit
-		if ($poll->id && $poll->published != 1)
+		if ($poll->get('id') && $poll->get('state') != 1)
 		{
 			App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -267,22 +273,28 @@ class Polls extends SiteController
 			$menu_params = new \Hubzero\Config\Registry($menu->params);
 			if (!$menu_params->get('page_title'))
 			{
-				$params->set('page_title', $poll->title);
+				$params->set('page_title', $poll->get('title'));
 			}
 		}
 		else
 		{
-			$params->set('page_title', $poll->title);
+			$params->set('page_title', $poll->get('title'));
 		}
 
 		Document::setTitle($params->get('page_title'));
 
 		//Set pathway information
-		Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->_option));
-		Pathway::append($poll->title, Route::url('index.php?option=' . $this->_option . '&id=' . $poll->id . ':' . $poll->alias));
+		Pathway::append(
+			Lang::txt('COM_POLL'),
+			Route::url('index.php?option=' . $this->_option)
+		);
+		Pathway::append(
+			$poll->get('title'),
+			Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias'))
+		);
 
 		$params->def('show_page_title', 1);
-		$params->def('page_title', $poll->title);
+		$params->def('page_title', $poll->get('title'));
 
 		$this->view
 			->set('options', $options)
@@ -293,6 +305,8 @@ class Polls extends SiteController
 
 	/**
  	 * Add a vote to an option
+ 	 *
+ 	 * @return  void
  	 */
 	public function voteTask()
 	{
@@ -304,7 +318,7 @@ class Polls extends SiteController
 
 		$poll = Poll::oneOrFail($poll_id);
 
-		if ($poll->published != 1)
+		if ($poll->get('state') != 1)
 		{
 			App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
@@ -341,7 +355,7 @@ class Polls extends SiteController
 				$secure = true;
 			}
 
-			setcookie($cookieName, '1', time() + $poll->lag, '/', '', $secure, true);
+			setcookie($cookieName, '1', time() + $poll->get('lag'), '/', '', $secure, true);
 
 			$poll->vote($option_id);
 
@@ -354,7 +368,7 @@ class Polls extends SiteController
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
 		App::redirect(
-			Route::url('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->alias . $itemid, false)
+			Route::url('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->get('alias') . $itemid, false)
 		);
 	}
 }

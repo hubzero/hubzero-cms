@@ -40,7 +40,7 @@
 	<br /><br />
 
 	<table>
-		<caption><?php echo $this->escape($this->poll->title); ?></caption>
+		<caption><?php echo $this->escape($this->poll->get('title')); ?></caption>
 		<tfoot>
 			<tr>
 				<td colspan="2">
@@ -52,12 +52,12 @@
 		<tbody>
 			<?php foreach ($this->options as $option)
 			{
-				if ($option->text != '')
+				if ($option->get('text') != '')
 				{
 					?>
 					<tr>
-						<td><input type="radio" name="poll" value="<?php echo $this->escape($option->text); ?>"></td>
-						<td class="poll"><?php echo $this->escape($option->text); ?></td>
+						<td><input type="radio" name="poll" value="<?php echo $this->escape($option->get('text')); ?>"></td>
+						<td class="poll"><?php echo $this->escape($option->get('text')); ?></td>
 					</tr>
 					<?php
 				}

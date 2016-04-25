@@ -127,39 +127,39 @@ Toolbar::help('polls');
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
-			$task  = $row->published ? 'unpublish' : 'publish';
-			$class = $row->published ? 'published' : 'unpublished';
-			$alt   = $row->published ? Lang::txt('JPUBLISHED') : Lang::txt('JUNPUBLISHED');
+			$task  = $row->get('state') ? 'unpublish' : 'publish';
+			$class = $row->get('state') ? 'published' : 'unpublished';
+			$alt   = $row->get('state') ? Lang::txt('JPUBLISHED') : Lang::txt('JUNPUBLISHED');
 
-			$task2  = ($row->open == 1) ? 'close' : 'open';
-			$class2 = ($row->open == 1) ? 'published' : 'unpublished';
-			$alt2   = ($row->open == 1) ? Lang::txt('COM_POLL_OPEN') : Lang::txt('COM_POLL_CLOSED');
+			$task2  = ($row->get('open') == 1) ? 'close' : 'open';
+			$class2 = ($row->get('open') == 1) ? 'published' : 'unpublished';
+			$alt2   = ($row->get('open') == 1) ? Lang::txt('COM_POLL_OPEN') : Lang::txt('COM_POLL_CLOSED');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php if (($row->checked_out && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
+					<?php if (($row->get('checked_out') && $row->get('checked_out') != User::get('id')) || !$canDo->get('core.edit')) { ?>
 						<span> </span>
 					<?php } else { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 					<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<?php if (($row->checked_out && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) {
-						echo $row->title;
+					<?php if (($row->get('checked_out') && $row->get('checked_out') != User::get('id')) || !$canDo->get('core.edit')) {
+						echo $row->get('title');
 					} else { ?>
-						<span class="editlinktip hasTip" title="<?php echo $this->escape($row->title); ?>">
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&view=poll&task=edit&id='. $row->id); ?>">
-								<?php echo $this->escape($row->title); ?>
+						<span class="editlinktip hasTip" title="<?php echo $this->escape($row->get('title')); ?>">
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&view=poll&task=edit&id='. $row->get('id')); ?>">
+								<?php echo $this->escape($row->get('title')); ?>
 							</a>
 						</span>
 					<?php } ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task); ?>">
+						<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -170,7 +170,7 @@ Toolbar::help('polls');
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task2 . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task2); ?>">
+						<a class="state <?php echo $class2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task2 . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task2); ?>">
 							<span><?php echo $alt2; ?></span>
 						</a>
 					<?php } else { ?>
@@ -180,16 +180,16 @@ Toolbar::help('polls');
 					<?php } ?>
 				</td>
 				<td class="priority-3">
-					<?php echo $row->voters; ?>
+					<?php echo $row->dates->count(); ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $row->numoptions; ?>
+					<?php echo $row->options->count(); ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $row->lag; ?>
+					<?php echo $row->get('lag'); ?>
 				</td>
 				<td class="priority-5">
-					<?php echo $row->id; ?>
+					<?php echo $row->get('id'); ?>
 				</td>
 			</tr>
 			<?php

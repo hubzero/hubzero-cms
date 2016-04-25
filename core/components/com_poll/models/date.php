@@ -46,17 +46,6 @@ class Date extends Relational
 	protected $namespace = 'poll';
 
 	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__poll_date';
-
-	/**
 	 * Default order by for model
 	 *
 	 * @var  string
@@ -83,11 +72,10 @@ class Date extends Relational
 	/**
 	 * Defines a belongs to one relationship between option and poll
 	 *
-	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object
 	 */
 	public function poll()
 	{
 		return $this->belongsToOne('Poll', 'poll_id');
 	}
 }
-

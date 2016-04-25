@@ -33,8 +33,8 @@ namespace Components\Poll\Models;
 
 use Hubzero\Database\Relational;
 
-require_once(__DIR__ . DS . 'option.php');
-require_once(__DIR__ . DS . 'date.php');
+require_once __DIR__ . DS . 'option.php';
+require_once __DIR__ . DS . 'date.php';
 
 /**
  * Poll model
@@ -98,11 +98,11 @@ class Poll extends Relational
 	 */
 	public function options()
 	{
-		return $this->oneToMany('Option', 'pollid');
+		return $this->oneToMany('Components\Poll\Models\Option', 'poll_id');
 	}
 
 	/**
-	 * Get a list of votes
+	 * Get a list of vote dates
 	 *
 	 * @return  object
 	 */
@@ -114,7 +114,7 @@ class Poll extends Relational
 	/**
 	 * Defines a belongs to one relationship between poll and user
 	 *
-	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object
 	 */
 	public function creator()
 	{
@@ -129,7 +129,7 @@ class Poll extends Relational
 	public static function current()
 	{
 		return self::all()
-			->whereEquals('published', 1)
+			->whereEquals('state', 1)
 			->whereEquals('open', 1)
 			->order('id', 'desc')
 			->ordered()
@@ -186,7 +186,7 @@ class Poll extends Relational
 	public function destroy()
 	{
 		// Remove data
-		foreach ($this->options() as $item)
+		foreach ($this->options()->rows() as $item)
 		{
 			if (!$item->destroy())
 			{
@@ -196,7 +196,7 @@ class Poll extends Relational
 		}
 
 		// Remove vote logs
-		foreach ($this->dates() as $dt)
+		foreach ($this->dates()->rows() as $dt)
 		{
 			if (!$dt->destroy())
 			{
@@ -206,7 +206,7 @@ class Poll extends Relational
 		}
 
 		// Remove menu entries
-		/*foreach ($this->menus() as $menu)
+		/*foreach ($this->menus()->rows() as $menu)
 		{
 			if (!$menu->destroy())
 			{

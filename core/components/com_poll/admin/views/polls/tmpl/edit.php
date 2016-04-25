@@ -89,24 +89,34 @@ Toolbar::help('poll');
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_POLL_FIELD_TITLE'); ?>:</label><br />
-					<input class="inputbox" type="text" name="title" id="field-title" value="<?php echo $this->escape($this->poll->title); ?>" />
+					<input class="inputbox" type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->poll->get('title')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-alias"><?php echo Lang::txt('COM_POLL_FIELD_ALIAS'); ?>:</label><br />
-					<input class="inputbox" type="text" name="alias" id="field-alias" value="<?php echo $this->escape($this->poll->alias); ?>" />
+					<input class="inputbox" type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->poll->get('alias')); ?>" />
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt( 'COM_POLL_FIELD_LAG_HINT'); ?>">
 					<label for="field-lag"><?php echo Lang::txt('COM_POLL_FIELD_LAG'); ?>:</label><br />
-					<input class="inputbox" type="text" name="lag" id="field-lag" value="<?php echo $this->escape($this->poll->lag); ?>" />
+					<input class="inputbox" type="text" name="fields[lag]" id="field-lag" value="<?php echo $this->escape($this->poll->get('lag')); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_POLL_FIELD_LAG_HINT'); ?></span>
 				</div>
 				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_POLL_FIELD_PUBLISHED'); ?>:</label><br />
-					<?php echo Html::select('booleanlist', 'published', 'class="inputbox"', $this->poll->published); ?>
+					<label for="field-state"><?php echo Lang::txt('COM_POLL_FIELD_PUBLISHED'); ?>:</label>
+					<select name="fields[state]" id="field-state">
+						<option value="0"<?php if ($this->poll->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php if ($this->poll->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+						<option value="2"<?php if ($this->poll->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+					</select>
+				</div>
+				<div class="input-wrap">
+					<label for="field-access"><?php echo Lang::txt('COM_POLL_FIELD_ACCESS_LEVEL'); ?>:</label>
+					<select name="fields[access]" id="field-access">
+						<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->poll->get('access')); ?>
+					</select>
 				</div>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_POLL_FIELD_OPEN'); ?>:</label><br />
-					<?php echo Html::select('booleanlist', 'open', 'class="inputbox"', $this->poll->open); ?>
+					<?php echo Html::select('booleanlist', 'fields[open]', 'class="inputbox"', $this->poll->get('open')); ?>
 				</div>
 			</fieldset>
 			<p class="warning"><?php echo Lang::txt('COM_POLL_WARNING'); ?></p>
@@ -136,10 +146,11 @@ Toolbar::help('poll');
 		</div>
 	</div>
 
+	<input type="hidden" name="fields[id]" value="<?php echo $this->poll->get('id'); ?>" />
+
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="id" value="<?php echo $this->poll->id; ?>" />
-	<input type="hidden" name="cid[]" value="<?php echo $this->poll->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->poll->get('id'); ?>" />
 	<input type="hidden" name="textfieldcheck" value="<?php echo $n; ?>" />
 
 	<?php echo Html::input('token'); ?>
