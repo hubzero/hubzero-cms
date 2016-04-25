@@ -33,7 +33,6 @@
 namespace Modules\MyTickets;
 
 use Hubzero\Module\Module;
-use Hubzero\User\Helper;
 use User;
 
 /**
@@ -101,7 +100,7 @@ class Helper extends Module
 		$this->rows1 = $rows1;
 		$this->rows2 = $rows2;
 
-		$xgroups = Helper::getGroups(User::get('id'), 'members', 1);
+		$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
 
 		$groups = '';
 		if ($xgroups)

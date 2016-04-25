@@ -309,7 +309,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		$this->view
 			->set('comments', $comments)
-			->setErrors(($this->getErrors());
+			->setErrors($this->getErrors());
 	}
 
 	/**
