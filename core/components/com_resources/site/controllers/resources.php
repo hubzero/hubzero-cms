@@ -1768,6 +1768,9 @@ class Resources extends SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
+			$type_model            = new Type($this->database);
+			$all_logical_types     = $type_model->getTypes(28);    // 28 means 'logical' types.
+
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -1775,10 +1778,15 @@ class Resources extends SiteController
 				$title = html_entity_decode($title);
 
 				// URL link to resource
-				$link = DS . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $row->id), DS);
+				$link = '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $row->id), '/');
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->introtext)));
+				$description = trim($row->introtext);
+				$description = $description ?: trim($row->fulltxt);
+				$description = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', stripslashes($description));
+				$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
+				$description = strip_tags($description);
+
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
@@ -1788,8 +1796,6 @@ class Resources extends SiteController
 				// Get any podcast/vodcast files
 				$podcast = '';
 
-				$type_model            = new Type($this->database);
-				$all_logical_types     = $type_model->getTypes(28);    // 28 means 'logical' types.
 				$queried_logical_types = @explode(' ', $feedtype);
 
 				if (is_null($queried_logical_types) || !is_array($queried_logical_types))
@@ -1804,8 +1810,10 @@ class Resources extends SiteController
 					$as_mnemonic = preg_replace('/[_-]/', ' ', $queried);
 					foreach ($all_logical_types as $logical_type)
 					{
+						//if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
+						// && strcasecmp($matches[ 1 ][ 0 ], $as_mnemonic) == 0)
 						if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
-						 && strcasecmp($matches[ 1 ][ 0 ], $as_mnemonic) == 0)
+						 && substr(strtolower($matches[ 1 ][ 0 ]), -strlen($as_mnemonic)) == $as_mnemonic)
 						{
 							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
 							break;
@@ -1836,7 +1844,11 @@ class Resources extends SiteController
 						{
 							if (stripslashes($grandchild->introtext) != '')
 							{
-								$gdescription = html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($grandchild->introtext)));
+								$gdescription = trim($grandchild->introtext);
+								$gdescription = $gdescription ?: trim($grandchild->fulltxt);
+								$gdescription = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', stripslashes($gdescription));
+								$gdescription = html_entity_decode(\Hubzero\Utility\Sanitize::clean($gdescription));
+								$gdescription = strip_tags($gdescription);
 							}
 							array_push($podcasts, $grandchild->path);
 							array_push($children, $grandchild);
@@ -1898,7 +1910,7 @@ class Resources extends SiteController
 					if ($podcast)
 					{
 						$podcastp = $podcast;
-						$podcast = DS . ltrim($this->_fullPath($podcast), DS);
+						$podcast = ltrim($this->_fullPath($podcast), '/');
 
 						if (substr($podcastp, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath'))
 						{
