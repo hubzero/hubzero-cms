@@ -172,6 +172,7 @@ HUBzero is a registered trademark of Purdue University.
 	<fieldset name="tool">
 		<field name="default_mw" type="text" menu="hide" default="narwhal" label="Default middleware" description="Name of default middleware" />
 		<field name="default_vnc" type="text" menu="hide" default="780x600" label="Default VNC size" description="Default VNC geometry values" />
+		<field name="default_hostreq" type="text" menu="hide" default="sessions" label="Default required host types" description="Default required session host types for new tools (comma seperated)" />
 		<field name="developer_site" type="text" menu="hide" default="FORGE" label="Developer Site" description="Name of project development site" />
 		<field name="project_path" type="text" menu="hide" default="/tools/" label="Path to projects" description="Path to projects on development site (usually followed by the tool name)" />
 		<field name="invokescript_dir" type="text" menu="hide" default="/apps" label="Invoke script dir" description="Directory for invoke script" />

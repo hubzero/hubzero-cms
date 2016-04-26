@@ -752,7 +752,8 @@ class Pipeline extends SiteController
 			'developers'   => array(User::get('id')),
 			'vncGeometryX' => $vncGeometryX,
 			'vncGeometryY' => $vncGeometryY,
-			'team'         => User::get('username')
+			'team'         => User::get('username'),
+			'hostreq'      => $this->config->get('default_hostreq', 'sessions')
 		);
 
 		// Set the page title
@@ -1017,6 +1018,7 @@ class Pipeline extends SiteController
 		$tool['toolname']     = strtolower($tool['toolname']);
 		$tool['developers']   = array_map('trim', explode(',', $tool['developers']));
 		$tool['membergroups'] = array_map('trim', explode(',', $tool['membergroups']));
+		$tool['hostreq']      = array_map('trim', explode(',', $tool['hostreq']));
 
 		// save tool info
 		if (!$id)  // new tool
@@ -1087,6 +1089,7 @@ class Pipeline extends SiteController
 			$hztv->state         = 3;
 			$hztv->instance      = $tool['toolname'] . $dev_suffix;
 			$hztv->mw            = $this->config->get('default_mw', 'narwhal');
+			$hztv->hostreq       = $tool['hostreq'];
 
 			$hzt->add('version', $hztv->instance);
 		}
@@ -1104,6 +1107,7 @@ class Pipeline extends SiteController
 				$hztv->wikiaccess    = $tool['wiki'];
 				$hztv->vnc_geometry  = $tool['vncGeometry'];
 				$hztv->exportControl = $exportmap[$tool['exec']];
+				$hztv->hostreq       = $tool['hostreq'];
 
 				$hzt->add('version', $hztv->instance);
 			}
