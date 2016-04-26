@@ -1105,16 +1105,31 @@ var RFB;
 
                     Util.Debug('ClientAction url: ' + url);
 
-                    //This requires fancyBox 2
-                    $.fancybox({
-                        type: 'iframe',
-                        href: url,
-                        width: 500,
-                        height: 500, //auto',
-                        autoSize: false,
-                        fitToView: true,
-                        titleShow: false
-                    });
+                    // Assigning to an anchor tag allows JS
+                    // to parse the URL a little easier
+                    var hostname = window.location.hostname,
+                        l = document.createElement("a");
+
+                    l.href = url;
+
+                    if (!l.hostname || l.hostname == hostname) {
+                        if (l.protocol && l.protocol != window.location.protocol) {
+                            url = url.replace('http:', 'https:');
+                        }
+
+                        //This requires fancyBox 2
+                        $.fancybox({
+                            type: 'iframe',
+                            href: url,
+                            width: 500,
+                            height: 500, //auto',
+                            autoSize: false,
+                            fitToView: true,
+                            titleShow: false
+                        });
+                    } else {
+                        window.open(url);
+                    }
                     return true;
 
                 default:
