@@ -79,14 +79,14 @@ class JApplicationHelper
 			// Site Client
 			$obj->id = 0;
 			$obj->name = 'site';
-			$obj->bootstrap = PATH_CORE . DS . 'bootstrap' . DS . 'site';
+			$obj->bootstrap = PATH_CORE . DS . 'joomla' . DS . 'site';
 			$obj->path = JPATH_SITE;
 			self::$_clients[0] = clone $obj;
 
 			// Administrator Client
 			$obj->id = 1;
 			$obj->name = 'administrator';
-			$obj->bootstrap = PATH_CORE . DS . 'bootstrap' . DS . 'administrator';
+			$obj->bootstrap = PATH_CORE . DS . 'joomla' . DS . 'administrator';
 			$obj->path = JPATH_ADMINISTRATOR;
 			// [!] Hubzero
 			$obj->alias = 'admin';
@@ -95,21 +95,21 @@ class JApplicationHelper
 			// Installation Client
 			$obj->id = 2;
 			$obj->name = 'installation';
-			$obj->bootstrap = PATH_CORE . DS . 'bootstrap' . DS . 'installation';
+			$obj->bootstrap = PATH_CORE . DS . 'joomla' . DS . 'install';
 			$obj->path = JPATH_INSTALLATION;
 			self::$_clients[2] = clone $obj;
 
 			// HUBzero API Client
 			$obj->id = 4;
 			$obj->name = 'api';
-			$obj->bootstrap = PATH_CORE . DS . 'bootstrap' . DS . 'api';
+			$obj->bootstrap = PATH_CORE . DS . 'joomla' . DS . 'api';
 			$obj->path = JPATH_SITE . DS . 'api';
 			self::$_clients[4] = clone $obj;
 
 			// HUBzero CLI Client
 			$obj->id = 6;
 			$obj->name = 'cli';
-			$obj->bootstrap = PATH_CORE . DS . 'bootstrap' . DS . 'cli';
+			$obj->bootstrap = PATH_CORE . DS . 'joomla' . DS . 'cli';
 			$obj->path = JPATH_SITE . DS . 'cli';
 			self::$_clients[6] = clone $obj;
 		}

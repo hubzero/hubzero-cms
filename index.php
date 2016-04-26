@@ -30,7 +30,7 @@ define('DS', DIRECTORY_SEPARATOR);
 
 define('PATH_ROOT', __DIR__);
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
 
 /*
 |--------------------------------------------------------------------------

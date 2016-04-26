@@ -30,7 +30,7 @@ define('DS', DIRECTORY_SEPARATOR);
 
 define('JPATH_BASE', __DIR__);
 
-require_once dirname(JPATH_BASE) . DS . 'core' . DS . 'bootstrap' . DS . 'api' . DS . 'defines.php';
+require_once dirname(JPATH_BASE) . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
 
 /*
 |--------------------------------------------------------------------------

@@ -22,4 +22,4 @@ if (!defined('PATH_ROOT'))
 	define('PATH_ROOT', JPATH_BASE);
 }
 
-include_once(dirname(__DIR__) . DS . 'paths.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'bootstrap' . DS . 'paths.php');
