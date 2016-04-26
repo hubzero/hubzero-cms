@@ -928,14 +928,14 @@ class File extends Base
 			if ($this->addAttachment($identifier, $pub, $configs, User::get('id'), $elementId, $element, $ordering))
 			{
 				$i++;
-
-				Event::trigger('filesystem.onAfterAddFileAttachment', [$identifier, $pub]);
 			}
 		}
 
 		// Success
 		if ($i > 0 && $i == $a)
 		{
+			Event::trigger('filesystem.onAfterSaveFileAttachments', [$pub, $configs, $elementId, $element]);
+
 			$message = $this->get('_message') ? $this->get('_message') : Lang::txt('Selection successfully saved');
 			$this->set('_message', $message);
 		}
