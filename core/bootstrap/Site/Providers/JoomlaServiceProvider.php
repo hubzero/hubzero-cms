@@ -25,35 +25,38 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-return array(
-	// Base Services
-	'Hubzero\Base\JoomlaServiceProvider',
-	'Hubzero\Events\EventServiceProvider',
-	'Hubzero\Language\TranslationServiceProvider',
-	'Hubzero\Database\DatabaseServiceProvider',
-	'Hubzero\Plugin\PluginServiceProvider',
-	'Hubzero\Debug\ProfilerServiceProvider',
-	'Hubzero\Log\LogServiceProvider',
-	'Hubzero\Routing\RouterServiceProvider',
-	'Hubzero\Filesystem\FilesystemServiceProvider',
-	// Admin-specific services
-	'Hubzero\Component\ComponentServiceProvider',
-	'Hubzero\Error\ErrorServiceProvider',
-	'Hubzero\Session\SessionServiceProvider',
-	'Hubzero\Auth\AuthServiceProvider',
-	'Hubzero\Document\DocumentServiceProvider',
-	'Hubzero\Html\ToolbarServiceProvider',
-	'Hubzero\Module\ModuleServiceProvider',
-	'Hubzero\Notification\NotificationServiceProvider',
-	'Hubzero\Template\TemplateServiceProvider',
-	'Hubzero\Cache\CacheServiceProvider',
-	'Hubzero\Html\EditorServiceProvider',
-	'Hubzero\Html\BuilderServiceProvider',
-	'Hubzero\Mail\MailerServiceProvider',
-	'Hubzero\Menu\MenuServiceProvider',
-	'Hubzero\Content\FeedServiceProvider',
-);
+namespace Bootstrap\Site\Providers;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Joomla handler service provider
+ * 
+ * This loads in the core Joomla framework and instantiates
+ * the base application class.
+ */
+class JoomlaServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the exception handler.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
+		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
+
+		jimport('joomla.application.menu');
+		jimport('joomla.environment.uri');
+		jimport('joomla.utilities.utility');
+		jimport('joomla.event.dispatcher');
+		jimport('joomla.utilities.arrayhelper');
+
+		$app = \JFactory::getApplication('site');
+	}
+}
