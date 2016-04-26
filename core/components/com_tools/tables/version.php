@@ -522,7 +522,16 @@ class Version extends \JTable
 			$query .= "WHERE v.instance=" . $this->_db->quote($instance) . " ";
 		}
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$data = $this->_db->loadObjectList();
+		if ($data)
+		{
+			foreach ($data as $i => $datum)
+			{
+				$this->_db->setQuery("SELECT `hostreq` FROM `#__tool_version_hostreq` WHERE `tool_version_id`=" . $this->_db->quote($datum->id));
+				$data[$i]->hostreq = $this->_db->loadColumn();
+			}
+		}
+		return $data;
 	}
 
 	/**

@@ -566,6 +566,7 @@ class Tool extends \JTable
 		$dev_suffix = $this->config->get('dev_suffix', '_dev');
 		$vnc        = $this->config->get('default_vnc', '780x600');
 		$mw         = $this->config->get('default_mw', 'narwhal');
+		$hostreq    = $this->config->get('default_hostreq', 'sessions');
 
 		// build status array
 		$status = array(
@@ -604,7 +605,8 @@ class Tool extends \JTable
 			'mw'            => isset($version[0]->mw) ? $version[0]->mw : $mw,
 			'vncCommand'    => isset($version[0]->vnc_command) ? $version[0]->vnc_command :  $invokedir . DS . $toolinfo[0]->toolname . DS . 'invoke',
 			'vncGeometry'   => (isset($version[0]->vnc_geometry) && $version[0]->vnc_geometry !='') ? $version[0]->vnc_geometry : $vnc,
-			'license'       => isset($version[0]->license) ? $version[0]->license : ''
+			'license'       => isset($version[0]->license) ? $version[0]->license : '',
+			'hostreq'       => (isset($version[0]->hostreq) ? implode(', ', $version[0]->hostreq) : $hostreq)
 		);
 
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);

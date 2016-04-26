@@ -149,6 +149,12 @@ $this->css('pipeline.css')
 					</div>
 					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VNC'); ?></p>
 				</fieldset>
+
+				<label for="t_hostreq">
+					<?php echo Lang::txt('COM_TOOLS_HOSTREQ') ?>:</span>
+					<input type="text" name="tool[hostreq]" id="t_hostreq" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_HOSTREQ'); ?></span>
+				</label>
 			</fieldset>
 
 			<fieldset>

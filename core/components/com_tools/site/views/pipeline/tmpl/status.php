@@ -156,6 +156,10 @@ $this->css('pipeline.css')
 							<td><?php echo $this->status['vncGeometryX'] . 'x' . $this->status['vncGeometryY'];?></td>
 						</tr>
 						<tr>
+							<th><?php echo Lang::txt('COM_TOOLS_HOSTREQ'); ?></th>
+							<td><?php echo $this->status['hostreq']; ?></td>
+						</tr>
+						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_TOOL_EXEC'); ?></th>
 							<td><?php echo \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']); ?></td>
 						</tr>
