@@ -37,12 +37,12 @@ class JPathwaySite extends JPathway
 			$home = $menu->getDefault();
 
 			if (is_object($home) && ($item->id != $home->id)) {
-				foreach($item->tree as $menupath)
+				foreach ($item->tree as $menupath)
 				{
 					$url = '';
 					$link = $menu->getItem($menupath);
 
-					switch($link->type)
+					switch ($link->type)
 					{
 						case 'separator':
 							$url = null;

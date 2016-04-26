@@ -31,7 +31,8 @@ abstract class JToolBarHelper
 	{
 		// Strip the extension.
 		$icons = explode(' ', $icon);
-		foreach($icons as &$icon) {
+		foreach ($icons as &$icon)
+		{
 			$icon = 'icon-48-'.preg_replace('#\.[^.]*$#', '', $icon);
 		}
 

@@ -45,7 +45,7 @@ class JMenuSite extends JMenu
 			return false;
 		}
 
-		foreach($this->_items as &$item) {
+		foreach ($this->_items as &$item) {
 			// Get parent information.
 			$parent_tree = array();
 			if (isset($this->_items[$item->parent_id])) {
