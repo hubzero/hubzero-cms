@@ -160,11 +160,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			?>
 			<div class="commnts">
 				<div class="comment convo clearfix" id="c<?php echo $comment->get('id'); ?>">
-					<a href="<?php echo Route::url($cuser->getLink()); ?>" class="img-link">
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->get('anonymous')); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
+					<a href="<?php echo Route::url($cuser->link()); ?>" class="img-link">
+						<img src="<?php echo $cuser->picture($comment->get('anonymous')); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo Route::url($cuser->getLink()); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> said <br />
+						<a href="<?php echo Route::url($cuser->link()); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> said <br />
 						<span class="entry-date">
 							<span class="entry-date-at">@</span>
 							<span class="time"><time datetime="<?php echo $comment->get('created'); ?>"><?php echo $comment->created('time'); ?></time></span>

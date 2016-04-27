@@ -101,7 +101,7 @@ class Managers extends SiteController
 			// Username
 			else
 			{
-				$uid = \JUserHelper::getUserId($mbr);
+				$uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
 			}
 
 			// Ensure we found an account

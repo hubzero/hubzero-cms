@@ -533,7 +533,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$groupMembers = array();
 		foreach ($group->get('members') as $member)
 		{
-			if ($profile = \Hubzero\User\Profile::getInstance($member))
+			if ($profile = User::getInstance($member))
 			{
 				$groupMembers[$profile->get('email')] = $profile->get('name');
 			}

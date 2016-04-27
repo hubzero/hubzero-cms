@@ -395,7 +395,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$recipients = array();
 		foreach ($mbrs as $mbr)
 		{
-			if ($profile = \Hubzero\User\Profile::getInstance($mbr))
+			if ($profile = User::getInstance($mbr))
 			{
 				$recipients[$profile->get('email')] = $profile->get('name');
 			}

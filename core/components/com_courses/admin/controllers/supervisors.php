@@ -81,14 +81,20 @@ class Supervisors extends AdminController
 		$m = Request::getVar('usernames', '', 'post');
 		$mbrs = explode(',', $m);
 
-		jimport('joomla.user.helper');
-
 		$users = array();
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
 			$mbr = trim($mbr);
-			$uid = \JUserHelper::getUserId($mbr);
+
+			if (is_numeric($mbr))
+			{
+				$uid = (int)$mbr;
+			}
+			else
+			{
+				$uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
+			}
 
 			// Ensure we found an account
 			if ($uid)

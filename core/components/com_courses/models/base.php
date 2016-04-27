@@ -188,7 +188,7 @@ abstract class Base extends Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \JUser))
+		if (!$this->_creator)
 		{
 			$this->_creator = User::getInstance($this->get('created_by'));
 		}

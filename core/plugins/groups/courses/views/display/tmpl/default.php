@@ -85,7 +85,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								$names = array();
 								foreach ($instructors as $i)
 								{
-									$instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
+									$instructor = User::getInstance($i->get('user_id'));
 
 									$names[] = '<a href="' . Route::url('index.php?option=com_members&id=' . $i->get('user_id')) . '">' . $this->escape(stripslashes($instructor->get('name'))) . '</a>';
 								}

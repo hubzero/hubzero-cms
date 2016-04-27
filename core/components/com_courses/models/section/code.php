@@ -34,6 +34,8 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 use Components\Courses\Tables;
+use Date;
+use User;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php');
 require_once(dirname(__DIR__) . DS . 'base.php');
@@ -136,15 +138,15 @@ class Code extends Base
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire User object
 	 *
 	 * @return     mixed
 	 */
 	public function redeemer($property=null)
 	{
-		if (!($this->_redeemer instanceof \JUser))
+		if (!$this->_redeemer)
 		{
-			$this->_redeemer = \User::getInstance($this->get('redeemed_by'));
+			$this->_redeemer = User::getInstance($this->get('redeemed_by'));
 		}
 		if ($property)
 		{
@@ -170,7 +172,7 @@ class Code extends Base
 			return true;
 		}
 
-		$now = \Date::toSql();
+		$now = Date::toSql();
 
 		if ($this->get('expires')
 		 && $this->get('expires') != $this->_db->getNullDate()
@@ -213,10 +215,10 @@ class Code extends Base
 		}
 		if (!$redeemed_by)
 		{
-			$redeemed_by = \User::get('id');
+			$redeemed_by = User::get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
-		$this->set('redeemed', \Date::toSql());
+		$this->set('redeemed', Date::toSql());
 		return $this->store();
 	}
 }

@@ -86,7 +86,7 @@ if ($role_id)
 						<?php if (count($this->members) > 0) { ?>
 							<optgroup label="Group Members">
 								<?php foreach ($this->members as $m) { ?>
-									<?php $u = JUser::getInstance($m); ?>
+									<?php $u = User::getInstance($m); ?>
 									<?php $sel = ($u->get('id') == $this->users[0]) ? "selected" : ""; ?>
 									<option <?php echo $sel; ?> value="<?php echo $u->get('id'); ?>"><?php echo $u->get('name'); ?></option>
 								<?php } ?>

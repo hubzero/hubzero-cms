@@ -235,13 +235,11 @@ class Membership extends AdminController
 		$m = Request::getVar('usernames', '', 'post');
 		$mbrs = preg_split("/[,;]/", $m);
 
-		jimport('joomla.user.helper');
-
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
 			$mbr = trim($mbr);
-			$uid = \JUserHelper::getUserId($mbr);
+			$uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
 
 			// Ensure we found an account
 			if ($uid)
