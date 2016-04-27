@@ -2648,9 +2648,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				'layout'  =>'provisioned'
 			)
 		);
-		$view->option  		= $this->_option;
-		$view->juser   		= User::getRoot();
-		$view->database		= $this->_database;
+		$view->option   = $this->_option;
+		$view->juser    = User::getInstance();
+		$view->database = $this->_database;
 
 		// Instantiate a publication object
 		$view->pub     = new \Components\Publications\Models\Publication();

@@ -85,7 +85,6 @@ if (!User::isGuest())
 		     ->set('banking', $this->banking)
 		     ->set('infolink', $this->infolink)
 		     ->set('resource', $this->resource)
-		     ->set('user', User::getRoot())
 		     ->display();
 	}
 }

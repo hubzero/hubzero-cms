@@ -77,8 +77,7 @@ class Helper extends Module
 		// If no active menu, use default
 		$active = ($menu->getActive()) ? $menu->getActive() : $menu->getDefault();
 
-		$user = User::getRoot();
-		$levels = $user->getAuthorisedViewLevels();
+		$levels = User::getAuthorisedViewLevels();
 		asort($levels);
 
 		$key = 'mod_menu.' . 'menu_items' . $params . implode(',', $levels) . '.' . $active->id;

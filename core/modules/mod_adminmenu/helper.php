@@ -64,7 +64,7 @@ class Helper extends Module
 
 		// Initialise variables.
 		$lang    = App::get('language');
-		$user    = User::GetRoot();
+		$user    = User::getInstance();
 		$menu    = new Tree();
 		$enabled = Request::getInt('hidemainmenu') ? false : true;
 
@@ -112,7 +112,6 @@ class Helper extends Module
 	{
 		// Initialise variables.
 		$lang   = App::get('language');
-		$user   = User::getRoot();
 		$db     = \App::get('db');
 		$query  = $db->getQuery(true);
 		$result = array();
@@ -145,7 +144,7 @@ class Helper extends Module
 			if ($component->parent_id == 1)
 			{
 				// Only add this top level if it is authorised and enabled.
-				if ($authCheck == false || ($authCheck && $user->authorise('core.manage', $component->element)))
+				if ($authCheck == false || ($authCheck && User::authorise('core.manage', $component->element)))
 				{
 					// Root level.
 					$result[$component->id] = $component;

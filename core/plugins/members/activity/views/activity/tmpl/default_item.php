@@ -39,7 +39,7 @@ if (!$this->row->wasViewed())
 	$this->row->markAsViewed();
 }
 
-$name = $this->escape(stripslashes($this->row->log->creator()->get('name')));
+$name = $this->escape(stripslashes($this->row->log->creator->get('name')));
 
 ?>
 <li
@@ -57,18 +57,18 @@ $name = $this->escape(stripslashes($this->row->log->creator()->get('name')));
 			<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=activity&action=remove&scope=' . $this->row->log->get('scope') . '&scope_id=' . $this->row->log->get('scope_id')); ?>">Don't show this object</a></li>
 		</ul>
 		<?php if ($this->row->log->creator()->get('public')) { ?>
-			<a href="<?php echo Route::url($this->row->log->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
-				<img src="<?php echo $this->row->log->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
+			<a href="<?php echo Route::url($this->row->log->creator->link()); ?>" title="<?php echo $name; ?>" class="img-link">
+				<img src="<?php echo $this->row->log->creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
 			</a>
 		<?php } else { ?>
 			<span class="img-link">
-				<img src="<?php echo $this->row->log->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
+				<img src="<?php echo $this->row->log->creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
 			</span>
 		<?php }*/ ?>
 		<span class="activity-details">
 			<span class="activity-actor">
-				<?php if ($this->row->log->creator()->get('public')) { ?>
-					<a href="<?php echo Route::url($this->row->log->creator()->getLink()); ?>">
+				<?php if (in_array($this->row->log->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+					<a href="<?php echo Route::url($this->row->log->creator->link()); ?>">
 						<?php echo $name; ?>
 					</a>
 				<?php } else { ?>

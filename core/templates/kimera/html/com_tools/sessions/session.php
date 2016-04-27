@@ -269,11 +269,7 @@ if (!$this->app->sess) {
 		<?php if (is_object($this->app->owns)) : ?>
 			<div class="col span8">
 				<p class="share-member-photo" id="shareform">
-					<?php
-					$jxuser = new \Hubzero\User\Profile();
-					$jxuser->load(User::get('id'));
-					?>
-					<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
+					<img src="<?php echo User::picture(); ?>" alt="" />
 				</p>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_TOOLS_SHARE_SESSION'); ?></legend>

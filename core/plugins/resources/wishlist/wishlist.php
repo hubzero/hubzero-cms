@@ -180,7 +180,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			if ($rtrn != 'metadata')
 			{
 				// Get wishes
-				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getRoot());
+				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getInstance());
 
 				$title = ($admin) ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit'])

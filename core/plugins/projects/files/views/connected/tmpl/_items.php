@@ -75,7 +75,7 @@ $handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'pr
 			<?php echo $item->getTimestamp() ? \Components\Projects\Helpers\Html::formatTime(Date::of($item->getTimestamp())->toSql()) : 'N/A'; ?>
 		</td>
 		<td class="shrinked middle_valign">
-			<?php echo ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') : User::getRoot()->getInstance($item->getOwner())->get('name'); ?>
+			<?php echo ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') : User::getInstance($item->getOwner())->get('name'); ?>
 		</td>
 		<td class="shrinked middle_valign nojs">
 			<?php if ($this->model->access('content')) : ?>

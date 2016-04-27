@@ -75,9 +75,9 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	{
 		jimport('joomla.user.helper');
 
-		$xuser = User::getRoot(); // get user from session (might be tmp_user, can't fetch from db)
+		$xuser = User::getInstance(); // get user from session (might be tmp_user, can't fetch from db)
 
-		if ($xuser->get('guest'))
+		if ($xuser->isGuest())
 		{
 			// joomla user plugin hasn't run or something went very badly
 

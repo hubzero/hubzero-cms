@@ -159,7 +159,7 @@ class Section extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Hubzero\User\User', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**

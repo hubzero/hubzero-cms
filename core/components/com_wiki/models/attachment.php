@@ -98,7 +98,7 @@ class Attachment extends Relational
 	 */
 	public function page()
 	{
-		return $this->belongsToOne('Page', 'pageid');
+		return $this->belongsToOne('Page', 'page_id');
 	}
 
 	/**

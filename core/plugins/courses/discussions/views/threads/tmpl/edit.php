@@ -59,7 +59,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 			}
 			$now = Date::of('now');
 			?>
-			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
+			<img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 		</p>
 
 		<fieldset>
@@ -84,7 +84,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 			<label for="field_<?php echo $this->post->get('id'); ?>_comment">
 				<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 				<?php
-				echo $this->editor('fields[comment]', $this->escape($this->post->content('raw')), 35, 5, 'field_' . $this->post->get('id') . '_comment', array('class' => 'minimal no-footer'));
+				echo $this->editor('fields[comment]', $this->escape($this->post->get('content')), 35, 5, 'field_' . $this->post->get('id') . '_comment', array('class' => 'minimal no-footer'));
 				?>
 			</label>
 		<?php if (!$this->post->get('parent')) { ?>

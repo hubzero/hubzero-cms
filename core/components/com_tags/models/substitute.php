@@ -33,8 +33,6 @@ namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Tag substitute
  */
@@ -120,7 +118,7 @@ class Substitute extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**

@@ -257,7 +257,7 @@ if (count($inst) > 0)
 							}
 							$now = Date::getRoot();
 							?>
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
+							<img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 						</p>
 
 						<fieldset>

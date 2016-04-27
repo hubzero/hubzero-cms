@@ -90,11 +90,9 @@ class Helper extends Module
 	public static function getList($params)
 	{
 		$db     = \App::get('db');
-		$app    = \JFactory::getApplication();
-		$user   = User::getRoot();
-		$userId = (int) $user->get('id');
+		$userId = (int) User::get('id');
 		$count  = intval($params->get('count', 5));
-		$groups = implode(',', $user->getAuthorisedViewLevels());
+		$groups = implode(',', User::getAuthorisedViewLevels());
 		$date   = \Date::toSql();
 
 		$option = Request::getCmd('option');

@@ -146,7 +146,7 @@ class Version extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**

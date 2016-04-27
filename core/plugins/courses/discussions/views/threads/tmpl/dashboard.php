@@ -193,7 +193,7 @@ if (count($inst) > 0)
 							}
 							$now = Date::getRoot();
 							?>
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo $this->escape(User::get('name')); ?>" />
+							<img src="<?php echo User::picture($anon); ?>" alt="<?php echo $this->escape(User::get('name')); ?>" />
 						</p>
 
 						<fieldset>

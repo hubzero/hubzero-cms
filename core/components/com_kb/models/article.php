@@ -217,7 +217,7 @@ class Article extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -415,7 +415,7 @@ class Article extends Relational
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+			$user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
 			$ip   = ($ip ?: Request::ip());
 
 			// See if a person from this IP has already voted in the last week
@@ -438,7 +438,7 @@ class Article extends Relational
 	{
 		if ($this->isNew())
 		{
-			$this->setError(Lang::txt('No record found'));
+			$this->addError(Lang::txt('No record found'));
 			return false;
 		}
 
@@ -448,11 +448,11 @@ class Article extends Relational
 
 		if ($vote === 0)
 		{
-			$this->setError(Lang::txt('No vote provided'));
+			$this->addError(Lang::txt('No vote provided'));
 			return false;
 		}
 
-		$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+		$user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
 
 		$al->set('object_id', $this->get('id'));
 		$al->set('type', 'article');
@@ -492,7 +492,7 @@ class Article extends Relational
 
 		if ($this->get('created_by') == $user->get('id'))
 		{
-			$this->setError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
+			$this->addError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
 			return false;
 		}
 
@@ -516,7 +516,7 @@ class Article extends Relational
 		// Store the vote log
 		if (!$al->save())
 		{
-			$this->setError($al->getError());
+			$this->addError($al->getError());
 			return false;
 		}
 
@@ -555,7 +555,7 @@ class Article extends Relational
 		{
 			if (!$comment->destroy())
 			{
-				$this->setError($comment->getError());
+				$this->addError($comment->getError());
 				return false;
 			}
 		}
@@ -568,7 +568,7 @@ class Article extends Relational
 		{
 			if (!$vote->destroy())
 			{
-				$this->setError($vote->getError());
+				$this->addError($vote->getError());
 				return false;
 			}
 		}

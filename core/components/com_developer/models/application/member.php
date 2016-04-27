@@ -32,8 +32,7 @@
 namespace Components\Developer\Models\Application;
 
 use Hubzero\Database\Relational;
-
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+use Hubzero\User\User;
 
 /**
  * Model class for a team member
@@ -78,7 +77,7 @@ class Member extends Relational
 	 */
 	public function getProfile()
 	{
-		return \Components\Members\Models\Member::oneOrNew($this->get('uidNumber'));
+		return User::oneOrNew($this->get('uidNumber'));
 	}
 
 	/**

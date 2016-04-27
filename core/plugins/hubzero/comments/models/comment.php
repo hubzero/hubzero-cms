@@ -34,7 +34,6 @@ namespace Plugins\Hubzero\Comments\Models;
 use Hubzero\Item\Comment as ItemComment;
 
 require_once __DIR__ . DS . 'file.php';
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Model for a comment
@@ -54,16 +53,6 @@ class Comment extends ItemComment
 	 * @var string
 	 */
 	private $_base = null;
-
-	/**
-	 * Defines a belongs to one relationship between question and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
-	}
 
 	/**
 	 * Get a list of files

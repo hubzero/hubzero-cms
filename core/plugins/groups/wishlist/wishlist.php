@@ -235,7 +235,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		if ($return == 'html')
 		{
 			// Get wishes
-			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getRoot());
+			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getInstance());
 
 			// HTML output
 			// Instantiate a view

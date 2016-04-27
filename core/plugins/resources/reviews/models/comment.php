@@ -33,8 +33,6 @@ namespace Components\Resources\Reviews\Models;
 
 use \Hubzero\Item\Comment as ItemComment;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Resources model for a comment
  */
@@ -46,16 +44,6 @@ class Comment extends ItemComment
 	 * @var  integer
 	 */
 	const STATE_FLAGGED = 3;
-
-	/**
-	 * Defines a belongs to one relationship between question and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
-	}
 
 	/**
 	 * Generate and return various links to the entry

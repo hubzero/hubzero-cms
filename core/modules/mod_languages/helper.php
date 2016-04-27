@@ -33,16 +33,16 @@
 namespace Modules\Languages;
 
 use Hubzero\Module\Module;
+use MenusHelper;
+use Config;
+use Route;
+use User;
+use Lang;
 use JLanguageHelper;
 use JLanguage;
 use JFactory;
 use JLoader;
-use Route;
 use JString;
-use MenusHelper;
-use Config;
-use User;
-use Lang;
 
 /**
  * Module class for displaying a menu
@@ -80,9 +80,7 @@ class Helper extends Module
 	{
 		JLoader::register('MenusHelper', PATH_CORE . '/components/com_menus/helpers/menus.php');
 
-		$user = User::getRoot();
 		$lang = Lang::getRoot();
-		$app  = JFactory::getApplication();
 		$menu = \App::get('menu');
 
 		// Get menu home items
@@ -106,7 +104,7 @@ class Helper extends Module
 			}
 		}
 
-		$levels    = $user->getAuthorisedViewLevels();
+		$levels    = User::getAuthorisedViewLevels();
 		$languages = JLanguageHelper::getLanguages();
 
 		// Filter allowed languages

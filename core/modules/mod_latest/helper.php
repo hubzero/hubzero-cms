@@ -36,6 +36,7 @@ use Hubzero\Module\Module;
 use Exception;
 use Route;
 use Lang;
+use User;
 
 /**
  * Module class for displaying the latest articles
@@ -76,9 +77,6 @@ class Helper extends Module
 	 */
 	public static function getList($params)
 	{
-		// Initialise variables
-		$user = User::getRoot();
-
 		// Get an instance of the generic articles model
 		$model = \JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
@@ -108,7 +106,7 @@ class Helper extends Module
 		}
 
 		// Set User Filter.
-		$userId = $user->get('id');
+		$userId = User::get('id');
 		switch ($params->get('user_id'))
 		{
 			case 'by_me':
@@ -136,7 +134,7 @@ class Helper extends Module
 		// Set the links
 		foreach ($items as &$item)
 		{
-			if ($user->authorise('core.edit', 'com_content.article.' . $item->id))
+			if (User::authorise('core.edit', 'com_content.article.' . $item->id))
 			{
 				$item->link = Route::url('index.php?option=com_content&task=article.edit&id=' . $item->id);
 			}

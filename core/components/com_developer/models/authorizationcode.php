@@ -36,8 +36,6 @@ use Hubzero\Utility\Validate;
 use Hubzero\Utility\Date;
 use Lang;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Authorization code model
  */
@@ -150,7 +148,7 @@ class Authorizationcode extends Relational
 	 */
 	public function user()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'uidNumber');
+		return $this->belongsToOne('Hubzero\User\User', 'uidNumber');
 	}
 
 	/**

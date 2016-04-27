@@ -74,7 +74,6 @@ $this->css();
 			     ->set('option', $this->option)
 			     ->set('rows', $this->owned)
 			     ->set('config', $this->config)
-			     ->set('user', User::getRoot())
 			     ->set('which', 'owned')
 			     ->display();
 
@@ -85,7 +84,6 @@ $this->css();
 		     ->set('option', $this->option)
 		     ->set('rows', $this->rows)
 		     ->set('config', $this->config)
-		     ->set('user', User::getRoot())
 		     ->set('which', $this->filters['which'])
 		     ->display();
 		?>

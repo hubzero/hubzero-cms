@@ -198,7 +198,7 @@ if (!$no_html) {
 				<?php if (!User::isGuest()) { ?>
 					<form action="<?php echo Route::url($base . '&post=' . $this->post->get('id') . '&task=savecomment' . ($this->no_html ? '&no_html=' . $this->no_html  : '')); ?>" method="post" id="commentform" enctype="multipart/form-data">
 						<p class="comment-member-photo">
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), 0); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes(User::get('name')))); ?>" />
+							<img src="<?php echo User::picture(0); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes(User::get('name')))); ?>" />
 						</p>
 
 						<fieldset>

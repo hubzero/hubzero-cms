@@ -33,23 +33,11 @@ namespace Components\Answers\Models;
 
 use Hubzero\Item\Comment as ItemComment;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Comment model
  */
 class Comment extends ItemComment
 {
-	/**
-	 * Defines a belongs to one relationship between question and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
-	}
-
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.

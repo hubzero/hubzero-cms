@@ -43,7 +43,6 @@ use Lang;
 use Date;
 use User;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once __DIR__ . DS . 'tags.php';
 require_once __DIR__ . DS . 'response.php';
 
@@ -206,7 +205,7 @@ class Question extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -386,7 +385,7 @@ class Question extends Relational
 			return $vote;
 		}
 
-		$user = $user_id ? User::getInstance($user_id) : User::getRoot();
+		$user = $user_id ? User::getInstance($user_id) : User::getInstance();
 		$ip   = $ip ?: Request::ip();
 
 		// See if a person from this IP has already voted in the last week
@@ -531,7 +530,7 @@ class Question extends Relational
 	public function destroy()
 	{
 		// Remove comments
-		foreach ($this->responses() as $response)
+		foreach ($this->responses()->rows() as $response)
 		{
 			if (!$response->destroy())
 			{
@@ -544,7 +543,7 @@ class Question extends Relational
 		$this->tag('');
 
 		// Remove vote logs
-		foreach ($this->votes() as $vote)
+		foreach ($this->votes()->rows() as $vote)
 		{
 			if (!$vote->destroy())
 			{

@@ -167,7 +167,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$xreg->loadAccount(User::getRoot());
+				$xreg->loadAccount(User::getInstance());
 			}
 
 			$check = $xreg->check('update');

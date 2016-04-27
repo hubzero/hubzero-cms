@@ -215,7 +215,7 @@ $this->css()
 				<?php
 				$anon = (!User::isGuest() ? 0 : 1);
 				?>
-				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="" />
+				<img src="<?php echo User::picture($anon); ?>" alt="" />
 			</p>
 
 			<fieldset>

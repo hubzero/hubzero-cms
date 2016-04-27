@@ -33,6 +33,7 @@
 namespace Components\Blog\Admin\Helpers;
 
 use Hubzero\Base\Object;
+use User;
 
 /**
  * Permissions helper
@@ -62,7 +63,6 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user = \User::getRoot();
 		$result = new Object;
 
 		$actions = array(
@@ -76,7 +76,7 @@ class Permissions
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

@@ -84,7 +84,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 			'html' => ''
 		);
 
-		$user = User::getRoot();
+		$user = User::getInstance();
 		$this->group = $group;
 		$this->option = $option;
 
@@ -131,7 +131,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		// Load the options
 		$database = App::get('db');
 		$recvEmailOption = new GroupsTableMemberoption($database);
-		$recvEmailOption->loadRecord($group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+		$recvEmailOption->loadRecord($group->get('gidNumber'), $user->get('id'), GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
 		if ($recvEmailOption->id)
 		{
@@ -175,7 +175,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		//bind the data
 		$rowdata = array(
 			'id'          => $recvEmailOptionID,
-			'userid'      => $user->id,
+			'userid'      => $user->get('id'),
 			'gidNumber'   => $group->get('gidNumber'),
 			'optionname'  => GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION,
 			'optionvalue' => $recvEmailOptionValue
@@ -187,7 +187,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		if (!$row->check())
 		{
 			$this->setError($row->getError());
-			return;
+			return $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
 		}
 
 		// Store content

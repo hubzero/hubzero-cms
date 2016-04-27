@@ -98,8 +98,8 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 
 		if (!User::isGuest())
 		{
-			if (User::authorize('com_resources', 'manage')
-			 || User::authorize('com_groups', 'manage'))
+			if (User::authorise('com_resources', 'manage')
+			 || User::authorise('com_groups', 'manage'))
 			{
 				$sql1 .= '';
 			}

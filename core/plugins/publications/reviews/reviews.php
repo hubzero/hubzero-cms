@@ -617,7 +617,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 			)
 		);
 		$eview->option      = $this->_option;
-		$eview->juser       = User::getRoot();
+		$eview->juser       = User::getInstance();
 		$eview->publication = $publication;
 		$message            = $eview->loadTemplate();
 		$message            = str_replace("\n", "\r\n", $message);

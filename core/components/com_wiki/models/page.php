@@ -41,8 +41,6 @@ use Lang;
 use Date;
 use User;
 
-
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once(__DIR__ . DS . 'attachment.php');
 require_once(__DIR__ . DS . 'version.php');
 require_once(__DIR__ . DS . 'comment.php');
@@ -277,7 +275,7 @@ class Page extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**

@@ -217,7 +217,7 @@ class Post extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Hubzero\User\User', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -250,7 +250,7 @@ class Post extends Relational
 	 */
 	public function modifier()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'modified_by');
+		return $this->belongsToOne('Hubzero\User\User', 'modified_by');
 	}
 
 	/**

@@ -34,8 +34,6 @@ namespace Components\Wiki\Models;
 use Hubzero\Database\Relational;
 use User;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Wiki author model
  */
@@ -79,7 +77,7 @@ class Author extends Relational
 	 */
 	public function user()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'user_id');
+		return $this->belongsToOne('Hubzero\User\User', 'user_id');
 	}
 
 	/**

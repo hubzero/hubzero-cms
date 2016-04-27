@@ -443,7 +443,7 @@ class Archive extends Object
 	 */
 	public function mine($type='')
 	{
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		$tbl = new Tables\Collection($this->_db);
 

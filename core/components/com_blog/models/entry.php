@@ -39,7 +39,6 @@ use Lang;
 use User;
 use Date;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once __DIR__ . DS . 'tags.php';
 require_once __DIR__ . DS . 'comment.php';
 
@@ -315,7 +314,7 @@ class Entry extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -641,7 +640,7 @@ class Entry extends Relational
 		}
 
 		// Remove comments
-		foreach ($this->comments() as $comment)
+		foreach ($this->comments()->rows() as $comment)
 		{
 			if (!$comment->destroy())
 			{

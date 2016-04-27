@@ -37,7 +37,6 @@ use Lang;
 use Date;
 //use User;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once __DIR__ . DS . 'comment.php';
 
 /**
@@ -159,7 +158,7 @@ class Review extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -192,7 +191,7 @@ class Review extends Relational
 			return $vote;
 		}
 
-		$user = $user_id ? User::getInstance($user_id) : User::getRoot();
+		$user = $user_id ? User::getInstance($user_id) : User::getInstance();
 		$ip   = $ip ?: Request::ip();
 
 		// See if a person from this IP has already voted in the last week

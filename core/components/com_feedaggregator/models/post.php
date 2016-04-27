@@ -34,8 +34,6 @@
 namespace Components\Feedaggregator\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model

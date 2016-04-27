@@ -36,7 +36,6 @@ use Hubzero\Utility\Validate;
 use Session;
 use Lang;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 include_once(__DIR__ . DS . 'accesstoken.php');
 include_once(__DIR__ . DS . 'refreshtoken.php');
 include_once(__DIR__ . DS . 'authorizationcode.php');
@@ -197,7 +196,7 @@ class Application extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -341,11 +340,11 @@ class Application extends Relational
 			return false;
 		}
 
-		foreach ($this->team() as $member)
+		foreach ($this->team()->rows() as $member)
 		{
 			if (!$member->destroy())
 			{
-				$this->setError($member->getError());
+				$this->addError($member->getError());
 				return false;
 			}
 		}
@@ -370,11 +369,11 @@ class Application extends Relational
 	 */
 	public function revokeAccessTokens()
 	{
-		foreach ($this->accessTokens() as $token)
+		foreach ($this->accessTokens()->rows() as $token)
 		{
 			if (!$token->destroy())
 			{
-				$this->setError($token->getError());
+				$this->addError($token->getError());
 				return false;
 			}
 		}
@@ -399,11 +398,11 @@ class Application extends Relational
 	 */
 	public function revokeRefreshTokens()
 	{
-		foreach ($this->refreshTokens() as $token)
+		foreach ($this->refreshTokens()->rows() as $token)
 		{
 			if (!$token->destroy())
 			{
-				$this->setError($token->getError());
+				$this->addError($token->getError());
 				return false;
 			}
 		}
@@ -428,11 +427,11 @@ class Application extends Relational
 	 */
 	public function revokeAuthorizationCodes()
 	{
-		foreach ($this->authorizationCodes() as $code)
+		foreach ($this->authorizationCodes()->rows() as $code)
 		{
 			if (!$code->destroy())
 			{
-				$this->setError($code->getError());
+				$this->addError($code->getError());
 				return false;
 			}
 		}

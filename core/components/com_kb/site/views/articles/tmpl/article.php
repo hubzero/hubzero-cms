@@ -189,9 +189,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 			</h3>
 			<form method="post" action="<?php echo Route::url($this->article->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
-					<img src="<?php
-					$user = Components\Members\Models\Member::oneOrNew(User::getRoot());
-					echo $user->picture(!User::isGuest() ? 0 : 1); ?>" alt="" />
+					<img src="<?php echo User::picture(!User::isGuest() ? 0 : 1); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php

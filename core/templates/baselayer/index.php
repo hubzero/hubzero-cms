@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
 
 // Get browser info to set some classes
-$browser = new \Hubzero\Browser\Detector();
+$browser = new Hubzero\Browser\Detector();
 $cls = array(
 	$browser->name(),
 	$browser->name() . $browser->major()
@@ -95,13 +95,11 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 			<nav id="main-navigation" role="main">
 				<div class="wrapper cf">
 					<div id="account">
-					<?php if (!User::isGuest()) {
-							$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-					?>
+					<?php if (!User::isGuest()) { ?>
 						<ul class="menu cf <?php echo (!User::isGuest()) ? 'loggedin' : 'loggedout'; ?>">
 							<li>
 								<div id="account-info">
-									<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" />
+									<img src="<?php echo User::picture(); ?>" alt="<?php echo User::get('name'); ?>" />
 									<a class="account-details" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
 										<?php echo stripslashes(User::get('name')); ?>
 										<span class="account-email"><?php echo User::get('email'); ?></span>

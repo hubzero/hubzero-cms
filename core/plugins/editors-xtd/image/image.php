@@ -37,9 +37,10 @@ class plgButtonImage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Constructor
 	 *
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
+	 * @since   1.5
+	 * @return  void
 	 */
 	public function __construct(& $subject, $config)
 	{
@@ -51,12 +52,14 @@ class plgButtonImage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display the button
 	 *
-	 * @return array A two element array of (imageName, textToInsert)
+	 * @param   string   $name
+	 * @param   string   $asset
+	 * @param   integer  $author
+	 * @return  array    A two element array of (imageName, textToInsert)
 	 */
 	public function onDisplay($name, $asset, $author)
 	{
 		$params = Component::params('com_media');
-		$user = User::getRoot();
 		$extension = Request::getCmd('option');
 
 		if ($asset == '')
@@ -64,12 +67,12 @@ class plgButtonImage extends \Hubzero\Plugin\Plugin
 			$asset = $extension;
 		}
 
-		if ($user->authorise('core.edit', $asset)
-			|| $user->authorise('core.create', $asset)
-			|| (count($user->getAuthorisedCategories($asset, 'core.create')) > 0)
-			|| ($user->authorise('core.edit.own', $asset) && $author == $user->id)
-			|| (count($user->getAuthorisedCategories($extension, 'core.edit')) > 0)
-			|| (count($user->getAuthorisedCategories($extension, 'core.edit.own')) > 0 && $author == $user->id)
+		if (User::authorise('core.edit', $asset)
+			|| User::authorise('core.create', $asset)
+			|| (count(User::getAuthorisedCategories($asset, 'core.create')) > 0)
+			|| (User::authorise('core.edit.own', $asset) && $author == User::get('id'))
+			|| (count(User::getAuthorisedCategories($extension, 'core.edit')) > 0)
+			|| (count(User::getAuthorisedCategories($extension, 'core.edit.own')) > 0 && $author == User::get('id'))
 		)
 		{
 			$link = 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=' . $name . '&amp;asset=' . $asset . '&amp;author=' . $author;
@@ -84,9 +87,7 @@ class plgButtonImage extends \Hubzero\Plugin\Plugin
 
 			return $button;
 		}
-				else
-		{
-			return false;
-		}
+
+		return false;
 	}
 }

@@ -164,11 +164,11 @@ class Members extends GroupMacro
 		{
 			foreach ($members as $member)
 			{
-				$profile = \Hubzero\User\Profile::getInstance($member);
-				$link    = \Route::url('index.php?option=com_members&id='.$profile->get('uidNumber'));
+				$profile = \Hubzero\User\User::oneOrNew($member);
+				$link    = \Route::url('index.php?option=com_members&id='.$profile->get('id'));
 
 				$content .= '<a href="' . $link . '" class="member" title="Go to ' . stripslashes($profile->get('name')) . '\'s Profile.">';
-				$content .= '<img src="' . $profile->getPicture(0, true) . '" alt="' . stripslashes($profile->get('name')) . '" class="member-border" width="50px" height="50px" />';
+				$content .= '<img src="' . $profile->picture(0, true) . '" alt="' . stripslashes($profile->get('name')) . '" class="member-border" width="50px" height="50px" />';
 				$content .= '<span class="name">' . stripslashes($profile->get('name')) . '</span>';
 				$content .= '<span class="org">' . stripslashes($profile->get('organization')) . '</span>';
 				$content .= '</a>';

@@ -101,10 +101,7 @@ $cls = array(
 						<ul class="menu loggedin">
 							<li>
 								<div id="account-info">
-									<?php
-									$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-									?>
-									<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" width="30" height="30" />
+									<img src="<?php echo User::picture(); ?>" alt="<?php echo User::get('name'); ?>" width="30" height="30" />
 									<a class="account-details" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
 										<?php echo stripslashes(User::get('name')); ?> 
 										<span class="account-email"><?php echo User::get('email'); ?></span>

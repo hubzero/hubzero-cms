@@ -38,7 +38,6 @@ use Lang;
 use Date;
 use User;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once __DIR__ . DS . 'vote.php';
 
 /**
@@ -139,7 +138,7 @@ class Comment extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -272,7 +271,7 @@ class Comment extends Relational
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+			$user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
 			$ip   = ($ip ?: Request::ip());
 
 			// See if a person from this IP has already voted in the last week
@@ -309,7 +308,7 @@ class Comment extends Relational
 			return false;
 		}
 
-		$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+		$user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
 
 		$al->set('object_id', $this->get('id'));
 		$al->set('type', 'comment');
@@ -398,7 +397,7 @@ class Comment extends Relational
 		{
 			if (!$comment->destroy())
 			{
-				$this->setError($comment->getError());
+				$this->addError($comment->getError());
 				return false;
 			}
 		}
@@ -407,7 +406,7 @@ class Comment extends Relational
 		{
 			if (!$vote->destroy())
 			{
-				$this->setError($vote->getError());
+				$this->addError($vote->getError());
 				return false;
 			}
 		}

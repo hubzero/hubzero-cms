@@ -99,7 +99,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//Create user object
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		//get the group members
 		$members = $group->get('members');
@@ -1114,8 +1114,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		if (!$this->user->get('guest'))
 		{
-			$profile = new \Hubzero\User\Profile();
-			$profile->load($this->user->get('id'));
+			$profile = \Hubzero\User\User::oneOrNew($this->user->get('id'));
 
 			$view->register['first_name']  = $profile->get('givenName');
 			$view->register['last_name']   = $profile->get('surname');

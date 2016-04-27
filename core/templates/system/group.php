@@ -146,12 +146,11 @@ $membership_control = $params->get('membership_control', 1);
 
 					<div id="account" role="navigation">
 						<?php if (!User::isGuest()) : ?>
-							<?php $profile = \Hubzero\User\Profile::getInstance(User::get('id')); ?>
 							<ul class="menu loggedin">
 								<li>
 									<div id="account-info">
 										<a class="account-details" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
-											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" />
+											<img src="<?php echo User::picture(); ?>" alt="<?php echo User::get('name'); ?>" />
 											<span class="account-name"><?php echo stripslashes(User::get('name')); ?></span>
 											<span class="account-email"><?php echo User::get('email'); ?></span>
 										</a>

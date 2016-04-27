@@ -103,7 +103,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$row = \Hubzero\Item\Comment($comment['id'])->set($comment);
+		$row = \Hubzero\Item\Comment::oneOrNew($comment['id'])->set($comment);
 
 		// Perform some text cleaning, etc.
 		$row->set('content', \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->get('content'))));
@@ -370,7 +370,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			)
 		);
 		$eview->option   = $this->_option;
-		$eview->user     = User::getRoot();
+		$eview->user     = User::getInstance();
 		$eview->resource = $resource;
 		$eview->review   = $row;
 		$message = $eview->loadTemplate();

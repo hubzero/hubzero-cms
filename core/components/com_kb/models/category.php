@@ -184,21 +184,21 @@ class Category extends Relational
 		}
 
 		// Remove children
-		foreach ($this->children() as $category)
+		foreach ($this->children()->rows() as $category)
 		{
 			if (!$category->destroy())
 			{
-				$this->setError($category->getError());
+				$this->addError($category->getError());
 				return false;
 			}
 		}
 
 		// Remove articles
-		foreach ($this->articles() as $article)
+		foreach ($this->articles()->rows() as $article)
 		{
 			if (!$article->destroy())
 			{
-				$this->setError($article->getError());
+				$this->addError($article->getError());
 				return false;
 			}
 		}

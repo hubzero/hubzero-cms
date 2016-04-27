@@ -45,14 +45,12 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		$user = User::getRoot();
-
 		// Messaging for new items
 		JModelLegacy::addIncludePath(PATH_CORE.'/components/com_messages/admin/models', 'MessagesModel');
 		JTable::addIncludePath(PATH_CORE.'/components/com_messages/admin/tables');
 
 		$db = App::get('db');
-		$db->setQuery('SELECT id FROM #__users WHERE sendEmail = 1');
+		$db->setQuery('SELECT id FROM `#__users` WHERE sendEmail = 1');
 		$users = (array) $db->loadColumn();
 
 		$default_language = Component::params('com_languages')->get('administrator');
@@ -60,7 +58,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 
 		foreach ($users as $user_id)
 		{
-			if ($user_id != $user->id)
+			if ($user_id != User::get('id'))
 			{
 				// Load language for messaging
 				$receiver = User::getInstance($user_id);
@@ -71,7 +69,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 				$message = array(
 					'user_id_to' => $user_id,
 					'subject'    => $lang->_('COM_CONTENT_NEW_ARTICLE'),
-					'message'    => sprintf($lang->_('COM_CONTENT_ON_NEW_CONTENT'), $user->get('name'), $article->title)
+					'message'    => sprintf($lang->_('COM_CONTENT_ON_NEW_CONTENT'), User::get('name'), $article->title)
 				);
 				$model_message = JModelLegacy::getInstance('Message', 'MessagesModel');
 				$model_message->save($message);

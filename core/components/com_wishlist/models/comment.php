@@ -34,23 +34,11 @@ namespace Components\Wishlist\Models;
 
 use Hubzero\Item\Comment as ItemComment;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Wishlist class for a wish comment model
  */
 class Comment extends ItemComment
 {
-	/**
-	 * Defines a belongs to one relationship between comment and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
-	}
-
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.

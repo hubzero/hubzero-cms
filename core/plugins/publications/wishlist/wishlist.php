@@ -158,7 +158,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			// Authorize admins & list owners
 			if (!User::isGuest())
 			{
-				if (User::authorize($option, 'manage'))
+				if (User::authorise($option, 'manage'))
 				{
 					$admin = 1;
 				}
@@ -182,7 +182,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			if ($rtrn != 'metadata')
 			{
 				// Get wishes
-				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getRoot());
+				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getInstance());
 
 				$title = ($admin) ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit'])

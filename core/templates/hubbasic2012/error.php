@@ -110,25 +110,23 @@ $cls = array(
 								<span class="tagline"><?php echo Lang::txt('TPL_HUBBASIC_TAGLINE'); ?></span>
 							</h1>
 							<ul id="account" class="<?php echo (!User::isGuest()) ? 'loggedin' : 'loggedout'; ?>">
-							<?php if (!User::isGuest()) {
-									$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-							?>
+							<?php if (!User::isGuest()) { ?>
 								<li id="account-info">
-									<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" width="30" height="30" />
-									<a class="account-details" href="<?php echo Route::url($profile->getLink()); ?>">
+									<img src="<?php echo User::picture(); ?>" alt="<?php echo User::get('name'); ?>" width="30" height="30" />
+									<a class="account-details" href="<?php echo Route::url(User::link()); ?>">
 										<?php echo stripslashes(User::get('name')); ?> 
 										<span class="account-username"><?php echo User::get('username'); ?></span>
 									</a>
 									<span class="account-sep"></span>
 									<ul>
 										<li id="account-dashboard">
-											<a href="<?php echo Route::url($profile->getLink() . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span></a>
+											<a href="<?php echo Route::url(User::link() . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span></a>
 										</li>
 										<li id="account-profile">
-											<a href="<?php echo Route::url($profile->getLink() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span></a>
+											<a href="<?php echo Route::url(User::link() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span></a>
 										</li>
 										<li id="account-messages">
-											<a href="<?php echo Route::url($profile->getLink() . '&active=messages'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span></a>
+											<a href="<?php echo Route::url(User::link() . '&active=messages'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span></a>
 										</li>
 										<li id="account-logout">
 											<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_LOGOUT'); ?></span></a>

@@ -35,8 +35,6 @@ use Hubzero\Database\Relational;
 use Lang;
 use Date;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Blog model for a comment
  */
@@ -162,7 +160,7 @@ class Comment extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**

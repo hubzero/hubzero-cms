@@ -59,8 +59,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				self::$default_sef  = self::$lang_codes[self::$default_lang]->sef;
 				self::$homes        = MultilangstatusHelper::getHomepages();
 
-				$user = User::getRoot();
-				$levels = $user->getAuthorisedViewLevels();
+				$levels = User::getAuthorisedViewLevels();
 				foreach (self::$sefs as $sef => &$language)
 				{
 					if (isset($language->access) && $language->access && !in_array($language->access, $levels))

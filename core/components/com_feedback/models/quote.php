@@ -37,8 +37,6 @@ use Filesystem;
 use Lang;
 use Date;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Feedback model for a quote
  */
@@ -92,7 +90,7 @@ class Quote extends Relational
 	 */
 	public function user()
 	{
-		return $this->belongsToOne('Components\Members\Models\Member', 'user_id');
+		return $this->belongsToOne('Hubzero\User\User', 'user_id');
 	}
 
 	/**
@@ -102,7 +100,7 @@ class Quote extends Relational
 	 */
 	public function creator()
 	{
-		return $this->belongsToOne('Components\Members\Models\Member', 'user_id');
+		return $this->belongsToOne('Hubzero\User\User', 'user_id');
 	}
 
 	/**

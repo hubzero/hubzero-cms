@@ -34,8 +34,6 @@ namespace Components\Tags\Models;
 use Hubzero\Database\Relational;
 use Date;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Tag log
  */
@@ -121,6 +119,6 @@ class Log extends Relational
 	 */
 	public function actor()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'actorid');
+		return $this->belongsToOne('Hubzero\User\User', 'actorid');
 	}
 }

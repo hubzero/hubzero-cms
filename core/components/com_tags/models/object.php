@@ -37,7 +37,6 @@ use Date;
 use User;
 
 require_once __DIR__ . DS . 'log.php';
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Tag object association
@@ -144,7 +143,7 @@ class Object extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'taggerid');
+		return $this->belongsToOne('Hubzero\User\User', 'taggerid');
 	}
 
 	/**

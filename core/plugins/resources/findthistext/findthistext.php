@@ -97,7 +97,6 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			$view->option   = $option;
 			$view->model    = $model;
 			$view->database = App::get('db');
-			$view->user     = User::getRoot();
 			$view->plugin   = $this->params;
 			$view->openurl  = $this->getOpenUrl();
 

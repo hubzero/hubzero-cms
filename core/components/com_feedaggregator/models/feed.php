@@ -34,8 +34,6 @@
 namespace Components\Feedaggregator\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model
@@ -95,11 +93,11 @@ class Feed extends Relational
 	public function destroy()
 	{
 		// Remove comments
-		foreach ($this->posts() as $post)
+		foreach ($this->posts()->rows() as $post)
 		{
 			if (!$post->destroy())
 			{
-				$this->setError($post->getError());
+				$this->addError($post->getError());
 				return false;
 			}
 		}

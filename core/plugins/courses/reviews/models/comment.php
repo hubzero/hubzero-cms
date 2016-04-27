@@ -35,8 +35,6 @@ namespace Components\Courses\Models;
 use Hubzero\Item\Comment as ItemComment;
 use Components\Courses\Models\Course;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Courses model for a comment
  */
@@ -48,16 +46,6 @@ class Comment extends ItemComment
 	 * @var string
 	 */
 	private $_base = null;
-
-	/**
-	 * Defines a belongs to one relationship between comment and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
-	}
 
 	/**
 	 * Generate and return various links to the entry

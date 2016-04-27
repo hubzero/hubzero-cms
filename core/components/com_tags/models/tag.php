@@ -39,7 +39,6 @@ use User;
 require_once __DIR__ . DS . 'object.php';
 require_once __DIR__ . DS . 'substitute.php';
 require_once __DIR__ . DS . 'log.php';
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Tag model
@@ -51,18 +50,7 @@ class Tag extends Relational
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'tags';
-
-	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__tags';
+	protected $namespace = '';
 
 	/**
 	 * Default order by for model
@@ -279,7 +267,7 @@ class Tag extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -438,7 +426,7 @@ class Tag extends Relational
 		// Attempt to delete the record
 		if (!$to->destroy())
 		{
-			$this->setError($to->getError());
+			$this->addError($to->getError());
 			return false;
 		}
 
@@ -486,7 +474,7 @@ class Tag extends Relational
 		// Attempt to store the new record
 		if (!$to->save())
 		{
-			$this->setError($to->getError());
+			$this->addError($to->getError());
 			return false;
 		}
 
@@ -506,7 +494,7 @@ class Tag extends Relational
 	{
 		if (!$tag_id)
 		{
-			$this->setError(Lang::txt('Missing tag ID.'));
+			$this->addError(Lang::txt('Missing tag ID.'));
 			return false;
 		}
 
@@ -514,7 +502,7 @@ class Tag extends Relational
 		// Loop through the associations and link them to a different tag
 		if (!Object::moveTo($this->get('id'), $tag_id))
 		{
-			$this->setError($to->getError());
+			$this->addError($to->getError());
 			return false;
 		}
 
@@ -522,7 +510,7 @@ class Tag extends Relational
 		// Loop through the records and link them to a different tag
 		if (!Substitute::moveTo($this->get('id'), $tag_id))
 		{
-			$this->setError($ts->getError());
+			$this->addError($ts->getError());
 			return false;
 		}
 
@@ -532,7 +520,7 @@ class Tag extends Relational
 		$sub->set('tag_id', $tag_id);
 		if (!$sub->save())
 		{
-			$this->setError($sub->getError());
+			$this->addError($sub->getError());
 			return false;
 		}
 
@@ -561,7 +549,7 @@ class Tag extends Relational
 	{
 		if (!$tag_id)
 		{
-			$this->setError(Lang::txt('Missing tag ID.'));
+			$this->addError(Lang::txt('Missing tag ID.'));
 			return false;
 		}
 
@@ -569,7 +557,7 @@ class Tag extends Relational
 		// Loop through the associations and link them to a different tag
 		if (!Object::copyTo($this->get('id'), $tag_id))
 		{
-			$this->setError($to->getError());
+			$this->addError($to->getError());
 			return false;
 		}
 
@@ -619,7 +607,7 @@ class Tag extends Relational
 			$sub->set('tag_id', $this->get('id'));
 			if (!$sub->save())
 			{
-				$this->setError($sub->getError());
+				$this->addError($sub->getError());
 			}
 		}
 
@@ -631,7 +619,7 @@ class Tag extends Relational
 			{
 				if (!$sub->destroy())
 				{
-					$this->setError($sub->getError());
+					$this->addError($sub->getError());
 					return false;
 				}
 			}
