@@ -62,8 +62,8 @@ class Membership_Auditor extends BaseAuditor
 
 		/* If no user, some checks may be skipped... */
 		// Get user
-		$jUser = User::getRoot();
-		if (!$jUser->get('guest')) {
+		$user = User::getRoot();
+		if (!$user->get('guest')) {
 			// Check if there is a limitation on when the subscription can be extended
 			$subscriptionMaxLen = Product::getMeta($this->pId, 'subscriptionMaxLen');
 			if ($subscriptionMaxLen) {

@@ -45,17 +45,16 @@ class Download extends \Hubzero\Component\SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
-
 		$this->warehouse = new Warehouse();
 
-		$this->juser = User::getRoot();
+		$this->user = User::getRoot();
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if ($this->user->get('guest'))
 		{
 			$this->login('Please login to continue');
 			return;
@@ -67,8 +66,7 @@ class Download extends \Hubzero\Component\SiteController
 	/**
 	 * Serve the file
 	 *
-	 * @param		$pId
-	 * @return     	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -90,7 +88,7 @@ class Download extends \Hubzero\Component\SiteController
 
 		// get cart user
 		$cartUser = Cart::getCartUser($crtId);
-		$currentUser = $this->juser->id;
+		$currentUser = $this->user->id;
 
 		// Error if needed
 		if ($tStatus !== 'completed')
@@ -176,6 +174,13 @@ class Download extends \Hubzero\Component\SiteController
 		exit;
 	}
 
+	/**
+	 * Display landing page
+	 *
+	 * @param   integer  $tId
+	 * @param   integer  $sId
+	 * @return  void
+	 */
 	public function landingTask($tId, $sId)
 	{
 		$this->setView('download', 'landing');
@@ -184,6 +189,12 @@ class Download extends \Hubzero\Component\SiteController
 		$this->view->display();
 	}
 
+	/**
+	 * Display a message
+	 *
+	 * @param   array  $notifications
+	 * @return  void
+	 */
 	public function messageTask($notifications)
 	{
 		$this->setView('download', 'message');
@@ -204,7 +215,6 @@ class Download extends \Hubzero\Component\SiteController
 			$message,
 			'warning'
 		);
-		return;
 	}
 }
 

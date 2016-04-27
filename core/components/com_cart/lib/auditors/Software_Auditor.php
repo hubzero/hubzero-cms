@@ -62,9 +62,9 @@ class Software_Auditor extends BaseAuditor
 	{
 		/* If no user, some checks may be skipped... */
 		// Get user
-		$jUser = User::getRoot();
+		$user = User::getRoot();
 		// User specific checks
-		if (!$jUser->get('guest'))
+		if (!$user->get('guest'))
 		{
 			if ($sId = $this->getSku())
 			{
