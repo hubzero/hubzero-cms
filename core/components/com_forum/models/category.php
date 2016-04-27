@@ -36,7 +36,6 @@ use Lang;
 use Date;
 use User;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once __DIR__ . DS . 'post.php';
 
 /**
@@ -191,7 +190,7 @@ class Category extends Relational
 	 */
 	public function creator()
 	{
-		return $this->oneToOne('Components\Members\Models\Member', 'id', 'created_by');
+		return $this->oneToOne('Hubzero\User\User', 'id', 'created_by');
 	}
 
 	/**
