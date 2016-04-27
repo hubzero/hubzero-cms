@@ -42,6 +42,7 @@ return array(
 	'Bootstrap\Api\Providers\FilesystemServiceProvider',
 	// API-specific services
 	'Bootstrap\Api\Providers\SessionServiceProvider',
+	'Bootstrap\Api\Providers\UserServiceProvider',
 	'Bootstrap\Api\Providers\ErrorServiceProvider',
 	'Hubzero\Api\ResponseServiceProvider',
 	'Hubzero\Api\AuthServiceProvider',

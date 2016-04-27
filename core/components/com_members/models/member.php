@@ -32,7 +32,6 @@
 namespace Components\Members\Models;
 
 use Hubzero\User\User;
-use Hubzero\User\Profile\Helper as ProfileHelper;
 
 require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
@@ -93,16 +92,6 @@ class Member extends User
 	}
 
 	/**
-	 * Get access groups
-	 *
-	 * @return  object
-	 */
-	public function accessgroups()
-	{
-		return $this->oneToMany('Hubzero\Access\Map', 'user_id');
-	}
-
-	/**
 	 * Gets an attribute by key
 	 *
 	 * This will not retrieve properties directly attached to the model,
@@ -148,7 +137,7 @@ class Member extends User
 	 * @param   boolean  $serveFile  Serve file?
 	 * @return  string
 	 */
-	public function picture($anonymous=0, $thumbnail=true, $serveFile=true)
+	/*public function picture($anonymous=0, $thumbnail=true, $serveFile=true)
 	{
 		// User doesn't exist? Force to anonymous
 		if (!$this->get('id'))
@@ -209,7 +198,7 @@ class Member extends User
 
 		// Return the default system pic
 		return parent::picture($anonymous, $thumbnail, $serveFile);
-	}
+	}*/
 
 	/**
 	 * Generate and return various links to the entry

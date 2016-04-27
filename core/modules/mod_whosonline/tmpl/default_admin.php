@@ -49,7 +49,7 @@ foreach ($this->rows as $row)
 	}
 }
 
-$editAuthorized = User::authorize('com_users', 'manage');
+$editAuthorized = User::authorise('com_users', 'manage');
 ?>
 
 <div class="<?php echo $this->module->module; ?>" id="<?php echo $this->module->module . $this->module->id; ?>">

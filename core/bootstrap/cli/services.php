@@ -42,6 +42,7 @@ return [
 	'Hubzero\Filesystem\FilesystemServiceProvider',
 	// CLI-specific services
 	'Hubzero\Session\SessionServiceProvider',
+	'Hubzero\User\UserServiceProvider',
 	'Hubzero\Console\ArgumentsServiceProvider',
 	'Hubzero\Console\OutputServiceProvider',
 	'Hubzero\Console\DispatcherServiceProvider',

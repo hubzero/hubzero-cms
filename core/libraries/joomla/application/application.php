@@ -1064,12 +1064,12 @@ class JApplication extends JObject
 		
 
 		// Check to see the the session already exists.
-		if (($this->getCfg('session_handler') != 'database' && (time() % 2 || $session->isNew()))
+		/*if (($this->getCfg('session_handler') != 'database' && (time() % 2 || $session->isNew()))
 			|| ($this->getCfg('session_handler') == 'database' && $session->isNew()))
 		//if ($this->getCfg('session_handler') == 'database' && $session->isNew())
 		{
 			$this->checkSession();
-		}
+		}*/
 
 		return $session;
 	}

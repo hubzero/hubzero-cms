@@ -107,23 +107,21 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('Search'); ?></a>
 										<jdoc:include type="modules" name="search" />
 									</li>
-								<?php if (!User::isGuest()) {
-										$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-								?>
+								<?php if (!User::isGuest()) { ?>
 									<li class="loggedin">
-										<a href="<?php echo Route::url($profile->getLink()); ?>">
-											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $profile->get('name'); ?>" width="30" height="30" />
+										<a href="<?php echo Route::url(User::link()); ?>">
+											<img src="<?php echo User::picture(); ?>" alt="<?php echo User::get('name'); ?>" width="30" height="30" />
 											<span class="account-details">
-												<?php echo stripslashes($profile->get('name')); ?> 
-												<span class="account-email"><?php echo $profile->get('email'); ?></span>
+												<?php echo stripslashes(User::get('name')); ?> 
+												<span class="account-email"><?php echo User::get('email'); ?></span>
 											</span>
 										</a>
 										<ul>
 											<li id="account-dashboard">
-												<a href="<?php echo Route::url($profile->getLink() . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_DASHBOARD'); ?></span></a>
+												<a href="<?php echo Route::url(User::link() . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_DASHBOARD'); ?></span></a>
 											</li>
 											<li id="account-profile">
-												<a href="<?php echo Route::url($profile->getLink() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_PROFILE'); ?></span></a>
+												<a href="<?php echo Route::url(User::link() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_PROFILE'); ?></span></a>
 											</li>
 											<li id="account-logout">
 												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_LOGOUT'); ?></span></a>

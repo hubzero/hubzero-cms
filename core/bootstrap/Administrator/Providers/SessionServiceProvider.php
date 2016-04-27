@@ -33,6 +33,8 @@ namespace Bootstrap\Administrator\Providers;
 
 use Hubzero\Base\ServiceProvider;
 use Hubzero\Session\Manager;
+use Hubzero\User\User;
+use Hubzero\Config\Registry;
 
 /**
  * Session service provider
@@ -83,5 +85,73 @@ class SessionServiceProvider extends ServiceProvider
 
 			return $session;
 		};
+	}
+
+	/**
+	 * Boot the service provider.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		if (($this->app['config']->get('session_handler') != 'database' && (time() % 2 || $this->app['session']->isNew()))
+		 || ($this->app['config']->get('session_handler') == 'database' && $this->app['session']->isNew()))
+		{
+			if ($this->app['config']->get('session_handler') == 'database' && $this->app->has('db'))
+			{
+				$db = $this->app['db'];
+
+				$query = $db->getQuery(true);
+				$query->select($query->qn('session_id'))
+					->from($query->qn('#__session'))
+					->where($query->qn('session_id') . ' = ' . $query->q($this->app['session']->getId()));
+
+				$db->setQuery($query, 0, 1);
+				$exists = $db->loadResult();
+
+				// If the session record doesn't exist initialise it.
+				if (!$exists)
+				{
+					$query->clear();
+
+					$ip = $this->app['request']->ip();
+
+					if ($this->app['session']->isNew())
+					{
+						$query->insert($query->qn('#__session'))
+							->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
+							->values($query->q($this->app['session']->getId()) . ', ' . (int) $this->app['client']->id . ', ' . $query->q((int) time()) . ', ' . $query->q($ip));
+						$db->setQuery($query);
+					}
+					else
+					{
+						$query->insert($query->qn('#__session'))
+							->columns(
+								$query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('guest') . ', ' .
+								$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') .  ', ' . $query->q('ip')
+							)
+							->values(
+								$query->q($this->app['session']->getId()) . ', ' . (int) $this->app['client']->id . ', ' . (int) $this->app['user']->get('guest') . ', ' .
+								$query->q((int) $this->app['session']->get('session.timer.start')) . ', ' . (int) $this->app['user']->get('id') . ', ' . $query->q($this->app['user']->get('username')) .  ', ' . $query->q($ip)
+							);
+
+						$db->setQuery($query);
+					}
+
+					// If the insert failed, exit the application.
+					if ($this->app['client']->id != 4 && !$db->execute())
+					{
+						exit($db->getErrorMsg());
+					}
+				}
+			}
+
+			// Session doesn't exist yet, so create session variables
+			if ($this->app['session']->isNew())
+			{
+				$this->app['session']->set('registry', new Registry('session'));
+				$this->app['session']->set('user', new User);
+			}
+		}
 	}
 }

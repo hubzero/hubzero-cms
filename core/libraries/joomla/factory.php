@@ -235,6 +235,9 @@ abstract class JFactory
 	{
 		if (is_null($id))
 		{
+			// [!] Hubzero
+			return \User::getInstance();
+
 			$instance = self::getSession()->get('user');
 			if (!($instance instanceof JUser))
 			{
@@ -243,6 +246,9 @@ abstract class JFactory
 		}
 		else
 		{
+			// [!] Hubzero
+			return \User::getInstance($id);
+
 			$current = self::getSession()->get('user');
 			if ($current->id != $id)
 			{

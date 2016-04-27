@@ -190,7 +190,7 @@ class UsersControllerUser extends UsersController
 	{
 		$app = JFactory::getApplication();
 
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		$authenticator = Request::getVar('authenticator', '', 'method');
 

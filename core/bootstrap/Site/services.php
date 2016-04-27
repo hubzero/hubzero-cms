@@ -45,6 +45,7 @@ return array(
 	'Bootstrap\Site\Providers\ErrorServiceProvider',
 	'Bootstrap\Site\Providers\SessionServiceProvider',
 	'Bootstrap\Site\Providers\AuthServiceProvider',
+	'Bootstrap\Site\Providers\UserServiceProvider',
 	'Bootstrap\Site\Providers\DocumentServiceProvider',
 	'Bootstrap\Site\Providers\ModuleServiceProvider',
 	'Bootstrap\Site\Providers\PathwayServiceProvider',
