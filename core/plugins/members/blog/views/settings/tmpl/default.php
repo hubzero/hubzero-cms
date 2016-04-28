@@ -38,7 +38,7 @@ $this->css()
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-archive btn" href="<?php echo Route::url($this->member->getLink() . '&active=blog'); ?>">
+		<a class="icon-archive btn" href="<?php echo Route::url($this->member->link() . '&active=blog'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
@@ -48,7 +48,7 @@ $this->css()
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url($this->member->getLink() . '&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo Route::url($this->member->link() . '&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
 	<fieldset class="settings">
 		<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_POSTS'); ?></legend>
 		<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_POSTS_EXPLANATION'); ?></p>
@@ -77,13 +77,13 @@ $this->css()
 		</p>
 
 		<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
-		<input type="hidden" name="settings[object_id]" value="<?php echo $this->member->get('uidNumber'); ?>" />
+		<input type="hidden" name="settings[object_id]" value="<?php echo $this->member->get('id'); ?>" />
 		<input type="hidden" name="settings[folder]" value="members" />
 		<input type="hidden" name="settings[element]" value="blog" />
 	</fieldset>
 	<div class="clear"></div>
 
-	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 	<input type="hidden" name="process" value="1" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="blog" />
@@ -94,7 +94,7 @@ $this->css()
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SAVE'); ?>" />
 
-		<a class="btn btn-secondary" href="<?php echo Route::url($this->member->getLink() . '&active=blog'); ?>">
+		<a class="btn btn-secondary" href="<?php echo Route::url($this->member->link() . '&active=blog'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_BLOG_CANCEL'); ?>
 		</a>
 	</p>

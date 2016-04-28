@@ -48,9 +48,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function onMembersAreas($user, $member)
 	{
@@ -64,11 +64,11 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -93,7 +93,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$this->_authorize('collection');
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
-		$this->model = new \Components\Collections\Models\Archive('member', $this->member->get('uidNumber'));
+		$this->model = new \Components\Collections\Models\Archive('member', $this->member->get('id'));
 
 		//are we returning html
 		if ($returnhtml)
@@ -108,7 +108,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$this->_authorize('item');
 
 			$default = $this->params->get('defaultView', 'feed');
-			if (User::get('id') != $member->get('uidNumber'))
+			if (User::get('id') != $member->get('id'))
 			{
 				$default = 'collections';
 			}
@@ -260,7 +260,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->model->collections($filters))
 		{
 			$collection = $this->model->collection(0);
-			$collection->setup($this->member->get('uidNumber'), 'member');
+			$collection->setup($this->member->get('id'), 'member');
 		}
 
 		if (!$this->params->get('access-manage-collection'))
@@ -279,7 +279,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _login()
 	{
-		$route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+		$route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('id') . '&active=' . $this->_name);
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
@@ -458,7 +458,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters = array(
 			'limit'         => Request::getInt('limit', Config::get('list_limit')),
 			'start'         => Request::getInt('limitstart', 0),
-			'user_id'       => $this->member->get('uidNumber'),
+			'user_id'       => $this->member->get('id'),
 			'search'        => Request::getVar('search', ''),
 			'state'         => 1,
 			'collection_id' => Request::getVar('board', ''),
@@ -479,7 +479,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Is it a private board?
-		if ($view->collection->get('access') == 4 && User::get('id') != $this->member->get('uidNumber'))
+		if ($view->collection->get('access') == 4 && User::get('id') != $this->member->get('id'))
 		{
 			App::abort(403, Lang::txt('Your are not authorized to access this content.'));
 			return;
@@ -539,7 +539,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') == $this->member->get('uidNumber'))
+		if (User::get('id') == $this->member->get('id'))
 		{
 			App::abort(500, Lang::txt('Your cannot follow your own content.'));
 			return;
@@ -553,7 +553,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'member':
-				$id = $this->member->get('uidNumber');
+				$id = $this->member->get('id');
 				$sfx = '&task=unfollow';
 			break;
 
@@ -577,7 +577,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (Request::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = Route::url($this->member->getLink() . '&active=collections' . $sfx);
+			$response->href = Route::url($this->member->link() . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -608,7 +608,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Is it a private board?
-		if (User::get('id') == $this->member->get('uidNumber'))
+		if (User::get('id') == $this->member->get('id'))
 		{
 			App::abort(500, Lang::txt('Your cannot unfollow your own content.'));
 			return;
@@ -622,7 +622,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'member':
-				$id = $this->member->get('uidNumber');
+				$id = $this->member->get('id');
 				$sfx = '&task=follow';
 			break;
 
@@ -646,7 +646,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (Request::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = Route::url($this->member->getLink() . '&active=collections' . $sfx);
+			$response->href = Route::url($this->member->link() . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -678,7 +678,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters = array();
 		$view->filters['limit']       = Request::getInt('limit', Config::get('list_limit'));
 		$view->filters['start']       = Request::getInt('limitstart', 0);
-		$view->filters['user_id']     = $this->member->get('uidNumber');
+		$view->filters['user_id']     = $this->member->get('id');
 		$view->filters['search']      = Request::getVar('search', '');
 		$view->filters['state']       = 1;
 		$view->filters['collection_id'] = Request::getVar('board', '');
@@ -739,10 +739,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters = array(
 			'limit'       => Request::getInt('limit', Config::get('list_limit')),
 			'start'       => Request::getInt('limitstart', 0),
-			'created_by'  => $this->member->get('uidNumber'),
+			'created_by'  => $this->member->get('id'),
 			'search'      => Request::getVar('search', ''),
 			'state'       => 1,
-			'object_id'   => $this->member->get('uidNumber'),
+			'object_id'   => $this->member->get('id'),
 			'object_type' => 'member',
 			'access'      => -1,
 			'sort'        => 'created',
@@ -769,7 +769,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$view->collection = \Components\Collections\Models\Collection::getInstance();
 
-		$view->filters['user_id'] = $this->member->get('uidNumber');
+		$view->filters['user_id'] = $this->member->get('id');
 
 		$view->rows = $view->collection->posts($view->filters);
 
@@ -802,7 +802,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		if ($collection->get('access') == 4 // private collection
-		 && User::get('id') != $this->member->get('uidNumber')) // is user the collection owner?
+		 && User::get('id') != $this->member->get('id')) // is user the collection owner?
 		{
 			$this->params->set('access-view-item', false);
 		}
@@ -862,7 +862,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('access-edit-item') && !$this->params->get('access-create-item'))
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name),
+				Route::url($this->member->link() . '&active=' . $this->_name),
 				Lang::txt('You are not authorized to perform this action.'),
 				'error'
 			);
@@ -898,7 +898,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->collections = $this->model->collections();
 		if (!$view->collections->total())
 		{
-			$view->collection->setup($this->member->get('uidNumber'), 'member');
+			$view->collection->setup($this->member->get('id'), 'member');
 			$view->collections = $this->model->collections();
 			$view->collection  = $this->model->collection(Request::getVar('board', 0));
 		}
@@ -1005,7 +1005,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			$collection = new \Components\Collections\Models\Collection();
 			$collection->set('title', $coltitle);
-			$collection->set('object_id', $this->member->get('uidNumber'));
+			$collection->set('object_id', $this->member->get('id'));
 			$collection->set('object_type', 'member');
 			$collection->store();
 
@@ -1035,7 +1035,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$collection = new \Components\Collections\Models\Collection($p['collection_id']);
 		}
 
-		$url = $this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias');
+		$url = $this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias');
 
 		// Record the activity
 		Event::trigger('system.logActivity', [
@@ -1199,7 +1199,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Display the main listing
-		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name));
+		App::redirect(Route::url($this->member->link() . '&active=' . $this->_name));
 	}
 
 	/**
@@ -1235,7 +1235,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$type = 'error';
 		}
 
-		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+		$route = Route::url($this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
 		// Record the activity
 		Event::trigger('system.logActivity', [
@@ -1293,7 +1293,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$this->setError($post->getError());
 		}
 
-		$route = Route::url($this->member->getLink() . '&active=' . $this->_name);
+		$route = Route::url($this->member->link() . '&active=' . $this->_name);
 
 		if (Request::getInt('no_html', 0))
 		{
@@ -1385,7 +1385,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to collection
-		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+		$route = Route::url($this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
 		// Record the activity
 		Event::trigger('system.logActivity', [
@@ -1542,7 +1542,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Get the collection model
 		$collection = $this->model->collection($post->get('collection_id'));
 
-		$url = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+		$url = Route::url($this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
 		// Record the activity
 		Event::trigger('system.logActivity', [
@@ -1588,7 +1588,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _editcollection($row=null)
 	{
-		$collection = Route::url($this->member->getLink() . '&active=' . $this->_name);
+		$collection = Route::url($this->member->link() . '&active=' . $this->_name);
 
 		// Login check
 		if (User::isGuest())
@@ -1691,7 +1691,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($collection);
 		}
 
-		$url = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all');
+		$url = Route::url($this->member->link() . '&active=' . $this->_name . '&task=all');
 
 		// Record the activity
 		Event::trigger('system.logActivity', [
@@ -1806,7 +1806,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		]);
 
 		// Redirect to main view
-		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all');
+		$route = Route::url($this->member->link() . '&active=' . $this->_name . '&task=all');
 
 		if ($no_html)
 		{
@@ -1836,7 +1836,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$this->params->set('access-delete-' . $assetType, false);
 			$this->params->set('access-edit-' . $assetType, false);
 
-			if (User::get('id') == $this->member->get('uidNumber'))
+			if (User::get('id') == $this->member->get('id'))
 			{
 				$this->params->set('access-manage-' . $assetType, true);
 				$this->params->set('access-create-' . $assetType, true);

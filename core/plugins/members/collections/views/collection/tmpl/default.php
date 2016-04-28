@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = $this->member->getLink() . '&active=' . $this->name;
+$base = $this->member->link() . '&active=' . $this->name;
 
 if (!$this->collection->get('layout'))
 {
@@ -241,7 +241,7 @@ $this->css()
 				$this->filters['start'],
 				$this->filters['limit']
 			);
-			$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
 			$pageNav->setAdditionalUrlParam('active', 'collections');
 			$pageNav->setAdditionalUrlParam('task', $this->task);
 			$pageNav->setAdditionalUrlParam('viewas', $viewas);

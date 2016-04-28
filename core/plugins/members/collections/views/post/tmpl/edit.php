@@ -53,7 +53,7 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 	$type = 'link';
 }
 
-$base = $this->member->getLink() . '&active=' . $this->name;
+$base = $this->member->link() . '&active=' . $this->name;
 
 $dir = $item->get('id');
 if (!$dir)
@@ -226,7 +226,7 @@ $this->css()
 	<input type="hidden" name="post[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
 	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->escape($this->entry->get('item_id')); ?>" />
 
-	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />

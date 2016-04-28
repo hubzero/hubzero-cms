@@ -41,7 +41,7 @@ $edit = false;
 $password = false;
 $messaging = false;
 
-$tab = $this->tab;
+$tab = $this->active;
 $tab_name = 'Dashboard';
 
 //are we allowed to messagin user
@@ -51,7 +51,7 @@ switch ($user_messaging)
 		$mssaging = false;
 		break;
 	case 1:
-		$common = \Hubzero\User\Helper::getCommonGroups(User::get('id'), $this->profile->get('uidNumber') );
+		$common = \Hubzero\User\Helper::getCommonGroups(User::get('id'), $this->profile->get('id') );
 		if (count($common) > 0)
 		{
 			$messaging = true;
@@ -63,9 +63,9 @@ switch ($user_messaging)
 }
 
 //if user is this member turn on editing and password change, turn off messaging
-if ($this->profile->get('uidNumber') == User::get("id"))
+if ($this->profile->get('id') == User::get("id"))
 {
-	if ($this->tab == "profile")
+	if ($this->active == "profile")
 	{
 		$edit = true;
 		$password = true;
@@ -89,7 +89,7 @@ if (!$no_html)
 	<h2>
 		<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
 	</h2>
-	<?php if ($this->profile->get('uidNumber') == User::get('id')) :
+	<?php if ($this->profile->get('id') == User::get('id')) :
 		$cls = '';
 		$span_title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_TITLE');
 		$title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_SET_PRIVATE_TITLE');
@@ -100,8 +100,8 @@ if (!$no_html)
 			$title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_SET_PUBLIC_TITLE');
 		}
 
-		if ($this->tab == 'profile') : ?>
-			<a id="profile-privacy" href="<?php echo Route::url($this->profile->getLink() . '?' . Session::getFormToken() . '=1'); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+		if ($this->active == 'profile') : ?>
+			<a id="profile-privacy" href="<?php echo Route::url($this->profile->link() . '&' . Session::getFormToken() . '=1'); ?>" data-uidnumber="<?php echo $this->profile->get('id'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 				<?php echo $title; ?>
 			</a>
 		<?php else: ?>
@@ -115,20 +115,16 @@ if (!$no_html)
 <div class="innerwrap">
 	<div id="page_container">
 		<div id="page_sidebar">
-			<?php
-				$src = \Hubzero\User\Profile\Helper::getMemberPhoto($this->profile, 0, false);
-				$link = Route::url($this->profile->getLink());
-			?>
 			<div id="page_identity">
-				<?php $title = ($this->profile->get('uidNumber') == User::get('id')) ? Lang::txt('COM_MEMBERS_GO_TO_MY_DASHBOARD') : Lang::txt('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->profile->get('name')); ?>
-				<a href="<?php echo Route::url($this->profile->getLink()); ?>" id="page_identity_link" title="<?php echo $title; ?>">
-					<img src="<?php echo $this->profile->getPicture(0, false); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_PROFILE_PICTURE_FOR', $this->escape(stripslashes($this->profile->get('name')))); ?>" class="profile-pic full" />
+				<?php $title = ($this->profile->get('id') == User::get('id')) ? Lang::txt('COM_MEMBERS_GO_TO_MY_DASHBOARD') : Lang::txt('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->profile->get('name')); ?>
+				<a href="<?php echo Route::url($this->profile->link()); ?>" id="page_identity_link" title="<?php echo $title; ?>">
+					<img src="<?php echo $this->profile->picture(0, false); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_PROFILE_PICTURE_FOR', $this->escape(stripslashes($this->profile->get('name')))); ?>" class="profile-pic full" />
 				</a>
 			</div><!-- /#page_identity -->
 			<?php if ($messaging): ?>
 			<ul id="member_options">
 				<li class="message-member">
-					<a class="tooltips" title="<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?> :: <?php echo Lang::txt('COM_MEMBERS_SEND_A_MESSAGE_TO', $this->escape(stripslashes($this->profile->get('name')))); ?>" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
+					<a class="tooltips" title="<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?> :: <?php echo Lang::txt('COM_MEMBERS_SEND_A_MESSAGE_TO', $this->escape(stripslashes($this->profile->get('name')))); ?>" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('id')); ?>">
 						<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?>
 					</a>
 				</li>
@@ -143,9 +139,9 @@ if (!$no_html)
 							continue;
 						}
 						$name = $c[$key];
-						$url = Route::url($this->profile->getLink() . '&active=' . $key);
-						$cls = ($this->tab == $key) ? 'active' : '';
-						$tab_name = ($this->tab == $key) ? $name : $tab_name;
+						$url = Route::url($this->profile->link() . '&active=' . $key);
+						$cls = ($this->active == $key) ? 'active' : '';
+						$tab_name = ($this->active == $key) ? $name : $tab_name;
 
 						$metadata = $this->sections[$k]['metadata'];
 						$meta_count = (isset($metadata['count']) && $metadata['count'] != "") ? $metadata['count'] : "";
@@ -206,8 +202,8 @@ if (!$no_html)
 			</ul><!-- /#page_menu -->
 
 			<?php
-				$thumb = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '_th.gif';
-				$full = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '.gif';
+				$thumb = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '_th.gif';
+				$full = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '.gif';
 			?>
 			<?php if (file_exists(PATH_ROOT . $thumb)) : ?>
 				<a id="member-stats-graph" rel="lightbox" title="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
@@ -221,14 +217,14 @@ if (!$no_html)
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('uidNumber') == User::get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->getLink() . '&task=edit'); ?>">
+						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('id') == User::get('id')) { echo 'my'; } else { echo $this->profile->get('name') . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->link() . '&task=edit'); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
 						</a>
 					</li>
 				<?php endif; ?>
 				<?php if ($password) : ?>
 					<li>
-						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: <?php echo Lang::txt('Change your password'); ?>" href="<?php echo Route::url($this->profile->getLink('changepassword')); ?>">
+						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: <?php echo Lang::txt('Change your password'); ?>" href="<?php echo Route::url($this->profile->link('changepassword')); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>
 						</a>
 					</li>
@@ -246,15 +242,15 @@ if (!$no_html)
 					}
 				?>
 			</div>
-			<div id="page_content" class="member_<?php echo $this->tab; ?>">
+			<div id="page_content" class="member_<?php echo $this->active; ?>">
 				<?php
 					}
-					if ($this->overwrite_content)
+					/*if ($this->overwrite_content)
 					{
 						echo $this->overwrite_content;
 					}
 					else
-					{
+					{*/
 						foreach ($this->sections as $s)
 						{
 							if ($s['html'] != '')
@@ -262,7 +258,7 @@ if (!$no_html)
 								echo $s['html'];
 							}
 						}
-					}
+					//}
 					if (!$no_html) {
 				?>
 			</div><!-- /#page_content -->

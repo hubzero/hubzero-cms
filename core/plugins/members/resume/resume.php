@@ -41,16 +41,16 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -78,9 +78,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -88,7 +88,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		// if this is the logged in user show them
-		if ($user->get('id') == $member->get('uidNumber') || $this->isEmployer($user, $member))
+		if ($user->get('id') == $member->get('id') || $this->isEmployer($user, $member))
 		{
 			$areas['resume'] = Lang::txt('PLG_MEMBERS_RESUME');
 			$areas['icon'] = 'f016';
@@ -138,7 +138,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if ($member)
 		{
-			$my =  $member->get('uidNumber') == User::get('id') ? 1 : 0;
+			$my =  $member->get('id') == User::get('id') ? 1 : 0;
 			$emp = $my && $emp ? 0 : $emp;
 		}
 
@@ -148,8 +148,8 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if the user is part of the administration group
 	 *
-	 * @param      integer $admin Var to set
-	 * @return     integer 1 = authorized, 0 = not
+	 * @param   integer  $admin  Var to set
+	 * @return  integer  1 = authorized, 0 = not
 	 */
 	public function isAdmin($admin = 0)
 	{
@@ -176,11 +176,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   array   $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -252,12 +252,12 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save data
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Component name
-	 * @param      object  $member   \Hubzero\User\Profile
-	 * @param      string  $task     Task to perform
-	 * @param      integer $emp      Is user employer?
-	 * @return     string
+	 * @param   object   $database  Database
+	 * @param   string   $option    Component name
+	 * @param   object   $member    Profile
+	 * @param   string   $task      Task to perform
+	 * @param   integer  $emp       Is user employer?
+	 * @return  string
 	 */
 	protected function _save($database, $option, $member, $task, $emp)
 	{
@@ -271,7 +271,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			$js = new \Components\Jobs\Tables\JobSeeker($database);
 
-			if (!$js->loadSeeker($member->get('uidNumber')))
+			if (!$js->loadSeeker($member->get('id')))
 			{
 				$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 				return '';
@@ -312,11 +312,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set a user as being a 'job seeker'
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Component name
-	 * @param      object  $member   \Hubzero\User\Profile
-	 * @param      integer $emp      Is user employer?
-	 * @return     string
+	 * @param   object   $database  Database
+	 * @param   string   $option    Component name
+	 * @param   object   $member    Profile
+	 * @param   integer  $emp       Is user employer?
+	 * @return  string
 	 */
 	protected function _activate($database, $option, $member, $emp)
 	{
@@ -325,7 +325,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$js = new \Components\Jobs\Tables\JobSeeker($database);
 
-		if (!$js->loadSeeker($member->get('uidNumber')))
+		if (!$js->loadSeeker($member->get('id')))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 			return '';
@@ -354,27 +354,27 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * View user's resumes
 	 *
-	 * @param      object  $database  JDatabase
-	 * @param      string  $option    Component name
-	 * @param      object  $member    \Hubzero\User\Profile
-	 * @param      integer $emp       Is user employer?
-	 * @param      integer $edittitle Parameter description (if any) ...
-	 * @param      integer $editpref  Parameter description (if any) ...
-	 * @return     string
+	 * @param   object   $database   Database
+	 * @param   string   $option     Component name
+	 * @param   object   $member     Profile
+	 * @param   integer  $emp        Is user employer?
+	 * @param   integer  $edittitle  Parameter description (if any) ...
+	 * @param   integer  $editpref   Parameter description (if any) ...
+	 * @return  string
 	 */
 	protected function _view($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
 	{
 		$out = '';
 
-		$self = $member->get('uidNumber') == User::get('id') ? 1 : 0;
+		$self = $member->get('id') == User::get('id') ? 1 : 0;
 
 		// get job seeker info on the user
 		$js = new \Components\Jobs\Tables\JobSeeker($database);
-		if (!$js->loadSeeker($member->get('uidNumber')))
+		if (!$js->loadSeeker($member->get('id')))
 		{
 			// make a new entry
 			$js = new \Components\Jobs\Tables\JobSeeker($database);
-			$js->uid = $member->get('uidNumber');
+			$js->uid = $member->get('id');
 			$js->active = 0;
 
 			// check content
@@ -398,9 +398,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// get active resume
 		$resume = new \Components\Jobs\Tables\Resume($database);
 		$file = '';
-		$path = $this->build_path($member->get('uidNumber'));
+		$path = $this->build_path($member->get('id'));
 
-		if ($resume->loadResume($member->get('uidNumber')))
+		if ($resume->loadResume($member->get('id')))
 		{
 			$file = PATH_APP . $path . DS . $resume->filename;
 			if (!is_file($file))
@@ -411,7 +411,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		// get seeker stats
 		$jobstats = new \Components\Jobs\Tables\JobStats($database);
-		$stats = $jobstats->getStats($member->get('uidNumber'), 'seeker');
+		$stats = $jobstats->getStats($member->get('id'), 'seeker');
 
 		$view = $this->view('default', 'resume');
 		$view->self   = $self;
@@ -441,8 +441,8 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build the path for uploading a resume to
 	 *
-	 * @param      integer $uid User ID
-	 * @return     mixed False if errors, string otherwise
+	 * @param   integer  $uid  User ID
+	 * @return  mixed    False if errors, string otherwise
 	 */
 	public function build_path($uid)
 	{
@@ -469,14 +469,14 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Upload a resume
 	 *
-	 * @param      object $database JDatabase
-	 * @param      string $option   Component name
-	 * @param      object $member   \Hubzero\User\Profile
-	 * @return     string
+	 * @param   object  $database  Database
+	 * @param   string  $option    Component name
+	 * @param   object  $member    Profile
+	 * @return  string
 	 */
 	protected function _upload($database, $option, $member)
 	{
-		$path = $this->build_path($member->get('uidNumber'));
+		$path = $this->build_path($member->get('id'));
 		$emp = Request::getInt('emp', 0);
 
 		if (!$path)
@@ -520,11 +520,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$row = new \Components\Jobs\Tables\Resume($database);
 
-		if (!$row->loadResume($member->get('uidNumber')))
+		if (!$row->loadResume($member->get('id')))
 		{
 			$row = new \Components\Jobs\Tables\Resume($database);
 			$row->id   = 0;
-			$row->uid  = $member->get('uidNumber');
+			$row->uid  = $member->get('id');
 			$row->main = 1;
 		}
 		else if (file_exists($path . DS . $row->filename)) // remove prev file first
@@ -533,7 +533,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			// Remove stats for prev resume
 			$jobstats = new \Components\Jobs\Tables\JobStats($database);
-			$jobstats->deleteStats($member->get('uidNumber'), 'seeker');
+			$jobstats->deleteStats($member->get('id'), 'seeker');
 		}
 
 		// Perform the upload
@@ -574,16 +574,16 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a resume
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Component name
-	 * @param      object  $member   \Hubzero\User\Profile
-	 * @param      integer $emp      Is user employer?
-	 * @return     string
+	 * @param   object   $database  Database
+	 * @param   string   $option    Component name
+	 * @param   object   $member    Profile
+	 * @param   integer  $emp       Is user employer?
+	 * @return  string
 	 */
 	protected function _deleteresume($database, $option, $member, $emp)
 	{
 		$row = new \Components\Jobs\Tables\Resume($database);
-		if (!$row->loadResume($member->get('uidNumber')))
+		if (!$row->loadResume($member->get('id')))
 		{
 			$this->setError(Lang::txt('Resume ID not found.'));
 			return '';
@@ -592,7 +592,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// Incoming file
 		$file = $row->filename;
 
-		$path = $this->build_path($member->get('uidNumber'));
+		$path = $this->build_path($member->get('id'));
 
 		if (!file_exists(PATH_APP . $path . DS . $file) or !$file)
 		{
@@ -611,11 +611,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 				// Remove stats for prev resume
 				$jobstats = new \Components\Jobs\Tables\JobStats($database);
-				$jobstats->deleteStats($member->get('uidNumber'), 'seeker');
+				$jobstats->deleteStats($member->get('id'), 'seeker');
 
 				// Do not include profile in search without a resume
 				$js = new \Components\Jobs\Tables\JobSeeker($database);
-				$js->loadSeeker($member->get('uidNumber'));
+				$js->loadSeeker($member->get('id'));
 				$js->bind(array('active' => 0));
 				if (!$js->store())
 				{
@@ -631,7 +631,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show a shortlist
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function onMembersShortlist()
 	{
@@ -646,9 +646,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieve a shortlist for a user
 	 *
-	 * @param      integer $oid  List ID
-	 * @param      integer $ajax Being displayed via AJAX?
-	 * @return     void
+	 * @param   integer  $oid   List ID
+	 * @param   integer  $ajax  Being displayed via AJAX?
+	 * @return  void
 	 */
 	public function shortlist($oid, $ajax=0)
 	{
@@ -694,8 +694,8 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return javascript to generate an alert prompt
 	 *
-	 * @param      string $msg Message to show
-	 * @return     string HTML
+	 * @param   string  $msg  Message to show
+	 * @return  string  HTML
 	 */
 	public function alert($msg)
 	{
@@ -705,11 +705,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Generate a select form
 	 *
-	 * @param      string $name  Field name
-	 * @param      array  $array Data to populate select with
-	 * @param      mixed  $value Value to select
-	 * @param      string $class Class to add
-	 * @return     string HTML
+	 * @param   string  $name   Field name
+	 * @param   array   $array  Data to populate select with
+	 * @param   mixed   $value  Value to select
+	 * @param   string  $class  Class to add
+	 * @return  string  HTML
 	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
@@ -729,8 +729,8 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Convert a timestamp to a more human readable string such as "3 days ago"
 	 *
-	 * @param      string $date Timestamp
-	 * @return     string
+	 * @param   string  $date  Timestamp
+	 * @return  string
 	 */
 	public static function nicetime($date)
 	{
@@ -780,12 +780,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'download'
+	 * Download a file
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      mixed $member Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   object  $member
+	 * @return  void
 	 */
 	protected function _download($member)
 	{
@@ -799,7 +797,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$uid = $member->get('uidNumber');
+		$uid = $member->get('id');
 
 		// Load the resume
 		$resume = new \Components\Jobs\Tables\Resume($database);
@@ -818,7 +816,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// Use user name as file name
-		$default_title  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('Resume')) : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
+		$default_title  = $member->get('givenName') ? $member->get('givenName') . ' ' . $member->get('surname') . ' ' . ucfirst(Lang::txt('Resume')) : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
 		$default_title .= substr($resume->filename, strripos($resume->filename, '.'));
 
 		// Initiate a new content server and serve up the file
@@ -841,10 +839,8 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			App::abort(500, Lang::txt('SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 }
 

@@ -36,7 +36,7 @@
 
 $this->css()->js();
 
-$base = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=citations';
+$base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations';
 
 //$allow_tags = $this->config->get("citation_allow_tags", "no");
 $allow_tags = "no";
@@ -407,7 +407,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 		<input type="hidden" name="uid" value="<?php echo $this->row->uid; ?>" />
 		<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
 		<input type="hidden" name="cid" value="<?php echo $this->row->id; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 		<input type="hidden" name="option" value="com_members" />
 		<input type="hidden" name="active" value="citations" />
 		<input type="hidden" name="action" value="save" />

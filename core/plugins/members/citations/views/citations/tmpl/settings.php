@@ -35,7 +35,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()->js();
-$base =	Route::url($this->member->getLink() . '&active=' . $this->_name);
+$base =	Route::url($this->member->link() . '&active=' . $this->_name);
 ?>
 
 <script type="text/javascript">
@@ -67,10 +67,10 @@ $jQ(document).ready(function(e) {
 				$('select[name="citation-format"]').find('option[value="custom"]').attr("selected",true);
 
 			}
-			if ($('select[name="citation-format"] option:contains(custom-group-<?php echo $this->member->get('uidNumber'); ?>)').attr("selected") != "selected")
+			if ($('select[name="citation-format"] option:contains(custom-group-<?php echo $this->member->get('id'); ?>)').attr("selected") != "selected")
 			{
 					// force the existing custom group format to be selected
-					$('select[name="citation-format"] option:contains(custom-group-<?php echo $this->member->get('uidNumber'); ?>)').attr("selected", true);
+					$('select[name="citation-format"] option:contains(custom-group-<?php echo $this->member->get('id'); ?>)').attr("selected", true);
 			}
 
 			$('#format-string').val($('#format-string').val() + $(this).attr('id'));
@@ -159,11 +159,11 @@ $jQ(document).ready(function(e) {
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_FORMAT'); ?>:
 								<select name="citation-format" id="format-selector">
 									<?php foreach ($this->formats as $format): ?>
-											<?php if ($format->style != 'custom-member-'.$this->member->get('uidNumber')): ?>
+											<?php if ($format->style != 'custom-member-'.$this->member->get('id')): ?>
 										<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
 											<?php echo $format->style; ?>
 										</option>
-										 <?php elseif ($format->style == 'custom-member-'.$this->member->get('uidNumber')): ?>
+										 <?php elseif ($format->style == 'custom-member-'.$this->member->get('id')): ?>
 											<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
 												<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_CUSTOM_FORMAT'); ?>
 											</option>

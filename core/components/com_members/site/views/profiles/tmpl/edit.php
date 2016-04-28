@@ -54,7 +54,7 @@ $html  = '<header id="content-header">'."\n";
 $html .= "\t".'<h2>'.$this->title.'</h2>'."\n";
 $html .= '<div id="content-header-extra">'."\n";
 $html .= "\t".'<ul id="useroptions">'."\n";
-$html .= "\t\t".'<li class="last"><a href="'.Route::url('index.php?option='.$this->option.'&task=cancel&id='. $this->profile->get('uidNumber')) .'">'.Lang::txt('CANCEL').'</a></li>'."\n";
+$html .= "\t\t".'<li class="last"><a href="'.Route::url('index.php?option='.$this->option.'&task=cancel&id='. $this->profile->get('id')) .'">'.Lang::txt('CANCEL').'</a></li>'."\n";
 $html .= "\t".'</ul>'."\n";
 $html .= '</div><!-- / #content-header-extra -->'."\n";
 $html .= '</header><!-- / #content-header-extra -->'."\n";
@@ -86,17 +86,17 @@ if ($this->authorized === 'admin') {
 
 //$html .= "\t".'<div class="explaination">'."\n";
 //$html .= "\t\t".'<p class="help">'.Lang::txt('E-mail may be changed with <a href="/hub/registration/edit">this form</a>.')."\n";
-//$html .= "\t\t".'<p class="help">'.Lang::txt('Passwords can be changed with <a href="'.Route::url('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=changepassword').'">this form</a>.').'</p>'."\n";
+//$html .= "\t\t".'<p class="help">'.Lang::txt('Passwords can be changed with <a href="'.Route::url('index.php?option='.$this->option.a.'id='.$this->profile->get('id').a.'task=changepassword').'">this form</a>.').'</p>'."\n";
 
 //$mwconfig = Component::params( 'com_mw' );
 //$enabled = $mwconfig->get('mw_on');
 //if ($enabled) {
-//	$html .= "\t\t".'<p class="help">'.Lang::txt('Request for more storage or sessions may be made with <a href="'.Route::url('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=raiselimit').'">this form</a>.').'</p>'."\n";
+//	$html .= "\t\t".'<p class="help">'.Lang::txt('Request for more storage or sessions may be made with <a href="'.Route::url('index.php?option='.$this->option.a.'id='.$this->profile->get('id').a.'task=raiselimit').'">this form</a>.').'</p>'."\n";
 //}
 //$html .= "\t".'</div>'."\n";
 $html .= "\t".'<fieldset>'."\n";
 $html .= "\t\t".'<legend>'.Lang::txt('Contact Information').'</legend>'."\n";
-$html .= "\t\t".'<input type="hidden" name="id" value="'. $this->profile->get('uidNumber') .'" />'."\n";
+$html .= "\t\t".'<input type="hidden" name="id" value="'. $this->profile->get('id') .'" />'."\n";
 $html .= "\t\t".'<input type="hidden" name="option" value="'. $this->option .'" />'."\n";
 $html .= "\t\t".'<input type="hidden" name="task" value="save" />'."\n";
 
@@ -714,7 +714,7 @@ if ($this->registration->OptIn != REG_HIDE) // newsletter Opt-In
 $html .= "\t".'<fieldset>'."\n";
 $html .= "<a name=\"memberpicture\"></a>";
 $html .= "\t\t".'<legend>'.Lang::txt('MEMBER_PICTURE').'</legend>'."\n";
-$html .= "\t\t".'<iframe width="100%" height="350" border="0" name="filer" id="filer" src="index.php?option='.$this->option.'&amp;controller=media&amp;tmpl=component&amp;file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('uidNumber').'"></iframe>'."\n";
+$html .= "\t\t".'<iframe width="100%" height="350" border="0" name="filer" id="filer" src="index.php?option='.$this->option.'&amp;controller=media&amp;tmpl=component&amp;file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('id').'"></iframe>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 $html .= Html::input('token');
 $html .= "\t".'<p class="submit"><input class="btn btn-success" type="submit" name="submit" value="'.Lang::txt('SAVE').'" /></p>'."\n";

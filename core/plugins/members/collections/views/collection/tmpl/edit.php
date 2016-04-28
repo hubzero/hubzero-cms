@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = $this->member->getLink() . '&active=' . $this->name;
+$base = $this->member->link() . '&active=' . $this->name;
 
 if (!$this->entry->exists())
 {
@@ -111,13 +111,13 @@ $this->css();
 	</fieldset>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
-	<input type="hidden" name="fields[object_id]" value="<?php echo $this->escape($this->member->get('uidNumber')); ?>" />
+	<input type="hidden" name="fields[object_id]" value="<?php echo $this->escape($this->member->get('id')); ?>" />
 	<input type="hidden" name="fields[object_type]" value="member" />
 	<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
 	<input type="hidden" name="fields[state]" value="<?php echo $this->escape($this->entry->get('state')); ?>" />
 
-	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="action" value="savecollection" />

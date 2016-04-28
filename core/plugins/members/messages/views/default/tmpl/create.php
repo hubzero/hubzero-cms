@@ -39,7 +39,7 @@ $tos = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'mbrs', 
 
 $this->css();
 ?>
-<form action="<?php echo Route::url($this->member->getLink() . '&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
+<form action="<?php echo Route::url($this->member->link() . '&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset class="hub-mail">
 		<div class="cont">
 			<h3><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
@@ -71,7 +71,7 @@ $this->css();
 		</div>
 	</fieldset>
 
-	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 	<input type="hidden" name="task" value="view" />
 	<input type="hidden" name="active" value="messages" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

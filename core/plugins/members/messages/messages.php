@@ -39,16 +39,16 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -56,7 +56,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		//if this is the logged in user show them
-		if ($user->get('id') == $member->get('uidNumber'))
+		if ($user->get('id') == $member->get('id'))
 		{
 			$areas['messages'] = Lang::txt('PLG_MEMBERS_MESSAGES');
 			$areas['icon'] = '2709';
@@ -68,11 +68,11 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -82,14 +82,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			'html' => '',
 			'metadata' => ''
 		);
-
-		/*
-		// Is the user logged in?
-		if (!$authorized)
-		{
-			return $arr;
-		}
-		*/
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas))
@@ -177,8 +169,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		//get the number of unread messages
 		$recipient = new \Hubzero\Message\Recipient($database);
-		$inboxCount = $recipient->getMessagesCount($member->get('uidNumber'), array('state' => '0'));
-		$unreadMessages = $recipient->getUnreadMessages($member->get('uidNumber'), 0);
+		$inboxCount = $recipient->getMessagesCount($member->get('id'), array('state' => '0'));
+		$unreadMessages = $recipient->getUnreadMessages($member->get('id'), 0);
 
 		//return total message count
 		$arr['metadata']['count'] = $inboxCount;
@@ -187,7 +179,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($unreadMessages) > 0)
 		{
 			$title = count($unreadMessages) . ' unread message(s).';
-			$link = Route::url($member->getLink() . '&active=messages');
+			$link = Route::url($member->link() . '&active=messages');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><strong>Messages Alert</strong>{$title}</span></a>";
 		}
 
@@ -230,9 +222,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$recipient = new \Hubzero\Message\Recipient($database);
 
-		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
+		$view->total = $recipient->getMessagesCount($member->get('id'), $filters);
 
-		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
+		$view->rows = $recipient->getMessages($member->get('id'), $filters);
 
 		$pageNav = new \Hubzero\Pagination\Paginator(
 			$view->total,
@@ -243,7 +235,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$xmc = new \Hubzero\Message\Component($database);
 		$view->components = $xmc->getComponents();
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
 		$pageNav->setAdditionalUrlParam('active', 'messages');
 		$pageNav->setAdditionalUrlParam('task', 'inbox');
 		$pageNav->setAdditionalUrlParam('action', '');
@@ -287,9 +279,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$recipient = new \Hubzero\Message\Recipient($database);
 
-		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
+		$view->total = $recipient->getMessagesCount($member->get('id'), $filters);
 
-		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
+		$view->rows = $recipient->getMessages($member->get('id'), $filters);
 
 		$pageNav = new \Hubzero\Pagination\Paginator(
 			$view->total,
@@ -300,7 +292,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$xmc = new \Hubzero\Message\Component($database);
 		$view->components = $xmc->getComponents();
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
 		$pageNav->setAdditionalUrlParam('active', 'messages');
 		$pageNav->setAdditionalUrlParam('task', 'archive');
 		$pageNav->setAdditionalUrlParam('action', '');
@@ -344,9 +336,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$recipient = new \Hubzero\Message\Recipient($database);
 
-		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
+		$view->total = $recipient->getMessagesCount($member->get('id'), $filters);
 
-		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
+		$view->rows = $recipient->getMessages($member->get('id'), $filters);
 
 		$pageNav = new \Hubzero\Pagination\Paginator(
 			$view->total,
@@ -357,7 +349,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$xmc = new \Hubzero\Message\Component($database);
 		$view->components = $xmc->getComponents();
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
 		$pageNav->setAdditionalUrlParam('active', 'messages');
 		$pageNav->setAdditionalUrlParam('task', 'trash');
 		$pageNav->setAdditionalUrlParam('action', '');
@@ -400,7 +392,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			0,
 			'int'
 		);
-		$filters['created_by'] = $member->get('uidNumber');
+		$filters['created_by'] = $member->get('id');
 
 		$recipient = new \Hubzero\Message\Message($database);
 
@@ -414,7 +406,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$filters['limit']
 		);
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
 		$pageNav->setAdditionalUrlParam('active', 'messages');
 		$pageNav->setAdditionalUrlParam('task', 'sent');
 		$pageNav->setAdditionalUrlParam('action', '');
@@ -471,7 +463,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$notify = new \Hubzero\Message\Notify($database);
 
 		// Get the user's selected methods
-		$methods = $notify->getRecords($member->get('uidNumber'));
+		$methods = $notify->getRecords($member->get('id'));
 		if ($methods)
 		{
 			foreach ($methods as $method)
@@ -563,7 +555,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$xmessage->message = stripslashes($xmessage->message);
 
 		$xmr = new \Hubzero\Message\Recipient($database);
-		$xmr->loadRecord($mid, $member->get('uidNumber'));
+		$xmr->loadRecord($mid, $member->get('id'));
 
 		$xmessage->message = str_replace("\n","\n ",$xmessage->message);
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
@@ -578,15 +570,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$xseen = new \Hubzero\Message\Seen($database);
 		$xseen->mid = $mid;
-		$xseen->uid = $member->get('uidNumber');
+		$xseen->uid = $member->get('id');
 		$xseen->loadRecord();
 
-		if (User::get('id') == $member->get('uidNumber'))
+		if (User::get('id') == $member->get('id'))
 		{
 			if (!$xseen->whenseen || $xseen->whenseen == $database->getNullDate())
 			{
 				$xseen->mid = $mid;
-				$xseen->uid = $member->get('uidNumber');
+				$xseen->uid = $member->get('id');
 				$xseen->whenseen = Date::toSql();
 				$xseen->store(true);
 			}
@@ -640,7 +632,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
-				$recipient->uid = $member->get('uidNumber');
+				$recipient->uid = $member->get('id');
 				$recipient->loadRecord();
 				$recipient->state = 1;
 				if (!$recipient->store())
@@ -650,7 +642,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 				$xseen = new \Hubzero\Message\Seen($database);
 				$xseen->mid = $mid;
-				$xseen->uid = $member->get('uidNumber');
+				$xseen->uid = $member->get('id');
 				$xseen->loadRecord();
 				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
 				{
@@ -665,7 +657,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return App::redirect(Route::url($member->getLink() . '&active=messages&task=' . Request::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -691,7 +683,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
-				$recipient->uid = $member->get('uidNumber');
+				$recipient->uid = $member->get('id');
 				$recipient->loadRecord();
 				$recipient->state = 0;
 				if (!$recipient->store())
@@ -706,7 +698,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return App::redirect(Route::url($member->getLink() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -732,12 +724,12 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
-				$recipient->uid = $member->get('uidNumber');
+				$recipient->uid = $member->get('id');
 				$recipient->loadRecord();
 
 				$xseen = new \Hubzero\Message\Seen($database);
 				$xseen->mid = $mid;
-				$xseen->uid = $member->get('uidNumber');
+				$xseen->uid = $member->get('id');
 				$xseen->loadRecord();
 				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
 				{
@@ -759,7 +751,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return App::redirect(Route::url($member->getLink() . '&active=messages&task=' . Request::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -773,7 +765,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	public function emptytrash($database, $option, $member)
 	{
 		$recipient = new \Hubzero\Message\Recipient($database);
-		$recipient->uid = $member->get('uidNumber');
+		$recipient->uid = $member->get('id');
 		if (!$recipient->deleteTrash())
 		{
 			$this->setError($recipient->getError());
@@ -805,7 +797,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->mid = $mid;
-				$recipient->uid = $member->get('uidNumber');
+				$recipient->uid = $member->get('id');
 				$recipient->loadRecord();
 				if (!$recipient->delete())
 				{
@@ -819,7 +811,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return App::redirect(Route::url($member->getLink() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -845,7 +837,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			{
 				$xseen = new \Hubzero\Message\Seen($database);
 				$xseen->mid = $mid;
-				$xseen->uid = $member->get('uidNumber');
+				$xseen->uid = $member->get('id');
 				//$xseen->loadRecord();
 				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
 				{
@@ -860,7 +852,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return App::redirect(Route::url($member->getLink() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -882,7 +874,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			// Check for request forgeries
 			Request::checkToken(['get', 'post']);
 
-			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
+			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('id') . " AND `mid` IN(" . implode(',', $ids) . ")";
 			$database = App::get('db');
 			$database->setQuery($sql);
 			$database->query();
@@ -894,7 +886,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return App::redirect(Route::url($member->getLink() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -927,7 +919,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					{
 						// Instantiate a Notify object and set its values
 						$notify = new \Hubzero\Message\Notify($database);
-						$notify->uid = $member->get('uidNumber');
+						$notify->uid = $member->get('id');
 						$notify->method = $v;
 						$notify->type = $key;
 						$notify->priority = 1;
@@ -964,7 +956,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			}
 
 			// If they previously had everything turned off, we need to remove that entry saying so
-			$records = $notify->getRecords($member->get('uidNumber'), 'all');
+			$records = $notify->getRecords($member->get('id'), 'all');
 			if ($records)
 			{
 				foreach ($records as $record)
@@ -979,9 +971,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			// It ensures we can know the difference between someone who has never changed their settings (thus, no database entries)
 			// and someone who purposely wants everything turned off.
 			$notify = new \Hubzero\Message\Notify($database);
-			$notify->uid = $member->get('uidNumber');
+			$notify->uid = $member->get('id');
 
-			$records = $notify->getRecords($member->get('uidNumber'), 'all');
+			$records = $notify->getRecords($member->get('id'), 'all');
 			if (!$records)
 			{
 				$notify->clearAll();
@@ -997,7 +989,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Push through to the settings view
 		$this->addPluginMessage(Lang::txt('You have successfully saved your message settings.'), 'passed');
-		return App::redirect(Route::url($member->getLink() . '&active=messages&action=settings'));
+		return App::redirect(Route::url($member->link() . '&active=messages&action=settings'));
 	}
 
 	/**
@@ -1046,7 +1038,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			if (!$no_html)
 			{
 				$this->addPluginMessage(Lang::txt('You must select a message recipient and enter a message.'), 'error');
-				return $this->redirect(Route::url($member->getLink() . '&active=messages&action=new'));
+				return $this->redirect(Route::url($member->link() . '&active=messages&action=new'));
 			}
 			return App::abort(500, Lang::txt('You must select a message recipient and enter a message.'));
 		}
@@ -1067,7 +1059,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (!$no_html)
 		{
 			$this->addPluginMessage(Lang::txt('You have successfully sent a message.'), 'passed');
-			return App::redirect(Route::url($member->getLink() . '&active=messages&task=inbox'));
+			return App::redirect(Route::url($member->link() . '&active=messages&task=inbox'));
 		}
 	}
 

@@ -118,7 +118,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$obj = new \Components\Citations\Tables\Citation($this->database);
 		$this->grand_total = $obj->getCount(array(
 			'scope'    => 'member',
-			'scope_id' => $member->get('uidNumber')
+			'scope_id' => $member->get('id')
 		), true);
 
 		$arr['metadata']['count'] = $this->grand_total;
@@ -129,7 +129,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$this->member   = $member;
 			$this->option   = $option;
 
-			if (User::get('id') == $this->member->get('uidNumber'))
+			if (User::get('id') == $this->member->get('id'))
 			{
 				$this->params->set('access-manage', true);
 			}
@@ -190,16 +190,16 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	private function browseAction()
 	{
 		 // Instantiate a new citations object
-		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->member->get('uidNumber'));
+		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->member->get('id'));
 
 		$count = clone $obj['citations'];
 		$count = $count->count();
-		$isAdmin = $this->member->get('uidNumber') == User::get('id');
-		$config =  $this->member->getParameters();
+		$isAdmin = $this->member->get('id') == User::get('id');
+		$config =  $this->member->params;
 
 		$total = \Components\Citations\Models\Citation::all()
 			->where('scope', '=', 'member')
-			->where('scope_id', '=', $this->member->get('uidNumber'))
+			->where('scope_id', '=', $this->member->get('id'))
 			->where('published', '!=', \Components\Citations\Models\Citation::STATE_DELETED)
 			->count();
 
@@ -207,7 +207,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			$view = $this->view('intro');
 			$view->member = $this->member;
-			$view->isAdmin = User::get('id') == $this->member->get('uidNumber');
+			$view->isAdmin = User::get('id') == $this->member->get('id');
 		}
 		elseif ((int) $count == 0 && $isAdmin && isset($display) && $total <= 0)
 		{
@@ -418,7 +418,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			{
 				// redirect
 				App::redirect(
-					Route::url($this->member->getLink() . '&active=' . $this->_name),
+					Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
 					'warning'
 				);
@@ -540,7 +540,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// set scope & scope id in save so no one can mess with hidden form inputs
 		$scope    = 'member';
-		$scopeID = $this->member->get('uidNumber');
+		$scopeID = $this->member->get('id');
 
 		// get tags
 		$tags = trim(Request::getVar('tags', ''));
@@ -657,7 +657,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// resdirect after save
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=' . $this->_name),
+			Route::url($this->member->link() . '&active=' . $this->_name),
 			($this->getError() ? $this->getError() : Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_SAVED')),
 			($this->getError() ? 'error' : 'success')
 		);
@@ -694,10 +694,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$citation->set('published', $citation::STATE_DELETED);
 
 			if ($citation->save() && $citation->scope == 'member'
-					&& $citation->scope_id == $this->member->get('uidNumber'))
+					&& $citation->scope_id == $this->member->get('id'))
 			{
 				App::redirect(
-					Route::url($this->member->getLink() . '&active=' . $this->_name),
+					Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
 					'success'
 				);
@@ -706,7 +706,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			else
 			{
 				App::redirect(
-					Route::url($this->member->getLink() . '&active=' . $this->_name),
+					Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
 					'error'
 				);
@@ -725,7 +725,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			{
 				// redirect and warn
 				App::redirect(
-					Route::url($this->member->getLink() . '&active=' . $this->_name),
+					Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
 					'warning'
 					);
@@ -742,14 +742,14 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 						// update the record
 						if ($citation->save() && $citation->scope == 'member'
-						&& $citation->scope_id == $this->member->get('uidNumber'))
+						&& $citation->scope_id == $this->member->get('id'))
 						{
 							array_push($deleted, $id);
 						}
 					}
 
 					App::redirect(
-						Route::url($this->member->getLink() . '&active=' . $this->_name),
+						Route::url($this->member->link() . '&active=' . $this->_name),
 						Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
 						'success'
 					);
@@ -758,7 +758,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			 else
 			 {
 					App::redirect(
-						Route::url($this->member->getLink() . '&active=' . $this->_name),
+						Route::url($this->member->link() . '&active=' . $this->_name),
 						Lang::txt('PLG_MEMBERS_CITATIONS_NO_SUCH_CITATION'),
 						'error'
 					);
@@ -783,7 +783,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$format = Request::getVar('citation-format', '');
 
 			// craft a clever name
-			$name =  "custom-member-" . $this->member->get('uidNumber');
+			$name =  "custom-member-" . $this->member->get('id');
 
 			// fetch or create new format
 			$citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
@@ -826,7 +826,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			{
 				// failed
 				App::redirect(
-					Route::url($this->member->getLink() . '&active=' . $this->_name),
+					Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_NOT_SAVED'),
 					'error'
 				);
@@ -834,7 +834,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			// redirect after save
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name),
+				Route::url($this->member->link() . '&active=' . $this->_name),
 				Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_SAVED'),
 				'success'
 			);
@@ -871,7 +871,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			// get the name of the current format (see if it's custom)
 			// the name of the custom format
-			$name = "custom-member-" . $this->member->get('uidNumber');
+			$name = "custom-member-" . $this->member->get('id');
 
 			$custom = \Components\Citations\Models\Format::all()->where('style', 'LIKE', $name)->count();
 
@@ -922,11 +922,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			{
 				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 
-				if ($citation->uid != $this->member->get('uidNumber'))
+				if ($citation->uid != $this->member->get('id'))
 				{
 					// redirect
 					App::redirect(
-							Route::url($this->member->getLink() . '&active=' . $this->_name),
+							Route::url($this->member->link() . '&active=' . $this->_name),
 							Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
 							'warning'
 						);
@@ -946,10 +946,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 				// save the state
 				if ($citation->save() && $citation->scope == 'member'
-						&& $citation->scope_id == $this->member->get('uidNumber'))
+						&& $citation->scope_id == $this->member->get('id'))
 				{
 					App::redirect(
-						Route::url($this->member->getLink() . '&active=' . $this->_name),
+						Route::url($this->member->link() . '&active=' . $this->_name),
 						Lang::txt($string),
 						'success'
 					);
@@ -958,7 +958,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				else
 				{
 					App::redirect(
-						Route::url($this->member->getLink() . '&active=' . $this->_name),
+						Route::url($this->member->link() . '&active=' . $this->_name),
 						Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
 						'error'
 					);
@@ -976,7 +976,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				{
 					// redirect and warn
 					App::redirect(
-						Route::url($this->member->getLink() . '&active=' . $this->_name),
+						Route::url($this->member->link() . '&active=' . $this->_name),
 						Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
 						'warning'
 						);
@@ -1003,13 +1003,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 					// save the state
 					if ($citation->save() && $citation->scope == 'member'
-						&& $citation->scope_id == $this->member->get('uidNumber'))
+						&& $citation->scope_id == $this->member->get('id'))
 					{
 						array_push($published, $id);
 					}
 				}
 					App::redirect(
-						Route::url($this->member->getLink() . '&active=' . $this->_name),
+						Route::url($this->member->link() . '&active=' . $this->_name),
 						Lang::txt($string),
 						'success'
 					);
@@ -1018,7 +1018,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			else
 			{
 				App::redirect(
-							Route::url($this->member->getLink() . '&active=' . $this->_name),
+							Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
 					'error'
 				);
@@ -1034,7 +1034,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	private function loginAction()
 	{
 		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=' . $this->action, false, true))),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->link() . '&active=' . $this->_name . '&action=' . $this->action, false, true))),
 			Lang::txt('PLG_MEMBERS_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);
@@ -1107,7 +1107,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if ($filename == '')
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
 				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE'),
 				'error'
 			);
@@ -1118,7 +1118,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if ($file->getSize() > 4000000)
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
 				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_FILE_TOO_BIG'),
 				'error'
 			);
@@ -1139,7 +1139,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if (!$citations)
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
 				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_PROCESS_FAILURE'),
 				'error'
 			);
@@ -1166,7 +1166,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=review')
+			Route::url($this->member->link() . '&active=' . $this->_name . '&action=review')
 		);
 	}
 
@@ -1195,7 +1195,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if (!$citations_require_attention && !$citations_require_no_attention)
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
 				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);
@@ -1249,7 +1249,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if (!$cites_require_attention && !$cites_require_no_attention)
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
 				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);
@@ -1263,7 +1263,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$this->importer->set('user', User::get('id'));
 		$this->importer->setTags($allow_tags == 'yes');
 		$this->importer->setBadges($allow_badges == 'yes');
-		$this->importer->set('scope_id', $this->member->get('uidNumber'));
+		$this->importer->set('scope_id', $this->member->get('id'));
 		$this->importer->set('scope', 'member');
 
 		// Process
@@ -1308,7 +1308,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		//redirect
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=saved')
+			Route::url($this->member->link() . '&active=' . $this->_name . '&action=saved')
 		);
 	}
 
@@ -1342,7 +1342,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if (!$citations_saved && !$citations_not_saved)
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
 				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);

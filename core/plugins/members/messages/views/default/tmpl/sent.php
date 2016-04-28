@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 ?>
-<form action="<?php echo Route::url($this->member->getLink() . '&active=messages&task=sent'); ?>" method="post">
+<form action="<?php echo Route::url($this->member->link() . '&active=messages&task=sent'); ?>" method="post">
 	<table class="data">
 		<thead>
 			<tr>
@@ -58,7 +58,7 @@ $this->css()
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
 
 						//url to view message
-						$url = Route::url($this->member->getLink() . '&active=messages&msg=' . $row->id);
+						$url = Route::url($this->member->link() . '&active=messages&msg=' . $row->id);
 
 						//get the message subject
 						$subject = $row->subject;

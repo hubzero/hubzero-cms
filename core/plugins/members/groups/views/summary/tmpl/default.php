@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = $this->member->getLink() . '&active=groups';
+$base = $this->member->link() . '&active=groups';
 
 $this->css();
 ?>

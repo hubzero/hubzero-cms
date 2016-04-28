@@ -103,19 +103,13 @@ class Passportv1_0 extends base
 		}
 
 		// Find user by email
-		$user_email = \Hubzero\User\Profile\Helper::find_by_email($user_email);
-
-		if (empty($user_email[0]))
-		{
-			App::abort(404, 'User was not found');
-		}
-		$user = \Hubzero\User\Profile::getInstance($user_email[0]);
-		if ($user === false)
+		$user = \Hubzero\User\User::oneByEmail($user_email);
+		if (!$user->get('id'))
 		{
 			App::abort(404, 'User was not found');
 		}
 
-		$user_id = $user->get('uidNumber');
+		$user_id = $user->get('id');
 
 		// Get section from provider badge id
 		$section_badge = \Components\Courses\Models\Section\Badge::loadByProviderBadgeId($badge_id);

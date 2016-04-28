@@ -99,7 +99,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		{
 			$content = '';
 			$this->user   = $user;
-			$this->member = $member;
+			$this->member = \Hubzero\User\Profile::getInstance($member->get('id'));
 			$this->option = $option;
 			$this->areas  = $areas;
 

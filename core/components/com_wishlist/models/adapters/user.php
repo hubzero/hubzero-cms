@@ -66,7 +66,7 @@ class User extends Base
 		$this->_segments['id']     = $referenceid;
 		$this->_segments['active'] = 'wishlist';
 
-		$this->_item = \Hubzero\User\Profile::getInstance($this->get('scope_id'));
+		$this->_item = \Hubzero\User\User::oneOrNew($this->get('scope_id'));
 	}
 
 	/**
@@ -220,7 +220,7 @@ class User extends Base
 				'index.php?option=' . $this->get('option')
 			);
 			Pathway::append(
-				stripslashes($this->_item->title),
+				stripslashes($this->_item->get('name')),
 				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
 			);
 			Pathway::append(

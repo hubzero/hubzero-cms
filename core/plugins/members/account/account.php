@@ -45,16 +45,16 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin  name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -62,7 +62,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		// If this is the logged in user show them
-		if ($user->get('id') == $member->get('uidNumber'))
+		if ($user->get('id') == $member->get('id'))
 		{
 			$areas['account'] = Lang::txt('PLG_MEMBERS_ACCOUNT');
 			$areas['icon'] = 'f085';
@@ -74,11 +74,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return  array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -142,7 +142,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($returnmeta)
 		{
 			// Make sure only I can see this
-			if ($member->get('uidNumber') == $user->get("id"))
+			if ($member->get('id') == $user->get("id"))
 			{
 				// Make sure a password is set and information has been found about it
 				if ($passinfo = $this->getPassInfo())
@@ -151,14 +151,14 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 					if ($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0)
 					{
 						$title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
-						$link  = Route::url($member->getLink() . '&active=account#password');
+						$link  = Route::url($member->link() . '&active=account#password');
 
 						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
 					}
 					else if ($passinfo['diff'] < 0)
 					{
 						$title = 'Your password has expired!';
-						$link  = Route::url($member->getLink() . '&active=account#password');
+						$link  = Route::url($member->link() . '&active=account#password');
 
 						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
 					}
@@ -186,7 +186,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Get linked accounts, if any
 		Plugin::import('authentication');
 		$view->domains_avail = Plugin::byType('authentication');
-		$view->hzalaccounts  = \Hubzero\Auth\Link::find_by_user_id($this->user->get("id"));
+		$view->hzalaccounts  = \Hubzero\Auth\Link::find_by_user_id($this->user->get('id'));
 
 		// Put the used domains into an array with details available from the providers (if applicable)
 		$view->domains_used = array();
@@ -238,7 +238,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Determine what type of password change the user needs
-		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 		if (!empty($hzup->passhash))
 		{
 			// A password has already been set, now check if they're logged in with a linked account
@@ -309,7 +309,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		jimport('joomla.user.helper');
 
 		// Make sure they're logged in
-		if ($this->user->get('guest'))
+		if ($this->user->isGuest())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' .
@@ -321,7 +321,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make sure this is an auth link account (i.e. no password set)
-		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 		if (!empty($hzup->passhash))
 		{
 			App::abort(404, Lang::txt('PLG_MEMBERS_ACCOUNT_NOT_LINKED_ACCOUNT'));
@@ -341,7 +341,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Redirect user to confirm token view page
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=account&task=confirmtoken'),
+			Route::url($this->member->link() . '&active=account&task=confirmtoken'),
 			Lang::txt('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'),
 			'warning'
 		);
@@ -443,7 +443,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Redirect user to set local password view
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=account&task=setlocalpass'),
+			Route::url($this->member->link() . '&active=account&task=setlocalpass'),
 			Lang::txt('Please provide a new password'),
 			'warning'
 		);
@@ -587,7 +587,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// No errors, so let's move on - encrypt the password and update the profile
-		$result = \Hubzero\User\Password::changePassword($profile->get('uidNumber'), $password1);
+		$result = \Hubzero\User\Password::changePassword($profile->get('id'), $password1);
 
 		// Save the changes
 		if (!$result)
@@ -608,7 +608,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			echo json_encode(
 				array(
 					"success" => true,
-					"redirect" => Route::url($this->member->getLink() . '&active=account'))
+					"redirect" => Route::url($this->member->link() . '&active=account'))
 				);
 			exit();
 		}
@@ -616,7 +616,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect user to confirm view page
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=account'),
+				Route::url($this->member->link() . '&active=account'),
 				Lang::txt('Password reset successful'),
 				'passed'
 			);
@@ -643,11 +643,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$hzal = \Hubzero\Auth\Link::find_by_id($hzal_id);
 
 		// Determine what type of password change the user needs
-		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
-		if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
+		if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('id'))) <= 1)
 		{
 			App::redirect(
-				Route::url($this->member->getLink() . '&active=account'),
+				Route::url($this->member->link() . '&active=account'),
 				Lang::txt('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'),
 				'warning'
 			);
@@ -662,7 +662,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Set the redirect
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=account'),
+			Route::url($this->member->link() . '&active=account'),
 			Lang::txt('PLG_MEMBERS_ACCOUNT_UNLINKED'),
 			'passed'
 		);
@@ -675,7 +675,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function getPassInfo()
 	{
-		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
+		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 
 		// Check to see if password expiration is even enforced
 		if (empty($hzup->passhash) || $hzup->shadowMax === NULL)
@@ -766,7 +766,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Set the redirect
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=account'),
+			Route::url($this->member->link() . '&active=account'),
 			Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'),
 			'passed'
 		);
@@ -902,7 +902,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	{
 		// Create the email with the new token
 		$url      = rtrim(Request::base(),'/');
-		$return   = $url . Route::url($this->member->getLink() . '&acitve=account&task=confirmtoken');
+		$return   = $url . Route::url($this->member->link() . '&acitve=account&task=confirmtoken');
 		$subject  = 'Set local password, confirmation token for ' . $url;
 		$message  = 'You have requested to set your local password at ' . $url . "\n\n";
 		$message .= 'Your reset token is: ' . $token;

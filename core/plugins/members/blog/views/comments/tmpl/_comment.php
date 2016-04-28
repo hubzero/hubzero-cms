@@ -88,7 +88,7 @@ else
 					<input type="hidden" name="comment[created]" value="<?php echo $this->comment->get('created'); ?>" />
 					<input type="hidden" name="comment[created_by]" value="<?php echo $this->comment->get('created_by'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+					<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 					<input type="hidden" name="active" value="blog" />
 					<input type="hidden" name="task" value="view" />
 					<input type="hidden" name="action" value="savecomment" />
@@ -158,7 +158,7 @@ else
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="comment[state]" value="1" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+						<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 						<input type="hidden" name="active" value="blog" />
 						<input type="hidden" name="task" value="view" />
 						<input type="hidden" name="action" value="savecomment" />

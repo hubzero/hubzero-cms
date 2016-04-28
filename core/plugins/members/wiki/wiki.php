@@ -101,15 +101,15 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have a member ID?
-		if ($member instanceof \Hubzero\User\Profile)
+		if ($member instanceof \Hubzero\User\User)
 		{
-			if (!$member->get('uidNumber'))
+			if (!$member->get('id'))
 			{
 				return array();
 			}
 			else
 			{
-				$uidNumber = $member->get('uidNumber');
+				$uidNumber = $member->get('id');
 				$username  = $member->get('username');
 			}
 		}

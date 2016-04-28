@@ -41,7 +41,7 @@ $this->css();
 
 <section class="main section">
 
-	<form action="<?php echo Route::url($this->profile->getLink() . '&task=raiselimit'); ?>" method="post" name="hubForm" id="hubForm">
+	<form action="<?php echo Route::url($this->profile->link() . '&task=raiselimit'); ?>" method="post" name="hubForm" id="hubForm">
 		<div class="explaination">
 			<p class="info">
 				When you have time, please leave some <a href="<?php echo Route::url('index.php?option=com_feedback'); ?>">feedback</a>. We would like to know a little more about how you are using the site so that we can make improvements for everyone.
@@ -74,7 +74,7 @@ $this->css();
 					<tr>
 						<th>User Login:</th>
 						<td colspan="2">
-							<a href="<?php echo Route::url($this->profile->getLink()); ?>"><?php echo $this->escape($this->profile->get('username')); ?></a>
+							<a href="<?php echo Route::url($this->profile->link()); ?>"><?php echo $this->escape($this->profile->get('username')); ?></a>
 							<input name="login" id="login" type="hidden" value="<?php echo $this->escape($this->profile->get('username'));?>" />
 						</td>
 					</tr>

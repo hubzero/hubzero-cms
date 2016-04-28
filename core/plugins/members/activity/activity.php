@@ -55,7 +55,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($user->get('id') == $member->get('uidNumber'))
+		if ($user->get('id') == $member->get('id'))
 		{
 			$areas['activity'] = Lang::txt('PLG_MEMBERS_ACTIVITY');
 			$areas['icon']     = 'f056';
@@ -105,7 +105,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 		// Get the number of unread messages
 		$unread = \Hubzero\Activity\Recipient::all()
 			->whereEquals('scope', 'user')
-			->whereEquals('scope_id', $member->get('uidNumber'))
+			->whereEquals('scope_id', $member->get('id'))
 			->whereEquals('state', 1)
 			->whereEquals('viewed', '0000-00-00 00:00:00')
 			->total();
@@ -130,7 +130,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 					$log->select('*');
 				}])
 			->whereEquals('scope', 'user')
-			->whereEquals('scope_id', $this->member->get('uidNumber'))
+			->whereEquals('scope_id', $this->member->get('id'))
 			->whereEquals('state', 1)
 			->ordered()
 			->paginated()

@@ -37,7 +37,7 @@ $this->css()
 <?php if (!$this->components) { ?>
 	<p class="error"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_NO_COMPONENTS_FOUND'); ?></p>
 <?php } else { ?>
-	<form action="<?php echo Route::url($this->member->getLink() . '&active=messages'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($this->member->link() . '&active=messages'); ?>" method="post" id="hubForm" class="full">
 		<input type="hidden" name="action" value="savesettings" />
 		<table class="settings">
 			<caption>

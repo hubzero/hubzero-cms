@@ -202,7 +202,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 						{
 							if (!in_array($individuals[$i], $allmembers))
 							{
-								$kuser = \Hubzero\User\Profile::getInstance($individuals[$i]);
+								$kuser = User::getInstance($individuals[$i]);
 							?>
 							<tr>
 								<td><?php echo $k; ?>.</td>
@@ -267,7 +267,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 						{
 							if (!in_array($advisory[$i], $allmembers))
 							{
-								$quser = \Hubzero\User\Profile::getInstance($advisory[$i]);
+								$quser = User::getInstance($advisory[$i]);
 							?>
 							<tr>
 								<td><?php echo $k; ?>.</td>

@@ -106,14 +106,14 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 			$view->member = $member;
 			$view->option = $option;
-			$view->contribution = $this->first_last_contribution($member->get('uidNumber'));
-			$view->rank = $this->get_rank($member->get('uidNumber'));
+			$view->contribution = $this->first_last_contribution($member->get('id'));
+			$view->rank = $this->get_rank($member->get('id'));
 
-			$view->total_tool_users    = $this->get_total_stats($member->get('uidNumber'), 'tool_users',14);
-			$view->total_andmore_users = $this->get_total_stats($member->get('uidNumber'), 'andmore_users',14);
-			$view->citation_count      = self::get_citationcount(null, $member->get('uidNumber'));
+			$view->total_tool_users    = $this->get_total_stats($member->get('id'), 'tool_users',14);
+			$view->total_andmore_users = $this->get_total_stats($member->get('id'), 'andmore_users',14);
+			$view->citation_count      = self::get_citationcount(null, $member->get('id'));
 
-			$cluster = self::get_classroom_usage($member->get('uidNumber'));
+			$cluster = self::get_classroom_usage($member->get('id'));
 			$view->cluster_classes = $cluster['classes'];
 			$view->cluster_users   = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
@@ -122,25 +122,25 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
-					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get("uidNumber")).'") AND (r.access=0 OR r.access=3)
+					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get('id')).'") AND (r.access=0 OR r.access=3)
 					ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
 			$view->tool_stats    = $database->loadObjectList();
-			$view->tool_total_12 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 12);
-			$view->tool_total_14 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 14);
+			$view->tool_total_12 = $this->get_total_stats($member->get('id'), 'tool_users', 12);
+			$view->tool_total_14 = $this->get_total_stats($member->get('id'), 'tool_users', 14);
 
 			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
-					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.intval($member->get("uidNumber")).'") AND (r.access=0 OR r.access=3)
+					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.intval($member->get('id')).'") AND (r.access=0 OR r.access=3)
 					ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
 			$view->andmore_stats    = $database->loadObjectList();
-			$view->andmore_total_12 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 12);
-			$view->andmore_total_14 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 14);
+			$view->andmore_total_12 = $this->get_total_stats($member->get('id'), 'andmore_users', 12);
+			$view->andmore_total_14 = $this->get_total_stats($member->get('id'), 'andmore_users', 14);
 
 			foreach ($this->getErrors() as $error)
 			{

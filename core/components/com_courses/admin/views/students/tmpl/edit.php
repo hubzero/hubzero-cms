@@ -45,7 +45,7 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
-$profile = \Hubzero\User\Profile::getInstance($this->row->get('user_id'));
+$profile = User::getInstance($this->row->get('user_id'));
 
 $js = '';
 

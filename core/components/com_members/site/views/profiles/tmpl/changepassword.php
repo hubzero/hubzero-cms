@@ -41,7 +41,7 @@ $this->css()
 
 	<div id="content-header-extra">
 		<p>
-			<a class="member btn" href="<?php echo Route::url('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber')); ?>"><?php echo Lang::txt('COM_MEMBERS_MYACCOUNT'); ?></a></li>
+			<a class="member btn" href="<?php echo Route::url('index.php?option='.$this->option.'&id='.$this->profile->get('id')); ?>"><?php echo Lang::txt('COM_MEMBERS_MYACCOUNT'); ?></a></li>
 		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -54,7 +54,7 @@ $this->css()
 			<p id="errors"></p>
 		<?php } ?>
 
-		<form action="<?php echo Route::url($this->profile->getLink() . '&task=changepassword', true, true); ?>" method="post" id="hubForm">
+		<form action="<?php echo Route::url($this->profile->link() . '&task=changepassword', true, true); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<p><?php echo Lang::txt('COM_MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
 				<p><?php echo Lang::txt('COM_MEMBERS_PASSWORD_IF_FORGOTTEN_RESET', Route::url('index.php?option=com_users&task=logout&return=' . base64_encode('/users/reset'))); ?></p>
@@ -62,7 +62,7 @@ $this->css()
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_MEMBERS_CHANGEPASSWORD_CHOOSE'); ?></legend>
 
-				<label<?php echo ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
+				<label<?php echo ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('id'), $this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
 					<?php echo Lang::txt('COM_MEMBERS_FIELD_CURRENT_PASS'); ?>
 					<input name="oldpass" id="oldpass" type="password" value="" />
 				</label>
@@ -71,7 +71,7 @@ $this->css()
 				{
 					echo '<p class="error">' . Lang::txt('COM_MEMBERS_PASS_BLANK') . '</p>';
 				}
-				if ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true))
+				if ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('id'), $this->oldpass, true))
 				{
 					echo '<p class="error">' . Lang::txt('COM_MEMBERS_PASS_INCORRECT') . '</p>';
 				}

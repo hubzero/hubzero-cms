@@ -53,7 +53,7 @@ $this->css('jobs', 'com_jobs');
 
 		<?php if (!$this->editpref) { ?>
 				<span class="includeme">
-					<a href="<?php echo Route::url($this->member->getLink() . '&active=resume&action=activate' . '&on=' . ($this->js->active && $this->file ? 0 : 1)); ?>">
+					<a href="<?php echo Route::url($this->member->link() . '&active=resume&action=activate' . '&on=' . ($this->js->active && $this->file ? 0 : 1)); ?>">
 				<?php if ($this->js->active && $this->file) { ?>
 					[-] <?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_HIDE'); ?>
 				<?php } else if ($this->file) { ?>
@@ -64,7 +64,7 @@ $this->css('jobs', 'com_jobs');
 		<?php } else { ?>
 			</p>
 
-			<form id="prefsForm" method="post" action="<?php echo Route::url($this->member->getLink() . '&active=resume'); ?>">
+			<form id="prefsForm" method="post" action="<?php echo Route::url($this->member->link() . '&active=resume'); ?>">
 				<fieldset>
 					<legend>
 						<?php echo $this->editpref==1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_INCLUDE_WITH_INFO') :  Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_PREFS'); ?>
@@ -144,7 +144,7 @@ $this->css('jobs', 'com_jobs');
 						<span class="selectgroup">
 							<input type="submit" class="btn" value="<?php echo $this->editpref == 1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 							<span>
-								<a href="<?php echo Route::url($this->member->getLink() . '&active=resume'); ?>" class="btn"><?php echo Lang::txt('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
+								<a href="<?php echo Route::url($this->member->link() . '&active=resume'); ?>" class="btn"><?php echo Lang::txt('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
 							</span>
 						</span>
 					</div>
@@ -161,7 +161,7 @@ $this->css('jobs', 'com_jobs');
 		if ($this->js->active && $this->file)
 		{
 			// get seeker info
-			$seeker = $this->js->getSeeker($this->member->get('uidNumber'), User::get('id'));
+			$seeker = $this->js->getSeeker($this->member->get('id'), User::get('id'));
 
 			if (!$seeker or count($seeker)==0)
 			{
@@ -200,17 +200,17 @@ $this->css('jobs', 'com_jobs');
 									: $this->member->get('name').' '.Lang::txt('PLG_MEMBERS_RESUME');
 						?>
 						<?php if ($this->edittitle && $this->self) { ?>
-							<form id="editTitleForm" method="post" action="<?php echo Route::url($this->member->getLink() . '&active=resume&action=savetitle'); ?>">
+							<form id="editTitleForm" method="post" action="<?php echo Route::url($this->member->link() . '&active=resume&action=savetitle'); ?>">
 								<fieldset>
 									<label class="resume">
 										<input type="text" name="title" value="<?php echo $this->escape($title); ?>" class="gettitle" maxlength="40" />
-										<input type="hidden" name="author" value="<?php echo $this->member->get('uidNumber'); ?>" />
+										<input type="hidden" name="author" value="<?php echo $this->member->get('id'); ?>" />
 										<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 									</label>
 								</fieldset>
 							</form>
 						<?php } else { ?>
-							<a class="resume" href="<?php echo Route::url($this->member->getLink() . '&active=resume&action=download'); ?>">
+							<a class="resume" href="<?php echo Route::url($this->member->link() . '&active=resume&action=download'); ?>">
 								<?php echo $this->escape($title); ?>
 							</a>
 						<?php } ?>
@@ -219,7 +219,7 @@ $this->css('jobs', 'com_jobs');
 							<time datetime="<?php echo $this->resume->created; ?>"><?php echo Date::of($this->resume->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a class="trash" href="<?php echo Route::url($this->member->getLink() . '&active=resume&action=deleteresume'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>">
+							<a class="trash" href="<?php echo Route::url($this->member->link() . '&active=resume&action=deleteresume'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>">
 								<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE'); ?>
 							</a>
 						</td>
@@ -233,7 +233,7 @@ $this->css('jobs', 'com_jobs');
 		<?php } ?>
 
 		<?php if ($this->self) { ?>
-			<form class="addResumeForm" method="post" action="<?php echo Route::url($this->member->getLink() . '&active=resume'); ?>" enctype="multipart/form-data">
+			<form class="addResumeForm" method="post" action="<?php echo Route::url($this->member->link() . '&active=resume'); ?>" enctype="multipart/form-data">
 				<fieldset>
 					<legend>
 						<?php echo ($this->resume->id && $this->file)

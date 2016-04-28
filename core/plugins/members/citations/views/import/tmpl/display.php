@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 $this->css('import.css')
      ->js('import.js');
 
-$base = $this->member->getLink() . '&active=citations';
+$base = $this->member->link() . '&active=citations';
 ?>
 <section id="import" class="section">
 	<div class="section-inner">
@@ -81,7 +81,7 @@ $base = $this->member->getLink() . '&active=citations';
 
 			<?php echo Html::input('token'); ?>
 			<input type="hidden" name="option" value="com_members" />
-			<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 			<input type="hidden" name="active" value="citations" />
 			<input type="hidden" name="action" value="upload" />
 		</form>

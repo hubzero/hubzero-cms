@@ -42,8 +42,6 @@ use Lang;
 use User;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'token.php';
-
 /**
  * Members controller class for profiles
  */
@@ -52,7 +50,7 @@ class Credentials extends SiteController
 	/**
 	 * Displays the username recovery form
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function remindTask()
 	{
@@ -63,7 +61,7 @@ class Credentials extends SiteController
 	/**
 	 * Processes the username recovery request
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function remindingTask()
 	{
@@ -158,7 +156,7 @@ class Credentials extends SiteController
 	/**
 	 * Displays the password reset form
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function resetTask()
 	{
@@ -169,8 +167,8 @@ class Credentials extends SiteController
 	/**
 	 * Processes intial reset password request
 	 *
-	 * @return void
-	 **/
+	 * @return  void
+	 */
 	public function resettingTask()
 	{
 		// Check the request token
@@ -236,13 +234,10 @@ class Credentials extends SiteController
 		}
 
 		// Get the user object
-		// NOTE: these are currently two separate objects and should remain separate until their
-		//       functionalities are merged
-		$user   = $user->first();
-		$hzuser = User::getInstance($user->id);
+		$user = $user->first();
 
 		// Make sure the user isn't blocked
-		if ($user->block)
+		if ($user->get('block'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
@@ -253,7 +248,7 @@ class Credentials extends SiteController
 		}
 
 		// Make sure the user isn't a super admin
-		if ($hzuser->authorise('core.admin'))
+		if ($user->authorise('core.admin'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
@@ -277,7 +272,7 @@ class Credentials extends SiteController
 		// Set the confirmation token
 		$token       = App::hash(\JUserHelper::genRandomPassword());
 		$salt        = \JUserHelper::getSalt('crypt-md5');
-		$hashedToken = md5($token.$salt).':'.$salt;
+		$hashedToken = md5($token . $salt) . ':' . $salt;
 
 		// Save the token
 		$user->tokens()->save(['token' => $hashedToken]);
@@ -306,7 +301,7 @@ class Credentials extends SiteController
 		$message = new \Hubzero\Mail\Message();
 		$message->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
 		        ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
-		        ->addTo($user->email, $user->name)
+		        ->addTo($user->get('email'), $user->get('name'))
 		        ->addHeader('X-Component', $this->_option)
 		        ->addHeader('X-Component-Object', 'password_reset')
 		        ->addPart($plain, 'text/plain')
@@ -315,7 +310,7 @@ class Credentials extends SiteController
 		// Send mail
 		if (!$message->send())
 		{
-			Log::error('Members password reset email failed: ' . Lang::txt('Failed to mail %s', $user->email));
+			Log::error('Members password reset email failed: ' . Lang::txt('Failed to mail %s', $user->get('email')));
 
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
@@ -326,7 +321,7 @@ class Credentials extends SiteController
 		}
 
 		// Push the user data into the session
-		User::setState('com_users.reset.user', $user->id);
+		User::setState('com_users.reset.user', $user->get('id'));
 
 		// Everything went well...go to the token verification page
 		App::redirect(
@@ -339,7 +334,7 @@ class Credentials extends SiteController
 	/**
 	 * Displays the password reset token verification form
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function verifyTask()
 	{
@@ -350,8 +345,8 @@ class Credentials extends SiteController
 	/**
 	 * Processes the password reset token verification request
 	 *
-	 * @return void
-	 **/
+	 * @return  void
+	 */
 	public function verifyingTask()
 	{
 		// Check the request token
@@ -369,13 +364,12 @@ class Credentials extends SiteController
 		}
 
 		// Get the token and user id from the confirmation process
-		$id  = User::getState('com_users.reset.user', null);
-
+		$id = User::getState('com_users.reset.user', null);
 
 		// Get the user object
 		try
 		{
-			$user  = \Hubzero\User\User::oneOrFail($id);
+			$user = \Hubzero\User\User::oneOrFail($id);
 		}
 		catch (Exception $e)
 		{
@@ -414,7 +408,7 @@ class Credentials extends SiteController
 		}
 
 		// Make sure the user isn't blocked
-		if ($user->block)
+		if ($user->get('block'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
@@ -438,29 +432,33 @@ class Credentials extends SiteController
 	/**
 	 * Displays the password set form
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function setpasswordTask()
 	{
-		$password_rules = \Hubzero\Password\Rule::getRules();
-		$this->view->password_rules = array();
+		$rules = \Hubzero\Password\Rule::getRules();
 
-		foreach ($password_rules as $rule)
+		$password_rules = array();
+
+		foreach ($rules as $rule)
 		{
 			if (!empty($rule['description']))
 			{
-				$this->view->password_rules[] = $rule['description'];
+				$password_rules[] = $rule['description'];
 			}
 		}
 
 		$this->setTitle();
-		$this->view->display();
+
+		$this->view
+			->set('password_rules', $password_rules)
+			->display();
 	}
 
 	/**
 	 * Processes the password set form
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function settingpasswordTask()
 	{
@@ -493,7 +491,7 @@ class Credentials extends SiteController
 		}
 
 		// Make sure the user isn't blocked
-		if ($user->block)
+		if ($user->get('block'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
@@ -503,11 +501,7 @@ class Credentials extends SiteController
 			return;
 		}
 
-		// Instantiate profile classs
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($id);
-
-		if (\Hubzero\User\Helper::isXDomainUser($user->id))
+		if (\Hubzero\User\Helper::isXDomainUser($user->get('id')))
 		{
 			throw new Exception(Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_LINKED_ACCOUNT'), 403);
 		}
@@ -519,7 +513,7 @@ class Credentials extends SiteController
 
 		if (!empty($password1))
 		{
-			$msg = \Hubzero\Password\Rule::validate($password1, $password_rules, $profile->get('username'));
+			$msg = \Hubzero\Password\Rule::validate($password1, $password_rules, $user->get('username'));
 		}
 		else
 		{
@@ -550,7 +544,7 @@ class Credentials extends SiteController
 
 		// If we're resetting password to the current password, just return true
 		// That way you can't reset the counter on your current password, or invalidate it by putting it into history
-		if (\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $password1))
+		if (\Hubzero\User\Password::passwordMatches($user->get('id'), $password1))
 		{
 			$error    = false;
 			$changing = false;
@@ -583,7 +577,7 @@ class Credentials extends SiteController
 		if ($changing)
 		{
 			// Encrypt the password and update the profile
-			$result = \Hubzero\User\Password::changePassword($profile->get('username'), $password1);
+			$result = \Hubzero\User\Password::changePassword($user->get('username'), $password1);
 		}
 
 		// Save the changes
@@ -638,8 +632,8 @@ class Credentials extends SiteController
 	/**
 	 * Sets the title and pathway based on the current task
 	 *
-	 * @return void
-	 **/
+	 * @return  void
+	 */
 	private function setTitle()
 	{
 		\Document::setTitle(

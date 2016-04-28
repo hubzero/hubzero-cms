@@ -33,12 +33,11 @@
 namespace Components\Members\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Members\Models\Member;
 use Exception;
 use Request;
-use Route;
 use Lang;
 use User;
-use App;
 
 /**
  * Members controller class for ORCIDs
@@ -243,12 +242,13 @@ class Orcid extends SiteController
 	private function _save($orcid)
 	{
 		// Instantiate a new profile object
-		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
+		$profile = Member::oneOrFail(User::get('id'));
+
 		if ($profile)
 		{
 			$profile->set('orcid', $orcid);
 
-			return $profile->update();
+			return $profile->save();
 		}
 
 		return false;
@@ -359,8 +359,9 @@ class Orcid extends SiteController
 	{
 		$this->fetchTask(true);
 
-		$this->view->config = $this->config;
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**

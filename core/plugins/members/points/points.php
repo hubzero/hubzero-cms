@@ -41,16 +41,16 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -58,7 +58,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		//if this is the logged in user show them
-		if ($user->get('id') == $member->get('uidNumber'))
+		if ($user->get('id') == $member->get('id'))
 		{
 			$areas['points'] = Lang::txt('PLG_MEMBERS_POINTS');
 			$areas['icon'] = 'f006';
@@ -70,11 +70,11 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -106,7 +106,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$BTL = new \Hubzero\Bank\Teller($member->get('uidNumber'));
+		$BTL = new \Hubzero\Bank\Teller($member->get('id'));
 
 		// Build the final HTML
 		if ($returnhtml)
@@ -135,7 +135,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 
 			$points = $BTL->summary();
 
-			$prefix = ($user->get('id') == $member->get('uidNumber')) ? 'I have' : $member->get('name') . ' has';
+			$prefix = ($user->get('id') == $member->get('id')) ? 'I have' : $member->get('name') . ' has';
 			$title = $prefix . ' ' . $points . ' points.';
 
 			$arr['metadata']['count'] = $points;

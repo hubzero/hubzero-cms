@@ -35,7 +35,7 @@ $this->css()
      ->js();
 ?>
 
-<form action="<?php echo Route::url($this->member->getLink() . '&active=messages'); ?>" method="post">
+<form action="<?php echo Route::url($this->member->link() . '&active=messages'); ?>" method="post">
 	<div id="filters">
 		<input type="hidden" name="inaction" value="inbox" />
 		<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?>
@@ -122,7 +122,7 @@ $this->css()
 							<?php echo $status; ?>
 						</td>
 						<td>
-							<a class="<?php echo $subject_cls; ?>" href="<?php echo Route::url($this->member->getLink() . '&active=messages&msg=' . $row->id); ?>">
+							<a class="<?php echo $subject_cls; ?>" href="<?php echo Route::url($this->member->link() . '&active=messages&msg=' . $row->id); ?>">
 								<?php echo $subject; ?>
 							</a>
 						</td>
@@ -143,7 +143,7 @@ $this->css()
 							<time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a title="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo Route::url($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1'); ?>">
+							<a title="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo Route::url($this->member->link() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1'); ?>">
 								<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'); ?>
 							</a>
 						</td>

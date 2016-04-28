@@ -33,6 +33,7 @@
 namespace Components\Members\Site;
 
 use Hubzero\Component\Router\Base;
+use User;
 
 /**
  * Routing class for the component
@@ -142,7 +143,7 @@ class Router extends Base
 				break;
 
 				case 'myaccount':
-					if (!\User::get('guest'))
+					if (!User::isGuest())
 					{
 						$vars['id'] = User::get('id');
 					}

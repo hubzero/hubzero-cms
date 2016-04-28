@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = $this->member->getLink() . '&active=blog';
+$base = $this->member->link() . '&active=blog';
 
 $first = $this->archive->entries(array(
 		'state'    => 1,
@@ -53,7 +53,7 @@ $this->css()
      ->js();
 ?>
 
-<?php if (User::get('id') == $this->member->get('uidNumber')) : ?>
+<?php if (User::get('id') == $this->member->get('id')) : ?>
 	<ul id="page_options">
 		<li>
 			<a class="icon-add add btn" href="<?php echo Route::url($base . '&task=new'); ?>">
@@ -68,7 +68,7 @@ $this->css()
 	</ul>
 <?php endif; ?>
 
-<?php if (User::get('id') == $this->member->get('uidNumber') && !$this->filters['year'] && !$this->filters['search'] && !$rows->count()) { ?>
+<?php if (User::get('id') == $this->member->get('id') && !$this->filters['year'] && !$this->filters['search'] && !$rows->count()) { ?>
 
 	<div class="introduction">
 		<div class="introduction-message">
@@ -236,7 +236,7 @@ $this->css()
 					<?php
 						$pageNav = $rows->pagination;
 
-						$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+						$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
 						$pageNav->setAdditionalUrlParam('active', 'blog');
 						if ($this->filters['year'])
 						{

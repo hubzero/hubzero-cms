@@ -92,7 +92,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		// Get our model
-		$this->model = new \Components\Blog\Models\Archive('member', $member->get('uidNumber'));
+		$this->model = new \Components\Blog\Models\Archive('member', $member->get('id'));
 
 		if ($returnhtml)
 		{
@@ -102,9 +102,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			//$this->authorized = $authorized;
 			$this->database = App::get('db');
 
-			$this->params = \Hubzero\Plugin\Params::getParams($this->member->get('uidNumber'), 'members', $this->_name);
+			$this->params = \Hubzero\Plugin\Params::getParams($this->member->get('id'), 'members', $this->_name);
 
-			if ($user->get('id') == $member->get('uidNumber'))
+			if ($user->get('id') == $member->get('id'))
 			{
 				$this->params->set('access-edit-comment', true);
 				$this->params->set('access-delete-comment', true);
@@ -177,15 +177,15 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Build filters
 		$filters = array(
 			'scope'      => 'member',
-			'scope_id'   => $member->get('uidNumber'),
-			//'created_by' => $member->get('uidNumber'),
+			'scope_id'   => $member->get('id'),
+			//'created_by' => $member->get('id'),
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		if (User::get('id') != $member->get('uidNumber'))
+		if (User::get('id') != $member->get('id'))
 		{
-			$filters['authorized'] = $member->get('uidNumber');
+			$filters['authorized'] = $member->get('id');
 		}
 
 		// Get an entry count
@@ -211,7 +211,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$path = str_replace('index.php', '', $path);
 			$path = '/' . trim($path, '/');
 
-			$blog = '/members/' . $this->member->get('uidNumber') . '/' . $this->_name;
+			$blog = '/members/' . $this->member->get('id') . '/' . $this->_name;
 
 			if ($path == $blog)
 			{
@@ -264,7 +264,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'year'       => Request::getInt('year', 0),
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
-			'scope_id'   => $this->member->get('uidNumber'),
+			'scope_id'   => $this->member->get('id'),
 			'search'     => Request::getVar('search',''),
 			'authorized' => false,
 			'state'      => 1,
@@ -289,9 +289,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$filters['month'] = 0;
 		}
 
-		if (User::get('id') == $this->member->get('uidNumber'))
+		if (User::get('id') == $this->member->get('id'))
 		{
-			$filters['authorized'] = $this->member->get('uidNumber');
+			$filters['authorized'] = $this->member->get('id');
 		}
 
 		$view = $this->view('default', 'browse')
@@ -325,7 +325,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Start a new feed object
 		$doc = Document::instance();
-		$doc->link = Route::url($this->member->getLink() . '&active=' . $this->_name);
+		$doc->link = Route::url($this->member->link() . '&active=' . $this->_name);
 
 		// Filters for returning results
 		$filters = array(
@@ -334,9 +334,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'year'       => Request::getInt('year', 0),
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
-			'scope_id'   => $this->member->get('uidNumber'),
+			'scope_id'   => $this->member->get('id'),
 			'search'     => Request::getVar('search',''),
-			//'created_by' => $this->member->get('uidNumber')
+			//'created_by' => $this->member->get('id')
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
 		);
@@ -435,7 +435,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Check authorization
 		if (($row->get('access') == 2 && User::isGuest())
-		 || ($row->get('state') == 0 && User::get('id') != $this->member->get('uidNumber')))
+		 || ($row->get('state') == 0 && User::get('id') != $this->member->get('id')))
 		{
 			App::abort(403, Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTH'));
 		}
@@ -445,11 +445,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'limit'      => 10,
 			'start'      => 0,
 			'scope'      => 'member',
-			'scope_id'   => $this->member->get('uidNumber'),
+			'scope_id'   => $this->member->get('id'),
 			'authorized' => false
 		);
 
-		if (User::get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('id'))
 		{
 			$filters['state']  = 1;
 			$filters['access'] = User::getAuthorisedViewLevels();
@@ -475,7 +475,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _login()
 	{
-		$return = base64_encode(Route::url($this->member->getLink() . '&active=' . $this->_name, false, true));
+		$return = base64_encode(Route::url($this->member->link() . '&active=' . $this->_name, false, true));
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -507,7 +507,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
@@ -527,8 +527,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$entry->set('allow_comments', 1);
 			$entry->set('state', 1);
 			$entry->set('scope', 'member');
-			$entry->set('scope_id', $this->member->get('uidNumber'));
-			$entry->set('created_by', $this->member->get('uidNumber'));
+			$entry->set('scope_id', $this->member->get('id'));
+			$entry->set('created_by', $this->member->get('id'));
 		}
 
 		// Render view
@@ -556,7 +556,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
@@ -613,7 +613,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				)
 			],
 			'recipients' => [
-				$this->member->get('uidNumber')
+				$this->member->get('id')
 			]
 		]);
 
@@ -632,7 +632,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -693,12 +693,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				)
 			],
 			'recipients' => [
-				$this->member->get('uidNumber')
+				$this->member->get('id')
 			]
 		]);
 
 		// Return the topics list
-		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name));
+		App::redirect(Route::url($this->member->link() . '&active=' . $this->_name));
 	}
 
 	/**
@@ -796,9 +796,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Log the activity
 		$recipients = array($comment->get('created_by'));
-		if ($comment->get('created_by') != $this->member->get('uidNumber'))
+		if ($comment->get('created_by') != $this->member->get('id'))
 		{
-			$recipients[] = $this->member->get('uidNumber');
+			$recipients[] = $this->member->get('id');
 		}
 
 		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
@@ -834,7 +834,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
@@ -842,7 +842,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		$settings = \Hubzero\Plugin\Params::oneByPlugin(
-			$this->member->get('uidNumber'),
+			$this->member->get('id'),
 			'members',
 			$this->_name
 		);
@@ -871,7 +871,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
@@ -906,12 +906,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_SETTINGS_UPDATED')
 			],
 			'recipients' => [
-				$this->member->get('uidNumber')
+				$this->member->get('id')
 			]
 		]);
 
 		App::redirect(
-			Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=settings'),
+			Route::url($this->member->link() . '&active=' . $this->_name . '&task=settings'),
 			Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_SAVED')
 		);
 	}

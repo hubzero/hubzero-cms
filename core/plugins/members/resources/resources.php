@@ -69,9 +69,9 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -84,7 +84,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return a list of categories
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onMembersContributionsAreas()
 	{
@@ -164,15 +164,15 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have a member ID?
-		if ($member instanceof \Hubzero\User\Profile)
+		if ($member instanceof \Hubzero\User\User)
 		{
-			if (!$member->get('uidNumber'))
+			if (!$member->get('id'))
 			{
 				return array();
 			}
 			else
 			{
-				$uidNumber = $member->get('uidNumber');
+				$uidNumber = $member->get('id');
 			}
 		}
 		else
@@ -194,10 +194,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		$filters['author'] = $uidNumber;
 		$filters['sortby'] = $sort;
-		//$filters['authorized'] = $authorized;
-
-		//$filters['usergroups'] = \Hubzero\User\Helper::getGroups($uidNumber, 'all');
-		$filters['usergroups'] = $member->getGroups('all');
+		$filters['usergroups'] = $member->groups();
 
 		// Get categories
 		$categories = $this->_cats;

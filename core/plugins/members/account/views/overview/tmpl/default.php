@@ -67,7 +67,7 @@ $this->css()
 					?>
 					<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
 						<div class="x">
-							<a title="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php echo Route::url($this->member->getLink() . '&active=account&action=unlink&hzal_id=' . $hzala['id']); ?>">x</a>
+							<a title="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php echo Route::url($this->member->link() . '&active=account&action=unlink&hzal_id=' . $hzala['id']); ?>">x</a>
 						</div>
 						<div class="account-info">
 							<div class="account-type"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
@@ -189,14 +189,14 @@ $this->css()
 
 				<input type="hidden" name="change" value="1" />
 				<input type="hidden" name="option" value="com_members" />
-				<input type="hidden" name="id" value="<?php echo $this->member->get("uidNumber"); ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 				<input type="hidden" name="task" value="changepassword" />
 				<input type="hidden" name="no_html" id="pass_no_html" value="0" />
 				<?php echo Html::input('token'); ?>
 			</form>
 		<?php } else { ?>
 			<p><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_LOCAL_PASS_EXPLANATION'); ?></p>
-			<a href="<?php echo Route::url($this->member->getLink() . '&active=account&task=sendtoken'); ?>">
+			<a href="<?php echo Route::url($this->member->link() . '&active=account&task=sendtoken'); ?>">
 				<div id="token-button"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_REQUEST_TOKEN'); ?></div>
 			</a>
 		<?php } ?>
@@ -215,7 +215,7 @@ $this->css()
 			</p>
 			<h5><?php echo Lang::txt('PLG_MEMBERS_MANAGE_KEYS'); ?></h5>
 			<?php if ($this->key !== false) : ?>
-				<form action="<?php echo Route::url($this->member->getLink() . '&active=account&task=uploadkey', true, true); ?>" method="post">
+				<form action="<?php echo Route::url($this->member->link() . '&active=account&task=uploadkey', true, true); ?>" method="post">
 					<p><?php echo Lang::txt('PLG_MEMGERS_ACCOUNT_KEY_HINT'); ?>:</p>
 					<textarea name="keytext" cols="50" rows="6"><?php echo $this->key; ?></textarea>
 					<div class="clear"></div>

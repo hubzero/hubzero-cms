@@ -34,6 +34,7 @@ namespace Components\Members\Site\Controllers;
 
 use Hubzero\Session\Helper as SessionHelper;
 use Hubzero\Component\SiteController;
+use Components\Members\Models\Member;
 use Component;
 use Document;
 use Pathway;
@@ -47,6 +48,7 @@ use Date;
 use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
 
 /**
  * Members controller class for profiles
@@ -81,12 +83,11 @@ class Profiles extends SiteController
 	/**
 	 * Opt out of a promotion
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function incremOptOutTask()
 	{
-		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-		if (!$profile)
+		if (!User::get('id'))
 		{
 			return;
 		}
@@ -99,17 +100,16 @@ class Profiles extends SiteController
 		$ia->optOut();
 
 		App::redirect(
-			Route::url($profile->getLink() . '&active=profile'),
+			Route::url(User::link() . '&active=profile'),
 			Lang::txt('You have been successfully opted out of this promotion.'),
 			'passed'
 		);
-		return;
 	}
 
 	/**
 	 * Return results for autocompleter
 	 *
-	 * @return     string JSON
+	 * @return  void
 	 */
 	public function autocompleteTask()
 	{
@@ -134,8 +134,7 @@ class Profiles extends SiteController
 
 					case 1:
 					default:
-						$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-						$xgroups = $profile->getGroups('all');
+						$profile = User::groups();
 						$usersgroups = array();
 						if (!empty($xgroups))
 						{
@@ -269,88 +268,95 @@ class Profiles extends SiteController
 	/**
 	 * Display main page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->title = Lang::txt('MEMBERS');
-
-		$this->view->contribution_counting = $this->config->get('contribution_counting', true);
+		$title = Lang::txt('COM_MEMBERS');
 
 		// Set the page title
-		Document::setTitle($this->view->title);
+		Document::setTitle($title);
 
 		// Set the document pathway
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-				Lang::txt(strtoupper($this->_name)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		// Output view
+		$this->view
+			->set('title', $title)
+			->display();
 	}
 
 	/**
 	 * Display a list of members
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function browseTask()
 	{
-		$this->view->contribution_counting = $this->config->get('contribution_counting', true);
-
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']  = Request::getVar('limit', Config::get('list_limit'), 'request');
-		$this->view->filters['start']  = Request::getInt('limitstart', 0, 'get');
-		$this->view->filters['show']   = strtolower(Request::getWord('show', $this->_view));
-		$this->view->filters['sortby'] = strtolower(Request::getWord('sortby', 'name'));
-		$this->view->filters['search'] = Request::getVar('search', '');
-		$this->view->filters['index']  = Request::getWord('index', '');
+		$filters = array(
+			'limit'  => Request::getVar('limit', Config::get('list_limit'), 'request'),
+			'start'  => Request::getInt('limitstart', 0, 'get'),
+			'sortby' => strtolower(Request::getWord('sortby', 'name')),
+			'search' => Request::getVar('search', ''),
+			'index'  => Request::getWord('index', ''),
+			'access' => User::getAuthorisedViewLevels()
+		);
 
-		if ($this->view->contribution_counting == false)
-		{
-			if ($this->view->filters['show'] = 'contributors')
-			{
-				$this->view->filters['show'] = 'members';
-			}
+		// Build query
+		$entries = Member::all()
+			->whereEquals('block', 0)
+			->whereEquals('activation', 1)
+			->where('approved', '>', 0);
 
-			if ($this->view->filters['sortby'] == 'contributions')
-			{
-				$this->view->filters['sortby'] = 'name';
-			}
-		}
-		else
+		if ($filters['search'])
 		{
-			$this->view->filters['contributions'] = 0;
+			$entries->whereLike('name', strtolower((string)$filters['search']), 1)
+				->orWhereLike('username', strtolower((string)$filters['search']), 1)
+				->orWhereLike('email', strtolower((string)$filters['search']), 1)
+				->resetDepth();
 		}
 
-		// Build the page title
-		if ($this->view->filters['show'] == 'contributors')
+		if ($filters['index'])
 		{
-			$this->view->title = Lang::txt('CONTRIBUTORS');
-			$this->view->filters['sortby'] = strtolower(Request::getWord('sortby', 'contributions'));
+			$entries->whereLike('surname', $filters['index']);
 		}
-		else
-		{
-			$this->view->title = Lang::txt('MEMBERS');
-		}
-		$this->view->title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
-		if (!in_array($this->view->filters['sortby'], array('name', 'organization', 'contributions')))
+		if (!empty($filters['access']))
 		{
-			$this->view->filters['sortby'] = ($this->view->filters['show'] == 'contributors') ? 'contributions' : 'name';
+			$entries->whereIn('access', $filters['access']);
 		}
+
+		switch ($filters['sortby'])
+		{
+			case 'organization':
+				$filters['sort'] = 'surname';
+				$filters['sort_Dir'] = 'asc';
+			break;
+
+			case 'name':
+			default:
+				$filters['sort'] = 'surname';
+				$filters['sort_Dir'] = 'asc';
+			break;
+		}
+
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Set the page title
-		Document::setTitle($this->view->title);
+		$title = Lang::txt('COM_MEMBERS');
+		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
+
+		Document::setTitle($title);
 
 		// Set the document pathway
 		if (Pathway::count() <= 0)
@@ -360,33 +366,27 @@ class Profiles extends SiteController
 				'index.php?option=' . $this->_option
 			);
 		}
+		// Add to the pathway
+		Pathway::append(
+			Lang::txt(strtoupper($this->_task)),
+			'index.php?option=' . $this->_option . '&task=' . $this->_task
+		);
 		// Was a specific index (letter) set?
-		if ($this->view->filters['index'])
+		if ($filters['index'])
 		{
 			// Add to the pathway
 			Pathway::append(
-				strtoupper($this->view->filters['index']),
-				'index.php?option=' . $this->_option . '&index=' . $this->view->filters['index']
+				strtoupper($filters['index']),
+				'index.php?option=' . $this->_option . '&task=' . $this->_task . '&index=' . $filters['index']
 			);
 		}
 
-		// Check authorization
-		$this->view->authorized = $this->_authorize();
-		if ($this->view->authorized === 'admin')
-		{
-			$admin = true;
-		}
-		else
-		{
-			$admin = false;
-		}
+		// Determine what fields we can display based on registration settings
+		$registration = new \Hubzero\Base\Object();
+		$registration->Fullname     = $this->_registrationField('registrationFullname', 'RRRR', $this->_task);
+		$registration->Organization = $this->_registrationField('registrationOrganization', 'HOOO', $this->_task);
 
-		$this->view->filters['authorized']     = $this->view->authorized;
-		$this->view->filters['emailConfirmed'] = true;
-
-		// Initiate a contributor object
-		$c = new \Components\Members\Tables\Profile($this->database);
-
+		// Get stats
 		if (!($stats = Cache::get('members.stats')))
 		{
 			$stats = $this->stats();
@@ -394,66 +394,52 @@ class Profiles extends SiteController
 			Cache::put('members.stats', $stats, intval($this->config->get('cache_time', 15)));
 		}
 
-		// Get record count of ALL members
-		$this->view->total_members = $stats->total_members; //$c->getCount(array('show' => ''), true);
-
-		// Get record count of ALL members
-		$this->view->total_public_members = $stats->total_public_members; //$c->getCount(array('show' => '', 'authorized' => false), false);
-
-		// Get record count
-		$this->view->total = $c->getCount($this->view->filters, $admin);
-
-		// Get records
-		$this->view->rows = $c->getRecords($this->view->filters, $admin);
-
-		//get newly registered members (past day)
-		//$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
-		$this->view->past_day_members = $stats->past_day_members; //$this->database->loadResult();
-
-		//get newly registered members (past month)
-		//$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
-		$this->view->past_month_members = $stats->past_month_members; //$this->database->loadResult();
-
-		$this->view->registration = new \Hubzero\Base\Object();
-		$this->view->registration->Fullname     = $this->_registrationField('registrationFullname', 'RRRR', $this->_task);
-		$this->view->registration->Organization = $this->_registrationField('registrationOrganization', 'HOOO', $this->_task);
-
 		// Instantiate the view
-		$this->view->config = $this->config;
-		$this->view->view = $this->_view;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->set('filters', $filters)
+			->set('title', $title)
+			->set('rows', $rows)
+			->set('past_day_members', $stats->past_day_members)
+			->set('past_month_members', $stats->past_month_members)
+			->set('total_members', $stats->total_members)
+			->set('total_public_members', $stats->total_public_members)
+			->set('registration', $registration)
+			->display();
 	}
 
 	/**
 	 * Calculate stats
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function stats()
 	{
-		$c = new \Components\Members\Tables\Profile($this->database);
-
 		$stats = new \stdClass;
 
-		// Get record count of ALL members
-		$stats->total_members = $c->getCount(array('show' => ''), true);
+		// Get record count of all members
+		$stats->total_members = Member::all()
+			->whereEquals('block', 0)
+			->whereEquals('activation', 1)
+			->where('approved', '>', 0)
+			->total();
 
-		// Get record count of ALL members
-		$stats->total_public_members = $c->getCount(array('show' => '', 'authorized' => false), false);
+		$stats->total_public_members = Member::all()
+			->whereEquals('block', 0)
+			->whereEquals('activation', 1)
+			->where('approved', '>', 0)
+			->whereEquals('access', 1)
+			->total();
 
-		//get newly registered members (past day)
-		$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
-		$stats->past_day_members = $this->database->loadResult();
+		// Get record count of new members in the past day
+		$stats->past_day_members = Member::all()
+			->where('registerDate', '>', Date::of(strtotime('-1 DAY'))->toSql())
+			->total();
 
-		//get newly registered members (past month)
-		$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
-		$stats->past_month_members = $this->database->loadResult();
+		// Get record count of new members in the past month
+		$stats->past_month_members = Member::all()
+			->where('registerDate', '>', Date::of(strtotime('-1 MONTH'))->toSql())
+			->total();
 
 		return $stats;
 	}
@@ -461,116 +447,82 @@ class Profiles extends SiteController
 	/**
 	 * A shortcut task for displaying a logged-in user's account page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function myaccountTask()
 	{
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount'))),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
 				Lang::txt('You must be a logged in to access this area.'),
 				'warning'
 			);
-			return;
 		}
 
 		Request::setVar('id', User::get('id'));
-		$this->viewTask();
-		return;
+
+		return $this->viewTask();
 	}
 
 	/**
 	 * Display a user profile
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function viewTask()
 	{
-		$this->view->setLayout('view');
-
-		// Build the page title
-		$this->view->title  = Lang::txt(strtoupper($this->_name));
-		$this->view->title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
-
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_name)),
-				'index.php?option=' . $this->_option
-			);
-		}
-
 		// Incoming
 		$id  = Request::getVar('id', 0);
 		$tab = Request::getVar('active', 'dashboard');  // The active tab (section)
 
-		// Ensure we have an ID
-		if (!$id || !is_numeric($id))
+		// Get the member's info
+		if (is_numeric($id))
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
-			return;
+			$profile = Member::oneOrNew(intval($id));
+		}
+		else
+		{
+			$profile = Member::oneByUsername((string)$id);
 		}
 
-		$id = intval($id);
-
-		// Check administrative access
-		$this->view->authorized = $this->_authorize($id);
-
-		// Get the member's info
-		$profile = \Hubzero\User\Profile::getInstance($id);
-
 		// Ensure we have a member
-		if (!is_object($profile) || (!$profile->get('name') && !$profile->get('surname')))
+		if (!$profile->get('id'))
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-			App::abort(404, Lang::txt('MEMBERS_NOT_FOUND'));
-			return;
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
 
 		// Check subscription to Employer Services
 		//   NOTE: This must occur after the initial plugins import and
 		//   do not specifically call Plugin::import('members', 'resume');
 		//   Doing so can have negative affects.
-		if ($this->config->get('employeraccess') && $tab == 'resume')
+		/*if ($this->config->get('employeraccess') && $tab == 'resume')
 		{
 			$checkemp   = Event::trigger('members.isEmployer', array());
 			$emp        = is_array($checkemp) ? $checkemp[0] : 0;
 			$this->view->authorized = $emp ? 1 : $this->view->authorized;
-		}
+		}*/
 
 		// Check if the profile is public/private and the user has access
-		if ($profile->get('public') != 1 && !$this->view->authorized)
+		if (!in_array($profile->get('access'), User::getAuthorisedViewLevels()))
 		{
 			// Check if they're logged in
 			if (User::isGuest())
 			{
-				$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&id=' . $profile->get('uidNumber')), 'server');
+				$rtrn = Request::getVar('REQUEST_URI', Route::url($profile->link()), 'server');
+
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
-				return;
 			}
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-			App::abort(403, Lang::txt('MEMBERS_NOT_PUBLIC'));
-			return;
+
+			App::abort(403, Lang::txt('COM_MEMBERS_NOT_PUBLIC'));
 		}
 
-		// check if unconfirmed
-		if ($profile->get('emailConfirmed') < 1 && !$this->view->authorized)
+		// Check if unconfirmed
+		if ($profile->get('activation') < 1 && !User::authorise('core.manage', $this->_option))
 		{
-			App::abort(403, Lang::txt('MEMBERS_NOT_CONFIRMED'));
-			return;
+			App::abort(403, Lang::txt('COM_MEMBERS_NOT_CONFIRMED'));
 		}
 
 		// Check for name
@@ -579,16 +531,19 @@ class Profiles extends SiteController
 			$name  = $profile->get('givenName') . ' ';
 			$name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
 			$name .= $profile->get('surname');
+
 			$profile->set('name', $name);
 		}
 
 		// Trigger the functions that return the areas we'll be using
-		$this->view->cats = Event::trigger('members.onMembersAreas', array(User::getInstance(), $profile));
+		$cats = Event::trigger('members.onMembersAreas', array(User::getInstance(), $profile));
 
 		$available = array();
-		foreach ($this->view->cats as $cat)
+
+		foreach ($cats as $cat)
 		{
 			$name = key($cat);
+
 			if ($name != '')
 			{
 				$available[] = $name;
@@ -601,52 +556,85 @@ class Profiles extends SiteController
 		}
 
 		// Get the sections
-		$this->view->sections = Event::trigger('members.onMembers', array(User::getInstance(), $profile, $this->_option, array($tab)));
+		$sections = Event::trigger('members.onMembers', array(User::getInstance(), $profile, $this->_option, array($tab)));
 
-		// Merge profile params (take precendence) with the site config
-		//  ** What is this for?
-		$rparams = new \Hubzero\Config\Registry($profile->get('params'));
-		$params = $this->config;
-		$params->merge($rparams);
+		// Build the page title
+		$title  = Lang::txt(strtoupper($this->_option));
+		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
 		// Set the page title
-		Document::setTitle($this->view->title . ': ' . stripslashes($profile->get('name')));
+		Document::setTitle($title . ': ' . stripslashes($profile->get('name')));
 
 		// Set the pathway
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
 		Pathway::append(
 			stripslashes($profile->get('name')),
-			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
+			'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
 		);
 
 		// Output HTML
-		$this->view->config = $this->config;
-		$this->view->tab = $tab;
-		$this->view->profile = $profile;
-		$this->view->overwrite_content = '';
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->set('active', $tab)
+			->set('profile', $profile)
+			->set('title', $title)
+			->set('cats', $cats)
+			->set('sections', $sections)
+			->setErrors($this->getErrors())
+			->setLayout('view')
+			->display();
 	}
 
 	/**
 	 * Show a form for changing user password
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function changepasswordTask()
 	{
-		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+		// Check if they're logged in
+		if (User::isGuest())
 		{
-			App::redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-			die('insecure connection and redirection failed');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true), 'server');
+
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
+			);
+		}
+
+		// Incoming
+		$id = Request::getInt('id', 0);
+		$id = $id ?: User::get('id');
+
+		// Ensure we have an ID
+		if (!$id)
+		{
+			App::abort(404, Lang::txt('COM_MEMBERS_NO_ID'));
+		}
+
+		// Check authorization
+		if (!User::authorise('core.manage', $this->_option) && User::get('id') != $id)
+		{
+			App::abort(403, Lang::txt('MEMBERS_NOT_AUTH'));
+		}
+
+		// Initiate profile class
+		$profile = Member::oneOrFail($id);
+
+		// Ensure we have a member
+		if (!$profile->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
 
 		// Set the page title
-		$title  = Lang::txt(strtoupper($this->_name));
+		$title  = Lang::txt(strtoupper($this->_option));
 		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)) : '';
 
 		Document::setTitle($title);
@@ -655,81 +643,23 @@ class Profiles extends SiteController
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-				Lang::txt(strtoupper($this->_name)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-
-		// Incoming
-		$id = Request::getInt('id', 0);
-
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword'), 'server');
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
-			);
-			return;
-		}
-
-		if (!$id)
-		{
-			$id = User::get('id');
-		}
-
-		// Ensure we have an ID
-		if (!$id)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
-			return;
-		}
-
-		// Check authorization
-		$authorized = $this->_authorize($id);
-		if (!$authorized)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(403, Lang::txt('MEMBERS_NOT_AUTH'));
-			return;
-		}
-
-		// Initiate profile class
-		$profile = \Hubzero\User\Profile::getInstance($id);
-
-		// Ensure we have a member
-		if (!$profile || !$profile->get('name'))
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(404, Lang::txt('MEMBERS_NOT_FOUND'));
-			return;
-		}
-
-		// Add to the pathway
 		Pathway::append(
 			stripslashes($profile->get('name')),
-			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
+			'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
 		);
 		Pathway::append(
 			Lang::txt('COM_MEMBERS_' . strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
+			'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task
 		);
 
 		// Load some needed libraries
 		if (\Hubzero\User\Helper::isXDomainUser(User::get('id')))
 		{
-			App::abort(403, Lang::txt('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT'));
-			return;
+			App::abort(403, Lang::txt('COM_MEMBERS_PASS_CHANGE_LINKED_ACCOUNT'));
 		}
 
 		// Incoming data
@@ -776,18 +706,15 @@ class Profiles extends SiteController
 		// Blank form request (no data submitted)
 		if (empty($change))
 		{
-			if ($this->getError())
-			{
-				$this->view->setError($this->getError());
-			}
-
-			$this->view->display();
+			$this->view
+				->setErrors($this->getErrors())
+				->display();
 			return;
 		}
 
 		$passrules = false;
 
-		if (!\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $oldpass, true))
+		if (!\Hubzero\User\Password::passwordMatches($profile->get('id'), $oldpass, true))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_PASS_INCORRECT'));
 		}
@@ -808,7 +735,7 @@ class Profiles extends SiteController
 		elseif (!empty($msg))
 		{
 			$this->setError(Lang::txt('Password does not meet site password requirements. Please choose a password meeting all the requirements listed below.'));
-			$this->view->validated = $msg;
+			$this->view->set('validated', $msg);
 			$passrules = true;
 		}
 
@@ -836,20 +763,22 @@ class Profiles extends SiteController
 			}
 			else
 			{
-				$this->view->setError($this->getError());
-				$this->view->display();
+				$this->view
+					->setError($this->getError())
+					->display();
 				return;
 			}
 		}
 
 		// Encrypt the password and update the profile
-		$result = \Hubzero\User\Password::changePassword($profile->get('uidNumber'), $newpass);
+		$result = \Hubzero\User\Password::changePassword($profile->get('id'), $newpass);
 
 		// Save the changes
 		if (!$result)
 		{
-			$this->view->setError(Lang::txt('MEMBERS_PASS_CHANGE_FAILED'));
-			$this->view->display();
+			$this->view
+				->setError(Lang::txt('MEMBERS_PASS_CHANGE_FAILED'))
+				->display();
 			return;
 		}
 
@@ -883,85 +812,59 @@ class Profiles extends SiteController
 	/**
 	 * Show a form for raising a user's allowed sessions, storage, etc.
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function raiselimitTask()
 	{
-		// Set the page title
-		$this->view->title  = Lang::txt(strtoupper($this->_name));
-		$this->view->title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
-
-		Document::setTitle($this->view->title);
-
-		// Set the pathway
-		if (Pathway::count() <= 0)
+		// Check if they're logged in
+		if (User::isGuest())
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_name)),
-				'index.php?option=' . $this->_option
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true), 'server');
+
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
 		}
 
 		// Incoming
 		$id = Request::getInt('id', 0);
 
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit'), 'server');
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
-			);
-			return;
-		}
+		// Initiate profile class
+		$profile = Member::oneOrFail($id);
 
-		// Ensure we have an ID
-		if (!$id)
+		// Ensure we have a member
+		if (!$profile->get('id'))
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
-			return;
+			App::abort(404, Lang::txt('MEMBERS_NOT_FOUND'));
 		}
 
 		// Check authorization
-		$this->view->authorized = $this->_authorize($id);
-		if (!$this->view->authorized)
+		if (!User::authorise('core.manage', $this->_option) && User::get('id') != $id)
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(403, Lang::txt('MEMBERS_NOT_AUTH'));
-			return;
+			App::abort(403, Lang::txt('COM_MEMBERS_NOT_AUTH'));
 		}
 
-		// Initiate profile class
-		$profile = \Hubzero\User\Profile::getInstance($id);
+		// Set the page title
+		$title  = Lang::txt(strtoupper($this->_option));
+		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
-		// Ensure we have a member
-		if (!$profile->get('name'))
+		Document::setTitle($title);
+
+		// Set the pathway
+		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
 			);
-			App::abort(404, Lang::txt('MEMBERS_NOT_FOUND'));
-			return;
 		}
-
-		$this->view->profile = $profile;
-
-		// Add to the pathway
 		Pathway::append(
 			stripslashes($profile->get('name')),
-			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
+			'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
 		);
 		Pathway::append(
 			Lang::txt(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
+			'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task
 		);
 
 		// Incoming
@@ -982,11 +885,11 @@ class Profiles extends SiteController
 					include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 					$preferences = new \Components\Tools\Tables\Preferences($this->database);
-					$preferences->loadByUser($profile->get('uidNumber'));
+					$preferences->loadByUser($profile->get('id'));
 					if (!$preferences || !$preferences->id)
 					{
 						$default = $preferences->find('one', array('alias' => 'default'));
-						$preferences->user_id  = $profile->get('uidNumber');
+						$preferences->user_id  = $profile->get('id');
 						$preferences->class_id = $default->id;
 						$preferences->jobs     = $default->jobs;
 						$preferences->store();
@@ -1006,9 +909,11 @@ class Profiles extends SiteController
 					}
 					else if ($request === null)
 					{
-						$this->view->resource = $k;
-						$this->view->setLayout('select');
-						$this->view->display();
+						$this->view
+							->set('title', $title)
+							->set('resource', $k)
+							->setLayout('select')
+							->display();
 						return;
 					}
 				break;
@@ -1019,18 +924,17 @@ class Profiles extends SiteController
 
 					$resourcemessage = ' storage limit has been raised from '. $oldlimit .' to '. $newlimit .'.';
 
-					if ($this->view->authorized == 'admin')
+					if (User::authorise('core.manage', $this->_option))
 					{
-						// $profile->set('quota', $newlimit);
-						// $profile->update();
-
 						$resourcemessage = 'The storage limit for [' . $profile->get('username') . '] has been raised from '. $oldlimit .' to '. $newlimit .'.';
 					}
 					else
 					{
-						$this->view->resource = $k;
-						$this->view->setLayout('select');
-						$this->view->display();
+						$this->view
+							->set('title', $title)
+							->set('resource', $k)
+							->setLayout('select')
+							->display();
 						return;
 					}
 				break;
@@ -1041,7 +945,7 @@ class Profiles extends SiteController
 
 					$resourcemessage = ' meeting limit has been raised from '. $oldlimit .' to '. $newlimit .'.';
 
-					if ($this->view->authorized == 'admin')
+					if (User::authorise('core.manage', $this->_option))
 					{
 						// $profile->set('max_meetings', $newlimit);
 						// $profile->update();
@@ -1050,16 +954,20 @@ class Profiles extends SiteController
 					}
 					else
 					{
-						$this->view->resource = $k;
-						$this->view->setLayout('select');
-						$this->view->display();
+						$this->view
+							->set('title', $title)
+							->set('resource', $k)
+							->setLayout('select')
+							->display();
 						return;
 					}
 				break;
 
 				default:
 					// Show limit selection form
-					$this->view->display();
+					$this->view
+						->set('title', $title)
+						->display();
 					return;
 				break;
 			}
@@ -1096,13 +1004,13 @@ class Profiles extends SiteController
 			}
 			$message .= "Click the following link to grant this request:\r\n";
 
-			$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task);
+			$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task);
 			$url = Request::base() . ltrim($sef, DS);
 
 			$message .= $url . "\r\n\r\n";
 			$message .= "Click the following link to review this user's account:\r\n";
 
-			$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber'));
+			$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('id'));
 			$url = Request::base() . ltrim($sef, DS);
 
 			$message .= $url . "\r\n";
@@ -1121,129 +1029,108 @@ class Profiles extends SiteController
 			}
 
 			// Output the view
-			$this->view->resourcemessage = $resourcemessage;
-			$this->view->setLayout('success');
-			$this->view->display();
+			$this->view
+				->set('resourcemessage', $resourcemessage)
+				->setLayout('success')
+				->display();
 			return;
 		}
-		else if ($this->view->authorized == 'admin' && !empty($resourcemessage))
+		else if (User::authorise('core.manage', $this->_option) && !empty($resourcemessage))
 		{
 			// Output the view
-			$this->view->resourcemessage = $resourcemessage;
-			$this->view->setLayout('success');
-			$this->view->display();
+			$this->view
+				->set('resourcemessage', $resourcemessage)
+				->setLayout('success')
+				->display();
 			return;
 		}
 
 		// Output the view
-		$this->view->resource = null;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('resource', null)
+			->set('title', $title)
+			->display();
 	}
 
 	/**
 	 * Show a form for editing a profile
 	 *
-	 * @param      object $xregistration \Components\Members\Models\Registration
-	 * @param      object $profile       \Hubzero\User\Profile
-	 * @return     void
+	 * @param   object  $xregistration  Registration
+	 * @param   object  $profile        Profile
+	 * @return  void
 	 */
 	public function editTask($xregistration=null, $profile=null)
 	{
-		// Set the page title
-		$this->view->title  = Lang::txt(strtoupper($this->_name));
-		$this->view->title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
-
-		Document::setTitle($this->view->title);
-
-		// Set the pathway
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_name)),
-				'index.php?option=' . $this->_option
-			);
-		}
-
 		// Incoming
 		$id = Request::getInt('id', 0);
 
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity'), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
-			return;
 		}
 
 		// Ensure we have an ID
 		if (!$id)
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
-			return;
+			App::abort(404, Lang::txt('COM_MEMBERS_NO_ID'));
 		}
+
 		// Check authorization
-		$this->view->authorized = $this->_authorize($id);
-		if ($id != User::get('id'))
+		if (!User::authorise('core.manage', $this->_option) && $id != User::get('id'))
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(403, Lang::txt('MEMBERS_NOT_AUTH'));
-			return;
+			App::abort(403, Lang::txt('COM_MEMBERS_NOT_AUTH'));
 		}
 
 		// Initiate profile class if we don't already have one and load info
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($profile))
 		{
-			$profile = \Hubzero\User\Profile::getInstance($id);
+			$profile = Member::oneOrFail($id);
 		}
 
 		// Ensure we have a member
-		if (!$profile->get('name') && !$profile->get('surname'))
+		if (!$profile->get('id'))
 		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
-			);
-			App::abort(404, Lang::txt('MEMBERS_NOT_FOUND'));
-			return;
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
 
 		// Get the user's interests (tags)
 		$mt = new \Components\Members\Models\Tags($id);
 		$this->view->tags = $mt->render('string');
 
-		// Add to the pathway
+		// Set the page title
+		$title  = Lang::txt(strtoupper($this->_option));
+		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
+
+		Document::setTitle($title);
+
+		// Set the pathway
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
 		Pathway::append(
 			stripslashes($profile->get('name')),
-			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
+			'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
 		);
 		Pathway::append(
 			Lang::txt(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
+			'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task
 		);
 
 		// Instantiate an xregistration object if we don't already have one
-		// Note: if we already have one then we just came from $this->save()
+		// Note: if we already have one then we just came from saveTask()
 		if (!is_object($xregistration))
 		{
 			$xregistration = new \Components\Members\Models\Registration();
 		}
-		$this->view->xregistration = $xregistration;
 
 		// Find out which fields are hidden, optional, or required
 		$registration = new \Hubzero\Base\Object();
@@ -1270,15 +1157,12 @@ class Profiles extends SiteController
 		$registration->ORCID           = $this->_registrationField('registrationORCID', 'OOOO', $this->_task);
 
 		// Ouput HTML
-		$this->view->profile = $profile;
-		$this->view->registration = $registration;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('title', $title)
+			->set('profile', $profile)
+			->set('registration', $registration)
+			->set('xregistration', $xregistration)
+			->display();
 	}
 
 	/**
@@ -1288,10 +1172,10 @@ class Profiles extends SiteController
 	 *  R = required
 	 *  U = read only
 	 *
-	 * @param      string $name    Field name
-	 * @param      string $default Default setting
-	 * @param      string $task    Task being executed
-	 * @return     integer
+	 * @param   string  $name     Field name
+	 * @param   string  $default  Default setting
+	 * @param   string  $task     Task being executed
+	 * @return  integer
 	 */
 	private function _registrationField($name, $default, $task = 'create')
 	{
@@ -1338,7 +1222,7 @@ class Profiles extends SiteController
 	 * Save changes to a profile
 	 * Outputs JSON when called via AJAX, redirects to profile otherwise
 	 *
-	 * @return     string JSON
+	 * @return  string  JSON
 	 */
 	public function saveTask()
 	{
@@ -1358,8 +1242,7 @@ class Profiles extends SiteController
 		// Do we have an ID?
 		if (!$id)
 		{
-			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
-			return;
+			App::abort(404, Lang::txt('COM_MEMBERS_NO_ID'));
 		}
 
 		// Incoming profile edits
@@ -1368,7 +1251,7 @@ class Profiles extends SiteController
 		$a = Request::getVar('access', array(), 'post');
 
 		// Load the profile
-		$profile = \Hubzero\User\Profile::getInstance($id);
+		$profile = Member::oneOrFail($id);
 
 		$oldemail = $profile->get('email');
 
@@ -1377,9 +1260,11 @@ class Profiles extends SiteController
 			$profile->set('givenName', trim($n['first']));
 			$profile->set('middleName', trim($n['middle']));
 			$profile->set('surname', trim($n['last']));
+
 			$name  = trim($n['first']) . ' ';
 			$name .= (trim($n['middle']) != '') ? trim($n['middle']) . ' ' : '';
 			$name .= trim($n['last']);
+
 			$profile->set('name', $name);
 		}
 
@@ -1401,9 +1286,9 @@ class Profiles extends SiteController
 			}
 		}
 
-		if (isset($p['public']))
+		if (isset($p['access']))
 		{
-			$profile->set('public', $p['public']);
+			$profile->set('access', $p['access']);
 		}
 
 		// Set some post data for the xregistration class
@@ -1429,7 +1314,7 @@ class Profiles extends SiteController
 				// Get a new confirmation code
 				$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 
-				$profile->set('emailConfirmed', $confirm);
+				$profile->set('activation', $confirm);
 			}
 		}
 
@@ -1530,7 +1415,7 @@ class Profiles extends SiteController
 		$declineTOU = Request::getVar('declinetou', 0);
 		if ($declineTOU)
 		{
-			$profile->set('public', 0);
+			$profile->set('access', 0);
 			$profile->set('usageAgreement', 0);
 		}
 
@@ -1538,10 +1423,9 @@ class Profiles extends SiteController
 		$profile->set('modifiedDate', Date::toSql());
 
 		// Save the changes
-		if (!$profile->update())
+		if (!$profile->save())
 		{
 			App::abort(500, $profile->getError());
-			return false;
 		}
 
 		// Process tags
@@ -1555,53 +1439,33 @@ class Profiles extends SiteController
 		$name  = $profile->get('name');
 
 		// Make sure certain changes make it back to the user table
-		if ($id > 0)
+		if ($profile->get('id') == User::get('id'))
 		{
-			$user  = User::getInstance($id);
-			$jname  = $user->get('name');
-			$jemail = $user->get('email');
-			if ($name != trim($jname))
-			{
-				$user->set('name', $name);
-			}
-			if ($email != trim($jemail))
-			{
-				$user->set('email', $email);
-			}
-			if ($name != trim($jname) || $email != trim($jemail))
-			{
-				if (!$user->save())
-				{
-					App::abort(500, Lang::txt($user->getError()));
-					return false;
-				}
-			}
+			$user = App::get('session')->get('user');
 
-			// Update session if name is changing
-			if ($n && $user->get('name') != App::get('session')->get('user')->get('name'))
+			if ($profile->get('name') != $user->get('name'))
 			{
-				$suser = App::get('session')->get('user');
-				$user->set('name', $suser->get('name'));
+				$user->set('name', $profile->get('name'));
 			}
 
 			// Update session if email is changing
-			if ($user->get('email') != App::get('session')->get('user')->get('email'))
+			if ($profile->get('email') != $user->get('email'))
 			{
-				$suser = App::get('session')->get('user');
-				$user->set('email', $suser->get('email'));
+				$user->set('email', $profile->get('email'));
 
 				// add item to session to mark that the user changed emails
 				// this way we can serve profile images for these users but not all
 				// unconfirmed users
-				$session = App::get('session');
-				$session->set('userchangedemail', 1);
+				App::get('session')->set('userchangedemail', 1);
 			}
+
+			App::get('session')->set('user', $user);
 		}
 
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
 		if ($email != $oldemail)
 		{
-			$this->_message = $this->_sendConfirmationCode($profile->get('username'), $email, $confirm);
+			$this->_sendConfirmationCode($profile->get('username'), $email, $confirm);
 		}
 
 		//if were declinging the terms we want to logout user and tell the javascript
@@ -1616,8 +1480,7 @@ class Profiles extends SiteController
 		{
 			// Redirect
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : '')),
-				$this->_message
+				Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : ''))
 			);
 		}
 		else
@@ -1630,10 +1493,10 @@ class Profiles extends SiteController
 	/**
 	 * Send a confirmation code to a user's email address
 	 *
-	 * @param      strong $login   Username
-	 * @param      string $email   User email address
-	 * @param      string $confirm Confirmation code
-	 * @return     string
+	 * @param   strong  $login    Username
+	 * @param   string  $email    User email address
+	 * @param   string  $confirm  Confirmation code
+	 * @return  boolean
 	 */
 	private function _sendConfirmationCode($login, $email, $confirm)
 	{
@@ -1645,11 +1508,11 @@ class Profiles extends SiteController
 			'name'   => 'emails',
 			'layout' => 'confirm'
 		));
-		$eview->option   = $this->_option;
-		$eview->sitename = Config::get('sitename');
-		$eview->login    = $login;
-		$eview->confirm  = $confirm;
-		$eview->baseURL  = Request::base();
+		$eview->set('option', $this->_option)
+			->set('sitename', Config::get('sitename'))
+			->set('login', $login)
+			->set('confirm', $confirm)
+			->set('baseURL', Request::base());
 
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1661,23 +1524,26 @@ class Profiles extends SiteController
 		    ->addHeader('X-Component', $this->_option)
 		    ->setBody($message);
 
+		$result = false;
+
 		// Send the email
 		if ($msg->send())
 		{
-			$msg = 'A confirmation email has been sent to "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'". You must click the link in that email to re-activate your account.';
+			Notify::success('A confirmation email has been sent to "'. htmlentities($email, ENT_COMPAT, 'UTF-8') .'". You must click the link in that email to re-activate your account.');
+			$result = true;
 		}
 		else
 		{
-			$msg = 'An error occurred emailing "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'" your confirmation.';
+			Notify::error('An error occurred emailing "'. htmlentities($email, ENT_COMPAT, 'UTF-8') .'" your confirmation.');
 		}
 
-		return $msg;
+		return $result;
 	}
 
 	/**
 	 * Save profile field access
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveaccessTask()
 	{
@@ -1694,7 +1560,6 @@ class Profiles extends SiteController
 		if (!$id)
 		{
 			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
-			return;
 		}
 
 		// Incoming profile edits
@@ -1702,22 +1567,24 @@ class Profiles extends SiteController
 		if (is_array($p))
 		{
 			// Load the profile
-			$profile = \Hubzero\User\Profile::getInstance($id);
+			$profile = Member::oneOrFail($id);
 
 			foreach ($p as $k => $v)
 			{
 				$v = intval($v);
+
 				if (!in_array($v, array(0, 1, 2, 3, 4)))
 				{
 					$v = 0;
 				}
+
 				$profile->setParam('access_' . $k, $v);
 			}
 
 			// Save the changes
 			if (!$profile->update())
 			{
-				\Notify::warning($profile->getError());
+				Notify::warning($profile->getError());
 				return false;
 			}
 		}
@@ -1729,18 +1596,18 @@ class Profiles extends SiteController
 	/**
 	 * Show the current user activity
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function activityTask()
 	{
 		// Set the page title
-		Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_task)));
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_task)));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-				Lang::txt(strtoupper($this->_name)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -1752,13 +1619,14 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity'), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
-			return;
 		}
-		if (!User::authorize($this->_option, 'manage'))
+
+		// Check authorization
+		if (!User::authorise('core.manage', $this->_option))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
@@ -1781,34 +1649,36 @@ class Profiles extends SiteController
 			foreach ($result as $row)
 			{
 				$row->idle = time() - $row->time;
+
 				if ($prevuser != $row->username)
 				{
 					if ($user)
 					{
-						$xprofile = \Hubzero\User\Profile::getInstance($prevuser);
+						$profile = Member::oneOrNew($prevuser);
 
 						$users[$prevuser] = $user;
-						$users[$prevuser]['uidNumber'] = $xprofile->get('uidNumber');
-						$users[$prevuser]['name'] = $xprofile->get('name');
-						$users[$prevuser]['org'] = $xprofile->get('organization');
-						$users[$prevuser]['orgtype'] = $xprofile->get('orgtype');
-						$users[$prevuser]['countryresident'] = $xprofile->get('countryresident');
+						$users[$prevuser]['uidNumber']       = $profile->get('id');
+						$users[$prevuser]['name']            = $profile->get('name');
+						$users[$prevuser]['org']             = $profile->get('organization');
+						$users[$prevuser]['orgtype']         = $profile->get('orgtype');
+						$users[$prevuser]['countryresident'] = $profile->get('countryresident');
 					}
 					$prevuser = $row->username;
 					$user = array();
 				}
 				array_push($user, array('ip' => $row->ip, 'idle' => $row->idle));
 			}
+
 			if ($user)
 			{
-				$xprofile = \Hubzero\User\Profile::getInstance($prevuser);
+				$profile = Member::oneOrNew($prevuser);
 
 				$users[$prevuser] = $user;
-				$users[$prevuser]['uidNumber'] = $xprofile->get('uidNumber');
-				$users[$prevuser]['name'] = $xprofile->get('name');
-				$users[$prevuser]['org'] = $xprofile->get('organization');
-				$users[$prevuser]['orgtype'] = $xprofile->get('orgtype');
-				$users[$prevuser]['countryresident'] = $xprofile->get('countryresident');
+				$users[$prevuser]['uidNumber']       = $profile->get('id');
+				$users[$prevuser]['name']            = $profile->get('name');
+				$users[$prevuser]['org']             = $profile->get('organization');
+				$users[$prevuser]['orgtype']         = $profile->get('orgtype');
+				$users[$prevuser]['countryresident'] = $profile->get('countryresident');
 			}
 		}
 
@@ -1827,22 +1697,18 @@ class Profiles extends SiteController
 		}
 
 		// Output View
-		$this->view->title = Lang::txt('Active Users and Guests');
-		$this->view->users = $users;
-		$this->view->guests = $guests;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('title', Lang::txt('Active Users and Guests'))
+			->set('users', $users)
+			->set('guests', $guests)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
 	 * Cancel a task and redirect to profile
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -1854,50 +1720,4 @@ class Profiles extends SiteController
 			Route::url('index.php?option=' . $this->_option . '&id=' . $id . '&active=profile')
 		);
 	}
-
-	/**
-	 * Method to check admin access permission
-	 *
-	 * @param      integer $uid       User ID
-	 * @param      string  $assetType Asset type
-	 * @param      string  $assetId   Asset ID
-	 * @return     boolean True on success
-	 */
-	protected function _authorize($uid=0, $assetType='component', $assetId=null)
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			return false;
-		}
-
-		// Check if they're a site admin
-		// Admin
-		$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $assetId));
-		$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $assetId));
-
-		if ($this->config->get('access-admin-' . $assetType))
-		{
-			return 'admin';
-		}
-
-		// Check if they're the member
-		if (is_numeric($uid))
-		{
-			if (User::get('id') == $uid)
-			{
-				return true;
-			}
-		}
-		else
-		{
-			if (User::get('username') == $uid)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 }
-

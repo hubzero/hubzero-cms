@@ -44,7 +44,7 @@ class Helper extends Module
 	/**
 	 * Get a list of contributions
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	private function _getContributions()
 	{
@@ -261,12 +261,10 @@ class Helper extends Module
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
-		$administrator = in_array('middleware', User::get('admin'));
-
 		// show tool contributions separately?
 		$this->show_tools = intval($this->params->get('show_tools', 1));
 

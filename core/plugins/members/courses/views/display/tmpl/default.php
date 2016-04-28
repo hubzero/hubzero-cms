@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = $this->member->getLink() . '&active=courses';
+$base = $this->member->link() . '&active=courses';
 
 $this->css();
 ?>
@@ -209,7 +209,7 @@ $this->css();
 				$this->filters['start'],
 				$this->filters['limit']
 			);
-			$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
 			$pageNav->setAdditionalUrlParam('active', 'courses');
 			$pageNav->setAdditionalUrlParam('task', $this->filters['task']);
 			$pageNav->setAdditionalUrlParam('action', '');

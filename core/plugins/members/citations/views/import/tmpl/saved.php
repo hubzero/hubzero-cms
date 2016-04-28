@@ -64,7 +64,7 @@ else
 	$citations_label_class = ' both-label';
 }
 
-$base = $this->member->getLink() . '&active=citations';
+$base = $this->member->link() . '&active=citations';
 ?>
 <div id="content-header-extra">
 	<ul id="useroptions">

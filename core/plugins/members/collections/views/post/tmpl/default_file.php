@@ -46,7 +46,7 @@ if ($item->get('title')) { ?>
 
 $path = $item->filespace() . DS . $item->get('id');
 $href = 'index.php?option=com_collections&controller=media&task=download&post=';
-$base = $this->member->getLink() . '&active=' . $this->name;
+$base = $this->member->link() . '&active=' . $this->name;
 
 $assets = $item->assets();
 

@@ -36,14 +36,14 @@ defined('_HZEXEC_') or die();
 $entry_year  = substr($this->row->get('publish_up'), 0, 4);
 $entry_month = substr($this->row->get('publish_up'), 5, 2);
 
-$base = $this->member->getLink() . '&active=blog';
+$base = $this->member->link() . '&active=blog';
 
 $this->css()
      ->js();
 ?>
 
 <ul id="page_options">
-<?php if (User::get('id') == $this->member->get('uidNumber')) : ?>
+<?php if (User::get('id') == $this->member->get('id')) : ?>
 	<li>
 		<a class="icon-add add btn" href="<?php echo Route::url($base . '&task=new'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_BLOG_NEW_ENTRY'); ?>
@@ -271,7 +271,7 @@ $this->css()
 						<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SUBMIT'); ?>" />
 					</p>
 				<?php } ?>
-					<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+					<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 					<input type="hidden" name="comment[id]" value="0" />
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->get('id'); ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />

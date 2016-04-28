@@ -41,7 +41,7 @@ $this->css('jquery.datepicker.css', 'system')
 	 ->js('jquery.timepicker', 'system');
 
 $filters = array('projects' => $this->projects);
-$url = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=todo';
+$url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=todo';
 
 $cfilters = array(
 	'mine'  => 1,
@@ -62,7 +62,7 @@ $cfilters = array(
 		</li>
 	</ul>
 <?php } ?>
-<?php if (User::get('id') == $this->member->get('uidNumber') && empty($this->projects) || !$this->todo->entries('count', $filters)) { ?>
+<?php if (User::get('id') == $this->member->get('id') && empty($this->projects) || !$this->todo->entries('count', $filters)) { ?>
 
 	<div class="introduction">
 		<div class="introduction-message">
@@ -85,7 +85,7 @@ $cfilters = array(
 		'todo',
 		$this->model,
 		$this->projects,
-		$this->member->get('uidNumber'),
+		$this->member->get('id'),
 		$this->filters
 	));
 	echo !empty($results) && isset($results[0]) ? $results[0] : NULL;

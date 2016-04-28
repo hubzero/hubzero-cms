@@ -41,24 +41,24 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		//default areas returned to nothing
+		// default areas returned to nothing
 		$areas = array();
 
-		//if this is the logged in user show them
-		if ($user->get('id') == $member->get('uidNumber'))
+		// if this is the logged in user show them
+		if ($user->get('id') == $member->get('id'))
 		{
 			$areas['groups'] = Lang::txt('PLG_MEMBERS_GROUPS');
 			$areas['icon'] = 'f042';
@@ -70,11 +70,11 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -96,23 +96,48 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$applicants = $member->getGroups('applicants');
-		$invitees   = $member->getGroups('invitees');
-		$members    = $member->getGroups('members');
-		$managers   = $member->getGroups('managers');
+		$applicants = array();
+		$invitees   = array();
+		$members    = array();
+		$managers   = array();
 
-		$applicants = (is_array($applicants)) ? $applicants : array();
-		$invitees   = (is_array($invitees))   ? $invitees   : array();
-		$members    = (is_array($members))    ? $members    : array();
-		$managers   = (is_array($managers))   ? $managers   : array();
+		$groups = Hubzero\User\Helper::getGroups($member->get('id'), 'all', 1);
+
+		foreach ($groups as $item)
+		{
+			if ($item->registered)
+			{
+				if (!$item->regconfirmed)
+				{
+					$applicants[] = $item;
+				}
+				else
+				{
+					if ($item->manager)
+					{
+						$managers[] = $item;
+					}
+					else
+					{
+						$members[] = $item;
+					}
+				}
+			}
+			else
+			{
+				$invitees[] = $item;
+			}
+		}
 
 		$groups = array_merge($applicants, $invitees);
+
 		$managerids = array();
 		foreach ($managers as $manager)
 		{
 			$groups[$manager->description] = $manager;
 			$managerids[] = $manager->cn;
 		}
+
 		foreach ($members as $mem)
 		{
 			if (!in_array($mem->cn, $managerids))
@@ -133,14 +158,13 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		// Build the final HTML
 		if ($returnhtml)
 		{
-			$view = $this->view('default', 'summary');
-			$view->total  = count($groups);
-			$view->filter = strtolower(Request::getWord('filter', '', 'get'));
+			$total  = count($groups);
+			$filter = strtolower(Request::getWord('filter', '', 'get'));
 
-			if (in_array($view->filter, array('invitees', 'applicants', 'members', 'managers')))
+			if (in_array($filter, array('invitees', 'applicants', 'members', 'managers')))
 			{
 				$g = array();
-				//$view->groups = $member->getGroups($view->filter);
+
 				switch ($view->filter)
 				{
 					case 'invitees':
@@ -186,14 +210,13 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 				$groups = $g;
 			}
 
-			$view->groups = $groups;
-			$view->member = $member;
-			$view->option = 'com_groups';
-
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view = $this->view('default', 'summary')
+				->set('total', $total)
+				->set('filter', $filter)
+				->set('groups', $groups)
+				->set('member', $member)
+				->set('option', 'com_groups')
+				->setErrors($this->getErrors());
 
 			$arr['html'] = $view->loadTemplate();
 		}
@@ -202,14 +225,14 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		if ($returnmeta)
 		{
 			//display a different message if its me
-			if ($member->get('uidNumber') == $user->get("id"))
+			if ($member->get('id') == $user->get('id'))
 			{
 				$arr['metadata']['count'] = count($groups);
 
 				if (count($invitees))
 				{
 					$title = Lang::txt('PLG_MEMBERS_GROUPS_NEW_INVITATIONS', count($invitees));
-					$link = Route::url($member->getLink() . '&active=groups&filter=invitees');
+					$link = Route::url($member->link() . '&active=groups&filter=invitees');
 					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . Lang::txt('PLG_MEMBERS_GROUPS_ALERT') . '</h5>' . $title . '</span></a>';
 				}
 			}

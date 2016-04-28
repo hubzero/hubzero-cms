@@ -52,9 +52,9 @@ $name = $this->escape(stripslashes($this->row->log->creator->get('name')));
 
 	<div class="activity <?php echo $this->escape($this->row->log->get('action')); ?> <?php echo $this->escape(str_replace('.', '-', $this->row->log->get('scope'))); ?>">
 		<?php /*<ul class="activity-options">
-			<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=activity&action=remove&action=' . $this->row->log->get('action')); ?>">Don't show this action</a></li>
-			<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=activity&action=remove&scope=' . $this->row->log->get('scope')); ?>">Don't show from all objects of this type</a></li>
-			<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=activity&action=remove&scope=' . $this->row->log->get('scope') . '&scope_id=' . $this->row->log->get('scope_id')); ?>">Don't show this object</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('id') . '&active=activity&action=remove&action=' . $this->row->log->get('action')); ?>">Don't show this action</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('id') . '&active=activity&action=remove&scope=' . $this->row->log->get('scope')); ?>">Don't show from all objects of this type</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('id') . '&active=activity&action=remove&scope=' . $this->row->log->get('scope') . '&scope_id=' . $this->row->log->get('scope_id')); ?>">Don't show this object</a></li>
 		</ul>
 		<?php if ($this->row->log->creator()->get('public')) { ?>
 			<a href="<?php echo Route::url($this->row->log->creator->link()); ?>" title="<?php echo $name; ?>" class="img-link">

@@ -74,9 +74,9 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function onMembersAreas($user, $member)
 	{
@@ -84,7 +84,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		//if this is the logged in user show them
-		if ($user->get('id') == $member->get('uidNumber'))
+		if ($user->get('id') == $member->get('id'))
 		{
 			$areas['dashboard'] = Lang::txt('PLG_MEMBERS_DASHBOARD');
 			$areas['icon'] = 'f009';
@@ -96,11 +96,11 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -294,7 +294,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Add Module View
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function addAction()
 	{
@@ -320,7 +320,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save Module Params for User
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveAction()
 	{
@@ -347,7 +347,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser(User::get('id'));
 
 		// update the user preferences
-		$membersDashboardModelPreferences->set('uidNumber', User::get('id'));
+		$membersDashboardModelPreferences->set('id', User::get('id'));
 		$membersDashboardModelPreferences->set('preferences', $modules);
 		$membersDashboardModelPreferences->set('modified', Date::toSql());
 
@@ -369,7 +369,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Returns the name of the plugin if it has an admin interface
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function onCanManage()
 	{
@@ -379,10 +379,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call for managing this plugin's content
 	 *
-	 * @param      string $option     Component name
-	 * @param      string $controller Cotnroller to use
-	 * @param      string $action     Action to perform
-	 * @return     string
+	 * @param   string  $option      Component name
+	 * @param   string  $controller  Cotnroller to use
+	 * @param   string  $action      Action to perform
+	 * @return  string
 	 */
 	public function onManage($option, $controller='plugins', $action='default')
 	{
@@ -410,7 +410,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Main Dashboard Manage
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function manageDefaultAction()
 	{
@@ -456,7 +456,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save Module Defaults
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function manageSaveAction()
 	{
@@ -484,7 +484,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Add Module View
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function manageAddAction()
 	{
@@ -511,7 +511,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return Rendered Module
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function manageModuleAction()
 	{
@@ -548,7 +548,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Push Module View
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function managePushAction()
 	{
@@ -565,7 +565,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Push modules to users
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function manageDoPushAction()
 	{

@@ -48,7 +48,7 @@ $this->css('jquery.datepicker.css', 'system')
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-archive archive btn" href="<?php echo Route::url($this->member->getLink() . '&active=blog'); ?>">
+		<a class="icon-archive archive btn" href="<?php echo Route::url($this->member->link() . '&active=blog'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
@@ -58,7 +58,7 @@ $this->css('jquery.datepicker.css', 'system')
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-	<form action="<?php echo Route::url($this->member->getLink() . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($this->member->link() . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
@@ -81,7 +81,7 @@ $this->css('jquery.datepicker.css', 'system')
 			<fieldset>
 				<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?></legend>
 				<div class="field-wrap">
-					<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('uidNumber') . '&scope=member&tmpl=component'; ?>"></iframe>
+					<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('id') . '&scope=member&tmpl=component'; ?>"></iframe>
 				</div>
 			</fieldset>
 

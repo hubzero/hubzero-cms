@@ -102,7 +102,7 @@ class Register extends SiteController
 
 		$target_xprofile = \Hubzero\User\Profile::getInstance($username);
 
-		$admin = User::authorize($this->_option, 'manage');
+		$admin = User::authorise('core.manage', $this->_option);
 		$self = ($xprofile->get('username') == $username);
 
 		if (!$admin && !$self)

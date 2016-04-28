@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 $this->css('citations.css')
 	 ->js();
 
-$base = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=citations';
+$base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations';
 
 if (isset($this->messages))
 {
@@ -278,7 +278,7 @@ if (isset($this->messages))
 
 					<div class="btn-cluster">
 						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FILTER'); ?>" />
-						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=citations'); ?>" class="btn">Reset</a>
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations'); ?>" class="btn">Reset</a>
 					</div>
 				</fieldset>
 			</div><!-- /.aside -->

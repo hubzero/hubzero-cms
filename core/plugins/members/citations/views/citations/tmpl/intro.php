@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 $this->css('citations.css')
 	 ->js();
 
-$base = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=citations';
+$base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations';
 
 if (isset($this->messages))
 {

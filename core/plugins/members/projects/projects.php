@@ -74,7 +74,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		// if this is the logged in user show them
-		if ($user->get('id') == $member->get('uidNumber'))
+		if ($user->get('id') == $member->get('id'))
 		{
 			$areas['projects'] = Lang::txt('PLG_MEMBERS_PROJECTS');
 			$areas['icon'] = 'f03f';
@@ -149,7 +149,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		//get meta
 		$arr['metadata'] = array();
 
-		$prefix = ($user->get('id') == $member->get("uidNumber")) ? 'I have' : $member->get('name') . ' has';
+		$prefix = ($user->get('id') == $member->get('id')) ? 'I have' : $member->get('name') . ' has';
 		$title = $prefix . ' ' . $this->_total . ' active projects.';
 
 		//return total message count

@@ -242,7 +242,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		//do we have a total?
 		if ($total > 0)
 		{
-			$prefix = (User::get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
+			$prefix = (User::get('id') == $member->get('id')) ? "I have" : $member->get('name') . " has";
 			$title = $prefix . " {$total} resources.";
 			$arr['metadata']['count'] = $total;
 		}

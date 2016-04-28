@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$url = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=todo';
+$url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=todo';
 
 ?>
 
@@ -45,7 +45,7 @@ $url = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&
 	<form action="<?php echo Route::url($url . '&action=save'); ?>" method="post" id="plg-form" >
 		<fieldset>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="uid" id="uid" value="<?php echo $this->member->get('uidNumber'); ?>" />
+			<input type="hidden" name="uid" id="uid" value="<?php echo $this->member->get('id'); ?>" />
 			<input type="hidden" name="active" value="todo" />
 			<input type="hidden" name="action" value="save" />
 			<?php echo Html::input('token'); ?>

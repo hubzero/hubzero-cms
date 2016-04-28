@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $item = $this->post->item();
-$base = $this->member->getLink() . '&active=' . $this->name;
+$base = $this->member->link() . '&active=' . $this->name;
 
 $this->css()
      ->js();
@@ -188,7 +188,7 @@ $this->css()
 						<input type="hidden" name="comment[state]" value="1" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+						<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 						<input type="hidden" name="scope" value="post/<?php echo $this->post->get('id'); ?>/savecomment" />
 						<input type="hidden" name="action" value="savecomment" />
 						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />

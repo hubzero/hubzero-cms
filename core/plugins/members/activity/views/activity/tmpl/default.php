@@ -40,7 +40,7 @@ $no_html = Request::getInt('no_html', 0);
 if (!$no_html) {
 ?>
 <div class="activities">
-	<form action="<?php echo Route::url($this->member->getLink() . '&active=activity'); ?>" method="get">
+	<form action="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" method="get">
 		<fieldset class="filters">
 			<h3><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_LATEST'); ?></h3>
 			<?php /*<label for="filter-category">
@@ -68,7 +68,7 @@ if (!$no_html) {
 <?php } ?>
 
 		<?php if ($this->rows->count()) { ?>
-			<ul class="activity-feed" data-url="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=activity'); ?>">
+			<ul class="activity-feed" data-url="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('id') . '&active=activity'); ?>">
 				<?php
 				foreach ($this->rows as $row)
 				{
