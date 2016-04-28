@@ -35,14 +35,14 @@ defined('_HZEXEC_') or die();
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	$name = Lang::txt('PLG_PUBLICATIONS_REVIEWS_ANONYMOUS');
-	$huser = new \Hubzero\User\Profile;
+	$huser = \Hubzero\User\User::oneOrNew($this->comment->get('created_by'));
 
 	if (!$this->comment->get('anonymous'))
 	{
-		$huser = \Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
-		if (is_object($huser) && $huser->get('name'))
+		$name = $this->escape(stripslashes($huser->get('name')));
+		if (in_array($huser->get('access'), User::getAuthorisedviewLevels()))
 		{
-			$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+			$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $name . '</a>';
 		}
 	}
 
@@ -82,7 +82,7 @@ defined('_HZEXEC_') or die();
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $huser->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $huser->picture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 		<?php if (!$this->comment->isReported() && $this->comment->get('publication_id')) { ?>

@@ -251,9 +251,9 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			{
 				$user = User::getInstance($hzal->user_id); // Bring this in line with the rest of the system
 
-				$response->username = $user->username;
-				$response->email    = $user->email;
-				$response->fullname = $user->name;
+				$response->username = $user->get('username');
+				$response->email    = $user->get('email');
+				$response->fullname = $user->get('name');
 			}
 			else
 			{
@@ -272,7 +272,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 				// Set cookie with login preference info
 				$prefs = array(
 					'user_id'       => $user->get('id'),
-					'user_img'      => \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false),
+					'user_img'      => $user->picture(0, false),
 					'authenticator' => 'pucas'
 				);
 

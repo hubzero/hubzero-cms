@@ -186,7 +186,7 @@ if (!$this->sub)
 				<?php
 				$anon = (!User::isGuest()) ? 0 : 1;
 				?>
-				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('COM_WIKI_MEMBER_PICTURE'); ?>" />
+				<img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('COM_WIKI_MEMBER_PICTURE'); ?>" />
 			</p>
 			<fieldset>
 				<?php if (!$this->mycomment->get('parent')) { ?>

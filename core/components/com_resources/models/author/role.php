@@ -156,11 +156,7 @@ class Role extends Relational
 	 */
 	public function creator()
 	{
-		if ($profile = Profile::getInstance($this->get('created_by')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -205,7 +201,7 @@ class Role extends Relational
 				$row = Type::oneByRoleAndType($this->get('id'), $type_id);
 				if (!$row->destroy())
 				{
-					$this->setError($row->getError());
+					$this->addError($row->getError());
 					return false;
 				}
 			}
@@ -221,7 +217,7 @@ class Role extends Relational
 				$row->set('type_id', $type_id);
 				if (!$row->save())
 				{
-					$this->setError($row->getError());
+					$this->addError($row->getError());
 					return false;
 				}
 			}

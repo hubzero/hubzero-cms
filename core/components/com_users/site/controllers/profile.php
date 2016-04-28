@@ -27,7 +27,7 @@ class UsersControllerProfile extends UsersController
 	public function edit()
 	{
 		$app         = JFactory::getApplication();
-		$user        = User::getRoot();
+		$user        = User::getInstance();
 		$loginUserId = (int) $user->get('id');
 
 		// Get the previous user id (if any) and the current user id.
@@ -77,7 +77,7 @@ class UsersControllerProfile extends UsersController
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$model  = $this->getModel('Profile', 'UsersModel');
-		$user   = User::getRoot();
+		$user   = User::getInstance();
 		$userId = (int) $user->get('id');
 
 		// Get the user data.

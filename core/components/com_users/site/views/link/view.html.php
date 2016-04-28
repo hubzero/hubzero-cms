@@ -42,7 +42,7 @@ class UsersViewLink extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		// If this is an auth_link account update, carry on, otherwise raise an error
 		if (!is_object($user)

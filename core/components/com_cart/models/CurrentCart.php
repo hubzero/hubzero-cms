@@ -62,8 +62,7 @@ class CurrentCart extends Cart
 		parent::__construct();
 
 		// Get user
-		$user = User::getRoot();
-		//print_r($user); die;
+		$user = User::getInstance();
 
 		//Set the user scope
 		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
@@ -78,7 +77,7 @@ class CurrentCart extends Cart
 		$cart = $this->liftSessionCart();
 
 		// If no session cart, try to locate a cookie cart (only for not logged in users)
-		if (!$cart && $user->get('guest'))
+		if (!$cart && $user->isGuest())
 		{
 			$cart = $this->liftCookie();
 		}
@@ -86,12 +85,14 @@ class CurrentCart extends Cart
 		if ($cart)
 		{
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-			if (!$user->get('guest')) {
+			if (!$user->isGuest())
+			{
 				if (empty($this->cart->linked) || !$this->cart->linked)
 				{
 					// link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
 					// if linking fails create a new cart
-					if (!$this->linkCarts()) {
+					if (!$this->linkCarts())
+					{
 						$this->createCart();
 					}
 				}
@@ -101,10 +102,10 @@ class CurrentCart extends Cart
 				$this->cart->linked = 0;
 			}
 		} // If no session & cookie cart found, but user is logged in
-		elseif (!$user->get('guest'))
+		elseif (!$user->isGuest())
 		{
 			// Try to get the saved cart in the DB
-			if (!$this->liftUserCart($user->id))
+			if (!$this->liftUserCart($user->get('id')))
 			{
 				// If no session, no cookie, no DB cart -- create a brand new cart
 				$this->createCart();
@@ -577,8 +578,7 @@ class CurrentCart extends Cart
 				$sqlUpdateValues = str_replace('tiShipping', 'sa', $sqlUpdateValues);
 
 				// Get user
-				$user = User::getRoot();
-				$uId = $user->id;
+				$uId = User::get('id');
 
 				$sql = "INSERT IGNORE INTO `#__cart_saved_addresses`
 						SET `uidNumber` = {$uId}, {$sqlUpdateValues}";
@@ -892,8 +892,7 @@ class CurrentCart extends Cart
 		$this->applyCoupon($cnId);
 
 		// If user is logged in subtract coupon use count. If not logged in subtraction will happen when user logs in
-		$user = User::getRoot();
-		if ($user->id)
+		if (User::get('id'))
 		{
 			$coupons->apply($cnId);
 		}
@@ -1360,8 +1359,7 @@ class CurrentCart extends Cart
 		$coupons = new Coupons;
 
 		// If user is logged in return coupon back to the coupons pool.
-		$user = User::getRoot();
-		if ($user->id)
+		if (User::get('id'))
 		{
 			$coupons->recycle($cnId);
 		}
@@ -1410,11 +1408,8 @@ class CurrentCart extends Cart
 				$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
 				$type = $pType['ptName'];
 
-				// Get user
-				$jUser = User::getRoot();
-
 				// Get the correct membership Object
-				$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $jUser->id);
+				$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, User::get('id'));
 				// Get the expiration for the current subscription (if any)
 				$currentExpiration = $subscription->getExpiration();
 
@@ -1746,13 +1741,11 @@ class CurrentCart extends Cart
 			echo "<br>Creating new cart";
 		}
 
-		$user = User::getRoot();
-
 		$uId = 'NULL';
 		$cart = new \stdClass();
-		if (!$user->get('guest'))
+		if (!User::isGuest())
 		{
-			$uId = $user->id;
+			$uId = User::get('id');
 			$cart->linked = 1;
 		}
 		else {
@@ -1770,7 +1763,7 @@ class CurrentCart extends Cart
 		$session->set('cart', $cart);
 
 		// Set cookie for non logged-in users to recover the cart
-		if ($user->get('guest'))
+		if (User::isGuest())
 		{
 			if ($this->debug)
 			{
@@ -1803,12 +1796,12 @@ class CurrentCart extends Cart
 		setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
 
 		// Get user
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		// Check if session cart is not someone else's. Otherwise load user's cart and done
 		if ($this->cartIsLinked($this->crtId))
 		{
-			if (!$this->liftUserCart($user->id))
+			if (!$this->liftUserCart($user->get('id')))
 			{
 				return false;
 			}
@@ -1816,7 +1809,7 @@ class CurrentCart extends Cart
 		}
 
 		// Get user's cart
-		$userCartId = $this->getUserCartId($user->id);
+		$userCartId = $this->getUserCartId($user->get('id'));
 
 		// Get coupons
 		$coupons = $this->getCoupons();

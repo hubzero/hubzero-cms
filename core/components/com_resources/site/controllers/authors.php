@@ -35,7 +35,6 @@ namespace Components\Resources\Site\Controllers;
 use Components\Resources\Models\Orm\Resource;
 use Components\Resources\Models\Author;
 use Hubzero\Component\SiteController;
-use Hubzero\User\Profile;
 use Request;
 use User;
 use Lang;
@@ -108,7 +107,7 @@ class Authors extends SiteController
 
 		if (!$authid && $username)
 		{
-			$profile = Profile::getInstance($username);
+			$profile = User::getInstance($username);
 
 			if (!$profile)
 			{
@@ -120,7 +119,7 @@ class Authors extends SiteController
 				return;
 			}
 
-			$authid = $profile->get('uidNumber');
+			$authid = $profile->get('id');
 		}
 
 		// Was there an ID? (this will come from the author <select>)
@@ -136,7 +135,7 @@ class Authors extends SiteController
 			else
 			{
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$profile = Profile::getInstance($authid);
+				$profile = User::getInstance($authid);
 
 				if ($profile)
 				{
@@ -162,7 +161,7 @@ class Authors extends SiteController
 					$uid = intval($cid);
 				}
 
-				$profile = Profile::getInstance($authid);
+				$profile = User::getInstance($authid);
 
 				// Find the user's account info
 				if (!$profile)
@@ -194,7 +193,7 @@ class Authors extends SiteController
 				else
 				{
 					// Check to see if they're already an author
-					$author = Author::oneByRelationship($id, $profile->get('uidNumber'));
+					$author = Author::oneByRelationship($id, $profile->get('id'));
 
 					if ($author->get('id'))
 					{
@@ -202,7 +201,7 @@ class Authors extends SiteController
 						continue;
 					}
 
-					$authorid     = $profile->get('uidNumber');
+					$authorid     = $profile->get('id');
 					$name         = $profile->get('name');
 					$organization = $profile->get('organization');
 				}

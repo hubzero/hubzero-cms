@@ -132,9 +132,9 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			{
 				$user = User::getInstance($result->id);
 
-				$response->username      = $user->username;
-				$response->email         = $user->email;
-				$response->fullname      = $user->name;
+				$response->username      = $user->get('username');
+				$response->email         = $user->get('email');
+				$response->fullname      = $user->get('name');
 				$response->status        = \Hubzero\Auth\Status::SUCCESS;
 				$response->error_message = '';
 
@@ -153,7 +153,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 				// Set cookie with login preference info
 				$prefs = array(
 					'user_id'       => $user->get('id'),
-					'user_img'      => \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false),
+					'user_img'      => $user->picture(0, false),
 					'authenticator' => 'hubzero'
 				);
 

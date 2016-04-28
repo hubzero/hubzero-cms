@@ -292,7 +292,7 @@ class Wishlists extends SiteController
 		// Get count of granted wishes
 		$sp_filters = $this->view->filters;
 		$sp_filters['filterby'] = 'granted';
-		$model->set('granted_count', $model->wishes('count', $sp_filters, true)); //$objWish->get_count($model->get('id'), $sp_filters, $this->_admin, User::getRoot());
+		$model->set('granted_count', $model->wishes('count', $sp_filters, true)); //$objWish->get_count($model->get('id'), $sp_filters, $this->_admin, User::getInstance());
 		$model->set('granted_percentage', ($total > 0 && $model->get('granted_count') > 0 ? round(($model->get('granted_count')/$total) * 100, 0) : 0));
 
 		// Some extras

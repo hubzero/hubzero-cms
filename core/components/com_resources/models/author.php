@@ -138,15 +138,7 @@ class Author extends Relational
 	 */
 	public function profile()
 	{
-		if ($this->get('authorid') > 0)
-		{
-			if ($profile = Profile::getInstance($this->get('authorid')))
-			{
-				return $profile;
-			}
-		}
-
-		return new Profile;
+		return $this->belongsToOne('Hubzero\User\User', 'authorid');
 	}
 
 	/**
@@ -156,9 +148,9 @@ class Author extends Relational
 	 */
 	public function populateFromProfile()
 	{
-		$profile = $this->profile();
+		$profile = $this->profile;
 
-		if (!$profile->get('uidNumber'))
+		if (!$profile->get('id'))
 		{
 			return false;
 		}
@@ -238,7 +230,7 @@ class Author extends Relational
 			// Check for a database error.
 			if (!$row->save())
 			{
-				$this->setError($row->getError());
+				$this->addError($row->getError());
 				return false;
 			}
 		}

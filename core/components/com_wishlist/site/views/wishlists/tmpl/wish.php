@@ -676,10 +676,7 @@ $this->css()
 						<?php echo Lang::txt('COM_WISHLIST_ACTION_ADD_COMMENT'); ?>
 					</h3>
 					<p class="comment-member-photo">
-						<?php
-							$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
-						?>
-						<img src="<?php echo $user->picture(); ?>" alt="" />
+						<img src="<?php echo User::picture(); ?>" alt="" />
 					</p>
 					<fieldset>
 						<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
@@ -751,7 +748,7 @@ $this->css()
 				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="planform" enctype="multipart/form-data">
 					<p class="plan-member-photo">
 						<span class="plan-anchor"></span>
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), 0); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
+						<img src="<?php echo User::picture(0); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
 					</p>
 					<fieldset>
 				<?php if ($this->wish->get('action') == 'editplan') { ?>

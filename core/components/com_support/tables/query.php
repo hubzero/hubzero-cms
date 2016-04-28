@@ -315,7 +315,7 @@ class Query extends \JTable
 		{
 			$condition = json_decode($condition);
 		}
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		$op = ' ' . strtoupper($condition->operator) . ' ';
 

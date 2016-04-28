@@ -129,7 +129,7 @@ class ContentViewFeatured extends JViewLegacy
 		$this->assignRef('params', $params);
 		$this->assignRef('items', $items);
 		$this->assignRef('pagination', $pagination);
-		$this->assignRef('user', User::getRoot());
+		$this->assignRef('user', User::getInstance());
 
 		$this->_prepareDocument();
 

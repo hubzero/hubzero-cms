@@ -413,10 +413,10 @@ class Ticketsv1_0 extends ApiController
 	{
 		//get the userid and attempt to load user profile
 		$userid = User::get('id');
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false)
+		if (!$result || !$result->get('id'))
 		{
 			throw new Exception(Lang::txt('User not found.'), 500);
 		}
@@ -468,7 +468,7 @@ class Ticketsv1_0 extends ApiController
 		// Any tags?
 		if ($tags = trim(Request::getVar('tags', '', 'post')))
 		{
-			$ticket->tag($tags, $result->get('uidNumber'));
+			$ticket->tag($tags, $result->get('id'));
 		}
 
 		// Set the response

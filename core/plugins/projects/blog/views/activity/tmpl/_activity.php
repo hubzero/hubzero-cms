@@ -43,7 +43,7 @@ $preview     = $activity['preview'];
 $showProject = isset($this->showProject) ? $this->showProject : false;
 $edit 	     = isset($this->edit) ? $this->edit : true;
 
-$creator = \Hubzero\User\Profile::getInstance($a->userid);
+$creator = User::getInstance($a->userid);
 
 $new = $this->model->member()->lastvisit
 	&& $this->model->member()->lastvisit <= $a->recorded
@@ -62,7 +62,7 @@ $new = $this->model->member()->lastvisit
 					<?php if ($showProject) { ?>
 						<img class="project-image" src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" />
 					<?php } else { ?>
-						<img class="blog-author" src="<?php echo $creator->getPicture($a->admin); ?>" alt="" />
+						<img class="blog-author" src="<?php echo $creator->picture($a->admin); ?>" alt="" />
 					<?php } ?>
 					<div class="blog-content">
 						<?php if ($showProject) { ?>

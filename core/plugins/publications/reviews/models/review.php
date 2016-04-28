@@ -166,20 +166,16 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new \Hubzero\User\Profile();
-			}
+			$this->_creator = \Hubzero\User\User::oneOrNew($this->get('created_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
+			$property = ($property == 'uidNumber') ? 'id' : $property;
 			if ($property == 'picture')
 			{
-				return $this->_creator->getPicture($this->get('anonymous'));
+				return $this->_creator->picture($this->get('anonymous'));
 			}
 			return $this->_creator->get($property);
 		}

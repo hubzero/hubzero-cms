@@ -31,7 +31,7 @@ class UsersViewLogin extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Get the view data.
-		$this->user		= User::getRoot();
+		$this->user		= User::getInstance();
 		$this->form		= $this->get('Form');
 		$this->state	= $this->get('State');
 		$this->params	= $this->state->get('params');
@@ -180,7 +180,6 @@ class UsersViewLogin extends JViewLegacy
 	 */
 	protected function prepareDocument()
 	{
-		$app = JFactory::getApplication();
 		$menus = \App::get('menu');
 		$login = User::isGuest() ? true : false;
 		$title = null;

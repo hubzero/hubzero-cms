@@ -37,11 +37,11 @@ $pAuthor 	= new \Components\Publications\Tables\Author( $this->database );
 $author = $pAuthor->getAuthorByOwnerId($this->row->publication_version_id, $this->row->project_owner_id);
 
 // Get profile thumb image
-$profile = \Hubzero\User\Profile::getInstance($this->row->user_id);
+$profile = User::getInstance($this->row->user_id);
 
-$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
+$actor   = User::getInstance(User::get('id'));
 
-$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 
 $name = $author->name ? $author->name : $author->p_name;
 $name = trim($name) ? $name : $author->invited_name;

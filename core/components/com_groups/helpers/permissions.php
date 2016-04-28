@@ -70,7 +70,7 @@ class Permissions
 			'core.delete'
 		);
 
-		$user = User::getRoot();
+		$user = User::getInstance();
 		$result = new Object;
 
 		foreach ($actions as $action)

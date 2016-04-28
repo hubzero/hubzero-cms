@@ -37,9 +37,9 @@ if (count($this->team) > 0) {
 		<?php foreach ($this->team as $owner)
 		{
 			// Get profile thumb image
-			$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-			$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
-			$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+			$profile = User::getInstance($owner->userid);
+			$actor   = User::getInstance(User::get('id'));
+			$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 
 			$org  = $owner->a_organization ? $owner->a_organization : $owner->organization;
 			$name = $owner->a_name ? $owner->a_name : $owner->fullname;

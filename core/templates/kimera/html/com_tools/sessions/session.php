@@ -339,16 +339,13 @@ if (!$this->app->sess) {
 					{
 						if ($row->viewuser != User::get('username'))
 						{
-							$user = \Hubzero\User\Profile::getInstance($row->viewuser);
+							$user = User::getInstance($row->viewuser);
 
-							$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
-
-							// User picture
-							$p = $user->getPicture();
+							$id = ($user->get('id') < 0) ? 'n' . -$user->get('id') : $user->get('id');
 						?>
 						<tr>
 							<th class="entry-img">
-								<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo $this->escape(stripslashes($user->get('name'))); ?>" />
+								<img width="40" height="40" src="<?php echo $user->picture(); ?>" alt="<?php echo $this->escape(stripslashes($user->get('name'))); ?>" />
 							</th>
 							<td>
 								<a class="entry-title" href="<?php echo Route::url('index.php?option=com_members&id='.$id); ?>">

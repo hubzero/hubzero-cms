@@ -320,7 +320,7 @@ class Certificate extends Base
 	{
 		if (!$user)
 		{
-			$user = \User::getRoot();
+			$user = \User::getInstance();
 		}
 
 		if (!class_exists('\Components\Courses\Models\Course'))

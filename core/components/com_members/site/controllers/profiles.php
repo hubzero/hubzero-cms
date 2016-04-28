@@ -583,7 +583,7 @@ class Profiles extends SiteController
 		}
 
 		// Trigger the functions that return the areas we'll be using
-		$this->view->cats = Event::trigger('members.onMembersAreas', array(User::getRoot(), $profile));
+		$this->view->cats = Event::trigger('members.onMembersAreas', array(User::getInstance(), $profile));
 
 		$available = array();
 		foreach ($this->view->cats as $cat)
@@ -601,7 +601,7 @@ class Profiles extends SiteController
 		}
 
 		// Get the sections
-		$this->view->sections = Event::trigger('members.onMembers', array(User::getRoot(), $profile, $this->_option, array($tab)));
+		$this->view->sections = Event::trigger('members.onMembers', array(User::getInstance(), $profile, $this->_option, array($tab)));
 
 		// Merge profile params (take precendence) with the site config
 		//  ** What is this for?

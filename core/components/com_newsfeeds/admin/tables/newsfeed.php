@@ -111,7 +111,7 @@ class NewsfeedsTableNewsfeed extends JTable
 	public function store($updateNulls = false)
 	{
 		$date = Date::of('now');
-		$user = User::getRoot();
+		$user = User::getInstance();
 		if ($this->id)
 		{
 			// Existing item

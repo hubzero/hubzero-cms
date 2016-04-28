@@ -195,7 +195,6 @@ class Course extends SiteController
 		}
 
 		$this->view->course        = $this->course;
-		$this->view->user          = User::getRoot();
 		$this->view->config        = $this->config;
 		$this->view->notifications = Notify::messages('courses');
 		$this->view->display();
@@ -625,7 +624,7 @@ class Course extends SiteController
 		));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user = User::getRoot();
+		$eview->user = User::getInstance();
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
 		$eview->course = $deletedcourse;

@@ -57,7 +57,7 @@ else
 				<?php
 				$anon = User::isGuest() ? 1 : 0;
 				?>
-				<img src="<?php echo $review->creator()->getPicture($anon); ?>" alt="" />
+				<img src="<?php echo $review->creator()->picture($anon); ?>" alt="" />
 			</p>
 			<fieldset>
 				<input type="hidden" name="created" value="<?php echo $review->get('created'); ?>" />

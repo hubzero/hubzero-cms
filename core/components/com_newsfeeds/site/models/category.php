@@ -101,7 +101,7 @@ class NewsfeedsModelCategory extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$user   = User::getRoot();
+		$user   = User::getInstance();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
 
 		// Create a new query object.

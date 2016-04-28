@@ -52,7 +52,7 @@ $shortComment = \Components\Projects\Helpers\Html::replaceUrls($shortComment, 'e
 $longComment  = \Components\Projects\Helpers\Html::replaceEmoIcons($longComment);
 $shortComment = \Components\Projects\Helpers\Html::replaceEmoIcons($shortComment);
 
-$creator = \Hubzero\User\Profile::getInstance($comment->created_by);
+$creator = User::getInstance($comment->created_by);
 
 ?>
 	<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
@@ -63,7 +63,7 @@ $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 			</span>
 		</span>
 		<?php } ?>
-		<img class="comment-author" src="<?php echo $creator->getPicture($comment->admin); ?>" alt="" />
+		<img class="comment-author" src="<?php echo $creator->picture($comment->admin); ?>" alt="" />
 		<div class="comment-show">
 			<span class="comment-details">
 				<span class="actor"><?php echo $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author; ?></span>

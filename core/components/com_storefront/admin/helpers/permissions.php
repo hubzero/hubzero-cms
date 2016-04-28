@@ -29,7 +29,7 @@
 namespace Components\Storefront\Admin\Helpers;
 
 use Hubzero\Base\Object;
-
+use User;
 
 class Permissions
 {
@@ -56,7 +56,6 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user = \User::getRoot();
 		$result = new Object;
 
 		$actions = array(
@@ -70,7 +69,7 @@ class Permissions
 
 		foreach ($actions as $action)
 		{
-			$result->set('core.' . $action, $user->authorise('core.' . $action, $assetName));
+			$result->set('core.' . $action, User::authorise('core.' . $action, $assetName));
 		}
 
 		return $result;

@@ -74,7 +74,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		// Core objects
 		$this->_database = \App::get('db');
-		$this->_user     = User::getRoot();
+		$this->_user     = User::getInstance();
 
 		// Create objects
 		$this->record = new stdClass;

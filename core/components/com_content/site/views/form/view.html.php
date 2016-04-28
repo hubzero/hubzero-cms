@@ -70,7 +70,7 @@ class ContentViewForm extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->params = $params;
-		$this->user   = User::getRoot();
+		$this->user   = User::getInstance();
 
 		if ($params->get('enable_category') == 1)
 		{

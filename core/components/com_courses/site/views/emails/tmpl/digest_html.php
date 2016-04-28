@@ -278,7 +278,7 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
 											<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
 												<tr>
 													<td width="75" style="padding: 10px 0;">
-														<img width="50" src="<?php echo Request::root() . \Hubzero\User\Profile::getInstance($post->created_by)->getPicture(); ?>" />
+														<img width="50" src="<?php echo Request::root() . User::getInstance($post->created_by)->picture(); ?>" />
 													</td>
 													<td style="padding: 10px 0;">
 														<div style="position: relative; border: 1px solid #CCCCCC; padding: 12px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;">

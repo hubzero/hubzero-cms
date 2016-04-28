@@ -232,7 +232,7 @@ class View
 
 		// pass vars to view
 		$view->group           = $group;
-		$view->user            = User::getRoot();
+		$view->user            = User::getInstance();
 		$view->classOrId       = $classOrId;
 		$view->tab             = self::getTab($group);
 		$view->sections        = self::getSections();
@@ -417,7 +417,7 @@ class View
 
 		// pass vars to view
 		$view->group      = $group;
-		$view->user       = User::getRoot();
+		$view->user       = User::getInstance();
 		$view->classOrId  = $classOrId;
 		$view->logoutLink = $displayLogoutLink;
 

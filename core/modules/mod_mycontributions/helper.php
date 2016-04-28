@@ -265,10 +265,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		// Get the user's profile
-		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
-
-		$administrator = in_array('middleware', $xprofile->get('admin'));
+		$administrator = in_array('middleware', User::get('admin'));
 
 		// show tool contributions separately?
 		$this->show_tools = intval($this->params->get('show_tools', 1));

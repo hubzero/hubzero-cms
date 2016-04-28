@@ -122,7 +122,7 @@ class ContentModelCategory extends JModelList
 		$mergedParams->merge($params);
 
 		$this->setState('params', $mergedParams);
-		$user = User::getRoot();
+		$user = User::getInstance();
 				// Create a new query object.
 		$db     = $this->getDbo();
 		$query  = $db->getQuery(true);
@@ -317,7 +317,7 @@ class ContentModelCategory extends JModelList
 
 			// Compute selected asset permissions.
 			if (is_object($this->_item)) {
-				$user	= User::getRoot();
+				$user	= User::getInstance();
 				$userId	= $user->get('id');
 				$asset	= 'com_content.category.'.$this->_item->id;
 

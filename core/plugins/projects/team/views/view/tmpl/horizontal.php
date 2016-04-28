@@ -45,13 +45,10 @@ defined('_HZEXEC_') or die();
 					continue;
 				}
 				// Get profile thumb image
-				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-				$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
-				if (!$actor)
-				{
-					$actor = new \Hubzero\User\Profile();
-				}
-				$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+				$profile = User::getInstance($owner->userid);
+				$actor   = User::getInstance(User::get('id'));
+
+				$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 			?>
 			<li>
 				<img width="50" height="50" src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($owner->fullname); ?>" />

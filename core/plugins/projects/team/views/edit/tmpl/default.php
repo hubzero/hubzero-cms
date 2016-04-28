@@ -120,9 +120,9 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 <?php foreach ($this->team as $owner)
 	{
 					// Get profile thumb image
-					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-					$actor   = \Hubzero\User\Profile::getInstance($this->uid);
-					$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+					$profile = User::getInstance($owner->userid);
+					$actor   = User::getInstance($this->uid);
+					$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 					$creator = $this->model->get('owned_by_user') == $owner->userid ? 1 : 0;

@@ -290,7 +290,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 	protected function prepareTable(&$table)
 	{
 		$date = Date::of('now');
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		$table->name		= htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias		= JApplication::stringURLSafe($table->alias);

@@ -47,8 +47,7 @@ class Browse extends \Hubzero\Component\SiteController
 	{
 		$this->warehouse = new Warehouse();
 
-		$user = User::getRoot();
-		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
+		$this->warehouse->addAccessLevels(User::getAuthorisedViewLevels());
 
 		// Get the task
 		$this->_task  = Request::getCmd('task', '');

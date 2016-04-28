@@ -231,7 +231,7 @@ class Router extends Base
 				//	}
 
 					// Only append the user id if not "me".
-				//	$user = User::getRoot();
+				//	$user = User::getInstance();
 				//	if (!empty($query['user_id']) && ($query['user_id'] != $user->id))
 				//	{
 				//		$segments[] = $query['user_id'];
@@ -297,7 +297,8 @@ class Router extends Base
 			$vars['user_id'] = (int)$userId;
 
 			// Set the view to package if not already set.
-			if (empty($vars['view'])) {
+			if (empty($vars['view']))
+			{
 				$vars['view'] = 'login';
 			}
 		}

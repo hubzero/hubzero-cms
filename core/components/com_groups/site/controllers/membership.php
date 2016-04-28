@@ -364,7 +364,7 @@ class Membership extends Base
 		));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user     = User::getRoot();
+		$eview->user     = User::getInstance();
 		$eview->group    = $this->view->group;
 		$eview->msg      = $msg;
 
@@ -466,7 +466,7 @@ class Membership extends Base
 			));
 			$eview2->option   = $this->_option;
 			$eview2->sitename = Config::get('sitename');
-			$eview2->user     = User::getRoot();
+			$eview2->user     = User::getInstance();
 			$eview2->group    = $this->view->group;
 			$eview2->msg      = $msg;
 			$eview2->token    = $mbr['token'];
@@ -675,7 +675,7 @@ class Membership extends Base
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'accepted'));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user     = User::getRoot();
+		$eview->user     = User::getInstance();
 		$eview->group    = $this->view->group;
 		$body = $eview->loadTemplate();
 		$body = str_replace("\n", "\r\n", $body);
@@ -801,7 +801,7 @@ class Membership extends Base
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'cancelled'));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user     = User::getRoot();
+		$eview->user     = User::getInstance();
 		$eview->group    = $this->view->group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1030,7 +1030,7 @@ class Membership extends Base
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'request'));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user = User::getRoot();
+		$eview->user = User::getInstance();
 		$eview->group = $this->view->group;
 		$eview->row = $row;
 		$html = $eview->loadTemplate();

@@ -94,13 +94,10 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 			foreach ($this->team as $owner)
 			{
 				// Get profile thumb image
-				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-				$actor   = \Hubzero\User\Profile::getInstance($this->uid);
-				if (!$actor)
-				{
-					$actor = new \Hubzero\User\Profile();
-				}
-				$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+				$profile = User::getInstance($owner->userid);
+				$actor   = User::getInstance($this->uid);
+
+				$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 
 				$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
 				$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'

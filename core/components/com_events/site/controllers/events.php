@@ -1689,7 +1689,7 @@ class Events extends SiteController
 		));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user = User::getRoot();
+		$eview->user = User::getInstance();
 		$eview->event = $event;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1947,7 +1947,7 @@ class Events extends SiteController
 		}
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user = User::getRoot();
+		$eview->user = User::getInstance();
 		$eview->row = $row;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);

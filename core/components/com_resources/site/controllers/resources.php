@@ -2097,16 +2097,16 @@ class Resources extends SiteController
 			$session = \Hubzero\Session\Helper::getSession($session_id);
 
 			$user = User::getInstance($session->userid);
-			$user->guest = 0;
-			$user->id = $session->userid;
-			$user->usertype = $session->usertype;
+			$user->set('guest', 0);
+			$user->set('id', $session->userid);
+			$user->set('usertype', $session->usertype);
 		}
 		else
 		{
-			$user = User::getRoot();
+			$user = User::getInstance();
 		}
 
-		if ($resource->access == 1 && $user->get('guest'))
+		if ($resource->access == 1 && $user->isGuest())
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
@@ -2630,9 +2630,9 @@ class Resources extends SiteController
 	{
 		if (!$user)
 		{
-			$user = User::getRoot();
+			$user = User::getInstance();
 		}
-		if (!$user->get('guest'))
+		if (!$user->isGuest())
 		{
 			// Check if they're a site admin
 			$this->config->set('access-admin-component', $user->authorise('core.admin', null));

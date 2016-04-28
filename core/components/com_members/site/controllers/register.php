@@ -375,7 +375,7 @@ class Register extends SiteController
 			}
 			else
 			{
-				$xregistration->loadAccount(User::getRoot());
+				$xregistration->loadAccount(User::getInstance());
 			}
 
 			$username = User::get('username');
@@ -668,7 +668,7 @@ class Register extends SiteController
 			if ($xregistration->check('create'))
 			{
 				// Get required system objects
-				$user      = clone(User::getRoot());
+				$user      = clone(User::getInstance());
 				$authorize = \JFactory::getACL();
 
 				// If user registration is not allowed, show 403 not authorized.
@@ -927,7 +927,7 @@ class Register extends SiteController
 		{
 			if (User::get('tmp_user'))
 			{
-				$xregistration->loadAccount(User::getRoot());
+				$xregistration->loadAccount(User::getInstance());
 
 				$username = $xregistration->get('login');
 				$email = $xregistration->get('email');

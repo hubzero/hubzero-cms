@@ -142,7 +142,6 @@ class Courses extends SiteController
 		// Output HTML
 		$this->view->config   = $this->config;
 		$this->view->database = $this->database;
-		$this->view->user     = User::getRoot();
 		$this->view->title    = $this->_title;
 
 		$this->view->notifications = \Notify::messages('courses');

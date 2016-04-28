@@ -58,10 +58,10 @@ class Checkout extends ComponentController
 			$this->registerTask('__default', $this->_task);
 		}
 
-		$this->user = User::getRoot();
+		$this->user = User::getInstance();
 
 		// Check if they're logged in
-		if ($this->user->get('guest'))
+		if ($this->user->isGuest())
 		{
 			$this->login('Please login to continue');
 			return;

@@ -373,12 +373,12 @@ class Tickets extends AdminController
 			$watch = strtolower($watch);
 
 			// Already watching
-			if ($this->view->row->isWatching(User::getRoot()))
+			if ($this->view->row->isWatching(User::getInstance()))
 			{
 				// Stop watching?
 				if ($watch == 'stop')
 				{
-					$this->view->row->stopWatching(User::getRoot());
+					$this->view->row->stopWatching(User::getInstance());
 				}
 			}
 			// Not already watching
@@ -387,8 +387,8 @@ class Tickets extends AdminController
 				// Start watching?
 				if ($watch == 'start')
 				{
-					$this->view->row->watch(User::getRoot());
-					if (!$this->view->row->isWatching(User::getRoot(), true))
+					$this->view->row->watch(User::getInstance());
+					if (!$this->view->row->isWatching(User::getInstance(), true))
 					{
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
 					}

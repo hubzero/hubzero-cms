@@ -80,7 +80,7 @@ class ACL extends Object
 	 */
 	public function __construct()
 	{
-		$this->_user = User::getRoot();
+		$this->_user = User::getInstance();
 		$this->_db = \App::get('db');
 
 		$sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
@@ -91,7 +91,7 @@ class ACL extends Object
 		$this->_db->setQuery($sql);
 		$this->_raw_data = $this->_db->loadAssocList();
 
-		if (!$this->_user->get('guest'))
+		if (!$this->_user->isGuest())
 		{
 			$this->_user_groups = UserHelper::getGroups($this->_user->get('id'));
 		}
@@ -128,7 +128,7 @@ class ACL extends Object
 		$permission = 0;
 
 		// Check if they are logged in
-		if (!$aro_foreign_key && $this->_user->get('guest'))
+		if (!$aro_foreign_key && $this->_user->isGuest())
 		{
 			return $permission;
 		}

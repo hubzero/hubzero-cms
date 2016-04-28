@@ -157,7 +157,7 @@ class Certificates extends AdminController
 			return;
 		}
 
-		$certificate->render(User::getRoot());
+		$certificate->render(User::getInstance());
 	}
 
 	/**

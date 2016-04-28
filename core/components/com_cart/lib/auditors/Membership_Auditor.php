@@ -42,8 +42,10 @@ class Membership_Auditor extends BaseAuditor
 	/**
 	 * Constructor
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @param   string   $type
+	 * @param   integer  $pId
+	 * @param   integer  $crtId
+	 * @return  void
 	 */
 	public function __construct($type, $pId, $crtId)
 	{
@@ -53,20 +55,19 @@ class Membership_Auditor extends BaseAuditor
 	/**
 	 * Main handler. Does all the checks
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @return  void
 	 */
 	public function audit()
 	{
 		/* Membership may have a limit on when it can be extended */
 
 		/* If no user, some checks may be skipped... */
-		// Get user
-		$user = User::getRoot();
-		if (!$user->get('guest')) {
+		if (!User::isGuest())
+		{
 			// Check if there is a limitation on when the subscription can be extended
 			$subscriptionMaxLen = Product::getMeta($this->pId, 'subscriptionMaxLen');
-			if ($subscriptionMaxLen) {
+			if ($subscriptionMaxLen)
+			{
 				/* Check if the current user has the existing subscription and how much is left on it
 				 i.e. figure out if he may extend his current subscription */
 
@@ -99,7 +100,6 @@ class Membership_Auditor extends BaseAuditor
 						$this->setResponseError(': you already have an active subscription. Subscription extension is not available at this time.');
 					}
 				}
-
 			}
 		}
 

@@ -90,9 +90,9 @@ $i = 0;
 			break;
 		}
 		// Get profile thumb image
-		$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-		$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
-		$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+		$profile = User::getInstance($owner->userid);
+		$actor   = User::getInstance(User::get('id'));
+		$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 
 		$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
 		$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'

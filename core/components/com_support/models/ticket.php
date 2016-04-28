@@ -582,7 +582,8 @@ class Ticket extends Model
 
 		if (!$user)
 		{
-			$user = User::getRoot();
+			$user = User::getInstance();
+			$id = $user->get('id');
 		}
 		if (is_numeric($user))
 		{
@@ -591,15 +592,7 @@ class Ticket extends Model
 		else if (is_string($user))
 		{
 			$user = User::getInstance($user);
-		}
-
-		if ($user instanceof \JUser)
-		{
 			$id = $user->get('id');
-		}
-		else if ($user instanceof Profile)
-		{
-			$id = $user->get('uidNumber');
 		}
 
 		return $id;

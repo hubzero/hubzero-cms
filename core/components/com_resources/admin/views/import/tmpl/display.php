@@ -103,7 +103,7 @@ function submitbutton(pressbutton)
 							?>
 							<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
 							<?php
-								if ($created_by = Hubzero\User\Profile::getInstance($import->get('created_by')))
+								if ($created_by = User::getInstance($import->get('created_by')))
 								{
 									echo $created_by->get('name');
 								}
@@ -125,7 +125,7 @@ function submitbutton(pressbutton)
 								?>
 								<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
 								<?php
-									if ($created_by = Hubzero\User\Profile::getInstance($lastRun->get('ran_by')))
+									if ($created_by = User::getInstance($lastRun->get('ran_by')))
 									{
 										echo $created_by->get('name');
 									}

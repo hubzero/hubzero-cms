@@ -51,7 +51,7 @@ class Download extends \Hubzero\Component\SiteController
 	{
 		$this->warehouse = new Warehouse();
 
-		$this->user = User::getRoot();
+		$this->user = User::getInstance();
 
 		// Check if they're logged in
 		if ($this->user->get('guest'))

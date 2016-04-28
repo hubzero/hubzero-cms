@@ -116,11 +116,10 @@ class HubgraphRequest
 	{
 		static $crit;
 		if (is_null($crit)) {
-			$user = User::getRoot();
 			$groups = array();
 			$super = FALSE;
-			if (($uid = $user->get('id'))) {
-				$super = $user->usertype === 'Super Administrator';
+			if (($uid = User::get('id'))) {
+				$super = User::get('usertype') === 'Super Administrator';
 				foreach (Db::query(
 					'SELECT DISTINCT g.gidNumber FROM jos_xgroups_members xm INNER JOIN jos_xgroups g ON g.gidNumber = xm.gidNumber WHERE uidNumber = ? 
 					UNION SELECT DISTINCT g.gidNumber FROM jos_xgroups_managers xm INNER JOIN jos_xgroups g ON g.gidNumber = xm.gidNumber WHERE uidNumber = ?', array($uid, $uid)) as $group) {

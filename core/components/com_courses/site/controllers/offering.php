@@ -223,7 +223,6 @@ class Offering extends SiteController
 		));
 
 		$this->view->course        = $this->course;
-		$this->view->user          = User::getRoot();
 		$this->view->config        = $this->config;
 		$this->view->plugins       = $plugins;
 		$this->view->notifications = \Notify::messages('courses');

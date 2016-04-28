@@ -44,8 +44,10 @@ class Software_Auditor extends BaseAuditor
 	/**
 	 * Constructor
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @param   string   $type
+	 * @param   integer  $pId
+	 * @param   integer  $crtId
+	 * @return  void
 	 */
 	public function __construct($type, $pId, $crtId)
 	{
@@ -55,16 +57,13 @@ class Software_Auditor extends BaseAuditor
 	/**
 	 * Main handler. Does all the checks
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @return  void
 	 */
 	public function audit()
 	{
 		/* If no user, some checks may be skipped... */
-		// Get user
-		$user = User::getRoot();
 		// User specific checks
-		if (!$user->get('guest'))
+		if (!User::isGuest())
 		{
 			if ($sId = $this->getSku())
 			{
@@ -73,9 +72,9 @@ class Software_Auditor extends BaseAuditor
 				$skuDownloadLimit = $sku->getMeta('downloadLimit');
 				if ($skuDownloadLimit > 0)
 				{
-				// Get SKU download count
-				$skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
-				// Check if the limit is reached
+					// Get SKU download count
+					$skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
+					// Check if the limit is reached
 					if ($skuDownloadCount >= $skuDownloadLimit)
 					{
 						$this->setResponseStatus('error');

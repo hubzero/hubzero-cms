@@ -785,7 +785,7 @@ class Groups extends Base
 		));
 
 		$eview->option = $this->_option;
-		$eview->user   = User::getRoot();
+		$eview->user   = User::getInstance();
 		$eview->group  = $group;
 		$message['plaintext'] = $eview->loadTemplate(false);
 		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
@@ -1100,7 +1100,7 @@ class Groups extends Base
 		$eview = new \Hubzero\Component\View(array('name' => 'emails','layout' => 'deleted'));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user     = User::getRoot();
+		$eview->user     = User::getInstance();
 		$eview->gcn      = $deletedgroup->get('cn');
 		$eview->msg      = $message;
 		$eview->group    = $deletedgroup;

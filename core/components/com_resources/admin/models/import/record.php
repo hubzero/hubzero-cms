@@ -70,7 +70,7 @@ class Record extends Object
 
 		// create core objects
 		$this->_database = \App::get('db');
-		$this->_user     = \User::getRoot();
+		$this->_user     = \User::getInstance();
 
 		// create resource objects
 		$this->record               = new stdClass;
@@ -517,9 +517,9 @@ class Record extends Object
 			// load name
 			if ($authorid != null)
 			{
-				if ($profile = \Hubzero\User\Profile::getInstance($authorid))
+				if ($profile = \Hubzero\User\User::oneOrNew($authorid))
 				{
-					$resourceContributor->authorid = $profile->get('uidNumber');
+					$resourceContributor->authorid = $profile->get('id');
 				}
 			}
 

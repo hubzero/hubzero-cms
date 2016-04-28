@@ -178,7 +178,7 @@ class UsersModelUser extends JModelAdmin
 		$pk   = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('user.id');
 		$user = User::getInstance($pk);
 
-		$my = User::getRoot();
+		$my = User::getInstance();
 
 		if ($data['block'] && $pk == $my->id && !$my->block)
 		{

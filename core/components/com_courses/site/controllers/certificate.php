@@ -119,7 +119,7 @@ class Certificate extends SiteController
 				}
 			}
 
-			$certificate->render(User::getRoot(), $file);
+			$certificate->render(User::getInstance(), $file);
 		}
 
 		// If file exists

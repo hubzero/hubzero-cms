@@ -63,7 +63,7 @@ defined('_HZEXEC_') or die();
 					<tr>
 						<td><?php echo $loggedin->get('name'); ?></td>
 						<td>
-							<a href="<?php echo Route::url('index.php?option=com_members&id=' . $loggedin->get('uidNumber')); ?>">
+							<a href="<?php echo Route::url('index.php?option=com_members&id=' . $loggedin->get('id')); ?>">
 								<?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN_VIEW_PROFILE'); ?>
 							</a>
 						</td>

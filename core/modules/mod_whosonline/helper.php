@@ -34,7 +34,7 @@ namespace Modules\Whosonline;
 
 use Hubzero\Module\Module;
 use Hubzero\Session\Helper as SessionHelper;
-use Hubzero\User\Profile;
+use Hubzero\User\User;
 
 /**
  * Module class for showing users online
@@ -84,8 +84,8 @@ class Helper extends Module
 			else
 			{
 				$this->loggedInCount++;
-				$profile = Profile::getInstance($session->userid);
-				if ($profile)
+				$profile = User::oneOrNew($session->userid);
+				if ($profile->get('id'))
 				{
 					$this->loggedInList[] = $profile;
 				}

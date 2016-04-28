@@ -52,8 +52,8 @@ class Product extends \Hubzero\Component\SiteController
 	public function execute()
 	{
 		$this->warehouse = new Warehouse();
-		$user = User::getRoot();
-		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
+
+		$this->warehouse->addAccessLevels(User::getAuthorisedViewLevels());
 
 		parent::execute();
 	}

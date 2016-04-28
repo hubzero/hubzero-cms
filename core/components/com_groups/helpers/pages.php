@@ -107,7 +107,7 @@ class Pages
 		));
 
 		// pass vars to view
-		$view->user  = User::getRoot();
+		$view->user  = User::getInstance();
 		$view->group = $group;
 
 		// get group desc
@@ -672,7 +672,7 @@ class Pages
 		$version->set('content', trim($content));
 
 		// set vars to view
-		$view->user       = User::getRoot();
+		$view->user       = User::getInstance();
 		$view->group      = $group;
 		$view->page       = $page;
 		$view->version    = $version;

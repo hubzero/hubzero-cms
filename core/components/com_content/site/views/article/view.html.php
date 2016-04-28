@@ -30,7 +30,7 @@ class ContentViewArticle extends JViewLegacy
 		$this->item  = $this->get('Item');
 		$this->print = Request::getBool('print');
 		$this->state = $this->get('State');
-		$this->user  = User::getRoot();
+		$this->user  = User::getInstance();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

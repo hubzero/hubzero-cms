@@ -164,7 +164,7 @@ class Profilesv1_0 extends ApiController
 		}
 
 		// Incoming
-		$user = User::getRoot();
+		$user = User::getInstance();
 		$user->set('id', 0);
 		$user->set('groups', array($newUsertype));
 		$user->set('registerDate', Date::toSql());
@@ -288,9 +288,9 @@ class Profilesv1_0 extends ApiController
 	public function readTask()
 	{
 		$userid = Request::getInt('id', 0);
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
-		if ($result === false)
+		if (!$result || !$result->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
 		}
@@ -305,7 +305,7 @@ class Profilesv1_0 extends ApiController
 			'first_name'        => $result->get('givenName'),
 			'middle_name'       => $result->get('middleName'),
 			'last_name'         => $result->get('surname'),
-			'bio'               => $result->getBio('clean'),
+			'bio'               => $result->get('bio'),
 			'email'             => $result->get('email'),
 			'phone'             => $result->get('phone'),
 			'webpage'           => $result->get('url'),
@@ -317,11 +317,11 @@ class Profilesv1_0 extends ApiController
 			'member_since'      => $result->get('registerDate'),
 			'orcid'             => $result->get('orcid'),
 			'picture'   => array(
-				'thumb' => \Hubzero\User\Profile\Helper::getMemberPhoto($result, 0, true),
-				'full'  => \Hubzero\User\Profile\Helper::getMemberPhoto($result, 0, false)
+				'thumb' => $result->picture(0, true),
+				'full'  => $result->picture(0, false)
 			),
 			'interests' => array(),
-			'url'       => str_replace('/api', '', $base . '/' . ltrim(Route::url($result->getLink()), '/'))
+			'url'       => str_replace('/api', '', $base . '/' . ltrim(Route::url($result->link()), '/'))
 		);
 
 		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
@@ -371,14 +371,14 @@ class Profilesv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$userid = Request::getInt('id', 0);
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
-		if ($result === false)
+		if (!$result || !$result->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
 		}
 
-		$groups = \Hubzero\User\Helper::getGroups($result->get('uidNumber'), 'members', 0);
+		$groups = \Hubzero\User\Helper::getGroups($result->get('id'), 'members', 0);
 
 		$g = array();
 		foreach ($groups as $k => $group)

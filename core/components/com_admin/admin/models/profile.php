@@ -108,7 +108,7 @@ class AdminModelProfile extends UsersModelUser
 	public function save($data)
 	{
 		// Initialise variables;
-		$user = User::getRoot();
+		$user = User::getInstance();
 
 		unset($data['id']);
 		unset($data['groups']);
