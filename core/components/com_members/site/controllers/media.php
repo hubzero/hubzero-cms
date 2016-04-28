@@ -546,7 +546,7 @@ class Media extends SiteController
 			->set('id', $id)
 			->set('file_path', $path)
 			->setErrors($this->getErrors())
-			->setLayout('display');
+			->setLayout('display')
 			->display();
 	}
 
