@@ -97,11 +97,15 @@ switch ($this->level)
 		$filters = $this->bits['filters'];
 
 		$sortbys = array(
-			'date'=>Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_DATE'),
-			'title'=>Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_TITLE'),
-			'ranking'=>Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_RANKING')
+			'date'  => Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_DATE'),
+			'title' => Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_TITLE')
 		);
-		if ($type == 7) {
+		if ($this->bits['ranking'])
+		{
+			$sortbys['ranking'] = Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_RANKING');
+		}
+		if ($type == 7)
+		{
 			$sortbys['users'] = Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_USERS');
 			$sortbys['jobs'] = Lang::txt('COM_RESOURCES_SORT_BY').' '.Lang::txt('COM_RESOURCES_JOBS');
 		}
