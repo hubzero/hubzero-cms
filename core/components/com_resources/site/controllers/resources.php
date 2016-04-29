@@ -479,6 +479,7 @@ class Resources extends SiteController
 				$bits['tag2'] = Request::getVar('input2', '');
 				$bits['sortby'] = Request::getVar('sortby', 'title');
 				$bits['filter']  = Request::getVar('filter', array('level0','level1','level2','level3','level4'));
+				$bits['ranking'] = $this->config->get('show_ranking');
 
 				if ($bits['tag'] == $bits['tag2'])
 				{
