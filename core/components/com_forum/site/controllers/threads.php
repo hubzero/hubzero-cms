@@ -681,6 +681,7 @@ class Threads extends SiteController
 		}
 
 		// Record the activity
+		$url  = $post->link();
 		$type = 'thread';
 		$desc = Lang::txt(
 			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',

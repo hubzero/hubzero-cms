@@ -33,6 +33,7 @@ use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
+use Components\Forum\Models\Attachment;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -1457,7 +1458,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$encryptor = new \Hubzero\Mail\Token();
+			$allowEmailResponses = true;
+			try
+			{
+				$encryptor = new \Hubzero\Mail\Token();
+			}
+			catch (Exception $e)
+			{
+				$allowEmailResponses = false;
+			}
 
 			$from = array(
 				'name'  => Config::get('sitename'),
@@ -1469,7 +1478,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			{
 				// Construct User specific Email ThreadToken
 				// Version, type, userid, xforumid
-				$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
+				if ($allowEmailResponses)
+				{
+					$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
+					$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
+				}
 
 				// add unsubscribe link
 				$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
@@ -1504,8 +1517,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				$subject = ' - ' . $this->group->get('cn') . ' - ' . $thread->get('title');
 
-				$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
-
 				if (!Event::trigger('xmessage.onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
 				{
 					$this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
@@ -1531,15 +1542,16 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$section  = Request::getVar('section', '');
 		$category = Request::getVar('category', '');
 
+		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category);
+
 		// Is the user logged in?
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url($this->base . '&scope=' . $section . '/' . $category),
+				$redirect,
 				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
-			return;
 		}
 
 		// Incoming
@@ -1552,11 +1564,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if (!$post->get('id'))
 		{
 			App::redirect(
-				Route::url($this->base . '&scope=' . $section . '/' . $category),
+				$redirect,
 				Lang::txt('PLG_GROUPS_FORUM_MISSING_ID'),
 				'error'
 			);
-			return;
 		}
 
 		// Check if user is authorized to delete entries
@@ -1565,11 +1576,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('access-delete-thread'))
 		{
 			App::redirect(
-				Route::url($this->base . '&scope=' . $section . '/' . $category),
+				$redirect,
 				Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
-			return;
 		}
 
 		// Trash the post
@@ -1579,17 +1589,40 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		if (!$post->save())
 		{
-			App::redirect(
-				Route::url($this->base . '&scope=' . $section . '/' . $category),
-				$forum->getError(),
-				'error'
+			Notify::error($forum->getError());
+		}
+		else
+		{
+			// Record the activity
+			$recipients = array(
+				['group', $this->group->get('gidNumber')],
+				['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')]
 			);
-			return;
+			foreach ($this->group->get('managers') as $recipient)
+			{
+				$recipients[] = ['user', $recipient];
+			}
+
+			$url  = $post->link();
+
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'deleted',
+					'scope'       => 'forum.thread',
+					'scope_id'    => $row->get('id'),
+					'description' => Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED', '<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'),
+					'details'     => array(
+						'thread' => $post->get('thread'),
+						'url'    => Route::url($url)
+					)
+				],
+				'recipients' => $recipients
+			]);
 		}
 
 		// Redirect to main listing
 		App::redirect(
-			Route::url($this->base . '&scope=' . $section . '/' . $category),
+			$redirect,
 			Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED'),
 			'passed'
 		);
