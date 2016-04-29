@@ -222,14 +222,16 @@ class Helper extends Module
 			}
 
 			$this->days_left = floor($difference/60/60/24);
+			$this->days_left = ($this->days_left ? $this->days_left : 7);
 
 			$expires = $now + 60*60*24*$this->days_left;
 
-			if ($hide = Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'get'))
+			$hide = Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
+
+			if (!$hide && Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'get'))
 			{
 				setcookie($this->params->get('moduleid', 'sitenotice'), 'closed', $expires);
 			}
-			$hide = Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
 		}
 
 		// Only do something if the module's time frame hasn't expired
