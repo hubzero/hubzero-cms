@@ -198,6 +198,14 @@ class Router extends Base
 			{
 				$vars['alias'] = $segments[0];
 				$vars['task'] = 'view';
+
+				if (isset($segments[1]))
+				{
+					if (is_numeric($segments[1]) || $segments[1] == 'dev' || $segments[1] == 'default')
+					{
+						$vars['v'] = $segments[1];
+					}
+				}
 			}
 		}
 
