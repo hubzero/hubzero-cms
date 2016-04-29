@@ -63,6 +63,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="yes">JYes</option>
 					<option value="no">JNo</option>
 				</field>
+				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 			</fieldset>
 		</fields>
 	</config>
