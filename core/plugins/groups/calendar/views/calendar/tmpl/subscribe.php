@@ -84,9 +84,9 @@ foreach ($this->calendars as $calendar)
 				<label <?php echo (!$enabled) ? 'class="disabled"' : '' ?>>
 					<input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?> name="subscribe[]"  type="checkbox" value="<?php echo $calendar->get('id'); ?>" />
 					<?php if ($calendar->get('color')) : ?>
-						<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" />
+						<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" alt="<?php echo $calendar->get('color'); ?>" />
 					<?php else : ?>
-						<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" />
+						<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="gray" />
 					<?php endif; ?>
 					<?php echo $calendar->get('title'); ?>
 					<?php
