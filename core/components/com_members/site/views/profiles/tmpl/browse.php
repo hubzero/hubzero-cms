@@ -344,11 +344,6 @@ $this->css()
 						</tr>
 					</tbody>
 				</table>
-				<p class="align-right">
-					<a href="<?php echo Route::url('index.php?option=com_usage#tot'); ?>">
-						<?php echo Lang::txt('COM_MEMBERS_BROWSE_ALL_MEMBER_USAGE'); ?>
-					</a>
-				</p>
 			</div><!-- / .container -->
 
 			<div class="container">
