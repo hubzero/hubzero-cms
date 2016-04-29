@@ -158,7 +158,7 @@ $this->css()
 							<div class="col span3 omega">
 								<span><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_APPROVED_BY'); ?></span>
 								<?php if ($approved_by != 'n/a' && $approved_by != 'System') : ?>
-									<img align="left" width="20" src="<?php echo $profile->picture()); ?>" />
+									<img align="left" width="20" src="<?php echo $profile->picture(); ?>" />
 								<?php endif; ?>
 								<?php echo $approved_by; ?>
 							</div>
