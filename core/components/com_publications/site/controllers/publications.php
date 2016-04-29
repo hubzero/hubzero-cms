@@ -126,7 +126,7 @@ class Publications extends SiteController
 
 		$this->_identifier = $this->_alias ? $this->_alias : $this->_id;
 
-		$pointer       = $this->_id ? '&id=' . $this->_id : '&alias=' . $this->alias;
+		$pointer       = $this->_id ? '&id=' . $this->_id : '&alias=' . $this->_alias;
 		$this->_route  = 'index.php?option=' . $this->_option;
 		$this->_route .= $this->_identifier ? $pointer : '';
 	}
