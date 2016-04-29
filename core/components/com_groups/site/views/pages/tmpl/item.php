@@ -60,11 +60,9 @@ if (isset($this->version) && $this->version->get('approved') == 0)
 
 	<?php if ($this->checkout) : ?>
 		<div class="item-checkout">
-			<img width="15" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->checkout->userid); ?>" />
-			<?php
-				$user = \Hubzero\User\Profile::getInstance($this->checkout->userid);
-				echo Lang::txt('COM_GROUPS_PAGES_PAGE_CHECKED_OUT', $user->get('uidNumber'), $user->get('name'));
-			?>
+			<?php $user = User::getInstance($this->checkout->userid); ?>
+			<img width="15" src="<?php echo $user->picture(); ?>" />
+			<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CHECKED_OUT', $user->get('id'), $user->get('name')); ?>
 		</div>
 	<?php endif; ?>
 

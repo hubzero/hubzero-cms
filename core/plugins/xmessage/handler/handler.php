@@ -203,8 +203,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			// Get all the sender's groups
 			if ($mconfig->get('user_messaging', 1) == 1 && !$bypassGroupsCheck)
 			{
-				$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-				$xgroups = $profile->getGroups('all');
+				$xgroups = User::groups('all');
 				$usersgroups = array();
 				if (!empty($xgroups))
 				{
@@ -234,7 +233,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				$methods = $notify->getRecords($uid, $type);
 
 				//$user = User::getInstance($uid);
-				$user = \Hubzero\User\Profile::getInstance($uid);
+				$user = User::getInstance($uid);
 				if (!is_object($user) || !$user->get('username'))
 				{
 					continue;
@@ -242,7 +241,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 				if ($mconfig->get('user_messaging', 1) == 1 && ($type == 'member_message' || $type == 'group_message'))
 				{
-					$pgroups = $user->getGroups('all');
+					$pgroups = $user->groups('all');
 					$profilesgroups = array();
 					if (!empty($pgroups))
 					{

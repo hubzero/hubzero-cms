@@ -72,7 +72,7 @@ $option = 'com_groups';
 			<li>
 				<?php if ($this->authorized == 'manager'
 					|| $this->authorized == 'admin'
-					|| \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
+					|| Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
 				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
 					<?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
 				</a>
@@ -194,11 +194,8 @@ $option = 'com_groups';
 								}
 								$guser = $this->groupusers[($i+$this->start)];
 
-								$u = \Hubzero\User\Profile::getInstance($guser);
-								if (!$u)
-								{
-									$u = new \Hubzero\User\Profile();
-								}
+								$u = User::getInstance($guser);
+
 								if (\Components\Members\Helpers\Utility::validemail($guser))
 								{
 									$inviteemail = true;
@@ -210,7 +207,7 @@ $option = 'com_groups';
 								}
 								else
 								{
-									$pic = \Hubzero\User\Profile\Helper::getMemberPhoto($u, 0);
+									$pic = $u->picture(0);
 								}
 
 								switch ($this->filter)

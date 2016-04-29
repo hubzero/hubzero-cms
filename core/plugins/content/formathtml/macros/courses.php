@@ -146,10 +146,10 @@ class Courses extends Macro
 					}, $instructors);
 
 					// get the profile from the instructor param
-					$profile = \Hubzero\User\Profile::getInstance($this->_getArg('instructor'));
-					if ($profile)
+					$profile = \User::getInstance($this->_getArg('instructor'));
+					if ($profile->get('id'))
 					{
-						if (!in_array($profile->get('uidNumber'), $instructorIds))
+						if (!in_array($profile->get('id'), $instructorIds))
 						{
 							continue;
 						}
@@ -201,10 +201,10 @@ class Courses extends Macro
 					$instr = array();
 					foreach ($instructors as $instructor)
 					{
-						$profile = \Hubzero\User\Profile::getInstance($instructor->get('user_id'));
-						if ($profile)
+						$profile = \User::getInstance($instructor->get('user_id'));
+						if ($profile->get('id'))
 						{
-							$instr[] = '<a href="' . \Route::url('index.php?option=com_members&id=' . $profile->get('uidNumber')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
+							$instr[] = '<a href="' . \Route::url('index.php?option=com_members&id=' . $profile->get('id')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
 						}
 
 					}

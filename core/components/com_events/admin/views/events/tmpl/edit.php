@@ -40,8 +40,8 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('event');
 
-$xprofilec = \Hubzero\User\Profile::getInstance($this->row->created_by);
-$xprofilem = \Hubzero\User\Profile::getInstance($this->row->modified_by);
+$xprofilec = User::getInstance($this->row->created_by);
+$xprofilem = User::getInstance($this->row->modified_by);
 $userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
 $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 

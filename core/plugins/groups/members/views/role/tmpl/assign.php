@@ -44,11 +44,10 @@ defined('_HZEXEC_') or die();
 		<label for="uid">
 			<input type="hidden" name="uid" value="<?php echo $this->escape($this->uid); ?>" id="uid" />
 			<?php
-				$u = new \Hubzero\User\Profile();
-				$u->load($this->uid);
+				$u = User::getInstance($this->uid);
 
 				$current_roles = array();
-				$roles = $u->getGroupMemberRoles($u->get('uidNumber'), $this->group->get('gidNumber'));
+				$roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($u->get('id'), $this->group->get('gidNumber'));
 				if ($roles)
 				{
 					foreach ($roles as $role)

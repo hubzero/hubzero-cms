@@ -212,13 +212,12 @@ class Log extends Model
 	 */
 	public function actor($property=null)
 	{
-		if (!isset($this->_actor) || !($this->_creator instanceof \Hubzero\User\Profile))
+		if (!isset($this->_actor) || !($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_actor = \Hubzero\User\Profile::getInstance($this->get('actor'));
+			$this->_actor = \User::getInstance($this->get('actor'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
 			return $this->_actor->get($property);
 		}
 		return $this->_actor;

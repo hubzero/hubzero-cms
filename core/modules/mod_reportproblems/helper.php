@@ -34,7 +34,6 @@
 namespace Modules\ReportProblems;
 
 use Hubzero\Module\Module;
-use Hubzero\User\Profile;
 use Hubzero\Browser\Detector;
 use Component;
 use User;

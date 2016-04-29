@@ -100,9 +100,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if a user has employer authorization
 	 *
-	 * @param      object $user       User
-	 * @param      object $member     \Hubzero\User\Profile
-	 * @return     integer 1 = authorized, 0 = not
+	 * @param   object   $user    User
+	 * @param   object   $member  Profile
+	 * @return  integer  1 = authorized, 0 = not
 	 */
 	public function isEmployer($user=null, $member=null)
 	{
@@ -122,8 +122,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup') && User::get('id') != 0)
 		{
-			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-			$ugs = $profile->getGroups('all');
+			$ugs = User::groups('all');
 			if ($ugs && count($ugs) > 0)
 			{
 				foreach ($ugs as $ug)
@@ -156,8 +155,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup'))
 		{
-			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-			$ugs = $profile->getGroups('all');
+			$ugs = User::groups('all');
 			if ($ugs && count($ugs) > 0)
 			{
 				foreach ($ugs as $ug)

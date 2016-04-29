@@ -140,9 +140,8 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 		if (!User::isGuest())
 		{
 			$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			$gids = array();
-			foreach ($profile->getGroups() as $group)
+			foreach (User::groups() as $group)
 			{
 				$gids[] = $group->gidNumber;
 			}

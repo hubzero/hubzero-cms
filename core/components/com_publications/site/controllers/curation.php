@@ -402,7 +402,7 @@ class Curation extends SiteController
 			// Make sure owner profile exists
 			if ($owner)
 			{
-				$ownerProfile  = \Hubzero\User\Profile::getInstance($owner);
+				$ownerProfile  = User::getInstance($owner);
 				if (!$ownerProfile)
 				{
 					$this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));

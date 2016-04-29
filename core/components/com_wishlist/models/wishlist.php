@@ -32,7 +32,6 @@
 
 namespace Components\Wishlist\Models;
 
-use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Components\Wishlist\Tables;
 use Lang;

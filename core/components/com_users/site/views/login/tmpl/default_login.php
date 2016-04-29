@@ -99,7 +99,7 @@ endforeach;
 		<div class="auth">
 			<div class="person">
 				<?php if (isset($user_img) && is_object($user) && file_exists($user_img)) : ?>
-					<?php $image = Hubzero\User\Profile\Helper::getMemberPicture($user, 0, false, false); ?>
+					<?php $image = $user->picture(0, false, false); ?>
 					<?php $img_properties = getimagesize(PATH_CORE . DS . $image); ?>
 					<?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
 					<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />

@@ -195,7 +195,7 @@ function submitbutton(pressbutton)
 
 			$status = $row->role;
 
-			$roles = Hubzero\User\Profile::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
+			$roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

@@ -97,7 +97,7 @@ $this->css()
 								$reviewed  = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED'))
 									. ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
 
-								$reviewer  = \Hubzero\User\Profile::getInstance($row->reviewed_by);
+								$reviewer  = User::getInstance($row->reviewed_by);
 								$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $reviewer->get('name') . '</span>' : NULL;
 							}
 
@@ -122,7 +122,7 @@ $this->css()
 								</td>
 								<td><span class="status-icon <?php echo $class; ?>"></span> <span class="status-label"><?php echo $row->state == 5 ? Lang::txt('COM_PUBLICATIONS_CURATION_STATUS_PENDING') : Lang::txt('COM_PUBLICATIONS_CURATION_PENDING_AUTHOR_CHANGES'); ?></span></td>
 								<td><?php
-									$owner = $row->curator ? \Hubzero\User\Profile::getInstance($row->curator) : NULL;
+									$owner = $row->curator ? User::getInstance($row->curator) : NULL;
 									if ($owner)
 									{ ?>
 										<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_TO') ?> <?php if ($assign) { ?><a href="<?php echo Route::url($route . '&id=' . $row->id . '&task=assign&vid=' . $row->version_id . '&ajax=1&no_html=1'); ?>" class="fancybox" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_CHANGE_ASSIGNMENT'); ?>"><?php } ?><?php echo $owner->get('name'); ?><?php if ($assign) { ?></a><?php } ?>

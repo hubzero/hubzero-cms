@@ -777,8 +777,8 @@ class Git extends Models\Adapter
 			}
 			else
 			{
-				$profile = \Hubzero\User\Profile::getInstance( trim($file->get('author')) );
-				if ($profile)
+				$profile = \User::getInstance(trim($file->get('author')));
+				if ($profile->get('id'))
 				{
 					$this->_profileAssoc[trim($file->get('author'))] = $profile;
 					$file->set('author', $profile->get('name'));

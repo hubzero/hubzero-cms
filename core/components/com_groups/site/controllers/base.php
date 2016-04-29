@@ -34,6 +34,7 @@ namespace Components\Groups\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Hubzero\User\Group;
+use Components\Groups\Helpers\Permissions;
 use Components\Groups\Helpers\View;
 use Pathway;
 use Request;
@@ -41,6 +42,8 @@ use Notify;
 use Route;
 use Lang;
 use App;
+
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php';
 
 /**
  * Groups controller class
@@ -320,6 +323,6 @@ class Base extends SiteController
 		}
 
 		// check if user has permissions
-		return \Hubzero\User\Profile::userHasPermissionForGroupAction($group, $task);
+		return Permissions::userHasPermissionForGroupAction($group, $task);
 	}
 }

@@ -130,8 +130,7 @@ class Authors extends SiteController
 			else
 			{
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$xprofile = new \Hubzero\User\Profile();
-				$xprofile->load($authid);
+				$xprofile = User::getInstance($authid);
 				if ($xprofile)
 				{
 					$this->_authorCheck($authid);
@@ -201,7 +200,7 @@ class Authors extends SiteController
 
 				$this->_authorCheck($uid);
 
-				$xprofile = \Hubzero\User\Profile::getInstance($user->get('id'));
+				$xprofile = User::getInstance($user->get('id'));
 				$rcc->subtable     = 'resources';
 				$rcc->subid        = $id;
 				$rcc->authorid     = $uid;
@@ -233,7 +232,7 @@ class Authors extends SiteController
 	 */
 	private function _authorCheck($id)
 	{
-		$xprofile = \Hubzero\User\Profile::getInstance($id);
+		$xprofile = User::getInstance($id);
 		if ($xprofile->get('givenName') == ''
 		 && $xprofile->get('middleName') == ''
 		 && $xprofile->get('surname') == '')

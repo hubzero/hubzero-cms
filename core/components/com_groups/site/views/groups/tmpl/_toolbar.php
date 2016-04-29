@@ -126,7 +126,7 @@ if ($this->group->isSuperGroup())
 						<?php endif; ?>
 					<?php endif; ?>
 
-					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
+					<?php if (!$isManager && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
 						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
@@ -136,7 +136,7 @@ if ($this->group->isSuperGroup())
 						<?php endif; ?>
 					<?php endif; ?>
 
-					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.edit')) : ?>
+					<?php if (!$isManager && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.edit')) : ?>
 						<li>
 							<a class="group-edit" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=edit'); ?>">
 								<?php echo Lang::txt('COM_GROUPS_TOOLBAR_EDIT'); ?>
@@ -144,7 +144,7 @@ if ($this->group->isSuperGroup())
 						</li>
 					<?php endif; ?>
 
-					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
+					<?php if (!$isManager && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
 						<li>
 							<a class="group-pages" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages'); ?>">
 								<?php echo Lang::txt('COM_GROUPS_TOOLBAR_PAGES'); ?>

@@ -67,7 +67,7 @@ class Sessionsv1_0 extends ApiController
 	{
 		//get the userid and attempt to load user profile
 		$userid = Request::getInt('user_id', 0);
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
 		//if ($result === false) return $this->not_found();
@@ -223,7 +223,7 @@ class Sessionsv1_0 extends ApiController
 	public function screenshotsTask()
 	{
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		// make sure we have a user
 		if ($result === false)
@@ -363,7 +363,7 @@ class Sessionsv1_0 extends ApiController
 	{
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
@@ -571,7 +571,7 @@ class Sessionsv1_0 extends ApiController
 
 		// Get the user_id and attempt to load user profile
 		$userid  = App::get('authn')['user_id'];
-		$profile = \Hubzero\User\Profile::getInstance($userid);
+		$profile = User::getInstance($userid);
 
 		// Make sure we have a user
 		if ($profile === false) return $this->not_found();
@@ -671,11 +671,11 @@ class Sessionsv1_0 extends ApiController
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
 
 		$preferences = new \Components\Tools\Tables\Preferences($database);
-		$preferences->loadByUser($profile->get('uidNumber'));
+		$preferences->loadByUser($profile->get('id'));
 		if (!$preferences || !$preferences->id)
 		{
 			$default = $preferences->find('one', array('alias' => 'default'));
-			$preferences->user_id  = $profile->get('uidNumber');
+			$preferences->user_id  = $profile->get('id');
 			$preferences->class_id = $default->id;
 			$preferences->jobs     = $default->jobs;
 			$preferences->store();
@@ -779,7 +779,7 @@ class Sessionsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		// Get profile instance and session number
-		$profile = \Hubzero\User\Profile::getInstance(App::get('authn')['user_id']);
+		$profile = User::getInstance(App::get('authn')['user_id']);
 		$session = Request::getInt('session_num', 0);
 
 		// Require authorization
@@ -928,7 +928,7 @@ class Sessionsv1_0 extends ApiController
 	{
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
@@ -1028,7 +1028,7 @@ class Sessionsv1_0 extends ApiController
 	{
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
@@ -1098,7 +1098,7 @@ class Sessionsv1_0 extends ApiController
 
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
@@ -1149,7 +1149,7 @@ class Sessionsv1_0 extends ApiController
 
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
@@ -1190,10 +1190,10 @@ class Sessionsv1_0 extends ApiController
 
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false)	return $this->not_found();
+		if ($result === false) return $this->not_found();
 
 		//get request vars
 		$degree = Request::getVar('degree', '');

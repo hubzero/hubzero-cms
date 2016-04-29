@@ -36,6 +36,11 @@ use Hubzero\Component\AdminController;
 use Components\Projects\Tables;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
+use Request;
+use Route;
+use User;
+use Lang;
+use App;
 
 /**
  * Manage projects
@@ -498,23 +503,23 @@ class Projects extends AdminController
 	protected function _saveMember()
 	{
 		// New member added?
-		$members 	= urldecode(trim(Request::getVar( 'newmember', '', 'post'  )));
-		$role 		= Request::getInt( 'role', 0 );
+		$members = urldecode(trim(Request::getVar( 'newmember', '', 'post'  )));
+		$role = Request::getInt( 'role', 0 );
 
 		$mbrs = explode(',', $members);
 
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
-			$profile = \Hubzero\User\Profile::getInstance( trim($mbr) );
+			$profile = User::getInstance(trim($mbr));
 
 			// Ensure we found an account
-			if ($profile)
+			if ($profile->get('id'))
 			{
-				$this->model->table('Owner')->saveOwners (
+				$this->model->table('Owner')->saveOwners(
 					$this->model->get('id'),
 					User::get('id'),
-					$profile->get('uidNumber'),
+					$profile->get('id'),
 					0,
 					$role,
 					$status = 1,

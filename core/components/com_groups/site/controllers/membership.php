@@ -218,18 +218,18 @@ class Membership extends Base
 		$la = preg_split("/[,;]/", $logins);
 		$la = array_map('trim', $la);
 
-		// turn usernames into proper uidNumbers
+		// turn usernames into proper IDs
 		foreach ($la as $k => $l)
 		{
 			// ignore uids & email addresses
 			if (!is_numeric($l) && strpos($l, '@') === false)
 			{
 				// load by username
-				$profile = \Hubzero\User\Profile::getInstance($l);
-				if ($profile && $profile->get('uidNumber'))
+				$profile = User::getInstance($l);
+				if ($profile && $profile->get('id'))
 				{
 					unset($la[$k]);
-					$la[] = $profile->get('uidNumber');
+					$la[] = $profile->get('id');
 				}
 			}
 		}
@@ -381,7 +381,7 @@ class Membership extends Base
 		$activity = array();
 		foreach ($invitees as $invitee)
 		{
-			if ($profile = \Hubzero\User\Profile::getInstance($invitee))
+			if ($profile = User::getInstance($invitee))
 			{
 				$groupInvitees[$profile->get('email')] = $profile->get('name');
 
@@ -692,7 +692,7 @@ class Membership extends Base
 		$managers = array();
 		foreach ($this->view->group->get('managers') as $m)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($m);
+			$profile = User::getInstance($m);
 			if ($profile)
 			{
 				$managers[$profile->get('email')] = $profile->get('name');
@@ -1048,7 +1048,7 @@ class Membership extends Base
 		$managers = array();
 		foreach ($this->view->group->get('managers') as $m)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($m);
+			$profile = User::getInstance($m);
 			if ($profile)
 			{
 				$managers[$profile->get('email')] = $profile->get('name');

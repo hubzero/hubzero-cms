@@ -77,7 +77,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 <div class="group-page page-<?php echo $this->page->get('alias'); ?>">
 
 	<?php if ($newerVersion
-			&& ($this->authorized == 'manager' || \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages'))) : ?>
+			&& ($this->authorized == 'manager' || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages'))) : ?>
 		<div class="group-page group-page-notice notice-info">
 			<h4><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL'); ?></h4>
 			<p><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL_DESC'); ?></p>
@@ -93,8 +93,8 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 				$currentVersion   = $this->version;
 				$createdDate      = ($firstVersion->get('created')) ? Date::of($firstVersion->get('created'))->toLocal('D F j, Y') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
 				$modifiedDate     = ($currentVersion->get('created')) ? Date::of($currentVersion->get('created'))->toLocal('D F j, Y g:i a') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
-				$createdProfile   = \Hubzero\User\Profile::getInstance($firstVersion->get("created_by"));
-				$modifiedProfile  = \Hubzero\User\Profile::getInstance($currentVersion->get("created_by"));
+				$createdProfile   = User::getInstance($firstVersion->get('created_by'));
+				$modifiedProfile  = User::getInstance($currentVersion->get('created_by'));
 				$createdBy        = (is_object($createdProfile)) ? $createdProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 				$modifiedBy       = (is_object($modifiedProfile)) ? $modifiedProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 
@@ -134,7 +134,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 				<?php endif; ?>
 			</div>
 
-			<?php if ($this->authorized == 'manager' || \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
+			<?php if ($this->authorized == 'manager' || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
 				<div class="page-controls col span2 omega">
 					<ul class="page-controls">
 					<?php if ($this->page->get('id') != 0) : ?>
@@ -177,7 +177,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 			foreach ($this->group->get('members') as $member)
 			{
 				// get each members roles
-				$roles = Hubzero\User\Profile::getGroupMemberRoles($member, $this->group->get('gidNumber'));
+				$roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($member, $this->group->get('gidNumber'));
 
 				// make sure roles match pattern "Expert: ..."
 				$roles = array_map(function($role)

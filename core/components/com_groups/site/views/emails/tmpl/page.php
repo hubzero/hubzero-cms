@@ -127,7 +127,7 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>
 								<td style="text-align: left; padding: 0 0.5em;" align="left">
 									<?php
-										$profile = \Hubzero\User\Profile::getInstance( $page->version()->get('created_by') );
+										$profile = User::getInstance($page->version()->get('created_by'));
 										echo $profile->get('name') . ' ('.$profile->get('uidNumber').')';
 									?>
 								</td>

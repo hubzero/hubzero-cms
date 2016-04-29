@@ -320,7 +320,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$emails = array();
 		foreach ($userIds as $k => $userid)
 		{
-			$profile = Hubzero\User\Profile::getInstance($userid);
+			$profile = User::getInstance($userid);
 			if ($profile)
 			{
 				$users[$profile->get('uidNumber')] = $profile->get('surname');
@@ -1653,9 +1653,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		$id = Request::getInt('member', 0);
-		$profile = \Hubzero\User\Profile::getInstance($id);
+		$profile = User::getInstance($id);
 
-		if (!$profile)
+		if (!$profile->get('id'))
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_MEMBERS_PROFILE_NOT_FOUND'));
 		}

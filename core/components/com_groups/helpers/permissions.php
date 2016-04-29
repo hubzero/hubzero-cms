@@ -80,5 +80,49 @@ class Permissions
 
 		return $result;
 	}
+
+	/**
+	 * Get group roles for a specific member/group pair
+	 *
+	 * @param   string  $uid  User ID
+	 * @param   string  $gid  Group ID
+	 * @return  array
+	 */
+	public static function getGroupMemberRoles($uid, $gid)
+	{
+		$db = \App::get('db');
+		$sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
+		$db->setQuery($sql);
+
+		return $db->loadAssocList();
+	}
+
+	/**
+	 * Check to see if user has permission to perform task
+	 *
+	 * @param   object   $group   \Hubzero\User\Group
+	 * @param   string   $action  Group Action to perform
+	 * @return  boolean
+	 */
+	public static function userHasPermissionForGroupAction($group, $action)
+	{
+		// Get user roles
+		$roles = self::getGroupMemberRoles(
+			User::get('id'),
+			$group->get('gidNumber')
+		);
+
+		// Check to see if any of our roles for user has permission for action
+		foreach ($roles as $role)
+		{
+			$permissions = json_decode($role['permissions']);
+			$permissions = (is_object($permissions)) ? $permissions : new \stdClass;
+			if (property_exists($permissions, $action) && $permissions->$action == 1)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }
 

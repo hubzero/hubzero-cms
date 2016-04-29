@@ -241,7 +241,7 @@ class Git extends Object
 			}
 
 			// Get author profile
-			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
+			$profile = \User::getInstance($this->_uid);
 
 			$name    = $profile->get('name');
 			$email   = $profile->get('email');
@@ -1196,11 +1196,11 @@ class Git extends Object
 				// SFTP?
 				if (strpos($message, '[SFTP]') !== false)
 				{
-					$profile = \Hubzero\User\Profile::getInstance( trim($author) );
-					if ($profile)
+					$profile = \User::getInstance(trim($author));
+					if ($profile->get('id'))
 					{
 						$author = $profile->get('name');
-						$email = $profile->get('email');
+						$email  = $profile->get('email');
 					}
 				}
 

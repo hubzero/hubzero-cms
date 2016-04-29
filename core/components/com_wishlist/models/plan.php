@@ -39,7 +39,6 @@ use Date;
 
 require_once(__DIR__ . DS . 'base.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
-require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 
 /**
  * Wishlist class for a wish plan model
@@ -68,7 +67,7 @@ class Plan extends Base
 	protected $_attachment = null;
 
 	/**
-	 * Hubzero\User\Profile
+	 * User
 	 *
 	 * @var object
 	 */
@@ -169,13 +168,12 @@ class Plan extends Base
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof Member))
+		if (!($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = Member::oneOrNew($this->get('created_by'));
+			$this->_creator = \User::getInstance($this->get('created_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'uidNumber' ? 'id' : $property);
 			if ($property == 'picture')
 			{
 				return $this->_creator->picture($this->get('anonymous'));

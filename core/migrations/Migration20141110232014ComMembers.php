@@ -26,9 +26,9 @@ class Migration20141110232014ComMembers extends Base
 		// fix each name
 		foreach ($result as $uidNumber)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($uidNumber);
+			$profile = \Hubzero\User\User::oneOrNew($uidNumber);
 
-			if (!$profile)
+			if (!$profile->get('id'))
 			{
 				continue;
 			}

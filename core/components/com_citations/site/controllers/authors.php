@@ -35,8 +35,8 @@ namespace Components\Citations\Site\Controllers;
 use Components\Citations\Tables\Citation;
 use Components\Citations\Tables\Author;
 use Hubzero\Component\SiteController;
-use Hubzero\User\Profile;
 use Exception;
+use User;
 
 /**
  * Manage a citation's author entries
@@ -99,13 +99,12 @@ class Authors extends SiteController
 			$user = null;
 			if (!strstr($mbr, ' '))
 			{
-				$user = Profile::getInstance($mbr);
+				$user = User::getInstance($mbr);
 			}
 
 			// Make sure the user exists
 			if (!is_object($user) || !$user->get('username'))
 			{
-				$user = new Profile();
 				$user->set('name', $mbr);
 			}
 

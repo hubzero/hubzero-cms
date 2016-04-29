@@ -560,8 +560,8 @@ class JApi extends JApplication
 					// check users IP against the session execution host IP
 					if (JRequest::ip() == gethostbyname($session->exechost))
 					{
-						$profile = \Hubzero\User\Profile::getInstance($session->username);
-						$this->_authn['user_id'] = $profile->get('uidNumber');
+						$profile = \Hubzero\User\User::oneByUsername($session->username);
+						$this->_authn['user_id'] = $profile->get('id');
 					}
 				}
 			}

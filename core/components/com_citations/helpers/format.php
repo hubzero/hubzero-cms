@@ -39,7 +39,6 @@ use Components\Citations\Tables\Association;
 use Components\Citations\Tables\Type;
 use Components\Citations\Models\Format as CitationFormat;
 use Hubzero\Utility\String;
-use Hubzero\User\Profile;
 
 /**
  * Citations helper class for formatting results
@@ -914,8 +913,6 @@ class Format
 		$html = "\t" . '<p>';
 		if (self::keyExistsOrIsNotEmpty('author', $row))
 		{
-			$xprofile = Profile::getInstance(\User::get('id'));
-
 			$auths = explode(';', $row->author);
 			$a = array();
 			foreach ($auths as $auth)

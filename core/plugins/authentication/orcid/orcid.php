@@ -121,10 +121,9 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		// If we're linking an account, set any info that we might already know
 		if (!User::isGuest())
 		{
-			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			$oauth->setEmail(User::get('email'));
-			$oauth->setFamilyNames($profile->get('surname'));
-			$oauth->setGivenNames($profile->get('givenName'));
+			$oauth->setFamilyNames(User::get('surname'));
+			$oauth->setGivenNames(User::get('givenName'));
 		}
 
 		// Create and follow the authorization URL

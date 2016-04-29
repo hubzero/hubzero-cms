@@ -37,6 +37,12 @@ use Components\Publications\Tables;
 use Components\Publications\Helpers;
 use Components\Publications\Models;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Manage publications
@@ -1603,7 +1609,7 @@ class Items extends AdminController
 		$u = Request::getInt('u', 0);
 
 		// Get the member's info
-		$profile = \Hubzero\User\Profile::getInstance($u);
+		$profile = User::getInstance($u);
 
 		if (!$profile->get('name'))
 		{
@@ -1616,6 +1622,6 @@ class Items extends AdminController
 			$name  = $profile->get('name');
 		}
 
-		echo $name . ' (' . $profile->get('uidNumber') . ')';
+		echo $name . ' (' . $profile->get('id') . ')';
 	}
 }

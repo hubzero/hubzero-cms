@@ -259,7 +259,7 @@ class Doi extends Object
 		}
 		elseif ($uid)
 		{
-			$user = \Hubzero\User\Profile::getInstance($uid);
+			$user = \User::getInstance($uid);
 			if ($user)
 			{
 				$name  = $user->get('name');

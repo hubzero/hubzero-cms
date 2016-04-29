@@ -114,27 +114,24 @@ class Groups extends Base
 		$this->view->populargroups = array();
 		$this->view->interestinggroups = array();
 
-		//get the users profile
-		$profile = \Hubzero\User\Profile::getInstance(User::get("id"));
-
 		//if we have a users profile load their groups and groups matching their tags
-		if (is_object($profile))
+		if (!User::isGuest())
 		{
 			//get users tags
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-			$mt = new \Components\Members\Models\Tags($profile->get("uidNumber"));
+			$mt = new \Components\Members\Models\Tags(User::get('id'));
 			$mytags = $mt->render('string');
 
 			//get users groups
-			$this->view->mygroups['members'] = \Hubzero\User\Helper::getGroups($profile->get("uidNumber"), 'members', 1);
-			$this->view->mygroups['invitees'] = \Hubzero\User\Helper::getGroups($profile->get("uidNumber"), 'invitees', 1);
-			$this->view->mygroups['applicants'] = \Hubzero\User\Helper::getGroups($profile->get("uidNumber"), 'applicants', 1);
+			$this->view->mygroups['members'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
+			$this->view->mygroups['invitees'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'invitees', 1);
+			$this->view->mygroups['applicants'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'applicants', 1);
 			$this->view->mygroups = array_filter($this->view->mygroups);
 
 			//get groups user may be interested in
 			$this->view->interestinggroups = Group\Helper::getGroupsMatchingTagString(
 				$mytags,
-				\Hubzero\User\Helper::getGroups($profile->get("uidNumber"))
+				\Hubzero\User\Helper::getGroups(User::get('id'))
 			);
 		}
 
@@ -1111,7 +1108,7 @@ class Groups extends Base
 		$groupMembers = array();
 		foreach ($members as $member)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($member);
+			$profile = User::getInstance($member);
 			if ($profile)
 			{
 				$groupMembers[$profile->get('email')] = $profile->get('name');

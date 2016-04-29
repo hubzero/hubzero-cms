@@ -195,8 +195,8 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 							<th><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
 							<td>
 								<?php
-									$profile = \Hubzero\User\Profile::getInstance($this->firstversion->get('created_by'));
-									echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+									$profile = User::getInstance($this->firstversion->get('created_by'));
+									echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
 								?>
 							</td>
 						</tr>
@@ -208,8 +208,8 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 							<th><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED_BY'); ?></th>
 							<td>
 								<?php
-									$profile = \Hubzero\User\Profile::getInstance($this->version->get('created_by'));
-									echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+									$profile = User::getInstance($this->version->get('created_by'));
+									echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
 								?>
 							</td>
 						</tr>
@@ -235,7 +235,7 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 									<td><?php echo $version->get('version'); ?></td>
 									<td>
 										<?php
-											$profile = \Hubzero\User\Profile::getInstance($version->get('created_by'));
+											$profile = User::getInstance($version->get('created_by'));
 											$name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
 											echo Lang::txt('COM_GROUPS_PAGES_VERSION_CREATED_DETAILS', $name, Date::of($version->get('created'))->toLocal());
 										?>
@@ -244,7 +244,7 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 										<?php
 											if ($version->get('approved'))
 											{
-												$profile = \Hubzero\User\Profile::getInstance($version->get('approved_by'));
+												$profile = User::getInstance($version->get('approved_by'));
 												$name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
 												echo Lang::txt('COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS', $name, Date::of($version->get('approved_on'))->toLocal());
 											}

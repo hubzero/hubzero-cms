@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,13 +32,17 @@
 namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
+use Components\Members\Models\Member;
 use Component;
 use Exception;
 use stdClass;
 use Request;
 use Route;
 use Lang;
+use User;
 use App;
+
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
 
 /**
  * Members API controller class
@@ -92,42 +95,74 @@ class Profilesv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'profile.php');
-
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'search'     => Request::getVar('search', ''),
 			'sortby'     => Request::getWord('sort', 'name'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
-			'authorized' => false,
-			'emailConfirmed' => true,
-			'public'     => 1,
-			'show'       => 'members'
+			'activation' => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
-		if ($filters['sortby'] == 'id')
+
+		// Build query
+		$entries = Member::all()
+			->whereEquals('block', 0)
+			->whereEquals('activation', 1)
+			->where('approved', '>', 0);
+
+		if ($filters['search'])
 		{
-			$filters['sortby'] = 'uidNumber';
+			$entries->whereLike('name', strtolower((string)$filters['search']), 1)
+				->orWhereLike('username', strtolower((string)$filters['search']), 1)
+				->orWhereLike('email', strtolower((string)$filters['search']), 1)
+				->resetDepth();
 		}
 
-		$database = App::get('db');
-		$c = new \Components\Members\Tables\Profile($database);
+		if (!empty($filters['access']))
+		{
+			$entries->whereIn('access', $filters['access']);
+		}
+
+		switch ($filters['sortby'])
+		{
+			case 'organization':
+				$filters['sort'] = 'surname';
+				$filters['sort_Dir'] = 'asc';
+			break;
+
+			case 'id':
+				$filters['sort'] = 'id';
+				$filters['sort_Dir'] = 'asc';
+			break;
+
+			case 'name':
+			default:
+				$filters['sort'] = 'surname';
+				$filters['sort_Dir'] = 'asc';
+			break;
+		}
+
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		$response = new stdClass;
 		$response->members = array();
-		$response->total = $c->getCount($filters, false);
+		$response->total   = $rows->pagination->total;
 
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
 
-			foreach ($c->getRecords($filters, false) as $i => $entry)
+			foreach ($rows as $entry)
 			{
 				$obj = new stdClass;
-				$obj->id        = $entry->uidNumber;
-				$obj->name      = $entry->name;
-				$obj->organization = $entry->organization;
-				$obj->uri       = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $entry->uidNumber), '/'));
+				$obj->id        = $entry->get('id');
+				$obj->name      = $entry->get('name');
+				$obj->organization = $entry->get('organization');
+				$obj->uri       = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id')), '/'));
 
 				$response->members[] = $obj;
 			}
@@ -378,7 +413,7 @@ class Profilesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
 		}
 
-		$groups = \Hubzero\User\Helper::getGroups($result->get('id'), 'members', 0);
+		$groups = $result->groups('members');
 
 		$g = array();
 		foreach ($groups as $k => $group)

@@ -131,9 +131,9 @@ class JRouterApi extends JRouter
 				}
 			}
 
-			$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+			$xprofile = \Hubzero\User\User::oneOrNew($juser->get('id'));
 
-			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
+			if (is_object($xprofile) && ($xprofile->get('activation') != 1) && ($xprofile->get('activation') != 3))
 			{
 				if ($vars['option'] == 'com_user')
 				{

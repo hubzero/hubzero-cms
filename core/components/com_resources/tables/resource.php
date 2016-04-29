@@ -334,9 +334,8 @@ class Resource extends \JTable
 		}
 		else if (!\User::isGuest())
 		{
-			$profile = \Hubzero\User\Profile::getInstance(\User::get('id'));
-			$xgroups = (is_object($profile)) ? $profile->getGroups('all') : array();
-			if ($xgroups != '')
+			$xgroups = \User::groups('all');
+			if ($xgroups)
 			{
 				$usersgroups = self::getUsersGroups($xgroups);
 
@@ -649,8 +648,7 @@ class Resource extends \JTable
 			{
 				if (!isset($filters['usergroups']))
 				{
-					$profile = \Hubzero\User\Profile::getInstance(\User::get('id'));
-					$xgroups = $profile->getGroups('all');
+					$xgroups = \User::groups('all');
 				}
 				else
 				{

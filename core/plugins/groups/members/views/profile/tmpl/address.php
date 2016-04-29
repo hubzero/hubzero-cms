@@ -87,8 +87,8 @@ else
 		if ($this->displayEditLinks)
 		{
 			$formattedAddresses .= '<span class="address-links">';
-			$formattedAddresses .= '<a class="edit edit-address" href="' . Route::url($this->profile->getLink() . '&active=profile&action=editaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_EDIT') . '</a>';
-			$formattedAddresses .= ' | <a class="delete delete-address" href="' . Route::url($this->profile->getLink() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_DELETE') . '</a>';
+			$formattedAddresses .= '<a class="edit edit-address" href="' . Route::url($this->profile->link() . '&active=profile&action=editaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_EDIT') . '</a>';
+			$formattedAddresses .= ' | <a class="delete delete-address" href="' . Route::url($this->profile->link() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_DELETE') . '</a>';
 			$formattedAddresses .= '</span>';
 		}
 

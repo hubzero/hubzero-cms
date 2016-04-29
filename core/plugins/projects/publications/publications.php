@@ -2233,8 +2233,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Send out notifications
-		$profile = \Hubzero\User\Profile::getInstance($this->_uid);
-		$actor 	 = $profile
+		$profile = User::getInstance($this->_uid);
+		$actor  = $profile
 				? $profile->get('name')
 				: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
 		$sef	 = Route::url($pub->link('version'));

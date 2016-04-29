@@ -1728,7 +1728,7 @@ class Items extends AdminController
 	/**
 	 * Gets the full name of a user from their ID #
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function authorTask()
 	{
@@ -1737,10 +1737,9 @@ class Items extends AdminController
 		$rid = Request::getInt('rid', 0);
 
 		// Get the member's info
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($this->view->id);
+		$profile = User::getInstance($this->view->id);
 
-		if (!is_object($profile) || !$profile->get('uidNumber'))
+		if (!is_object($profile) || !$profile->get('id'))
 		{
 			$this->database->setQuery("SELECT id FROM `#__users` WHERE `name`=" . $this->database->Quote($this->view->id));
 			if ($id = $this->database->loadResult())
@@ -1749,7 +1748,7 @@ class Items extends AdminController
 			}
 		}
 
-		if (is_object($profile) && $profile->get('uidNumber'))
+		if (is_object($profile) && $profile->get('id'))
 		{
 			if (!$profile->get('name'))
 			{
@@ -1762,7 +1761,7 @@ class Items extends AdminController
 				$this->view->name  = $profile->get('name');
 			}
 			$this->view->org = $profile->get('organization');
-			$this->view->id  = $profile->get('uidNumber');
+			$this->view->id  = $profile->get('id');
 		}
 		else
 		{

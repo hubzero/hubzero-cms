@@ -760,8 +760,8 @@ class Batchcreate extends AdminController
 			}
 			else
 			{
-				$profile = \Hubzero\User\Profile::getInstance($uid);
-				if (!$profile || !$profile->get('uidNumber'))
+				$profile = User::getInstance($uid);
+				if (!$profile || !$profile->get('id'))
 				{
 					$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND') . ': ' . trim($uid);
 					$item['errors'][] = $error;

@@ -40,7 +40,6 @@ use Components\Support\Models\Tags;
 use Components\Support\Tables;
 use Hubzero\Component\AdminController;
 use Hubzero\Browser\Detector;
-use Hubzero\User\Profile;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
 use Exception;

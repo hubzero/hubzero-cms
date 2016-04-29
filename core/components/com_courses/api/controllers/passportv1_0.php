@@ -35,6 +35,7 @@ namespace Components\Courses\Api\Controllers;
 use Components\Courses\Models\Course;
 use Components\Courses\Models\Member;
 use Request;
+use User;
 use App;
 use Date;
 
@@ -103,7 +104,7 @@ class Passportv1_0 extends base
 		}
 
 		// Find user by email
-		$user = \Hubzero\User\User::oneByEmail($user_email);
+		$user = User::oneByEmail($user_email);
 		if (!$user->get('id'))
 		{
 			App::abort(404, 'User was not found');
@@ -159,7 +160,7 @@ class Passportv1_0 extends base
 
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
-		$user = \Hubzero\User\Profile::getInstance($userid);
+		$user = User::getInstance($userid);
 		//make sure we have a user
 		if ($user === false)
 		{
@@ -199,7 +200,7 @@ class Passportv1_0 extends base
 		$user_groups = array();
 		if (!empty($user))
 		{
-			$user_groups = $user->getGroups('members');
+			$user_groups = $user->groups('members');
 		}
 
 		// Next see if the user is allowed to make this call

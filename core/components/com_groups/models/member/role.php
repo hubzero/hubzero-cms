@@ -32,7 +32,6 @@
 namespace Components\Groups\Models\Member;
 
 use Hubzero\Database\Relational;
-use Hubzero\User\Profile;
 
 /**
  * Group member role
@@ -87,11 +86,7 @@ class Role extends Relational
 	 */
 	public function member()
 	{
-		if ($profile = Profile::getInstance($this->get('uidNumber')))
-		{
-			return $profile;
-		}
-		return new Profile;
+		return $this->belongsToOne('Hubzero\User\User', 'uidNumber');
 	}
 }
 

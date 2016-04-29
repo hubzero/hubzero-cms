@@ -1212,8 +1212,8 @@ class Html
 			// Send email
 			foreach ($addressees as $userid)
 			{
-				$user = \Hubzero\User\Profile::getInstance(trim($userid));
-				if ($user === false)
+				$user = User::getInstance(trim($userid));
+				if (!$user->get('id'))
 				{
 					continue;
 				}

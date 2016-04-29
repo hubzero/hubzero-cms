@@ -367,9 +367,7 @@ class Sessions extends SiteController
 						// Replace ~/ prefix with user's home directory
 						if (strncmp($value,"~/",2) === 0)
 						{
-							$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
-
-							$homeDirectory = rtrim($xprofile->get('homeDirectory'), '/');
+							$homeDirectory = rtrim(User::get('homeDirectory'), '/');
 
 							if (!isset($homeDirectory[0]) || $homeDirectory[0] !== '/')
 							{
@@ -587,7 +585,6 @@ class Sessions extends SiteController
 			$preferences->store();
 		}
 
-		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$remain = $preferences->jobs - $jobs;
 
 		// Have they reached their session quota?

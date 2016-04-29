@@ -359,7 +359,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		jimport('joomla.user.helper');
 
 		// Check if they're logged in
-		if ($this->user->get('guest'))
+		if ($this->user->isGuest())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' .
@@ -459,7 +459,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	private function setlocalpass()
 	{
 		// Logged in?
-		if ($this->user->get('guest'))
+		if ($this->user->isGuest())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' .
@@ -530,17 +530,13 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Load some needed libraries
 		jimport('joomla.user.helper');
 
-		// Initiate profile classs
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($this->user->get('id'));
-
 		// Fire the onBeforeStoreUser trigger
 		Event::trigger('user.onBeforeStoreUser', array($this->user->getProperties(), false));
 
 		// Validate the password against password rules
 		if (!empty($password1))
 		{
-			$msg = \Hubzero\Password\Rule::validate($password1, $password_rules, $profile->get('username'));
+			$msg = \Hubzero\Password\Rule::validate($password1, $password_rules, $this->user->get('username'));
 		}
 		else
 		{
@@ -587,7 +583,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// No errors, so let's move on - encrypt the password and update the profile
-		$result = \Hubzero\User\Password::changePassword($profile->get('id'), $password1);
+		$result = \Hubzero\User\Password::changePassword($this->user->get('id'), $password1);
 
 		// Save the changes
 		if (!$result)

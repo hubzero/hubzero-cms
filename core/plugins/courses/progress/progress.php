@@ -224,8 +224,8 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 					'id'        => $m->get('id'),
 					'user_id'   => $m->get('user_id'),
 					'name'      => User::getInstance($m->get('user_id'))->get('name'),
-					'thumb'     => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, true), DS),
-					'full'      => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, false), DS),
+					'thumb'     => ltrim(User::getInstance($m->get('user_id'))->picture(0, true), DS),
+					'full'      => ltrim(User::getInstance($m->get('user_id'))->picture(0, false), DS),
 					'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
 										? Date::of($m->get('enrolled'))->format('M j, Y')
 										: 'unknown'),

@@ -124,7 +124,7 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>
 								<td style="text-align: left; padding: 0 0.5em;" align="left">
 									<?php
-										$profile = \Hubzero\User\Profile::getInstance( $this->object->get('created_by') );
+										$profile = User::getInstance($this->object->get('created_by'));
 										echo $profile->get('name') . ' ('.$profile->get('username').')';
 									?>
 								</td>

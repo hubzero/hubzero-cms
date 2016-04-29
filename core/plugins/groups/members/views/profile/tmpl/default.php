@@ -74,7 +74,7 @@ $isUser   = false;
 				<div class="field-content">
 					<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL'); ?></div>
 					<div class="value">
-						<a href="<?php echo $this->profile->getLink(); ?>"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL_GO'); ?></a>
+						<a href="<?php echo $this->profile->link(); ?>"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL_GO'); ?></a>
 					</div>
 				</div>
 			</li>
@@ -214,7 +214,7 @@ $isUser   = false;
 						// Get member addresses
 						$db = App::get('db');
 						$membersAddress = new \Components\Members\Tables\Address($db);
-						$addresses = $membersAddress->getAddressesForMember($this->profile->get("uidNumber"));
+						$addresses = $membersAddress->getAddressesForMember($this->profile->get('id'));
 
 						if (count($addresses) > 0) :
 					?>
@@ -245,7 +245,7 @@ $isUser   = false;
 						<div class="field-content">
 							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_BIOGRAPHY'); ?></div>
 							<div class="value">
-								<?php echo $this->profile->getBio('parsed'); ?>
+								<?php echo $this->profile->get('bio'); ?>
 							</div>
 						</div>
 					</li>
@@ -260,7 +260,7 @@ $isUser   = false;
 					<?php
 						include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
-						$mt = new \Components\Members\Models\Tags($this->profile->get('uidNumber'));
+						$mt = new \Components\Members\Models\Tags($this->profile->get('id'));
 						$tags = $mt->render();
 						if ($tags) :
 					?>

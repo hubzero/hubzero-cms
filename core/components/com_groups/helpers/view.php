@@ -605,7 +605,7 @@ class View
 		}
 
 		// attach custom error handler
-		set_exception_handler(array('\Components\Groups\Helpers\View', 'handleCustomError'));
+		//set_exception_handler(array('\Components\Groups\Helpers\View', 'handleCustomError'));
 	}
 
 	/**

@@ -43,6 +43,8 @@ use Lang;
 use App;
 use stdClass;
 
+include_once __DIR__ . DS . 'permissions.php';
+
 class Pages
 {
 	/**
@@ -284,7 +286,7 @@ class Pages
 
 		foreach ($approvers as $approver)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($approver);
+			$profile = User::getInstance($approver);
 			if ($profile)
 			{
 				$emails[$profile->get('email')] = $profile->get('name');
@@ -379,7 +381,7 @@ class Pages
 		// get all manager email addresses
 		foreach ($group->get('managers') as $m)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($m);
+			$profile = User::getInstance($m);
 			if ($profile)
 			{
 				$managers[$profile->get('email')] = $profile->get('name');
@@ -632,8 +634,7 @@ class Pages
 			$layout = ($version === null) ? '_view_notapproved' : '_view_unpublished';
 
 			// show unpublished or no version layout
-			if ($authorized == 'manager'
-				|| \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.pages'))
+			if ($authorized == 'manager' || Permissions::userHasPermissionForGroupAction($group, 'group.pages'))
 			{
 				$view->setLayout($layout);
 				$view->group   = $group;

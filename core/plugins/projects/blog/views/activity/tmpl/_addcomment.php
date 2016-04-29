@@ -45,7 +45,7 @@ if ($a->commentable && $this->model->access('content')) { ?>
 			<input type="hidden" name="itemid" value="<?php echo $this->eid; ?>" />
 			<input type="hidden" name="tbl" value="<?php echo $this->etbl; ?>" />
 			<input type="hidden" name="parent_activity" value="<?php echo $a->id; ?>" />
-			<img class="comment-author" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->uid); ?>" alt="" />
+			<img class="comment-author" src="<?php echo User::getInstance($this->uid)->picture(); ?>" alt="" />
 			<label class="comment-show">
 				<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo Lang::txt('PLG_PROJECTS_BLOG_ENTER_COMMENT'); ?>" id="ca_<?php echo $a->id; ?>"></textarea>
 			</label>

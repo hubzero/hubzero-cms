@@ -34,10 +34,10 @@ class Migration20140624123157ComCitations extends Base
 			if (!is_numeric($citation->uid))
 			{
 				$newId = 62;
-				$profile = \Hubzero\User\Profile::getInstance($citation->uid);
-				if (is_object($profile))
+				$profile = \Hubzero\User\User::oneOrNew($citation->uid);
+				if ($profile->get('id'))
 				{
-					$newId = $profile->get('uidNumber');
+					$newId = $profile->get('id');
 				}
 
 				$query = "UPDATE `#__citations` SET uid=" . $this->db->quote($newId) . " WHERE id=" . $this->db->quote($citation->id);

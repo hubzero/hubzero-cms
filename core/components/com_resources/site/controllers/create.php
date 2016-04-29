@@ -40,7 +40,6 @@ use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Html;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
-use Hubzero\User\Profile;
 use Pathway;
 use Request;
 use Route;
@@ -457,8 +456,7 @@ class Create extends SiteController
 		$row = Resource::oneOrFail($id);
 
 		// Get groups
-		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-		$groups = $profile->getGroups('members');
+		$groups = User::groups('members');
 
 		$this->_checkProgress($id);
 

@@ -54,6 +54,7 @@ use Event;
 use Route;
 use Lang;
 use Date;
+use User;
 use ZipArchive;
 
 /**
@@ -567,8 +568,7 @@ class Jobs extends SiteController
 		$this->js();
 
 		// Get the member's info
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($uid);
+		$profile = User::getInstance($uid);
 
 		// load Employer
 		$employer = new Employer($this->database);
@@ -667,8 +667,7 @@ class Jobs extends SiteController
 		$uid = $uid ? $uid : User::get('id');
 
 		// Get the member's info
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($uid);
+		$profile = User::getInstance($uid);
 
 		// are we renewing?
 		$subid       = Request::getInt('subid', 0);
@@ -954,8 +953,7 @@ class Jobs extends SiteController
 		}
 
 		// Get the member's info
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($uid);
+		$profile = User::getInstance($uid);
 
 		// load Employer
 		$employer = new Employer($this->database);
@@ -1660,8 +1658,7 @@ class Jobs extends SiteController
 		$job->admins = $code ? $jobadmin->getAdmins($job->id) : array(User::get('id'));
 
 		// Get the member's info
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($uid);
+		$profile = User::getInstance($uid);
 
 		// load Employer
 		if (!$employer->loadEmployer($uid) && !$this->_admin)

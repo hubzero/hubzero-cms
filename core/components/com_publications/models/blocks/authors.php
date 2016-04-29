@@ -368,8 +368,8 @@ class Authors extends Base
 			// Check that profile exists
 			if ($uid)
 			{
-				$profile = \Hubzero\User\Profile::getInstance($uid);
-				$uid = $profile->get('uidNumber') ? $uid : 0;
+				$profile = User::getInstance($uid);
+				$uid = $profile->get('id') ? $uid : 0;
 			}
 		}
 
@@ -554,8 +554,8 @@ class Authors extends Base
 		// Check that profile exists
 		if ($uid)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($uid);
-			$uid = $profile->get('uidNumber') ? $uid : 0;
+			$profile = User::getInstance($uid);
+			$uid = $profile->get('id') ? $uid : 0;
 		}
 
 		// Tying author to a user account?

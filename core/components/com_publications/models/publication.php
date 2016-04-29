@@ -1317,17 +1317,13 @@ class Publication extends Object
 	 */
 	public function creator($property=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new \Hubzero\User\Profile();
-			}
+			$this->_creator = \HUser::getInstance($this->get('created_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
+			$property = ($property == 'uidNumber' ? 'id' : $property);
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
@@ -1344,17 +1340,13 @@ class Publication extends Object
 	 */
 	public function modifier($property=null)
 	{
-		if (!($this->_modifier instanceof \Hubzero\User\Profile))
+		if (!($this->_modifier instanceof \Hubzero\User\User))
 		{
-			$this->_modifier = \Hubzero\User\Profile::getInstance($this->get('modified_by'));
-			if (!$this->_modifier)
-			{
-				$this->_modifier = new \Hubzero\User\Profile();
-			}
+			$this->_modifier = \User::getInstance($this->get('modified_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
+			$property = ($property == 'uidNumber' ? 'id' : $property);
 			return $this->_modifier ? $this->_modifier->get($property) : NULL;
 		}
 		return $this->_modifier;
@@ -1375,13 +1367,13 @@ class Publication extends Object
 		{
 			return false;
 		}
-		if (!($this->_curator instanceof \Hubzero\User\Profile))
+		if (!($this->_curator instanceof \Hubzero\User\User))
 		{
-			$this->_curator = \Hubzero\User\Profile::getInstance($this->get('curator'));
+			$this->_curator = \User::getInstance($this->get('curator'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
+			$property = ($property == 'uidNumber' ? 'id' : $property);
 			return $this->_curator ? $this->_curator->get($property) : NULL;
 		}
 		return $this->_curator;

@@ -33,9 +33,7 @@
 namespace Modules\Featuredmember;
 
 use Hubzero\Module\Module;
-use Hubzero\User\Profile;
 use Hubzero\Config\Registry;
-use MembersProfile;
 use Component;
 use User;
 
@@ -74,7 +72,7 @@ class Helper extends Module
 		$db->setQuery($query);
 
 		// Load their bio
-		$this->row = Member::oneOrNew($row->loadResult());
+		$this->row = User::oneOrNew($row->loadResult());
 
 		if (trim(strip_tags($this->row->get('bio'))) == '')
 		{

@@ -1718,7 +1718,7 @@ class Pipeline extends SiteController
 			{
 				foreach ($members as $member)
 				{
-					$muser = \Hubzero\User\Profile::getInstance($member);
+					$muser = User::getInstance($member);
 					if (is_object($muser))
 					{
 						$admins[] = $member;

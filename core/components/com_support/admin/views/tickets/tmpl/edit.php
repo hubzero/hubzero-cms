@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
+$user = User::getInstance();
 
 $unknown  = true;
 $name     = '';
@@ -388,7 +388,7 @@ if (!$no_html)
 			<div class="new ticket">
 				<p class="ticket-member-photo">
 					<span class="ticket-anchor"></span>
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($user, 0); ?>" alt="<?php echo Lang::txt('COM_SUPPORT_PROFILE_IMAGE'); ?>" />
+					<img src="<?php echo $user->picture(0); ?>" alt="<?php echo Lang::txt('COM_SUPPORT_PROFILE_IMAGE'); ?>" />
 				</p>
 
 				<fieldset class="ticket-head">

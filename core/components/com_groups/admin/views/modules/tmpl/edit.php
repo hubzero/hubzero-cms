@@ -148,8 +148,8 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_GROUPS_MODULES_CREATED_BY'); ?></th>
 							<td>
 								<?php
-									$profile = \Hubzero\User\Profile::getInstance($this->module->get('created_by'));
-									echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+									$profile = User::getInstance($this->module->get('created_by'));
+									echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
 								?>
 							</td>
 						</tr>
@@ -173,8 +173,8 @@ function submitbutton(pressbutton)
 									$modified_by = '--';
 									if ($this->module->get('modified_by') != null)
 									{
-										$profile = \Hubzero\User\Profile::getInstance($this->module->get('modified_by'));
-										$modified_by = (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+										$profile = User::getInstance($this->module->get('modified_by'));
+										$modified_by = (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
 									}
 									echo $modified_by;
 								?>

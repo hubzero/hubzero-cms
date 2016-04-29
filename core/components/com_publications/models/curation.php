@@ -1488,24 +1488,23 @@ class Curation extends Object
 			return $status;
 		}
 
-		$status->status 		= $reviewStatus->status;
-		$status->curatornotice 	= $reviewStatus->getError();
-		$status->updated		= $pub->state != 1 ? $reviewStatus->lastupdate : NULL;
-		$status->authornotice 	= $reviewStatus->message;
+		$status->status        = $reviewStatus->status;
+		$status->curatornotice = $reviewStatus->getError();
+		$status->updated       = $pub->state != 1 ? $reviewStatus->lastupdate : NULL;
+		$status->authornotice  = $reviewStatus->message;
 
 		if ($status->updated && isset($reviewStatus->updated_by) && $reviewStatus->updated_by)
 		{
-			$profile = \Hubzero\User\Profile::getInstance($reviewStatus->updated_by);
-			$by 	 = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
+			$profile = User::getInstance($reviewStatus->updated_by);
+			$by = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
 
 			if ($status->status != 3)
 			{
-				$status->updatenotice 	= Lang::txt('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
-					. Date::of($status->updated)->format('M d, Y @ H:i') . $by;
+				$status->updatenotice = Lang::txt('COM_PUBLICATIONS_CURATION_UPDATED') . ' ' . Date::of($status->updated)->format('M d, Y @ H:i') . $by;
 			}
 			else
 			{
-				$status->updatenotice 	= Lang::txt('COM_PUBLICATIONS_CURATION_SKIPPED') . ' ' . $by;
+				$status->updatenotice = Lang::txt('COM_PUBLICATIONS_CURATION_SKIPPED') . ' ' . $by;
 			}
 		}
 

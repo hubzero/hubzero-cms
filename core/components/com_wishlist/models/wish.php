@@ -33,7 +33,6 @@
 namespace Components\Wishlist\Models;
 
 use Components\Members\Models\Member;
-use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Hubzero\Base\ItemList;
 use Components\Wishlist\Tables;
@@ -141,14 +140,14 @@ class Wish extends Base
 	private $_plan = null;
 
 	/**
-	 * Hubzero\User\Profile
+	 * Hubzero\User\User
 	 *
 	 * @var object
 	 */
 	private $_proposer = null;
 
 	/**
-	 * Hubzero\User\Profile
+	 * User
 	 *
 	 * @var object
 	 */
@@ -243,13 +242,12 @@ class Wish extends Base
 	 */
 	public function proposer($property=null, $default=null)
 	{
-		if (!($this->_proposer instanceof Member))
+		if (!($this->_proposer instanceof \Hubzero\User\User))
 		{
-			$this->_proposer = Member::oneOrNew($this->get('proposed_by'));
+			$this->_proposer = \User::oneOrNew($this->get('proposed_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'uidNumber') ? 'id' : $property;
 			if ($property == 'picture')
 			{
 				return $this->_proposer->picture($this->get('anonymous'));
@@ -272,13 +270,12 @@ class Wish extends Base
 	 */
 	public function owner($property=null, $default=null)
 	{
-		if (!($this->_owner instanceof Member))
+		if (!($this->_owner instanceof \Hubzero\User\User))
 		{
-			$this->_owner = Member::oneOrNew($this->get('assigned'));
+			$this->_owner = \User::oneOrNew($this->get('assigned'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'uidNumber') ? 'id' : $property;
 			if ($property == 'picture')
 			{
 				return $this->_owner->picture();

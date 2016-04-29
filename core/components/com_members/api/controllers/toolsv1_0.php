@@ -65,7 +65,7 @@ class Toolsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$userid = Request::getInt('id', 0);
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		if ($result === false)
 		{
@@ -218,7 +218,7 @@ class Toolsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$userid = Request::getInt('id', 0);
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		if ($result === false)
 		{
@@ -290,7 +290,7 @@ class Toolsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$userid = App::get('authn')['user_id'];
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$result = User::getInstance($userid);
 
 		if ($result === false)
 		{

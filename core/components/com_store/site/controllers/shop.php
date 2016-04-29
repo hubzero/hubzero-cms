@@ -34,7 +34,6 @@ namespace Components\Store\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
-use Hubzero\User\Profile;
 use Hubzero\Bank\Teller;
 use Components\Store\Tables\Store;
 use Components\Store\Tables\Cart;

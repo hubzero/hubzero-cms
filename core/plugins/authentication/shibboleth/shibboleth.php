@@ -574,7 +574,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				// Set cookie with login preference info
 				$prefs = array(
 					'user_id'       => $user->get('id'),
-					'user_img'      => \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false),
+					'user_img'      => $user->picture(0, false),
 					'authenticator' => 'shibboleth'
 				);
 				self::log('auth cookie', $prefs);

@@ -232,7 +232,7 @@ class Managers extends AdminController
 	/**
 	 * Display a list of 'manager' for a specific course
 	 *
-	 * @param   object  $profile  \Hubzero\User\Profile
+	 * @param   object  $course
 	 * @return  void
 	 */
 	public function displayTask($course=null)

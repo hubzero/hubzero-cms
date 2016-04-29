@@ -118,8 +118,8 @@ $this->css()
 							}
 							else if ($pageVersion->get('created_by') != null && is_numeric($pageVersion->get('created_by')))
 							{
-								$profile = \Hubzero\User\Profile::getInstance( $pageVersion->get('created_by') );
-								$created_by = '<a href="'.Route::url('index.php?option=com_members&id=' . $profile->get('uidNumber')).'">'.$profile->get('name').'</a>';
+								$profile = User::getInstance( $pageVersion->get('created_by') );
+								$created_by = '<a href="'.Route::url('index.php?option=com_members&id=' . $profile->get('id')).'">'.$profile->get('name').'</a>';
 							}
 
 							$approved_on = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
@@ -135,8 +135,8 @@ $this->css()
 							}
 							else if ($pageVersion->get('approved_by') != null && is_numeric($pageVersion->get('approved_by')))
 							{
-								$profile = \Hubzero\User\Profile::getInstance( $pageVersion->get('approved_by') );
-								$approved_by = '<a href="'.Route::url('index.php?option=com_members&id=' . $profile->get('uidNumber')).'">'.$profile->get('name').'</a>';
+								$profile = User::getInstance( $pageVersion->get('approved_by') );
+								$approved_by = '<a href="'.Route::url('index.php?option=com_members&id=' . $profile->get('id')).'">'.$profile->get('name').'</a>';
 							}
 						?>
 						<div class="grid version-metadata">
@@ -147,7 +147,7 @@ $this->css()
 							<div class="col span3">
 								<span><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_CREATED_BY'); ?></span>
 								<?php if ($created_by != 'n/a' && $created_by != 'System') : ?>
-									<img align="left" width="20" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
+									<img align="left" width="20" src="<?php echo $profile->picture(); ?>" />
 								<?php endif; ?>
 								<?php echo $created_by; ?>
 							</div>
@@ -158,7 +158,7 @@ $this->css()
 							<div class="col span3 omega">
 								<span><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_APPROVED_BY'); ?></span>
 								<?php if ($approved_by != 'n/a' && $approved_by != 'System') : ?>
-									<img align="left" width="20" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
+									<img align="left" width="20" src="<?php echo $profile->picture()); ?>" />
 								<?php endif; ?>
 								<?php echo $approved_by; ?>
 							</div>

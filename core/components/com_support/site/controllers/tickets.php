@@ -40,7 +40,6 @@ use Components\Support\Models\Tags;
 use Components\Support\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Browser\Detector;
-use Hubzero\User\Profile;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
 use Filesystem;
@@ -849,9 +848,7 @@ class Tickets extends SiteController
 
 		if (!User::isGuest())
 		{
-			$profile = new Profile();
-			$profile->load(User::get('id'));
-			$emailConfirmed = $profile->get('emailConfirmed');
+			$emailConfirmed = User::get('activation');
 			if (($emailConfirmed == 1) || ($emailConfirmed == 3))
 			{
 				$row->set('verified', 1);

@@ -68,7 +68,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param object holds the new profile data (\Hubzero\User\Profile)
+	 * @param object holds the new profile data (\Hubzero\User\User)
 	 */
 	public function onAfterStoreProfile($user)
 	{
@@ -79,7 +79,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param object holds the new profile data (\Hubzero\User\Profile)
+	 * @param object holds the new profile data (\Hubzero\User\User)
 	 */
 	public function onAfterDeleteProfile($user)
 	{

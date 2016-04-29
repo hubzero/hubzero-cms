@@ -42,7 +42,7 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param   object  $user  holds the new profile data (\Hubzero\User\Profile)
+	 * @param   object  $user  holds the new profile data (\Hubzero\User\User)
 	 * @return  void
 	 */
 	public function onAfterStoreProfile($user)
@@ -131,7 +131,7 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param   object  $user  holds the new profile data (\Hubzero\User\Profile)
+	 * @param   object  $user  holds the new profile data (\Hubzero\User\User)
 	 * @return  void
 	 */
 	public function onAfterDeleteProfile($user)

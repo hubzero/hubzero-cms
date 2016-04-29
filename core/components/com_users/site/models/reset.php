@@ -163,8 +163,7 @@ class UsersModelReset extends JModelForm
 		}
 
 		// Initiate profile classs
-		$profile = new \Hubzero\User\Profile();
-		$profile->load( $id );
+		$profile = User::getInstance($id);
 
 		if (\Hubzero\User\Helper::isXDomainUser($user->get('id'))) {
 			App::abort( 403, Lang::txt('This is a linked account. To change your password you must change it using the procedures available where the account you are linked to is managed.') );

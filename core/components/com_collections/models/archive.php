@@ -35,7 +35,6 @@ namespace Components\Collections\Models;
 use Components\Collections\Tables;
 use Hubzero\Base\Object;
 use Hubzero\Base\ItemList;
-use Hubzero\User\Profile;
 use Hubzero\Plugin\Params;
 use User;
 use Lang;
@@ -453,10 +452,8 @@ class Archive extends Object
 			case 'groups':
 				$collections = array();
 
-				$member = Profile::getInstance($user->get('id'));
-
-				$usergroups = $member->getGroups('members');
-				$usergroups_manager = $member->getGroups('managers');
+				$usergroups = $user->groups('members');
+				$usergroups_manager = $user->groups('managers');
 
 				if ($usergroups)
 				{

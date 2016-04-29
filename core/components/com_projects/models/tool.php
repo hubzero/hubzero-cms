@@ -260,13 +260,12 @@ class Tool extends Model
 			}
 			if ($property == 'actor')
 			{
-				if (!isset($this->_actor) || !($this->_actor instanceof \Hubzero\User\Profile))
+				if (!isset($this->_actor) || !($this->_actor instanceof \Hubzero\User\User))
 				{
-					$this->_actor = \Hubzero\User\Profile::getInstance($this->_lastUpdate->actor);
+					$this->_actor = \User::getInstance($this->_lastUpdate->actor);
 				}
 				if ($as)
 				{
-					$as = ($as == 'id' ? 'uidNumber' : $as);
 					return $this->_actor->get($as);
 				}
 			}
@@ -567,13 +566,12 @@ class Tool extends Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\Profile))
+		if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = \User::getInstance($this->get('created_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
@@ -590,13 +588,12 @@ class Tool extends Model
 	 */
 	public function statusChanger($property=null)
 	{
-		if (!isset($this->_statusChanger) || !($this->_statusChanger instanceof \Hubzero\User\Profile))
+		if (!isset($this->_statusChanger) || !($this->_statusChanger instanceof \Hubzero\User\User))
 		{
-			$this->_statusChanger = \Hubzero\User\Profile::getInstance($this->get('status_changed_by'));
+			$this->_statusChanger = \User::getInstance($this->get('status_changed_by'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
 			return is_object($this->_statusChanger) ? $this->_statusChanger->get($property) : NULL;
 		}
 		return $this->_statusChanger;

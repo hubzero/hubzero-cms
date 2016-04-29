@@ -624,17 +624,12 @@ class Project extends Model
 	 */
 	public function owner($property=null)
 	{
-		if (!isset($this->_owner) || !($this->_owner instanceof \Hubzero\User\Profile))
+		if (!isset($this->_owner) || !($this->_owner instanceof \Hubzero\User\User))
 		{
-			$this->_owner = \Hubzero\User\Profile::getInstance($this->get('owned_by_user'));
-			if (!$this->_owner)
-			{
-				$this->_owner = new \Hubzero\User\Profile();
-			}
+			$this->_owner = \User::getInstance($this->get('owned_by_user'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
 			return $this->_owner->get($property);
 		}
 		return $this->_owner;
@@ -651,13 +646,12 @@ class Project extends Model
 	 */
 	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\Profile))
+		if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by_user'));
+			$this->_creator = \User::getInstance($this->get('created_by_user'));
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;

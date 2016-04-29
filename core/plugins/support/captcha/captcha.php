@@ -202,8 +202,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 		if (!User::isGuest())
 		{
-			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3)
+			if (User::get('activation') == 1 || User::get('activation') == 3)
 			{
 				$this->_verified = true;
 			}
