@@ -97,8 +97,18 @@ if (!empty($this->fields)) {
 
 $start_date = Date::of($this->row->publish_up, $timezone)->toLocal('d M Y');
 $stop_date  = Date::of($this->row->publish_down, $timezone)->toLocal('d M Y');
+$current_date = Date::of();
 
-$html  = "\t".'<li id="event'.$this->row->id.'">'."\n";
+//determine if the event is in the past or not
+if (strtotime($stop_date) - strtotime($current_date) < 0)
+{
+	$html  = "\t".'<li id="event'.$this->row->id.'" class="prior">'."\n";
+}
+else
+{
+	$html  = "\t".'<li id="event'.$this->row->id.'">'."\n";
+}
+
 $html .= "\t\t".'<dl class="event-details">'."\n";
 if ($start_date == $stop_date) {
 	if ($this->showdate) {
