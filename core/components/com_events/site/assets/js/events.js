@@ -474,5 +474,13 @@ HUB.Events = {
 jQuery(document).ready(function($){
 	HUB.Events.initialize();
 	HUB.Events.preventDelete();
-
+	$('#toggle-prior-anchor').click(function() { 
+		if ($('#toggle-prior-anchor').text() == 'Show Past Events') {
+			$('#toggle-prior-anchor').text('Hide Past Events');
+		} else {
+			$('#toggle-prior-anchor').text('Show Past Events');
+		}
+		$('.prior').slideToggle(500);
+	});
+	$('.prior').slideUp(500);
 });

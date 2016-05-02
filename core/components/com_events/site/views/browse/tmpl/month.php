@@ -59,6 +59,7 @@ $this->css()
 
 <section class="main section">
 	<div class="subject">
+	<p id="toggle-prior"><strong><a id="toggle-prior-anchor" href="#" onClick="return false;">Show Past Events</a></strong></p>
 	<?php if (count($this->rows) > 0) { ?>
 		<ul class="events">
 			<?php
