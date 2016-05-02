@@ -1205,7 +1205,7 @@ class Html
 					$pt = \Components\Resources\Tables\Type::getRecordInstance($resource->type);
 					if ($pt->alias == 'databases')
 					{
-						$mesg = "Dataview";
+						$mesg = "View Data";
 					}
 
 					if ($xact)
