@@ -299,7 +299,7 @@ class Helper extends Module
 				}
 
 				// Load their bio
-				$profile = \Components\Members\Models\Member::onrOrNew($row->uidNumber);
+				$profile = \Components\Members\Models\Member::oneOrNew($row->uidNumber);
 
 				$title = $row->name;
 				if (!trim($title))
@@ -319,7 +319,7 @@ class Helper extends Module
 					$thumb = '/core/modules/mod_spotlight/assets/img/default.gif';
 				}
 
-				$profile = \Components\Members\Models\Member::onrOrNew($row->created_by);
+				$profile = \Components\Members\Models\Member::oneOrNew($row->created_by);
 
 				if ($getid)
 				{
@@ -371,7 +371,7 @@ class Helper extends Module
 				$name = Lang::txt('Anonymous');
 				if ($row->anonymous == 0)
 				{
-					$name = \Components\Members\Models\Member::onrOrNew($row->created_by)->get('name');
+					$name = \Components\Members\Models\Member::oneOrNew($row->created_by)->get('name');
 				}
 				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . rtrim(Request::base(true), '/') . $thumb . '" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
 				$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '">' . stripslashes($row->subject) . '</a></span> ';

@@ -158,7 +158,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 		</tbody>
 	</table>
 	<?php //Load the batch processing form. ?>
-	<?php if (User::authorize('core.create', $extension) & User::authorize('core.edit', $extension) && User::authorize('core.edit.state', $extension)) : ?>
+	<?php if (User::authorise('core.create', $extension) & User::authorise('core.edit', $extension) && User::authorise('core.edit.state', $extension)) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 
