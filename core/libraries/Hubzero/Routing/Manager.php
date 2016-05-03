@@ -101,7 +101,7 @@ class Manager
 	 */
 	protected function createRouter($client)
 	{
-		$prefix = $this->app['request']->getHost() . ($this->app['request']->getPort() ? ':' . $this->app['request']->getPort() : '');
+		$prefix = $this->app['request']->getHttpHost();
 
 		$router = new Router(array(), $prefix);
 
