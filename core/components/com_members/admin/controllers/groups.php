@@ -37,6 +37,7 @@ use Hubzero\User\Group;
 use Request;
 use Lang;
 use User;
+use App;
 
 /**
  * Manage a member's group memberships
@@ -57,27 +58,24 @@ class Groups extends AdminController
 		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(Lang::txt('MEMBERS_NO_ID'));
-			$this->displayTask($id);
-			return;
+			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->displayTask($id);
 		}
 
 		// Incoming group table
 		$tbl = Request::getVar('tbl', '');
 		if (!$tbl)
 		{
-			$this->setError(Lang::txt('MEMBERS_NO_GROUP_TABLE'));
-			$this->displayTask($id);
-			return;
+			$this->setError(Lang::txt('COM_MEMBERS_NO_GROUP_TABLE'));
+			return $this->displayTask($id);
 		}
 
 		// Incoming group ID
 		$gid = Request::getInt('gid', 0);
 		if (!$gid)
 		{
-			$this->setError(Lang::txt('MEMBERS_NO_GROUP_ID'));
-			$this->displayTask($id);
-			return;
+			$this->setError(Lang::txt('COM_MEMBERS_NO_GROUP_ID'));
+			return $this->displayTask($id);
 		}
 
 		// Load the group page
@@ -101,7 +99,7 @@ class Groups extends AdminController
 	 * Remove member(s) from a group
 	 * Disallows removal of last manager (group must have at least one)
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -111,8 +109,7 @@ class Groups extends AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$group = new Group();
-		$group->read($gid);
+		$group = Group::getInstance($gid);
 
 		// Get all the group's managers
 		$managers = $group->get('managers');
@@ -129,7 +126,7 @@ class Groups extends AdminController
 		// Ensure we found an account
 		if (!$id)
 		{
-			\App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
 
 		if (in_array($id, $members))
@@ -158,7 +155,7 @@ class Groups extends AdminController
 	/**
 	 * Update member option
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function updateTask()
 	{
@@ -173,10 +170,10 @@ class Groups extends AdminController
 		// Ensure we found an account
 		if (!$id)
 		{
-			\App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
 
-		$db = \App::get('db');
+		$db = App::get('db');
 
 		foreach ($options as $key => $option)
 		{
@@ -197,10 +194,10 @@ class Groups extends AdminController
 	public function displayTask($id=0)
 	{
 		// Incoming
-		$this->view->id = $id ? $id : Request::getInt('id', 0);
+		$id = $id ? $id : Request::getInt('id', 0);
 
 		// Get a list of all groups
-		$this->view->rows = \Hubzero\User\Group::find(array(
+		$rows = \Hubzero\User\Group::find(array(
 			'type'       => array('all'),
 			'limit'      => 'all',
 			'search'     => '',
@@ -209,14 +206,11 @@ class Groups extends AdminController
 			'authorized' => 'admin'
 		));
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
+			->set('id', $id)
+			->set('rows', $rows)
+			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
 	}

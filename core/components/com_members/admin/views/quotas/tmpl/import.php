@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
+Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user');
 ?>
 
 <?php

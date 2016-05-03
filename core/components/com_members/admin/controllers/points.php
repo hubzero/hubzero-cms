@@ -450,8 +450,8 @@ class Points extends AdminController
 
 				foreach ($users as $user)
 				{
-					$validuser = \Hubzero\User\Profile::getInstance($user);
-					if ($user && $validuser)
+					$validuser = \User::getInstance($user);
+					if ($user && $validuser->get('id'))
 					{
 						$BTL = new \Hubzero\Bank\Teller($user);
 						switch ($data['type'])

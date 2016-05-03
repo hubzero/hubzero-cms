@@ -56,9 +56,6 @@ if ($canDo->get('core.admin'))
 }
 Toolbar::help('levels');
 
-// Include the component HTML helpers.
-//Html::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 $canOrder  = User::authorise('core.edit.state', $this->option);

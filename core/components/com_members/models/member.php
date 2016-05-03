@@ -307,19 +307,19 @@ class Member extends User
 		}
 
 		// Save record
-		$result = parent::store();
+		$result = parent::save();
 
 		if ($result)
 		{
 			foreach ($profile as $field)
 			{
-				$result = $field->save();
+				/*$result = $field->save();
 
 				if (!$result)
 				{
 					$this->addError($field->getError());
 					break;
-				}
+				}*/
 			}
 		}
 

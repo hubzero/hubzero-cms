@@ -141,6 +141,11 @@ Html::behavior('multiselect');
 				$canEdit = false;
 			}
 			$canChange = User::authorise('core.edit.state', $this->option);
+
+			$level = Hubzero\Access\Group::all()
+				->where('lft', '<', $row->get('lft'))
+				->where('rgt', '>', $row->get('rgt'))
+				->total();
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -152,7 +157,7 @@ Html::behavior('multiselect');
 					<?php echo (int) $row->id; ?>
 				</td>
 				<td>
-					<?php echo str_repeat('<span class="gi">|&mdash;</span>', $row->get('level')) ?>
+					<?php echo str_repeat('<span class="gi">|&mdash;</span>', $level) ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape($row->get('title')); ?>
@@ -161,7 +166,7 @@ Html::behavior('multiselect');
 						<?php echo $this->escape($row->get('title')); ?>
 					<?php endif; ?>
 					<?php if (Config::get('debug')) : ?>
-						<a class="button fltrt" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debuggroup&group_id=' . (int) $row->get('id')); ?>">
+						<a class="button fltrt" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . (int) $row->get('id')); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_DEBUG_GROUP');?>
 						</a>
 					<?php endif; ?>

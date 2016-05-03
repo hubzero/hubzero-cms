@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,6 +32,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Members\Models\Member;
 use Request;
 use Lang;
 
@@ -56,21 +56,18 @@ class Hosts extends AdminController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('MEMBERS_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Load the profile
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($id);
+		$profile = Member::oneOrFail($id);
 
 		// Incoming host
 		$host = Request::getVar('host', '');
 		if (!$host)
 		{
 			$this->setError(Lang::txt('MEMBERS_NO_HOST'));
-			$this->displayTask($id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		$hosts = $profile->get('host');
@@ -78,7 +75,8 @@ class Hosts extends AdminController
 
 		// Update the hosts list
 		$profile->set('host', $hosts);
-		if (!$profile->update())
+
+		if (!$profile->save())
 		{
 			$this->setError($profile->getError());
 		}
@@ -102,21 +100,18 @@ class Hosts extends AdminController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('MEMBERS_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Load the profile
-		$profile = new \Hubzero\User\Profile();
-		$profile->load($id);
+		$profile = Member::oneOrFail($id);
 
 		// Incoming host
 		$host = Request::getVar('host', '');
 		if (!$host)
 		{
 			$this->setError(Lang::txt('MEMBERS_NO_HOST'));
-			$this->displayTask($profile);
-			return;
+			return $this->displayTask($profile);
 		}
 
 		$hosts = $profile->get('host');
@@ -131,7 +126,8 @@ class Hosts extends AdminController
 
 		// Update the hosts list
 		$profile->set('host', $a);
-		if (!$profile->update())
+
+		if (!$profile->save())
 		{
 			$this->setError($profile->getError());
 		}
@@ -143,7 +139,7 @@ class Hosts extends AdminController
 	/**
 	 * Display host entries for a member
 	 *
-	 * @param   object  $profile  \Hubzero\User\Profile
+	 * @param   object  $profile
 	 * @return  void
 	 */
 	public function displayTask($profile=null)
@@ -153,23 +149,14 @@ class Hosts extends AdminController
 		{
 			$id = Request::getInt('id', 0, 'get');
 
-			$profile = new \Hubzero\User\Profile();
-			$profile->load($id);
-		}
-
-		// Get a list of all hosts
-		$this->view->rows = $profile->get('host');
-
-		$this->view->id = $profile->get('uidNumber');
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$profile = Member::oneOrFail($id);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('id', $profile->get('id'))
+			->set('rows', $profile->get('host'))
+			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
 	}

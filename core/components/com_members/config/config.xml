@@ -30,11 +30,188 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<fieldset name="basic">
-		<field name="contribution_counting" type="list" default="1" label="Contribution Counting" description="Enable (potentially slow) contribution counting in browse view">
-			<option value="0">Disable</option>
-			<option value="1">Enable</option>
+	<fieldset name="component">
+		<field
+			name="allowUserRegistration"
+			type="radio"
+			default="1"
+			label="COM_MEMBERS_CONFIG_FIELD_ALLOWREGISTRATION_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_ALLOWREGISTRATION_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
 		</field>
+
+		<field
+			name="new_usertype"
+			type="usergroup"
+			default="2"
+			label="COM_MEMBERS_CONFIG_FIELD_NEW_USER_TYPE_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_NEW_USER_TYPE_DESC">
+		</field>
+
+		<field
+			name="guest_usergroup"
+			type="usergroup"
+			default="1"
+			label="COM_MEMBERS_CONFIG_FIELD_GUEST_USER_GROUP_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_GUEST_USER_GROUP_DESC">
+		</field>
+
+		<field
+			name="sendpassword"
+			type="radio"
+			default="1"
+			label="COM_MEMBERS_CONFIG_FIELD_SENDPASSWORD_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_SENDPASSWORD_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+
+		<field
+			name="useractivation"
+			type="list"
+			default="2"
+			label="COM_MEMBERS_CONFIG_FIELD_USERACTIVATION_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_USERACTIVATION_DESC">
+			<option
+				value="0">JNONE</option>
+			<option
+				value="1">COM_MEMBERS_CONFIG_FIELD_USERACTIVATION_OPTION_SELFACTIVATION</option>
+			<option
+				value="2">COM_MEMBERS_CONFIG_FIELD_USERACTIVATION_OPTION_ADMINACTIVATION</option>
+		</field>
+
+		<field
+			name="simple_registration"
+			type="radio"
+			default="0"
+			label="COM_MEMBERS_CONFIG_FIELD_SIMPLE_REGISTRATION_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_SIMPLE_REGISTRATION_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+
+		<field
+			name="allow_duplicate_emails"
+			type="list"
+			default="0"
+			label="COM_MEMBERS_CONFIG_FIELD_DUPLICATEEMAILS_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_DUPLICATEEMAILS_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+			<option
+				value="2">COM_MEMBERS_CONFIG_FIELD_DUPLICATEEMAILS_GRANDFATHERED</option>
+		</field>
+
+		<field
+			name="mail_to_admin"
+			type="radio"
+			default="1"
+			label="COM_MEMBERS_CONFIG_FIELD_MAILTOADMIN_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_MAILTOADMIN_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+
+		<field
+			name="captcha"
+			type="plugins"
+			folder="captcha"
+			default=""
+			label="COM_MEMBERS_CONFIG_FIELD_CAPTCHA_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_CAPTCHA_DESC"
+			filter="cmd" >
+			<option
+				value="">JOPTION_USE_DEFAULT</option>
+			<option
+				value="0">JOPTION_DO_NOT_USE</option>
+		</field>
+
+		<field
+			name="frontend_userparams"
+			type="radio"
+			default="1"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_USERPARAMS_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_USERPARAMS_DESC">
+			<option
+				value="0">JHIDE</option>
+			<option
+				value="1">JSHOW</option>
+		</field>
+		<field
+			name="site_language"
+			type="radio"
+			default="0"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LANG_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LANG_DESC">
+			<option
+				value="0">JHIDE</option>
+			<option
+				value="1">JSHOW</option>
+		</field>
+		<field
+			name="change_login_name"
+			type="radio"
+			default="0"
+			label="COM_MEMBERS_CONFIG_FIELD_CHANGEUSERNAME_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_CHANGEUSERNAME_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+		<field
+			name="reset_count"
+			type="integer"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_RESET_COUNT_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_RESET_COUNT_DESC"
+			first="0"
+			last="20"
+			step="1"
+			default="10">
+		</field>
+		<field
+			name="reset_time"
+			type="integer"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_RESET_TIME_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_RESET_TIME_DESC"
+			first="1"
+			last="24"
+			step="1"
+			default="1">
+		</field>
+		<field
+			name="login_attempts_limit"
+			type="integer"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_COUNT_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_COUNT_DESC"
+			first="0"
+			last="20"
+			step="1"
+			default="10">
+		</field>
+		<field
+			name="login_attempts_timeframe"
+			type="integer"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_TIMEFRAME_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_TIMEFRAME_DESC"
+			first="1"
+			last="24"
+			step="1"
+			default="1">
+		</field>
+	</fieldset>
+	<fieldset name="basic">
 		<field name="privacy" type="list" default="0" label="Default Privacy" description="Set the default privacy for new profiles">
 			<option value="0">Private</option>
 			<option value="1">Public</option>

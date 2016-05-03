@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,10 +32,11 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Members\Tables;
+use Components\Members\Models\Member;
+use Components\Members\Models\Quota;
+use Components\Members\Models\Quota\Category;
 use Filesystem;
 use Request;
-use Config;
 use Notify;
 use Route;
 use Html;
@@ -50,6 +50,21 @@ use App;
 class Quotas extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		Lang::load($this->_option . '.quotas', dirname(__DIR__));
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display member quotas
 	 *
 	 * @return  void
@@ -57,7 +72,7 @@ class Quotas extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'search' => urldecode(Request::getState(
 				$this->_option . '.quotas.search',
 				'search',
@@ -82,58 +97,63 @@ class Quotas extends AdminController
 				$this->_option . '.quotas.class_alias',
 				'class_alias',
 				''
-			),
-			'limit' => Request::getState(
-				$this->_option . '.quotas.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.quotas.limitstart',
-				'limitstart',
-				0,
-				'int'
 			)
 		);
 
-		$obj = new Tables\UsersQuotas($this->database);
+		$cats  = Category::blank()->getTableName();
+		$users = Member::blank()->getTableName();
 
-		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters, true);
-		$this->view->rows  = $obj->getRecords($this->view->filters, true);
+		$entries = Quota::all();
 
-		$classes = new Tables\QuotasClasses($this->database);
-		$this->view->classes = $classes->getRecords();
+		$entries
+			->select($entries->getTableName() . '.*')
+			->select($cats . '.alias', 'class_alias')
+			->select($users . '.name')
+			->select($users . '.username')
+			->join($cats, $cats . '.id', $entries->getTableName() . '.class_id', 'left')
+			->join($users, $users . '.id', $entries->getTableName() . '.user_id', 'left');
 
-		$this->view->config = $this->config;
+		if ($filters['search'])
+		{
+			$entries->whereLike($users . '.name', strtolower((string)$filters['search']), 1)
+				->orWhereLike($users . '.username', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
+
+		if ($filters['class_alias'])
+		{
+			$entries->whereEquals('class_alias', $filters['class_alias']);
+		}
+
+		// Get records
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		$classes = Category::all()
+			->ordered()
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Create a new quota class
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		// Output the HTML
-		$this->editTask();
+		$this->view
+			->set('rows', $rows)
+			->set('classes', $classes)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Edit a member quota
 	 *
-	 * @param   integer  $id  ID of user to edit
+	 * @param   integer  $id  ID of entry to edit
 	 * @return  void
 	 */
-	public function editTask($id=0)
+	public function editTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		if (!$id)
+		if (!$row)
 		{
 			// Incoming
 			$id = Request::getVar('id', array(0));
@@ -143,56 +163,46 @@ class Quotas extends AdminController
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
-		}
 
-		$quotas = new Tables\UsersQuotas($this->database);
-		$this->view->row = $quotas->getRecord($id);
+			$row = Quota::oneOrNew($id);
+		}
 
 		// Build classes select option
-		$quotaClass = new Tables\QuotasClasses($this->database);
-		$classes    = $quotaClass->getRecords();
-		$selected   = '';
-		$options[]  = Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text');
+		$categories = Category::all()
+			->ordered()
+			->rows();
 
-		foreach ($classes as $class)
+		$selected = '';
+		$options  = array(
+			Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text')
+		);
+
+		foreach ($categories as $class)
 		{
-			$options[] = Html::select('option', $class->id, $class->alias, 'value', 'text');
-			if ($class->id == $this->view->row->class_id)
+			$options[] = Html::select('option', $class->get('id'), $class->get('alias'), 'value', 'text');
+			if ($class->get('id') == $row->get('class_id'))
 			{
-				$selected = $class->id;
+				$selected = $class->get('id');
 			}
 		}
-		$this->view->classes = Html::select('genericlist', $options, 'fields[class_id]', '', 'value', 'text', $selected, 'class_id', false, false);
 
-		$this->view->du = $this->getQuotaUsageTask('array', $this->view->row->id);
+		$classes = Html::select('genericlist', $options, 'fields[class_id]', '', 'value', 'text', $selected, 'class_id', false, false);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$du = $this->getQuotaUsageTask('array', $row->get('id'));
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('classes', $classes)
+			->set('du', $du)
 			->setLayout('edit')
+			->setErrors($this->getErrors())
 			->display();
-	}
-
-	/**
-	 * Apply changes to a user quota
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		// Save without redirect
-		$this->saveTask();
 	}
 
 	/**
 	 * Save user quota
 	 *
-	 * @param   integer  $redirect  Whether or not to redirect after save
 	 * @return  void
 	 */
 	public function saveTask()
@@ -204,19 +214,18 @@ class Quotas extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new Tables\UsersQuotas($this->database);
+		$row = Quota::oneOrNew($fields['id']);
 
 		if ($fields['class_id'])
 		{
-			$class = new Tables\QuotasClasses($this->database);
-			$class->load($fields['class_id']);
+			$class = Category::oneOrNew($fields['class_id']);
 
-			if ($class->id)
+			if ($class->get('id'))
 			{
-				$fields['hard_files']  = $class->hard_files;
-				$fields['soft_files']  = $class->soft_files;
-				$fields['hard_blocks'] = $class->hard_blocks;
-				$fields['soft_blocks'] = $class->soft_blocks;
+				$fields['hard_files']  = $class->get('hard_files');
+				$fields['soft_files']  = $class->get('soft_files');
+				$fields['hard_blocks'] = $class->get('hard_blocks');
+				$fields['soft_blocks'] = $class->get('soft_blocks');
 			}
 		}
 
@@ -224,35 +233,31 @@ class Quotas extends AdminController
 
 		if (!is_object($user) || !$user->get('id'))
 		{
-			$this->view->task = 'edit';
-			$this->setError(Lang::txt('COM_MEMBERS_QUOTA_USER_NOT_FOUND'));
-			$this->editTask($row->id);
-			return;
+			Notify::error(Lang::txt('COM_MEMBERS_QUOTA_USER_NOT_FOUND'));
+			return $this->editTask($row);
 		}
 
 		$fields['user_id'] = $user->get('id');
 
+		$row->set($fields);
+
 		// Try to save
-		if (!$row->save($fields))
+		if (!$row->save())
 		{
-			$this->view->task = 'edit';
-			$this->setError($row->getError());
-			$this->editTask($row->id);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		Notify::success(Lang::txt('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'));
+
+		// Redirect
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($row);
 		}
 
 		// Redirect
-		if ($this->_task == 'apply')
-		{
-			return $this->editTask($row->id);
-		}
-
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'),
-			'message'
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -272,33 +277,23 @@ class Quotas extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$quotas = new Tables\UsersQuotas($this->database);
-			if (!$quotas->setDefaultClass($ids))
+			if (!Quota::setDefaultClass($ids))
 			{
-				// Output message and redirect
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
-					'error'
-				);
-				return;
+				Notify::error(Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'));
+			}
+			else
+			{
+				Notify::success(Lang::txt('COM_MEMBERS_QUOTA_SET_TO_DEFAULT'));
 			}
 		}
 		else // no rows were selected
 		{
 			// Output message and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'),
-				'warning'
-			);
+			Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
 		}
 
-		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_QUOTA_SET_TO_DEFAULT')
-		);
+		// Redirect
+		$this->cancelTask();
 	}
 
 	/* ------------- */
@@ -313,27 +308,30 @@ class Quotas extends AdminController
 	public function displayClassesTask()
 	{
 		// Incoming
-		$this->view->filters = array(
-			'limit' => Request::getState($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
-			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
+		$filters = array(
+			'sort' => Request::getState(
+				$this->_option . '.classes.sort',
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.classes.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
 
-		$obj = new Tables\QuotasClasses($this->database);
-
-		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters, true);
-		$this->view->rows  = $obj->getRecords($this->view->filters, true);
-
-		$this->view->config = $this->config;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		// Get records
+		$rows = Category::all()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -350,14 +348,14 @@ class Quotas extends AdminController
 	/**
 	 * Edit a quota class
 	 *
-	 * @param   integer  $id  ID of class to edit
+	 * @param   object  $row
 	 * @return  void
 	 */
-	public function editClassTask($id=0)
+	public function editClassTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		if (!$id)
+		if (!$row)
 		{
 			// Incoming
 			$id = Request::getVar('id', array());
@@ -367,30 +365,30 @@ class Quotas extends AdminController
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
+
+			// Initiate database class and load info
+			$row = Category::oneOrNew($id);
 		}
 
-		// Initiate database class and load info
-		$this->view->row = new Tables\QuotasClasses($this->database);
-		$this->view->row->load($id);
+		$user_count = Quota::all()
+			->whereEquals('class_id', $row->get('id'))
+			->count();
 
-		$quotas = new Tables\UsersQuotas($this->database);
-		$this->view->user_count = count($quotas->getRecords(array('class_id'=>$id)));
+		/*$groups = array();
+		$qcGroups = Group::all()
+			->whereEquals('class_id', $row->get('id'))
+			->rows();
 
-		/*$this->view->groups = array();
-		$qcGroups = new Tables\QuotasClassesGroups($this->database);
-		foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
+		foreach ($qcGroups as $group)
 		{
-			$this->view->groups[] = $group->group_id
+			$groups[] = $group->get('group_id');
 		}*/
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			Notify::error($error);
-		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('user_count', $user_count)
+			->setErrors($this->getErrors())
 			->setLayout('editClass')
 			->display();
 	}
@@ -420,44 +418,40 @@ class Quotas extends AdminController
 		// Incoming fields
 		$fields = Request::getVar('fields', array(), 'post');
 
-		// Load the profile
-		$row = new Tables\QuotasClasses($this->database);
+		$groups = array();
+		if (isset($fields['groups']))
+		{
+			$groups = $fields['groups'];
+			unset($fields['groups']);
+		}
+
+		// Load the record
+		$row = Category::oneOrNew($fields['id'])->set($fields);
 
 		// Try to save
-		if (!$row->save($fields))
+		if (!$row->save())
 		{
-			$this->view->task = 'editClass';
-			$this->setError($row->getError());
-			$this->editClassTask($row->id);
-			return;
+			Notify::error($row->getError());
+			return $this->editClassTask($row);
 		}
 
 		// Save class/access-group association
-		if (!isset($fields['groups']))
+		if (!$row->setGroupIds($groups))
 		{
-			$fields['groups'] = array();
-		}
-
-		if (!$row->setGroupIds($fields['groups']))
-		{
-			$this->view->task = 'editClass';
-			$this->setError($row->getError());
-			$this->editClassTask($row->id);
-			return;
+			Notify::error($row->getError());
+			return $this->editClassTask($row);
 		}
 
 		Notify::success(Lang::txt('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'));
 
 		// Redirect
-		if ($this->_task == 'applyClass')
+		if ($this->getTask() == 'applyClass')
 		{
-			return $this->editClassTask($row->id);
+			return $this->editClassTask($row);
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false)
-		);
+		$this->cancelClassTask();
 	}
 
 	/**
@@ -482,44 +476,32 @@ class Quotas extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new Tables\QuotasClasses($this->database);
-				$row->load($id);
+				$row = Category::oneOrNew($id);
 
-				if ($row->alias == 'default')
+				if ($row->get('alias') == 'default')
 				{
 					// Output message and redirect
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
-						Lang::txt('COM_MEMBERS_QUOTA_CLASS_DONT_DELETE_DEFAULT'),
-						'warning'
-					);
-
-					return;
+					Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_CLASS_DONT_DELETE_DEFAULT'));
+					return $this->cancelClassTask();
 				}
 
 				// Remove the record
-				$row->delete($id);
+				$row->destroy();
 
 				// Restore all members of this class to default
-				$quota = new Tables\UsersQuotas($this->database);
-				$quota->restoreDefaultClass($id);
+				Quota::restoreDefaultClass($id);
 			}
 		}
 		else // no rows were selected
 		{
 			// Output message and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
-				Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'),
-				'warning'
-			);
+			Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
+			return $this->cancelClassTask();
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
-			Lang::txt('COM_MEMBERS_QUOTA_DELETE_SUCCESSFUL')
-		);
+		Notify::success(Lang::txt('COM_MEMBERS_QUOTA_DELETE_SUCCESSFUL'));
+		return $this->cancelClassTask();
 	}
 
 	/**
@@ -541,16 +523,15 @@ class Quotas extends AdminController
 	 */
 	public function getClassValuesTask()
 	{
-		$class_id = Request::getInt('class_id');
+		$class_id = Request::getInt('class_id', 0);
 
-		$class = new Tables\QuotasClasses($this->database);
-		$class->load($class_id);
+		$class = Category::oneOrNew($class_id);
 
 		$return = array(
-			'soft_files'  => $class->soft_files,
-			'hard_files'  => $class->hard_files,
-			'soft_blocks' => $class->soft_blocks,
-			'hard_blocks' => $class->hard_blocks
+			'soft_files'  => $class->get('soft_files'),
+			'hard_files'  => $class->get('hard_files'),
+			'soft_blocks' => $class->get('soft_blocks'),
+			'hard_blocks' => $class->get('hard_blocks')
 		);
 
 		echo json_encode($return);
@@ -569,12 +550,25 @@ class Quotas extends AdminController
 			$id = Request::getInt('id');
 		}
 
-		$quota = new Tables\UsersQuotas($this->database);
-		$quota->load($id);
-		$username = User::getInstance($quota->user_id)->get('username');
-
 		$info = array();
 		$success = false;
+
+		$return = array(
+			'success' => $success,
+			'info'    => $info,
+			'used'    => 0,
+			'percent' => 0
+		);
+
+		$quota = Quota::oneOrNew($id);
+		$user  = User::getInstance($quota->get('user_id'));
+
+		if (!$user || !$user->get('id'))
+		{
+			return $return;
+		}
+
+		$username = $user->get('username');
 
 		$config = \Component::params('com_tools');
 		$host = $config->get('storagehost');
@@ -582,6 +576,7 @@ class Quotas extends AdminController
 		if ($username && $host)
 		{
 			$fp = @stream_socket_client($host, $errno, $errstr, 30);
+
 			if (!$fp)
 			{
 				$info[] = "$errstr ($errno)\n";
@@ -589,13 +584,16 @@ class Quotas extends AdminController
 			else
 			{
 				$msg = '';
+
 				fwrite($fp, "getquota user=" . $username . "\n");
 				while (!feof($fp))
 				{
 					$msg .= fgets($fp, 1024);
 				}
 				fclose($fp);
+
 				$tokens = preg_split('/,/',$msg);
+
 				foreach ($tokens as $token)
 				{
 					if (!empty($token))
@@ -624,35 +622,28 @@ class Quotas extends AdminController
 			echo json_encode($return);
 			exit();
 		}
-		else
-		{
-			return $return;
-		}
+
+		return $return;
 	}
 
 	/**
 	 * Display quota import page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function importTask()
 	{
-		$this->view->config = $this->config;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
 	 * Process quota import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function processImportTask()
 	{
@@ -668,8 +659,6 @@ class Quotas extends AdminController
 				Lang::txt('COM_MEMBERS_QUOTA_NO_CONF_TEXT'),
 				'warning'
 			);
-
-			return;
 		}
 
 		$lines   = explode("\n", $qfile);
@@ -691,10 +680,11 @@ class Quotas extends AdminController
 			switch ($args[0])
 			{
 				case 'class':
-					$class = new Tables\QuotasClasses($this->database);
-					$class->load(array('alias' => $args[1]));
+					$class = Category::all()
+						->whereEquals('alias', $args[1])
+						->row();
 
-					if ($class->id && !$overwrite)
+					if ($class->get('id') && !$overwrite)
 					{
 						continue;
 					}
@@ -704,7 +694,7 @@ class Quotas extends AdminController
 					$class->set('hard_blocks', $args[3]);
 					$class->set('soft_files' , $args[4]);
 					$class->set('hard_files' , $args[5]);
-					$class->store();
+					$class->save();
 				break;
 
 				case 'user':
@@ -718,67 +708,63 @@ class Quotas extends AdminController
 					{
 						continue;
 					}
-					else
-					{
-						$user_id = $user->get('id');
-					}
 
-					$class = new Tables\QuotasClasses($this->database);
-					$class->load(array('alias' => $args[2]));
+					$user_id = $user->get('id');
 
-					if (!$class->id)
+					$class = Category::all()
+						->whereEquals('alias', $args[2])
+						->row();
+
+					if (!$class->get('id'))
 					{
 						continue;
 					}
 
-					$quota = new Tables\UsersQuotas($this->database);
-					$quota->load(array('user_id' => $user_id));
+					$quota = Quota::all()
+						->whereEquals('user_id', $user_id)
+						->row();
 
-					if ($quota->id && !$overwrite)
+					if ($quota->get('id') && !$overwrite)
 					{
 						continue;
 					}
 
 					$quota->set('user_id'    , $user_id);
-					$quota->set('class_id'   , $class->id);
-					$quota->set('soft_blocks', $class->soft_blocks);
-					$quota->set('hard_blocks', $class->hard_blocks);
-					$quota->set('soft_files' , $class->soft_files);
-					$quota->set('hard_files' , $class->hard_files);
-					$quota->store();
+					$quota->set('class_id',    $class->get('id'));
+					$quota->set('soft_blocks', $class->get('soft_blocks'));
+					$quota->set('hard_blocks', $class->get('hard_blocks'));
+					$quota->set('soft_files',  $class->get('soft_files'));
+					$quota->set('hard_files',  $class->get('hard_files'));
+					$quota->save();
 				break;
 			}
 		}
 
 		// Output message and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_QUOTA_CONF_IMPORT_SUCCESSFUL'),
-			'passed'
-		);
+		Notify::success(Lang::txt('COM_MEMBERS_QUOTA_CONF_IMPORT_SUCCESSFUL'));
 
-		return;
+		$this->cancelTask();
 	}
 
 	/**
 	 * Check for registered users without quota entries and add them
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function importMissingTask()
 	{
 		// Query for all members in the CMS
-		$query = "SELECT `id` FROM `#__users`";
-		$this->database->setQuery($query);
-		$results = $this->database->loadObjectList();
+		$results = Member::all()
+			->select('id')
+			->rows();
 
-		if (count($results) > 0)
+		if ($results->count() > 0)
 		{
 			$updates = 0;
-			$class = new Tables\QuotasClasses($this->database);
-			$class->load(array('alias' => 'default'));
 
-			if (!$class->id)
+			$class = Category::defaultEntry();
+
+			if (!$class->get('id'))
 			{
 				// Output message and redirect
 				App::redirect(
@@ -786,37 +772,34 @@ class Quotas extends AdminController
 					Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
 					'error'
 				);
-				return;
 			}
 
 			foreach ($results as $r)
 			{
-				$quota = new Tables\UsersQuotas($this->database);
-				$quota->load(array('user_id' => $r->id));
+				$quota = Quota::all()
+					->whereEquals('user_id', $r->get('id'))
+					->row();
 
-				if ($quota->id)
+				if ($quota->get('id'))
 				{
 					continue;
 				}
 
-				$quota->set('user_id'    , $r->id);
-				$quota->set('class_id'   , $class->id);
-				$quota->set('soft_blocks', $class->soft_blocks);
-				$quota->set('hard_blocks', $class->hard_blocks);
-				$quota->set('soft_files' , $class->soft_files);
-				$quota->set('hard_files' , $class->hard_files);
-				$quota->store();
+				$quota->set('user_id',     $r->get('id'));
+				$quota->set('class_id',    $class->get('id'));
+				$quota->set('soft_blocks', $class->get('soft_blocks'));
+				$quota->set('hard_blocks', $class->get('hard_blocks'));
+				$quota->set('soft_files',  $class->get('soft_files'));
+				$quota->set('hard_files',  $class->get('hard_files'));
+				$quota->save();
+
 				$updates++;
 			}
 		}
 
 		// Output message and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_QUOTA_MISSING_USERS_IMPORT_SUCCESSFUL', $updates),
-			'passed'
-		);
+		Notify::success(Lang::txt('COM_MEMBERS_QUOTA_MISSING_USERS_IMPORT_SUCCESSFUL', $updates));
 
-		return;
+		$this->cancelTask();
 	}
 }

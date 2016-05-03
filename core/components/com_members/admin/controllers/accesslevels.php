@@ -56,12 +56,14 @@ class Accesslevels extends AdminController
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('save2new', 'save');
+		$this->registerTask('save2copy', 'save');
 
 		parent::execute();
 	}
 
 	/**
-	 * Display password blacklist
+	 * Display entries
 	 *
 	 * @return  void
 	 */
@@ -157,8 +159,18 @@ class Accesslevels extends AdminController
 		// Incoming password blacklist edits
 		$fields = Request::getVar('fields', array(), 'post');
 
+		if (isset($fields['rules']) && is_array($fields['rules']))
+		{
+			$fields['rules'] = array_map('intval', $fields['rules']);
+		}
+
 		// Load the record
-		$row = Viewlevel::onrOrNew($fields['id'])->set($fields);
+		$row = Viewlevel::oneOrNew($fields['id'])->set($fields);
+
+		if ($this->getTask() == 'save2copy')
+		{
+			$row->set('id', null);
+		}
 
 		// Try to save
 		if (!$row->save())
@@ -167,10 +179,15 @@ class Accesslevels extends AdminController
 			return $this->editTask($row);
 		}
 
-		Notify::success(Lang::txt('COM_MEMBERS_ACCESSLEVEL_SAVE_SUCCESS'));
+		Notify::success(Lang::txt('COM_MEMBERS_SAVE_SUCCESS'));
+
+		if ($this->getTask() == 'save2new')
+		{
+			$row = Viewlevel::blank();
+		}
 
 		// Fall through to edit form
-		if ($this->getTask() == 'apply')
+		if (in_array($this->getTask(), array('apply', 'save2new', 'save2copy')))
 		{
 			return $this->editTask($row);
 		}
@@ -180,7 +197,7 @@ class Accesslevels extends AdminController
 	}
 
 	/**
-	 * Removes one or mroe entries
+	 * Removes one or more entries
 	 *
 	 * @return  void
 	 */

@@ -32,10 +32,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
+$canDo = Components\Members\Helpers\Admin::getActions('component');
 
 // Menu
-Toolbar::title(Lang::txt('COM_MEMBERS_QUOTA_CLASSES'), 'user.png');
+Toolbar::title(Lang::txt('COM_MEMBERS_QUOTA_CLASSES'), 'user');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::addNew('addClass');
@@ -55,7 +55,7 @@ Toolbar::help('quotaclasses');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
 				<th class="priority-5"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ALIAS'); ?></th>
 				<th class="priority-3"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?></th>
@@ -69,11 +69,7 @@ Toolbar::help('quotaclasses');
 				<td colspan="7">
 					<?php
 					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					echo $this->rows->pagination;
 					?>
 				</td>
 			</tr>
@@ -81,39 +77,48 @@ Toolbar::help('quotaclasses');
 		<tbody>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$row = &$this->rows[$i];
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td class="priority-5">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editClass&id=' . $row->id); ?>">
-						<?php echo $this->escape($row->id); ?>
-					</a>
+					<?php if ($canDo->get('core.edit')): ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editClass&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape($row->get('id')); ?>
+						</a>
+					<?php else: ?>
+						<?php echo $this->escape($row->get('id')); ?>
+					<?php endif; ?>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editClass&id=' . $row->id); ?>">
-						<?php echo $this->escape($row->alias); ?>
-					</a>
+					<?php if ($canDo->get('core.edit')): ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editClass&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape($row->get('alias')); ?>
+						</a>
+					<?php else: ?>
+						<?php echo $this->escape($row->get('alias')); ?>
+					<?php endif; ?>
 				</td>
 				<td class="priority-3">
-					<?php echo $this->escape($row->soft_blocks); ?>
+					<?php echo $this->escape($row->get('soft_blocks')); ?>
 				</td>
 				<td>
-					<?php echo $this->escape($row->hard_blocks); ?>
+					<?php echo $this->escape($row->get('hard_blocks')); ?>
 				</td>
 				<td class="priority-3">
-					<?php echo $this->escape($row->soft_files); ?>
+					<?php echo $this->escape($row->get('soft_files')); ?>
 				</td>
 				<td class="priority-2">
-					<?php echo $this->escape($row->hard_files); ?>
+					<?php echo $this->escape($row->get('hard_files')); ?>
 				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;
+			$i++;
 		}
 		?>
 		</tbody>

@@ -54,6 +54,7 @@ if (!$this->row->get('id') && $canDo->get('core.create'))
 Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('group');
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -76,16 +77,25 @@ function submitbutton(pressbutton)
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_DESC'); ?>">
-					<label for="field-title"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_LABELE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<label for="field-title"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_DESC'); ?>">
-					<label for="field-parent"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<select name="fields[parent]" id="field-parent">
-						<?php foreach ($this->options as $option): ?>
-							<option value="<?php echo $option->get('id'); ?>"<?php if ($option->get('id') == $this->row->get('parent')) { echo ' selected="selected"'; } ?>><?php echo str_repeat('- ', $option->get('level', 1)) . $option->get('title'); ?></option>
-						<?php endforeach; ?>
+					<label for="field-parent_id"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<select name="fields[parent_id]" id="field-parent_id">
+						<?php foreach ($this->options as $option):
+							if (User::authorise('core.admin') || (!\JAccess::checkGroup($option->get('id'), 'core.admin')))
+							{
+								$level = Hubzero\Access\Group::all()
+									->where('lft', '<', $option->get('lft'))
+									->where('rgt', '>', $option->get('rgt'))
+									->total();
+								?>
+								<option value="<?php echo $option->get('id'); ?>"<?php if ($option->get('id') == $this->row->get('parent_id')) { echo ' selected="selected"'; } ?>><?php echo str_repeat('- ', $level) . $option->get('title'); ?></option>
+								<?php
+							}
+						endforeach; ?>
 					</select>
 				</div>
 			</fieldset>

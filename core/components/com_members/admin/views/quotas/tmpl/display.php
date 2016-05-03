@@ -32,10 +32,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
+$canDo = Components\Members\Helpers\Admin::getActions('component');
 
 // Menu
-Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS'), 'user.png');
+Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS'), 'user');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::addNew();
@@ -58,7 +58,7 @@ $this->css('quotas.css');
 				var usage = $(el).find('.usage-outer');
 
 				$.ajax({
-					url      : 'index.php?option=com_members&controller=quotas&task=getQuotaUsage',
+					url      : '<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage'); ?>',
 					dataType : 'JSON',
 					type     : 'GET',
 					data     : {"id":id},
@@ -105,7 +105,7 @@ $this->css('quotas.css');
 				<select name="class_alias" id="filter_class_alias" onchange="document.adminForm.submit( );">
 					<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
 					<?php foreach ($this->classes as $class) : ?>
-						<option value="<?php echo $class->alias; ?>"<?php if ($this->filters['class_alias'] == $class->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->alias); ?></option>
+						<option value="<?php echo $class->get('alias'); ?>"<?php if ($this->filters['class_alias'] == $class->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->get('alias')); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -114,11 +114,11 @@ $this->css('quotas.css');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th class="priority-5"><?php echo $this->grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th class="priority-4"><?php echo $this->grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo $this->grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th class="priority-3"><?php echo $this->grid('sort', 'COM_MEMBERS_QUOTA_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_DISK_USAGE'); ?></th>
 			</tr>
 		</thead>
@@ -127,11 +127,7 @@ $this->css('quotas.css');
 				<td colspan="6">
 					<?php
 					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					echo $this->rows->pagination;
 					?>
 				</td>
 			</tr>
@@ -139,29 +135,29 @@ $this->css('quotas.css');
 		<tbody>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$row = &$this->rows[$i];
 			?>
 			<tr class="<?php echo "row$k quota-row"; ?>">
 				<td>
-					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td class="priority-5">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
-						<?php echo $this->escape($row->user_id); ?>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<?php echo $this->escape($row->get('user_id')); ?>
 					</a>
 				</td>
 				<td class="priority-4">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
-						<?php echo $this->escape($row->username); ?>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<?php echo $this->escape($row->get('username')); ?>
 					</a>
 				</td>
 				<td>
-					<?php echo $this->escape($row->name); ?>
+					<?php echo $this->escape($row->get('name')); ?>
 				</td>
 				<td class="priority-3">
-					<?php echo ($row->class_alias) ? $this->escape($row->class_alias) : 'custom'; ?>
+					<?php echo $this->escape($row->get('class_alias', 'custom')); ?>
 				</td>
 				<td>
 					<div class="usage-calculating"><?php echo Lang::txt('COM_MEMBERS_QUOTA_CALCULATING'); ?></div>
@@ -173,6 +169,7 @@ $this->css('quotas.css');
 			</tr>
 			<?php
 			$k = 1 - $k;
+			$i++;
 		}
 		?>
 		</tbody>

@@ -74,51 +74,6 @@ class Admin
 	}
 
 	/**
-	 * Configure the Linkbar.
-	 *
-	 * @param   string  $active  The name of the active view.
-	 * @return  void
-	 */
-	public static function addSubmenu($active)
-	{
-		Submenu::addEntry(
-			Lang::txt('COM_MEMBERS_SUBMENU_USERS'),
-			Route::url('index.php?option=com_users&view=users'),
-			$active == 'users'
-		);
-
-		// Groups and Levels are restricted to core.admin
-		$canDo = self::getActions();
-
-		if ($canDo->get('core.admin'))
-		{
-			Submenu::addEntry(
-				Lang::txt('COM_MEMBERS_SUBMENU_GROUPS'),
-				Route::url('index.php?option=com_users&view=groups'),
-				$active == 'groups'
-			);
-			Submenu::addEntry(
-				Lang::txt('COM_MEMBERS_SUBMENU_LEVELS'),
-				Route::url('index.php?option=com_users&view=levels'),
-				$active == 'levels'
-			);
-			Submenu::addEntry(
-				Lang::txt('COM_MEMBERS_SUBMENU_NOTES'),
-				Route::url('index.php?option=com_users&view=notes'),
-				$active == 'notes'
-			);
-
-			$extension = Request::getString('extension');
-
-			Submenu::addEntry(
-				Lang::txt('COM_MEMBERS_SUBMENU_NOTE_CATEGORIES'),
-				Route::url('index.php?option=com_categories&extension=com_users'),
-				$active == 'categories' || $extension == 'com_users'
-			);
-		}
-	}
-
-	/**
 	 * Get a list of filter options for the blocked state of a user.
 	 *
 	 * @return  array  An array of Option elements.
@@ -169,7 +124,7 @@ class Admin
 	 *
 	 * @return  array  An array of Option elements.
 	 */
-	public static function getGroups()
+	public static function getAccessGroups()
 	{
 		/*
 		$ug = Usergroup::all();

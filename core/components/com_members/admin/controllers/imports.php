@@ -73,6 +73,8 @@ class Imports extends AdminController
 			);
 		}
 
+		Lang::load($this->_option . '.import', dirname(__DIR__));
+
 		parent::execute();
 	}
 

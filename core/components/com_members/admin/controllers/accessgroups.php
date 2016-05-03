@@ -35,6 +35,7 @@ use Hubzero\Component\AdminController;
 use Hubzero\Access\Group as Accessgroup;
 use Request;
 use Notify;
+use Event;
 use Route;
 use Lang;
 use App;
@@ -55,12 +56,14 @@ class Accessgroups extends AdminController
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('save2new', 'save');
+		$this->registerTask('save2copy', 'save');
 
 		parent::execute();
 	}
 
 	/**
-	 * Display password blacklist
+	 * Display entries
 	 *
 	 * @return  void
 	 */
@@ -108,7 +111,7 @@ class Accessgroups extends AdminController
 	}
 
 	/**
-	 * Edit a blacklisted password
+	 * Edit an entry
 	 *
 	 * @param   object  $row
 	 * @return  void
@@ -159,7 +162,7 @@ class Accessgroups extends AdminController
 	}
 
 	/**
-	 * Save blacklisted password
+	 * Save entry
 	 *
 	 * @return  void
 	 */
@@ -172,7 +175,7 @@ class Accessgroups extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the record
-		$row = Accessgroup::onrOrNew($fields['id'])->set($fields);
+		$row = Accessgroup::oneOrNew($fields['id'])->set($fields);
 
 		// Check the super admin permissions for group
 		// We get the parent group permissions and then check the group permissions manually
@@ -220,7 +223,7 @@ class Accessgroups extends AdminController
 				$otherSuperAdmin = false;
 				foreach ($otherGroups as $otherGroup)
 				{
-					$otherSuperAdmin = ($otherSuperAdmin) ? $otherSuperAdmin : JAccess::checkGroup($otherGroup, 'core.admin');
+					$otherSuperAdmin = ($otherSuperAdmin) ? $otherSuperAdmin : \JAccess::checkGroup($otherGroup, 'core.admin');
 				}
 
 				// If we would not otherwise have super admin permissions
@@ -233,6 +236,11 @@ class Accessgroups extends AdminController
 			}
 		}
 
+		if ($this->getTask() == 'save2copy')
+		{
+			$row->set('id', null);
+		}
+
 		// Try to save
 		if (!$row->save())
 		{
@@ -240,10 +248,15 @@ class Accessgroups extends AdminController
 			return $this->editTask($row);
 		}
 
-		Notify::success(Lang::txt('COM_MEMBERS_ACCESSGROUP_SAVE_SUCCESS'));
+		Notify::success(Lang::txt('COM_MEMBERS_SAVE_SUCCESS'));
+
+		if ($this->getTask() == 'save2new')
+		{
+			$row = Accessgroup::blank();
+		}
 
 		// Fall through to edit form
-		if ($this->getTask() == 'apply')
+		if (in_array($this->getTask(), array('apply', 'save2new', 'save2copy')))
 		{
 			return $this->editTask($row);
 		}
@@ -253,7 +266,7 @@ class Accessgroups extends AdminController
 	}
 
 	/**
-	 * Removes [a] password blacklist item(s)
+	 * Removes one or more entries
 	 *
 	 * @return  void
 	 */
@@ -263,7 +276,7 @@ class Accessgroups extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getVar('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -276,21 +289,12 @@ class Accessgroups extends AdminController
 			// Check if I am a Super Admin
 			$iAmSuperAdmin = User::authorise('core.admin');
 
-			// do not allow to delete groups to which the current user belongs
-			foreach ($pks as $i => $pk)
-			{
-				if (in_array($pk, $groups))
-				{
-					Notify::warning(Lang::txt('COM_MEMBERS_DELETE_ERROR_INVALID_GROUP'));
-					return false;
-				}
-			}
-
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
 				$id = intval($id);
 
+				// do not allow to delete groups to which the current user belongs
 				if (in_array($id, $groups))
 				{
 					Notify::warning(Lang::txt('COM_MEMBERS_DELETE_ERROR_INVALID_GROUP'));
@@ -341,5 +345,138 @@ class Accessgroups extends AdminController
 		}
 
 		$this->cancelTask();
+	}
+
+	/**
+	 * Debug permissions
+	 *
+	 * @return  void
+	 */
+	public function debugTask()
+	{
+		include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'debug.php';
+
+		// Get filters
+		$filters = array(
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'lft'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'level_start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.filter_level_start',
+				'filter_level_start',
+				0,
+				'int'
+			),
+			'level_end' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.filter_level_end',
+				'filter_level_end',
+				0,
+				'int'
+			),
+			'component' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.filter_component',
+				'filter_component',
+				''
+			)
+		);
+
+		if ($filters['level_end'] > 0 && $filters['level_end'] < $filters['level_start'])
+		{
+			$filters['level_end'] = $filters['level_start'];
+		}
+
+		$id = Request::getInt('id', 0);
+
+		// Load access group
+		$accessgroup = Accessgroup::oneOrFail($id);
+
+		// Select the required fields from the table.
+		$entries = \Hubzero\Access\Asset::all();
+
+		if ($filters['search'])
+		{
+			$entries->whereLike('name', $filters['search'], 1)
+				->orWhereLike('title', $filters['search'], 1)
+				->resetDepth();
+		}
+
+		if ($filters['level_start'] > 0)
+		{
+			$entries->where('level', '>=', $filters['level_start']);
+		}
+		if ($filters['level_end'] > 0)
+		{
+			$entries->where('level', '<=', $filters['level_end']);
+		}
+
+		// Filter the items over the component if set.
+		if ($filters['component'])
+		{
+			$entries->whereEquals('name', $filters['component'], 1)
+				->orWhereLike('name', $filters['component'], 1)
+				->resetDepth();
+		}
+
+		$assets = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated()
+			->rows();
+
+		$actions = \Components\Members\Helpers\Debug::getActions($filters['component']);
+
+		$data = $assets->raw();
+		$assets->clear();
+
+		foreach ($data as $key => $asset)
+		{
+			$checks = array();
+
+			foreach ($actions as $action)
+			{
+				$name  = $action[0];
+				$level = $action[1];
+
+				// Check that we check this action for the level of the asset.
+				if ($action[1] === null || $action[1] >= $asset->get('level'))
+				{
+					// We need to test this action.
+					$checks[$name] = \JAccess::checkGroup($id, $action[0], $asset->get('name'));
+				}
+				else
+				{
+					// We ignore this action.
+					$checks[$name] = 'skip';
+				}
+			}
+
+			$asset->set('checks', $checks);
+
+			$assets->push($asset);
+		}
+
+		$levels     = \Components\Members\Helpers\Debug::getLevelsOptions();
+		$components = \Components\Members\Helpers\Debug::getComponents();
+
+		// Output the HTML
+		$this->view
+			->set('group', $accessgroup)
+			->set('filters', $filters)
+			->set('assets', $assets)
+			->set('actions', $actions)
+			->set('levels', $levels)
+			->set('components', $components)
+			->display();
 	}
 }

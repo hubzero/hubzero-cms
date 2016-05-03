@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,10 +32,13 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Image\Processor;
+use Hubzero\Utility\String;
 use Filesystem;
 use Request;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**
@@ -60,7 +62,7 @@ class Media extends AdminController
 		$file    = Request::getVar('upload', '', 'files', 'array');
 
 		// Build upload path
-		$dir  = \Hubzero\Utility\String::pad($id);
+		$dir  = String::pad($id);
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		//allowed extensions for uplaod
@@ -73,16 +75,14 @@ class Media extends AdminController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-			$this->displayTask($curfile, $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// make sure we have a file
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));
-			$this->displayTask($curfile, $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// make sure we have an upload path
@@ -91,8 +91,7 @@ class Media extends AdminController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask($curfile, $id);
-				return;
+				return $this->displayTask($id);
 			}
 		}
 
@@ -100,8 +99,7 @@ class Media extends AdminController
 		if ($file['size'] == 0)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_FILE_HAS_NO_SIZE'));
-			$this->displayTask($curfile, $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// make sure file is not empty
@@ -109,8 +107,7 @@ class Media extends AdminController
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			$this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
-			$this->displayTask($curfile, $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// must be in allowed extensions
@@ -120,8 +117,7 @@ class Media extends AdminController
 		{
 			$these = implode(', ', $allowedExtensions);
 			$this->setError(Lang::txt('COM_MEMBERS_FILE_TYPE_NOT_ALLOWED', $these));
-			$this->displayTask($curfile, $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// build needed paths
@@ -133,12 +129,11 @@ class Media extends AdminController
 		if (!Filesystem::upload($file['tmp_name'], $filePath))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING'));
-			$this->displayTask($curfile, $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// create profile pic
-		$imageProcessor = new \Hubzero\Image\Processor($filePath);
+		$imageProcessor = new Processor($filePath);
 		if (count($imageProcessor->getErrors()) == 0)
 		{
 			$imageProcessor->autoRotate();
@@ -148,26 +143,18 @@ class Media extends AdminController
 		}
 
 		// create thumb
-		$imageProcessor = new \Hubzero\Image\Processor($filePath);
+		$imageProcessor = new Processor($filePath);
 		if (count($imageProcessor->getErrors()) == 0)
 		{
 			$imageProcessor->resize(50, false, true, true);
 			$imageProcessor->save($thumbPath);
 		}
 
-		// update profile
-		$profile = \Hubzero\User\Profile::getInstance($id);
-		$profile->set('picture', 'profile.png');
-		if (!$profile->update())
-		{
-			$this->setError($profile->getError());
-		}
-
 		// remove orig file
 		unlink($filePath);
 
 		// Push through to the image view
-		$this->displayTask('profile.png', $id);
+		$this->displayTask($id);
 	}
 
 	/**
@@ -185,8 +172,7 @@ class Media extends AdminController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-			$this->displayTask('', $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// Incoming file
@@ -194,12 +180,11 @@ class Media extends AdminController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));
-			$this->displayTask('', $id);
-			return;
+			return $this->displayTask($id);
 		}
 
 		// Build the file path
-		$dir  = \Hubzero\Utility\String::pad($id);
+		$dir  = String::pad($id);
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		// if we have file
@@ -215,18 +200,13 @@ class Media extends AdminController
 			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
-				$this->displayTask($file, $id);
-				return;
+				return $this->displayTask($id);
 			}
 
 			// Get the file thumbnail name
 			if ($file == 'profile.png')
 			{
 				$curthumb = 'thumb.png';
-			}
-			else
-			{
-				$curthumb = $ih->createThumbName($file);
 			}
 
 			// Remove the thumbnail
@@ -235,23 +215,12 @@ class Media extends AdminController
 				if (!Filesystem::delete($path . DS . $curthumb))
 				{
 					$this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
-					$this->displayTask($file, $id);
-					return;
+					return $this->displayTask($file, $id);
 				}
 			}
-
-			// Instantiate a profile, change some info and save
-			$profile = \Hubzero\User\Profile::getInstance($id);
-			$profile->set('picture', '');
-			if (!$profile->update())
-			{
-				$this->setError($profile->getError());
-			}
-
-			$file = '';
 		}
 
-		$this->displayTask($file, $id);
+		$this->displayTask($id);
 	}
 
 	/**
@@ -263,35 +232,18 @@ class Media extends AdminController
 	 */
 	public function displayTask($file='', $id=0)
 	{
-		// Load the component config
-		$this->view->config = $this->config;
-
-		// Incoming
 		if (!$id)
 		{
 			$id = Request::getInt('id', 0);
 		}
-		$this->view->id = $id;
-		$this->view->profile = \Hubzero\User\Profile::getInstance($id);
 
-		if (!$file)
-		{
-			$file = Request::getVar('file', '');
-		}
-		$this->view->file = $file;
-
-		// Build the file path
-		$this->view->dir  = \Hubzero\Utility\String::pad($id);
-		$this->view->path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $this->view->dir;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$profile = User::getInstance($id);
 
 		// Output the HTML
 		$this->view
+			->set('config', $this->config)
+			->set('profile', $profile)
+			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
 	}

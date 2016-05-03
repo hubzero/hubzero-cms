@@ -25,27 +25,25 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Members\Admin\Controllers;
 
+use Components\Members\Models\Member;
 use Components\Members\Helpers;
+use Hubzero\Access\Group as Accessgroup;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Validate;
-use Hubzero\User\Profile;
 use Filesystem;
 use Request;
-use Config;
+use Notify;
 use Route;
 use User;
 use Date;
 use Lang;
 use App;
-
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
 
 /**
  * Manage site members
@@ -53,23 +51,36 @@ include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php'
 class Members extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		Lang::load($this->_option . '.members', dirname(__DIR__));
+
+		$this->registerTask('modal', 'display');
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('confirm', 'state');
+		$this->registerTask('unconfirm', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of site members
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
-			)),
-			'search_field' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search_field',
-				'search_field',
-				'name'
 			)),
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -86,72 +97,210 @@ class Members extends AdminController
 				'registerDate',
 				''
 			),
-			'emailConfirmed' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.emailConfirmed',
-				'emailConfirmed',
+			'activation' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.activation',
+				'activation',
 				0,
 				'int'
 			),
-			'public' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.public',
-				'public',
-				-1,
-				'int'
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'*'
 			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
 				0,
 				'int'
+			),
+			'approved' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.approved',
+				'approved',
+				'*'
+			),
+			'group_id' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.group_id',
+				'group_id',
+				0,
+				'int'
+			),
+			'range' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.range',
+				'range',
+				''
 			)
 		);
 
-		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+		// Build query
+		$entries = Member::all();
 
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$a = $entries->getTableName();
+		$b = '#__user_usergroup_map';
 
-		$obj = new \Components\Members\Tables\Profile($this->database);
+		$entries
+			->select($a . '.*')
+			->including(['accessgroups', function ($accessgroup){
+				$accessgroup
+					->select('*');
+			}])
+			->including(['notes', function ($note){
+				$note
+					->select('id')
+					->select('user_id');
+			}]);
 
-		// Get a record count
-		$this->view->total = $obj->getRecordCount($this->view->filters, true);
+		if ($filters['group_id'])
+		{
+			$entries
+				->join($b, $b . '.user_id', $a . '.id', 'left')
+				->whereEquals($b . '.group_id', (int)$filters['group_id'])
+				->group($a . '.id')
+				->group($a . '.name')
+				->group($a . '.username')
+				->group($a . '.password')
+				->group($a . '.usertype')
+				->group($a . '.block')
+				->group($a . '.sendEmail')
+				->group($a . '.registerDate')
+				->group($a . '.lastvisitDate')
+				->group($a . '.activation')
+				->group($a . '.params')
+				->group($a . '.email');
+		}
+
+		if ($filters['search'])
+		{
+			$entries->whereLike($a . 'name', strtolower((string)$filters['search']), 1)
+				->orWhereLike($a . 'username', strtolower((string)$filters['search']), 1)
+				->orWhereLike($a . 'email', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
+
+		if ($filters['registerDate'])
+		{
+			$entries->where($a . 'registerDate', '>=', $filters['registerDate']);
+		}
+
+		if ($filters['access'] > 0)
+		{
+			$entries->whereEquals($a . 'access', (int)$filters['access']);
+		}
+
+		if (is_numeric($filters['state']))
+		{
+			$entries->whereEquals($a . 'block', (int)$filters['state']);
+		}
+
+		if (is_numeric($filters['approved']))
+		{
+			$entries->whereEquals($a . 'approved', (int)$filters['approved']);
+		}
+
+		if ($filters['activation'] < 0)
+		{
+			$entries->where($a . 'activation', '<', 0);
+		}
+		if ($filters['activation'] > 0)
+		{
+			$entries->where($a . 'activation', '>', 0);
+		}
+
+		// Apply the range filter.
+		if ($filters['range'])
+		{
+			// Get UTC for now.
+			$dNow = Date::of('now');
+			$dStart = clone $dNow;
+
+			switch ($filters['range'])
+			{
+				case 'past_week':
+					$dStart->modify('-7 day');
+					break;
+
+				case 'past_1month':
+					$dStart->modify('-1 month');
+					break;
+
+				case 'past_3month':
+					$dStart->modify('-3 month');
+					break;
+
+				case 'past_6month':
+					$dStart->modify('-6 month');
+					break;
+
+				case 'post_year':
+				case 'past_year':
+					$dStart->modify('-1 year');
+					break;
+
+				case 'today':
+					// Ranges that need to align with local 'days' need special treatment.
+					$offset = Config::get('offset');
+
+					// Reset the start time to be the beginning of today, local time.
+					$dStart = Date::of('now', $offset);
+					$dStart->setTime(0, 0, 0);
+
+					// Now change the timezone back to UTC.
+					$tz = new \DateTimeZone('GMT');
+					$dStart->setTimezone($tz);
+					break;
+			}
+
+			if ($range == 'post_year')
+			{
+				$entries->where($a . 'registerDate', '<', $dStart->format('Y-m-d H:i:s'));
+			}
+			else
+			{
+				$entries->where($a . 'registerDate', '>=', $dStart->format('Y-m-d H:i:s'));
+				$entries->where($a . 'registerDate', '<=', $dNow->format('Y-m-d H:i:s'));
+			}
+		}
 
 		// Get records
-		$this->view->rows = $obj->getRecordEntries($this->view->filters, true);
+		$rows = $entries
+			->order($a . '.' . $filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
-		$this->view->config = $this->config;
+		// Access groups
+		$accessgroups = Accessgroup::all()
+			->ordered()
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('accessgroups', $accessgroups)
+			->set('filters', $filters)
+			->setLayout($this->getTask() == 'modal' ? 'modal' : 'display')
+			->display();
 	}
 
 	/**
 	 * Create a new member
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function addTask()
+	/*public function addTask()
 	{
 		Request::setVar('hidemainmenu', 1);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			\Notify::error($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
 		$this->view
 			->setLayout('add')
 			->display();
-	}
+	}*/
 
 	/**
 	 * Create a new user
@@ -159,7 +308,7 @@ class Members extends AdminController
 	 * @param      integer $redirect Redirect to main listing?
 	 * @return     void
 	 */
-	public function newTask($redirect=1)
+	/*public function newTask($redirect=1)
 	{
 		// Check for request forgeries
 		Request::checkToken();
@@ -201,11 +350,10 @@ class Members extends AdminController
 		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
 		$name .= trim($p['surname']);
 
-		$user = new \JUser();
+		$user = Member::oneOrNew($p['id']);
 		$user->set('username', trim($p['username']));
 		$user->set('name', $name);
 		$user->set('email', trim($p['email']));
-		$user->set('id', 0);
 		$user->set('groups', array($newUsertype));
 		$user->set('registerDate', Date::toSql());
 		$user->set('password', trim($p['password']));
@@ -255,179 +403,191 @@ class Members extends AdminController
 			Route::url('index.php?option='.$this->_option.'&controller='.$this->_controller.'&task=edit&id[]='.$profile->get('uidNumber'), false),
 			Lang::txt('COM_MEMBERS_MEMBER_SAVED')
 		);
-	}
+	}*/
 
 	/**
 	 * Edit a member's information
 	 *
-	 * @param      integer $id ID of member to edit
-	 * @return     void
+	 * @param   object  $user
+	 * @return  void
 	 */
-	public function editTask($id=0)
+	public function editTask($user=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		if (!$id)
+		if (!$user)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getVar('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
+
+			// Initiate database class and load info
+			$user = Member::oneOrNew($id);
 		}
 
-		// Initiate database class and load info
-		$this->view->profile = new Profile();
-		$this->view->profile->load($id);
-
-		$this->view->password = \Hubzero\User\Password::getInstance($id);
+		$password = \Hubzero\User\Password::getInstance($user->get('id'));
 
 		// Get password rules
-		$password_rules = \Hubzero\Password\Rule::getRules();
-
 		// Get the password rule descriptions
-		$this->view->password_rules = array();
-		foreach ($password_rules as $rule)
+		$password_rules = array();
+		foreach (\Hubzero\Password\Rule::all()->whereEquals('enabled', 1)->rows() as $rule)
 		{
 			if (!empty($rule['description']))
 			{
-				$this->view->password_rules[] = $rule['description'];
+				$password_rules[] = $rule['description'];
 			}
-		}
-
-		// Validate the password
-		$this->view->validated = (isset($this->validated)) ? $this->validated : false;
-
-		// Get the user's interests (tags)
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
-
-		$mt = new \Components\Members\Models\Tags($id);
-		$this->view->tags = $mt->render('string');
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('profile', $user)
+			->set('password', $password)
+			->set('password_rules', $password_rules)
+			->set('validated', (isset($this->validated) ? $this->validated : false))
+			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();
 	}
 
 	/**
-	 * Save an entry and return to edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(0);
-	}
-
-	/**
 	 * Save an entry and return to main listing
 	 *
-	 * @param      integer $redirect Redirect to main listing?
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming user ID
-		$id = Request::getInt('id', 0, 'post');
-
-		// Do we have an ID?
-		if (!$id)
-		{
-			App::abort(500, Lang::txt('COM_MEMBERS_NO_ID'));
-			return;
-		}
-
 		// Incoming profile edits
-		$p = Request::getVar('profile', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Load the profile
-		$profile = new Profile();
-		$profile->load($id);
+		$user = Member::oneOrNew($fields['id'])->set($fields);
+
+		if ($user->isNew())
+		{
+			$newUsertype = $this->config->get('new_usertype');
+
+			if (!$newUsertype)
+			{
+				$newUsertype = Accessgroup::oneByTitle('Registered')->get('id');
+			}
+
+			$user->set('groups', array($newUsertype));
+
+			// Check that username is filled
+			if (!Validate::username($fields['username']))
+			{
+				Notify::error(Lang::txt('COM_MEMBERS_MEMBER_USERNAME_INVALID'));
+				return $this->editTask($user);
+			}
+
+			// Check email is valid
+			if (!Validate::email($fields['email']))
+			{
+				Notify::error(Lang::txt('COM_MEMBERS_MEMBER_EMAIL_INVALID'));
+				return $this->editTask($user);
+			}
+
+			$user->set('registerDate', Date::toSql());
+		}
 
 		// Set the new info
-		$profile->set('givenName', preg_replace('/\s+/', ' ', trim($p['givenName'])));
-		$profile->set('middleName', preg_replace('/\s+/', ' ', trim($p['middleName'])));
-		$profile->set('surname', preg_replace('/\s+/', ' ', trim($p['surname'])));
+		$user->set('givenName', preg_replace('/\s+/', ' ', trim($fields['givenName'])));
+		$user->set('middleName', preg_replace('/\s+/', ' ', trim($fields['middleName'])));
+		$user->set('surname', preg_replace('/\s+/', ' ', trim($fields['surname'])));
 
-		$name  = trim($p['givenName']).' ';
-		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
-		$name .= trim($p['surname']);
-		$name  = preg_replace('/\s+/', ' ', $name);
+		$name = array(
+			$user->get('givenName'),
+			$user->get('middleName'),
+			$user->get('surname')
+		);
+		$name = implode(' ', $name);
+		$name = preg_replace('/\s+/', ' ', $name);
 
-		$profile->set('name', $name);
-		if (isset($p['vip']))
+		$user->set('name', $name);
+		$user->set('modifiedDate', Date::toSql());
+
+		if ($ec = Request::getInt('activation', 0, 'post'))
 		{
-			$profile->set('vip',$p['vip']);
+			$user->set('activation', $ec);
 		}
 		else
 		{
-			$profile->set('vip',0);
+			$user->set('activation', Helpers\Utility::genemailconfirm());
 		}
-		$profile->set('usageAgreement', 0);
-		if (isset($p['usageAgreement']))
+
+		// Can't block yourself
+		if ($user->get('block') && $user->get('id') == User::get('id') && !User::get('block'))
 		{
-			$profile->set('usageAgreement',$p['usageAgreement']);
+			Notify::error(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
+			return $this->editTask($user);
 		}
-		$profile->set('orcid', trim($p['orcid']));
-		$profile->set('url', trim($p['url']));
-		$profile->set('phone', trim($p['phone']));
-		$profile->set('orgtype', trim($p['orgtype']));
-		$profile->set('organization', trim($p['organization']));
-		$profile->set('bio', trim($p['bio']));
+
+		// Make sure that we are not removing ourself from Super Admin group
+		$iAmSuperAdmin = User::authorise('core.admin');
+
+		if ($iAmSuperAdmin && User::get('id') == $user->get('id'))
+		{
+			// Check that at least one of our new groups is Super Admin
+			$stillSuperAdmin = false;
+
+			foreach ($fields['groups'] as $group)
+			{
+				$stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : \JAccess::checkGroup($group, 'core.admin'));
+			}
+
+			if (!$stillSuperAdmin)
+			{
+				Notify::error(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
+				return $this->editTask($user);
+			}
+		}
+
+		// Save the changes
+		if (!$user->save())
+		{
+			Notify::error($user->getError());
+			return $this->editTask($user);
+		}
+
+		// Save profile data
+		/*
+		$user->set('orcid', trim($p['orcid']));
+		$user->set('url', trim($p['url']));
+		$user->set('phone', trim($p['phone']));
+		$user->set('orgtype', trim($p['orgtype']));
+		$user->set('organization', trim($p['organization']));
+		$user->set('bio', trim($p['bio']));
 		if (isset($p['public']))
 		{
-			$profile->set('public',$p['public']);
+			$user->set('public',$p['public']);
 		}
 		else
 		{
-			$profile->set('public',0);
+			$user->set('public',0);
 		}
-		$profile->set('modifiedDate', Date::toSql());
-
-		$profile->set('homeDirectory', trim($p['homeDirectory']));
-
-		$profile->set('loginShell', trim($p['loginShell']));
-
-		$ec = Request::getInt('emailConfirmed', 0, 'post');
-		if ($ec)
+		$user->set('modifiedDate', Date::toSql());
+		$user->set('homeDirectory', trim($p['homeDirectory']));
+		$user->set('loginShell', trim($p['loginShell']));
+		/*if (isset($fields['sendEmail']))
 		{
-			$profile->set('emailConfirmed', $ec);
+			$user->set('sendEmail', (int)$fields['sendEmail']);
 		}
 		else
 		{
-			$confirm = Helpers\Utility::genemailconfirm();
-			$profile->set('emailConfirmed', $confirm);
-		}
-
-		if (isset($p['email']))
-		{
-			$profile->set('email', trim($p['email']));
-		}
-		if (isset($p['mailPreferenceOption']))
-		{
-			$profile->set('mailPreferenceOption', trim($p['mailPreferenceOption']));
-		}
-		else
-		{
-			$profile->set('mailPreferenceOption', -1);
+			$user->set('sendEmail', -1);
 		}
 
 		if (!empty($p['gender']))
 		{
-			$profile->set('gender', trim($p['gender']));
+			$user->set('gender', trim($p['gender']));
 		}
 
 		if (!empty($p['disability']))
@@ -483,38 +643,34 @@ class Members extends AdminController
 		if (isset($p['race']) && is_array($p['race']))
 		{
 			$profile->set('race',$p['race']);
-		}
-
-		// Save the changes
-		if (!$profile->update())
-		{
-			App::abort(500, $profile->getError());
-			return false;
-		}
+		}*/
 
 		// Do we have a new pass?
 		$newpass = trim(Request::getVar('newpass', '', 'post'));
-		if ($newpass != '')
+
+		if ($newpass)
 		{
 			// Get password rules and validate
-			$password_rules = \Hubzero\Password\Rule::getRules();
-			$validated      = \Hubzero\Password\Rule::validate($newpass, $password_rules, $profile->get('uidNumber'));
+			$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
+			$validated      = \Hubzero\Password\Rule::verify($newpass, $password_rules, $user->get('id'));
 
 			if (!empty($validated))
 			{
 				// Set error
-				$this->setError(Lang::txt('COM_MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
+				Notify::error(Lang::txt('COM_MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
 				$this->validated = $validated;
-				$redirect = false;
+				$this_task = 'apply';
 			}
 			else
 			{
 				// Save password
-				\Hubzero\User\Password::changePassword($profile->get('username'), $newpass);
+				\Hubzero\User\Password::changePassword($user->get('username'), $newpass);
 			}
 		}
 
-		$passinfo = \Hubzero\User\Password::getInstance($id);
+		$passinfo = \Hubzero\User\Password::getInstance($user->get('id'));
 
 		if (is_object($passinfo))
 		{
@@ -554,43 +710,25 @@ class Members extends AdminController
 			}
 		}
 
-		// Get the user's interests (tags)
-		$tags = trim(Request::getVar('tags', ''));
+		// Set success message
+		Notify::success(Lang::txt('COM_MEMBERS_MEMBER_SAVED'));
 
-		// Process tags
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
-
-		$mt = new \Components\Members\Models\Tags($id);
-		$mt->setTags($tags, $id);
-
-		// Make sure certain changes make it back to the user table
-		$user = User::getInstance($id);
-		$user->set('name', $name);
-		$user->set('email', $profile->get('email'));
-		if (!$user->save())
+		// Drop through to edit form?
+		if ($this->getTask() == 'apply')
 		{
-			App::abort('', Lang::txt($user->getError()));
-			return false;
+			return $this->editTask($user);
 		}
 
-		if ($redirect)
-		{
-			// Redirect
-			App::redirect(
-				Route::url('index.php?option='.$this->_option),
-				Lang::txt('COM_MEMBERS_MEMBER_SAVED')
-			);
-		}
-		else
-		{
-			$this->editTask($id);
-		}
+		// Redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option)
+		);
 	}
 
 	/**
 	 * Removes a profile entry, associated picture, and redirects to main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -601,72 +739,63 @@ class Members extends AdminController
 		$ids = Request::getVar('ids', array());
 
 		// Do we have any IDs?
+		$i = 0;
+
 		if (!empty($ids))
 		{
+			// Check if I am a Super Admin
+			$iAmSuperAdmin = User::authorise('core.admin');
+
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
-				$id = intval($id);
-
-				// Delete any associated pictures
-				$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id);
-				if (!file_exists($path . DS . $file) or !$file)
-				{
-					$this->setError(Lang::txt('COM_MEMBERS_FILE_NOT_FOUND'));
-				}
-				else
-				{
-					unlink($path . DS . $file);
-				}
-
-				// Remove any contribution associations
-				$assoc = new \Components\Members\Tables\Association($this->database);
-				$assoc->authorid = $id;
-				$assoc->deleteAssociations();
-
 				// Remove the profile
-				$profile = new Profile();
-				$profile->load($id);
-				$profile->delete();
+				$user = Member::oneOrFail(intval($id));
+
+				// Access checks.
+				$allow = User::authorise('core.delete', 'com_members');
+
+				// Don't allow non-super-admin to delete a super admin
+				$allow = (!$iAmSuperAdmin && JAccess::check($user->get('id'), 'core.admin')) ? false : $allow;
+
+				if (!$allow)
+				{
+					Notify::warning(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					continue;
+				}
+
+				if (!$user->destroy())
+				{
+					Notify::error($user->getError());
+					continue;
+				}
+
+				$i++;
 			}
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_REMOVED'));
 		}
 
 		// Output messsage and redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_REMOVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
-	 * Set a member's emailConfirmed to confirmed
+	 * Sets the account activation state of a member
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function confirmTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Set a member's emailConfirmed to unconfirmed
-	 *
-	 * @return     void
-	 */
-	public function unconfirmTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
-	 * Sets the emailConfirmed state of a member
-	 *
-	 * @return     void
-	 */
-	public function stateTask($state=1)
+	public function stateTask()
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		$state = ($this->getTask() == 'confirm' ? 1 : 0);
 
 		// Incoming user ID
 		$ids = Request::getVar('id', array());
@@ -675,45 +804,41 @@ class Members extends AdminController
 		// Do we have an ID?
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_NO_ID'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->cancelTask();
 		}
+
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Load the profile
-			$profile = new Profile();
-			$profile->load(intval($id));
+			$user = Member::oneOrFail(intval($id));
 
 			if ($state)
 			{
-				$profile->set('emailConfirmed', $state);
+				$user->set('activation', $state);
 			}
 			else
 			{
-				$confirm = Helpers\Utility::genemailconfirm();
-				$profile->set('emailConfirmed', $confirm);
+				$user->set('activation', Helpers\Utility::genemailconfirm());
 			}
 
-			if (!$profile->update())
+			if (!$user->save())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					$profile->getError(),
-					'error'
-				);
-				return;
+				Notify::error($user->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_CONFIRMATION_CHANGED')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_CONFIRMATION_CHANGED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -726,49 +851,40 @@ class Members extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		// Update registration config value to require re-agreeing upon next login
+		$currentTOU = $this->config->get('registrationTOU', 'RHRH');
+		$newTOU     = substr_replace($currentTOU, 'R', 2, 1);
+		$this->config->set('registrationTOU', $newTOU);
+
 		// Get db object
 		$dbo = App::get('db');
-
-		// Update registration config value to require re-agreeing upon next login
-		$params     = \Component::params('com_members');
-		$currentTOU = $params->get('registrationTOU', 'RHRH');
-		$newTOU     = substr_replace($currentTOU, 'R', 2, 1);
-		$params->set('registrationTOU', $newTOU);
-
 		$migration = new \Hubzero\Content\Migration\Base($dbo);
-		if (!$migration->saveParams('com_members', $params))
+
+		if (!$migration->saveParams('com_members', $this->config))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_FAILED_TO_UPDATE_REGISTRATION_TOU'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_MEMBERS_FAILED_TO_UPDATE_REGISTRATION_TOU'));
+
+			return $this->cancelTask();
 		}
 
-		// Clear all old TOU states (move this to a model at some point!)
-		$profiles = new \Components\Members\Tables\Profile($dbo);
-		if (!$profiles->clearTerms())
+		// Clear all old TOU states
+		if (!Member::clearTerms())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_FAILED_TO_CLEAR_TOU'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_MEMBERS_FAILED_TO_CLEAR_TOU'));
+
+			return $this->cancelTask();
 		}
 
 		// Output message to let admin know everything went well
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_SUCESSFULLY_CLEARED_TOU')
-		);
+		Notify::success(Lang::txt('COM_MEMBERS_SUCESSFULLY_CLEARED_TOU'));
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Return results for autocompleter
 	 *
-	 * @return     string JSON
+	 * @return  string  JSON
 	 */
 	public function autocompleteTask()
 	{
@@ -777,60 +893,40 @@ class Members extends AdminController
 			return;
 		}
 
-		$restrict = '';
-
-		$filters = array();
-		$filters['limit']  = 20;
-		$filters['start']  = 0;
-		$filters['search'] = strtolower(trim(Request::getString('value', '')));
+		$filters = array(
+			'limit'  => 20,
+			'start'  => 0,
+			'search' => strtolower(trim(Request::getString('value', '')))
+		);
 
 		// Fetch results
-		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public
-				FROM `#__xprofiles` AS xp
-				INNER JOIN `#__users` u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . " AND xp.emailConfirmed>0 $restrict
-				ORDER BY xp.name ASC";
+		$entries = Member::all()
+			->whereEquals('block', 0);
 
-		$this->database->setQuery($query);
-		$rows = $this->database->loadObjectList();
+		if ($filters['search'])
+		{
+			$entries->whereLike('name', strtolower((string)$filters['search']), 1)
+				->orWhereLike('username', strtolower((string)$filters['search']), 1)
+				->orWhereLike('email', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
 
-		$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
+		$rows = $entries
+			->order('name', 'asc')
+			->limit($filters['limit'])
+			->rows();
 
 		// Output search results in JSON format
 		$json = array();
-		if (count($rows) > 0)
+
+		foreach ($rows as $row)
 		{
-			$default = DS . trim($this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif'), DS);
-			$default = Profile\Helper::thumbit($default);
-			foreach ($rows as $row)
-			{
-				$picture = $default;
+			$obj = array();
+			$obj['id']      = $row->get('id');
+			$obj['name']    = str_replace(array("\n", "\r", '\\'), '', $row->get('name'));
+			$obj['picture'] = $row->picture;
 
-				$name = str_replace("\n", '', stripslashes(trim($row->name)));
-				$name = str_replace("\r", '', $name);
-				$name = str_replace('\\', '', $name);
-
-				if ($row->public && $row->picture)
-				{
-					$thumb  = $base . DS . trim($this->config->get('webpath', '/site/members'), DS);
-					$thumb .= DS . Profile\Helper::niceidformat($row->uidNumber);
-					$thumb .= DS . ltrim($row->picture, DS);
-					$thumb = Profile\Helper::thumbit($thumb);
-
-					if (file_exists(PATH_APP . $thumb))
-					{
-						$picture = $thumb;
-					}
-				}
-
-				$obj = array();
-				$obj['id']      = $row->uidNumber;
-				$obj['name']    = $name;
-				$obj['org']     = ($row->public ? $row->organization : '');
-				$obj['picture'] = $picture;
-
-				$json[] = $obj;
-			}
+			$json[] = $obj;
 		}
 
 		echo json_encode($json);
@@ -843,23 +939,17 @@ class Members extends AdminController
 	 */
 	public function pictureTask()
 	{
-		//get vars
+		// Get vars
 		$id = Request::getInt('id', 0);
 
-		//check to make sure we have an id
+		// Check to make sure we have an id
 		if (!$id || $id == 0)
 		{
 			return;
 		}
 
-		//Load member profile
-		$member = Profile::getInstance($id);
-
-		// check to make sure we have member profile
-		if (!$member)
-		{
-			return;
-		}
+		// Load member
+		$member = Member::oneOrFail($id);
 
 		$file  = DS . trim($this->config->get('webpath', '/site/members'), DS);
 		$file .= DS . Profile\Helper::niceidformat($member->get('uidNumber'));
@@ -869,7 +959,6 @@ class Members extends AdminController
 		if (!file_exists(PATH_APP . DS . $file))
 		{
 			App::abort(404, Lang::txt('COM_MEMBERS_FILE_NOT_FOUND') . ' ' . $file);
-			return;
 		}
 
 		// Serve up the image
@@ -878,17 +967,146 @@ class Members extends AdminController
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		//serve up file
+		// Serve up file
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			App::abort(404, Lang::txt('COM_MEMBERS_MEDIA_ERROR_SERVING_FILE'));
 		}
-		else
+
+		exit;
+	}
+
+	/**
+	 * Debug user permissions
+	 *
+	 * @return  void
+	 */
+	public function debuguserTask()
+	{
+		include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'debug.php';
+
+		// Get filters
+		$filters = array(
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'lft'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'level_start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.filter_level_start',
+				'filter_level_start',
+				0,
+				'int'
+			),
+			'level_end' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.filter_level_end',
+				'filter_level_end',
+				0,
+				'int'
+			),
+			'component' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.filter_component',
+				'filter_component',
+				''
+			)
+		);
+
+		if ($filters['level_end'] > 0 && $filters['level_end'] < $filters['level_start'])
 		{
-			exit;
+			$filters['level_end'] = $filters['level_start'];
 		}
-		return;
+
+		$id = Request::getInt('id', 0);
+
+		// Load member
+		$member = Member::oneOrFail($id);
+
+		// Select the required fields from the table.
+		$entries = \Hubzero\Access\Asset::all();
+
+		if ($filters['search'])
+		{
+			$entries->whereLike('name', $filters['search'], 1)
+				->orWhereLike('title', $filters['search'], 1)
+				->resetDepth();
+		}
+
+		if ($filters['level_start'] > 0)
+		{
+			$entries->where('level', '>=', $filters['level_start']);
+		}
+		if ($filters['level_end'] > 0)
+		{
+			$entries->where('level', '<=', $filters['level_end']);
+		}
+
+		// Filter the items over the component if set.
+		if ($filters['component'])
+		{
+			$entries->whereEquals('name', $filters['component'], 1)
+				->orWhereLike('name', $filters['component'], 1)
+				->resetDepth();
+		}
+
+		$assets = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated()
+			->rows();
+
+		$actions = \Components\Members\Helpers\Debug::getActions($filters['component']);
+
+		$data = $assets->raw();
+		$assets->clear();
+
+		foreach ($data as $key => $asset)
+		{
+			$checks = array();
+
+			foreach ($actions as $action)
+			{
+				$name  = $action[0];
+				$level = $action[1];
+
+				// Check that we check this action for the level of the asset.
+				if ($action[1] === null || $action[1] >= $asset->get('level'))
+				{
+					// We need to test this action.
+					$checks[$name] = \JAccess::check($id, $action[0], $asset->get('name'));
+				}
+				else
+				{
+					// We ignore this action.
+					$checks[$name] = 'skip';
+				}
+			}
+
+			$asset->set('checks', $checks);
+
+			$assets->push($asset);
+		}
+
+		$levels     = \Components\Members\Helpers\Debug::getLevelsOptions();
+		$components = \Components\Members\Helpers\Debug::getComponents();
+
+		// Output the HTML
+		$this->view
+			->set('user', $member)
+			->set('filters', $filters)
+			->set('assets', $assets)
+			->set('actions', $actions)
+			->set('levels', $levels)
+			->set('components', $components)
+			->display();
 	}
 }
-

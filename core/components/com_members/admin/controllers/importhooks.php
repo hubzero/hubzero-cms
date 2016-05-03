@@ -55,6 +55,8 @@ class ImportHooks extends AdminController
 	 */
 	public function execute()
 	{
+		Lang::load($this->_option . '.import', dirname(__DIR__));
+
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
 

@@ -31,16 +31,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-$default = $this->config->get('defaultpic');
-if ($default == '/components/com_members/assets/img/profile.gif'
- || $default == '/components/com_members/site/assets/img/profile.gif')
-{
-	$default = '/core/components/com_members/site/assets/img/profile.gif';
-}
 ?>
 <div id="media">
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 		<table class="formed">
 			<thead>
 				<tr>
@@ -53,7 +46,7 @@ if ($default == '/components/com_members/assets/img/profile.gif'
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 						<input type="hidden" name="tmpl" value="component" />
-						<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+						<input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />
 						<input type="hidden" name="task" value="upload" />
 
 						<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
@@ -63,57 +56,14 @@ if ($default == '/components/com_members/assets/img/profile.gif'
 			</tbody>
 		</table>
 		<?php
-			if ($this->getError())
-			{
-				echo '<p class="error">' . $this->getError() . '</p>';
-			}
+		if ($this->getError())
+		{
+			echo '<p class="error">' . $this->getError() . '</p>';
+		}
 		?>
-		<table class="formed">
-			<thead>
-				<tr>
-					<th colspan="4"><label for="image"><?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?></label></th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php
-			$k = 0;
-
-			if ($this->file && file_exists($this->path . DS . $this->file))
-			{
-				$this_size = filesize($this->path . DS . $this->file);
-				list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
-				?>
-				<tr>
-					<td rowspan="6"><img src="<?php echo substr($this->path, strlen(PATH_ROOT)) . DS . $this->file . '?v=' . time(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" /></td>
-					<td><?php echo Lang::txt('COM_MEMBERS_MEDIA_FILE'); ?>:</td>
-					<td><?php echo $this->file; ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Lang::txt('COM_MEMBERS_MEDIA_SIZE'); ?>:</td>
-					<td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Lang::txt('COM_MEMBERS_MEDIA_WIDTH'); ?>:</td>
-					<td><?php echo $width; ?> px</td>
-				</tr>
-				<tr>
-					<td><?php echo Lang::txt('COM_MEMBERS_MEDIA_HEIGHT'); ?>:</td>
-					<td><?php echo $height; ?> px</td>
-				</tr>
-				<tr>
-					<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=remove&file=' . $this->file . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('JACTION_DELETE'); ?> ]</a></td>
-				</tr>
-			<?php } else { ?>
-				<tr>
-					<td colspan="4">
-						<img src="<?php echo '../' . ltrim($default, '/'); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_NO_PICTURE'); ?>" />
-						<input type="hidden" name="currentfile" value="" />
-					</td>
-				</tr>
-			<?php } ?>
-			</tbody>
-		</table>
+		<div class="input-wrap" style="text-align: center; max-width: 300px;">
+			<img style="width: 100%;" src="<?php echo $this->profile->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" />
+		</div>
 		<?php echo Html::input('token'); ?>
 	</form>
 </div>

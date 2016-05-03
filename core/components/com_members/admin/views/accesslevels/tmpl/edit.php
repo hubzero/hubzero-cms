@@ -34,10 +34,9 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Members\Helpers\Admin::getActions('component');
 
-//$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-//Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_ACCESSGROUPS') . ': ' . $text, 'user');
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt($this->row->isNew() ? 'COM_MEMBERS_VIEW_NEW_LEVEL_TITLE' : 'COM_MEMBERS_VIEW_EDIT_LEVEL_TITLE'), 'levels-add');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_ACCESSLEVELS') . ': ' . $text, 'user');
 if ($canDo->get('core.edit') || $canDo->get('core.create'))
 {
 	Toolbar::apply();

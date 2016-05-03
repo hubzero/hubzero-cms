@@ -54,7 +54,7 @@ class Messages extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'component' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.component',
 				'component',
@@ -88,15 +88,20 @@ class Messages extends AdminController
 		$obj = new Message\Component($this->database);
 
 		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters, true);
+		$total = $obj->getCount($filters, true);
 
 		// Get records
-		$this->view->rows = $obj->getRecords($this->view->filters, true);
+		$rows = $obj->getRecords($filters, true);
 
-		$this->view->components = $obj->getComponents();
+		$components = $obj->getComponents();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->set('components', $components)
+			->display();
 	}
 
 	/**
@@ -178,38 +183,33 @@ class Messages extends AdminController
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Check content
 		if (!$row->check())
 		{
 			$this->setError($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Store content
 		if (!$row->store())
 		{
 			$this->setError($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		Notify::success(Lang::txt('Message Action saved'));
 
 		// Redirect
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -248,10 +248,9 @@ class Messages extends AdminController
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('Message Action removed')
-		);
+		Notify::success(Lang::txt('Message Action removed'));
+
+		$this->cancelTask();
 	}
 
 	/**
