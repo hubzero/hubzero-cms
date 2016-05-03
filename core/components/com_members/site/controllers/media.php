@@ -620,7 +620,7 @@ class Media extends SiteController
 		$file = urldecode($file);
 
 		// build base path
-		$base_path = $this->filespace() . DS . \Hubzero\User\Profile\Helper::niceidformat($member->get('id'));
+		$base_path = $this->filespace() . DS . \Hubzero\Utility\String::pad($member->get('id'), 5);
 
 		//if we are on the blog
 		if (Request::getVar('active', 'profile') == 'blog')
@@ -639,7 +639,7 @@ class Media extends SiteController
 			$blog_params = Plugin::params('members', 'blog');
 
 			//build the base path to file based of upload path param
-			$base_path = str_replace('{{uid}}', \Hubzero\User\Profile\Helper::niceidformat($member->get('id')), $blog_params->get('uploadpath'));
+			$base_path = str_replace('{{uid}}', \Hubzero\Utility\String::pad($member->get('id'), 5), $blog_params->get('uploadpath'));
 		}
 
 		//build file path

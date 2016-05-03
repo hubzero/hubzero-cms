@@ -204,74 +204,64 @@ class Profilesv1_0 extends ApiController
 		$user->set('groups', array($newUsertype));
 		$user->set('registerDate', Date::toSql());
 
-		/*$user->set('name', Request::getVar('name', '', 'post'));
+		$user->set('name', Request::getVar('name', '', 'post'));
 		if (!$user->get('name'))
 		{
-			return $this->error(500, Lang::txt('No name provided.'));
+			App::abort(500, Lang::txt('No name provided.'));
 		}
 
 		$user->set('username', Request::getVar('username', '', 'post'));
 		if (!$user->get('username'))
 		{
-			return $this->error(500, Lang::txt('No username provided.'));
+			App::abort(500, Lang::txt('No username provided.'));
 		}
 		if (!\Hubzero\Utility\Validate::username($user->get('username')))
 		{
-			return $this->error(500, Lang::txt('Username not valid.'));
+			App::abort(500, Lang::txt('Username not valid.'));
 		}
 
 		$user->set('email', Request::getVar('email', '', 'post'));
 		if (!$user->get('email'))
 		{
-			return $this->error(500, Lang::txt('No email provided.'));
+			App::abort(500, Lang::txt('No email provided.'));
 		}
 		if (!\Hubzero\Utility\Validate::email($user->get('email')))
 		{
-			return $this->error(500, Lang::txt('Email not valid.'));
+			App::abort(500, Lang::txt('Email not valid.'));
 		}
 
+		$name = explode(' ', $user->get('name'));
+		$surname    = $user->get('name');
+		$givenName  = '';
+		$middleName = '';
+		if (count($name) > 1)
+		{
+			$surname    = array_pop($name);
+			$givenName  = array_shift($name);
+			$middleName = implode(' ', $name);
+		}
+
+		// Set the new info
+		$user->set('givenName', $givenName);
+		$user->set('middleName', $middleName);
+		$user->set('surname', $surname);
+		$user->set('activation', -rand(1, pow(2, 31)-1));
+		$user->set('access', 1);
 		$user->set('password', $password);
 		$user->set('password_clear', $password);
-		$user->save();
+
+		/*$result = $user->save();
+
 		$user->set('password_clear', '');
-
-		// Attempt to get the new user
-		$profile = \Hubzero\User\Profile::getInstance($user->get('id'));
-		$result  = is_object($profile);
-
-		// Did we successfully create an account?
-		if ($result)
-		{
-			$name = explode(' ', $user->get('name'));
-			$surname    = $user->get('name');
-			$givenName  = '';
-			$middleName = '';
-			if (count($name) > 1)
-			{
-				$surname    = array_pop($name);
-				$givenName  = array_shift($name);
-				$middleName = implode(' ', $name);
-			}
-
-			// Set the new info
-			$profile->set('givenName', $givenName);
-			$profile->set('middleName', $middleName);
-			$profile->set('surname', $surname);
-			$profile->set('name', $user->get('name'));
-			$profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
-			$profile->set('public', 0);
-			$profile->set('password', '');
-
-			$result = $profile->store();
-		}
+		$user->set('password', '');
 
 		if ($result)
 		{
-			$result = \Hubzero\User\Password::changePassword($profile->get('uidNumber'), $password);
+			$result = \Hubzero\User\Password::changePassword($user->get('id'), $password);
 
 			// Set password back here in case anything else down the line is looking for it
-			$profile->set('password', $password);
-			$profile->store();
+			$user->set('password', $password);
+			$user->save();
 		}
 
 		// Did we successfully create/update an account?

@@ -39,6 +39,7 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**
@@ -262,8 +263,8 @@ class Messages extends AdminController
 	{
 		$id = Request::getInt('id', 0);
 
-		$member = \Hubzero\User\Profile::getInstance($id);
-		if (!$member || !$member->get('uidNumber'))
+		$member = User::getInstance($id);
+		if (!$member || !$member->get('id'))
 		{
 			// Output messsage and redirect
 			App::abort(404, Lang::txt('Unknown or invalid member ID'));
@@ -295,7 +296,7 @@ class Messages extends AdminController
 		$notify = new \Hubzero\Message\Notify($database);
 
 		// Get the user's selected methods
-		$methods = $notify->getRecords($member->get('uidNumber'));
+		$methods = $notify->getRecords($member->get('id'));
 		if ($methods)
 		{
 			foreach ($methods as $method)
@@ -350,8 +351,8 @@ class Messages extends AdminController
 
 		$id = Request::getInt('id', 0);
 
-		$member = \Hubzero\User\Profile::getInstance($id);
-		if (!$member || !$member->get('uidNumber'))
+		$member = User::getInstance($id);
+		if (!$member || !$member->get('id'))
 		{
 			// Output messsage and redirect
 			App::abort(404, Lang::txt('Unknown or invalid member ID'));
@@ -375,7 +376,7 @@ class Messages extends AdminController
 					{
 						// Instantiate a Notify object and set its values
 						$notify = new \Hubzero\Message\Notify($database);
-						$notify->uid = $member->get('uidNumber');
+						$notify->uid = $member->get('id');
 						$notify->method = $v;
 						$notify->type = $key;
 						$notify->priority = 1;

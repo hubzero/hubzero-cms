@@ -178,7 +178,7 @@ class Profiles extends SiteController
 		// match against orcid id
 		if (preg_match('/\d{4}-\d{4}-\d{4}-\d{4}/', $filters['search']))
 		{
-			$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public
+			$query = "SELECT xp.uidNumber AS id, xp.name, xp.username, xp.organization, xp.picture, xp.public
 					FROM #__xprofiles AS xp
 					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
 					WHERE orcid= " . $this->database->quote($filters['search']) . " AND xp.emailConfirmed>0 $restrict
@@ -192,7 +192,7 @@ class Profiles extends SiteController
 
 			// match member names on all three name parts
 			$match = "MATCH(xp.givenName,xp.middleName,xp.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
-			$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public, $match as rel
+			$query = "SELECT xp.uidNumber AS id, xp.name, xp.username, xp.organization, xp.picture, xp.public, $match as rel
 					FROM #__xprofiles AS xp
 					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
 					WHERE $match AND xp.emailConfirmed>0 $restrict
@@ -207,38 +207,15 @@ class Profiles extends SiteController
 		$json = array();
 		if (count($rows) > 0)
 		{
-			$default = DS . trim($this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif'), DS);
-			if ($default == '/components/com_members/assets/img/profile.gif')
-			{
-				$default = '/core/components/com_members/site/assets/img/profile.gif';
-			}
-			$default = \Hubzero\User\Profile\Helper::thumbit($default);
 			foreach ($rows as $row)
 			{
-				$picture = $default;
-
-				$name = str_replace("\n", '', stripslashes(trim($row->name)));
-				$name = str_replace("\r", '', $name);
-				$name = str_replace('\\', '', $name);
-
-				if ($row->public && $row->picture)
-				{
-					$thumb  = DS . trim($this->config->get('webpath', '/site/members'), DS);
-					$thumb .= DS . \Hubzero\User\Profile\Helper::niceidformat($row->uidNumber);
-					$thumb .= DS . ltrim($row->picture, DS);
-					$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
-
-					if (file_exists(PATH_APP . $thumb))
-					{
-						$picture = substr(PATH_APP, strlen(PATH_ROOT)) . $thumb;
-					}
-				}
+				$user = Member::blank()->set($row);
 
 				$obj = array();
-				$obj['id']      = $row->uidNumber;
-				$obj['name']    = $name;
-				$obj['org']     = ($row->public ? $row->organization : '');
-				$obj['picture'] = $picture;
+				$obj['id']      = $user->get('id');
+				$obj['name']    = $user->name;
+				$obj['org']     = (in_array($user->get('access'), User::getAuthorisedViewLevels()) ? $user->get('organization', '') : '');
+				$obj['picture'] = $user->picture();
 
 				$json[] = $obj;
 			}

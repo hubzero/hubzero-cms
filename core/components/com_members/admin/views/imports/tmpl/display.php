@@ -134,7 +134,7 @@ function submitbutton(pressbutton)
 							<time datetime="<?php echo $import->get('created_at'); ?>"><?php echo Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a'); ?></time><br />
 							<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
 							<?php
-								if ($created_by = Hubzero\User\Profile::getInstance($import->get('created_by')))
+								if ($created_by = User::getInstance($import->get('created_by')))
 								{
 									echo $created_by->get('name');
 								}
@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 								<time datetime="<?php echo $import->get('ran_at'); ?>"><?php echo Date::of($lastRun->get('ran_at'))->toLocal('m/d/Y @ g:i a'); ?></time><br />
 								<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
 								<?php
-									if ($created_by = Hubzero\User\Profile::getInstance($lastRun->get('ran_by')))
+									if ($created_by = User::getInstance($lastRun->get('ran_by')))
 									{
 										echo $created_by->get('name');
 									}

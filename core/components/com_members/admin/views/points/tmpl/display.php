@@ -61,9 +61,9 @@ Toolbar::preferences('com_members', '550');
 				for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				{
 					$row =& $this->rows[$i];
-					$wuser = \Hubzero\User\Profile::getInstance($row->uid);
+					$wuser = User::getInstance($row->uid);
 					$name  = Lang::txt('COM_MEMBERS_UNKNOWN');
-					if (is_object($wuser))
+					if ($wuser->get('id'))
 					{
 						$name = $wuser->get('name');
 					}
