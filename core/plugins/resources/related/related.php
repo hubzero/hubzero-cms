@@ -87,8 +87,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 		if (!User::isGuest())
 		{
-			if (User::authorize('com_resources', 'manage')
-			 || User::authorize('com_groups', 'manage'))
+			if (User::authorise('core.manage', 'com_resources')
+			 || User::authorise('core.manage', 'com_groups'))
 			{
 				$sql1 .= '';
 			}
@@ -126,8 +126,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id AND r.type!=8 ";
 		if (!User::isGuest())
 		{
-			if (User::authorize('com_resources', 'manage')
-			 || User::authorize('com_groups', 'manage'))
+			if (User::authorise('core.manage', 'com_resources')
+			 || User::authorise('core.manage', 'com_groups'))
 			{
 				$sql2 .= '';
 			}
