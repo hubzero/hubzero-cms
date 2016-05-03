@@ -254,10 +254,7 @@ $first = $this->archive->entries(array(
 
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
-					<?php
-					$user = \Components\Members\Models\Member::oneOrNew(User::get('id'));
-					?>
-					<img src="<?php echo $user->picture(User::isGuest() ? 1 : 0); ?>" alt="" />
+					<img src="<?php echo User::picture(User::isGuest() ? 1 : 0); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php
