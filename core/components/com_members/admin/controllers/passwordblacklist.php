@@ -25,17 +25,16 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Members\Admin\Controllers;
 
-use Components\Members\Tables;
+use Hubzero\Password\Blacklist;
 use Hubzero\Component\AdminController;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -46,6 +45,21 @@ use App;
 class PasswordBlacklist extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		Lang::load($this->_option . '.passwords', dirname(__DIR__));
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display password blacklist
 	 *
 	 * @return  void
@@ -53,19 +67,7 @@ class PasswordBlacklist extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
@@ -77,50 +79,30 @@ class PasswordBlacklist extends AdminController
 				'ASC'
 			)
 		);
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		// Get password rules object
-		$pbObj = new Tables\PasswordBlacklist($this->database);
-
-		$this->view->pw_blacklist = $pbObj->getRecords($this->view->filters);
-
-		// Get records and count
-		$this->view->total = $pbObj->getCount($this->view->filters);
-		$this->view->rows  = $pbObj->getRecords($this->view->filters);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$rows = Blacklist::all()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Create a new blacklisted password
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		// Output the HTML
-		$this->editTask();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Edit a blacklisted password
 	 *
-	 * @param   integer  $id  ID of word to edit
+	 * @param   object  $row
 	 * @return  void
 	 */
-	public function editTask($id=0)
+	public function editTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		if (!$id)
+		if (!$row)
 		{
 			// Incoming
 			$id = Request::getVar('id', array());
@@ -130,33 +112,16 @@ class PasswordBlacklist extends AdminController
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
-		}
 
-		// Initiate database class and load info
-		$this->view->row = new Tables\PasswordBlacklist($this->database);
-		$this->view->row->load($id);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row = Blacklist::oneOrNew($id);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();
-	}
-
-	/**
-	 * Apply changes to a password blacklist item
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		// Save without redirect
-		$this->saveTask();
 	}
 
 	/**
@@ -172,33 +137,26 @@ class PasswordBlacklist extends AdminController
 		// Incoming password blacklist edits
 		$fields = Request::getVar('fields', array(), 'post');
 
-		// Load the profile
-		$row = new Tables\PasswordBlacklist($this->database);
+		// Load the record
+		$row = Blacklist::oneOrNew($fields['id'])->set($fields);
 
 		// Try to save
-		if (!$row->save($fields))
+		if (!$row->save())
 		{
-			// Redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_SAVE_SUCCESS'));
+
+		// Fall through to edit form
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($row);
 		}
 
 		// Redirect
-		if ($this->_task == 'apply')
-		{
-			return $this->editTask($row->id);
-		}
-
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_SAVE_SUCCESS'),
-			'message'
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -215,6 +173,8 @@ class PasswordBlacklist extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
+		$i = 0;
+
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
@@ -223,26 +183,29 @@ class PasswordBlacklist extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new Tables\PasswordBlacklist($this->database);
-
 				// Remove the record
-				$row->delete($id);
+				$row = Blacklist::oneOrFail($id);
+
+				if (!$row->destroy())
+				{
+					Notify::error($row->getError());
+					continue;
+				}
+
+				$i++;
 			}
 		}
 		else // no rows were selected
 		{
-			// Output message and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_NO_ROW_SELECTED'),
-				'warning'
-			);
+			Notify::warning(Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_NO_ROW_SELECTED'));
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_SUCCESS')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_SUCCESS'));
+		}
+
+		$this->cancelTask();
 	}
 }

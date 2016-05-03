@@ -139,8 +139,10 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 				$response->error_message = '';
 
 				// Check validity and age of password
-				$password_rules = \Hubzero\Password\Rule::getRules();
-				$msg = \Hubzero\Password\Rule::validate($credentials['password'], $password_rules, $result->username);
+				$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
+				$msg = \Hubzero\Password\Rule::verify($credentials['password'], $password_rules, $result->username);
 				if (is_array($msg) && !empty($msg[0]))
 				{
 					App::get('session')->set('badpassword', '1');

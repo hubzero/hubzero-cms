@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
+$canDo = Components\Members\Helpers\Admin::getActions('component');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST') . ': ' . $text, 'user.png');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST') . ': ' . $text, 'user');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -66,14 +66,14 @@ function submitbutton(pressbutton)
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></span></legend>
 
-				<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="save" />
 
 				<div class="input-wrap">
 					<label for="field-word"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->word)); ?>" />
+					<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->get('word'))); ?>" />
 				</div>
 			</fieldset>
 		</div>
@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<th><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_ID'); ?></th>
-						<td><?php echo $this->row->id; ?></td>
+						<td><?php echo $this->row->get('id'); ?></td>
 					</tr>
 				</tbody>
 			</table>

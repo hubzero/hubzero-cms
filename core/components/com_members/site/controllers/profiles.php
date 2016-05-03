@@ -682,7 +682,9 @@ class Profiles extends SiteController
 		$this->view->newpass2 = $newpass2;
 		$this->view->validated = true;
 
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		$this->view->password_rules = array();
 
@@ -696,7 +698,7 @@ class Profiles extends SiteController
 
 		if (!empty($newpass))
 		{
-			$msg = \Hubzero\Password\Rule::validate($newpass, $password_rules, $profile->get('username'));
+			$msg = \Hubzero\Password\Rule::verify($newpass, $password_rules, $profile->get('username'));
 		}
 		else
 		{

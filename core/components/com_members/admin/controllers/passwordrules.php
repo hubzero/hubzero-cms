@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,7 +32,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Members\Tables;
+use Hubzero\Password\Rule;
 use Notify;
 use Request;
 use Config;
@@ -48,6 +47,23 @@ use App;
 class PasswordRules extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		Lang::load($this->_option . '.passwords', dirname(__DIR__));
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('orderup', 'order');
+		$this->registerTask('orderdown', 'order');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of password rules
 	 *
 	 * @return  void
@@ -55,19 +71,7 @@ class PasswordRules extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
@@ -79,98 +83,64 @@ class PasswordRules extends AdminController
 				'ASC'
 			)
 		);
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		// Get password rules object
-		$prObj = new Tables\PasswordRules($this->database);
-
-		// Get count
-		$this->view->total = $prObj->getCount($this->view->filters);
+		$rows = Rule::all()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// If count is zero, i.e. no records, let's add some default password rules
-		if ($this->view->total == 0)
+		if (!$rows->count())
 		{
 			// Add default rules if we don't have any already
-			$prObj->defaultContent();
+			Rule::defaultContent();
 
-			// Refresh count now that we've added the defaults
-			$this->view->total = $prObj->getCount($this->view->filters);
-		}
-
-		// Get the records list
-		$this->view->rows = $prObj->getRecords($this->view->filters);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$rows = Rule::all()
+				->order($filters['sort'], $filters['sort_Dir'])
+				->paginated('limitstart', 'limit')
+				->rows();
 		}
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Create a new password rule
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		// Output the HTML
-		$this->editTask();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Edit a password rule
 	 *
-	 * @param      integer $id ID of member to edit
-	 * @return     void
+	 * @param   object  $row
+	 * @return  void
 	 */
-	public function editTask($id=0)
+	public function editTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		if (!$id)
+		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getVar('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
+
+			$row = Rule::oneOrNew($id);
 		}
 
-		// Initiate database class and load info
-		$this->view->row = new Tables\PasswordRules($this->database);
-		$this->view->row->load($id);
-
-		$this->view->rules_list = $this->rulesList($this->view->row->rule);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$rules_list = $this->rulesList($row->get('rule'));
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('rules_list', $rules_list)
+			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();
-	}
-
-	/**
-	 * Apply changes to a password rule
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		// Save without redirect
-		$this->saveTask();
 	}
 
 	/**
@@ -186,85 +156,51 @@ class PasswordRules extends AdminController
 		// Incoming password rule edits
 		$fields = Request::getVar('fields', array(), 'post');
 
-		// Load the profile
-		$row = new Tables\PasswordRules($this->database);
+		// Load the record
+		$row = Rule::oneOrNew($fields['id'])->set($fields);
 
 		// Try to save
-		if (!$row->save($fields))
+		if (!$row->save())
 		{
-			App::abort(500, $row->getError());
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_SAVE_SUCCESS'));
 
 		// Redirect
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
-			return $this->editTask($fields['id']);
+			return $this->editTask($row);
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
-	 * Order up
-	 *
-	 * @return  void
-	 */
-	public function orderupTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
-
-		$this->orderTask(1);
-
-		// Output message and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
-		);
-	}
-
-	/**
-	 * Order down
-	 *
-	 * @return  void
-	 */
-	public function orderdownTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
-
-		$this->orderTask(0);
-
-		// Output message and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
 	 * Reorder rules
 	 *
-	 * @param   integer  $up  Whether order up or down
 	 * @return  void
 	 */
 	public function orderTask($up)
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$cid = Request::getVar('id', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		$id  = $cid[0];
-		$inc = ($up) ? -1 : 1;
+		$inc = ($this->getTask() == 'orderup' ? -1 : 1);
 
-		$row = new Tables\PasswordRules($this->database);
-		$row->load($id);
+		$row = Rule::oneOrFail($id);
 		$row->move($inc);
+
+		Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED'));
+
+		// Redirect
+		$this->cancelTask();
 	}
 
 	/**
@@ -286,28 +222,26 @@ class PasswordRules extends AdminController
 		$order = Request::getVar('order', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
-		// Get password rules object
-		$row = new Tables\PasswordRules($this->database);
-
 		// Update ordering values
 		for ($i=0; $i < $total; $i++)
 		{
-			$row->load((int) $cid[$i]);
-			if ($row->ordering != $order[$i])
+			$row = Rule::oneOrFail((int) $cid[$i]);
+
+			if ($row->get('ordering') != $order[$i])
 			{
-				$row->ordering = $order[$i];
-				if (!$row->store())
+				$row->set('ordering', $order[$i]);
+
+				if (!$row->save())
 				{
-					App::abort(500, $db->getErrorMsg());
+					App::abort(500, $row->getError());
 				}
 			}
 		}
 
+		Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED'));
+
 		// Output message and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -328,24 +262,23 @@ class PasswordRules extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the billboard
-			$row = new Tables\PasswordRules($this->database);
-			$row->load($id);
+			$row = Rule::oneOrFail($id);
 
-			$enabled = ($row->enabled) ? 0 : 1;
+			$enabled = ($row->get('enabled') ? 0 : 1);
 
-			$row->enabled = $enabled;
-			if (!$row->store())
+			$row->set('enabled', $enabled);
+
+			if (!$row->save())
 			{
 				App::abort(500, $row->getError());
-				return;
 			}
 		}
 
 		// Output message and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_RULES_TOGGLE_ENABLED')
-		);
+		Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_TOGGLE_ENABLED'));
+
+		// Redirect
+		$this->cancelTask();
 	}
 
 	/**
@@ -356,16 +289,13 @@ class PasswordRules extends AdminController
 	public function restore_default_contentTask()
 	{
 		// Get the object
-		$obj = new Tables\PasswordRules($this->database);
-
-		// Do the restore (set flag = 1 to force restore)
-		$obj->defaultContent(1);
+		Rule::defaultContent(true);
 
 		// Output message and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_RULES_RESTORED')
-		);
+		Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_RESTORED'));
+
+		// Redirect
+		$this->cancelTask();
 	}
 
 	/**
@@ -385,6 +315,8 @@ class PasswordRules extends AdminController
 			$ids = array($ids);
 		}
 
+		$i = 0;
+
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
@@ -393,27 +325,30 @@ class PasswordRules extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new Tables\PasswordRules($this->database);
+				$row = Rule::oneOrFail($id);
 
 				// Remove the record
-				$row->delete($id);
+				if (!$row->destroy())
+				{
+					Notify::error($row->getError());
+					continue;
+				}
+
+				$i++;
 			}
 		}
 		else // no rows were selected
 		{
-			// Output message and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_PASSWORD_RULES_DELETE_NO_ROW_SELECTED'),
-				'warning'
-			);
+			Notify::warning(Lang::txt('COM_MEMBERS_PASSWORD_RULES_DELETE_NO_ROW_SELECTED'));
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_RULES_DELETE_SUCCESS')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_DELETE_SUCCESS'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**

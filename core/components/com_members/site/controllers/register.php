@@ -1044,7 +1044,9 @@ class Register extends SiteController
 
 		// Push some values to the view
 
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		$this->view->password_rules = array();
 

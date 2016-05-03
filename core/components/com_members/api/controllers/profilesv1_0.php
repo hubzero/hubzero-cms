@@ -458,7 +458,9 @@ class Profilesv1_0 extends ApiController
 		}
 
 		// Get the password rules
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		$pw_rules = array();
 
@@ -477,7 +479,7 @@ class Profilesv1_0 extends ApiController
 		// Validate the password
 		if (!empty($pw))
 		{
-			$msg = \Hubzero\Password\Rule::validate($pw, $password_rules, $userid);
+			$msg = \Hubzero\Password\Rule::verify($pw, $password_rules, $userid);
 		}
 		else
 		{

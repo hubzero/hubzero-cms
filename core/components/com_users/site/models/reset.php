@@ -170,13 +170,15 @@ class UsersModelReset extends JModelForm
 			return;
 		}
 
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		$password1 = $data['password1'];
 		$password2 = $data['password2'];
 
 		if (!empty($password1)) {
-			$msg = \Hubzero\Password\Rule::validate($password1,$password_rules,$profile->get('username'));
+			$msg = \Hubzero\Password\Rule::verify($password1,$password_rules,$profile->get('username'));
 		} else {
 			$msg = array();
 		}

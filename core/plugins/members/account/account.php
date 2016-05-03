@@ -266,7 +266,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view->key = $this->readKey();
 
 		// Get the password rules
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		// Get the password rule descriptions
 		$view->password_rules = array();
@@ -505,7 +507,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view->id     = $this->user->get('id');
 
 		// Get the password rules
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		// Get the password rule descriptions
 		$view->password_rules = array();
@@ -536,7 +540,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Validate the password against password rules
 		if (!empty($password1))
 		{
-			$msg = \Hubzero\Password\Rule::validate($password1, $password_rules, $this->user->get('username'));
+			$msg = \Hubzero\Password\Rule::verify($password1, $password_rules, $this->user->get('username'));
 		}
 		else
 		{
@@ -927,7 +931,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	public function checkPass()
 	{
 		// Get the password rules
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		$pw_rules = array();
 
@@ -946,7 +952,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Validate the password
 		if (!empty($pw))
 		{
-			$msg = \Hubzero\Password\Rule::validate($pw, $password_rules, $this->member->get('username'));
+			$msg = \Hubzero\Password\Rule::verify($pw, $password_rules, $this->member->get('username'));
 		}
 		else
 		{

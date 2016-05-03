@@ -851,8 +851,10 @@ class Registration
 				// Strong pass
 			}
 
-			$rules = \Hubzero\Password\Rule::getRules();
-			$msg = \Hubzero\Password\Rule::validate($registration['password'],$rules,$login,$registration['name']);
+			$rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
+			$msg = \Hubzero\Password\Rule::verify($registration['password'],$rules,$login,$registration['name']);
 			if (!empty($msg))
 			{
 				$this->_invalid['password'] = $msg;

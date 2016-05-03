@@ -64,7 +64,9 @@ class UsersViewReset extends JViewLegacy
 
 		$this->prepareDocument();
 
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 		$this->password_rules = array();
 
 		foreach ($password_rules as $rule)

@@ -436,7 +436,9 @@ class Credentials extends SiteController
 	 */
 	public function setpasswordTask()
 	{
-		$rules = \Hubzero\Password\Rule::getRules();
+		$rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		$password_rules = array();
 
@@ -506,14 +508,16 @@ class Credentials extends SiteController
 			throw new Exception(Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_LINKED_ACCOUNT'), 403);
 		}
 
-		$password_rules = \Hubzero\Password\Rule::getRules();
+		$password_rules = \Hubzero\Password\Rule::all()
+					->whereEquals('enabled', 1)
+					->rows();
 
 		$password1 = trim(Request::getVar('password1', null));
 		$password2 = trim(Request::getVar('password2', null));
 
 		if (!empty($password1))
 		{
-			$msg = \Hubzero\Password\Rule::validate($password1, $password_rules, $user->get('username'));
+			$msg = \Hubzero\Password\Rule::verify($password1, $password_rules, $user->get('username'));
 		}
 		else
 		{
