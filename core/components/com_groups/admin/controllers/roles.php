@@ -196,9 +196,14 @@ class Roles extends AdminController
 
 		$row = Role::oneOrNew(intval($fields['id']))->set($fields);
 
+		if (!isset($fields['permissions']))
+		{
+			$fields['permissions'] = array();
+		}
+
 		$permissions = new \Hubzero\Config\Registry($fields['permissions']);
 
-		$row->set('permissions', $permissions->toString()); //json_encode($fields['permissions']));
+		$row->set('permissions', $permissions->toString());
 
 		// Store new content
 		if (!$row->save())
@@ -266,11 +271,57 @@ class Roles extends AdminController
 	 *
 	 * @return  void
 	 */
+	public function unassignTask()
+	{
+		Request::setVar('hidemainmenu', 1);
+
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+		$gid = Request::getVar('gid', '');
+		$roleid = Request::getInt('roleid', 0);
+
+		if (!$gid)
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false),
+				Lang::txt('COM_GROUPS_MISSING_ID'),
+				'error'
+			);
+			return;
+		}
+
+		foreach ($ids as $id)
+		{
+			$model = \Components\Groups\Models\Member\Role::oneByUserAndRole((int)$id, $roleid);
+
+			if ($model->get('id'))
+			{
+				$model->destroy();
+			}
+		}
+
+		if ($rtrn = Request::getVar('return'))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $rtrn . '&gid=' . $gid, false)
+			);
+		}
+
+		// Output the HTML
+		$this->cancelTask();
+	}
+
+	/**
+	 * Assign members to a role
+	 *
+	 * @return  void
+	 */
 	public function assignTask()
 	{
 		Request::setVar('hidemainmenu', 1);
 
 		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 		$gid = Request::getVar('gid', '');
 
 		if (!$gid)
@@ -309,6 +360,7 @@ class Roles extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 		$gid = Request::getVar('gid', '');
 		$roleid = Request::getInt('roleid', 0);
 
@@ -327,10 +379,13 @@ class Roles extends AdminController
 
 		foreach ($ids as $id)
 		{
-			$model = \Components\Groups\Models\Member\Role::blank();
-			$model->set('roleid', $roleid);
-			$model->set('uidNumber', (int)$id);
-			$model->save();
+			$model = \Components\Groups\Models\Member\Role::oneByUserAndRole((int)$id, $roleid);
+			if (!$model->get('id'))
+			{
+				$model->set('roleid', $roleid);
+				$model->set('uidNumber', (int)$id);
+				$model->save();
+			}
 		}
 
 		$tmpl = Request::getVar('tmpl', '');

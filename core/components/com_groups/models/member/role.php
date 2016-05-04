@@ -88,5 +88,18 @@ class Role extends Relational
 	{
 		return $this->belongsToOne('Hubzero\User\User', 'uidNumber');
 	}
+
+	/**
+	 * Member profile
+	 *
+	 * @return  object
+	 */
+	public static function oneByUserAndRole($uidNumber, $roleid)
+	{
+		return self::all()
+			->whereEquals('uidNumber', $uidNumber)
+			->whereEquals('roleid', $roleid)
+			->row();
+	}
 }
 
