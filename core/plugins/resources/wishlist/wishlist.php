@@ -155,7 +155,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			// Authorize admins & list owners
 			if (!User::isGuest())
 			{
-				if (User::authorize($option, 'manage'))
+				if (User::authorise($option, 'manage'))
 				{
 					$admin = 1;
 				}
