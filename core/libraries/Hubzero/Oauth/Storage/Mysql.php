@@ -558,8 +558,9 @@ class Mysql implements AccessTokenInterface,
 			return false;
 		}
 
-		// check users IP against the session execution host IP
-		if (\App::get('request')->ip() != gethostbyname($session->exechost))
+		$ip = \Hubzero\Utility\Ip(\App::get('request')->ip());
+		// ip should be coming from a private address
+		if (!$ip->isPrivate())
 		{
 			return false;
 		}
