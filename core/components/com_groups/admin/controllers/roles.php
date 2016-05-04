@@ -61,7 +61,6 @@ class Roles extends AdminController
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false)
 			);
-			return;
 		}
 
 		$this->registerTask('add', 'edit');
@@ -220,11 +219,7 @@ class Roles extends AdminController
 			return $this->editTask($row);
 		}
 
-		$tmpl = Request::getVar('tmpl', '');
-
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getVar('gid', '') . ($tmpl ? '&tmpl=' . $tmpl : ''), false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -237,33 +232,38 @@ class Roles extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$gid = Request::getVar('gid', '');
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$tmpl = Request::getVar('tmpl', '');
 
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid . ($tmpl ? '&tmpl=' . $tmpl : ''), false),
-				Lang::txt('COM_GROUPS_ERROR_NO_ITEMS_SELECTED'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_GROUPS_ERROR_NO_ITEMS_SELECTED'));
+			return $this->cancelTask();
 		}
+
+		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Remove the entry
 			$model = Role::oneOrFail(intval($id));
-			$model->destroy();
+
+			if (!$model->destroy())
+			{
+				Notify::error($model->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid . ($tmpl ? '&tmpl=' . $tmpl : ''), false),
-			Lang::txt('COM_GROUPS_ROLE_REMOVED')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_GROUPS_ROLE_REMOVED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -331,7 +331,6 @@ class Roles extends AdminController
 				Lang::txt('COM_GROUPS_MISSING_ID'),
 				'error'
 			);
-			return;
 		}
 
 		$group = new Group();
@@ -371,7 +370,6 @@ class Roles extends AdminController
 				Lang::txt('COM_GROUPS_MISSING_ID'),
 				'error'
 			);
-			return;
 		}
 
 		$group = new Group();
@@ -388,11 +386,7 @@ class Roles extends AdminController
 			}
 		}
 
-		$tmpl = Request::getVar('tmpl', '');
-
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid . ($tmpl ? '&tmpl=' . $tmpl : ''), false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
