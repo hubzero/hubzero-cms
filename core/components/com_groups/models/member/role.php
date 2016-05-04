@@ -93,5 +93,18 @@ class Role extends Relational
 		}
 		return new Profile;
 	}
+
+	/**
+	 * Member profile
+	 *
+	 * @return  object
+	 */
+	public static function oneByUserAndRole($uidNumber, $roleid)
+	{
+		return self::all()
+			->whereEquals('uidNumber', $uidNumber)
+			->whereEquals('roleid', $roleid)
+			->row();
+	}
 }
 

@@ -220,7 +220,7 @@ foreach ($this->rows as $row)
 						//echo Lang::txt('COM_GROUPS_ROLES') . ': ';
 						$r = array();
 						foreach ($roles as $role) :
-							$r[] = '<span class="role">' . $role['name'] . '</span>';
+							$r[] = '<span class="role">' . $role['name'] . ' <a href="' . Route::url('index.php?option=com_groups&controller=roles&task=unassign&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&roleid=' . $role['id'] . '&return=' . $this->controller) . '" title="' . Lang::txt('COM_GROUPS_UNASSIGN_ROLE') . '">x</a></span>';
 						endforeach;
 						echo implode(', ', $r);
 						?>

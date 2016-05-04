@@ -149,3 +149,22 @@
 	.icon-32-merge:before {
 		content: '\f16b' !important;
 	}
+
+	.role {
+		display: inline-block;
+		font-size: 0.8em;
+		line-height: 1;
+		background-color: rgba(0, 0, 0, 0.07);
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+		padding: 0.4em 0.5em;
+	}
+	.role a {
+		font-weight: bold;
+		margin-left: 0.5em;
+		color: #999;
+	}
+	.role a:hover {
+		color: #c00;
+	}

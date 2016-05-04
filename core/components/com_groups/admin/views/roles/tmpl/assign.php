@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 	} else {
 		submitform(pressbutton);
 	}
-	//window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=membership&gid=<?php echo $this->group->get('cn'); ?>'", 700);
+	window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=membership&gid=<?php echo $this->group->get('cn'); ?>'", 700);
 }
 </script>
 <?php if ($this->getError()) { ?>
