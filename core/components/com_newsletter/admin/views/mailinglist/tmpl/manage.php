@@ -138,7 +138,7 @@ Toolbar::cancel();
 							?>
 						</td>
 						<td>
-							<?php echo Date::of($le->date_added)->format('l, F d, Y @ g:ia'); ?>
+							<?php echo Date::of($le->date_added)->toLocal('l, F d, Y @ g:ia'); ?>
 						</td>
 						<td>
 							<?php
