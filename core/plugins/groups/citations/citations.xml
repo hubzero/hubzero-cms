@@ -53,6 +53,13 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="members">Only Group Members</option>
 					<option value="nobody">Disabled/Off</option>
 				</field>
+				<field name="sort" type="list" default="year DESC" label="Default Sort" description="Default value to sort records by.">
+					<option value="year DESC">Year</option>
+					<option value="created DESC">Created</option>
+					<option value="title ASC">Title</option>
+					<option value="author ASC">Author</option>
+					<option value="journal ASC">Journal</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

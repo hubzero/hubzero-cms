@@ -303,7 +303,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->filters['year_end'] = isset($view->filters['year_end']) ? $view->filters['year_end'] : "";
 		$view->filters['startuploaddate'] = isset($view->filters['startuploaddate']) ? $view->filters['startuploaddate'] : "";
 		$view->filters['enduploaddate'] = isset($view->filters['enduploaddate']) ? $view->filters['enduploaddate'] : "";
-		$view->filters['sort'] = isset($view->filters['sort']) ? $view->filters['sort'] : "";
+		$view->filters['sort'] = isset($view->filters['sort']) ? $view->filters['sort'] : 'year DESC';
 		$view->filters['filter'] = isset($view->filters['filter']) ? $view->filters['filter'] : "";
 
 		// Sort Filter
@@ -1470,6 +1470,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!$citations)
 		{
 			return false;
+		}
+
+		// Set default sort if none otherwise specified
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = $this->params->get('sort', 'year DESC');
 		}
 
 		$filterCount = count($filters);
