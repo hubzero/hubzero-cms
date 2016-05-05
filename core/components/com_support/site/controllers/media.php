@@ -205,7 +205,39 @@ class Media extends SiteController
 		$view->asset      = $asset;
 		$view->no_html    = 1;
 
-		//echo result
+		// Remove any abandoned uploads older than a day
+		try
+		{
+			$old = time() - 86400;
+			$uploads = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS);
+			$dirs = Filesystem::directories($uploads);
+			foreach ($dirs as $dir)
+			{
+				$dir = basename($dir);
+				$dir = intval(trim($dir, DS));
+
+				// Temp directories have a negative timestamp
+				// So, if it's greater than zero, we can assume it's valid
+				if ($dir > 0)
+				{
+					continue;
+				}
+
+				$name = abs($dir);
+
+				// If it's older than a day ago...
+				if ($name < $old)
+				{
+					Filesystem::deleteDirectory($uploads . DS . $dir);
+				}
+			}
+		}
+		catch (Exception $e)
+		{
+			// Fail silently.
+		}
+
+		// echo result
 		echo json_encode(array(
 			'success'    => true,
 			'file'       => $filename . '.' . $ext,
