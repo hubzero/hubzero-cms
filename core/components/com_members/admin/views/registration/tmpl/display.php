@@ -32,12 +32,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
+$canDo = \Components\Members\Helpers\Admin::getActions('component');
 
-Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION'), 'users');
 if ($canDo->get('core.edit'))
 {
-	Toolbar::preferences($this->option, '550');
+	Toolbar::preferences($this->option);
 	Toolbar::save();
 	Toolbar::cancel();
 }
