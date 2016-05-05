@@ -54,6 +54,9 @@ if (!$this->no_html)
 	</div>
 	<script type="text/javascript">window.top.window.HUB.Modules.ReportProblems.hideTimer();</script>
 <?php } else { ?>
+	<header id="content-header">
+		<h2><?php echo Lang::txt('COM_SUPPORT'); ?></h2>
+	</header><!-- / #content-header -->
 	<section class="main section">
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
