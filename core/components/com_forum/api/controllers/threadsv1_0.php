@@ -55,19 +55,6 @@ require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php');
 class Threadsv1_0 extends ApiController
 {
 	/**
-	 * Execute a request
-	 *
-	 * @return    void
-	 */
-	public function execute()
-	{
-		$this->config   = Component::params('com_forum');
-		$this->database = \App::get('db');
-
-		parent::execute();
-	}
-
-	/**
 	 * Display a list of sections
 	 *
 	 * @apiMethod GET
@@ -121,7 +108,7 @@ class Threadsv1_0 extends ApiController
 				$obj->id         = $section->get('id');
 				$obj->title      = $section->get('title');
 				$obj->alias      = $section->get('alias');
-				$obj->created    = $section->get('created');
+				$obj->created    = with(new Date($section->get('created')))->format('Y-m-d\TH:i:s\Z');
 				$obj->scope      = $section->get('scope');
 				$obj->scope_id   = $section->get('scope_id');
 
@@ -226,7 +213,7 @@ class Threadsv1_0 extends ApiController
 		$response->section->id         = $section->get('id');
 		$response->section->title      = $section->get('title');
 		$response->section->alias      = $section->get('alias');
-		$response->section->created    = $section->get('created');
+		$response->section->created    = with(new Date($section->get('created')))->format('Y-m-d\TH:i:s\Z');
 		$response->section->scope      = $section->get('scope');
 		$response->section->scope_id   = $section->get('scope_id');
 		$response->categories = array();
@@ -250,7 +237,7 @@ class Threadsv1_0 extends ApiController
 				$obj->title       = $category->get('title');
 				$obj->alias       = $category->get('alias');
 				$obj->description = $category->get('description');
-				$obj->created     = $category->get('created');
+				$obj->created     = with(new Date($category->get('created')))->format('Y-m-d\TH:i:s\Z');
 				$obj->scope       = $category->get('scope');
 				$obj->scope_id    = $category->get('scope_id');
 
@@ -354,7 +341,7 @@ class Threadsv1_0 extends ApiController
 			->whereEquals('scope_id', $forum->get('scope_id'))
 			->row();
 
-		if (!$section->exists())
+		if (!$section->get('id'))
 		{
 			throw new Exception(Lang::txt('Section not found.'), 404);
 		}
@@ -365,7 +352,7 @@ class Threadsv1_0 extends ApiController
 			->whereEquals('scope_id', $forum->get('scope_id'))
 			->row();
 
-		if (!$category->exists())
+		if (!$category->get('id'))
 		{
 			throw new Exception(Lang::txt('Category not found.'), 404);
 		}
@@ -376,7 +363,7 @@ class Threadsv1_0 extends ApiController
 		$response->section->id         = $section->get('id');
 		$response->section->title      = $section->get('title');
 		$response->section->alias      = $section->get('alias');
-		$response->section->created    = $section->get('created');
+		$response->section->created    = with(new Date($section->get('created')))->format('Y-m-d\TH:i:s\Z');
 		$response->section->scope      = $section->get('scope');
 		$response->section->scope_id   = $section->get('scope_id');
 
@@ -385,7 +372,7 @@ class Threadsv1_0 extends ApiController
 		$response->category->title       = $category->get('title');
 		$response->category->alias       = $category->get('alias');
 		$response->category->description = $category->get('description');
-		$response->category->created     = $category->get('created');
+		$response->category->created     = with(new Date($category->get('created')))->format('Y-m-d\TH:i:s\Z');
 		$response->category->scope       = $category->get('scope');
 		$response->category->scope_id    = $category->get('scope_id');
 
@@ -418,8 +405,7 @@ class Threadsv1_0 extends ApiController
 				$obj = new stdClass;
 				$obj->id          = $thread->get('id');
 				$obj->title       = $thread->get('title');
-				//$obj->description = $category->get('description');
-				$obj->created     = $thread->get('created');
+				$obj->created     = with(new Date($thread->get('created')))->format('Y-m-d\TH:i:s\Z');
 				$obj->modified    = $thread->get('modified');
 				$obj->anonymous   = ($thread->get('anonymous') ? true : false);
 				$obj->closed      = ($thread->get('closed') ? true : false);
@@ -619,6 +605,7 @@ class Threadsv1_0 extends ApiController
 		else
 		{
 			$rows = $forum->posts($filters)->rows();
+
 			if ($rows)
 			{
 				if ($filters['start_id'])
@@ -633,7 +620,9 @@ class Threadsv1_0 extends ApiController
 
 					foreach ($rows as $v)
 					{
-						$pt      = $v->parent;
+						$v->set('created', with(new Date($v->get('created')))->format('Y-m-d\TH:i:s\Z'));
+
+						$pt      = $v->get('parent');
 						$list    = @$children[$pt] ? $children[$pt] : array();
 						array_push($list, $v);
 						$children[$pt] = $list;
