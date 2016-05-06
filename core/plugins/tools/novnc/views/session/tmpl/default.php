@@ -45,6 +45,17 @@ else
 	$this->css('./novnc/base.css')
 	     ->js('./novnc/jquery.ui.touch-punch.min.js') // This allows for touch events to be translated to click events on mobile devices
 	     ->js('./novnc/util.js')
+	     ->js('./novnc/webutil.js')
+	     ->js('./novnc/base64.js')
+	     ->js('./novnc/websock.js')
+	     ->js('./novnc/des.js')
+	     ->js('./novnc/keysymdef.js')
+	     ->js('./novnc/keyboard.js')
+	     ->js('./novnc/input.js')
+	     ->js('./novnc/display.js')
+	     ->js('./novnc/jsunzip.js')
+	     ->js('./novnc/rfb.js')
+	     ->js('./novnc/keysym.js')
 	     ->js('./novnc/ui-hubzero.js');
 
 	$base = rtrim(Request::base(true), '/');
@@ -249,11 +260,11 @@ else
 				cancel : 'cancel'
 			});
 		});
-		window.onscriptsload = function () {
+		/*window.onscriptsload = function () {
 			UI.load();
-		};
+		};*/
 
 		//Final attachment for onload
-		//window.onload = UI.load;
+		window.onload = UI.load;
 	</script>
 <?php } ?>
