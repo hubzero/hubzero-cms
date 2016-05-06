@@ -579,9 +579,9 @@ class Groups extends Base
 		$g_cn              = trim(Request::getVar('cn', '', 'post'));
 		$g_description     = preg_replace('/\s+/', ' ',trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
 		$g_discoverability = Request::getInt('discoverability', 0, 'post');
-		$g_public_desc     = Sanitize::stripScripts(trim(Request::getVar('public_desc',  '', 'post', 'none', 2)));
-		$g_private_desc    = Sanitize::stripScripts(trim(Request::getVar('private_desc', '', 'post', 'none', 2)));
-		$g_restrict_msg    = Sanitize::stripScripts(trim(Request::getVar('restrict_msg', '', 'post', 'none', 2)));
+		$g_public_desc     = Sanitize::clean(trim(Request::getVar('public_desc',  '', 'post', 'none', 2)));
+		$g_private_desc    = Sanitize::clean(trim(Request::getVar('private_desc', '', 'post', 'none', 2)));
+		$g_restrict_msg    = Sanitize::clean(trim(Request::getVar('restrict_msg', '', 'post', 'none', 2)));
 		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
 		$tags              = trim(Request::getVar('tags', ''));
 		$lid               = Request::getInt('lid', 0, 'post');
