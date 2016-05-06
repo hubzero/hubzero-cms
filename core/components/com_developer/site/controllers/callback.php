@@ -119,4 +119,45 @@ class Callback extends SiteController
 		// Redirect to the local endpoint
 		App::redirect(base64_decode($state));
 	}
+
+	/**
+	 * Processes the Globus callback from oauth authorize requests
+	 *
+	 * @return    void
+	 **/
+	public function globusAuthorizeTask()
+	{
+		$params = \Plugin::params('filesystem', 'globus');
+
+		if (!$code = Request::getVar('code'))
+		{
+			throw new \Exception("No code found", 400);
+		}
+
+		// Check state
+		if (!$state = Request::getVar('state'))
+		{
+			throw new \Exception("No state found", 400);
+		}
+		if ($state != Session::get('globus.state'))
+		{
+			throw new \Exception("State mismatch", 500);
+		}
+
+		$provider = new \League\OAuth2\Client\Provider\Globus([
+			'clientId'     => $params->get('app_key'),
+			'clientSecret' => $params->get('app_secret'),
+			'redirectUri'  => trim(Request::base(), '/') . '/developer/callback/globusAuthorize'
+		]);
+
+		// Try to get an access token using the authorization code grant
+		$accessToken = $provider->getAccessToken('authorization_code', [
+			'code' => $code
+		]);
+
+		\Session::set('globus.token', $accessToken);
+
+		// Redirect to the local endpoint
+		App::redirect(base64_decode($state));
+	}
 }
