@@ -33,6 +33,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Blog\Models\Entry;
+use Hubzero\User\Group;
+
+require_once PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php';
+
 /**
  * Search blog entries
  */
@@ -130,5 +135,148 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 
 		$results->add($rows);
 	}
-}
 
+/************************************************
+ *
+ * HubSearch Required Methods
+ * @author Kevin Wojkovich <kevinw@purdue.edu>
+ *
+ ***********************************************/
+
+	/****************************
+	Query-time / General Methods
+	****************************/
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'blog-entry';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	public function onGetModel($type = '')
+	{
+		if ($type == 'blog-entry')
+		{
+			return new Entry;
+		}
+	}
+	/*********************
+		Index-time methods
+	*********************/
+
+	/**
+	 * onGetMapping - Maps database columns to SearchDocument Fields
+	 *
+	 * @param string $type
+	 * @access public
+	 * @return object $mapping
+	 */
+	public function onGetMapping($type)
+	{
+		if ($type == 'blog-entry')
+		{
+			$mapping  = new stdClass;
+			$mapping->title = '{title}';
+			$mapping->alias = '{alias}';
+			$mapping->fulltext = '{content}';
+			$mapping->description = '{description}';
+			$mapping->scope = '{scope}';
+			$mapping->scope_id = '{scope_id}';
+			$mapping->state = '{state}';
+
+			return $mapping;
+		}
+	}
+
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row)
+	{
+		if ($type == 'blog-entry')
+		{
+			// Determine the author of the Entry
+			$user = User::getInstance($row->created_by);
+			$authorArr = array();
+			array_push($authorArr, $user->name);
+
+			// Instantiate new $fields object
+			$fields = new stdClass;
+
+			// Calculate Permissions
+			// Public condition
+			if ($row->state == 1 && $row->access == 1)
+			{
+				$fields->access_level = 'public';
+			}
+			// Registered condition
+			elseif ($row->state == 1 && $row->access == 2)
+			{
+				$fields->access_level = 'registered';
+			}
+			// Default private
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			if ($row->scope != 'group')
+			{
+				$fields->owner_type = 'user';
+				$fields->owner = $row->created_by;
+			}
+			else
+			{
+				$fields->owner_type = 'group';
+				$fields->owner = $row->scope_id;
+			}
+
+			// Build out path
+			$year = Date::of(strtotime($row->publish_up))->toLocal('Y');
+			$month = Date::of(strtotime($row->publish_up))->toLocal('m');
+			$alias = $row->alias;
+
+			if ($row->scope == 'site')
+			{
+				$path = '/blog/' . $year . '/' . $month . '/' . $alias;
+			}
+			elseif ($row->scope == 'member')
+			{
+				$path = '/members/'. $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
+			}
+			elseif ($row->scope == 'group')
+			{
+				$group = Group::getInstance($row->scope_id);
+				$cn = $group->get('cn');
+				$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
+			}
+
+			$fields->url = $path;
+			$fields->author = $authorArr;
+			$fields->tags = $row->tags('array');
+
+			return $fields;
+		}
+	}
+}
