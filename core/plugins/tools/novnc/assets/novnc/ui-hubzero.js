@@ -20,7 +20,7 @@ window.onload = function () {
 
 var INCLUDE_URI = "/core/plugins/tools/novnc/assets/novnc/";
 
-Util.load_scripts([
+/*Util.load_scripts([
 	"webutil.js",
 	"base64.js",
 	"websock.js",
@@ -32,7 +32,7 @@ Util.load_scripts([
 	"jsunzip.js",
 	"rfb.js",
 	"keysym.js"
-]);
+]);*/
 
 
 var UI = {
