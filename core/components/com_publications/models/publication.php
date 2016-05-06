@@ -1319,7 +1319,7 @@ class Publication extends Object
 	{
 		if (!($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = \HUser::getInstance($this->get('created_by'));
+			$this->_creator = \User::getInstance($this->get('created_by'));
 		}
 		if ($property)
 		{
