@@ -120,9 +120,9 @@ class Tool extends \JTable
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$search = $filters['search'];
-			if (intval($search))
+			if (is_numeric($search))
 			{
-				$filter .= " AND f.id=" . $this->_db->quote('%' . $search . '%') . " ";
+				$filter .= " AND f.id=" . $this->_db->quote(intval($search)) . " ";
 			}
 			else
 			{
