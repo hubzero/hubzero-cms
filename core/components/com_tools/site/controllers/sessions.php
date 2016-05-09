@@ -1760,14 +1760,14 @@ class Sessions extends SiteController
 
 		if (empty($country) && in_array($exportcontrol, array('us', 'd1', 'pu')))
 		{
-			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
+			$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN'));
 			Log::debug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
 			return false;
 		}
 
 		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 		{
-			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
+			$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1'));
 			Log::debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
 			return false;
 		}
@@ -1777,7 +1777,7 @@ class Sessions extends SiteController
 			case 'us':
 				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
 				{
-					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
+					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY'));
 					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
 					return false;
 				}
@@ -1786,7 +1786,7 @@ class Sessions extends SiteController
 			case 'd1':
 				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 				{
-					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
+					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE'));
 					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
 					return false;
 				}
@@ -1795,7 +1795,7 @@ class Sessions extends SiteController
 			case 'pu':
 				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol))
 				{
-					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
+					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY'));
 					Log::debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
 					return false;
 				}
@@ -1821,7 +1821,7 @@ class Sessions extends SiteController
 		// Ensure we have a tool
 		if (!$tool)
 		{
-			$this->setError('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
+			$this->setError(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
 			Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return false;
 		}
