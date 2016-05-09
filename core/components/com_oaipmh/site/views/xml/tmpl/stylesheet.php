@@ -831,10 +831,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 				<xsl:when test='starts-with(.,"http" )'>
 					<xsl:choose>
 						<xsl:when test='string-length(.) &gt; 150'>
-							<a class="link" href="{.}">URL (hidden due to length)</a>
+							<a class="link"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>URL (hidden due to length)</a>
 						</xsl:when>
 						<xsl:otherwise>
-							<a class="link" href="{.}"><xsl:value-of select="."/></a>
+							<a class="link"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/></a>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:when>
@@ -862,7 +862,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 </xsl:template>
 
 <xsl:template match="dc:relation" xmlns:dc="http://purl.org/dc/elements/1.1/">
-	<li><a class="link" href="{.}"><xsl:value-of select="."/></a></li>
+	<li><a class="link"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/></a></li>
 </xsl:template>
 
 <xsl:template match="dcterms:hasVersion" xmlns:dcterms="http://purl.org/dc/terms/">
@@ -930,7 +930,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <xsl:template match="dc:identifier" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<tr>
 		<th class="key">Resource Identifier</th>
-		<td class="value"><a href="{.}"><xsl:value-of select="."/></a></td>
+		<td class="value"><a><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/></a></td>
 	</tr>
 </xsl:template>
 
