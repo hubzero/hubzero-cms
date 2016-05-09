@@ -237,7 +237,12 @@ else
 							// Add PATH_CORE
 							$filename = PATH_APP . $filename;
 
-							list($width, $height) = getimagesize($filename);
+							$width  = 0;
+							$height = 0;
+							if (file_exists($filename))
+							{
+								list($width, $height) = getimagesize($filename);
+							}
 							if ($width > 0 && $height > 0)
 							{
 								$class .= ' ' . $width . 'x' . $height;
