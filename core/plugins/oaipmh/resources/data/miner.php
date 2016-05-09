@@ -186,7 +186,7 @@ class Miner extends Object implements Provider
 				$filters['from'] .= ' 00:00:00';
 			}
 			$query .= " AND (
-				(r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` >= " . $this->database->quote($filters['from']) . ") OR r.`created` >= " . $this->database->quote($filters['from']) . "
+				(r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` >= " . $this->database->quote($filters['from']) . ") OR (r.`publish_up` = '0000-00-00 00:00:00' AND r.`created` >= " . $this->database->quote($filters['from']) . ")
 			)";
 		}
 		if (isset($filters['until']) && $filters['until'])
@@ -201,7 +201,7 @@ class Miner extends Object implements Provider
 				$filters['until'] .= ' 00:00:00';
 			}
 			$query .= " AND (
-				(r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` < " . $this->database->quote($filters['until']) . ") OR r.`created` < " . $this->database->quote($filters['until']) . "
+				(r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` < " . $this->database->quote($filters['until']) . ") OR (r.`publish_up` = '0000-00-00 00:00:00' AND r.`created` < " . $this->database->quote($filters['until']) . ")
 			)";
 		}
 
