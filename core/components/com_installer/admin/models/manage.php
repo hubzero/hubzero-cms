@@ -140,15 +140,15 @@ class Manage extends Extension
 						continue;
 					}
 				}
-				if ($table->protected == 1)
+				/*if ($table->protected == 1)
 				{
 					$result = false;
 					App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 				}
 				else
-				{
+				{*/
 					$table->enabled = $value;
-				}
+				//}
 				if (!$table->store())
 				{
 					$this->setError($table->getError());
