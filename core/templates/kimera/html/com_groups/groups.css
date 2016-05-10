@@ -1343,6 +1343,7 @@
 	}
 	#page_options {
 		right: 60px;
+		list-style:none;
 	}
 	#page_content {
 		padding: 30px 60px;
