@@ -98,7 +98,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// get all queued mailing recipients
-		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking, nl.autogen
+		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking, nl.autogen, nm.date AS sendDate
 				FROM `#__newsletter_mailings` AS nm, `#__newsletter_mailing_recipients` AS nmr, `#__newsletters` AS nl
 				WHERE nm.id=nmr.mid
 				AND nm.nid=nl.id
@@ -109,7 +109,6 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 				LIMIT {$limit}";
 		$database->setQuery($sql);
 		$queuedEmails = $database->loadObjectList();
-
 
 		// Get newsletter, check whether it is autogen
 
@@ -201,9 +200,8 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 					$newsletterMailingRecipient->date_sent = Date::toSql();
 					$newsletterMailingRecipient->save($newsletterMailingRecipient);
 				}
-				elseif ($queuedEmail->autogen != 0 && $queuedEmail->autogen != null)
+				else
 				{
-					// Check to see if mailing already exists
 					$sql = "SELECT *, max(date) AS maxDate FROM #__newsletter_mailings WHERE nid = {$queuedEmail->newsletterid} AND deleted=0;";
 					$database->setQuery($sql);
 					$latestMailing = $database->loadObject();
@@ -222,15 +220,13 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 					}
 
 					$nextDate = Date::of(strtotime($latestMailing->maxDate. $lookahead))->toLocal();
+
 					$windowMin = strtotime(Date::of(strtotime($nextDate))->toLocal("Y-m-d"));
 					$windowMax = strtotime(Date::of(strtotime($lookahead))->toLocal("Y-m-d"));
 
 					// If there is no mailing set for the next interval, create it.
-					if ($latestMailing->id == $queuedEmail->mailingid && ($windowMax - $windowMin == 0))
+					if ($windowMax - $windowMin == 0)
 					{
-
-						// Determine the next date
-
 						// Create mailing
 						$newMailing = new Components\Newsletter\Tables\Mailing($database);
 						$newMailing->bind($latestMailing);
@@ -245,7 +241,10 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 						// @TODO Verify there is no helper method to determine whether or not to send email
 						foreach ($emails as $email)
 						{
-							$values[] = "(" . $database->quote($newMailing->id) . "," . $database->quote($email->email) . ",'queued', " . $database->quote(Date::of(time())->toLocal()) . ")";
+							if ($email->status == 'active')
+							{
+								$values[] = "(" . $database->quote($newMailing->id) . "," . $database->quote($email->email) . ",'queued', " . $database->quote(Date::of(time())->toLocal()) . ")";
+							}
 						}
 
 						// make sure we have some values
