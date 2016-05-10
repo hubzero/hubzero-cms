@@ -696,14 +696,32 @@ class Sessions extends SiteController
 		$ms->params   = $params;
 		if (!$ms->store())
 		{
-			echo $ms->getError();
-			die();
+			App::abort(500, $ms->getError());
 		}
 
 		$rtrn = Request::getVar('return', '');
 
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : '');
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'created',
+				'scope'       => 'tool.session',
+				'scope_id'    => $app->sess,
+				'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_CREATED', $app->sess, '<a href="' . Route::url($url) . '">' . $app->caption . '</a>'),
+				'details'     => array(
+					'tool'    => $app->name,
+					'url'     => $url
+				)
+			],
+			'recipients' => array(
+				['user', User::get('id')]
+			)
+		]);
+
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''), false)
+			Route::url($url, false)
 		);
 	}
 
@@ -847,7 +865,7 @@ class Sessions extends SiteController
 		//do we want to share with a group
 		if (isset($group) && $group != 0)
 		{
-			$hg = \Hubzero\User\Group::getInstance( $group );
+			$hg = \Hubzero\User\Group::getInstance($group);
 			$members = $hg->get('members');
 
 			//merge group members with any passed in username field
@@ -890,6 +908,8 @@ class Sessions extends SiteController
 			App::abort(404, Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
 			break;
 		}
+
+		$ids = array();
 		foreach ($users as $user)
 		{
 			// Check for invalid characters
@@ -906,6 +926,14 @@ class Sessions extends SiteController
 				$this->setError(Lang::txt('COM_TOOLS_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
 			}
+
+			if (in_array($zuser->get('id'), $ids))
+			{
+				// We already did this user
+				continue;
+			}
+
+			$ids[] = $zuser->get('id');
 
 			//load current view perm
 			$mwViewperm = new \Components\Tools\Tables\Viewperm($mwdb);
@@ -945,6 +973,20 @@ class Sessions extends SiteController
 			}
 		}
 
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'shared',
+				'scope'       => 'tool.session',
+				'scope_id'    => $sess,
+				'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_SHARED', $sess),
+				'details'     => array(
+					'tool'    => $row->appname
+				)
+			],
+			'recipients' => $ids
+		]);
+
 		// Drop through and re-view the session...
 		$this->viewTask();
 	}
@@ -969,7 +1011,7 @@ class Sessions extends SiteController
 		// Incoming
 		$sess = Request::getVar('sess', '');
 		$user = Request::getVar('username', '');
-		$app = Request::getVar('app', '');
+		$app  = Request::getVar('app', '');
 
 		// If a username is given, check that the user owns this session.
 		if ($user != '')
@@ -992,6 +1034,22 @@ class Sessions extends SiteController
 		// Delete the viewperm
 		$mv = new \Components\Tools\Tables\Viewperm($mwdb);
 		$mv->deleteViewperm($sess, $user);
+
+		// Log activity
+		$u = User::getInstance($user);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'unshared',
+				'scope'       => 'tool.session',
+				'scope_id'    => $sess,
+				'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_UNSHARED', $sess),
+				'details'     => array(
+					'tool'    => $app
+				)
+			],
+			'recipients' => array($u->get('id'))
+		]);
 
 		if ($user == User::get('username'))
 		{
@@ -1440,6 +1498,22 @@ class Sessions extends SiteController
 
 		// Trigger any events that need to be called after session stop
 		Event::trigger('mw.onAfterSessionStop', array($ms->appname));
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'deleted',
+				'scope'       => 'tool.session',
+				'scope_id'    => $sess,
+				'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_DELETED', $sess),
+				'details'     => array(
+					'tool'    => $ms->appname
+				)
+			],
+			'recipients' => array(
+				['user', User::get('id')]
+			)
+		]);
 
 		// Take us back to the main page...
 		if ($rtrn)
