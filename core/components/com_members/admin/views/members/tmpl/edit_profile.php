@@ -32,50 +32,49 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-/*
-include_once Component::path('com_members') . DS . 'models' . DS . 'form' . DS . 'form.php';
 include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
-
-$form = new Components\Members\Models\Form\Form('profile', array('control' => 'profile'));
 
 $fields = Components\Members\Models\Profile\Field::all()
 	->including(['options', function ($option){
 		$option
-			->select('*')
-			->whereEquals('parent', 0);
+			->select('*');
 	}])
-	->whereEquals('parent', 0)
 	->ordered()
 	->rows();
-*/
+
+// Convert to XML so we can use the Form processor
+$xml = Components\Members\Models\Profile\Field::toXml($fields);
+
+// Gather data to pass to the form processor
+$data = new Hubzero\Config\Registry(
+	Components\Members\Models\Profile::collect($this->profile->profiles()->ordered()->rows())
+);
+$data->set('tags', $this->profile->tags('string'));
+
+// Create a new form
+$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+$form->load($xml);
+$form->bind($data);
+
+$fields = $form->getFieldset('basic');
 ?>
 <div class="grid">
 	<div class="col span7">
 		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_MEMBERS_DEMOGRAPHICS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_MEMBERS_PROFILE'); ?></span></legend>
 
-			<?php /*foreach ($fields as $field): ?>
+			<?php foreach ($fields as $field): ?>
 				<?php
-				$input = $form->loadField($field, null, $this->profile->get($field->get('name')));
-				if ($input)
+				echo '<div class="input-wrap"' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
+				echo $field->label;
+				echo $field->input;
+				if ($field->description)
 				{
-					echo '<div class="input-wrap"' . ($input->description ? ' data-hint="' . $this->escape($input->description) . '"' : '') . '>';
-					echo $input->label;
-					echo $input->input;
-					echo '</div>';
+					echo '<span class="hint">' . $field->description . '</span>';
 				}
-				else
-				{
-					?>
-					<div class="input-wrap"<?php if ($field->get('description')) { echo ' data-hint="' . $this->escape($field->get('description')) . '"'; } ?>>
-						<label for="profile-<?php echo $field->get('name'); ?>"><?php echo $field->get('label'); ?></label>
-						<input type="text" name="profile[<?php echo $field->get('name'); ?>]" id="profile-<?php echo $field->get('name'); ?>" value="<?php echo $this->profile->get($field->get('name')); ?>" />
-					</div>
-					<?php
-				}
+				echo '</div>';
 				?>
-			<?php endforeach;*/ ?>
-			<p>Profile info.</p>
+			<?php endforeach; ?>
 		</fieldset>
 	</div>
 	<div class="col span5">

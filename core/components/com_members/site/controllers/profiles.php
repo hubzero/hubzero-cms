@@ -302,7 +302,7 @@ class Profiles extends SiteController
 
 		if ($filters['index'])
 		{
-			$entries->whereLike('surname', $filters['index']);
+			$entries->where('surname', 'LIKE', $filters['index'] . '%');
 		}
 
 		if (!empty($filters['access']))

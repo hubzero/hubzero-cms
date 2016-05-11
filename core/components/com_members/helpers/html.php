@@ -51,9 +51,9 @@ class Html
 	public static function selectAccess($name, $value, $class='', $id='')
 	{
 		$arr = array(
-			0 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
-			1 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
-			2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
+			1 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
+			2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
+			5 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
 		);
 
 		$html  = '<select name="' . $name . '"';

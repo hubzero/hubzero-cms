@@ -121,18 +121,18 @@ HUB.Members.Profile = {
 				});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editToggleSection: function( trigger )
 	{
 		var $ = this.jQuery;
-		
+
 		var $section = trigger.parents("li"),
 			section_classes = $section.attr("class").split(" ");
-		
+
 		//show edit or close link
-		if($section.find(".section-edit a").html() == "Edit")
+		if (!$section.find(".section-edit a").hasClass('open')) //html() == "Edit")
 		{   
 			$section.find(".section-edit a").addClass("open").html('&times;'); 
 		}
@@ -140,20 +140,20 @@ HUB.Members.Profile = {
 		{
 			$section.find(".section-edit a").removeClass("open").html('Edit');
 		}
-			
+
 		//hide all open sections
 		$("#profile li:not(."+section_classes[0]+") .section-edit a").removeClass("open").html('Edit');
 		$("#profile li:not(."+section_classes[0]+")").removeClass("active").find(".section-edit-container").slideUp();
-		
+
 		//remove hover div
 		$section.find(".section-hover").remove();
-		
+
 		//slide open new section
 		$section.toggleClass("active").find(".section-edit-container").slideToggle();
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editSubmitForm: function( submit_button )
 	{
 		var $ = this.jQuery;

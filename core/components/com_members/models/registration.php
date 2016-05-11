@@ -32,11 +32,13 @@
 
 namespace Components\Members\Models;
 
+use Components\Members\Models\Profile\Field;
 use Components\Members\Tables;
 use Components\Members\Helpers;
 use Request;
 use User;
 
+include_once(__DIR__ . DS . 'profile' . DS . 'field.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php');
 
 /**
@@ -120,11 +122,9 @@ class Registration
 	var $_checked;
 
 	/**
-	 * Short description for 'clear'
+	 * Clear cached data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function clear()
 	{
@@ -136,26 +136,20 @@ class Registration
 	}
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $login Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $login
+	 * @return  void
 	 */
 	public function __construct($login = null)
 	{
-		//$this->logDebug("self::__construct()");
-
 		$this->clear();
 	}
 
 	/**
-	 * Short description for 'normalize'
+	 * Normalize data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function normalize()
 	{
@@ -170,7 +164,7 @@ class Registration
 		$this->_registration['login'] = null;
 		$this->_registration['email'] = null;
 		$this->_registration['confirmEmail'] = null;
-		$this->_registration['web'] = null;
+		$this->_registration['url'] = null;
 		$this->_registration['phone'] = null;
 		$this->_registration['name'] = null;
 		$this->_registration['givenName'] = null;
@@ -185,7 +179,7 @@ class Registration
 		$this->_registration['confirmPassword'] = null;
 		$this->_registration['sex'] = null;
 		$this->_registration['usageAgreement'] = null;
-		$this->_registration['mailPreferenceOption'] = null;
+		$this->_registration['sendEmail'] = null;
 		$this->_registration['captcha'] = null;
 		$this->_registration['interests'] = null;
 		$this->_registration['address'] = null;
@@ -193,11 +187,9 @@ class Registration
 	}
 
 	/**
-	 * Short description for 'loadPost'
+	 * Load data from post values
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function loadPost()
 	{
@@ -405,7 +397,7 @@ class Registration
 		$this->_registration['login'] = strtolower(Request::getVar('login', null, 'post'));
 		$this->_registration['email'] = Request::getVar('email', null, 'post');
 		$this->_registration['confirmEmail'] = Request::getVar('email2', null, 'post');
-		$this->_registration['web'] = Request::getVar('web', null, 'post');
+		$this->_registration['url'] = Request::getVar('url', null, 'post');
 		$this->_registration['phone'] = Request::getVar('phone', null, 'post');
 		//$this->_registration['name'] = Request::getVar('name', null, 'post');
 		$this->_registration['orgtype']	= Request::getVar('orgtype', null, 'post');
@@ -424,7 +416,7 @@ class Registration
 		$this->_registration['password'] = Request::getVar('password', null, 'post');
 		$this->_registration['confirmPassword'] = Request::getVar('password2', null, 'post');
 		$this->_registration['usageAgreement'] = Request::getVar('usageAgreement', null, 'post');
-		$this->_registration['mailPreferenceOption'] = Request::getVar('mailPreferenceOption', null, 'post');
+		$this->_registration['sendEmail'] = Request::getVar('sendEmail', null, 'post');
 		$this->_registration['sex'] = Request::getVar('sex', null, 'post');
 		$this->_registration['interests'] = Request::getVar('interests',null,'post');
 		$this->_registration['orcid'] = Request::getVar('orcid', null, 'post');
@@ -446,12 +438,10 @@ class Registration
 	}
 
 	/**
-	 * Short description for 'loadProfile'
+	 * Load data from user profile
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $xprofile Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   object  $xprofile
+	 * @return  void
 	 */
 	public function loadProfile($xprofile = null)
 	{
@@ -462,14 +452,12 @@ class Registration
 			return;
 		}
 
-		//get user tags
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
-		$database = \App::get('db');
-		$mt = new Tags($xprofile->get('uidNumber'));
-		$tag_string = $mt->render('string');
+		// get user tags
+		$tag_string = $xprofile->tags('string');
 
 		//get member addresses
 		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'address.php');
+		$database = \App::get('db');
 		$membersAddress = new Tables\Address($database);
 		$addresses = $membersAddress->getAddressesForMember($xprofile->get("uidNumber"));
 
@@ -484,7 +472,7 @@ class Registration
 		$this->set('login', $xprofile->get('username'));
 		$this->set('email', $xprofile->get('email'));
 		$this->set('confirmEmail', $xprofile->get('email'));
-		$this->set('web', $xprofile->get('url'));
+		$this->set('url', $xprofile->get('url'));
 		$this->set('phone', $xprofile->get('phone'));
 		$this->set('name', $xprofile->get('name'));
 		$this->set('givenName', $xprofile->get('givenName'));
@@ -499,8 +487,8 @@ class Registration
 		$this->set('confirmPassword', null);
 		$this->set('sex', $xprofile->get('gender'));
 		$this->set('usageAgreement', $xprofile->get('usageAgreement'));
-		$this->set('mailPreferenceOption', $xprofile->get('mailPreferenceOption'));
-		$this->set('interests', $tag_string);
+		$this->set('sendEmail', $xprofile->get('sendEmail'));
+		$this->set('interests', $xprofile->tags('string'));
 		$this->set('address', $addresses);
 		$this->set('orcid', $xprofile->get('orcid'));
 
@@ -508,12 +496,10 @@ class Registration
 	}
 
 	/**
-	 * Short description for 'loadAccount'
+	 * Load data from user account
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $user Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   object  $user
+	 * @return  void
 	 */
 	public function loadAccount($user = null)
 	{
@@ -646,27 +632,20 @@ class Registration
 	/**
 	 * Returns userid if email exists
 	 *
-	 * @param string The email to search on
-	 * @return int The user id or 0 if not found
+	 * @param   string   $email  The email to search on
+	 * @return  integer  The user id or 0 if not found
 	 */
 	public function getEmailId($email)
 	{
-		// Initialize some variables
-		$db = \App::get('db');
-
-		$query = 'SELECT id FROM `#__users` WHERE email = ' . $db->Quote($email);
-		$db->setQuery($query, 0, 1);
-		return $db->loadResult();
+		return User::getInstance($email)->get('id');
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Check data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $task Parameter description (if any) ...
-	 * @param      integer $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $task
+	 * @param   integer  $id
+	 * @return  boolean
 	 */
 	public function check($task = 'create', $id = 0, $field_to_check = array())
 	{
@@ -997,21 +976,45 @@ class Registration
 			}
 		}
 
+		$fields = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->where('action_' . $task, '=', Field::STATE_REQUIRED)
+			->ordered()
+			->rows();
+
+		foreach ($fields as $field)
+		{
+			if ($field->get('type') != 'hidden')
+			{
+				$value = $this->get($field->get('name'));
+
+				if (empty($value))
+				{
+					$check['_missing'] = $field->get('label');
+				}
+			}
+		}
+
+		/*
 		if ($registrationURL == REG_REQUIRED)
 		{
-			if (empty($registration['web']))
+			if (empty($registration['url']))
 			{
-				$this->_missing['web'] = 'Personal Web Page';
-				$this->_invalid['web'] = 'Please provide a valid website URL';
+				$this->_missing['url'] = 'Personal Web Page';
+				$this->_invalid['url'] = 'Please provide a valid urlsite URL';
 			}
 		}
 
 		if ($registrationURL != REG_HIDE)
 		{
-			$registration['web'] = trim($registration['web']);
-			if (!empty($registration['web']) && (strstr($registration['web'], ' ') || !Helpers\Utility::validurl($registration['web'])))
+			$registration['url'] = trim($registration['url']);
+			if (!empty($registration['url']) && (strstr($registration['url'], ' ') || !Helpers\Utility::validurl($registration['url'])))
 			{
-				$this->_invalid['web'] = 'Invalid web site URL. You may be using characters that are not allowed.';
+				$this->_invalid['url'] = 'Invalid url site URL. You may be using characters that are not allowed.';
 			}
 		}
 
@@ -1057,15 +1060,6 @@ class Registration
 				$this->_invalid['orgtype'] = 'Please make an employment type selection';
 			}
 		}
-
-		/*
-		if ($registrationEmployment != REG_HIDE)
-			if (empty($registration['orgtype']))
-			{
-				//if (!Helpers\Utility::validateOrgType($registration['orgtype']) )
-					$this->_invalid['orgtype'] = 'Invalid employment status. Please make a new selection.';
-			}
-		*/
 
 		if ($registrationOrganization == REG_REQUIRED)
 		{
@@ -1165,16 +1159,6 @@ class Registration
 			}
 		}
 
-		/*
-		if ($registrationHispanic != REG_HIDE)
-		{
-			if (empty($registration['hispanic']))
-			{
-				$this->_invalid['hispanic'] = 'Invalid hispanic heritage selection.';
-			}
-		}
-		*/
-
 		if ($registrationRace == REG_REQUIRED)
 		{
 			if ($task == 'edit')
@@ -1196,16 +1180,6 @@ class Registration
 			}
 		}
 
-		/*
-		if ($registrationRace != REG_HIDE)
-		{
-			if (!empty($registration['race']) || !Helpers\Utility::validtext($registration['race']))
-			{
-				$this->_invalid['race'] = 'Invalid racial selection.';
-			}
-		}
-		*/
-
 		if ($registrationInterests == REG_REQUIRED)
 		{
 			if (empty($registration['interests']) || $registration['interests'] == '')
@@ -1214,16 +1188,6 @@ class Registration
 				$this->_invalid['interests'] = 'Please select materials your are interested in';
 			}
 		}
-
-		/*
-		if ($registrationInterests != REG_HIDE)
-		{
-			if (!empty($registration['edulevel']) && !Helpers\Utility::validtext($registration['edulevel']))
-				$this->_invalid['interests'] = 'Invalid interest selection.';
-			if (!empty($registration['role']) && !Helpers\Utility::validtext($registration['role']))
-				$this->_invalid['interests'] = 'Invalid interest selection.';
-		}
-		*/
 
 		if ($registrationReason == REG_REQUIRED)
 		{
@@ -1245,13 +1209,14 @@ class Registration
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
 			}
 		}
+		*/
 
 		if ($registrationOptIn == REG_REQUIRED)
 		{
-			if (is_null($registration['mailPreferenceOption']) || intval($registration['mailPreferenceOption']) < 0)
+			if (is_null($registration['sendEmail']) || intval($registration['sendEmail']) < 0)
 			{
-				$this->_missing['mailPreferenceOption'] = 'Receive Email Updates';
-				$this->_invalid['mailPreferenceOption'] = 'Receive Email Updates has not been selected';
+				$this->_missing['sendEmail'] = 'Receive Email Updates';
+				$this->_invalid['sendEmail'] = 'Receive Email Updates has not been selected';
 			}
 		}
 

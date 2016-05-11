@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 
 	<div class="input-wrap">
 		<?php echo Lang::txt('COM_MEMBERS_PASSWORD_CURRENT'); ?>:
-		<input type="text" name="profile[currentpassword]" disabled="disabled" <?php echo ($this->profile->get('password')) ? "value=\"{$this->profile->get('password')}\"" : 'placeholder="' . Lang::txt('no local password set') . '"'; ?> />
+		<input type="text" name="currentpassword" disabled="disabled" <?php echo ($this->profile->get('password')) ? 'value="' . $this->profile->get('password') . '"' : 'placeholder="' . Lang::txt('no local password set') . '"'; ?> />
 	</div>
 	<div class="input-wrap">
 		<label for="newpass"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW'); ?>:</label>
@@ -90,14 +90,14 @@ defined('_HZEXEC_') or die();
 			</ul>
 		<?php endif; ?>
 	</div>
-	<div class="input-wrap">
+	<!-- div class="input-wrap">
 		<label id="field_password2-lbl" for="field_password2"><?php echo Lang::txt('Confirm Password'); ?></label>
-		<input type="password" name="fields[password2]" id="field_password2" value="" autocomplete="off" class="inputbox validate-password" />
+		<input type="password" name="password2" id="field_password2" value="" autocomplete="off" class="inputbox validate-password" />
 	</div>
-	<!-- <div class="input-wrap" data-hint="<?php echo Lang::txt('Number of password resets since last reset date'); ?>">
-		<label id="jform_resetCount-lbl" for="jform_resetCount"><?php echo Lang::txt('Password Reset Count'); ?></label>
-		<input type="text" name="jform[resetCount]" id="jform_resetCount" value="0" class="readonly" readonly="readonly"/>
-	</div> -->
+	<div class="input-wrap" data-hint="<?php echo Lang::txt('Number of password resets since last reset date'); ?>">
+		<label id="field_resetCount-lbl" for="field_resetCount"><?php echo Lang::txt('Password Reset Count'); ?></label>
+		<input type="text" name="resetCount" id="field_resetCount" value="0" class="readonly" readonly="readonly"/>
+	</div -->
 	<div class="input-wrap">
 		<label title="shadowLastChange"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_LAST_CHANGE'); ?>:</label>
 		<?php

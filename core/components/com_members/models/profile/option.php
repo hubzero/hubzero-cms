@@ -29,21 +29,21 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Members\Models;
+namespace Components\Members\Models\Profile;
 
 use Hubzero\Database\Relational;
 
 /**
- * User profile model
+ * User profile field option model
  */
-class Profile extends Relational
+class Option extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'user';
+	protected $namespace = 'user_profile';
 
 	/**
 	 * Default order by for model
@@ -65,8 +65,8 @@ class Profile extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'profile_key' => 'notempty',
-		'user_id'     => 'positive|nonzero'
+		'label'    => 'notempty',
+		'field_id' => 'positive|nonzero'
 	);
 
 	/**
@@ -79,13 +79,55 @@ class Profile extends Relational
 	);
 
 	/**
-	 * Get parent member
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'value',
+		'checked'
+	);
+
+	/**
+	 * Generates automatic value field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticValue($data)
+	{
+		if (!isset($data['value']) || !$data['value'])
+		{
+			$data['value'] = $data['label'];
+		}
+
+		return $data['value'];
+	}
+
+	/**
+	 * Generates automatic checked field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticChecked($data)
+	{
+		if (!isset($data['checked']))
+		{
+			$data['checked'] = 0;
+		}
+
+		return (int)$data['checked'];
+	}
+
+	/**
+	 * Get parent field
 	 *
 	 * @return  object
 	 */
-	public function member()
+	public function field()
 	{
-		return $this->belongsToOne('Member', 'user_id');
+		return $this->belongsToOne('Field', 'field_id');
 	}
 
 	/**
@@ -108,52 +150,5 @@ class Profile extends Relational
 		}
 
 		return $data['ordering'];
-	}
-
-	/**
-	 * Generates automatic ordering field value
-	 *
-	 * @param   string   $profile_key
-	 * @param   integer  $user_id
-	 * @return  object
-	 */
-	public static function oneByKeyAndUser($profile_key, $user_id)
-	{
-		return self::all()
-			->whereEquals('profile_key', $profile_key)
-			->whereEquals('user_id', $user_id)
-			->row();
-	}
-
-	/**
-	 * Helper method to collect multi-value fields
-	 *
-	 * @param   mixed
-	 * @return  array
-	 */
-	public static function collect($data)
-	{
-		$arr = array();
-
-		foreach ($data as $profile)
-		{
-			if (!isset($arr[$profile->get('profile_key')]))
-			{
-				$arr[$profile->get('profile_key')] = $profile->get('profile_value');
-			}
-			else
-			{
-				$values = $arr[$profile->get('profile_key')];
-				if (!is_array($values))
-				{
-					$values = array($values);
-				}
-				$values[] = $profile->get('profile_value');
-
-				$arr[$profile->get('profile_key')] = $values;
-			}
-		}
-
-		return $arr;
 	}
 }

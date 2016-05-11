@@ -37,6 +37,7 @@ require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'note.php');
 require_once(__DIR__ . DS . 'quota.php');
+require_once(__DIR__ . DS . 'host.php');
 
 /**
  * User model
@@ -92,6 +93,16 @@ class Member extends User
 	}
 
 	/**
+	 * Get hosts
+	 *
+	 * @return  object
+	 */
+	public function hosts()
+	{
+		return $this->oneToMany('Host', 'uidNumber');
+	}
+
+	/**
 	 * Gets an attribute by key
 	 *
 	 * This will not retrieve properties directly attached to the model,
@@ -106,11 +117,19 @@ class Member extends User
 	 */
 	public function get($key, $default = null)
 	{
+		if ($key == 'tags')
+		{
+			return $this->tags();
+		}
+
 		if (!$this->hasAttribute($key) && !$this->profileLoaded)
 		{
-			foreach ($this->profiles()->ordered()->rows() as $field)
+			// Collect multi-value fields into arrays
+			$data = Profile::collect($this->profiles()->ordered()->rows());
+
+			foreach ($data as $k => $v)
 			{
-				$this->set($field->get('profile_key'), $field->get('profile_value'));
+				$this->set($k, $v);
 			}
 
 			$this->profileLoaded = true;
@@ -128,77 +147,6 @@ class Member extends User
 	{
 		return ($this->get('emailConfirmed') == 1);
 	}
-
-	/**
-	 * Get a user's picture
-	 *
-	 * @param   integer  $anonymous  Is user anonymous?
-	 * @param   boolean  $thumbnail  Show thumbnail or full picture?
-	 * @param   boolean  $serveFile  Serve file?
-	 * @return  string
-	 */
-	/*public function picture($anonymous=0, $thumbnail=true, $serveFile=true)
-	{
-		// User doesn't exist? Force to anonymous
-		if (!$this->get('id'))
-		{
-			$anonymous = 1;
-		}
-
-		// Display picture only if not anonymous
-		if (!$anonymous)
-		{
-			$path = PATH_APP . DS . 'site' . DS . 'members' . DS . \Hubzero\Utility\String::pad($this->get('id'), 5);
-
-			$file = ($thumbnail ? 'thumb.png' : 'profile.png');
-
-			if (file_exists($path . DS . $file))
-			{
-				return with(new \Hubzero\Content\Moderator($path . DS . $file))->getUrl();
-			}
-
-			$config = \Component::params('com_members');
-
-			// Do we have a picture processor?
-			if ($processor = $config->get('picture', 'initialcon'))
-			{
-				// Build the class name
-				$cls = __NAMESPACE__ . '\\Picture\\' . ucfirst($processor);
-
-				// If the class doesn't exist, try to load it
-				if (!class_exists($cls))
-				{
-					$inc = __DIR__ . DS . 'picture' . DS . $processor . '.php';
-
-					if (file_exists($inc))
-					{
-						include_once $inc;
-					}
-				}
-
-				// If class exists, instantiate the processor
-				// and get the user picture
-				if (class_exists($cls))
-				{
-					$processor = new $cls([
-						'path'          => $path,
-						'name'          => $this->get('name'),
-						'pictureName'   => 'profile.png',
-						'thumbnailName' => 'thumb.png',
-						'fallback'      => $config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')
-					]);
-
-					if ($picture = $processor->picture($this->get('email'), $thumbnail))
-					{
-						return $picture;
-					}
-				}
-			}
-		}
-
-		// Return the default system pic
-		return parent::picture($anonymous, $thumbnail, $serveFile);
-	}*/
 
 	/**
 	 * Generate and return various links to the entry
@@ -295,6 +243,11 @@ class Member extends User
 
 		foreach ($attribs as $key => $val)
 		{
+			if ($key == 'accessgroups')
+			{
+				continue;
+			}
+
 			if (!isset($columns[$key]))
 			{
 				$field = Profile::oneByKeyAndUser($key, $this->get('id'));
@@ -327,11 +280,6 @@ class Member extends User
 		{
 			// Reset the data to the way it was before save attempt
 			$this->set($attribs);
-		}
-		else
-		{
-			// Trigger the onAftereStoreUser event
-			//Event::trigger('user.onUserAfterSave', array($attribs, false, true, null));
 		}
 
 		return $result;

@@ -41,16 +41,16 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -64,11 +64,11 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  Profile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -86,8 +86,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//include address library
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		//require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
+		//require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 		$arr = array(
 			'html' => '',
@@ -97,9 +98,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		// Build the final HTML
 		if ($returnhtml)
 		{
-			$content = '';
 			$this->user   = $user;
-			$this->member = \Hubzero\User\Profile::getInstance($member->get('id'));
+			$this->member = $member;
 			$this->option = $option;
 			$this->areas  = $areas;
 
@@ -115,36 +115,17 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 				default:              $arr['html'] = $this->display();
 			}
 		}
+
 		return $arr;
 	}
 
 	/**
 	 * View the profile page
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function display()
 	{
-		// Find out which fields are hidden, optional, or required
-		$registration = new \Hubzero\Base\Object();
-		$registration->Fullname     = $this->_registrationField('registrationFullname','RRRR','edit');
-		$registration->Email        = $this->_registrationField('registrationEmail','RRRR','edit');
-		$registration->URL          = $this->_registrationField('registrationURL','HHHH','edit');
-		$registration->Phone        = $this->_registrationField('registrationPhone','HHHH','edit');
-		$registration->Employment   = $this->_registrationField('registrationEmployment','HHHH','edit');
-		$registration->Organization = $this->_registrationField('registrationOrganization','HHHH','edit');
-		$registration->Citizenship  = $this->_registrationField('registrationCitizenship','HHHH','edit');
-		$registration->Residency    = $this->_registrationField('registrationResidency','HHHH','edit');
-		$registration->Sex          = $this->_registrationField('registrationSex','HHHH','edit');
-		$registration->Disability   = $this->_registrationField('registrationDisability','HHHH','edit');
-		$registration->Hispanic     = $this->_registrationField('registrationHispanic','HHHH','edit');
-		$registration->Race         = $this->_registrationField('registrationRace','HHHH','edit');
-		$registration->Interests    = $this->_registrationField('registrationInterests','HHHH','edit');
-		$registration->Reason       = $this->_registrationField('registrationReason','HHHH','edit');
-		$registration->OptIn        = $this->_registrationField('registrationOptIn','HHHH','edit');
-		$registration->address      = $this->_registrationField('registrationAddress','OOOO','edit');
-		$registration->ORCID        = $this->_registrationField('registrationORCID','OOOO','edit');
-
 		//get member params
 		$rparams = new \Hubzero\Config\Registry($this->member->get('params'));
 
@@ -152,181 +133,86 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$params = $this->params;
 		$params->merge($rparams);
 
-		$this->view = $this->view('default', 'index');
-
-		$registration_update = null;
+		$xreg = null;
 
 		if (App::get('session')->get('registration.incomplete'))
 		{
 			$xreg = new \Components\Members\Models\Registration();
-
-			$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
-			if (is_object($xprofile))
-			{
-				$xreg->loadProfile($xprofile);
-			}
-			else
-			{
-				$xreg->loadAccount(User::getInstance());
-			}
+			$xreg->loadProfile($this->member);
 
 			$check = $xreg->check('update');
+
 			if ($check)
 			{
 				App::get('session')->set('registration.incomplete', 0);
 				App::redirect($_SERVER['REQUEST_URI']);
 			}
-			else
-			{
-				$registration_update = $xreg;
-			}
 		}
 
-		//get profile completeness
-		$this->view->completeness = $this->getProfileCompleteness($registration, $this->member);
+		$fields = Components\Members\Models\Profile\Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->where('action_edit', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			->ordered()
+			->rows();
 
-		$this->view->option = 'com_members';
-		$this->view->profile = $this->member;
-		$this->view->registration = $registration;
-		$this->view->registration_update = $registration_update;
-		$this->view->params = $params;
+		$view = $this->view('default', 'index')
+			->set('params', $params)
+			->set('option', 'com_members')
+			->set('profile', $this->member)
+			->set('fields', $fields)
+			->set('completeness', $this->getProfileCompleteness($fields, $this->member))
+			->set('registration_update', $xreg);
 
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		return $this->view->loadTemplate();
-	}
-
-	/**
-	 * Return if a field is required, option, read only, or hidden
-	 *
-	 * @param      string  $name    Property name
-	 * @param      string  $default Default property value
-	 * @param      string  $task    Task to look up value for
-	 * @return     string
-	 */
-	private function _registrationField($name, $default, $task = 'create')
-	{
-		switch ($task)
-		{
-			case 'register':
-			case 'create': $index = 0; break;
-			case 'proxy':  $index = 1; break;
-			case 'update': $index = 2; break;
-			case 'edit':   $index = 3; break;
-			default:       $index = 0; break;
-		}
-
-		$hconfig = Component::params('com_members');
-		$default = str_pad($default, 4, '-');
-		$configured = $hconfig->get($name);
-
-		if (empty($configured))
-		{
-			$configured = $default;
-		}
-		$length = strlen($configured);
-		if ($length > $index)
-		{
-			$value = substr($configured, $index, 1);
-		}
-		else
-		{
-			$value = substr($default, $index, 1);
-		}
-
-		switch ($value)
-		{
-			case 'R': return(REG_REQUIRED);
-			case 'O': return(REG_OPTIONAL);
-			case 'U': return(REG_READONLY);
-			case 'H':
-			case '-':
-			default : return(REG_HIDE);
-		}
+		return $view
+			->setErrors($this->getErrors())
+			->loadTemplate();
 	}
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      array  $fields  Fields filled in
-	 * @param      object $profile MembersProfile
-	 * @return     integer
+	 * @param   array    $fields   Fields filled in
+	 * @param   object   $profile  Profile
+	 * @return  integer
 	 */
 	public function getProfileCompleteness($fields, $profile)
 	{
 		//default vars
 		$num_fields = 0;
 		$num_filled_fields = 0;
-		$_property_map = array(
-			'Fullname' 		=> 'name',
-			'Email' 		=> 'email',
-			'URL' 			=> 'web',
-			'Phone' 		=> 'phone',
-			'Employment' 	=> 'orgtype',
-			'Organization' 	=> 'org',
-			'Citizenship' 	=> 'countryorigin',
-			'Residency' 	=> 'countryresident',
-			'Sex' 			=> 'sex',
-			'Disability' 	=> 'disability',
-			'Hispanic'		=> 'hispanic',
-			'Race'			=> 'race',
-			'Bio'			=> 'bio',
-			'Interests' 	=> 'tags',
-			'OptIn' 		=> 'mailPreferenceOption',
-			'ORCID'			=> 'orcid'
-		);
-
-		//unset errors from the fields object
-		$fields->setErrors(array());
-
-		//load the user profile
-		$registration = new \Components\Members\Models\Registration();
-		$registration->loadProfile($profile);
-
-		//add tags to the registration object
-		$database = App::get('db');
-		$mt = new \Components\Members\Models\Tags($profile->get('uidNumber'));
-		$registration->_registration['tags'] = $mt->render('string');
-
-		//add bio to the registration object
-		$fields->Bio = REG_OPTIONAL;
-		$registration->_registration['bio'] = $profile->get("bio");
 
 		//loop through each field to see if we want to count it
-		foreach ($fields as $k => $v)
+		foreach ($fields as $field)
 		{
-			//if the field is anything button hidden we want to count it
-			if (in_array($v, array(REG_REQUIRED, REG_OPTIONAL, REG_READONLY)))
+			// if the field is anything button hidden we want to count it
+			if ($field->get('type') != 'hidden')
 			{
-				//check if we have a mapping (excludes certain unused vars)
-				if (isset($_property_map[$k]))
+				//add to the number of fields count
+				$num_fields++;
+
+				//check to see if we have it filled in
+				$value = $profile->get($field->get('name'));
+				$type = gettype($value);
+
+				if (($type == 'array' && !empty($value)) || ($type == 'string' && $value != ''))
 				{
-					//add to the number of fields count
-					$num_fields++;
-
-					//check to see if we have it filled in
-					$value = $registration->get($_property_map[$k]);
-					$type = gettype($registration->get($_property_map[$k]));
-
-					if (($type == 'array' && !empty($value)) || ($type == 'string' && $value != ''))
-					{
-						$num_filled_fields++;
-					}
+					$num_filled_fields++;
 				}
 			}
 		}
 
-		//return percentage
+		// return percentage
 		return number_format(($num_filled_fields/$num_fields) * 100, 0);
 	}
 
 	/**
 	 * Method to add a user address
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addAddress()
 	{
@@ -336,7 +222,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method to edit a user address
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editAddress()
 	{
@@ -370,7 +256,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method to save a user address
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveAddress()
 	{
@@ -409,13 +295,12 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
 			'passed'
 		);
-		return;
 	}
 
 	/**
 	 * Method to delete a user address
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteAddress()
 	{
@@ -462,6 +347,5 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
 			'passed'
 		);
-		return;
 	}
 }

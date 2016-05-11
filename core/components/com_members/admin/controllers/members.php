@@ -33,6 +33,9 @@ namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Models\Member;
 use Components\Members\Helpers;
+use Components\Members\Models\Profile;
+use Components\Members\Models\Profile\Field;
+use Components\Members\Models\Profile\Option;
 use Hubzero\Access\Group as Accessgroup;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Validate;
@@ -44,6 +47,8 @@ use User;
 use Date;
 use Lang;
 use App;
+
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 /**
  * Manage site members
@@ -64,6 +69,7 @@ class Members extends AdminController
 		$this->registerTask('apply', 'save');
 		$this->registerTask('confirm', 'state');
 		$this->registerTask('unconfirm', 'state');
+		$this->registerTask('applyprofile', 'saveprofile');
 
 		parent::execute();
 	}
@@ -171,39 +177,39 @@ class Members extends AdminController
 
 		if ($filters['search'])
 		{
-			$entries->whereLike($a . 'name', strtolower((string)$filters['search']), 1)
-				->orWhereLike($a . 'username', strtolower((string)$filters['search']), 1)
-				->orWhereLike($a . 'email', strtolower((string)$filters['search']), 1)
+			$entries->whereLike($a . '.name', strtolower((string)$filters['search']), 1)
+				->orWhereLike($a . '.username', strtolower((string)$filters['search']), 1)
+				->orWhereLike($a . '.email', strtolower((string)$filters['search']), 1)
 				->resetDepth();
 		}
 
 		if ($filters['registerDate'])
 		{
-			$entries->where($a . 'registerDate', '>=', $filters['registerDate']);
+			$entries->where($a . '.registerDate', '>=', $filters['registerDate']);
 		}
 
 		if ($filters['access'] > 0)
 		{
-			$entries->whereEquals($a . 'access', (int)$filters['access']);
+			$entries->whereEquals($a . '.access', (int)$filters['access']);
 		}
 
 		if (is_numeric($filters['state']))
 		{
-			$entries->whereEquals($a . 'block', (int)$filters['state']);
+			$entries->whereEquals($a . '.block', (int)$filters['state']);
 		}
 
 		if (is_numeric($filters['approved']))
 		{
-			$entries->whereEquals($a . 'approved', (int)$filters['approved']);
+			$entries->whereEquals($a . '.approved', (int)$filters['approved']);
 		}
 
 		if ($filters['activation'] < 0)
 		{
-			$entries->where($a . 'activation', '<', 0);
+			$entries->where($a . '.activation', '<', 0);
 		}
 		if ($filters['activation'] > 0)
 		{
-			$entries->where($a . 'activation', '>', 0);
+			$entries->where($a . '.activation', '>', 0);
 		}
 
 		// Apply the range filter.
@@ -252,12 +258,12 @@ class Members extends AdminController
 
 			if ($range == 'post_year')
 			{
-				$entries->where($a . 'registerDate', '<', $dStart->format('Y-m-d H:i:s'));
+				$entries->where($a . '.registerDate', '<', $dStart->format('Y-m-d H:i:s'));
 			}
 			else
 			{
-				$entries->where($a . 'registerDate', '>=', $dStart->format('Y-m-d H:i:s'));
-				$entries->where($a . 'registerDate', '<=', $dNow->format('Y-m-d H:i:s'));
+				$entries->where($a . '.registerDate', '>=', $dStart->format('Y-m-d H:i:s'));
+				$entries->where($a . '.registerDate', '<=', $dNow->format('Y-m-d H:i:s'));
 			}
 		}
 
@@ -464,6 +470,14 @@ class Members extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
 		// Incoming profile edits
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
@@ -538,7 +552,7 @@ class Members extends AdminController
 			// Check that at least one of our new groups is Super Admin
 			$stillSuperAdmin = false;
 
-			foreach ($fields['groups'] as $group)
+			foreach ($fields['accessgroups'] as $group)
 			{
 				$stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : \JAccess::checkGroup($group, 'core.admin'));
 			}
@@ -558,92 +572,138 @@ class Members extends AdminController
 		}
 
 		// Save profile data
-		/*
-		$user->set('orcid', trim($p['orcid']));
-		$user->set('url', trim($p['url']));
-		$user->set('phone', trim($p['phone']));
-		$user->set('orgtype', trim($p['orgtype']));
-		$user->set('organization', trim($p['organization']));
-		$user->set('bio', trim($p['bio']));
-		if (isset($p['public']))
-		{
-			$user->set('public',$p['public']);
-		}
-		else
-		{
-			$user->set('public',0);
-		}
-		$user->set('modifiedDate', Date::toSql());
-		$user->set('homeDirectory', trim($p['homeDirectory']));
-		$user->set('loginShell', trim($p['loginShell']));
-		/*if (isset($fields['sendEmail']))
-		{
-			$user->set('sendEmail', (int)$fields['sendEmail']);
-		}
-		else
-		{
-			$user->set('sendEmail', -1);
-		}
+		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
 
-		if (!empty($p['gender']))
+		foreach ($profile as $key => $data)
 		{
-			$user->set('gender', trim($p['gender']));
-		}
-
-		if (!empty($p['disability']))
-		{
-			if ($p['disability'] == 'yes')
+			if (isset($profile[$key . '_other']))
 			{
-				if (!is_array($p['disabilities']))
+				if (is_array($profile[$key]))
 				{
-					$p['disabilities'] = array();
-				}
-				if (count($p['disabilities']) == 1
-				 && isset($p['disabilities']['other'])
-				 && empty($p['disabilities']['other']))
-				{
-					$profile->set('disability',array('no'));
+					$profile[$key][] = $profile[$key . '_other'];
 				}
 				else
 				{
-					$profile->set('disability',$p['disabilities']);
+					$profile[$key] = $profile[$key . '_other'];
+				}
+
+				unset($profile[$key . '_other']);
+			}
+		}
+
+		$keep = array();
+
+		foreach ($user->profiles()->rows() as $field)
+		{
+			// Remove any entries not in the incoming data
+			if (!isset($profile[$field->get('profile_key')]))
+			{
+				$field->destroy();
+				continue;
+			}
+
+			// Push to the list of fields we want to keep
+			if (!isset($keep[$field->get('profile_key')]))
+			{
+				$keep[$field->get('profile_key')] = $field;
+			}
+			else
+			{
+				// Multi-value field
+				$values = $keep[$field->get('profile_key')];
+				$values = is_array($values) ? $values : array($values->get('profile_value') => $values);
+				$values[$field->get('profile_value')] = $field;
+
+				$keep[$field->get('profile_key')] = $values;
+			}
+		}
+
+		$i = 1;
+
+		foreach ($profile as $key => $data)
+		{
+			// Is it a multi-value field?
+			if (is_array($data))
+			{
+				foreach ($data as $val)
+				{
+					$val = trim($val);
+
+					// Skip empty values
+					if (!$val)
+					{
+						continue;
+					}
+
+					$field = null;
+
+					// Try to find an existing entry
+					if (isset($keep[$key]) && is_array($keep[$key]))
+					{
+						if (isset($keep[$key][$val]))
+						{
+							$field = $keep[$key][$val];
+							unset($keep[$key][$val]);
+						}
+					}
+
+					if (!$field)
+					{
+						$field = Profile::blank();
+					}
+
+					$field->set(array(
+						'user_id'       => $user->get('id'),
+						'profile_key'   => $key,
+						'profile_value' => $val,
+						'ordering'      => $i,
+						//'access'        => $data['access']
+					));
+
+					$field->save();
+				}
+
+				// Remove any values not already found
+				if (isset($keep[$key]) && is_array($keep[$key]))
+				{
+					foreach ($keep[$key] as $f)
+					{
+						$f->destroy();
+					}
 				}
 			}
 			else
 			{
-				$profile->set('disability',array($p['disability']));
-			}
-		}
+				$val = trim($data);
 
-		if (!empty($p['hispanic']))
-		{
-			if ($p['hispanic'] == 'yes')
-			{
-				if (!is_array($p['hispanics']))
+				// Skip empty values
+				if (!$val)
 				{
-					$p['hispanics'] = array();
+					continue;
 				}
-				if (count($p['hispanics']) == 1
-				 && isset($p['hispanics']['other'])
-				 && empty($p['hispanics']['other']))
+
+				if (isset($keep[$key]))
 				{
-					$profile->set('hispanic', array('no'));
+					$field = $keep[$key];
 				}
 				else
 				{
-					$profile->set('hispanic',$p['hispanics']);
+					$field = Profile::blank();
 				}
-			}
-			else
-			{
-				$profile->set('hispanic',array($p['hispanic']));
-			}
-		}
 
-		if (isset($p['race']) && is_array($p['race']))
-		{
-			$profile->set('race',$p['race']);
-		}*/
+				$field->set(array(
+					'user_id'       => $user->get('id'),
+					'profile_key'   => $key,
+					'profile_value' => $val,
+					'ordering'      => $i,
+					//'access'        => $data['access']
+				));
+
+				$field->save();
+			}
+
+			$i++;
+		}
 
 		// Do we have a new pass?
 		$newpass = trim(Request::getVar('newpass', '', 'post'));
@@ -654,14 +714,15 @@ class Members extends AdminController
 			$password_rules = \Hubzero\Password\Rule::all()
 					->whereEquals('enabled', 1)
 					->rows();
-			$validated      = \Hubzero\Password\Rule::verify($newpass, $password_rules, $user->get('id'));
+
+			$validated = \Hubzero\Password\Rule::verify($newpass, $password_rules, $user->get('id'));
 
 			if (!empty($validated))
 			{
 				// Set error
 				Notify::error(Lang::txt('COM_MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
 				$this->validated = $validated;
-				$this_task = 'apply';
+				$this->_task = 'apply';
 			}
 			else
 			{
@@ -1108,5 +1169,199 @@ class Members extends AdminController
 			->set('levels', $levels)
 			->set('components', $components)
 			->display();
+	}
+
+	/**
+	 * Show a form for building a profile schema
+	 *
+	 * @return  void
+	 */
+	public function profileTask()
+	{
+		Request::setVar('hidemainmenu', 1);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
+		$fields = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->ordered()
+			->rows();
+
+		$this->view
+			->set('fields', $fields)
+			->setLayout('profile')
+			->display();
+	}
+
+	/**
+	 * Save profile schema
+	 *
+	 * @return  void
+	 */
+	public function saveprofileTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
+		// Incoming data
+		$profile = json_decode(Request::getVar('profile', '{}', 'post', 'none', 2));
+
+		// Get the old schema
+		$fields = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->ordered()
+			->rows();
+
+		// Collect old fields
+		$oldFields = array();
+		foreach ($fields as $oldField)
+		{
+			$oldFields[$oldField->get('id')] = $oldField;
+		}
+
+		foreach ($profile->fields as $i => $element)
+		{
+			$field = null;
+
+			$fid = (isset($element->field_id) ? $element->field_id : 0);
+
+			if ($fid && isset($oldFields[$fid]))
+			{
+				$field = $oldFields[$fid];
+
+				// Remove found fields from the list
+				// Anything remaining will be deleted
+				unset($oldFields[$fid]);
+			}
+
+			$field = ($field ?: Field::oneOrNew($fid));
+			$field->set(array(
+				'type'          => (string) $element->field_type,
+				'label'         => (string) $element->label,
+				'name'          => (string) $element->name,
+				'description'   => (isset($element->field_options->description) ? (string) $element->field_options->description : ''),
+				/*'required'     => (isset($element->required) ? (int) $element->required : 0),
+				'readonly'     => (isset($element->readonly) ? (int) $element->readonly : 0),
+				'disabled'     => (isset($element->disabled) ? (int) $element->disabled : 0),*/
+				'ordering'      => ($i + 1),
+				'access'        => (isset($element->access) ? (int) $element->access : 0),
+				'option_other'  => (isset($element->field_options->include_other_option) ? (int) $element->field_options->include_other_option : ''),
+				'option_blank'  => (isset($element->field_options->include_blank_option) ? (int) $element->field_options->include_blank_option : ''),
+				'action_create' => (isset($element->create) ? (int) $element->create : 1),
+				'action_update' => (isset($element->update) ? (int) $element->update : 1),
+				'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1)
+			));
+
+			if ($field->get('type') == 'dropdown')
+			{
+				$field->set('type', 'select');
+			}
+			if ($field->get('type') == 'paragraph')
+			{
+				$field->set('type', 'textarea');
+			}
+
+			if (!$field->save())
+			{
+				Notify::error($field->getError());
+				continue;
+			}
+
+			// Collect old options
+			$oldOptions = array();
+			foreach ($field->options as $oldOption)
+			{
+				$oldOptions[$oldOption->get('id')] = $oldOption;
+			}
+
+			// Does this field have any set options?
+			if (isset($element->field_options->options))
+			{
+				foreach ($element->field_options->options as $k => $opt)
+				{
+					$option = null;
+
+					$oid = (isset($opt->field_id) ? $opt->field_id : 0);
+
+					if ($oid && isset($oldOptions[$oid]))
+					{
+						$option = $oldOptions[$oid];
+
+						// Remove found options from the list
+						// Anything remaining will be deleted
+						unset($oldOptions[$oid]);
+					}
+
+					$option = ($option ?: Option::oneOrNew($oid));
+					$option->set(array(
+						'field_id' => $field->get('id'),
+						'label'    => (string) $opt->label,
+						'value'    => (isset($opt->value)   ? (string) $opt->value : ''),
+						'checked'  => (isset($opt->checked) ? (int) $opt->checked : 0),
+						'ordering' => ($k + 1)
+					));
+
+					if (!$option->save())
+					{
+						Notify::error($option->getError());
+						continue;
+					}
+				}
+			}
+
+			// Remove any options not in the incoming list
+			foreach ($oldOptions as $option)
+			{
+				if (!$option->destroy())
+				{
+					Notify::error($option->getError());
+					continue;
+				}
+			}
+		}
+
+		// Remove any fields not in the incoming list
+		foreach ($oldFields as $field)
+		{
+			if (!$field->destroy())
+			{
+				Notify::error($field->getError());
+				continue;
+			}
+		}
+
+		// Set success message
+		Notify::success(Lang::txt('COM_MEMBERS_PROFILE_SCHEMA_SAVED'));
+
+		// Drop through to edit form?
+		if ($this->getTask() == 'applyprofile')
+		{
+			// Redirect, instead of falling through, to avoid caching issues
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false)
+			);
+			//return $this->profileTask();
+		}
+
+		// Redirect
+		$this->cancelTask();
 	}
 }

@@ -141,7 +141,7 @@ if (!$surname)
 				{
 					$groups[] = $g->get('group_id');
 				}
-				echo Html::access('usergroups', 'fields[groups]', $groups, true); ?>
+				echo Html::access('usergroups', 'fields[accessgroups]', $groups, true); ?>
 			</div>
 		</fieldset>
 	</div>

@@ -55,7 +55,7 @@ class Hosts extends AdminController
 		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(Lang::txt('MEMBERS_NO_ID'));
+			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
 			return $this->displayTask();
 		}
 
@@ -64,21 +64,17 @@ class Hosts extends AdminController
 
 		// Incoming host
 		$host = Request::getVar('host', '');
+
 		if (!$host)
 		{
-			$this->setError(Lang::txt('MEMBERS_NO_HOST'));
+			$this->setError(Lang::txt('COM_MEMBERS_NO_HOST'));
 			return $this->displayTask($id);
 		}
 
-		$hosts = $profile->get('host');
-		$hosts[] = $host;
-
 		// Update the hosts list
-		$profile->set('host', $hosts);
-
-		if (!$profile->save())
+		if (Components\Members\Models\Host::addUserToHost($profile->get('id'), $host))
 		{
-			$this->setError($profile->getError());
+			$this->setError(Lang::txt('Failed to add host "%s"', $host));
 		}
 
 		// Push through to the hosts view
@@ -114,22 +110,12 @@ class Hosts extends AdminController
 			return $this->displayTask($profile);
 		}
 
-		$hosts = $profile->get('host');
-		$a = array();
-		foreach ($hosts as $h)
+		foreach ($profile->hosts as $h)
 		{
-			if ($h != $host)
+			if ($h->get('host') == $host)
 			{
-				$a[] = $h;
+				$h->destroy();
 			}
-		}
-
-		// Update the hosts list
-		$profile->set('host', $a);
-
-		if (!$profile->save())
-		{
-			$this->setError($profile->getError());
 		}
 
 		// Push through to the hosts view
@@ -155,7 +141,7 @@ class Hosts extends AdminController
 		// Output the HTML
 		$this->view
 			->set('id', $profile->get('id'))
-			->set('rows', $profile->get('host'))
+			->set('rows', $profile->hosts)
 			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();

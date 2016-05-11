@@ -32,6 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+Document::addStyleDeclaration('
+	.toolbar-box .icon-32-buildprofile:before { content: "\f007"; }
+	.toolbar-box .icon-32-buildprofile:after { content: "\f0ad"; right: 0px; bottom: -2px; }
+');
+
 $canDo = Components\Members\Helpers\Admin::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS'));
@@ -40,11 +45,13 @@ if ($canDo->get('core.admin'))
 	Toolbar::preferences($this->option);
 	Toolbar::spacer();
 
-	Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
+	//Toolbar::custom('profile', 'buildprofile', '', 'COM_MEMBERS_PROFILE', false);
+	Toolbar::getRoot()->appendButton('Link', 'buildprofile', 'COM_MEMBERS_PROFILE', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile'));
 	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
+	Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
 	Toolbar::publishList('confirm', 'COM_MEMBERS_CONFIRM');
 	Toolbar::unpublishList('unconfirm', 'COM_MEMBERS_UNCONFIRM');
 	Toolbar::spacer();

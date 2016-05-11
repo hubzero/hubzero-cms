@@ -89,12 +89,15 @@
 	#profile .section-edit-container .notice {
 		margin: 10px 0 10px 25%;
 	}
+	#profile .section-edit-content .input-wrap {
+		border-bottom: 1px solid #efefef;
+		margin-bottom: 1em;
+		padding: 0 0 1em 0;
+	}
 	#profile .section-edit-content label {
 		font-weight: bold;
 		display: block;
-		border-bottom: 1px solid #efefef;
 		padding-bottom: 10px;
-		margin-bottom: 10px;
 	}
 	#profile .section-edit-content label.side-by-side {
 		float:left;
@@ -128,22 +131,25 @@
 	#profile .section-edit-content label.no-padding-right {
 		padding-right: 0;
 	}
-	#profile .section-edit-content label input.input-text,
-	#profile .section-edit-content label select.input-select {
+	#profile .section-edit-content .input-wrap input[type=password],
+	#profile .section-edit-content .input-wrap input[type=text],
+	#profile .section-edit-content .input-wrap select,
+	#profile .section-edit-content .input-wrap textarea {
 		display: block;
 		width: 100%;
-		padding: 5px;
+		/*padding: 5px;
 		border: 1px solid #aaa;
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		-ms-box-sizing: border-box;
 		-o-box-sizing: border-box;
 		box-sizing: border-box;
+		*/
 	}
-	#profile .section-edit-content label input.input-text:focus {
+	/*#profile .section-edit-content label input.input-text:focus {
 		outline:none;
 		border:1px solid #065eff;
-	}
+	}*/
 
 	.section-edit-submit:disabled {
 		background: #81adfc;
@@ -239,6 +245,25 @@
 	}
 	#profile_bio {
 		width:99%;
+	}
+
+	#profile .section-edit-content .input-wrap ul {
+		list-style: none;
+		margin: 0;
+	}
+	#profile .section-edit-content .input-wrap li {
+		margin: 0;
+		padding: 0.2em 0;
+	}
+	#profile .section-edit-content .input-wrap li label,
+	#profile .section-edit-content .input-wrap li input[type=radio],
+	#profile .section-edit-content .input-wrap li input[type=checkbox] {
+		width: auto;
+		display: inline-block;
+		margin-right: 0.5em;
+	}
+	#profile .section-edit-content .input-wrap li label {
+		font-weight: normal;
 	}
 
 /* Member Profile Completeness */

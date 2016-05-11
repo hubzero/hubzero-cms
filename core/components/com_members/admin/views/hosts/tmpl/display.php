@@ -56,14 +56,14 @@ defined('_HZEXEC_') or die();
 		<table class="paramlist admintable">
 			<tbody>
 				<?php
-				if (count($this->rows) > 0)
+				if ($this->rows)
 				{
 					foreach ($this->rows as $row)
 					{
 						?>
 						<tr>
-							<td class="paramlist_key"><?php echo $row; ?></td>
-							<td class="paramlist_value"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=remove&host=' . $row . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a></td>
+							<td class="paramlist_key"><?php echo $row->get('host'); ?></td>
+							<td class="paramlist_value"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=remove&host=' . $row->get('host') . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a></td>
 						</tr>
 						<?php
 					}
