@@ -125,11 +125,11 @@ class Member extends User
 		if (!$this->hasAttribute($key) && !$this->profileLoaded)
 		{
 			// Collect multi-value fields into arrays
-			$data = Profile::collect($this->profiles()->ordered()->rows());
+			$data = Profile::collect($this->profiles);
 
-			foreach ($data as $k => $v)
+			foreach ($data as $key => $value)
 			{
-				$this->set($k, $v);
+				$this->set($key, $value);
 			}
 
 			$this->profileLoaded = true;

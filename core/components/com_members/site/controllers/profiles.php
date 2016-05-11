@@ -288,6 +288,10 @@ class Profiles extends SiteController
 
 		// Build query
 		$entries = Member::all()
+			->including(['profiles', function ($profile){
+				$profile
+					->select('*');
+			}])
 			->whereEquals('block', 0)
 			->whereEquals('activation', 1)
 			->where('approved', '>', 0);
