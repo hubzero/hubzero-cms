@@ -19,21 +19,21 @@ class Migration20160511142701ComMembers extends Base
 		{
 			if (!$this->db->tableHasField('#__user_profiles', 'id'))
 			{
-				$query = "ALTER TABLE `#__user_profiles` ADD COLUMN `id` INT(11) UNSIGNED  NOT NULL  AUTO_INCREMENT;";
+				$query = "ALTER TABLE `#__user_profiles` ADD COLUMN `id` INT(11) UNSIGNED  PRIMARY KEY  NOT NULL  AUTO_INCREMENT  FIRST;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if ($this->db->tableHasKey('#__user_profiles', 'idx_user_id_profile_key'))
 			{
-				$query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_user_id_profile_key`";
+				$query = "ALTER TABLE `#__user_profiles` DROP KEY `idx_user_id_profile_key`";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__user_profiles', 'idx_user_id'))
 			{
-				$query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_user_id` (`user_id`)";
+				$query = "ALTER TABLE `#__user_profiles` ADD INDEX `idx_user_id` (`user_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -56,14 +56,14 @@ class Migration20160511142701ComMembers extends Base
 
 			if ($this->db->tableHasKey('#__user_profiles', 'idx_user_id'))
 			{
-				$query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_user_id`";
+				$query = "ALTER TABLE `#__user_profiles` DROP KEY `idx_user_id`";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__user_profiles', 'idx_user_id_profile_key'))
 			{
-				$query = "ALTER TABLE `#__support_tickets` ADD UNIQUE INDEX `idx_user_id_profile_key` (`user_id`,`profile_key`)";
+				$query = "ALTER TABLE `#__user_profiles` ADD UNIQUE INDEX `idx_user_id_profile_key` (`user_id`,`profile_key`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
