@@ -66,6 +66,13 @@ class Groups extends Base
 		$this->cn     = Request::getVar('cn', '');
 		$this->active = Request::getVar('active', '');
 		$this->action = Request::getVar('action', '');
+		$this->task   = Request::getVar('task', '');
+
+		// Handles misrouted request 
+		if ($this->task == 'pages')
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn='. $this->cn . '&controller=pages'));
+		}
 
 		//are we serving up a file
 		$uri = $_SERVER['REQUEST_URI'];
