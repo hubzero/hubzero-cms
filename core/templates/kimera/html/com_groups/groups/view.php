@@ -104,7 +104,16 @@ $created = Date::of($this->group->get('created'))->toLocal(Lang::txt('DATE_FORMA
 				<?php if ($this->tab == 'overview') : ?>
 				<div id="page_header">
 					<h3>
-						<?php echo \Components\Groups\Helpers\View::displayTab($this->group); ?>
+						<?php
+							if (isset($this->trueTab) && $this->trueTab != '')
+							{
+								echo ucfirst($this->trueTab);
+							}
+							else
+							{
+								echo \Components\Groups\Helpers\View::displayTab($this->group);
+							}
+						?>
 					</h3>
 
 					<?php
