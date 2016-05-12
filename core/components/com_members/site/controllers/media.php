@@ -187,7 +187,7 @@ class Media extends SiteController
 		}
 
 		$file = $uploadDirectory . $filename . '.' . $ext;
-		$final_file = $uploadDirectory . 'profile.png';
+		$final_file  = $uploadDirectory . 'profile.png';
 		$final_thumb = $uploadDirectory . 'thumb.png';
 
 		if ($stream)
@@ -443,7 +443,7 @@ class Media extends SiteController
 	/**
 	 * Delete a file in the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{

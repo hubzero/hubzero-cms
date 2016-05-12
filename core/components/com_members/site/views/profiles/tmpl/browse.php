@@ -281,10 +281,10 @@ $this->css()
 								<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>">
 									<?php echo $name; ?>
 								</a>
-								<?php if ($row->get('organization') && $this->registration->Organization != REG_HIDE) { ?>
+								<?php if ($org = $row->get('organization')) { ?>
 									<br />
 									<span class="entry-details">
-										<span class="organization"><?php echo $this->escape(stripslashes($row->get('organization'))); ?></span>
+										<span class="organization"><?php echo $this->escape(stripslashes($org)); ?></span>
 									</span>
 								<?php } ?>
 							</td>

@@ -34,12 +34,15 @@ namespace Components\Members\Site\Controllers;
 
 use Hubzero\Session\Helper as SessionHelper;
 use Hubzero\Component\SiteController;
+use Components\Members\Models\Profile\Field;
+use Components\Members\Models\Profile;
 use Components\Members\Models\Member;
 use Component;
 use Document;
 use Pathway;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Cache;
 use Lang;
@@ -58,7 +61,7 @@ class Profiles extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -290,7 +293,8 @@ class Profiles extends SiteController
 		$entries = Member::all()
 			->including(['profiles', function ($profile){
 				$profile
-					->select('*');
+					->select('*')
+					->whereIn('access', User::getAuthorisedViewLevels());
 			}])
 			->whereEquals('block', 0)
 			->whereEquals('activation', 1)
@@ -362,11 +366,6 @@ class Profiles extends SiteController
 			);
 		}
 
-		// Determine what fields we can display based on registration settings
-		$registration = new \Hubzero\Base\Object();
-		$registration->Fullname     = $this->_registrationField('registrationFullname', 'RRRR', $this->_task);
-		$registration->Organization = $this->_registrationField('registrationOrganization', 'HOOO', $this->_task);
-
 		// Get stats
 		if (!($stats = Cache::get('members.stats')))
 		{
@@ -385,7 +384,6 @@ class Profiles extends SiteController
 			->set('past_month_members', $stats->past_month_members)
 			->set('total_members', $stats->total_members)
 			->set('total_public_members', $stats->total_public_members)
-			->set('registration', $registration)
 			->display();
 	}
 
@@ -1038,11 +1036,10 @@ class Profiles extends SiteController
 	/**
 	 * Show a form for editing a profile
 	 *
-	 * @param   object  $xregistration  Registration
-	 * @param   object  $profile        Profile
+	 * @param   object  $profile  Profile
 	 * @return  void
 	 */
-	public function editTask($xregistration=null, $profile=null)
+	public function editTask($profile=null)
 	{
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -1108,97 +1105,28 @@ class Profiles extends SiteController
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task
 		);
 
-		// Instantiate an xregistration object if we don't already have one
-		// Note: if we already have one then we just came from saveTask()
-		if (!is_object($xregistration))
+		foreach ($this->getErrors() as $error)
 		{
-			$xregistration = new \Components\Members\Models\Registration();
+			Notify::error($error);
 		}
 
-		// Find out which fields are hidden, optional, or required
-		$registration = new \Hubzero\Base\Object();
-		$registration->Username        = $this->_registrationField('registrationUsername', 'RROO', $this->_task);
-		$registration->Password        = $this->_registrationField('registrationPassword', 'RRHH', $this->_task);
-		$registration->ConfirmPassword = $this->_registrationField('registrationConfirmPassword', 'RRHH', $this->_task);
-		$registration->Fullname        = $this->_registrationField('registrationFullname', 'RRRR', $this->_task);
-		$registration->Email           = $this->_registrationField('registrationEmail', 'RRRR', $this->_task);
-		$registration->ConfirmEmail    = $this->_registrationField('registrationConfirmEmail', 'RRRR', $this->_task);
-		$registration->URL             = $this->_registrationField('registrationURL', 'HHHH', $this->_task);
-		$registration->Phone           = $this->_registrationField('registrationPhone', 'HHHH', $this->_task);
-		$registration->Employment      = $this->_registrationField('registrationEmployment', 'HHHH', $this->_task);
-		$registration->Organization    = $this->_registrationField('registrationOrganization', 'HHHH', $this->_task);
-		$registration->Citizenship     = $this->_registrationField('registrationCitizenship', 'HHHH', $this->_task);
-		$registration->Residency       = $this->_registrationField('registrationResidency', 'HHHH', $this->_task);
-		$registration->Sex             = $this->_registrationField('registrationSex', 'HHHH', $this->_task);
-		$registration->Disability      = $this->_registrationField('registrationDisability', 'HHHH', $this->_task);
-		$registration->Hispanic        = $this->_registrationField('registrationHispanic', 'HHHH', $this->_task);
-		$registration->Race            = $this->_registrationField('registrationRace', 'HHHH', $this->_task);
-		$registration->Interests       = $this->_registrationField('registrationInterests', 'HHHH', $this->_task);
-		$registration->Reason          = $this->_registrationField('registrationReason', 'HHHH', $this->_task);
-		$registration->OptIn           = $this->_registrationField('registrationOptIn', 'HHHH', $this->_task);
-		$registration->TOU             = $this->_registrationField('registrationTOU', 'HHHH', $this->_task);
-		$registration->ORCID           = $this->_registrationField('registrationORCID', 'OOOO', $this->_task);
+		$fields = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->where('action_edit', '!=', Field::STATE_HIDDEN)
+			->ordered()
+			->rows();
 
 		// Ouput HTML
 		$this->view
 			->set('title', $title)
 			->set('profile', $profile)
-			->set('registration', $registration)
-			->set('xregistration', $xregistration)
+			->set('fields', $fields)
+			->setLayout('edit')
 			->display();
-	}
-
-	/**
-	 * Get the settings for a particular field
-	 *  H = hidden
-	 *  O = optional
-	 *  R = required
-	 *  U = read only
-	 *
-	 * @param   string  $name     Field name
-	 * @param   string  $default  Default setting
-	 * @param   string  $task     Task being executed
-	 * @return  integer
-	 */
-	private function _registrationField($name, $default, $task = 'create')
-	{
-		switch ($task)
-		{
-			case 'register':
-			case 'create': $index = 0; break;
-			case 'proxy':  $index = 1; break;
-			case 'update': $index = 2; break;
-			case 'edit':   $index = 3; break;
-			default:       $index = 0; break;
-		}
-
-		$hconfig = Component::params('com_members');
-
-		$default = str_pad($default, 4, '-');
-		$configured = $hconfig->get($name);
-		if (empty($configured))
-		{
-			$configured = $default;
-		}
-		$length = strlen($configured);
-		if ($length > $index)
-		{
-			$value = substr($configured, $index, 1);
-		}
-		else
-		{
-			$value = substr($default, $index, 1);
-		}
-
-		switch ($value)
-		{
-			case 'R': return(REG_REQUIRED);
-			case 'O': return(REG_OPTIONAL);
-			case 'H': return(REG_HIDE);
-			case '-': return(REG_HIDE);
-			case 'U': return(REG_READONLY);
-			default : return(REG_HIDE);
-		}
 	}
 
 	/**
@@ -1217,7 +1145,7 @@ class Profiles extends SiteController
 
 		Request::checkToken(array('get', 'post'));
 
-		$no_html = Request::getVar("no_html", 0);
+		$no_html = Request::getVar('no_html', 0);
 
 		// Incoming user ID
 		$id = Request::getInt('id', 0, 'post');
@@ -1228,215 +1156,171 @@ class Profiles extends SiteController
 			App::abort(404, Lang::txt('COM_MEMBERS_NO_ID'));
 		}
 
-		// Incoming profile edits
-		$p = Request::getVar('profile', array(), 'post', 'none', 2);
-		$n = Request::getVar('name', array(), 'post');
-		$a = Request::getVar('access', array(), 'post');
-
 		// Load the profile
-		$profile = Member::oneOrFail($id);
+		$member = Member::oneOrFail($id);
 
-		$oldemail = $profile->get('email');
+		// Name changed?
+		$name = Request::getVar('name', array(), 'post');
 
-		if ($n)
+		if ($name && !empty($name))
 		{
-			$profile->set('givenName', trim($n['first']));
-			$profile->set('middleName', trim($n['middle']));
-			$profile->set('surname', trim($n['last']));
+			$member->set('givenName', trim($name['first']));
+			$member->set('middleName', trim($name['middle']));
+			$member->set('surname', trim($name['last']));
 
-			$name  = trim($n['first']) . ' ';
-			$name .= (trim($n['middle']) != '') ? trim($n['middle']) . ' ' : '';
-			$name .= trim($n['last']);
+			$name  = trim($name['first']) . ' ';
+			$name .= (trim($name['middle']) != '') ? trim($name['middle']) . ' ' : '';
+			$name .= trim($name['last']);
 
-			$profile->set('name', $name);
+			$member->set('name', $name);
 		}
 
-		if (isset($p['bio']))
+		// Set profile access
+		$visibility = Request::getVar('profileaccess', null, 'post');
+
+		if (!is_null($visibility))
 		{
-			$profile->set('bio', trim($p['bio']));
+			$member->set('access', $visibility);
 		}
 
-		if (is_array($a) && count($a) > 0)
-		{
-			foreach ($a as $k => $v)
-			{
-				$v = intval($v);
-				if (!in_array($v, array(0, 1, 2, 3, 4)))
-				{
-					$v = 0;
-				}
-				$profile->setParam('access_' . $k, $v);
-			}
-		}
+		// Check email
+		$oldemail = $member->get('email');
+		$email = Request::getVar('email', null, 'post');
 
-		if (isset($p['access']))
+		if (!is_null($email))
 		{
-			$profile->set('access', $p['access']);
-		}
-
-		// Set some post data for the xregistration class
-		$tags = trim(Request::getVar('tags',''));
-		if (isset($tags))
-		{
-			Request::setVar('interests', $tags, 'post');
-		}
-
-		// Instantiate a new \Components\Members\Models\Registration
-		$xregistration = new \Components\Members\Models\Registration();
-		$xregistration->loadPOST();
-
-		// Push the posted data to the profile
-		// Note: this is done before the required fields check so, if we need to display the edit form, it'll show all the new changes
-		if (!is_null($xregistration->_registration['email']))
-		{
-			$profile->set('email', $xregistration->_registration['email']);
+			$member->set('email', $email);
 
 			// Unconfirm if the email address changed
-			if ($oldemail != $xregistration->_registration['email'])
+			if ($oldemail != $email)
 			{
 				// Get a new confirmation code
 				$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 
-				$profile->set('activation', $confirm);
+				$member->set('activation', $confirm);
 			}
 		}
 
-		if (!is_null($xregistration->_registration['countryresident']))
+		// Receieve email updates?
+		$sendEmail = Request::getVar('sendEmail', null, 'post');
+
+		if (!is_null($sendEmail))
 		{
-			$profile->set('countryresident', $xregistration->_registration['countryresident']);
+			$member->set('sendEmail', $sendEmail);
 		}
 
-		if (!is_null($xregistration->_registration['countryorigin']))
+		// Usage agreement
+		$usageAgreement = Request::getInt('usageAgreement', 0, 'post');
+
+		if (!is_null($usageAgreement))
 		{
-			$profile->set('countryorigin', $xregistration->_registration['countryorigin']);
+			$member->set('usageAgreement', $usageAgreement);
 		}
 
-		if (!is_null($xregistration->_registration['nativetribe']))
-		{
-			$profile->set('nativeTribe', $xregistration->_registration['nativetribe']);
-		}
-
-		if ($xregistration->_registration['org'] != '')
-		{
-			$profile->set('organization', $xregistration->_registration['org']);
-		}
-		elseif ($xregistration->_registration['orgtext'] != '')
-		{
-			$profile->set('organization', $xregistration->_registration['orgtext']);
-		}
-
-		if (!is_null($xregistration->_registration['web']))
-		{
-			$profile->set('url', $xregistration->_registration['web']);
-		}
-
-		if (!is_null($xregistration->_registration['phone']))
-		{
-			$profile->set('phone', $xregistration->_registration['phone']);
-		}
-
-		if (!is_null($xregistration->_registration['orgtype']))
-		{
-			$profile->set('orgtype', $xregistration->_registration['orgtype']);
-		}
-
-		if (!is_null($xregistration->_registration['sex']))
-		{
-			$profile->set('gender', $xregistration->_registration['sex']);
-		}
-
-		if (!is_null($xregistration->_registration['disability']))
-		{
-			$profile->set('disability', $xregistration->_registration['disability']);
-		}
-
-		if (!is_null($xregistration->_registration['hispanic']))
-		{
-			$profile->set('hispanic', $xregistration->_registration['hispanic']);
-		}
-
-		if (!is_null($xregistration->_registration['race']))
-		{
-			$profile->set('race', $xregistration->_registration['race']);
-		}
-
-		if (!is_null($xregistration->_registration['mailPreferenceOption']))
-		{
-			$profile->set('mailPreferenceOption', $xregistration->_registration['mailPreferenceOption']);
-		}
-
-		if (!is_null($xregistration->_registration['usageAgreement']))
-		{
-			$profile->set('usageAgreement', $xregistration->_registration['usageAgreement']);
-		}
-
-		if (!is_null($xregistration->_registration['orcid']))
-		{
-			$profile->set('orcid', $xregistration->_registration['orcid']);
-		}
-
-		$field_to_check = Request::getVar("field_to_check", array());
-
-		// Check that required fields were filled in properly
-		if (!$xregistration->check('edit', $profile->get('uidNumber'), $field_to_check))
-		{
-			if (!$no_html)
-			{
-				$this->_task = 'edit';
-				$this->editTask($xregistration, $profile);
-				return;
-			}
-			else
-			{
-				echo json_encode($xregistration);
-				exit();
-			}
-		}
-
-		//are we declining the terms of use
-		//if yes we want to set the usage agreement to 0 and profile to private
+		// Are we declining the terms of use?
+		// If yes we want to set the usage agreement to 0 and profile to private
 		$declineTOU = Request::getVar('declinetou', 0);
+
 		if ($declineTOU)
 		{
-			$profile->set('access', 0);
-			$profile->set('usageAgreement', 0);
+			$member->set('access', 0);
+			$member->set('usageAgreement', 0);
 		}
-
-		// Set the last modified datetime
-		$profile->set('modifiedDate', Date::toSql());
 
 		// Save the changes
-		if (!$profile->save())
+		if (!$member->save())
 		{
-			App::abort(500, $profile->getError());
+			$this->setError($member->getError());
+			if ($no_html)
+			{
+				echo json_encode($this->getErrors());
+				exit();
+			}
+			return $this->editTask($member);
 		}
 
-		// Process tags
-		if (isset($tags) && in_array('interests', $field_to_check))
+		// Incoming profile edits
+		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+		$access  = Request::getVar('access', array(), 'post');
+
+		$old = Profile::collect($member->profiles);
+		$profile = array_merge($old, $profile);
+
+		// Compile profile data
+		foreach ($profile as $key => $data)
 		{
-			$mt = new \Components\Members\Models\Tags($id);
-			$mt->setTags($tags, $id);
+			if (isset($profile[$key . '_other']))
+			{
+				if (is_array($profile[$key]))
+				{
+					$profile[$key][] = $profile[$key . '_other'];
+				}
+				else
+				{
+					$profile[$key] = $profile[$key . '_other'];
+				}
+
+				unset($profile[$key . '_other']);
+			}
 		}
 
-		$email = $profile->get('email');
-		$name  = $profile->get('name');
+		// Validate profile data
+		$fields = \Components\Members\Models\Profile\Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*');
+			}])
+			->ordered()
+			->rows();
+
+		$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+		$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
+		$form->bind(new \Hubzero\Config\Registry($profile));
+
+		if (!$form->validate($profile))
+		{
+			foreach ($form->getErrors() as $error)
+			{
+				$this->setError($error);
+			}
+			if ($no_html)
+			{
+				echo json_encode($this->getErrors());
+				exit();
+			}
+			return $this->editTask($member);
+		}
+
+		// Save profile data
+		if (!$member->saveProfile($profile, $access))
+		{
+			$this->setError($member->getError());
+			if ($no_html)
+			{
+				echo json_encode($this->getErrors());
+				exit();
+			}
+			return $this->editTask($member);
+		}
+
+		$email = $member->get('email');
 
 		// Make sure certain changes make it back to the user table
-		if ($profile->get('id') == User::get('id'))
+		if ($member->get('id') == User::get('id'))
 		{
 			$user = App::get('session')->get('user');
 
-			if ($profile->get('name') != $user->get('name'))
+			if ($member->get('name') != $user->get('name'))
 			{
-				$user->set('name', $profile->get('name'));
+				$user->set('name', $member->get('name'));
 			}
 
 			// Update session if email is changing
-			if ($profile->get('email') != $user->get('email'))
+			if ($member->get('email') != $user->get('email'))
 			{
-				$user->set('email', $profile->get('email'));
+				$user->set('email', $member->get('email'));
 
-				// add item to session to mark that the user changed emails
+				// Add item to session to mark that the user changed emails
 				// this way we can serve profile images for these users but not all
 				// unconfirmed users
 				App::get('session')->set('userchangedemail', 1);
@@ -1448,10 +1332,10 @@ class Profiles extends SiteController
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
 		if ($email != $oldemail)
 		{
-			$this->_sendConfirmationCode($profile->get('username'), $email, $confirm);
+			$this->_sendConfirmationCode($member->get('username'), $email, $confirm);
 		}
 
-		//if were declinging the terms we want to logout user and tell the javascript
+		// If were declinging the terms we want to logout user and tell the javascript
 		if ($declineTOU)
 		{
 			App::get('auth')->logout();
@@ -1459,26 +1343,25 @@ class Profiles extends SiteController
 			return;
 		}
 
-		if (!$no_html)
-		{
-			// Redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : ''))
-			);
-		}
-		else
+		if ($no_html)
 		{
 			// Output JSON
 			echo json_encode(array('success' => true));
+			exit();
 		}
+
+		// Redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : ''))
+		);
 	}
 
 	/**
 	 * Send a confirmation code to a user's email address
 	 *
-	 * @param   strong  $login    Username
-	 * @param   string  $email    User email address
-	 * @param   string  $confirm  Confirmation code
+	 * @param   strong   $login    Username
+	 * @param   string   $email    User email address
+	 * @param   string   $confirm  Confirmation code
 	 * @return  boolean
 	 */
 	private function _sendConfirmationCode($login, $email, $confirm)
@@ -1528,7 +1411,7 @@ class Profiles extends SiteController
 	 *
 	 * @return  void
 	 */
-	public function saveaccessTask()
+	/*public function saveaccessTask()
 	{
 		// Check if they are logged in
 		if (User::isGuest())
@@ -1574,7 +1457,7 @@ class Profiles extends SiteController
 
 		// Push through to the profile view
 		$this->viewTask();
-	}
+	}*/
 
 	/**
 	 * Show the current user activity

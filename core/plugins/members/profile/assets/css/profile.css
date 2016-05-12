@@ -262,8 +262,20 @@
 		display: inline-block;
 		margin-right: 0.5em;
 	}
+	#profile .section-edit-content label {
+		position: relative;
+	}
 	#profile .section-edit-content .input-wrap li label {
 		font-weight: normal;
+	}
+	#profile .section-edit-content span.required {
+		color: #c00;
+		font-weight: normal;
+		font-size: 0.85em;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		position: absolute;
+		right: 0;
 	}
 
 /* Member Profile Completeness */

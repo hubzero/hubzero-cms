@@ -57,7 +57,7 @@ $isIncrementalEnabled = false;
 $update_missing = array();
 $invalid = array();
 
-/*
+
 //registration update
 $update_missing = array();
 if (isset($this->registration_update))
@@ -71,7 +71,7 @@ if (isset($this->registration_update))
 	$invalid = $this->registration_update->_invalid;
 }
 
-
+/*
 //incremental registration
 require_once PATH_CORE . '/components/com_members/tables/incremental/awards.php';
 require_once PATH_CORE . '/components/com_members/tables/incremental/groups.php';
@@ -85,7 +85,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 $profiles = $this->profile->profiles()->ordered()->rows();
 
 // Convert to XML so we can use the Form processor
-$xml = Components\Members\Models\Profile\Field::toXml($this->fields);
+$xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
@@ -93,6 +93,8 @@ $data = new Hubzero\Config\Registry(
 );
 
 // Create a new form
+Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
+
 $form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
 $form->load($xml);
 $form->bind($data);
@@ -274,6 +276,16 @@ foreach ($profiles as $profile)
 			</li>
 		<?php endif; ?>
 
+		<?php if ($isUser) : ?>
+			<li class="profile-name section hidden">
+				<div class="section-content">
+					<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_USERNAME'); ?></div>
+					<div class="value"><?php echo $this->escape($this->profile->get('username')); ?></div>
+					<br class="clear" />
+				</div>
+			</li>
+		<?php endif; ?>
+
 		<?php if (!Plugin::isEnabled('members', 'account')) : ?>
 			<?php if ($isUser) : ?>
 				<li class="profile-password section hidden">
@@ -440,7 +452,7 @@ foreach ($profiles as $profile)
 								->set('profile', $this->profile)
 								->set('isUser', $isUser)
 								->set('inputs', $formfield->label . $formfield->input)
-								->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']',$field->get('access'),'input-select'))
+								->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select'))
 								->display();
 						}
 						?>

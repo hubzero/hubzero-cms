@@ -141,7 +141,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$xreg->loadProfile($this->member);
 
 			$check = $xreg->check('update');
-
+print_r($xreg);
 			if ($check)
 			{
 				App::get('session')->set('registration.incomplete', 0);

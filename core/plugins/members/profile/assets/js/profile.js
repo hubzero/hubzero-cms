@@ -121,19 +121,19 @@ HUB.Members.Profile = {
 				});
 		}
 	},
-
+	
 	//-------------------------------------------------------------
-
+	
 	editToggleSection: function( trigger )
 	{
 		var $ = this.jQuery;
-
+		
 		var $section = trigger.parents("li"),
 			section_classes = $section.attr("class").split(" ");
 
 		//show edit or close link
-		if (!$section.find(".section-edit a").hasClass('open')) //html() == "Edit")
-		{   
+		if (!$section.find(".section-edit a").hasClass('open'))
+		{
 			$section.find(".section-edit a").addClass("open").html('&times;'); 
 		}
 		else
@@ -144,16 +144,16 @@ HUB.Members.Profile = {
 		//hide all open sections
 		$("#profile li:not(."+section_classes[0]+") .section-edit a").removeClass("open").html('Edit');
 		$("#profile li:not(."+section_classes[0]+")").removeClass("active").find(".section-edit-container").slideUp();
-
+		
 		//remove hover div
 		$section.find(".section-hover").remove();
-
+		
 		//slide open new section
 		$section.toggleClass("active").find(".section-edit-container").slideToggle();
 	},
-
+	
 	//-------------------------------------------------------------
-
+	
 	editSubmitForm: function( submit_button )
 	{
 		var $ = this.jQuery;
@@ -177,6 +177,7 @@ HUB.Members.Profile = {
 			data: form.serialize(),
 			success: function(data, status, xhr)
 			{
+				console.log(data);
 				//parse the returned json data
 				var returned = jQuery.parseJSON(data);
 				
@@ -200,7 +201,7 @@ HUB.Members.Profile = {
 				}
 				else if(returned.loggedout)
 				{
-				    HUB.Members.Profile.editRedirect("/");
+					HUB.Members.Profile.editRedirect("/");
 				}
 				else
 				{
@@ -348,14 +349,14 @@ HUB.Members.Profile = {
 	editValidationHandling: function( form, returned_data, registration_field )
 	{
 		var $ = this.jQuery;
-		
+
 		var error = "",
 			missing = returned_data._missing,
 			invalid = returned_data._invalid;
 
-		if(missing[registration_field] || invalid[registration_field]) 
-		{     
-			if(missing[registration_field])
+		if (missing[registration_field] || invalid[registration_field]) 
+		{
+			if (missing[registration_field])
 			{
 				error = '<p class="error no-margin-top"><strong>Missing Required Field:</strong> ' + missing[registration_field] + '</p>';
 			}
@@ -366,63 +367,58 @@ HUB.Members.Profile = {
 			form.find(".section-edit-errors").html( error );
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editPrivacy: function()
 	{
-		var $ = this.jQuery;
+		var $ = this.jQuery,
+			privacy = $("#profile-privacy");
 
-		$("#profile-privacy").click( function(event){
-			var pub = 0,
-				id = $(this).attr("data-uidnumber"),
-				url = $(this).attr("href");
-			
-			if($(this).hasClass("private"))
-			{
-				pub = 1;
-			}
-			else
-			{
-				pub = 0;
+		privacy.on('click', function(event){
+			var pub = 1,
+				id  = $(this).attr('data-id'),
+				url = $(this).attr('href');
+
+			if ($(this).hasClass("private")) {
+				pub = 5;
 			}
 
-			
 			var params = {
 				'option': 'com_members',
 				'id': id,
 				'task': 'save',
-				'profile[public]': pub,
-				'field_to_check[]': 'profile[public]',
+				'profileaccess': pub,
+				'field_to_check[]': 'profileaccess',
 				'no_html': 1
 			};
-			
+
 			$.post(url, params, function(data){ 
 				var returned = jQuery.parseJSON(data);
-				
-				if(returned.success)
-				{
-					if(pub)
-					{
-						$("#profile-privacy").removeClass("private");
-						$("body").find(".tooltip-text").html("Click here to set your profile private.");
-						$("body").find("#profile-privacy").html("Public Profile :: Click here to set your profile private.");
-					}
-					else
-					{
-						$("#profile-privacy").addClass("private");
-						$("body").find(".tooltip-text").html("Click here to set your profile public.");
-						$("body").find("#profile-privacy").html("Private Profile :: Click here to set your profile public.");
+
+				if (returned.success) {
+					if (pub) {
+						privacy
+							.removeClass("private")
+							.html("Public Profile :: " + privacy.attr('data-private'));
+
+						$("body").find(".tooltip-text").html(privacy.attr('data-private'));
+					} else {
+						privacy
+							.addClass("private")
+							.html("Private Profile :: " + privacy.attr('data-public'));
+
+						$("body").find(".tooltip-text").html(privacy.attr('data-public'));
 					}
 				}
 			});
-			
+
 			event.preventDefault();
 		});
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfilePicture: function()
 	{
 		var $ = this.jQuery;

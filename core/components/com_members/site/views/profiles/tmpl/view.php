@@ -205,23 +205,39 @@ if (!$no_html)
 			<div id="page_header">
 				<?php if ($this->profile->get('id') == User::get('id')) : ?>
 					<?php
-						$cls = '';
-						$span_title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_TITLE');
-						$title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_SET_PRIVATE_TITLE');
-						if ($this->profile->get('public') != 1)
-						{
-							$cls = 'private';
-							$span_title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_TITLE');
-							$title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_SET_PUBLIC_TITLE');
-						}
+					$cls = '';
+					$span_title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_TITLE');
+					$title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_SET_PRIVATE_TITLE');
+
+					if ($this->profile->get('access') == 2)
+					{
+						$cls = 'protected';
+						$span_title = Lang::txt('COM_MEMBERS_PROTECTED_PROFILE_TITLE');
+						$title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_SET_PUBLIC_TITLE');
+					}
+
+					if ($this->profile->get('access') > 2)
+					{
+						$cls = 'private';
+						$span_title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_TITLE');
+						$title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_SET_PUBLIC_TITLE');
+					}
 					?>
 
 					<?php if ($this->active == 'profile') : ?>
-						<a id="profile-privacy" href="<?php echo Route::url($this->profile->link() . '?' . Session::getFormToken() . '=1'); ?>" data-uidnumber="<?php echo $this->profile->get('id'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+						<a id="profile-privacy" href="<?php echo Route::url($this->profile->link() . '?' . Session::getFormToken() . '=1'); ?>"
+							data-id="<?php echo $this->profile->get('id'); ?>"
+							data-private="<?php echo Lang::txt('Click here to set your profile private.'); ?>"
+							data-public="<?php echo Lang::txt('Click here to set your profile public.'); ?>"
+							class="<?php echo $cls; ?> tooltips"
+							title="<?php echo $title; ?>">
 							<?php echo $title; ?>
 						</a>
 					<?php else: ?>
-						<span id="profile-privacy"<?php echo ($cls ? ' class="' . $cls . '"' : ''); ?>>
+						<span id="profile-privacy"<?php echo ($cls ? ' class="' . $cls . '"' : ''); ?>
+							data-id="<?php echo $this->profile->get('id'); ?>"
+							data-private="<?php echo Lang::txt('Click here to set your profile private.'); ?>"
+							data-public="<?php echo Lang::txt('Click here to set your profile public.'); ?>">
 							<?php echo $span_title; ?>
 						</span>
 					<?php endif; ?>

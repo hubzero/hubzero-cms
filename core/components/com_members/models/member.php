@@ -32,6 +32,9 @@
 namespace Components\Members\Models;
 
 use Hubzero\User\User;
+//use Hubzero\Form\Form;
+//use Hubzero\Config\Registry;
+//use Components\Members\Models\Profile\Field;
 
 require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
@@ -127,9 +130,9 @@ class Member extends User
 			// Collect multi-value fields into arrays
 			$data = Profile::collect($this->profiles);
 
-			foreach ($data as $key => $value)
+			foreach ($data as $k => $v)
 			{
-				$this->set($key, $value);
+				$this->set($k, $v);
 			}
 
 			$this->profileLoaded = true;
@@ -233,13 +236,10 @@ class Member extends User
 	 */
 	public function save()
 	{
-		// Trigger the onUserBeforeSave event.
-		//$result = Event::trigger('user.onUserBeforeSave', array($old, false, $table->getProperties()));
-
 		// Map set data to profile fields
 		$attribs = $this->getAttributes();
 		$columns = $this->getStructure()->getTableColumns($this->getTableName());
-		$profile = array();
+		$profile = null; //array();
 
 		foreach ($attribs as $key => $val)
 		{
@@ -248,13 +248,13 @@ class Member extends User
 				continue;
 			}
 
+			if ($key == 'profile' || $key == 'profiles')
+			{
+				$profile = $val;
+			}
+
 			if (!isset($columns[$key]))
 			{
-				$field = Profile::oneByKeyAndUser($key, $this->get('id'));
-				$field->set('profile_value', $val);
-
-				$profile[$key] = $field;
-
 				$this->removeAttribute($key);
 			}
 		}
@@ -264,15 +264,9 @@ class Member extends User
 
 		if ($result)
 		{
-			foreach ($profile as $field)
+			if ($profile)
 			{
-				/*$result = $field->save();
-
-				if (!$result)
-				{
-					$this->addError($field->getError());
-					break;
-				}*/
+				$result = $this->saveProfile($profile);
 			}
 		}
 
@@ -283,6 +277,169 @@ class Member extends User
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Save profile data
+	 *
+	 * @param   array   $profile
+	 * @param   array   $access
+	 * @return  boolean
+	 */
+	public function saveProfile($profile, $access = array())
+	{
+		$profile = (array)$profile;
+		$access  = (array)$access;
+
+		$keep = array();
+
+		foreach ($this->profiles as $field)
+		{
+			// Remove any entries not in the incoming data
+			if (!isset($profile[$field->get('profile_key')]))
+			{
+				if (!$field->destroy())
+				{
+					$this->addError($field->getError());
+					return false;
+				}
+
+				continue;
+			}
+
+			// Push to the list of fields we want to keep
+			if (!isset($keep[$field->get('profile_key')]))
+			{
+				$keep[$field->get('profile_key')] = $field;
+			}
+			else
+			{
+				// Multi-value field
+				$values = $keep[$field->get('profile_key')];
+				$values = is_array($values) ? $values : array($values->get('profile_value') => $values);
+				$values[$field->get('profile_value')] = $field;
+
+				$keep[$field->get('profile_key')] = $values;
+			}
+		}
+
+		$i = 1;
+
+		foreach ($profile as $key => $data)
+		{
+			if ($key == 'tag' || $key == 'tags')
+			{
+				$this->tag($data);
+				continue;
+			}
+
+			// Is it a multi-value field?
+			if (is_array($data))
+			{
+				foreach ($data as $val)
+				{
+					$val = trim($val);
+
+					// Skip empty values
+					if (!$val)
+					{
+						continue;
+					}
+
+					$field = null;
+
+					// Try to find an existing entry
+					if (isset($keep[$key]) && is_array($keep[$key]))
+					{
+						if (isset($keep[$key][$val]))
+						{
+							$field = $keep[$key][$val];
+							unset($keep[$key][$val]);
+						}
+					}
+
+					if (!$field)
+					{
+						$field = Profile::blank();
+					}
+
+					$field->set(array(
+						'user_id'       => $this->get('id'),
+						'profile_key'   => $key,
+						'profile_value' => $val,
+						'ordering'      => $i,
+						'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
+					));
+
+					if (!$field->save())
+					{
+						$this->addError($field->getError());
+						return false;
+					}
+				}
+
+				// Remove any values not already found
+				if (isset($keep[$key]) && is_array($keep[$key]))
+				{
+					foreach ($keep[$key] as $f)
+					{
+						if (!$f->destroy())
+						{
+							$this->addError($f->getError());
+							return false;
+						}
+					}
+				}
+			}
+			else
+			{
+				$val = trim($data);
+
+				if (isset($keep[$key]))
+				{
+					$field = $keep[$key];
+				}
+				else
+				{
+					$field = Profile::blank();
+				}
+
+				// If value is empty
+				if (!$val)
+				{
+					// If an existing field, remove it
+					if ($field->get('id'))
+					{
+						if (!$field->destroy())
+						{
+							$this->addError($field->getError());
+							return false;
+						}
+					}
+
+					// Move along. Nothing to see here.
+					continue;
+				}
+
+				$field->set(array(
+					'user_id'       => $this->get('id'),
+					'profile_key'   => $key,
+					'profile_value' => $val,
+					'ordering'      => $i,
+					'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
+				));
+
+				if (!$field->save())
+				{
+					$this->addError($field->getError());
+					return false;
+				}
+			}
+
+			$i++;
+		}
+
+		return true;
 	}
 
 	/**
@@ -312,6 +469,16 @@ class Member extends User
 			if (!$note->destroy())
 			{
 				$this->setError($note->getError());
+				return false;
+			}
+		}
+
+		// Remove hosts
+		foreach ($this->hosts()->rows() as $host)
+		{
+			if (!$host->destroy())
+			{
+				$this->setError($host->getError());
 				return false;
 			}
 		}

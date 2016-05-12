@@ -52,6 +52,8 @@ $data = new Hubzero\Config\Registry(
 $data->set('tags', $this->profile->tags('string'));
 
 // Create a new form
+Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
+
 $form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
 $form->load($xml);
 $form->bind($data);

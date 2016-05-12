@@ -267,9 +267,10 @@ class Field extends Relational
 	 * Helper method to convert list of fields and field options to XML
 	 *
 	 * @param   mixed   $fields  Iterable object or attay
+	 * @param   string  $action
 	 * @return  string
 	 */
-	public static function toXml($fields)
+	public static function toXml($fields, $action = null)
 	{
 		// Convert to XML so we can use the Form processor
 		$xml   = array();
@@ -282,6 +283,10 @@ class Field extends Relational
 			$f .= ($field->get('description')  ? ' description="' . $field->get('description') . '"' : '');
 			$f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
 			$f .= ($field->get('option_other') ? ' option_other="1"' : '');
+			if (in_array($action, array('create', 'update', 'edit')))
+			{
+				$f .= ($field->get('action_' . $action) == self::STATE_REQUIRED ? ' required="true"' : '');
+			}
 			$f .= '>';
 
 			$xml[] = $f;
