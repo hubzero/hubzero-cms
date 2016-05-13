@@ -37,6 +37,7 @@ use Components\Storefront\Models\CourseOffering;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Models\Coupon;
 use Components\Storefront\Models\Collection;
+use Lang;
 
 require_once(__DIR__ . DS . 'Product.php');
 require_once(__DIR__ . DS . 'Course.php');
@@ -367,7 +368,12 @@ class Warehouse extends \Hubzero\Base\Object
 			$lookupField = 'pAlias';
 		}
 
-		$sql = "SELECT `pId`, `access` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->_db->quote($product);
+		$sql = "SELECT `pId`, `access`";
+		$sql .= ", IF(";
+		$sql .= " (`publish_up` IS NULL OR `publish_up` <= NOW())";
+		$sql .= " AND (`publish_down` IS NULL OR `publish_down` = '0000-00-00 00:00:00' OR `publish_down` > NOW()";
+		$sql .= "), 1, 0) AS isPublished";
+		$sql .= " FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->_db->quote($product);
 		if (!$showInactive)
 		{
 			$sql .= " AND p.`pActive` = 1";
@@ -397,6 +403,15 @@ class Warehouse extends \Hubzero\Base\Object
 				$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
 				return $response;
 			}
+		}
+
+		// Check if the product is published
+		if (!$pInfo->isPublished)
+		{
+			$response->status = 0;
+			$response->errorCode = 403;
+			$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+			return $response;
 		}
 
 		$response->pId = $pInfo->pId;
@@ -435,6 +450,10 @@ class Warehouse extends \Hubzero\Base\Object
 		if ($showOnlyActive)
 		{
 			$sql .= " AND `pActive` = 1";
+
+			// check the publish times
+			$sql .= " AND (`publish_up` IS NULL OR `publish_up` <= NOW())";
+			$sql .= " AND (`publish_down` IS NULL OR `publish_down` = '0000-00-00 00:00:00' OR `publish_down` > NOW())";
 		}
 
 		// Filter by collections
@@ -518,6 +537,10 @@ class Warehouse extends \Hubzero\Base\Object
 		if (!$showInactive)
 		{
 			$sql .= " AND `pActive` = 1";
+
+			// check publish up and down
+			$sql .= " AND (p.`publish_up` IS NULL OR p.`publish_up` <= NOW())";
+			$sql .= " AND (p.`publish_down` IS NULL OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW())";
 		}
 
 		$this->_db->setQuery($sql);
@@ -595,7 +618,10 @@ class Warehouse extends \Hubzero\Base\Object
 					LEFT JOIN `#__storefront_options` o ON so.`oId` = o.`oId`
 					LEFT JOIN `#__storefront_option_groups` og ON o.`ogId` = og.`ogId`
 
-					WHERE s.`pId` = {$pId} AND s.`sActive` = 1 AND (s.`sInventory` > 0 OR s.`sTrackInventory` = 0)
+					WHERE s.`pId` = {$pId} AND s.`sActive` = 1";
+		$sql .= " 	AND (s.`publish_up` IS NULL OR s.`publish_up` <= NOW())";
+		$sql .= " 	AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
+		$sql .= "   AND (s.`sInventory` > 0 OR s.`sTrackInventory` = 0)
 
 					ORDER BY og.`ogId`, o.`oId`";
 
@@ -899,6 +925,13 @@ class Warehouse extends \Hubzero\Base\Object
 			$sql .= "
 				AND p.`pActive` = 1
 				AND s.`sActive` = 1 ";
+
+			// check publish up and down
+			$sql .= " AND (p.`publish_up` IS NULL OR p.`publish_up` <= NOW())";
+			$sql .= " AND (p.`publish_down` IS NULL OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW())";
+
+			$sql .= " AND (s.`publish_up` IS NULL OR s.`publish_up` <= NOW())";
+			$sql .= " AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
 		}
 
 		// Filter by filters
@@ -1571,6 +1604,8 @@ class Warehouse extends \Hubzero\Base\Object
 						`sTrackInventory` = " . $sku->getTrackInventory() . ",
 						`sInventory` = " . $sku->getInventoryLevel() . ",
 						`sEnumerable` = " . $sku->getEnumerable() . ",
+						`publish_up` = " . $this->_db->quote($sku->getPublishTime()->publish_up) . ",
+						`publish_down` = " . $this->_db->quote($sku->getPublishTime()->publish_down) . ",
 						`sActive` = " . $sku->getActiveStatus();
 
 		if (!empty($sId))

@@ -267,6 +267,8 @@ class Archive extends \Hubzero\Base\Object
 			$sku->setOptions($fields['options']);
 		}
 
+		$sku->setPublishTime($fields['publish_up'], $fields['publish_down']);
+
 		// Meta
 		if (isset($fields['meta']))
 		{

@@ -136,14 +136,13 @@ class Cart extends ComponentController
 		// Check if there is a delete request
 		else
 		{
-			$allPost = Request::request(); //JFactory::getApplication()->input->getArray($_POST);
+			$allPost = Request::request();
 
 			foreach ($allPost as $var => $val)
 			{
 				if ($val == 'delete')
 				{
 					$toDelete = explode('_', $var);
-					//print_r($toDelete);	die;
 
 					if ($toDelete[0] == 'delete')
 					{
@@ -206,14 +205,14 @@ class Cart extends ComponentController
 
 				// Redirect directly to checkout, skip the cart page
 				App::redirect(
-						Route::url('index.php?option=' . $this->_option) . DS . 'checkout'
+					Route::url('index.php?option=' . $this->_option) . DS . 'checkout'
 				);
 			}
 
 			// prevent resubmitting form by refresh
 			// redirect to cart
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 

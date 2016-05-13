@@ -320,6 +320,7 @@ abstract class Cart
 
 		if (empty($allSkuInfo))
 		{
+			Lang::load('com_storefront', Component::path('com_storefront') . DS . 'site');
 			throw new \Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
 		}
 

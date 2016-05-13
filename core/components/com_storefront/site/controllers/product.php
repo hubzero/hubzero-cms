@@ -34,6 +34,7 @@ use Pathway;
 use Components\Storefront\Models\Warehouse;
 use Components\Cart\Models\CurrentCart;
 use Components\Cart\Helpers\Audit;
+use Exception;
 
 require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php';
@@ -222,8 +223,6 @@ class Product extends \Hubzero\Component\SiteController
 		// Add custom page JS
 		if ($data && (count($data->options) > 0 || count($data->skus) > 1)) {
 			$js = $this->getDisplayJs($data->options, $data->skus, $productIdentifier);
-			//$doc =& JFactory::getDocument();
-			//$doc->addScriptDeclaration($js);
 			Document::addScriptDeclaration($js);
 		}
 

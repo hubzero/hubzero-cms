@@ -236,7 +236,15 @@ class Products extends AdminController
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
-		//var_dump((($fields['pAlias']))); die;
+
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
+		{
+			$fields['publish_up'] = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+		}
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
+		{
+			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
+		}
 
 		$obj = new Archive();
 
@@ -288,6 +296,7 @@ class Products extends AdminController
 				$fields['optionGroups'] = array();
 			}
 			$product->setOptionGroups($fields['optionGroups']);
+			$product->setPublishTime($fields['publish_up'], $fields['publish_down']);
 			$product->save();
 		}
 		catch (\Exception $e)
