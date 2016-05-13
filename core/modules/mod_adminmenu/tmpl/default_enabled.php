@@ -123,11 +123,11 @@ if (User::authorise('core.manage', 'com_users'))
 	$createUser = $shownew && User::authorise('core.create', 'com_users');
 	$createGrp  = User::authorise('core.admin', 'com_users');
 
-	$menu->addChild(
+	/*$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_COM_USERS_USER_MANAGER'), 'index.php?option=com_users&view=users', 'class:user') //, $createUser
 	);
 
-	/*if ($createUser)
+	if ($createUser)
 	{
 		$menu->addChild(
 			new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_USER'), 'index.php?option=com_users&task=user.add', 'class:newarticle')
@@ -153,24 +153,24 @@ if (User::authorise('core.manage', 'com_users'))
 	{
 		$menu->addSeparator();
 		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_COM_USERS_GROUPS'), 'index.php?option=com_users&view=groups', 'class:groups'), $createUser
+			new Node(Lang::txt('MOD_MENU_COM_USERS_GROUPS'), 'index.php?option=com_members&controller=accessgroups', 'class:groups'), $createUser
 		);
 		if ($createUser)
 		{
 			$menu->addChild(
-				new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_GROUP'), 'index.php?option=com_users&task=group.add', 'class:newarticle')
+				new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_GROUP'), 'index.php?option=com_members&controller=accessgroups&task=add', 'class:newarticle')
 			);
 			$menu->getParent();
 		}
 
 		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_COM_USERS_LEVELS'), 'index.php?option=com_users&view=levels', 'class:levels'), $createUser
+			new Node(Lang::txt('MOD_MENU_COM_USERS_LEVELS'), 'index.php?option=com_members&controller=accesslevels', 'class:levels'), $createUser
 		);
 
 		if ($createUser)
 		{
 			$menu->addChild(
-				new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_LEVEL'), 'index.php?option=com_users&task=level.add', 'class:newarticle')
+				new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_LEVEL'), 'index.php?option=com_members&controller=accesslevels&task=add', 'class:newarticle')
 			);
 			$menu->getParent();
 		}
@@ -178,13 +178,13 @@ if (User::authorise('core.manage', 'com_users'))
 
 	$menu->addSeparator();
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_USERS_NOTES'), 'index.php?option=com_users&view=notes', 'class:user-note'), $createUser
+		new Node(Lang::txt('MOD_MENU_COM_USERS_NOTES'), 'index.php?option=com_members&controller=notes', 'class:user-note'), $createUser
 	);
 
 	if ($createUser)
 	{
 		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_NOTE'), 'index.php?option=com_users&task=note.add', 'class:newarticle')
+			new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_NOTE'), 'index.php?option=com_members&controller=notes&task=add', 'class:newarticle')
 		);
 		$menu->getParent();
 	}
