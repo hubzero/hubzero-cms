@@ -394,7 +394,11 @@ class Events extends AdminController
 		$row = new Event($this->database);
 		if (!$row->bind($_POST))
 		{
-			throw new Exception($row->getError(), 500);
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				$row->getError(),
+				'error'
+			);
 		}
 
 		// New entry or existing?
@@ -418,7 +422,11 @@ class Events extends AdminController
 		}
 		elseif (!$row->catid)
 		{
-			throw new Exception(Lang::txt('EVENT_CAL_LANG_EVENT_REQUIRED'), 500);
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('EVENT_CAL_LANG_EVENT_REQUIRED'),
+				'error'
+			);
 		}
 
 		//$row->title = $this->view->escape($row->title);
@@ -494,11 +502,19 @@ class Events extends AdminController
 
 		if (!$row->check())
 		{
-			throw new Exception($row->getError(), 500);
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				$row->getError(),
+				'error'
+			);
 		}
 		if (!$row->store())
 		{
-			throw new Exception($row->getError(), 500);
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				$row->getError(),
+				'error'
+			);
 		}
 		$row->checkin();
 
