@@ -1202,13 +1202,28 @@ class Members extends AdminController
 						unset($oldOptions[$oid]);
 					}
 
+					$dependents = array();
+					if (isset($opt->dependents))
+					{
+						$dependents = explode(',', trim($opt->dependents));
+						$dependents = array_map('trim', $dependents);
+						foreach ($dependents as $j => $dependent)
+						{
+							if (!$dependent)
+							{
+								unset($dependents[$j]);
+							}
+						}
+					}
+
 					$option = ($option ?: Option::oneOrNew($oid));
 					$option->set(array(
-						'field_id' => $field->get('id'),
-						'label'    => (string) $opt->label,
-						'value'    => (isset($opt->value)   ? (string) $opt->value : ''),
-						'checked'  => (isset($opt->checked) ? (int) $opt->checked : 0),
-						'ordering' => ($k + 1)
+						'field_id'   => $field->get('id'),
+						'label'      => (string) $opt->label,
+						'value'      => (isset($opt->value)   ? (string) $opt->value : ''),
+						'checked'    => (isset($opt->checked) ? (int) $opt->checked : 0),
+						'ordering'   => ($k + 1),
+						'dependents' => json_encode($dependents)
 					));
 
 					if (!$option->save())

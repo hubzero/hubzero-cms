@@ -44,6 +44,25 @@
 		display: none;
 	}
 
+	#hubForm .radio {
+		margin-top: 0.2em;
+	}
+	#hubForm .radio ul {
+		list-style: none;
+		margin: 0;
+	}
+	#hubForm .radio li {
+		margin: 0;
+		padding: 0.1em 0;
+	}
+	#hubForm .radio li label,
+	#hubForm .radio li input[type=radio],
+	#hubForm .radio li input[type=checkbox] {
+		width: auto;
+		display: inline-block;
+		margin-right: 0.5em;
+	}
+
 /* Username checker */
 	#hubForm .group p.hint.ok {
 		color: #090;

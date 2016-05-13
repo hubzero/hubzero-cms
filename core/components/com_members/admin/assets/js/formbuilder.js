@@ -371,7 +371,7 @@
         model: responseField,
         parentView: this
       });
-      console.log(responseField);
+      //console.log(responseField);
       if (options.$replaceEl != null) {
         return options.$replaceEl.replaceWith(view.render().el);
       } else if ((options.position == null) || options.position === -1) {
@@ -514,9 +514,9 @@
 
     BuilderView.prototype.saveForm = function(e) {
       var payload;
-      if (this.formSaved) {
+      /*if (this.formSaved) {
         return;
-      }
+      }*/
       this.formSaved = true;
       this.saveFormButton.attr('disabled', true).text(Formbuilder.options.dict.ALL_CHANGES_SAVED);
       this.collection.sort();
@@ -1040,7 +1040,7 @@ __p += '\n  <label>\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
  } ;
 __p += '\n\n<div class=\'option\' data-rv-each-option=\'model.' +
 ((__t = ( Formbuilder.options.mappings.OPTIONS )) == null ? '' : __t) +
-'\'>\n  <input type="checkbox" class=\'js-default-updated\' data-rv-checked="option:checked" />\n  <input type="text" data-rv-input="option:label" class=\'option-label-input\' placeholder="Label" />\n  <input type="text" data-rv-input="option:value" class=\'option-value-input\' placeholder="Value (if different than label)" />\n  <a class="js-remove-option ' +
+'\'>\n  <input type="checkbox" class=\'js-default-updated\' data-rv-checked="option:checked" />\n  <input type="text" data-rv-input="option:label" class=\'option-label-input\' placeholder="Label" />\n  <input type="text" data-rv-input="option:value" class=\'option-value-input\' placeholder="Value (if different than label)" />\n  <input type="text" data-rv-input="option:dependents" class=\'option-dependents-input\' placeholder="Dependent fields" />\n  <a class="js-remove-option ' +
 ((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
 '" title="Remove Option"><i class=\'fa fa-minus-circle\'></i></a>\n</div>\n\n';
  if (typeof includeOther !== 'undefined'){ ;

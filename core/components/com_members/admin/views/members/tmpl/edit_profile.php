@@ -67,7 +67,7 @@ $fields = $form->getFieldset('basic');
 
 			<?php foreach ($fields as $field): ?>
 				<?php
-				echo '<div class="input-wrap"' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
+				echo '<div class="input-wrap" id="input-' . $field->fieldname . '" ' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
 				echo $field->label;
 				echo $field->input;
 				if ($field->description)

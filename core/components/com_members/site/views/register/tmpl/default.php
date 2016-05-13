@@ -400,6 +400,8 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 		$form->load($xml);
 		$form->bind($data);
 
+		$scripts = array();
+
 		if ($this->fields->count() > 0): ?>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_LEGEND_PERSONAL_INFO'); ?></legend>
@@ -408,6 +410,96 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					<?php
 					$formfield = $form->getField($field->get('name'));
 
+					if ($field->options->count())
+					{
+						$i = 0;
+						$hasEvents = false;
+						$opts = array();
+						$hide = array();
+
+						foreach ($field->options as $option)
+						{
+							$opts[] = '#' . $formfield->id . $i;
+
+							if (!$option->get('dependents'))
+							{
+								continue;
+							}
+
+							$events = json_decode($option->get('dependents'));
+							$option->set('dependents', $events);
+
+							if (empty($events))
+							{
+								continue;
+							}
+
+							$hasEvents = true;
+
+							$i++;
+						}
+
+						if ($hasEvents)
+						{
+							if ($field->get('type') == 'dropdown')
+							{
+								$scripts[] = '	$("#'. $formfield->id . '").on("change", function(e){';
+							}
+							else
+							{
+								$scripts[] = '	$("'. implode(',', $opts) . '").on("change", function(e){';
+							}
+						}
+
+						$i = 0;
+						foreach ($field->options as $option)
+						{
+							if (!$option->get('dependents'))
+							{
+								continue;
+							}
+
+							$events = $option->get('dependents');
+
+							if ($field->get('type') == 'dropdown')
+							{
+								$scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+								$show = array();
+								foreach ($events as $s)
+								{
+									$show[] = '#input-' . $s;
+								}
+								$hide = array_merge($hide, $show);
+								$scripts[] = '			$("' . implode(', ', $show) . '").show();';
+								$scripts[] = '		} else {';
+								$scripts[] = '			$("' . implode(', ', $show) . '").hide();';
+								$scripts[] = '		}';
+							}
+							else
+							{
+								$scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+								$show = array();
+								foreach ($events as $s)
+								{
+									$show[] = '#input-' . $s;
+								}
+								$hide = array_merge($hide, $show);
+								$scripts[] = '			$("' . implode(', ', $show) . '").show();';
+								$scripts[] = '		} else {';
+								$scripts[] = '			$("' . implode(', ', $show) . '").hide();';
+								$scripts[] = '		}';
+							}
+
+							$i++;
+						}
+
+						if ($hasEvents)
+						{
+							$scripts[] = '	});';
+							$scripts[] = '	$("' . implode(', ', $hide) . '").hide();';
+						}
+					}
+
 					if (isset($this->registration['_profile'][$field->get('name')]))
 					{
 						$formfield->setValue($this->registration['_profile'][$field->get('name')]);
@@ -415,7 +507,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 
 					$errors = (!empty($this->xregistration->_invalid[$field->get('name')])) ? '<span class="error">' . $this->xregistration->_invalid[$field->get('name')] . '</span>' : '';
 					?>
-					<div class="input-wrap<?php echo ($errors ? ' fieldWithErrors' : ''); ?>">
+					<div class="input-wrap<?php echo ($errors ? ' fieldWithErrors' : ''); ?>" id="input-<?php echo $field->get('name'); ?>">
 						<?php
 						echo $formfield->label;
 						echo $formfield->input;
@@ -424,7 +516,13 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					</div>
 				<?php endforeach; ?>
 			</fieldset>
-		<?php endif; ?>
+		<?php endif;
+
+		if (!empty($scripts))
+		{
+			$this->js("jQuery(document).ready(function($){\n" . implode("\n", $scripts) . "\n});");
+		}
+		?>
 
 		<?php if ($this->registrationOptIn != Field::STATE_HIDDEN) { ?>
 			<?php

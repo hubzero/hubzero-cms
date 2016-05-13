@@ -86,6 +86,10 @@ foreach ($this->fields as $field)
 			$opt->label    = (string)$option->get('label');
 			$opt->value    = (string)$option->get('value', $option->get('label'));
 			$opt->checked  = (bool)$option->get('checked');
+			$dependents = $option->get('dependents', '[]');
+			$dependents = $dependents ? $dependents : '[]';
+			$dependents = json_decode($dependents);
+			$opt->dependents = implode(', ', $dependents);
 
 			$element->field_options->options[] = $opt;
 		}
@@ -94,7 +98,9 @@ foreach ($this->fields as $field)
 	$elements[] = $element;
 }
 
-$elements = json_encode($elements);
+$json = new stdClass;
+$json->fields = $elements;
+$json = json_encode($json);
 
 $this->css('formbuilder.css')
      ->js('vendor.js')
@@ -106,7 +112,7 @@ $this->css('formbuilder.css')
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="saveprofile" />
-	<input type="hidden" name="profile" id="profile-schema" value="<?php echo $this->escape($elements); ?>" />
+	<input type="hidden" name="profile" id="profile-schema" value="<?php echo $this->escape($json); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
@@ -117,12 +123,11 @@ $this->css('formbuilder.css')
 	jQuery(document).ready(function($){
 		fb = new Formbuilder({
 			selector: '.fb-main',
-			bootstrapData: <?php echo $elements; ?>
+			bootstrapData: <?php echo json_encode($elements); ?>
 		});
 
 		fb.on('save', function(payload){
-			console.log(payload);
-
+			//console.log(payload);
 			$('#profile-schema').val(payload);
 		});
 	});
