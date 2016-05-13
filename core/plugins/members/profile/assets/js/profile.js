@@ -49,7 +49,7 @@ HUB.Members.Profile = {
 		//profile address section
 		HUB.Members.Profile.addresses();
 		HUB.Members.Profile.locateMe();
-		HUB.Members.Profile.fetchOrcid();
+		//HUB.Members.Profile.fetchOrcid();
 	},
 	
 	//-------------------------------------------------------------
@@ -422,36 +422,36 @@ HUB.Members.Profile = {
 	editProfilePicture: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var $identity = $("#page_identity"),
 		    $change = $("<a id=\"page_identity_change\"><span>Change Picture</span></a>");
-			
+
 		//if this is our profile otherwise dont do ot
 		if( $(".section-edit a").length )
 		{
 			var w = $identity.find("img").width() + 2;
 			w = (w < 165) ? 165 : w;
-			
+
 			$change
 				.css('width',  w)
 				.attr("href", window.location.href.replace("profile","ajaxupload"))
 				.appendTo($identity);
-					
+
 			//edit picture	
 			$('.com_members')
 				.on("click", "#page_identity_change", function(event) {
 					HUB.Members.Profile.editProfilePicturePopup();
 					event.preventDefault();
-				});	
+				});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfilePicturePopup: function()
 	{
 		var $ = this.jQuery;
-		
+
 		$('#page_identity_change').fancybox({
 			type: 'ajax',
 			width: 500,
@@ -516,13 +516,13 @@ HUB.Members.Profile = {
 			}
 		});
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfilePictureUpload: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var uploader = new qq.FileUploader({
 			element: $("#ajax-uploader")[0],
 			action: $("#ajax-uploader").attr("data-action"),
@@ -541,14 +541,14 @@ HUB.Members.Profile = {
 				$("#ajax-upload-uploading").fadeOut("slow").remove();
 				var url = $("#ajax-uploader").attr("data-action");
 				url = url.replace("doajaxupload","getfileatts"); 
-				
+
 				$.post(url, {file:response.file, dir:response.directory}, function(data) {
 					var upload = jQuery.parseJSON( data );
 					if(upload)
 					{
 						$("#ajax-upload-right").find("table").show();
 						$("#ajax-upload-right").find("p.warning").remove();
-						
+
 						$("#picture-src").attr("src", upload.src + "?v=" + new Date().getTime());
 						$("#picture-name").html(upload.name);
 						$("#picture-size").html(upload.size);
@@ -560,17 +560,17 @@ HUB.Members.Profile = {
 			}
 		});
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editTermsOfUse: function()
 	{
 		var $ = this.jQuery;
-		
+
 		if( $("#usage-agreement-popup").length )
 		{
 			$("#usage-agreement-popup").hide();
-			
+
 			$.fancybox({
 				type:'inline',
 				autoSize: false, 
@@ -587,13 +587,13 @@ HUB.Members.Profile = {
 			});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editCompletenessMeter: function()
 	{
 		var $ = this.jQuery;
-		
+
 		if( $("#member-profile-completeness").length )
 		{
 			$("#member-profile-completeness").appendTo( $("#page_options") ).show();
@@ -601,7 +601,7 @@ HUB.Members.Profile = {
 				$("#meter-percent").width( $("#meter-percent").attr("data-percent") + "%" );
 			}, 1000);
 		}
-		
+
 		if( $("#award-info").length )
 		{
 			$("#completeness-info").on("click", function(event) {
@@ -609,13 +609,13 @@ HUB.Members.Profile = {
 			});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfileSectionWithHash: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var timeout = null,
 			distance = 0,
 			bottom = 0,
@@ -623,7 +623,7 @@ HUB.Members.Profile = {
 			item = null,
 			item_edit_btn = null,
 			hash = document.location.hash.replace("#", "");
-			
+
 		//if we have a hash and we have an edit btn(on our profile)
 		if(hash != "")
 		{
@@ -652,7 +652,7 @@ HUB.Members.Profile = {
 	addresses: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//delete confirmation
 		$('.com_members').on('click','.delete-address', function(event) {
 			if (!confirm("Are you sure you want to delete this member Address?"))
@@ -660,7 +660,7 @@ HUB.Members.Profile = {
 				event.preventDefault();
 			}
 		});
-		
+
 		//add/edit addresses
 		if ($('.add-address, .edit-address').length) {
 			$('.add-address, .edit-address').fancybox({
@@ -696,11 +696,11 @@ HUB.Members.Profile = {
 			});
 		}
 	},
-	
+
 	locateMe: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//locate me
 		$('body').on('click', '#locate-me', function(event) {
 			event.preventDefault();
@@ -711,7 +711,7 @@ HUB.Members.Profile = {
 				alert('You browser is not capable of gettting you location.');
 				return;
 			}
-				
+
 			//use the browser geo location
 			navigator.geolocation.getCurrentPosition(
 				HUB.Members.Profile.locateMeGotLocation,
@@ -724,20 +724,20 @@ HUB.Members.Profile = {
 			);
 		});
 	},
-	
+
 	locateMeGotLocation: function( location )
 	{
 		var $ = HUB.Members.Profile.jQuery;
-		
+
 		var latitude      = location.coords.latitude,
 			longitude     = location.coords.longitude,
 			reverseGeoUrl = 'https://maps.google.com/maps/api/geocode/json?sensor=true&latlng=' + latitude + ',' + longitude;
-		
+
 		var address_parts = [];
-		
+
 		$.getJSON(reverseGeoUrl, function(json){
 			var result = json.results[0].address_components;
-			
+
 			for (var i=0, n=result.length; i<n; i++)
 			{
 				//do we have a street
@@ -745,38 +745,38 @@ HUB.Members.Profile = {
 				{
 					address_parts['address1'] = result[i].long_name;
 				}
-				
+
 				//do we have a street
 				if (jQuery.inArray('route', result[i].types) > -1)
 				{
 					address_parts['address1'] += ' ' + result[i].long_name;
 				}
-				
+
 				//do we have a state / region
 				if (jQuery.inArray('locality', result[i].types) > -1)
 				{
 					address_parts['city'] = result[i].long_name;
 				}
-				
+
 				//do we have a state / region
 				if (jQuery.inArray('administrative_area_level_1', result[i].types) > -1)
 				{
 					address_parts['region'] = result[i].long_name;
 				}
-				
+
 				//do we have a postal code
 				if (jQuery.inArray('postal_code', result[i].types) > -1)
 				{
 					address_parts['postal'] = result[i].long_name;
 				}
-				
+
 				//do we have a country
 				if (jQuery.inArray('country', result[i].types) > -1)
 				{
 					address_parts['country'] = result[i].long_name;
 				}
 			}
-			
+
 			//set values
 			$('.member-address-form').find('#address1').val(address_parts['address1']);
 			$('.member-address-form').find('#addressCity').val(address_parts['city']);
@@ -793,89 +793,6 @@ HUB.Members.Profile = {
 		var $ = HUB.Members.Profile.jQuery;
 
 		alert('Geo Location Error: ' + error.message);
-	},
-
-	fetchOrcidRecords: function()
-	{
-		var $ = this.jQuery;
-
-		var firstName = $('#first-name').val();
-		var lastName  = $('#last-name').val();
-		var email     = $('#email').val();
-
-		if (!firstName && !lastName && !email) {
-			alert('Please fill at least one of the fields.');
-			return;
-		}
-
-		// return param: 1 means return ORCID to use to finish registration, assumes registration page
-		// return param: 0 means do not return ORCID, assumes profile page
-		var url = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=fetch&no_html=1&fname=' + firstName + '&lname=' + lastName + '&email=' + email + '&return=0';
-
-		$.ajax({
-			url: url,
-			type: 'GET',
-			success: function(data, status, jqXHR)
-			{
-				$('#section-orcid-results').html(jQuery.parseJSON(data));
-			}
-		});
-	},
-
-	fetchOrcid: function()
-	{
-		var $ = this.jQuery;
-
-		$('body').on('click', '#get-orcid-results', function(event) {
-			event.preventDefault();
-
-			HUB.Members.Profile.fetchOrcidRecords();
-		});
-	},
-
-	associateOrcid: function(parentField, orcid)
-	{
-		var url = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=associate&no_html=1&orcid=' + orcid;
-
-		$.ajax({
-			url: url,
-			type: 'GET',
-			success: function(data, status, jqXHR) {
-				var status = jQuery.parseJSON(data);
-
-				if (status) {
-					//window.parent.document.getElementById('orcid').value = orcid;
-					window.parent.jQuery.fancybox.close();
-				}
-			}
-		});
-	},
-
-	createOrcid: function(fname, lname, email)
-	{
-		$.ajax({
-			url: $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email,
-			type: 'GET',
-			success: function(data, status, jqXHR) {
-				var response = jQuery.parseJSON(data);
-
-				if (response.success) {
-					if (response.orcid) {
-						alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
-						window.parent.document.getElementById('orcid').value = response.orcid;
-						window.parent.jQuery.fancybox.close();
-					} else {
-						alert('ORCID service reported a successful creation but we failed to retrieve an ORCID. Please contact support.');
-					}
-				} else {
-					if (response.message) {
-						alert(response.message);
-					} else {
-						alert('Failed to create a new ORCID. Possible existence of an ORCID with the same email.');
-					}
-				}
-			}
-		});
 	}
 };
 
@@ -883,35 +800,4 @@ HUB.Members.Profile = {
 
 jQuery(document).ready(function($){
 	HUB.Members.Profile.initialize();
-
-	// Iframe method
-	if ($('#orcid-fetch').length) {
-		$('#orcid-fetch').fancybox({
-			type: 'iframe',   // change this to 'ajax' if you want to use AJAX
-			width: 700,
-			height: 'auto',
-			autoSize: false,
-			fitToView: false,
-			titleShow: false,
-			closeClick: false,
-			helpers: { 
-				overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
-			},
-			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-			},
-			beforeLoad: function() {
-				href = $(this).attr('href');
-				if (href.indexOf('?') == -1) {
-						href += '?tmpl=component';    // Change to no_html=1 if using AJAX
-				} else {
-						href += '&tmpl=component';    // Change to no_html=1 if using AJAX
-				}
-				$(this).attr('href', href);
-			},
-			afterClose: function() {
-				HUB.Members.Profile.editReloadSections();
-			}
-		});
-	}
 });

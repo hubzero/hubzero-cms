@@ -49,7 +49,7 @@ $this->css('register.css');
 		<div class="col span-half omega">
 			<?php if ($this->getError()) { ?>
 				<p class="error"><?php echo $this->getError(); ?></p>
-			<?php } else if ($this->xprofile->get('emailConfirmed') < 0){ ?>
+			<?php } else if ($this->xprofile->get('activation') < 0){ ?>
 				<div class="account-activation">
 					<div class="instructions">
 						<p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED_MESSAGE', $this->sitename, \Hubzero\Utility\String::obfuscate($this->xprofile->get('email'))); ?></p>

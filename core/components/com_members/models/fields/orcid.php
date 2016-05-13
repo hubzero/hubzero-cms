@@ -91,7 +91,7 @@ class Orcid extends Text
 		$html[] = '		<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />';
 		$html[] = '	</div>';
 		$html[] = '	<div class="col span3 omega">';
-		$html[] = '		<a class="btn button icon-search orcid-fetch" id="orcid-fetch" data-id="' . $this->id . '" href="' . Request::base() . '/' . Route::url('index.php?option=com_members&controller=orcid') . '">' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIND') . '</a>';
+		$html[] = '		<a class="btn button icon-search orcid-fetch" data-base="' . rtrim(Request::base(true), '/') . '" data-id="' . $this->id . '" href="' . Request::base() . '/' . Route::url('index.php?option=com_members&controller=orcid') . '">' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIND') . '</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
 		$html[] = '<p><img src="' . Request::root()  . '/core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="ORCID" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
@@ -99,43 +99,10 @@ class Orcid extends Text
 		Behavior::framework(true);
 		Behavior::modal();
 
-		/*App::get('document')->addScriptDeclaration("
-			jQuery(document).ready(function($){
-				if ($('.orcid-fetch').length > 0) {
-					$('.orcid-fetch').on('click', function(e) {
-						e.preventDefault();
-
-						$.fancybox({
-							type: 'iframe',
-							width: 700,
-							height: 'auto',
-							autoSize: false,
-							fitToView: false,
-							titleShow: false,
-							closeClick: false,
-							helpers: { 
-								overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
-							},
-							tpl: {
-								wrap:'<div class=\"fancybox-wrap\"><div class=\"fancybox-skin\"><div class=\"fancybox-outer\"><div id=\"sbox-content\" class=\"fancybox-inner\"></div></div></div></div>'
-							},
-							beforeLoad: function() {
-								var href = $(this).attr('href');
-								if (href.indexOf('?') == -1) {
-									href += '?tmpl=component';
-								} else {
-									href += '&tmpl=component';
-								}
-								href += '&return=1&fname=' + $(this).attr('data-fname') + '&lname=' + $(this).attr('data-lname')  + '&email=' + $(this).attr('data-email');
-								$(this).attr('href', href);
-							},
-							afterClose: function() {
-								HUB.Members.Profile.editReloadSections();
-							}
-						});
-					});
-				}
-		");*/
+		if (file_exists(PATH_ROOT . '/core/components/com_members/site/assets/js/orcid.js'))
+		{
+			Document::addScript('/core/components/com_members/site/assets/js/orcid.js?t=' . filemtime(PATH_ROOT . '/core/components/com_members/site/assets/js/orcid.js'));
+		}
 
 		return implode($html);
 	}

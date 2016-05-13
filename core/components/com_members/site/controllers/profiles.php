@@ -182,8 +182,8 @@ class Profiles extends SiteController
 		if (preg_match('/\d{4}-\d{4}-\d{4}-\d{4}/', $filters['search']))
 		{
 			$query = "SELECT xp.uidNumber AS id, xp.name, xp.username, xp.organization, xp.picture, xp.public
-					FROM #__xprofiles AS xp
-					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
+					FROM `#__xprofiles` AS xp
+					INNER JOIN `#__users` u ON u.id = xp.uidNumber AND u.block = 0
 					WHERE orcid= " . $this->database->quote($filters['search']) . " AND xp.emailConfirmed>0 $restrict
 					ORDER BY xp.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
@@ -196,8 +196,8 @@ class Profiles extends SiteController
 			// match member names on all three name parts
 			$match = "MATCH(xp.givenName,xp.middleName,xp.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
 			$query = "SELECT xp.uidNumber AS id, xp.name, xp.username, xp.organization, xp.picture, xp.public, $match as rel
-					FROM #__xprofiles AS xp
-					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
+					FROM `#__xprofiles` AS xp
+					INNER JOIN `#__users` u ON u.id = xp.uidNumber AND u.block = 0
 					WHERE $match AND xp.emailConfirmed>0 $restrict
 					ORDER BY rel DESC, xp.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
@@ -1189,7 +1189,7 @@ class Profiles extends SiteController
 
 		if (!is_null($email))
 		{
-			$member->set('email', $email);
+			$member->set('email', (string)$email);
 
 			// Unconfirm if the email address changed
 			if ($oldemail != $email)
@@ -1210,11 +1210,11 @@ class Profiles extends SiteController
 		}
 
 		// Usage agreement
-		$usageAgreement = Request::getInt('usageAgreement', 0, 'post');
+		$usageAgreement = Request::getVar('usageAgreement', null, 'post');
 
 		if (!is_null($usageAgreement))
 		{
-			$member->set('usageAgreement', $usageAgreement);
+			$member->set('usageAgreement', (int)$usageAgreement);
 		}
 
 		// Are we declining the terms of use?
@@ -1270,6 +1270,7 @@ class Profiles extends SiteController
 				$option
 					->select('*');
 			}])
+			->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
 			->ordered()
 			->rows();
 
@@ -1281,7 +1282,7 @@ class Profiles extends SiteController
 		{
 			foreach ($form->getErrors() as $error)
 			{
-				$this->setError($error);
+				$this->setError((string)$error);
 			}
 			if ($no_html)
 			{
@@ -1405,59 +1406,6 @@ class Profiles extends SiteController
 
 		return $result;
 	}
-
-	/**
-	 * Save profile field access
-	 *
-	 * @return  void
-	 */
-	/*public function saveaccessTask()
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			return false;
-		}
-
-		// Incoming user ID
-		$id = Request::getInt('id', 0);
-
-		// Do we have an ID?
-		if (!$id)
-		{
-			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
-		}
-
-		// Incoming profile edits
-		$p = Request::getVar('access', array(), 'post');
-		if (is_array($p))
-		{
-			// Load the profile
-			$profile = Member::oneOrFail($id);
-
-			foreach ($p as $k => $v)
-			{
-				$v = intval($v);
-
-				if (!in_array($v, array(0, 1, 2, 3, 4)))
-				{
-					$v = 0;
-				}
-
-				$profile->setParam('access_' . $k, $v);
-			}
-
-			// Save the changes
-			if (!$profile->update())
-			{
-				Notify::warning($profile->getError());
-				return false;
-			}
-		}
-
-		// Push through to the profile view
-		$this->viewTask();
-	}*/
 
 	/**
 	 * Show the current user activity

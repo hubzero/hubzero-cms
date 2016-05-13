@@ -252,9 +252,9 @@ foreach ($profiles as $profile)
 					<div class="value"><?php echo $this->escape($this->profile->get('name')); ?></div>
 					<br class="clear" />
 					<?php
-						$name  = '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_FIRST_NAME') . ' <input type="text" name="name[first]" id="" class="input-text" value="'.$this->escape($this->profile->get('givenName')).'" /></label>';
-						$name .= '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_MIDDLE_NAME') . ' <input type="text" name="name[middle]" id="" class="input-text" value="'.$this->escape($this->profile->get('middleName')).'" /></label>';
-						$name .= '<label class="side-by-side three no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_LAST_NAME') . ' <input type="text" name="name[last]" id="" class="input-text" value="'.$this->escape($this->profile->get('surname')).'" /></label>';
+						$name  = '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_FIRST_NAME') . ' <input type="text" name="name[first]" id="first-name" class="input-text" value="'.$this->escape($this->profile->get('givenName')).'" /></label>';
+						$name .= '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_MIDDLE_NAME') . ' <input type="text" name="name[middle]" id="middle-name" class="input-text" value="'.$this->escape($this->profile->get('middleName')).'" /></label>';
+						$name .= '<label class="side-by-side three no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_LAST_NAME') . ' <input type="text" name="name[last]" id="last-name" class="input-text" value="'.$this->escape($this->profile->get('surname')).'" /></label>';
 
 						$this->view('default', 'edit')
 						     ->set('registration_field', 'name')
@@ -360,6 +360,7 @@ foreach ($profiles as $profile)
 							</a>
 						</div>
 						<br class="clear" />
+						<input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
 						<?php
 							/*$this->view('default', 'edit')
 							     ->set('registration_field', 'email')

@@ -201,172 +201,6 @@ class Registration
 		//
 		// TODO: more cleanup
 
-		$coriginus_p = Request::getVar('corigin_us', null, 'post');
-		$corigin_p = Request::getVar('corigin', null, 'post');
-		$cresidentus_p = Request::getVar('cresident_us', null, 'post');
-		$cresident_p = Request::getVar('cresident', null, 'post');
-		$disability_p = Request::getVar('disability', null, 'post');
-		$disabilityblind_p = Request::getVar('disabilityblind', null, 'post');
-		$disabilitydeaf_p = Request::getVar('disabilitydeaf', null, 'post');
-		$disabilityphysical_p = Request::getVar('disabilityphysical', null, 'post');
-		$disabilitylearning_p = Request::getVar('disabilitylearning', null, 'post');
-		$disabilityvocal_p = Request::getVar('disabilityvocal', null, 'post');
-		$disabilityother_p = Request::getVar('disabilityother', null, 'post');
-		$hispanic_p = Request::getVar('hispanic', null, 'post');
-		$hispaniccuban_p = Request::getVar('hispaniccuban', null, 'post');
-		$hispanicmexican_p = Request::getVar('hispanicmexican', null, 'post');
-		$hispanicpuertorican_p = Request::getVar('hispanicpuertorican', null, 'post');
-		$hispanicother_p = Request::getVar('hispanicother',null,'post');
-		$racenativeamerican_p = Request::getVar('racenativeamerican', null, 'post');
-		$racenativetribe_p = Request::getVar('racenativetribe', null, 'post');
-		$raceasian_p = Request::getVar('raceasian', null, 'post');
-		$raceblack_p = Request::getVar('raceblack', null, 'post');
-		$racehawaiian_p = Request::getVar('racehawaiian', null, 'post');
-		$racewhite_p = Request::getVar('racewhite', null, 'post');
-		$racerefused_p = Request::getVar('racerefused', null, 'post');
-		//$interests_p = Request::getVar('interests',null,'post');
-
-		//if ($coriginus_p === null) { // field not on form
-		if ($coriginus_p || $corigin_p) { // field not on form
-			$corigin = ($coriginus_p == 'yes') ? 'US' : $corigin_p;
-		} else {
-			$corigin = null;
-		}
-
-		//if ($cresident_p === null) { // field not on form
-		if ($cresidentus_p || $cresident_p) { // field not on form
-			$cresident = ($cresidentus_p == 'yes') ? 'US' : $cresident_p;
-		} else {
-			$cresident = null;
-		}
-
-		if ($disability_p === null) // field not on form
-			$disability = null;
-		else
-		{
-			$disability = array();
-
-			if ($disability_p == 'yes')
-			{
-				if ($disabilityblind_p)
-					$disability[] = 'blind';
-				if ($disabilitydeaf_p)
-					$disability[] = 'deaf';
-				if ($disabilityphysical_p)
-					$disability[] = 'physical';
-				if ($disabilitylearning_p)
-					$disability[] = 'learning';
-				if ($disabilityvocal_p)
-					$disability[] = 'vocal';
-				if ($disabilityother_p)
-					$disability[] = $disabilityother_p;
-				if (empty($disability))
-					$disability[] = 'yes';
-			}
-			else if ($disability_p == 'no')
-				$disability[] = 'no';
-			else if ($disability_p == 'refused')
-				$disability[] = 'refused';
-		}
-
-		if ($hispanic_p === null) // field not on form
-			$hispanic = null;
-		else
-		{
-			$hispanic = array();
-
-			if ($hispanic_p == 'yes')
-			{
-				if ($hispaniccuban_p)
-					$hispanic[] = 'cuban';
-				if ($hispanicmexican_p)
-					$hispanic[] = 'mexican';
-				if ($hispanicpuertorican_p)
-					$hispanic[] = 'puertorican';
-				if ($hispanicother_p)
-					$hispanic[] = $hispanicother_p;
-			}
-			else if ($hispanic_p == 'no')
-				$hispanic[] = 'no';
-			else if ($hispanic_p == 'refused')
-				$hispanic[] = 'refused';
-		}
-
-		if ($racenativeamerican_p === NULL
-		 && $racenativetribe_p === null
-		 && $raceasian_p === NULL
-		 && $raceblack_p === NULL
-		 && $racehawaiian_p === NULL
-		 && $racewhite_p === NULL
-		 && $racerefused_p === NULL) // field not on form
-		{
-			$race = null;
-			$racenativetribe = null;
-		}
-		else
-		{
-			$race = array();
-			$racenativetribe = null;
-
-			if ($racenativeamerican_p)
-			{
-				$race[] = 'nativeamerican';
-				$racenativetribe = $racenativetribe_p;
-			}
-			if ($raceasian_p)
-			{
-				$race[] = 'asian';
-			}
-			if ($raceblack_p)
-			{
-				$race[] = 'black';
-			}
-			if ($racehawaiian_p)
-			{
-				$race[] = 'hawaiian';
-			}
-			if ($racewhite_p)
-			{
-				$race[] = 'white';
-			}
-			if ($racerefused_p)
-			{
-				$race = 'refused';
-			}
-		}
-
-		// if ($interests_p === null) // field not on form
-		// {
-		// 	$role = null;
-		// 	$edulevel = null;
-		// }
-		// else
-		// {
-		// 	$role = array();
-		// 	$edulevel = array();
-
-		// 	if ( Request::getVar('rolestudent', '', 'post') )
-		// 		$role[] = 'student';
-
-	 // 		if ( Request::getVar('roleeducator', '', 'post') )
-		// 		$role[] = 'educator';
-
-		// 	if ( Request::getVar('roleresearcher', '', 'post') )
-		// 		$role[] = 'researcher';
-
-		// 	if ( Request::getVar('roledeveloper', '', 'post') )
-		// 		$role[] = 'developer';
-
-		// 	if ( Request::getVar('edulevelk12', '', 'post') )
-		// 		$edulevel[] = 'k12';
-
-		// 	if ( Request::getVar('edulevelundergraduate', '', 'post') )
-		// 		$edulevel[] = 'undergraduate';
-
-		// 	if ( Request::getVar('edulevelgraduate', '', 'post') )
-		// 		$edulevel[] = 'graduate';
-		// }
-
 		$name = Request::getVar('name', array(), 'post');
 		if (!is_array($name))
 		{
@@ -386,53 +220,41 @@ class Registration
 			$this->_registration['surname'] = $name['last'];
 		}
 
-		$this->_registration['countryresident'] = $cresident;
-		$this->_registration['countryorigin']	= $corigin;
-		$this->_registration['nativetribe'] = $racenativetribe;
-		//$this->_registration['role'] = $role;
-		//$this->_registration['edulevel'] = $edulevel;
-		$this->_registration['hispanic'] = $hispanic;
-		$this->_registration['disability'] = $disability;
-		$this->_registration['race'] = $race;
 		$this->_registration['login'] = strtolower(Request::getVar('login', null, 'post'));
 		$this->_registration['email'] = Request::getVar('email', null, 'post');
 		$this->_registration['confirmEmail'] = Request::getVar('email2', null, 'post');
-		$this->_registration['url'] = Request::getVar('url', null, 'post');
-		$this->_registration['phone'] = Request::getVar('phone', null, 'post');
-		//$this->_registration['name'] = Request::getVar('name', null, 'post');
-		$this->_registration['orgtype']	= Request::getVar('orgtype', null, 'post');
-		$this->_registration['org'] = Request::getVar('org', null, 'post');
-		$this->_registration['orgtext']	= Request::getVar('orgtext', null, 'post');
-		if (!$this->_registration['org'])
-		{
-			$this->_registration['org'] = $this->_registration['orgtext'];
-		}
-		$this->_registration['reason'] = Request::getVar('reason', null, 'post');
-		$this->_registration['reasontxt'] = Request::getVar('reasontxt', null, 'post');
-		if (!$this->_registration['reason'])
-		{
-			$this->_registration['reason'] = $this->_registration['reasontxt'];
-		}
 		$this->_registration['password'] = Request::getVar('password', null, 'post');
 		$this->_registration['confirmPassword'] = Request::getVar('password2', null, 'post');
 		$this->_registration['usageAgreement'] = Request::getVar('usageAgreement', null, 'post');
 		$this->_registration['sendEmail'] = Request::getVar('sendEmail', null, 'post');
-		$this->_registration['sex'] = Request::getVar('sex', null, 'post');
-		$this->_registration['interests'] = Request::getVar('interests',null,'post');
-		$this->_registration['orcid'] = Request::getVar('orcid', null, 'post');
-
-		if ($this->_registration['sex'] !== null)
-		{
-			if ($this->_registration['sex'] == 'unspecified')
-			{
-				$this->_registration['sex'] = '';
-			}
-		}
 
 		if ($this->_registration['usageAgreement'] !== null)
 		{
 			$this->_registration['usageAgreement'] = ($this->_registration['usageAgreement'] === 'unset') ? false : true;
 		}
+
+		// Incoming profile edits
+		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+
+		// Compile profile data
+		foreach ($profile as $key => $data)
+		{
+			if (isset($profile[$key . '_other']))
+			{
+				if (is_array($profile[$key]))
+				{
+					$profile[$key][] = $profile[$key . '_other'];
+				}
+				else
+				{
+					$profile[$key] = $profile[$key . '_other'];
+				}
+
+				unset($profile[$key . '_other']);
+			}
+		}
+
+		$this->_registration['_profile'] = $profile;
 
 		$this->_checked = false;
 	}
@@ -664,14 +486,15 @@ class Registration
 		}
 
 		$this->_missing = array();
-		$_invalid = array();
+		$this->_invalid = array();
+
 		$registrationUsername = $this->registrationField('registrationUsername','RROO',$task);
 		$registrationPassword = $this->registrationField('registrationPassword','RRHH',$task);
 		$registrationConfirmPassword = $this->registrationField('registrationConfirmPassword','RRHH',$task);
 		$registrationFullname = $this->registrationField('registrationFullname','RRRR',$task);
 		$registrationEmail = $this->registrationField('registrationEmail','RRRR',$task);
 		$registrationConfirmEmail = $this->registrationField('registrationConfirmEmail','RRRR',$task);
-		$registrationURL = $this->registrationField('registrationURL','HHHH',$task);
+		/*$registrationURL = $this->registrationField('registrationURL','HHHH',$task);
 		$registrationPhone = $this->registrationField('registrationPhone','HHHH',$task);
 		$registrationEmployment = $this->registrationField('registrationEmployment','HHHH',$task);
 		$registrationOrganization = $this->registrationField('registrationOrganization','HHHH',$task);
@@ -682,12 +505,12 @@ class Registration
 		$registrationHispanic = $this->registrationField('registrationHispanic','HHHH',$task);
 		$registrationRace = $this->registrationField('registrationRace','HHHH',$task);
 		$registrationInterests = $this->registrationField('registrationInterests','HHHH',$task);
-		$registrationReason = $this->registrationField('registrationReason','HHHH',$task);
+		$registrationReason = $this->registrationField('registrationReason','HHHH',$task);*/
 		$registrationOptIn = $this->registrationField('registrationOptIn','HHHH',$task);
 		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA','HHHH',$task);
 		$registrationTOU = $this->registrationField('registrationTOU','HHHH',$task);
-		$registrationAddress = $this->registrationField('registrationAddress','OOOO',$task);
-		$registrationORCID = $this->registrationField('registrationORCID','HHHO',$task);
+		//$registrationAddress = $this->registrationField('registrationAddress','OOOO',$task);
+		//$registrationORCID = $this->registrationField('registrationORCID','HHHO',$task);
 
 		if ($task == 'update')
 		{
@@ -747,9 +570,7 @@ class Registration
 
 		if (!empty($login) && ($task == 'create' || $task == 'proxycreate' || $task == 'update'))
 		{
-			jimport('joomla.user.helper');
-
-			$uid = \JUserHelper::getUserId($login);
+			$uid = \User::getInstance($login)->get('id');
 
 			if ($uid && $uid != $id)
 			{
@@ -976,241 +797,6 @@ class Registration
 			}
 		}
 
-		$fields = Field::all()
-			->including(['options', function ($option){
-				$option
-					->select('*')
-					->ordered();
-			}])
-			->where('action_' . $task, '=', Field::STATE_REQUIRED)
-			->ordered()
-			->rows();
-
-		foreach ($fields as $field)
-		{
-			if ($field->get('type') != 'hidden')
-			{
-				$value = $this->get($field->get('name'));
-
-				if (empty($value))
-				{
-					$check['_missing'] = $field->get('label');
-				}
-			}
-		}
-
-		/*
-		if ($registrationURL == REG_REQUIRED)
-		{
-			if (empty($registration['url']))
-			{
-				$this->_missing['url'] = 'Personal Web Page';
-				$this->_invalid['url'] = 'Please provide a valid urlsite URL';
-			}
-		}
-
-		if ($registrationURL != REG_HIDE)
-		{
-			$registration['url'] = trim($registration['url']);
-			if (!empty($registration['url']) && (strstr($registration['url'], ' ') || !Helpers\Utility::validurl($registration['url'])))
-			{
-				$this->_invalid['url'] = 'Invalid url site URL. You may be using characters that are not allowed.';
-			}
-		}
-
-		if ($registrationORCID == REG_REQUIRED)
-		{
-			if (empty($registration['orcid']))
-			{
-				$this->_missing['orcid'] = 'ORCID';
-				$this->_invalid['orcid'] = 'Please provide a valid ORCID';
-			}
-		}
-
-		if ($registrationORCID != REG_HIDE)
-		{
-			if (!empty($registration['orcid']) && !Helpers\Utility::validorcid($registration['orcid']))
-			{
-				$this->_invalid['orcid'] = 'Invalid ORCID. It should be in the form of XXXX-XXXX-XXXX-XXXX.';
-			}
-		}
-
-		if ($registrationPhone == REG_REQUIRED)
-		{
-			if (empty($registration['phone']))
-			{
-				$this->_missing['phone'] = 'Phone Number';
-				$this->_invalid['phone'] = 'Please provide a valid phone number';
-			}
-		}
-
-		if ($registrationPhone != REG_HIDE)
-		{
-			if (!empty($registration['phone']) && !Helpers\Utility::validphone($registration['phone']))
-			{
-				$this->_invalid['phone'] = 'Invalid phone number. You may be using characters that are not allowed.';
-			}
-		}
-
-		if ($registrationEmployment == REG_REQUIRED)
-		{
-			if (empty($registration['orgtype']))
-			{
-				$this->_missing['orgtype'] = 'Employment Type';
-				$this->_invalid['orgtype'] = 'Please make an employment type selection';
-			}
-		}
-
-		if ($registrationOrganization == REG_REQUIRED)
-		{
-			if (empty($registration['org']) && empty($registration['orgtext']))
-			{
-				$this->_missing['org'] = 'Organization';
-				$this->_invalid['org'] = 'Invalid affiliation';
-			}
-		}
-
-		if ($registrationOrganization != REG_HIDE)
-		{
-			if (!empty($registration['org']) && !Helpers\Utility::validtext($registration['org']))
-			{
-				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
-			}
-			elseif (!empty($registration['orgtext']) && !Helpers\Utility::validtext($registration['orgtext']))
-			{
-				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
-			}
-		}
-
-		if ($registrationCitizenship == REG_REQUIRED)
-		{
-			if (empty($registration['countryorigin']))
-			{
-				$this->_missing['countryorigin'] = 'Country of Citizenship / Permanent Residence';
-				$this->_invalid['countryorigin'] = 'Invalid country of origin.';
-			}
-		}
-
-		if ($registrationCitizenship != REG_HIDE)
-		{
-			if (!empty($registration['countryorigin']) && !Helpers\Utility::validtext($registration['countryorigin']))
-			{
-				$this->_invalid['countryorigin'] = 'Invalid country of origin. You may be using characters that are not allowed.';
-			}
-		}
-
-		if ($registrationResidency == REG_REQUIRED)
-		{
-			if (empty($registration['countryresident']))
-			{
-				$this->_missing['countryresident'] = 'Country of Current Residence';
-				$this->_invalid['countryresident'] = 'Invalid country of residency';
-			}
-		}
-
-		if ($registrationResidency != REG_HIDE)
-		{
-			if (!empty($registration['countryresident']) && !Helpers\Utility::validtext($registration['countryresident']))
-			{
-				$this->_invalid['countryresident'] = 'Invalid country of residency. You may be using characters that are not allowed.';
-			}
-		}
-
-		if ($registrationSex == REG_REQUIRED)
-		{
-			if (empty($registration['sex']))
-			{
-				$this->_missing['sex'] = 'Gender';
-				$this->_invalid['sex'] = 'Please select gender.';
-			}
-		}
-
-		if ($registrationSex != REG_HIDE)
-		{
-			if (!empty($registration['sex']) && !Helpers\Utility::validtext($registration['sex']))
-			{
-				$this->_invalid['sex'] = 'Invalid gender selection.';
-			}
-		}
-
-		if ($registrationDisability == REG_REQUIRED)
-		{
-			if (empty($registration['disability']))
-			{
-				$this->_missing['disability'] = 'Disability Information';
-				$this->_invalid['disability'] = 'Please indicate any disabilities you may have.';
-			}
-		}
-
-		if ($registrationDisability != REG_HIDE)
-		{
-			if (!empty($registration['disability']) && in_array('yes', $registration['disability']))
-			{
-				$this->_invalid['disability'] = 'Invalid disability selection.';
-			}
-		}
-
-		if ($registrationHispanic == REG_REQUIRED)
-		{
-			if (empty($registration['hispanic']))
-			{
-				$this->_missing['hispanic'] = 'Hispanic Ethnic Heritage';
-				$this->_invalid['hispanic'] = 'Please make a selection or choose not to reveal.';
-			}
-		}
-
-		if ($registrationRace == REG_REQUIRED)
-		{
-			if ($task == 'edit')
-			{
-				$corigin_incoming = (in_array('countryorigin', $field_to_check)) ? true : false;
-				$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-			}
-			else
-			{
-				$corigin_incoming = true;
-			}
-
-			if (empty($registration['race'])
-				&& (($corigin_incoming && strtolower($registration['countryorigin']) == 'us')
-					|| (!$corigin_incoming && isset($profile) && strtolower($profile->get('countryorigin')) == 'us'))
-			){
-				$this->_missing['race'] = 'Racial Background';
-				$this->_invalid['race'] = 'Please make a selection or choose not to reveal.';
-			}
-		}
-
-		if ($registrationInterests == REG_REQUIRED)
-		{
-			if (empty($registration['interests']) || $registration['interests'] == '')
-			{
-				$this->_missing['interests'] = 'Interests';
-				$this->_invalid['interests'] = 'Please select materials your are interested in';
-			}
-		}
-
-		if ($registrationReason == REG_REQUIRED)
-		{
-			if (empty($registration['reason']) && empty($registration['reasontxt']))
-			{
-				$this->_missing['reason'] = 'Reason for registering';
-				$this->_invalid['reason'] = 'Reason for registering';
-			}
-		}
-
-		if ($registrationReason != REG_HIDE)
-		{
-			if (!empty($registration['reason']) && !Helpers\Utility::validtext($registration['reason']))
-			{
-				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
-			}
-			if (!empty($registration['reasontxt']) && !Helpers\Utility::validtext($registration['reasontxt']))
-			{
-				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
-			}
-		}
-		*/
-
 		if ($registrationOptIn == REG_REQUIRED)
 		{
 			if (is_null($registration['sendEmail']) || intval($registration['sendEmail']) < 0)
@@ -1250,13 +836,7 @@ class Registration
 			}
 		}
 
-		/*
-		if ($registrationTOU != REG_HIDE)
-			if (!empty($registration['usageAgreement']))
-				$this->_invalid['usageAgreement'] = 'Usage Agreement has not been Read and Accepted';
-		*/
-
-		if ($registrationAddress == REG_REQUIRED)
+		/*if ($registrationAddress == REG_REQUIRED)
 		{
 			if (count($registration['address']) == 0)
 			{
@@ -1265,6 +845,55 @@ class Registration
 			}
 		}
 
+		// Load all fields not hidden
+		$fields = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->where('action_' . $task, '!=', Field::STATE_HIDDEN)
+			->ordered()
+			->rows();
+
+		if (!isset($registration['_profile']))
+		{
+			$registration['_profile'] = array();
+		}
+
+		// Find missing required fields
+		foreach ($fields as $field)
+		{
+			if ($field->get('type') != 'hidden')
+			{
+				if (!isset($registration['_profile'][$field->get('name')]))
+				{
+					continue;
+				}
+
+				$value = $registration['_profile'][$field->get('name')];
+
+				if (empty($value) && $field->get('action_' . $task) == Field::STATE_REQUIRED)
+				{
+					$this->_missing[$field->get('name')] = $field->get('label');
+				}
+			}
+		}
+
+		// Validate input
+		$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+		$form->load(Field::toXml($fields, $action));
+		$form->bind(new \Hubzero\Config\Registry($registration['_profile']));
+
+		if (!$form->validate($registration['_profile']))
+		{
+			foreach ($form->getErrors() as $error)
+			{
+				$this->_invalid[] = $error;
+			}
+		}*/
+
+		// Filter out fields
 		if (!empty($field_to_check))
 		{
 			if ($this->_missing)

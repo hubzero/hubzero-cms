@@ -41,19 +41,19 @@ $returnOrcid = Request::getInt('return', 0);
 
 $isRegister = $returnOrcid == 1;
 
-if ($isRegister)
+/*if ($isRegister)
 {
 	$callbackPrefix = "HUB.Register.";
 }
 else
 {
 	$callbackPrefix = "HUB.Members.Profile.";
-}
+}*/
 
 if (!$isRegister)
 {
 	// Instantiate a new profile object
-	$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
+	$profile = User::getInstance();
 	if ($profile)
 	{
 		$fname = $fname ?: $profile->get('givenName');
@@ -66,15 +66,16 @@ if (!$isRegister)
 $returnOrcid = Request::getInt('return', 0);
 $isRegister = $returnOrcid == 1;
 
-if (Request::getInt('return', 0) == 1)
+/*if (Request::getInt('return', 0) == 1)
 {
 	$this->js('register.js');
 }
 else
 {
 	\Hubzero\Document\Assets::addPluginScript('members', 'profile');
-}
+}*/
 
+$this->js('orcid.js');
 $this->css('orcid.css');
 
 $srv = $this->config->get('orcid_service', 'members');
@@ -145,7 +146,7 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 							<p><?php echo Lang::txt('If you can\'t find your ID or would like to create one, click the "Create new ORCID" button to generate a new ID based on the info above. You will receive an email from ORCID to claim the new ID.'); ?></p>
 						</div>
 						<div class="col span4 omega">
-							<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo Lang::txt('Create new ORCID'); ?></a></p>
+							<p><a id="create-orcid" class="btn" onclick="<?php echo "HUB.Orcid.createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo Lang::txt('Create new ORCID'); ?></a></p>
 						</div>
 					</div>
 				</div>

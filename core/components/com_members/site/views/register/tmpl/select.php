@@ -45,7 +45,7 @@ defined('_HZEXEC_') or die();
 
 			<h4>Why is registration required for parts of the <?php echo $this->sitename; ?>?</h4>
 
-			<p>Our sponsors ask us who uses the <?php echo $this->sitenamw;?> and what they use it for. Registration helps us answer these questions. Usage statistics also focus our attention on improvements, making the <?php echo $this->sitename; ?> experience better for <em>you</em>.</p>
+			<p>Our sponsors ask us who uses the <?php echo $this->sitename;?> and what they use it for. Registration helps us answer these questions. Usage statistics also focus our attention on improvements, making the <?php echo $this->sitename; ?> experience better for <em>you</em>.</p>
 		</div>
 		<fieldset>
 			<h3>Register with <?php echo $this->sitename; ?></h3>

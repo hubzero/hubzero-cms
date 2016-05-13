@@ -66,7 +66,7 @@ defined('_HZEXEC_') or die();
 						</span>
 					</td>
 					<td>
-						<a class="btn" onclick="<?php echo $this->callbackPrefix . 'associateOrcid(\'orcid\', \'' . $orcid . '\');'; ?>">
+						<a class="btn" onclick="<?php echo 'HUB.Orcid.associateOrcid(\'orcid\', \'' . $orcid . '\');'; ?>">
 							<?php echo Lang::txt('Associate this ORCID'); ?>
 						</a>
 					</td>
