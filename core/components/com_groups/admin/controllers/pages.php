@@ -143,8 +143,8 @@ class Pages extends AdminController
 	public function editTask()
 	{
 		// get request vars
-		$ids = Request::getVar('id', array());
-		$id  = (isset($ids[0])) ? $ids[0] : null;
+		$id = Request::getVar('id', array(0));
+		$id = (is_array($id) ? $id[0] : $id;
 
 		// get the page & version objects
 		$this->view->page = new Page($id);
