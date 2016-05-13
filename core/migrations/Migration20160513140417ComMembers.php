@@ -66,13 +66,6 @@ class Migration20160513140417ComMembers extends Base
 		{
 			if ($this->db->tableExists('#__users'))
 			{
-				if (!$this->db->tableHasField('#__users', 'access'))
-				{
-					$query = "ALTER TABLE `#__users` ADD COLUMN `access` INT(10) NOT NULL DEFAULT 0;";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-
 				$query = "UPDATE `#__users` AS u
 						INNER JOIN `#__xprofiles` AS x ON x.`uidNumber`=u.`id`
 						SET u.`homeDirectory` = x.`homeDirectory`,
@@ -95,6 +88,13 @@ class Migration20160513140417ComMembers extends Base
 
 			if ($this->db->tableExists('#__user_profiles'))
 			{
+				if (!$this->db->tableHasField('#__user_profiles', 'access'))
+				{
+					$query = "ALTER TABLE `#__user_profiles` ADD COLUMN `access` INT(10) NOT NULL DEFAULT 0;";
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+
 				$fields = array();
 				if ($this->db->tableExists('#__user_profile_fields'))
 				{
