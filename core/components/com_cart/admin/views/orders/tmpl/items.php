@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('orders');
 
-Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'), 'cart.png');
+Toolbar::title(Lang::txt('COM_CART') . ': Items Ordered', 'cart.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');

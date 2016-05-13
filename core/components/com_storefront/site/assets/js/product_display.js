@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+	if (SF.OPTIONS == null) {
+		return;
+	}
+
 	SF.PRODUCT.skus = (SF.OPTIONS.skus);
 	SF.PRODUCT.ops = (SF.OPTIONS.ops);
 	SF.PRODUCT.pId = (SF.OPTIONS.pId);

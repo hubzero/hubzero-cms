@@ -213,6 +213,15 @@ class Skus extends AdminController
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
+
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
+		{
+			$fields['publish_up'] = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+		}
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
+		{
+			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
+		}
 		//print_r($fields); die;
 
 		// Get the proper SKU

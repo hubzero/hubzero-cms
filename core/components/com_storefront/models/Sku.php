@@ -30,6 +30,8 @@
 
 namespace Components\Storefront\Models;
 
+use Date;
+
 require_once(__DIR__ . DS . 'Memberships.php');
 require_once(__DIR__ . DS . 'Product.php');
 require_once(__DIR__ . DS . 'Option.php');
@@ -82,6 +84,7 @@ class Sku
 			$this->setInventoryLevel($skuInfo['info']->sInventory);
 			$this->setEnumerable($skuInfo['info']->sEnumerable);
 			$this->setActiveStatus($skuInfo['info']->sActive);
+			$this->setPublishTime($skuInfo['info']->publish_up, $skuInfo['info']->publish_down);
 
 			// Set meta
 			if (!empty($skuInfo['meta']))
@@ -158,6 +161,45 @@ class Sku
 			return NULL;
 		}
 		return $this->data->weight;
+	}
+
+	/**
+	 * Set publishing times
+	 *
+	 * @param	string		publish up time
+	 * @param	string		publish down time
+	 * @return	bool		true
+	 */
+	public function setPublishTime($publishUp, $publishDown)
+	{
+		$this->data->publishTime = new \stdClass();
+		if (empty($publishUp))
+		{
+			$publishUp = '0000-00-00 00:00:00';
+		}
+		$this->data->publishTime->publish_up = $publishUp;
+		if (empty($publishDown))
+		{
+			$publishDown = '0000-00-00 00:00:00';
+		}
+		$this->data->publishTime->publish_down = $publishDown;
+
+		return true;
+	}
+
+	/**
+	 * Get publishing times
+	 *
+	 * @param	void
+	 * @return	object
+	 */
+	public function getPublishTime()
+	{
+		if (!empty($this->data->publishTime))
+		{
+			return $this->data->publishTime;
+		}
+		return false;
 	}
 
 

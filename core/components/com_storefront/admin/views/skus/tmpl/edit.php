@@ -279,15 +279,25 @@ function submitbutton(pressbutton)
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_PARAMETERS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_STOREFRONT_PUBLISH_OPTIONS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_PUBLISH'); ?>:</label>
+				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_STATE'); ?>:</label>
 				<select name="fields[state]" id="field-state">
 					<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
 					<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
 					<option value="2"<?php if ($this->row->getActiveStatus() == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-publish_up"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>:</label><br />
+				<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
+				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
 			</div>
 
 		</fieldset>

@@ -33,6 +33,7 @@ namespace Components\Storefront\Models;
 use Components\Storefront\Models\Warehouse;
 use Exception;
 use Filesystem;
+use Date;
 
 require_once(__DIR__ . DS . 'Warehouse.php');
 
@@ -78,11 +79,16 @@ class Product
 		$pId = $this->getId();
 
 		// Get all product info
+		/*
 		$sql = "SELECT p.*, pt.ptName, pt.ptModel FROM `#__storefront_products` p
  				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
  				WHERE p.`pId` = " . $db->quote($pId);
 		$db->setQuery($sql);
 		$productInfo = $db->loadObject();
+		*/
+
+		$warehouse = new Warehouse();
+		$productInfo = $warehouse->getProductInfo($pId, true);
 
 		if (empty($productInfo))
 		{
@@ -100,6 +106,7 @@ class Product
 		$this->setActiveStatus($productInfo->pActive);
 		$this->setAccessLevel($productInfo->access);
 		$this->setAllowMultiple($productInfo->pAllowMultiple);
+		$this->setPublishTime($productInfo->publish_up, $productInfo->publish_down);
 	}
 
 	/**
@@ -639,6 +646,45 @@ class Product
 	}
 
 	/**
+	 * Set publishing times
+	 *
+	 * @param	string		publish up time
+	 * @param	string		publish down time
+	 * @return	bool		true
+	 */
+	public function setPublishTime($publishUp, $publishDown)
+	{
+		$this->data->publishTime = new \stdClass();
+		if (empty($publishUp))
+		{
+			$publishUp = '0000-00-00 00:00:00';
+		}
+		$this->data->publishTime->publish_up = $publishUp;
+		if (empty($publishDown))
+		{
+			$publishDown = '0000-00-00 00:00:00';
+		}
+		$this->data->publishTime->publish_down = $publishDown;
+
+		return true;
+	}
+
+	/**
+	 * Get publishing times
+	 *
+	 * @param	void
+	 * @return	object
+	 */
+	public function getPublishTime()
+	{
+		if (!empty($this->data->publishTime))
+		{
+			return $this->data->publishTime;
+		}
+		return false;
+	}
+
+	/**
 	 * Set product access level
 	 *
 	 * @param	int		Product access level
@@ -846,6 +892,8 @@ class Product
 				`pFeatures` = " . $db->quote($this->getFeatures()) . ",
 				`pAllowMultiple` = " . $db->quote($this->getAllowMultiple()) . ",
 				`pActive` = " . $db->quote($this->getActiveStatus()) . ",
+				`publish_up` = " . $db->quote($this->getPublishTime()->publish_up) . ",
+				`publish_down` = " . $db->quote($this->getPublishTime()->publish_down) . ",
 				`access` = " . $db->quote($this->getAccessLevel());
 
 
