@@ -91,6 +91,7 @@ class Media extends SiteController
 		// instantiate view and pass needed vars
 		$this->view
 			->set('config', $this->config)
+			->set('profile', $profile)
 			->setErrors($this->getErrors())
 			->setLayout('upload')
 			->display();
@@ -453,60 +454,47 @@ class Media extends SiteController
 			return false;
 		}
 
+		Request::checkToken(['get', 'post']);
+
 		// Incoming member ID
 		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(Lang::txt('MEMBERS_NO_ID'));
+			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
 			return $this->displayTask('', $id);
 		}
 
-		// Incoming file
-		$file = Request::getVar('file', '');
-		if (!$file)
+		$profile = Member::oneOrFail($id);
+
+		if (!$profile->get('id'))
 		{
-			$this->setError(Lang::txt('MEMBERS_NO_FILE'));
+			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
 			return $this->displayTask('', $id);
 		}
 
 		// Build the file path
+		$files = array(
+			'profile.png',
+			'thumb.png'
+		);
+
 		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
-		if (!file_exists($path . DS . $file) or !$file)
+		foreach ($files as $file)
 		{
-			$this->setError(Lang::txt('FILE_NOT_FOUND'));
-		}
-		else
-		{
-			$ih = new \Components\Members\Helpers\ImgHandler();
+			if (!file_exists($path . DS . $file))
+			{
+				$this->setError(Lang::txt('FILE_NOT_FOUND'));
+				continue;
+			}
 
 			// Attempt to delete the file
 			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
-				return $this->displayTask($file, $id);
+				continue;
 			}
-
-			$curthumb = $ih->createThumbName($file);
-			if (file_exists($path . DS . $curthumb))
-			{
-				if (!Filesystem::delete($path . DS . $curthumb))
-				{
-					$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
-					return $this->displayTask($file, $id);
-				}
-			}
-
-			// Instantiate a profile, change some info and save
-			$profile = Member::oneOrFail($id);
-			$profile->set('picture', '');
-			if (!$profile->save())
-			{
-				$this->setError($profile->getError());
-			}
-
-			$file = '';
 		}
 
 		// Push through to the image view

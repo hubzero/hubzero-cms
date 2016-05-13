@@ -49,7 +49,6 @@ HUB.Members.Profile = {
 		//profile address section
 		HUB.Members.Profile.addresses();
 		HUB.Members.Profile.locateMe();
-		//HUB.Members.Profile.fetchOrcid();
 	},
 	
 	//-------------------------------------------------------------
@@ -291,7 +290,7 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 
 	editRedirect: function( location )
-	{              
+	{
 		if(location != '')
 		{
 			window.location.href = location;
@@ -424,7 +423,7 @@ HUB.Members.Profile = {
 		var $ = this.jQuery;
 
 		var $identity = $("#page_identity"),
-		    $change = $("<a id=\"page_identity_change\"><span>Change Picture</span></a>");
+		    $change = $('<a id="page_identity_change"><span>Change Picture</span></a>');
 
 		//if this is our profile otherwise dont do ot
 		if( $(".section-edit a").length )
@@ -437,7 +436,7 @@ HUB.Members.Profile = {
 				.attr("href", window.location.href.replace("profile","ajaxupload"))
 				.appendTo($identity);
 
-			//edit picture	
+			//edit picture
 			$('.com_members')
 				.on("click", "#page_identity_change", function(event) {
 					HUB.Members.Profile.editProfilePicturePopup();
@@ -465,7 +464,7 @@ HUB.Members.Profile = {
 			{
 				href = $(this).attr('href').replace("#", "");
 				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
-				$(this).attr('href', href);	
+				$(this).attr('href', href);
 			},
 			beforeShow: function()
 			{
@@ -476,12 +475,26 @@ HUB.Members.Profile = {
 				$("#ajax-upload-container")
 					.on("click", "#remove-picture", function(event) {
 						event.preventDefault();
+
+						$.get($(this).attr('href'), function(data){});
+
 						$(this).hide();
-						$("#ajax-upload-right").find("table").hide();
-						$("#ajax-upload-right").append("<p class=\"warning\" style=\"margin-top:0;\">You must save changes to remove your profile picture.</p>"); 
-						
-						$("#profile-picture").attr("value", "");
+
 						$("#picture-src").attr("src", $("#picture-src").attr("data-default-pic"));
+						// load exact page to get results new profile pic sources
+						// not ideal way to do this, save should really return new profile pic
+						$.get(window.location.href, function(data)
+						{
+							var full = $(data).find('.profile-pic.full').first().attr('src'),
+								thumb = $(data).find('.profile-pic.thumb').first().attr('src');
+
+							// update all full & thumb
+							$('.profile-pic.full').attr('src', full + '?' + new Date().getTime());
+							$('.profile-pic.thumb').attr('src', thumb + '?' + new Date().getTime());
+
+							// close fancy box
+							$.fancybox.close();
+						});
 					})
 					.on("click", ".section-edit-cancel", function(event) {
 						event.preventDefault();
@@ -492,9 +505,9 @@ HUB.Members.Profile = {
 						var form = $("#ajax-upload-container").find("form");
 
 						// save profile picture updates
-						$.post( form.attr("action"), form.serialize(), function(data){
+						$.post(form.attr("action"), form.serialize(), function(data){
 							var save = jQuery.parseJSON(data);
-							if(save.success)
+							if (save.success)
 							{
 								// load exact page to get results new profile pic sources
 								// not ideal way to do this, save should really return new profile pic
@@ -528,10 +541,10 @@ HUB.Members.Profile = {
 			action: $("#ajax-uploader").attr("data-action"),
 			multiple: false,
 			template: '<div class="qq-uploader">' + 
-	                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-	                '<div class="qq-upload-button">Upload an Image</div>' +
-	                '<ul class="qq-upload-list"></ul>' + 
-	             '</div>',
+						'<div class="qq-upload-button"><span>Upload an Image</span></div>' +
+						'<div class="qq-upload-drop-area"><span>Upload an Image</span></div>' +
+						'<ul class="qq-upload-list"></ul>' + 
+					'</div>',
 			onSubmit: function(id, file)
 			{
 				$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
@@ -544,17 +557,25 @@ HUB.Members.Profile = {
 
 				$.post(url, {file:response.file, dir:response.directory}, function(data) {
 					var upload = jQuery.parseJSON( data );
-					if(upload)
+					if (upload)
 					{
-						$("#ajax-upload-right").find("table").show();
 						$("#ajax-upload-right").find("p.warning").remove();
-
 						$("#picture-src").attr("src", upload.src + "?v=" + new Date().getTime());
-						$("#picture-name").html(upload.name);
-						$("#picture-size").html(upload.size);
-						$("#picture-width").html(upload.width);
-						$("#picture-height").html(upload.height);
-						$("#profile-picture").attr("value", upload.name); 
+
+						// load exact page to get results new profile pic sources
+						// not ideal way to do this, save should really return new profile pic
+						$.get(window.location.href, function(data)
+						{
+							var full = $(data).find('.profile-pic.full').first().attr('src'),
+								thumb = $(data).find('.profile-pic.thumb').first().attr('src');
+
+							// update all full & thumb
+							$('.profile-pic.full').attr('src', full + '?' + new Date().getTime());
+							$('.profile-pic.thumb').attr('src', thumb + '?' + new Date().getTime());
+
+							// close fancy box
+							$.fancybox.close();
+						});
 					}
 				})
 			}
@@ -567,7 +588,7 @@ HUB.Members.Profile = {
 	{
 		var $ = this.jQuery;
 
-		if( $("#usage-agreement-popup").length )
+		if ($("#usage-agreement-popup").length)
 		{
 			$("#usage-agreement-popup").hide();
 
@@ -594,7 +615,7 @@ HUB.Members.Profile = {
 	{
 		var $ = this.jQuery;
 
-		if( $("#member-profile-completeness").length )
+		if ($("#member-profile-completeness").length)
 		{
 			$("#member-profile-completeness").appendTo( $("#page_options") ).show();
 			var timeout = setTimeout(function() {
@@ -602,7 +623,7 @@ HUB.Members.Profile = {
 			}, 1000);
 		}
 
-		if( $("#award-info").length )
+		if ($("#award-info").length)
 		{
 			$("#completeness-info").on("click", function(event) {
 				$("#award-info").slideToggle();
@@ -625,22 +646,22 @@ HUB.Members.Profile = {
 			hash = document.location.hash.replace("#", "");
 
 		//if we have a hash and we have an edit btn(on our profile)
-		if(hash != "")
+		if (hash != "")
 		{
 			item = $("." + hash),
 			item_edit_btn = item.find(".section-edit a");
-			if(item_edit_btn.length)
+			if (item_edit_btn.length)
 			{
 				//trigger edit button click
 				item_edit_btn.trigger("click");
-			
+
 				//set timeout to allow section to open so we can capture height of section
 				timeout = setTimeout(function() {
 					window_bottom = $(window).innerHeight();
 					bottom = item.offset().top + item.outerHeight(true);
-				
-					if(bottom > window_bottom)
-					{   
+
+					if (bottom > window_bottom)
+					{
 						distance = bottom - window_bottom + 20;
 						$("body").animate({ scrollTop: distance }, 1500);
 					}
@@ -648,7 +669,7 @@ HUB.Members.Profile = {
 			}
 		}
 	},
-	
+
 	addresses: function()
 	{
 		var $ = this.jQuery;
@@ -704,7 +725,7 @@ HUB.Members.Profile = {
 		//locate me
 		$('body').on('click', '#locate-me', function(event) {
 			event.preventDefault();
-			
+
 			//make sure we have the ability
 			if (!navigator.geolocation) 
 			{
