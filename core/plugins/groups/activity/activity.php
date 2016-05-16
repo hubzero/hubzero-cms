@@ -164,10 +164,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	protected function feedAction()
 	{
 		$entries = \Hubzero\Activity\Recipient::all()
-			->including(['log', function ($log)
-				{
-					$log->select('*');
-				}])
+			->including('log')
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $this->group->get('gidNumber'))
 			->whereEquals('state', 1)

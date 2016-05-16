@@ -125,10 +125,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 	protected function feedAction()
 	{
 		$entries = \Hubzero\Activity\Recipient::all()
-			->including(['log', function ($log)
-				{
-					$log->select('*');
-				}])
+			->including('log')
 			->whereEquals('scope', 'user')
 			->whereEquals('scope_id', $this->member->get('id'))
 			->whereEquals('state', 1)
