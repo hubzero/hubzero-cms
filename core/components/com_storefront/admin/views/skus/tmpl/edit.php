@@ -205,6 +205,10 @@ function submitbutton(pressbutton)
 						<input type="hidden" name="pId" id="pid" value="<?php echo $this->escape($this->pInfo->pId); ?>" />
 					</td>
 				</tr>
+				<?php
+				if ($this->pInfo->ptModel == 'software')
+				{
+				?>
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
 					<td>
@@ -214,12 +218,16 @@ function submitbutton(pressbutton)
 						{
 							echo(' times');
 						}
-						else {
+						else
+						{
 							echo 'time';
 						}
 						?>
 					</td>
 				</tr>
+				<?php
+				}
+				?>
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DIRECT_URL'); ?>:</th>
 					<td>
