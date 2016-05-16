@@ -33,10 +33,14 @@
 
 namespace Components\Resources\Api\Controllers;
 
+use Components\Resources\Tables\Resource;
+use Components\Resources\Tables\Type;
 use Hubzero\Component\ApiController;
 use Component;
+use Exception;
 use stdClass;
 use Request;
+use App;
 
 /**
  * API controller class for resources
@@ -44,10 +48,117 @@ use Request;
 class Entriesv1_0 extends ApiController
 {
 	/**
-	 * Get a list of new content for a given time period
+	 * Get a list of resources
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /resources/list
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       25
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "start",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "type",
+	 * 		"description":   "Type of resource to filter results.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sortby",
+	 * 		"description":   "Value to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "date",
+	 * 		"allowedValues": "date, title, random"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "search",
+	 * 		"description":   "A word or phrase to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @return    void
+	 */
+	public function listTask()
+	{
+		// Incoming
+		$filters = array(
+			'type'   => Request::getVar('type', ''),
+			'sortby' => Request::getCmd('sortby', 'date'),
+			'limit'  => Request::getInt('limit', Config::get('list_limit')),
+			'start'  => Request::getInt('limitstart', 0),
+			'search' => Request::getVar('search', '')
+		);
+
+		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
+		{
+			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
+		}
+
+		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
+		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
+
+		$database = App::get('db');
+
+		// Instantiate a resource object
+		$rr = new Resource($database);
+
+		// encode results and return response
+		$response = new stdClass;
+		$response->records = array();
+		$response->total   = $rr->getCount($filters);
+
+		if ($response->total)
+		{
+			// Get major types
+			$t = new Type($database);
+			$types = array();
+			foreach ($t->getMajorTypes() as $type)
+			{
+				unset($type->params);
+				unset($type->customFields);
+
+				$types[$type->id] = $type;
+			}
+
+			$response->records = $rr->getRecords($filters);
+
+			$base = rtrim(Request::base(), '/');
+
+			foreach ($response->records as $i => $entry)
+			{
+				$entry->url = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_resources&' . ($entry->alias ? 'alias=' . $entry->alias : 'id=' . $entry->id)), '/'));
+
+				if (isset($types[$entry->type]))
+				{
+					$entry->type = $types[$entry->type];
+				}
+
+				$response->records[$i] = $entry;
+			}
+		}
+
+		$response->success = true;
+
+		$this->send($response);
+	}
+
+	/**
+	 * Get a list of new content for a given time period
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /resources/whatsnew
 	 * @apiParameter {
 	 * 		"name":          "limit",
 	 * 		"description":   "Number of result to return.",
@@ -96,7 +207,7 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Render an image of a LaTeX expression
+	 * Render LaTeX expression
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /resources/renderlatex
@@ -107,7 +218,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"required":      true,
 	 * 		"default":       ""
 	 * }
-	 * @return  void
+	 * @return    void
 	 */
 	public function renderlatexTask()
 	{
@@ -135,12 +246,12 @@ class Entriesv1_0 extends ApiController
 		// if cache doesn't exist, create it
 		if (!is_dir($dir))
 		{
-			\Hubzero\Filesystem::makeDirectory($dir);
+			\Filesystem::makeDirectory($dir);
 		}
 
-		if (file_put_contents($dir .DS. $filename . '.tex', $doc) === false)
+		if (file_put_contents($dir . DS . $filename . '.tex', $doc) === false)
 		{
-			throw new \Exception('Failed to open target file');
+			throw new Exception('Failed to open target file');
 		}
 
 		try
@@ -150,14 +261,15 @@ class Entriesv1_0 extends ApiController
 			exec($command, $output_lines, $exit_status);
 
 			// execute dvi2png to build png
-			$command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o " . $dir .DS. $filename . '.png '. $dir .DS. $filename . '.dvi 2>&1';
+			$command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o " . $dir . DS . $filename . '.png '. $dir . DS . $filename . '.dvi 2>&1';
 			exec($command, $output_lines, $exit_status);
+
 			if ($exit_status != 0)
 			{
-				throw new \Exception("dvi2png failed");
+				throw new Exception("dvi2png failed");
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$error = $e->getMessage();
 		}
@@ -174,7 +286,7 @@ class Entriesv1_0 extends ApiController
 		{
 			// no errors - send base64 encoded image
 			$object->error = "";
-			$imgbinary = fread(fopen($dir .DS. $filename . '.png', 'r'), filesize($dir .DS. $filename .'.png'));
+			$imgbinary = fread(fopen($dir . DS . $filename . '.png', 'r'), filesize($dir . DS . $filename .'.png'));
 			$base64img = 'data:image/png;base64,'.base64_encode($imgbinary);
 			$object->img = $base64img;
 		}
