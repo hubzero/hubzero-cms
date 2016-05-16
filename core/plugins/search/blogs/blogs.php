@@ -179,31 +179,6 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 	/*********************
 		Index-time methods
 	*********************/
-
-	/**
-	 * onGetMapping - Maps database columns to SearchDocument Fields
-	 *
-	 * @param string $type
-	 * @access public
-	 * @return object $mapping
-	 */
-	public function onGetMapping($type)
-	{
-		if ($type == 'blog-entry')
-		{
-			$mapping  = new stdClass;
-			$mapping->title = '{title}';
-			$mapping->alias = '{alias}';
-			$mapping->fulltext = '{content}';
-			$mapping->description = '{description}';
-			$mapping->scope = '{scope}';
-			$mapping->scope_id = '{scope_id}';
-			$mapping->state = '{state}';
-
-			return $mapping;
-		}
-	}
-
 	/**
 	 * onProcessFields - Set SearchDocument fields which have conditional processing
 	 *
@@ -275,6 +250,23 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 			$fields->url = $path;
 			$fields->author = $authorArr;
 			$fields->tags = $row->tags('array');
+
+			$fields->title = $row->title;
+			$fields->alias = $row->alias;
+
+			// Monkeying around to adapt for console application
+			$content = $row->get('content');
+			$content = html_entity_decode($content);
+			$content = strip_tags($content);
+			$fields->fulltext = $content;
+
+			// Format the date for SOLR
+			$date = Date::of($row->publish_up)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			$fields->description = html_entity_decode($row->description);
 
 			return $fields;
 		}
