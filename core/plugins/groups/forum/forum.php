@@ -1524,9 +1524,63 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		$url = $this->base . '&scope=' . $section->get('alias') . '/' . $category->get('alias') . '/' . $thread->get('id');
+
+		// Record the activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
+			['user', $post->get('created_by')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+		$type = 'thread';
+		$desc = Lang::txt(
+			'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+			'<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'
+		);
+		// If this is a post in a thread and not the thread starter...
+		if ($post->get('parent'))
+		{
+			$thread = isset($thread) ? $thread : Post::oneOrFail($post->get('thread'));
+			$thread->set('last_activity', ($fields['id'] ? $post->get('modified') : $post->get('created')));
+			$thread->save();
+
+			$type = 'post';
+			$desc = Lang::txt(
+				'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+				$post->get('id'),
+				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
+			);
+
+			// If the parent post is not the same as the
+			// thread starter (i.e., this is a reply)
+			if ($post->get('parent') != $post->get('thread'))
+			{
+				$parent = Post::oneOrFail($post->get('parent'));
+				$recipients[] = ['user', $parent->get('created_by')];
+			}
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'forum.' . $type,
+				'scope_id'    => $post->get('id'),
+				'description' => $desc,
+				'details'     => array(
+					'thread' => $post->get('thread'),
+					'url'    => Route::url($url)
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// Set the redirect
 		App::redirect(
-			Route::url($this->base . '&scope=' . $section->get('alias') . '/' . $category->get('alias') . '/' . $thread->get('id')), // . '#c' . $model->id),
+			Route::url($url), // . '#c' . $model->id),
 			$message,
 			'passed'
 		);
