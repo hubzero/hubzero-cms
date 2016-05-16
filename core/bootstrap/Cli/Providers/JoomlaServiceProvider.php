@@ -25,13 +25,38 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-return array(
-	// Base Services
-	'Bootstrap\Files\Providers\EventServiceProvider',
-	'Bootstrap\Files\Providers\AuthServiceProvider',
-	'Bootstrap\Files\Providers\FileServiceProvider',
-);
+namespace Bootstrap\Cli\Providers;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Joomla handler service provider
+ * 
+ * This loads in the core Joomla framework and instantiates
+ * the base application class.
+ */
+class JoomlaServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the exception handler.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
+		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
+
+		jimport('joomla.application.menu');
+		jimport('joomla.environment.uri');
+		jimport('joomla.utilities.utility');
+		jimport('joomla.event.dispatcher');
+		jimport('joomla.utilities.arrayhelper');
+
+		$app = \JFactory::getApplication('cli');
+	}
+}

@@ -71,7 +71,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
 |
 */
 
-$muse = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'cli' . DS . 'shim.php';
+$muse = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'Cli' . DS . 'shim.php';
 
 /*
 |--------------------------------------------------------------------------

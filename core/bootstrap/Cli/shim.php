@@ -84,7 +84,7 @@ if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $ap
 |
 */
 
-$providers = PATH_CORE . DS . 'bootstrap' . DS . 'cli' .  DS . 'services.php';
+$providers = PATH_CORE . DS . 'bootstrap' . DS . 'Cli' .  DS . 'services.php';
 $services  = file_exists($providers) ? require $providers : array();
 
 foreach ($services as $service)
@@ -102,7 +102,7 @@ foreach ($services as $service)
 |
 */
 
-$facades = PATH_CORE . DS . 'bootstrap' . DS . 'cli' .  DS . 'aliases.php';
+$facades = PATH_CORE . DS . 'bootstrap' . DS . 'Cli' .  DS . 'aliases.php';
 $aliases = file_exists($facades) ? require $facades : array();
 
 $app->registerFacades($aliases);

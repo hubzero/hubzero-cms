@@ -25,26 +25,46 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-return [
-	// Base Services
-	'Hubzero\Base\JoomlaServiceProvider',
-	'Hubzero\Events\EventServiceProvider',
-	'Hubzero\Language\TranslationServiceProvider',
-	'Hubzero\Database\DatabaseServiceProvider',
-	'Hubzero\Plugin\PluginServiceProvider',
-	'Hubzero\Debug\ProfilerServiceProvider',
-	'Hubzero\Log\LogServiceProvider',
-	'Hubzero\Routing\RouterServiceProvider',
-	'Hubzero\Filesystem\FilesystemServiceProvider',
-	// CLI-specific services
-	'Hubzero\Session\SessionServiceProvider',
-	'Hubzero\User\UserServiceProvider',
-	'Hubzero\Console\ArgumentsServiceProvider',
-	'Hubzero\Console\OutputServiceProvider',
-	'Hubzero\Console\DispatcherServiceProvider',
-	'Hubzero\Console\ComponentServiceProvider',
-];
+namespace Bootstrap\Cli\Providers;
+
+use Hubzero\Log\Manager;
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Event service provider
+ */
+class LogServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['log'] = function($app)
+		{
+			$manager = new Manager($app);
+
+			$manager->register('debug', array(
+				'file' => 'cmsdebug.log',
+			));
+
+			$manager->register('auth', array(
+				'file'   => 'cmsauth.log',
+				'level'  => 'info',
+				'format' => "%datetime% %message%\n",
+			));
+
+			$manager->register('spam', array(
+				'file' => 'cmsspam.log'
+			));
+
+			return $manager;
+		};
+	}
+}

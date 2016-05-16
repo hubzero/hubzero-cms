@@ -24,54 +24,43 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   framework
+ * @package   hubzero-cms
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Bootstrap\Files;
+namespace Bootstrap\Cli\Providers;
 
-use Hubzero\Base\Middleware;
-use Hubzero\Http\Request;
-use Hubzero\Content\Moderator;
+use Hubzero\Database\Driver;
+use Hubzero\Base\ServiceProvider;
 
 /**
- * Token based authentication service provider
+ * Database service provider
  */
-class AuthServiceProvider extends Middleware
+class DatabaseServiceProvider extends ServiceProvider
 {
 	/**
-	 * Handle request in stack
-	 * 
-	 * @param   object  $request  Request
-	 * @return  mixed
+	 * Register the service provider
+	 *
+	 * @return  void
 	 */
-	public function handle(Request $request)
+	public function register()
 	{
-		$response = $this->next($request);
-
-		// Get the referer to parse for the applicable app
-		$referer = $request->header('referer');
-		$app     = Request::create($referer)->segment(1, 'site');
-		$app     = (in_array($app, ['site', 'administrator'])) ? $app : 'site';
-
-		// Get secret and session name manually
-		$secret      = $this->app['config']->get('secret');
-		$cookie_name = md5(md5($secret . $app));
-		$session_id  = $request->getVar($cookie_name, false, 'COOKIE');
-
-		// Build moderator
-		$identifier = $request->segment(2);
-		$moderator  = new Moderator($identifier, $session_id, $secret);
-
-		if (!$moderator->validateToken())
+		$this->app['db'] = function($app)
 		{
-			header('HTTP/1.1 401 You don\'t have permission to do this');
-			exit();
-		}
+			// @FIXME: this isn't pretty, but it will shim the removal of the old mysql_* calls from php
+			$driver = ($app['config']->get('dbtype') == 'mysql') ? 'pdo' : $app['config']->get('dbtype');
 
-		$this->app['moderator'] = $moderator;
+			$options = [
+				'driver'   => $driver,
+				'host'     => $app['config']->get('host'),
+				'user'     => $app['config']->get('user'),
+				'password' => $app['config']->get('password'),
+				'database' => $app['config']->get('db'),
+				'prefix'   => $app['config']->get('dbprefix')
+			];
 
-		return $response;
+			return Driver::getInstance($options);
+		};
 	}
 }

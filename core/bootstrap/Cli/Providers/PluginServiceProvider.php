@@ -25,13 +25,44 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-return array(
-	// Base Services
-	'Bootstrap\Files\Providers\EventServiceProvider',
-	'Bootstrap\Files\Providers\AuthServiceProvider',
-	'Bootstrap\Files\Providers\FileServiceProvider',
-);
+namespace Bootstrap\Cli\Providers;
+
+use Hubzero\Plugin\Loader;
+use Hubzero\Events\DispatcherInterface;
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Plugin loader service provider
+ */
+class PluginServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['plugin'] = function($app)
+		{
+			return new Loader();
+		};
+	}
+
+	/**
+	 * Add the plugin loader to the event dispatcher.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		if ($this->app->has('dispatcher'))
+		{
+			$this->app['dispatcher']->addListenerLoader($this->app['plugin']);
+		}
+	}
+}
