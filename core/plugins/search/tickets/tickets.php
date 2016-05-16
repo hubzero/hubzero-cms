@@ -84,27 +84,6 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 	/*********************
 		Index-time methods
 	*********************/
-
-	/**
-	 * onGetMapping - Maps database columns to SearchDocument Fields
-	 *
-	 * @param string $type
-	 * @access public
-	 * @return object $mapping
-	 */
-	public function onGetMapping($type)
-	{
-		if ($type == 'ticket')
-		{
-			$mapping  = new stdClass;
-			$mapping->title = '{summary}';
-			$mapping->fulltext = '{report}';
-			$mapping->state = '{open}';
-
-			return $mapping;
-		}
-	}
-
 	/**
 	 * onProcessFields - Set SearchDocument fields which have conditional processing
 	 *
@@ -131,7 +110,8 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 				$cleaned = strip_tags($comment->comment);
 				$cleaned = str_replace("\n", '', $cleaned);
 				$cleaned = str_replace("\r", '', $cleaned);
-				$cleaned = preg_replace("/[^a-zA-Z0-9\s]/", "", $cleaned);
+				//$cleaned = preg_replace("/[^a-zA-Z0-9\s]/", "", $cleaned);
+
 				array_push($comments, $cleaned);
 				array_push($owners, $comment->created_by);
 			}
@@ -154,8 +134,15 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 				array_push($owners, $author['id']);
 			}
 
+			// Clean up the title
+			$title = $row->summary;
+			$title = trim(preg_replace('/\s+/', ' ', $title));
+			$fields->title = $title;
+
 			$fields->date = $date;
+			$fields->fulltext = $row->report;
 			$fields->author = isset($author['name']) ? $author['name'] : '';
+			$fields->access_level = "private";
 			$fields->url = '/support/ticket/' . $row->id;
 			$fields->owner_type = 'user';
 			$fields->owner = $owners;
