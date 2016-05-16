@@ -267,6 +267,14 @@ class Archive extends \Hubzero\Base\Object
 			$sku->setOptions($fields['options']);
 		}
 
+		if (!isset($fields['publish_up']))
+		{
+			$fields['publish_up'] = '';
+		}
+		if (!isset($fields['publish_down']))
+		{
+			$fields['publish_down'] = '';
+		}
 		$sku->setPublishTime($fields['publish_up'], $fields['publish_down']);
 
 		// Meta
