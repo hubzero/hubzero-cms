@@ -226,7 +226,7 @@ class Attachments extends SiteController
 		$sizeLimit = $this->config->get('maxAllowed', 40000000);
 
 		// get the file
-		if (isset($_GET['qqfile']))
+		if (isset($_GET['qqfile']) && isset($_SERVER["CONTENT_LENGTH"])) // make sure we actually have a file
 		{
 			$stream = true;
 			$file = $_GET['qqfile'];
@@ -327,7 +327,7 @@ class Attachments extends SiteController
 
 		if (!is_dir($path))
 		{
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array(
 					'error' => Lang::txt('Error uploading. Unable to create path.')
@@ -400,15 +400,15 @@ class Attachments extends SiteController
 		}
 
 		// Set the path
-		if (!$resource->path)
+		if (!$resource->get('path'))
 		{
-			$resource->path = $listdir . DS . $filename . '.' . $ext;
+			$resource->set('path', $resource->relativepath() . DS . $filename . '.' . $ext);
 		}
-		$resource->path = ltrim($resource->path, DS);
+		$resource->set('path', ltrim($resource->get('path'), DS));
 		$resource->save();
 
 		// Textifier
-		$this->textifier($file, $row->id);
+		$this->textifier($file, $resource->get('id'));
 
 		// Output results
 		echo json_encode(array(
@@ -564,7 +564,7 @@ class Attachments extends SiteController
 		}
 
 		// Build the path
-		$listdir = $this->_buildPathFromDate($resource->created, $resource->id, '');
+		$listdir = $this->_buildPathFromDate($resource->get('created'), $resource->get('id'), '');
 		$path    = $this->_buildUploadPath($listdir, '');
 
 		// Make sure the upload path exist
@@ -573,8 +573,7 @@ class Attachments extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask($pid);
-				return;
+				return $this->displayTask($pid);
 			}
 		}
 
@@ -587,7 +586,7 @@ class Attachments extends SiteController
 		{
 			// File was uploaded
 			// Check the file type
-			$resource->type = $this->_getChildType($file['name']);
+			$resource->set('type', $this->_getChildType($file['name']));
 		}
 
 		// Scan for viruses
@@ -608,11 +607,11 @@ class Attachments extends SiteController
 		// Set path value
 		//
 		// NOTE: This is relative to the base resources upload path
-		if (!$resource->path)
+		if (!$resource->get('path'))
 		{
-			$resource->path = $listdir . DS . $file['name'];
+			$resource->set('path', $listdir . DS . $file['name']);
 		}
-		$resource->path = ltrim($resource->path, DS);
+		$resource->set('path', ltrim($resource->get('path'), DS));
 
 		// Store new content
 		if (!$resource->save())
@@ -629,7 +628,7 @@ class Attachments extends SiteController
 		}
 
 		// Textifier
-		$this->textifier($fpath, $resource->id);
+		$this->textifier($fpath, $resource->get('id'));
 
 		// Push through to the attachments view
 		$this->displayTask($pid);
@@ -696,9 +695,9 @@ class Attachments extends SiteController
 		$resource = Resource::oneOrFail($id);
 
 		// Check for stored file
-		if ($resource->path != '')
+		if ($resource->get('path') != '')
 		{
-			$listdir = $resource->path;
+			$listdir = $resource->get('path');
 		}
 		else
 		{
@@ -710,7 +709,7 @@ class Attachments extends SiteController
 		$path = $resource->basepath() . DS . $listdir;
 
 		// Check if the path is a URL or exists
-		if (!file_exists($path) or !$path or substr($resource->path, 0, strlen('http')) == 'http')
+		if (!file_exists($path) or !$path or substr($resource->get('path'), 0, strlen('http')) == 'http')
 		{
 			//$this->setError(Lang::txt('COM_CONTRIBUTE_FILE_NOT_FOUND'));
 		}

@@ -931,6 +931,8 @@ class Create extends SiteController
 		// Load the resource
 		$row = Resource::oneOrFail($id);
 
+		$prev = $row->get('group_owner');
+
 		// Set the group and access level
 		$row->set('group_owner', Request::getVar('group_owner', ''));
 		$row->set('access', Request::getInt('access', 0));
@@ -952,6 +954,49 @@ class Create extends SiteController
 			$this->view->set('step', $this->step);
 			$this->view->setLayout('authors');
 			return $this->step_authors();
+		}
+
+		// If group ownership has changed
+		if ((!$prev && $row->get('group_owner')) || ($prev && !$row->get('group_owner')))
+		{
+			// Log activity
+			if (!$prev && $row->get('group_owner'))
+			{
+				$action = 'ADDED';
+			}
+			if ($prev && !$row->get('group_owner'))
+			{
+				$action = 'REMOVED';
+			}
+
+			$recipients = array(
+				['resource', $row->get('id')],
+				['user', $row->get('created_by')]
+			);
+			foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+			{
+				$recipients[] = ['user', $author->get('authorid')];
+			}
+			$group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
+			$recipients[] = ['group', $group->get('gidNumber')];
+
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'updated',
+					'scope'       => 'resource',
+					'scope_id'    => $row->get('id'),
+					'description' => Lang::txt(
+						'COM_RESOURCES_ACTIVITY_ENTRY_GROUP_' . $action,
+						'<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . $row->get('title') . '</a>',
+						'<a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . $group->get('description') . '</a>'
+					),
+					'details'     => array(
+						'title' => $row->get('title'),
+						'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
+					)
+				],
+				'recipients' => $recipients
+			]);
 		}
 	}
 
