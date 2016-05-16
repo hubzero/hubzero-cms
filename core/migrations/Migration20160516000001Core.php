@@ -17,7 +17,7 @@ class Migration20160516000001Core extends Base
 	{
 		if (!$this->db->tableExists('#__notifications'))
 		{
-			$query = "CREATE TABLE `jos_notifications` (
+			$query = "CREATE TABLE `#__notifications` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`scope` varchar(100) DEFAULT NULL,
 					`scope_id` int(11) DEFAULT NULL,
