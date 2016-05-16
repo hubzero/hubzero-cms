@@ -293,24 +293,46 @@ class Author extends \JTable
 
 			foreach ($dev_authors as $authid)
 			{
-				// Do we have name/org info in previous version?
-				$query  = "SELECT name, organization FROM #__tool_authors ";
-				$query .= "WHERE toolname=" . $this->_db->quote($toolname) . " AND uid=" . $this->_db->quote($authid) . " AND revision < " . $this->_db->quote($revision);
-				$query .= " AND name IS NOT NULL AND organization IS NOT NULL ";
-				$query .= " ORDER BY revision DESC LIMIT 1";
-				$this->_db->setQuery($query);
-				$info = $this->_db->loadObjectList();
-				if ($info)
-				{
-					$name         = $info[0]->name;
-					$organization = $info[0]->organization;
-				}
-				else
-				{
-					$xprofile = User::getInstance($authid);
+				$name         = '';
+				$organization = '';
 
-					$name         = $xprofile->get('name');
-					$organization = $xprofile->get('organization');
+				// Check the author_assoc table first, as that's what gets updated when you edit the tool info
+				$query  = "SELECT name, organization FROM `#__author_assoc` ";
+				$query .= "WHERE subid= " . $this->_db->quote($rid);
+				$query .= " AND authorid=" . $this->_db->quote($authid);
+				$query .= " AND subtable='resources'";
+				$this->_db->setQuery($query);
+				$author = $this->_db->loadObject();
+
+				if ($author)
+				{
+					$name         = $author->name;
+					$organization = $author->organization;
+				}
+
+				if (!$name || !$organization)
+				{
+					// Do we have name/org info in previous version?
+					$query  = "SELECT name, organization FROM #__tool_authors ";
+					$query .= "WHERE toolname=" . $this->_db->quote($toolname) . " AND uid=" . $this->_db->quote($authid) . " AND revision < " . $this->_db->quote($revision);
+					$query .= " AND name IS NOT NULL AND organization IS NOT NULL ";
+					$query .= " ORDER BY revision DESC LIMIT 1";
+					$this->_db->setQuery($query);
+					$info = $this->_db->loadObjectList();
+					if ($info)
+					{
+						$name         = $name ?: $info[0]->name;
+						$organization = $organization ?: $info[0]->organization;
+					}
+
+					// If we still don't have it, try to grab it from the profile
+					if (!$name || !$organization)
+					{
+						$xprofile = User::getInstance($authid);
+
+						$name         = $name ?: $xprofile->get('name');
+						$organization = $organization ?: $xprofile->get('organization');
+					}
 				}
 
 				$query = "INSERT INTO $this->_tbl (toolname, revision, uid, ordering, version_id, name, organization) VALUES ('" . $toolname . "','" . $revision . "','" . $authid . "','" . $i . "', '" . $version . "', '" . addslashes($name) . "', '" . addslashes($organization) . "')";
