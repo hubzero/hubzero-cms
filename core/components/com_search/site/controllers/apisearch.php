@@ -39,13 +39,11 @@ use Plugin;
 use Config;
 use Lang;
 use stdClass;
-use Components\Search\Helpers\SolrEngine as SearchEngine;
-use Components\Search\Models\Hubtype;
 
 /**
  * Search controller class
  */
-class Solr extends SiteController
+class ApiSearch extends SiteController
 {
 	/**
 	 * Display search form and results (if any)
@@ -54,6 +52,10 @@ class Solr extends SiteController
 	 */
 	public function displayTask($response = NULL)
 	{
+		$terms = Request::get('terms', '');
+		$limit = Request::get('limit', 25);
+		$start = Request::get('limitstart', 0);
+
 		if (isset($response))
 		{
 			$this->view->query = $response->search;
@@ -66,37 +68,9 @@ class Solr extends SiteController
 			$this->view->results = '';
 		}
 
-		$this->view->types = Hubtype::all()->order('type', 'DESC')->rows()->toObject();
+		$this->view->terms = $terms;
 		$this->view->setLayout('display');
 		$this->view->display();
-	}
-
-	public function searchTask()
-	{
-		$searchRequest = Request::getVar('search', array());
-		$query = $searchRequest['query'];
-		$HubtypeFilter = $searchRequest['type'];
-
-		$hubSearch = new SearchEngine();
-
-		if ($HubtypeFilter != '')
-		{
-			//$search = $hubSearch->createFilterQuery('hubtype')->setQuery('hubtype:'.$HubtypeFilter)->search($query)->limit(100);
-			$search = $hubSearch->search($query)->limit(100);
-		}
-		else
-		{
-			$search = $hubSearch->search($query)->limit(100);
-		}
-
-		$result = $search->getResult();
-
-		$response = new stdClass;
-		$response->results = $result;
-		$response->search = $search;
-		$response->queryString = $query;
-
-		return $this->displayTask($response);
 	}
 }
 
