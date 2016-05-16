@@ -510,7 +510,7 @@ class Warehouse extends \Hubzero\Base\Object
 		}
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+		//print_r($this->_db->toString()); die;
 		$this->_db->execute();
 		if ($return == 'count')
 		{
