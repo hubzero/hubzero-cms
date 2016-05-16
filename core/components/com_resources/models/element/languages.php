@@ -34,6 +34,7 @@ namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
 use Lang;
+use Html;
 
 /**
  * Renders a languages element
@@ -41,17 +42,17 @@ use Lang;
 class Languages extends Base
 {
 	/**
-	* Element name
-	*
-	* @var		string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Language List';
 
 	/**
-	* Language list
-	*
-	* @var		array
-	*/
+	 * Language list
+	 *
+	 * @var  array
+	 */
 	protected $_codes = array(
 		"aa" => "Afar",
 		"ab" => "Abkhazian",
@@ -252,8 +253,7 @@ class Languages extends Base
 	{
 		if (!$value)
 		{
-			jimport('joomla.language.helper');
-			$language = \JLanguageHelper::detectLanguage();
+			$language = Lang::detect();
 			$language = explode('-', $language);
 			$value = $language[0];
 		}
@@ -261,18 +261,18 @@ class Languages extends Base
 		$languages = array();
 		foreach ($this->_codes as $code => $lang)
 		{
-			$languages[] = \Html::select('option', $code, $lang);
+			$languages[] = Html::select('option', $code, $lang);
 		}
 
-		array_unshift($languages, \Html::select('option', '', '- '.Lang::txt('Select Language').' -'));
+		array_unshift($languages, Html::select('option', '', '- '.Lang::txt('Select Language').' -'));
 
-		return '<span class="field-wrap">' . \Html::select('genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
+		return '<span class="field-wrap">' . Html::select('genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**
 	 * Display the language for a language code
 	 *
-	 * @param   string  $value   Data
+	 * @param   string  $value  Data
 	 * @return  string  Formatted string.
 	 */
 	public function display($value)

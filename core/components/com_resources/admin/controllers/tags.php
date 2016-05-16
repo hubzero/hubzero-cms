@@ -130,11 +130,10 @@ class Tags extends AdminController
 
 		$tagging->setTags($tags, User::get('id'), 1);
 
+		Notify::success(Lang::txt('COM_RESOURCES_TAGS_UPDATED', $id));
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=items', false),
-			Lang::txt('COM_RESOURCES_TAGS_UPDATED', $id)
-		);
+		$this->cancelTask();
 	}
 
 	/**

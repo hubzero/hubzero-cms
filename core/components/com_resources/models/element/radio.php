@@ -41,10 +41,10 @@ use Lang;
 class Radio extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Radio boxes';
 
 	/**

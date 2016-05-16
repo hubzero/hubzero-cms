@@ -99,26 +99,27 @@ $this->css('introduction.css', 'system')
 				</thead>
 				<tbody>
 				<?php
-					$ra = new \Components\Resources\Tables\Assoc($database);
-					$rc = new \Components\Resources\Tables\Contributor($database);
-					$cls = 'even';
-					foreach ($submissions as $submission)
+				$cls = 'even';
+				foreach ($submissions as $submission)
+				{
+					$cls = ($cls == 'even') ? 'odd' : 'even';
+
+					$resource = Components\Resources\Models\Orm\Resource::oneOrNew($submission->id);
+
+					switch ($resource->get('published'))
 					{
-						$cls = ($cls == 'even') ? 'odd' : 'even';
+						case 1: $state = 'published';  break;  // published
+						case 2: $state = 'draft';      break;  // draft
+						case 3: $state = 'pending';    break;  // pending
+						case 0:
+						default: $state = 'unpublished';  break;  // unpublished
+					}
 
-						switch ($submission->published)
-						{
-							case 1: $state = 'published';  break;  // published
-							case 2: $state = 'draft';      break;  // draft
-							case 3: $state = 'pending';    break;  // pending
-						}
+					$attachments = $resource->children()->total();
 
-						$attachments = $ra->getCount($submission->id);
+					$authors =  $resource->authors()->total();
 
-						$authors = $rc->getCount($submission->id, 'resources');
-
-						$rt = new \Components\Resources\Helpers\Tags($submission->id);
-						$tags = $rt->tags('count');
+					$tags = $resource->tags()->count();
 					?>
 					<tr class="<?php echo $cls; ?>">
 						<td><?php if ($submission->published == 2) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo stripslashes($submission->typetitle); ?></span></td>
@@ -167,8 +168,7 @@ $this->css('introduction.css', 'system')
 	</div><!-- / .grid -->
 
 <?php
-$t = new \Components\Resources\Tables\Type($database);
-$categories = $t->getMajorTypes();
+$categories = Components\Resources\Models\Type::getMajorTypes();
 if ($categories) {
 ?>
 	<div class="grid">
@@ -183,7 +183,7 @@ if ($categories) {
 
 		foreach ($categories as $category)
 		{
-			if ($category->contributable != 1)
+			if ($category->get('contributable') != 1)
 			{
 				continue;
 			}
@@ -197,15 +197,15 @@ if ($categories) {
 				default: $clm = ''; break;
 			}
 
-			if (substr($category->alias, -3) == 'ies') {
-				$cls = $category->alias;
+			if (substr($category->get('alias'), -3) == 'ies') {
+				$cls = $category->get('alias');
 			} else {
-				$cls = substr($category->alias, 0, -1);
+				$cls = substr($category->get('alias'), 0, -1);
 			}
 			?>
 			<div class="col span-third <?php echo $clm; ?>">
 				<div class="<?php echo $cls; ?>">
-					<h3><a href="<?php echo Route::url('index.php?option='.$this->option.'&task=draft&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
+					<h3><a href="<?php echo Route::url('index.php?option='.$this->option.'&task=draft&step=1&type='.$category->get('id')); ?>"><?php echo stripslashes($category->get('type')); ?></a></h3>
 					<p><?php echo stripslashes($category->description); ?></p>
 				</div>
 			</div><!-- / .col span-third <?php echo $clm; ?> -->

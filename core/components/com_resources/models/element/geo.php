@@ -42,17 +42,17 @@ use Lang;
 class Geo extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Geo Location';
 
 	/**
-	* Flag for if JS has been pushed to document or not
-	*
-	* @var  string
-	*/
+	 * Flag for if JS has been pushed to document or not
+	 *
+	 * @var  string
+	 */
 	protected $_script = false;
 
 	/**
@@ -113,11 +113,9 @@ class Geo extends Base
 		$value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
 		$value = preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
 
-		/*
-		 * Required to avoid a cycle of encoding &
-		 * html_entity_decode was used in place of htmlspecialchars_decode because
-		 * htmlspecialchars_decode is not compatible with PHP 4
-		 */
+		// Required to avoid a cycle of encoding &
+		// html_entity_decode was used in place of htmlspecialchars_decode because
+		// htmlspecialchars_decode is not compatible with PHP 4
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
 		$html  = '<input type="text" name="' . $control_name . '[' . $name . '][value]" id="' . $control_name . '-' . $name . '" value="' . $address . '" ' . $class . ' ' . $size . ' />';
@@ -155,10 +153,10 @@ class Geo extends Base
 	/**
 	 * Create html tag for element.
 	 * 
-	 * @param  string $tag    Tag Name
-	 * @param  sting  $value  Tag Value
-	 * @param  string $prefix Tag prefix
-	 * @return string HTML
+	 * @param   string  $tag     Tag Name
+	 * @param   sting   $value   Tag Value
+	 * @param   string  $prefix  Tag prefix
+	 * @return  string  HTML
 	 */
 	public function toHtmlTag($tag, $value, $prefix = 'nb:')
 	{

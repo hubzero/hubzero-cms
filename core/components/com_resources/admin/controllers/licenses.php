@@ -35,6 +35,7 @@ namespace Components\Resources\Admin\Controllers;
 use Components\Resources\Models\License;
 use Hubzero\Component\AdminController;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -175,9 +176,7 @@ class Licenses extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -198,12 +197,8 @@ class Licenses extends AdminController
 		if (empty($ids))
 		{
 			// Redirect with error message
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'),
-				'error'
-			);
-			return;
+			Noify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
+			return $this->cancelTask();
 		}
 
 		$i = 0;
@@ -221,11 +216,13 @@ class Licenses extends AdminController
 			$i++;
 		}
 
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $i));
+		}
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $i)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -253,8 +250,6 @@ class Licenses extends AdminController
 			Notify::error($row->getError());
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 }

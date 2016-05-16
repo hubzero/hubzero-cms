@@ -42,10 +42,10 @@ use Lang;
 class Date extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Date';
 
 	/**
@@ -218,7 +218,7 @@ class Date extends Base
 	/**
 	 * Return month text based on numerical value (1-12)
 	 *
-	 * @param   integer  $month Month numerical value
+	 * @param   integer  $month  Month numerical value
 	 * @return  string
 	 */
 	private function _getMonth($month)
@@ -245,8 +245,8 @@ class Date extends Base
 	/**
 	 * Return a value from tag wrappers
 	 *
-	 * @param   string  $tag  Wrapper tags to match
-	 * @param   string  $text Data
+	 * @param   string  $tag   Wrapper tags to match
+	 * @param   string  $text  Data
 	 * @return  string
 	 */
 	private function _getValue($tag='lat', $text)
@@ -259,7 +259,7 @@ class Date extends Base
 	/**
 	 * Display a value
 	 *
-	 * @param   string  $value   Data
+	 * @param   string  $value  Data
 	 * @return  string  Formatted string.
 	 */
 	public function display($value)
@@ -354,10 +354,10 @@ class Date extends Base
 	/**
 	 * Create html tag for element.
 	 * 
-	 * @param  string $tag    Tag Name
-	 * @param  sting  $value  Tag Value
-	 * @param  string $prefix Tag prefix
-	 * @return string HTML
+	 * @param   string  $tag     Tag Name
+	 * @param   sting   $value   Tag Value
+	 * @param   string  $prefix  Tag prefix
+	 * @return  string  HTML
 	 */
 	public function toHtmlTag($tag, $value, $prefix = 'nb:')
 	{

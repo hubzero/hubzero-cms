@@ -41,10 +41,10 @@ use Lang;
 class Hidden extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Hidden';
 
 	/**
@@ -143,7 +143,7 @@ class Hidden extends Base
 	/**
 	 * Display the language for a language code
 	 *
-	 * @param   string  $value   Data
+	 * @param   string  $value  Data
 	 * @return  string  Formatted string.
 	 */
 	public function display($value)
@@ -154,15 +154,14 @@ class Hidden extends Base
 	/**
 	 * Create html tag for element.
 	 * 
-	 * @param  string $tag    Tag Name
-	 * @param  sting  $value  Tag Value
-	 * @param  string $prefix Tag prefix
-	 * @return string HTML
+	 * @param   string  $tag     Tag Name
+	 * @param   sting   $value   Tag Value
+	 * @param   string  $prefix  Tag prefix
+	 * @return  string  HTML
 	 */
 	public function toHtmlTag($tag, $value, $prefix = 'nb:')
 	{
 		// build and return tag
 		return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
 	}
-
 }

@@ -41,10 +41,10 @@ use Lang;
 class Checkbox extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Checkboxes';
 
 	/**
@@ -214,10 +214,10 @@ class Checkbox extends Base
 	/**
 	 * Create html tag for element.
 	 * 
-	 * @param  string $tag    Tag Name
-	 * @param  sting  $value  Tag Value
-	 * @param  string $prefix Tag prefix
-	 * @return string HTML
+	 * @param   string  $tag     Tag Name
+	 * @param   sting   $value   Tag Value
+	 * @param   string  $prefix  Tag prefix
+	 * @return  string  HTML
 	 */
 	public function toHtmlTag($tag, $value, $prefix = 'nb:')
 	{

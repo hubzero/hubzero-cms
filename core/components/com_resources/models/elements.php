@@ -112,7 +112,7 @@ class Elements
 	/**
 	 * Magic function to clone the registry object.
 	 *
-	 * @return  Registry
+	 * @return  void
 	 */
 	public function __clone()
 	{
@@ -253,7 +253,7 @@ class Elements
 	/**
 	 * Load a associative array of values into the default namespace
 	 *
-	 * @param   array  $array  Associative array of value to load
+	 * @param   array    $array  Associative array of value to load
 	 * @return  boolean  True on success
 	 */
 	public function loadArray($array)
@@ -266,7 +266,7 @@ class Elements
 	/**
 	 * Load the public variables of the object into the default namespace.
 	 *
-	 * @param   object  $object  The object holding the publics to load
+	 * @param   object   $object  The object holding the publics to load
 	 * @return  boolean  True on success
 	 */
 	public function loadObject($object)
@@ -385,8 +385,10 @@ class Elements
 					$this->data->$k = $v;
 				}
 			}
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -437,7 +439,7 @@ class Elements
 	/**
 	 * Transforms a namespace to an object
 	 *
-	 * @return  object   An an object holding the namespace data
+	 * @return  object  An an object holding the namespace data
 	 */
 	public function toObject()
 	{
@@ -667,12 +669,14 @@ class Elements
 		{
 			return false;
 		}
+
 		$results = array();
 		foreach ($this->_schema[$group]->fields as $element)
 		{
 			$result = $this->getElement($element, $name, $group);
 			$results[$result->name] = $result;
 		}
+
 		return $results;
 	}
 
@@ -688,6 +692,7 @@ class Elements
 		{
 			return false;
 		}
+
 		return $this->_schema[$group];
 	}
 
@@ -710,6 +715,7 @@ class Elements
 		{
 			$results[] = $this->getElement($element, $name, $group);
 		}
+
 		return $results;
 	}
 
@@ -774,6 +780,7 @@ class Elements
 			$result->name    = $result->label;
 			$result->default = '';
 			$result->type    = $type;
+
 			return $result;
 		}
 
@@ -805,6 +812,7 @@ class Elements
 		}
 
 		$elementClass = __NAMESPACE__ . '\\Element\\' . $type;
+
 		if (!class_exists($elementClass))
 		{
 			if (isset($this->_elementPath))
@@ -826,15 +834,13 @@ class Elements
 			}
 			else
 			{
-				$false = false;
-				return $false;
+				return false;
 			}
 		}
 
 		if (!class_exists($elementClass))
 		{
-			$false = false;
-			return $false;
+			return false;
 		}
 
 		$this->_elements[$signature] = new $elementClass($this);

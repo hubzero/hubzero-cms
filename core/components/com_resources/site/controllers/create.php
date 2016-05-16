@@ -713,31 +713,29 @@ class Create extends SiteController
 
 		$row = Resource::oneOrNew($fields['id'])->set($fields);
 
-		$isNew = $row->id < 1 || substr($row->id, 0, 4) == '9999';
+		$isNew = $row->get('id') < 1 || substr($row->get('id'), 0, 4) == '9999';
 
-		$row->created    = ($row->created)    ? $row->created    : Date::toSql();
-		$row->created_by = ($row->created_by) ? $row->created_by : User::get('id');
+		//$row->created    = ($row->created)    ? $row->created    : Date::toSql();
+		//$row->created_by = ($row->created_by) ? $row->created_by : User::get('id');
 
 		// Set status to "composing"
 		if ($isNew)
 		{
-			$row->published = 2;
+			$row->set('published', 2);
 		}
-		else
-		{
-			$row->published = ($row->published ?: 2);
-		}
-		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ? $row->publish_up : Date::toSql());
-		$row->publish_down = ($row->publish_down && $row->publish_down != '0000-00-00 00:00:00' ? $row->publish_down : '0000-00-00 00:00:00');
-		$row->modified     = Date::toSql();
-		$row->modified_by  = User::get('id');
-		$row->access       = ($row->access ?: 0);
 
-		$row->fulltxt   = trim(preg_replace('/\\\/', "%5C", $row->fulltxt));
-		$row->introtext = String::truncate(strip_tags($row->fulltxt), 500);
+		$row->set('published', (int)$row->get('published', 2));
+		$row->set('publish_up', ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00' ? $row->get('publish_up') : Date::toSql()));
+		$row->set('publish_down', ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00' ? $row->get('publish_down') : '0000-00-00 00:00:00'));
+		$row->set('modified', Date::toSql());
+		$row->set('modified_by', User::get('id'));
+		$row->set('access', (int)$row->get('access', 0));
+
+		$row->set('fulltxt', trim(preg_replace('/\\\/', "%5C", $row->get('fulltxt'))));
+		$row->set('introtext', String::truncate(strip_tags($row->get('fulltxt')), 500));
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
-		$type = Type::oneOrFail($row->type);
+		$type = Type::oneOrFail($row->get('type'));
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 		$elements = new Elements(array(), $type->customFields);
@@ -752,13 +750,15 @@ class Create extends SiteController
 			}
 		}
 
+		$fulltxt = $row->get('fulltxt');
+
 		$nbtag = Request::getVar('nbtag', array(), 'post');
 		$found = array();
 		foreach ($nbtag as $tagname => $tagcontent)
 		{
 			$f = '';
 
-			$row->fulltxt .= "\n" . '<nb:' . $tagname . '>';
+			$fulltxt .= "\n" . '<nb:' . $tagname . '>';
 			if (is_array($tagcontent))
 			{
 				$c = count($tagcontent);
@@ -769,7 +769,7 @@ class Create extends SiteController
 					{
 						$num++;
 					}
-					$row->fulltxt .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
+					$fulltxt .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
 				}
 				if ($c == $num)
 				{
@@ -781,10 +781,10 @@ class Create extends SiteController
 				$f = trim($tagcontent);
 				if ($f)
 				{
-					$row->fulltxt .= trim($tagcontent);
+					$fulltxt .= trim($tagcontent);
 				}
 			}
-			$row->fulltxt .= '</nb:' . $tagname . '>' . "\n";
+			$fulltxt .= '</nb:' . $tagname . '>' . "\n";
 
 			if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required)
 			{
@@ -793,6 +793,8 @@ class Create extends SiteController
 
 			$found[] = $tagname;
 		}
+
+		$row->set('fulltxt', $fulltxt);
 
 		foreach ($fields as $field)
 		{
@@ -803,15 +805,15 @@ class Create extends SiteController
 			}
 		}
 
-		$row->title = preg_replace('/\s+/', ' ', $row->title);
-		$row->title = $this->_txtClean($row->title);
+		$row->set('title', preg_replace('/\s+/', ' ', $row->get('title')));
+		$row->set('title', $this->_txtClean($row->get('title')));
 
 		// Strip any scripting there may be
-		if (trim($row->fulltxt))
+		if (trim($row->get('fulltxt')))
 		{
-			$row->fulltxt    = \Components\Resources\Helpers\Html::stripStyles($row->fulltxt);
-			$row->fulltxt    = $this->_txtClean($row->fulltxt);
-			$row->footertext = $this->_txtClean($row->footertext);
+			$row->set('fulltxt', \Components\Resources\Helpers\Html::stripStyles($row->get('fulltxt')));
+			$row->set('fulltxt', $this->_txtClean($row->get('fulltxt')));
+			$row->set('footertext', $this->_txtClean($row->get('footertext')));
 		}
 
 		// Fall back to step if any errors found
@@ -826,7 +828,7 @@ class Create extends SiteController
 		// reset id
 		if ($isNew)
 		{
-			$row->id = null;
+			$row->set('id', 0);
 		}
 
 		// Store new content
@@ -854,9 +856,9 @@ class Create extends SiteController
 			$new = DS . $row->id . DS;
 
 			// update all images in abstract
-			$row->introtext = str_replace($old, $new, $row->introtext);
-			$row->fulltxt   = str_replace($old, $new, $row->fulltxt);
-			$row->store();
+			$row->set('introtext', str_replace($old, $new, $row->get('introtext')));
+			$row->set('fulltxt', str_replace($old, $new, $row->get('fulltxt')));
+			$row->save();
 
 			// clear temp id
 			$session->clear('resources_temp_id');
@@ -866,8 +868,8 @@ class Create extends SiteController
 		if ($isNew)
 		{
 			// Automatically attach this user as the first author
-			Request::setVar('pid', $row->id);
-			Request::setVar('id', $row->id);
+			Request::setVar('pid', $row->get('id'));
+			Request::setVar('id', $row->get('id'));
 			Request::setVar('authid', User::get('id'));
 
 			include_once(__DIR__ . DS . 'authors.php');
@@ -890,7 +892,7 @@ class Create extends SiteController
 				'action'      => ($isNew ? 'updated' : 'created'),
 				'scope'       => 'resource',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . $row->get('title') . '</a>'),
+				'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . (!$isNew ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . $row->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
@@ -1615,10 +1617,10 @@ class Create extends SiteController
 	 * Convert Microsoft characters and strip disallowed content
 	 * This includes script tags, HTML comments, xhubtags, and style tags
 	 *
-	 * @param   string  &$text  Text to clean
+	 * @param   string  $text  Text to clean
 	 * @return  string
 	 */
-	private function _txtClean(&$text)
+	private function _txtClean($text)
 	{
 		// Handle special characters copied from MS Word
 		$text = str_replace('“','"', $text);

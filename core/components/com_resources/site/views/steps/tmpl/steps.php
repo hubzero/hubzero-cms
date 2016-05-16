@@ -34,16 +34,19 @@
 defined('_HZEXEC_') or die();
 
 $attachments = 0;
-$authors = 0;
-$tags = array();
-$state = 'draft';
-if ($this->resource->id)
+$authors     = 0;
+$tags        = array();
+$state       = 'draft';
+
+if ($this->resource->get('id'))
 {
-	switch ($this->resource->published)
+	switch ($this->resource->get('published'))
 	{
 		case 1: $state = 'published';  break;  // published
 		case 2: $state = 'draft';      break;  // draft
 		case 3: $state = 'pending';    break;  // pending
+		case 0:
+		default: $state = 'unpublished';  break;  // unpublished
 	}
 
 	$attachments = $this->resource->children()->total();
@@ -72,16 +75,16 @@ if ($this->resource->id)
 					<?php echo $this->resource->type()->get('title', Lang::txt('COM_CONTRIBUTE_NONE')); ?>
 				</td>
 				<td>
-					<?php echo ($this->resource->title) ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->title), 150)) : Lang::txt('COM_CONTRIBUTE_NONE'); ?>
+					<?php echo ($this->resource->get('title') ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->get('title')), 150)) : Lang::txt('COM_CONTRIBUTE_NONE')); ?>
 				</td>
 				<td>
-					<?php echo $attachments; ?> attachment(s)
+					<?php echo Lang::txt('%s attachment(s)', $attachments); ?>
 				</td>
 				<td>
-					<?php echo $authors; ?> author(s)
+					<?php echo Lang::txt('%s author(s)', $authors); ?>
 				</td>
 				<td>
-					<?php echo $tags; ?> tag(s)
+					<?php echo Lang::txt('%s tag(s)', $tags); ?>
 				</td>
 				<td>
 					<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>
@@ -110,7 +113,7 @@ if ($this->resource->id)
 	$laststep = (count($this->steps) - 1);
 
 	$html  = '';
-	for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
+	for ($i=1, $n=count($this->steps); $i < $n; $i++)
 	{
 		$html .= "\t".'<li';
 		if ($this->step == $i) {

@@ -33,6 +33,7 @@
 namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
+use App;
 
 /**
  * Renders a textarea element
@@ -40,10 +41,10 @@ use Components\Resources\Models\Element as Base;
 class Textarea extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Textarea';
 
 	/**
@@ -65,11 +66,11 @@ class Textarea extends Base
 		{
 			$cls[] = $element->class;
 		}
-		$cls[] = (\App::isAdmin() ? 'no-footer' : 'minimal no-footer');
+		$cls[] = (App::isAdmin() ? 'no-footer' : 'minimal no-footer');
 
 		// convert tags so they are safe for wysiwyg and source editors
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<span class="field-wrap">' . \App::get('editor')->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => implode(' ', $cls))) . '</span>';
+		return '<span class="field-wrap">' . App::get('editor')->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => implode(' ', $cls))) . '</span>';
 	}
 }

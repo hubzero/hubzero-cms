@@ -43,7 +43,7 @@ class INI extends Base
 	/**
 	* Cache container
 	*
-	* @var		array
+	* @var  array
 	*/
 	protected static $cache = array();
 
@@ -94,7 +94,7 @@ class INI extends Base
 	 *
 	 * @param   string  $data     INI formatted string to convert.
 	 * @param   mixed   $options  An array of options used by the formatter, or a boolean setting to process sections.
-	 * @return  object   Data object.
+	 * @return  object  Data object.
 	 */
 	public function stringToObject($data, $options = array())
 	{
@@ -231,7 +231,7 @@ class INI extends Base
 	/**
 	 * Method to get a value in an INI format.
 	 *
-	 * @param   mixed  $value  The value to convert to INI format.
+	 * @param   mixed   $value  The value to convert to INI format.
 	 * @return  string  The value in INI format.
 	 */
 	protected function getValueAsINI($value)

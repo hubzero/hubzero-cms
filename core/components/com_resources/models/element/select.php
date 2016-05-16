@@ -41,10 +41,10 @@ use Lang;
 class Select extends Base
 {
 	/**
-	* Element type
-	*
-	* @var  string
-	*/
+	 * Element type
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Select list';
 
 	/**

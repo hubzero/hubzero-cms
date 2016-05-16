@@ -59,7 +59,7 @@ class JSON extends Base
 	 *
 	 * @param   string  $data     JSON formatted string to convert.
 	 * @param   array   $options  Options used by the formatter.
-	 * @return  object   Data object.
+	 * @return  object  Data object.
 	 */
 	public function stringToObject($data, $options = array('processSections' => false))
 	{
@@ -67,9 +67,6 @@ class JSON extends Base
 		if (is_bool($options))
 		{
 			$options = array('processSections' => $options);
-
-			// Deprecation warning.
-			\JLog::add('ResourcesElementsFormatJSON::stringToObject() second argument should not be a boolean.', \JLog::WARNING, 'deprecated');
 		}
 
 		$data = trim($data);
@@ -82,6 +79,7 @@ class JSON extends Base
 		{
 			$obj = json_decode($data);
 		}
+
 		return $obj;
 	}
 }

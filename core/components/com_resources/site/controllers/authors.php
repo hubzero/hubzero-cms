@@ -126,7 +126,7 @@ class Authors extends SiteController
 		if ($authid)
 		{
 			// Check if they're already linked to this resource
-			$existing = Author::oneByRelationship($id, $authorid);
+			$existing = Author::oneByRelationship($id, $authid);
 
 			if ($existing->get('id'))
 			{
@@ -140,9 +140,9 @@ class Authors extends SiteController
 				if ($profile)
 				{
 					$author->set('authorid', $authid);
-					$author->set('name', $profile->get('name'));
-					$author->set('role', $role);
-					$author->set('organization', $profile->get('organization'));
+					$author->set('name', (string)$profile->get('name'));
+					$author->set('role', (string)$role);
+					$author->set('organization', (string)$profile->get('organization'));
 					$author->save();
 				}
 			}
@@ -209,10 +209,34 @@ class Authors extends SiteController
 				$author->set('subtable', 'resources');
 				$author->set('subid', $id);
 				$author->set('authorid', $authorid);
-				$author->set('name', $name);
-				$author->set('organization', $organization);
-				$author->set('role', $role);
+				$author->set('name', (string)$name);
+				$author->set('organization', (string)$organization);
+				$author->set('role', (string)$role);
 				$author->save();
+
+				// Log activity
+				if ($authorid > 0)
+				{
+					$resource = Resource::oneOrFail($id);
+
+					Event::trigger('system.logActivity', [
+						'activity' => [
+							'action'      => 'updated',
+							'scope'       => 'resource',
+							'scope_id'    => $resource->get('id'),
+							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
+							'details'     => array(
+								'title' => $resource->get('title'),
+								'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
+							)
+						],
+						'recipients' => array(
+							['resource', $resource->get('id')],
+							['user', $resource->get('created_by')],
+							['user', $authorid]
+						)
+					]);
+				}
 			}
 		}
 
@@ -249,6 +273,32 @@ class Authors extends SiteController
 			if (!$author->destroy())
 			{
 				$this->setError($author->getError());
+			}
+			else
+			{
+				// Log activity
+				if ($author->get('authorid') > 0)
+				{
+					$resource = Resource::oneOrFail($pid);
+
+					Event::trigger('system.logActivity', [
+						'activity' => [
+							'action'      => 'updated',
+							'scope'       => 'resource',
+							'scope_id'    => $resource->get('id'),
+							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
+							'details'     => array(
+								'title' => $resource->get('title'),
+								'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
+							)
+						],
+						'recipients' => array(
+							['resource', $resource->get('id')],
+							['user', $resource->get('created_by')],
+							['user', $authorid]
+						)
+					]);
+				}
 			}
 		}
 

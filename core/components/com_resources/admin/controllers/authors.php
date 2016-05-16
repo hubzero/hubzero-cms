@@ -36,10 +36,12 @@ use Components\Resources\Models\Author;
 use Components\Resources\Models\Author\Role;
 use Hubzero\Component\AdminController;
 use Request;
+use Notify;
 use Route;
 use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php');
 
 /**
  * Manage resource authors
@@ -116,8 +118,6 @@ class Authors extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php');
-
 		$authorid = 0;
 
 		if (!is_array($rows))
@@ -170,10 +170,7 @@ class Authors extends AdminController
 
 		if (!$authorid)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		$rows = array();
@@ -200,8 +197,6 @@ class Authors extends AdminController
 			return $this->editTask($rows);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 }

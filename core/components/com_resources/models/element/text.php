@@ -40,10 +40,10 @@ use Components\Resources\Models\Element as Base;
 class Text extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Single-line text box';
 
 	/**

@@ -33,6 +33,7 @@
 namespace Components\Resources\Models;
 
 use Exception;
+use Lang;
 
 /**
  * Abstract Format for resources elements

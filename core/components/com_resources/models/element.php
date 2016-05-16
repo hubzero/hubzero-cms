@@ -34,6 +34,7 @@ namespace Components\Resources\Models;
 
 use Hubzero\Base\Object;
 use stdClass;
+use Lang;
 
 /**
  * Resource element base class
@@ -60,7 +61,8 @@ class Element extends Object
 	/**
 	 * Constructor
 	 *
-	 * @access protected
+	 * @param   object  $parent
+	 * @return  void
 	 */
 	public function __construct($parent = null)
 	{
@@ -70,8 +72,7 @@ class Element extends Object
 	/**
 	* Get the element name
 	*
-	* @access public
-	* @return string type of the parameter
+	* @return  string  Type of the parameter
 	*/
 	public function getName()
 	{
@@ -88,9 +89,9 @@ class Element extends Object
 	 */
 	public function render(&$element, $value, $control_name = 'fields')
 	{
-		$name	= $element->name;
-		$label	= isset($element->label) ? $element->label : $element->name;
-		$descr	= isset($element->description) ? $element->description : '';
+		$name  = $element->name;
+		$label = isset($element->label) ? $element->label : $element->name;
+		$descr = isset($element->description) ? $element->description : '';
 
 		// Make sure we have a valid label
 		$label = $label ? $label : $name;
@@ -166,7 +167,7 @@ class Element extends Object
 	/**
 	 * Display a value
 	 *
-	 * @param   string  $value   Data
+	 * @param   string  $value  Data
 	 * @return  string  Formatted string.
 	 */
 	public function display($value)
@@ -177,19 +178,19 @@ class Element extends Object
 	/**
 	 * Create html tag for element.
 	 *
-	 * @param  string $tag    Tag Name
-	 * @param  sting  $value  Tag Value
-	 * @param  string $prefix Tag prefix
-	 * @return string HTML
+	 * @param   string  $tag     Tag Name
+	 * @param   sting   $value   Tag Value
+	 * @param   string  $prefix  Tag prefix
+	 * @return  string  HTML
 	 */
 	public function toHtmlTag($tag, $value, $prefix = 'nb:')
 	{
-		/*
-		 * 	Some value checking, apparently, the resource importer breaks this.
-		 */
+		// Some value checking, apparently, the resource importer breaks this.
 		if (!is_object($value))
 		{
 			return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
 		}
+
+		return '';
 	}
 }

@@ -37,7 +37,6 @@ use Components\Resources\Models\Orm\Resource;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
-use Config;
 use Notify;
 use Route;
 use Lang;
@@ -238,9 +237,7 @@ class Types extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -278,12 +275,8 @@ class Types extends AdminController
 		if (empty($ids))
 		{
 			// Redirect with error message
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
+			return $this->cancelTask();
 		}
 
 		$i = 0;
@@ -313,11 +306,13 @@ class Types extends AdminController
 			$i++;
 		}
 
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $i));
+		}
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			($i ? Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $i) : null)
-		);
+		$this->cancelTask();
 	}
 
 	/**

@@ -214,12 +214,12 @@ class Media extends SiteController
 		// Incoming sub-directory
 		$subdir = Request::getVar('subdir', '');
 
-		$row = Resource::oneOrFail($resource);
+		$row = Resource::oneOrNew($resource);
 
 		// Allow for temp resource uploads
-		if (!$row->created || $row->created == '0000-00-00 00:00:00')
+		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')
 		{
-			$row->created = Date::format('Y-m-d 00:00:00');
+			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
 		$path = $row->filespace() . DS . 'media';

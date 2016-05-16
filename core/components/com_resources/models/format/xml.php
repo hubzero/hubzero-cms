@@ -85,7 +85,7 @@ class XML extends Base
 	 *
 	 * @param   string  $data     XML formatted string to convert.
 	 * @param   array   $options  Options used by the formatter.
-	 * @return  object   Data object.
+	 * @return  object  Data object.
 	 */
 	public function stringToObject($data, $options = array())
 	{
@@ -107,7 +107,7 @@ class XML extends Base
 	 * Method to get a PHP native value for a SimpleXMLElement object. -- called recursively
 	 *
 	 * @param   object  $node  SimpleXMLElement object for which to get the native value.
-	 * @return  mixed  Native value of the SimpleXMLElement object.
+	 * @return  mixed   Native value of the SimpleXMLElement object.
 	 */
 	protected function getValueFromNode($node)
 	{
