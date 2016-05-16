@@ -48,25 +48,46 @@ class Searchv1_0 extends ApiController
 {
 	public function listTask()
 	{
+
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
 
 		$terms = Request::getVar('terms', '');
 		$limit = Request::getInt('limit', 10);
 		$start = Request::getInt('start', 0);
+		$sortBy = Request::getVar('sortBy', '');
+		$sortDir = Request::getVar('sortDir', '');
 
 		$filters = Request::getVar('filters', array());
 
-		$results = $query->query($terms)->limit($limit)->start($start)->restrictAccess()->run();
+		// Apply the limiting
+		$query = $query->query($terms)->limit($limit)->start($start);
 
-		foreach ($results as &$result)
+		// Apply the sorting
+		if ($sortBy != '' && $sortDir != '')
 		{
-			$result = $result->getFields();
+			$query = $query->sortBy($sortBy, $sortDir);
 		}
 
+		// Administrators can see all records
+		$isAdmin = User::authorise('core.admin', 'com_users');
+		if ($isAdmin)
+		{
+			$query = $query->query($terms)->limit($limit)->start($start);
+		}
+		else
+		{
+			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
+		}
+
+		// Perform the query
+		$query = $query->run();
+		$results = $query->getResults();
+		$numFound = $query->getNumFound();
 
 		$response = new stdClass;
 		$response->results = $results;
+		$response->total = $numFound;
 		$response->success = true;
 
 		$this->send($response);
