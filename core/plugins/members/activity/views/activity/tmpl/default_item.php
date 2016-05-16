@@ -38,9 +38,9 @@ if (!$this->row->wasViewed())
 
 	$this->row->markAsViewed();
 }
-
-$name = $this->escape(stripslashes($this->row->log->creator->get('name')));
-
+$creator = User::getInstance($this->row->log->get('created_by'));
+//$creator = $this->row->log->creator;
+$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
 ?>
 <li
 	data-time="<?php echo $this->row->get('created'); ?>"
@@ -67,8 +67,8 @@ $name = $this->escape(stripslashes($this->row->log->creator->get('name')));
 		<?php }*/ ?>
 		<span class="activity-details">
 			<span class="activity-actor">
-				<?php if (in_array($this->row->log->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
-					<a href="<?php echo Route::url($this->row->log->creator->link()); ?>">
+				<?php if (in_array($creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+					<a href="<?php echo Route::url($creator->link()); ?>">
 						<?php echo $name; ?>
 					</a>
 				<?php } else { ?>
