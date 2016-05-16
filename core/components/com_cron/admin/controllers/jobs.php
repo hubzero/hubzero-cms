@@ -390,7 +390,7 @@ class Jobs extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_CRON_STATE_UNPUBLISH') : Lang::txt('COM_CRON_STATE_PUBLISH');
 
-			Notify::warning(Lang::txt('COM_CRON_ERROR_SELECT_ITEMS', $action);
+			Notify::warning(Lang::txt('COM_CRON_ERROR_SELECT_ITEMS', $action));
 			return $this->cancelTask();
 		}
 
