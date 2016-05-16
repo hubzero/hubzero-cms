@@ -159,7 +159,6 @@ class Skus extends AdminController
 			$row = $this->instantiateSkuForProduct($id, $pId);
 			$this->view->row = $row;
 		}
-		//print_r($row); die;
 
 		// Get product's info
 		$pId = $row->getProductId();
