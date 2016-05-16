@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,6 +37,7 @@ use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
 use Request;
 use Config;
+use Notify;
 use User;
 use Lang;
 use Date;
@@ -313,11 +313,13 @@ class Comments extends AdminController
 			}
 		}
 
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_WIKI_COMMENTS_DELETED'));
+		}
+
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&page_id=' . Request::getInt('page_id', 0), false),
-			($removed ? Lang::txt('COM_WIKI_COMMENTS_DELETED') : null)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -342,11 +344,9 @@ class Comments extends AdminController
 		{
 			$action = ($state == Comment::STATE_PUBLISHED) ? Lang::txt('COM_WIKI_UNPUBLISH') : Lang::txt('COM_WIKI_PUBLISH');
 
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&page_id=' . $pageid, false),
-				Lang::txt('COM_WIKI_ERROR_SELECT_TO', $action),
-				'error'
-			);
+			Notify::warning(Lang::txt('COM_WIKI_ERROR_SELECT_TO', $action));
+
+			return $this->cancelTask();
 		}
 
 		// Loop through all the IDs
@@ -367,20 +367,22 @@ class Comments extends AdminController
 		}
 
 		// Set message
-		if ($state == Comment::STATE_PUBLISHED)
+		if ($i)
 		{
-			$message = Lang::txt('COM_WIKI_ITEMS_PUBLISHED', $i);
-		}
-		else
-		{
-			$message = Lang::txt('COM_WIKI_ITEMS_UNPUBLISHED', $i);
+			if ($state == Comment::STATE_PUBLISHED)
+			{
+				$message = Lang::txt('COM_WIKI_ITEMS_PUBLISHED', $i);
+			}
+			else
+			{
+				$message = Lang::txt('COM_WIKI_ITEMS_UNPUBLISHED', $i);
+			}
+
+			Notify::success($message);
 		}
 
 		// Set redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&page_id=' . $pageid, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**

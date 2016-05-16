@@ -252,9 +252,7 @@ class Jobs extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -273,12 +271,8 @@ class Jobs extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'));
+			return $this->cancelTask();
 		}
 
 		$output = new stdClass;
@@ -345,15 +339,12 @@ class Jobs extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'));
+			return $this->cancelTask();
 		}
 
 		// Loop through each ID
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			$row = Job::oneOrFail(intval($id));
@@ -362,14 +353,19 @@ class Jobs extends AdminController
 			if (!$row->destroy())
 			{
 				Notify::error($row->getError());
+				continue;
 			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_CRON_ITEMS_DELETED'));
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option, false),
-			Lang::txt('COM_CRON_ITEMS_DELETED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -394,12 +390,8 @@ class Jobs extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_CRON_STATE_UNPUBLISH') : Lang::txt('COM_CRON_STATE_PUBLISH');
 
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_CRON_ERROR_SELECT_ITEMS', $action),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_CRON_ERROR_SELECT_ITEMS', $action);
+			return $this->cancelTask();
 		}
 
 		$total = 0;
@@ -419,18 +411,18 @@ class Jobs extends AdminController
 		}
 
 		// Set message
-		if ($state == 1)
+		if ($total)
 		{
-			Notify::success(Lang::txt('COM_CRON_ITEMS_PUBLISHED', $total));
-		}
-		else
-		{
-			Notify::success(Lang::txt('COM_CRON_ITEMS_UNPUBLISHED', $total));
+			if ($state == 1)
+			{
+				Notify::success(Lang::txt('COM_CRON_ITEMS_PUBLISHED', $total));
+			}
+			else
+			{
+				Notify::success(Lang::txt('COM_CRON_ITEMS_UNPUBLISHED', $total));
+			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option, false)
-		);
+		$this->cancelTask();
 	}
 }
-

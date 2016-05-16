@@ -212,9 +212,7 @@ class Questions extends AdminController
 		}
 
 		// Redirect back to the full questions list
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -233,12 +231,10 @@ class Questions extends AdminController
 
 		if (count($ids) <= 0)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			// Load the record
@@ -248,13 +244,18 @@ class Questions extends AdminController
 			if (!$aq->destroy())
 			{
 				Notify::error($aq->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_ANSWERS_QUESTION_DELETED')
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_ANSWERS_QUESTION_DELETED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -278,44 +279,42 @@ class Questions extends AdminController
 		{
 			$action = ($publish == 1) ? Lang::txt('COM_ANSWERS_SET_STATE_CLOSE') : Lang::txt('COM_ANSWERS_SET_STATE_OPEN');
 
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action));
+
+			return $this->cancelTask();
 		}
 
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			// Update record(s)
 			$aq = Question::oneOrFail(intval($id));
 			$aq->set('state', $publish);
 
-			/*if ($publish == 1)
-			{
-				$aq->adjustCredits();
-			}*/
-
 			if (!$aq->save())
 			{
 				Notify::error($aq->getError());
+				continue;
 			}
+
+			$i++;
 		}
 
 		// Set message
-		if ($publish == 1)
+		if ($i)
 		{
-			$message = Lang::txt('COM_ANSWERS_QUESTIONS_CLOSED', count($ids));
-		}
-		else if ($publish == 0)
-		{
-			$message = Lang::txt('COM_ANSWERS_QUESTIONS_OPENED', count($ids));
+			if ($publish == 1)
+			{
+				$message = Lang::txt('COM_ANSWERS_QUESTIONS_CLOSED', $i);
+			}
+			else if ($publish == 0)
+			{
+				$message = Lang::txt('COM_ANSWERS_QUESTIONS_OPENED', $i);
+			}
+
+			Notify::success($message);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 }

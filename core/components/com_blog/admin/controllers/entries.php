@@ -154,7 +154,7 @@ class Entries extends AdminController
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @param   object  $row  BlogEntry
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -231,9 +231,7 @@ class Entries extends AdminController
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -269,11 +267,13 @@ class Entries extends AdminController
 			}
 		}
 
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_BLOG_ENTRIES_DELETED'));
+		}
+
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			($removed ? Lang::txt('COM_BLOG_ENTRIES_DELETED') : null)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -295,12 +295,8 @@ class Entries extends AdminController
 		// Check for a resource
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->_task));
+			return $this->cancelTask();
 		}
 
 		// Loop through all the IDs
@@ -321,24 +317,26 @@ class Entries extends AdminController
 			$success++;
 		}
 
-		switch ($this->_task)
+		if ($success)
 		{
-			case 'publish':
-				$message = Lang::txt('COM_BLOG_ITEMS_PUBLISHED', $success);
-			break;
-			case 'unpublish':
-				$message = Lang::txt('COM_BLOG_ITEMS_UNPUBLISHED', $success);
-			break;
-			case 'archive':
-				$message = Lang::txt('COM_BLOG_ITEMS_ARCHIVED', $success);
-			break;
+			switch ($this->_task)
+			{
+				case 'publish':
+					$message = Lang::txt('COM_BLOG_ITEMS_PUBLISHED', $success);
+				break;
+				case 'unpublish':
+					$message = Lang::txt('COM_BLOG_ITEMS_UNPUBLISHED', $success);
+				break;
+				case 'archive':
+					$message = Lang::txt('COM_BLOG_ITEMS_ARCHIVED', $success);
+				break;
+			}
+
+			Notify::success($message);
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -359,12 +357,8 @@ class Entries extends AdminController
 		// Check for a resource
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task));
+			return $this->cancelTask();
 		}
 
 		// Loop through all the IDs
@@ -385,15 +379,16 @@ class Entries extends AdminController
 			$success++;
 		}
 
-		$message = $state
+		if ($success)
+		{
+			$message = $state
 				? Lang::txt('COM_BLOG_ITEMS_COMMENTS_ENABLED', $success)
 				: Lang::txt('COM_BLOG_ITEMS_COMMENTS_DISABLED', $success);
 
+			Notify::success($message);
+		}
+
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 }
-

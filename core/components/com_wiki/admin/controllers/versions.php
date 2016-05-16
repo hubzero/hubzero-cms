@@ -53,9 +53,6 @@ class Versions extends AdminController
 	 */
 	public function execute()
 	{
-		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
-		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
-
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
 
@@ -274,12 +271,8 @@ class Versions extends AdminController
 
 		if (count($ids) <= 0)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
-				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
-				'warning'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_WIKI_ERROR_MISSING_ID'));
+			return $this->cancelTask();
 		}
 
 		// Incoming
@@ -375,7 +368,6 @@ class Versions extends AdminController
 		Request::checkToken('get');
 
 		// Incoming
-		$pageid = Request::getInt('pageid', 0);
 		$id = Request::getInt('id', 0);
 
 		if ($id)
@@ -390,9 +382,7 @@ class Versions extends AdminController
 			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**

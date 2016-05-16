@@ -202,15 +202,13 @@ class Answers extends AdminController
 
 		Notify::success(Lang::txt('COM_ANSWERS_ANSWER_SAVED'));
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -234,6 +232,7 @@ class Answers extends AdminController
 			foreach ($ids as $id)
 			{
 				$ar = Response::oneOrFail(intval($id));
+
 				if (!$ar->destroy())
 				{
 					Notify::error($ar->getError());
@@ -269,21 +268,13 @@ class Answers extends AdminController
 		{
 			$action = ($publish == 1) ? 'accept' : 'reject';
 
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action));
+			return $this->cancelTask();
 		}
 		else if (count($id) > 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'));
+			return $this->cancelTask();
 		}
 
 		$ar = Response::oneOrFail($id[0]);
@@ -312,53 +303,43 @@ class Answers extends AdminController
 
 		if (!$ar->save())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$ar->getError(),
-				'error'
-			);
-			return;
+			Notify::error($ar->getError());
+			return $this->cancelTask();
 		}*/
 
 		if ($publish == 1)
 		{
 			if (!$ar->accept())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					$ar->getError(),
-					'error'
-				);
-				return;
+				Notify::error($ar->getError());
+				return $this->cancelTask();
 			}
 		}
 		else
 		{
 			if (!$ar->reject())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					$ar->getError(),
-					'error'
-				);
-				return;
+				Notify::error($ar->getError());
+				return $this->cancelTask();
 			}
 		}
 
 		// Set message
-		if ($publish == '1')
+		if ($i)
 		{
-			$message = Lang::txt('COM_ANSWERS_ANSWER_ACCEPTED');
-		}
-		else if ($publish == '0')
-		{
-			$message = Lang::txt('COM_ANSWERS_ANSWER_REJECTED');
+			if ($publish == '1')
+			{
+				$message = Lang::txt('COM_ANSWERS_ANSWER_ACCEPTED');
+			}
+			else if ($publish == '0')
+			{
+				$message = Lang::txt('COM_ANSWERS_ANSWER_REJECTED');
+			}
+
+			Notify::success($message);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -387,8 +368,6 @@ class Answers extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 }

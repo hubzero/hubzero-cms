@@ -157,14 +157,14 @@ class Comments extends AdminController
 	/**
 	 * Recursive function to build tree
 	 *
-	 * @param      integer $id       Parent ID
-	 * @param      string  $indent   Indent text
-	 * @param      array   $list     List of records
-	 * @param      array   $children Container for parent/children mapping
-	 * @param      integer $maxlevel Maximum levels to descend
-	 * @param      integer $level    Indention level
-	 * @param      integer $type     Indention type
-	 * @return     void
+	 * @param   integer  $id        Parent ID
+	 * @param   string   $indent    Indent text
+	 * @param   array    $list      List of records
+	 * @param   array    $children  Container for parent/children mapping
+	 * @param   integer  $maxlevel  Maximum levels to descend
+	 * @param   integer  $level     Indention level
+	 * @param   integer  $type      Indention type
+	 * @return  void
 	 */
 	public function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
 	{
@@ -267,7 +267,7 @@ class Comments extends AdminController
 
 		Notify::success(Lang::txt('COM_BLOG_COMMENT_SAVED'));
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
@@ -311,11 +311,13 @@ class Comments extends AdminController
 			}
 		}
 
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_BLOG_COMMENT_DELETED'));
+		}
+
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false),
-			($removed ? Lang::txt('COM_BLOG_COMMENT_DELETED') : null)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -331,4 +333,3 @@ class Comments extends AdminController
 		);
 	}
 }
-
