@@ -79,11 +79,11 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 					switch ($this->action)
 					{
 						case 'assigned':
-							echo 'The following wish has been assigned to ' . $this->escape(stripslashes($this->wish->owner('name'))) . '.';
+							echo 'The following wish has been assigned to ' . $this->escape(stripslashes($this->wish->owner()->get('name'))) . '.';
 						break;
 
 						case 'created':
-							echo 'A new wish has been submitted by ' . $this->escape(stripslashes($this->wish->proposer('name')));
+							echo 'A new wish has been submitted by ' . $this->escape(stripslashes($this->wish->proposer()->get('name')));
 						break;
 
 						case 'moved':
@@ -130,7 +130,7 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->wish->get('anonymous') ? Lang::txt('COM_WISHLIST_ANONYMOUS') : $this->escape(stripslashes($this->wish->proposer('name'))); ?></td>
+								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->wish->get('anonymous') ? Lang::txt('COM_WISHLIST_ANONYMOUS') : $this->escape(stripslashes($this->wish->proposer()->get('name'))); ?></td>
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>

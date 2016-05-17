@@ -1514,7 +1514,7 @@ class Wishlists extends SiteController
 	/**
 	 * Assign a point bonus to a wish
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addbonusTask()
 	{
@@ -1598,7 +1598,7 @@ class Wishlists extends SiteController
 	/**
 	 * Mark a wish as deleted
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletewishTask()
 	{
@@ -1699,7 +1699,7 @@ class Wishlists extends SiteController
 	/**
 	 * Save a vote for a wish
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savevoteTask()
 	{
@@ -1822,7 +1822,8 @@ class Wishlists extends SiteController
 			],
 			'recipients' => array(
 				['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
-				['user', $wish->get('proposed_by')]
+				['user', $wish->get('proposed_by')],
+				['user', User::get('id')]
 			)
 		]);
 
@@ -1834,7 +1835,7 @@ class Wishlists extends SiteController
 	/**
 	 * Save a wish comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savereplyTask()
 	{
@@ -2018,6 +2019,25 @@ class Wishlists extends SiteController
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 				}
 			}
+
+			// Log activity
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'created',
+					'scope'       => 'wishlist.comment',
+					'scope_id'    => $row->get('id'),
+					'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_CREATED', $row->get('id'), '<a href="' . Route::url($objWish->link()) . '">' . $objWish->get('subject') . '</a>'),
+					'details'     => array(
+						'wish'    => $objWish->get('id'),
+						'url'     => Route::url($objWish->link())
+					)
+				],
+				'recipients' => array(
+					['wishlist.' . $category, $id],
+					['user', $objWish->get('proposed_by')],
+					['user', $row->get('created_by')]
+				)
+			]);
 		} // -- end if id & category
 
 		App::redirect(
@@ -2098,7 +2118,7 @@ class Wishlists extends SiteController
 	/**
 	 * Reply to a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function replyTask()
 	{
@@ -2128,7 +2148,7 @@ class Wishlists extends SiteController
 	/**
 	 * Vote for a wish
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function rateitemTask()
 	{
@@ -2291,13 +2311,13 @@ class Wishlists extends SiteController
 	/**
 	 * Build a select list of users
 	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      array   $ownerids Parameter description (if any) ...
-	 * @param      unknown $active Parameter description (if any) ...
-	 * @param      integer $nouser Parameter description (if any) ...
-	 * @param      string  $javascript Parameter description (if any) ...
-	 * @param      string  $order Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   string   $name
+	 * @param   array    $ownerids
+	 * @param   string   $active
+	 * @param   integer  $nouser
+	 * @param   string   $javascript
+	 * @param   string   $order
+	 * @return  array
 	 */
 	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
@@ -2343,8 +2363,8 @@ class Wishlists extends SiteController
 	/**
 	 * Upload a file
 	 *
-	 * @param      integer $listdir Wish ID
-	 * @return     string
+	 * @param   integer  $listdir  Wish ID
+	 * @return  string
 	 */
 	public function uploadTask($listdir)
 	{
@@ -2425,7 +2445,7 @@ class Wishlists extends SiteController
 	/**
 	 * Download an attachment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
@@ -2474,19 +2494,16 @@ class Wishlists extends SiteController
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_WISHLIST_SERVER_ERROR'), 500);
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 
 	/**
 	 * Convert effort value to a time
 	 *
-	 * @param      float $rawnum Number to convert
-	 * @param      array $due    Array to populate
-	 * @return     array
+	 * @param   float  $rawnum  Number to convert
+	 * @param   array  $due     Array to populate
+	 * @return  array
 	 */
 	public function convertTime($rawnum, $due=array())
 	{

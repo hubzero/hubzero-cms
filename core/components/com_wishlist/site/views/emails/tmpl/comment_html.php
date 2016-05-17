@@ -130,7 +130,7 @@ $this->css(
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->wish->get('anonymous') ? Lang::txt('COM_WISHLIST_ANONYMOUS') : $this->escape(stripslashes($this->wish->proposer('name'))); ?></td>
+								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->wish->get('anonymous') ? Lang::txt('COM_WISHLIST_ANONYMOUS') : $this->escape(stripslashes($this->wish->proposer()->get('name'))); ?></td>
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
@@ -154,7 +154,7 @@ $this->css(
 	<table width="100%" id="wish-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
 			<tr>
-				<th style="text-align: left;" align="left"><?php echo ($this->comment->get('anonymous') ? Lang::txt('COM_WISHLIST_UNKNOWN') : $this->escape($this->comment->creator('name'))); ?></th>
+				<th style="text-align: left;" align="left"><?php echo ($this->comment->get('anonymous') ? Lang::txt('COM_WISHLIST_UNKNOWN') : $this->escape($this->comment->creator->get('name'))); ?></th>
 				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('@%s on %s', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
 			</tr>
 			<tr>

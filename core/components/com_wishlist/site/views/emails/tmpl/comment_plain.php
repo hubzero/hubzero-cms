@@ -39,8 +39,8 @@ $base = rtrim(str_replace('/administrator', '', $base), '/');
 $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 
 // Get author name
-$name  = $this->wish->proposer('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
-$login = $this->wish->proposer('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
+$name  = $this->wish->proposer()->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
+$login = $this->wish->proposer()->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
 if ($this->wish->get('anonymous'))
 {
@@ -57,8 +57,8 @@ $message .= Lang::txt('COM_WISHLIST_BY') . ' ' . $name . ' ' . ($this->wish->get
 $message .= '----------------------------' . "\n\n";
 
 // Get author name
-$name  = $this->comment->creator('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
-$login = $this->comment->creator('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
+$name  = $this->comment->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
+$login = $this->comment->creator->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
 if ($this->comment->get('anonymous'))
 {
