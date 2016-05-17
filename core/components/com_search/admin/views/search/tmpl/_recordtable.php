@@ -29,35 +29,67 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Search\Admin;
+// No direct access.
+defined('_HZEXEC_') or die();
 
-// Authorization check
-if (!\User::authorise('core.manage', 'com_search'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+// Generate table headers
+// @TODO create a standard document model, create view object
+$fields = array_keys($this->documents[0]);
+$fields = array('hubid','hubtype','title','access_level','owner_type','owner','id');
+?>
+<style>
+#noresults {
+	margin-right: auto;
+	margin-left: auto;
 }
+</style>
 
-// Get the preferred search mechanism
-$controllerName = \Component::params('com_search')->get('engine');
-
-if (strtolower($controllerName) != 'basic')
-{
-	$controllerName = 'search';
-}
-
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	\App::abort(404, \Lang::txt('Controller not found'));
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'noindex.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+<?php if (count($this->documents) > 0): ?>
+<table class="adminlist searchDocument">
+	<thead>
+		<tr>
+		<th>&nbsp;</th>
+		<?php foreach ($fields as $field): ?>
+			<th><?php echo $field; ?></th>
+		<?php endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($this->documents as $document)
+		{
+			echo '<tr>';
+			echo '<td><input type="checkbox" name="selection[]"/></td>';
+			foreach ($fields as $field)
+			{
+				echo '<td>';
+				if (isset($document[$field]) && !is_array($document[$field]))
+				{
+					echo $document[$field];
+				}
+				elseif (isset($document[$field]))
+				{
+					$x = 0;
+					foreach ($document[$field] as $element)
+					{
+						echo $element;
+						if ($x < count($document[$field]) - 1)
+						{
+							echo '/';
+						}
+						$x++;
+					}
+				}
+				else
+				{
+					echo '-';
+				}
+				echo '</td>';
+			}
+			echo '</tr>';
+		}
+		?>
+	</tbody>
+</table>
+<?php else: ?>
+<div id="noresults" class="warning message"><?php echo Lang::txt('COM_SEARCH_NO_RESULTS_FOUND'); ?></div>
+<?php endif; ?>
