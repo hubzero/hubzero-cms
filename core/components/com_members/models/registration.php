@@ -1070,7 +1070,7 @@ class Registration
 			if (empty($registration['org']) && empty($registration['orgtext']))
 			{
 				$this->_missing['org'] = 'Organization';
-				$this->_invalid['org'] = 'Invalid affiliation';
+				$this->_invalid['org'] = 'Invalid organization';
 			}
 		}
 
@@ -1078,11 +1078,11 @@ class Registration
 		{
 			if (!empty($registration['org']) && !Helpers\Utility::validtext($registration['org']))
 			{
-				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
+				$this->_invalid['org'] = 'Invalid organization. You may be using characters that are not allowed.';
 			}
 			elseif (!empty($registration['orgtext']) && !Helpers\Utility::validtext($registration['orgtext']))
 			{
-				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
+				$this->_invalid['org'] = 'Invalid organization. You may be using characters that are not allowed.';
 			}
 		}
 

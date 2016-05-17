@@ -22,6 +22,9 @@
 		border-top: 1px solid #efefef;
 		position: relative;
 	}
+	#profile li.section.missing {
+		background: rgba(255, 0, 0, 0.1);
+	}
 	#profile li .section-hover {
 		background: #FF0;
 		width: 100%;

@@ -297,6 +297,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$cls .= ($isUser) ? ' hidden' : ' hide';
 						}
+						if (isset($update_missing) && in_array('org', array_keys($update_missing)))
+						{
+							$cls = str_replace(' hide', '', $cls);
+							$cls .= ' missing';
+						}
 					?>
 				<li class="profile-org section <?php echo $cls; ?>">
 					<div class="section-content">
@@ -371,6 +376,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						if ($this->profile->get("orgtype") == "" || is_null($this->profile->get("orgtype")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
+						}
+						if (isset($update_missing) && in_array('orgtype', array_keys($update_missing)))
+						{
+							$cls = str_replace(' hide', '', $cls);
+							$cls .= ' missing';
 						}
 					?>
 				<li class="profile-orgtype section <?php echo $cls; ?>">
