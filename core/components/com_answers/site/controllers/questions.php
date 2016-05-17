@@ -53,6 +53,8 @@ use Date;
 use User;
 use App;
 
+require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
+
 /**
  * Answers controller class for questions
  */
@@ -213,10 +215,10 @@ class Questions extends SiteController
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'action'      => ($comment['id'] ? 'updated' : 'created'),
 				'scope'       => 'question.answer.comment',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
 				'details'     => array(
 					'title' => $question->get('title'),
 					'url'   => $question->link()
