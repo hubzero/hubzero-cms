@@ -41,17 +41,17 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @return     array
+	 * @param   object  $publication  Current publication
+	 * @return  array
 	 */
-	public function &onPublicationSubAreas( $publication )
+	public function &onPublicationSubAreas($publication)
 	{
 		$areas = array();
 		if ($publication->category()->_params->get('plg_recommendations', 1) == 1)
@@ -66,12 +66,12 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a publication sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $publication 	Current publication
-	 * @param      string  $option    		Name of the component
-	 * @param      integer $miniview  		View style
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   integer  $miniview     View style
+	 * @return  array
 	 */
-	public function onPublicationSub( $publication, $option, $miniview=0 )
+	public function onPublicationSub($publication, $option, $miniview=0)
 	{
 		$arr = array(
 			'html'    =>'',
@@ -81,48 +81,35 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 
 		// Check if our area is in the array of areas we want to return results for
 		$areas = array('recommendations');
-		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
-		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
+		if (!array_intersect($areas, $this->onPublicationSubAreas($publication))
+		&& !array_intersect($areas, array_keys( $this->onPublicationSubAreas($publication))))
 		{
 			return false;
 		}
 
 		// Get some needed libraries
-		include_once(PATH_CORE . DS . 'plugins' . DS . 'publications'
-			. DS . 'recommendations' . DS . 'publication.recommendation.php');
-
-		// Set some filters for returning results
-		$filters = array(
-			'id'        => $publication->get('id'),
-			'threshold' => $this->params->get('threshold', '0.21'),
-			'limit'     => $this->params->get('display_limit', 10)
-		);
+		include_once(__DIR__ . DS . 'models' . DS . 'recommendation.php');
 
 		// Get recommendations
-		$database = App::get('db');
-		$r = new PublicationRecommendation($database);
-		$results = $r->getResults($filters);
+		$r = Plugins\Resources\Recommendations\Models\Recommendation::find(
+			$resource->id,
+			$this->params->get('threshold', '0.21')
+		);
 
-		$view = new \Hubzero\Plugin\View(array(
-			'folder'  => $this->_type,
-			'element' => $this->_name,
-			'name'    => 'browse'
-		));
+		$results = $r->limit($this->params->get('display_limit', 10))->rows();
 
-		// Instantiate a view
+		// Pass the view some info
+		$view = $this->view('default', 'browse');
+
 		if ($miniview)
 		{
 			$view->setLayout('mini');
 		}
 
-		// Pass the view some info
-		$view->option      = $option;
-		$view->publication = $publication;
-		$view->results     = $results;
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
+		$view->set('option', $option);
+		$view->set('publication', $publication);
+		$view->set('results', $results);
+		$view->setErrors($this->getErrors());
 
 		// Return the output
 		$arr['html'] = $view->loadTemplate();

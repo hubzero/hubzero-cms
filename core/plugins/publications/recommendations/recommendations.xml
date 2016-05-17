@@ -30,11 +30,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" group="publications">
-	<name>Publication - Recommendations</name>
+	<name>plg_publications_recommendations</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Displays recommendations for a publication</description>
+	<description>PLG_PUBLICATIONS_RECOMMENDATIONS_DESCRIPTION</description>
 	<files>
 		<filename plugin="recommendations">recommendations.php</filename>
 	</files>

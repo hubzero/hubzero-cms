@@ -41,15 +41,15 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesSubAreas($resource)
 	{
@@ -62,10 +62,10 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      integer $miniview  View style
-	 * @return     array
+	 * @param   object   $resource   Current resource
+	 * @param   string   $option     Name of the component
+	 * @param   integer  $miniview   View style
+	 * @return  array
 	 */
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
@@ -76,40 +76,28 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get some needed libraries
-		include_once(__DIR__ . DS . 'resources.recommendation.php');
+		include_once(__DIR__ . DS . 'models' . DS . 'recommendation.php');
 
-		// Set some filters for returning results
-		$filters = array(
-			'id'        => $resource->id,
-			'threshold' => $this->params->get('threshold', '0.21'),
-			'limit'     => $this->params->get('display_limit', 10)
+		// Get recommendations
+		$r = Plugins\Resources\Recommendations\Models\Recommendation::find(
+			$resource->id,
+			$this->params->get('threshold', '0.21')
 		);
 
-		$view = new \Hubzero\Plugin\View(array(
-			'folder'  => $this->_type,
-			'element' => $this->_name,
-			'name'    => 'browse'
-		));
+		$results = $r->limit($this->params->get('display_limit', 10))->rows();
 
-		// Instantiate a view
+		// Pass the view some info
+		$view = $this->view('default', 'browse');
+
 		if ($miniview)
 		{
 			$view->setLayout('mini');
 		}
 
-		// Pass the view some info
-		$view->option   = $option;
-		$view->resource = $resource;
-
-		// Get recommendations
-		$database = App::get('db');
-		$r = new ResourcesRecommendation($database);
-		$view->results  = $r->getResults($filters);
-
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view->set('option', $option);
+		$view->set('resource', $resource);
+		$view->set('results', $results);
+		$view->setErrors($this->getErrors());
 
 		// Return the output
 		$arr['html'] = $view->loadTemplate();
@@ -117,4 +105,3 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 		return $arr;
 	}
 }
-
