@@ -30,14 +30,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5" type="plugin" group="members">
-	<name>Members - Collections</name>
+	<name>plg_members_collections</name>
 	<author>HUBzero</author>
 	<creationDate>December 2012</creationDate>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5</version>
-	<description>Display collections</description>
+	<description>PLG_MEMBERS_COLLECTIONS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="collections">collections.php</filename>
 	</files>
@@ -47,10 +47,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="maxWidth" type="text" menu="hide" default="290" label="Max Image Width" description="Max Image Width for tile listing" />
-				<field name="defaultView" type="list" default="0" label="Default View" description="Default view for the tab.">
-					<option value="feed">Activity feed</option>
-					<option value="collections">User's Collections</option>
+				<field name="maxWidth" type="text" menu="hide" default="290" label="PLG_MEMBERS_COLLECTIONS_PARAM_MAXWIDTH_LABEL" description="PLG_MEMBERS_COLLECTIONS_PARAM_MAXWIDTH_DESC" />
+				<field name="defaultView" type="list" default="0" label="PLG_MEMBERS_COLLECTIONS_PARAM_DEFAULTVIEW_LABEL" description="PLG_MEMBERS_COLLECTIONS_PARAM_DEFAULTVIEW_DESC">
+					<option value="feed">PLG_MEMBERS_COLLECTIONS_PARAM_DEFAULTVIEW_FEED</option>
+					<option value="collections">PLG_MEMBERS_COLLECTIONS_PARAM_DEFAULTVIEW_COLLECTIONS</option>
 				</field>
 			</fieldset>
 		</fields>

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/members/projects.xml
+@file           plugins/members/impact/impact.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -30,11 +30,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" group="members">
-	<name>Members - Impact</name>
-	<author>Alissa Nedossekina</author>
+	<name>plg_members_impact</name>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display a member's impact as a publication author</description>
+	<description>PLG_MEMBERS_IMPACT_DESCRIPTION</description>
 	<files>
 		<filename plugin="impact">impact.php</filename>
 	</files>
@@ -44,11 +44,15 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-				<field name="show_impact" type="list" default="0" label="Show Impact" description="Show author impact section">
-					<option value="0">No</option>
-					<option value="2">Yes, show publicly</option>
-					<option value="1">Yes, show to author only</option>
+				<field name="display_limit" type="text" size="5" default="50" label="PLG_MEMBERS_IMPACT_PARAM_LIMIT_LABEL" description="PLG_MEMBERS_IMPACT_PARAM_LIMIT_DESC"/>
+				<field name="show_impact" type="list" default="0" label="PLG_MEMBERS_IMPACT_PARAM_SHOWIMPACT_LABEL" description="PLG_MEMBERS_IMPACT_PARAM_SHOWIMPACT_DESC">
+					<option value="0">JNo</option>
+					<option value="2">PLG_MEMBERS_IMPACT_PARAM_SHOWIMPACT_PUBLIC</option>
+					<option value="1">PLG_MEMBERS_IMPACT_PARAM_SHOWIMPACT_AUTHORONLY</option>
+				</field>
+				<field name="contributions" type="list" default="0" label="PLG_MEMBERS_IMPACT_PARAM_CONTRIBUTIONS_LABEL" description="PLG_MEMBERS_IMPACT_PARAM_CONTRIBUTIONS_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/members/groups.xml
+@file           plugins/members/profile/profile.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -31,10 +31,10 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="members">
 	<name>Members - Profile</name>
-	<author>Christopher Smoak</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display a member's Profile</description>
+	<description>PLG_MEMBERS_PROFILE_DESCRIPTION</description>
 	<files>
 		<filename plugin="profile">profile.php</filename>
 	</files>

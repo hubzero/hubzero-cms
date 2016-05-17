@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -26,6 +23,11 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -39,25 +41,29 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * List of actions
 	 *
+	 * @var  array
 	 */
 	protected $_actionMap = array();
 
 	/**
-	 * Overloading Parent Constructor
+	 * Constructor
 	 *
-	 * @param	array	$config		Optional configurations to be used
+	 * @param   object  $subject  Event dispatcher
+	 * @param   array   $config   Optional configurations to be used
 	 * @return  void
 	 */
 	public function __construct($subject, $config)
 	{
 		// get all public methods ending in 'action'
 		$reflectionClass = new ReflectionClass($this);
+
 		foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
 		{
 			$name = $method->getName();
@@ -128,7 +134,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			$this->params->set('position', 'memberDashboard');
 
 			// include dasboard models
-			include_once __DIR__ . DS . 'models' . DS . 'preferences.php';
+			include_once __DIR__ . DS . 'models' . DS . 'preference.php';
 
 			// add assets
 			$this->css();
@@ -153,7 +159,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				throw new Exception('Members dashboard action doesnt exist.');
+				throw new Exception('Members dashboard action does not exist.');
 			}
 		}
 
@@ -215,7 +221,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return Module Rendered & Ready For Display
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function moduleAction()
 	{
@@ -294,7 +300,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Add Module View
 	 *
-	 * @return  void
+	 * @return  string
 	 */
 	public function addAction()
 	{
@@ -344,24 +350,23 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		// load member preferences
-		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser(User::get('id'));
+		$preferences = Plugins\Members\Dashboard\Models\Preference::oneByUser(User::get('id'));
 
 		// update the user preferences
-		$membersDashboardModelPreferences->set('id', User::get('id'));
-		$membersDashboardModelPreferences->set('preferences', $modules);
-		$membersDashboardModelPreferences->set('modified', Date::toSql());
+		$preferences->set('uidNumber', User::get('id'));
+		$preferences->set('preferences', $modules);
+		$preferences->set('modified', Date::toSql());
 
 		// attempt to save
-		if (!$membersDashboardModelPreferences->store())
+		if (!$preferences->save())
 		{
-			App::abort(500,'Unable to save the users modules.');
-			exit();
+			App::abort(500, 'Unable to save the users modules.');
 		}
 
 		// build return
 		echo json_encode(array(
-			'saved' => true,
-			'modules' => $modules
+			'saved'   => true,
+			'modules' => json_decode($modules)
 		));
 		exit();
 	}
@@ -392,7 +397,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$this->database   = App::get('db');
 
 		// include dasboard models
-		include_once __DIR__ . DS . 'models' . DS . 'preferences.php';
+		include_once __DIR__ . DS . 'models' . DS . 'preference.php';
 
 		// add assets
 		Html::behavior('modal');
@@ -410,7 +415,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Main Dashboard Manage
 	 *
-	 * @return  void
+	 * @return  string
 	 */
 	public function manageDefaultAction()
 	{
@@ -484,7 +489,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Add Module View
 	 *
-	 * @return  void
+	 * @return  string
 	 */
 	public function manageAddAction()
 	{
@@ -548,7 +553,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display Push Module View
 	 *
-	 * @return  void
+	 * @return  string
 	 */
 	public function managePushAction()
 	{
@@ -580,21 +585,24 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		if ($module == 0 || $module == null)
 		{
 			App::abort(406, 'You must provide a module.');
-			return;
 		}
 
 		// load all member preferences
-		$this->database->setQuery("SELECT * from `#__xprofiles_dashboard_preferences`");
-		$memberPreferences = $this->database->loadObjectList();
+		//$this->database->setQuery("SELECT * from `#__xprofiles_dashboard_preferences`");
+		//$memberPreferences = $this->database->loadObjectList();
+
+		$memberPreferences = Plugins\Members\Dashboard\Models\Preference::all()
+			->ordered()
+			->rows();
 
 		// loop through each member preference and attempt to push module
 		foreach ($memberPreferences as $memberPreference)
 		{
 			// load their member preferences
 			$params = array();
-			if (is_string($memberPreference->preferences) && $memberPreference->preferences !== '')
+			if ((string)$memberPreference->get('preferences') !== '')
 			{
-				$params = json_decode($memberPreference->preferences);
+				$params = json_decode($memberPreference->get('preferences'));
 			}
 
 			// get a list of installed modules
@@ -653,10 +661,13 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			// encode params
 			$params = json_encode($params);
 
+			$memberPreference->set('preferences', $params);
+			$memberPreference->save();
+
 			// update user params
-			$sql = "UPDATE `#__xprofiles_dashboard_preferences` SET `preferences`=" . $this->database->quote($params) . " WHERE `uidNumber`=" . $memberPreference->uidNumber;
+			/*$sql = "UPDATE `#__xprofiles_dashboard_preferences` SET `preferences`=" . $this->database->quote($params) . " WHERE `uidNumber`=" . $memberPreference->uidNumber;
 			$this->database->setQuery($sql);
-			$this->database->query();
+			$this->database->query();*/
 		}
 
 		// return message
@@ -689,8 +700,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	 *
 	 * Will load defaults if not intentionally set to empty & no preferences we found
 	 * 
-	 * @param  int 	 $uidNumber  Profile ID number
-	 * @return array             Array of preferences
+	 * @param   integer  $uidNumber  Profile ID number
+	 * @return  array    Array of preferences
 	 */
 	private function _loadPreferences($uidNumber = null)
 	{
@@ -701,8 +712,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		// load member preferences
-		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($uidNumber);
-		$preferences = $membersDashboardModelPreferences->get('preferences');
+		$model = Plugins\Members\Dashboard\Models\Preference::oneByUser($uidNumber);
+		$preferences = $model->get('preferences');
 
 		// no user preferences, use default
 		if ($preferences === NULL)

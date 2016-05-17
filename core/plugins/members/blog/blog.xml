@@ -30,14 +30,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5" type="plugin" group="members">
-	<name>Members - Blog</name>
+	<name>plg_members_blog</name>
 	<author>HUBzero</author>
 	<creationDate>December 2009</creationDate>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<authorEmail>zooley@purdue.edu</authorEmail>
 	<version>1.5</version>
-	<description>Display a blog</description>
+	<description>PLG_MEMBERS_BLOG_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="blog">blog.php</filename>
 	</files>
@@ -47,20 +46,20 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="uploadpath" type="text" menu="hide" default="/site/members/{{uid}}/blog" label="Upload path" description="File path for uploads" />
-				<field name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
+				<field name="uploadpath" type="text" menu="hide" default="/site/members/{{uid}}/blog" label="PLG_MEMBERS_BLOG_PARAM_UPLOADPATH_LABEL" description="PLG_MEMBERS_BLOG_PARAM_UPLOADPATH_DESC" />
+				<field name="cleanintro" type="list" default="1" label="PLG_MEMBERS_BLOG_PARAM_CLEANINTRO_LABEL" description="PLG_MEMBERS_BLOG_PARAM_CLEANINTRO_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="introlength" type="text" default="300" label="Intro Length" description="The length of text the intros should be in lists of entries." />
+				<field name="introlength" type="text" default="300" label="PLG_MEMBERS_BLOG_PARAM_INTROLENGTH_LABEL" description="PLG_MEMBERS_BLOG_PARAM_INTROLENGTH_DESC" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="feeds_enabled" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
-					<option value="0">Disabled</option>
-					<option value="1">Enabled</option>
+				<field name="feeds_enabled" type="list" default="1" label="PLG_MEMBERS_BLOG_PARAM_FEEDSENABLED_LABEL" description="PLG_MEMBERS_BLOG_PARAM_FEEDSENABLED_DESCs">
+					<option value="0">PLG_MEMBERS_BLOG_PARAM_FEEDSENABLED_DISABLED</option>
+					<option value="1">PLG_MEMBERS_BLOG_PARAM_FEEDSENABLED_ENABLED</option>
 				</field>
-				<field name="feed_entries" type="list" default="partial" label="Feed Entries" description="The length of RSS feed entries">
-					<option value="full">Full</option>
-					<option value="partial">Partial</option>
+				<field name="feed_entries" type="list" default="partial" label="PLG_MEMBERS_BLOG_PARAM_FEEDENTRIES_LABEL" description="PLG_MEMBERS_BLOG_PARAM_FEEDENTRIES_DESC">
+					<option value="full">PLG_MEMBERS_BLOG_PARAM_FEEDENTRIES_FULL</option>
+					<option value="partial">PLG_MEMBERS_BLOG_PARAM_FEEDENTRIES_PARTIAL</option>
 				</field>
 			</fieldset>
 		</fields>

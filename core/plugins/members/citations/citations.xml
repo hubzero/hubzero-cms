@@ -30,24 +30,18 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5" type="plugin" group="members">
-	<name>Members - Citations</name>
+	<name>plg_members_citations</name>
 	<author>HUBzero</author>
 	<creationDate>March 2015</creationDate>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5</version>
-	<description>Displays member citations</description>
+	<description>PLG_MEMBERS_CITATIONS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="citations">citations.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_members_citations.ini</language>
 	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-			</fieldset>
-		</fields>
-	</config>
 </extension>

@@ -30,11 +30,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" group="members">
-	<name>Members - Projects</name>
-	<author>Alissa Nedossekina</author>
+	<name>plg_members_projects</name>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display a member's projects</description>
+	<description>PLG_MEMBERS_PROJECTS_DESCRIPTION</description>
 	<files>
 		<filename plugin="projects">projects.php</filename>
 	</files>
@@ -44,7 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+				<field name="display_limit" type="text" size="5" default="50" label="PLG_MEMBERS_PROJECTS_PARAM_LIMIT_LABEL" description="PLG_MEMBERS_PROJECTS_PARAM_LIMIT_DESC"/>
 			</fieldset>
 		</fields>
 	</config>

@@ -55,7 +55,6 @@ use Components\Citations\Models\Type;
 use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
 
-
 /**
  * Groups plugin class for citations
  */
@@ -160,21 +159,21 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			// Run task based on action
 			switch ($this->action)
 			{
-				case 'save':   		$arr['html'] .= $this->saveAction();      break;
+				case 'save':     $arr['html'] .= $this->saveAction();     break;
 				case 'add':
-				case 'edit':   		$arr['html'] .= $this->editAction();      break;
-				case 'delete': 		$arr['html'] .= $this->deleteAction();    break;
-				case 'publish': 	$arr['html'] .= $this->publishAction();  	break;
-				case 'browse': 		$arr['html'] .= $this->browseAction();    break;
-				case 'settings': 	$arr['html'] .= $this->settingsAction(); 	break;
+				case 'edit':     $arr['html'] .= $this->editAction();     break;
+				case 'delete':   $arr['html'] .= $this->deleteAction();   break;
+				case 'publish':  $arr['html'] .= $this->publishAction();  break;
+				case 'browse':   $arr['html'] .= $this->browseAction();   break;
+				case 'settings': $arr['html'] .= $this->settingsAction(); break;
 
-				case 'import':  	$arr['html'] .= $this->importAction();   	break;
-				case 'upload':  	$arr['html'] .= $this->uploadAction();   	break;
-				case 'review':  	$arr['html'] .= $this->reviewAction();   	break;
-				case 'process': 	$arr['html'] .= $this->processAction();  	break;
-				case 'saved':   	$arr['html'] .= $this->savedAction();    	break;
+				case 'import':   $arr['html'] .= $this->importAction();   break;
+				case 'upload':   $arr['html'] .= $this->uploadAction();   break;
+				case 'review':   $arr['html'] .= $this->reviewAction();   break;
+				case 'process':  $arr['html'] .= $this->processAction();  break;
+				case 'saved':    $arr['html'] .= $this->savedAction();    break;
 
-				default:       		$arr['html'] .= $this->browseAction(); 		break;
+				default:         $arr['html'] .= $this->browseAction();   break;
 			}
 		}
 
@@ -221,13 +220,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view = $this->view('browse');
 
 			// push objects to the view
-			$view->option			 = $this->option;
-			$view->member			 = $this->member;
-			$view->task				 = $this->_name;
-			$view->database			 = $this->database;
-			$view->title			 = Lang::txt(strtoupper($this->_name));
-			$view->isAdmin 		 = $isAdmin;
-			$view->config			 = $config;
+			$view->option      = $this->option;
+			$view->member      = $this->member;
+			$view->task        = $this->_name;
+			$view->database    = $this->database;
+			$view->title       = Lang::txt(strtoupper($this->_name));
+			$view->isAdmin     = $isAdmin;
+			$view->config      = $config;
 			$view->grand_total = $total;
 
 		}
@@ -254,8 +253,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// Affiliation filter
 		$view->filterlist = array(
-			'all'	 => Lang::txt('PLG_MEMBERS_CITATIONS_ALL'),
-			'aff'	 => Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATED'),
+			'all'    => Lang::txt('PLG_MEMBERS_CITATIONS_ALL'),
+			'aff'    => Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATED'),
 			'nonaff' => Lang::txt('PLG_MEMBERS_CITATIONS_NONAFFILIATED'),
 			'member' => Lang::txt('PLG_MEMBERS_CITATIONS_MEMBERCONTRIB')
 		);
@@ -276,10 +275,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// Sort Filter
 		$view->sorts = array(
 			//'sec_cnt DESC' => Lang::txt('PLG_MEMBERS_CITATIONS_CITEDBY'),
-			'year DESC'		 => Lang::txt('PLG_MEMBERS_CITATIONS_YEAR'),
+			'year DESC'    => Lang::txt('PLG_MEMBERS_CITATIONS_YEAR'),
 			'created DESC' => Lang::txt('PLG_MEMBERS_CITATIONS_NEWEST'),
-			'title ASC'		 => Lang::txt('PLG_MEMBERS_CITATIONS_TITLE'),
-			'author ASC'	 => Lang::txt('PLG_MEMBERS_CITATIONS_AUTHOR'),
+			'title ASC'    => Lang::txt('PLG_MEMBERS_CITATIONS_TITLE'),
+			'author ASC'   => Lang::txt('PLG_MEMBERS_CITATIONS_AUTHOR'),
 			'journal ASC'  => Lang::txt('PLG_MEMBERS_CITATIONS_JOURNAL')
 		);
 
@@ -462,7 +461,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view->badges = array();
 
 			$view->row->id = -time();
-
 		}
 		else
 		{
@@ -503,12 +501,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 					$x = $x + 1;
 				}
-					$view->authorString = $authorString;
+
+				$view->authorString = $authorString;
 			}
 
-		 //tags & badges
-		 $view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
-		 $view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
+			// tags & badges
+			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
+			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
 		}
 
 		// Output HTML
@@ -607,7 +606,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-
 		$authorCount = $citation->relatedAuthors()->count();
 
 		// update authors entries for new citations
@@ -642,7 +640,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				));
 
 				$authorObj->save();
-
 			}
 			// turn the author string into author entries
 		}
@@ -718,7 +715,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			/**
 			 * @TODO move to API, possible use of whereIn()?
-			 ***/
+			 **/
 
 			// when no selection has been made
 			if ($bulk == true && $citationIDs == '')
@@ -728,52 +725,49 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 					Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
 					'warning'
-					);
+				);
 			}
 
-				 $deleted  = array();
+			$deleted  = array();
 
-				 $citationIDs = explode(',',$citationIDs);
+			$citationIDs = explode(',',$citationIDs);
 
-				 foreach ($citationIDs as $id)
-				 {
-						$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-						$citation->set('published', $citation::STATE_DELETED);
+			foreach ($citationIDs as $id)
+			{
+				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+				$citation->set('published', $citation::STATE_DELETED);
 
-						// update the record
-						if ($citation->save() && $citation->scope == 'member'
-						&& $citation->scope_id == $this->member->get('id'))
-						{
-							array_push($deleted, $id);
-						}
-					}
-
-					App::redirect(
-						Route::url($this->member->link() . '&active=' . $this->_name),
-						Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
-						'success'
-					);
-					return;
-			 }
-			 else
-			 {
-					App::redirect(
-						Route::url($this->member->link() . '&active=' . $this->_name),
-						Lang::txt('PLG_MEMBERS_CITATIONS_NO_SUCH_CITATION'),
-						'error'
-					);
-					return;
+				// update the record
+				if ($citation->save() && $citation->scope == 'member'
+				&& $citation->scope_id == $this->member->get('id'))
+				{
+					array_push($deleted, $id);
 				}
-				 return;
+			}
+
+			App::redirect(
+				Route::url($this->member->link() . '&active=' . $this->_name),
+				Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
+				'success'
+			);
+			return;
+		}
+		else
+		{
+			App::redirect(
+				Route::url($this->member->link() . '&active=' . $this->_name),
+				Lang::txt('PLG_MEMBERS_CITATIONS_NO_SUCH_CITATION'),
+				'error'
+			);
+			return;
+		}
+		return;
 	}
 
 	/**
 	 * Settings for group citations
 	 *
-	 * @param null
-	 * @return void
-	 *
-	 *
+	 * @return  void
 	 */
 	private function settingsAction()
 	{
@@ -792,8 +786,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew()))
 			{
 				$citationFormat->set(array(
-					'format'		=> Request::getVar('template'),
-					'style'			=> $name
+					'format' => Request::getVar('template'),
+					'style'  => $name
 				));
 
 				// save format
@@ -807,7 +801,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				// returned value from format select box
 				$citationFormatID = $format;
 			}
-
 
 			$include_coins = \Hubzero\Utility\Sanitize::clean(Request::getVar('include_coins', ''));
 			$coins_only = \Hubzero\Utility\Sanitize::clean(Request::getVar('coins_only', ''));
@@ -839,7 +832,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'success'
 			);
 			return;
-
 		}
 		else
 		{
@@ -847,7 +839,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view = $this->view('settings');
 
 			// pass the group through
-			$view->member	= $this->member;
+			$view->member = $this->member;
 
 			// get group settings
 			$params = json_decode($this->member->get('params'));
@@ -858,7 +850,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges: "true");
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
-						// intended for the case that the group's custom
+			// intended for the case that the group's custom
 			// format is removed from the jos_citations_format
 			try
 			{
@@ -908,123 +900,121 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Publish method for group citations
 	 *
-	 * @param null
-	 * @return void
-	 *
-	 **/
-	 private function publishAction()
-	 {
-			$id = Request::getVar('cid', 0);
-			$citationIDs = Request::getVar('citationIDs', array());
-			$bulk = Request::getVar('bulk', false);
+	 * @return  void
+	 */
+	private function publishAction()
+	{
+		$id = Request::getVar('cid', 0);
+		$citationIDs = Request::getVar('citationIDs', array());
+		$bulk = Request::getVar('bulk', false);
 
-			if ($id != 0 && !$bulk)
+		if ($id != 0 && !$bulk)
+		{
+			$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+			if ($citation->uid != $this->member->get('id'))
 			{
-				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-
-				if ($citation->uid != $this->member->get('id'))
-				{
-					// redirect
-					App::redirect(
-							Route::url($this->member->link() . '&active=' . $this->_name),
-							Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
-							'warning'
-						);
-				}
-
-				// toggle the state
-				if ($citation->published != $citation::STATE_PUBLISHED)
-				{
-					$citation->set('published',  $citation::STATE_PUBLISHED);
-					$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
-				}
-				else
-				{
-					$citation->set('published', $citation::STATE_UNPUBLISHED);
-					$string = 'PLG_MEMBERS_CITATIONS_CITATION_UNPUBLISHED';
-				}
-
-				// save the state
-				if ($citation->save() && $citation->scope == 'member'
-						&& $citation->scope_id == $this->member->get('id'))
-				{
-					App::redirect(
-						Route::url($this->member->link() . '&active=' . $this->_name),
-						Lang::txt($string),
-						'success'
-					);
-					return;
-				}
-				else
-				{
-					App::redirect(
-						Route::url($this->member->link() . '&active=' . $this->_name),
-						Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
-						'error'
-					);
-					return;
-				}
+				// redirect
+				App::redirect(
+					Route::url($this->member->link() . '&active=' . $this->_name),
+					Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
+					'warning'
+				);
 			}
-			elseif ((bool)$bulk)
+
+			// toggle the state
+			if ($citation->published != $citation::STATE_PUBLISHED)
 			{
-				/***
-				 * @TODO move to API, possible use of whereIn()?
-				 ***/
-
-				// when no selection has been made
-				if ($bulk == true && $citationIDs == '')
-				{
-					// redirect and warn
-					App::redirect(
-						Route::url($this->member->link() . '&active=' . $this->_name),
-						Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
-						'warning'
-						);
-				}
-
-				$published = array();
-				$citationIDs = explode(',',$citationIDs);
+				$citation->set('published',  $citation::STATE_PUBLISHED);
 				$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
+			}
+			else
+			{
+				$citation->set('published', $citation::STATE_UNPUBLISHED);
+				$string = 'PLG_MEMBERS_CITATIONS_CITATION_UNPUBLISHED';
+			}
 
-				// error, no such citation
-				foreach ($citationIDs as $id)
-				{
-					$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-
-					// toggle the state
-					if ($citation->published != $citation::STATE_PUBLISHED)
-					{
-						$citation->set('published',  $citation::STATE_PUBLISHED);
-					}
-					else
-					{
-						$citation->set('published', $citation::STATE_UNPUBLISHED);
-					}
-
-					// save the state
-					if ($citation->save() && $citation->scope == 'member'
-						&& $citation->scope_id == $this->member->get('id'))
-					{
-						array_push($published, $id);
-					}
-				}
-					App::redirect(
-						Route::url($this->member->link() . '&active=' . $this->_name),
-						Lang::txt($string),
-						'success'
-					);
-					return;
+			// save the state
+			if ($citation->save() && $citation->scope == 'member'
+					&& $citation->scope_id == $this->member->get('id'))
+			{
+				App::redirect(
+					Route::url($this->member->link() . '&active=' . $this->_name),
+					Lang::txt($string),
+					'success'
+				);
+				return;
 			}
 			else
 			{
 				App::redirect(
-							Route::url($this->member->link() . '&active=' . $this->_name),
+					Route::url($this->member->link() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
 					'error'
 				);
 				return;
 			}
-	 } // end _publish()
+		}
+		elseif ((bool)$bulk)
+		{
+			/***
+			 * @TODO move to API, possible use of whereIn()?
+			 ***/
+
+			// when no selection has been made
+			if ($bulk == true && $citationIDs == '')
+			{
+				// redirect and warn
+				App::redirect(
+					Route::url($this->member->link() . '&active=' . $this->_name),
+					Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
+					'warning'
+				);
+			}
+
+			$published = array();
+			$citationIDs = explode(',',$citationIDs);
+			$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
+
+			// error, no such citation
+			foreach ($citationIDs as $id)
+			{
+				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+				// toggle the state
+				if ($citation->published != $citation::STATE_PUBLISHED)
+				{
+					$citation->set('published',  $citation::STATE_PUBLISHED);
+				}
+				else
+				{
+					$citation->set('published', $citation::STATE_UNPUBLISHED);
+				}
+
+				// save the state
+				if ($citation->save() && $citation->scope == 'member'
+					&& $citation->scope_id == $this->member->get('id'))
+				{
+					array_push($published, $id);
+				}
+			}
+			App::redirect(
+				Route::url($this->member->link() . '&active=' . $this->_name),
+				Lang::txt($string),
+				'success'
+			);
+			return;
+		}
+		else
+		{
+			App::redirect(
+				Route::url($this->member->link() . '&active=' . $this->_name),
+				Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
+				'error'
+			);
+			return;
+		}
+	}
 
 	/**
 	 * Redirect to login form
@@ -1474,37 +1464,37 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 					// pull the appropriate ones.
 					$citations->whereIn('id', $collection);
-			} // end searching
+				} // end searching
 
-			// for tags
-			if ($filter == "tag" && $value != "")
-			{
-				$collection = array();
-				$cite = clone $citations;
-				foreach ($cite as $c)
+				// for tags
+				if ($filter == "tag" && $value != "")
 				{
-					foreach ($c->tags as $tag)
+					$collection = array();
+					$cite = clone $citations;
+					foreach ($cite as $c)
 					{
-						if ($tag->tag == $value)
+						foreach ($c->tags as $tag)
 						{
-							array_push($collection, $c->id);
+							if ($tag->tag == $value)
+							{
+								array_push($collection, $c->id);
+							}
 						}
 					}
+
+					// remove duplicates
+					$collection = array_unique($collection);
+
+					// get the tagged ones
+					$citations->whereIn('id', $collection);
+				} // end if tags
+
+				if ($filter == "sort" && $value != "")
+				{
+					$clause = explode(" ", $value);
+					$citations->order($clause[0], $clause[1]);
 				}
-
-				// remove duplicates
-				$collection = array_unique($collection);
-
-				// get the tagged ones
-				$citations->whereIn('id', $collection);
-		 } // end if tags
-
-			if ($filter == "sort" && $value != "")
-			{
-				$clause = explode(" ", $value);
-				$citations->order($clause[0], $clause[1]);
-			}
-		} // end foreach filters as filter
+			} // end foreach filters as filter
 
 			return array('citations' => $citations, 'filters' => $filters);
 		}
@@ -1517,7 +1507,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	/**
 	* Uses URL to determine OpenURL server
 	*
-	* @return	object $openURL
+	* @return  mixed
 	*/
 	private function _handleOpenURL()
 	{

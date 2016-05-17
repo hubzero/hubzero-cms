@@ -41,16 +41,16 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  MembersProfile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -67,11 +67,11 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  MembersProfile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -202,9 +202,10 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Return array of html
+	 * @param   string  $what
+	 * @param   string  $who
+	 * @param   array   $filters
+	 * @return  array   Return array of html
 	 */
 	private function _getData($what='count', $who=null, $filters=array())
 	{
@@ -371,7 +372,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return a list of categories
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onMembersContributionsAreas()
 	{
@@ -383,9 +384,9 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build SQL for returning the count of the number of contributions
 	 *
-	 * @param      string $user_id  Field to join on user ID
-	 * @param      string $username Field to join on username
-	 * @return     string
+	 * @param   string  $user_id   Field to join on user ID
+	 * @param   string  $username  Field to join on username
+	 * @return  string
 	 */
 	public function onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')
 	{
@@ -403,14 +404,14 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return either a count or an array of the member's contributions
 	 *
-	 * @param      object  $member     Current member
-	 * @param      string  $option     Component name
-	 * @param      string  $authorized Authorization level
-	 * @param      integer $limit      Number of record to return
-	 * @param      integer $limitstart Record return start
-	 * @param      string  $sort       Field to sort records on
-	 * @param      array   $areas      Areas to return data for
-	 * @return     array
+	 * @param   object   $member      Current member
+	 * @param   string   $option      Component name
+	 * @param   string   $authorized  Authorization level
+	 * @param   integer  $limit       Number of record to return
+	 * @param   integer  $limitstart  Record return start
+	 * @param   string   $sort        Field to sort records on
+	 * @param   array    $areas       Areas to return data for
+	 * @return  array
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{

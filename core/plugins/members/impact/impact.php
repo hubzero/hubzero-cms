@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -26,6 +23,11 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -214,17 +216,15 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		// Load contributions plugin parameters
-		$this->_cPlugin = Plugin::byType('members', 'contributions');
-		$this->_cParams = new \Hubzero\Config\Registry($this->_cPlugin->params);
-
-		if ($this->_cParams->get('include_publications', 0) == 1)
+		if ($this->params->get('contributions', 0) == 1)
 		{
 			$areas = array(
 				'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS')
 			);
 		}
+
 		$this->_areas = $areas;
+
 		return $areas;
 	}
 
@@ -343,8 +343,8 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
