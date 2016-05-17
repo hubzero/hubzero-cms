@@ -872,6 +872,36 @@ class Pages extends Base
 			return $this->versionsTask();
 		}
 
+		// Log activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'updated',
+				'scope'       => 'group.page',
+				'scope_id'    => $page->get('id'),
+				'description' => Lang::txt(
+					'COM_GROUPS_ACTIVITY_PAGE_RESTORED',
+					$page->get('title'),
+					$version,
+					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+				),
+				'details'     => array(
+					'title'     => $page->get('title'),
+					'url'       => $url,
+					'gidNumber' => $this->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),

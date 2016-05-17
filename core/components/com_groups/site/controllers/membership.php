@@ -547,7 +547,7 @@ class Membership extends Base
 		$this->setNotification($error_message, 'error');
 
 		// Redirect back to view group
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
+		App::redirect($url);
 	}
 
 	/**
@@ -667,6 +667,34 @@ class Membership extends Base
 			'action'    => 'membership_invite_accepted',
 			'comments'  => array(User::get('id'))
 		));
+
+		// Log activity
+		$url = Route::url('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn'));
+
+		$recipients = array(
+			['group', $this->view->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->view->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'accepted',
+				'scope'       => 'group',
+				'scope_id'    => $this->view->group->get('gidNumber'),
+				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_ACCEPTED', '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
+				'details'     => array(
+					'title'     => $this->view->group->get('description'),
+					'url'       => $url,
+					'cn'        => $this->view->group->get('cn'),
+					'gidNumber' => $this->view->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
 
 		// E-mail subject
 		$subject = Lang::txt('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_SUBJECT', $this->view->group->get('cn'));
@@ -820,6 +848,34 @@ class Membership extends Base
 			$this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
 		}
 
+		// Log activity
+		$url = Route::url('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn'));
+
+		$recipients = array(
+			['group', $this->view->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->view->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'cancelled',
+				'scope'       => 'group',
+				'scope_id'    => $this->view->group->get('gidNumber'),
+				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_CANCELLED', '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
+				'details'     => array(
+					'title'     => $this->view->group->get('description'),
+					'url'       => $url,
+					'cn'        => $this->view->group->get('cn'),
+					'gidNumber' => $this->view->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// Action Complete. Redirect to appropriate page
 		App::redirect(
 			Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=groups'),
@@ -839,8 +895,7 @@ class Membership extends Base
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'));
 		}
 
 		//check to make sure we have  cname
@@ -900,8 +955,7 @@ class Membership extends Base
 		//is the group restricted
 		if ($this->view->group->get('join_policy') == 1)
 		{
-			$this->requestTask();
-			return;
+			return $this->requestTask();
 		}
 
 		//if this group is open just make a member
@@ -919,11 +973,37 @@ class Membership extends Base
 				'comments'  => array(User::get('id'))
 			));
 
-			App::redirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
-			return;
+			// Log activity
+			$url = Route::url('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn'));
+
+			$recipients = array(
+				['group', $this->view->group->get('gidNumber')],
+				['user', User::get('id')]
+			);
+			foreach ($this->view->group->get('managers') as $recipient)
+			{
+				$recipients[] = ['user', $recipient];
+			}
+
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'joined',
+					'scope'       => 'group',
+					'scope_id'    => $this->view->group->get('gidNumber'),
+					'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_CANCELLED', '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
+					'details'     => array(
+						'title'     => $this->view->group->get('description'),
+						'url'       => $url,
+						'cn'        => $this->view->group->get('cn'),
+						'gidNumber' => $this->view->group->get('gidNumber')
+					)
+				],
+				'recipients' => $recipients
+			]);
+
+			App::redirect($url);
 		}
 	}
-
 
 	/**
 	 * Show request membership form
@@ -932,19 +1012,19 @@ class Membership extends Base
 	 */
 	public function requestTask()
 	{
-		//set the layout
-		$this->view->setLayout('request');
+		// Get view notifications
+		$notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		// get view notifications
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		// Set the title
+		$title = Lang::txt('COM_GROUPS_INVITE_REQUEST') . ': ' . $this->view->group->get('description');
 
-		//set title
-		$this->view->title = Lang::txt('COM_GROUPS_INVITE_REQUEST') . ": " . $this->view->group->get('description');
-
-		//display
-		$this->view->display();
+		// Display
+		$this->view
+			->set('title', $title)
+			->set('notifications', $notifications)
+			->setLayout('request')
+			->display();
 	}
-
 
 	/**
 	 * Add membership request for user
@@ -1023,11 +1103,42 @@ class Membership extends Base
 			'comments'  => array(User::get('id'))
 		));
 
+		// Log activity
+		$url = Route::url('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn'));
+
+		$recipients = array(
+			['group', $this->view->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->view->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'requested',
+				'scope'       => 'group',
+				'scope_id'    => $this->view->group->get('gidNumber'),
+				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_REQUESTED', '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
+				'details'     => array(
+					'title'     => $this->view->group->get('description'),
+					'url'       => $url,
+					'cn'        => $this->view->group->get('cn'),
+					'gidNumber' => $this->view->group->get('gidNumber')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		// E-mail subject
 		$subject = Lang::txt('COM_GROUPS_JOIN_REQUEST_EMAIL_SUBJECT', $this->view->group->get('cn'));
 
 		// Build the e-mail message
-		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'request'));
+		$eview = new \Hubzero\Component\View(array(
+			'name'   => 'emails',
+			'layout' => 'request'
+		));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
 		$eview->user = User::getInstance();
@@ -1072,9 +1183,8 @@ class Membership extends Base
 		$this->setNotification(Lang::txt('COM_GROUPS_INVITE_REQUEST_FORWARDED'), 'passed');
 
 		// Push through to the groups listing
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
+		App::redirect($url);
 	}
-
 
 	/**
 	 *  Creates Random Token String
