@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/members/messages.xml
+@file           plugins/members/activity/activity.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -29,28 +29,18 @@ THE SOFTWARE.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension version="1.7" type="plugin" group="members">
-	<name>Members - Messages</name>
+<extension version="1.0" type="plugin" group="members">
+	<name>plg_members_activity</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Site message manager for members.</description>
+	<description>PLG_MEMBERS_ACTIVITY_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="messages">messages.php</filename>
-		<filename>messages.js</filename>
+		<filename plugin="activity">activity.php</filename>
+		<filename>assets/css/activity.css</filename>
+		<filename>assets/js/activity.js</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_members_messages.ini</language>
+		<language tag="en-GB">en-GB.plg_members_activity.ini</language>
 	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="default_method" type="list" default="email" label="Default Method" description="The default messaging method">
-					<option value="email">Email</option>
-					<option value="internal">Internal</option>
-				</field>
-			</fieldset>
-		</fields>
-	</config>
 </extension>
-
