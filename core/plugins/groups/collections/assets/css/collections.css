@@ -1062,7 +1062,9 @@
 		        box-shadow: none;
 	}
 	.new-post a,
-	.new-collection a {
+	.new-post a:visited,
+	.new-collection a,
+	.new-collection a:visited {
 		display: block;
 		background: #f7f7f7;
 		border: 3px dashed #ddd;
@@ -1093,8 +1095,14 @@
 		font-size: 2em;
 		margin-left: -0.5em;
 	}
+	.new-post a:active,
+	.new-post a:focus,
 	.new-post a:hover,
-	.new-collection a:hover {
+	.new-post a:visited:hover,
+	.new-collection a:active,
+	.new-collection a:focus,
+	.new-collection a:hover,
+	.new-collection a:visited:hover {
 		border: 3px solid #333;
 		color: #333;
 		cursor: pointer;

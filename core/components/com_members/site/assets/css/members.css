@@ -683,7 +683,7 @@
 		margin: 0;
 		padding: 0.2em 0;
 	}
-	.com_members #hubForm label,
+	.com_members #hubForm li label,
 	.com_members .input-wrap li label,
 	.com_members .input-wrap li input[type=radio],
 	.com_members .input-wrap li input[type=checkbox] {
