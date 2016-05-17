@@ -732,105 +732,20 @@ class Questions extends SiteController
 		// Add the tags
 		$row->tag($tags);
 
-		/*
-		// Get users who need to be notified on every question
-		$receivers = $this->recipients();
-
-		// Get tool contributors if question is about a tool
-		if ($tags)
-		{
-			$tags = preg_split("/[,;]/", $tags);
-			if (count($tags) > 0)
-			{
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-
-				$db = App::get('db');
-
-				$TA = new \Components\Tools\Tables\Author($db);
-				$objV = new \Components\Tools\Tables\Version($db);
-
-				foreach ($tags as $tag)
-				{
-					if ($tag == '')
-					{
-						continue;
-					}
-					if (preg_match('/tool:/', $tag))
-					{
-						$toolname = preg_replace('/tool:/', '', $tag);
-						if (trim($toolname))
-						{
-							$rev = $objV->getCurrentVersionProperty ($toolname, 'revision');
-							$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
-							if (count($authors) > 0)
-							{
-								foreach ($authors as $author)
-								{
-									$receivers[] = $author->uidNumber;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		// Send the message
-		if (!empty($receivers))
-		{
-			// Send a message about the new question to authorized users (specified admins or related content authors)
-			$from = array(
-				'email'     => Config::get('mailfrom'),
-				'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
-				'multipart' => md5(date('U'))
-			);
-
-			// Build the message subject
-			$subject = Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('new question about content you author or manage');
-
-			$message = array();
-
-			// Plain text message
-			$eview = new \Hubzero\Mail\View(array(
-				'name'   => 'emails',
-				'layout' => 'question_plaintext'
-			));
-			$eview->option   = $this->_option;
-			$eview->sitename = Config::get('sitename');
-			$eview->question = $row;
-			$eview->id       = $row->get('id', 0);
-			$eview->boundary = $from['multipart'];
-
-			$message['plaintext'] = $eview->loadTemplate(false);
-			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
-
-			// HTML message
-			$eview->setLayout('question_html');
-
-			$message['multipart'] = $eview->loadTemplate();
-			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
-
-			if (!Event::trigger('xmessage.onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, $this->_option)))
-			{
-				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
-			}
-		}
-		*/
 
 		// Log activity
-		$recipients = array($question->get('created_by'));
+		$recipients = array($row->get('created_by'));
 		$recipients = $this->recipients($recipients);
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'question',
-				'scope_id'    => $question->get('id'),
-				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('subject') . '</a>'),
 				'details'     => array(
-					'title' => $question->get('title'),
-					'url'   => $question->link()
+					'title' => $row->get('title'),
+					'url'   => $row->link()
 				)
 			],
 			'recipients' => $recipients
