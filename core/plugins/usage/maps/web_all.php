@@ -47,7 +47,7 @@ behavior:url(#default#VML);
 }
 </style>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'" type="text/javascript"> </script>
-<script src="/components/'.$option.'/maps/js/Clusterer2.js" type="text/javascript"> </script>
+<script src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/js/Clusterer2.js" type="text/javascript"> </script>
 <script type="text/javascript">
 	//<![CDATA[
 	function load() {
@@ -82,9 +82,9 @@ behavior:url(#default#VML);
 
 	function getMarkers()
 	{
-		//var urlstr="/components/'.$option.'/maps/read.php";
+		//var urlstr="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/read.php";
 		var urlstr="'.$dataurl.'";
-		var icon="/components/'.$option.'/maps/images/marker_red.png";
+		var icon="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/marker_red.png";
 		var request = GXmlHttp.create();
 		request.open(\'GET\', urlstr , true); // request XML from PHP with AJAX call
 		request.onreadystatechange = function () {
@@ -98,7 +98,7 @@ behavior:url(#default#VML);
 			var usage = locations[i].getAttribute("hits");
 			var icon = new GIcon();
 
-			icon.image = "/components/'.$option.'/maps/images/marker.png";
+			icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/marker.png";
 
 			// icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
 			// icon.shadow = "marker_shadow.png";

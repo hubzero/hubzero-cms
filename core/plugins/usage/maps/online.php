@@ -45,7 +45,7 @@ $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='. $key .'&sensor=false"> </script>
-	<script type="text/javascript" src="https://gmaps-samples-v3.googlecode.com/svn/trunk/xmlparsing/util.js"> </script>
+	<script type="text/javascript" src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/js/util.js"> </script>
 
 	<script type="text/javascript">
 

@@ -313,9 +313,9 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$key = $config->get('mapsApiKey');
 				$mappath = $config->get('maps_path');
 
-				if (is_file(PATH_CORE . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php'))
+				if (is_file(__DIR__ . DS . $type . '.php'))
 				{
-					include_once(PATH_CORE . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php');
+					include_once(__DIR__ . DS . $type . '.php');
 				}
 				else
 				{
