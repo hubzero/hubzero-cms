@@ -233,12 +233,12 @@ $option = 'com_groups';
 									break;
 								}
 
-								if (is_object($u) && User::get('id') == $u->get('uidNumber'))
+								if (is_object($u) && User::get('id') == $u->get('id'))
 								{
 									$cls .= ' me';
 								}
 
-								$url = $this->group->isSuperGroup() ? 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&scope=' . $u->get('uidNumber') : $u->getLink();
+								$url = $this->group->isSuperGroup() ? 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&scope=' . $u->get('id') : $u->link();
 						?>
 						<tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
 							<td class="photo">
@@ -287,7 +287,15 @@ $option = 'com_groups';
 								if ($this->filter == 'members' || $this->filter == 'managers') {
 									$html .= '<span class="roles">';
 									$all_roles = '';
-									$roles = $u->getGroupMemberRoles($u->get('uidNumber'),$this->group->gidNumber);
+
+									$db = \App::get('db');
+									$db->setQuery(
+										"SELECT r.id, r.name, r.permissions
+										FROM `#__xgroups_roles` as r
+										LEFT JOIN `#__xgroups_member_roles` as m ON m.roleid=r.id
+										WHERE m.uidNumber=" . $db->quote($u->get('id')) . " AND r.gidNumber=" . $db->quote($this->group->gidNumber)
+									);
+									$roles = $db->loadAssocList();
 
 									if ($roles) {
 										$html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
@@ -296,18 +304,18 @@ $option = 'com_groups';
 
 											if ($this->authorized == 'manager') {
 												if ($this->membership_control == 1) {
-													$all_roles .= '<span class="delete-role"><a href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
+													$all_roles .= '<span class="delete-role"><a href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('id').'&role='.$role['id']).'">x</a></span></span>';
 												}
 											} else {
 												$all_roles .= '</span>';
 											}
 										}
 
-										$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'">'.substr($all_roles,2).'</span>';
+										$html .= '<span class="roles-list" id="roles-list-'.$u->get('id').'">'.substr($all_roles,2).'</span>';
 
 										if ($this->authorized == 'manager') {
 											if ($this->membership_control == 1) {
-												$html .= ', <a class="assign-role" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
+												$html .= ', <a class="assign-role" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('id')).'">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 											}
 										}
 
@@ -316,18 +324,17 @@ $option = 'com_groups';
 									if ($this->membership_control == 1) {
 										if (($this->authorized == 'manager' || $this->authorized == 'admin') && !$roles) {
 											$html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
-											$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'"></span>';
-											$html .= ' <a class="assign-role" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
+											$html .= '<span class="roles-list" id="roles-list-'.$u->get('id').'"></span>';
+											$html .= ' <a class="assign-role" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('id')).'">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 										}
 									}
 									$html .= '</span>';
-
 								}
 
 								if ($this->filter == 'pending') {
 									$database = App::get('db');
 									$row = new Components\Groups\Tables\Reason($database);
-									$row->loadReason($u->get('uidNumber'), $this->group->gidNumber);
+									$row->loadReason($u->get('id'), $this->group->gidNumber);
 
 									if ($row)
 									{
@@ -336,8 +343,6 @@ $option = 'com_groups';
 										$html .= '<span class="reason-date">'.Date::of($row->date)->toLocal('F d, Y @ g:ia').'</span>';
 										$html .= '</span>';
 									}
-								} else {
-									//$html .= '<span class="activity">Activity: </span>';
 								}
 
 								$html .= '</td>'."\n";

@@ -104,22 +104,24 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 	<div id="member_browser" class="member_browser">
 		<?php
 		$counter = 1;
-		require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+		require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
-		foreach ($members as $k => $member) : ?>
-			<?php
-			$profile = Components\Members\Models\Member::oneOrNew($member);
-			if ($counter <= 12 && $profile->get('id')) :
-			?>
-				<?php if ($profile->get('public')) { ?>
+		$profiles = Components\Members\Models\Member::all()
+			->including('profiles')
+			->whereIn('id', $members)
+			->rows();
+
+		foreach ($profiles as $profile) : ?>
+			<?php if ($counter <= 12 && $profile->get('id')) : ?>
+				<?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels())) { ?>
 					<a href="<?php echo Route::url($profile->link()); ?>" class="member" title="<?php echo Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name'))); ?>">
 				<?php } else { ?>
 					<div class="member">
 				<?php } ?>
 						<img src="<?php echo $profile->picture(0, true); ?>" alt="<?php echo $this->escape(stripslashes($profile->get('name'))); ?>" class="member-border" width="50px" height="50px" />
 						<span class="name"><?php echo $this->escape(stripslashes($profile->get('name'))); ?></span>
-						<span class="org"><?php echo $this->escape(stripslashes($profile->get('organization'))); ?></span>
-				<?php if ($profile->get('public')) { ?>
+						<span class="org"><?php print_r($profile->get('organization'));//echo $this->escape(stripslashes($profile->get('organization'))); ?></span>
+				<?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels())) { ?>
 					</a>
 				<?php } else { ?>
 					</div>
