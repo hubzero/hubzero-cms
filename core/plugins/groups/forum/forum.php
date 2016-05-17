@@ -515,23 +515,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$this->view = $this->view('display', 'sections');
 
 		// email settings data
-		include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
+		include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
 
-		$recvEmailOption = new GroupsTableMemberoption($this->database);
-		$recvEmailOption->loadRecord($this->group->get('gidNumber'), User::get('id'), GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
-
-		if ($recvEmailOption->id)
-		{
-			$this->view->recvEmailOptionID    = $recvEmailOption->id;
-			$this->view->recvEmailOptionValue = $recvEmailOption->optionvalue;
-		}
-		else
-		{
-			$this->view->recvEmailOptionID    = 0;
-			$this->view->recvEmailOptionValue = 0;
-		}
+		$recvEmailOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+			$this->group->get('gidNumber'),
+			User::get('id'),
+			'receive-forum-email'
+		);
 
 		return $this->view
+			->set('recvEmailOptionID', $recvEmailOption->get('id', 0))
+			->set('recvEmailOptionValue', $recvEmailOption->get('optionvalue', 0))
 			->set('option', $this->option)
 			->set('group', $this->group)
 			->set('filters', $filters)
@@ -1435,21 +1429,16 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				if ($user->get('id'))
 				{
-					include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
+					include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
 
 					// Find the user's group settings, do they want to get email (0 or 1)?
-					$groupMemberOption = new GroupsTableMemberoption($this->database);
-					$groupMemberOption->loadRecord(
+					$groupMemberOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
 						$this->group->get('gidNumber'),
 						$user->get('id'),
-						GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION
+						'receive-forum-email'
 					);
 
-					$sendEmail = 0;
-					if ($groupMemberOption->id)
-					{
-						$sendEmail = $groupMemberOption->optionvalue;
-					}
+					$sendEmail = $groupMemberOption->get('optionvalue', 0);
 
 					if ($sendEmail == 1)
 					{
@@ -1459,6 +1448,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 
 			$allowEmailResponses = true;
+
 			try
 			{
 				$encryptor = new \Hubzero\Mail\Token();
@@ -2025,21 +2015,23 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// neede member option lib
-		include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
+		include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
 
 		// Find the user's group settings, do they want to get email (0 or 1)?
-		$groupMemberOption = new GroupsTableMemberoption($this->database);
-		$groupMemberOption->loadRecord(
+		$groupMemberOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
 			$this->group->get('gidNumber'),
 			$tokenDetails[0],
-			GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION
+			'receive-forum-email'
 		);
 
 		// mark that they dont want to be received anymore.
-		$groupMemberOption->optionvalue = 0;
+		$groupMemberOption->set('gidNumber', $this->group->get('gidNumber'));
+		$groupMemberOption->set('userid', $tokenDetails[0]);
+		$groupMemberOption->set('optionname', 'receive-forum-email');
+		$groupMemberOption->set('optionvalue', 0);
 
 		// attempt to update
-		if (!$groupMemberOption->save($groupMemberOption))
+		if (!$groupMemberOption->save())
 		{
 			App::redirect(
 				Route::url($rtrn),

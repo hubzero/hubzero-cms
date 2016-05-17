@@ -35,8 +35,6 @@ HUBzero is a registered trademark of Purdue University.
 	<creationDate>June 2008</creationDate>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<authorEmail>zooley@purdue.edu</authorEmail>
-	<authorUrl>zooley.rcac.purdue.edu</authorUrl>
 	<version>1.5</version>
 	<description>Display usage information for a group</description>
 	<files>
