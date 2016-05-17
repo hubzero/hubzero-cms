@@ -46,8 +46,8 @@ v\:* {
 behavior:url(#default#VML);
 }
 </style>
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'" type="text/javascript"> </script>
-<script src="/components/'.$option.'/maps/js/Clusterer2.js" type="text/javascript"> </script>
+<script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'" type="text/javascript"> </script>
+<script src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/js/Clusterer2.js" type="text/javascript"> </script>
 <script type="text/javascript">
 	//<![CDATA[
 	function load() {
@@ -82,9 +82,9 @@ behavior:url(#default#VML);
 	}
 
 	function getMarkers() {
-	//var urlstr="/components/'.$option.'/maps/read.php";
+	//var urlstr="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/read.php";
 	var urlstr="'.$dataurl.'";
-	var icon="/components/'.$option.'/maps/images/marker_red.png";
+	var icon="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/marker_red.png";
 		var request = GXmlHttp.create();
 		request.open(\'GET\', urlstr , true); // request XML from PHP with AJAX call
 		request.onreadystatechange = function () {
@@ -98,37 +98,37 @@ behavior:url(#default#VML);
 			var usage = locations[i].getAttribute("hits");
 			var icon = new GIcon();
 			if ( usage > 0 ) {
-				icon.image = "/components/'.$option.'/maps/images/11.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/11.png";
 			}
 			if ( usage > 2 ) {
-				icon.image = "/components/'.$option.'/maps/images/10.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/10.png";
 			}
 			if ( usage > 10 ) {
-				icon.image = "/components/'.$option.'/maps/images/9.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/9.png";
 			}
 			if ( usage > 50 ) {
-				icon.image = "/components/'.$option.'/maps/images/8.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/8.png";
 			}
 			if ( usage > 100 ) {
-				icon.image = "/components/'.$option.'/maps/images/7.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/7.png";
 			}
 			if ( usage > 250 ) {
-				icon.image = "/components/'.$option.'/maps/images/6.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/6.png";
 			}
 			if ( usage > 500 ) {
-				icon.image = "/components/'.$option.'/maps/images/5.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/5.png";
 			}
 			if ( usage > 1000 ) {
-				icon.image = "/components/'.$option.'/maps/images/4.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/4.png";
 			}
 			if ( usage > 5000 ) {
-				icon.image = "/components/'.$option.'/maps/images/3.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/3.png";
 			}
 			if ( usage > 10000 ) {
-				icon.image = "/components/'.$option.'/maps/images/2.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/2.png";
 			}
 			if ( usage > 25000 ) {
-				icon.image = "/components/'.$option.'/maps/images/1.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/1.png";
 			}
 
 			// icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";

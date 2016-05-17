@@ -38,8 +38,8 @@ defined('_HZEXEC_') or die();
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
-	<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $key; ?>"></script>
-	<script type="text/javascript" src="/components/<?php echo $option; ?>/maps/js/Clusterer2.js"></script>
+	<script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $key; ?>"></script>
+	<script type="text/javascript" src="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/js/Clusterer2.js"></script>
 	<script type="text/javascript">
 	function load()
 	{
@@ -78,9 +78,9 @@ defined('_HZEXEC_') or die();
 						var bot = locations[i].getAttribute('bot');
 						var icon = new GIcon();
 						if (bot == '1') {
-							icon.image = '/components/<?php echo $option; ?>/maps/images/markerB.png';
+							icon.image = '<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/images/markerB.png';
 						} else {
-							icon.image = '/components/<?php echo $option; ?>/maps/images/markerU.png';
+							icon.image = '<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/images/markerU.png';
 						}
 						icon.iconSize = new GSize(18, 30);
 						icon.iconAnchor = new GPoint(9, 30);

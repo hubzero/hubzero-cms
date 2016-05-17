@@ -46,14 +46,14 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	</style>
 
 	<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'"></script>
-	<script type="text/javascript" src="/components/'.$option.'/maps/js/Clusterer2.js"></script>
+	<script type="text/javascript" src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/js/Clusterer2.js"></script>
 	<script type="text/javascript">
 	function load()
 	{
 		if (GBrowserIsCompatible()) {
-    		map = new GMap2(document.getElementById("div_map"));
-       		map.addControl(new GLargeMapControl());
-        	map.setCenter(new GLatLng(25.4091, -28.8592), 3, G_PHYSICAL_MAP);
+			map = new GMap2(document.getElementById("div_map"));
+			map.addControl(new GLargeMapControl());
+			map.setCenter(new GLatLng(25.4091, -28.8592), 3, G_PHYSICAL_MAP);
 			getMarkers();
 		}
 	}
@@ -76,7 +76,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 						// var user = locations[i].getAttribute("user");
 						var type = locations[i].getAttribute("type");
 						var icon = new GIcon();
-						icon.image = "/components/'.$option.'/maps/images/markerU.png";
+						icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/markerU.png";
 
 						icon.iconSize = new GSize(18, 30);
 						icon.iconAnchor = new GPoint(6, 20);
