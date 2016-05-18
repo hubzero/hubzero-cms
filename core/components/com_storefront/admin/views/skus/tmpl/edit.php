@@ -52,6 +52,8 @@ JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('category');
 
+$this->css();
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -307,7 +309,27 @@ function submitbutton(pressbutton)
 				<label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
 				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
 			</div>
+		</fieldset>
 
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('Restrictions'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-restricted"><?php echo Lang::txt('Restrict by users'); ?>:</label>
+				<select name="fields[restricted]" id="field-restricted">
+					<option value="0"<?php if ($this->row->getRestricted() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
+					<option value="1"<?php if ($this->row->getRestricted() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+				</select>
+			</div>
+
+			<?php
+			if ($this->row->getRestricted()) {
+				?>
+				<p>
+					<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=restrictions&id=' . $this->row->getId(); ?>">Manage restrictions</a></p>
+				<?php
+			}
+			?>
 		</fieldset>
 
 	</div>

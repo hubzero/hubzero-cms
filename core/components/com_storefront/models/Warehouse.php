@@ -61,6 +61,9 @@ class Warehouse extends \Hubzero\Base\Object
 	// Access levels scope (what is allowed to display)
 	var $accessLevelsScope = false;
 
+	// User scope (what user is trying to get the info)
+	var $userScope = false;
+
 	// Database instance
 	var $db = NULL;
 
@@ -114,7 +117,16 @@ class Warehouse extends \Hubzero\Base\Object
 		$this->accessLevelsScope = array_merge(array('NULL', 0), $accessLevels);
 	}
 
-
+	/**
+	 * Add user level scope for entities having user permission property (currently SKUs only)
+	 *
+	 * @param  int user ID
+	 * @return void
+	 */
+	public function addUserScope($uId)
+	{
+		$this->userScope = $uId;
+	}
 
 	/* ------------------------------------- Main working functions ----------------------------------------------- */
 
@@ -616,18 +628,31 @@ class Warehouse extends \Hubzero\Base\Object
 		$sql .= "	FROM `#__storefront_skus` s
 					LEFT JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
 					LEFT JOIN `#__storefront_options` o ON so.`oId` = o.`oId`
-					LEFT JOIN `#__storefront_option_groups` og ON o.`ogId` = og.`ogId`
+					LEFT JOIN `#__storefront_option_groups` og ON o.`ogId` = og.`ogId`";
 
-					WHERE s.`pId` = {$pId} AND s.`sActive` = 1";
+		// check user scope if needed
+		if ($this->userScope)
+		{
+			$sql .= " LEFT JOIN #__storefront_permissions pr ON pr.`scope_id` = s.sId";
+		}
+
+		$sql .= "	WHERE s.`pId` = {$pId} AND s.`sActive` = 1";
 		$sql .= " 	AND (s.`publish_up` IS NULL OR s.`publish_up` <= NOW())";
 		$sql .= " 	AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
-		$sql .= "   AND (s.`sInventory` > 0 OR s.`sTrackInventory` = 0)
-
-					ORDER BY og.`ogId`, o.`oId`";
+		$sql .= "   AND (s.`sInventory` > 0 OR s.`sTrackInventory` = 0)";
+		if ($this->userScope)
+		{
+			$sql .= " AND (s.`sRestricted` = 0 OR (pr.scope = 'sku' AND pr.uId = '{$this->userScope}'))";
+		}
+		else
+		{
+			$sql .= " AND s.`sRestricted` = 0";
+		}
+		$sql .= "	ORDER BY og.`ogId`, o.`oId`";
 
 		$this->_db->setQuery($sql);
+		//print_r($this->_db->toString()); die;
 		$this->_db->query();
-		//print_r($this->_db->replacePrefix( (string) $sql )); die;
 		if (!$this->_db->getNumRows())
 		{
 			return false;
@@ -1606,6 +1631,7 @@ class Warehouse extends \Hubzero\Base\Object
 						`sEnumerable` = " . $sku->getEnumerable() . ",
 						`publish_up` = " . $this->_db->quote($sku->getPublishTime()->publish_up) . ",
 						`publish_down` = " . $this->_db->quote($sku->getPublishTime()->publish_down) . ",
+						`sRestricted` = " . $sku->getRestricted() . ",
 						`sActive` = " . $sku->getActiveStatus();
 
 		if (!empty($sId))

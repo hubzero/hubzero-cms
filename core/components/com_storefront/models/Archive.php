@@ -262,6 +262,10 @@ class Archive extends \Hubzero\Base\Object
 				$checkIntegrity = false;
 			}
 		}
+		if (isset($fields['restricted']))
+		{
+			$sku->setRestricted($fields['restricted']);
+		}
 		if (isset($fields['options']))
 		{
 			$sku->setOptions($fields['options']);

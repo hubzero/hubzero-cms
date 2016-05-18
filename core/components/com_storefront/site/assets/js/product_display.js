@@ -63,10 +63,8 @@ $(document).ready(function() {
 	});
 
 	// Check if specific product options are requested in the URL
-	var pathname = (window.location.pathname).replace('/storefront/product/' + SF.PRODUCT.pId + '/', '');
+	var pathname = (window.location.pathname).replace('/storefront/product/' + SF.PRODUCT.pId, '');
 	var pathname = pathname.replace('/', '');
-
-	//console.log(pathname);
 
 	if(pathname !== '') {
 		var productOptions = pathname.split(',');
@@ -74,14 +72,12 @@ $(document).ready(function() {
 		$('#productOptions .product-options input').each(function(index) {
 			var input = $(this);
 			if(productOptions.indexOf($(input).val()) > -1) {
-				console.log(input);
 				input.prop("checked", true).trigger("change");
 			}
 
 		});
 	}
 	else {
-		console.log('q');
 		// Auto-select single product options (https://freedcamp.com/wl_14B/Shopping_Cart_Tk2/todos/2197226/)
 		$('#productOptions .product-options').each(function (index) {
 			var inputs = $(this).find('input');

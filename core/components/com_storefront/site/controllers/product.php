@@ -53,9 +53,11 @@ class Product extends \Hubzero\Component\SiteController
 	public function execute()
 	{
 		$this->warehouse = new Warehouse();
-
 		$this->warehouse->addAccessLevels(User::getAuthorisedViewLevels());
-
+		if (is_numeric(User::get('id')))
+		{
+			$this->warehouse->addUserScope(User::get('id'));
+		}
 		parent::execute();
 	}
 
@@ -145,6 +147,8 @@ class Product extends \Hubzero\Component\SiteController
 
 		// Get option groups with options and SKUs
 		$data = $this->warehouse->getProductOptions($pId);
+
+		//print_r($data); die;
 
 		if ($data)
 		{
