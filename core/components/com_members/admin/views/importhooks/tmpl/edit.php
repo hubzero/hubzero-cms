@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 // set title
 $title  = ($this->hook->get('id')) ? Lang::txt('COM_MEMBERS_IMPORTHOOK_TITLE_EDIT') : Lang::txt('COM_MEMBERS_IMPORTHOOK_TITLE_ADD');
 
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt($title), 'import.png');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt($title), 'import');
 Toolbar::save();
 Toolbar::cancel();
 ?>

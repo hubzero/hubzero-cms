@@ -38,12 +38,12 @@ $this->css('import')
 
 Request::setVar('hidemainmenu', 1);
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
+$canDo = \Components\Members\Helpers\Admin::getActions('component');
 
 // set title
 $title  = ($this->import->get('id')) ? Lang::txt('COM_MEMBERS_IMPORT_TITLE_EDIT') : Lang::txt('COM_MEMBERS_IMPORT_TITLE_ADD');
 
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . $title, 'import.png');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . $title, 'import');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::save();

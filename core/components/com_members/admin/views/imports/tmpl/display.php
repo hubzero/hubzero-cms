@@ -33,9 +33,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
+$canDo = \Components\Members\Helpers\Admin::getActions('component');
 
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS'), 'import.png');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS'), 'import');
 
 if ($canDo->get('core.admin'))
 {

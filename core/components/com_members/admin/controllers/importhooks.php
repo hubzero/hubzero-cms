@@ -37,6 +37,7 @@ use Hubzero\Content\Import\Model\Hook;
 use Filesystem;
 use Request;
 use Config;
+use Notify;
 use Route;
 use User;
 use Date;
@@ -228,9 +229,7 @@ class ImportHooks extends AdminController
 			return $this->editTask($hook);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -283,6 +282,7 @@ class ImportHooks extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
@@ -297,21 +297,20 @@ class ImportHooks extends AdminController
 
 			if (!$hook->save())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-					$hook->getError(),
-					'error'
-				);
-				return;
+				Notify::error($hook->getError());
+				continue;
 			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_IMPORTHOOK_REMOVED'));
 		}
 
 		//inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			Lang::txt('COM_MEMBERS_IMPORTHOOK_REMOVED'),
-			'passed'
-		);
+		$this->cancelTask();
 	}
 
 	/**

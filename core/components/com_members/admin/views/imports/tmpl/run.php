@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // set title
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_IMPORT_TITLE_RUN'), 'script.png');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_IMPORT_TITLE_RUN'), 'import');
 
 // add import styles and scripts
 $this->js('import')

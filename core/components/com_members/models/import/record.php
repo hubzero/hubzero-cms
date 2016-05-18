@@ -32,6 +32,8 @@
 
 namespace Components\Members\Models\Import;
 
+use Components\Members\Models\Member;
+use Hubzero\Utility\Validate;
 use Exception;
 use stdClass;
 use Component;
@@ -41,7 +43,8 @@ use Lang;
 use User;
 use Date;
 
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'profile.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
 include_once dirname(__DIR__) . DS . 'tags.php';
 include_once dirname(__DIR__) . DS . 'registration.php';
 
@@ -53,9 +56,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	/**
 	 * Profile
 	 *
-	 * @var  object
+	 * @var  array
 	 */
-	private $_profile;
+	private $_profile = array();
 
 	/**
 	 *  Constructor
@@ -73,13 +76,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		$this->_mode    = strtoupper($mode);
 
 		// Core objects
-		$this->_database = \App::get('db');
 		$this->_user     = User::getInstance();
+		$this->_profile = array();
 
 		// Create objects
 		$this->record = new stdClass;
-		$this->record->entry = new \Components\Members\Tables\Profile($this->_database);
-		$this->_profile = new \Hubzero\User\Profile();
+		$this->record->entry = new \Components\Members\Models\Member();
 		$this->record->tags  = array();
 
 		// Messages
@@ -132,10 +134,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		}
 
 		$xregistration = new \Components\Members\Models\Registration();
-		$xregistration->loadProfile($this->_profile);
+		$xregistration->loadProfile($this->record->entry);
 
 		// Check that required fields were filled in properly
-		if (!$xregistration->check('edit', $this->_profile->get('uidNumber'), array()))
+		if (!$xregistration->check('edit', $this->record->entry->get('id'), array()))
 		{
 			$skip = array();
 
@@ -163,6 +165,28 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 					array_push($this->record->errors, $invalid);
 				}
+			}
+		}
+
+		// Validate profile data
+		$fields = \Components\Members\Models\Profile\Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*');
+			}])
+			->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			->ordered()
+			->rows();
+
+		$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+		$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
+		$form->bind(new \Hubzero\Config\Registry($profile));
+
+		if (!$form->validate($this->_profile))
+		{
+			foreach ($form->getErrors() as $key => $error)
+			{
+				array_push($this->record->errors, (string)$error);
 			}
 		}
 
@@ -215,11 +239,15 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// Either passed in the raw data or gotten from the title match
 		if (isset($this->raw->uidNumber) && $this->raw->uidNumber > 1)
 		{
-			$this->record->entry->load($this->raw->uidNumber);
+			$this->record->entry = Member::oneOrNew($this->raw->uidNumber);
+		}
+		else if (isset($this->raw->id) && $this->raw->id > 1)
+		{
+			$this->record->entry = Member::oneOrNew($this->raw->id);
 		}
 		else if (isset($this->raw->username) && $this->raw->username)
 		{
-			$this->record->entry->loadByUsername($this->raw->username);
+			$this->record->entry = Member::oneByUsername($this->raw->username);
 		}
 
 		$d = Date::of('now');
@@ -237,13 +265,15 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->raw->registerDate = $d->toSql();
 		}
 
-		if (!$this->record->entry->get('uidNumber') && !$this->raw->registerDate)
+		if (!$this->record->entry->get('id') && !$this->raw->registerDate)
 		{
 			$this->raw->registerDate = $d->toSql();
 		}
 
 		// Set modified date/user
 		$this->raw->modifiedDate = Date::of('now')->toSql();
+
+		$columns = $this->record->entry->getStructure()->getTableColumns($this->record->entry->getTableName());
 
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
@@ -259,7 +289,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				continue;
 			}
 
-			$this->record->entry->set($key, $val);
+			if (in_array($key, $columns))
+			{
+				$this->record->entry->set($key, $val);
+			}
+			else
+			{
+				$this->_profile[$key] = $val;
+			}
 		}
 
 		// Set multi-value fields
@@ -271,13 +308,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			if (isset($this->raw->$key))
 			{
 				// In PATCH mode, skip fields with no values
-				if ($this->_mode == 'PATCH' && !$this->raw->$key)
+				if ($this->_mode == 'PATCH' && (!isset($this->_profile[$key]) || !$this->_profile[$key]))
 				{
 					continue;
 				}
 
-				$this->record->$key = $this->_multiValueField($this->raw->$key);
-				$this->record->entry->set($key, $this->record->$key);
+				$this->_profile[$key] = $this->_multiValueField($this->_profile[$key]);
 			}
 		}
 
@@ -302,7 +338,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		}
 
 		// If we're updating an existing record...
-		if ($this->record->entry->get('uidNumber'))
+		if ($this->record->entry->get('id'))
 		{
 			// Check if the username passed if the same for the record we're updating
 			$username = $this->record->entry->get('username');
@@ -315,12 +351,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		else if (isset($this->raw->username) && $this->raw->username)
 		{
 			$this->record->entry->set('username', $this->raw->username);
-		}
-
-		// Bind to the profile object
-		foreach ($this->record->entry->getProperties() as $key => $val)
-		{
-			$this->_profile->set($key, $val);
 		}
 	}
 
@@ -349,7 +379,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 */
 	private function _saveEntryData()
 	{
-		$isNew = (!$this->_profile->get('uidNumber'));
+		$isNew = (!$this->record->entry->get('id'));
 
 		if (!isset($this->raw->password))
 		{
@@ -358,13 +388,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if ($isNew)
 		{
-			if (!$this->_profile->get('username'))
+			if (!$this->record->entry->get('username'))
 			{
 				$valid = false;
 
 				// Try to create from name
-				$username = preg_replace('/[^a-z9-0_]/i', '', strtolower($this->_profile->get('name')));
-				if (\Hubzero\Utility\Validate::username($username))
+				$username = preg_replace('/[^a-z9-0_]/i', '', strtolower($this->record->entry->get('name')));
+				if (Validate::username($username))
 				{
 					if (!$this->_usernameExists($username))
 					{
@@ -375,8 +405,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				// Try to create from portion preceeding @ in email address
 				if (!$valid)
 				{
-					$username = strstr($this->_profile->get('email'), '@', true);
-					if (\Hubzero\Utility\Validate::username($username))
+					$username = strstr($this->record->entry->get('email'), '@', true);
+					if (Validate::username($username))
 					{
 						if ($this->_usernameExists($username))
 						{
@@ -390,8 +420,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				{
 					for ($i = 0; $i <= 99; $i++)
 					{
-						$username = preg_replace('/[^a-z9-0_]/i', '', strtolower($this->_profile->get('name'))) . $i;
-						if (\Hubzero\Utility\Validate::username($username))
+						$username = preg_replace('/[^a-z9-0_]/i', '', strtolower($this->record->entry->get('name'))) . $i;
+						if (Validate::username($username))
 						{
 							if ($this->_usernameExists($username))
 							{
@@ -404,14 +434,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 				if ($valid)
 				{
-					$this->_profile->set('username', $username);
+					$this->record->entry->set('username', $username);
 				}
 			}
 
 			if (!$this->raw->password)
 			{
-				//\Hubzero\User\Helper::random_password();
-				$this->raw->password = $this->_profile->get('username');
+				$this->raw->password = $this->record->entry->get('username');
 			}
 
 			$usersConfig = Component::params('com_users');
@@ -440,72 +469,34 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				}
 			}
 
-			$user = new \JUser();
-			$user->set('username', $this->_profile->get('username'));
-			$user->set('name', $this->_profile->get('name'));
-			$user->set('email', $this->_profile->get('email'));
-			$user->set('id', 0);
-			$user->set('groups', array($newUsertype));
-			$user->set('registerDate', $d->toSql());
-			$user->set('password', $this->raw->password);
-			$user->set('password_clear', $this->raw->password);
-			if (!$user->save())
+			$this->record->entry->set('id', 0);
+			$this->record->entry->set('accessgroups', array($newUsertype));
+			$this->record->entry->set('registerDate', $d->toSql());
+			$this->record->entry->set('password', $this->raw->password);
+
+			if (!$this->record->entry->get('activation', null))
 			{
-				throw new Exception($user->getError());
-			}
-			$user->set('password_clear', '');
-
-			// Attempt to get the new user
-			$profile = \Hubzero\User\Profile::getInstance($user->get('id'));
-			$result  = is_object($profile);
-
-			// Did we successfully create an account?
-			if ($result)
-			{
-				if (!$this->record->entry->get('emailConfirmed', null))
-				{
-					$this->_profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
-				}
-				$this->_profile->set('uidNumber', $user->get('id'));
-				$this->_profile->set('gidNumber', $profile->get('gidNumber'));
-
-				if (!$this->_profile->get('homeDirectory'))
-				{
-					$this->_profile->set('homeDirectory', $profile->get('homeDirectory'));
-				}
-				if (!$this->_profile->get('loginShell'))
-				{
-					$this->_profile->set('loginShell', $profile->get('loginShell'));
-				}
-				if (!$this->_profile->get('ftpShell'))
-				{
-					$this->_profile->set('ftpShell', $profile->get('ftpShell'));
-				}
-				if (!$this->_profile->get('jobsAllowed'))
-				{
-					$this->_profile->set('jobsAllowed', $profile->get('jobsAllowed'));
-				}
+				$this->record->entry->set('activation', -rand(1, pow(2, 31)-1));
 			}
 		}
 
-		if (!$this->_profile->store())
+		if (!$this->record->entry->save())
 		{
 			throw new Exception(Lang::txt('Unable to save the entry data.'));
 		}
 
+		if (!empty($this->_profile))
+		{
+			if (!$this->record->entry->saveProfile($this->_profile))
+			{
+				throw new Exception($this->record->entry->getError());
+			}
+		}
+
 		if ($this->raw->password)
 		{
-			/*if ($isNew)
-			{
-				// We need to bypass any hashing
-				$this->raw->password = '*';
-				\Hubzero\User\Password::changePasshash($this->_profile->get('uidNumber'), $password);
-			}
-			else
-			{*/
-				\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $this->raw->password);
-				\Hubzero\User\Password::expirePassword($this->_profile->get('uidNumber'));
-			//}
+			\Hubzero\User\Password::changePassword($this->record->entry->get('id'), $this->raw->password);
+			\Hubzero\User\Password::expirePassword($this->record->entry->get('id'));
 		}
 
 		if ($isNew && $this->_options['emailnew'] == 1)
@@ -518,15 +509,15 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$eview->option       = 'com_members';
 			$eview->controller   = 'register';
 			$eview->sitename     = Config::get('sitename');
-			$eview->login        = $this->_profile->get('username');
-			$eview->name         = $this->_profile->get('name');
-			$eview->registerDate = $this->_profile->get('registerDate');
-			$eview->confirm      = $this->_profile->get('emailConfirmed');
+			$eview->login        = $this->record->entry->get('username');
+			$eview->name         = $this->record->entry->get('name');
+			$eview->registerDate = $this->record->entry->get('registerDate');
+			$eview->confirm      = $this->record->entry->get('activation');
 			$eview->baseURL      = Request::base();
 
 			$msg = new \Hubzero\Mail\Message();
 			$msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
-			    ->addTo($this->_profile->get('email'))
+			    ->addTo($this->record->entry->get('email'))
 			    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 			    ->addHeader('X-Component', 'com_members');
 
@@ -549,19 +540,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	}
 
 	/**
-	 * Map Tags
+	 * Check if a username exists
 	 *
-	 * @return  void
+	 * @return  integer
 	 */
 	private function _usernameExists($username)
 	{
-		$db = \App::get('db');
-		$query = $db->getQuery(true)
-			->select('id')
-			->from('#__users')
-			->where('username=' . $qb->quote($username));
-		$db->setQuery($query);
-		return $db->loadResult();
+		return Member::oneByUsername($username)->get('id');
 	}
 
 	/**
@@ -590,7 +575,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		}
 
 		// save tags
-		$tags = new \Components\Members\Models\Tags($this->_profile->get('uidNumber'));
+		$tags = new \Components\Members\Models\Tags($this->record->entry->get('id'));
 		$tags->setTags($this->record->tags, $this->_user->get('id'));
 	}
 
@@ -639,10 +624,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			return;
 		}
 
-		$id = $this->_profile->get('uidNumber');
+		$id = $this->record->entry->get('id');
 
 		// Get all the user's current groups
-		$existing = $this->_profile->getGroups();
+		$existing = \Hubzero\User\Helper::getGroups($id);
 		$gids = array();
 		if ($existing)
 		{

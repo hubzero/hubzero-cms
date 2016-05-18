@@ -32,8 +32,10 @@
 
 namespace Components\Members\Admin\Controllers;
 
-use Components\Members\Helpers\Permissions;
+use Components\Members\Helpers\Admin;
 use Components\Members\Models\Import;
+use Components\Members\Models\Member;
+use Components\Members\Models\Profile\Field;
 use Hubzero\Component\AdminController;
 use Hubzero\Content\Import\Model\Hook;
 use Hubzero\Content\Importer;
@@ -47,9 +49,9 @@ use Date;
 use Lang;
 use App;
 
-// No direct access
-defined('_HZEXEC_') or die();
 
+include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
+include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php');
 include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'import.php');
 
 /**
@@ -64,7 +66,7 @@ class Imports extends AdminController
 	 */
 	public function execute()
 	{
-		if (!Permissions::getActions('component')->get('core.admin'))
+		if (!Admin::getActions('component')->get('core.admin'))
 		{
 			App::redirect(
 				Route::url('index.php?option=com_members', false),
@@ -306,6 +308,8 @@ class Imports extends AdminController
 			return $this->editTask($model);
 		}
 
+		Notify::success(Lang::txt('COM_MEMBERS_IMPORT_CREATED'));
+
 		// Inform user & redirect
 		if ($redirect)
 		{
@@ -318,12 +322,7 @@ class Imports extends AdminController
 				return;
 			}
 
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_IMPORT_CREATED'),
-				'passed'
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		$this->editTask($model);
@@ -344,6 +343,7 @@ class Imports extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
@@ -357,21 +357,20 @@ class Imports extends AdminController
 			// attempt to delete import
 			if (!$import->destroy())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-					$import->getError(),
-					'error'
-				);
-				return;
+				Notify::error($import->getError());
+				continue;
 			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_IMPORT_REMOVED'));
 		}
 
 		//inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			Lang::txt('COM_MEMBERS_IMPORT_REMOVED'),
-			'passed'
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -405,17 +404,12 @@ class Imports extends AdminController
 			return $this->cancelTask();
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->set('dryRun', $dryRun)
 			->set('import', $import)
 			->setLayout('run')
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -622,31 +616,58 @@ class Imports extends AdminController
 	 */
 	public function sampleTask()
 	{
-		$database = App::get('db');
-
-		$profile = new \Components\Members\Tables\Profile($database);
-
 		$skip = array('gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword', 'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber');
 
 		$fields = array();
 		$row    = array();
 
-		foreach ($profile->getProperties() as $key => $val)
+		$member = Member::blank();
+		$attribs = $member->getStructure()->getTableColumns($member->getTableName());
+
+		foreach ($attribs as $key => $desc)
 		{
 			if (in_array(strtolower($key), $skip))
 			{
 				continue;
 			}
+
+			$example = 'Example';
+			$desc = preg_replace('/\(.*\)/', '', $desc);
+
+			if (in_array($desc, array('int', 'tinyint', 'float')))
+			{
+				$example = '1';
+			}
+
+			array_push($row, $example);
 			array_push($fields, $key);
-			array_push($row, 'Example');
 		}
 
-		$multi = array('interests', 'race', 'disability');
+		$attribs = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*');
+			}])
+			->ordered()
+			->rows();
 
-		foreach ($multi as $key)
+		foreach ($attribs as $field)
 		{
+			$key = $field->get('name');
+
+			if (in_array(strtolower($key), $skip))
+			{
+				continue;
+			}
+
+			$example = 'Example';
+			if ($field->options->count() || in_array($field->get('type'), array('select', 'dropdown', 'list', 'radio', 'radios', 'checkbox', 'checkboxes')))
+			{
+				$example = 'example;example;example';
+			}
+
+			array_push($row, $example);
 			array_push($fields, $key);
-			array_push($row, 'example;example;example');
 		}
 
 		// Output header
