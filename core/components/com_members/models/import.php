@@ -76,7 +76,7 @@ class Import extends Base
 			'name',
 			'fullname',
 		),
-		'uidNumber' => array(
+		'id' => array(
 			'id',
 			'uid',
 			'userid',
@@ -237,7 +237,7 @@ class Import extends Base
 			'citizenship',
 			'citizen',
 		),
-		'mailPreferenceOption' => array(
+		'sendEmail' => array(
 			'mailpreferenceoption',
 			'mailpreference',
 			'recievemail',
@@ -246,12 +246,14 @@ class Import extends Base
 			'getemail',
 			'mailupdates',
 			'emailupdates',
+			'sendemail',
 		),
-		'emailConfirmed' => array(
+		'activation' => array(
 			'emailconfirmed',
 			'confirmedemail',
 			'validemail',
 			'emailconfirm',
+			'activation',
 		),
 		'reason' => array(
 			'reason',
@@ -279,13 +281,13 @@ class Import extends Base
 			'restrict',
 			'restricted',
 		),
-		'regIP' => array(
+		'registerIP' => array(
 			'regip',
 			'registrationip',
 			'registeredip',
 			'registerip',
 		),
-		'regHost' => array(
+		'registerHost' => array(
 			'reghost',
 			'registrationhost',
 			'registeredhost',

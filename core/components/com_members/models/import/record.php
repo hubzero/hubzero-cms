@@ -76,7 +76,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		$this->_mode    = strtoupper($mode);
 
 		// Core objects
-		$this->_user     = User::getInstance();
+		$this->_user    = User::getInstance();
 		$this->_profile = array();
 
 		// Create objects
@@ -127,11 +127,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	public function check()
 	{
 		// Run save check method
-		if (!$this->record->entry->check())
+		/*if (!$this->record->entry->check())
 		{
 			array_push($this->record->errors, $this->record->entry->getError());
 			return $this;
-		}
+		}*/
 
 		$xregistration = new \Components\Members\Models\Registration();
 		$xregistration->loadProfile($this->record->entry);
@@ -180,7 +180,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
 		$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
-		$form->bind(new \Hubzero\Config\Registry($profile));
+		$form->bind(new \Hubzero\Config\Registry($this->_profile));
 
 		if (!$form->validate($this->_profile))
 		{
@@ -204,6 +204,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// Are we running in dry run mode?
 		if ($dryRun || count($this->record->errors) > 0)
 		{
+			$this->record->entry = $this->record->entry->toObject();
+			foreach ($this->_profile as $field => $value)
+			{
+				$this->record->entry->$field = $value;
+			}
+
 			return $this;
 		}
 
@@ -223,6 +229,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		catch (Exception $e)
 		{
 			array_push($this->record->errors, $e->getMessage());
+		}
+
+		$this->record->entry = $this->record->entry->toObject();
+		foreach ($this->_profile as $field => $value)
+		{
+			$this->record->entry->$field = $value;
 		}
 
 		return $this;
@@ -289,7 +301,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				continue;
 			}
 
-			if (in_array($key, $columns))
+			if (isset($columns[$key]))
 			{
 				$this->record->entry->set($key, $val);
 			}
@@ -681,5 +693,34 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$group->remove('applicants', array($id));
 			$group->update();
 		}
+	}
+
+	/**
+	 * To String object
+	 *
+	 * Removes private properties before returning
+	 *
+	 * @return  string
+	 */
+	public function toString()
+	{
+		// Reflect on class to get private or protected props
+		$privateProperties = with(new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PROTECTED);
+
+		// Remove each private or protected prop
+		foreach ($privateProperties as $prop)
+		{
+			$name = (string) $prop->name;
+			unset($this->$name);
+		}
+
+		$this->record->entry = $this->record->entry->toObject();
+		foreach ($this->_profile as $field => $value)
+		{
+			$this->record->entry->$field = $value;
+		}
+
+		// Output as json
+		return json_encode($this);
 	}
 }

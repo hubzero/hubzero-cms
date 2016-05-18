@@ -336,6 +336,11 @@ class Member extends User
 			// Is it a multi-value field?
 			if (is_array($data))
 			{
+				if (empty($data))
+				{
+					continue;
+				}
+
 				foreach ($data as $val)
 				{
 					$val = trim($val);
