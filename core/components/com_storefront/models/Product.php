@@ -652,7 +652,7 @@ class Product
 	 * @param	string		publish down time
 	 * @return	bool		true
 	 */
-	public function setPublishTime($publishUp, $publishDown)
+	public function setPublishTime($publishUp = '', $publishDown = '')
 	{
 		$this->data->publishTime = new \stdClass();
 		if (empty($publishUp))
@@ -677,11 +677,11 @@ class Product
 	 */
 	public function getPublishTime()
 	{
-		if (!empty($this->data->publishTime))
+		if (empty($this->data->publishTime))
 		{
-			return $this->data->publishTime;
+			$this->setPublishTime();
 		}
-		return false;
+		return $this->data->publishTime;
 	}
 
 	/**

@@ -84,6 +84,7 @@ class Sku
 			$this->setInventoryLevel($skuInfo['info']->sInventory);
 			$this->setEnumerable($skuInfo['info']->sEnumerable);
 			$this->setActiveStatus($skuInfo['info']->sActive);
+			$this->setRestricted($skuInfo['info']->sRestricted);
 			$this->setPublishTime($skuInfo['info']->publish_up, $skuInfo['info']->publish_down);
 
 			// Set meta
@@ -170,7 +171,7 @@ class Sku
 	 * @param	string		publish down time
 	 * @return	bool		true
 	 */
-	public function setPublishTime($publishUp, $publishDown)
+	public function setPublishTime($publishUp = '', $publishDown = '')
 	{
 		$this->data->publishTime = new \stdClass();
 		if (empty($publishUp))
@@ -195,11 +196,11 @@ class Sku
 	 */
 	public function getPublishTime()
 	{
-		if (!empty($this->data->publishTime))
+		if (empty($this->data->publishTime))
 		{
-			return $this->data->publishTime;
+			$this->setPublishTime();
 		}
-		return false;
+		return $this->data->publishTime;
 	}
 
 
@@ -525,6 +526,40 @@ class Sku
 			return 'DEFAULT';
 		}
 		return $this->data->activeStatus;
+	}
+
+	/**
+	 * Set restricted flag
+	 *
+	 * @param	bool		SKU restricted flag
+	 * @return	bool		true
+	 */
+	public function setRestricted($activeStatus)
+	{
+		if ($activeStatus)
+		{
+			$this->data->restricted = 1;
+		}
+		else
+		{
+			$this->data->restricted = 0;
+		}
+		return true;
+	}
+
+	/**
+	 * Get restricted flag
+	 *
+	 * @param	void
+	 * @return	bool	Restricted flag
+	 */
+	public function getRestricted()
+	{
+		if (!isset($this->data->restricted))
+		{
+			return 0;
+		}
+		return $this->data->restricted;
 	}
 
 	public function addMeta($key, $val)

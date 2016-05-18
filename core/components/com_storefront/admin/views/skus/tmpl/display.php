@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="3">
+				<th colspan=4">
 					SKUs for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=products&task=edit&id=' . $this->product->getId()); ?>" title="<?php echo Lang::txt('Edit product'); ?>"><?php echo $this->product->getName(); ?></a>
 				</th>
 			</tr>
@@ -85,11 +85,12 @@ function submitbutton(pressbutton)
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_STOREFRONT_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">Restrictions</th>
 			</tr>
 		</thead>
 		<tfoot>
 		<tr>
-			<td colspan="3"><?php
+			<td colspan="4"><?php
 				// Initiate paging
 				echo $this->pagination(
 						$this->total,
@@ -169,6 +170,15 @@ foreach ($this->rows as $row)
 						<span><?php echo $alt; ?></span>
 					</span>
 				<?php } ?>
+				</td>
+				<td>
+					<?php if ($canDo->get('core.edit') && $row->sRestricted) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=restrictions&id=' . $row->sId); ?>" title="<?php echo Lang::txt('COM_STOREFRONT_VIEW_RESTRICTIONS'); ?>">
+					<?php } ?>
+							<span><?php echo $row->sRestricted ? 'restricted': ''; ?></span>
+					<?php if ($canDo->get('core.edit') && $row->sRestricted) { ?>
+						</a>
+					<?php } ?>
 				</td>
 			</tr>
 <?php
