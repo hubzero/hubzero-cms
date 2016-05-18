@@ -32,11 +32,12 @@
 
 namespace Plugins\Antispam\BlackList;
 
-use Plugins\Antispam\BlackList\Table\Word;
+use Plugins\Antispam\BlackList\Models\Word;
 use Hubzero\Spam\Detector\DetectorInterface;
+use Hubzero\Database\Relational;
 use Exception;
 
-include_once(__DIR__ . DS . 'Table' . DS . 'Word.php');
+include_once(__DIR__ . DS . 'models' . DS . 'word.php');
 
 /**
  * Spam detector for black listed words
@@ -65,11 +66,11 @@ class Detector implements DetectorInterface
 	protected $blackLists = array();
 
 	/**
-	 * Holds the file that stores blacklisted words
+	 * Model for retrieving list of words
 	 *
-	 * @var  null
+	 * @var  object
 	 */
-	protected $db = null;
+	protected $model = null;
 
 	/**
 	 * Message
@@ -91,12 +92,12 @@ class Detector implements DetectorInterface
 			$this->blackLists = $options['blackLists'];
 		}
 
-		if (!isset($options['db']))
+		if (!isset($options['model']))
 		{
-			$options['db'] = \App::get('db');
+			$options['model'] = Word::blank();
 		}
 
-		$this->setDbo($options['db']);
+		$this->setModel($options['model']);
 
 		$this->message = '';
 	}
@@ -108,7 +109,7 @@ class Detector implements DetectorInterface
 	 *
 	 * @param   string  $vars   List of blacklisted words
 	 * @param   bool    $regex  Flags word as regex pattern
-	 * @return  BlackList
+	 * @return  object
 	 */
 	public function add($vars, $regex = false)
 	{
@@ -126,32 +127,32 @@ class Detector implements DetectorInterface
 	}
 
 	/**
-	 * Set database connection
+	 * Set model
 	 *
-	 * @param   string  $file
+	 * @param   object  $model
 	 * @return  object
 	 * @throws  Exception
 	 */
-	public function setDbo($db)
+	public function setModel($model)
 	{
-		if (!($db instanceof \Hubzero\Database\Driver))
+		if (!($model instanceof Relational))
 		{
-			throw new Exception('Database object must extend the Hubzero database driver');
+			throw new Exception('Model must extend the Hubzero\\Database\\Relational');
 		}
 
-		$this->db = $db;
+		$this->model = $model;
 
 		return $this;
 	}
 
 	/**
-	 * Get the database
+	 * Get the model
 	 *
 	 * @return  object
 	 */
-	public function getDbo()
+	public function getModel()
 	{
-		return $this->db;
+		return $this->model;
 	}
 
 	/**
@@ -182,10 +183,17 @@ class Detector implements DetectorInterface
 		{
 			$dbList = array();
 
-			$tbl = new Word($this->getDbo());
-			if ($tbl->getFields())
+			if ($storage = $this->getModel())
 			{
-				$dbList = $tbl->find('array');
+				$rows = $storage->rows();
+
+				if ($rows->count())
+				{
+					foreach ($rows as $row)
+					{
+						$dbList[] = $row->get('word');
+					}
+				}
 			}
 
 			$blackLists = array_merge($this->blackLists, $dbList);

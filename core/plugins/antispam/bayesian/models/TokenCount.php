@@ -25,57 +25,58 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die;
+namespace Plugins\Antispam\Bayesian\Models;
+
+use Hubzero\Database\Relational;
 
 /**
- * Antispam plugin for a basic Bayesian filter
+ * Antispam token counts
  */
-class plgAntispamBayesian extends \Hubzero\Plugin\Plugin
+class TokenCount extends Relational
 {
 	/**
-	 * Instantiate and return a spam detector.
+	 * The table namespace
 	 *
-	 * @return  object  Hubzero\Spam\Detector\DetectorInterface
-	 * @since   1.3.2
+	 * @var  string
 	 */
-	public function onAntispamDetector()
-	{
-		include_once(__DIR__ . DS . 'Detector.php');
-
-		$bayesian = new \Plugins\Antispam\Bayesian\Detector();
-		$bayesian->setThreshold($this->params->get('threshold', 0.95));
-
-		return $bayesian;
-	}
+	protected $namespace = 'antispam_token';
 
 	/**
-	 * Event for training spam
+	 * The table to which the class pertains
 	 *
-	 * @param  string   $content  The content to train on
-	 * @param  boolean  $isSpam   If the content is spam or not
-	 * @since  1.3.2
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
 	 */
-	public function onAntispamTrain($content, $isSpam)
-	{
-		if (!$content)
-		{
-			return;
-		}
+	protected $table = '#__antispam_token_counts';
 
-		if (!$this->params->get('learn', 1))
-		{
-			return;
-		}
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'id';
 
-		$bayesian = new \Plugins\Antispam\Bayesian\Detector();
-		$bayesian->setThreshold($this->params->get('threshold', 0.95));
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
 
-		$bayesian->learn($content, $isSpam);
-	}
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'good_count' => 'positive|nonzero',
+		'bad_count'  => 'positive|nonzero'
+	);
 }

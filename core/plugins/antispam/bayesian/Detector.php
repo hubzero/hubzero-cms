@@ -32,16 +32,16 @@
 
 namespace Plugins\Antispam\Bayesian;
 
-use Plugins\Antispam\Bayesian\Table\MessageHash;
-use Plugins\Antispam\Bayesian\Table\TokenCount;
-use Plugins\Antispam\Bayesian\Table\TokenProb;
+use Plugins\Antispam\Bayesian\Models\MessageHash;
+use Plugins\Antispam\Bayesian\Models\TokenCount;
+use Plugins\Antispam\Bayesian\Models\TokenProb;
 use Hubzero\Spam\Detector\DetectorInterface;
 use Exception;
 use stdClass;
 
-include_once(__DIR__ . DS . 'Table' . DS . 'MessageHash.php');
-include_once(__DIR__ . DS . 'Table' . DS . 'TokenCount.php');
-include_once(__DIR__ . DS . 'Table' . DS . 'TokenProb.php');
+include_once(__DIR__ . DS . 'models' . DS . 'MessageHash.php');
+include_once(__DIR__ . DS . 'models' . DS . 'TokenCount.php');
+include_once(__DIR__ . DS . 'models' . DS . 'TokenProb.php');
 
 /**
  * Bayesian filter
@@ -72,13 +72,6 @@ class Detector implements DetectorInterface
 	protected $threshold = 0.95;
 
 	/**
-	 * Holds the file that stores blacklisted words
-	 *
-	 * @var  null
-	 */
-	protected $db = null;
-
-	/**
 	 * Message
 	 *
 	 * @var  string
@@ -88,7 +81,7 @@ class Detector implements DetectorInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed  $properties
+	 * @param   array  $options
 	 * @return  void
 	 */
 	public function __construct(array $options = array())
@@ -98,38 +91,7 @@ class Detector implements DetectorInterface
 			$this->setThreshold($options['threshold']);
 		}
 
-		if (!isset($options['db']))
-		{
-			$options['db'] = \App::get('db');
-		}
-
-		$this->setDbo($options['db']);
-
 		$this->message = '';
-	}
-
-	/**
-	 * Set database connection
-	 *
-	 * @param   string  $file
-	 * @return  object
-	 * @throws  Exception
-	 */
-	public function setDbo($db)
-	{
-		$this->db = $db;
-
-		return $this;
-	}
-
-	/**
-	 * Get database connection
-	 *
-	 * @return  object
-	 */
-	public function getDbo()
-	{
-		return $this->db;
 	}
 
 	/**
@@ -178,7 +140,7 @@ class Detector implements DetectorInterface
 		{
 			foreach ($tokens as $token)
 			{
-				if ($token->token == $word)
+				if ($token->get('token') == $word)
 				{
 					$tokens_prob[] = $token;
 					break;
@@ -236,10 +198,8 @@ class Detector implements DetectorInterface
 		{
 			return 1;
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 
 	/**
@@ -255,8 +215,9 @@ class Detector implements DetectorInterface
 			return null;
 		}
 
-		$tbl = new TokenProb($this->getDbo());
-		return $tbl->find('list', array('token' => $words));
+		return TokenProb::all()
+			->whereIn('token', $words)
+			->rows();
 	}
 
 	/**
@@ -266,21 +227,21 @@ class Detector implements DetectorInterface
 	 */
 	protected function getTokensCount()
 	{
-		$tbl = new TokenCount($this->getDbo());
-		$obj = $tbl->find('first');
+		$obj = TokenCount::all()
+			->ordered()
+			->row();
 
-		if (!$obj)
+		if (!$obj->get('id'))
 		{
-			$obj = new stdClass();
-			$obj->good_count = 0;
-			$obj->bad_count  = 0;
+			$obj->set('good_count', 0);
+			$obj->set('bad_count', 0);
 		}
 
 		return $obj;
 	}
 
 	/**
-	 * Description...
+	 * Check if a record exists for specified text
 	 *
 	 * @param   string   $text
 	 * @return  boolean
@@ -289,12 +250,12 @@ class Detector implements DetectorInterface
 	{
 		$hash = sha1($text);
 
-		$tbl = new MessageHash($this->getDbo());
+		$tbl = MessageHash::oneByHash($hash);
 
-		if (!$tbl->find('count', array('hash' => $hash)))
+		if (!$tbl->get('id'))
 		{
-			$tbl->hash = $hash;
-			$tbl->store();
+			$tbl->set('hash', $hash);
+			$tbl->save();
 
 			return false;
 		}
@@ -355,14 +316,14 @@ class Detector implements DetectorInterface
 	{
 		$hash = sha1($text);
 
-		$tbl = new MessageHash($this->getDbo());
+		$tbl = MessageHash::oneByHash($hash);
 
-		if (!$tbl->find('count', array('hash' => $hash)))
+		if (!$tbl->get('id'))
 		{
 			return false;
 		}
 
-		$tbl->deleteByHash($hash);
+		$tbl->destroy();
 
 		return true;
 	}
@@ -426,13 +387,12 @@ class Detector implements DetectorInterface
 		$b = $bad_count;
 		$found = false;
 
-		$token_prob = new TokenProb($this->getDbo());
-		$token_prob->loadByToken($token);
+		$token_prob = TokenProb::oneByToken($token);
 
-		if ($token_prob->id)
+		if ($token_prob->get('id'))
 		{
-			$g += (int)$token_prob->in_ham;
-			$b += (int)$token_prob->in_spam;
+			$g += (int)$token_prob->get('in_ham');
+			$b += (int)$token_prob->get('in_spam');
 			$found = true;
 		}
 
@@ -440,8 +400,8 @@ class Detector implements DetectorInterface
 
 		if ($g + $b >= self::MIN_COUNT_FOR_INCLUSION)
 		{
-			$goodfactor = min(1, ((float)$g)/((float)$tokens_count->good_count));
-			$badfactor  = min(1, ((float)$b)/((float)$tokens_count->bad_count));
+			$goodfactor = min(1, ((float)$g)/((float)$tokens_count->get('good_count')));
+			$badfactor  = min(1, ((float)$b)/((float)$tokens_count->get('bad_count')));
 			$prob = max(self::MIN_SCORE, min(self::MAX_SCORE, $badfactor / ($goodfactor + $badfactor)));
 			if ($g == 0)
 			{
@@ -453,15 +413,15 @@ class Detector implements DetectorInterface
 				$this->increaseTokenCount($good_count, $bad_count);
 			}
 
-			if ($token_prob->id)
+			if ($token_prob->get('id'))
 			{
-				$token_prob->prev_prob = $token_prob->prob;
+				$token_prob->set('prev_prob', $token_prob->get('prob'));
 			}
-			$token_prob->prob    = (float)$prob;
-			$token_prob->token   = $token;
-			$token_prob->in_ham  = (int)$token_prob->in_ham + (int)$good_count;
-			$token_prob->in_spam = (int)$token_prob->in_spam + (int)$bad_count;
-			$token_prob->store();
+			$token_prob->set('prob', (float)$prob);
+			$token_prob->set('token', $token);
+			$token_prob->set('in_ham', (int)$token_prob->get('in_ham') + (int)$good_count);
+			$token_prob->set('in_spam', (int)$token_prob->get('in_spam') + (int)$bad_count);
+			$token_prob->save();
 		}
 	}
 
@@ -474,16 +434,13 @@ class Detector implements DetectorInterface
 	 */
 	protected function increaseTokenCount($good_count, $bad_count)
 	{
-		$tbl = new TokenCount($this->getDbo());
+		$tbl = TokenCount::all()
+			->ordered()
+			->row();
 
-		if ($obj = $tbl->find('first'))
-		{
-			$tbl->bind($obj);
-		}
-
-		$tbl->good_count = (int)$tbl->good_count + (int)$good_count;
-		$tbl->bad_count  = (int)$tbl->bad_count + (int)$bad_count;
-		$tbl->store();
+		$tbl->set('good_count', (int)$tbl->get('good_count') + (int)$good_count);
+		$tbl->set('bad_count', (int)$tbl->get('bad_count') + (int)$bad_count);
+		$tbl->save();
 	}
 
 	/**

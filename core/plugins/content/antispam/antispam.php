@@ -44,7 +44,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 	 * Method is called right after the content is saved
 	 *
 	 * @param   string   $context  The context of the content passed to the plugin (added in 1.6)
-	 * @param   object   $article  A JTableContent object
+	 * @param   object   $article  Model
 	 * @param   boolean  $isNew    If the content is just about to be created
 	 * @return  void
 	 * @since   2.5
@@ -56,7 +56,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if ($article instanceof \Hubzero\Base\Object)
+		if ($article instanceof \Hubzero\Base\Object || $article instanceof \Hubzero\Database\Relational)
 		{
 			$key = $this->_key($context);
 
@@ -74,14 +74,20 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 		$content = preg_replace('/^<!-- \{FORMAT:.*\} -->/i', '', $content);
 		$content = trim($content);
 
-		if (!$content) return;
+		if (!$content)
+		{
+			return;
+		}
 
 		// Get the detector manager
 		$service = new \Hubzero\Spam\Checker();
 
 		foreach (Event::trigger('antispam.onAntispamDetector') as $detector)
 		{
-			if (!$detector) continue;
+			if (!$detector)
+			{
+				continue;
+			}
 
 			$service->registerDetector($detector);
 		}

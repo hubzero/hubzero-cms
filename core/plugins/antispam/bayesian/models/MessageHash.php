@@ -25,57 +25,59 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die;
+namespace Plugins\Antispam\Bayesian\Models;
+
+use Hubzero\Database\Relational;
 
 /**
- * Antispam plugin for a basic Bayesian filter
+ * Antispam message hash
  */
-class plgAntispamBayesian extends \Hubzero\Plugin\Plugin
+class MessageHash extends Relational
 {
 	/**
-	 * Instantiate and return a spam detector.
+	 * The table namespace
 	 *
-	 * @return  object  Hubzero\Spam\Detector\DetectorInterface
-	 * @since   1.3.2
+	 * @var  string
 	 */
-	public function onAntispamDetector()
-	{
-		include_once(__DIR__ . DS . 'Detector.php');
-
-		$bayesian = new \Plugins\Antispam\Bayesian\Detector();
-		$bayesian->setThreshold($this->params->get('threshold', 0.95));
-
-		return $bayesian;
-	}
+	protected $namespace = 'antispam_message';
 
 	/**
-	 * Event for training spam
+	 * Default order by for model
 	 *
-	 * @param  string   $content  The content to train on
-	 * @param  boolean  $isSpam   If the content is spam or not
-	 * @since  1.3.2
+	 * @var  string
 	 */
-	public function onAntispamTrain($content, $isSpam)
+	public $orderBy = 'hash';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'hash' => 'notempty'
+	);
+
+	/**
+	 * Load a record by hash
+	 *
+	 * @param   string  $hash
+	 * @return  object
+	 */
+	public static function oneByHash($hash)
 	{
-		if (!$content)
-		{
-			return;
-		}
-
-		if (!$this->params->get('learn', 1))
-		{
-			return;
-		}
-
-		$bayesian = new \Plugins\Antispam\Bayesian\Detector();
-		$bayesian->setThreshold($this->params->get('threshold', 0.95));
-
-		$bayesian->learn($content, $isSpam);
+		return self::all()
+			->whereEquals('hash', $hash)
+			->row();
 	}
 }
