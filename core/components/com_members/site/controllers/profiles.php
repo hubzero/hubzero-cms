@@ -1242,6 +1242,7 @@ class Profiles extends SiteController
 		// Incoming profile edits
 		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
 		$access  = Request::getVar('access', array(), 'post');
+		$field_to_check = Request::getVar('field_to_check', array());
 
 		$old = Profile::collect($member->profiles);
 		$profile = array_merge($old, $profile);
@@ -1278,15 +1279,37 @@ class Profiles extends SiteController
 		$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
 		$form->bind(new \Hubzero\Config\Registry($profile));
 
+		$errors = array(
+			'_missing' => array(),
+			'_invalid' => array()
+		);
+
 		if (!$form->validate($profile))
 		{
-			foreach ($form->getErrors() as $error)
+			foreach ($form->getErrors() as $key => $error)
 			{
+				// Filter out fields
+				if (!empty($field_to_check) && !in_array($key, $field_to_check))
+				{
+					continue;
+				}
+
+				if ($error instanceof \Hubzero\Form\Exception\MissingData)
+				{
+					$errors->_missing[$key] = (string)$error;
+				}
+
+				$errors->_invalid[$key] = (string)$error;
+
 				$this->setError((string)$error);
 			}
+		}
+
+		if ($this->getError())
+		{
 			if ($no_html)
 			{
-				echo json_encode($this->getErrors());
+				echo json_encode($errors);
 				exit();
 			}
 			return $this->editTask($member);

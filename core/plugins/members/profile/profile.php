@@ -132,23 +132,25 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		$xreg = null;
 
+		$fields = Components\Members\Models\Profile\Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->where('action_edit', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			->ordered()
+			->rows();
+
 		if (App::get('session')->get('registration.incomplete'))
 		{
 			$xreg = new \Components\Members\Models\Registration();
 			$xreg->loadProfile($this->member);
 
-			$check = $xreg->check('update');
+			$check = $xreg->check('edit');
 
 			// Validate profile data
 			// @TODO  Move this to central validation model (e.g., registraiton)?
-			$fields = Components\Members\Models\Profile\Field::all()
-				->including(['options', function ($option){
-					$option
-						->select('*');
-				}])
-				->where('action_create', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
-				->ordered()
-				->rows();
 
 			// Compile profile data
 			$profile = array();
@@ -159,7 +161,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 			// Validate profile fields
 			$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
-			$form->load(Components\Members\Models\Profile\Field::toXml($fields, 'create'));
+			$form->load(Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
 			$form->bind(new Hubzero\Config\Registry($profile));
 
 			if (!$form->validate($profile))
@@ -184,16 +186,6 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 				App::redirect($_SERVER['REQUEST_URI']);
 			}
 		}
-
-		$fields = Components\Members\Models\Profile\Field::all()
-			->including(['options', function ($option){
-				$option
-					->select('*')
-					->ordered();
-			}])
-			->where('action_edit', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
-			->ordered()
-			->rows();
 
 		$view = $this->view('default', 'index')
 			->set('params', $params)
