@@ -215,7 +215,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 		</tbody>
 	</table>
 	<?php //Load the batch processing form.is user is allowed ?>
-	<?php if (User::authorize('core.create', 'com_menus') && User::authorize('core.edit', 'com_menus') && User::authorize('core.edit.state', 'com_menus')) : ?>
+	<?php if (User::authorise('core.create', 'com_menus') && User::authorise('core.edit', 'com_menus') && User::authorise('core.edit.state', 'com_menus')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif; ?>
 

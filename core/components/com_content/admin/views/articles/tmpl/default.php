@@ -199,7 +199,7 @@ $saveOrder = $listOrder == 'a.ordering';
 	</table>
 
 	<?php //Load the batch processing form. ?>
-	<?php if (User::authorize('core.create', 'com_content') && User::authorize('core.edit', 'com_content') && User::authorize('core.edit.state', 'com_content')) : ?>
+	<?php if (User::authorise('core.create', 'com_content') && User::authorise('core.edit', 'com_content') && User::authorise('core.edit.state', 'com_content')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 

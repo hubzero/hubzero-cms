@@ -171,7 +171,7 @@ $saveOrder = $listOrder == 'a.ordering';
 	</table>
 
 	<?php //Load the batch processing form. ?>
-	<?php if (User::authorize('core.create', 'com_newsfeeds') && User::authorize('core.edit', 'com_newsfeeds') && User::authorize('core.edit.state', 'com_newsfeeds')) : ?>
+	<?php if (User::authorise('core.create', 'com_newsfeeds') && User::authorise('core.edit', 'com_newsfeeds') && User::authorise('core.edit.state', 'com_newsfeeds')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 

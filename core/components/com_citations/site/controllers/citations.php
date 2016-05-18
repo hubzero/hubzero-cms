@@ -106,7 +106,7 @@ class Citations extends SiteController
 		$this->view->allow_import = $this->config->get('citation_import', 1);
 		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
 		$this->view->isAdmin = false;
-		if (User::authorize($this->_option, 'import'))
+		if (User::authorise('core.manage', $this->_option))
 		{
 			$this->view->isAdmin = true;
 		}
@@ -131,7 +131,7 @@ class Citations extends SiteController
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
 		$this->view->isAdmin  = false;
-		if (User::authorize($this->_option, 'import'))
+		if (User::authorise('core.manage', $this->_option))
 		{
 			$this->view->isAdmin = true;
 		}
@@ -543,7 +543,7 @@ class Citations extends SiteController
 
 		// Check if admin
 		$isAdmin = false;
-		if (User::authorize($this->_option, 'manage'))
+		if (User::authorise('core.manage', $this->_option))
 		{
 			$isAdmin = true;
 		}

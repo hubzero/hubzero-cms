@@ -115,7 +115,7 @@ class Import extends SiteController
 		}
 
 		//are we only allowing admins?
-		$isAdmin = User::authorize($this->_option, 'import');
+		$isAdmin = User::authorise('core.manage', $this->_option);
 		if ($importParam == 2 && !$isAdmin)
 		{
 			App::redirect(
