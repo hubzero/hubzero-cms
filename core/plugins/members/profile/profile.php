@@ -85,9 +85,6 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//include address library
-		//require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
-		//require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 		$arr = array(
@@ -141,7 +138,46 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$xreg->loadProfile($this->member);
 
 			$check = $xreg->check('update');
-print_r($xreg);
+
+			// Validate profile data
+			// @TODO  Move this to central validation model (e.g., registraiton)?
+			$fields = Components\Members\Models\Profile\Field::all()
+				->including(['options', function ($option){
+					$option
+						->select('*');
+				}])
+				->where('action_create', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
+				->ordered()
+				->rows();
+
+			// Compile profile data
+			$profile = array();
+			foreach ($fields as $field)
+			{
+				$profile[$field->get('name')] = $this->member->get($field->get('name'));
+			}
+
+			// Validate profile fields
+			$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+			$form->load(Components\Members\Models\Profile\Field::toXml($fields, 'create'));
+			$form->bind(new Hubzero\Config\Registry($profile));
+
+			if (!$form->validate($profile))
+			{
+				$check = false;
+
+				foreach ($form->getErrors() as $key => $error)
+				{
+					if ($error instanceof Hubzero\Form\Exception\MissingData)
+					{
+						$xreg->_missing[$key] = (string)$error;
+					}
+
+					$xreg->_invalid[$key] = (string)$error;
+				}
+			}
+
+			// If no errors, redirect to where they were going
 			if ($check)
 			{
 				App::get('session')->set('registration.incomplete', 0);
