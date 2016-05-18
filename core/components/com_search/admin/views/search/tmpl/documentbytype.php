@@ -74,8 +74,10 @@ $this->css('solr');
 	$this->view('_recordtable')
 		->set('documents', $this->documents)
 		->set('type', $this->type)
+		->set('pagination', $this->pagination->render())
 		->display();
 	?>
+
 
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

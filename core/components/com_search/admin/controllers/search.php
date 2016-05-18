@@ -32,6 +32,7 @@
 namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Search\Models\NoIndex;
 use \Hubzero\Search\Query;
 use stdClass;
 
@@ -54,8 +55,10 @@ class Search extends AdminController
 		$config = Component::params('com_search');
 		$index = new \Hubzero\Search\Index($config);
 
+		// Get the last 10 entries
 		$this->view->logs = array_slice($index->getLogs(), -10, 10, true);
 
+		// Get the last insert date
 		$insertTime = Date::of($index->lastInsert())->format('relative');
 
 		$this->view->status = $index->status();
@@ -67,6 +70,12 @@ class Search extends AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * searchIndexTask - displays all indexed hubtypes and the number of records
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function searchIndexTask()
 	{
 		// Display CMS errors
@@ -93,10 +102,18 @@ class Search extends AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * documentByTypeTask - view a type's records
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function documentByTypeTask()
 	{
 		$type = Request::getVar('type', '');
 		$filter = Request::getVar('filter', '*:*');
+		$limitstart = Request::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', 10);
 
 		// Display CMS errors
 		foreach ($this->getErrors() as $error)
@@ -107,9 +124,17 @@ class Search extends AdminController
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
 		$results = $query->query($filter)->addFilter('hubtype', array('hubtype', '=', $type))
-			->run()->getResults();
+			->limit($limit)->start($limitstart)->run()->getResults();
+
+		$total = $query->getNumFound();
 
 		$this->view->type = $type;
+
+		$pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
+		$pagination->setLimits(array('5','10','15','20','50','100','200'));
+		$this->view->pagination = $pagination;
+
+
 		$this->view->filter = isset($filter) ? $filter : '';
 		$this->view->documents = isset($results) ? $results : array();
 		$this->view->display();

@@ -89,6 +89,13 @@ $fields = array('hubid','hubtype','title','access_level','owner_type','owner','i
 		}
 		?>
 	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="11">
+				<?php echo $this->pagination; ?>
+			</td>
+		</tr>
+	</tfoot>
 </table>
 <?php else: ?>
 <div id="noresults" class="warning message"><?php echo Lang::txt('COM_SEARCH_NO_RESULTS_FOUND'); ?></div>
