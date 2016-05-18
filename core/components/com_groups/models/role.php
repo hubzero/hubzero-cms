@@ -106,7 +106,22 @@ class Role extends Relational
 	}
 
 	/**
-	 * Get group permissions
+	 * Save the record
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function save()
+	{
+		if (!is_string($this->get('permissions')))
+		{
+			$this->set('permissions', json_encode($this->get('permissions')));
+		}
+
+		return parent::save();
+	}
+
+	/**
+	 * Delete record and associated content
 	 *
 	 * @return  object
 	 */
@@ -114,10 +129,13 @@ class Role extends Relational
 	{
 		foreach ($this->members()->rows() as $member)
 		{
-			$member->destroy();
+			if (!$member->destroy())
+			{
+				$this->addError($member->getError());
+				return false;
+			}
 		}
 
 		return parent::destroy();
 	}
 }
-

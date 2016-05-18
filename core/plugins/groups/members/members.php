@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // include role lib
-require_once __DIR__ . DS . 'role.php';
+require_once Component::path('com_groups') . DS . 'models' . DS . 'role.php';
 use Components\Groups\Tables\Reason;
 
 /**
@@ -823,7 +823,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$users_man[] = $uid;
 				}
 
-				GroupsMembersRole::deleteRolesForUserWithId($uid);
+				Components\Groups\Models\Member\Role::destroyByUser($uid);
 
 				// Log activity
 				$recipients = array(
@@ -1204,39 +1204,27 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  void
 	 */
-	public function editRole()
+	public function editRole($role = null)
 	{
-		$view = $this->view('add', 'role');
-
-		// database object
-		$database = App::get('db');
-
-		// load role object
-		$view->role = new GroupsMembersRole($database);
-		$view->role->load(Request::getInt('role', 0));
-
-		// did we pass role back from save?
-		if (isset($this->role) && !is_null($this->role))
+		if (!$role)
 		{
-			$view->role = $this->role;
+			// load role object
+			$role = Components\Groups\Models\Role::oneOrNew(Request::getInt('role', 0));
 		}
-
-		// get permissions
-		$view->available_permissions = array(
-			'group.invite' => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPINVITE'),
-			'group.edit'   => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPEDIT'),
-			'group.pages'  => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPPAGES'),
-		);
 
 		// pass vars to view
-		$view->option     = $this->_option;
-		$view->group      = $this->group;
-		$view->authorized = $this->authorized;
+		$view = $this->view('add', 'role')
+			->set('role', $role)
+			->set('option', $this->_option)
+			->set('group', $this->group)
+			->set('authorized', $this->authorized)
+			->set('available_permissions', array(
+				'group.invite' => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPINVITE'),
+				'group.edit'   => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPEDIT'),
+				'group.pages'  => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPPAGES')
+			));
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view->setErrors($this->getErrors());
 
 		$this->_output = $view->loadTemplate();
 	}
@@ -1249,22 +1237,18 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	public function saveRole()
 	{
 		// get request vars
-		$role = Request::getVar('role', array());
-		$role['gidNumber']   = $this->group->get('gidNumber');
-		$role['permissions'] = json_encode($role['permissions']);
-
-		// database object
-		$database = App::get('db');
+		$fields = Request::getVar('role', array());
+		$fields['gidNumber']   = $this->group->get('gidNumber');
+		$fields['permissions'] = json_encode($fields['permissions']);
 
 		// load role object
-		$this->role = new GroupsMembersRole($database);
+		$role = Components\Groups\Models\Role::blank()->set($fields);
 
 		// attempt to save new role
-		if (!$this->role->save($role))
+		if (!$role->save())
 		{
-			$this->setError($this->role->getError());
-			$this->editRole();
-			return;
+			$this->setError($role->getError());
+			return $this->editRole($role);
 		}
 
 		// Log activity
@@ -1278,16 +1262,16 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($role['id'] ? 'updated' : 'created'),
+				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'group.role',
-				'scope_id'    => $this->role->id,
+				'scope_id'    => $role->get('id'),
 				'description' => Lang::txt(
-					'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_' . ($role['id'] ? 'UPDATED' : 'CREATED'),
-					$this->role->name,
+					'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+					$role->get('name'),
 					'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
 				),
 				'details'     => array(
-					'role_id'  => $uid,
+					'role_id'  => $role->get('id'),
 					'group_id' => $this->group->get('gidNumber')
 				)
 			],
@@ -1313,49 +1297,49 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$role = Request::getVar('role','');
+		$role = Request::getInt('role', 0);
 
 		if (!$role)
 		{
 			return false;
 		}
 
-		$db = App::get('db');
-		$db->setQuery("DELETE FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role));
-		$db->query();
+		$role = Components\Groups\Models\Role::oneOrFail($role);
 
-		$db->setQuery("DELETE FROM `#__xgroups_roles` WHERE id=" . $db->Quote($role));
-		if (!$db->query())
+		if (!$role->destroy())
 		{
 			$this->setError('An error occurred while trying to remove the member role. Please try again.');
 		}
 
 		// Log activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')]
-		);
-		foreach ($this->group->get('managers') as $recipient)
+		if (!$this->getError())
 		{
-			$recipients[] = ['user', $recipient];
-		}
+			$recipients = array(
+				['group', $this->group->get('gidNumber')]
+			);
+			foreach ($this->group->get('managers') as $recipient)
+			{
+				$recipients[] = ['user', $recipient];
+			}
 
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => 'deleted',
-				'scope'       => 'group.role',
-				'scope_id'    => $role,
-				'description' => Lang::txt(
-					'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_DELETED',
-					$role,
-					'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
-				),
-				'details'     => array(
-					'role_id'  => $uid,
-					'group_id' => $this->group->get('gidNumber')
-				)
-			],
-			'recipients' => $recipients
-		]);
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'deleted',
+					'scope'       => 'group.role',
+					'scope_id'    => $role->get('id'),
+					'description' => Lang::txt(
+						'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_DELETED',
+						$role->get('name'),
+						'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+					),
+					'details'     => array(
+						'role_id'  => $role->get('id'),
+						'group_id' => $this->group->get('gidNumber')
+					)
+				],
+				'recipients' => $recipients
+			]);
+		}
 
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),

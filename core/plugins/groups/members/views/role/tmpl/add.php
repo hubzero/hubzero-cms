@@ -57,7 +57,7 @@ defined('_HZEXEC_') or die();
 			<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_PERMISSIONS'); ?></legend>
 			<?php foreach ($this->available_permissions as $perm => $label) : ?>
 				<label>
-					<?php $ckd = ($this->role->hasPermission($perm)) ? 'checked="checked"' : '' ?>
+					<?php $ckd = ($this->role->permissions->get($perm)) ? 'checked="checked"' : '' ?>
 					<input type="hidden" name="role[permissions][<?php echo $perm; ?>]" value="0" />
 					<input class="option" type="checkbox" <?php echo $ckd; ?> name="role[permissions][<?php echo $perm; ?>]" value="1"> <?php echo $label; ?>
 				</label>
