@@ -45,12 +45,20 @@ jQuery(document).ready(function(jQuery) {
 	var options = {
 		notes: <?php
 			$n = array();
-			$access = 0;
+			$access = array(0);
 			if ($this->course->access('manage'))
 			{
 				$access = array(0, 1);
 			}
-			if ($notes = $this->model->notes(array('scope' => 'lecture', 'scope_id' => $this->lecture->get('id'), 'access' => $access, 'section_id' => $this->offering->section()->get('id'))))
+			$notes = \Plugins\Courses\Notes\Models\Note::all()
+				->whereEquals('scope', 'lecture')
+				->whereEquals('scope_id', $this->lecture->get('id'))
+				->whereIn('access', $access)
+				->whereEquals('section_id', $this->offering->section()->get('id'))
+				->whereEquals('created_by', User::get('id'))
+				->whereEquals('state', 1)
+				->rows();
+			if ($notes->count())
 			{
 				foreach ($notes as $note)
 				{
@@ -71,7 +79,13 @@ jQuery(document).ready(function(jQuery) {
 			}
 			if (!$this->course->access('manage'))
 			{
-				if ($notes = $this->model->notes(array('scope' => 'lecture', 'scope_id' => $this->lecture->get('id'), 'access' => 1, 'created_by' => -1)))
+				$notes = \Plugins\Courses\Notes\Models\Note::all()
+					->whereEquals('scope', 'lecture')
+					->whereEquals('scope_id', $this->lecture->get('id'))
+					->whereEquals('access', 1)
+					->whereEquals('state', 1)
+					->rows();
+				if ($notes->count())
 				{
 					foreach ($notes as $note)
 					{

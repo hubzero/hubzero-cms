@@ -33,9 +33,20 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$results = null;
-$notes = $this->model->notes($this->filters);
-if ($notes)
+$results = array();
+
+$entries = \Plugins\Courses\Notes\Models\Note::all()
+	->whereEquals('section_id', $this->offering->section()->get('id'))
+	->whereEquals('created_by', User::get('id'))
+	->whereEquals('state', 1);
+
+if ($this->filters['search'])
+{
+	$entries->whereLike('content', $this->filters['search']);
+}
+$notes = $entries->rows();
+
+if ($notes->count())
 {
 	foreach ($notes as $note)
 	{
@@ -50,7 +61,7 @@ if ($notes)
 
 $base = $this->offering->link();
 
-if ($results)
+if (count($results))
 {
 	foreach ($results as $id => $notes)
 	{

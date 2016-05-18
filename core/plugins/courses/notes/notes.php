@@ -43,7 +43,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -79,9 +79,8 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		{
 			$this->course   = $course;
 			$this->offering = $offering;
-			$this->database = App::get('db');
 
-			$this->view = with($this->view('default', 'notes'))
+			$this->view = $this->view('default', 'notes')
 				->set('option', Request::getCmd('option', 'com_courses'))
 				->set('controller', Request::getWord('controller', 'course'))
 				->set('course', $course)
@@ -92,8 +91,6 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 				'section_id' => $offering->section()->get('id'),
 				'search'     => Request::getVar('search', '')
 			);
-
-			$this->view->model = new \Plugins\Courses\Notes\Models\Note(0);
 
 			if ($action = strtolower(Request::getWord('action', '')))
 			{
@@ -133,11 +130,12 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * After lecture event
 	 *
-	 * @param   object  $url  URL to redirect to
-	 * @param   object  $msg  Message to send
-	 * @return  void
+	 * @param   object  $course
+	 * @param   object  $unit
+	 * @param   object  $lecture
+	 * @return  string
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
@@ -146,15 +144,11 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view = $this->view('default', 'lecture');
-
-		$this->database = App::get('db');
-		$this->view->course   = $this->course   = $course;
-		$this->view->offering = $this->offering = $course->offering();
-		$this->view->unit     = $this->unit     = $unit;
-		$this->view->lecture  = $this->lecture  = $lecture;
-
-		$this->view->model = new \Plugins\Courses\Notes\Models\Note(0);
+		$this->view = $this->view('default', 'lecture')
+			->set('course', $course)
+			->set('offering', $course->offering())
+			->set('unit', $unit)
+			->set('lecture', $lecture);
 
 		return $this->view->loadTemplate();
 	}
@@ -208,20 +202,18 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function _edit($model=null)
 	{
-		if (!$this->view->no_html)
-		{
-			$this->view->setLayout('edit');
-		}
-
-		if ($model instanceof \Plugins\Courses\Notes\Models\Note)
-		{
-			$this->view->model = $model;
-		}
-		else
+		if (!($model instanceof \Plugins\Courses\Notes\Models\Note))
 		{
 			$note_id = Request::getInt('note', 0);
 
-			$this->view->model = new \Plugins\Courses\Notes\Models\Note($note_id);
+			$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
+		}
+
+		$this->view->set('model', $model);
+
+		if (!$this->view->no_html)
+		{
+			$this->view->setLayout('edit');
 		}
 	}
 
@@ -234,7 +226,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	{
 		$note_id = Request::getInt('note', 0);
 
-		$model = new \Plugins\Courses\Notes\Models\Note($note_id);
+		$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
 
 		if ($scope = Request::getWord('scope', 'lecture'))
 		{
@@ -275,7 +267,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		$model->set('access', Request::getInt('access', 0));
 		$model->set('section_id', $this->view->offering->section()->get('id'));
 
-		if (!$model->store(true))
+		if (!$model->save())
 		{
 			$this->setError($model->getError());
 			if (!$this->view->no_html)
@@ -301,14 +293,11 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	{
 		$note_id = Request::getInt('note', 0);
 
-		$model = new \Plugins\Courses\Notes\Models\Note($note_id);
-		if ($model->exists())
+		$model = \Plugins\Courses\Notes\Models\Note::oneOrFail($note_id);
+		$model->set('state', 2);
+		if (!$model->save())
 		{
-			$model->set('state', 2);
-			if (!$model->store(false))
-			{
-				$this->setError($model->getError());
-			}
+			$this->setError($model->getError());
 		}
 
 		if (!$this->view->no_html)
@@ -318,4 +307,3 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		return $note_id;
 	}
 }
-

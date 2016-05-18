@@ -25,118 +25,81 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Plugins\Courses\Notes\Models;
 
-use Components\Courses\Models\Base;
-use Components\Courses\Models\Iterator;
-use User;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'note.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'base.php');
+use Hubzero\Database\Relational;
 
 /**
- * Courses model class for a course note
+ * Model class for course notes
  */
-class Note extends Base
+class Note extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Plugins\\Courses\\Notes\\Tables\\Note';
+	protected $namespace = 'courses_member';
 
 	/**
-	 * Object scope
+	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_scope = 'note';
+	public $orderBy = 'id';
 
 	/**
-	 * \Components\Courses\Models\Iterator
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	protected $_notes = null;
+	public $orderDir = 'asc';
 
 	/**
-	 * Serialized string of filers
+	 * Fields and their validation criteria
 	 *
-	 * @var string
+	 * @var  array
 	 */
-	protected $_filters = null;
+	protected $rules = array(
+		'scope'      => 'notempty',
+		'scope_id'   => 'positive|nonzero',
+		'section_id' => 'positive|nonzero'
+	);
 
 	/**
-	 * Returns a reference to a course note model
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @param   integer  $oid  ID (int)
-	 * @return  object
+	 * @var  array
 	 */
-	static function &getInstance($oid=0)
+	public $initiate = array(
+		'created',
+		'created_by',
+		'state'
+	);
+
+	/**
+	 * Generates automatic state field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticState()
 	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
+		$data['state'] = (isset($data['state']) ? $data['state'] : 1);
+		return $data['state'];
 	}
 
 	/**
-	 * Get a list or count of notes
+	 * Get the parent user associated with this entry
 	 *
-	 * @param   array   $filters  Filters to apply
 	 * @return  object
 	 */
-	public function notes($filters=array())
+	public function creator()
 	{
-		if (!isset($filters['created_by']))
-		{
-			$filters['created_by'] = (int) User::get('id');
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state'] = 1;
-		}
-
-		if (isset($filters['count']) && $filters['count'])
-		{
-			return $this->_tbl->count($filters);
-		}
-
-		if (!isset($this->_notes) || !($this->_notes instanceof Iterator) || (!empty($filters) && serialize($filters) != $this->_filters))
-		{
-			$this->_filters = serialize($filters);
-
-			if ($results = $this->_tbl->find($filters))
-			{
-				foreach ($results as $key => $result)
-				{
-					$results[$key] = new self($result);
-				}
-			}
-			else
-			{
-				$results = array();
-			}
-
-			$this->_notes = new Iterator($results);
-		}
-
-		return $this->_notes;
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 }
-

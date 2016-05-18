@@ -35,13 +35,6 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$filters = array(
-	'state'     => 1,
-	'item_id'   => $this->course->get('id'),
-	'item_type' => 'courses',
-	'parent'    => 0
-);
-
 $total = 0;
 $avg   = 0;
 $distribution = array(
@@ -53,11 +46,13 @@ $distribution = array(
 	5 => 0
 );
 
-//$ratings = $this->tbl->ratings($filters);
 $ratings = \Components\Courses\Models\Comment::all()
 	->whereEquals('item_id', $this->course->get('id'))
 	->whereEquals('item_type', 'courses')
-	->whereEquals('state', array(1))
+	->whereEquals('parent', 0)
+	->whereEquals('state', array(
+		Components\Courses\Models\Comment::STATE_PUBLISHED
+	))
 	->rows();
 
 if ($ratings)

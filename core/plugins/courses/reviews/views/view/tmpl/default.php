@@ -102,13 +102,12 @@ $this->js();
 					<span class="comment-anchor"></span>
 					<?php
 					$anonymous = 1;
-					$jxuser = \Components\Members\Models\Member::oneOrNew(User::get('id'));
 					if (!User::isGuest())
 					{
 						$anonymous = 0;
 					}
 					?>
-					<img src="<?php echo $jxuser->picture($anonymous); ?>" alt="" />
+					<img src="<?php echo User::getInstance()->picture($anonymous); ?>" alt="" />
 				</p>
 				<fieldset>
 				<?php

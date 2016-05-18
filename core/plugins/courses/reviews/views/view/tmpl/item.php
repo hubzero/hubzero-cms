@@ -64,7 +64,7 @@ switch ($this->comment->get('rating'))
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"></span>
-				<img src="<?php echo $this->comment->creator()->picture($this->comment->get('anonymous')); ?>" alt="" />
+				<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
 			</p>
 			<div class="comment-content">
 				<?php
@@ -80,12 +80,12 @@ switch ($this->comment->get('rating'))
 				<p class="comment-title">
 					<strong>
 					<?php if (!$this->comment->get('anonymous')) { ?>
-						<?php if (in_array($this->comment->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+						<?php if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
 							<a href="<?php echo Route::url($this->comment->creator()->link()); ?>">
-								<?php echo $this->escape(stripslashes($this->comment->creator()->get('name'))); ?>
+								<?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?>
 							</a>
 						<?php } else { ?>
-							<?php echo $this->escape(stripslashes($this->comment->creator()->get('name'))); ?>
+							<?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?>
 						<?php } ?>
 					<?php } else { ?>
 						<?php echo Lang::txt('PLG_COURSES_REVIEWS_ANONYMOUS'); ?>
@@ -192,9 +192,17 @@ switch ($this->comment->get('rating'))
 			<?php } ?>
 			</div><!-- / .comment-content -->
 			<?php
+			$replies = $this->comment->replies()
+				->whereIn('state', array(
+					Components\Courses\Models\Comment::STATE_PUBLISHED,
+					Components\Courses\Models\Comment::STATE_FLAGGED
+				))
+				->ordered()
+				->rows();
+
 			$this->view('list')
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies(array('state' => array(1, 3))))
+			     ->set('comments', $replies)
 			     ->set('obj_type', $this->obj_type)
 			     ->set('obj', $this->obj)
 			     ->set('params', $this->params)

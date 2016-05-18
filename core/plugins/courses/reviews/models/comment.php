@@ -41,9 +41,16 @@ use Components\Courses\Models\Course;
 class Comment extends ItemComment
 {
 	/**
+	 * Flagged state
+	 *
+	 * @var  integer
+	 */
+	const STATE_FLAGGED = 3;
+
+	/**
 	 * URL for this entry
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_base = null;
 
@@ -51,8 +58,8 @@ class Comment extends ItemComment
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{

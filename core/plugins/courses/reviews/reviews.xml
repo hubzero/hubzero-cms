@@ -30,11 +30,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" group="courses">
-	<name>Courses - Reviews</name>
+	<name>plg_courses_reviews</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display reviews for a course</description>
+	<description>PLG_COURSES_REVIEWS_DESCRIPTION</description>
 	<files>
 		<filename plugin="reviews">reviews.php</filename>
 	</files>
@@ -44,10 +44,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-				<field name="voting" type="radio" default="1" label="Voting Enabled" description="Allow voting on reviews and comments">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="display_limit" type="text" size="5" default="50" label="PLG_COURSES_REVIEWS_PARAM_LIMIT_LABEL" description="PLG_COURSES_REVIEWS_PARAM_LIMIT_DESC"/>
+				<field name="voting" type="radio" default="1" label="PLG_COURSES_REVIEWS_PARAM_VOTING_LABEL" description="PLG_COURSES_REVIEWS_PARAM_VOTING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>
