@@ -24,12 +24,12 @@ class Attachment
 	 * @var string
 	 */
 	protected $image_url;
-	
+
 	/**
-		* Optional thumbnail that should appear within the attachment
-		*
-		* @var string 
-		*/
+	 * Optional thumbnail that should appear within the attachment
+	 *
+	 * @var string 
+	 */
 	protected $thumb_url;
 
 	/**
@@ -52,7 +52,7 @@ class Attachment
 	 * @var string
 	 */
 	protected $title_link;
-	
+
 	/**
 	 * Optional author name for the attachment
 	 *
@@ -109,7 +109,7 @@ class Attachment
 		if (isset($attributes['text'])) $this->setText($attributes['text']);
 
 		if (isset($attributes['image_url'])) $this->setImageUrl($attributes['image_url']);
-		
+
 		if (isset($attributes['thumb_url'])) $this->setThumbUrl($attributes['thumb_url']);
 
 		if (isset($attributes['pretext'])) $this->setPretext($attributes['pretext']);
@@ -123,7 +123,7 @@ class Attachment
 		if (isset($attributes['title'])) $this->setTitle($attributes['title']);
 
 		if (isset($attributes['title_link'])) $this->setTitleLink($attributes['title_link']);
-		
+
 		if (isset($attributes['author_name'])) $this->setAuthorName($attributes['author_name']);
 
 		if (isset($attributes['author_link'])) $this->setAuthorLink($attributes['author_link']);
@@ -199,7 +199,7 @@ class Attachment
 
 		return $this;
 	}
-	
+
 	/**
 	 * Get the optional thumbnail to appear within the attachment
 	 *
