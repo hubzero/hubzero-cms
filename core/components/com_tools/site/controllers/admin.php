@@ -171,8 +171,8 @@ class Admin extends SiteController
 
 		$command  = '/usr/bin';
 		$command .= DS . 'addrepo ' . $status['toolname'];
-		$command .= ' -title "' . $status['title'] . '"';
-		$command .= ' -description "' . $status['description'] . '"';
+		$command .= ' -title ' . escapeshellarg($status['title']);
+		$command .= ' -description ' . escapeshellarg($status['description']);
 		$command .= ' -password "' . $pw . '"';
 		$command .= ' -hubdir ' . PATH_CORE . "/../";
 
