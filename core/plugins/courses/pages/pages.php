@@ -209,7 +209,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 		if (!$this->view->offering->access('manage', 'section') && (!$page || !$page->exists()))
 		{
-			App::abort(404, Lang::txt('PLG_COURSES_PAGES_ERROR_PAGE_NOT_FOUND'));
+			if ($active)
+			{
+				App::abort(404, Lang::txt('PLG_COURSES_PAGES_ERROR_PAGE_NOT_FOUND'));
+			}
 		}
 		$this->view->pages = $pages;
 		$this->view->page  = $page;
