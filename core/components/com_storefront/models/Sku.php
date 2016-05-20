@@ -246,6 +246,19 @@ class Sku
 
 	public function verify()
 	{
+		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
+		$integrityCheck = \Integrity::skuIntegrityCheck($this);
+
+		if ($integrityCheck->status != 'ok')
+		{
+			$errorMessage = "Integrity check error:";
+			foreach ($integrityCheck->errors as $error)
+			{
+				$errorMessage .= '<br>' . $error;
+			}
+			throw new \Exception($errorMessage);
+		}
+
 		if (!isset($this->data->price) || !is_numeric($this->data->price))
 		{
 			throw new \Exception(Lang::txt('No SKU price set'));
@@ -297,7 +310,7 @@ class Sku
 	// TODO: Move saving logic here from warehouse
 	public function save()
 	{
-		if ($this->getActiveStatus())
+		if ($this->getActiveStatus() && $this->getActiveStatus() != 'DEFAULT')
 		{
 			// verify SKU if it gets published
 			$this->verify();
@@ -552,7 +565,7 @@ class Sku
 	 * Get SKU active status
 	 *
 	 * @param	void
-	 * @return	bool		SKU status
+	 * @return	mixed		SKU status
 	 */
 	public function getActiveStatus()
 	{

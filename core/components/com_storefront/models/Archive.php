@@ -232,8 +232,6 @@ class Archive extends \Hubzero\Base\Object
 	 */
 	public function updateSku($sku, $fields)
 	{
-		$checkIntegrity = true;
-		//print_r($fields); die;
 		if (isset($fields['sPrice']))
 		{
 			$sku->setPrice($fields['sPrice']);
@@ -257,10 +255,6 @@ class Archive extends \Hubzero\Base\Object
 		if (isset($fields['state']))
 		{
 			$sku->setActiveStatus($fields['state']);
-			if (!$fields['state'])
-			{
-				$checkIntegrity = false;
-			}
 		}
 		if (isset($fields['restricted']))
 		{
@@ -287,23 +281,6 @@ class Archive extends \Hubzero\Base\Object
 			foreach ($fields['meta'] as $metaKey => $metaVal)
 			{
 				$sku->addMeta($metaKey, $metaVal);
-			}
-		}
-
-		// Before saving SKU, check the for possible conflicts (integrity check) except when the SKU gets unpublished
-		if ($checkIntegrity)
-		{
-			require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
-			$integrityCheck = \Integrity::skuIntegrityCheck($sku);
-
-			if ($integrityCheck->status != 'ok')
-			{
-				$errorMessage = "Integrity check error:";
-				foreach ($integrityCheck->errors as $error)
-				{
-					$errorMessage .= '<br>' . $error;
-				}
-				throw new \Exception($errorMessage);
 			}
 		}
 

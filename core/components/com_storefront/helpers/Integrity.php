@@ -39,6 +39,8 @@ class Integrity
 		$return->status = 'ok';
 		$return->errors = array();
 
+		//print_r($sku);
+
 		$options = $sku->getOptions();
 
 		// Check if there are other SKUs that have the same set of options
@@ -56,6 +58,17 @@ class Integrity
 			else
 			{
 				$return->errors[] = 'There is already a SKU with the identical set of options. Each SKU must have a unique set of options.';
+			}
+		}
+
+		// If allowing multiple check if the parent product allows it. If not -- parent must be set to allow it first.
+		if ($sku->getAllowMultiple())
+		{
+			$pInfo = $warehouse->getProductInfo($sku->getProductId());
+			if (!$pInfo->pAllowMultiple)
+			{
+				$return->status = 'error';
+				$return->errors[] = 'Cannot allow multiple, the parent product is not set to allow multiple.';
 			}
 		}
 
