@@ -32,9 +32,9 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s permitted users', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s serial numbers', 'storefront.png');
 
-Toolbar::appendButton('Popup', 'new', 'New', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'new', 'New', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&sId=' . $this->sku->getId(), 570, 170);
 if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
@@ -42,7 +42,7 @@ if ($canDo->get('core.delete'))
 
 JToolBarHelper::spacer();
 //Toolbar::custom('upload', 'upload.png', '', 'Upload CSV', false);
-Toolbar::appendButton('Popup', 'upload', 'Upload CSV', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=upload&id=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'upload', 'Upload CSV', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=upload&sId=' . $this->sku->getId(), 570, 170);
 JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 
@@ -65,14 +65,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan=5">
-					Users for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=edit&id=' . $this->sku->getId()); ?>" title="<?php echo Lang::txt('Edit SKU'); ?>"><?php echo $this->sku->getName(); ?></a>
+					Serial numbers for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=edit&sId=' . $this->sku->getId()); ?>" title="<?php echo Lang::txt('Edit SKU'); ?>"><?php echo $this->sku->getName(); ?></a>
 				</th>
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'ID', 'uId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col">Email</th>
+				<th scope="col"><?php echo $this->grid('sort', 'ID', 'srId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'Serial Number', 'srNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'Status', 'srStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -98,21 +98,29 @@ foreach ($this->rows as $row)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+					<?php
+					if ($row->srStatus == 'available')
+					{
+					?>
+						<input type="checkbox" name="srId[]" id="cb<?php echo $i; ?>" value="<?php echo $row->srId; ?>"
+							   onclick="isChecked(this.checked, this);"/>
+					<?php
+					}
+					?>
 				</td>
 				<td>
 					<span>
-						<?php echo $this->escape(stripslashes($row->uId)); ?>
+						<?php echo $this->escape(stripslashes($row->srId)); ?>
 					</span>
 				</td>
 				<td>
 					<span>
-						<?php echo $this->escape(stripslashes($row->name)) . ' (' . $this->escape(stripslashes($row->username)) . ')'; ?>
+						<?php echo $this->escape(stripslashes($row->srNumber)); ?>
 					</span>
 				</td>
 				<td>
 					<span>
-						<?php echo $this->escape(stripslashes($row->email)); ?>
+						<?php echo $this->escape(stripslashes($row->srStatus)); ?>
 					</span>
 				</td>
 			</tr>
@@ -128,7 +136,6 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="sId" value="<?php echo $this->sId; ?>" />
-	<input type="hidden" name="pId" value="<?php echo $this->sku->getProductId(); ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />

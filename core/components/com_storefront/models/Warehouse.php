@@ -960,7 +960,7 @@ class Warehouse extends \Hubzero\Base\Object
 		}
 
 		// Filter by filters
-		//print_r($filters);
+		//print_r($filters); die;
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')
@@ -995,7 +995,7 @@ class Warehouse extends \Hubzero\Base\Object
 		}
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
+		//print_r($this->_db->toString()); die;
 		$this->_db->execute();
 
 		$rawSkusInfo = $this->_db->loadObjectList();
@@ -1076,8 +1076,6 @@ class Warehouse extends \Hubzero\Base\Object
 	{
 		$sInfo = $this->getSkusInfo(array($sId), $showInactive);
 		$sInfo = $sInfo[$sId];
-
-		//print_r($sInfo);die;
 
 		// Check if the product can be viewed (if access level scope is set)
 		if ($this->accessLevelsScope)

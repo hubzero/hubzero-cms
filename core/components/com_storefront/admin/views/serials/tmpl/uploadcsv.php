@@ -47,7 +47,7 @@ Html::behavior('framework');
 <script type="text/javascript">
 	function closeAndRefresh(pressbutton)
 	{
-		window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&id=<?php echo $this->sId; ?>';
+		window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&sId=<?php echo $this->sId; ?>';
 	}
 
 	jQuery(document).ready(function($){
@@ -66,7 +66,7 @@ Html::behavior('framework');
 			<div class="fltrt configuration-options">
 				<button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt( 'Close' );?></button>
 			</div>
-			<?php echo Lang::txt('Upload a file with users') ?>
+			<?php echo Lang::txt('Upload a file with serial numbers') ?>
 		</div>
 	</fieldset>
 <?php } ?>
@@ -77,13 +77,13 @@ else {
 ?>
 <div class="col width-100">
 	<div class="current">
-		<p><?php echo $this->inserted; ?> user<?php echo $this->inserted == 1 ? '' : 's'; ?> inserted.</p>
+		<p><?php echo $this->inserted; ?> serial number<?php echo $this->inserted == 1 ? '' : 's'; ?> inserted.</p>
 
 		<?php
 		if (!empty($this->skipped))
 		{
 		?>
-		<p><?php echo count($this->skipped); ?> duplicate user<?php echo count($this->skipped) == 1 ? '' : 's'; ?> skipped.</p>
+		<p><?php echo count($this->skipped); ?> duplicate serial number<?php echo count($this->skipped) == 1 ? '' : 's'; ?> skipped.</p>
 		<?php
 		}
 		?>
@@ -92,7 +92,7 @@ else {
 		if (!empty($this->ignored))
 		{
 			?>
-			<p><?php echo count($this->ignored); ?> user<?php echo count($this->ignored) == 1 ? '' : 's'; ?> could not be found and <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:</p>
+			<p><?php echo count($this->ignored); ?> serial number<?php echo count($this->ignored) == 1 ? '' : 's'; ?> <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:</p>
 			<ul>
 
 			<?php

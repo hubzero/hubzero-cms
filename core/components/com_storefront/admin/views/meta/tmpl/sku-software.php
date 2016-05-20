@@ -85,7 +85,7 @@
 	if ($serialManagement == "multiple") {
 	?>
 		<p>
-			<a class="options-link" href="<?php echo 'index.php?option=' . $this->parent->option . '&controller=serialst&id=' . $this->parent->row->getId(); ?>">Manage multiple serial numbers</a>
+			<a class="options-link" href="<?php echo 'index.php?option=' . $this->parent->option . '&controller=serials&sId=' . $this->parent->row->getId(); ?>">Manage multiple serial numbers</a>
 		</p>
 	<?php
 	}

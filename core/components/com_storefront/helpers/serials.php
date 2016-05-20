@@ -121,7 +121,6 @@ class Serials
 			$serialIds .= ',' . $serial->srId;
 		}
 
-		$db = \App::get('db');
 		$sql = "UPDATE `#__storefront_serials` SET srStatus = 'used'";
 		$sql .= " WHERE srId IN (" . $serialIds . ")";
 
@@ -130,6 +129,126 @@ class Serials
 		$db->execute();
 
 		return $serialNumbers;
+	}
+
+	// Admin functions
+
+	/**
+	 * Get a list or count of the serials for the SKU.
+	 *
+	 * @param   array   Filters
+	 * @param   int  SKU id
+	 * @return  object/int
+	 */
+	public static function getSkuSerials($filters = array(), $sId)
+	{
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'uId';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		if (!isset($filters['return']))
+		{
+			$filters['return'] = 'list';
+		}
+
+		$db = \App::get('db');
+		$sql = "SELECT s.* ";
+		$sql .= "FROM #__storefront_serials s";
+		$sql .= " WHERE srSId = " . $db->quote($sId);
+
+		if (isset($filters['sort']))
+		{
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']) && $filters['return'] != 'count')
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
+
+		$db->setQuery($sql);
+		//print_r($db->toString()); die;
+		$db->execute();
+		if ($filters['return'] == 'count')
+		{
+			return($db->getNumRows());
+		}
+		$users = $db->loadObjectList();
+
+		return $users;
+	}
+
+	public static function delete($ids)
+	{
+		$msg = new \stdClass();
+		$msg->type = 'message';
+
+		$sIds = '0';
+		foreach ($ids as $id)
+		{
+			$sIds .= ',' . $id;
+		}
+
+		$db = \App::get('db');
+		// delete only available
+		$sql = "DELETE FROM `#__storefront_serials`";
+		$sql .= " WHERE srStatus='available' AND srId IN (" . $sIds . ")";
+
+		$db->setQuery($sql);
+		//print_r($db->toString()); die;
+		$db->execute();
+		$deleted = $db->getNumRows();
+
+		$message = $deleted . ' serial number';
+		if ($deleted > 1)
+		{
+			$message .= 's';
+		}
+		$message .= ' deleted';
+		$msg->message = $message;
+
+		if (count($ids) > $deleted)
+		{
+			$msg->type = 'warning';
+			$message = (count($ids) - $deleted) . ' serial number';
+			if (count($ids) - $deleted > 1)
+			{
+				$message .= 's';
+			}
+			$message .= ' could not be deleted. Possible status change.';
+			$msg->message = $message;
+		}
+
+		return $msg;
+	}
+
+	public static function add($serial, $sId)
+	{
+		$serial = trim($serial);
+
+		$db = \App::get('db');
+		$sql = "INSERT IGNORE INTO #__storefront_serials";
+		$sql .= " SET `srStatus` = 'available', `srNumber` = '{$serial}', `srSId` = {$sId}";
+
+		$db->setQuery($sql);
+		//print_r($db->toString()); die;
+		$db->execute();
+
+		return $db->getAffectedRows();
 	}
 }
 

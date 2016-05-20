@@ -30,16 +30,18 @@
 
 namespace Components\Storefront\Admin\Controllers;
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'restrictions.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'serials.php');
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
-use Components\Storefront\Admin\Helpers\RestrictionsHelper;
+use Components\Storefront\Helpers\Serials as SerialsHelper;
+
+ini_set("auto_detect_line_endings", true);
 
 /**
  * Controller class for knowledge base categories
  */
-class Restrictions extends AdminController
+class Serials extends AdminController
 {
 	/**
 	 * Display a list of all users
@@ -49,11 +51,7 @@ class Restrictions extends AdminController
 	public function displayTask()
 	{
 		// Get SKU ID
-		$sId = Request::getVar('id');
-		if (empty($sId))
-		{
-			$sId = Request::getVar('sId', array(0));
-		}
+		$sId = Request::getVar('sId');
 		$this->view->sId = $sId;
 
 		// Get SKU
@@ -64,42 +62,38 @@ class Restrictions extends AdminController
 		$this->view->filters = array(
 			// Get sorting variables
 			'sort' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sort',
-					'filter_order',
-					'uId'
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'srId'
 			),
 			'sort_Dir' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sortdir',
-					'filter_order_Dir',
-					'ASC'
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limit',
-					'limit',
-					Config::get('list_limit'),
-					'int'
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
 			),
 			'start' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limitstart',
-					'limitstart',
-					0,
-					'int'
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
 			)
 		);
-
 		//print_r($this->view->filters); die;
-
-		RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
-
 
 		// Get record count
 		$this->view->filters['return'] = 'count';
-		$this->view->total = RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
+		$this->view->total = SerialsHelper::getSkuSerials($this->view->filters, $sId);
 
 		// Get records
 		$this->view->filters['return'] = 'list';
-		$this->view->rows = RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
+		$this->view->rows = SerialsHelper::getSkuSerials($this->view->filters, $sId);
 
 		// Output the HTML
 		$this->view->display();
@@ -114,7 +108,7 @@ class Restrictions extends AdminController
 	{
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=display&id=' . Request::getVar('pId', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getVar('id', 0), false)
 		);
 	}
 
@@ -129,17 +123,20 @@ class Restrictions extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = Request::getVar('id', 0);
+		$ids = Request::getVar('srId', 0);
 		$sId = Request::getVar('sId');
 		//print_r($ids); die;
 
-		RestrictionsHelper::removeUsers($ids);
+		$deletedMessage = SerialsHelper::delete($ids);
 
-		$msg = "User(s) deleted";
-		$type = 'message';
+		if ($deletedMessage)
+		{
+			$msg = $deletedMessage->message;
+			$type = $deletedMessage->type;
+		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $sId, false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&sId=' . $sId, false),
 			$msg,
 			$type
 		);
@@ -147,7 +144,7 @@ class Restrictions extends AdminController
 
 	public function newTask()
 	{
-		$sId = Request::getVar('id', '');
+		$sId = Request::getVar('sId', '');
 		$this->view->sId = $sId;
 
 		// Set any errors
@@ -160,27 +157,21 @@ class Restrictions extends AdminController
 		$this->view->display();
 	}
 
-	public function addusersTask()
+	public function addserialsTask()
 	{
 		$sId = Request::getInt('sId', '');
-		$users = Request::getVar('users', '');
+		$serials = Request::getVar('serials', '');
 
-		$users = explode(',', $users);
-		foreach ($users as $user)
+		$serials = explode(',', $serials);
+		foreach ($serials as $serial)
 		{
-			$usr = new \Hubzero\User\Profile(trim($user));
-			$uId = $usr->get('uidNumber');
-			if ($uId)
-			{
-				print_r(RestrictionsHelper::addSkuUser($uId, $sId));
-			}
+			\Components\Storefront\Helpers\Serials::add($serial, $sId);
 		}
 	}
 
 	public function uploadTask()
 	{
-		$sId = Request::getInt('id', '');
-
+		$sId = Request::getInt('sId', '');
 		$this->view->sId = $sId;
 
 		// Output the HTML
@@ -204,29 +195,29 @@ class Restrictions extends AdminController
 				$inserted = 0;
 				$skipped = array();
 				$ignored = array();
+
 				while (($line = fgetcsv($handle, 1000, ",")) !== FALSE)
 				{
 					if (!empty($line[0]))
 					{
-						$usr = new \Hubzero\User\Profile(trim($line[0]));
-						$uId = $usr->get('uidNumber');
-						if ($uId)
+						$serial = trim($line[0]);
+
+						$res = SerialsHelper::add($serial, $sId);
+						if ($res)
 						{
-							$res = RestrictionsHelper::addSkuUser($uId, $sId);
-							if ($res)
-							{
-								$inserted++;
-							}
-							else {
-								$skipped[] = $usr;
-							}
+							$inserted++;
 						}
 						else {
-							$ignored[] = $line[0];
+							$skipped[] = $serial;
 						}
+
 					}
 				}
 				fclose($handle);
+
+				$this->view->inserted = $inserted;
+				$this->view->skipped = $skipped;
+				$this->view->ignored = $ignored;
 			}
 			else
 			{
@@ -239,9 +230,6 @@ class Restrictions extends AdminController
 
 		// Output the HTML
 		$this->view->sId = $sId;
-		$this->view->inserted = $inserted;
-		$this->view->skipped = $skipped;
-		$this->view->ignored = $ignored;
 		$this->view->display();
 	}
 }

@@ -34,10 +34,7 @@ defined('_HZEXEC_') or die();
 
 $tmpl = Request::getVar('tmpl', '');
 
-$text = 'Add user';
-
-$canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('sku');
-
+$text = 'Add serial number';
 
 if ($tmpl != 'component')
 {
@@ -62,18 +59,18 @@ function submitbutton(pressbutton)
 	}
 
 	// form field validation
-	if (form.users.value == '') {
+	if (form.serials.value == '') {
 		alert('<?php echo Lang::txt('COM_STOREFRONT_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
-		window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&id=<?php echo $this->sId; ?>'", 700);
+		window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&sId=<?php echo $this->sId; ?>'", 700);
 	}
 }
 
 jQuery(document).ready(function($){
 	$(window).on('keypress', function(){
 		if (window.event.keyCode == 13) {
-			submitbutton('addusers');
+			submitbutton('addserials');
 		}
 	})
 });
@@ -86,10 +83,10 @@ jQuery(document).ready(function($){
 	<fieldset>
 		<div class="configuration" >
 			<div class="fltrt configuration-options">
-				<button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt( 'Save' );?></button>
+				<button type="button" onclick="submitbutton('addserials');"><?php echo Lang::txt( 'Save' );?></button>
 				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt( 'Cancel' );?></button>
 			</div>
-			<?php echo Lang::txt('Add new users') ?>
+			<?php echo Lang::txt('Add new serial numbers') ?>
 		</div>
 	</fieldset>
 <?php } ?>
@@ -104,8 +101,8 @@ jQuery(document).ready(function($){
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-users"><?php echo Lang::txt('Users (comma-separated IDs or usernames)'); ?>:</label></td>
-						<td><input type="text" name="users" class="input-users" id="field-users" value="" size="50" /></td>
+						<td class="key"><label for="field-serials"><?php echo Lang::txt('Serial numbers (comma-separated)'); ?>:</label></td>
+						<td><input type="text" name="serials" class="input-users" id="field-serials" value="" size="50" /></td>
 					</tr>
 				</tbody>
 			</table>

@@ -562,8 +562,6 @@ abstract class Cart
 
 		$tInfo = self::getTransactionInfo($tId);
 
-		// Calculate grand total
-		$tInfo->tiTotalAmount = $tInfo->tiSubtotal + $tInfo->tiTax + $tInfo->tiShipping;
 		$transaction->info = $tInfo;
 
 		return $transaction;
@@ -590,7 +588,6 @@ abstract class Cart
 
 		$allSkuInfo = $db->loadObjectList('sId');
 		$skus = $db->loadColumn();
-
 
 		$warehouse = new Warehouse();
 
