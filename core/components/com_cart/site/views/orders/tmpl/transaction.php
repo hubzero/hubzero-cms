@@ -84,7 +84,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transaction->tInfo->info->tId . '/' . $info->sId;
 					$action .= '" target="_blank">Download</a>';
 
-					if (isset($item['meta']['serial']) && !empty($item['meta']['serial']))
+					if ($item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials']))
+					{
+						$action .= "<br>";
+						$action .= " Serial number";
+						if (count($item['meta']['serials']) > 1)
+						{
+							$action .= "s";
+						}
+						$action .= ': <strong>';
+						foreach ($item['meta']['serials'] as $serial)
+						{
+							if (count($item['meta']['serials']) > 1)
+							{
+								$action .= '<br>';
+							}
+							$action .= $serial;
+						}
+						$action .= '</strong>';
+					}
+					elseif (isset($item['meta']['serial']) && !empty($item['meta']['serial']))
 					{
 						$action .= "<br>";
 						$action .= " Serial number: <strong>" . $item['meta']['serial'] . '</strong>';

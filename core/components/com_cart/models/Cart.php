@@ -748,7 +748,7 @@ abstract class Cart
 		// Handle each item in the transaction
 		foreach ($transactionItems as $sId => $item)
 		{
-			$productHandler = new \Components\Cart\Helpers\CartProductHandler($item, $crtId);
+			$productHandler = new \Components\Cart\Helpers\CartProductHandler($item, $crtId, $tId);
 			$productHandler->handle();
 		}
 
@@ -768,6 +768,50 @@ abstract class Cart
 		$sql = "DELETE FROM `#__cart_cart_items` WHERE `crtiQty` <= 0 AND `crtId` = {$tInfo->info->crtId}";
 		$db->setQuery($sql);
 		$db->query();
+	}
+
+	public static function updateTransactionItem($tId, $item)
+	{
+		$tInfo = self::getTransactionInfo($tId);
+		$tItems = unserialize($tInfo->tiItems);
+
+		$sId = $item['info']->sId;
+
+		// Find the existing item in the transaction
+		if (empty($tItems[$sId]))
+		{
+			throw new \Exception('Missing transaction item.');
+		}
+
+		$tItems[$sId] = $item;
+
+		self::setTransactionItems($tId, $tItems);
+		return true;
+	}
+
+	/**
+	 * Set transaction items
+	 *
+	 * @param   int     Transaction ID
+	 * @param   obj     Items
+	 * @return  bool
+	 */
+	private static function setTransactionItems($tId, $items)
+	{
+		$db = \App::get('db');
+
+		$sql = "UPDATE `#__cart_transaction_info` SET `tiItems` = " . $db->quote(serialize($items)) . " WHERE `tId` = " . $db->quote($tId);
+
+		$db->setQuery($sql);
+		$db->query();
+
+		$affectedRows = $db->getAffectedRows();
+
+		if (!$affectedRows)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -899,15 +943,20 @@ abstract class Cart
 		// Get transaction items
 		$tItems = self::getTransactionItems($tId);
 
-		/* Go through each item and return the quantity back to inventory if needed */
+		/* Go through each item and release the quantity back to inventory if needed */
 		$warehouse = new Warehouse();
 
 		if (!empty($tItems))
 		{
+			require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+
 			foreach ($tItems as $sId => $itemInfo)
 			{
 				$qty = $itemInfo['transactionInfo']->qty;
-				$warehouse->updateInventory($sId, $qty, 'add');
+				$sku = \Components\Storefront\Models\Sku::getInstance($sId);
+				$sku->releaseInventory($qty);
+				$sku->save();
+				//$warehouse->updateInventory($sId, $qty, 'add');
 			}
 		}
 		// update status

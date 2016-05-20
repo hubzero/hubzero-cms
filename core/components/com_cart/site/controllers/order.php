@@ -156,7 +156,7 @@ class Order extends ComponentController
 		if (!$transaction)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . 'com_cart')
+				Route::url('index.php?option=' . 'com_cart')
 			);
 		}
 
@@ -167,6 +167,8 @@ class Order extends ComponentController
 		{
 			die('Error processing your order. Bad security token.');
 		}
+
+		//print_r($transaction); die;
 
 		// Check if the order total is 0
 		if ($transaction->info->tiTotal != 0)
@@ -360,10 +362,8 @@ class Order extends ComponentController
 		// Handle transaction according to items handlers
 		Cart::completeTransaction($tInfo);
 
-		// Initialize logger
-		$logger = new \CartMessenger('Complete order');
-
 		// Send emails to customer and admin
+		$logger = new \CartMessenger('Complete order');
 		$logger->emailOrderComplete($tInfo->info);
 
 		return true;

@@ -1141,39 +1141,6 @@ class Warehouse extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Update SKU inventory if the item is tracking inventory
-	 *
-	 * @param int SKU ID
-	 * @param qty quantity
-	 * @param string method: 'add' -- add to existing qty, 'subtract' -- subtract from existing qty, 'update' -- update existing qty
-	 * @return void
-	 */
-	public function updateInventory($sId, $qty, $method = 'update')
-	{
-		if ($method == 'add')
-		{
-			$sql = "UPDATE `#__storefront_skus` s SET s.`sInventory` = s.`sInventory` + {$qty}
-					WHERE s.`sId` = {$sId} AND s.`sTrackInventory` = 1";
-		}
-		elseif ($method == 'subtract')
-		{
-			$sql = "UPDATE `#__storefront_skus` s SET s.`sInventory` = s.`sInventory` - {$qty}
-					WHERE s.`sId` = {$sId} AND s.`sTrackInventory` = 1";
-		}
-		elseif ($method == 'update')
-		{
-			$sql = "UPDATE `#__storefront_skus` s SET s.`sInventory` = {$qty}
-					WHERE s.`sId` = {$sId} AND s.`sTrackInventory` = 1";
-		}
-		else
-		{
-			return false;
-		}
-		$this->_db->setQuery($sql);
-		$this->_db->query();
-	}
-
-	/**
 	 * Get product types
 	 *
 	 * @param	int					product type ID

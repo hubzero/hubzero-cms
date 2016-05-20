@@ -30,7 +30,10 @@
 
 namespace Components\Storefront\Models;
 
+use Components\Storefront\Helpers\Serials;
+
 require_once(__DIR__ . DS . 'Sku.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'serials.php');
 
 /**
  *
@@ -48,6 +51,22 @@ class SoftwareSku extends Sku
 	public function __construct($sId)
 	{
 		parent::__construct($sId);
+	}
+
+	public function reserveInventory($qty)
+	{
+		parent::reserveInventory($qty);
+
+		// Mark the serials as reserved
+		Serials::reserveSerials($this->getId(), $qty);
+	}
+
+	public function releaseInventory($qty)
+	{
+		parent::releaseInventory($qty);
+
+		// Mark the reserved serials as available
+		Serials::releaseSerials($this->getId(), $qty);
 	}
 
 	public function verify()
@@ -71,9 +90,21 @@ class SoftwareSku extends Sku
 		}
 	}
 
-	public function getGlobalDownloadLimit()
+	public function save()
 	{
+		// Update the inventory level for those SKUs that have multiple managed Serial Numbers.
+		// The inventory should be tracked
+		// The inventory level should always be equal to the number of available not-reserved serial numbers.
 
+		$serialManagement = $this->getMeta('serialManagement');
+		if ($serialManagement && $serialManagement == 'multiple')
+		{
+			$totalSerials = Serials::countAvailableSerials($this->getId());
+			$this->setTrackInventory(true);
+			$this->setInventoryLevel($totalSerials);
+		}
+
+		parent::save();
 	}
 
 }

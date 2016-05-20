@@ -183,6 +183,7 @@ function submitbutton(pressbutton)
 		if ($this->pInfo->ptModel == 'software')
 		{
 			$view = new \Hubzero\Component\View(array('name'=>'meta', 'layout' => 'sku-software'));
+			$view->parent = $this;
 			$view->skuMeta = $skuMeta;
 			$view->display();
 		}
@@ -269,6 +270,16 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 
+			<?php
+			$showInventoryOptions = true;
+			if ($this->pInfo->ptModel == 'software' && isset($skuMeta['serialManagement']) && $skuMeta['serialManagement'] == 'multiple')
+			{
+				$showInventoryOptions = false;
+			}
+			if ($showInventoryOptions)
+			{
+			?>
+
 			<div class="input-wrap" data-hint="<?php echo 'Should the inventory level be kept tracked? If yes set the inventory.'; ?>">
 				<label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
 				<select name="fields[sTrackInventory]" id="field-sTrackInventory">
@@ -281,6 +292,10 @@ function submitbutton(pressbutton)
 				<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
 				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="10" value="<?php echo $this->row->getInventoryLevel(); ?>" />
 			</div>
+
+			<?php
+			}
+			?>
 
 			<div class="input-wrap" data-hint="<?php echo 'Inventory threshold: when reached or below an email notification is sent to the admin on each inventory change'; ?>">
 				<label for="field-inventory-notification-threshold"><?php echo 'Inventory notification threshold'; ?>:</label>
@@ -324,10 +339,10 @@ function submitbutton(pressbutton)
 
 			<?php
 			if ($this->row->getRestricted()) {
-				?>
+			?>
 				<p>
 					<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=restrictions&id=' . $this->row->getId(); ?>">Manage restrictions</a></p>
-				<?php
+			<?php
 			}
 			?>
 		</fieldset>

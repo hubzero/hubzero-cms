@@ -198,7 +198,6 @@ class Checkout extends ComponentController
 
 		$this->view->productEula = $productEula;
 
-
 		$eulaSubmitted = Request::getVar('submitEula', false, 'post');
 
 		if ($eulaSubmitted)
@@ -229,6 +228,20 @@ class Checkout extends ComponentController
 		if (!empty($errors))
 		{
 			$this->view->notifications = $errors;
+		}
+
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+		if ($this->_task)
+		{
+			Pathway::append(
+				Lang::txt('EULA')
+			);
 		}
 
 		$this->view->display();
@@ -377,6 +390,20 @@ class Checkout extends ComponentController
 		}
 
 		$cart->finalizeTransaction();
+
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+		if ($this->_task)
+		{
+			Pathway::append(
+				Lang::txt('Review your order')
+			);
+		}
 
 		$this->view->token = $token;
 		$this->view->transactionItems = $transaction->items;
