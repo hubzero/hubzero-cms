@@ -32,7 +32,9 @@ namespace Components\Cart\Site\Controllers;
 
 use Request;
 use User;
+use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
+use Components\Storefront\Models\Warehouse;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 
@@ -92,7 +94,25 @@ class Orders extends ComponentController
 		{
 			foreach ($transactions as $transaction)
 			{
-				$transactionInfo = $cart->getTransactionFacts($transaction->tId);
+				$transactionInfo = Cart::getTransactionInfo($transaction->tId);
+
+				// Figure out if the items int the transactions are still avaialble
+				$tItems = unserialize($transactionInfo->tiItems);
+
+				foreach ($tItems as $item)
+				{
+					// Check if the product is still available
+					$warehouse = new Warehouse();
+					$skuInfo = $warehouse->getSkuInfo($item['info']->sId, false);
+					$item['info']->available = true;
+					if (!$skuInfo)
+					{
+						// product no longer available
+						$item['info']->available = false;
+					}
+				}
+
+				$transactionInfo->tiItems = $tItems;
 				$transaction->tInfo = $transactionInfo;
 			}
 		}

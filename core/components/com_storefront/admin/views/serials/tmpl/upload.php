@@ -39,15 +39,25 @@ $text = 'Upload a CSV file';
 if ($tmpl != 'component')
 {
 	Toolbar::title(Lang::txt('COM_STOREFRONT').': ' . $text, 'addedit.png');
+	Toolbar::save();
+	Toolbar::cancel();
 }
 
 Html::behavior('framework');
 ?>
 
 <script type="text/javascript">
-	function closeAndRefresh(pressbutton)
+	function submitbutton(pressbutton)
 	{
-		window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&id=<?php echo $this->sId; ?>';
+		var form = document.adminForm;
+
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
+
+		submitform(pressbutton);
+		//window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&id=<?php echo $this->sId; ?>'", 700);
 	}
 
 	jQuery(document).ready(function($){
@@ -59,55 +69,39 @@ Html::behavior('framework');
 	});
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
-<?php if ($tmpl == 'component') { ?>
-	<fieldset>
-		<div class="configuration" >
-			<div class="fltrt configuration-options">
-				<button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt( 'Close' );?></button>
-			</div>
-			<?php echo Lang::txt('Upload a file with users') ?>
-		</div>
-	</fieldset>
-<?php } ?>
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php }
-else {
-?>
-<div class="col width-100">
-	<div class="current">
-		<p><?php echo $this->inserted; ?> user<?php echo $this->inserted == 1 ? '' : 's'; ?> inserted.</p>
+	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
+<?php } ?>
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form" enctype="multipart/form-data">
+	<?php if ($tmpl == 'component') { ?>
+		<fieldset>
+			<div class="configuration" >
+				<div class="fltrt configuration-options">
+					<button type="button" onclick="submitbutton('uploadcsv');"><?php echo Lang::txt( 'Import' );?></button>
+					<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt( 'Cancel' );?></button>
+				</div>
+				<?php echo Lang::txt('Uplaod a file with serial numbers') ?>
+			</div>
+		</fieldset>
+	<?php } ?>
+	<div class="col width-100">
+		<fieldset class="adminform">
+			<input type="hidden" name="sId" value="<?php echo $this->sId; ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="tmpl" value="component" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+			<input type="hidden" name="task" value="uploadcsv" />
 
-		<?php
-		if (!empty($this->skipped))
-		{
-		?>
-		<p><?php echo count($this->skipped); ?> duplicate user<?php echo count($this->skipped) == 1 ? '' : 's'; ?> skipped.</p>
-		<?php
-		}
-		?>
-
-		<?php
-		if (!empty($this->ignored))
-		{
-			?>
-			<p><?php echo count($this->ignored); ?> user<?php echo count($this->ignored) == 1 ? '' : 's'; ?> could not be found and <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:</p>
-			<ul>
-
-			<?php
-			foreach ($this->ignored as $ignore)
-			{
-				echo '<li>' . $ignore . '</li>';
-			}
-			?>
-
-			</ul>
-		<?php
-		}
-		?>
+			<table class="admintable">
+				<tbody>
+				<tr>
+					<td><label for="csvFile">CSV file:</label></td>
+					<td><input type="file" name="csvFile" id="csvFile" /></td>
+				</tr>
+				</tbody>
+			</table>
+		</fieldset>
 	</div>
-</div>
-<?php }
-?>
+
+	<?php echo Html::input('token'); ?>
 </form>

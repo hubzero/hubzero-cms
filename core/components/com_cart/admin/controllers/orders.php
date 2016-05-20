@@ -63,7 +63,7 @@ class Orders extends AdminController
 			'sort_Dir' => Request::getState(
 					$this->_option . '.' . $this->_controller . '.sortdir',
 					'filter_order_Dir',
-					'ASC'
+					'DESC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
