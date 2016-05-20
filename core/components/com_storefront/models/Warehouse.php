@@ -692,7 +692,6 @@ class Warehouse extends \Hubzero\Base\Object
 			// populate SKUs for JS
 			$skusInfo = new \stdClass();
 			$skusInfo->sId = $line->skuId;
-			//$skusInfo->sId = $line->skusOptionId;
 			$skusInfo->sPrice = $line->sPrice;
 			$skusInfo->sAllowMultiple = $line->sAllowMultiple;
 			$skusInfo->sTrackInventory = $line->sTrackInventory;
@@ -707,7 +706,6 @@ class Warehouse extends \Hubzero\Base\Object
 		$ret = new \stdClass();
 		$ret->options = $options;
 		$ret->skus = $skus;
-
 		//print_r($ret); die;
 
 		return $ret;
@@ -1270,18 +1268,6 @@ class Warehouse extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Create and return a new SKU
-	 *
-	 * @param	void
-	 * @return	StorefrontModelSku 		Instance of a SKU
-	 */
-	public function newSku()
-	{
-		$sku = new Sku();
-		return $sku;
-	}
-
-	/**
 	 * Get a SKU
 	 *
 	 * @param	int							SKU ID
@@ -1484,8 +1470,9 @@ class Warehouse extends \Hubzero\Base\Object
 
 		foreach ($skus as $sku)
 		{
-			$sId = $this->saveSku($sku);
-			$activeSIds[] = $sId;
+			// TODO: not really sure if the sku needs to be saved here
+			$sku->save();
+			$activeSIds[] = $sku->getId();
 		}
 
 		// Delete unused SKUs
@@ -1574,102 +1561,6 @@ class Warehouse extends \Hubzero\Base\Object
 		$return = new \stdClass();
 		$return->pId = $pId;
 		return $return;
-	}
-
-	public function saveSku($sku)
-	{
-		// Get sId
-		$sId = $sku->getId();
-
-		// If no sID set -- this is a new SKU -- create a new record
-		if (empty($sId))
-		{
-			$sql = "INSERT INTO `#__storefront_skus` SET ";
-		}
-		// If sId is set -- update the existing SKU
-		else
-		{
-			$sql = "UPDATE `#__storefront_skus` SET ";
-		}
-
-		$sql .= "
-						`pId` = " . $sku->getProductId() . ",
-						`sSku` = " . $this->_db->quote($sku->getName()) . ",
-						`sPrice` = " . $this->_db->quote($sku->getPrice()) . ",
-						`sAllowMultiple` = " . $sku->getAllowMultiple() . ",
-						`sTrackInventory` = " . $sku->getTrackInventory() . ",
-						`sInventory` = " . $sku->getInventoryLevel() . ",
-						`sEnumerable` = " . $sku->getEnumerable() . ",
-						`publish_up` = " . $this->_db->quote($sku->getPublishTime()->publish_up) . ",
-						`publish_down` = " . $this->_db->quote($sku->getPublishTime()->publish_down) . ",
-						`sRestricted` = " . $sku->getRestricted() . ",
-						`sActive` = " . $sku->getActiveStatus();
-
-		if (!empty($sId))
-		{
-			$sql .= " WHERE `sId` = " . $this->_db->quote($sId);
-		}
-
-		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
-		$this->_db->query();
-		if (empty($sId))
-		{
-			$sId = $this->_db->insertid();
-		}
-
-		// Do SKU meta (if any)
-		$skuMeta = $sku->getMeta();
-
-		$activeMetaIds = array();
-
-		if (!empty($skuMeta))
-		{
-			// Go through each meta key and insert/update it, remembering the affected ID
-			foreach ($skuMeta as $k => $v)
-			{
-				$sql = "SET @skuMetaId := 0";
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-
-				$sql = "INSERT INTO `#__storefront_sku_meta` SET
-							`sId` = " . $this->_db->quote($sId) . ",
-							`smKey` = " . $this->_db->quote($k) . ",
-							`smValue` = " . $this->_db->quote($v) . "
-							ON DUPLICATE KEY UPDATE
-							`smId` = (@skuMetaId := `smId`),
-							`sId` = " . $this->_db->quote($sId) . ",
-							`smKey` = " . $this->_db->quote($k) . ",
-							`smValue` = " . $this->_db->quote($v);
-
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-
-				$sql = "SELECT IF(@skuMetaId = 0, LAST_INSERT_ID(), @skuMetaId)";
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-
-				$activeMetaIds[] = $this->_db->loadResult();
-			}
-		}
-
-		// Delete unused Meta info: everything not affected above
-		$deleteSql = '(0';
-		foreach ($activeMetaIds as $metaId)
-		{
-			$deleteSql .= ", " . $this->_db->quote($metaId);
-		}
-		$deleteSql .= ')';
-
-		$sql = "DELETE FROM `#__storefront_sku_meta` WHERE `sId` = " . $this->_db->quote($sId) . " AND `smId` NOT IN {$deleteSql}";
-		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-		$this->_db->query();
-
-		return $sId;
 	}
 
 	/**

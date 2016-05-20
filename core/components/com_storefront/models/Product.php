@@ -78,15 +78,6 @@ class Product
 		$db = \App::get('db');
 		$pId = $this->getId();
 
-		// Get all product info
-		/*
-		$sql = "SELECT p.*, pt.ptName, pt.ptModel FROM `#__storefront_products` p
- 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
- 				WHERE p.`pId` = " . $db->quote($pId);
-		$db->setQuery($sql);
-		$productInfo = $db->loadObject();
-		*/
-
 		$warehouse = new Warehouse();
 		$productInfo = $warehouse->getProductInfo($pId, true);
 

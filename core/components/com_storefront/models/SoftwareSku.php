@@ -33,7 +33,7 @@ namespace Components\Storefront\Models;
 use Components\Storefront\Helpers\Serials;
 
 require_once(__DIR__ . DS . 'Sku.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'serials.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Serials.php');
 
 /**
  *
