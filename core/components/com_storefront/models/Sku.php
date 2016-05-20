@@ -55,7 +55,7 @@ class Sku
 	public function __construct($sId = false)
 	{
 		$this->db = \App::get('db');
-		
+
 		$this->data = new \stdClass();
 		if (isset($sId) && is_numeric($sId) && $sId)
 		{
