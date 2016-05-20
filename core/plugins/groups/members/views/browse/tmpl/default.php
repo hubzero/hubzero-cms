@@ -105,7 +105,7 @@ $option = 'com_groups';
 					<?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->groupusers) > 0) { ?>
 						<ul class="entries-menu message-options">
 							<li>
-								<span class="message-all">
+								<span class="message-all message-member">
 									<?php if ($this->messages_acl != 'nobody') { ?>
 									<?php
 										if ($role_id) {
@@ -134,7 +134,7 @@ $option = 'com_groups';
 											}
 										}
 									?>
-									<a class="message-member tooltips" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new'.$append); ?>" title="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE'); ?> :: <?php echo $title; ?>">
+									<a class="tooltips" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new'.$append); ?>" title="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE'); ?> :: <?php echo $title; ?>">
 										<?php echo Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL'); ?>
 									</a>
 									<?php } ?>
