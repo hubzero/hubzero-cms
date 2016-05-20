@@ -179,7 +179,8 @@ class ContentViewCategory extends JViewLegacy
 		$this->assignRef('params', $params);
 		$this->assignRef('parent', $parent);
 		$this->assignRef('pagination', $pagination);
-		$this->assignRef('user', User::getRoot());
+		$user = User::getRoot();
+		$this->assignRef('user', $user);
 
 		$this->_prepareDocument();
 
