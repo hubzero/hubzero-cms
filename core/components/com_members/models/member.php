@@ -32,9 +32,7 @@
 namespace Components\Members\Models;
 
 use Hubzero\User\User;
-//use Hubzero\Form\Form;
-//use Hubzero\Config\Registry;
-//use Components\Members\Models\Profile\Field;
+use Hubzero\Config\Registry;
 
 require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
@@ -236,10 +234,21 @@ class Member extends User
 	 */
 	public function save()
 	{
+		if (is_array($this->get('params')))
+		{
+			$params = new Registry($this->get('params'));
+
+			$this->set('params', $params);
+		}
+		if (is_object($this->get('params')))
+		{
+			$this->set('params', $this->get('params')->toString());
+		}
+
 		// Map set data to profile fields
 		$attribs = $this->getAttributes();
 		$columns = $this->getStructure()->getTableColumns($this->getTableName());
-		$profile = null; //array();
+		$profile = null;
 
 		foreach ($attribs as $key => $val)
 		{

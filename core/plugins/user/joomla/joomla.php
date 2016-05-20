@@ -70,7 +70,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 					// Look for user language. Priority:
 					//  1. User frontend language
 					//  2. User backend language
-					$userParams = new \Hubzero\Config\Registry($user['params']);
+					$userParams = new Hubzero\Config\Registry($user['params']);
 					$userLocale = $userParams->get('language', $userParams->get('admin_language', $defaultLocale));
 
 					if ($userLocale != $defaultLocale)
@@ -236,7 +236,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 			// Session doesn't exist yet, so create session variables
 			if ($session->isNew())
 			{
-				$session->set('registry', new Registry('session'));
+				$session->set('registry', new Hubzero\Config\Registry('session'));
 				$session->set('user', $instance);
 			}
 		}

@@ -242,5 +242,38 @@ if (!$surname)
 				<?php endif; ?>
 			</div>
 		</fieldset>
+
+		<?php
+		// Create a new form
+		$data = new Hubzero\Config\Registry();
+		$data->set('params', $this->profile->params->toArray());
+		$form = new Hubzero\Form\Form('fields', array('control' => 'fields'));
+		$form->load(Hubzero\Form\Form::getXML(Component::path('com_members') . DS . 'models' . DS . 'forms' . DS . 'user.xml', true));
+		$form->bind($data);
+
+		$fieldsets = $form->getFieldsets();
+
+		echo Html::sliders('start');
+
+		foreach ($fieldsets as $fieldset) :
+			if ($fieldset->name == 'user_details') :
+				continue;
+			endif;
+			echo Html::sliders('panel', Lang::txt($fieldset->label), $fieldset->name);
+			?>
+			<fieldset class="panelform">
+				<?php foreach ($form->getFieldset($fieldset->name) as $field): ?>
+					<?php if ($field->hidden): ?>
+						<?php echo $field->input; ?>
+					<?php else: ?>
+						<div class="input-wrap">
+							<?php echo $field->label; ?>
+							<?php echo $field->input; ?>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</fieldset>
+		<?php endforeach; ?>
+		<?php echo Html::sliders('end'); ?>
 	</div>
 </div>
