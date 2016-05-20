@@ -189,14 +189,33 @@ class CartMessenger
 			$action = false;
 			if ($productType == 'Course')
 			{
-				$action = ' Go to the course page at: ' .
+				$action = ' Go to the course page at: ';
 				$action .= Route::url('index.php?option=com_courses', true, -1) . $itemMeta['courseId'] . '/' . $itemMeta['offeringId'];
 			}
 			elseif ($productType == 'Software Download')
 			{
-				$action = ' Download at: ' .
+				$action = ' Download at: ';
 				$action .= Route::url('index.php?option=com_cart', true, -1) . 'download/' . $transactionInfo->tId . '/' . $itemInfo->sId;
-				if (isset($itemMeta['serial']) && !empty($itemMeta['serial']))
+
+				if ($itemMeta['serialManagement'] == 'multiple' && isset($itemMeta['serials']) && !empty($itemMeta['serials']))
+				{
+					$action .= "\n\t";
+					$action .= " Serial number";
+					if (count($itemMeta['serials']) > 1)
+					{
+						$action .= "s";
+					}
+					$action .= ': ';
+					foreach ($itemMeta['serials'] as $serial)
+					{
+						if (count($itemMeta['serials']) > 1)
+						{
+							$action .= '\n\t';
+						}
+						$action .= $serial;
+					}
+				}
+				elseif (isset($itemMeta['serial']) && !empty($itemMeta['serial']))
 				{
 					$action .= "\n\t";
 					$action .= " Serial number: " . $itemMeta['serial'];
