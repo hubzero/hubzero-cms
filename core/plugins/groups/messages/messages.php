@@ -441,13 +441,16 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		// set message details and send
 		$message->setSubject($subject)
-				->addFrom($from['email'], $from['name'])
-				->setTo($recipients)
-				->addPart($plain, 'text/plain')
-				->send();
+				->setFrom(array($from['email'] => $from['name']))
+				->addPart($plain, 'text/plain');
+
+		foreach ($recipients as $email => $name)
+		{
+			$message->setTo(array($email => $name))->send();
+		}
 
 		// add invite emails if sending to invitees
-		if ($action == 'group_invitees_message')
+		/*if ($action == 'group_invitees_message')
 		{
 			// Get invite emails
 			$db = App::get('db');
@@ -460,7 +463,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			{
 				mail($current_inviteemail, $subject, $message, $headers);
 			}
-		}
+		}*/
 
 		// Log the action
 		if ($action)
