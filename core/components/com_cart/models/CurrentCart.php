@@ -2011,8 +2011,13 @@ class CurrentCart extends Cart
 				$postSteps[] = $step;
 			}
 
-			// lock items
-			$warehouse->updateInventory($sId, $skuInfo['cartInfo']->qty, 'subtract');
+			// Reserve/lock items
+			require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+			$sku = \Components\Storefront\Models\Sku::getInstance($sId);
+			//print_r($sku); die;
+			$sku->reserveInventory($skuInfo['cartInfo']->qty);
+			$sku->save();
+			//$warehouse->updateInventory($sId, $skuInfo['cartInfo']->qty, 'reserve');
 		}
 
 		// populate items
@@ -2089,9 +2094,14 @@ class CurrentCart extends Cart
 		// lock transaction items
 		$warehouse = $this->warehouse;
 
+		require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+
 		foreach ($tItems as $sId => $item)
 		{
-			$warehouse->updateInventory($sId, $item['transactionInfo']->qty, 'subtract');
+			$sku = \Components\Storefront\Models\Sku::getInstance($sId);
+			$sku->reserveInventory($item['transactionInfo']->qty);
+			$sku->save();
+			//$warehouse->updateInventory($sId, $item['transactionInfo']->qty, 'subtract');
 		}
 
 		parent::updateTransactionStatus('pending', $this->cart->tId);

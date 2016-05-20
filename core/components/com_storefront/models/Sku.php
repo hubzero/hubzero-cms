@@ -445,6 +445,41 @@ class Sku
 		return $this->data->trackInventory;
 	}
 
+	public function reserveInventory($qty)
+	{
+		if (!$this->getTrackInventory() || $this->getTrackInventory() == 'DEFAULT')
+		{
+			// no tracking
+			return;
+		}
+		if (!is_numeric($qty))
+		{
+			throw new \Exception(Lang::txt('Bad inventory quantity value'));
+		}
+
+		if ($this->getInventoryLevel() < $qty)
+		{
+			throw new \Exception(Lang::txt('Cannot reserve more than current inventory'));
+		}
+
+		$this->setInventoryLevel($this->getInventoryLevel() - $qty);
+	}
+
+	public function releaseInventory($qty)
+	{
+		if (!$this->getTrackInventory() || $this->getTrackInventory() == 'DEFAULT')
+		{
+			// no tracking
+			return;
+		}
+		if (!is_numeric($qty))
+		{
+			throw new \Exception(Lang::txt('Bad inventory quantity value'));
+		}
+
+		$this->setInventoryLevel($this->getInventoryLevel() + $qty);
+	}
+
 	public function setInventoryLevel($inventoryLevel)
 	{
 		if (!is_numeric($inventoryLevel) && $inventoryLevel != 'DEFAULT')
@@ -624,6 +659,30 @@ class Sku
 	public function setOptions($options)
 	{
 		$this->data->options = $options;
+	}
+
+
+	// Static ----------------------------
+
+
+	public static function getInstance($sId)
+	{
+		$warehouse = new Warehouse();
+		$skuInfo = $warehouse->getSkuInfo($sId);
+		$productType = $warehouse->getProductTypeInfo($skuInfo['info']->ptId)['ptName'];
+
+		// Initialize the correct SKU based on the product type
+		if (!empty($productType) && $productType == 'Software Download')
+		{
+			require_once(__DIR__ . DS . 'SoftwareSku.php');
+			$sku = new \Components\Storefront\Models\SoftwareSku($sId);
+		}
+		else
+		{
+			$sku = new \Components\Storefront\Models\Sku($sId);
+		}
+
+		return($sku);
 	}
 
 }

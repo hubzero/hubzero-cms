@@ -35,9 +35,9 @@ class Membership_Model_Handler extends Model_Handler
 	 * @param 	void
 	 * @return 	void
 	 */
-	public function __construct($item, $crtId)
+	public function __construct($item, $crtId, $tId)
 	{
-		parent::__construct($item, $crtId);
+		parent::__construct($item, $crtId, $tId);
 	}
 
 	public function handle()

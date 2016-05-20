@@ -49,10 +49,11 @@ class CartProductHandler
 	 * @param	int				cart ID
 	 * @return 	void
 	 */
-	public function __construct($item, $crtId)
+	public function __construct($item, $crtId, $tId)
 	{
 		$this->item = $item;
 		$this->crtId = $crtId;
+		$this->tId = $tId;
 	}
 
 	/**
@@ -84,7 +85,7 @@ class CartProductHandler
 			// Include the handler file
 			include_once($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php');
 
-			$modelHandler = new $modelHandlerClass($this->item, $this->crtId);
+			$modelHandler = new $modelHandlerClass($this->item, $this->crtId, $this->tId);
 			$modelHandler->handle();
 		}
 
