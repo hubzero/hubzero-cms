@@ -262,6 +262,19 @@ class Collection
 	 */
 	public function verify()
 	{
+		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
+		$integrityCheck = \Integrity::collectionIntegrityCheck($this);
+
+		if ($integrityCheck->status != 'ok')
+		{
+			$errorMessage = "Integrity check error:";
+			foreach ($integrityCheck->errors as $error)
+			{
+				$errorMessage .= '<br>' . $error;
+			}
+			throw new \Exception($errorMessage);
+		}
+
 		if (empty($this->data->name))
 		{
 			throw new \Exception(Lang::txt('No collection name set'));
@@ -275,7 +288,7 @@ class Collection
 	}
 
 	/**
-	 * Add collection to the warehouse
+	 * Add collection to the warehouse TODO: Something tells me that this is not used. Check and kill this and the $warehouse->addCollection($this) method
 	 *
 	 * @param  void
 	 * @return object	info
@@ -310,6 +323,12 @@ class Collection
 	 */
 	public function save()
 	{
+		if ($this->getActiveStatus() && $this->getActiveStatus() != 'DEFAULT')
+		{
+			// verify if it gets published
+			$this->verify();
+		}
+
 		$db = \App::get('db');
 
 		$action = 'update';

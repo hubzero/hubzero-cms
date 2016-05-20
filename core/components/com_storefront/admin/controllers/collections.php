@@ -196,8 +196,7 @@ class Collections extends AdminController
 			}
 			$collection->setType('category');
 
-			// Make sure there are no integrity issues
-			$this->checkIntegrity($collection);
+			// Make sure there are no integrity issues TODO: move the integrity check to the collection verify method (same as SKU)
 			$collection->save();
 		}
 		catch (\Exception $e)
@@ -211,8 +210,8 @@ class Collections extends AdminController
 		{
 			// Redirect
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_STOREFRONT_COLLECTION_SAVED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_STOREFRONT_COLLECTION_SAVED')
 			);
 			return;
 		}
