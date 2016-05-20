@@ -49,6 +49,7 @@ use Lang;
 use App;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
 /**
  * Manage site members

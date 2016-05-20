@@ -42,6 +42,8 @@ use Html;
 use Lang;
 use App;
 
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php';
+
 /**
  * Manage resource types
  */
