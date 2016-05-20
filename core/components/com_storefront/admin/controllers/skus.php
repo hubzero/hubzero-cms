@@ -234,7 +234,6 @@ class Skus extends AdminController
 		}
 		catch (\Exception $e)
 		{
-			//\Notify::error($e->getMessage());
 			Notify::error($e->getMessage());
 			$this->editTask($sku);
 			return;

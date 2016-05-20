@@ -30,7 +30,7 @@
 
 namespace Components\Storefront\Admin\Controllers;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'serials.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Serials.php');
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
