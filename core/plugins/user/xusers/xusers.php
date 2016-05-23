@@ -391,15 +391,15 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			$xprofile->set('gidNumber', $params->get('gidNumber', '100'));
 			$xprofile->set('gid', $params->get('gid', 'users'));
 			$xprofile->set('uidNumber', $user['id']);
-			$xprofile->set('homeDirectory', $hubHomeDir . DS . $user['username']);
-			$xprofile->set('loginShell', '/bin/bash');
-			$xprofile->set('ftpShell', '/usr/lib/sftp-server');
+			$xprofile->set('homeDirectory', isset($user['homeDirectory']) ? $user['homeDirectory'] : $hubHomeDir . DS . $user['username']);
+			$xprofile->set('loginShell', isset($user['loginShell']) ? $user['loginShell'] : '/bin/bash');
+			$xprofile->set('ftpShell', isset($user['ftpShell']) ? $user['ftpShell'] : '/usr/lib/sftp-server');
 			$xprofile->set('name', $user['name']);
 			$xprofile->set('email', $user['email']);
-			$xprofile->set('emailConfirmed', '3');
 			$xprofile->set('username', $user['username']);
 			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
-			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
+			//$xprofile->set('emailConfirmed', '3');
+			$xprofile->set('emailConfirmed', isset($user['activation']) ? $user['activation'] : -rand(1, pow(2, 31)-1));
 			$xprofile->set('public', $params->get('privacy', 0));
 
 			if (isset($_SERVER['REMOTE_HOST']))

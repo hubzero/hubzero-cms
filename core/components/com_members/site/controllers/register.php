@@ -706,7 +706,59 @@ class Register extends SiteController
 
 				$user->set('username', $xregistration->get('login'));
 				$user->set('name', $xregistration->get('name'));
+				$user->set('givenName', $xregistration->get('givenName'));
+				$user->set('middleName', $xregistration->get('middleName'));
+				$user->set('surname', $xregistration->get('surname'));
 				$user->set('email', $xregistration->get('email'));
+				$user->set('sendEmail', -1);
+				if ($xregistration->get('sendEmail') >= 0)
+				{
+					$user->set('sendEmail', (int)$xregistration->get('sendEmail'));
+				}
+
+				// Set home directory
+				$hubHomeDir = rtrim($this->config->get('homedir'),'/');
+				if (!$hubHomeDir)
+				{
+					// try to deduce a viable home directory based on sitename or live_site
+					$sitename = strtolower(Config::get('sitename'));
+					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
+					$sitename = trim($sitename,'/ ');
+					$sitename_e = explode('.', $sitename, 2);
+					if (isset($sitename_e[1]))
+					{
+						$sitename = $sitename_e[0];
+					}
+					if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+					{
+						$sitename = '';
+					}
+					if (empty($sitename))
+					{
+						$sitename = strtolower(Request::base());
+						$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
+						$sitename = trim($sitename,'/ ');
+						$sitename_e = explode('.', $sitename, 2);
+						if (isset($sitename_e[1]))
+						{
+							$sitename = $sitename_e[0];
+						}
+						if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+						{
+							$sitename = '';
+						}
+					}
+
+					$hubHomeDir = DS . 'home';
+
+					if (!empty($sitename))
+					{
+						$hubHomeDir .= DS . $sitename;
+					}
+				}
+				$user->set('homeDirectory', $hubHomeDir . DS . $user->get('username'));
+				$user->set('loginShell', '/bin/bash');
+				$user->set('ftpShell', '/usr/lib/sftp-server');
 
 				// Set some initial user values
 				$user->set('id', 0);
@@ -726,6 +778,7 @@ class Register extends SiteController
 				}
 
 				$user->set('access', 5);
+				$user->set('activation', -rand(1, pow(2, 31)-1));
 
 				if (is_object($hzal))
 				{
@@ -733,16 +786,18 @@ class Register extends SiteController
 					{
 						$user->set('activation', 3);
 					}
-					else
+					/*else
 					{
 						$user->set('activation', -rand(1, pow(2, 31)-1));
-					}
+					}*/
 				}
 				else if ($useractivation == 0)
 				{
 					$user->set('activation', 1);
 					$user->set('access', $this->config->get('privacy', 1));
 				}
+
+				$user->set('password', \Hubzero\User\Password::getPasshash($xregistration->get('password')));
 
 				// Do we have a return URL?
 				$regReturn = Request::getVar('return', '');
