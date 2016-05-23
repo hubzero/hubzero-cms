@@ -141,9 +141,9 @@ class Entriesv1_0 extends ApiController
 				$obj->title     = $entry->get('title');
 				$obj->alias     = $entry->get('alias');
 				$obj->state     = $entry->get('state');
-				$obj->published = $entry->get('publish_up');
+				$obj->published = with(new Date($entry->get('publish_up')))->format('Y-m-d\TH:i:s\Z');
 				$obj->scope     = $entry->get('scope');
-				$obj->author    = $entry->creator()->get('name');
+				$obj->author    = $entry->creator->get('name');
 				$obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), DS));
 				$obj->comments  = $entry->comments()->whereIn('state', array(1, 3))->count();
 
@@ -298,6 +298,13 @@ class Entriesv1_0 extends ApiController
 			}
 		}
 
+		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
+		if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
+		{
+			$row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
+		}
+
 		$this->send($row->toObject());
 	}
 
@@ -324,6 +331,13 @@ class Entriesv1_0 extends ApiController
 		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
+		}
+
+		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
+		if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
+		{
+			$row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
 		}
 
 		$this->send($row->toObject());
@@ -489,6 +503,13 @@ class Entriesv1_0 extends ApiController
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
+		}
+
+		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
+		if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
+		{
+			$row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
 		}
 
 		$this->send($row->toObject());
