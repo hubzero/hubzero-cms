@@ -103,29 +103,32 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 
 		$groups = Hubzero\User\Helper::getGroups($member->get('id'), 'all', 1);
 
-		foreach ($groups as $item)
+		if ($groups)
 		{
-			if ($item->registered)
+			foreach ($groups as $item)
 			{
-				if (!$item->regconfirmed)
+				if ($item->registered)
 				{
-					$applicants[] = $item;
-				}
-				else
-				{
-					if ($item->manager)
+					if (!$item->regconfirmed)
 					{
-						$managers[] = $item;
+						$applicants[] = $item;
 					}
 					else
 					{
-						$members[] = $item;
+						if ($item->manager)
+						{
+							$managers[] = $item;
+						}
+						else
+						{
+							$members[] = $item;
+						}
 					}
 				}
-			}
-			else
-			{
-				$invitees[] = $item;
+				else
+				{
+					$invitees[] = $item;
+				}
 			}
 		}
 
