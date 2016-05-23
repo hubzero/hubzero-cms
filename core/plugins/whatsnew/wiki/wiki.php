@@ -115,6 +115,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 				$row->href  = Route::url($page->link());
 				$row->text  = strip_tags($page->version->get('pagehtml'));
 				$row->category = $page->get('scope');
+				$row->section = $this->_name;
 
 				$rows[] = $row;
 			}
