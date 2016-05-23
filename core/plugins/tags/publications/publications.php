@@ -116,7 +116,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
 
-		$filters['usergroups'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+		$filters['usergroups'] = \Hubzero\User\Helper::getGroups((int)User::get('id', 0), 'all');
 
 		$filters['select'] = 'count';
 
