@@ -91,7 +91,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
 		$addtl_where = array();
 
-		$gids = $this->_getGroupIds(User::get('id'));
+		$gids = $this->_getGroupIds((int)User::get('id', 0));
 
 		if (!User::authorise('core.view', 'com_forum'))
 		{

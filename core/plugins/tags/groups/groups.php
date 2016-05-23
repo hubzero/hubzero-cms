@@ -83,7 +83,7 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 
 		if (!User::authorise('core.view', 'com_groups'))
 		{
-			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . User::get('id');
+			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . (int)User::get('id', 0);
 		}
 
 		// Build the query

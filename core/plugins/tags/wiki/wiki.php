@@ -155,16 +155,16 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 		{
 			if (isset($filters['tags']))
 			{
-				$query = "SELECT COUNT(f.id) FROM (SELECT v.pageid AS id, COUNT(DISTINCT t.tagid) AS uniques ";
+				$query = "SELECT COUNT(f.id) FROM (SELECT v.page_id AS id, COUNT(DISTINCT t.tagid) AS uniques ";
 			}
 			else
 			{
-				$query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.pageid) ";
+				$query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.page_id) ";
 			}
 		}
 		else
 		{
-			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
+			$query = "SELECT v.page_id AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
 						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
 						CASE
 							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&scope=', w.path, '&pagename=', w.pagename)
@@ -180,19 +180,19 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 		}
 		$query .= "FROM #__wiki_pages AS w
 					INNER JOIN #__wiki_versions AS v ON v.id=w.version_id
-					LEFT JOIN `#__xgroups` xg ON xg.cn = w.group_cn";
+					LEFT JOIN `#__xgroups` xg ON xg.gidNumber = w.scope_id AND w.scope='group'";
 		if (isset($filters['tags']))
 		{
 			$query .= ", #__tags_object AS t ";
 		}
-		$query .= "WHERE w.id=v.pageid AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))";
+		$query .= "WHERE w.id=v.page_id AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))";
 		if (isset($filters['tags']))
 		{
 			$ids = implode(',', $filters['tags']);
 			$query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
 		}
 
-		$query .= "GROUP BY pageid ";
+		$query .= "GROUP BY page_id ";
 		if (isset($filters['tags']))
 		{
 			$query .= "HAVING uniques=" . count($filters['tags']) . " ";
