@@ -256,7 +256,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
                 "reference": "v4.5.0",
                 "shasum": ""
             },
@@ -300,7 +300,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebookarchive/facebook-php-sdk/zipball/bf99924386be074da30a8e9d6bbcb49d3333da12",
+                "url": "https://api.github.com/repos/facebookarchive/facebook-php-sdk/zipball/v3.2.2",
                 "reference": "v3.2.2",
                 "shasum": ""
             },
@@ -331,6 +331,7 @@
                 "facebook",
                 "sdk"
             ],
+            "abandoned": "facebook/php-sdk-v4",
             "time": "2013-01-15 21:37:15"
         },
         {
@@ -682,12 +683,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "ccf4f3ee6ededf09a529e8644e279b8f0d06d84e"
+                "reference": "f6230910ae9bb721687a0567f8d11683561bafd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/ccf4f3ee6ededf09a529e8644e279b8f0d06d84e",
-                "reference": "ccf4f3ee6ededf09a529e8644e279b8f0d06d84e",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/f6230910ae9bb721687a0567f8d11683561bafd4",
+                "reference": "f6230910ae9bb721687a0567f8d11683561bafd4",
                 "shasum": ""
             },
             "require": {
@@ -720,7 +721,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-05-11 14:39:36"
+            "time": "2016-05-20 12:20:27"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1165,7 +1166,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/82a67a1d3a9b18cba6dca86774ea4608a16d600d",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/193ee757ed8e6686e117df7142020e0b54cd1afd",
                 "reference": "193ee757ed8e6686e117df7142020e0b54cd1afd",
                 "shasum": ""
             },
@@ -1897,6 +1898,7 @@
                 "pdf417",
                 "qrcode"
             ],
+            "abandoned": "tecnickcom/tcpdf",
             "time": "2013-05-16 16:17:45"
         },
         {
