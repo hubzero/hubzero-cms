@@ -664,6 +664,7 @@ class Create extends SiteController
 			->set('usersgroups', $usersgroups)
 			->set('next_step', $this->step + 1)
 			->set('task', 'submit')
+			->set('resource', $row)
 			->set('progress', $this->progress)
 			->setErrors($this->getErrors())
 			->display();
@@ -1214,6 +1215,19 @@ class Create extends SiteController
 			return $this->step_review();
 		}
 
+		// Allow for any other validation
+		$results = Event::trigger('resources.onResourceBeforeSubmit', array($resource));
+
+		foreach ($results as $result)
+		{
+			if ($result)
+			{
+				$this->setError($result);
+				$this->_checkProgress($id);
+				return $this->step_review();
+			}
+		}
+
 		// Is this a newly submitted resource?
 		if (!$published)
 		{
@@ -1386,6 +1400,8 @@ class Create extends SiteController
 
 		// Save the resource
 		$resource->save();
+
+		Event::trigger('resources.onResourceAfterSubmit', array($resource));
 
 		// If a previously published resource, redirect to the resource page
 		if ($published == 1)
