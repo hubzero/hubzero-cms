@@ -39,11 +39,15 @@ defined('_HZEXEC_') or die;
 class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Finder before save content method
+	 * Before save content method
+	 *
 	 * Article is passed by reference, but after the save, so no changes will be saved.
 	 * Method is called right after the content is saved
 	 *
-	 * @param   string The context of the content passed to the plugin
+	 * @param   string  $context  The context of the content being passed to the plugin.
+	 * @param   object  $article  The article object.  Note $article->text is also available
+	 * @param   bool    $isNew
+	 * @return  void
 	 */
 	public function onContentBeforeSave($context, &$article, $isNew)
 	{
@@ -52,11 +56,26 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		$content = '';
+
 		$key = $this->_key($context);
 
-		$content = ltrim($article->get($key));
+		if ($article instanceof \Hubzero\Base\Object
+		 || $article instanceof \Hubzero\Database\Relational)
+		{
+			$content = $article->get($key);
+		}
+		else if (isset($article->$key))
+		{
+			$content = $article->$key;
+		}
 
-		if (!$content) return;
+		$content = ltrim($content);
+
+		if (!$content)
+		{
+			return;
+		}
 
 		// Is there a format already applied?
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
@@ -89,29 +108,53 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			$content = '<!-- {FORMAT:HTML} -->' . $content;
 		}
 
-		$article->set($key, $content);
+		if ($article instanceof \Hubzero\Base\Object
+		 || $article instanceof \Hubzero\Database\Relational)
+		{
+			$article->set($key, $content);
+		}
+		else
+		{
+			$article->$key = $content;
+		}
 	}
 
 	/**
 	 * Convert content to HTML
 	 *
-	 * @param  string $context The context of the content being passed to the plugin.
-	 * @param  object $article The article object.  Note $article->text is also available
-	 * @param  object $params  The article params
-	 * @param  int    $page    The 'page' number
+	 * @param  string  $context  The context of the content being passed to the plugin.
+	 * @param  object  $article  The article object.  Note $article->text is also available
+	 * @param  object  $params   The article params
+	 * @param  int     $page     The 'page' number
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		//if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		if ($context == 'com_content.article')
 		{
 			return;
 		}
 
+		$content = '';
+
 		$key = $this->_key($context);
 
-		$content = ltrim($article->get($key));
+		if ($article instanceof \Hubzero\Base\Object
+		 || $article instanceof \Hubzero\Database\Relational)
+		{
+			$content = $article->get($key);
+		}
+		else if (isset($article->$key))
+		{
+			$content = $article->$key;
+		}
 
-		if (!$content) return;
+		$content = ltrim($content);
+
+		if (!$content)
+		{
+			return;
+		}
 
 		// Is there a format already applied?
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
@@ -154,7 +197,15 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			$content = $parser->parse($content);
 		}
 
-		$article->set($key, $content);
+		if ($article instanceof \Hubzero\Base\Object
+		 || $article instanceof \Hubzero\Database\Relational)
+		{
+			$article->set($key, $content);
+		}
+		else
+		{
+			$article->$key = $content;
+		}
 	}
 
 	/**
@@ -182,12 +233,25 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 	 */
 	private function _key($context)
 	{
-		$parts = explode('.', $context);
 		$key = 'content';
-		if (isset($parts[2]))
+
+		if (!$context)
 		{
-			$key = $parts[2];
+			return $key;
 		}
+
+		$key = $context;
+
+		if (strstr($context, '.'))
+		{
+			$parts = explode('.', $context);
+
+			if (isset($parts[2]))
+			{
+				$key = $parts[2];
+			}
+		}
+
 		return $key;
 	}
 }
