@@ -1,0 +1,48 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_whatsnew/assets/css/whatsnew.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_whatsnew CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Item listing */
+	.entries .resource .title {
+		margin-right: 220px;
+	}
+	.com_whatsnew .container-block h3 {
+		font-size: 115%;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+		padding: 0 0 0.618em 0;
+		margin-bottom: 0;
+	}
+	.com_whatsnew .container-block h3 a.feed {
+		float: right;
+	}
+
+	.results .href {
+		margin: .5em 0 0 0;
+		padding: 0;
+		font-size: .85em;
+	}
+
+	.moreresults {
+		background-color: rgba(0, 0, 0, 0.05);
+		padding: 0.5em 1em;
+		margin: 0 0 30px 0;
+	}
+
+	ol.entries {
+		margin: 0;
+		padding: 0;
+	}
