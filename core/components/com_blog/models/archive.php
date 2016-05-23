@@ -101,10 +101,8 @@ class Archive extends Object
 	/**
 	 * Get a count of, model for, or list of entries
 	 *
-	 * @param   string   $rtrn     Data to return
-	 * @param   array    $filters  Filters to apply to data retrieval
-	 * @param   boolean  $reset    Clear cached data?
-	 * @return  mixed
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  object
 	 */
 	public function entries($filters = array())
 	{
