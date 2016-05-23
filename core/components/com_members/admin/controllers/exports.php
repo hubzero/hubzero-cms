@@ -33,7 +33,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Models\Member;
-use Components\Members\Models\Profile;
+use Components\Members\Models\Profile\Field;
 use Components\Members\Helpers\Permissions;
 use Hubzero\Component\AdminController;
 use User;
@@ -45,6 +45,7 @@ use App;
 defined('_HZEXEC_') or die();
 
 include_once (dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php');
+include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php');
 
 /**
  * Member exporter
@@ -88,49 +89,71 @@ class Exports extends AdminController
 	/**
 	 * Run Export
 	 *
-	 * @param   integer  $dryRun
 	 * @return  void
 	 */
 	public function runTask()
 	{
-		// Get request vars
-		$delimiter = Request::getVar('delimiter', array(0));
-		$id = 1010;
-		$members = Member::all();
-
-		$members_fields = array();
+		$skip = array('password', 'params', 'usertype');
 		$keys = array();
+		$tags = array();
 
-		//gather up member information
-		foreach ($members->rows() as $member)
+		$members = Member::blank();
+		$attribs = $members->getStructure()->getTableColumns($members->getTableName());
+
+		foreach ($attribs as $key => $desc)
 		{
-				$fields = $member->toArray();
-				unset($fields['password']);
-				unset($fields['params']);
-				$fields = array_merge($fields, Profile::collect($member->profiles()->rows()));
-				array_push($members_fields, $fields);
-				//list of fields will not always be static, so make sure we have all of them to align the CSV properly
-				foreach (array_keys($fields) as $key)
-				{
-					array_push($keys, $key);
-				}
+			if (in_array(strtolower($key), $skip))
+			{
+				continue;
+			}
+
+			array_push($keys, $key);
 		}
-		$keys = array_unique($keys);
+
+		$attribs = Field::all()
+			->ordered()
+			->rows();
+
+		foreach ($attribs as $attrib)
+		{
+			if ($attrib->get('type') == 'tags')
+			{
+				array_push($tags, $attrib->get('name'));
+			}
+			array_push($keys, $attrib->get('name'));
+		}
+
+
+		// Get request vars
+		$delimiter = Request::getVar('delimiter', ',');
+		//$id = 1010;
 
 		$csv = array();
 
-		foreach ($members_fields as $member)
+		// Gather up member information
+		foreach ($members->ordered()->rows() as $member)
 		{
 			$tmp = array();
+
 			foreach ($keys as $key)
 			{
-				if (isset($member[$key]))
+				if (in_array($key, $tags))
 				{
-					array_push($tmp, $member[$key]);
-				} else {
-					array_push($tmp, '');
+					$val = $member->tags('string');
 				}
+				else
+				{
+					$val = $member->get($key);
+				}
+
+				if (is_array($val))
+				{
+					$val = implode(';', $val);
+				}
+
+				$tmp[$key] = $val;
 			}
+
 			array_push($csv, $tmp);
 		}
 
