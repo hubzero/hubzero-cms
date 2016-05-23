@@ -96,51 +96,87 @@ class Comment extends Relational
 	);
 
 	/**
-	 * Return a formatted timestamp
+	 * Parses content string as directed
+	 *
+	 * @return  string
+	 */
+	public function transformContent()
+	{
+		$field = 'content';
+
+		$property = "_{$field}Parsed";
+
+		if (!isset($this->$property))
+		{
+			$params = array(
+				'option'   => $this->get('option', \Request::getCmd('option')),
+				'scope'    => $this->get('scope', 'blog'),
+				'pagename' => $this->get('alias'),
+				'pageid'   => 0,
+				'filepath' => $this->get('path'),
+				'domain'   => ''
+			);
+
+			$this->$property = Html::content('prepare', $this->get($field, ''), $params);
+		}
+
+		return $this->$property;
+	}
+
+	/**
+	 * Return a formatted timestamp for Created date
 	 *
 	 * @param   string  $as  What data to return
 	 * @return  string
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		if ($as)
+		{
+			return Date::of($this->get('created'))->toLocal($as);
+		}
+
+		return $this->get('created');
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Return a formatted timestamp for Modified date
 	 * 
-	 * @param   string   $as  What format to return
-	 * @return  boolean
+	 * @param   string  $as  What format to return
+	 * @return  string
 	 */
 	public function modified($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('modified');
-			break;
+			return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		if ($as)
+		{
+			return Date::of($this->get('modified'))->toLocal($as);
+		}
+
+		return $this->get('modified');
 	}
 
 	/**

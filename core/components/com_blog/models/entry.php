@@ -314,6 +314,12 @@ class Entry extends Relational
 	 */
 	public function creator()
 	{
+		if (file_exists(Component::path('com_members') . DS . 'models' . DS . 'member.php'))
+		{
+			include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
+			return $this->belongsToOne('Components\Members\Models\Member', 'created_by');
+		}
 		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
@@ -503,24 +509,24 @@ class Entry extends Relational
 	 */
 	public function published($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('publish_up'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				if ($as)
-				{
-					return Date::of($this->get('publish_up'))->toLocal($as);
-				}
-				return $this->get('publish_up');
-			break;
+			return Date::of($this->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('publish_up'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		if ($as)
+		{
+			return Date::of($this->get('publish_up'))->toLocal($as);
+		}
+
+		return $this->get('publish_up');
 	}
 
 	/**
@@ -541,6 +547,40 @@ class Entry extends Relational
 		}
 
 		return $this->params;
+	}
+
+	/**
+	 * Parses content string as directed
+	 *
+	 * @return  string
+	 */
+	public function transformContent()
+	{
+		$field = 'content';
+
+		$property = "_{$field}Parsed";
+
+		if (!isset($this->$property))
+		{
+			$published = Date::of($this->get('publish_up'));
+
+			$scope  = $published->toLocal('Y') . '/';
+			$scope .= $published->toLocal('m');
+
+			$params = array(
+				'filepath' => $this->adapter()->filespace(),
+				'option'   => $this->adapter()->get('option'),
+				'scope'    => $this->adapter()->get('scope') . '/' . $scope,
+				'pagename' => $this->get('alias'),
+				'pageid'   => 0,
+				'filepath' => $this->adapter()->get('path'),
+				'domain'   => ''
+			);
+
+			$this->$property = Html::content('prepare', $this->get($field, ''), $params);
+		}
+
+		return $this->$property;
 	}
 
 	/**
@@ -659,7 +699,7 @@ class Entry extends Relational
 	/**
 	 * Transforms a namespace to an object
 	 *
-	 * @return  object   An an object holding the namespace data
+	 * @return  object  An an object holding the namespace data
 	 */
 	public function toObject()
 	{
