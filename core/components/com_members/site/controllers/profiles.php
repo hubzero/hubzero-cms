@@ -483,7 +483,7 @@ class Profiles extends SiteController
 		}*/
 
 		// Check if the profile is public/private and the user has access
-		if (!in_array($profile->get('access'), User::getAuthorisedViewLevels()))
+		if (User::get('id') != $profile->get('id') && !in_array($profile->get('access'), User::getAuthorisedViewLevels()))
 		{
 			// Check if they're logged in
 			if (User::isGuest())
