@@ -162,7 +162,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$filters['tags'] = $tagids;
 		}
 
-		$filters['usergroups'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+		$filters['usergroups'] = \Hubzero\User\Helper::getGroups((int)User::get('id', 0), 'all');
 
 		// Get categories
 		$categories = $this->_cats;
