@@ -48,6 +48,8 @@ use Lang;
 use User;
 use Date;
 
+include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 /**
  * Feedback controller class
  */
@@ -193,7 +195,7 @@ class Feedback extends SiteController
 		$user = Member::oneOrNew(User::get('id'));
 
 		// Create the object if we weren't passed one
-		if ($row->get('id'))
+		if (!$row)
 		{
 			$row = Quote::oneOrNew(0);
 			$row->set('org', $user->get('organization'));
