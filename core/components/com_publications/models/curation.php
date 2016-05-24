@@ -2035,6 +2035,12 @@ class Curation extends Object
 		$licFile 	= $this->_pub->path('base', true) . DS . 'LICENSE.txt';
 		$readmeFile = $this->_pub->path('base', true) . DS . 'README.txt';
 
+		// File already exists.
+		if (file_exists($tarpath))
+		{
+			return true;
+		}
+
 		// Get attachment type model
 		$attModel = new Attachments($this->_db);
 
