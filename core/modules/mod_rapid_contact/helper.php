@@ -173,6 +173,10 @@ class Helper extends Module
 				{
 					$this->replacement = $this->page_text;
 				}
+
+				// Reset the message field
+				$this->posted['subject'] = '';
+				$this->posted['message'] = '';
 			}
 		}
 
