@@ -200,8 +200,18 @@ class Wish extends \JTable
 		{
 			require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
 
-			$tagging = new Tags($this->_db);
-			$tags = $tagging->parseTags($filters['tag']);
+			$tagging = new Tags(1, 'wishlist');
+
+			$tags = $filters['tag'];
+			if (is_string($tags))
+			{
+				$tags = trim($tags);
+				$tags = preg_split("/(,|;)/", $tags);
+			}
+			foreach ($tags as $k => $tag)
+			{
+				$tags[$k] = $tagging->normalize($tag);
+			}
 
 			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN ('" . implode("','", $tags) . "') OR TA.raw_tag IN ('" . implode("','", $tags) . "')))";
 			$sql .= " GROUP BY ws.id ";
