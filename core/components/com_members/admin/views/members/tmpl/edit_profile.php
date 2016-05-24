@@ -65,7 +65,7 @@ $fields = $form->getFieldset('basic');
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_MEMBERS_PROFILE'); ?></span></legend>
 
-			<?php foreach ($fields as $field): ?>
+			<?php /*foreach ($fields as $field): ?>
 				<?php
 				echo '<div class="input-wrap" id="input-' . $field->fieldname . '" ' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
 				echo $field->label;
@@ -76,7 +76,7 @@ $fields = $form->getFieldset('basic');
 				}
 				echo '</div>';
 				?>
-			<?php endforeach; ?>
+			<?php endforeach;*/ ?>
 		</fieldset>
 	</div>
 	<div class="col span5">
