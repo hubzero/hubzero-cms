@@ -38,27 +38,24 @@ $authors = 0;
 $tags = array();
 $state = 'pending';
 $type = '';
-if ($this->resource->id)
+if ($this->resource->get('id'))
 {
-	$database = App::get('db');
-	$ra = new \Components\Resources\Tables\Assoc($database);
-	$rc = new \Components\Resources\Tables\Contributor($database);
-	$rt = new \Components\Resources\Helpers\Tags($this->resource->id);
-
-	switch ($this->resource->published)
+	switch ($this->resource->get('published'))
 	{
 		case 1: $state = 'published';  break;  // published
 		case 2: $state = 'draft';      break;  // draft
 		case 3: $state = 'pending';    break;  // pending
+		case 0:
+		default: $state = 'unpublished';  break;  // unpublished
 	}
 
-	$type = $this->resource->getTypeTitle();
+	$type = $this->resource->type()->get('title', Lang::txt('COM_CONTRIBUTE_NONE'));
 
-	$attachments = $ra->getCount($this->resource->id);
+	$attachments = $this->resource->children()->total();
 
-	$authors = $rc->getCount($this->resource->id, 'resources');
+	$authors =  $this->resource->authors()->total();
 
-	$tags = $rt->tags('count');
+	$tags = $this->resource->tags()->count();
 }
 
 
