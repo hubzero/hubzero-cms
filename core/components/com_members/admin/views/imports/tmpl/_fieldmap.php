@@ -83,26 +83,20 @@ if ($this->import->get('id')) { ?>
 								<option value="surname" <?php if ($mapping['field'] == 'surname') { echo 'selected="selected"'; } ?>>surname</option>
 							</optgroup>
 							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_PROFILE'); ?>">
-								<option value="bio" <?php if ($mapping['field'] == 'bio') { echo 'selected="selected"'; } ?>>bio</option>
-								<option value="organization" <?php if ($mapping['field'] == 'organization') { echo 'selected="selected"'; } ?>>organization</option>
-								<option value="orgtype" <?php if ($mapping['field'] == 'orgtype') { echo 'selected="selected"'; } ?>>orgtype</option>
-								<option value="phone" <?php if ($mapping['field'] == 'phone') { echo 'selected="selected"'; } ?>>phone</option>
-								<option value="public" <?php if ($mapping['field'] == 'public') { echo 'selected="selected"'; } ?>>public</option>
-								<option value="url" <?php if ($mapping['field'] == 'url') { echo 'selected="selected"'; } ?>>url</option>
-								<option value="orcid" <?php if ($mapping['field'] == 'orcid') { echo 'selected="selected"'; } ?>>orcid</option>
-								<option value="interests" <?php if ($mapping['field'] == 'interests') { echo 'selected="selected"'; } ?>>interests</option>
-								<option value="reason" <?php if ($mapping['field'] == 'reason') { echo 'selected="selected"'; } ?>>reason</option>
-								<option value="picture" <?php if ($mapping['field'] == 'picture') { echo 'selected="selected"'; } ?>>picture</option>
-								<option value="vip" <?php if ($mapping['field'] == 'vip') { echo 'selected="selected"'; } ?>>vip</option>
-							</optgroup>
-							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_DEMOGRAPHICS'); ?>">
-								<option value="countryresident" <?php if ($mapping['field'] == 'countryresident') { echo 'selected="selected"'; } ?>>countryresident</option>
-								<option value="countryorigin" <?php if ($mapping['field'] == 'countryorigin') { echo 'selected="selected"'; } ?>>countryorigin</option>
-								<option value="gender" <?php if ($mapping['field'] == 'gender') { echo 'selected="selected"'; } ?>>gender</option>
-								<option value="disability" <?php if ($mapping['field'] == 'disability') { echo 'selected="selected"'; } ?>>disability</option>
-								<option value="race" <?php if ($mapping['field'] == 'race') { echo 'selected="selected"'; } ?>>race</option>
-								<option value="hispanic" <?php if ($mapping['field'] == 'hispanic') { echo 'selected="selected"'; } ?>>hispanic</option>
-								<option value="nativeTribe" <?php if ($mapping['field'] == 'nativeTribe') { echo 'selected="selected"'; } ?>>nativeTribe</option>
+								<?php
+								include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
+
+								$fields = Components\Members\Models\Profile\Field::all()
+									->ordered()
+									->rows();
+
+								foreach ($fields as $field)
+								{
+									?>
+									<option value="<?php echo $field->get('name'); ?>" <?php if ($mapping['field'] == $field->get('name')) { echo 'selected="selected"'; } ?>><?php echo $field->get('name'); ?></option>
+									<?php
+								}
+								?>
 							</optgroup>
 						</select>
 					</td>

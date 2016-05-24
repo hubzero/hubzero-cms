@@ -33,6 +33,7 @@
 namespace Components\Members\Models;
 
 use Components\Members\Models\Import\Record;
+use Components\Members\Models\Profile\Field;
 use Hubzero\Content\Import\Model\Import as Base;
 use Hubzero\Content\Importer;
 use stdClass;
@@ -98,46 +99,11 @@ class Import extends Base
 			'login',
 			'userlogin',
 		),
-		'phone' => array(
-			'phone',
-			'cell',
-			'cellphone',
-			'telephone',
-			'workphone',
-		),
-		'gender' => array(
-			'gender',
-			'sex',
-		),
-		'orcid' => array(
-			'orcid',
-		),
-		'public' => array(
+		'access' => array(
 			'public',
 			'publicprofile',
 			'access',
 			'visibility',
-		),
-		'organization' => array(
-			'org',
-			'organization',
-			'organisation',
-			'company',
-		),
-		'orgtype' => array(
-			'orgtype',
-			'organizationtype',
-			'organisationtype',
-			'companytype',
-			'employertype',
-			'employmenttype',
-		),
-		'url' => array(
-			'url',
-			'website',
-			'webpage',
-			'site',
-			'homepage',
 		),
 		'interests' => array(
 			'tags',
@@ -147,33 +113,6 @@ class Import extends Base
 			'likes',
 			'keyword',
 			'keywords',
-		),
-		'bio' => array(
-			'bio',
-			'biography',
-			'about',
-		),
-		'race' => array(
-			'race',
-			'racial',
-			'ethnicity',
-			'ethnic',
-		),
-		'hispanic' => array(
-			'hispanic',
-			'latin',
-			'latino',
-		),
-		'nativeTribe' => array(
-			'nativetribe',
-			'tribe',
-			'nativeamericantribe',
-			'indiantribe',
-		),
-		'disability' => array(
-			'disability',
-			'disabled',
-			'handicap',
 		),
 		'note' => array(
 			'note',
@@ -222,21 +161,6 @@ class Import extends Base
 			'passwrd',
 			'memberpassword',
 		),
-		'countryresident' => array(
-			'countryresident',
-			'resident',
-			'residence',
-			'residency',
-			'country',
-		),
-		'countryorigin' => array(
-			'countryorigin',
-			'origin',
-			'birthplace',
-			'birthcountry',
-			'citizenship',
-			'citizen',
-		),
 		'sendEmail' => array(
 			'mailpreferenceoption',
 			'mailpreference',
@@ -255,6 +179,84 @@ class Import extends Base
 			'emailconfirm',
 			'activation',
 		),
+		/* @deprecated
+		'countryresident' => array(
+			'countryresident',
+			'resident',
+			'residence',
+			'residency',
+			'country',
+		),
+		'countryorigin' => array(
+			'countryorigin',
+			'origin',
+			'birthplace',
+			'birthcountry',
+			'citizenship',
+			'citizen',
+		),
+		'bio' => array(
+			'bio',
+			'biography',
+			'about',
+		),
+		'race' => array(
+			'race',
+			'racial',
+			'ethnicity',
+			'ethnic',
+		),
+		'hispanic' => array(
+			'hispanic',
+			'latin',
+			'latino',
+		),
+		'nativeTribe' => array(
+			'nativetribe',
+			'tribe',
+			'nativeamericantribe',
+			'indiantribe',
+		),
+		'disability' => array(
+			'disability',
+			'disabled',
+			'handicap',
+		),
+		'organization' => array(
+			'org',
+			'organization',
+			'organisation',
+			'company',
+		),
+		'orgtype' => array(
+			'orgtype',
+			'organizationtype',
+			'organisationtype',
+			'companytype',
+			'employertype',
+			'employmenttype',
+		),
+		'phone' => array(
+			'phone',
+			'cell',
+			'cellphone',
+			'telephone',
+			'workphone',
+		),
+		'gender' => array(
+			'gender',
+			'sex',
+		),
+		'orcid' => array(
+			'orcid',
+		),
+		'url' => array(
+			'url',
+			'website',
+			'webpage',
+			'site',
+			'homepage',
+		),
 		'reason' => array(
 			'reason',
 			'reasonforaccount',
@@ -271,9 +273,10 @@ class Import extends Base
 			'photo',
 		),
 		'vip' => array(
+			'vip',
 			'veryimportantperson',
 			'veryimportant',
-		),
+		),*/
 		'locked' => array(
 			'locked',
 			'lock',
@@ -473,7 +476,7 @@ class Import extends Base
 				'field' => ''
 			);
 
-			foreach ($this->_fieldMap as $column => $aliases)
+			foreach ($this->fieldMap() as $column => $aliases)
 			{
 				if (in_array($norm, $aliases))
 				{
@@ -486,5 +489,38 @@ class Import extends Base
 		}
 
 		return $mapping;
+	}
+
+	/**
+	 * Map custom fields
+	 *
+	 * @return  array
+	 */
+	public function fieldMap()
+	{
+		if (!$this->mapped)
+		{
+			include_once __DIR__ . DS . 'profile' . DS . 'field.php';
+
+			$fields = Field::all()
+				->ordered()
+				->rows();
+
+			foreach ($fields as $field)
+			{
+				if (isset($this->_fieldMap[$field->get('name')]))
+				{
+					continue;
+				}
+
+				$this->_fieldMap[$field->get('name')] = array(
+					$field->get('name'),
+					strtolower($field->get('name')),
+					preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name'))
+				);
+			}
+		}
+
+		return $this->_fieldMap;
 	}
 }
