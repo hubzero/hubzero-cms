@@ -425,6 +425,29 @@ foreach ($profiles as $profile)
 					$value = $value ?: $this->profile->get($field->get('name'));
 				}
 
+				if (is_array($value))
+				{
+					foreach ($value as $k => $v)
+					{
+						if (strstr($v, '{'))
+						{
+							$v = json_decode((string)$v, true);
+
+							if (!$v|| json_last_error() !== JSON_ERROR_NONE)
+							{
+								continue;
+							}
+
+							foreach ($v as $nm => $vl)
+							{
+								$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+							}
+
+							$value[$k] = implode('<br />', $v);
+						}
+					}
+				}
+
 				if (empty($value))
 				{
 					$cls[] = ($isUser) ? 'hidden' : 'hide';
@@ -441,6 +464,11 @@ foreach ($profiles as $profile)
 							if ($field->get('type') == 'tags')
 							{
 								$value = $this->profile->tags('string');
+							}
+							if ($field->get('type') == 'address')
+							{
+								$value = $profile->get('profile_value');
+								$value = $value ?: $this->profile->get($field->get('name'));
 							}
 							$formfield = $form->getField($field->get('name'));
 							$formfield->setValue($value);
