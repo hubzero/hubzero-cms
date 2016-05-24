@@ -50,7 +50,7 @@ $data = new Hubzero\Config\Registry(
 	Components\Members\Models\Profile::collect($this->profile->profiles()->ordered()->rows())
 );
 $data->set('tags', $this->profile->tags('string'));
-
+print_R($data);
 // Create a new form
 Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
 
