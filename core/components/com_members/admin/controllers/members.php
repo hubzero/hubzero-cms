@@ -577,7 +577,7 @@ class Members extends AdminController
 
 		foreach ($profile as $key => $data)
 		{
-			if (isset($profile[$key . '_other']))
+			if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
 			{
 				if (is_array($profile[$key]))
 				{
