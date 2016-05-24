@@ -352,6 +352,11 @@ class Member extends User
 
 				foreach ($data as $val)
 				{
+					if (is_array($val) || is_object($val))
+					{
+						$val = json_encode($val);
+					}
+
 					$val = trim($val);
 
 					// Skip empty values
