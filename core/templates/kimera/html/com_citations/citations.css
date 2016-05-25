@@ -1,0 +1,14 @@
+@import url("../../../../../core/components/com_citations/site/assets/css/citations.css");
+
+	#content-header .content-header-left h2 {
+		padding: 0;
+	}
+	.citation-author {
+		padding:0 0 15px 0;
+	}
+	.citation-citation {
+		margin: 0 0 30px 0;
+	}
+	.citation-abstract {
+		padding:0 0 20px 0;
+	}
