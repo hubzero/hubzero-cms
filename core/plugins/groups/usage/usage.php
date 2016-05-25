@@ -45,6 +45,33 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * Loads the plugin language file
+	 *
+	 * @param   string   $extension  The extension for which a language file should be loaded
+	 * @param   string   $basePath   The basepath to use
+	 * @return  boolean  True, if the file has successfully loaded.
+	 */
+	public function loadLanguage($extension = '', $basePath = PATH_APP)
+	{
+		if (empty($extension))
+		{
+			$extension = 'plg_' . $this->_type . '_' . $this->_name;
+		}
+
+		$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+		if ($group && $group->isSuperGroup())
+		{
+			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
+		}
+
+		$lang = \App::get('language');
+		return $lang->load(strtolower($extension), $basePath, null, false, true)
+			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
+			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
+			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+	}
+
+	/**
 	 * Return the alias and name for this category of content
 	 *
 	 * @return  array
