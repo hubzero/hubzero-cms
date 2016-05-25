@@ -68,7 +68,7 @@ $this->css()
 				if ($component->name != $sheader)
 				{
 					$sheader = $component->name;
-					$lang->load($component->name);
+					Lang::load($component->name);
 
 					$display_header = Lang::hasKey($component->name) ? Lang::txt($component->name) : ucfirst(str_replace('com_', '', $component->name));
 				?>
