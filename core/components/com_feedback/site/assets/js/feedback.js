@@ -39,11 +39,10 @@ jQuery(document).ready(function(jq){
 				running++;
 			},
 			onComplete: function (e, data, response) {
-				console.log(response.toString());
 				running--;
 
 				var newImageDom = document.createElement('img');
-				newImageDom.src = '/' + response.directory + '/' + response.file;
+				newImageDom.src = response.directory + '/' + response.file;
 				newImageDom.width = '100';
 				newImageDom.height = '100';
 
