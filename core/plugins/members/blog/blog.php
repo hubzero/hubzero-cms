@@ -183,9 +183,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		if (User::get('id') != $member->get('id'))
+		if (User::get('id') == $member->get('id'))
 		{
-			$filters['authorized'] = $member->get('id');
+			$filters['authorized'] = true;
 		}
 
 		// Get an entry count

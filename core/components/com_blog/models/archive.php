@@ -179,8 +179,11 @@ class Archive extends Object
 		}
 
 		$results->resetDepth();
-		$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
-					->orWhere('publish_down', '>=', Date::toSql(), 1);
+		if (!isset($filters['authorized']) || !$filters['authorized'])
+		{
+			$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+						->orWhere('publish_down', '>=', Date::toSql(), 1);
+		}
 
 		if (isset($filters['search']) && $filters['search'])
 		{
