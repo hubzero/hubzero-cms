@@ -64,7 +64,7 @@ class Queries extends AdminController
 	public function displayTask()
 	{
 		// Get paging variables
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
@@ -93,25 +93,23 @@ class Queries extends AdminController
 		$obj = new Query($this->database);
 
 		// Record count
-		$this->view->total = $obj->find('count', $this->view->filters);
+		$total = $obj->find('count', $filters);
 
 		// Fetch results
-		$this->view->rows  = $obj->find('list', $this->view->filters);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$rows  = $obj->find('list', $filters);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
 	 * Create a new record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -121,7 +119,7 @@ class Queries extends AdminController
 	/**
 	 * Display a form for adding/editing a record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -171,7 +169,7 @@ class Queries extends AdminController
 	/**
 	 * Create a new record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
