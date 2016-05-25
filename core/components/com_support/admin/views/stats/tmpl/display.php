@@ -475,7 +475,7 @@ $base = rtrim($base, '/');
 					if ($z == 1)
 					{
 						?>
-						</div><!-- / .col width-50 fltlft -->
+						</div><!-- / .col span6 -->
 						<div class="col span6">
 						<?php
 					}
@@ -483,8 +483,9 @@ $base = rtrim($base, '/');
 					{
 						$z = 0;
 						?>
-						</div><!-- / .col width-50 fltrt -->
-						</div>
+						</div><!-- / .col span6 -->
+						</div><!-- / .grid -->
+						<div class="grid">
 						<div class="col span6">
 						<?php
 					}
