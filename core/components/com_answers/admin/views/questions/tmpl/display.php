@@ -95,7 +95,7 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-1"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ANSWERS', 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-1"><?php echo Lang::txt('COM_ANSWERS_COL_ANSWERS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
