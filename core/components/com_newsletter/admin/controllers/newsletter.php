@@ -851,6 +851,21 @@ class Newsletter extends AdminController
 		{
 			foreach ($newsletterContacts as $contact)
 			{
+				// get tracking & unsubscribe token
+				$recipient = new stdClass;
+				$recipient->email = $contact;
+				$recipient->mailingid = ($newsletterMailinglist ? $newsletterMailinglist : -1);
+
+				$emailToken = \Components\Newsletter\Helpers\Helper::generateMailingToken($recipient);
+
+				// create unsubscribe link
+				$unsubscribeMailtoLink = '';
+				$unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . urlencode($contact) . '&t=' . $emailToken;
+
+				// add unsubscribe link - placeholder & in header (must do after adding tracking!!)
+				$mailHtmlBody  = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $mailHtmlBody);
+				$mailPlainBody = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $mailPlainBody);
+
 				// create new message
 				$message = new \Hubzero\Mail\Message();
 
