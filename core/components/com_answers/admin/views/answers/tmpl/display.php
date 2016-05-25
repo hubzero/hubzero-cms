@@ -121,6 +121,7 @@ function submitbutton(pressbutton)
 					$cls = 'published';
 				break;
 				case 0:
+				default:
 					$task = 'accept';
 					$alt = Lang::txt('COM_ANSWERS_STATE_UNACCEPTED');
 					$cls = 'unpublished';
