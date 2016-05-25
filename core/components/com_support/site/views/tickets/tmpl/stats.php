@@ -591,7 +591,7 @@ function getMonthName($month)
 					$closeddata = implode(',', $c);
 				}
 				$anon = 0;
-				$profile = Components\Members\Models\Member::oneOrNew($user->id);
+				$profile = User::getInstance($user->id);
 				if (!$profile)
 				{
 					$anon = 1;
