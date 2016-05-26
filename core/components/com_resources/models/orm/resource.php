@@ -335,12 +335,24 @@ class Resource extends Relational
 	 *
 	 * @return  string
 	 */
-	public function tags()
+	public function tags($as = 'list')
 	{
 		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php');
 
 		$cloud = new Tags($this->get('id'));
-		return $cloud->tags();
+		if ($as == 'list')
+		{
+			$tags = array();
+			foreach ($cloud->tags() as $tag)
+			{
+				array_push($tags, $tag->tag);
+			}
+			return $tags;
+		}
+		else
+		{
+			return $cloud->tags();
+		}
 	}
 
 	/**
