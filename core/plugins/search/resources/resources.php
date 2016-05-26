@@ -33,6 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Resources\Models\Orm\Resource;
+
+require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+
 /**
  * Short description for 'ResourceChildSorter'
  *
@@ -286,6 +290,157 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 		foreach ($rows as $row)
 		{
 			$results->add($row);
+		}
+	}
+
+/************************************************
+ *
+ * HubSearch Required Methods
+ * @author Kevin Wojkovich <kevinw@purdue.edu>
+ *
+ ***********************************************/
+
+	/****************************
+	Query-time / General Methods
+	****************************/
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'resource';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	public function onGetModel($type = '')
+	{
+		if ($type == 'resource')
+		{
+			return new Resource;
+		}
+	}
+	/*********************
+		Index-time methods
+	*********************/
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row)
+	{
+		if ($type == 'resource')
+		{
+			/*
+			// Determine the author of the Entry
+			$owner = User::getInstance($row->created_by);
+			$authorArr = array();
+			array_push($authorArr, $user->name);
+			*/
+
+			// Instantiate new $fields object
+			$fields = new stdClass;
+
+			// Calculate Permissions
+
+			/** @FIXME legacy access values
+			/*  0 - Public
+			/*	1 - Registered
+			/*  2 - Special
+			/*  3 - Protected
+			/*  4 - Private
+			****************************************/
+
+			// Public condition
+			if ($row->state == 1 && $row->access == 0 && $row->standalone == 1)
+			{
+				$fields->access_level = 'public';
+			}
+			// Registered condition
+			elseif ($row->state == 1 && $row->access == 1 && $row->standalone == 1)
+			{
+				$fields->access_level = 'registered';
+			}
+			// Default private
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			// Who is the owner
+			if (isset($row->group_owner) && $row->scope != 'group')
+			{
+				$fields->owner_type = 'group';
+				$fields->owner = $row->group_owner;
+			}
+			else
+			{
+				$fields->owner_type = 'user';
+				$fields->owner = $row->created_by;
+			}
+
+			// Build out path
+			$path = '/resources/';
+			if (isset($row->alias) && $row->alias != '')
+			{
+				$path .= $row->alias;
+			}
+			else
+			{
+				$path .= $row->id;
+			}
+
+			$fields->url = $path;
+
+			// Extract author names
+			$authors  = array();
+			foreach ($row->authors() as $author)
+			{
+				array_push($authors, $author->name);
+			}
+			$fields->author = $authors;
+
+			$fields->tags = $row->tags('list');
+
+			$fields->title = $row->title;
+			$fields->alias = $row->alias;
+
+			$abstract = $row->introtext;
+			$abstract = html_entity_decode($abstract);
+			$abstract = strip_tags($abstract);
+			$fields->abstract = $abstract;
+
+			$fulltext = $row->fulltxt;
+			$fulltext = html_entity_decode($fulltext);
+			$fields->fulltext = $fulltext;
+
+			// Format the date for SOLR
+			$date = Date::of($row->publish_up)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			$fields->description = $abstract;
+			$fields->doi = $row->master_doi;
+
+			return $fields;
 		}
 	}
 }
