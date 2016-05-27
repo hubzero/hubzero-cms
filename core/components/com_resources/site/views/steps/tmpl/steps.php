@@ -50,10 +50,8 @@ if ($this->resource->get('id'))
 	}
 
 	$attachments = $this->resource->children()->total();
-
 	$authors =  $this->resource->authors()->total();
-
-	$tags = $this->resource->tags()->count();
+	$tags = count($this->resource->tags());
 }
 ?>
 <div class="meta-container">
