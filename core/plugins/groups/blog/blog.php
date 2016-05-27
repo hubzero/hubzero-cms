@@ -247,7 +247,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		// Import needed libraries
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-		$tbl = \Components\Blog\Models\Entry::all()
+		$entries = \Components\Blog\Models\Entry::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $group->get('gidNumber'))
 			->rows();
