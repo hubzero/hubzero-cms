@@ -52,6 +52,11 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 				'label'  => Lang::txt('PLG_CRON_STOREFRONT_NOTIFY_PUBLISH'),
 				'params' => 'notifyPublishParams'
 			),
+			array(
+				'name'   => 'cleanTransactions',
+				'label'  => Lang::txt('PLG_CRON_STOREFRONT_CLEAN_TRANSACTIONS'),
+				'params' => ''
+			)
 		);
 
 		return $obj;
@@ -174,5 +179,18 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Clean old unused expired transactions.
+	 *
+	 * @param   object  $job  \Components\Cron\Models\Job
+	 * @return  bool
+	 */
+	public function cleanTransactions(\Components\Cron\Models\Job $job)
+	{
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+
+		\Components\Cart\Models\Cart::killExpiredTransactions();
 	}
 }
