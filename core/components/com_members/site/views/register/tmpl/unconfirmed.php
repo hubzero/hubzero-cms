@@ -51,6 +51,6 @@ $this->css('register')
 	</div><!-- / .subject -->
 	<aside class="aside">
 		<h4>Never received or cannot find the confirmation email?</h4>
-		<p>You can have a new confirmation email sent to "<?php echo $this->escape($this->email); ?>" by <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resend&return=' . $this->return); ?>">clicking here</a>.</p>
+		<p>You can have a new confirmation email sent to "<?php echo $this->escape($this->email); ?>" by <a href="<?php echo Route::url('index.php?option=com_members'&controller=register&task=resend&return=' . $this->return); ?>">clicking here</a>.</p>
 	</aside><!-- / .aside -->
 </section><!-- / .section -->

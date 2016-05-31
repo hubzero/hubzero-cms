@@ -1436,21 +1436,21 @@ class Register extends SiteController
 			}
 
 			//check to see if we have a return param
-			$pReturn = base64_decode(urldecode($profile->getParam('return')));
+			$pReturn = base64_decode(urldecode($xprofile->getParam('return')));
 			if ($pReturn)
 			{
 				$return = $pReturn;
-				$profile->setParam('return','');
+				$xprofile->setParam('return','');
 			}
 
 			// make as confirmed
-			$profile->set('activation', 1);
+			$xprofile->set('activation', 1);
 
 			// set public setting
-			$profile->set('access', $this->config->get('privacy', 1));
+			$xprofile->set('access', $this->config->get('privacy', 1));
 
 			// upload profile
-			if (!$profile->save())
+			if (!$xprofile->save())
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_CONFIRMING'));
 			}
