@@ -30,6 +30,7 @@
 
 namespace Components\Storefront\Admin\Controllers;
 
+use Components\Storefront\Models\Sku;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Product;
@@ -156,7 +157,20 @@ class Skus extends AdminController
 
 			// Get correct SKU instance
 			$pId = Request::getVar('pId');
-			$row = $this->instantiateSkuForProduct($id, $pId);
+
+			if ($id)
+			{
+				$row = Sku::getInstance($id);
+			}
+			elseif ($pId)
+			{
+				// create new SKU
+				$row = Sku::newInstance($pId);
+			}
+			else
+			{
+				throw new \Exception('SKU was not found');
+			}
 			$this->view->row = $row;
 		}
 
@@ -223,9 +237,17 @@ class Skus extends AdminController
 		}
 		//print_r($fields); die;
 
-		// Get the proper SKU
 		$pId = Request::getVar('pId');
-		$sku = $this->instantiateSkuForProduct($fields['sId'], $pId);
+		// Get the proper SKU
+		if ($fields['sId'])
+		{
+			$sku = Sku::getInstance($fields['sId']);
+		}
+		elseif ($pId)
+		{
+			// create new SKU
+			$sku = Sku::newInstance($pId);
+		}
 
 		// Save SKU
 		$obj = new Archive();
@@ -324,7 +346,7 @@ class Skus extends AdminController
 						// Delete SKU
 						try
 						{
-							$sku = $this->instantiateSkuForProduct($sId, $pId);
+							$sku = Sku::getInstance($sId);
 							$sku->delete();
 						}
 						catch (\Exception $e)
@@ -404,7 +426,7 @@ class Skus extends AdminController
 			// Save SKU
 			try
 			{
-				$sku = $this->instantiateSkuForProduct($sId, $pId);
+				$sku = Sku::getInstance($sId);
 				$obj->updateSku($sku, array('state' => $state));
 			}
 			catch (\Exception $e)
@@ -468,48 +490,6 @@ class Skus extends AdminController
 		App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0), false)
 		);
-	}
-
-	/**
-	 * Instantiate the correct Sku for a given product
-	 *
-	 * @return     StorefrontModelProduct
-	 */
-	private function instantiateSkuForProduct($sId, $pId)
-	{
-		$warehouse = new Warehouse();
-
-		// If existing SKU, load the SKU, find the product, get the product type
-		if ($sId)
-		{
-			$skuInfo = $warehouse->getSkuInfo($sId);
-			$productType = $warehouse->getProductTypeInfo($skuInfo['info']->ptId)['ptName'];
-		}
-		// For the new SKU load the product the SKU is being created for, get the product type
-		else {
-			$product = new Product($pId);
-			$productType = $warehouse->getProductTypeInfo($product->getType())['ptName'];
-		}
-
-		// Initialize the correct SKU based on the product type
-		if (!empty($productType) && $productType == 'Software Download')
-		{
-			require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'SoftwareSku.php');
-			$sku = new \Components\Storefront\Models\SoftwareSku($sId);
-		}
-		else
-		{
-			require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Sku.php');
-			$sku = new \Components\Storefront\Models\Sku($sId);
-		}
-
-		// If this is a new SKU, set the product ID
-		if (!$sId)
-		{
-			$sku->setProductId($pId);
-		}
-
-		return $sku;
 	}
 }
 

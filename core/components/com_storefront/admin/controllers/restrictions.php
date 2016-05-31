@@ -37,7 +37,7 @@ use Components\Storefront\Models\Sku;
 use Components\Storefront\Admin\Helpers\RestrictionsHelper;
 
 /**
- * Controller class for knowledge base categories
+ * Controller class
  */
 class Restrictions extends AdminController
 {
@@ -57,7 +57,7 @@ class Restrictions extends AdminController
 		$this->view->sId = $sId;
 
 		// Get SKU
-		$sku = new Sku($sId);
+		$sku = Sku::getInstance($sId);
 		$this->view->sku = $sku;
 
 		// Get filters
@@ -87,8 +87,6 @@ class Restrictions extends AdminController
 					'int'
 			)
 		);
-
-		//print_r($this->view->filters); die;
 
 		RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
 

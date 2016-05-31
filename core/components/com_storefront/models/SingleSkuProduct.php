@@ -36,7 +36,7 @@ require_once(__DIR__ . DS . 'Warehouse.php');
 
 /**
  *
- * Storefront course product class
+ * Storefront single sku product class
  *
  */
 class SingleSkuProduct extends Product

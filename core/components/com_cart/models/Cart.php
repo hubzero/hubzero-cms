@@ -361,7 +361,8 @@ abstract class Cart
 		// Check quantity: must be a positive integer or zero
 		if (!CartHelper::isNonNegativeInt($qty))
 		{
-			throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
+			//throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
+			throw new \Exception('Product quantity is incorrect');
 		}
 		elseif ($qty == 0 && !$retainOldValue)
 		{
@@ -372,7 +373,8 @@ abstract class Cart
 				return;
 			}
 			else {
-				throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
+				//throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
+				throw new \Exception('Product quantity is incorrect');
 			}
 		}
 
@@ -404,7 +406,8 @@ abstract class Cart
 		if (empty($allSkuInfo))
 		{
 			Lang::load('com_storefront', Component::path('com_storefront') . DS . 'site');
-			throw new \Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
+			//throw new \Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
+			throw new \Exception('Requested product could not be found. Please check your selection');
 		}
 
 		$skuInfo = $allSkuInfo['info'];
@@ -451,7 +454,8 @@ abstract class Cart
 			}
 			// Don't allow purchasing multiple SKUs for those that are not allowed
 			if (!$skuInfo->sAllowMultiple && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))) {
-				throw new \Exception($skuName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+				//throw new \Exception($skuName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+				throw new \Exception($skuName . " is already in the cart and cannot be added multiple times");
 			}
 
 			// Make sure there is enough inventory
@@ -460,12 +464,14 @@ abstract class Cart
 				// See if qty can be added
 				if ($qty > $skuInfo->sInventory)
 				{
-					throw new \Exception(Lang::txt('COM_CART_NOT_ENOUGH_INVENTORY'));
+					//throw new \Exception(Lang::txt('COM_CART_NOT_ENOUGH_INVENTORY'));
+					throw new \Exception('You are trying to add too many products to your cart. We do not have enough inventory.');
 				}
 				elseif (!empty($skuCartInfo->crtiQty) && ($qty + $skuCartInfo->crtiQty > $skuInfo->sInventory))
 				{
 					// This is how much they can add: $skuInfo->sInventory - $skuCartInfo->crtiQty
-					throw new \Exception(Lang::txt('COM_CART_ADD_TOO_MANY_CART'));
+					//throw new \Exception(Lang::txt('COM_CART_ADD_TOO_MANY_CART'));
+					throw new \Exception('You are trying to add too many products to your cart. You already have this product in your cart.');
 				}
 			}
 		}
@@ -516,7 +522,6 @@ abstract class Cart
 		// keep the qty value if syncing
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$this->_db->query();
 	}
 

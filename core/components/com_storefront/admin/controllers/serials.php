@@ -55,7 +55,7 @@ class Serials extends AdminController
 		$this->view->sId = $sId;
 
 		// Get SKU
-		$sku = new Sku($sId);
+		$sku = Sku::getInstance($sId);
 		$this->view->sku = $sku;
 
 		// Get filters

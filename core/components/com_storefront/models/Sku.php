@@ -758,8 +758,33 @@ class Sku
 	{
 		$warehouse = new Warehouse();
 		$skuInfo = $warehouse->getSkuInfo($sId);
+
+		if (!$skuInfo)
+		{
+			return false;
+		}
+
 		$productType = $warehouse->getProductTypeInfo($skuInfo['info']->ptId)['ptName'];
 
+		$sku = self::getProperInstance($productType, $sId);
+
+		return($sku);
+	}
+
+	public static function newInstance($pId)
+	{
+		$warehouse = new Warehouse();
+		$product = new Product($pId);
+		$productType = $warehouse->getProductTypeInfo($product->getType())['ptName'];
+
+		$sku = self::getProperInstance($productType);
+		$sku->setProductId($pId);
+
+		return($sku);
+	}
+
+	private static function getProperInstance($productType, $sId = false)
+	{
 		// Initialize the correct SKU based on the product type
 		if (!empty($productType) && $productType == 'Software Download')
 		{
@@ -773,5 +798,6 @@ class Sku
 
 		return($sku);
 	}
+
 
 }
