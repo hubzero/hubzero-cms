@@ -245,7 +245,7 @@ $this->css('pipeline.css')
 						<fieldset>
 							<legend><?php echo Lang::txt('COM_TOOLS_ADMIN_CONTROLS');?></legend>
 
-							<div class="admin actions grid">
+							<div class="admin grid">
 								<div class="col span3" id="createtool"><a class="icon-create btn admincall" data-action-txt="<?php echo Lang::txt('Creating tool project area...'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=addrepo&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO');?></a></div>
 								<div class="col span3" id="installtool"><a class="icon-install btn admincall" data-action-txt="<?php echo Lang::txt('Installing tool...'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=install&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL');?></a></div>
 								<div class="col span3" id="publishtool"><a class="icon-publish btn admincall" data-action-txt="<?php echo Lang::txt('Publishing tool...'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=publish&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH');?></a></div>
