@@ -459,20 +459,17 @@ class CurrentCart extends Cart
 		// Get transaction info
 		$tInfo = $this->getTransactionData();
 
-		if (!$tInfo || $tInfo->tAge > $this->transactionKillAge)
-		{
-			// No transaction found
-			return false;
-		}
-
 		// Only pending and released transactions can be lifted
 		if ($tInfo->tStatus != 'pending' && $tInfo->tStatus != 'released')
 		{
 			return false;
 		}
 
+		$params =  Component::params('com_cart');
+		$transactionTTL = ($params->get('transactionTTL'));
+
 		// See if transaction is expired
-		if ($tInfo->tAge > $this->transactionTTL)
+		if ($tInfo->tAge > $transactionTTL)
 		{
 			// If transaction has not yet been processed as expired (status is still 'pending') release the transaction
 			if ($tInfo->tStatus == 'pending')

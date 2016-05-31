@@ -68,8 +68,6 @@ class Cart extends ComponentController
 	{
 		$cart = new CurrentCart();
 
-		//print_r($this); die;
-
 		// Initialize errors array
 		$errors = array();
 

@@ -33,6 +33,7 @@ HUBzero is a registered trademark of Purdue University.
     <fieldset name="basic">
         <field name="storeAdminId" type="text" menu="hide" default="1000" label="Store administrator ID" description="Numeric ID" size="50" />
         <field name="sendNotificationTo" type="text" menu="hide" default="" label="Send notifications to" description="Comma-separated list of email addresses" size="50" />
+        <field name="transactionTTL" type="text" menu="hide" default="" label="Transaction TTL" description="Time in minutes the cart items stay reserved until they get released back to inventory and transaction is killed" size="5" />
     </fieldset>
     <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
         <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_storefront" section="component" />

@@ -53,12 +53,6 @@ abstract class Cart
 	// Debug mode
 	var $debug = false;
 
-	// TODO: Move to config
-	// Transaction time to live: TTL -- transaction active
-	var $transactionTTL = 60;    // 1 hour
-	// Transaction kill age -- age at which transaction gets deleted forever
-	var $transactionKillAge = 43200; // 30 days
-
 	protected static $securitySalt = 'ERDCVcvk$sad!ccsso====++!w';
 
 	/**
@@ -985,5 +979,33 @@ abstract class Cart
 		$sql = "DELETE FROM `#__cart_transaction_steps` WHERE `tId` = {$tId}";
 		$db->setQuery($sql);
 		$db->query();
+	}
+
+	/**
+	 * Kill all expired transactions
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public static function killExpiredTransactions()
+	{
+		$db = \App::get('db');
+		$params =  Component::params('com_cart');
+		$transactionTTL = ($params->get('transactionTTL'));
+
+
+		$sql = "SELECT t.tId
+				FROM `#__cart_transactions` t
+				WHERE t.`tStatus` = 'pending' OR t.`tStatus` = 'released' AND TIMESTAMPDIFF(MINUTE, t.`tLastUpdated`, NOW()) > {$transactionTTL}";
+
+		$db->setQuery($sql);
+		$db->query();
+		$tIds = $db->loadColumn();
+
+		foreach ($tIds as $tId)
+		{
+			self::releaseTransaction($tId);
+			self::killTransaction($tId);
+		}
 	}
 }
