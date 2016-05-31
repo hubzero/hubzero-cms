@@ -226,6 +226,7 @@ jQuery(document).ready(function($) {
 		
 		options.axes.xaxis.rendererOptions = {tickRenderer: $.jqplot.CanvasAxisTickRenderer};
 		options.axes.yaxis.rendererOptions = {tickRenderer: $.jqplot.CanvasAxisTickRenderer};
+		options.axes.xaxis.tickOptions = {angle: -30};
 
 		plot = draw(data, options);
 
