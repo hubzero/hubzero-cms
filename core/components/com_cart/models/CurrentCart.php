@@ -467,7 +467,7 @@ class CurrentCart extends Cart
 		}
 
 		// Only pending and released transactions can be lifted
-		if ($tInfo->tStatus != 'pending' && $tInfo->tStatus != 'released')
+		if (!$tInfo || ($tInfo->tStatus != 'pending' && $tInfo->tStatus != 'released'))
 		{
 			return false;
 		}

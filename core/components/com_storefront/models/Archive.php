@@ -3,8 +3,10 @@
 namespace Components\Storefront\Models;
 
 use Components\Storefront\Models\Warehouse;
+use Components\Storefront\Models\Sku;
 
 require_once(__DIR__ . DS . 'Warehouse.php');
+require_once(__DIR__ . DS . 'Sku.php');
 
 /**
 * Archive model. Interface between admin and Warehouse
@@ -197,30 +199,6 @@ class Archive extends \Hubzero\Base\Object
 				$this->_products = new \Hubzero\Base\ItemList($results);
 				return $this->_products;
 		}
-	}
-
-	public function sku($sId)
-	{
-		$warehouse = new Warehouse();
-
-		if ($sId)
-		{
-			$skuInfo = $warehouse->getSkuInfo($sId);
-			$productType = $warehouse->getProductTypeInfo($skuInfo['info']->ptId)['ptName'];
-		}
-
-		// Initialize the correct SKU
-		if (!empty($productType) && $productType == 'Software Download')
-		{
-			require_once(__DIR__ . DS . 'SoftwareSku.php');
-			$sku = new SoftwareSku($sId);
-		}
-		else
-		{
-			require_once(__DIR__ . DS . 'Sku.php');
-			$sku = new Sku($sId);
-		}
-		return $sku;
 	}
 
 	/**
