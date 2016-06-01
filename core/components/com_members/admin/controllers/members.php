@@ -257,7 +257,7 @@ class Members extends AdminController
 					break;
 			}
 
-			if ($range == 'post_year')
+			if ($filters['range'] == 'post_year')
 			{
 				$entries->where($a . '.registerDate', '<', $dStart->format('Y-m-d H:i:s'));
 			}
