@@ -501,24 +501,19 @@ class Profiles extends SiteController
 		// Check if unconfirmed
 		if ($profile->get('activation') < 1 && !User::authorise('core.manage', $this->_option))
 		{
-			// Check if the user is logged in
-			if (User::isGuest())
-			{
-				$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
-				App::redirect(
-					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-					Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_CONFIRM'),
-					'warning'
+			//App::abort(403, Lang::txt('COM_MEMBERS_NOT_CONFIRMED'));
+			$rtrn = Request::getVar('REQUEST_URI', Route::url($profile->link()), 'server');
+			/*
+			App::redirect(
+					Route::url('index.php?option=com_members&controller=member&task=unconfirmed&return=' . base64_encode($rtrn))
 				);
-				return;
-			}
-
+				*/
 			// Prep vars for unconfirmed page
 			$return = Request::getVar('return', urlencode('/'));
 			$this->view->title    = Lang::txt('COM_MEMBERS_REGISTER_UNCONFIRMED');
 			$this->view->email = $profile->get('email');
 			$this->view->sitename = Config::get('sitename');
-			$this->view->return = $return;
+			$this->view->return = urlencode($rtrn);
 
 			// Offer explaination and eternal redemption to the user, instead of leaving them high and dry
 			$this->view
@@ -526,7 +521,7 @@ class Profiles extends SiteController
 				->setName('register')
 				->setLayout('unconfirmed')
 				->display();
-				return;
+			return;
 		}
 
 		// Check for name

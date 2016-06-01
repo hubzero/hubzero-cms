@@ -1163,14 +1163,15 @@ class Register extends SiteController
 		$xprofile = User::getInstance();
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
-		$email_confirmed = $xprofile->get('activation');
+		$email_confirmed = $xprofile->get('emailConfirmed');
 
 		// Incoming
 		$return = urldecode(Request::getVar('return', '/'));
 
+		// If already confirmed?
 		if ($email_confirmed == 1 || $email_confirmed == 3)
 		{
-			App::redirect(urlencode($return));
+			App::redirect($return);
 		}
 
 		$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
@@ -1381,7 +1382,7 @@ class Register extends SiteController
 	}
 
 	/**
-	 * Conform user's registration code
+	 * Confirm user's registration code
 	 *
 	 * @return  void
 	 */
