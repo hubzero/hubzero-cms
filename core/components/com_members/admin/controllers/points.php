@@ -321,7 +321,7 @@ class Points extends AdminController
 
 			$BT = Transaction::blank()->set($data);
 
-			if (!Transaction::save())
+			if (!$BT->save())
 			{
 				App::abort(500, $row->getError());
 				return;
