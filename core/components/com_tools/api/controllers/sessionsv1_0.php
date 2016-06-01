@@ -1254,4 +1254,115 @@ class Sessionsv1_0 extends ApiController
 			$this->send($object);
 		}
 	}
+
+	/**
+	 * Method to setup Windows filesharing connection
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{sessionid}/fileshare
+	 * @apiParameter {
+	 * 		"name":          "sessionid",
+	 * 		"description":   "Tool session identifier",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "username",
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "ip",
+	 * }
+	 * @return     void
+	 *
+	 *
+	 *
+	 * @TODO: This is just a rough draft. needs a little polishing.
+	 *
+	 */
+	public function fileshareTask()
+	{
+		//$this->requiresAuthentication();
+
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
+
+		//instantiate middleware database object
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+
+		//get any request vars
+		$username  = Request::getVar('username');
+		$sessionid = Request::getVar('id');
+		$private_ip  = Request::getVar('private_ip');
+		$public_ip  = Request::getVar('public_ip', \Request::ip());
+
+		//check to make sure we have a valid sessionid
+		if ($sessionid == '' || !is_numeric($sessionid))
+		{
+			throw new Exception(Lang::txt('No session ID Specified.'), 401);
+		}
+
+		//load session
+		$ms = new \Components\Tools\Tables\Session($mwdb);
+		$sess = $ms->loadSession($sessionid);
+
+		$command = "/usr/bin/sudo /usr/bin/hzappstream --remote 128.46.19.124 fileshare add $username $sessionid $public_ip $private_ip --ipsec-use-default-psk";
+		$command = escapeshellcmd($command);
+
+		$descriptorspec = array(
+		    0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+		    1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+		    2 => array("pipe", "w")   // stderr is a pipe that the child with write to
+		);
+
+		$process = proc_open($command, $descriptorspec, $pipes, "/", NULL);
+
+		if (is_resource($process))
+		{
+			// $pipes now looks like this:
+			// 0 => writeable handle connected to child stdin
+			// 1 => readable handle connected to child stdout
+			// Any error output will be appended to /tmp/error-output.txt
+
+			fclose($pipes[0]);
+			$output = stream_get_contents($pipes[1]);
+			fclose($pipes[1]);
+
+			$error = stream_get_contents($pipes[2]);
+			fclose($pipes[2]);
+
+			// It is important that you close any pipes before calling
+			// proc_close in order to avoid a deadlock
+
+			$return_value = proc_close($process);
+
+			$output = strstr($output, '{');
+			$joutput = json_decode($output);
+
+			$object = array(
+			    'fileserver'   => '128.46.19.124',
+			    'username'     => $username,
+			    'session'      => $sessionid,
+			    'ipsec_ip1'    => $public_ip,
+			    'ipsec_ip2'    => $private_ip,
+			    'smb_username' => 'smb-' . $sessionid
+			);
+
+			$object['smb_password'] = $joutput->smb_password;
+		}
+		else
+		{
+			$object = array(
+			    'fileserver'   => '128.46.19.124',
+			    'username'     => $username,
+			    'session'      => $sessionid,
+			    'ipsec_ip1'    => $public_ip,
+			    'ipsec_ip2'    => $private_ip,
+			    'ipsec_password' => NULL,
+			    'smb_username' => 'smb-' . $sessionid,
+			    'smb_password' => NULL
+			);
+		}
+		$this->send($object);
+	}
 }
