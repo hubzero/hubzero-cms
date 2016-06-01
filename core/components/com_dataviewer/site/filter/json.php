@@ -313,7 +313,7 @@ function filter($res, $dd)
 								$pub_vid = str_pad($pub_vid, 5, '0', STR_PAD_LEFT);
 							}
 
-							$link = "/site/publications/$pub_id/$pub_vid/data/";
+							$link = "/app/site/publications/$pub_id/$pub_vid/data/";
 
 							$pi = pathinfo($val);
 
