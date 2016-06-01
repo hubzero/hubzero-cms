@@ -394,8 +394,7 @@ class Shop extends SiteController
 		$this->view->items = $item->getCartItems(User::get('id'));
 
 		// Output HTML
-		$this->view->xprofile = new Profile;
-		$this->view->xprofile->load(User::get('id'));
+		$this->view->xprofile = \Hubzero\User::getInstance();
 		$this->view->posted = array();
 
 		foreach ($this->getErrors() as $error)
@@ -653,8 +652,7 @@ class Shop extends SiteController
 		$this->view->funds = $funds;
 		$this->view->items = $items;
 		$this->view->infolink = $this->infolink;
-		$this->view->xprofile = new Profile;
-		$this->view->xprofile->load(User::get('id'));
+		$this->view->xprofile = User::getInstance();
 
 		foreach ($this->getErrors() as $error)
 		{

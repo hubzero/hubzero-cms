@@ -76,7 +76,7 @@ defined('_HZEXEC_') or die();
 ?>
 			<tr>
 				<td rowspan="6">
-					<img src="<?php echo '..' . $this->path . DS . $this->file; ?>" alt="<?php echo Lang::txt('COM_STORE_PICTURE'); ?>" id="conimage" width="100" />
+					<img src="<?php echo DS . trim(substr(PATH_APP, strlen(PATH_ROOT)), DS) . $this->path . DS . $this->file; ?>" alt="<?php echo Lang::txt('COM_STORE_PICTURE'); ?>" id="conimage" width="100" />
 				</td>
 				<td><?php echo Lang::txt('COM_STORE_FILE'); ?>:</td>
 				<td><?php echo $this->file; ?></td>
