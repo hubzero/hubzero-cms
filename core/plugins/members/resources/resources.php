@@ -344,6 +344,10 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		{
 			$row->publish_up = $row->created;
 		}
+		if (!isset($row->area))
+		{
+			$row->area = '';
+		}
 
 		// Set the display date
 		switch ($rparams->get('show_date', $config->get('show_date')))
