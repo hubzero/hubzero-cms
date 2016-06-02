@@ -209,10 +209,10 @@ if (!$this->sub)
 				<input type="hidden" name="comment[created]" value="<?php echo $this->escape($this->mycomment->get('created')); ?>" />
 				<input type="hidden" name="comment[id]" value="<?php echo $this->escape($this->mycomment->get('id')); ?>" />
 				<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($this->mycomment->get('created_by')); ?>" />
-				<input type="hidden" name="comment[status]" value="<?php echo $this->escape($this->mycomment->get('status', 1)); ?>" />
+				<input type="hidden" name="comment[state]" value="<?php echo $this->escape($this->mycomment->get('state', 1)); ?>" />
 				<input type="hidden" name="comment[version]" value="<?php echo $this->escape($this->mycomment->get('version')); ?>" />
 				<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->mycomment->get('parent')); ?>" />
-				<input type="hidden" name="comment[page_id]" value="<?php echo $this->escape($this->mycomment->get('page_id')); ?>" />
+				<input type="hidden" name="comment[page_id]" value="<?php echo $this->escape($this->mycomment->get('page_id', $this->page->get('id'))); ?>" />
 
 				<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
 

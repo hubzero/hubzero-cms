@@ -31,6 +31,7 @@
 
 namespace Components\Wiki\Models;
 
+use Components\Wiki\Helpers\Parser;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Request;
@@ -102,6 +103,16 @@ class Comment extends Relational
 	}
 
 	/**
+	 * Defines a belongs to one relationship between comment and page
+	 *
+	 * @return  object
+	 */
+	public function page()
+	{
+		return $this->belongsToOne('Components\Wiki\Models\Page', 'page_id');
+	}
+
+	/**
 	 * Return a formatted timestamp
 	 *
 	 * @param   string  $as
@@ -122,9 +133,9 @@ class Comment extends Relational
 			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
 
-		if ($format)
+		if ($as)
 		{
-			return Date::of($this->get('created'))->toLocal($format);
+			return Date::of($this->get('created'))->toLocal($as);
 		}
 
 		return $this->get('created');
@@ -202,7 +213,7 @@ class Comment extends Relational
 	 * @param   integer  $shorten  Number of characters to shorten text to
 	 * @return  string
 	 */
-	/*public function content($as='parsed', $shorten=0)
+	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
 		$options = array();
@@ -210,33 +221,31 @@ class Comment extends Relational
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('content.parsed', null);
-
-				if ($content === null)
+				if ($this->get('chtml'))
 				{
-					$config = array(
-						'option'   => 'com_kb',
-						'scope'    => '',
-						'pagename' => $this->get('article'),
-						'pageid'   => $this->get('id'),
-						'filepath' => '',
-						'domain'   => ''
-					);
-
-					$content = (string) stripslashes($this->get('content', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('content.parsed', (string) $this->get('content', ''));
-					$this->set('content', $content);
-
-					return $this->content($as, $shorten);
+					return $this->get('chtml');
 				}
 
-				$options['html'] = true;
+				$parser = Parser::getInstance();
+
+				$parsed = $parser->parse(stripslashes($this->get('ctext')), array(
+					'option'   => Request::getCmd('option', 'com_wiki'),
+					'scope'    => Request::getVar('scope'),
+					'pagename' => Request::getVar('pagename'),
+					'pageid'   => $this->get('page_id'),
+					'filepath' => '',
+					'domain'   => Request::getVar('group', '')
+				));
+
+				$this->set('chtml', $parsed);
+
+				if ($shorten)
+				{
+					$content = String::truncate($this->get('chtml'), $shorten, array('html' => true));
+					return $content;
+				}
+
+				return $this->get('chtml');
 			break;
 
 			case 'clean':
@@ -245,8 +254,7 @@ class Comment extends Relational
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->get('content'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+				$content = $this->get('ctext');
 			break;
 		}
 
@@ -254,8 +262,53 @@ class Comment extends Relational
 		{
 			$content = String::truncate($content, $shorten, $options);
 		}
+
 		return $content;
-	}*/
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param   string  $type  The type of link to return
+	 * @return  boolean
+	 */
+	public function link($type='')
+	{
+		if (!isset($this->base))
+		{
+			$this->base = $this->page->link() . '&' . ($this->page->get('scope_id') ? 'action' : 'task');
+		}
+
+		$link = $this->base;
+
+		// If it doesn't exist or isn't published
+		switch (strtolower($type))
+		{
+			case 'edit':
+				$link .= '=editcomment&comment=' . $this->get('id');
+			break;
+
+			case 'delete':
+				$link .= '=removecomment&comment=' . $this->get('id');
+			break;
+
+			case 'reply':
+				$link .= '=addcomment&parent=' . $this->get('id');
+			break;
+
+			case 'report':
+				$link = 'index.php?option=com_support&task=reportabuse&category=wikicomment&id=' . $this->get('id') . '&parent=' . $this->get('pageid');
+			break;
+
+			case 'permalink':
+			default:
+				$link .= '=comments#c' . $this->get('id');
+			break;
+		}
+
+		return $link;
+	}
 
 	/**
 	 * Delete the record and all associated data

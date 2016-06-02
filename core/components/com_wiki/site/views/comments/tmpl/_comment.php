@@ -39,6 +39,8 @@ if ($this->page->get('created_by') == $this->comment->get('created_by'))
 }
 $cls .= ($this->comment->isReported()) ? ' abusive' : '';
 
+$this->comment->base = $this->page->link() . '&' . ($this->page->get('scope_id') ? 'action' : 'task');
+
 $name = Lang::txt('COM_WIKI_ANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
@@ -151,7 +153,7 @@ $this->comment->set('category', 'answercomment');
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="comment[version]" value="<?php echo $this->page->version->get('version'); ?>" />
-						<input type="hidden" name="comment[status]" value="1" />
+						<input type="hidden" name="comment[state]" value="1" />
 
 						<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
 

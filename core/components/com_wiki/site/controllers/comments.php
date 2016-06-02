@@ -195,6 +195,7 @@ class Comments extends SiteController
 			->set('sub', $this->page->get('scope') != 'site')
 			->set('mycomment', $mycomment)
 			->set('version', $version)
+			->set('config', $this->config)
 			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
