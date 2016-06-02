@@ -47,15 +47,18 @@ class Course extends SingleSkuProduct
 	 * @param  void
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($pId = false)
 	{
-		parent::__construct();
+		parent::__construct($pId);
 
-		// Set type course
-		$this->setType('course');
+		if (!$pId)
+		{
+			// Set type course
+			$this->setType('course');
 
-		// Override SKU
-		$this->setSku(new CourseOffering());
+			// Override SKU
+			$this->setSku(new CourseOffering());
+		}
 	}
 
 	/**

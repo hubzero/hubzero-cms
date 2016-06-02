@@ -605,9 +605,9 @@ class Products extends AdminController
 
 		// Redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				$message,
-				$type
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+			$message,
+			$type
 		);
 	}
 
@@ -620,7 +620,7 @@ class Products extends AdminController
 	{
 		// Set the redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 		);
 	}
 }

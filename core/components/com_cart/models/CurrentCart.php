@@ -33,6 +33,7 @@ use Components\Cart\Models\Cart;
 use Components\Cart\Helpers\CartHelper;
 use Hubzero\Base\Model;
 use User;
+use Components\Storefront\Models\Product;
 
 require_once 'Cart.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
@@ -1992,9 +1993,10 @@ class CurrentCart extends Cart
 			// if soft, check if EULA is needed
 			if ($productInfo->ptModel == 'software')
 			{
-				$productMeta = $warehouse->getProductMeta($skuInfo['info']->pId);
+				$eulaRequired = Product::getMetaValue($skuInfo['info']->pId, 'eulaRequired');
+
 				// If EULA is needed, add step, note the EULA required for each SKU, so for multiple SKUs of the same product, multiple EULA will be required
-				if (!empty($productMeta['eulaRequired']) && $productMeta['eulaRequired']->pmValue)
+				if ($eulaRequired)
 				{
 					$step = new \stdClass();
 					$step->name = 'eula';
@@ -2016,8 +2018,6 @@ class CurrentCart extends Cart
 			$sku = \Components\Storefront\Models\Sku::getInstance($sId);
 			//print_r($sku); die;
 			$sku->reserveInventory($skuInfo['cartInfo']->qty);
-			$sku->save();
-			//$warehouse->updateInventory($sId, $skuInfo['cartInfo']->qty, 'reserve');
 		}
 
 		// populate items
@@ -2100,7 +2100,6 @@ class CurrentCart extends Cart
 		{
 			$sku = \Components\Storefront\Models\Sku::getInstance($sId);
 			$sku->reserveInventory($item['transactionInfo']->qty);
-			$sku->save();
 			//$warehouse->updateInventory($sId, $item['transactionInfo']->qty, 'subtract');
 		}
 

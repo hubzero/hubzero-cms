@@ -868,8 +868,6 @@ abstract class Cart
 				$qty = $itemInfo['transactionInfo']->qty;
 				$sku = \Components\Storefront\Models\Sku::getInstance($sId);
 				$sku->releaseInventory($qty);
-				$sku->save();
-				//$warehouse->updateInventory($sId, $qty, 'add');
 			}
 		}
 		// update status

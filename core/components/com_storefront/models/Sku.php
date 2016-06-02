@@ -54,8 +54,6 @@ class Sku
 	 */
 	public function __construct($sId = false)
 	{
-		$this->db = \App::get('db');
-
 		$this->data = new \stdClass();
 		if (isset($sId) && is_numeric($sId) && $sId)
 		{
@@ -311,49 +309,8 @@ class Sku
 
 	public function save()
 	{
-		if ($this->getActiveStatus() && $this->getActiveStatus() != 'DEFAULT')
-		{
-			// verify SKU if it gets published
-			$this->verify();
-		}
-
-		// If no sID set -- this is a new SKU -- create a new record
-		$sId = $this->getId();
-		if (!$sId)
-		{
-			$sql = "INSERT INTO `#__storefront_skus` SET ";
-		}
-		// If sId is set -- update the existing SKU
-		else
-		{
-			$sql = "UPDATE `#__storefront_skus` SET ";
-		}
-
-		$sql .= "	`pId` = " . $this->getProductId() . ",
-					`sSku` = " . $this->db->quote($this->getName()) . ",
-					`sPrice` = " . $this->db->quote($this->getPrice()) . ",
-					`sAllowMultiple` = " . $this->getAllowMultiple() . ",
-					`sTrackInventory` = " . $this->getTrackInventory() . ",
-					`sInventory` = " . $this->getInventoryLevel() . ",
-					`sEnumerable` = " . $this->getEnumerable() . ",
-					`publish_up` = " . $this->db->quote($this->getPublishTime()->publish_up) . ",
-					`publish_down` = " . $this->db->quote($this->getPublishTime()->publish_down) . ",
-					`sRestricted` = " . $this->getRestricted() . ",
-					`sActive` = " . $this->getActiveStatus();
-
-		if (!empty($sId))
-		{
-			$sql .= " WHERE `sId` = " . $this->db->quote($sId);
-		}
-
-		$this->db->setQuery($sql);
-		//print_r($this->db->toString());
-		$this->db->query();
-		if (empty($sId))
-		{
-			$sId = $this->db->insertid();
-			$this->setId($sId);
-		}
+		$db = \App::get('db');
+		$sId = $this->saveBase();
 
 		// Do SKU meta (if any)
 		$skuMeta = $this->getMeta();
@@ -366,27 +323,27 @@ class Sku
 			foreach ($skuMeta as $k => $v)
 			{
 				$sql = "SET @skuMetaId := 0";
-				$this->db->setQuery($sql);
-				$this->db->query();
+				$db->setQuery($sql);
+				$db->query();
 
 				$sql = "INSERT INTO `#__storefront_sku_meta` SET
-						`sId` = " . $this->db->quote($sId) . ",
-						`smKey` = " . $this->db->quote($k) . ",
-						`smValue` = " . $this->db->quote($v) . "
+						`sId` = " . $db->quote($sId) . ",
+						`smKey` = " . $db->quote($k) . ",
+						`smValue` = " . $db->quote($v) . "
 						ON DUPLICATE KEY UPDATE
 						`smId` = (@skuMetaId := `smId`),
-						`sId` = " . $this->db->quote($sId) . ",
-						`smKey` = " . $this->db->quote($k) . ",
-						`smValue` = " . $this->db->quote($v);
+						`sId` = " . $db->quote($sId) . ",
+						`smKey` = " . $db->quote($k) . ",
+						`smValue` = " . $db->quote($v);
 
-				$this->db->setQuery($sql);
-				$this->db->query();
+				$db->setQuery($sql);
+				$db->query();
 
 				$sql = "SELECT IF(@skuMetaId = 0, LAST_INSERT_ID(), @skuMetaId)";
-				$this->db->setQuery($sql);
-				$this->db->query();
+				$db->setQuery($sql);
+				$db->query();
 
-				$activeMetaIds[] = $this->db->loadResult();
+				$activeMetaIds[] = $db->loadResult();
 			}
 		}
 
@@ -394,32 +351,83 @@ class Sku
 		$deleteSql = '(0';
 		foreach ($activeMetaIds as $metaId)
 		{
-			$deleteSql .= ", " . $this->db->quote($metaId);
+			$deleteSql .= ", " . $db->quote($metaId);
 		}
 		$deleteSql .= ')';
 
-		$sql = "DELETE FROM `#__storefront_sku_meta` WHERE `sId` = " . $this->db->quote($sId) . " AND `smId` NOT IN {$deleteSql}";
-		$this->db->setQuery($sql);
-		$this->db->query();
+		$sql = "DELETE FROM `#__storefront_sku_meta` WHERE `sId` = " . $db->quote($sId) . " AND `smId` NOT IN {$deleteSql}";
+		$db->setQuery($sql);
+		$db->query();
 
 		// Save options
 		if (isset($this->data->options))
 		{
-			$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `sId` = ' . $this->db->quote($this->getId());
-			$this->db->setQuery($sql);
-			$this->db->query();
+			$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `sId` = ' . $db->quote($this->getId());
+			$db->setQuery($sql);
+			$db->query();
 
 			foreach ($this->data->options as $oId)
 			{
 				if ($oId && $oId > 0)
 				{
 					$sql = 'INSERT INTO `#__storefront_sku_options` (`sId`, `oId`)
-						VALUES (' . $this->db->quote($this->getId()) . ', ' . $this->db->quote($oId) . ')';
-					$this->db->setQuery($sql);
-					$this->db->query();
+						VALUES (' . $db->quote($this->getId()) . ', ' . $db->quote($oId) . ')';
+					$db->setQuery($sql);
+					$db->query();
 				}
 			}
 		}
+		return $sId;
+	}
+
+	private function saveBase()
+	{
+		$db = \App::get('db');
+
+		if ($this->getActiveStatus() && $this->getActiveStatus() != 'DEFAULT')
+		{
+			// verify SKU if it gets published
+			$this->verify();
+		}
+
+		// If no sId set -- this is a new SKU -- create a new record
+		$sId = $this->getId();
+		if (!$sId)
+		{
+			$sql = "INSERT INTO `#__storefront_skus` SET ";
+		}
+		// If sId is set -- update the existing SKU
+		else
+		{
+			$sql = "UPDATE `#__storefront_skus` SET ";
+		}
+
+		$sql .= "	`pId` = " . $this->getProductId() . ",
+					`sSku` = " . $db->quote($this->getName()) . ",
+					`sPrice` = " . $db->quote($this->getPrice()) . ",
+					`sAllowMultiple` = " . $this->getAllowMultiple() . ",
+					`sTrackInventory` = " . $this->getTrackInventory() . ",
+					`sInventory` = " . $this->getInventoryLevel() . ",
+					`sEnumerable` = " . $this->getEnumerable() . ",
+					`publish_up` = " . $db->quote($this->getPublishTime()->publish_up) . ",
+					`publish_down` = " . $db->quote($this->getPublishTime()->publish_down) . ",
+					`sRestricted` = " . $this->getRestricted() . ",
+					`sActive` = " . $this->getActiveStatus();
+
+		if (!empty($sId))
+		{
+			$sql .= " WHERE `sId` = " . $db->quote($sId);
+		}
+
+		$db->setQuery($sql);
+		//print_r($db->toString());
+		$db->query();
+		if (empty($sId))
+		{
+			$sId = $db->insertid();
+			$this->setId($sId);
+		}
+
 		return $sId;
 	}
 
@@ -431,11 +439,13 @@ class Sku
 	 */
 	public function delete()
 	{
+		$db = \App::get('db');
+
 		// Delete the SKU record
-		$sql = 'DELETE FROM `#__storefront_skus` WHERE `sId` = ' . $this->db->quote($this->getId());
-		$this->db->setQuery($sql);
-		//print_r($this->db->replacePrefix($this->db->getQuery()));
-		$this->db->query();
+		$sql = 'DELETE FROM `#__storefront_skus` WHERE `sId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		//print_r($db->replacePrefix($db->getQuery()));
+		$db->query();
 
 		// Delete the SKU-related files
 		//	-- SKU image
@@ -478,14 +488,14 @@ class Sku
 		}
 
 		// Delete the SKU meta
-		$sql = 'DELETE FROM `#__storefront_sku_meta` WHERE `sId` = ' . $this->db->quote($this->getId());
-		$this->db->setQuery($sql);
-		$this->db->query();
+		$sql = 'DELETE FROM `#__storefront_sku_meta` WHERE `sId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
 
 		// Delete the SKU options
-		$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `sId` = ' . $this->db->quote($this->getId());
-		$this->db->setQuery($sql);
-		$this->db->query();
+		$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `sId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
 
 		return true;
 	}
@@ -554,6 +564,9 @@ class Sku
 		}
 
 		$this->setInventoryLevel($this->getInventoryLevel() - $qty);
+
+		// Save the changes right away
+		$this->saveBase();
 	}
 
 	public function releaseInventory($qty)
@@ -569,6 +582,9 @@ class Sku
 		}
 
 		$this->setInventoryLevel($this->getInventoryLevel() + $qty);
+
+		// Save the changes right away
+		$this->saveBase();
 	}
 
 	public function setInventoryLevel($inventoryLevel)
@@ -734,12 +750,14 @@ class Sku
 
 	public function getOptions()
 	{
+		$db = \App::get('db');
+
 		if (!isset($this->data->options))
 		{
 			$sql = 'SELECT oId';
-			$sql .= ' FROM `#__storefront_sku_options` WHERE `sId` = ' . $this->db->quote($this->getId());
-			$this->db->setQuery($sql);
-			$this->data->options = $this->db->loadColumn();
+			$sql .= ' FROM `#__storefront_sku_options` WHERE `sId` = ' . $db->quote($this->getId());
+			$db->setQuery($sql);
+			$this->data->options = $db->loadColumn();
 		}
 		return $this->data->options;
 	}
@@ -752,7 +770,6 @@ class Sku
 
 
 	// Static ----------------------------
-
 
 	public static function getInstance($sId)
 	{
@@ -786,14 +803,19 @@ class Sku
 	private static function getProperInstance($productType, $sId = false)
 	{
 		// Initialize the correct SKU based on the product type
-		if (!empty($productType) && $productType == 'Software Download')
+		if ($productType && $productType == 'Software Download')
 		{
 			require_once(__DIR__ . DS . 'SoftwareSku.php');
-			$sku = new \Components\Storefront\Models\SoftwareSku($sId);
+			$sku = new SoftwareSku($sId);
+		}
+		elseif ($productType && $productType == 'Course')
+		{
+			require_once(__DIR__ . DS . 'CourseOffering.php');
+			$sku = new CourseOffering();
 		}
 		else
 		{
-			$sku = new \Components\Storefront\Models\Sku($sId);
+			$sku = new Sku($sId);
 		}
 
 		return($sku);

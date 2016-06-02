@@ -64,7 +64,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 
 			// Get the user group ID to set the user to (from meta)
 			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
-			$userGId = \Components\Storefront\Models\Product::getMeta($this->item['info']->pId, 'userGroupId');
+			$userGId = \Components\Storefront\Models\Product::getMetaValue($this->item['info']->pId, 'userGroupId');
 
 			$add = \JUserHelper::addUserToGroup($userId, $userGId);
 			if ($add instanceof \Exception) {
