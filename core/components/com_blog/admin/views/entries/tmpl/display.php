@@ -116,7 +116,7 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-1"><?php echo Html::grid('sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2" colspan="2"><?php echo Html::grid('sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2" colspan="2"><?php echo Lang::txt('COM_BLOG_COL_COMMENTS'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_BLOG_COL_SCOPE', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
