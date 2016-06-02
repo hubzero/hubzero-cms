@@ -74,7 +74,7 @@ if (!$this->thread->thread)
 		if (!$this->thread->anonymous)
 		{
 			$name = $this->escape(stripslashes($this->thread->creator->get('name')));
-			if (in_array($this->thread->creator->get('access'), User::geAuthorisedviewLevels()))
+			if (in_array($this->thread->creator->get('access'), User::getAuthorisedviewLevels()))
 			{
 				$name = '<a href="' . Route::url($this->thread->creator->link()) . '">' . $name . '</a>';
 			}

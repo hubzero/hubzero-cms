@@ -49,7 +49,7 @@ defined('_HZEXEC_') or die();
 	if (!$this->comment->get('anonymous'))
 	{
 		$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
-		if (in_array($this->comment->creator->get('access'), User::geAuthorisedviewLevels()))
+		if (in_array($this->comment->creator->get('access'), User::getAuthorisedviewLevels()))
 		{
 			$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 		}
