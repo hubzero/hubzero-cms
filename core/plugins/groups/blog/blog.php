@@ -1075,7 +1075,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'settings')
 			->set('option', $this->option)
 			->set('group', $this->group)
-			->set('task', $this->task)
+			->set('task', $this->action)
 			->set('config', $this->params)
 			->set('settings', $settings)
 			->set('model', $this->model)

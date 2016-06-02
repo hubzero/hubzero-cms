@@ -49,7 +49,7 @@ $this->css()
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<?php if ($this->message) { ?>
+<?php if (isset($this->message) && $this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
 	<form action="<?php echo Route::url($base . '&action=savesettings'); ?>" method="post" id="hubForm" class="full">
