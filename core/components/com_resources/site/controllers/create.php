@@ -845,7 +845,7 @@ class Create extends SiteController
 		// build path to temp upload folder and future permanent folder
 		$session = App::get('session');
 		$created = Date::format('Y-m-d 00:00:00');
-		$oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id') ,'');
+		$oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id'),'');
 		$newPath = $row->filespace();
 
 		// if we have a temp dir, move it to permanent location

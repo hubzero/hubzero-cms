@@ -71,12 +71,20 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
-		$row = Resource::oneOrFail($resource);
+		if ($resource < 1 || substr($resource, 0, 4) == '9999')
+		{
+			$row = Resource::blank();
+		}
+		else
+		{
+			$row = Resource::oneOrFail($resource);
+		}
+		$row->set('id', $resource);
 
 		// Allow for temp resource uploads
-		if (!$row->created || $row->created == '0000-00-00 00:00:00')
+		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')
 		{
-			$row->created = Date::of('now')->format('Y-m-d 00:00:00');
+			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
 		$path = $row->filespace() . DS . 'media';
@@ -150,12 +158,20 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
-		$row = Resource::oneOrFail($resource);
+		if ($resource < 1 || substr($resource, 0, 4) == '9999')
+		{
+			$row = Resource::blank();
+		}
+		else
+		{
+			$row = Resource::oneOrFail($resource);
+		}
+		$row->set('id', $resource);
 
 		// Allow for temp resource uploads
-		if (!$row->created || $row->created == '0000-00-00 00:00:00')
+		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')
 		{
-			$row->created = Date::format('Y-m-d 00:00:00');
+			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
 		$path = $row->filespace() . DS . 'media';
@@ -211,10 +227,18 @@ class Media extends SiteController
 			return;
 		}
 
+		if ($resource < 1 || substr($resource, 0, 4) == '9999')
+		{
+			$row = Resource::blank();
+		}
+		else
+		{
+			$row = Resource::oneOrFail($resource);
+		}
+		$row->set('id', $resource);
+
 		// Incoming sub-directory
 		$subdir = Request::getVar('subdir', '');
-
-		$row = Resource::oneOrNew($resource);
 
 		// Allow for temp resource uploads
 		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')

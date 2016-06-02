@@ -119,7 +119,7 @@ $this->css('introduction.css', 'system')
 
 					$authors =  $resource->authors()->total();
 
-					$tags = $resource->tags()->count();
+					$tags = count($resource->tags());
 					?>
 					<tr class="<?php echo $cls; ?>">
 						<td><?php if ($submission->published == 2) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo stripslashes($submission->typetitle); ?></span></td>
