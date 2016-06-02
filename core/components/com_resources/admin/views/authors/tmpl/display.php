@@ -74,12 +74,13 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'authorid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_COL_MEMBER'); ?></th>
-				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_RESOURCES', 'resources', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php /* Temporarily removed until query can be rewritten
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_RESOURCES', 'resources', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> */ ?>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php
+				<td colspan="4"><?php
 				// Initiate paging
 				echo $this->rows->pagination;
 				?></td>
@@ -141,9 +142,10 @@ function submitbutton(pressbutton)
 						</span>
 					<?php } ?>
 				</td>
+				<?php /* Temporarily removed until query can be rewritten
 				<td class="priority-3">
-					<?php //echo Lang::txt('COM_RESOURCES_AUTHORS_NUM_RESOURCES', $this->escape(stripslashes($row->resources))); ?>
-				</td>
+					<?php echo Lang::txt('COM_RESOURCES_AUTHORS_NUM_RESOURCES', $this->escape(stripslashes($row->resources))); ?>
+				</td> */ ?>
 			</tr>
 			<?php
 			$k = 1 - $k;
