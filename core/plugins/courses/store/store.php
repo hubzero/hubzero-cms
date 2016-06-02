@@ -111,7 +111,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 		if ($offering->params('store_product_id', 0))
 		{
-			$warehouse = new StorefrontModelWarehouse();
+			$warehouse = new \Components\Storefront\Models\Warehouse();
 			// Get course by pID returned with $course->add() above
 			try
 			{
@@ -123,7 +123,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (is_object($product) && $product->data->id)
+		if (is_object($product) && $product->getId())
 		{
 			$url = 'index.php?option=com_cart'; //index.php?option=com_storefront/product/' . $product->pId;
 		}
@@ -160,7 +160,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			{
 				include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
-				$product = new StorefrontModelCourse();
+				$product = new \Components\Storefront\Models\Course();
 				$product->setName($title);
 				$product->setDescription($description);
 				$product->setPrice($price);
@@ -180,10 +180,9 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 				$product->setOfferingId($model->get('alias'));
 				try
 				{
-					// Returns object with values, pId is the new product ID to link to
-					$info = $product->add();
+					$product->save();
 
-					$params->set('store_product_id', $info->pId);
+					$params->set('store_product_id', $product->getId());
 
 					$model->set('params', $params->toString());
 					$model->store();
@@ -195,7 +194,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$warehouse = new StorefrontModelWarehouse();
+				$warehouse = new \Components\Storefront\Models\Warehouse();
 				try
 				{
 					// Get course by pID returned with $course->add() above
@@ -212,7 +211,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 					{
 						$product->setActiveStatus(1);
 					}
-					$product->update();
+					$product->save();
 				}
 				catch (Exception $e)
 				{
@@ -239,9 +238,9 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 		if ($product = $params->get('store_product_id', 0))
 		{
-			$warehouse = new StorefrontModelWarehouse();
-			// Delete by existing course ID (pID returned with $course->add() when the course was created)
-			$warehouse->deleteProduct($product);
+			$warehouse = new \Components\Storefront\Models\Warehouse();
+			$product = $warehouse->getCourse($product);
+			$product->delete();
 		}
 	}
 
@@ -323,7 +322,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			try
 			{
 				// Constructor take the coupon code
-				$coupon = new StorefrontModelCoupon($model->get('code'));
+				$coupon = new \Components\Storefront\Models\Coupon($model->get('code'));
 				// Couponn description (shows up in the cart)
 				$coupon->setDescription(Request::getVar('description', 'Test coupon, 10% off product with ID 111'));
 				// Expiration date
@@ -338,10 +337,10 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 				include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
-				$product = new StorefrontModelCourse();
-				$product->set('course_id', $model->find('course'));
+				$product = new \Components\Storefront\Models\Course();
+				$product->setCourseId($model->find('course'));
 
-				$coupon->addObject($product->get('product_id'), 1);
+				$coupon->addObject($product->getId());
 				// Action, only 'discount' for now
 				// second parameter either percentage ('10%') or absolute dollar value ('20')
 				$coupon->setAction('discount', '100%');
@@ -370,7 +369,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = new \Components\Storefront\Models\Warehouse();
 		try
 		{
 			$warehouse->deleteCoupon($model->get('code'));
