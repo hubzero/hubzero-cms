@@ -113,11 +113,11 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 			</tr>
 			<tr class="even">
 				<th scope="row"><?php echo Lang::txt('TBL_TH_WIKI_PAGES'); ?>:</th>
-				<td><?php echo plgGroupsUsage::getWikipageCount($this->group->get('cn'), $this->authorized); ?></td>
+				<td><?php echo plgGroupsUsage::getWikipageCount($this->group->get('gidNumber'), $this->authorized); ?></td>
 			</tr>
 			<tr class="odd">
 				<th scope="row"><?php echo Lang::txt('TBL_TH_WIKI_FILES'); ?>:</th>
-				<td><?php echo plgGroupsUsage::getWikifileCount($this->group->get('cn'), $this->authorized); ?></td>
+				<td><?php echo plgGroupsUsage::getWikifileCount($this->group->get('gidNumber'), $this->authorized); ?></td>
 			</tr>
 			<tr class="even">
 				<th scope="row"><?php echo Lang::txt('TBL_TH_BLOG'); ?>:</th>

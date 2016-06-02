@@ -271,9 +271,9 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a count of all wiki pages
 	 *
-	 * @param      integer $gid        Group ID
-	 * @param      string  $authorized Authorization level
-	 * @return     integer
+	 * @param   integer  $gid         Group ID
+	 * @param   string   $authorized  Authorization level
+	 * @return  integer
 	 */
 	public static function getWikipageCount($gid=NULL, $authorized)
 	{
@@ -281,18 +281,18 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = App::get('db');
 
-		$database->setQuery("SELECT COUNT(*) FROM `#__wiki_page` AS p WHERE p.scope=" . $database->quote($gid . DS . 'wiki') . " AND p.group_cn=" . $database->quote($gid));
+		$database = App::get('db');
+		$database->setQuery("SELECT COUNT(*) FROM `#__wiki_pages` AS p WHERE p.scope=" . $database->quote('group') . " AND p.scope_id=" . $database->quote($gid));
 		return $database->loadResult();
 	}
 
 	/**
 	 * Get a count of all wiki attachments
 	 *
-	 * @param      integer $gid        Group ID
-	 * @param      string  $authorized Authorization level
-	 * @return     integer
+	 * @param   integer  $gid         Group ID
+	 * @param   string   $authorized  Authorization level
+	 * @return  integer
 	 */
 	public static function getWikifileCount($gid=NULL, $authorized)
 	{
@@ -300,9 +300,9 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = App::get('db');
 
-		$database->setQuery("SELECT id FROM `#__wiki_page` AS p WHERE p.scope=" . $database->quote($gid . DS . 'wiki') . " AND p.group_cn=" . $database->quote($gid));
+		$database = App::get('db');
+		$database->setQuery("SELECT id FROM `#__wiki_pages` AS p WHERE p.scope=" . $database->quote('group') . " AND p.scope_id=" . $database->quote($gid));
 		$pageids = $database->loadObjectList();
 		if ($pageids)
 		{
@@ -315,10 +315,8 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$database->setQuery("SELECT COUNT(*) FROM `#__wiki_attachments` WHERE pageid IN (" . implode(',', $ids) . ")");
 			return $database->loadResult();
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 
 	/**
