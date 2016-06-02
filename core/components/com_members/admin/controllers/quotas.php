@@ -550,14 +550,16 @@ class Quotas extends AdminController
 			$id = Request::getInt('id');
 		}
 
-		$info = array();
+		$info    = array();
 		$success = false;
+		$used    = 0;
+		$percent = 0;
 
 		$return = array(
 			'success' => $success,
 			'info'    => $info,
-			'used'    => 0,
-			'percent' => 0
+			'used'    => $used,
+			'percent' => $percent
 		);
 
 		$quota = Quota::oneOrNew($id);
@@ -572,7 +574,6 @@ class Quotas extends AdminController
 
 		$config = \Component::params('com_tools');
 		$host = $config->get('storagehost');
-		$used = 0;
 
 		if ($username && $host)
 		{
