@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die(); ?>
 	<fieldset>
 		<h4><?php echo $this->escape($poll->title); ?></h4>
 		<ul class="poll">
-			<?php foreach ($poll->options()->where('text', '!=', '')->ordered()->rows() as $option) : ?>
+			<?php foreach ($poll->options()->where('text', '!=', '')->order('id', 'asc')->rows() as $option) : ?>
 				<li class="poll-option <?php echo $this->params->get('moduleclass_sfx'); ?>">
 					<input type="radio" name="voteid" id="voteid<?php echo $option->id; ?>" value="<?php echo $this->escape($option->id); ?>" />
 					<label for="voteid<?php echo $option->id; ?>" class="poll-option-text <?php echo $this->params->get('moduleclass_sfx'); ?>">
