@@ -1164,12 +1164,6 @@ class Warehouse extends \Hubzero\Base\Object
 		return $course;
 	}
 
-	public function newProduct()
-	{
-		$product = new Product();
-		return $product;
-	}
-
 	/**
 	 * Get course by alias
 	 *
