@@ -109,7 +109,7 @@ class Software_Auditor extends BaseAuditor
 		}
 
 		// Get product download limit
-		$productDownloadLimit = Product::getMeta($this->pId, 'globalDownloadLimit');
+		$productDownloadLimit = Product::getMetaValue($this->pId, 'globalDownloadLimit');
 		// Get product downloads count
 		if ($productDownloadLimit > 0)
 		{

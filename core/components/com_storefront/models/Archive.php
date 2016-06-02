@@ -112,39 +112,6 @@ class Archive extends \Hubzero\Base\Object
 		return $types;
 	}
 
-	/**
-	 * Get product meta
-	 *
-	 * @param      pId
-	 * @return     types
-	 */
-	public function getProductMeta($pId)
-	{
-		$warehouse = new Warehouse();
-		$meta = $warehouse->getProductMeta($pId, true);
-
-		$metaObj = new \stdClass();
-		foreach ($meta as $key => $m)
-		{
-			$metaObj->$key = $m->pmValue;
-		}
-
-		return $metaObj;
-	}
-
-	/**
-	 * Set product meta
-	 *
-	 * @param      pId
-	 * @param      array Meta
-	 * @return     types
-	 */
-	public function setProductMeta($pId, $meta)
-	{
-		$warehouse = new Warehouse();
-		$meta = $warehouse->setProductMeta($pId, $meta);
-	}
-
 	/* SKUs */
 	/**
 	 * Get a count or list of skus

@@ -52,7 +52,7 @@ class Software_Model_Handler extends Model_Handler
 			// Get the required number of serials
 			$serialsNeeded = $itemCartInfo->qty;
 
-			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'serials.php';
+			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Serials.php';
 			// Get the serial numbers
 			$serialNumbers = \Components\Storefront\Helpers\Serials::issueSerials($itemInfo->sId, $serialsNeeded);
 

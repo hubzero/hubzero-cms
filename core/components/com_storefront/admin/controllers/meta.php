@@ -143,7 +143,7 @@ class Meta extends AdminController
 		}
 
 		// Load meta
-		$this->view->meta = $obj->getProductMeta($id);
+		$this->view->meta = $this->view->row->getMeta();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -192,19 +192,14 @@ class Meta extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		$obj = new Archive();
+		// Get the product
+		$product = $obj->product($fields['pId']);
 
-		// Save product
-		try {
-			$obj->setProductMeta($fields['pId'], $fields);
-		}
-		catch (\Exception $e)
-		{
-			\Notify::error($e->getMessage());
-			// Get the product
-			$product = $obj->product($fields['pId']);
-			$this->editTask($product);
-			return;
-		}
+		$meta = $fields;
+		unset($meta['pId']);
+
+		// Save product meta
+		$product->setMeta($meta);
 
 		if ($redirect)
 		{
@@ -215,9 +210,6 @@ class Meta extends AdminController
 			);
 			return;
 		}
-
-		// Get the product
-		$product = $obj->product($fields['pId']);
 
 		$this->editTask($product);
 	}

@@ -33,6 +33,7 @@ namespace Components\Cart\Site\Controllers;
 use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Components\Storefront\Models\Warehouse;
+use Components\Storefront\Models\Product;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
@@ -193,7 +194,7 @@ class Checkout extends ComponentController
 			// Get product id
 			$pId = $skuInfo['info']->pId;
 			// Get EULA
-			$productEula = $warehouse->getProductMeta($pId)['eula']->pmValue;
+			$productEula = Product::getMetaValue($pId, 'eula');
 		}
 
 		$this->view->productEula = $productEula;

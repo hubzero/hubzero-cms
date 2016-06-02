@@ -47,12 +47,15 @@ class SingleSkuProduct extends Product
 	 * @param  void
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($pId = false)
 	{
-		parent::__construct();
+		parent::__construct($pId);
 
-		// Create SKU automatically
-		$this->setSku(new Sku());
+		if (!$pId)
+		{
+			// Create SKU automatically
+			$this->setSku(new Sku());
+		}
 	}
 
 	/**

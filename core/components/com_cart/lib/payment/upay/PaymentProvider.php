@@ -61,12 +61,12 @@ class PaymentProvider
 		$this->options->postbackAction = 'payment';
 		$this->options->transactionName = "$hubName online purchase";
 		$this->options->env = $params->get('paymentProviderEnv');
-		$this->options->validationKey = $params->get('UPAY_VALIDATION_KEY');
-		// Posting Key should be configured in uPay to be the same as a validation key (UPAY_VALIDATION_KEY)
+		$this->options->validationKey = $params->get('paymentValidationKey');
+		// Posting Key should be configured in uPay to be the same as a validation key (paymentValidationKey)
 		$this->options->postingKey = $this->options->validationKey;
 
 		$this->siteDetails = new \stdClass();
-		$this->siteDetails->siteId = $params->get('UPAY_SITE_ID');
+		$this->siteDetails->siteId = $params->get('paymentSiteId');
 	}
 
 	/**

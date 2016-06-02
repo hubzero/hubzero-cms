@@ -534,7 +534,7 @@ class Warehouse extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get product information
+	 * Get product information TODO: phase out the legacy format
 	 *
 	 * @param	int			Product ID
 	 * @param  	bool		Flag whether to show inactive product info
@@ -542,75 +542,51 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	public function getProductInfo($pId, $showInactive = false)
 	{
-		$sql = "SELECT p.*, pt.ptName, pt.ptModel FROM `#__storefront_products` p
- 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
- 				WHERE p.`pId` = " . $this->_db->quote($pId);
+		// Get the product
+		try
+		{
+			$product = Product::getInstance($pId);
+		}
+		catch (\Exception $e)
+		{
+			return false;
+		}
 
+		// Do the inactive/active check
 		if (!$showInactive)
 		{
-			$sql .= " AND `pActive` = 1";
+			// check if active
+			if (!$product->getActiveStatus())
+			{
+				return false;
+			}
 
-			// check publish up and down
-			$sql .= " AND (p.`publish_up` IS NULL OR p.`publish_up` <= NOW())";
-			$sql .= " AND (p.`publish_down` IS NULL OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW())";
+			// check if published
+			if (!$product->getPublishTime()->publishedNow)
+			{
+				return false;
+			}
 		}
 
-		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-		$product = $this->_db->loadObject();
+		// Reformat the output for legacy code
+		$productInfo = new \stdClass();
+		$productInfo->pId = $product->getId();
+		$productInfo->pAlias = $product->getAlias();
+		$productInfo->ptId = $product->getTypeInfo()->id;
+		$productInfo->pName = $product->getName();
+		$productInfo->pTagline = $product->getTagline();
+		$productInfo->pDescription = $product->getDescription();
+		$productInfo->pFeatures = $product->getFeatures();
+		$productInfo->pActive = $product->getActiveStatus();
+		$productInfo->pAllowMultiple = $product->getAllowMultiple();
+		$productInfo->access = $product->getAccessLevel();
+		$productInfo->publish_up = $product->getPublishTime()->publish_up;
+		$productInfo->publish_down = $product->getPublishTime()->publish_down;
+		$productInfo->ptName = $product->getTypeInfo()->name;
+		$productInfo->ptModel = $product->getTypeInfo()->model;
+		$productInfo->images = $product->getImages();
 
-		// Get product image(s)
-		if (!empty($product))
-		{
-			$sql = "SELECT imgId, imgName FROM `#__storefront_images`
-					WHERE `imgObject` = 'product'
-					AND `imgObjectId` = " . $this->_db->quote($pId) . "
-					ORDER BY `imgPrimary` DESC";
-			$this->_db->setQuery($sql);
-			$images = $this->_db->loadObjectList();
-			$product->images = $images;
-		}
-
-		return $product;
-	}
-
-	/**
-	 * Get product meta information
-	 * TODO Rewrite to use Product Class
-	 *
-	 * @param	int			Product ID
-	 * @param  	bool		Flag whether to show inactive product info
-	 * @return 	object		Product info
-	 */
-	public function getProductMeta($pId, $showInactive = false)
-	{
-		$sql = "SELECT pm.pmKey, pm.pmValue
-				FROM `#__storefront_product_meta` pm
- 				LEFT JOIN `#__storefront_products` p ON pm.pId = p.pId
- 				WHERE pm.`pId` = " . $this->_db->quote($pId);
-
-		if (!$showInactive)
-		{
-			$sql .= " AND p.`pActive` = 1";
-		}
-
-		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
-		$productMeta = $this->_db->loadObjectList('pmKey');
-
-		return $productMeta;
-	}
-
-	/**
-	 * Set product meta information
-	 *
-	 * @param	int			Product ID
-	 * @param  	bool		Flag whether to show inactive product info
-	 * @return 	object		Product info
-	 */
-	public function setProductMeta($pId, $meta)
-	{
-		Product::setMeta($pId, $meta);
+		return $productInfo;
 	}
 
 	/**
@@ -1174,75 +1150,23 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	public function getCourse($courseId)
 	{
-		$course = $this->getProduct($courseId, 'course');
+		$course = \Components\Storefront\Models\Product::getInstance($courseId);
+
+		// check if this is a course
+		if (!($course instanceof Course))
+		{
+			throw new \Exception(Lang::txt('Invalid course'));
+		}
+
+		$course->getCollections();
+		$course->getSkus();
+
 		return $course;
 	}
 
 	public function newProduct()
 	{
 		$product = new Product();
-		return $product;
-	}
-
-	/**
-	 * Get a product
-	 *
-	 * @param	int							product ID
-	 * @param	string						product type
-	 * @return	StorefrontModelProduct 	Instance of a product
-	 */
-	public function getProduct($pId, $productType = 'product', $showOnlyActiveSkus = true)
-	{
-		$allowedProductTypes = array('product', 'course');
-
-		if (!in_array($productType, $allowedProductTypes))
-		{
-			throw new \Exception(Lang::txt('Bad product type.'));
-		}
-
-		// Create a StorefrontModelProduct
-
-		if ($productType == 'product')
-		{
-			$product = new Product();
-		}
-		elseif ($productType == 'course')
-		{
-			$product = new Course();
-		}
-
-		// Get all product info
-		$productInfo = $this->getProductInfo($pId, true);
-
-		$product->setType($productInfo->ptId);
-		$product->setId($productInfo->pId);
-		$product->setName($productInfo->pName);
-		$product->setDescription($productInfo->pDescription);
-		$product->setFeatures($productInfo->pFeatures);
-		$product->setTagline($productInfo->pTagline);
-		$product->setActiveStatus($productInfo->pActive);
-		$product->setAccessLevel($productInfo->access);
-		$product->setAllowMultiple($productInfo->pAllowMultiple);
-		$product->setImages($productInfo->images);
-
-		// Get collections
-		$collections = $this->getProductCollections($pId);
-		foreach ($collections as $cId)
-		{
-			$product->addToCollection($cId);
-		}
-
-		// Get SKUs
-		$skus = $this->getProductSkus($pId, 'rows', $showOnlyActiveSkus);
-
-		// Add SKUs to product
-		foreach ($skus as $sId)
-		{
-			$sku = $this->getSku($sId, $productType);
-			$product->addSku($sku);
-		}
-		//$product->verify();
-
 		return $product;
 	}
 
@@ -1262,358 +1186,8 @@ class Warehouse extends \Hubzero\Base\Object
 				AND `smValue` = " . $this->_db->quote($alias);
 
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql;
 		$this->_db->query();
 		return($this->_db->loadResult());
-	}
-
-	/**
-	 * Get a SKU
-	 *
-	 * @param	int							SKU ID
-	 * @param	string						product type
-	 * @return	StorefrontModelSku 		Instance of a SKU
-	 */
-	public function getSku($sId, $productType = 'product')
-	{
-		if ($productType == 'product')
-		{
-			$sku = new Sku();
-		}
-		elseif ($productType == 'course')
-		{
-			$sku = new CourseOffering();
-		}
-
-		$skuInfo = $this->getSkuInfo($sId);
-		//print_r($skuInfo); die;
-
-		$sku->setId($sId);
-		$sku->setProductId($skuInfo['info']->pId);
-		$sku->setName($skuInfo['info']->sSku);
-		$sku->setPrice($skuInfo['info']->sPrice);
-		$sku->setAllowMultiple($skuInfo['info']->sAllowMultiple);
-		$sku->setTrackInventory($skuInfo['info']->sTrackInventory);
-		$sku->setInventoryLevel($skuInfo['info']->sInventory);
-		$sku->setEnumerable($skuInfo['info']->sEnumerable);
-		$sku->setActiveStatus($skuInfo['info']->sActive);
-
-		// Set meta
-		if (!empty($skuInfo['meta']))
-		{
-			foreach ($skuInfo['meta'] as $key => $val)
-			{
-				if ($productType == 'course' && $key == 'courseId')
-				{
-					$sku->setCourseId($val);
-				}
-
-				$sku->addMeta($key, $val);
-			}
-		}
-
-		return $sku;
-	}
-
-	/**
-	 * Add a new product
-	 *
-	 * @param	StorefrontModelProduct 	Instance of a product to add
-	 * @return	int							product ID
-	 */
-	public function addProduct($product)
-	{
-		return $this->doProduct($product, 'add');
-	}
-
-	/**
-	 * Update existing product
-	 *
-	 * @param	StorefrontModelProduct 	Instance of a product to update
-	 * @return	int							product ID
-	 */
-	public function updateProduct($product)
-	{
-		return $this->doProduct($product, 'update');
-	}
-
-	/**
-	 * Delete product
-	 *
-	 * @param	int		product ID
-	 * @return	bool
-	 */
-	public function deleteProduct($pId)
-	{
-		// Check if product ID is set
-		if (empty($pId))
-		{
-			throw new \Exception(Lang::txt('Cannot delete product: no product ID set.'));
-		}
-
-		if (!is_numeric($pId))
-		{
-			throw new \Exception(Lang::txt('Cannot delete product: bad product ID.'));
-		}
-
-		// check if product exists
-		if (!$this->productExists($pId, true))
-		{
-			throw new \Exception(Lang::txt('Cannot delete product: product does not exixt.'));
-		}
-
-		$sql = "UPDATE `#__storefront_products` SET `pActive` = 0 WHERE `pId` = " . $this->_db->quote($pId);
-		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
-		$this->_db->query();
-	}
-
-	/**
-	 * Handle product actions (add, update)
-	 *
-	 * @param	StorefrontModelProduct 	Instance of a product to add
-	 * @return	int							product ID
-	 */
-	private function doProduct($product, $action)
-	{
-		$allowedActions = array('add', 'update');
-
-		// Get product ID (if set)
-		$pId = $product->getId();
-
-		// Check everything
-
-		if (!in_array($action, $allowedActions))
-		{
-			throw new \Exception(Lang::txt('Bad action. Why would you try to do something like that anyway?'));
-		}
-
-		$product->verify($action);
-
-		// check if this is a product
-		if (!($product instanceof Product))
-		{
-			throw new \Exception(Lang::txt('Bad product.'));
-		}
-
-		if ($action == 'update')
-		{
-			// Check if product ID is set
-			if (empty($pId))
-			{
-				throw new \Exception(Lang::txt('Cannot update product: no product ID set.'));
-			}
-
-			// check if product exists
-			if (!$this->productExists($pId, true))
-			{
-				throw new \Exception(Lang::txt('Cannot update product: product does not exixt.'));
-			}
-		}
-		elseif ($action == 'add')
-		{
-			if ($this->productExists($pId, true))
-			{
-				throw new \Exception(Lang::txt('Cannot add product: product ID already exists.'));
-			}
-		}
-
-		// ### Do the product
-
-		if ($action == 'update')
-		{
-			$sql = "UPDATE `#__storefront_products` SET ";
-		}
-		elseif ($action == 'add')
-		{
-			$sql = "INSERT INTO `#__storefront_products` SET ";
-		}
-
-			$sql .= "
-				`ptId` = " . $this->_db->quote($product->getType()) . ",
-				`pName` = " . $this->_db->quote($product->getName()) . ",
-				`pTagline` = " . $this->_db->quote($product->getTagline()) . ",
-				`pDescription` = " . $this->_db->quote($product->getDescription()) . ",
-				`pFeatures` = " . $this->_db->quote($product->getFeatures()) . ",
-				`pAllowMultiple` = " . $this->_db->quote($product->getAllowMultiple()) . ",
-				`pActive` = " . $this->_db->quote($product->getActiveStatus()) . ",
-				`access` = " . $this->_db->quote($product->getAccessLevel());
-
-
-		// Set pId if needed if adding new product
-		if ($action == 'add' && !empty($pId))
-		{
-			$sql .= ",
-				`pId` = " . $this->_db->quote($pId);
-		}
-
-		// Add WHERE if updating product
-		if ($action == 'update')
-		{
-			$sql .= " WHERE `pId` = " . $this->_db->quote($pId);
-		}
-
-		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
-		$this->_db->query();
-		if (empty($pId))
-		{
-			$pId = $this->_db->insertid();
-		}
-
-
-		// ### Do SKUs
-		$skus = $product->getSkus();
-
-		// Remember all sId used
-		$activeSIds = array();
-
-		foreach ($skus as $sku)
-		{
-			// TODO: not really sure if the sku needs to be saved here
-			$sku->save();
-			$activeSIds[] = $sku->getId();
-		}
-
-		// Delete unused SKUs
-		$deleteSql = '(0';
-		foreach ($activeSIds as $activeSId)
-		{
-			$deleteSql .= ", " . $this->_db->quote($activeSId);
-		}
-		$deleteSql .= ')';
-		$sql = "DELETE FROM `#__storefront_skus` WHERE `pId` = " . $this->_db->quote($pId) . " AND `sId` NOT IN {$deleteSql}";
-		$this->_db->setQuery($sql);
-		$this->_db->query();
-
-
-		// ### Do collections
-		$collections = $product->getCollections();
-
-		$affectedCollectionIds = array();
-		if (!empty($collections))
-		{
-			foreach ($collections as $cId)
-			{
-				$sql = "SET @collectionId := 0";
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-
-				$sql = "INSERT INTO `#__storefront_product_collections` SET
-						`cId` = " . $this->_db->quote($cId) . ",
-						`pId` = " . $this->_db->quote($pId) . "
-						ON DUPLICATE KEY UPDATE
-						`pcId` = (@collectionId := `pcId`),
-						`cId` = " . $this->_db->quote($cId) . ",
-						`pId` = " . $this->_db->quote($pId);
-
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-
-				$sql = "SELECT IF(@collectionId = 0, LAST_INSERT_ID(), @collectionId)";
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-
-				$affectedCollectionIds[] = $this->_db->loadResult();
-			}
-		}
-
-		// Delete unused collections
-		$deleteSql = '(0';
-		foreach ($affectedCollectionIds as $activeCllId)
-		{
-			$deleteSql .= ", " . $this->_db->quote($activeCllId);
-		}
-		$deleteSql .= ')';
-		$sql = "DELETE FROM `#__storefront_product_collections` WHERE `pId` = " . $this->_db->quote($pId) . " AND `pcId` NOT IN {$deleteSql}";
-		$this->_db->setQuery($sql);
-		$this->_db->query();
-
-		// ### Do images
-		$images = $product->getImages();
-
-		// First delete all old references
-		$sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'product' AND `imgObjectId` = " . $this->_db->quote($pId);
-		$this->_db->setQuery($sql);
-		$this->_db->query();
-
-		if (!empty($images))
-		{
-			$firstImage = true;
-			foreach ($images as $key => $img)
-			{
-				$primary = 0;
-				if ($firstImage)
-				{
-					$primary = 1;
-					$firstImage = false;
-				}
-				$sql = "INSERT INTO `#__storefront_images` SET
-						`imgName` = " . $this->_db->quote($img->imgName) . ",
-						`imgObject` = 'product',
-						`imgObjectId` = " . $this->_db->quote($pId) . ",
-						`imgPrimary` = " . $primary;
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-			}
-		}
-
-		$return = new \stdClass();
-		$return->pId = $pId;
-		return $return;
-	}
-
-	/**
-	 * Get coupon
-	 *
-	 * @param	string						coupon code
-	 * @return	StorefrontModelCoupon	Instance of a coupon
-	 */
-	public function getCoupon($code)
-	{
-		// Seems like unused code
-		throw new \Exception('Not sure if this is ever used. Warehouse.php');
-
-		// Create a StorefrontModelCoupon
-		if ($productType == 'product')
-		{
-			$product = new Product();
-		}
-		elseif ($productType == 'course')
-		{
-			$product = new Course();
-		}
-
-		// Get all product info
-		$productInfo = $this->getProductInfo($pId, true);
-
-		$product->setType($productInfo->ptId);
-		$product->setId($productInfo->pId);
-		$product->setName($productInfo->pName);
-		$product->setDescription($productInfo->pDescription);
-		$product->setTagline($productInfo->pTagline);
-		$product->setActiveStatus($productInfo->pActive);
-
-		// Get collections
-		$collections = $this->getProductCollections($pId);
-		foreach ($collections as $cId)
-		{
-			$product->addToCollection($cId);
-		}
-
-		// Get SKUs
-		$skus = $this->getProductSkus($pId);
-
-		// Add SKUs to product
-		foreach ($skus as $sId)
-		{
-			$sku = $this->getSku($sId, $productType);
-			$product->addSku($sku);
-		}
-
-		$product->verify();
-
-		return $product;
 	}
 
 	/**

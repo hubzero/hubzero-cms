@@ -30,6 +30,7 @@
 
 namespace Components\Storefront\Models;
 
+use Components\Storefront\Models\Course;
 use Components\Storefront\Models\Warehouse;
 use Exception;
 use Filesystem;
@@ -78,14 +79,39 @@ class Product
 		$db = \App::get('db');
 		$pId = $this->getId();
 
-		$warehouse = new Warehouse();
-		$productInfo = $warehouse->getProductInfo($pId, true);
+		//$warehouse = new Warehouse();
+		//$productInfo = $warehouse->getProductInfo($pId, true);
 
-		if (empty($productInfo))
+		$sql = 	"SELECT p.*,
+				IF((p.`publish_up` IS NULL OR p.`publish_up` = '0000-00-00 00:00:00' OR p.`publish_up` <= NOW())
+				AND (p.`publish_down` IS NULL OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW()), 1, 0) AS pPublishedNow,
+				pt.ptName, pt.ptModel";
+		$sql .= " FROM `#__storefront_products` p
+				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
+				WHERE p.`pId` = " . $db->quote($pId);
+
+		$db->setQuery($sql);
+		$productInfo = $db->loadObject();
+
+		// Get product image(s)
+		if ($productInfo)
+		{
+			$sql = "SELECT imgId, imgName FROM `#__storefront_images`
+					WHERE `imgObject` = 'product'
+					AND `imgObjectId` = " . $db->quote($pId) . "
+					ORDER BY `imgPrimary` DESC";
+			$db->setQuery($sql);
+			$images = $db->loadObjectList();
+			$productInfo->images = $images;
+		}
+
+		if (!$productInfo)
 		{
 			throw new \Exception(Lang::txt('Error loading product'));
 		}
+
 		$this->setType($productInfo->ptId);
+		$this->setTypeInfo($productInfo->ptId, $productInfo->ptName, $productInfo->ptModel);
 		$this->setName($productInfo->pName);
 		if (!empty($productInfo->pAlias))
 		{
@@ -97,7 +123,7 @@ class Product
 		$this->setActiveStatus($productInfo->pActive);
 		$this->setAccessLevel($productInfo->access);
 		$this->setAllowMultiple($productInfo->pAllowMultiple);
-		$this->setPublishTime($productInfo->publish_up, $productInfo->publish_down);
+		$this->setPublishTime($productInfo->publish_up, $productInfo->publish_down, $productInfo->pPublishedNow);
 	}
 
 	/**
@@ -142,6 +168,39 @@ class Product
 			return false;
 		}
 		return $this->data->type;
+	}
+
+	/**
+	 * Set product type info
+	 *
+	 * @param	int		Product type ID
+	 * @param	string		Product type name
+	 * @param	string		Product type model
+	 * @return	void		Throws exception if the produt type is bad
+	 */
+	private function setTypeInfo($ptId, $ptName, $ptModel)
+	{
+		$productTypeInfo = new \stdClass();
+		$productTypeInfo->id = $ptId;
+		$productTypeInfo->name = $ptName;
+		$productTypeInfo->model = $ptModel;
+
+		$this->data->typeInfo = $productTypeInfo;
+	}
+
+	/**
+	 * Get product type info
+	 *
+	 * @param	void
+	 * @return	obj		Product type info
+	 */
+	public function getTypeInfo()
+	{
+		if (empty($this->data->typeInfo))
+		{
+			return false;
+		}
+		return $this->data->typeInfo;
 	}
 
 
@@ -643,7 +702,7 @@ class Product
 	 * @param	string		publish down time
 	 * @return	bool		true
 	 */
-	public function setPublishTime($publishUp = '', $publishDown = '')
+	public function setPublishTime($publishUp = '', $publishDown = '', $pPublishedNow)
 	{
 		$this->data->publishTime = new \stdClass();
 		if (empty($publishUp))
@@ -656,6 +715,8 @@ class Product
 			$publishDown = '0000-00-00 00:00:00';
 		}
 		$this->data->publishTime->publish_down = $publishDown;
+
+		$this->data->publishTime->publishedNow = $pPublishedNow;
 
 		return true;
 	}
@@ -813,42 +874,6 @@ class Product
 		}
 
 		return true;
-	}
-
-	/**
-	 * Add product to the warehouse -- TODO: seems like something that needs to go soon
-	 *
-	 * @param  void
-	 * @return object	info
-	 */
-	public function add()
-	{
-		$this->verify();
-
-		$warehouse = new Warehouse();
-
-		$productAdded = $warehouse->addProduct($this);
-		$this->setId($productAdded->pId);
-		return($productAdded);
-	}
-
-	/**
-	 * Update product info -- TODO: phase it out -- use save() instead
-	 *
-	 * @param  void
-	 * @return object	info
-	 */
-	public function update()
-	{
-		$this->verify();
-
-		$warehouse = new Warehouse();
-
-		$return = $warehouse->updateProduct($this);
-
-		$this->load();
-
-		return($return);
 	}
 
 	/**
@@ -1113,16 +1138,46 @@ class Product
 		return $this->data->messages;
 	}
 
+	public function setMeta($meta)
+	{
+		$db = \App::get('db');
+
+		foreach ($meta as $key => $val)
+		{
+			$sql  = "	INSERT INTO `#__storefront_product_meta` (`pmKey`, `pmValue`, `pId`)
+						VALUES (" . $db->quote($key) . ", " . $db->quote($val) . ", " . $db->quote($this->getId()) . ")
+						ON DUPLICATE KEY UPDATE `pmValue` = " . $db->quote($val);
+			$db->setQuery($sql);
+			$db->query();
+		}
+	}
+
+	public function getMeta()
+	{
+		$db = \App::get('db');
+
+		$sql  = 'SELECT `pmKey`, `pmValue` FROM `#__storefront_product_meta` WHERE `pId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$meta = $db->loadObjectList('pmKey');
+
+		$metaObj = new \stdClass();
+		foreach ($meta as $key => $m)
+		{
+			$metaObj->$key = $m->pmValue;
+		}
+		return $metaObj;
+	}
+
 	/* ************************************* Static functions ***************************************************/
 
 	/**
-	 * Get product meta value by name or all product meta values if $metaKey is false
+	 * Get product meta value by name
 	 *
 	 * @param  	int		Product ID
-	 * @param	String	Optional: Meta key to get a certain value, if empty returns all product meta
-	 * @return 	mixed	Product meta
+	 * @param	String	Meta key to get a certain valuea
+	 * @return 	mixed	Meta value
 	 */
-	public static function getMeta($pId, $metaKey = false)
+	public static function getMetaValue($pId, $metaKey)
 	{
 		$db = \App::get('db');
 
@@ -1132,37 +1187,42 @@ class Product
 			$sql .= '`pmKey`, ';
 		}
 		$sql .= '`pmValue` FROM `#__storefront_product_meta` WHERE `pId` = ' . $db->quote($pId);
-		if ($metaKey)
-		{
-			$sql .= ' AND `pmKey` = ' . $db->quote($metaKey);
-		}
+		$sql .= ' AND `pmKey` = ' . $db->quote($metaKey);
 		$db->setQuery($sql);
-		if ($metaKey)
-		{
-			$meta = $db->loadResult();
-		}
-		else
-		{
-			$meta = $db->loadObjectList();
-		}
+		$meta = $db->loadResult();
 		return $meta;
 	}
 
-	public static function setMeta($pId, $meta)
+	public static function getInstance($pId)
 	{
 		$db = \App::get('db');
 
-		foreach ($meta as $key => $val)
+		// Get product type first
+		$sql = "SELECT pt.ptName, pt.ptId FROM `#__storefront_products` p
+ 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
+ 				WHERE p.`pId` = " . $db->quote($pId);
+
+		$db->setQuery($sql);
+		//print_r($db->toString()); die;
+		$db->execute();
+		$productTypeInfo = $db->loadObject();
+
+		// No product found
+		if (!$productTypeInfo)
 		{
-			if ($key != 'pId')
-			{
-				$sql  = "	INSERT INTO `#__storefront_product_meta` (`pmKey`, `pmValue`, `pId`)
-							VALUES (" . $db->quote($key) . ", " . $db->quote($val) . ", " . $db->quote($pId) . ")
-	  						ON DUPLICATE KEY UPDATE `pmValue` = " . $db->quote($val);
-				$db->setQuery($sql);
-				$db->query();
-			}
+			return false;
 		}
+
+		if ($productTypeInfo->ptName == 'Course')
+		{
+			$product = new Course($pId);
+		}
+		else
+		{
+			$product = new Product($pId);
+		}
+
+		return $product;
 	}
 
 }

@@ -65,7 +65,7 @@ class Membership_Auditor extends BaseAuditor
 		$jUser = User::getRoot();
 		if (!$jUser->get('guest')) {
 			// Check if there is a limitation on when the subscription can be extended
-			$subscriptionMaxLen = Product::getMeta($this->pId, 'subscriptionMaxLen');
+			$subscriptionMaxLen = Product::getMetaValue($this->pId, 'subscriptionMaxLen');
 			if ($subscriptionMaxLen) {
 				/* Check if the current user has the existing subscription and how much is left on it
 				 i.e. figure out if he may extend his current subscription */
