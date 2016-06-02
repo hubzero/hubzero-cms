@@ -168,7 +168,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 			{
 				$g = array();
 
-				switch ($view->filter)
+				switch ($filter)
 				{
 					case 'invitees':
 						foreach ($groups as $key => $group)
