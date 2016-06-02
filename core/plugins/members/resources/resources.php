@@ -340,6 +340,11 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		//$params = $config;
 		//$params->merge($rparams);
 
+		if (!isset($row->publish_up) || !$row->publish_up || $row->publish_up == '0000-00-00 00:00:00')
+		{
+			$row->publish_up = $row->created;
+		}
+
 		// Set the display date
 		switch ($rparams->get('show_date', $config->get('show_date')))
 		{
