@@ -195,6 +195,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 						<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
+						<input type="hidden" name="fields[id]" value="" />
 						<input type="hidden" name="fields[scope]" value="course" />
 						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->course->offering()->get('id'); ?>" />
 						<input type="hidden" name="active" value="discussions" />
