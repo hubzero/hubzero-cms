@@ -37,8 +37,8 @@ class UsersHelper
 	public static function addSubmenu($vName)
 	{
 		Submenu::addEntry(
-			Lang::txt('COM_USERS_SUBMENU_USERS'),
-			Route::url('index.php?option=com_users&view=users'),
+			Lang::txt('COM_USERS_SUBMENU_MEMBERS'),
+			Route::url('index.php?option=com_members&view=users'),
 			$vName == 'users'
 		);
 
