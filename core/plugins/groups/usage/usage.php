@@ -312,7 +312,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 				$ids[] = $pageid->id;
 			}
 
-			$database->setQuery("SELECT COUNT(*) FROM `#__wiki_attachments` WHERE pageid IN (" . implode(',', $ids) . ")");
+			$database->setQuery("SELECT COUNT(*) FROM `#__wiki_attachments` WHERE page_id IN (" . implode(',', $ids) . ")");
 			return $database->loadResult();
 		}
 
