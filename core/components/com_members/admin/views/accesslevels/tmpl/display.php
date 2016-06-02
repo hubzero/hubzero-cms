@@ -96,10 +96,10 @@ Html::behavior('multiselect');
 					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
 				</th>
 				<th class="left">
-					<?php echo Html::grid('sort', 'COM_MEMBERS_HEADING_LEVEL_NAME', 'a.title', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'COM_MEMBERS_HEADING_LEVEL_NAME', 'title', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 				<th>
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'ordering', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order', $this->rows); ?>
 					<?php endif; ?>
@@ -118,7 +118,7 @@ Html::behavior('multiselect');
 		$i = 0;
 		$n = $this->rows->count();
 		foreach ($this->rows as $row) :
-			$ordering  = ($listOrder == 'a.ordering');
+			$ordering  = ($listOrder == 'ordering');
 			$canCreate = User::authorise('core.create', $this->option);
 			$canEdit   = User::authorise('core.edit', $this->option);
 			$canChange = User::authorise('core.edit.state', $this->option);
