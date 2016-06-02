@@ -81,7 +81,7 @@ class TitleIndexMacro extends WikiMacro
 			}
 		}
 
-		$pages = \Components\Models\Wiki\Page::all()
+		$pages = \Components\Wiki\Models\Page::all()
 			->whereEquals('state', 1);
 
 		if ($et)
