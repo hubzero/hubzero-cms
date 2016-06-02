@@ -206,10 +206,12 @@ class Polls extends AdminController
 
 		if ($poll->isNew())
 		{
-			$poll->published = 1;
+			$poll->set('published', 1);
 		}
-
-		$poll->checkout(User::get('id'));
+		else
+		{
+			$poll->checkout(User::get('id'));
+		}
 
 		$options = $poll->options()
 			->ordered()
