@@ -32,6 +32,8 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$content = \Hubzero\Utility\String::truncate(strip_tags($this->post->get('comment')), 200);
 ?>
 <li class="forum-entry">
 	<p class="title">
@@ -40,7 +42,7 @@ defined('_HZEXEC_') or die();
 	<p class="details">
 		<?php echo Lang::txt('PLG_TAGS_FORUM') . ' &rsaquo; ' . $this->escape(stripslashes($this->post->get('section'))) . ' &rsaquo; ' . $this->escape(stripslashes($this->post->get('category'))); ?>
 	</p>
-	<?php if ($content = $this->post->content('clean', 200)) { ?>
+	<?php if ($content) { ?>
 		<p><?php echo $content; ?></p>
 	<?php } ?>
 	<p class="href">

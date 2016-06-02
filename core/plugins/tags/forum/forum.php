@@ -161,7 +161,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(Component::path('com_forum') . DS . 'models' . DS . 'thread.php');
+		include_once(Component::path('com_forum') . DS . 'models' . DS . 'post.php');
 
 		$row->scope    = $row->rcount;
 		$row->scope_id = $row->data3;
@@ -179,7 +179,21 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 			'element' => 'forum',
 			'name'    => 'result'
 		));
-		$view->post = new \Components\Forum\Models\Post($row);
+		$view->post = \Components\Forum\Models\Post::blank()->set(array(
+			'id'         => $row->id,
+			'title'      => $row->title,
+			'alias'      => $row->alias,
+			'comment'    => $row->comment,
+			'state'      => $row->state,
+			'created'    => $row->created,
+			'created_by' => $row->created_by,
+			'scope'      => $row->rcount,
+			'scope_id'   => $row->data3,
+			'thread'     => $row->thread,
+			'parent'     => $row->parent,
+			'section'    => $row->data2,
+			'category'   => $row->data1
+		));
 
 		return $view->loadTemplate();
 	}
