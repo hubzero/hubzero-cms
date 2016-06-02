@@ -572,6 +572,7 @@ class Quotas extends AdminController
 
 		$config = \Component::params('com_tools');
 		$host = $config->get('storagehost');
+		$used = 0;
 
 		if ($username && $host)
 		{
