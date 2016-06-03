@@ -55,7 +55,7 @@ if ($this->resource->get('id'))
 
 	$authors =  $this->resource->authors()->total();
 
-	$tags = $this->resource->tags()->count();
+	$tags = count($this->resource->tags());
 }
 
 
