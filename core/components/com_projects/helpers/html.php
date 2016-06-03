@@ -504,7 +504,14 @@ class Html extends Object
 	 */
 	public static function replaceUrls($string, $rel = 'nofollow')
 	{
-	    return preg_replace('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', "<a href=\"$1\" rel=\"{$rel}\">$1</a>", $string);
+		//return preg_replace('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', "<a href=\"$1\" rel=\"{$rel}\">$1</a>", $string);
+		// Replace email links
+		$string = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $string);
+
+		// Replace url links
+		$string = preg_replace('#\b((?<!href=")(https?://www[.]|[\w-]+://?|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#', "<a rel=\"{$rel}\" href=\"$1\">$1</a>", $string);
+
+		return $string;
 	}
 
 	/**
