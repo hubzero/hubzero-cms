@@ -90,25 +90,25 @@ Toolbar::help('polls');
 					<?php echo Lang::txt('COM_POLL_COL_NUM'); ?>
 				</th>
 				<th scope="col" class="title">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_TITLE', 'title', @$this->filters['order_Dir'], @$this->filters['order']); ?>
 				</th>
 				<th scope="col">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_PUBLISHED', 'state', @$this->filters['order_Dir'], @$this->filters['order']); ?>
 				</th>
 				<th scope="col" class="priority-2">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_OPEN', 'open', @$this->filters['order_Dir'], @$this->filters['order']); ?>
 				</th>
 				<th scope="col" class="priority-3">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_VOTES', 'voters', @$this->filters['order_Dir'], @$this->filters['order']); ?>
 				</th>
 				<th scope="col" class="priority-4">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
+					<?php echo Lang::txt('COM_POLL_COL_OPTIONS'); ?>
 				</th>
 				<th scope="col" class="priority-4">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_LAG', 'lag', @$this->filters['order_Dir'], @$this->filters['order']); ?>
 				</th>
 				<th scope="col" class="priority-5">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_ID', 'm.id', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_ID', 'id', @$this->filters['order_Dir'], @$this->filters['order']); ?>
 				</th>
 			</tr>
 		</thead>
