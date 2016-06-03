@@ -46,6 +46,16 @@ class plgResourcesGooglescholar extends \Hubzero\Plugin\Plugin
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
+		if (!App::isSite())
+		{
+			return;
+		}
+
+		if (Request::getWord('tmpl') || Request::getWord('format') || Request::getInt('no_html'))
+		{
+			return;
+		}
+
 		$view = $this->view();
 
 		// Add metadata

@@ -46,6 +46,16 @@ class plgResourcesOpengraph extends \Hubzero\Plugin\Plugin
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
+		if (!App::isSite())
+		{
+			return;
+		}
+
+		if (Request::getWord('tmpl') || Request::getWord('format') || Request::getInt('no_html'))
+		{
+			return;
+		}
+
 		$view = $this->view();
 
 		Document::addCustomTag('<meta property="og:title" content="' . $view->escape($model->resource->title) . '" />');
