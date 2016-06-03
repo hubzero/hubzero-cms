@@ -216,12 +216,12 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($this->params->get('contributions', 0) == 1)
-		{
+		//if ($this->params->get('contributions', 0) == 1)
+		//{
 			$areas = array(
 				'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS')
 			);
-		}
+		//}
 
 		$this->_areas = $areas;
 
@@ -310,11 +310,21 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		if (!$limit)
 		{
+			if (!$this->params->get('contributions'))
+			{
+				return 0;
+			}
+
 			$results = $objP->getCount($filters);
 			return $results;
 		}
 		else
 		{
+			if (!$this->params->get('contributions'))
+			{
+				return array();
+			}
+
 			$rows = $objP->getRecords($filters);
 
 			if ($rows)
