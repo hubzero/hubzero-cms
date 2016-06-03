@@ -327,7 +327,7 @@ class Resource extends Relational
 	 */
 	public function link()
 	{
-		return 'index.php?option=com_resources&alias=' . ($this->get('alias') ? 'alias=' . $this->get('alias') : 'id=' . $this->get('id'));
+		return 'index.php?option=com_resources&' . ($this->get('alias') ? 'alias=' . $this->get('alias') : 'id=' . $this->get('id'));
 	}
 
 	/**
