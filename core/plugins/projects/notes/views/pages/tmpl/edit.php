@@ -56,7 +56,7 @@ $scope   = Request::getVar('scope', '');
 
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-	<h2><?php echo $this->task == 'new' ? 'New Note' : $this->escape($this->title); ?></h2>
+	<h2><?php echo $this->task == 'new' ? 'New Note' : $this->escape('Edit Note'); ?></h2>
 </header><!-- /#content-header -->
 
 <?php

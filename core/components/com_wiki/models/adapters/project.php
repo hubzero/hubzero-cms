@@ -70,6 +70,10 @@ class Project extends Base
 
 		//$project = Project::getInstance($this->_scope_id);
 		$project = Request::getVar('project', NULL);
+		if (is_object($project))
+		{
+			$project = $project->get('alias');
+		}
 
 		$this->_segments['alias'] = $project;
 	}
