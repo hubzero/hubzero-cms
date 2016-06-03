@@ -456,6 +456,7 @@ class Pages extends SiteController
 			->set('tree', $tree)
 			->set('tags', $tags)
 			->set('preview', $this->preview)
+			->set('base_path', $this->_base_path)
 			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();

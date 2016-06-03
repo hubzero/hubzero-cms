@@ -37,15 +37,14 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('al
 $pagename = Request::getVar('pagename', '');
 
 ?>
-
 <section class="main section">
-<p class="s-notes">	
-	<?php if ($this->project->access('content'))
-	{ ?>
-		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->scope . '&action=new'); ?>">
-			<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
-		</a>
-<?php } else { echo Lang::txt('This project has no notes.');  }
-	?>	
-</p>
+	<p class="s-notes">	
+		<?php if ($this->project->access('content')) { ?>
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->scope . '&action=new'); ?>">
+				<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
+			</a>
+		<?php } else { ?>
+			<?php echo Lang::txt('This project has no notes.'); ?>
+		<?php } ?>
+	</p>
 </section><!-- / .main section -->
