@@ -519,7 +519,7 @@ class Questions extends SiteController
 
 		switch ($filters['sortby'])
 		{
-			case 'rewards': $order = 'points'; break;
+			case 'rewards': $order = 'reward';  break;
 			case 'votes':   $order = 'helpful'; break;
 			case 'date':
 			default:        $order = 'created'; break;
