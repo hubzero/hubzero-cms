@@ -923,37 +923,6 @@ this["Formbuilder"]["templates"]["edit/base_non_input"] = function(obj) {
   return __p
 };
 
-this["Formbuilder"]["templates"]["edit/checkboxes"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<label>Viewing level\n  <select data-rv-value=\'model.' +
-((__t = ( Formbuilder.options.mappings.ACCESS )) == null ? '' : __t) +
-'\'><option value="1">Public</option><option value="2">Registered</option><option value="5">Private</option></select>\n  </label>\n<div class="grid"><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.REQUIRED )) == null ? '' : __t) +
-'\' />\n  Required\n</label>\n</div><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.READONLY )) == null ? '' : __t) +
-'\' />\n  Read only\n</label>\n</div><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.DISABLED )) == null ? '' : __t) +
-'\' />\n  Disabled\n</label></div></div>\n<!-- label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.ADMIN_ONLY )) == null ? '' : __t) +
-'\' />\n  Admin only\n</label -->';
-
-}
-return __p
-};
-
-this["Formbuilder"]["templates"]["edit/states"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<label>Viewing level\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.ACCESS )) == null ? '' : __t) + '\'><option value="1">Public</option><option value="2">Registered</option><option value="5">Private</option></select>\n  </label>\n' +
-'<label>Create account\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.CREATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
-//'<label>Update on next login\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.UPDATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
-'<label>Edit profile\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.EDIT )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n';
-}
-return __p
-};
 
 this["Formbuilder"]["templates"]["edit/common"] = function(obj) {
 obj || (obj = {});
@@ -961,8 +930,6 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class=\'fb-edit-section-header\'>Label</div>\n\n<div class=\'fb-common-wrapper\'>\n  <div class=\'fb-label-description\'>\n    ' +
 ((__t = ( Formbuilder.templates['edit/label_description']() )) == null ? '' : __t) +
-'\n  </div>\n  <div class=\'fb-edit-section-header\'>Access</div>\n\n<div class=\'fb-common-checkboxes\'>\n    ' +
-((__t = ( Formbuilder.templates['edit/states']() )) == null ? '' : __t) +
 '\n  </div>\n  <div class=\'fb-clear\'></div>\n</div>\n';
 
 }

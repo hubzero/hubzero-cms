@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PROFILE'), 'user');
+Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . Lang::txt('COM_PROJECTS_CUSTOM_DESCRIPTION'));
 if (User::authorise('core.edit') || User::authorise('core.create'))
 {
 	Toolbar::apply('applyDescription');
@@ -41,7 +41,7 @@ if (User::authorise('core.edit') || User::authorise('core.create'))
 }
 Toolbar::cancel();
 Toolbar::divider();
-Toolbar::help('user');
+//Toolbar::help('user');
 
 $elements = array();
 
@@ -59,14 +59,16 @@ foreach ($this->fields as $field)
 	{
 		$element->field_type = 'paragraph';
 	}
+
+	// NOT implemented yet
 	/*$element->required = (bool)$field->get('required');
 	$element->readonly = (bool)$field->get('readonly');
 	$element->disabled = (bool)$field->get('disabled');*/
-	$element->create   = (int)$field->get('action_create');
-	$element->update   = (int)$field->get('action_update');
-	$element->edit     = (int)$field->get('action_edit');
-	$element->access   = (int)$field->get('access');
-	$element->field_id = (int)$field->get('id');
+	//$element->create   = (int)$field->get('action_create');
+	//$element->update   = (int)$field->get('action_update');
+	//$element->edit     = (int)$field->get('action_edit');
+	//$element->access   = (int)$field->get('access');
+	//$element->field_id = (int)$field->get('id');
 
 	$element->field_options = new stdClass;
 	$element->field_options->include_other_option = (bool)$field->get('option_other');
