@@ -34,7 +34,14 @@ namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
+use Components\Projects\Models\Orm\Description\Field;
+use Components\Projects\Models\Orm\Description;
+use Components\Projects\Models\Orm\Project as ProjectORM;
 use Exception;
+
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php';
 
 /**
  * Projects setup controller class
@@ -629,6 +636,7 @@ class Setup extends Base
 		{
 			case 'describe':
 			case 'info':
+			case 'info_custom':
 
 				// Incoming
 				$name       = trim(Request::getVar( 'name', '', 'post' ));
@@ -692,8 +700,52 @@ class Setup extends Base
 					return false;
 				}
 
+				// Save custom description
+				if ($this->section == 'info_custom')
+				{
+					$newInfo = Request::getVar('description', array());
+
+					$projectID = $this->model->get('id');
+					$project = ProjectORM::one($this->model->get('id'));
+
+					$old = Description::collect($project->descriptions);
+					$formFields = array_merge($old, $newInfo);
+					$knownFields = Field::all()->rows()->toObject();
+
+					foreach ($knownFields as $kField)
+					{
+						$existingField = Description::all()->whereEquals('project_id', $this->model->get('id'))
+							->whereEquals('description_key', $kField->name)
+							->limit(1)
+							->row();
+
+						if ($existingField->id != NULL)
+						{
+							$existingField->set('description_value', $formFields[$kField->name]);
+							$existingField->set('ordering', $kField->ordering);
+							$existingField->save();
+						}
+						else
+						{
+							// Create a new field
+							$newField = new Description;
+
+							$newField
+								->set('description_key', $kField->name)
+								->set('description_value', $formFields[$kField->name])
+								->set('project_id', $this->model->get('id'))
+								->set('ordering', $kField->ordering);
+
+							if (!$newField->save())
+							{
+								$this->setError($newField->getError());
+							}
+						}
+					}
+				}
+
 				// Save owners for new projects
-				if ($new)
+				if ($new && $this->section != 'info_custom')
 				{
 					$this->_identifier = $this->model->get('alias');
 
@@ -728,7 +780,10 @@ class Setup extends Base
 					}
 				}
 
-				break;
+			break;
+			case 'info_custom':
+				ddie('info_custom');
+			break;
 
 			case 'team':
 
@@ -885,13 +940,29 @@ class Setup extends Base
 			return;
 		}
 
-		// Which section are we editing?
-		$sections = array('info', 'team', 'settings');
-		if ($this->config->get('edit_settings', 0) == 0)
+		if ($this->config->get('edit_settings') == 'custom')
 		{
-			array_pop($sections);
+			$sections = array('info', 'team', 'settings');
+			$this->section = 'info_custom';
+			$this->view->fields = Field::all()->order('ordering', 'ASC');
+
+			$projectID = $this->model->get('id');
+
+			// Load project values
+			$projectData = Description::all()->where('project_id', '=', $projectID);
+			$data = Description::collect($projectData);
+			$this->view->data = $data;
 		}
-		$this->section = in_array( $this->section, $sections ) ? $this->section : 'info';
+		else
+		{
+			// Which section are we editing?
+			$sections = array('info', 'team', 'settings');
+			if ($this->config->get('edit_settings', 0) == 0)
+			{
+				array_pop($sections);
+			}
+			$this->section = in_array( $this->section, $sections ) ? $this->section : 'info';
+		}
 
 		// Set the pathway
 		$this->_buildPathway();

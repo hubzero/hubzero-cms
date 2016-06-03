@@ -30,6 +30,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+//ddie(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 
 $privacy = !$this->model->isPublic() ? Lang::txt('COM_PROJECTS_PRIVATE') : Lang::txt('COM_PROJECTS_PUBLIC');
 
@@ -81,6 +82,21 @@ $config = $this->model->config();
 				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></th>
 				<td><?php echo $this->model->groupOwner() ? $this->model->groupOwner('description') : $this->model->owner('name'); ?></td>
 			</tr>
+
+			<?php
+				// This is for the admin-defined project information
+				if ($this->info)
+				{
+					foreach ($this->info as $field)
+					{ ?>
+						<tr>
+							<th class="htd"><?php echo $field->label; ?></th>
+							<td><?php echo $field->value; ?></td>
+						</tr>
+			<?php } // end foreach
+					} // end if
+				?>
+
 			<?php if ($this->model->about('parsed')) { ?>
 			<tr>
 				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></th>

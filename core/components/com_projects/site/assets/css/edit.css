@@ -164,3 +164,15 @@
 		font-size: 85%;
 		margin-bottom: 2em;
 	}
+
+/* Extended info
+----------------------------------------------*/
+	#hubForm ul {
+		list-style: none;
+	}
+
+	#hubForm input[type="radio"] {
+		float:left;
+		margin-top: 10px;
+		margin-right: 10px;
+	}

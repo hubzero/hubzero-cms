@@ -152,6 +152,7 @@ $sideContent 	= $sideContent && !empty($sideContent)
 							$this->view('_info')
 							     ->set('model', $this->model)
 							     ->set('option', $this->option)
+									 ->set('info', $this->info)
 							     ->display();
 					 } ?>
 					<?php if ($sideContent) { ?>

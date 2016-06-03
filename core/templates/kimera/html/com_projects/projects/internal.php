@@ -150,6 +150,7 @@ $sideContent 	= $sideContent && !empty($sideContent)
 							// Display project info
 							$this->view('_info')
 							     ->set('model', $this->model)
+									 ->set('info', $this->info)
 							     ->set('option', $this->option)
 							     ->display();
 					 } ?>

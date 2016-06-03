@@ -35,8 +35,17 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 Toolbar::title( Lang::txt( 'Projects' ), 'user.png' );
+
+// Only display if enabled
+if ($this->config->get('edit_settings') == 'custom')
+{
+	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
+}
+
+Toolbar::spacer();
 Toolbar::preferences('com_projects', '550');
 Toolbar::editList();
+
 
 Html::behavior('tooltip');
 

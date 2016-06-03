@@ -128,7 +128,7 @@ else
 							<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_GRANTINFO_BECAUSE'); ?></p>
 						<?php } ?>
 					<?php } ?>
-					<?php if ($this->section == 'info') { ?>
+					<?php if ($this->section == 'info' || $this->section == 'info_custom') { ?>
 						<p><?php echo Lang::txt('Need to cancel project? You have an option to permanently '); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=delete'); ?>" id="delproject"><?php echo strtolower(Lang::txt('delete')); ?></a> <?php echo Lang::txt('your project.'); ?></p>
 					<?php } ?>
 				</div>
@@ -177,7 +177,52 @@ else
 									<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
 									<span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=info'); ?>" class="btn btn-secondary btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a></span>
 								</p>
+							<?php
+							break;
+							case 'info_custom': ?>
+								<fieldset>
+								<legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO')); ?></legend>
+
+								<label for="field-name">
+									<?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?>
+									<input type="text" name="name" id="field-name" disabled="disabled" readonly="readonly" class="disabled readonly" value="<?php echo $this->model->get('alias'); ?>" />
+								</label>
+
+								<label for="field-title">
+									<?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>
+									<input name="title" id="field-title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" />
+								</label>
+								</fieldset>
+
+								<fieldset>
+								<legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO_EXTENDED')); ?></legend>
 								<?php
+								// Convert to XML so we can use the Form processor
+								$xml = Components\Projects\Models\Orm\Description\Field::toXml($this->fields, 'edit');
+								// Create a new form
+								Hubzero\Form\Form::addFieldPath(Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS. 'fields');
+
+								$form = new Hubzero\Form\Form('description', array('control' => 'description'));
+								$form->load($xml);
+
+								$data = new stdClass;
+								$data->textbox = 'abd';
+								$data->projecttags = 'testing, tagging';
+
+								$form->bind($this->data);
+
+								foreach ($form->getFieldsets() as $fieldset)
+								{
+									foreach ($form->getFieldset($fieldset->name) as $field)
+									{
+										echo $field->label;
+										echo $field->input;
+										echo $field->description;
+									}
+								}
+								echo '<hr />';
+								echo '<input type="submit" class="btn btn-success" value="' . Lang::txt('COM_PROJECTS_SAVE_CHANGES') . '"  />';
+								echo '</fieldset>';
 							break;
 							case 'team':
 								?>

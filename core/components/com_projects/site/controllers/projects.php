@@ -35,7 +35,13 @@ namespace Components\Projects\Site\Controllers;
 use Components\Projects\Tables;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
+use Components\Projects\Models\Orm\Description;
+use Components\Projects\Models\Orm\Description\Field;
 use Exception;
+use stdClass;
+
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description.php';
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
 
 /**
  * Primary component controller
@@ -656,6 +662,26 @@ class Projects extends Base
 		$this->view->option 	= $this->_option;
 		$this->view->config 	= $this->config;
 		$this->view->msg 		= $this->_getNotifications('success');
+
+		$fields = Field::all()->rows();
+		$projectDescription = Description::all()->where('project_id', '=', $this->model->get('id'))->rows();
+
+		$info = array();
+		foreach ($fields as $field)
+		{
+			foreach ($projectDescription as $description)
+			{
+				if ($description->description_key == $field->name)
+				{
+					$f = new stdClass;
+					$f->label = $field->label;
+					$f->value = $description->description_value;
+					array_push($info, $f);
+				}
+			}
+		}
+		$this->view->info = $info;
+
 
 		if ($layout == 'invited')
 		{

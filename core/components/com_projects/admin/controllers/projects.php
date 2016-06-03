@@ -35,12 +35,12 @@ namespace Components\Projects\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Projects\Tables;
 use Components\Projects\Models;
+use Components\Projects\Models\Orm\Description\Field;
+use Components\Projects\Models\Orm\Description\Option;
 use Components\Projects\Helpers;
-use Request;
-use Route;
-use User;
-use Lang;
-use App;
+
+
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
 
 /**
  * Manage projects
@@ -839,5 +839,213 @@ class Projects extends AdminController
 			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
 			Lang::txt('Sync log unavailable')
 		);
+	}
+
+	/**
+	 * customizeDescriptionTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function customizeDescriptionTask()
+	{
+		// Shamelessly ripped off from Shawn
+
+		// Authorization check
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
+		// Fields that we have, ordered
+		$fields = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->ordered()
+			->rows();
+
+		$this->view
+			->set('fields', $fields)
+			->setLayout('description')
+			->display();
+	}
+
+	public function saveDescriptionTask()
+	{
+		//$fields = Request::getVar('descriptionFields', '');
+
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
+		// Incoming data
+		$description = json_decode(Request::getVar('descriptionFields', '{}', 'post', 'none', 2));
+
+		// Get the old schema
+		$fields = Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*')
+					->ordered();
+			}])
+			->ordered()
+			->rows();
+
+		// Collect old fields
+		$oldFields = array();
+		foreach ($fields as $oldField)
+		{
+			$oldFields[$oldField->get('id')] = $oldField;
+		}
+
+		foreach ($description->fields as $i => $element)
+		{
+			$field = null;
+
+			$fid = (isset($element->field_id) ? $element->field_id : 0);
+
+			if ($fid && isset($oldFields[$fid]))
+			{
+				$field = $oldFields[$fid];
+
+				// Remove found fields from the list
+				// Anything remaining will be deleted
+				unset($oldFields[$fid]);
+			}
+
+			$field = ($field ?: Field::oneOrNew($fid));
+			$field->set(array(
+				'type'          => (string) $element->field_type,
+				'label'         => (string) $element->label,
+				'name'          => (string) $element->name,
+				'description'   => (isset($element->field_options->description) ? (string) $element->field_options->description : ''),
+				'ordering'      => ($i + 1),
+				'access'        => (isset($element->access) ? (int) $element->access : 0),
+				'option_other'  => (isset($element->field_options->include_other_option) ? (int) $element->field_options->include_other_option : ''),
+				'option_blank'  => (isset($element->field_options->include_blank_option) ? (int) $element->field_options->include_blank_option : ''),
+				'action_create' => (isset($element->create) ? (int) $element->create : 1),
+				'action_update' => (isset($element->update) ? (int) $element->update : 1),
+				'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1)
+			));
+
+			if ($field->get('type') == 'dropdown')
+			{
+				$field->set('type', 'select');
+			}
+			if ($field->get('type') == 'paragraph')
+			{
+				$field->set('type', 'textarea');
+			}
+
+			if (!$field->save())
+			{
+				Notify::error($field->getError());
+				continue;
+			}
+
+			// Collect old options
+			$oldOptions = array();
+			foreach ($field->options as $oldOption)
+			{
+				$oldOptions[$oldOption->get('id')] = $oldOption;
+			}
+
+			// Does this field have any set options?
+			if (isset($element->field_options->options))
+			{
+				foreach ($element->field_options->options as $k => $opt)
+				{
+					$option = null;
+
+					$oid = (isset($opt->field_id) ? $opt->field_id : 0);
+
+					if ($oid && isset($oldOptions[$oid]))
+					{
+						$option = $oldOptions[$oid];
+
+						// Remove found options from the list
+						// Anything remaining will be deleted
+						unset($oldOptions[$oid]);
+					}
+
+					$dependents = array();
+					if (isset($opt->dependents))
+					{
+						$dependents = explode(',', trim($opt->dependents));
+						$dependents = array_map('trim', $dependents);
+						foreach ($dependents as $j => $dependent)
+						{
+							if (!$dependent)
+							{
+								unset($dependents[$j]);
+							}
+						}
+					}
+
+					$option = ($option ?: Option::oneOrNew($oid));
+					$option->set(array(
+						'field_id'   => $field->get('id'),
+						'label'      => (string) $opt->label,
+						'value'      => (isset($opt->value)   ? (string) $opt->value : ''),
+						'checked'    => (isset($opt->checked) ? (int) $opt->checked : 0),
+						'ordering'   => ($k + 1),
+						'dependents' => json_encode($dependents)
+					));
+
+					if (!$option->save())
+					{
+						Notify::error($option->getError());
+						continue;
+					}
+				}
+			}
+
+			// Remove any options not in the incoming list
+			foreach ($oldOptions as $option)
+			{
+				if (!$option->destroy())
+				{
+					Notify::error($option->getError());
+					continue;
+				}
+			}
+		}
+
+		// Remove any fields not in the incoming list
+		foreach ($oldFields as $field)
+		{
+			if (!$field->destroy())
+			{
+				Notify::error($field->getError());
+				continue;
+			}
+		}
+
+		// Set success message
+		Notify::success(Lang::txt('COM_MEMBERS_PROFILE_SCHEMA_SAVED'));
+
+		// Drop through to edit form?
+		if ($this->getTask() == 'applyprofile')
+		{
+			// Redirect, instead of falling through, to avoid caching issues
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false)
+			);
+			//return $this->profileTask();
+		}
+
+		// Redirect
+		$this->cancelTask();
+		ddie($fields);
+		ddie('saving');
 	}
 }
