@@ -69,7 +69,7 @@ class LanguagesModelInstalled extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		//$app = JFactory::getApplication('administrator');
 
 		// Load the filter state.
 		$clientId = Request::getInt('client');
@@ -114,7 +114,7 @@ class LanguagesModelInstalled extends JModelList
 		if (is_null($this->client))
 		{
 			$this->client = \Hubzero\Base\ClientManager::client($this->getState('filter.client_id', 0));
-			$this->client->path = '/bootstrap/' . $this->client->name;
+			$this->client->path = '/bootstrap/' . ucfirst($this->client->name);
 		}
 
 		return $this->client;
