@@ -68,7 +68,7 @@ $canDo = \Components\Members\Helpers\Admin::getActions();
 	\Lang::txt('COM_MEMBERS_MENU_MESSAGING'),
 	\Route::url('index.php?option=com_members&controller=messages'),
 	$controllerName == 'messages'
-);
+);*/
 if (\Component::params('com_members')->get('bankAccounts'))
 {
 	\Submenu::addEntry(
@@ -76,7 +76,7 @@ if (\Component::params('com_members')->get('bankAccounts'))
 		\Route::url('index.php?option=com_members&controller=points'),
 		$controllerName == 'points'
 	);
-}*/
+}
 if ($canDo->get('core.admin'))
 {
 	\Submenu::addEntry(
