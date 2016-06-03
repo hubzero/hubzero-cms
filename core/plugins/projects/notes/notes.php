@@ -267,7 +267,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			if (!file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS
 				. 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php'))
 			{
-				$this->_controllerName = 'page';
+				$this->_controllerName = 'pages';
 			}
 			// Include controller
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS
@@ -352,7 +352,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				array(
 					'folder'  =>'projects',
 					'element' =>'notes',
-					'name'    =>'page',
+					'name'    =>'pages',
 					'layout'  =>'doesnotexist'
 				)
 			);
