@@ -1270,7 +1270,7 @@ class Profiles extends SiteController
 		// Compile profile data
 		foreach ($profile as $key => $data)
 		{
-			if (isset($profile[$key . '_other']))
+			if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
 			{
 				if (is_array($profile[$key]))
 				{
@@ -1316,10 +1316,10 @@ class Profiles extends SiteController
 
 				if ($error instanceof \Hubzero\Form\Exception\MissingData)
 				{
-					$errors->_missing[$key] = (string)$error;
+					$errors['_missing'][$key] = (string)$error;
 				}
 
-				$errors->_invalid[$key] = (string)$error;
+				$errors['_invalid'][$key] = (string)$error;
 
 				$this->setError((string)$error);
 			}
