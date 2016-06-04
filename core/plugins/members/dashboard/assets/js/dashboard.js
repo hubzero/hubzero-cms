@@ -454,6 +454,10 @@ HUB.Plugins.MemberDashboard = {
 			pageContentMargins = 20;
 
 		// calculate total working area width
+		// ignore sidebar if it is displayed on top
+		if (sidebarWidth >= innerWrapWidth) {
+			sidebarWidth = 0;
+		}
 		modulesAreasWidth = innerWrapWidth - sidebarWidth - pageContentMargins;
 
 		// get module width
