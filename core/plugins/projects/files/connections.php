@@ -465,6 +465,310 @@ class connections
 	}
 
 	/**
+	 * Check if all the chunks exist, and combine them into a final file
+	 *
+	 * @param   string  $temp_dir     The temporary directory holding all the parts of the file
+	 * @param   string  $fileName     The original file name
+	 * @param   string  $chunkSize    Each chunk size (in bytes)
+	 * @param   string  $totalSize    Original file size (in bytes)
+	 * @param   int     $total_files  The total number of chunks for this file
+	 * @param   int     $expand       Whether to automatically expand zip,tar,gz files
+	 *
+	 * @return  array
+	 */
+	public function createFileFromChunks($temp_dir, $fileName, $chunkSize, $totalSize, $total_files, $expand)
+	{
+		// Count all the parts of this file
+		$total_files_on_server_size = 0;
+		$temp_total = 0;
+
+		$results = [];
+
+		foreach (scandir($temp_dir) as $file)
+		{
+			$temp_total = $total_files_on_server_size;
+			$tempfilesize = filesize($temp_dir . DS . $file);
+			$total_files_on_server_size = $temp_total + $tempfilesize;
+		}
+
+		// Check that all the parts are present
+		// If the Size of all the chunks on the server is equal to the size of the file uploaded.
+		if ($total_files_on_server_size >= $totalSize)
+		{
+			// Create a temporary file to combine all the chunks into
+			$fp = tmpfile();
+
+			for ($i=1; $i<=$total_files; $i++)
+			{
+				fwrite($fp, file_get_contents($temp_dir . DS . $fileName . '.part' . $i));
+				unlink($temp_dir . DS . $fileName . '.part' . $i);
+			}
+
+			fseek($fp, 0);
+
+			$path = trim($this->subdir, DS) . DS . $fileName;
+
+			// Final destination file
+			$file = Entity::fromPath($path, $this->connection->adapter());
+
+			$file->contents = $fp;
+			$file->size     = $totalSize;
+
+			if ($file->save())
+			{
+				$results['uploaded'][] = $file->getPath();
+
+				if ($file->isExpandable() && $expand)
+				{
+					if ($file->expand())
+					{
+						// Delete the archive itself
+						$file->delete();
+					}
+				}
+			}
+			else
+			{
+				$results['failed'][] = $file->getPath();
+			}
+
+			if (is_resource($file))
+			{
+				// Some (3rd party) adapters close the stream internally.
+				fclose($file);
+			}
+
+			// Rename the temporary directory (to avoid access from other
+			// Concurrent chunks uploads) and then delete it
+			if (rename($temp_dir, $temp_dir . '_UNUSED'))
+			{
+				Filesystem::deleteDirectory($temp_dir . '_UNUSED');
+			}
+			else
+			{
+				Filesystem::deleteDirectory($temp_dir);
+			}
+
+		}
+
+		return $results;
+
+	}
+
+	/**
+	 * Uploads file chunk(s) and combines them before adding the
+	 * final file to repository
+	 *
+	 * @return  void
+	 */
+	public function chunkedSave()
+	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+		}
+
+		// Incoming
+		$no_html    = Request::getVar('no_html', 0);
+		$expand     = Request::getInt('expand_zip', 0);
+		$ajaxUpload = $no_html ? true : false;
+
+		$results = [];
+
+		if ($ajaxUpload)
+		{
+			// Check if request is GET and the requested chunk exists or not. this makes testChunks work
+			if ($_SERVER['REQUEST_METHOD'] === 'GET')
+			{
+				if (!(isset($_GET['flowIdentifier']) && trim($_GET['flowIdentifier']) != ''))
+				{
+					$_GET['flowIdentifier'] = '';
+				}
+
+				if (!(isset($_GET['flowFilename']) && trim($_GET['flowFilename'])!=''))
+				{
+					$_GET['flowFilename'] = '';
+				}
+
+				if (!(isset($_GET['flowChunkNumber']) && trim($_GET['flowChunkNumber']) != ''))
+				{
+					$_GET['flowChunkNumber'] = '';
+				}
+
+				if (!(isset($_GET['flowChunkHash']) && trim($_GET['flowChunkHash']) != ''))
+				{
+					$_GET['flowChunkHash'] = '';
+				}
+
+				$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
+				$temp_dir .= base64_encode($this->subdir) . '_' . $_GET['flowIdentifier'];
+
+				$chunk_file = $temp_dir . DS . $_GET['flowFilename'] . '.part' . $_GET['flowChunkNumber'];
+
+				if (file_exists($chunk_file))
+				{
+					// Also compare MD5 hash to make sure this is the same part as before
+					$hash = md5_file($chunk_file);
+					if (strcmp($hash,$_GET['flowChunkHash']) === 0)
+					{
+						header("HTTP/1.0 200 OK");
+						exit;
+					}
+					else
+					{
+						unlink($chunk_file);
+						header("HTTP/1.0 204 Not Found");
+						exit;
+					}
+				}
+				else
+				{
+					header("HTTP/1.0 204 Not Found");
+					exit;
+				}
+			}
+
+			// Loop through files and move the chunks to a temporarily created directory
+			if (!empty($_FILES))
+			{
+				foreach ($_FILES as $file)
+				{
+					// check the error status
+					if ($file['error'] != 0)
+					{
+						continue;
+					}
+
+					// Init the destination file (format <filename.ext>.part<#chunk>)
+					// The file is stored in a temporary directory identified by the
+					// project ID, the base64 encoded destination and the filename
+					if (isset($_POST['flowIdentifier']) && trim($_POST['flowIdentifier']) != '')
+					{
+						$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
+						$temp_dir .= base64_encode($this->subdir) . '_' . $_POST['flowIdentifier'];
+					}
+
+					$dest_file = $temp_dir . DS . $_POST['flowFilename'] . '.part' . $_POST['flowChunkNumber'];
+
+					// Create the temporary directory
+					if (!is_dir($temp_dir))
+					{
+						mkdir($temp_dir, 0777, true);
+					}
+
+					// Move the temporary file
+					if (!move_uploaded_file($file['tmp_name'], $dest_file))
+					{
+
+						header("HTTP/1.0 404 Error Uploading File");
+						exit;
+					}
+					else
+					{
+						// Check if all the parts present, and create the final destination file
+						$results = $this->createFileFromChunks(
+							$temp_dir,
+							$_POST['flowFilename'],
+							$_POST['flowChunkSize'],
+							$_POST['flowTotalSize'],
+							$_POST['flowTotalChunks'],
+							$expand
+						);
+					}
+				}
+			}
+		}
+		else // Basic upload
+		{
+			$files = [];
+
+			// Regular upload
+			$upload = Request::getVar('upload', '', 'files', 'array');
+
+			if (empty($upload['name']) || $upload['name'][0] == '')
+			{
+				throw new Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
+			}
+
+			// Go through uploaded files
+			for ($i=0; $i < count($upload['name']); $i++)
+			{
+				$path = trim($this->subdir, '/') . '/' . $upload['name'][$i];
+				$file = Entity::fromPath($path, $this->connection->adapter());
+
+				$file->contents = file_get_contents($upload['tmp_name'][$i]);
+				$file->size     = (int) $upload['size'][$i];
+
+				$files[] = $file;
+			}
+
+			foreach ($files as $file)
+			{
+				// @FIXME: how do we want to do virus scanning?
+				if ($file->save())
+				{
+					$results['uploaded'][] = $file->getPath();
+
+					if ($file->isExpandable() && $expand)
+					{
+						if ($file->expand())
+						{
+							// Delete the archive itself
+							$file->delete();
+						}
+					}
+				}
+				else
+				{
+					$results['failed'][] = $file->getPath();
+				}
+			}
+		}
+
+		// Register changes for active projects
+		if (!empty($results))
+		{
+			foreach ($results as $updateType => $files)
+			{
+				foreach ($files as $file)
+				{
+					$this->registerUpdate($updateType, $file);
+
+					// Ajax requires output right here
+					if ($ajaxUpload)
+					{
+						if ($updateType == 'failed')
+						{
+							return json_encode(array(
+								'error' => 'error uploading file'
+							));
+						}
+						else
+						{
+							return json_encode(array(
+								'success'   => 1,
+								'file'      => $file,
+								'isNew'     => $updateType == 'uploaded' ? true : false
+							));
+						}
+					}
+				}
+			}
+		}
+
+
+		$url  = $this->model->link('files') . '&action=browse';
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$url .= '&connection=' . $this->connection->id;
+		$url  = Route::url($url, false);
+
+		// Redirect
+		App::redirect($url);
+		return;
+	}
+
+	/**
 	 * Renders delete view
 	 *
 	 * @return  stromg
@@ -812,7 +1116,7 @@ class connections
 
 		// See if there is an edit interface that we should use
 		// in favor of the default one (this is slightly better
-		// than a view override in the sense that the view can 
+		// than a view override in the sense that the view can
 		// still be packaged with the plugin, rather than having
 		// to be overriden in the template on a per-hub basis)
 		$editors = Event::trigger('metadata.onMetadataEdit');
