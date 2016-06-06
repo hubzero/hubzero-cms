@@ -117,6 +117,12 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		{
 			$result = $result[0];
 		}
+		else
+		{
+			$response->status = \Hubzero\Auth\Status::FAILURE;
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
+			return false;
+		}
 
 		// Now make sure they haven't made too many failed login attempts
 		if (\Hubzero\User\User::oneOrFail($result->id)->hasExceededLoginLimit())
