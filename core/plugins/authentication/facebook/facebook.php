@@ -370,40 +370,6 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	}
 
 	/**
-	 * Get user profile info provided via facebook
-	 *
-	 * We pass params to avoid creating an instance of the plugin and carrying the joomla 'event' bagage with it
-	 *
-	 * @param   object  $params  Plugin params
-	 * @return  void
-	 */
-	public static function getInfo($params)
-	{
-		// Set up the config for the sdk instance
-		$params = json_decode($params);
-
-		// Create instance and get the facebook user_id
-		$facebook = new Facebook(array(
-			'appId'  => $params->app_id,
-			'secret' => $params->app_secret
-		));
-		$user_id  = $facebook->getUser();
-
-		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
-		if ($user_id > 0)
-		{
-			// Get the facebook graph api profile for the user
-			$user_profile = $facebook->api('/me','GET');
-
-			return $user_profile;
-		}
-		else
-		{
-			// Not currently logged in
-		}
-	}
-
-	/**
 	 * Generate return url
 	 *
 	 * @param   string  $return  url
