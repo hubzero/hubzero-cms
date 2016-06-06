@@ -33,6 +33,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Projects\Models\Orm\Project;
+use Hubzero\User\Group;
+
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
+
 /**
  * Search groups
  */
@@ -82,6 +87,99 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));
+	}
+/************************************************
+ *
+ * HubSearch Required Methods
+ * @author Kevin Wojkovich <kevinw@purdue.edu>
+ *
+ ***********************************************/
+
+	/****************************
+	Query-time / General Methods
+	****************************/
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'project';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	public function onGetModel($type = '')
+	{
+		if ($type == 'project')
+		{
+			return new Project;
+		}
+	}
+	/*********************
+		Index-time methods
+	*********************/
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row)
+	{
+		if ($type == 'project')
+		{
+			// Object for mapped fields
+			$fields = new stdClass;
+
+			// Public condition
+			if ($row->state == 1 && $row->private == 0)
+			{
+				$fields->access_level = 'public';
+			}
+			// Default private
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			$group = Group::getInstance('pr-'.$row->alias);
+			$fields->owner_type = 'group';
+			$fields->owner = $group->get('gidNumber');
+
+			// Build out path
+			$path = '/projects/';
+			$path .= $row->alias;
+
+			$fields->url = $path;
+
+			$fields->title = $row->title;
+			$fields->alias = $row->alias;
+
+			// Format the date for SOLR
+			$date = Date::of($row->created)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			$fields->description = $row->about;
+
+			return $fields;
+		}
 	}
 }
 
