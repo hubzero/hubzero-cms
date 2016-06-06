@@ -59,11 +59,11 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
 			</li>
 		<?php endif; ?>
 
-		<?php if ($canEdit) : ?>
+		<?php /*if ($canEdit) : ?>
 			<li class="edit-icon">
 			<?php echo Html::icon('edit', $this->item, $params); ?>
 			</li>
-		<?php endif; ?>
+		<?php endif;*/ ?>
 
 	<?php else : ?>
 		<li>
