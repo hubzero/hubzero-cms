@@ -62,7 +62,6 @@
     ],
     "require": {
         "ezyang/htmlpurifier": "4.5.0",
-        "facebook/php-sdk": "3.2.2",
         "facebook/php-sdk-v4": "4.0.11",
         "tecnickcom/tcpdf": "6.0.017",
         "leafo/lessphp": "0.5.0",
