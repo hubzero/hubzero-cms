@@ -40,9 +40,9 @@ if (!\User::authorise('core.manage', 'com_search'))
 // Get the preferred search mechanism
 $controllerName = \Component::params('com_search')->get('engine');
 
-if (strtolower($controllerName) != 'basic')
+if (strtolower($controllerName) != 'search')
 {
-	$controllerName = 'search';
+	$controllerName = 'basic';
 }
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
