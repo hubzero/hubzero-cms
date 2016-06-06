@@ -289,130 +289,6 @@ class Members extends AdminController
 	}
 
 	/**
-	 * Create a new member
-	 *
-	 * @return  void
-	 */
-	/*public function addTask()
-	{
-		Request::setVar('hidemainmenu', 1);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			Notify::error($error);
-		}
-
-		// Output the HTML
-		$this->view
-			->setLayout('add')
-			->display();
-	}*/
-
-	/**
-	 * Create a new user
-	 *
-	 * @param      integer $redirect Redirect to main listing?
-	 * @return     void
-	 */
-	/*public function newTask($redirect=1)
-	{
-		// Check for request forgeries
-		Request::checkToken();
-
-		// Incoming profile edits
-		$p = Request::getVar('profile', array(), 'post', 'none', 2);
-
-		// Initialize new usertype setting
-		$usersConfig = \Component::params('com_users');
-		$newUsertype = $usersConfig->get('new_usertype');
-		if (!$newUsertype)
-		{
-			$db = \App::get('db');
-			$query = $db->getQuery(true)
-				->select('id')
-				->from('#__usergroups')
-				->where('title = "Registered"');
-			$db->setQuery($query);
-			$newUsertype = $db->loadResult();
-		}
-
-		// check that username & password are filled
-		if (!Validate::username($p['username']))
-		{
-			$this->setError(Lang::txt('COM_MEMBERS_MEMBER_USERNAME_INVALID'));
-			$this->addTask();
-			return;
-		}
-
-		// check email is valid
-		if (!Validate::email($p['email']))
-		{
-			$this->setError(Lang::txt('COM_MEMBERS_MEMBER_EMAIL_INVALID'));
-			$this->addTask();
-			return;
-		}
-
-		$name  = trim($p['givenName']).' ';
-		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
-		$name .= trim($p['surname']);
-
-		$user = Member::oneOrNew($p['id']);
-		$user->set('username', trim($p['username']));
-		$user->set('name', $name);
-		$user->set('email', trim($p['email']));
-		$user->set('groups', array($newUsertype));
-		$user->set('registerDate', Date::toSql());
-		$user->set('password', trim($p['password']));
-		$user->set('password_clear', trim($p['password']));
-		$user->save();
-		$user->set('password_clear', '');
-
-		// Attempt to get the new user
-		$profile = Profile::getInstance($user->get('id'));
-		$result  = is_object($profile);
-
-		// Did we successfully create an account?
-		if ($result)
-		{
-			// Set the new info
-			$profile->set('givenName', trim($p['givenName']));
-			$profile->set('middleName', trim($p['middleName']));
-			$profile->set('surname', trim($p['surname']));
-			$profile->set('name', $name);
-			$profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
-			$profile->set('public', 0);
-			$profile->set('password', '');
-			$result = $profile->store();
-		}
-
-		if ($result)
-		{
-			$result = \Hubzero\User\Password::changePassword($profile->get('uidNumber'), $p['password']);
-			// Set password back here in case anything else down the line is looking for it
-			$profile->set('password', $p['password']);
-			$profile->store();
-		}
-
-		// Did we successfully create/update an account?
-		if (!$result)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$user->getError(),
-				'error'
-			);
-			return;
-		}
-
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option='.$this->_option.'&controller='.$this->_controller.'&task=edit&id[]='.$profile->get('uidNumber'), false),
-			Lang::txt('COM_MEMBERS_MEMBER_SAVED')
-		);
-	}*/
-
-	/**
 	 * Edit a member's information
 	 *
 	 * @param   object  $user
@@ -497,18 +373,62 @@ class Members extends AdminController
 			$user->set('groups', array($newUsertype));
 
 			// Check that username is filled
-			if (!Validate::username($fields['username']))
+			if (!Validate::username($user->get('username')))
 			{
 				Notify::error(Lang::txt('COM_MEMBERS_MEMBER_USERNAME_INVALID'));
 				return $this->editTask($user);
 			}
 
 			// Check email is valid
-			if (!Validate::email($fields['email']))
+			if (!Validate::email($user->get('email')))
 			{
 				Notify::error(Lang::txt('COM_MEMBERS_MEMBER_EMAIL_INVALID'));
 				return $this->editTask($user);
 			}
+
+			// Set home directory
+			$hubHomeDir = rtrim($this->config->get('homedir'),'/');
+			if (!$hubHomeDir)
+			{
+				// try to deduce a viable home directory based on sitename or live_site
+				$sitename = strtolower(Config::get('sitename'));
+				$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
+				$sitename = trim($sitename,'/ ');
+				$sitename_e = explode('.', $sitename, 2);
+				if (isset($sitename_e[1]))
+				{
+					$sitename = $sitename_e[0];
+				}
+				if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+				{
+					$sitename = '';
+				}
+				if (empty($sitename))
+				{
+					$sitename = strtolower(Request::base());
+					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
+					$sitename = trim($sitename,'/ ');
+					$sitename_e = explode('.', $sitename, 2);
+					if (isset($sitename_e[1]))
+					{
+						$sitename = $sitename_e[0];
+					}
+					if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+					{
+						$sitename = '';
+					}
+				}
+
+				$hubHomeDir = DS . 'home';
+
+				if (!empty($sitename))
+				{
+					$hubHomeDir .= DS . $sitename;
+				}
+			}
+			$user->set('homeDirectory', $hubHomeDir . DS . $user->get('username'));
+			$user->set('loginShell', '/bin/bash');
+			$user->set('ftpShell', '/usr/lib/sftp-server');
 
 			$user->set('registerDate', Date::toSql());
 		}
@@ -838,7 +758,7 @@ class Members extends AdminController
 	/**
 	 * Return results for autocompleter
 	 *
-	 * @return  string  JSON
+	 * @return  void
 	 */
 	public function autocompleteTask()
 	{
@@ -1266,7 +1186,6 @@ class Members extends AdminController
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false)
 			);
-			//return $this->profileTask();
 		}
 
 		// Redirect
