@@ -70,7 +70,7 @@ if ($this->resource->get('id'))
 		<tbody>
 			<tr>
 				<td>
-					<?php echo $this->resource->type()->get('title', Lang::txt('COM_CONTRIBUTE_NONE')); ?>
+					<?php echo $this->resource->type()->get('type', Lang::txt('COM_CONTRIBUTE_NONE')); ?>
 				</td>
 				<td>
 					<?php echo ($this->resource->get('title') ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->get('title')), 150)) : Lang::txt('COM_CONTRIBUTE_NONE')); ?>

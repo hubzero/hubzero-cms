@@ -49,7 +49,7 @@ if ($this->resource->get('id'))
 		default: $state = 'unpublished';  break;  // unpublished
 	}
 
-	$type = $this->resource->type()->get('title', Lang::txt('COM_CONTRIBUTE_NONE'));
+	$type = $this->resource->type()->get('type', Lang::txt('COM_CONTRIBUTE_NONE'));
 
 	$attachments = $this->resource->children()->total();
 
