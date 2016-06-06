@@ -1,0 +1,211 @@
+/* Set the stage */
+	section.options {
+		padding: 0;
+		background-color: #fff;
+	}
+	section.options form {
+		padding: 30px 30px 0 30px;
+	}
+	section.options ul.sub-menu {
+		margin: 0;
+		padding-top: 0;
+		background-color: transparent;
+	}
+	.data-entry {
+		margin-bottom: 0;
+	}
+
+/* Result views */
+	.result-views {
+		list-style: none;
+		text-align: center;
+		margin: 0;
+		padding: 0;
+		float: none;
+		white-space: nowrap;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	}
+	.result-views li {
+		display: inline-block;
+		vertical-align: top;
+		position: relative;
+	}
+	.result-views li a {
+		display: block;
+		margin: 0;
+		padding: 0.5em 1em;
+		color: #888;
+		border: none;
+	}
+	.result-views li.active:before,
+	.result-views li.active:after {
+		content: "";
+		border: 0.5em solid transparent;
+		border-color: transparent transparent #d9d9d9 transparent;
+		border-top: none;
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -0.5em;
+	}
+	.result-views li.active:after {
+		margin-top: 1px;
+		border-color: transparent transparent #f9f9f9 transparent;
+	}
+	.result-views li.active a,
+	.result-views li a:hover {
+		color: #333;
+		border: none;
+	}
+
+/* Results */
+	.results li {
+		list-style: none;
+	}
+	.results li,
+	.result {
+		padding: 15px 0;
+		border-top: 1px solid #efefef;
+		border-top: 1px solid rgba(0, 0, 0, 0.075);
+	}
+	.results:before,
+	.results:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.results:after {
+		clear: left;
+	}
+	.results .result:first-child {
+		padding-top: 0;
+		border-top: none;
+	}
+	.result-body {
+		margin: 0 -15px;
+		padding: 15px;
+		-webkit-transition: all .1s ease-out;
+		-moz-transition: all .1s ease-out;
+		-o-transition: all .1s ease-out;
+		transition: all .1s ease-out;
+	}
+	.result:hover .result-body {
+		background: rgba(0, 0, 0, 0.04);
+	}
+	/* Title */
+	.result-title {
+		margin: 0 0 0.5em 0;
+		padding: 0;
+	}
+	.result-title a {
+		color: #333;
+	}
+	/* URL */
+	.result-url {
+		margin: 0.5em 0 0 0;
+		word-wrap: break-word;
+	}
+	.result-url a {
+		opacity: 0.5;
+	}
+	.result-url a:hover {
+		opacity: 1;
+	}
+	/* Extras */
+	.result-extras {
+		opacity: 0.5;
+		margin: 0.5em 0;
+		font-size: 0.85em;
+		font-style: italic;
+	}
+	.result-extras>span {
+		margin-right: 1.5em;
+	}
+	/* Tags */
+	.result-tags .tags {
+		margin: 0.5em 0 0 0;
+	}
+	.result-tags .tags li {
+		padding: 0;
+	}
+
+	.result-privacy .private:before {
+		content: '\f070';
+		font-family: "Fontcons";
+	}
+
+
+/* Tiles */
+	.tiled .result {
+		width: 48.38709677419355%;
+		margin-right: 3.225806451612903%;
+		float: left;
+		overflow: hidden;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		padding: 0 0 6em 0;
+		margin-bottom: 2em;
+		height: 20em;
+		position: relative;
+		-webkit-transition: all .1s ease-out;
+		-moz-transition: all .1s ease-out;
+		-o-transition: all .1s ease-out;
+		transition: all .1s ease-out;
+	}
+	.tiled .result:first-child {
+		border: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.tiled .result:nth-child(even) {
+		margin-right: 0;
+	}
+	.tiled .result:hover {
+		background: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.3);
+	}
+	.tiled .result .result-body {
+		margin: 0;
+		padding: 0;
+	}
+	.tiled .result:hover .result-body {
+		background: transparent;
+	}
+	.tiled .result-title {
+		padding: 1rem;
+		font-size: 1.2em;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.tiled .result-snippet {
+		padding: 0 1em;
+	}
+	.tiled .result-tags,
+	.tiled .result-extras {
+		display: none;
+	}
+	.tiled .result-url {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: rgba(0, 0, 0, 0.05);
+		padding: 1em;
+	}
+
+	.adminbar a {
+		padding-right: 10px;
+		margin-bottom: 5px;
+	}
+	.adminbar .mark-spam:hover {
+		color: #cc2900;
+	}
+	.adminbar .mark-spam:before {
+		content: '\2622';
+		font-family: "Fontcons";
+	}
+	.adminbar .suggestion:before {
+		content: '\f0c1';
+		font-family: "Fontcons";
+	}
+

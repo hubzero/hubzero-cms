@@ -56,7 +56,6 @@ $this->js('search1');
 	<nav>
 		<ul class="result-views">
 			<li class="active"><a href="#">Content</a></li>
-			<li><a href="#">Files</a></li>
 			<li><a href="#">Map</a></li>
 		</ul>
 	</nav>
@@ -66,19 +65,20 @@ $this->js('search1');
 		<nav class="aside">
 			<div class="container facet">
 				<h3>Category</h3>
-				<ul>
-				<script id="category-template" type="text/x-handlebars-template">
+				<ul class="type-facets">
 					<li>
-						<a class="active" href="/search/?type=all">All Categories <span class="item-count">2</span></a>
+						<a id="type-facet-all" class="active" href="/search/?type=all">All Categories <span class="item-count">0</span></a>
 					</li>
-					{{#each categories}}
-					<li>
-						<a class="active" href="{{path}}">{{name}}<span class="item-count">{{count}}</span></a>
-					</li>
+					<div id="filters">
+					</div>
+				<script id="filter-template" type="text/x-handlebars-template">
+					{{#each filters}}
+						{{#if count}}
+							<li>
+								<a id="type-facet-{{type}}" href="{{{filter-apply type}}}">{{name}}<span class="item-count">{{count}}</span></a>
+							</li>
+					{{/if}}
 					{{/each}}
-					<li>
-						<a href="/search/?terms=wiki:paleontology">Wiki <span class="item-count">2</span></a>
-					</li>
 				</script>
 				</ul>
 			</div><!-- / .container -->
@@ -169,6 +169,7 @@ $this->js('search1');
 						<input type="hidden" name="limitstart" value="0" />
 					</nav>
 					<input type="hidden" id="paginate-terms" name="terms" value="paleontology" />
+					<input type="hidden" id="type" name="type" value="<?php echo $this->type; ?>"/>
 					<div class="clearfix"></div>
 				</form>
 			</div><!-- / .container -->

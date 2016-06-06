@@ -48,25 +48,27 @@ class Searchv1_0 extends ApiController
 {
 	public function listTask()
 	{
-
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
 
-		$terms = Request::getVar('terms', '');
+		$terms = Request::getVar('terms', '*:*');
 		$limit = Request::getInt('limit', 10);
 		$start = Request::getInt('start', 0);
 		$sortBy = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
+		$type = Request::getVar('type', '');
 
 		$filters = Request::getVar('filters', array());
-
-		// Apply the limiting
-		$query = $query->query($terms)->limit($limit)->start($start);
 
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
 		{
 			$query = $query->sortBy($sortBy, $sortDir);
+		}
+
+		if ($type != '')
+		{
+			$query->addFilter('Type', array('hubtype', '=', $type));
 		}
 
 		// Administrators can see all records
@@ -103,11 +105,62 @@ class Searchv1_0 extends ApiController
 			$config = Component::params('com_search');
 			$query = new \Hubzero\Search\Query($config);
 			$suggest = $query->getSuggestions($terms);
-			ddie($suggest);
 		}
 
 		$response = new stdClass;
 		$response->results = $suggest;
+		$response->success = true;
+		$this->send($response);
+	}
+
+	public function getHubTypesTask()
+	{
+		$config = Component::params('com_search');
+		$query = new \Hubzero\Search\Query($config);
+		$terms = Request::getVar('terms','*:*');
+		$type = Request::getVar('type', '');
+		$limit = 0;
+		$start = 0;
+
+		$types = Event::trigger('search.onGetTypes');
+		foreach ($types as $type)
+		{
+			$query->addFacet($type, array('hubtype', '=', $type));
+		}
+
+		// Administrators can see all records
+		$isAdmin = User::authorise('core.admin', 'com_users');
+		if ($isAdmin)
+		{
+			$query = $query->query($terms)->limit($limit)->start($start);
+		}
+		else
+		{
+			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
+		}
+
+		$query = $query->run();
+		$facets = array();
+		$total = 0;
+		foreach ($types as $type)
+		{
+			$name = $type;
+			if (strpos($type, "-") !== false)
+			{
+				$name = substr($type, 0, strpos($type, "-"));
+			}
+
+			$count = $query->getFacetCount($type);
+			$total += $count;
+
+
+			$name = ucfirst(\Hubzero\Utility\Inflector::pluralize($name));
+			array_push($facets, array('type'=> $type, 'name' => $name,'count' => $count));
+		}
+
+		$response = new stdClass;
+		$response->results = json_encode($facets);
+		$response->total = $total;
 		$response->success = true;
 		$this->send($response);
 	}

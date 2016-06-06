@@ -55,6 +55,7 @@ class ApiSearch extends SiteController
 		$terms = Request::get('terms', '');
 		$limit = Request::get('limit', 25);
 		$start = Request::get('limitstart', 0);
+		$type = Request::get('type', '');
 
 		if (isset($response))
 		{
@@ -69,6 +70,7 @@ class ApiSearch extends SiteController
 		}
 
 		$this->view->terms = $terms;
+		$this->view->type = $type;
 		$this->view->setLayout('display');
 		$this->view->display();
 	}
