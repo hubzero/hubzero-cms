@@ -67,12 +67,12 @@ $clientId = $this->state->get('filter.client_id', 0);
 
 		foreach ($this->rows as $i => $row) :
 		?>
-			<tr class="row<?php echo $i % 2; ?>">
+			<tr class="row<?php echo $i % 2; if (isset($row->missing)) { echo ' archived'; } ?>">
 				<td class="priority-6">
 					<?php echo $this->pagination->getRowOffset($i); ?>
 				</td>
 				<td>
-					<?php echo Html::languages('id', $i, $row->language);?>
+					<?php if (!isset($row->missing)) { echo Html::languages('id', $i, $row->language); } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->name); ?>

@@ -178,7 +178,18 @@ class LanguagesModelInstalled extends JModelList
 
 				if (!is_array($info))
 				{
-					continue;
+					//continue;
+					$info = array(
+						'language'     => $lang,
+						'name'         => $lang,
+						'description'  => '',
+						'version'      => '',
+						'creationDate' => '',
+						'author'       => '',
+						'authorEmail'  => '',
+						'authorUrl'    => '',
+						'missing'      => true
+					);
 				}
 
 				foreach ($info as $key => $value)
