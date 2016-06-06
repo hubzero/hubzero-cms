@@ -31,11 +31,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Components\Members\Tables\OrganizationType;
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
-
-
 /**
  * Resources Plugin class for usage
  */
@@ -158,9 +153,28 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
+			include_once(\Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php');
 
-			$organizationTypes = new OrganizationType($database);
-			$types = $organizationTypes->find('*');
+			$types = array();
+
+			$field = \Components\Members\Models\Profile\Field::all()
+				->whereEquals('name', 'orgtype')
+				->row();
+
+			if ($field->get('id'))
+			{
+				$options = $field->options()->ordered()->rows();
+
+				foreach ($options as $option)
+				{
+					$type = new stdClass;
+					$type->id    = $option->get('id');
+					$type->type  = $option->get('value');
+					$type->title = $option->get('label');
+
+					$types[] = $type;
+				}
+			}
 
 			// Instantiate a view
 			$view = $this->view('default', 'browse');

@@ -33,6 +33,7 @@ namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Components\Members\Models\Member;
+use Components\Members\Models\Profile\Field;
 use Component;
 use Exception;
 use stdClass;
@@ -43,6 +44,7 @@ use User;
 use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php');
 
 /**
  * Members API controller class
@@ -522,26 +524,29 @@ class Profilesv1_0 extends ApiController
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /members/organizations
-	 *
-	 * @apiParameter {
-	 * 		"name":        "orgID",
-	 * 		"description": "The row ID of an organization",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @return  void
+	 * @return    void
 	 */
 	public function organizationsTask()
 	{
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'organization.php');
-		$database = App::get('db');
+		$organizations = array();
 
-		$filters = array();
+		$field = Field::all()
+			->whereEquals('name', 'organization')
+			->row();
 
-		$obj = new \Components\Members\Tables\Organization($database);
+		if ($field->get('id'))
+		{
+			$options = $field->options()->ordered()->rows();
 
-		$organizations = $obj->find('all', $filters);
+			foreach ($options as $option)
+			{
+				$organization = new stdClass;
+				$organization->id = $option->get('id');
+				$organization->organization = $option->get('label');
+
+				$organizations[] = $organization;
+			}
+		}
 
 		// Encode sessions for return
 		$object = new stdClass();

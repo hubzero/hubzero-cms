@@ -37,9 +37,45 @@ $this->css('profile.css');
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'html.php');
 
-$database = App::get('db');
 $loggedin = (! User::isGuest());
 $isUser   = false;
+
+$profiles = $this->profile->profiles()->ordered()->rows();
+
+// Convert to XML so we can use the Form processor
+$xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
+
+// Gather data to pass to the form processor
+$data = new Hubzero\Config\Registry(
+	Components\Members\Models\Profile::collect($profiles)
+);
+
+// Create a new form
+Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
+
+$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+$form->load($xml);
+$form->bind($data);
+
+$fields = array();
+foreach ($profiles as $profile)
+{
+	if (isset($fields[$profile->get('profile_key')]))
+	{
+		$values = $fields[$profile->get('profile_key')]->get('profile_value');
+		if (!is_array($values))
+		{
+			$values = array($values);
+		}
+		$values[] = $profile->get('profile_value');
+
+		$fields[$profile->get('profile_key')]->set('profile_value', $values);
+	}
+	else
+	{
+		$fields[$profile->get('profile_key')] = $profile;
+	}
+}
 ?>
 <?php if ($this->membership_control == 1) { ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
@@ -79,52 +115,6 @@ $isUser   = false;
 				</div>
 			</li>
 
-			<?php if ($this->registration->Organization != REG_HIDE && $this->profile->get('organization')) : ?>
-				<?php if ($this->params->get('access_org') == 0
-						|| ($this->params->get('access_org') == 1 && $loggedin)
-						|| ($this->params->get('access_org') == 2 && $isUser)
-						) : ?>
-					<li class="profile-org field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_ORGANIZATION'); ?></div>
-							<div class="value">
-								<?php echo $this->escape(stripslashes($this->profile->get('organization'))); ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->registration->Employment != REG_HIDE && $this->profile->get('orgtype')) : ?>
-				<?php if ($this->params->get('access_orgtype') == 0
-						|| ($this->params->get('access_orgtype') == 1 && $loggedin)
-						|| ($this->params->get('access_orgtype') == 2 && $isUser)
-						) : ?>
-					<li class="profile-orgtype field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_EMPLOYMENT_TYPE'); ?></div>
-							<?php
-								//get organization types from db
-								include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
-
-								$xot = new \Components\Members\Tables\OrganizationType($database);
-								$orgtypes = $xot->find('list');
-
-								//output value
-								$orgtype = $this->escape($this->profile->get('orgtype'));
-								foreach ($orgtypes as $ot)
-								{
-									$orgtype = ($ot->type == $this->profile->get('orgtype') ? $this->escape($ot->title) : $orgtype);
-								}
-							?>
-							<div class="value">
-								<?php echo $orgtype; ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
 			<?php if ($this->profile->get('email')) : ?>
 				<?php if ($this->params->get('access_email', 2) == 0
 						|| ($this->params->get('access_email', 2) == 1 && $loggedin)
@@ -143,276 +133,80 @@ $isUser   = false;
 				<?php endif; ?>
 			<?php endif; ?>
 
-			<?php if ($this->registration->ORCID != REG_HIDE && $this->profile->get('orcid')) : ?>
-				<?php if ($this->params->get('access_orcid') == 0
-						|| ($this->params->get('access_orcid') == 1 && $loggedin)
-						|| ($this->params->get('access_orcid') == 2 && $isUser)
-					) : ?>
-					<li class="profile-web field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_ORCID'); ?></div>
-							<div class="value">
-								<?php echo '<a class="orcid" rel="external" href="http://orcid.org/' . $this->profile->get('orcid') . '">' . $this->profile->get('orcid') . '</a>'; ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
+			<?php foreach ($this->fields as $field): ?>
+				<?php
+				if (!isset($fields[$field->get('name')]))
+				{
+					$fields[$field->get('name')] = Components\Members\Models\Profile::blank();
+					$fields[$field->get('name')]->set('access', 1);
+				}
 
-			<?php if ($this->registration->URL != REG_HIDE && $this->profile->get('url')) : ?>
-				<?php if ($this->params->get('access_url') == 0
-						|| ($this->params->get('access_url') == 1 && $loggedin)
-						|| ($this->params->get('access_url') == 2 && $isUser)
-					) : ?>
-					<li class="profile-web field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_WEBSITE'); ?></div>
-							<div class="value">
-								<?php
-								$url = stripslashes($this->profile->get('url'));
-								if ($url)
+				$profile = $fields[$field->get('name')];
+				if (!$profile->get('access'))
+				{
+					$profile->set('access', 5);
+				}
+
+				if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels()))
+				{
+					$cls = array('profile-' . $field->get('name'));
+
+					if ($profile->get('access', $field->get('access')) == 2)
+					{
+						$cls[] = 'registered';
+					}
+
+					if ($profile->get('access', $field->get('access')) == 5)
+					{
+						$cls[] = 'private';
+					}
+
+					if ($field->get('type') == 'tags')
+					{
+						$value = $this->profile->tags();
+					}
+					else
+					{
+						$value = $profile->get('profile_value');
+						$value = $value ?: $this->profile->get($field->get('name'));
+					}
+
+					if (is_array($value))
+					{
+						foreach ($value as $k => $v)
+						{
+							if (strstr($v, '{'))
+							{
+								$v = json_decode((string)$v, true);
+
+								if (!$v|| json_last_error() !== JSON_ERROR_NONE)
 								{
-									$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)";
-									if (!preg_match("/$UrlPtn/", $url))
-									{
-										$url = 'http://' . $url;
-									}
+									continue;
 								}
-								$title = Lang::txt('PLG_GROUPS_PROFILE_WEBSITE_MEMBERS', $this->profile->get('name'));
 
-								echo '<a class="url" rel="external" title="' . $title . '" href="' . $url . '">' . $url . '</a>';
-								?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
+								foreach ($v as $nm => $vl)
+								{
+									$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+								}
 
-			<?php if ($this->registration->Phone != REG_HIDE && $this->profile->get('phone')) : ?>
-				<?php if ($this->params->get('access_phone') == 0
-						|| ($this->params->get('access_phone') == 1 && $loggedin)
-						|| ($this->params->get('access_phone') == 2 && $isUser)
-					) : ?>
-					<li class="profile-phone field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_TELEPHONE'); ?></div>
-							<div class="value">
-								<?php echo $this->escape(str_replace(' ', '-', $this->profile->get('phone'))); ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
+								$value[$k] = implode('<br />', $v);
+							}
+						}
+					}
 
-			<?php if ($this->registration->address != REG_HIDE) : ?>
-				<?php if ($this->params->get('access_address') == 0
-						|| ($this->params->get('access_address') == 1 && $loggedin)
-						|| ($this->params->get('access_address') == 2 && $isUser)
-					) : ?>
-					<?php
-						include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
-						// Get member addresses
-						$db = App::get('db');
-						$membersAddress = new \Components\Members\Tables\Address($db);
-						$addresses = $membersAddress->getAddressesForMember($this->profile->get('id'));
-
-						if (count($addresses) > 0) :
+					if (empty($value))
+					{
+						$cls[] = 'hide';
+					}
 					?>
-					<li class="profile-address field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_ADDRESS'); ?></div>
-							<div class="value">
-								<?php
-								$this->view('address')
-								     ->set('addresses', $addresses)
-								     ->set('displayEditLinks', $isUser)
-								     ->set('profile', $this->profile)
-								     ->display();
-								?>
-							</div>
+					<li class="<?php echo implode(' ', $cls); ?> section">
+						<div class="section-content">
+							<div class="key"><?php echo $field->get('label'); ?></div>
+							<div class="value"><?php echo (!empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : '(not set)'); ?></div>
 						</div>
 					</li>
-					<?php endif; ?>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->profile->get('bio')) : ?>
-				<?php if ($this->params->get('access_bio') == 0
-						|| ($this->params->get('access_bio') == 1 && $loggedin)
-						|| ($this->params->get('access_bio') == 2 && $isUser)
-					) : ?>
-					<li class="profile-bio field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_BIOGRAPHY'); ?></div>
-							<div class="value">
-								<?php echo $this->profile->get('bio'); ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->registration->Interests != REG_HIDE) : ?>
-				<?php if ($this->params->get('access_tags') == 0
-						|| ($this->params->get('access_tags') == 1 && $loggedin)
-						|| ($this->params->get('access_tags') == 2 && $isUser)
-					) : ?>
-					<?php
-						include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-
-						$mt = new \Components\Members\Models\Tags($this->profile->get('id'));
-						$tags = $mt->render();
-						if ($tags) :
-					?>
-						<li class="profile-interests field">
-							<div class="field-content">
-								<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_INTERESTS'); ?></div>
-								<div class="value">
-									<?php echo $tags; ?>
-								</div>
-							</div>
-						</li>
-					<?php endif; ?>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php
-			// get countries list
-			$co = \Hubzero\Geocode\Geocode::countries();
-			?>
-			<?php if ($this->registration->Citizenship != REG_HIDE && $this->profile->get('countryorigin')) : ?>
-				<?php if ($this->params->get('access_countryorigin') == 0
-						|| ($this->params->get('access_countryorigin') == 1 && $loggedin)
-						|| ($this->params->get('access_countryorigin') == 2 && $isUser)
-					) : ?>
-					<li class="profile-countryorigin field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_CITIZENSHIP'); ?></div>
-							<?php
-								$img = '';
-								$citizenship = '';
-								if (is_file(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
-								{
-									$img = '<img src="' . rtrim(Request::base(true), '/') . '/core/components/com_members/site/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . Lang::txt('PLG_GROUPS_PROFILE_FLAG') . '" /> ';
-								}
-
-								// get the country name
-								foreach ($co as $c)
-								{
-									if (strtoupper($c->code) == strtoupper($this->profile->get('countryorigin')))
-									{
-										$citizenship = $c->name;
-									}
-								}
-								// prepend image if we have them
-								$citizenship = $img . $citizenship;
-							?>
-							<div class="value">
-								<?php echo $citizenship; ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->registration->Residency != REG_HIDE && $this->profile->get('countryresident')) : ?>
-				<?php if ($this->params->get('access_countryresident') == 0
-						|| ($this->params->get('access_countryresident') == 1 && $loggedin)
-						|| ($this->params->get('access_countryresident') == 2 && $isUser)
-					) : ?>
-					<li class="profile-countryresident field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_RESIDENCE'); ?></div>
-							<?php
-								$img = '';
-								$residence = '';
-								if (is_file(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
-								{
-									$img = '<img src="' . rtrim(Request::base(true), '/') . '/core/components/com_members/site/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . Lang::txt('PLG_GROUPS_PROFILE_FLAG') . '" /> ';
-								}
-
-								// get the country name
-								foreach ($co as $c)
-								{
-									if (strtoupper($c->code) == strtoupper($this->profile->get('countryresident')))
-									{
-										$residence = $c->name;
-									}
-								}
-								// prepend image if we have them
-								$residence = $img . $residence;
-							?>
-							<div class="value">
-								<?php echo $residence; ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->registration->Sex != REG_HIDE && $this->profile->get('gender')) : ?>
-				<?php if ($this->params->get('access_gender') == 0
-						|| ($this->params->get('access_gender') == 1 && $loggedin)
-						|| ($this->params->get('access_gender') == 2 && $isUser)
-					) : ?>
-					<li class="profile-sex field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_GENDER'); ?></div>
-							<div class="value">
-								<?php echo \Components\Members\Helpers\Html::propercase_singleresponse($this->profile->get('gender')); ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->registration->Disability != REG_HIDE && $this->profile->get('disability')) : ?>
-				<?php if ($this->params->get('access_disability') == 0
-						|| ($this->params->get('access_disability') == 1 && $loggedin)
-						|| ($this->params->get('access_disability') == 2 && $isUser)
-					) : ?>
-					<li class="profile-disability field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_DISABILITY'); ?></div>
-							<div class="value">
-								<?php echo \Components\Members\Helpers\Html::propercase_multiresponse($this->profile->get('disability')); ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->registration->Hispanic != REG_HIDE && $this->profile->get('hispanic')) : ?>
-				<?php if ($this->params->get('access_hispanic') == 0
-						|| ($this->params->get('access_hispanic') == 1 && $loggedin)
-						|| ($this->params->get('access_hispanic') == 2 && $isUser)
-					) : ?>
-					<li class="profile-hispanic field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_HISPANIC'); ?></div>
-							<div class="value">
-								<?php echo \Components\Members\Helpers\Html::propercase_multiresponse($this->profile->get('hispanic')); ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
-
-			<?php if ($this->registration->Race != REG_HIDE && $this->profile->get('race')) : ?>
-				<?php if ($this->params->get('access_race') == 0
-						|| ($this->params->get('access_race') == 1 && $loggedin)
-						|| ($this->params->get('access_race') == 2 && $isUser)
-					) : ?>
-					<li class="profile-race field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_RACE'); ?></div>
-							<div class="value">
-								<?php echo \Components\Members\Helpers\Html::propercase_multiresponse($this->profile->get('race')); ?>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
+				<?php } ?>
+			<?php endforeach; ?>
 		</ul>
 
 		<?php

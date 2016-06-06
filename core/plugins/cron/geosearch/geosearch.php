@@ -41,7 +41,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return	array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -63,8 +63,8 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 	/**
 	 * populate the geosearch markers table
 	 *
-	 * @param	 object	 $job	\Components\Cron\Models\Job
-	 * @return	boolean
+	 * @param   object   $job  \Components\Cron\Models\Job
+	 * @return  boolean
 	 */
 	public function getLocationData(\Components\Cron\Models\Job $job)
 	{
@@ -72,19 +72,21 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 		$this->database = App::get('db');
 
 		//get the relevant tables
-		require_once(PATH_CORE . DS . 'components' . DS .'com_members' . DS . 'tables' . DS . 'profile.php');
+		require_once(PATH_CORE . DS . 'components' . DS .'com_members' . DS . 'models' . DS . 'member.php');
+		require_once(PATH_CORE . DS . 'components' . DS .'com_members' . DS . 'models' . DS . 'profile' . DS . 'field.php');
 		require_once(PATH_CORE . DS . 'components' . DS .'com_geosearch' . DS . 'tables' . DS . 'geosearchmarkers.php');
 		require_once(PATH_CORE . DS . 'components' . DS .'com_jobs' . DS . 'tables' . DS . 'job.php');
 		require_once(PATH_CORE . DS . 'components' . DS .'com_events' . DS . 'tables' . DS . 'event.php');
-		require_once(PATH_CORE . DS . 'components' . DS .'com_members' . DS . 'tables' . DS . 'organization.php');
 
 		// get current markers
 		$markers = new \Components\Geosearch\Tables\GeosearchMarkers($this->database);
 		$markers = $markers->getMarkers(array(), 'array');
 
 		// user profiles
-		$objProfile = new \Components\Members\Tables\Profile($this->database);
-		$profiles = $objProfile->selectWhere('uidNumber', 'public=1');
+		$profiles = \Components\Members\Models\Member::all()
+			->select('id')
+			->whereEquals('access', 1)
+			->rows();
 
 		// jobs
 		$objJob = new \Components\Jobs\Tables\Job($this->database);
@@ -95,8 +97,25 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 		$events = $objEvents->getEvents('year', array('year' => date('Y'), 'category' => 0));
 
 		// organizations
-		$objOrganizations = new	\Components\Members\Tables\Organization($this->database);
-		$organizations = $objOrganizations->find('all');
+		$organizations = array();
+
+		$field = \Components\Members\Models\Profile\Field::all()
+			->whereEquals('name', 'organization')
+			->row();
+
+		if ($field->get('id'))
+		{
+			$options = $field->options()->ordered()->rows();
+
+			foreach ($options as $option)
+			{
+				$organization = new stdClass;
+				$organization->id = $option->get('id');
+				$organization->organization = $option->get('label');
+
+				$organizations[] = $organization;
+			}
+		}
 
 		if (count($markers) > 0)
 		{
@@ -153,7 +172,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 			{
 				$obj = array();
 				$obj['scope'] = 'member';
-				$obj['scope_id'] = $profile->uidNumber;
+				$obj['scope_id'] = $profile->get('id');
 
 				array_push($markerMemberIDs, $obj);
 			}
@@ -210,8 +229,8 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 	/**
 	 * populate the geosearch markers table
 	 *
-	 * @param	 array	 $markers	list of markers to geocode
-	 * @return	boolean
+	 * @param   array    $markers  list of markers to geocode
+	 * @return  boolean
 	 */
 	private function _doGeocode($markers, $objProfile, $objJob, $objEvents, $objOrganizations)
 	{
