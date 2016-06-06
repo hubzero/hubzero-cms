@@ -33,23 +33,7 @@ HUBzero is a registered trademark of Purdue University.
 	<fieldset name="basic">
 		<field name="engine" type="list" default="basic" label="COM_SEARCH_PARAM_ENGINE_LABEL" description="COM_SEARCH_PARAM_ENGINE_DESC">
 			<option value="basic">COM_SEARCH_PARAM_ENGINE_BASIC</option>
-			<option value="hubgraph">HUBgraph</option>
-			<option value="solr">Solr</option>
-		</field>
-	</fieldset>
-	<fieldset name="hubgraph">
-		<field name="hubgraph_host" type="text" menu="hide" default="unix:///var/run/hubzero-hubgraph/hubgraph-server.sock" label="COM_SEARCH_PARAM_HUBGRAPH_HOST_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_HOST_DESC" />
-		<field name="hubgraph_port" type="text" menu="hide" default="" label="COM_SEARCH_PARAM_HUBGRAPH_PORT_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_PORT_DESC" />
-		<field name="hubgraph_showTagCloud" type="list" default="1" label="COM_SEARCH_PARAM_HUBGRAPH_TAGGCLOUD_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_TAGGCLOUD_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="hubgraph_enabledOptions" type="text" menu="hide" default="" label="COM_SEARCH_PARAM_HUBGRAPH_ENABLEDOPTIONS_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_ENABLEDOPTIONS_DESC" />
-	</fieldset>
-	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_search" section="component">
-			<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
-			<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+			<option value="solr">Apache Solr</option>
 		</field>
 	</fieldset>
 	<fieldset name="solr">
@@ -58,5 +42,11 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="solr_core" type="text" menu="hide" default="hubsearch" label="COM_SEARCH_PARAM_SOLR_CORE" description="COM_SEARCH_PARAM_SOLR_CORE_LABEL" />
 		<field name="solr_path" type="text" menu="hide" default="/src/example/solr/data" label="COM_SEARCH_PARAM_SOLR_PATH" description="COM_SEARCH_PARAM_SOLR_PATH_LABEL" />
 		<field name="solr_log_path" type="text" menu="hide" default="/opt/solr/server/logs/solr.log" label="COM_SEARCH_PARAM_SOLR_LOG_PATH" description="COM_SEARCH_PARAM_SOLR_LOG_PATH_LABEL" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_search" section="component">
+			<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+			<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		</field>
 	</fieldset>
 </config>
