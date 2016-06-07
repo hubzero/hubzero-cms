@@ -75,11 +75,13 @@ function submitbutton(pressbutton)
 
 	<table class="adminlist">
 		<thead>
+			<?php if ($this->entry->get('id')) { ?>
 			<tr>
 				<th colspan="6">
 					(<?php echo $this->escape(stripslashes($this->entry->get('scope'))); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>
 				</th>
 			</tr>
+			<?php } ?>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>

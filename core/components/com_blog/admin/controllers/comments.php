@@ -108,7 +108,7 @@ class Comments extends AdminController
 			)
 		);
 
-		$entry = Entry::oneOrFail($filters['entry_id']);
+		$entry = Entry::oneOrNew($filters['entry_id']);
 
 		$comments = Comment::all();
 
