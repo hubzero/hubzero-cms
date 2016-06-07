@@ -20,10 +20,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cpanel\Admin;
@@ -34,4 +32,3 @@ require_once(__DIR__ . DS . 'controllers' . DS . 'cpanel.php');
 // Instantiate controller
 $controller = new Controllers\Cpanel();
 $controller->execute();
-$controller->redirect();

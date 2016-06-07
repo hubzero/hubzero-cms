@@ -5,61 +5,68 @@
 
 	<section>
 		<h2> <span class="mw-headline" id="How_to_access">How to access</span></h2>
-		<p>Navigate to the the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Redirect_Manager" title="Help25:Components Redirect Manager">Redirect Manager</a>. To add a new Redirect, click on the <i>New</i> icon in the toolbar. To edit an existing Redirect, click on the Redirect's <i>Expired URL</i> field or check the Redirect's checkbox and press the <i>Edit</i> icon in the toolbar.
-		</p>
+		<p>Navigate to the the <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=links'); ?>" title="Help: Components Redirect Manager">Redirect Manager</a>. To add a new Redirect, click on the <i>New</i> icon in the toolbar. To edit an existing Redirect, click on the Redirect's <i>Expired URL</i> field or check the Redirect's checkbox and press the <i>Edit</i> icon in the toolbar.</p>
 
 		<h2> <span class="mw-headline" id="Description">Description</span></h2>
-		<p>This is where you can add a new redirect or edit an existing one. The URL you want to redirect from must not be a working one on your website which actually loads a web page. It can be the URL to a web page which you have disabled in the Joomla! back-end administrator interface. The Source URL you specify when you create the redirect should be the full URL as you would type it in your web browser. The Destination URL you specify when you create a redirect must be the full URL as well.
-		</p>
+		<p>This is where you can add a new redirect or edit an existing one. The URL you want to redirect from must not be a working one on your website which actually loads a web page. It can be the URL to a web page which you have disabled in the Joomla! back-end administrator interface. The Source URL you specify when you create the redirect should be the full URL as you would type it in your web browser. The Destination URL you specify when you create a redirect must be the full URL as well.</p>
 	</section>
 
-	<section>
-		<h2> <span class="mw-headline" id="Details_and_Options">Details and Options</span></h2>
-		<h3> <span class="mw-headline" id="Edit.2FNew_Link">Edit/New Link</span></h3>
-		<ul><li><b>Source URL.</b> The URL to be redirected.
-		</li><li><b>Destination URL.</b> The URL to redirect to.
-		</li><li><b>Comment.</b> A comment that is only viewable in the administrator back-end. It is primarily intended for administrator reference only.
-		</li></ul>
-		<ul><li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.
-		</li></ul>
-		<h3> <span class="mw-headline" id="Options">Options</span></h3>
-		<ul><li><b>State</b>: State of the item. Possible values are:
-		<ul><li><i>Published</i>: The item is published. This is the only state that will allow regular website users to view this item.
-		</li><li><i>Unpublished</i>: The item is unpublished.
-		</li><li><i>Archived</i>: The item has been archived. 
-		</li><li><i>Trashed</i>: The item has been sent to the Trash.
-		</li></ul>
-		</li></ul>
-		<h3> <span class="mw-headline" id="Details">Details</span></h3>
-		<ul><li><b>Created Date.</b> The date the Redirect was created on.
-		</li><li><b>Last Updated Date.</b> Shows the last date the item was modified.
-		</li></ul>
-		<ul><li><b>Hits.</b> The number of times an item has been viewed.
-		</li></ul>
+	<section id="Details_and_Options">
+		<h2><span class="mw-headline">Details and Options</span></h2>
+		<h3><span class="mw-headline" id="Edit.2FNew_Link">Edit/New Link</span></h3>
+		<ul>
+			<li><b>Source URL.</b> The URL to be redirected.</li>
+			<li><b>Destination URL.</b> The URL to redirect to.</li>
+			<li><b>Comment.</b> A comment that is only viewable in the administrator back-end. It is primarily intended for administrator reference only.</li>
+			<li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
+		</ul>
+
+		<h3><span class="mw-headline" id="Options">Options</span></h3>
+		<ul>
+			<li>
+				<b>State</b>: State of the item. Possible values are:
+				<ul>
+					<li><i>Published</i>: The item is published. This is the only state that will allow regular website users to view this item.</li>
+					<li><i>Unpublished</i>: The item is unpublished.</li>
+					<li><i>Archived</i>: The item has been archived.</li>
+					<li><i>Trashed</i>: The item has been sent to the Trash.</li>
+				</ul>
+			</li>
+		</ul>
+
+		<h3><span class="mw-headline" id="Details">Details</span></h3>
+		<ul>
+			<li><b>Created Date.</b> The date the Redirect was created on.</li>
+			<li><b>Last Updated Date.</b> Shows the last date the item was modified.</li>
+			<li><b>Hits.</b> The number of times an item has been viewed.</li>
+		</ul>
 	</section>
 
-	<section>
-		<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+	<section id="Toolbar">
+		<h2><span class="mw-headline">Toolbar</span></h2>
 		<p>At the top right you will see the toolbar:</p>
 		<p>The functions are:</p>
-		<ul><li><b>Save</b>. Saves the redirect and stays in the current screen.
-		</li><li><b>Save &amp; Close</b>. Saves the redirect and closes the current screen.
-		</li><li><b>Save &amp; New</b>. Saves the redirect and keeps the editing screen open and ready to create another redirect.
-		</li><li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.
-		</li><li><b>Help</b>. Opens this help screen.
-		</li></ul>
+		<ul>
+			<li><b>Save</b>. Saves the redirect and stays in the current screen.</li>
+			<li><b>Save &amp; Close</b>. Saves the redirect and closes the current screen.</li>
+			<li><b>Save &amp; New</b>. Saves the redirect and keeps the editing screen open and ready to create another redirect.</li>
+			<li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.</li>
+			<li><b>Help</b>. Opens this help screen.</li>
+		</ul>
 	</section>
 
-	<section>
-		<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
-		<ul><li> When entering URLs into the <i>Expired/Source URL</i> and <i>New/Destination URL</i> fields, enter the complete URL as you would type it into your web browser to view the web page.
-		</li><li> When entering URLs into the <i>Source URL</i> and <i>Destination URL</i> fields, enter the complete URL as you would type it into your web browser to view it. The <i>Source URL</i> should be a URL that does not resolve to any valid web page on your website. You can specify a source URL for a Joomla! web page that you have put into a disabled state in the administrator back-end. Ensure the <i>State</i> option is set to <b>Enabled</b>.
-		</li></ul>
+	<section id="Quick_Tips">
+		<h2><span class="mw-headline">Quick Tips</span></h2>
+		<ul>
+			<li>When entering URLs into the <i>Expired/Source URL</i> and <i>New/Destination URL</i> fields, enter the complete URL as you would type it into your web browser to view the web page.</li>
+			<li>When entering URLs into the <i>Source URL</i> and <i>Destination URL</i> fields, enter the complete URL as you would type it into your web browser to view it. The <i>Source URL</i> should be a URL that does not resolve to any valid web page on your website. You can specify a source URL for a Joomla! web page that you have put into a disabled state in the administrator back-end. Ensure the <i>State</i> option is set to <b>Enabled</b>.</li>
+		</ul>
 	</section>
 
-	<section>
-		<h2> <span class="mw-headline" id="Related_information">Related information</span></h2>
-		<ul><li>To manage redirects: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Redirect_Manager" title="Help25:Components Redirect Manager">Redirect Manager</a>
-		</li></ul>
+	<section id="Related_information">
+		<h2><span class="mw-headline">Related information</span></h2>
+		<ul>
+			<li>To manage redirects: <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=links'); ?>" title="Help: Components Redirect Manager">Redirect Manager</a></li>
+		</ul>
 	</section>
 </article>

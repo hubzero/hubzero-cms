@@ -14,11 +14,11 @@
 	</section>
 	<section id="description">
 		<h2><span>Description</span></h2>
-		<p>This tool will purge all expired cache files from the cache folders. Cache files are temporary files that are created to improve the performance of your site.  <b>Cache files that are still current according to what Joomla! finds are not purged.</b></p>
+		<p>This tool will purge all expired cache files from the cache folders. Cache files are temporary files that are created to improve the performance of your site.  <b>Cache files that are still current according to what the CMS finds are not purged.</b></p>
 
 		<ul>
-			<li>Because this process has to check each cache file individually, it is slower and requires more system resources.  Once the purge process is complete there should be no loss in speed for your users, because all up to date cache files are still available for your current Joomla! website.</li>
-			<li>In contrast, the <a href="index.php?option=com_help&component=com_cache&page=clear" title="Site Maintenance: Clear Cache">Clean Cache</a> option runs more quickly since it deletes all of the files stored in each cache folder.  However, the website may be a little slower immediately after running Clean Cache, since <i>all</i> cache files -- including current ones -- are removed, so users lose the benefit of using the cache files until they are re-created by Joomla!to be up to date with your current site.</li>
+			<li>Because this process has to check each cache file individually, it is slower and requires more system resources.  Once the purge process is complete there should be no loss in speed for your users, because all up to date cache files are still available for your current website.</li>
+			<li>In contrast, the <a href="<?php echo Route::url('index.php?option=com_help&component=com_cache&page=clear'); ?>" title="Site Maintenance: Clear Cache">Clean Cache</a> option runs more quickly since it deletes all of the files stored in each cache folder.  However, the website may be a little slower immediately after running Clean Cache, since <i>all</i> cache files -- including current ones -- are removed, so users lose the benefit of using the cache files until they are re-created by the CMS to be up to date with your current site.</li>
 			<li>If you have a large number of cache files and your server setting for 'max_input_time' is set to less then 60 seconds, you may receive a PHP warning message saying that the process exceeded the maximum time allowed. In this case, no harm is done but all of the files may not have been purged. It is ok simply to re-run the process.</li>
 		</ul>
 	</section>
@@ -38,15 +38,15 @@
 		<h2><span>Quick Tips</span></h2>
 		<ul>
 			<li>It is recommended that this option is run on a regular basis, however this will require more system resources because each file is checked.</li>
-			<li>The <a href="index.php?option=com_help&component=com_cache&page=clear" title="Site Maintenance: Clear Cache">Clear Cache</a> option is quicker, however <b>all</b> cache files will be deleted, not just those that have expired.</li>
+			<li>The <a href="<?php echo Route::url('index.php?option=com_help&component=com_cache&page=clear'); ?>" title="Site Maintenance: Clear Cache">Clear Cache</a> option is quicker, however <b>all</b> cache files will be deleted, not just those that have expired.</li>
 			<li>If you receive a PHP timeout error or warning during the process, it is safe to start this process again.</li>
 		</ul>
 	</section>
 	<section id="related-info">
 		<h2><span>Related Information</span></h2>
 		<ul>
-			<li>To change the cache settings for your site: <a href="index.php?option=com_help&component=com_config&page=global_config" title="Site: Global Configuration">Global Configuration - Cache Settings</a>.</li>
-			<li>To clear all cache files: <a href="index.php?option=com_help&component=com_cache&page=clear" title="Site Maintenance: Clear Cache">Clean Cache</a>.</li>
+			<li>To change the cache settings for your site: <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config'); ?>" title="Site: Global Configuration">Global Configuration - Cache Settings</a>.</li>
+			<li>To clear all cache files: <a href="<?php echo Route::url('index.php?option=com_help&component=com_cache&page=clear'); ?>" title="Site Maintenance: Clear Cache">Clean Cache</a>.</li>
 		</ul>
 	</section>
 </article>

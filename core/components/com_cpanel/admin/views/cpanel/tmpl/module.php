@@ -20,11 +20,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @license   http://opensource.org/licenses/MIT MIT
  */
+
 
 // no direct access
 defined('_HZEXEC_') or die();

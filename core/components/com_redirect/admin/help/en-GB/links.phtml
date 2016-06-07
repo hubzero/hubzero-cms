@@ -1,15 +1,15 @@
 <article>
 	<h1><span>Redirect Manager: Links</span></h1>
 
-	<p>The Redirect Manager is a component that is accessed from the back-end of a Joomla! website. Its main function is to provide a mechanism to give an Administrator the ability to redirect the URL of a web page which no longer exists to a working web page. You must have the <i>Use Apache mod_rewrite</i> option enabled in your Joomla! installation <i>Global Configuration</i> options in order for the redirects you create to function.</p>
+	<p>The Redirect Manager is a component that is accessed from the back-end of the website. Its main function is to provide a mechanism to give an Administrator the ability to redirect the URL of a web page which no longer exists to a working web page. You must have the <i>Use Apache mod_rewrite</i> option enabled in your installation <i>Global Configuration</i> options in order for the redirects you create to function.</p>
 
-	<section>
-		<h2> <span class="mw-headline" id="Description">Description</span></h2>
-		<p>This component is primarily used for redirecting URLs for web pages that no longer exist on your website to web pages that are working. The URL you want to redirect from must not be a working one on your website which actually loads a web page. It can be the URL to a web page which you have disabled in the Joomla! back-end administrator interface. The <i>Source URL</i> you specify when you create the redirect should be the full URL as you would type it in your web browser. The component will only display the last portion of the source URL in the redirect listing. The <i>Destination URL</i> you specify when you create a redirect must be the full URL as well. To work the component requires the redirect plugin to be active.</p>
+	<section id="Description">
+		<h2> <span class="mw-headline">Description</span></h2>
+		<p>This component is primarily used for redirecting URLs for web pages that no longer exist on your website to web pages that are working. The URL you want to redirect from must not be a working one on your website which actually loads a web page. It can be the URL to a web page which you have disabled in the back-end administrator interface. The <i>Source URL</i> you specify when you create the redirect should be the full URL as you would type it in your web browser. The component will only display the last portion of the source URL in the redirect listing. The <i>Destination URL</i> you specify when you create a redirect must be the full URL as well. To work the component requires the redirect plugin to be active.</p>
 	</section>
 
-	<section>
-		<h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
+	<section id="Column_Headers">
+		<h2> <span class="mw-headline">Column Headers</span></h2>
 		<p>Click on the column heading to sort the list by that column's value.</p>
 		<ul>
 			<li><b>Checkbox</b>. Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
@@ -19,105 +19,125 @@
 			<li><b>Created Date.</b> The date the Redirect was created on.</li>
 			<li><b>Enabled.</b> Whether or not the item is enabled. A green circle with a white check mark in it means it is enabled. A red circle with a white dot in it means it is disabled.</li>
 			<li><b>404 Hits.</b> The number of times this page was requested and not being forwarded. Sorting on this column helps to find old links from external websites (or even internal old links).</li>
-			<li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
+			<li><b>ID</b>. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
+		</ul>
+	</section>
+
+	<section id="List_Filters">
+		<h2><span class="mw-headline">List Filters</span></h2>
+
+		<h4><span class="mw-headline" id="Filter_by_Partial_Title">Filter by Partial Title</span></h4>
+		<p>You can filter the list of items by typing part of the redirect's name or the ID number of the redirect.</p>
+
+		<h4><span class="mw-headline" id="Filter_by_State">Filter by State</span></h4>
+		<p>In the upper right area, above the column headings, there is one drop-down list box as shown below:</p>
+		<p>Only items matching the selection will be displayed in the list.</p>
+		<ul>
+			<li>
+				<b>State</b>: State of the item. Possible values are:
+				<ul>
+					<li><i>Published</i>: The item is published. This is the only state that will allow regular website users to view this item.</li>
+					<li><i>Unpublished</i>: The item is unpublished.</li>
+					<li><i>Archived</i>: The item has been archived.</li>
+					<li><i>Trashed</i>: The item has been sent to the Trash.</li>
+				</ul>
+			</li>
+		</ul>
+
+		<h4><span class="mw-headline" id="Number_of_Items_to_Display">Number of Items to Display</span></h4>
+		<p>Below the list you'll find:</p>
+		<ul>
+			<li>
+				<b>Page Controls.</b> When the number of items is more than one page, you will see a page control bar as shown below.
+				<ul>
+					<li><b>Display #:</b> Select the number of items to show on one page.</li>
+					<li><b>Start:</b> Click to go to the first page.</li>
+					<li><b>Prev:</b> Click to go to the previous page.</li>
+					<li><b>Page numbers:</b> Click to go to the desired page.</li>
+					<li><b>Next:</b> Click to go to the next page.</li>
+					<li><b>End:</b> Click to go to the last page.</li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+
+	<section id="Batch_Processing">
+		<h2><span class="mw-headline">Batch Processing</span></h2>
+		<p>Below the listing of redirects, is a section named 'Update selected links to the following new URL'. This function allows you to change the 'Destination URL' for the selected redirects.</p>
+		<ul>
+			<li><b>Destination URL.</b> The destination URL to set for the selected redirects.</li>
+			<li><b>Comment.</b> The comment to set for the selected redirects.</li>
+			<li><b>Update Links.</b> Updates all selected redirects with the specified <i>Destination URL</i> and <i>Comment</i>.</li>
+		</ul>
+	</section>
+
+	<section id="Toolbar">
+		<h2><span class="mw-headline">Toolbar</span></h2>
+		<p>At the top right you will see the toolbar:</p>
+		<p>The functions are:</p>
+		<ul>
+			<li><b>New</b>. Opens the editing screen to create a new redirect.</li>
+			<li><b>Edit</b>. Opens the editing screen for the selected redirect. If more than one redirect is selected (where applicable), only the first redirect will be opened. The editing screen can also be opened by clicking on the Title or Name of the redirect.</li>
+			<li><b>Enable</b>. Makes the selected redirects available for use on your website.</li>
+			<li><b>Disable</b>. Makes the selected redirects unavailable for use on your website.</li>
+			<li><b>Archive</b>. Changes the status of the selected redirects to indicate that they are archived.  Archived redirects can be moved back to the published or unpublished state by selecting "Archived" in the Select Status filter and changing the status of the redirects to Published or Unpublished as preferred.</li>
+			<li><b>Trash</b>. Changes the status of the selected redirects to indicate that they are trashed.  Trashed redirects can still be recovered by selecting "Trashed" in the Select Status filter and changing the status of the redirects to Published or Unpublished as preferred.  To permanently delete trashed redirects, select "Trashed" in the Select Status filter, select the redirects to be permanently deleted, then click the Empty Trash toolbar icon.</li>
+			<li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.</li>
+			<li><b>Help</b>. Opens this help screen.</li>
 		</ul>
 	</section>
 
 	<section>
-		<h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
+		<h2><span class="mw-headline" id="Options">Options</span></h2>
+		<p>Click the Options button to open the <b>Redirect Manager Options</b> window which lets you configure this component.</p>
 
-		<h4> <span class="mw-headline" id="Filter_by_Partial_Title">Filter by Partial Title</span></h4>
-		<p>You can filter the list of items by typing part of the redirect's name or the ID number of the redirect.</p>
+		<h3><span class="mw-headline" id="Buttons_Common_to_All_Tabs">Buttons Common to All Tabs</span></h3>
+		<ul>
+			<li><b>Save</b>. Saves the redirect manager options and stays in the current screen.</li>
+			<li><b>Save &amp; Close</b>. Saves the redirect manager options and closes the current screen.</li>
+			<li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.</li>
+		</ul>
 
-		<h4> <span class="mw-headline" id="Filter_by_State">Filter by State</span></h4>
-		<p>In the upper right area, above the column headings, there is one drop-down list box as shown below:</p>
-		<p>Only items matching the selection will be displayed in the list.</p>
-		<ul><li><b>State</b>: State of the item. Possible values are:
-		<ul><li><i>Published</i>: The item is published. This is the only state that will allow regular website users to view this item.
-		</li><li><i>Unpublished</i>: The item is unpublished.
-		</li><li><i>Archived</i>: The item has been archived. 
-		</li><li><i>Trashed</i>: The item has been sent to the Trash.
-		</li></ul>
-		</li></ul>
-
-		<h4> <span class="mw-headline" id="Number_of_Items_to_Display">Number of Items to Display</span></h4>
-		<p>Below the list you'll find:</p>
-		<ul><li><b>Page Controls.</b> When the number of items is more than one page, you will see a page control bar as shown below.
-		<ul><li><b>Display #:</b> Select the number of items to show on one page.
-		</li><li><b>Start:</b> Click to go to the first page.
-		</li><li><b>Prev:</b> Click to go to the previous page.
-		</li><li><b>Page numbers:</b> Click to go to the desired page.
-		</li><li><b>Next:</b> Click to go to the next page.
-		</li><li><b>End:</b> Click to go to the last page.
-		</li></ul>
-		</li></ul>
-	</section>
-
-	<section>
-		<h2> <span class="mw-headline" id="Batch_Processing">Batch Processing</span></h2>
-		<p>Below the listing of redirects, is a section named 'Update selected links to the following new URL'. This function allows you to change the 'Destination URL' for the selected redirects.</p>
-		<ul><li><b>Destination URL.</b> The destination URL to set for the selected redirects.
-		</li><li><b>Comment.</b> The comment to set for the selected redirects.
-		</li><li><b>Update Links.</b> Updates all selected redirects with the specified <i>Destination URL</i> and <i>Comment</i>.
-		</li></ul>
-	</section>
-
-	<section>
-		<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
-		<p>At the top right you will see the toolbar:</p>
-		<p>The functions are:</p>
-		<ul><li><b>New</b>. Opens the editing screen to create a new redirect.
-		</li><li><b>Edit</b>. Opens the editing screen for the selected redirect. If more than one redirect is selected (where applicable), only the first redirect will be opened. The editing screen can also be opened by clicking on the Title or Name of the redirect.
-		</li><li><b>Enable</b>. Makes the selected redirects available for use on your website.
-		</li><li><b>Disable</b>. Makes the selected redirects unavailable for use on your website.
-		</li><li><b>Archive</b>. Changes the status of the selected redirects to indicate that they are archived.  Archived redirects can be moved back to the published or unpublished state by selecting "Archived" in the Select Status filter and changing the status of the redirects to Published or Unpublished as preferred.
-		</li><li><b>Trash</b>. Changes the status of the selected redirects to indicate that they are trashed.  Trashed redirects can still be recovered by selecting "Trashed" in the Select Status filter and changing the status of the redirects to Published or Unpublished as preferred.  To permanently delete trashed redirects, select "Trashed" in the Select Status filter, select the redirects to be permanently deleted, then click the Empty Trash toolbar icon.
-		</li><li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.
-		</li><li><b>Help</b>. Opens this help screen.
-		</li></ul>
-	</section>
-
-	<section>
-		<h2> <span class="mw-headline" id="Options">Options</span></h2>
-		<p>Click the Options button to open the <b>Redirect Manager Options</b> window which lets you configure this component.
-		</p>
-		<h3> <span class="mw-headline" id="Buttons_Common_to_All_Tabs">Buttons Common to All Tabs</span></h3>
-		<ul><li><b>Save</b>. Saves the redirect manager options and stays in the current screen.
-		</li><li><b>Save &amp; Close</b>. Saves the redirect manager options and closes the current screen.
-		</li><li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.
-		</li></ul>
-		<h3> <span class="mw-headline" id="Permissions_Tab">Permissions Tab</span></h3>
-		<p>This screen allows you to set the component permissions in Joomla. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:
-		</p>
+		<h3><span class="mw-headline" id="Permissions_Tab">Permissions Tab</span></h3>
+		<p>This screen allows you to set the component permissions. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
 
 		<p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes.
 		The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied.
-		Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.
-		</p><p>The default values used here are the ones set in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a>
-		</p>
-		<dl><dd><dl><dt>Configure</dt><dd> Open the redirect manager component option screens (the modal window these options are in)
-		</dd><dt>Access Administration Interface</dt><dd> Open the redirect manager component manger screens
-		</dd><dt>Create&#160;</dt><dd> Create new redirects in the component
-		</dd><dt>Delete&#160;</dt><dd> Delete existing redirects in the component
-		</dd><dt>Edit&#160;</dt><dd> Edit existing redirects in the component
-		</dd><dt>Edit State&#160;</dt><dd> Change an redirects state (Publish, Unpublish, Archive, and Trash) in the component.
-		</dd></dl>
-		</dd></dl>
+		Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
+
+		<p>The default values used here are the ones set in the <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config'); ?>" title="Help: Site Global Configuration">Global Configuration Permissions Tab</a></p>
+
+		<dl>
+			<dt>Configure</dt>
+			<dd>Open the redirect manager component option screens (the modal window these options are in)</dd>
+			<dt>Access Administration Interface</dt>
+			<dd>Open the redirect manager component manger screens</dd>
+			<dt>Create&#160;</dt>
+			<dd>Create new redirects in the component</dd>
+			<dt>Delete&#160;</dt>
+			<dd>Delete existing redirects in the component</dd>
+			<dt>Edit&#160;</dt>
+			<dd>Edit existing redirects in the component</dd>
+			<dt>Edit State&#160;</dt>
+			<dd>Change an redirects state (Publish, Unpublish, Archive, and Trash) in the component.</dd>
+		</dl>
+
 		<p>There are two very important points to understand from this screen. The first is to see how the permissions can be inherited from the parent Group. The second is to see how you can control the default permissions by Group and by Action.
 		This provides a lot of flexibility. For example, if you wanted Shop Suppliers to be able to have the ability to create an article about their product, you could just change their Create value to "Allowed". If you wanted to not allow members of Administrator group to delete objects or change their state, you would change their permissions in these columns to Inherited (or Denied).
-		It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.
-		</p>
+		It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.</p>
 	</section>
 
-	<section>
-		<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
-		<ul><li> In order for your redirects to work, you must enable the option <b>Use Apache mod_rewrite</b> in the <b>Global Configuration</b> options of your Joomla! installation. Note also that just enabling the 'Use Apache mod_rewrite' option is not enough. You must take the additional step of renaming the <i>htaccess.txt</i> file in the web site directory where you installed Joomla! to <i>.htaccess</i> or to whatever file name your Apache web server requires for additional configuration directives. In the Apache configuration file this setting is named 'AccessFileName' and by default this is set to '.htaccess'
-		</li></ul>
+	<section id="Quick_Tips">
+		<h2><span class="mw-headline">Quick Tips</span></h2>
+		<ul>
+			<li>In order for your redirects to work, you must enable the option <b>Use Apache mod_rewrite</b> in the <b>Global Configuration</b> options of your installation. Note also that just enabling the 'Use Apache mod_rewrite' option is not enough. You must take the additional step of renaming the <i>htaccess.txt</i> file in the web site directory where you installed the CMS to <i>.htaccess</i> or to whatever file name your Apache web server requires for additional configuration directives. In the Apache configuration file this setting is named 'AccessFileName' and by default this is set to '.htaccess'</li>
+		</ul>
 	</section>
 
-	<section>
-		<h2> <span class="mw-headline" id="Related_information">Related information</span></h2>
-		<ul><li>To create/edit a redirect: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Redirect_Manager_Edit" title="Help25:Components Redirect Manager Edit">Redirect Manager: Link - Create/Edit</a>
-		</li></ul>
+	<section id="Related_information">
+		<h2> <span class="mw-headline">Related information</span></h2>
+		<ul>
+			<li>To create/edit a redirect: <a href="<?php echo Route::url('index.php?option=com_help&component=com_redirect&page=link'); ?>" title="Help: Components Redirect Manager Edit">Redirect Manager: Link - Create/Edit</a></li>
+		</ul>
 	</section>
 </article>

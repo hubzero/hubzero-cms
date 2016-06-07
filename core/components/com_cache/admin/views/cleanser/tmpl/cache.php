@@ -32,7 +32,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_CACHE_CLEAR_CACHE'), 'clear.png');
+Toolbar::title(Lang::txt('COM_CACHE_CLEAR_CACHE'), 'clear');
 Toolbar::custom('delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
 Toolbar::divider();
 if (User::authorise('core.admin', 'com_cache'))

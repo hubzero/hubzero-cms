@@ -30,15 +30,14 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die('Restricted access');
 
 
 // define path to macros
 $path = PATH_CORE . DS . 'plugins' . DS . 'content' . DS . 'formathtml' . DS . 'macros';
 
 // get all macro files
-$files = JFolder::files($path, '.', true, true, array('CVS', '.DS_Store', '__MACOSX', 'macro-assets'));
+$files = Filesystem::files($path, '.', true, true, array('CVS', '.DS_Store', '__MACOSX', 'macro-assets'));
 
 // include base macro class
 require_once $path . DS . '..' . DS . 'macro.php';
@@ -46,11 +45,12 @@ require_once $path . DS . '..' . DS . 'macro.php';
 // include each macro
 foreach ($files as $file)
 {
-	require_once $file;	
+	require_once $file;
 }
 
 // anonymous function to get macros description
-$macroAttributes = function($class) {
+$macroAttributes = function($class)
+{
 	if (is_subclass_of($class, 'Plugins\Content\Formathtml\Macro'))
 	{
 		$macroClass = new $class();

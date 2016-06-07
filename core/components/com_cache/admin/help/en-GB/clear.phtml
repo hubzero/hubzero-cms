@@ -13,15 +13,15 @@
 
 	<section id="overview">
 		<h2><span>Overview</span></h2>
-		<p>Component packaged with Joomla! 2.5 Core to clear cache files from the cache folders if enabled under the  <a href="index.php?option=com_help&component=com_config&page=global_config" title="Site: Global Configuration">Site Global Configuration</a> settings.</p>
+		<p>Component to clear cache files from the cache folders if enabled under the  <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config'); ?>" title="Site: Global Configuration">Site Global Configuration</a> settings.</p>
 	</section>
 	<section id="description">
 		<h2> <span class="mw-headline" id="Description">Description</span></h2>
 		<p>This tool will delete <i>all</i> Cache files from the cache folders - including current ones - from your web server. As admin functions are cached too, some cache folders might appear as if they were not cleaned because they get recreated before cache content is rescanned after this action.</p>
 		<p>Cache files are temporary files that are created to improve the performance of your site. If you have made significant changes to your web site, such as changing your Template or Language, your cache files may be out of date. To avoid any problems caused by out of date cache files, you can delete all of the cache files.</p>
 		<ul>
-			<li>Because this process deletes <strong>all</strong> Cache files, the website may be a little slower immediately after running Clean Cache.  Once this process is complete, users lose the benefit of using the cache files until they are re-created by Joomla! to be up to date with your current site.</li>
-			<li>In contrast, the <a href="index.php?option=com_help&component=com_cache&page=purge_expired" title="Site Maintenance: Purge Expired Cache">Purge Expired Cache</a> option will check each Cache file individually for being out of date, but the process is slower and requires more system resources.  However, the website should perform close to the same speed for users visiting your site, since all up to date files are still available for your current Joomla! site.</li>
+			<li>Because this process deletes <strong>all</strong> Cache files, the website may be a little slower immediately after running Clean Cache.  Once this process is complete, users lose the benefit of using the cache files until they are re-created by the CMS to be up to date with your current site.</li>
+			<li>In contrast, the <a href="<?php echo Route::url('index.php?option=com_help&component=com_cache&page=purge_expired'); ?>" title="Site Maintenance: Purge Expired Cache">Purge Expired Cache</a> option will check each Cache file individually for being out of date, but the process is slower and requires more system resources.  However, the website should perform close to the same speed for users visiting your site, since all up to date files are still available for your current site.</li>
 		</ul>
 	</section>
 	<section id="toolbar">
@@ -71,11 +71,11 @@
 		<h2><span>Column Headers</span></h2>
 		<dl>
 			<dt>#</dt>
-			<dd>An indexing number automatically assigned by Joomla! for ease of reference.</dd>
+			<dd>An indexing number automatically assigned by the CMS for ease of reference.</dd>
 			<dt>Checkbox</dt>
 			<dd>Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</dd>
 			<dt>Cache Group</dt>
-			<dd>The type of item being cached in this file. This is also the name of the subdirectory where this type of cache file is stored. The cache files are stored in the directory "&lt;path-to-Joomla!&gt;/cache/&lt;Cache Group Name&gt;".</dd>
+			<dd>The type of item being cached in this file. This is also the name of the subdirectory where this type of cache file is stored. The cache files are stored in the directory "&lt;path-to-site&gt;/app/cache/&lt;Cache Group Name&gt;".</dd>
 			<dt>Number of Files</dt>
 			<dd>The number of files currently in this cache group.</dd>
 			<dt>Size</dt>
@@ -88,6 +88,6 @@
 	</section>
 	<section id="related-info">
 		<h2><span>Related Information</span></h2>
-		<p>To change the cache settings for your site: <a href="index.php?option=com_help&component=com_config&page=global_config" title="Site: Global Configuration">Global Configuration - Cache Settings</a></p>
+		<p>To change the cache settings for your site: <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config'); ?>" title="Site: Global Configuration">Global Configuration - Cache Settings</a></p>
 	</section>
 </article>

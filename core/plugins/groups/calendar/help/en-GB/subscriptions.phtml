@@ -31,7 +31,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die('Restricted access');
 ?>
 <h1 class="page-title">Calendar Subscriptions</h1>
 <p>Users can subscribe to a group calendar two separate ways:</p>
@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 <h2>Downloading the Group Calendar</h2>
 <p>To download a group calendar, navigate to a group's calendar tab. If you scroll down, under the calendar of events you should see a box titled "Subscribe", which looks like the image below</p>
 <p>
-	<img src="/plugins/groups/calendar/help/en-GB/subscribe.png" alt="Subscribe" />
+	<img src="<?php echo substr(__DIR__, strlen(PATH_ROOT)); ?>/subscribe.png" alt="Subscribe" />
 </p>
 <p>Here you can pick which of the group calendar's you want to download. After you have made your choices simply click the <u><em>Download</em></u> button. A iCalendar file (.ics) will be downloaded by your browser, which you can then import into any calendar application with iCalendar support.</p>
 <p>
