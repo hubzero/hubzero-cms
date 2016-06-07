@@ -33,6 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Members\Models\Member;
+
+require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
+
 /**
  * Short description for 'ContributionSorter'
  *
@@ -105,6 +109,93 @@ class ContributionSorter
  */
 class plgSearchMembers extends \Hubzero\Plugin\Plugin
 {
+	/****************************
+	Query-time / General Methods
+	****************************/
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 *
+	 * @param mixed $type
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'member';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	/**
+	 * onGetModel 
+	 * 
+	 * @param string $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetModel($type = '')
+	{
+		if ($type == 'member')
+		{
+			return new Member;
+		}
+	}
+
+	/*********************
+		Index-time methods
+	*********************/
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row, &$db)
+	{
+		if ($type == 'member')
+		{
+			// Instantiate new $fields object
+			$fields = new stdClass;
+
+			// Format the date for SOLR
+			$date = Date::of($row->registerDate)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->registerDate)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			$fields->title = $row->name;
+			$fields->alias = $row->username;
+			$fields->address = $row->email;
+
+			$fields->owner_type = 'user';
+			$fields->owner = $row->id;
+			$fields->type = $row->usertype;
+
+			if ($row->access == 1 && $row->block == 0 && $row->approved == 2)
+			{
+				$fields->access_level = 'public';
+			}
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			$fields->url = '/members/' . $row->id;
+
+			return $fields;
+		}
+	}
 	/**
 	 * Build search query and add it to the $results
 	 *
