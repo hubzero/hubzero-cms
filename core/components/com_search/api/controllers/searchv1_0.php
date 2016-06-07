@@ -87,9 +87,46 @@ class Searchv1_0 extends ApiController
 		$results = $query->getResults();
 		$numFound = $query->getNumFound();
 
+		$highlightOptions = array('format' =>'<span class="highlight">\1</span>',
+															'html' => false,
+															'regex'  => "|%s|iu"
+														);
+
+		foreach ($results as &$result)
+		{
+			$snippet = '';
+			foreach ($result as $field => &$r)
+			{
+				if (is_string($r))
+				{
+					$r = strip_tags($r);
+				}
+
+				if ($field != 'url')
+				{
+					$r = \Hubzero\Utility\String::highlight($r, $terms, $highlightOptions);
+				}
+
+				if ($field == 'description' || $field == 'fulltext' || $field == 'abstract')
+				{
+					if (isset($result['description']) && $result['description'] != $result['fulltext'])
+					{
+						$snippet .= $r;
+					}
+				}
+			}
+
+			$snippet = str_replace("\n", "", $snippet);
+			$snippet = str_replace("\r", "", $snippet);
+			$snippet  = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+
+			$result['snippet'] = $snippet;
+		}
+
 		$response = new stdClass;
 		$response->results = $results;
 		$response->total = $numFound;
+		$response->showing = count($results);
 		$response->success = true;
 
 		$this->send($response);

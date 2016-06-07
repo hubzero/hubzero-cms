@@ -209,3 +209,6 @@
 		font-family: "Fontcons";
 	}
 
+	.highlight {
+		background-color: yellow;
+	}

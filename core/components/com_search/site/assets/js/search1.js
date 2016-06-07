@@ -59,6 +59,16 @@ var SearchPage = {
 					return date;
 		});
 
+		/*
+		Handlebars.registerHelper('highlight', function(text) {
+			if (text)
+			{
+				text = text.split(RegExp("\\b"+queryObj.terms+"\\b","i")).join('<span class="highlight">'+queryObj.terms+'</span>');
+				return text;
+			}
+		});
+		*/
+
 		// Compile the template
 		var compiled = Handlebars.compile(template);
 
@@ -68,26 +78,6 @@ var SearchPage = {
 		// Append content to the container
 		$('#results').append(html);
 	},
-
-	// Render Categories
-	renderCategories: function(filters) {
-		filters = {}
-
-		// Set the context
-		var context = {categories};
-		var template = $('#category-template').html();
-		console.log(template);
-
-		// Compile the template
-		var compiled = Handlebars.compile(template);
-
-		// Returns a callback to generate the HTML
-		var html = compiled(context);
-
-		// Append content to the container
-		$('#categories').append(html);
-	},
-
 
 	//
 	// Performs the query
@@ -161,7 +151,6 @@ var SearchPage = {
 		// Append content to the container
 		$('#filters').append(html);
 
-		console.log(queryObj.type);
 		if (queryObj.type != '')
 		{
 			$(".type-facets .active").removeClass('active');

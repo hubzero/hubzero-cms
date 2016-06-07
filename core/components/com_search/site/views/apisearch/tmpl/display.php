@@ -110,8 +110,7 @@ $this->js('search1');
 							</div><!-- /.result-extras -->
 
 							<div class="result-snippet">
-								{{{description}}}
-								{{{fulltext}}}
+								{{{ snippet }}}
 							</div>
 
 							<div class="result-url">{{{link url url}}}</div>
@@ -138,20 +137,6 @@ $this->js('search1');
 					<nav class="pagination">
 						<ul class="list-footer">
 							<li class="counter">Results 1 - 2 of 2</li>
-							<li class="limit">
-								<label for="limit">Display #</label>
-								<select id="limit" name="limit" class="inputbox" size="1" onchange="searchPageObj.refreshQuery()"><option value="5">5</option>
-								<option value="10">10</option>
-								<option value="15">15</option>
-								<option value="20">20</option>
-								<option value="25" selected="selected">25</option>
-								<option value="30">30</option>
-								<option value="50">50</option>
-								<option value="100">100</option>
-								<option value="500">500</option>
-								<option value="1000">1000</option>
-								</select>
-							</li>
 							<li class="pagination-start start">
 								<span class="pagenav">Start</span>
 							</li>
