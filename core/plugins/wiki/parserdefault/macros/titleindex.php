@@ -118,7 +118,7 @@ class TitleIndexMacro extends WikiMacro
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				if ($row->get('pagename') == $this->get('pagename'))
+				if ($row->get('pagename') == $this->pagename)
 				{
 					continue;
 				}
