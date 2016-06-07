@@ -70,12 +70,9 @@ class Helper extends Module
 	public function run()
 	{
 		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
-		include_once(Component::path('com_members') . DS . 'tables' . DS . 'profile.php');
-		include_once(Component::path('com_members') . DS . 'tables' . DS . 'association.php');
-		include_once(Component::path('com_answers') . DS . 'tables' . DS . 'question.php');
-		include_once(Component::path('com_answers') . DS . 'tables' . DS . 'response.php');
-		include_once(Component::path('com_blog') . DS . 'tables' . DS . 'entry.php');
-		include_once(Component::path('com_blog') . DS . 'tables' . DS . 'comment.php');
+		include_once(Component::path('com_members') . DS . 'models' . DS . 'member.php');
+		include_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
+		include_once(Component::path('com_blog') . DS . 'models' . DS . 'archive.php');
 
 		$this->database = \App::get('db');
 
@@ -150,20 +147,26 @@ class Helper extends Module
 				break;
 
 				case 'profiles':
-					// No - so we need to randomly choose one
-					$filters['start'] = 0;
-					$filters['sortby'] = "RAND()";
-					$filters['search'] = '';
-					$filters['state'] = 'public';
-					$filters['authorized'] = false;
-					$filters['tag'] = '';
-					$filters['contributions'] = trim($this->params->get('min_contributions'));
-					$filters['show'] = trim($this->params->get('show'));
-
-					$mp = new \Components\Members\Tables\Profile($this->database);
-
 					// Get records
-					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);
+					if (!isset($rows[$spot]))
+					{
+						$last = \Components\Members\Models\Member::all()
+							->select('id')
+							->whereEquals('block', 0)
+							->whereEquals('activation', 1)
+							->where('approved', '>', 0)
+							->order('id', 'desc')
+							->row();
+
+						$r = mt_rand(0, $last->get('id'));
+
+						$rows[$spot] = \Components\Members\Models\Member::all()
+							->whereEquals('block', 0)
+							->whereEquals('activation', 1)
+							->where('approved', '>', 0)
+							->where('id', '>=', $r)
+							->row();
+					}
 				break;
 
 				case 'topics':
@@ -295,24 +298,27 @@ class Helper extends Module
 			case 'profiles':
 				if ($getid)
 				{
-					return $row->uidNumber;
+					return $row->get('id');
 				}
 
 				// Load their bio
-				$profile = \Components\Members\Models\Member::oneOrNew($row->uidNumber);
-
-				$title = $row->name;
+				$title = $row->get('name');
 				if (!trim($title))
 				{
-					$title = $row->givenName . ' ' . $row->surname;
+					$title = $row->get('givenName') . ' ' . $row->get('surname');
 				}
-				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_members&id=' . $row->uidNumber) . '"><img width="30" height="30" src="' . $profile->picture() . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
-				$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_members&id=' . $row->uidNumber) . '">' . $title . '</a></span>, ' . $row->organization . "\n";
-				$out .= ' - ' . Lang::txt('Contributions') . ': ' . $this->_countContributions($row->uidNumber) . "\n";
+				$out .= '<span class="spotlight-img"><a href="' . Route::url($row->link()) . '"><img width="30" height="30" src="' . $row->picture() . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
+				$out .= '<span class="spotlight-item"><a href="' . Route::url($row->link()) . '">' . $title . '</a></span>, ' . $row->get('organization') . "\n";
+				$out .= ' - ' . Lang::txt('Contributions') . ': ' . $this->_countContributions($row->get('id')) . "\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
 			case 'blog':
+				if ($getid)
+				{
+					return $row->id;
+				}
+
 				$thumb = trim($this->params->get('default_blogpic', '/core/modules/mod_spotlight/assets/img/default.gif'));
 				if ($thumb == '/modules/mod_spotlight/default.gif')
 				{
@@ -321,10 +327,6 @@ class Helper extends Module
 
 				$profile = \Components\Members\Models\Member::oneOrNew($row->created_by);
 
-				if ($getid)
-				{
-					return $row->id;
-				}
 				if (!$row->title)
 				{
 					$out = '';

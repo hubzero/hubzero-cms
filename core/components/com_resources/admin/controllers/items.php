@@ -735,17 +735,12 @@ class Items extends AdminController
 			// Build <select> of groups
 			$this->view->lists['groups'] = Html::selectGroup($groups, $this->view->row->group_owner);
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
-
-			// Get all contributors
-			$mp = new \Components\Members\Tables\Profile($this->database);
-			$members = null; //$mp->getRecords(array('sortby'=>'surname DESC','limit'=>'all','search'=>'','show'=>''), true);
-
 			// Get all contributors linked to this resource
 			$authnames = array();
 			if ($this->view->row->id)
 			{
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
+
 				$ma = new \Components\Members\Tables\Association($this->database);
 				$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization
 						FROM " . $ma->getTableName() . " AS a

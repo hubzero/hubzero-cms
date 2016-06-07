@@ -56,7 +56,7 @@ class Authors extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -79,10 +79,10 @@ class Authors extends SiteController
 	/**
 	 * Save one or more authors
 	 *
-	 * @param      integer $show       Display author list when done?
-	 * @param      integer $id         Resource ID
-	 * @param      array   $authorsNew Authors to add
-	 * @return     void
+	 * @param   integer  $show        Display author list when done?
+	 * @param   integer  $id          Resource ID
+	 * @param   array    $authorsNew  Authors to add
+	 * @return  void
 	 */
 	public function saveTask($show = 1, $id = 0, $authorsNew = array())
 	{
@@ -151,8 +151,6 @@ class Authors extends SiteController
 		// Do we have new authors?
 		if (!empty($authorsNew))
 		{
-			jimport('joomla.user.helper');
-
 			// loop through each one
 			for ($i=0, $n=count($authorsNew); $i < $n; $i++)
 			{
@@ -166,7 +164,7 @@ class Authors extends SiteController
 				{
 					$cid = strtolower($cid);
 					// Find the user's account info
-					$uid = \JUserHelper::getUserId($cid);
+					$uid = User::oneByUsername($cid)->get('id');
 					if (!$uid)
 					{
 						$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
@@ -227,8 +225,8 @@ class Authors extends SiteController
 	/**
 	 * Split a user's name into its parts if not already done
 	 *
-	 * @param      integer $id User ID
-	 * @return     void
+	 * @param   integer  $id  User ID
+	 * @return  void
 	 */
 	private function _authorCheck($id)
 	{
@@ -253,7 +251,7 @@ class Authors extends SiteController
 	/**
 	 * Remove an author from an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -265,8 +263,7 @@ class Authors extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Ensure we have the contributor's ID ($id)
@@ -286,7 +283,7 @@ class Authors extends SiteController
 	/**
 	 * Update information for a resource author
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateTask()
 	{
@@ -298,8 +295,7 @@ class Authors extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_COM_CONTRIBUTE_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Ensure we have the contributor's ID ($id)
@@ -322,7 +318,7 @@ class Authors extends SiteController
 	/**
 	 * Reorder the list of authors
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reorderTask()
 	{
@@ -335,16 +331,14 @@ class Authors extends SiteController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// Get the element moving down - item 1
@@ -387,27 +381,24 @@ class Authors extends SiteController
 	/**
 	 * Display a list of authors
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     void
+	 * @param   integer  $id  Resource ID
+	 * @return  void
 	 */
 	public function displayTask($id=null)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
 		if (!$id)
 		{
 			$id = Request::getInt('rid', 0);
 		}
 
-		$this->view->version = Request::getVar('version', 'dev');
-
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			return;
 		}
+
+		$this->view->version = Request::getVar('version', 'dev');
 
 		// Get all contributors of this resource
 		$helper = new \Components\Resources\Helpers\Helper($id, $this->database);
@@ -427,7 +418,6 @@ class Authors extends SiteController
 		}
 
 		// Get a list of all existing contributors
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
 
@@ -443,11 +433,9 @@ class Authors extends SiteController
 
 		$this->view->roles = $rt->getRolesForType($resource->type);
 
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->setLayout('display')
+			->display();
 	}
 }
