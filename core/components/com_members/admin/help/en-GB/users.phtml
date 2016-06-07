@@ -4,7 +4,7 @@
 	<h2> <span class="mw-headline" id="How_to_access">How to access</span></h2>
 	<p>To access this screen you can either:</p>
 	<ul>
-		<li> Click the <b>User Manager</b> button in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel" title="Help25:Site Control Panel">Control Panel</a>, or</li>
+		<li> Click the <b>User Manager</b> button in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel'); ?>" title="Help25:Site Control Panel">Control Panel</a>, or</li>
 		<li> Select <b>Users → User Manager</b> from the drop-down menus.</li>
 	</ul>
 
@@ -12,18 +12,18 @@
 	<p>In this screen you have the ability to look at a list of your users and sort them in different ways. You can also edit and create users.</p>
 
 	<h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
-	<p>In the table containing the users from your Joomla! site, you will see different columns. Here you can read what they mean and what is displayed in that column.</p>
+	<p>In the table containing the users from your site, you will see different columns. Here you can read what they mean and what is displayed in that column.</p>
 	<ul>
 		<li><b>Checkbox</b>. Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
 		<li><b>Name</b>. The full name of the user.</li>
 		<li><b>User Name</b>. The name the user will log in as.</li>
 		<li><b>Enabled</b>. Whether or not the user is enabled.</li>
-		<li><b>Activated</b>. Whether or not the user is activated. Normally when a user registers from the front end, some type of activation is required. This is controlled by the New User Account Activation parameter in the Users Configuration &#8594; Component screen. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Users_User_Manager#Component" title="Help25:Users User Manager">Users Options - Component Settings</a> for more information.</li>
+		<li><b>Activated</b>. Whether or not the user is activated. Normally when a user registers from the front end, some type of activation is required. This is controlled by the New User Account Activation parameter in the Users Configuration &#8594; Component screen. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Users_User_Manager#Component'); ?>" title="Help25:Users User Manager">Users Options - Component Settings</a> for more information.</li>
 		<li><b>User Groups</b>. The list of groups that the user belongs to. Note that a user may belong to more than one group.</li>
 		<li> <b>E-Mail</b>. The e-mail address from the user is displayed here.</li>
 		<li> <b>Last Visit Date</b>. Here you can see the date on which the user last logged in.</li>
 		<li> <b>Registration Date</b>. The date the user was registered.</li>
-		<li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
+		<li><b>ID</b>. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
 	</ul>
 
 	<h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
@@ -73,7 +73,7 @@
 <h3> <span class="mw-headline" id="Component">Component</span></h3>
 <ul><li><b>Allow User Registration.</b> (Yes/No) If set Yes, users can register from the front end of the site using the Create an Account link provided on the Login module. If set to No, the "Create and Account" link will not show. 
 </li><li><b>New User Registration Group.</b> The group that users are assigned to by default when they register on the site. Defaults to Registered.
-</li><li><b>Guest User Group.</b> The group that guests are assigned to. (Guests are visitors to the site who are not logged in.) This is set to Public by default. If you change this to a different group, it is possible to create content on the site that is visible to guests but not visible to logged in users. See <a href="/proxy/index.php?option=com_help&view=help&keyref=ACL_Tutorial_for_Joomla_1.6#Allowing_Guest-Only_Access_to_Menu_Items_and_Modules" title="ACL Tutorial for Joomla 1.6" class="mw-redirect">Allowing Guest-Only Access to Menu Items and Modules</a>.
+</li><li><b>Guest User Group.</b> The group that guests are assigned to. (Guests are visitors to the site who are not logged in.) This is set to Public by default. If you change this to a different group, it is possible to create content on the site that is visible to guests but not visible to logged in users. See <a href="/proxy/index.php?option=com_help&view=help&keyref=ACL_Tutorial#Allowing_Guest-Only_Access_to_Menu_Items_and_Modules" title="ACL Tutorial" class="mw-redirect">Allowing Guest-Only Access to Menu Items and Modules</a>.
 </li><li><b>Send Password.</b> If set to yes the user will be emailed their password on the registration email. Note there are potential security issues if this is set to yes.
 </li><li><b>New User Account Activation.</b>
 <ul><li><b>None.</b> User account will be active immediately with no action required.
@@ -93,7 +93,7 @@
 </li><li><b>Mailbody Suffix</b>. Enter optional text to be inserted automatically after the body of the email (for example, a signature).
 </li></ul>
 <h3> <span class="mw-headline" id="Permissions">Permissions</span></h3>
-<p>This screen allows you to set the component permissions in Joomla. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
+<p>This screen allows you to set the component permissions. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
 <p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes.
 The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied.
 Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.
@@ -128,6 +128,6 @@ It is also important to understand that the ability to have child groups is comp
 <ul><li> <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Users_User_Manager_Edit'); ?>" title="Help25:Users User Manager Edit">User Manager: Add/Edit User</a>
 </li><li> <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Users_Groups'); ?>" title="Help25:Users Groups">User Manager: Users Groups</a>
 </li><li> <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Users_Access_Levels'); ?>" title="Help25:Users Access Levels">User Manager: Viewing Access Levels</a>
-</li><li><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Access_Control_List/1.6-2.5/Tutorial'); ?>" title="Access Control List/1.6-2.5/Tutorial" class="mw-redirect">ACL Tutorial for Joomla 1.6, 1.7 and 2.5</a>
+</li><li><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Access_Control_List_Tutorial'); ?>" title="Access Control List Tutorial" class="mw-redirect">ACL Tutorial</a>
 </li></ul>
 </article>

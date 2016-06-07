@@ -1,7 +1,7 @@
 <article>
 	<h1><span>Overview of ACL</span></h1>
 
-	<p>The Joomla ACL system can be thought of as being divided into two completely separate systems. One system controls what things on the site users can <i>view</i>. The other controls what things users can <i>do</i> (what actions a user can take). The ACL for each is set up differently.</p>
+	<p>The ACL system can be thought of as being divided into two completely separate systems. One system controls what things on the site users can <i>view</i>. The other controls what things users can <i>do</i> (what actions a user can take). The ACL for each is set up differently.</p>
 
 	<section>
 		<h2> <span class="mw-headline" id="Controlling_What_Users_Can_See">Controlling What Users Can See</span></h2>
@@ -11,7 +11,7 @@
 		<li>Create the set of Access Levels required for the site. This could be a small number or a large number depending on the number of different groups and how many categories of items there are. Assign each Access Level to one or more of the User Groups created in step 1.</li>
 		<li>Assign each item to be viewed to one Access Level. Items include content items (articles, contacts, and so on), menu items, and modules.</li>
 		</ol>
-		<p>Any time a user is about to view an item on a Joomla page, the program checks whether the user has access to the item, as follows:</p>
+		<p>Any time a user is about to view an item on a page, the program checks whether the user has access to the item, as follows:</p>
 		<ol>
 		<li>Creates a list of all the Access Levels that the User has access to, based on all Groups that the User belongs to. Also, if a group has a parent group, access levels for the parent group are also included in the list.</li>
 		<li>Checks whether the Access Level for the item (article, module, menu item, and so on) is on that list. If yes, then the item is displayed to the user. If no, then the item is not displayed.</li>
@@ -109,7 +109,7 @@
 	</section>
 	<section>
 		<h1> <span class="mw-headline" id="Default_ACL_Setup">Default ACL Setup</span></h1>
-		<p>When Joomla! is installed, these are set to their initial default settings. We will discuss these initial settings as a way to understand how the ACL works.</p>
+		<p>When the CMS is installed, these are set to their initial default settings. We will discuss these initial settings as a way to understand how the ACL works.</p>
 	</section>
 	<section>
 		<h2> <span class="mw-headline" id="Default_Groups">Default Groups</span></h2>
@@ -119,10 +119,9 @@
 	</section>
 	<section>
 		<h2> <span class="mw-headline" id="Global_Configuration_2">Global Configuration</span></h2>
-		<p>Joomla! version 2.5 will install with the same familiar back-end permissions as that of version 1.5. However, with 2.5, you can easily change these to suit the needs of your site.</p>
 		<p>As discussed earlier, the permissions for each action are inherited from the level above in the permission hierarchy and from a group's parent group. Let's see how this works. The top level for this is the entire site. This is set up in the Site-&gt;Global Configuration-&gt;Permissions, as shown below.</p>
 
-		<p>The first thing to notice are the nine Actions: Site Login, Admin Login, Super Admin, Access Component, Create, Delete, Edit, Edit State. and Edit Own. These are the actions that a user can perform on an object in Joomla. The specific meaning of each action depends on the context. For the Global Configuration screen, they are defined as follows:</p>
+		<p>The first thing to notice are the nine Actions: Site Login, Admin Login, Super Admin, Access Component, Create, Delete, Edit, Edit State. and Edit Own. These are the actions that a user can perform on an object in the CMS. The specific meaning of each action depends on the context. For the Global Configuration screen, they are defined as follows:</p>
 		<dl>
 		<dt>Site Login&#160;</dt>
 		<dd>Login to the front end of the site</dd>
@@ -215,7 +214,7 @@
 		<p>Next, notice that the Administrator has Inherit for the Manage action and the Manager group has Deny permission. In this screen, the Manage action gives a group access to the User Manager. Since the Administrator has Allow for the Manage action by default, then the Inherit permission here means they inherit the Allow permission for the Manage action. Since the Manager group has Deny permission for the Manage action, members of the Manager group cannot access the User Manager and therefore cannot do any of the other user-related actions.</p>
 		<p>If you look at the Options for Menus-&gt;Menu Manager, you will see the same default settings as for the User Manager. Again, the Administrator group can manage and set default permissions for Menu Manager objects whereas the Manager group cannot.</p>
 		<p>In short, we can see that the different permissions for the Administrator and Manager groups are set using the Options-&gt;Permissions forms on the User Manager and Menu Manager screens.</p>
-		<p>It is also important to understand that this same Options-&gt;Permissions form for setting default permissions is available for all Joomla! objects, including Media Manager, Banners, Contacts, Newsfeeds, Redirect, Search Statistics, Web Links, Extensions, Modules, Plugins, Templates, and Language. So you now have the option to create user groups with fine-tuned sets of back-end permissions.</p>
+		<p>It is also important to understand that this same Options-&gt;Permissions form for setting default permissions is available for all objects, including Media Manager, Banners, Contacts, Newsfeeds, Redirect, Search Statistics, Web Links, Extensions, Modules, Plugins, Templates, and Language. So you now have the option to create user groups with fine-tuned sets of back-end permissions.</p>
 	</section>
 	<section>
 		<h2> <span class="mw-headline" id="Front_End_Permissions">Front End Permissions</span></h2>

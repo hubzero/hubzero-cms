@@ -16,18 +16,12 @@
 <p>Access levels control which users can view which objects on your site. Objects include menu items, modules, categories, and component items (articles, contacts, and so on). Each object in the site is assigned to one access level. User groups are also assigned to each access level.
 </p><p>If a user is a member of a group that in turn has permission for an access level, then that user can view all objects assigned to that access level. It is important to understand that user groups can be arranged in a parent-child hierarchy. If so, then a child group has access to all access levels that the parent group has access to. So you don't need to assign a child group access to levels that its parent group already has access to.
 </p>
-<h2> <span class="mw-headline" id="Screenshot"> Screenshot </span></h2>
-<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-users_access_levels_edit-screen.png" class="image"><img alt="Help25-users access levels edit-screen.png" src="http://docs.joomla.org/images/2/21/Help25-users_access_levels_edit-screen.png" width="800" height="352" /></a>
-</p>
 <h2> <span class="mw-headline" id="Access_Levels_Details"> Access Levels Details </span></h2>
 <ul><li><b>Level Title</b>. The name of this access level.
 </li><li><b>User Groups Having Viewing Access</b>. All user groups defined for the site will display, with a check box for each. Check the boxes for all groups that will have access to this level. Remember that you don't have to check child groups if a parent group has access. The child will inherit the access from the parent.
 </li></ul>
 <h2> <span class="mw-headline" id="Toolbar"> Toolbar</span></h2>
-<p>At the top right you will see the toolbar:
-</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-Save-SaveClose-SaveNew-Cancel-Help.png" class="image"><img alt="Help25-Toolbar-Save-SaveClose-SaveNew-Cancel-Help.png" src="http://docs.joomla.org/images/0/05/Help25-Toolbar-Save-SaveClose-SaveNew-Cancel-Help.png" width="325" height="65" /></a>
-</p><p>The functions are:
-</p>
+<p>At the top right you will see the toolbar. The functions are:</p>
 <ul><li><b>Save</b>. Saves the access level and stays in the current screen.
 </li><li><b>Save &amp; Close</b>. Saves the access level and closes the current screen.
 </li><li><b>Save &amp; New</b>. Saves the access level and keeps the editing screen open and ready to create another access level.
@@ -38,8 +32,8 @@
 <ul><li>If you add a new group, you may need to edit any access levels that this group should have access to.
 </li></ul>
 <h2> <span class="mw-headline" id="Related_information">Related information</span></h2>
-<ul><li> <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Users_Access_Levels" title="Help25:Users Access Levels">User Manager: Viewing Access Levels</a>
-</li><li> <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Users_Groups" title="Help25:Users Groups">User Manager: User Groups</a>
-</li><li> <a href="/proxy/index.php?option=com_help&view=help&keyref=Access_Control_List/1.6-2.5/Tutorial" title="Access Control List/1.6-2.5/Tutorial" class="mw-redirect">ACL Tutorial for Joomla 1.6, 1.7 and 2.5</a>
+<ul><li> <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Users_Access_Levels'); ?>" title="Help25:Users Access Levels">User Manager: Viewing Access Levels</a>
+</li><li> <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Users_Groups'); ?>" title="Help25:Users Groups">User Manager: User Groups</a>
+</li><li> <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Access_Control_List_Tutorial'); ?>" title="Access Control List Tutorial" class="mw-redirect">ACL Tutorial</a>
 </li></ul>
 </article>
