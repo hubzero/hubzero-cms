@@ -2,24 +2,20 @@
 	<h1>Module Manager</h1>
 
 	<h2> <span class="mw-headline" id="How_to_Access">How to Access</span></h2>
-<ul><li>Select <b>Extensions &#8594; Module Manager</b> from the drop-down menu on the back-end of your Joomla! installation.
-</li><li>Click on <b>Module Manager</b> in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel" title="Help25:Site Control Panel">Control Panel</a> of the administrator interface.
+<ul><li>Select <b>Extensions &#8594; Module Manager</b> from the drop-down menu on the back-end of your installation.
+</li><li>Click on <b>Module Manager</b> in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel'); ?>" title="Help25:Site Control Panel">Control Panel</a> of the administrator interface.
 </li></ul>
 <h2> <span class="mw-headline" id="Description">Description</span></h2>
-<p>The Module Manager is where you add and edit Joomla! Modules. In Joomla!, Modules are used to display content and/or media around the main content.
-</p><p><b>Module Facts:</b>
-</p>
-<ol><li>All Joomla! websites require at least 1 Menu Module
+<p>The Module Manager is where you add and edit Modules. Modules are used to display content and/or media around the main content.</p>
+<p><b>Module Facts:</b></p>
+<ol><li>All hubs websites require at least 1 Menu Module
 </li><li>All Other Module Types are Optional. (Examples: News, Banner, Latest News, Polls)
 </li><li>Every Menu is accompanied by a menu module. (Example mod_mainmenu)
 </li><li>Multiple occurrences of similar module types.
-</li><li>Some Modules are linked to components. For example, each Menu Module is related to one Menu component. To define a Menu in Joomla!, you need to create the Menu and Menu Items using the Menus screens and then create the Module for the Menu using this screen. Other Modules, such as Custom HTML and Breadcrumbs, do not depend on any other content. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.modules.edit.15" title="Screen.modules.edit.15" class="mw-redirect">Module Manager - New/Edit</a> for information about the different Module Types.
+</li><li>Some Modules are linked to components. For example, each Menu Module is related to one Menu component. To define a Menu, you need to create the Menu and Menu Items using the Menus screens and then create the Module for the Menu using this screen. Other Modules, such as Custom HTML and Breadcrumbs, do not depend on any other content. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.modules.edit.15'); ?>" title="Screen.modules.edit.15" class="mw-redirect">Module Manager - New/Edit</a> for information about the different Module Types.
 </li></ol>
-<p>The Joomla! installation is accompanied with 20 module types, additional 3rd party modules can be located at the <a rel="nofollow" class="external text" href="http://extensions.joomla.org/">JED</a>.
-</p>
-<h2> <span class="mw-headline" id="Screenshot">Screenshot</span></h2>
-<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-module-manager-screenshot.png" class="image"><img alt="Help25-module-manager-screenshot.png" src="http://docs.joomla.org/images/1/10/Help25-module-manager-screenshot.png" width="670" height="374" /></a>
-</p>
+<p>The installation is accompanied with 20 module types.</p>
+
 <h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
 <p>Click on the column heading to sort the list by that column's value.
 </p>
@@ -36,7 +32,7 @@
 <ul><li><b>Position.</b> The position on the page where this module is displayed. Positions are locations on the page where modules can be placed (for example, "left" or "right"). Positions are defined in the Template in use for the page. Positions can also be used to insert a Module inside an Article using the syntax "{loadposition xxx}", where "xxx" is a unique position for the module.
 </li><li><b>Order.</b> The order to display modules within a Position. If the list is sorted by this column, you can change the display order of modules within a Position by selecting a Position in the "Select Position" filter and then clicking the arrows or by entering the sequential order and clicking 'Save Order'.
 </li></ul>
-<ul><li><b>Type.</b> The system name of the Module. Joomla! installs 20 standard Modules. Many Joomla! Extensions contribute additional Modules. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.modules.edit.15" title="Screen.modules.edit.15" class="mw-redirect">Module Manager New/Edit</a> for information about each of the standard Modules.
+<ul><li><b>Type.</b> The system name of the Module. Many Extensions contribute additional Modules. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.modules.edit.15'); ?>" title="Screen.modules.edit.15" class="mw-redirect">Module Manager New/Edit</a> for information about each of the standard Modules.
 </li></ul>
 <ul><li><b>Pages.</b> The Menu Items where this Module will be displayed. Options are "All" for all Menu Items, "None" for no Menu Items, and "Varies" for selected Menu Items. A Module will only display on Menu Items where it is selected.
 </li></ul>
@@ -50,13 +46,11 @@
 </dd></dl>
 <ul><li><b>Language</b>. Item language.
 </li></ul>
-<ul><li> <b>ID</b>. The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.
+<ul><li> <b>ID</b>. The ID number. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, for example in internal links. You can not change this number.
 </li></ul>
 <h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
-<p>At the top right you will see the toolbar:
-</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-New-Edit-Duplicate-Publish-Unpublish-Checkin-Trash-Options-Help.png" class="image"><img alt="Help25-Toolbar-New-Edit-Duplicate-Publish-Unpublish-Checkin-Trash-Options-Help.png" src="http://docs.joomla.org/images/5/5c/Help25-Toolbar-New-Edit-Duplicate-Publish-Unpublish-Checkin-Trash-Options-Help.png" width="532" height="65" /></a>
-</p><p>The functions are:
-</p>
+<p>At the top right you will see the toolbar:</p>
+<p>The functions are:</p>
 <ul><li><b>New</b>. Opens the editing screen to create a new module.
 </li><li><b>Edit</b>. Opens the editing screen for the selected module. If more than one module is selected (where applicable), only the first module will be opened. The editing screen can also be opened by clicking on the Title or Name of the module.
 </li><li><b>Duplicate</b>. Makes a copy of the selected module.  The copy is created immediately and is given the same name as the original but prefixed with "Copy of" and/or suffixed with a number (eg. "(2)") so that it can be distinguished from the original and any other copies.
@@ -67,11 +61,10 @@
 </li><li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.
 </li><li><b>Help</b>. Opens this help screen.
 </li></ul>
-<p><br />
-</p>
+
 <h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
 <h3> <span class="mw-headline" id="Filter_by_Partial_Title">Filter by Partial Title</span></h3>
-<ul><li><b>Filter by Partial Title or ID. </b> In the upper left is a filter field and two buttons, as shown below. <div class="thumb tnone"><div class="thumbinner" style="width:285px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-filter-field.png" class="image"><img alt="Help25-chunk-colheader-filter-field.png" src="http://docs.joomla.org/images/0/03/Help25-chunk-colheader-filter-field.png" width="283" height="46" class="thumbimage" /></a>  <div class="thumbcaption"></div></div></div>
+<ul><li><b>Filter by Partial Title or ID. </b> In the upper left is a filter field and two buttons.
 <ul><li> To filter by partial title, enter part of the title and click Search.
 </li><li> To filter by ID number, enter "id:xx", where "xx" is the ID number (for example, "id:9").
 </li></ul>
@@ -79,15 +72,13 @@
 <dl><dd>Click Clear to clear the Filter field and restore the list to its unfiltered state.
 </dd></dl>
 <h3> <span class="mw-headline" id="Site_and_Administrator_Links">Site and Administrator Links</span></h3>
-<p>At the top right, the first drop-down box will look like:
-</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Module-Manager-Filter-By-Site.png" class="image"><img alt="Help25-Module-Manager-Filter-By-Site.png" src="http://docs.joomla.org/images/1/1c/Help25-Module-Manager-Filter-By-Site.png" width="99" height="56" /></a>
-</p>
+<p>At the top right, the first drop-down box will look like:</p>
 <ul><li><b>Site.</b> Opens the Site tab. This is the default tab and allows you to manage the Modules for the front end of the web site.
-</li><li><b>Administrator.</b> This tab allows you to manage the Modules for the back end administration of the web site. If you do not need to change the Joomla! administrator menus, no modifications are required here.
+</li><li><b>Administrator.</b> This tab allows you to manage the Modules for the back end administration of the web site. If you do not need to change the administrator menus, no modifications are required here.
 </li></ul>
 <h3> <span class="mw-headline" id="Filter_by_State.2C_Position.2C_Type.2C_Access_and_Language">Filter by State, Position, Type, Access and Language</span></h3>
-In the upper right area, above the column headings, are following drop-down list boxes as shown below:<div class="center"><div class="floatnone"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Module-Manager-Filters.png" class="image"><img alt="Help25-Module-Manager-Filters.png" src="http://docs.joomla.org/images/1/1c/Help25-Module-Manager-Filters.png" width="670" height="29" /></a></div></div> The selections may be combined. Only items matching both selections will display in the list.
-<ul><li><b>Filter by Published Status.</b> Lets you show only items with the selected published status. <div class="thumb tnone"><div class="thumbinner" style="width:104px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-status.png" class="image"><img alt="Help25-chunk-colheader-select-status.png" src="http://docs.joomla.org/images/8/85/Help25-chunk-colheader-select-status.png" width="102" height="97" class="thumbimage" /></a>  <div class="thumbcaption"></div></div></div> 
+In the upper right area, above the column headings, are drop-down list boxes. The selections may be combined. Only items matching both selections will display in the list.
+<ul><li><b>Filter by Published Status.</b> Lets you show only items with the selected published status.
 <ul><li><i>- Select Status -:</i> Shows items that are Published and Unpublished. Does <i>not</i> show items that are Trashed or Archived.
 </li><li><i>Published:</i> Shows only items that are Published.
 </li><li><i>Unpublished:</i> Shows only items that are Unpublished.
@@ -102,14 +93,14 @@ In the upper right area, above the column headings, are following drop-down list
 </li></ul>
 <ul><li><b>Select Position.</b> Select a Position from the drop-down list box of available Positions.
 </li></ul>
-<ul><li><b>Select Type.</b> Select the Module Type from the drop-down list box of available Module Types. Joomla! installs with 20 available Module Types. Additional ones may be available if you have installed any Joomla! Extensions. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.modules.edit.15" title="Screen.modules.edit.15" class="mw-redirect">Module Manager - New/Edit</a> for information about the available Module Types.
+<ul><li><b>Select Type.</b> Select the Module Type from the drop-down list box of available Module Types. Additional ones may be available if you have installed any Extensions. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.modules.edit.15'); ?>" title="Screen.modules.edit.15" class="mw-redirect">Module Manager - New/Edit</a> for information about the available Module Types.
 </li></ul>
-<ul><li><b>Filter by Viewing Access Level.</b> Lets you show only items that have a specified viewing access level. The list box will show the access levels defined for your site, similar to the example below. <div class="thumb tnone"><div class="thumbinner" style="width:189px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-access.png" class="image"><img alt="Help25-chunk-colheader-select-access.png" src="http://docs.joomla.org/images/8/8c/Help25-chunk-colheader-select-access.png" width="187" height="84" class="thumbimage" /></a>  <div class="thumbcaption"></div></div></div> 
+<ul><li><b>Filter by Viewing Access Level.</b> Lets you show only items that have a specified viewing access level. The list box will show the access levels defined for your site, similar to the example below.
 <ul><li><i>- Select Access -:</i> Show items with any viewing access level.
 </li><li><i>&lt;your access level&gt;:</i> Show items only with this viewing access level.
 </li></ul>
 </li></ul>
-<ul><li><b>Filter by Language.</b> Lets you show only items that have a specific language assigned. The list box will show the languages defined for your site, similar to the example below. <div class="thumb tnone"><div class="thumbinner" style="width:122px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-language.png" class="image"><img alt="Help25-chunk-colheader-select-language.png" src="http://docs.joomla.org/images/7/75/Help25-chunk-colheader-select-language.png" width="120" height="71" class="thumbimage" /></a>  <div class="thumbcaption"></div></div></div> 
+<ul><li><b>Filter by Language.</b> Lets you show only items that have a specific language assigned. The list box will show the languages defined for your site, similar to the example below.
 <ul><li><i>- Select Language - or All:</i> Show items for any language.
 </li><li><i>&lt;your language&gt;:</i> Show items only for this language.
 </li></ul>
@@ -119,9 +110,10 @@ In the upper right area, above the column headings, are following drop-down list
 <ul><li>Select the desired Position using the Position Filter. This will limit the list to Modules that are assigned to this Position.
 </li><li>Change the order using the Up or Down arrows or by typing the order number and pressing the Save Order icon. The Modules will display in the new order within the Position.
 </li></ul>
-</li><li>You can open a Module for editing by clicking on the Module Name. This opens the <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.modules.edit.15" title="Screen.modules.edit.15" class="mw-redirect">Module Manager - New/Edit</a> screen.
+</li><li>You can open a Module for editing by clicking on the Module Name. This opens the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.modules.edit.15'); ?>" title="Screen.modules.edit.15" class="mw-redirect">Module Manager - New/Edit</a> screen.
 </li></ul>
 <h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
-<ul><li>To create or edit Modules: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Edit" title="Help25:Extensions Module Manager Edit">Module Manager - New/Edit</a>
-</li></ul>
+<ul>
+	<li>To create or edit Modules: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Edit'); ?>" title="Help25:Extensions Module Manager Edit">Module Manager - New/Edit</a></li>
+</ul>
 </article>

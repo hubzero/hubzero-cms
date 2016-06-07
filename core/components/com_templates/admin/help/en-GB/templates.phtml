@@ -1,11 +1,11 @@
 <article>
 	<h1>Template Manager: Templates</h1>
 
-	<p>This screen is accessed from the back-end Joomla! administrator panel. It is used to preview and templates in your Joomla! website.</p>
+	<p>This screen is accessed from the back-end administrator panel. It is used to preview and templates in your website.</p>
 
 	<section id="Description">
 		<h2> <span class="mw-headline">Description</span></h2>
-		<p>The <b>Template Manager: Templates</b> screen allows you to preview and edit templates which are installed in your Joomla! installation.</p>
+		<p>The <b>Template Manager: Templates</b> screen allows you to preview and edit templates which are installed in your installation.</p>
 	</section>
 	<section id="Column_Headers">
 		<h2><span class="mw-headline">Column Headers</span></h2>
@@ -77,11 +77,11 @@
 		</li></ul>
 
 		<h3> <span class="mw-headline" id="Permissions_Tab">Permissions Tab</span></h3>
-		<p>This screen allows you to set the component permissions in Joomla. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
+		<p>This screen allows you to set the component permissions in the CMS. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
 		<p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes.
 		The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied.
 		Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
-		<p>The default values used here are the ones set in the <a href="index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+		<p>The default values used here are the ones set in the <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config'); ?>" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
 		<dl><dd><dl><dt>Configure</dt><dd> Open the template manager option screens (the modal window these options are in)
 		</dd><dt>Access Administration Interface</dt><dd> Open the template manager manger screens
 		</dd><dt>Create&#160;</dt><dd> Create new styles in the component
@@ -97,12 +97,12 @@
 	<section id="Toolbar_Links">
 		<h2><span class="mw-headline">Toolbar Links</span></h2>
 		<p>At the top left, above the Filter, you will see the following two links:</p>
-		<ul><li><b>Styles.</b> Click this link to go to the <a href="index.php?option=com_help&view=help&keyref=Help25:Extensions_Template_Manager_Styles" title="Help25:Extensions Template Manager Styles">Template Manager: Styles</a> screen.
+		<ul><li><b>Styles.</b> Click this link to go to the <a href="<?php echo Route::url('index.php?option=com_help&component=com_templates&page=styles'); ?>" title="Help: Extensions Template Manager Styles">Template Manager: Styles</a> screen.
 		</li><li><b>Templates.</b> This link takes you to the screen you are currently on.
 		</li></ul>
 	</section>
 	<section id="Related_Information">
 		<h2><span class="mw-headline">Related Information</span></h2>
-		<p>To edit templates styles: <a href="index.php?option=com_help&view=help&keyref=Help25:Extensions_Template_Manager_Styles" title="Help25:Extensions Template Manager Styles">Template Manager: Styles</a></p>
+		<p>To edit templates styles: <a href="<?php echo Route::url('index.php?option=com_help&component=com_templates&page=styles'); ?>" title="Help: Extensions Template Manager Styles">Template Manager: Styles</a></p>
 	</section>
 </article>

@@ -7,7 +7,7 @@
 <ul><li> Clicking on the Module Manager icon in the Control Panel
 </li><li> Top drop down menu, <b>Extensions<span style="font-size:1.40em;">&#160;</b>&#8594;<b>&#160;</span>Module Manager</b>
 </li></ul>
-<p>After that, click on the '<b>New'</b> button in the toolbar to <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Edit#Create_New" title="Help25:Extensions Module Manager Edit">create a new Module Item</a>, or select a Module by double clicking the Module's <b>Title</b> or check the 'check box' and click on the 'Edit' button.
+<p>After that, click on the '<b>New'</b> button in the toolbar to <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Edit#Create_New'); ?>" title="Help25:Extensions Module Manager Edit">create a new Module Item</a>, or select a Module by double clicking the Module's <b>Title</b> or check the 'check box' and click on the 'Edit' button.
 </p>
 <h2> <span class="mw-headline" id="Description">Description</span></h2>
 <p>The Extensions Module Manager Edit (New) allows editing an existing Module or creating a new Module by Module type.
@@ -17,8 +17,7 @@
 </p>
 <dl><dd> A <b><a href="#Related_Information">Specific Module Type</a></b> Help screen, links with descriptions are listed below.
 </dd></dl>
-<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-extensions-module-manager-edit.png" class="image"><img alt="Help25-extensions-module-manager-edit.png" src="http://docs.joomla.org/images/c/cd/Help25-extensions-module-manager-edit.png" width="670" height="457" /></a>
-</p>
+
 <h2> <span class="mw-headline" id="Details">Details</span></h2>
 <p>The screenshot above shows the editing view of a 'Archived Article' Module. For <b><a href="#Related_Information">Specific Module Type</a></b> Help screen, links with descriptions are listed below.
 </p>
@@ -31,7 +30,7 @@
 </li></ul>
 <ul><li><b>Position.</b> Click button to open a modal pop up window to select Module position by available positions in a Template(s) installed.
 </li></ul>
-<dl><dd><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Extension-Manager-Module-Edit-module-position.png" class="image"><img alt="Help25-Extension-Manager-Module-Edit-module-position.png" src="http://docs.joomla.org/images/9/96/Help25-Extension-Manager-Module-Edit-module-position.png" width="400" height="233" /></a>
+<dl><dd>
 <ul><li><b>Filter</b>. Filter positions by title of position.
 </li><li><b>Select Status</b>. Filter positions by status, enabled or disabled.
 </li><li><b>Type</b>. Filter positions by type, User(User created) or Template.
@@ -46,7 +45,7 @@
 </li><li> <i>Trashed:</i> Item is deleted from the site but still in the database. It can be permanently deleted from the database with the Empty Trash function in Article Manager.
 </li></ul>
 </li></ul>
-<ul><li> <b>Access.</b> Select the viewing access level for this item from the list box. The access levels that display will depend on the what has been set up for this site in <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Users_Access_Levels" title="Help25:Users Access Levels"> Users&#8594;Access Levels</a>. Note that access levels are separate from ACL permissions. Access levels control what a user can see. ACL permissions control what actions a user can perform.
+<ul><li> <b>Access.</b> Select the viewing access level for this item from the list box. The access levels that display will depend on the what has been set up for this site in <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Users_Access_Levels'); ?>" title="Help25:Users Access Levels"> Users&#8594;Access Levels</a>. Note that access levels are separate from ACL permissions. Access levels control what a user can see. ACL permissions control what actions a user can perform.
 </li></ul>
 <ul><li><b>Ordering.</b> Select the ordering of the module as compared to other modules in the same position. See <b>Position</b>.
 </li></ul>
@@ -54,34 +53,26 @@
 </li></ul>
 <ul><li><b>Finish Publishing.</b> Date and time to finish publishing. Use this field if you want to have content automatically changed to Unpublished state at a future time (for example, when it is no longer applicable).
 </li></ul>
-<ul><li> <b>Language.</b> Select the language for this item. If you are not using the multi-language feature of Joomla, keep the default of 'All'.
+<ul><li> <b>Language.</b> Select the language for this item. If you are not using the multi-language feature, keep the default of 'All'.
 </li></ul>
 <ul><li><b>Note</b>. Item note. This is normally for the site administrator's use (for example, to document information about this item) and does not show in the front end of the site.
 </li></ul>
-<ul><li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.
+<ul><li><b>ID</b>. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.
 </li></ul>
 <ul><li><b>Module Description.</b> A summary of the the Module type with a description.
 </li></ul>
 <h3> <span class="mw-headline" id="Menu_assignment">Menu assignment</span></h3>
-<dl><dd><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Module-Manager-Edit-menu-assignment.png" class="image"><img alt="Help25-Module-Manager-Edit-menu-assignment.png" src="http://docs.joomla.org/images/c/c9/Help25-Module-Manager-Edit-menu-assignment.png" width="400" height="385" /></a>
-</dd></dl>
-<p>This section contains all the menu items configured in your Joomla! website. To apply the current style to a menu item's corresponding web page, check the box next to the menu item. You can press the <i>Toggle Selection</i> button to invert the menu item selections.
-</p><p><b>Note</b>: If a checkbox is grayed out and cannot be checked then it could be because the menu item is in use by another user.  You can see if this is the case by going to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager" title="Help25:Menus Menu Item Manager">menu manager screen for the menu</a> concerned.  If there is a padlock symbol next to the menu item then it is currently in use by another user.
+<p>This section contains all the menu items configured in your website. To apply the current style to a menu item's corresponding web page, check the box next to the menu item. You can press the <i>Toggle Selection</i> button to invert the menu item selections.
+</p><p><b>Note</b>: If a checkbox is grayed out and cannot be checked then it could be because the menu item is in use by another user.  You can see if this is the case by going to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager'); ?>" title="Help25:Menus Menu Item Manager">menu manager screen for the menu</a> concerned.  If there is a padlock symbol next to the menu item then it is currently in use by another user.
 </p>
 <h3> <span class="mw-headline" id="Additional_Options">Additional Options</span></h3>
 <p>Additional Options, such as <b>Basic</b> and <b>Advanced</b> can be found on the <a href="#Related_Information">specific Module Type</a> Help screen. Please note, installed Extensions may contain more parameters in Additional Options. Please refer to the specific Extension Module's information provided by the Extension developer.
 </p>
 <h3> <span class="mw-headline" id="Create_New">Create New</span></h3>
-<p>When creating a new Module, you will be presented with a modal pop up window. Choose the module type by clicking on the module name to be taken to the 'edit' details screen.
-<a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Extensions-Module-Manager-create-new-popup.png" class="image"><img alt="Help25-Extensions-Module-Manager-create-new-popup.png" src="http://docs.joomla.org/images/a/a4/Help25-Extensions-Module-Manager-create-new-popup.png" width="670" height="328" /></a>
-</p>
+<p>When creating a new Module, you will be presented with a modal pop up window. Choose the module type by clicking on the module name to be taken to the 'edit' details screen.</p>
 <h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
 <h3> <span class="mw-headline" id="Edit_Module">Edit Module</span></h3>
-<p>For existing Modules, edit functions:
-At the top right you will see the toolbar:
-</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-Save-SaveClose-SaveNew-SaveCopy-Close-Help.png" class="image"><img alt="Help25-Toolbar-Save-SaveClose-SaveNew-SaveCopy-Close-Help.png" src="http://docs.joomla.org/images/0/08/Help25-Toolbar-Save-SaveClose-SaveNew-SaveCopy-Close-Help.png" width="414" height="65" /></a>
-</p><p>The functions are:
-</p>
+<p>For existing Modules, edit functions. At the top right you will see the toolbar. The functions are: </p>
 <ul><li><b>Save</b>. Saves the module and stays in the current screen.
 </li><li><b>Save &amp; Close</b>. Saves the module and closes the current screen.
 </li><li><b>Save &amp; New</b>. Saves the module and keeps the editing screen open and ready to create another module.
@@ -90,11 +81,7 @@ At the top right you will see the toolbar:
 </li><li><b>Help</b>. Opens this help screen.
 </li></ul>
 <h3> <span class="mw-headline" id="New_Module">New Module</span></h3>
-<p>For creating a New Module, new functions:
-At the top right you will see the toolbar:
-</p><p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-Save-SaveClose-SaveNew-Cancel-Help.png" class="image"><img alt="Help25-Toolbar-Save-SaveClose-SaveNew-Cancel-Help.png" src="http://docs.joomla.org/images/0/05/Help25-Toolbar-Save-SaveClose-SaveNew-Cancel-Help.png" width="325" height="65" /></a>
-</p><p>The functions are:
-</p>
+<p>For creating a New Module, new functions. At the top right you will see the toolbar. The functions are:</p>
 <ul><li><b>Save</b>. Saves the module and stays in the current screen.
 </li><li><b>Save &amp; Close</b>. Saves the module and closes the current screen.
 </li><li><b>Save &amp; New</b>. Saves the module and keeps the editing screen open and ready to create another module.
@@ -109,56 +96,56 @@ At the top right you will see the toolbar:
 <th>Description
 </th></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Archive" title="Help25:Extensions Module Manager Articles Archive">Extensions Module Manager Articles Archive</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Archive'); ?>" title="Help25:Extensions Module Manager Articles Archive">Extensions Module Manager Articles Archive</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This module shows a list of the calendar months containing archived articles. After you have changed the status of an article to archived, this list will be automatically generated.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Categories" title="Help25:Extensions Module Manager Articles Categories">Extensions Module Manager Articles Categories</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Categories'); ?>" title="Help25:Extensions Module Manager Articles Categories">Extensions Module Manager Articles Categories</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This module displays a list of articles from one or more categories.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Category" title="Help25:Extensions Module Manager Articles Category">Extensions Module Manager Articles Category</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Category'); ?>" title="Help25:Extensions Module Manager Articles Category">Extensions Module Manager Articles Category</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This module displays a list of articles from one or more categories.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Newsflash" title="Help25:Extensions Module Manager Articles Newsflash">Extensions Module Manager Articles Newsflash</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Newsflash'); ?>" title="Help25:Extensions Module Manager Articles Newsflash">Extensions Module Manager Articles Newsflash</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module shows one or more Articles from one Category each time the page is refreshed. One random Article or a list of Articles can be displayed.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Related" title="Help25:Extensions Module Manager Articles Related">Extensions Module Manager Articles Related</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Related'); ?>" title="Help25:Extensions Module Manager Articles Related">Extensions Module Manager Articles Related</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module shows a list of Articles that are related to the current Article being viewed by the user (for example, a Article Layout or a Blog or List layout where the user has clicked on an Article link). Articles are considered to be related to each other if they share at least one Keyword in the Article's Metadata Information. Article Keywords are entered in the Metadata Information section of the Article Manager - New/Edit screen.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Banners" title="Help25:Extensions Module Manager Banners">Extensions Module Manager Banners</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Banners'); ?>" title="Help25:Extensions Module Manager Banners">Extensions Module Manager Banners</a>
 </td>
 <td style="font-size:.85em; width:auto;">
-<p>This Module allows you to show active Banners from the Banner Component created in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Banners_Banners" title="Help25:Components Banners Banners">Banner Manager</a> screen.
+<p>This Module allows you to show active Banners from the Banner Component created in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Banners_Banners'); ?>" title="Help25:Components Banners Banners">Banner Manager</a> screen.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Breadcrumbs" title="Help25:Extensions Module Manager Breadcrumbs">Extensions Module Manager Breadcrumbs</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Breadcrumbs'); ?>" title="Help25:Extensions Module Manager Breadcrumbs">Extensions Module Manager Breadcrumbs</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module shows a set of navigation links that illustrates where you are inside the web site and allows you to navigate back. 
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Custom_HTML" title="Help25:Extensions Module Manager Custom HTML">Extensions Module Manager Custom HTML</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Custom_HTML'); ?>" title="Help25:Extensions Module Manager Custom HTML">Extensions Module Manager Custom HTML</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This allows you to create a Module that contains any valid HTML code. There are many cases where you might want to put free-form HTML inside a web page. For example, you might want to create an HTML Image Map or you might want to copy HTML code from PayPal, Amazon, or some other site.
@@ -166,112 +153,112 @@ At the top right you will see the toolbar:
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Feed_Display" title="Help25:Extensions Module Manager Feed Display">Extensions Module Manager Feed Display</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Feed_Display'); ?>" title="Help25:Extensions Module Manager Feed Display">Extensions Module Manager Feed Display</a>
 </td>
 <td style="font-size:.85em; width:auto;">
-<p>This Module shows an RSS News Feed from a website. This Module is not related to the News Feeds Component or the News Feeds Layouts in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Newsfeeds_Feeds" title="Help25:Components Newsfeeds Feeds">Newsfeed Manager</a> screen but is an alternative that allows a feed to display in a Module position.
+<p>This Module shows an RSS News Feed from a website. This Module is not related to the News Feeds Component or the News Feeds Layouts in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Newsfeeds_Feeds'); ?>" title="Help25:Components Newsfeeds Feeds">Newsfeed Manager</a> screen but is an alternative that allows a feed to display in a Module position.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Footer" title="Help25:Extensions Module Manager Footer">Extensions Module Manager Footer</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Footer'); ?>" title="Help25:Extensions Module Manager Footer">Extensions Module Manager Footer</a>
 </td>
 <td style="font-size:.85em; width:auto;">
-<p>This Module displays the web site copyright and Joomla! license information.
+<p>This Module displays the web site copyright and license information.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Language_Switcher" title="Help25:Extensions Module Manager Language Switcher">Extensions Module Manager Language Switcher</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Language_Switcher'); ?>" title="Help25:Extensions Module Manager Language Switcher">Extensions Module Manager Language Switcher</a>
 </td>
 <td style="font-size:.85em; width:auto;">
-<p>This module allows you to switch between available Content languages.  Selecting a language will take you to the home page for that language. The plugin '<a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Plugin_Manager_Edit#System_-_Language_Filter" title="Help25:Extensions Plugin Manager Edit">System - Language Filter</a>' has to be enabled for this to work. Please see <a href="/proxy/index.php?option=com_help&view=help&keyref=Language_Switcher_Tutorial" title="Language Switcher Tutorial">this tutorial</a> on how to configure your site to work in a multilingual mode.
+<p>This module allows you to switch between available Content languages.  Selecting a language will take you to the home page for that language. The plugin '<a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Plugin_Manager_Edit#System_-_Language_Filter'); ?>" title="Help25:Extensions Plugin Manager Edit">System - Language Filter</a>' has to be enabled for this to work. Please see <a href="/proxy/index.php?option=com_help&view=help&keyref=Language_Switcher_Tutorial" title="Language Switcher Tutorial">this tutorial</a> on how to configure your site to work in a multilingual mode.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Latest_News" title="Help25:Extensions Module Manager Latest News">Extensions Module Manager Latest News</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Latest_News'); ?>" title="Help25:Extensions Module Manager Latest News">Extensions Module Manager Latest News</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module shows a list of the most recently published Articles.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Latest_Users" title="Help25:Extensions Module Manager Latest Users">Extensions Module Manager Latest Users</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Latest_Users'); ?>" title="Help25:Extensions Module Manager Latest Users">Extensions Module Manager Latest Users</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>The Latest Users module will display the latest users which who last registered on the website.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Login" title="Help25:Extensions Module Manager Login">Extensions Module Manager Login</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Login'); ?>" title="Help25:Extensions Module Manager Login">Extensions Module Manager Login</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module displays a username and password Login form. It also displays a link to retrieve a forgotten password. If User registration is enabled in the User Settings of the Global Configuration screen, then the link "Create an Account" will be shown to invite Users to self-register.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Menu" title="Help25:Extensions Module Manager Menu">Extensions Module Manager Menu</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Menu'); ?>" title="Help25:Extensions Module Manager Menu">Extensions Module Manager Menu</a>
 </td>
 <td style="font-size:.85em; width:auto;">
-<p>This Module allows you to place your Menus on the page. Every Joomla! website has at least one Menu that is created in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager" title="Help25:Menus Menu Manager">Menu Manager</a> screen. The Menu Module allows you place all or part of the selected Menu at the desired position and on the desired web pages.
+<p>This Module allows you to place your Menus on the page. Every hub has at least one Menu that is created in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager'); ?>" title="Help25:Menus Menu Manager">Menu Manager</a> screen. The Menu Module allows you place all or part of the selected Menu at the desired position and on the desired web pages.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Most_Read" title="Help25:Extensions Module Manager Most Read">Extensions Module Manager Most Read</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Most_Read'); ?>" title="Help25:Extensions Module Manager Most Read">Extensions Module Manager Most Read</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module displays a list of Articles with the highest hit counts.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Random_Image" title="Help25:Extensions Module Manager Random Image">Extensions Module Manager Random Image</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Random_Image'); ?>" title="Help25:Extensions Module Manager Random Image">Extensions Module Manager Random Image</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module displays a random image from a directory.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Search" title="Help25:Extensions Module Manager Search">Extensions Module Manager Search</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Search'); ?>" title="Help25:Extensions Module Manager Search">Extensions Module Manager Search</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module displays a Search entry field where the user can type in a phrase and press Enter to search the web site.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Smart_Search" title="Help25:Extensions Module Manager Smart Search">Extensions Module Manager Smart Search</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Smart_Search'); ?>" title="Help25:Extensions Module Manager Smart Search">Extensions Module Manager Smart Search</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module displays a Smart Search entry field where the user can type in a phrase and press Enter to search the web site.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Statistics" title="Help25:Extensions Module Manager Statistics">Extensions Module Manager Statistics</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Statistics'); ?>" title="Help25:Extensions Module Manager Statistics">Extensions Module Manager Statistics</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>The Statistics Module shows information about your server installation together with statistics on the Web site users, number of Articles in your database and the number of Web links you provide.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Syndication_Feeds" title="Help25:Extensions Module Manager Syndication Feeds">Extensions Module Manager Syndication Feeds</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Syndication_Feeds'); ?>" title="Help25:Extensions Module Manager Syndication Feeds">Extensions Module Manager Syndication Feeds</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>This Module creates a RSS Feed link for the page. This allows a User to create a newsfeed for the current page.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Weblinks" title="Help25:Extensions Module Manager Weblinks">Extensions Module Manager Weblinks</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Weblinks'); ?>" title="Help25:Extensions Module Manager Weblinks">Extensions Module Manager Weblinks</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>The Weblinks module will display weblinks from within the Weblinks component.
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Who_Online" title="Help25:Extensions Module Manager Who Online">Extensions Module Manager Who Online</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Who_Online'); ?>" title="Help25:Extensions Module Manager Who Online">Extensions Module Manager Who Online</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>The "Who's Online" module displays information about users that are visiting your site at a particular moment.  
 </p>
 </td></tr>
 <tr>
-<td style="width:300px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Wrapper" title="Help25:Extensions Module Manager Wrapper">Extensions Module Manager Wrapper</a>
+<td style="width:300px;"><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Wrapper'); ?>" title="Help25:Extensions Module Manager Wrapper">Extensions Module Manager Wrapper</a>
 </td>
 <td style="font-size:.85em; width:auto;">
 <p>The wrapper module allows you to display an external website in a module.  The functionality is the same to that of the 'iFrame Wrapper' you can add as a menu item.  If the page to which the wrapper is linked is too big, bars will be shown below and to the right of the wrapper, allowing you to "navigate" the page.

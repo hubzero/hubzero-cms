@@ -8,71 +8,58 @@
 	<section id="overview">
 		<h2> <span class="mw-headline" id="Description">Description</span></h2>
 		<p>The Featured Articles is the place where you control which Articles are displayed on the Front Page and in what order they are displayed. The Front Page is often the Home page of a web site, but it can be any page in the site. The Front Page is created using a Menu Item with the Front Page layout.</p>
-
+	</section>
+	<section>
 		<h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
 		<p>Click on the column heading to sort the list by that column's value.</p>
 		<ul>
-		<li><b>Checkbox</b>. Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
+			<li><b>Checkbox</b>. Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
+			<li><b>Title</b>. The name of the item. For a Menu Item, the Title will display in the Menu. For an Article, Section, or Category, the Title may optionally be displayed on the web page. This entry is required. You can open the item for editing by clicking on the Title.</li>
+			<li><b>Published.</b> Whether or not this item is published. Select <i>Yes</i> or <i>No</i> from the radio button group to set the Published state for this item.</li>
+			<li><b>Category</b>. The Category this item belongs to. Clicking on the Category title opens the Category for editing. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.contentcategories.edit.15'); ?>" title="Screen.contentcategories.edit.15" class="mw-redirect">Category Manager - Edit</a>.</li>
+			<li><b>Order</b>. The order in which to display the Articles on the Front Page. If the list is sorted by this column, you can change the order by clicking the arrows or by entering the sequential order and clicking 'Save Order'. Note that the display order on the Front Page is set in the Parameters - Advanced section for the Front Page Blog Menu Item. To sort Front Page Articles using this Order value, set the Category Order to "No. Order by Primary Order Only" and set the Primary Order to "Default". If these Parameters are set to other values (for example, "Oldest First" or "Title (Alphabetical)"), then the Articles will be sorted that way and this column will be ignored.</li>
+			<li><b>Access Level</b>. Who has access to this item. Current options are:
+				<ul>
+					<li><span style="color:green">Public</span>: Everyone has access</li>
+					<li><span style="color:red">Registered</span>: Only registered users have access</li>
+					<li><span style="color:black">Special</span>: Only users with author status or higher have access</li>
+				</ul>
+			</li>
 		</ul>
-		<ul>
-		<li><b>Title</b>. The name of the item. For a Menu Item, the Title will display in the Menu. For an Article, Section, or Category, the Title may optionally be displayed on the web page. This entry is required. You can open the item for editing by clicking on the Title.</li>
-		</ul>
-		<ul>
-		<li><b>Published.</b> Whether or not this item is published. Select <i>Yes</i> or <i>No</i> from the radio button group to set the Published state for this item.</li>
-		</ul>
-		<ul>
-		<li><b>Category</b>. The Category this item belongs to. Clicking on the Category title opens the Category for editing. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.contentcategories.edit.15" title="Screen.contentcategories.edit.15" class="mw-redirect">Category Manager - Edit</a>.</li>
-		<li><b>Order</b>. The order in which to display the Articles on the Front Page. If the list is sorted by this column, you can change the order by clicking the arrows or by entering the sequential order and clicking 'Save Order'. Note that the display order on the Front Page is set in the Parameters - Advanced section for the Front Page Blog Menu Item. To sort Front Page Articles using this Order value, set the Category Order to "No. Order by Primary Order Only" and set the Primary Order to "Default". If these Parameters are set to other values (for example, "Oldest First" or "Title (Alphabetical)"), then the Articles will be sorted that way and this column will be ignored.</li>
-		</ul>
-		<ul>
-		<li><b>Access Level</b>. Who has access to this item. Current options are:
-		<ul>
-		<li><span style="color:green">Public</span>: Everyone has access</li>
-		<li><span style="color:red">Registered</span>: Only registered users have access</li>
-		<li><span style="color:black">Special</span>: Only users with author status or higher have access</li>
-		</ul>
-		</li>
-		</ul>
+
 		<dl>
 		<dd>Enter the desired level using the drop-down list box.</dd>
 		</dl>
 		<ul>
-		<li><b>Created by</b>. Name of the Joomla! User who created this item. This will default to the currently logged-in user. If you want to change this to a different user, click the Select User button to select a different user.</li>
+		<li><b>Created by</b>. Name of the User who created this item. This will default to the currently logged-in user. If you want to change this to a different user, click the Select User button to select a different user.</li>
+		<li><b>Date</b>. The date this Article was created. This date is added automatically by the CMS, but you may change it in the Parameters - Article section of the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.content.edit.15'); ?>" title="Screen.content.edit.15" class="mw-redirect">Article Manager - New/Edit</a>.</li>
+		<li><b>Hits.</b> The number of hits for an Article. A hit is the number of times a page has been viewed. Hits can be reset to 0 in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.content.edit.15'); ?>" title="Screen.content.edit.15" class="mw-redirect">Article Manager - New/Edit</a> screen.</li>
+		<li><b>Language.</b> Select the language for this item. If you are not using the multi-language feature, keep the default of 'All'.</li>
+		<li><b>ID</b>. The ID number. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, for example in internal links. You can not change this number.</li>
 		</ul>
-		<ul>
-		<li><b>Date</b>. The date this Article was created. This date is added automatically by Joomla!, but you may change it in the Parameters - Article section of the <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.content.edit.15" title="Screen.content.edit.15" class="mw-redirect">Article Manager - New/Edit</a>.</li>
-		</ul>
-		<ul>
-		<li><b>Hits.</b> The number of hits for an Article. A hit is the number of times a page has been viewed. Hits can be reset to 0 in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.content.edit.15" title="Screen.content.edit.15" class="mw-redirect">Article Manager - New/Edit</a> screen.</li>
-		</ul>
-		<ul>
-		<li><b>Language.</b> Select the language for this item. If you are not using the multi-language feature of Joomla, keep the default of 'All'.</li>
-		</ul>
-		<ul>
-		<li><b>ID</b>. The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.</li>
-		</ul>
+	</section>
+	<section>
 		<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
-		<p>At the top right you will see the toolbar:</p>
-		<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-New-Edit-Publish-Unpublish-Archive-Checkin-Remove-Trash-Options-Help.png" class="image"><img alt="Help25-Toolbar-New-Edit-Publish-Unpublish-Archive-Checkin-Remove-Trash-Options-Help.png" src="http://docs.joomla.org/images/f/f9/Help25-Toolbar-New-Edit-Publish-Unpublish-Archive-Checkin-Remove-Trash-Options-Help.png" width="580" height="65" /></a></p>
-		<p>The functions are:</p>
+		<p>At the top right you will see the toolbar. The functions are:</p>
 		<ul>
-		<li><b>New</b>. Opens the editing screen to create a new article.</li>
-		<li><b>Edit</b>. Opens the editing screen for the selected article. If more than one article is selected (where applicable), only the first article will be opened. The editing screen can also be opened by clicking on the Title or Name of the article.</li>
-		<li><b>Publish</b>. Makes the selected articles available to visitors to your website.</li>
-		<li><b>Unpublish</b>. Makes the selected articles unavailable to visitors to your website.</li>
-		<li><b>Archive</b>. Changes the status of the selected articles to indicate that they are archived. Archived articles can be moved back to the published or unpublished state by selecting "Archived" in the Select Status filter and changing the status of the articles to Published or Unpublished as preferred.</li>
-		<li><b>Check In</b>. Checks-in the selected articles. Works with one or multiple articles selected.</li>
-		<li><b>Remove.</b>. Removes one or more articles from featured status. Featured articles are shown in featured views. Removed articles may still be available on other pages.</li>
-		<li><b>Trash</b>. Changes the status of the selected articles to indicate that they are trashed. Trashed articles can still be recovered by selecting "Trashed" in the Select Status filter and changing the status of the articles to Published or Unpublished as preferred. To permanently delete trashed articles, select "Trashed" in the Select Status filter, select the articles to be permanently deleted, then click the Empty Trash toolbar icon.</li>
-		<li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.</li>
-		<li><b>Help</b>. Opens this help screen.</li>
+			<li><b>New</b>. Opens the editing screen to create a new article.</li>
+			<li><b>Edit</b>. Opens the editing screen for the selected article. If more than one article is selected (where applicable), only the first article will be opened. The editing screen can also be opened by clicking on the Title or Name of the article.</li>
+			<li><b>Publish</b>. Makes the selected articles available to visitors to your website.</li>
+			<li><b>Unpublish</b>. Makes the selected articles unavailable to visitors to your website.</li>
+			<li><b>Archive</b>. Changes the status of the selected articles to indicate that they are archived. Archived articles can be moved back to the published or unpublished state by selecting "Archived" in the Select Status filter and changing the status of the articles to Published or Unpublished as preferred.</li>
+			<li><b>Check In</b>. Checks-in the selected articles. Works with one or multiple articles selected.</li>
+			<li><b>Remove.</b>. Removes one or more articles from featured status. Featured articles are shown in featured views. Removed articles may still be available on other pages.</li>
+			<li><b>Trash</b>. Changes the status of the selected articles to indicate that they are trashed. Trashed articles can still be recovered by selecting "Trashed" in the Select Status filter and changing the status of the articles to Published or Unpublished as preferred. To permanently delete trashed articles, select "Trashed" in the Select Status filter, select the articles to be permanently deleted, then click the Empty Trash toolbar icon.</li>
+			<li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.</li>
+			<li><b>Help</b>. Opens this help screen.</li>
 		</ul>
+	</section>
+	<section>
 		<h2> <span class="mw-headline" id="Toolbar_Links">Toolbar Links</span></h2>
 		<p>At the top left, above the Filter, you will see the following two links:</p>
-		<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-contents-manager-links.png" class="image"><img alt="Help25-contents-manager-links.png" src="http://docs.joomla.org/images/d/de/Help25-contents-manager-links.png" width="352" height="36" /></a></p>
 		<ul>
-		<li><b>Articles.</b> Click this link to go to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager" title="Help25:Content Article Manager">Content Manager: Articles</a> screen.</li>
-		<li><b>Categories.</b> Click this link to go to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Content_Categories" title="Help25:Components Content Categories">Content Manager: Categories</a> screen.</li>
+		<li><b>Articles.</b> Click this link to go to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager'); ?>" title="Help25:Content Article Manager">Content Manager: Articles</a> screen.</li>
+		<li><b>Categories.</b> Click this link to go to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Content_Categories'); ?>" title="Help25:Components Content Categories">Content Manager: Categories</a> screen.</li>
 		<li><b>Featured Articles.</b> This link takes you to the screen you are currently on.</li>
 		</ul>
 		<h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
@@ -80,11 +67,6 @@
 		<p>You can filter the list of items either by entering in part of the title or the ID number. You can also select a combination of State, Access, and Language.</p>
 		<ul>
 		<li><b>Filter by Partial Title or ID.</b> In the upper left is a filter field and two buttons, as shown below.
-		<div class="thumb tnone">
-		<div class="thumbinner" style="width:285px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-filter-field.png" class="image"><img alt="Help25-chunk-colheader-filter-field.png" src="http://docs.joomla.org/images/0/03/Help25-chunk-colheader-filter-field.png" width="283" height="46" class="thumbimage" /></a>
-		<div class="thumbcaption"></div>
-		</div>
-		</div>
 		<ul>
 		<li>To filter by partial title, enter part of the title and click Search.</li>
 		<li>To filter by ID number, enter "id:xx", where "xx" is the ID number (for example, "id:9").</li>
@@ -96,17 +78,9 @@
 		</dl>
 		<p><b>Filter by Status, Access, Language</b></p>
 		<p>In the area in the upper right, above the column headings, there are 3 drop-down list boxes as shown below:</p>
-		<div class="center">
-		<div class="floatnone"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-article_manager_filter2.png" class="image"><img alt="Help25-article manager filter2.png" src="http://docs.joomla.org/images/5/56/Help25-article_manager_filter2.png" width="357" height="23" /></a></div>
-		</div>
 		<p>The selections may be combined. Only items matching all selections will display in the list.</p>
 		<ul>
 		<li><b>Filter by Published Status.</b> Lets you show only items with the selected published status.
-		<div class="thumb tnone">
-		<div class="thumbinner" style="width:104px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-status.png" class="image"><img alt="Help25-chunk-colheader-select-status.png" src="http://docs.joomla.org/images/8/85/Help25-chunk-colheader-select-status.png" width="102" height="97" class="thumbimage" /></a>
-		<div class="thumbcaption"></div>
-		</div>
-		</div>
 		<ul>
 		<li><i>- Select Status -:</i> Shows items that are Published and Unpublished. Does <i>not</i> show items that are Trashed or Archived.</li>
 		<li><i>Published:</i> Shows only items that are Published.</li>
@@ -125,11 +99,6 @@
 		</ul>
 		<ul>
 		<li><b>Filter by Viewing Access Level.</b> Lets you show only items that have a specified viewing access level. The list box will show the access levels defined for your site, similar to the example below.
-		<div class="thumb tnone">
-		<div class="thumbinner" style="width:189px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-access.png" class="image"><img alt="Help25-chunk-colheader-select-access.png" src="http://docs.joomla.org/images/8/8c/Help25-chunk-colheader-select-access.png" width="187" height="84" class="thumbimage" /></a>
-		<div class="thumbcaption"></div>
-		</div>
-		</div>
 		<ul>
 		<li><i>- Select Access -:</i> Show items with any viewing access level.</li>
 		<li><i>&lt;your access level&gt;:</i> Show items only with this viewing access level.</li>
@@ -138,29 +107,28 @@
 		</ul>
 		<ul>
 		<li><b>Filter by Language.</b> Lets you show only items that have a specific language assigned. The list box will show the languages defined for your site, similar to the example below.
-		<div class="thumb tnone">
-		<div class="thumbinner" style="width:122px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-select-language.png" class="image"><img alt="Help25-chunk-colheader-select-language.png" src="http://docs.joomla.org/images/7/75/Help25-chunk-colheader-select-language.png" width="120" height="71" class="thumbimage" /></a>
-		<div class="thumbcaption"></div>
-		</div>
-		</div>
 		<ul>
 		<li><i>- Select Language - or All:</i> Show items for any language.</li>
 		<li><i>&lt;your language&gt;:</i> Show items only for this language.</li>
 		</ul>
 		</li>
 		</ul>
+	</section>
+	<section>
 		<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
 		<ul>
-		<li>Only the Articles that have already been added to the Front Page will display on this screen. Articles can be added to the Front Page in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.content.15" title="Screen.content.15" class="mw-redirect">Article Manager</a> or when an Article is added or edited in <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.content.edit.15" title="Screen.content.edit.15" class="mw-redirect">Article Manager - New/Edit</a>.</li>
-		<li>You can control the number of columns, number of articles, and other features of the Front Page layout in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.menus.edit.15#Front_Page_Blog_Layout" title="Screen.menus.edit.15" class="mw-redirect">Menu Item Manager - New/Edit - Front Page Blog Layout</a>.</li>
+		<li>Only the Articles that have already been added to the Front Page will display on this screen. Articles can be added to the Front Page in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.content.15'); ?>" title="Screen.content.15" class="mw-redirect">Article Manager</a> or when an Article is added or edited in <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.content.edit.15'); ?>" title="Screen.content.edit.15" class="mw-redirect">Article Manager - New/Edit</a>.</li>
+		<li>You can control the number of columns, number of articles, and other features of the Front Page layout in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.menus.edit.15#Front_Page_Blog_Layout'); ?>" title="Screen.menus.edit.15" class="mw-redirect">Menu Item Manager - New/Edit - Front Page Blog Layout</a>.</li>
 		</ul>
+	</section>
+	<section>
 		<h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
 		<ul>
-		<li>To change the way Articles are displayed on the Front Page Layout: <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.menus.edit.15#Front_Page_Blog_Layout" title="Screen.menus.edit.15" class="mw-redirect">Menu Item Manager - New/Edit - Front Page Blog Layout</a></li>
-		<li>To work with Articles: <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.content.15" title="Screen.content.15" class="mw-redirect">Article Manager</a></li>
-		<li>To work with Categories: <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.categories.15" title="Screen.categories.15">Category Manager</a></li>
-		<li>To work with Sections: <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.sections.15" title="Screen.sections.15" class="mw-redirect">Section Manager</a></li>
-		<li>To work with Users: <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.users.15" title="Screen.users.15" class="mw-redirect">User Manager</a></li>
+		<li>To change the way Articles are displayed on the Front Page Layout: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.menus.edit.15'); ?>" title="Screen.menus.edit.15" class="mw-redirect">Menu Item Manager - New/Edit - Front Page Blog Layout</a></li>
+		<li>To work with Articles: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.content.15'); ?>" title="Screen.content.15" class="mw-redirect">Article Manager</a></li>
+		<li>To work with Categories: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.categories.15'); ?>" title="Screen.categories.15">Category Manager</a></li>
+		<li>To work with Sections: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.sections.15'); ?>" title="Screen.sections.15" class="mw-redirect">Section Manager</a></li>
+		<li>To work with Users: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.users.15'); ?>" title="Screen.users.15" class="mw-redirect">User Manager</a></li>
 		</ul>
 	</section>
 </article>
