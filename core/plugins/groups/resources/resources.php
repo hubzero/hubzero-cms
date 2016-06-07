@@ -187,32 +187,36 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
-			require_once PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php';
-
-			$hgConf = \Components\Search\Models\Hubgraph\Configuration::instance();
-			if ($hgConf->isOptionEnabled('com_groups'))
+			if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php'))
 			{
-				$view =$this->view('default', 'results');
-				// Pass the view some info
-				$view->option = $option;
-				$view->group  = $group;
+				require_once PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php';
 
-				Lang::load('com_search', PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site');
+				$hgConf = \Components\Search\Models\Hubgraph\Configuration::instance();
 
-				ob_start();
-				$_GET['group'] = $group->gidNumber;
-				Request::setVar('group', $group->gidNumber);
-				define('HG_INLINE', 1);
-				require PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site' . DS . 'controllers' . DS . 'hubgraph.php';
-				$controller = new \Components\Search\Site\Controllers\Hubgraph();
-				$controller->execute();
-				$controller->redirect();
+				if ($hgConf->isOptionEnabled('com_groups'))
+				{
+					$view =$this->view('default', 'results');
+					// Pass the view some info
+					$view->option = $option;
+					$view->group  = $group;
 
-				$view->hubgraphResponse = ob_get_clean();
+					Lang::load('com_search', PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site');
 
-				return array(
-					'html' => $view->loadTemplate('hubgraph')
-				);
+					ob_start();
+					$_GET['group'] = $group->gidNumber;
+					Request::setVar('group', $group->gidNumber);
+					define('HG_INLINE', 1);
+					require PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site' . DS . 'controllers' . DS . 'hubgraph.php';
+					$controller = new \Components\Search\Site\Controllers\Hubgraph();
+					$controller->execute();
+					$controller->redirect();
+
+					$view->hubgraphResponse = ob_get_clean();
+
+					return array(
+						'html' => $view->loadTemplate('hubgraph')
+					);
+				}
 			}
 		}
 
