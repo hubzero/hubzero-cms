@@ -33,6 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Events\Models\Orm\Event as CalEvent;
+
+require_once Component::path('com_events') . DS . 'models' . DS . 'orm' . DS . 'event.php';
+
 /**
  * Search events
  */
@@ -142,6 +146,107 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 			<span class="day">' . date('d', $date) . '</span>
 			<span class="year">' . date('Y', $date) . '</span>
 			</p>';
+	}
+	/****************************
+	Query-time / General Methods
+	****************************/
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 *
+	 * @param mixed $type
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'event';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	/**
+	 * onGetModel 
+	 * 
+	 * @param string $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetModel($type = '')
+	{
+		if ($type == 'event')
+		{
+			return new CalEvent;
+		}
+	}
+
+	/*********************
+		Index-time methods
+	*********************/
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row, &$db)
+	{
+		if ($type == 'event')
+		{
+			// Instantiate new $fields object
+			$fields = new stdClass;
+
+			// Format the date for SOLR
+			$date = Date::of($row->publish_up)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			// Clean up the title
+			$fields->title = $row->title;
+
+			$fields->fulltext = $row->content;
+			$fields->location = $row->adress_info;
+
+			// Permissions and other scope-based parameter
+			if ($row->scope == 'group')
+			{
+				$fields->access_level = 'private';
+				$fields->owner_type = 'group';
+				$fields->owner = $row->scope_id;
+
+				$group = \Hubzero\User\Group::getInstance($row->scope_id);
+				if (isset($group) && is_object($group))
+				{
+					$groupCN = $group->get('cn');
+					$fields->url = '/groups/' . $groupCN . '/calendar/details/' . $row->id;
+				}
+			}
+			elseif ($row->scope == 'event' && $row->approved == 1 && $row->state == 1)
+			{
+				$fields->access_level = 'public';
+				$fields->url = '/events/details/' . $row->id;
+			}
+			else
+			{
+				$fields->access_level = 'private';
+				$fields->owner_type = 'user';
+				$fields->owner = $row->created_by;
+				$fields->url = '/events/details/' . $row->id;
+			}
+
+			return $fields;
+		}
 	}
 }
 
