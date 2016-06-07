@@ -2,9 +2,9 @@
 	<h1>Menu Manager: Menu ITems</h1>
 
 	<h2> <span class="mw-headline" id="How_to_access">How to access</span></h2>
-<p>Select <b>Menus → [name of the menu]</b> from the drop-down menu on the back-end of your Joomla! installation. For example, if a Menu is called "Main Menu", select <b>Menus → Main Menu</b>. Or navigate to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager" title="Help25:Menus Menu Manager">Menu Manager</a> and click on the icon in the Menu Items column.</p>
+<p>Select <b>Menus → [name of the menu]</b> from the drop-down menu on the back-end of your installation. For example, if a Menu is called "Main Menu", select <b>Menus → Main Menu</b>. Or navigate to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager'); ?>" title="Help25:Menus Menu Manager">Menu Manager</a> and click on the icon in the Menu Items column.</p>
 <h2> <span class="mw-headline" id="Description">Description</span></h2>
-<p>The Menu Item Manager lists the menu items contained in a menu created using the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager" title="Help25:Menus Menu Manager">Menu Manager</a>.</p>
+<p>The Menu Item Manager lists the menu items contained in a menu created using the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager'); ?>" title="Help25:Menus Menu Manager">Menu Manager</a>.</p>
 
 <h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
 <ul>
@@ -19,7 +19,7 @@
 <ul>
 <li><b>Ordering</b>. The order in which to display items. You can sort the list by order number by clicking on the Ordering label in the column heading. If the list is sorted by this column, you can change the order by clicking the arrows or by entering the sequential order and clicking the 'Save Order' icon. This is shown in the screen below.
 
-Note that the ordering is only defined within a single category. For this reason, it is easier to re-order the list if you use the Category filter to select one category. Note that the display order on a page can often be overridden the 'Advanced Options' section of each <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager_Edit" title="Help25:Menus Menu Item Manager Edit">Menu Item</a>.</li>
+Note that the ordering is only defined within a single category. For this reason, it is easier to re-order the list if you use the Category filter to select one category. Note that the display order on a page can often be overridden the 'Advanced Options' section of each <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager_Edit'); ?>" title="Help25:Menus Menu Item Manager Edit">Menu Item</a>.</li>
 </ul>
 <ul>
 <li><b>Access.</b> The viewing level access for this item.</li>
@@ -34,7 +34,7 @@ Note that the ordering is only defined within a single category. For this reason
 <li><b>Language</b>. Item language.</li>
 </ul>
 <ul>
-<li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
+<li><b>ID</b>. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
 </ul>
 <h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
 <p>At the top right you will see the toolbar. The functions are:</p>
@@ -64,10 +64,10 @@ Note that the ordering is only defined within a single category. For this reason
 <li><b>Page Class.</b> Add an optional page class to elements in the page. It allows CSS styling specific to menu items pages.</li>
 </ul>
 <h3> <span class="mw-headline" id="Permissions_Tab">Permissions Tab</span></h3>
-<p>This screen allows you to set the component permissions in Joomla. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
+<p>This screen allows you to set the component permissions. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
 
 <p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes. The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied. Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
-<p>The default values used here are the ones set in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+<p>The default values used here are the ones set in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions'); ?>" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
 <dl>
 <dd>
 <dl>
@@ -171,6 +171,6 @@ Note that the ordering is only defined within a single category. For this reason
 </ul>
 <h2> <span class="mw-headline" id="Related_information">Related information</span></h2>
 <ul>
-<li><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager" title="Help25:Menus Menu Manager">Menu Manager</a></li>
+<li><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager'); ?>" title="Help25:Menus Menu Manager">Menu Manager</a></li>
 </ul>
 </article>

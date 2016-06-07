@@ -104,7 +104,7 @@
 		<p>At the top right of the Options modal window you will see the toolbar.</p>
 		<ul>
 			<li><b>Save</b>. Saves the language options and stays in the current screen.</li>
-			<li><b>Save &amp; Close</b>. Saves the language options and closes the current screen.</li>
+			<li><b>Save & Close</b>. Saves the language options and closes the current screen.</li>
 			<li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.</li>
 		</ul>
 	</section>
@@ -112,7 +112,7 @@
 		<h3> <span class="mw-headline">Permissions Tab</span></h3>
 		<p>This screen allows you to set the component permissions in the CMS. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to.</p>
 		<p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes. The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied. Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
-		<p>The default values used here are the ones set in the <a href="index.php?option=com_help&amp;component=config&amp;page=global_config#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+		<p>The default values used here are the ones set in the <a href="<?php echo Route::url('index.php?option=com_help&component=config&page=global_config#Permissions'); ?>" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
 		<dl>
 			<dd>
 				<dl>
@@ -142,7 +142,7 @@
 			<li><b>Publish</b>. Makes the selected content languages available to visitors to your website.</li>
 			<li><b>Unpublish</b>. Makes the selected content languages unavailable to visitors to your website.</li>
 			<li><b>Trash</b>. Changes the status of the selected content languages to indicate that they are trashed. Trashed content languages can still be recovered by selecting "Trashed" in the Select Status filter and changing the status of the content languages to Published or Unpublished as preferred. To permanently delete trashed content languages, select "Trashed" in the Select Status filter, select the content languages to be permanently deleted, then click the Empty Trash toolbar icon.</li>
-			<li><b>Install Language.</b> Redirects to the <a href="index.php?option=com_help&amp;component=languages&amp;page=languages" title="Help25:Extensions Extension Manager languages">Extension Manager Language Installer</a></li>
+			<li><b>Install Language.</b> Redirects to the <a href="<?php echo Route::url('index.php?option=com_help&component=languages&page=languages'); ?>" title="Help25:Extensions Extension Manager languages">Extension Manager Language Installer</a></li>
 			<li><b>Options</b>. Opens the Options window where settings such as default parameters or permissions can be edited.</li>
 			<li><b>Help</b>. Opens this help screen.</li>
 		</ul>
@@ -151,16 +151,16 @@
 		<h2> <span class="mw-headline">Toolbar Links</span></h2>
 		<p>At the top left, above the columns, you will see four links as shown below:</p>
 		<ul>
-			<li><b>Installed - Site.</b> Shows the Languages available for the front-end of the web site. See <a href="index.php?option=com_help&amp;component=languages&amp;page=languages" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
-			<li><b>Installed - Administrator.</b> Shows the Languages available for the back-end of the web site. See <a href="index.php?option=com_help&amp;component=languages&amp;page=languages" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
+			<li><b>Installed - Site.</b> Shows the Languages available for the front-end of the web site. See <a href="<?php echo Route::url('index.php?option=com_help&component=languages&page=languages'); ?>" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
+			<li><b>Installed - Administrator.</b> Shows the Languages available for the back-end of the web site. See <a href="<?php echo Route::url('index.php?option=com_help&component=languages&page=languages'); ?>" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
 			<li><b>Content.</b> Shows the Content Languages available for the web site. See <strong class="selflink">Extensions Language Manager Content</strong>.</li>
-			<li><b>Overrides.</b> Allows you to override any language strings in any language file through the backend. See <a href="index.php?option=com_help&amp;component=languages&amp;page=overrides" title="Help25:Extensions Language Manager Overrides">Language Overrides Help Screen</a></li>
+			<li><b>Overrides.</b> Allows you to override any language strings in any language file through the backend. See <a href="<?php echo Route::url('index.php?option=com_help&component=languages&page=overrides'); ?>" title="Help25:Extensions Language Manager Overrides">Language Overrides Help Screen</a></li>
 		</ul>
 	</section>
 	<section id="Quick_Tips">
 		<h2> <span class="mw-headline">Quick Tips</span></h2>
 		<ul>
-			<li>Users can use any Language from the list of installed Languages, either by having it assigned in the <a href="index.php?option=com_help&amp;component=users&amp;page=users" title="Help25:Users User Manager">User Manager</a> or by filling out a <a href="index.php?option=com_help&amp;component=menus&amp;page=item#User_Form_Layout" title="Help25:Menus Menu Item Manager Edit">Menu Item Manager - New/Edit - User Form Layout</a> at the Front end. This will cause the system prompts to be generated in this Language just for this User. For example, if a User chooses Spanish as their language, then the Search Module will show with prompts in Spanish.</li>
+			<li>Users can use any Language from the list of installed Languages, either by having it assigned in the <a href="<?php echo Route::url('index.php?option=com_help&component=users&page=users'); ?>" title="Help25:Users User Manager">User Manager</a> or by filling out a <a href="<?php echo Route::url('index.php?option=com_help&component=menus&page=item#User_Form_Layout'); ?>" title="Help25:Menus Menu Item Manager Edit">Menu Item Manager - New/Edit - User Form Layout</a> at the Front end. This will cause the system prompts to be generated in this Language just for this User. For example, if a User chooses Spanish as their language, then the Search Module will show with prompts in Spanish.</li>
 			<li>This User's choice is not affected by the Default Language set for the Front-end.</li>
 		</ul>
 		<dl>
@@ -172,17 +172,17 @@
 		</dl>
 		<ul>
 			<li><b>Important</b>: Do not delete the default language files (for example, with FTP). This will create errors on both the Front-end and Back-end.</li>
-			<li>Additional Languages can be added using the <a href="index.php?option=com_help&amp;component=installer&amp;page=install" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a>.</li>
+			<li>Additional Languages can be added using the <a href="<?php echo Route::url('index.php?option=com_help&component=installer&page=install'); ?>" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a>.</li>
 			<li>If desired, you can show the Front-end site in one Language and show the Back-end administration pages in a different Language. Also, individual articles can be configured to use a different language in the Advanced Parameter pane when editing the Article.</li>
 		</ul>
 	</section>
 	<section id="Related_Information">
 		<h2> <span class="mw-headline">Related Information</span></h2>
 		<ul>
-			<li>To install more Languages: <a href="index.php?option=com_help&amp;component=installer&amp;page=install" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a></li>
-			<li>To uninstall a Language: <a href="index.php?option=com_help&amp;component=installer&amp;page=manage" title="Help25:Extensions Extension Manager Manage">Extension Manager - Manage</a></li>
-			<li>To change the Language for a User: <a href="index.php?option=com_help&amp;component=users&amp;page=user" title="Help25:Users User Manager Edit">User Manager - New/Edit</a></li>
-			<li>To set the Language of an Article: <a href="index.php?option=com_help&amp;component=install&amp;page=article#Parameters_-_Advanced" title="Help25:Content Article Manager Edit">Article Manager - New/Edit - Parameters - Advanced</a></li>
+			<li>To install more Languages: <a href="<?php echo Route::url('index.php?option=com_help&component=installer&page=install'); ?>" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a></li>
+			<li>To uninstall a Language: <a href="<?php echo Route::url('index.php?option=com_help&component=installer&page=manage'); ?>" title="Help25:Extensions Extension Manager Manage">Extension Manager - Manage</a></li>
+			<li>To change the Language for a User: <a href="<?php echo Route::url('index.php?option=com_help&component=users&page=user'); ?>" title="Help25:Users User Manager Edit">User Manager - New/Edit</a></li>
+			<li>To set the Language of an Article: <a href="<?php echo Route::url('index.php?option=com_help&component=install&page=article#Parameters_-_Advanced'); ?>" title="Help25:Content Article Manager Edit">Article Manager - New/Edit - Parameters - Advanced</a></li>
 		</ul>
 	</section>
 </article>

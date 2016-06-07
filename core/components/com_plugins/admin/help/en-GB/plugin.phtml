@@ -16,7 +16,7 @@
 			<li><b>Plug-in Name.</b> The Name of the Plug-in.</li>
 			<li><b>Enabled.</b> Whether or not this Plug-in is enabled.</li>
 			<li>
-				<b>Access.</b> Which user 'access levels' have access to this item. You can change an item's Access Level by clicking on its name to open it up for editing. The default user 'access levels' which come preconfigured with Joomla! are:
+				<b>Access.</b> Which user 'access levels' have access to this item. You can change an item's Access Level by clicking on its name to open it up for editing. The default user 'access levels' which come preconfigured are:
 				<ul>
 					<li> Public: Everyone has access including website visitors who have not logged in</li>
 					<li> Registered: Only users with registered status or higher will have access</li>
@@ -26,7 +26,7 @@
 			<li><b>Ordering.</b> A drop-down list of plug-ins of the same Type. The list of plug-ins is arranged by their current order. You can change this plug-in's order in relation to the other plug-ins by selecting the plug-in in the drop-down list that you want this plug-in to be ordered below.</li>
 			<li><b>Plug-in Type.</b> The Type of the Plug-in. This value cannot be changed.</li>
 			<li><b>Plug-in File.</b> The name of the Plug-in file. Each Plug-in has two files with this name. One has the file extension '.php' and the other has the file extension '.xml'.</li>
-			<li><b>ID.</b> The Plug-in's ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You cannot change this number.</li>
+			<li><b>ID.</b> The Plug-in's ID number. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, for example in internal links. You cannot change this number.</li>
 			<li><b>Description.</b> The description of what this Plug-in does. This cannot be changed. The developer of the plug-in specifies this. This may be blank if the developer did not specify a description for the plug-in.</li>
 		</ul>
 	</section>
@@ -48,24 +48,24 @@
 	</section>
 	<section>
 		<h2> <span class="mw-headline" id="Plug-in_Descriptions_and_Options">Plug-in Descriptions and Options</span></h2>
-		<p>When Joomla! is installed, many plug-ins are included in the installation. These are described below, along with any options for the plug-in.</p>
+		<p>When a hub is installed, many plug-ins are included in the installation. These are described below, along with any options for the plug-in.</p>
 
-		<h3> <span class="mw-headline" id="Authentication_-_Joomla">Authentication - Joomla</span></h3>
-		<p>This plug-in processes the default User Authentication method in Joomla!. It has no options.</p>
+		<h3> <span class="mw-headline" id="Authentication_-_HUBzero">Authentication - HUBzero</span></h3>
+		<p>This plug-in processes the default User Authentication method. It has no options.</p>
 
 		<h3> <span class="mw-headline" id="Authentication_-_GMail">Authentication - GMail</span></h3>
 		<p>This plug-in processes User Authentication using GMail accounts. It has the following options:</p>
 		<ul>
-			<li> <b>Apply Username Suffix.</b> This options allows you to automatically apply a suffix to the username a person enters when they log into your Joomla! installation. The suffix is the portion of the email address after the <i>@</i> symbol.</li>
+			<li> <b>Apply Username Suffix.</b> This options allows you to automatically apply a suffix to the username a person enters when they log into your installation. The suffix is the portion of the email address after the <i>@</i> symbol.</li>
 			<li> <b>Username Suffix.</b> This is the suffix portion of the GMail email addresses which will be used to log into your site. This is the portion of the mail address after the <i>@</i> symbol. Usually you will set this to <i>gmail.com</i> for regular GMail accounts. This option is present to allow you to use other GMail accounts that don't end in the typical <i>gmail.com</i> suffix. This would be the case with Google Apps for Domains email accounts.</li>
-			<li> <b>Verify Peer.</b> When your Joomla! installation attempts to verify the entered Gmail username it does so over an SSL connection. This option configures whether or not your Joomla! installation will check to ensure the CA certificate of the SSL connection is valid before proceeding with verification of the entered username/password. In some situations certificate verification fails in which case you can try setting this option to <i>No</i> to try to fix this.</li>
-			<li> <b>User Blacklist.</b> A comma separated list of usernames not allowed to log into your Joomla! installation.</li>
+			<li> <b>Verify Peer.</b> When your installation attempts to verify the entered Gmail username it does so over an SSL connection. This option configures whether or not your installation will check to ensure the CA certificate of the SSL connection is valid before proceeding with verification of the entered username/password. In some situations certificate verification fails in which case you can try setting this option to <i>No</i> to try to fix this.</li>
+			<li> <b>User Blacklist.</b> A comma separated list of usernames not allowed to log into your installation.</li>
 		</ul>
 		<p><b>To use the GMail plug-in:</b></p>
 		<ul>
-			<li> Create a Joomla! user account with the same username as a GMail account user. For example if the GMail email address of the person you want to add is bob1234@gmail.com you would create the Joomla! user account with the username <i>bob1234</i>.</li>
+			<li> Create a user account with the same username as a GMail account user. For example if the GMail email address of the person you want to add is bob1234@gmail.com you would create the user account with the username <i>bob1234</i>.</li>
 			<li> Enable the GMail Plug-in.</li>
-			<li> Logout of Joomla!.</li>
+			<li> Logout of the CMS.</li>
 			<li> Login using the GMail username (without "@gmail.com") and the GMail password.</li>
 		</ul>
 		<h3> <span class="mw-headline" id="Authentication_-_LDAP">Authentication - LDAP</span></h3>
@@ -110,16 +110,6 @@
 		</li></ul>
 		</li></ul>
 
-		<h3> <span class="mw-headline" id="Content_-_Joomla">Content - Joomla </span></h3>
-		<p>Does category processing for core extensions and sends an email when new article is submitted in the frontend.</p>
-		<ul>
-			<li><b>Check Category Deletion.</b> Checks that the categories have no items in before they can be deleted.</li>
-			<li><b>Email on new site article.</b> Sends an email when a new article is submitted in the front end.</li>
-		</ul>
-
-		<h3> <span class="mw-headline" id="Content_-_Smart_Search">Content - Smart Search </span></h3>
-		<p>This plug-in enables Smart Search, it has no options to set.</p>
-
 		<h3> <span class="mw-headline" id="Content_-_Email_Cloaking">Content - Email Cloaking</span></h3>
 		<p>This plug-in cloaks all e-mails in content from spambots using JavaScript. This helps prevent e-mails contained in articles from being added to spam e-mail lists. You can disable Email Cloaking inside an article by inserting <code>{emailcloak=off}</code> anywhere in the text of the article. In this case, no e-mail addresses in the article will be cloaked by this plug-in.</p>
 		<p>Email Cloaking has the following options:</p>
@@ -155,7 +145,7 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		</ul>
 
 		<h3> <span class="mw-headline" id="Content_-_Page_Navigation">Content - Page Navigation</span></h3>
-		<p>This plug-in allows you to add Next &amp; Previous navigation links  to Articles, for example when using a blog or list layout. This feature can be controlled with the following Joomla! options:</p>
+		<p>This plug-in allows you to add Next &amp; Previous navigation links  to Articles, for example when using a blog or list layout. This feature can be controlled with the following options:</p>
 		<ul>
 			<li>"Show Navigation" in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Options'); ?>" title="Help25:Content Article Manager Options">Article Manager - Options</a> screen</li>
 			<li>"Show Navigation" in the Options - Component section of the Menu Item Manager - New/Edit screen for Article layouts.</li>
@@ -181,7 +171,7 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		<p>This plug-in loads a basic text editor. This option can be used when you are pasting HTML code from another source and you don't want the HTML to be altered by a WYSIWYG editor. This plug-in has no options.</p>
 
 		<h3> <span class="mw-headline" id="Editor_-_TinyMCE">Editor - TinyMCE</span></h3>
-		<p>This plug-in loads the TinyMCE editor. This is the default editor in Joomla!.
+		<p>This plug-in loads the TinyMCE editor.
 		<h4> <span class="mw-headline" id="Basic_Options">Basic Options</span></h4>
 		<ul><li><b>Functionality.</b> Select "Advanced" or "Simple" functionality. With "Simple" selected, the User has only 9 toolbar buttons: Bold, Italic, Underline, Strikethrough, Undo, Re-do, Clean up messy code, Bullets, and Numbering. With "Advanced" selected, the User has all of the TinyMCE toolbar buttons. "Advanced" is the default setting.
 		</li><li><b>Skin.</b> Choose the skin which will be applied to the TinyMCE editor when displayed in your website.
@@ -244,19 +234,16 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		</li></ul>
 		<div style="clear:both"></div>
 		<h3> <span class="mw-headline" id="Button_-_Article">Button - Article</span></h3>
-		<p>This plug-in displays the Article button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It allows you to insert an Article link into an Article. This plug-in has no options.
+		<p>This plug-in displays the Article button below the editor box when you are using an editor (for example, when writing an Article). It allows you to insert an Article link into an Article. This plug-in has no options.
 		</p>
 		<h3> <span class="mw-headline" id="Button_-_Image">Button - Image</span></h3>
-		<p>This plug-in displays the Image button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It allows you to insert an image into an Article. This plug-in has no options.
+		<p>This plug-in displays the Image button below the editor box when you are using an editor (for example, when writing an Article). It allows you to insert an image into an Article. This plug-in has no options.
 		</p>
 		<h3> <span class="mw-headline" id="Button_-_Pagebreak">Button - Pagebreak</span></h3>
-		<p>This plug-in displays the Pagebreak button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It inserts a page break in the Article. This plug-in has no options.
+		<p>This plug-in displays the Pagebreak button below the editor box when you are using an editor (for example, when writing an Article). It inserts a page break in the Article. This plug-in has no options.
 		</p>
 		<h3> <span class="mw-headline" id="Button_-_Readmore">Button - Readmore</span></h3>
-		<p>This plug-in displays the "Read more..." button below the editor box when you are using a Joomla! editor (for example, when writing an Article). It inserts a "Read more..." break in the Article that allows you to display just the first portion of an Article on a page. This plug-in has no options.
-		</p>
-		<h3> <span class="mw-headline" id="Extension_-_Joomla">Extension - Joomla</span></h3>
-		<p>This plug-in manages the update sites for extensions. This plug-in has no options.
+		<p>This plug-in displays the "Read more..." button below the editor box when you are using an editor (for example, when writing an Article). It inserts a "Read more..." break in the Article that allows you to display just the first portion of an Article on a page. This plug-in has no options.
 		</p>
 		<h3> <span class="mw-headline" id="Smartsearch_-_Categories">Smartsearch - Categories</span></h3>
 		<p>This plug-in indexes Categories for Smart-Search, it has no options to set.
@@ -273,10 +260,10 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		<h3> <span class="mw-headline" id="Smartsearch_-_Weblinks">Smartsearch - Weblinks</span></h3>
 		<p>This plug-in indexes Web Links for Smart-Search, it has no options to set.
 		</p>
-		<h3> <span class="mw-headline" id="Quick_Icon_-_Joomla.21_Update_Notification">Quick Icon - Joomla! Update Notification</span></h3>
+		<h3> <span class="mw-headline" id="Quick_Icon_-_Update_Notification">Quick Icon - Update Notification</span></h3>
 		<ul><li><b>Group</b>. The Group of this icon. This value is compared with group value of the "Quick Icons" modules used to inject icons.
 		</li></ul>
-		<h3> <span class="mw-headline" id="Quick_Icon_-_Joomla.21_Extensions_Updates_Notification">Quick Icon - Joomla! Extensions Updates Notification</span></h3>
+		<h3> <span class="mw-headline" id="Quick_Icon_-_Extensions_Updates_Notification">Quick Icon - Extensions Updates Notification</span></h3>
 		<ul><li><b>Group</b>. The Group of this icon. This value is compared with group value of the "Quick Icons" modules used to inject icons.
 		</li></ul>
 		<h3> <span class="mw-headline" id="Search_-_Categories">Search - Categories</span></h3>
@@ -321,13 +308,13 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		</li></ul>
 
 		<h3> <span class="mw-headline" id="System_-_P3P_Policy">System - P3P Policy</span></h3>
-		<p>The P3P policy plugin allows Joomla! to send a customised string of P3P policy tags in the HTTP header. This is required for the sessions to work on certain browsers (i.e. Internet Explorer 6 and 7).</p>
+		<p>The P3P policy plugin allows the CMS to send a customised string of P3P policy tags in the HTTP header. This is required for the sessions to work on certain browsers (i.e. Internet Explorer 6 and 7).</p>
 
 		<h3> <span class="mw-headline" id="System_-_Logout">System - Logout</span></h3>
-		<p>The system logout plug-in enables Joomla to redirect the user to the home page if the user chooses to logout while the user is on a protected access page. This plug-in has no options to set.</p>
+		<p>The system logout plug-in enables the CMS to redirect the user to the home page if the user chooses to logout while the user is on a protected access page. This plug-in has no options to set.</p>
 
 		<h3> <span class="mw-headline" id="System_-_Debug">System - Debug</span></h3>
-		<p>This plug-in provides debugging information. The report is shown below the main screen of the front and backend interfaces of your Joomla! installation. To turn on the system you must activate it in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Debug_Settings'); ?>" title="Help25:Site Global Configuration">Global Configuration Page</a></p>
+		<p>This plug-in provides debugging information. The report is shown below the main screen of the front and backend interfaces of your installation. To turn on the system you must activate it in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Debug_Settings'); ?>" title="Help25:Site Global Configuration">Global Configuration Page</a></p>
 		<dl>
 			<dd>It has the following options:</dd>
 		</dl>
@@ -338,7 +325,7 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		</li><li><b>Show Memory Usage.</b> Whether or not to include memory usage data in the debug information.
 		</li></ul>
 		<h4> <span class="mw-headline" id="Language_Debug_Options">Language Debug Options</span></h4>
-		<ul><li><b>Show errors when parsing language files.</b> Whether or not to display a list of language files with errors due to their not being in compliance with the Joomla! language file specification.
+		<ul><li><b>Show errors when parsing language files.</b> Whether or not to display a list of language files with errors due to their not being in compliance with the language file specification.
 		</li><li><b>Show Language Files.</b> Whether or not to display the language files that have been loaded to generate the page.
 		</li><li><b>Show Language String.</b> Whether or not to include undefined language strings in the debug information.
 		</li><li><b>Strip First Word.</b> Whether or not to always strip the first word in multi-word strings.
@@ -357,7 +344,7 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		</ul>
 
 		<h3> <span class="mw-headline" id="System_-_Redirect">System - Redirect</span></h3>
-		<p>This plug-in enables the Joomla! Redirect system to catch missing pages and redirect users. It is required to be enabled to use the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Redirect_Manager'); ?>" title="Help25:Components Redirect Manager">Redirect Component</a>. This plug-in has no options.</p>
+		<p>This plug-in enables the Redirect system to catch missing pages and redirect users. It is required to be enabled to use the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Redirect_Manager'); ?>" title="Help25:Components Redirect Manager">Redirect Component</a>. This plug-in has no options.</p>
 
 		<h3> <span class="mw-headline" id="System_-_Highlight">System - Highlight</span></h3>
 		<p>This plug-in enables the highlighting of specified terms. This plug-in has no options.</p>
@@ -410,10 +397,10 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 			<li><b>Autopublish the contact.</b> Optionally have the automatically created contact set to the published state and visible to your website visitors.</li>
 		</ul>
 
-		<h3> <span class="mw-headline" id="User_-_Joomla.21">User - Joomla!</span></h3>
+		<h3> <span class="mw-headline">User - Hubzero</span></h3>
 		<p>This plug-in handles the default user synchronization. It has the following options:</p>
 		<ul>
-			<li><b>Auto-create Users.</b> Whether or not to automatically create registered Joomla! users where possible. Default is "Yes".</li>
+			<li><b>Auto-create Users.</b> Whether or not to automatically create registered users where possible. Default is "Yes".</li>
 			<li><b>Notification Mail to User</b>. Whether or not to send an email to a User with credentials (username and password) for user accounts created by a Administrator.</li>
 		</ul>
 	</section>
@@ -421,7 +408,7 @@ Syntax: Usage: &lt;hr class=&quot;system-pagebreak&quot; /&gt;
 		<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
 		<ul>
 			<li>If you are using the TinyMCE editor, you can control which options appear on the editor's toolbar by setting the parameters in the "Editor - TinyMCE" plug-in.</li>
-			<li>Starting with Joomla! 1.6, configurable plug-in settings are referred to as 'options'. In previous versions of Joomla! these configurable settings were referred to as 'parameters'. You may see the terms 'options' and 'parameters' used interchangeably in help documentation and tutorials you encounter.</li>
+			<li>Configurable plug-in settings are referred to as 'options'. In previous versions these configurable settings were referred to as 'parameters'. You may see the terms 'options' and 'parameters' used interchangeably in help documentation and tutorials you encounter.</li>
 			<li>At least one authentication plugin must be enabled or you will loose all access to your site!</li>
 		</ul>
 	</section>

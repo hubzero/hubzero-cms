@@ -3,7 +3,7 @@
 
 	<ul class="nav">
 		<li><a href="#Description">Description</a></li>
-		<li><a href="#Details_.26_Options">Details &amp; Options</a></li>
+		<li><a href="#Details_.26_Options">Details & Options</a></li>
 		<li><a href="#Toolbar">Toolbar</a></li>
 		<li><a href="#Quick_Tips">Quick Tips</a></li>
 		<li><a href="#Related_Information">Related Information</a></li>
@@ -14,7 +14,7 @@
 		<p>In the Language Manager: Edit Content Language you can set the title, URL, image, code, and description of the installed langauges. You may also update or add meta keywords and description.</p>
 	</section>
 	<section id="Details_.26_Options">
-		<h2><span class="mw-headline">Details &amp; Options</span></h2>
+		<h2><span class="mw-headline">Details & Options</span></h2>
 		<h3><span class="mw-headline" id="Details">Details</span></h3>
 		<ul>
 		<li><b>Title.</b> The name of the language as it will appear ion the lists.</li>
@@ -22,12 +22,8 @@
 		<li><b>URL Language Code.</b> URL Language Code for this language. If 'en' is used then it will be added after the site URL. Example: <a rel="nofollow" class="external free" href="http://mysite.com/en">http://mysite.com/en</a>. Note: The prefix must be unique over all the languages.</li>
 		<li><b>Image Prefix.</b> Name of the image file for this language when using the "Use Image Flags" Language Switcher basic option. Example: If 'en' is chosen, then the image shall be en.gif. Images and CSS for this module are in media/mod_languages/</li>
 		<li><b>Language Tag.</b> Enter here the language tag - example: en-GB for English (UK). This should be the exact prefix used for the language installed or to be installed.</li>
-		</ul>
-		<ul>
 		<li><b>Status.</b> (Published/Unpublished/Archived/Trashed) The published status of the item.</li>
 		<li><b>Description.</b> Enter a description for the language</li>
-		</ul>
-		<ul>
 		<li><b>ID</b>. This is a unique identification number for this item assigned automatically. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
 		</ul>
 		<h3> <span class="mw-headline" id="MetaData_Options">MetaData Options</span></h3>
@@ -39,7 +35,7 @@
 		</ul>
 		<ol>
 		<li>To help Search Engines and other systems classify the content of the Article.</li>
-		<li>For articles only, in combination with the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Related" title="Help25:Extensions Module Manager Articles Related">Related Articles module</a>, to display Articles that share at least one keyword in common. For example, if the current Article displayed has the keywords "cats, dogs, monkeys", any other Articles with at least one of these keywords will show in the Related Articles module.</li>
+		<li>For articles only, in combination with the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Related'); ?>" title="Help25:Extensions Module Manager Articles Related">Related Articles module</a>, to display Articles that share at least one keyword in common. For example, if the current Article displayed has the keywords "cats, dogs, monkeys", any other Articles with at least one of these keywords will show in the Related Articles module.</li>
 		</ol>
 		<h3> <span class="mw-headline" id="Site_Name">Site Name</span></h3>
 		<ul>
@@ -60,7 +56,7 @@
 	<section id="Quick_Tips">
 		<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
 		<ul>
-		<li>Users can use any Language from the list of installed Languages, either by having it assigned in the <a href="index.php?option=com_help&amp;component=users&amp;page=users" title="Help25:Users User Manager">User Manager</a> or by filling out a <a href="index.php?option=com_help&amp;component=menus&amp;page=item#User_Form_Layout" title="Help25:Menus Menu Item Manager Edit">Menu Item Manager - New/Edit - User Form Layout</a> at the Front end. This will cause the system prompts to be generated in this Language just for this User. For example, if a User chooses Spanish as their language, then the Search Module will show with prompts in Spanish.</li>
+		<li>Users can use any Language from the list of installed Languages, either by having it assigned in the <a href="<?php echo Route::url('index.php?option=com_help&component=users&page=users'); ?>" title="Help25:Users User Manager">User Manager</a> or by filling out a <a href="<?php echo Route::url('index.php?option=com_help&component=menus&page=item#User_Form_Layout'); ?>" title="Help25:Menus Menu Item Manager Edit">Menu Item Manager - New/Edit - User Form Layout</a> at the Front end. This will cause the system prompts to be generated in this Language just for this User. For example, if a User chooses Spanish as their language, then the Search Module will show with prompts in Spanish.</li>
 		<li>This User's choice is not affected by the Default Language set for the Front-end.</li>
 		</ul>
 		<dl>
@@ -74,7 +70,7 @@
 		<li><b>Important</b>: Do not delete the default language files (for example, with FTP). This will create errors on both the Front-end and Back-end.</li>
 		</ul>
 		<ul>
-		<li>Additional Languages can be added using the <a href="index.php?option=com_help&amp;component=installer&amp;page=install" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a>.</li>
+		<li>Additional Languages can be added using the <a href="<?php echo Route::url('index.php?option=com_help&component=installer&page=install'); ?>" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a>.</li>
 		</ul>
 		<ul>
 		<li>If desired, you can show the Front-end site in one Language and show the Back-end administration pages in a different Language. Also, individual articles can be configured to use a different language in the Advanced Parameter pane when editing the Article.</li>
@@ -83,10 +79,10 @@
 	<section id="Related_Information">
 		<h2> <span class="mw-headline">Related Information</span></h2>
 		<ul>
-		<li>To install more Languages: <a href="index.php?option=com_help&amp;component=installer&amp;page=install" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a></li>
-		<li>To uninstall a Language: <a href="index.php?option=com_help&amp;component=installer&amp;page=manage" title="Help25:Extensions Extension Manager Manage">Extension Manager - Manage</a></li>
-		<li>To change the Language for a User: <a href="index.php?option=com_help&amp;component=users&amp;page=user" title="Help25:Users User Manager Edit">User Manager - New/Edit</a></li>
-		<li>To set the Language of an Article: <a href="index.php?option=com_help&amp;component=content&amp;page=article#Parameters_-_Advanced" title="Help25:Content Article Manager Edit">Article Manager - New/Edit - Parameters - Advanced</a></li>
+		<li>To install more Languages: <a href="<?php echo Route::url('index.php?option=com_help&component=installer&page=install'); ?>" title="Help25:Extensions Extension Manager Install">Extension Manager - Install Screen</a></li>
+		<li>To uninstall a Language: <a href="<?php echo Route::url('index.php?option=com_help&component=installer&page=manage'); ?>" title="Help25:Extensions Extension Manager Manage">Extension Manager - Manage</a></li>
+		<li>To change the Language for a User: <a href="<?php echo Route::url('index.php?option=com_help&component=users&page=user'); ?>" title="Help25:Users User Manager Edit">User Manager - New/Edit</a></li>
+		<li>To set the Language of an Article: <a href="<?php echo Route::url('index.php?option=com_help&component=content&page=article#Parameters_-_Advanced'); ?>" title="Help25:Content Article Manager Edit">Article Manager - New/Edit - Parameters - Advanced</a></li>
 		</ul>
 	</section>
 </article>

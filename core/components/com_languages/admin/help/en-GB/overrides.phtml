@@ -22,24 +22,18 @@
 		<li><b>Location.</b> Whether the item is a public front-end or an administrator back-end item. 'Site' means it is a public front-end item. 'Administrator' means it is an administrator back-end item.</li>
 		</ul>
 		<ul>
-		<li><b>#</b>. An indexing number automatically assigned by Joomla! for ease of reference.</li>
+		<li><b>#</b>. An indexing number automatically assigned by the CMS for ease of reference.</li>
 		</ul>
 		<h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
 		<h3> <span class="mw-headline" id="Filter_by_Partial_Title">Filter by Partial Title</span></h3>
-		<p>You can filter the list of items by typing part of the constant's name or the ID number of the constant. <a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-banners-manage-filter-name.png" class="image"><img alt="Help25-banners-manage-filter-name.png" src="http://docs.joomla.org/images/2/2b/Help25-banners-manage-filter-name.png" width="286" height="25" /></a></p>
+		<p>You can filter the list of items by typing part of the constant's name or the ID number of the constant.</p>
 		<h3> <span class="mw-headline" id="Filter_by_Language">Filter by Language</span></h3>
-		<p>In the upper right area, above the column headings, there is a drop-down list boxes as shown below:</p>
-		<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-language-manager-override-filter-language.png" class="image"><img alt="Help25-language-manager-override-filter-language.png" src="http://docs.joomla.org/images/b/b4/Help25-language-manager-override-filter-language.png" width="219" height="45" /></a></p>
+		<p>In the upper right area, above the column headings, there is a drop-down list boxes.</p>
 		<p>You can filter by the Language of the Strings and by site or administrator access</p>
 		<h3> <span class="mw-headline" id="Number_of_Items_to_Display">Number of Items to Display</span></h3>
 		<p>Below the list you'll find:</p>
 		<ul>
 		<li><b>Page Controls.</b> When the number of items is more than one page, you will see a page control bar as shown below.
-		<div class="thumb tnone">
-		<div class="thumbinner" style="width:543px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-chunk-colheader-pagination.png" class="image"><img alt="Help25-chunk-colheader-pagination.png" src="http://docs.joomla.org/images/7/76/Help25-chunk-colheader-pagination.png" width="541" height="37" class="thumbimage" /></a>
-		<div class="thumbcaption"></div>
-		</div>
-		</div>
 		<ul>
 		<li><b>Display #:</b> Select the number of items to show on one page.</li>
 		<li><b>Start:</b> Click to go to the first page.</li>
@@ -54,23 +48,15 @@
 		<p>Click the Options button to open the <b>Language Manager Options</b> window which lets you configure this component.</p>
 		<h3> <span class="mw-headline" id="Buttons_Common_to_All_Tabs">Buttons Common to All Tabs</span></h3>
 		<p>At the top right of the Options modal window you will see the toolbar.</p>
-		<div class="thumb tnone">
-		<div class="thumbinner" style="width:212px;"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-screenshot-article-manager-options-toolbar.png" class="image"><img alt="Help25-screenshot-article-manager-options-toolbar.png" src="http://docs.joomla.org/images/b/bd/Help25-screenshot-article-manager-options-toolbar.png" width="210" height="36" class="thumbimage" /></a>
-		<div class="thumbcaption"></div>
-		</div>
-		</div>
 		<ul>
 		<li><b>Save</b>. Saves the language options and stays in the current screen.</li>
 		<li><b>Save &amp; Close</b>. Saves the language options and closes the current screen.</li>
 		<li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.</li>
 		</ul>
 		<h3> <span class="mw-headline" id="Permissions_Tab">Permissions Tab</span></h3>
-		<p>This screen allows you to set the component permissions in Joomla. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
-		<div class="center">
-		<div class="floatnone"><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-extensions-language-manager-options-permissions.png" class="image"><img alt="Help25-extensions-language-manager-options-permissions.png" src="http://docs.joomla.org/images/2/20/Help25-extensions-language-manager-options-permissions.png" width="670" height="431" /></a></div>
-		</div>
+		<p>This screen allows you to set the component permissions. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
 		<p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes. The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied. Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
-		<p>The default values used here are the ones set in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+		<p>The default values used here are the ones set in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions'); ?>" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
 		<dl>
 		<dd>
 		<dl>
@@ -91,9 +77,7 @@
 		</dl>
 		<p>There are two very important points to understand from this screen. The first is to see how the permissions can be inherited from the parent Group. The second is to see how you can control the default permissions by Group and by Action. This provides a lot of flexibility. For example, if you wanted Shop Suppliers to be able to have the ability to create an article about their product, you could just change their Create value to "Allowed". If you wanted to not allow members of Administrator group to delete objects or change their state, you would change their permissions in these columns to Inherited (or Denied). It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.</p>
 		<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
-		<p>At the top right you will see the toolbar:</p>
-		<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Toolbar-New-Edit-Delete-Options-Help.png" class="image"><img alt="Help25-Toolbar-New-Edit-Delete-Options-Help.png" src="http://docs.joomla.org/images/e/e7/Help25-Toolbar-New-Edit-Delete-Options-Help.png" width="281" height="65" /></a></p>
-		<p>The functions are:</p>
+		<p>At the top right you will see the toolbar. The functions are:</p>
 		<ul>
 		<li><b>New</b>. Opens the editing screen to create a new language override.</li>
 		<li><b>Edit</b>. Opens the editing screen for the selected language override. If more than one language override is selected (where applicable), only the first language override will be opened. The editing screen can also be opened by clicking on the Title or Name of the language override.</li>
@@ -103,14 +87,13 @@
 		</ul>
 		<h2> <span class="mw-headline" id="Toolbar_Links">Toolbar Links</span></h2>
 		<p>At the top left, above the columns, you will see four links as shown below:</p>
-		<p><a href="/proxy/index.php?option=com_help&view=help&keyref=File:Help25-Extenions-Language-Installed-Content-tabs.png" class="image"><img alt="Help25-Extenions-Language-Installed-Content-tabs.png" src="http://docs.joomla.org/images/3/32/Help25-Extenions-Language-Installed-Content-tabs.png" width="466" height="37" /></a></p>
 		<ul>
-		<li><b>Installed - Site.</b> Shows the Languages available for the front-end of the web site. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Language_Manager_Installed" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
-		<li><b>Installed - Administrator.</b> Shows the Languages available for the back-end of the web site. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Language_Manager_Installed" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
-		<li><b>Content.</b> Shows the Content Languages available for the web site. See <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Extensions_Language_Manager_Content" title="Help25:Extensions Language Manager Content">Extensions Language Manager Content</a>.</li>
+		<li><b>Installed - Site.</b> Shows the Languages available for the front-end of the web site. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Language_Manager_Installed'); ?>" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
+		<li><b>Installed - Administrator.</b> Shows the Languages available for the back-end of the web site. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Language_Manager_Installed'); ?>" title="Help25:Extensions Language Manager Installed">Installed Languages Help Screen</a></li>
+		<li><b>Content.</b> Shows the Content Languages available for the web site. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Language_Manager_Content'); ?>" title="Help25:Extensions Language Manager Content">Extensions Language Manager Content</a>.</li>
 		<li><b>Overrides.</b> Allows you to override any language strings in any language file through the backend. See <strong class="selflink">Language Overrides Help Screen</strong></li>
 		</ul>
 		<h2> <span class="mw-headline" id="See_Also">See Also</span></h2>
-		<p><a href="/proxy/index.php?option=com_help&view=help&keyref=J2.5:Language_Overrides_in_Joomla" title="J2.5:Language Overrides in Joomla">Layout Overrides in Joomla</a></p>
+		<p><a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Language_Overrides'); ?>" title="Language Overrides">Layout Overrides</a></p>
 	</section>
 </article>

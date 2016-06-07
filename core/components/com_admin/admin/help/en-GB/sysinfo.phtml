@@ -2,78 +2,88 @@
 	<h1>System Information</h1>
 
 	<p>Core settings with information useful for management of your website.</p>
-
-<h2> <span class="mw-headline" id="How_to_access">How to access</span></h2>
-<p>Select <b>Site → System Information</b> from the drop-down menu of the <i><b>Administrator Panel</b></i>.</p>
-
-<h2> <span class="mw-headline" id="Description">Description</span></h2>
-<p>This tool provides useful information about your host server environment, including operating system, database and PHP settings, and directory information.  You can navigate to five different screen: System Info, PHP Settings, Configuration File, Directory Permissions, and PHP Information. Each screen provides detailed information about that aspect of your website.  This information is very helpful when you are troubleshooting setup problems.</p>
-<ul><li>Note that none of these settings can be changed from these screens. This must be done in different locations throughout your installation, depending on the specific setting.
-</li><li>Many settings on the Configuration File screen can be changed from the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration" title="Help25:Site Global Configuration">Global Configuration</a> screen.  Some settings shown here depend on your host server configuration and cannot be changed from inside the CMS.
-</li></ul>
-
-<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
-<p>At the top right you will see the toolbar. The functions are:</p>
-<ul><li><b>Help</b>. Opens this help screen.
-</li></ul>
-
-<h2> <span class="mw-headline" id="Screens">Screens</span></h2>
-<ul><li>System Info
-</li><li>PHP Settings
-</li><li>Configuration File
-</li><li>Directory Permissions
-</li><li>PHP Information.
-</li></ul>
-
-<h2> <span class="mw-headline" id="System_Info">System Info</span></h2>
-<p>This screen shows information about the operating environment for your site.</p>
-<ul><li><b>PHP Built on:</b> Provides details of the principle operating system which the webserver that the CMS is running on.
-</li><li><b>Database Version:</b> Provides the current version of the MySQL database being used by the installation of the CMS.
-</li><li><b>Database Collation:</b> How the MySQL databased is structured for the information used by the CMS.
-</li><li><b>PHP Version:</b> Provides the current version of PHP server side script that is being used for this installation of the CMS.
-</li><li><b>Web Server:</b> Provides the current type and version of web server which the installation of the CMS is running on.
-</li><li><b>Web Server to PHP interface:</b> The script that permits  interaction between the web server (in most cases, Apache) and the PHP scripting language.
-</li><li><b>Joomla! Version:</b> Provides the current version of Joomla!.  It is recommended that it is always to to day and using the current stable release.
-</li><li><b>User Agent:</b>The summary of the current user's local machine's operating system and browser information which is used to create an unique session ID for access and functionality within the web site.
-</li></ul>
-
-<h2> <span class="mw-headline" id="PHP_Settings">PHP Settings</span></h2>
-<p>These screen shows the Relevant PHP Settings information. If any of these is highlighted as incorrect should be taken care of to rectify the situation.</p>
-<ul><li><b>Safe Mode:</b> Recommended setting: ON
-</li><li><b>Open basedir:</b> Recommended setting: Site dependent
-</li><li><b>Display Errors:</b> Recommended setting: OFF
-</li><li><b>Short Open Tags:</b> Recommended setting:
-</li><li><b>File Uploads:</b> Recommended setting: ON
-</li><li><b>Magic Quotes:</b> Recommended setting: OFF
-</li><li><b>Register Globals:</b> Recommended setting: OFF
-</li><li><b>Output Buffering:</b> Recommended setting: OFF
-</li><li><b>Session Save Path:</b> Recommended setting: Site dependent
-</li><li><b>Session Auto Start:</b> Recommended setting: OFF
-</li><li><b>XML Enabled:</b> Recommended setting: ON
-</li><li><b>Zlib Enabled:</b> Recommended setting: ON
-</li><li><b>Disabled Functions:</b> Recommended setting: Site dependent
-</li><li><b>Mbstring Enabled:</b> Recommended setting: ON
-</li><li><b>Iconv Available:</b> Recommended setting:
-</li><li><b>WYSIWYG Editor:</b> Recommended setting: Depends on preference
-</li></ul>
-
-<h2> <span class="mw-headline" id="Configuration_File">Configuration File</span></h2>
-<p>This screen shows the contents of the current <i>configuration.php</i> file which is stored under the main <b>&lt;path to hub&gt;/cms_root/</b> directory.  This file is created for you automatically when you first install the CMS and where most changes of the Global Configuration section of the CMS are recorded.  Please note that none of the settings can be changed from this page. Use <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration" title="Help25:Site Global Configuration">Global Configuration</a> to see more information about these settings and to make changes.</p>
-
-<h2> <span class="mw-headline" id="Directory_Permissions">Directory Permissions</span></h2>
-<p>This screen shows a list of the directories that the webserver should have write access to.  Please note that all directories listed on this page should say <b style="color:green">Writable</b>. If not, you may need to change the permissions to be able to install and use the CMS successfully.</p>
-<h2> <span class="mw-headline" id="PHP_Information">PHP Information</span></h2>
-
-<p>This screen displays the full configuration of the PHP server side scripting language that the CMS runs on, together with all the associated system information that goes towards the creation of the web server. It is the output of an integrated php.info script built into the CMS.
-</p><p>PHP is installed, and runs on the server (hence the server side above), and therefore all the settings are made on the server. The visitor to the web site does not need to have anything special running on their local machine in order to view or use any of the extra functionality that PHP gives to the web site.
-</p><p>All the settings that are ever likely to be needed are displayed here. Any changes that are required would be made within the <i>php.ini</i> and other configuration files on the web server.
-</p><p>How much control a web site owner has over this information depends on whether they own the server or if the server host is flexible in their customer approach.
-</p><p>It is a good practice to know the limitations of a particular server installation. This screens output is used to find detailed information about how PHP is implemented on the server.
-</p><p>For full details on the information contained within the PHP Info screen visit: <a rel="nofollow" class="external free" href="http://php.net/phpinfo">http://php.net/phpinfo</a>.
-</p>
-
-<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
-<ul><li>If you are having problems installing extensions, uploading files, or changing configuration options, check the Directory Permissions screen to make sure you have permission to write to files on your web server. The "Status" of the directories should be "Writable". If not, you may be unable to upload or edit files in these directories.
-</li><li>When you are seeking help with setup problems, for example in a web forum, it is very helpful to post specific information about your installation. This screen is an easy way to find all of this information in one place.
-</li></ul>
+	<section>
+		<h2> <span class="mw-headline" id="How_to_access">How to access</span></h2>
+		<p>Select <b>Site → System Information</b> from the drop-down menu of the <i><b>Administrator Panel</b></i>.</p>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="Description">Description</span></h2>
+		<p>This tool provides useful information about your host server environment, including operating system, database and PHP settings, and directory information.  You can navigate to five different screen: System Info, PHP Settings, Configuration File, Directory Permissions, and PHP Information. Each screen provides detailed information about that aspect of your website.  This information is very helpful when you are troubleshooting setup problems.</p>
+		<ul><li>Note that none of these settings can be changed from these screens. This must be done in different locations throughout your installation, depending on the specific setting.
+		</li><li>Many settings on the Configuration File screen can be changed from the <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config'); ?>" title="Help: Site Global Configuration">Global Configuration</a> screen.  Some settings shown here depend on your host server configuration and cannot be changed from inside the CMS.
+		</li></ul>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+		<p>At the top right you will see the toolbar. The functions are:</p>
+		<ul><li><b>Help</b>. Opens this help screen.
+		</li></ul>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="Screens">Screens</span></h2>
+		<ul><li>System Info
+		</li><li>PHP Settings
+		</li><li>Configuration File
+		</li><li>Directory Permissions
+		</li><li>PHP Information.
+		</li></ul>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="System_Info">System Info</span></h2>
+		<p>This screen shows information about the operating environment for your site.</p>
+		<ul><li><b>PHP Built on:</b> Provides details of the principle operating system which the webserver that the CMS is running on.
+		</li><li><b>Database Version:</b> Provides the current version of the MySQL database being used by the installation of the CMS.
+		</li><li><b>Database Collation:</b> How the MySQL databased is structured for the information used by the CMS.
+		</li><li><b>PHP Version:</b> Provides the current version of PHP server side script that is being used for this installation of the CMS.
+		</li><li><b>Web Server:</b> Provides the current type and version of web server which the installation of the CMS is running on.
+		</li><li><b>Web Server to PHP interface:</b> The script that permits  interaction between the web server (in most cases, Apache) and the PHP scripting language.
+		</li><li><b>Version:</b> Provides the current version of the CMS. It is recommended that it is always to to day and using the current stable release.
+		</li><li><b>User Agent:</b>The summary of the current user's local machine's operating system and browser information which is used to create an unique session ID for access and functionality within the web site.
+		</li></ul>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="PHP_Settings">PHP Settings</span></h2>
+		<p>These screen shows the Relevant PHP Settings information. If any of these is highlighted as incorrect should be taken care of to rectify the situation.</p>
+		<ul><li><b>Safe Mode:</b> Recommended setting: ON
+		</li><li><b>Open basedir:</b> Recommended setting: Site dependent
+		</li><li><b>Display Errors:</b> Recommended setting: OFF
+		</li><li><b>Short Open Tags:</b> Recommended setting:
+		</li><li><b>File Uploads:</b> Recommended setting: ON
+		</li><li><b>Magic Quotes:</b> Recommended setting: OFF
+		</li><li><b>Register Globals:</b> Recommended setting: OFF
+		</li><li><b>Output Buffering:</b> Recommended setting: OFF
+		</li><li><b>Session Save Path:</b> Recommended setting: Site dependent
+		</li><li><b>Session Auto Start:</b> Recommended setting: OFF
+		</li><li><b>XML Enabled:</b> Recommended setting: ON
+		</li><li><b>Zlib Enabled:</b> Recommended setting: ON
+		</li><li><b>Disabled Functions:</b> Recommended setting: Site dependent
+		</li><li><b>Mbstring Enabled:</b> Recommended setting: ON
+		</li><li><b>Iconv Available:</b> Recommended setting:
+		</li><li><b>WYSIWYG Editor:</b> Recommended setting: Depends on preference
+		</li></ul>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="Configuration_File">Configuration File</span></h2>
+		<p>This screen shows the contents of the current <i>configuration.php</i> file which is stored under the main <b>&lt;path to hub&gt;/cms_root/</b> directory.  This file is created for you automatically when you first install the CMS and where most changes of the Global Configuration section of the CMS are recorded.  Please note that none of the settings can be changed from this page. Use <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config'); ?>" title="Help25:Site Global Configuration">Global Configuration</a> to see more information about these settings and to make changes.</p>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="Directory_Permissions">Directory Permissions</span></h2>
+		<p>This screen shows a list of the directories that the webserver should have write access to.  Please note that all directories listed on this page should say <b style="color:green">Writable</b>. If not, you may need to change the permissions to be able to install and use the CMS successfully.</p>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="PHP_Information">PHP Information</span></h2>
+		<p>This screen displays the full configuration of the PHP server side scripting language that the CMS runs on, together with all the associated system information that goes towards the creation of the web server. It is the output of an integrated php.info script built into the CMS.
+		</p><p>PHP is installed, and runs on the server (hence the server side above), and therefore all the settings are made on the server. The visitor to the web site does not need to have anything special running on their local machine in order to view or use any of the extra functionality that PHP gives to the web site.
+		</p><p>All the settings that are ever likely to be needed are displayed here. Any changes that are required would be made within the <i>php.ini</i> and other configuration files on the web server.
+		</p><p>How much control a web site owner has over this information depends on whether they own the server or if the server host is flexible in their customer approach.
+		</p><p>It is a good practice to know the limitations of a particular server installation. This screens output is used to find detailed information about how PHP is implemented on the server.
+		</p><p>For full details on the information contained within the PHP Info screen visit: <a rel="nofollow" class="external free" href="http://php.net/phpinfo">http://php.net/phpinfo</a>.
+		</p>
+	</section>
+	<section>
+		<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+		<ul><li>If you are having problems installing extensions, uploading files, or changing configuration options, check the Directory Permissions screen to make sure you have permission to write to files on your web server. The "Status" of the directories should be "Writable". If not, you may be unable to upload or edit files in these directories.
+		</li><li>When you are seeking help with setup problems, for example in a web forum, it is very helpful to post specific information about your installation. This screen is an easy way to find all of this information in one place.
+		</li></ul>
+	</section>
 </article>

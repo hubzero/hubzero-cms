@@ -4,14 +4,13 @@
 	<h2> <span class="mw-headline" id="How_To_Access">How To Access</span></h2>
 <p>To create a new Single Article Menu Item:</p>
 <ul>
-<li>Select <b>Menus → [name of the menu]</b> from the drop-down menu on the back-end of your Joomla! installation (for example, <b>Menus → Main Menu</b>).</li>
+<li>Select <b>Menus → [name of the menu]</b> from the drop-down menu on the back-end of your installation (for example, <b>Menus → Main Menu</b>).</li>
 <li>Click <b>New</b> to create a new menu item.</li>
 <li>Click the Menu Item Type Select button and then click the Single Article link under Articles.</li>
 </ul>
-<p>To edit an existing Single Article Menu Item, click its Title in <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager" title="Help25:Menus Menu Item Manager">Menu Manager: Menu Items</a>.</p>
+<p>To edit an existing Single Article Menu Item, click its Title in <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager'); ?>" title="Help25:Menus Menu Item Manager">Menu Manager: Menu Items</a>.</p>
 <h2> <span class="mw-headline" id="Description">Description</span></h2>
 <p>Used to show one article in the front end of the site.</p>
-<h2> <span class="mw-headline" id="Screenshot">Screenshot</span></h2>
 
 <h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
 <h3> <span class="mw-headline" id="Required_Settings">Required Settings</span></h3>
@@ -20,11 +19,11 @@
 <ul>
 <li><b>Select Article.</b> This field holds the article to be shown in this layout. Press the Select/Change button to open the article selection modal window, as shown below.</li>
 
-<p>This screen is similar to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager" title="Help25:Content Article Manager">Article Manager</a>. You can use the Filter fields to find the desired article and then click on the article's Title to select it. At that point, the modal window will close and the title will show in the Select Article field.</p>
+<p>This screen is similar to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager'); ?>" title="Help25:Content Article Manager">Article Manager</a>. You can use the Filter fields to find the desired article and then click on the article's Title to select it. At that point, the modal window will close and the title will show in the Select Article field.</p>
 <h3> <span class="mw-headline" id="Article_Options">Article Options</span></h3>
 <p>The Single Article Layout has the following Article Options, as shown below. These options determine how the article will show in the layout.</p>
 
-<p>Note that these options include "Use Global". If this is selected, the setting from the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager" title="Help25:Content Article Manager">Article Manager Options</a> will be used.</p>
+<p>Note that these options include "Use Global". If this is selected, the setting from the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager'); ?>" title="Help25:Content Article Manager">Article Manager Options</a> will be used.</p>
 <ul>
 <li><b>Show Title.</b> (Use Global/Hide/Show). Whether or not to show the Article's Title.</li>
 </ul>
@@ -50,7 +49,7 @@
 <li><b>Show Author.</b> (Use Global/Hide/Show) Whether to show the author of the Article.</li>
 </ul>
 <ul>
-<li><b>Link Author.</b> (Use Global/No/Yes). If the Article's author is shown, whether to show it as a link to a Contact layout for that author. Note that the author must be set up as a Contact in <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Components_Contacts_Contacts_Edit" title="Help25:Components Contacts Contacts Edit">Contact Manager: Edit</a>.</li>
+<li><b>Link Author.</b> (Use Global/No/Yes). If the Article's author is shown, whether to show it as a link to a Contact layout for that author. Note that the author must be set up as a Contact in <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Contacts_Contacts_Edit'); ?>" title="Help25:Components Contacts Contacts Edit">Contact Manager: Edit</a>.</li>
 </ul>
 <ul>
 <li><b>Show Create Date.</b> (Use Global/Hide/Show). Whether or not to show the Article's create date.</li>
@@ -86,7 +85,7 @@
 <li><b>Positioning of the Links.</b> (Use Global/Above/Below). If Above, links are shown above the content. Otherwise they are shown below the content.</li>
 </ul>
 <h3> <span class="mw-headline" id="Common_Options">Common Options</span></h3>
-<p>See <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager_Edit" title="Help25:Menus Menu Item Manager Edit">Menu Item Manager: New Menu Item</a> for help on fields common to all Menu Item types, including Details, Link Type Options, Page Display Options, Metadata Options, and Module Assignments for this Menu Item.</p>
+<p>See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager_Edit'); ?>" title="Help25:Menus Menu Item Manager Edit">Menu Item Manager: New Menu Item</a> for help on fields common to all Menu Item types, including Details, Link Type Options, Page Display Options, Metadata Options, and Module Assignments for this Menu Item.</p>
 <h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
 <p>At the top right you will see the toolbar. The functions are:</p>
 <ul>
@@ -100,10 +99,10 @@
 <h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
 <ul>
 <li>If you have a Single Article Layout defined for an article, that layout will show any time a user drills down to that article. For example, if an article is shown on another menu item type (for example, in a Category Blog or List Layout or a Featured Articles Layout), the user will be taken to the Single Article Layout for that article (if defined).</li>
-<li>Archived articles are no longer published but are still stored on the site. Articles are Archived using the <a href="/proxy/index.php?option=com_help&view=help&keyref=Screen.content.15" title="Screen.content.15" class="mw-redirect">Article Manager</a> screen. Note that Articles assigned to the "Uncategorized" Section will not show on the Archived Article List layout.</li>
+<li>Archived articles are no longer published but are still stored on the site. Articles are Archived using the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.content.15'); ?>" title="Screen.content.15" class="mw-redirect">Article Manager</a> screen. Note that Articles assigned to the "Uncategorized" Section will not show on the Archived Article List layout.</li>
 </ul>
 <h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
 <ul>
-<li>Articles are created using <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Edit" title="Help25:Content Article Manager Edit">Article Manager: Add or Edit</a>.</li>
+<li>Articles are created using <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Edit'); ?>" title="Help25:Content Article Manager Edit">Article Manager: Add or Edit</a>.</li>
 </ul>
 </article>

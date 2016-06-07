@@ -14,7 +14,7 @@
 			<dd>The Title for this item. This may or may not display on the page, depending on the parameter values you choose.</dd>
 
 			<dt>Alias</dt>
-			<dd>The internal name of the item. Normally, you can leave this blank and Joomla! will fill in a default value. The default value is the Title or Name in lower case and with dashes instead of spaces. You may enter the Alias manually. The Alias should consist of lowercase letters and hyphens (-). No blank spaces or underscores are allowed. The Alias will be used in the URL when SEF is activated. Note: If the title consists of non-Latin characters, the Alias will default to the current date and time, for example "2009-02-11-17-54-38".</dd>
+			<dd>The internal name of the item. Normally, you can leave this blank and the CMS will fill in a default value. The default value is the Title or Name in lower case and with dashes instead of spaces. You may enter the Alias manually. The Alias should consist of lowercase letters and hyphens (-). No blank spaces or underscores are allowed. The Alias will be used in the URL when SEF is activated. Note: If the title consists of non-Latin characters, the Alias will default to the current date and time, for example "2009-02-11-17-54-38".</dd>
 
 			<dt>Parent</dt>
 			<dd>Allows a parent category for the category being edited/created to be chosen.</dd>
@@ -53,21 +53,21 @@
 				<p>There are two very important points to understand from this screen. The first is to see how the permissions can be inherited from the parent Group. The second is to see how you can control the default permissions by Group and by Action.</p>
 				<p>This provides a lot of flexibility. For example, if you wanted Shop Suppliers to be able to have the ability to create an item in the category, you could just change their Create value to "Allowed". If you wanted to not allow members of Administrator group to delete objects or change their state, you would change their permissions in these columns to Inherited (or Denied).</p>
 				<p>It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.</p>
-				<p>Please note the inherited values will come from the Permissions set in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+				<p>Please note the inherited values will come from the Permissions set in the <a href="<?php echo Route::url('index.php?option=com_help&component=com_config&page=global_config#Permissions'); ?>" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
 			</dd>
 
 			<dt>Description</dt>
 			<dd>The description for the item. Section and Category descriptions for Articles may be shown on web pages, depending on the parameter settings. These descriptions are entered using the same editor that is used for Articles. Note that Section and Category descriptions may not be edited from the front end.</dd>
 
 			<dt>Language</dt>
-			<dd>Select the language for this item. If you are not using the multi-language feature of Joomla, keep the default of 'All'.</dd>
+			<dd>Select the language for this item. If you are not using the multi-language feature, keep the default of 'All'.</dd>
 
 			<dt>ID</dt>
-			<dd>The unique ID number automatically assigned to this item by Joomla!. This number cannot be changed.</dd>
+			<dd>The unique ID number automatically assigned to this item by the CMS. This number cannot be changed.</dd>
 		</dl>
 
 		<h3><span>Category Description</span></h3>
-		<p>This is where you enter the description of the category. The editor you use depends on the settings for your site and your user. The core install includes multiple editor options: CKEditor (the default), TinyMCE, Code Mirror, and None. Additional editors can be installed as extension plugins if desired (see the Joomla Extensions direction category of editors for a list). A number of the editors such as CKEditor and TinyMCE are WYSIWYG (what you see is what you get) editors that allows users a familiar word-processing interface to use when editing Articles and other content. These can be configured from the <a href="index.php?option=com_help&component=com_plugins&page=plugins" title="Extensions: Plugin Manager"> Plugin Manager</a>.</p>
+		<p>This is where you enter the description of the category. The editor you use depends on the settings for your site and your user. The core install includes multiple editor options: CKEditor (the default), TinyMCE, Code Mirror, and None. Additional editors can be installed as extension plugins if desired (see the Extensions direction category of editors for a list). A number of the editors such as CKEditor and TinyMCE are WYSIWYG (what you see is what you get) editors that allows users a familiar word-processing interface to use when editing Articles and other content. These can be configured from the <a href="index.php?option=com_help&component=com_plugins&page=plugins" title="Extensions: Plugin Manager"> Plugin Manager</a>.</p>
 
 		<h4><span>Editor Buttons</span></h4>
 		<p>Five buttons are located just below the edit window, as shown below:</p>
@@ -87,7 +87,7 @@
 			<dt>Image</dt>
 			<dd>
 				<p>This button provides an easy way to insert an image into an Article. Images may be inserted from the 'images' folder and may also be uploaded. When you click the Image button, a window pops up, as shown below:</p>
-				<ul><li><b>Directory.</b> The current directory on the host server. This is the 'images' directory under your Joomla! home directory. Use the drop-down list box to select a subdirectory.
+				<ul><li><b>Directory.</b> The current directory on the host server. This is the 'images' directory under your home directory. Use the drop-down list box to select a subdirectory.
 				</li><li><b>Up.</b> Navigate to the parent directory. Note that the top directory for this function is 'images/stories'. You can not navigate to a higher directory.
 				</li><li><b>Insert.</b> Insert the selected image. The insert point will be the current cursor position. You will see the image display inside the edit window.
 				</li><li><b>Cancel</b>. Cancel the operation and close the popup window. You can cancel also in clicking the X at right top corner.
@@ -98,14 +98,14 @@
 				</li><li><b>Image Title.</b> Enter a Title for this image. This displays when a User hovers the mouse on the image.
 				</li><li><b>Caption.</b> If checked, image title will display as a caption below the image.
 				</li><li><b>Choose Files.</b> Click this button to browse to an image file to upload from your local computer. A file dialog will open allowing you to select a file.
-				</li><li><b>Start Upload.</b> Once you have selected a file, press this button to upload the file to your Joomla! 'images' folder. The thumbnail for the new image will now show in the thumbnail area.
+				</li><li><b>Start Upload.</b> Once you have selected a file, press this button to upload the file to your 'images' folder. The thumbnail for the new image will now show in the thumbnail area.
 				</li></ul>
 			</dd>
 			<dt>Pagebreak</dt>
 			<dd>
 				<p>This button allows you to insert a pagebreak inside an Article. A pagebreak allows for page navigation when the article is displayed on a layout. This is useful for long articles. When this button is pressed, a popup window is displayed as shown below:</p>
 				<ul><li> <b>Page Title</b>. Enter the title to display for the new page (for example, 'Page 2').
-				</li><li> <b>Table of Contents Alias</b>. Optional field to display in the table of contents for this page. In a multi-page article, Joomla! displays a 'table of contents' for the page that allows the user to select any page. If this field is blank, the Page Title will be used. If you want a different title in the table of contents, enter it here.
+				</li><li> <b>Table of Contents Alias</b>. Optional field to display in the table of contents for this page. In a multi-page article, the CMS displays a 'table of contents' for the page that allows the user to select any page. If this field is blank, the Page Title will be used. If you want a different title in the table of contents, enter it here.
 				</li><li> <b>Insert Page Break.</b> Click this button to insert the pagebreak with the entered fields. The Pagebreak will display as a gray dashed line across the Article. Note that a pagebreak cannot be edited. If you need to change a field in the pagebreak, click on the Article just past the pagebreak, press Backspace until the pagebreak is deleted, then insert a new pagebreak with the desired information.
 				</li><li><b>Read more...</b> This button inserts a 'Read more...' break in the Article. This shows as a red dotted line across the Article. If an Article has a 'Read more...' break, only the text before the break, called the Into Text, will initially display, along with a 'Read more...' link. If the User clicks this link, either the entire Article or just the part after the 'Read more...' link is displayed. This depends on the setting of the 'Intro Text' parameters for the Article and in the Global Configuration. The 'Read more...' break allows you to save space on pages by just showing the Intro Text. Note that the 'Read more...' break only shows in the Front Page, Section, and Category Blog layouts. If you want to insert breaks for an Article shown in an Article Layout, use the Page Break button.
 				</li></ul>
@@ -115,10 +115,10 @@
 		<h3><span>Publishing Options</span></h3>
 		<p><strong>Note: This slider can be hidden by users with Admin Permission for the article manager.</strong></p>
 
-		<p>This section allows you to enter parameters for this Article. These entries are optional. Joomla! automatically creates default entries for these values.</p>
+		<p>This section allows you to enter parameters for this Article. These entries are optional. The CMS automatically creates default entries for these values.</p>
 		<dl>
 			<dt>Created by</dt>
-			<dd>Name of the Joomla! User who created this item. This will default to the currently logged-in user. If you want to change this to a different user, click the Select User button to select a different user.</dd>
+			<dd>Name of the User who created this item. This will default to the currently logged-in user. If you want to change this to a different user, click the Select User button to select a different user.</dd>
 
 			<dt>Created By Alias</dt>
 			<dd>This optional field allows you to enter in an alias for this Author for this Article. This allows you to display a different Author name for this Article.</dd>
@@ -149,7 +149,7 @@
 
 		<dl>
 			<dt>Alternative Layout</dt>
-			<dd>If you have defined one or more alternative layouts for the Single Article menu item, you can select the layout to use for this article. See <a href="index.php?option=com_help&view=help&keyref=Layout_Overrides_in_Joomla_2.5" title="Layout Overrides" class="mw-redirect">Layout Overrides in Joomla 2.5</a> for more information about alternative layouts.</dd>
+			<dd>If you have defined one or more alternative layouts for the Single Article menu item, you can select the layout to use for this article. See <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Layout_Overrides'); ?>" title="Layout Overrides" class="mw-redirect">Layout Overrides</a> for more information about alternative layouts.</dd>
 
 			<dt>Image</dt>
 			<dd>Click the Select button to choose an image that will be displayed with the category. This will open a modal window that allows you to select an image from your images folder. See <a href="#Editor_Buttons">Editor Buttons</a> for more information on working with images. After you have selected an image, you can hover the mouse on the "Preview" text to see a preview of the image.</dd>
@@ -173,11 +173,11 @@
 					<li> In combination with Banner tags, to display specific Banners based on the Article content. For example, say you have one Banner with an ad for dog products and another Banner for cat products. You can have your dog Banner display when a User is viewing a dog-related Article and your cat Banner display for a cat-related Article. To do this, you would:
 						<ol>
 							<li> Add the keywords 'dog' and 'cat' to the appropriate Articles.</li>
-							<li> Add the Tags 'dog' and 'cat' to the appropriate Banners in the <a href="index.php?option=com_help&view=help&keyref=Help25:Components_Banners_Banners_Edit" title="Components Banners Banners Edit"> Banner Manager New/Edit</a> screen.</li>
-							<li> Set the Banner module Parameter 'Search By Tags' to 'Yes in the <a href="index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Banners" title="Extensions Module Manager Banners"> Banner Module Edit</a> screen.</li>
+							<li> Add the Tags 'dog' and 'cat' to the appropriate Banners in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Banners_Banners_Edit'); ?>" title="Components Banners Banners Edit"> Banner Manager New/Edit</a> screen.</li>
+							<li> Set the Banner module Parameter 'Search By Tags' to 'Yes in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Banners'); ?>" title="Extensions Module Manager Banners"> Banner Module Edit</a> screen.</li>
 						</ol>
 					</li>
-					<li> For articles only, in combination with the <a href="index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Related" title="Extensions Module Manager Articles Related"> Related Articles module</a>, to display Articles that share at least one keyword in common. For example, if the current Article displayed has the keywords "cats, dogs, monkeys", any other Articles with at least one of these keywords will show in the Related Articles module.</li>
+					<li> For articles only, in combination with the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Module_Manager_Articles_Related'); ?>" title="Extensions Module Manager Articles Related"> Related Articles module</a>, to display Articles that share at least one keyword in common. For example, if the current Article displayed has the keywords "cats, dogs, monkeys", any other Articles with at least one of these keywords will show in the Related Articles module.</li>
 				</ol>
 			</dd>
 
@@ -215,10 +215,10 @@
 	<section id="related-info">
 		<h2><span>Related Information</span></h2>
 		<ul>
-			<li>To work with existing Categories: <a href="index.php?option=com_help&view=help&keyref=Help25:Components_Content_Categories" title="Components Content Categories">Category Manager</a></li>
-			<li>To work with Articles: <a href="index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager" title="Content Article Manager">Article Manager</a></li>
-			<li>To create a page showing Articles for a Category in a Blog layout: <a href="index.php?option=com_help&view=help&keyref=Screen.menus.edit.15#Category_Blog_Layout">Menu Item Manager - New/Edit - Category Blog Layout</a></li>
-			<li>To create a page showing Articles for a Category in a List layout: <a href="index.php?option=com_help&view=help&keyref=Screen.menus.edit.15#Category_List_Layout">Menu Item Manager - New/Edit - Category List Layout</a></li>
+			<li>To work with existing Categories: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Content_Categories'); ?>" title="Components Content Categories">Category Manager</a></li>
+			<li>To work with Articles: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager'); ?>" title="Content Article Manager">Article Manager</a></li>
+			<li>To create a page showing Articles for a Category in a Blog layout: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.menus.edit.15#Category_Blog_Layout'); ?>">Menu Item Manager - New/Edit - Category Blog Layout</a></li>
+			<li>To create a page showing Articles for a Category in a List layout: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Screen.menus.edit.15#Category_List_Layout'); ?>">Menu Item Manager - New/Edit - Category List Layout</a></li>
 		</ul>
 	</section>
 </article>

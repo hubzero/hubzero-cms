@@ -1,11 +1,11 @@
 <article>
 	<h1>Menu Manager</h1>
 
-	<p>Provides an overview of the menus available on a Joomla site. This includes the details of each individual menu's number of items published, unpublished and names of linked modules.</p>
+	<p>Provides an overview of the menus available on a site. This includes the details of each individual menu's number of items published, unpublished and names of linked modules.</p>
 <h2> <span class="mw-headline" id="How_to_Access">How to Access</span></h2>
 <p>To access this screen you can either:</p>
 <ul>
-<li>Click the <b>Menu Manager</b> button in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel" title="Help25:Site Control Panel">Control Panel</a>, or</li>
+<li>Click the <b>Menu Manager</b> button in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel'); ?>" title="Help25:Site Control Panel">Control Panel</a>, or</li>
 <li>Select <b>Menus → Menu Manager</b> from the drop-down menus.</li>
 </ul>
 <h2> <span class="mw-headline" id="Description">Description</span></h2>
@@ -27,7 +27,7 @@
 <li><b>Modules Linked to the Menu</b>. Lists any menu modules associated with the menu. The column shows the module's name, access level, and position on template.</li>
 </ul>
 <ul>
-<li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
+<li><b>ID</b>. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
 </ul>
 <h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
 <ul>
@@ -68,10 +68,10 @@
 <li><b>Page Class.</b> Add an optional page class to elements in the page. It allows CSS styling specific to menu items pages.</li>
 </ul>
 <h3> <span class="mw-headline" id="Permissions_Tab">Permissions Tab</span></h3>
-<p>This screen allows you to set the component permissions in Joomla. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
+<p>This screen allows you to set the component permissions. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
 
 <p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes. The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied. Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
-<p>The default values used here are the ones set in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+<p>The default values used here are the ones set in the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions'); ?>" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
 <dl>
 <dd>
 <dl>
@@ -102,9 +102,9 @@
 </ul>
 <h2> <span class="mw-headline" id="Related_Information">Related Information</span></h2>
 <ul>
-<li>To add new Menus: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager_Edit" title="Help25:Menus Menu Manager Edit">Menu Manager New/Edit</a></li>
-<li>To set action permissions for menus: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager#Options" title="Help25:Menus Menu Manager">Menus Configuration</a></li>
-<li>To add or edit Menu Items: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager" title="Help25:Menus Menu Item Manager">Menu Item Manager</a></li>
-<li>To add or edit Menu Modules: <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager_Edit" title="Help25:Menus Menu Item Manager Edit">Module Manager</a></li>
+<li>To add new Menus: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager_Edit'); ?>" title="Help25:Menus Menu Manager Edit">Menu Manager New/Edit</a></li>
+<li>To set action permissions for menus: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager#Options'); ?>" title="Help25:Menus Menu Manager">Menus Configuration</a></li>
+<li>To add or edit Menu Items: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager'); ?>" title="Help25:Menus Menu Item Manager">Menu Item Manager</a></li>
+<li>To add or edit Menu Modules: <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager_Edit'); ?>" title="Help25:Menus Menu Item Manager Edit">Module Manager</a></li>
 </ul>
 </article>
