@@ -71,14 +71,27 @@ if ($assets->total() > 0)
 		//$assets->rewind();
 		$first = array_shift($images);
 
-		list($originalWidth, $originalHeight) = getimagesize($path . DS . $first->file('thumbnail'));
+		$isLocal = (filter_var($first->file('original'), FILTER_VALIDATE_URL)) ? false : true;
+		$imgPath = $isLocal ? $path . DS . $first->file('thumbnail') : $first->file('original');
+
+		list($originalWidth, $originalHeight) = getimagesize($imgPath);
 		$ratio = $originalWidth / $originalHeight;
 		?>
-		<div class="holder">
-			<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
-				<img src="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>px;" />
-			</a>
-		</div>
+
+		<?php if ($isLocal) : ?>
+			<div class="holder">
+				<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
+					<img src="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>px;" />
+				</a>
+			</div>
+		<?php else : ?>
+			<div class="holder">
+				<a target="_blank" class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo $imgPath; ?>" data-download="<?php echo $imgPath; ?>" data-downloadtext="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
+					<img src="<?php echo $imgPath; ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>px;" />
+				</a>
+			</div>
+		<?php endif; ?>
+
 		<?php
 		if (count($images) > 0)
 		{
