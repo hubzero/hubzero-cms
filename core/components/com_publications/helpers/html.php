@@ -558,29 +558,30 @@ class Html
 			switch ($publication->version->get('state'))
 			{
 				case 1:
-					$msg .= $publication->isDown() ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED') : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED');
-					$msg .= ' ';
+					$m  = $publication->isDown() ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED') : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED');
+					$m .= ' ';
 					switch ($publication->get('access'))
 					{
 						case 0:
-							$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_PUBLIC');
+							$m .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_PUBLIC');
 							break;
 						case 1:
-							$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_REGISTERED');
+							$m .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_REGISTERED');
 							break;
 						case 2:
-							$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_RESTRICTED');
+							$m .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_RESTRICTED');
 							break;
 						case 3:
-							$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_PRIVATE');
+							$m .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_PRIVATE');
 							break;
 					}
 
 					if ($publication->isEmbargoed())
 					{
-						$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO')
-							. ' ' . Date::of($publication->published_up)->toLocal('m d, Y');
+						$m = Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO') . ' ' . Date::of($publication->published_up)->toLocal('m d, Y');
 					}
+
+					$msg .= $m;
 
 					break;
 
