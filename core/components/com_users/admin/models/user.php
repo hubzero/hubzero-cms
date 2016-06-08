@@ -283,7 +283,7 @@ class UsersModelUser extends JModelAdmin
 					else
 					{
 						// Trigger the onUserAfterDelete event.
-						Event::trigger('user.onUserAfterDelete', array($user_to_delete->getProperties(), true, $this->getError()));
+						Event::trigger('user.onUserAfterDelete', array($user_to_delete->getAttributes(), true, $this->getError()));
 					}
 				}
 				else

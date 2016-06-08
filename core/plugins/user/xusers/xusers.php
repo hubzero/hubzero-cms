@@ -660,7 +660,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			if (substr($user->get('email'), -8) == '@invalid')
 			{
 				// Delete the user
-				$user->delete();
+				$user->destroy();
 			}
 		}
 

@@ -332,10 +332,10 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		$instance->set('id',             0);
 		$instance->set('name',           $user['fullname']);
 		$instance->set('username',       $user['username']);
-		$instance->set('password_clear', ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
+		//$instance->set('password_clear', ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
 		$instance->set('email',          $user['email']);  // Result should contain an email (check)
 		$instance->set('usertype',       'deprecated');
-		$instance->set('groups',         array($defaultUserGroup));
+		$instance->set('accessgroups',   array($defaultUserGroup));
 
 		// Check joomla user activation setting
 		// 0 = automatically confirmed

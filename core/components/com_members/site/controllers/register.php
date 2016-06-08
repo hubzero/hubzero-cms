@@ -349,7 +349,7 @@ class Register extends SiteController
 		// Instantiate a new registration object
 		$xregistration = new \Components\Members\Models\Registration();
 
-		$xprofile = User::getInstance();
+		$xprofile = Member::oneOrFail(User::get('id'));
 
 		$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
 

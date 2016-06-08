@@ -45,10 +45,10 @@ class UsersViewLink extends JViewLegacy
 		$user = User::getInstance();
 
 		// If this is an auth_link account update, carry on, otherwise raise an error
-		if (!is_object($user)
-			|| !array_key_exists('auth_link_id', $user)
-			|| !is_numeric($user->get('username'))
-			|| !$user->get('username') < 0)
+		if ($user->isGuest()
+			|| !$user->hasAttribute('auth_link_id')
+			|| !is_numeric($user->username)
+			|| !$user->username < 0)
 		{
 			App::abort('405', 'Method not allowed');
 			return;

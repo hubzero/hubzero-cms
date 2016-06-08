@@ -274,9 +274,6 @@ class Registration
 			return;
 		}
 
-		// get user tags
-		$tag_string = $xprofile->tags('string');
-
 		//get member addresses
 		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'address.php');
 		$database = \App::get('db');
