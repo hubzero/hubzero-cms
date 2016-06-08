@@ -666,22 +666,25 @@ class Register extends SiteController
 				->rows();
 
 			// Validate profile fields
-			$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
-			$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'create'));
-			$form->bind(new \Hubzero\Config\Registry($profile));
-
-			if (!$form->validate($profile))
+			if ($fields->count())
 			{
-				$result = false;
+				$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+				$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'create'));
+				$form->bind(new \Hubzero\Config\Registry($profile));
 
-				foreach ($form->getErrors() as $key => $error)
+				if (!$form->validate($profile))
 				{
-					if ($error instanceof \Hubzero\Form\Exception\MissingData)
-					{
-						$xregistration->_missing[$key] = $error;
-					}
+					$result = false;
 
-					$xregistration->_invalid[$key] = $error;
+					foreach ($form->getErrors() as $key => $error)
+					{
+						if ($error instanceof \Hubzero\Form\Exception\MissingData)
+						{
+							$xregistration->_missing[$key] = $error;
+						}
+
+						$xregistration->_invalid[$key] = $error;
+					}
 				}
 			}
 
