@@ -373,7 +373,8 @@ class Register extends SiteController
 
 			if ($username[0] == '-' && is_object($hzal))
 			{
-				$tmp_username = Session::get('auth_link.tmp_username', '');
+				$sub_email    = explode('@', (string) $hzal->email, 2);
+				$tmp_username = Session::get('auth_link.tmp_username', $sub_email[0]);
 				$xregistration->set('login', $tmp_username);
 				$xregistration->set('orcid', Session::get('auth_link.tmp_orcid', ''));
 				$xregistration->set('email', $hzal->email);
