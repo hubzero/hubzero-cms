@@ -57,7 +57,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/spwilson806/flysystem-github"
+            "url": "https://github.com/hubzero/flysystem-github"
         }
     ],
     "require": {
@@ -88,7 +88,7 @@
         "league/flysystem-dropbox": "1.0.*",
         "hubzero/framework": "dev-master",
         "solarium/solarium": "3.5.1",
-        "spwilson806/flysystem-github": "dev-develop"
+        "hubzero/flysystem-github": "dev-develop"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "096666f20f9e1203c92ebf59d623cd8c",
-    "content-hash": "10c0bc3fc882f2cdd4367a6e5696d89c",
+    "hash": "dcf8a08aa13e35efef633547c6be4e54",
+    "content-hash": "fb3ba5afccd424234efc42abf46425e7",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -632,6 +632,79 @@
                 "stream"
             ],
             "time": "2014-10-12 19:18:40"
+        },
+        {
+            "name": "hubzero/flysystem-github",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hubzero/flysystem-github.git",
+                "reference": "212b15cc9bd68b98732d0aeb68ae0548e1ae3b49"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hubzero/flysystem-github/zipball/212b15cc9bd68b98732d0aeb68ae0548e1ae3b49",
+                "reference": "212b15cc9bd68b98732d0aeb68ae0548e1ae3b49",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/github-api": "^1.4",
+                "league/flysystem": "^1.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "php": ">=5.5",
+                "phpunit/phpunit": "^4.7.7",
+                "satooshi/php-coveralls": "^0.6.1",
+                "scrutinizer/ocular": "^1.1",
+                "whatthejeff/nyancat-phpunit-resultprinter": "^1.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Potherca\\Flysystem\\Github\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Potherca\\Flysystem\\Github\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Potherca",
+                    "email": "potherca@gmail.com",
+                    "homepage": "http://pother.ca/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flysystem adapter for Github",
+            "homepage": "https://github.com/potherca/flysystem-github",
+            "keywords": [
+                "adapter",
+                "flysystem",
+                "flysystem-adapter",
+                "flysystem-github",
+                "github",
+                "potherca"
+            ],
+            "support": {
+                "source": "https://github.com/hubzero/flysystem-github/tree/develop"
+            },
+            "time": "2016-06-09 20:18:42"
         },
         {
             "name": "hubzero/framework",
@@ -1521,79 +1594,6 @@
             "time": "2015-12-19 16:00:15"
         },
         {
-            "name": "spwilson806/flysystem-github",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spwilson806/flysystem-github.git",
-                "reference": "7fcea5f660266c54cb6debe58b948f7d1ed965e5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spwilson806/flysystem-github/zipball/7fcea5f660266c54cb6debe58b948f7d1ed965e5",
-                "reference": "7fcea5f660266c54cb6debe58b948f7d1ed965e5",
-                "shasum": ""
-            },
-            "require": {
-                "knplabs/github-api": "^1.4",
-                "league/flysystem": "^1.0",
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "php": ">=5.5",
-                "phpunit/phpunit": "^4.7.7",
-                "satooshi/php-coveralls": "^0.6.1",
-                "scrutinizer/ocular": "^1.1",
-                "whatthejeff/nyancat-phpunit-resultprinter": "^1.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Potherca\\Flysystem\\Github\\": "src"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Potherca\\Flysystem\\Github\\": "tests"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Potherca",
-                    "email": "potherca@gmail.com",
-                    "homepage": "http://pother.ca/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Flysystem adapter for Github",
-            "homepage": "https://github.com/potherca/flysystem-github",
-            "keywords": [
-                "adapter",
-                "flysystem",
-                "flysystem-adapter",
-                "flysystem-github",
-                "github",
-                "potherca"
-            ],
-            "support": {
-                "source": "https://github.com/spwilson806/flysystem-github/tree/develop"
-            },
-            "time": "2016-03-24 20:00:49"
-        },
-        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.0.2",
             "source": {
@@ -2047,7 +2047,7 @@
         "guzzle/guzzle": 20,
         "pelago/emogrifier": 20,
         "hubzero/framework": 20,
-        "spwilson806/flysystem-github": 20,
+        "hubzero/flysystem-github": 20,
         "mockery/mockery": 20
     },
     "prefer-stable": false,
