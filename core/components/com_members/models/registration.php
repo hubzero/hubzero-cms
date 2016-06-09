@@ -37,6 +37,7 @@ use Components\Members\Tables;
 use Components\Members\Helpers;
 use Request;
 use User;
+use App;
 
 include_once(__DIR__ . DS . 'profile' . DS . 'field.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php');
@@ -89,37 +90,37 @@ class Registration
 	/**
 	 * Description for '_registration'
 	 *
-	 * @var array
+	 * @var  array
 	 */
-	var $_registration;
+	public $_registration;
 
 	/**
 	 * Description for '_encoded'
 	 *
-	 * @var unknown
+	 * @var  unknown
 	 */
-	var $_encoded;
+	public $_encoded;
 
 	/**
 	 * Description for '_missing'
 	 *
-	 * @var array
+	 * @var  array
 	 */
-	var $_missing;
+	public $_missing;
 
 	/**
 	 * Description for '_invalid'
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
-	var $_invalid;
+	public $_invalid;
 
 	/**
 	 * Description for '_checked'
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
-	var $_checked;
+	public $_checked;
 
 	/**
 	 * Clear cached data
@@ -153,37 +154,20 @@ class Registration
 	 */
 	public function normalize()
 	{
-		$this->_registration['countryresident'] = null;
-		$this->_registration['countryorigin'] = null;
-		$this->_registration['nativetribe'] = null;
-		$this->_registration['role'] = null;
-		$this->_registration['edulevel'] = null;
-		$this->_registration['hispanic'] = null;
-		$this->_registration['disability'] = null;
-		$this->_registration['race'] = null;
 		$this->_registration['login'] = null;
 		$this->_registration['email'] = null;
 		$this->_registration['confirmEmail'] = null;
-		$this->_registration['url'] = null;
-		$this->_registration['phone'] = null;
 		$this->_registration['name'] = null;
 		$this->_registration['givenName'] = null;
 		$this->_registration['middleName'] = null;
 		$this->_registration['surname'] = null;
-		$this->_registration['orgtype'] = null;
-		$this->_registration['org'] = null;
-		$this->_registration['orgtext'] = null;
-		$this->_registration['reason'] = null;
-		$this->_registration['reasontxt'] = null;
 		$this->_registration['password'] = null;
 		$this->_registration['confirmPassword'] = null;
-		$this->_registration['sex'] = null;
 		$this->_registration['usageAgreement'] = null;
 		$this->_registration['sendEmail'] = null;
 		$this->_registration['captcha'] = null;
-		$this->_registration['interests'] = null;
-		$this->_registration['address'] = null;
 		$this->_registration['orcid'] = null;
+		$this->_registration['_profile'] = array();
 	}
 
 	/**
@@ -275,7 +259,7 @@ class Registration
 		}
 
 		//get member addresses
-		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'address.php');
+		/*require_once(dirname(__DIR__) . DS . 'tables' . DS . 'address.php');
 		$database = \App::get('db');
 		$membersAddress = new Tables\Address($database);
 		$addresses = $membersAddress->getAddressesForMember($xprofile->get("uidNumber"));
@@ -287,28 +271,28 @@ class Registration
 		$this->set('edulevel', $xprofile->get('edulevel'));
 		$this->set('hispanic', $xprofile->get('hispanic'));
 		$this->set('disability', $xprofile->get('disability'));
-		$this->set('race', $xprofile->get('race'));
+		$this->set('race', $xprofile->get('race'));*/
 		$this->set('login', $xprofile->get('username'));
 		$this->set('email', $xprofile->get('email'));
 		$this->set('confirmEmail', $xprofile->get('email'));
-		$this->set('url', $xprofile->get('url'));
-		$this->set('phone', $xprofile->get('phone'));
+		//$this->set('url', $xprofile->get('url'));
+		//$this->set('phone', $xprofile->get('phone'));
 		$this->set('name', $xprofile->get('name'));
 		$this->set('givenName', $xprofile->get('givenName'));
 		$this->set('middleName', $xprofile->get('middleName'));
 		$this->set('surname', $xprofile->get('surname'));
-		$this->set('orgtype', $xprofile->get('orgtype'));
-		$this->set('org', $xprofile->get('organization'));
-		$this->set('orgtext', '');
-		$this->set('reason', $xprofile->get('reason'));
-		$this->set('reasontxt', '');
+		//$this->set('orgtype', $xprofile->get('orgtype'));
+		//$this->set('org', $xprofile->get('organization'));
+		//$this->set('orgtext', '');
+		//$this->set('reason', $xprofile->get('reason'));
+		//$this->set('reasontxt', '');
 		$this->set('password', null);
 		$this->set('confirmPassword', null);
-		$this->set('sex', $xprofile->get('gender'));
+		//$this->set('sex', $xprofile->get('gender'));
 		$this->set('usageAgreement', $xprofile->get('usageAgreement'));
 		$this->set('sendEmail', $xprofile->get('sendEmail'));
-		$this->set('interests', $xprofile->tags('string'));
-		$this->set('address', $addresses);
+		//$this->set('interests', $xprofile->tags('string'));
+		//$this->set('address', $addresses);
 		$this->set('orcid', $xprofile->get('orcid'));
 
 		$this->_checked = false;
@@ -337,60 +321,47 @@ class Registration
 	}
 
 	/**
-	 * Short description for 'get'
+	 * Retrieve a registraion value
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   string  $key
+	 * @return  mixed
 	 */
 	public function get($key)
 	{
-		//$this->logDebug("self:get($key)");
-
 		if (!array_key_exists($key, $this->_registration))
 		{
-			die(__CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
+			App::abort(500, __CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
 		}
 
 		return $this->_registration[$key];
 	}
 
 	/**
-	 * Short description for 'set'
+	 * Set a registraion value
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $key
+	 * @param   mixed   $value
+	 * @return  void
 	 */
-	public function set($key,$value)
+	public function set($key, $value)
 	{
-		//$this->logDebug("self:set($key,$value)");
-
 		$this->_checked = false;
 
 		if (!array_key_exists($key, $this->_registration))
 		{
-			die(__CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
+			App::abort(500, __CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
 		}
 
 		$this->_registration[$key] = $value;
-
-		//if (($key == 'login') || ($key == 'email'))
-			//unset($this->_encoded[$key]);
 	}
 
 	/**
-	 * Short description for 'registrationField'
+	 * Determine state of a field
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      unknown $default Parameter description (if any) ...
-	 * @param      string $task Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   string  $name
+	 * @param   string  $default
+	 * @param   string  $task
+	 * @return  integer
 	 */
 	private function registrationField($name, $default, $task = 'register')
 	{
@@ -491,23 +462,9 @@ class Registration
 		$registrationFullname = $this->registrationField('registrationFullname','RRRR',$task);
 		$registrationEmail = $this->registrationField('registrationEmail','RRRR',$task);
 		$registrationConfirmEmail = $this->registrationField('registrationConfirmEmail','RRRR',$task);
-		/*$registrationURL = $this->registrationField('registrationURL','HHHH',$task);
-		$registrationPhone = $this->registrationField('registrationPhone','HHHH',$task);
-		$registrationEmployment = $this->registrationField('registrationEmployment','HHHH',$task);
-		$registrationOrganization = $this->registrationField('registrationOrganization','HHHH',$task);
-		$registrationCitizenship = $this->registrationField('registrationCitizenship','HHHH',$task);
-		$registrationResidency = $this->registrationField('registrationResidency','HHHH',$task);
-		$registrationSex = $this->registrationField('registrationSex','HHHH',$task);
-		$registrationDisability = $this->registrationField('registrationDisability','HHHH',$task);
-		$registrationHispanic = $this->registrationField('registrationHispanic','HHHH',$task);
-		$registrationRace = $this->registrationField('registrationRace','HHHH',$task);
-		$registrationInterests = $this->registrationField('registrationInterests','HHHH',$task);
-		$registrationReason = $this->registrationField('registrationReason','HHHH',$task);*/
 		$registrationOptIn = $this->registrationField('registrationOptIn','HHHH',$task);
 		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA','HHHH',$task);
 		$registrationTOU = $this->registrationField('registrationTOU','HHHH',$task);
-		//$registrationAddress = $this->registrationField('registrationAddress','OOOO',$task);
-		//$registrationORCID = $this->registrationField('registrationORCID','HHHO',$task);
 
 		if ($task == 'update')
 		{
@@ -559,7 +516,7 @@ class Registration
 		if ($registrationUsername != REG_HIDE)
 		{
 			$allowNumericFirstCharacter = ($task == 'update') ? true : false;
-			if (!empty($login) && !Helpers\Utility::validlogin($login, $allowNumericFirstCharacter) )
+			if (!empty($login) && !Helpers\Utility::validlogin($login, $allowNumericFirstCharacter))
 			{
 				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';
 			}
@@ -567,7 +524,7 @@ class Registration
 
 		if (!empty($login) && ($task == 'create' || $task == 'proxycreate' || $task == 'update'))
 		{
-			$uid = \User::getInstance($login)->get('id');
+			$uid = User::getInstance($login)->get('id');
 
 			if ($uid && $uid != $id)
 			{
@@ -649,9 +606,10 @@ class Registration
 			}
 
 			$rules = \Hubzero\Password\Rule::all()
-					->whereEquals('enabled', 1)
-					->rows();
-			$msg = \Hubzero\Password\Rule::verify($registration['password'],$rules,$login,$registration['name']);
+				->whereEquals('enabled', 1)
+				->rows();
+
+			$msg = \Hubzero\Password\Rule::verify($registration['password'], $rules, $login, $registration['name']);
 			if (!empty($msg))
 			{
 				$this->_invalid['password'] = $msg;
@@ -667,7 +625,7 @@ class Registration
 			}
 			else
 			{
-				$bits = explode(' ',$registration['name']);
+				$bits = explode(' ', $registration['name']);
 				$surname = null;
 				$middleName = null;
 				$givenName = null;
@@ -700,7 +658,7 @@ class Registration
 
 		if ($registrationFullname != REG_HIDE)
 		{
-			if (!empty($registration['name']) && !Helpers\Utility::validname($registration['name']) )
+			if (!empty($registration['name']) && !Helpers\Utility::validname($registration['name']))
 			{
 				$this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
 			}
@@ -727,14 +685,16 @@ class Registration
 			}
 			else
 			{
-				$usersConfig = \Component::params( 'com_users' );
-				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
+				$usersConfig = \Component::params('com_users');
+				$allow_duplicate_emails = $usersConfig->get('allow_duplicate_emails');
 
 				// Check if the email is already in use
-				$db = \App::get('db');
-				$query = "SELECT `id` FROM `#__users` WHERE `email` = " . $db->quote($email) . " AND `id` != " . (int)$id;
-				$db->setQuery($query);
-				$xid = intval($db->loadResult());
+				$row = \Hubzero\User\User::all()
+					->whereEquals('email', $email)
+					->where('id', '!=', (int)$id)
+					->row();
+
+				$xid = intval($row->get('id'));
 
 				// 0 = not allowed
 				// 1 = allowed (i.e. no check needed)
@@ -758,10 +718,8 @@ class Registration
 							// We also need to catch existing users who might try to change their
 							// email to an existing email address on the hub. For that, we need to
 							// check and see if their email address is changing with this save.
-							$db = \App::get('db');
-							$query = "SELECT `email` FROM `#__users` WHERE `id` = " . (int)$id;
-							$db->setQuery($query);
-							$currentEmail = $db->loadResult();
+							$row = \Hubzero\User\User::oneOrNew((int)$id);
+							$currentEmail = $row->get('email');
 
 							if ($currentEmail != $email)
 							{
@@ -833,7 +791,10 @@ class Registration
 			}
 		}
 
-		/*if ($registrationAddress == REG_REQUIRED)
+		/* Everything below is currently done elsewhere
+		   @TODO  Move code to here or refactor?
+
+		if ($registrationAddress == REG_REQUIRED)
 		{
 			if (count($registration['address']) == 0)
 			{
@@ -925,13 +886,11 @@ class Registration
 	}
 
 	/**
-	 * Short description for 'scorePassword'
+	 * Score how good a password is
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $password Parameter description (if any) ...
-	 * @param      string $username Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   string  $password
+	 * @param   string  $username
+	 * @return  integer
 	 */
 	public function scorePassword($password, $username='')
 	{
@@ -987,8 +946,8 @@ class Registration
 	/**
 	 * Checks if username already exists
 	 *
-	 * @param string Username to check
-	 * @return array: status & message
+	 * @param   string  $username  Username to check
+	 * @return  array   Status & message
 	 */
 	public function checkusername($username)
 	{
@@ -1006,16 +965,12 @@ class Registration
 			return $ret;
 		}
 
-		// Initialize database
-		$db = \App::get('db');
+		// Count records with the given username
+		$total = \Hubzero\User\User::all()
+			->whereEquals('username', $username)
+			->total();
 
-		$query = 'SELECT id FROM `#__users` WHERE username = ' . $db->Quote( $username );
-		$db->setQuery($query);
-		$db->query();
-
-		$num_rows = $db->getNumRows();
-
-		if ($num_rows > 0)
+		if ($total > 0)
 		{
 			$ret['message'] = 'User login name is not available. Please select another one.';
 			return $ret;
@@ -1023,14 +978,15 @@ class Registration
 
 		$ret['status'] = 'ok';
 		$ret['message'] = 'User login name is available';
+
 		return $ret;
 	}
 
 	/**
 	 * Generates new available username based on email address
 	 *
-	 * @param 	string 		Email address or preferrd username
-	 * @return	string 		Generated username
+	 * @param   string  $email  Email address or preferrd username
+	 * @return  string  Generated username
 	 */
 	public function generateUsername($email)
 	{
@@ -1090,4 +1046,3 @@ class Registration
 		return false;
 	}
 }
-

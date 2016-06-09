@@ -427,27 +427,27 @@ class Register extends SiteController
 				}
 			}
 
-			$hubHomeDir = rtrim($this->config->get('homedir'),'/');
+			$hubHomeDir = rtrim($this->config->get('homedir'), DS);
 
 			$updateEmail = false;
 
 			if ($xprofile->get('homeDirectory') == '')
 			{
-				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
+				$xprofile->set('homeDirectory', $hubHomeDir . DS . $xprofile->get('username'));
 			}
 
-			if ($xprofile->get('regIP') == '')
+			if ($xprofile->get('registerIP') == '')
 			{
-				$xprofile->set('regIP', Request::getVar('REMOTE_ADDR','','server'));
+				$xprofile->set('registerIP', Request::getVar('REMOTE_ADDR','','server'));
 			}
 
-			if ($xprofile->get('regHost') == '')
+			/*if ($xprofile->get('registerHost') == '')
 			{
 				if (isset($_SERVER['REMOTE_HOST']))
 				{
-					$xprofile->set('regHost', Request::getVar('REMOTE_HOST','','server'));
+					$xprofile->set('registerHost', Request::getVar('REMOTE_HOST','','server'));
 				}
-			}
+			}*/
 
 			if ($xprofile->get('registerDate') == '')
 			{
@@ -458,7 +458,7 @@ class Register extends SiteController
 			{
 				if (is_object($hzal) && $xregistration->get('email') == $hzal->email)
 				{
-					$xprofile->set('activation',3);
+					$xprofile->set('activation', 3);
 				}
 				else
 				{
@@ -469,8 +469,18 @@ class Register extends SiteController
 
 			if ($xregistration->get('login') != $xprofile->get('username'))
 			{
-				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xregistration->get('login'));
+				$xprofile->set('homeDirectory', $hubHomeDir . DS . $xregistration->get('login'));
 			}
+
+			$keys = array('email', 'name', 'surname', 'givenName', 'middleName', 'usageAgreement', 'sendEmail', 'password');
+			foreach ($keys as $key)
+			{
+				if ($xregistration->get($key) !== null)
+				{
+					$xprofile->set($key, $xregistration->get($key));
+				}
+			}
+			$xprofile->set('username', $xregistration->get('login'));
 
 			$xprofile->save();
 

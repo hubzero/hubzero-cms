@@ -336,6 +336,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		$instance->set('email',          $user['email']);  // Result should contain an email (check)
 		$instance->set('usertype',       'deprecated');
 		$instance->set('accessgroups',   array($defaultUserGroup));
+		$instance->set('activation',     1);
 
 		// Check joomla user activation setting
 		// 0 = automatically confirmed
@@ -384,6 +385,8 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 			// No existing user and autoregister off, this is a temporary user.
 			$instance->set('tmp_user', true);
 		}
+
+		$instance->set('password_clear', (isset($user['password_clear']) ? $user['password_clear'] : ''));
 
 		return $instance;
 	}
