@@ -471,18 +471,21 @@ foreach ($profiles as $profile)
 								$value = $value ?: $this->profile->get($field->get('name'));
 							}
 							$formfield = $form->getField($field->get('name'));
-							$formfield->setValue($value);
+							if ($formfield)
+							{
+								$formfield->setValue($value);
 
-							$this->view('default', 'edit')
-								->set('registration_field', $field->get('name'))
-								->set('profile_field', $field->get('name'))
-								->set('registration', $field->get('action_edit'))
-								->set('title', $field->get('label'))
-								->set('profile', $this->profile)
-								->set('isUser', $isUser)
-								->set('inputs', $formfield->label . $formfield->input)
-								->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select'))
-								->display();
+								$this->view('default', 'edit')
+									->set('registration_field', $field->get('name'))
+									->set('profile_field', $field->get('name'))
+									->set('registration', $field->get('action_edit'))
+									->set('title', $field->get('label'))
+									->set('profile', $this->profile)
+									->set('isUser', $isUser)
+									->set('inputs', $formfield->label . $formfield->input)
+									->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select'))
+									->display();
+							}
 						}
 						?>
 					</div>
