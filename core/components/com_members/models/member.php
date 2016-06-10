@@ -368,16 +368,24 @@ class Member extends User
 					$field = null;
 
 					// Try to find an existing entry
-					if (isset($keep[$key]) && is_array($keep[$key]))
+					if (isset($keep[$key]))
 					{
-						if (isset($keep[$key][$val]))
+						if (is_array($keep[$key]))
 						{
-							$field = $keep[$key][$val];
-							unset($keep[$key][$val]);
+							if (isset($keep[$key][$val]))
+							{
+								$field = $keep[$key][$val];
+								unset($keep[$key][$val]);
+							}
+						}
+						else
+						{
+							$field = $keep[$key];
+							unset($keep[$key]);
 						}
 					}
 
-					if (!$field)
+					if (!($field instanceof Profile))
 					{
 						$field = Profile::blank();
 					}
@@ -414,11 +422,14 @@ class Member extends User
 			{
 				$val = trim($data);
 
+				$field = null;
+
 				if (isset($keep[$key]))
 				{
 					$field = $keep[$key];
 				}
-				else
+
+				if (!($field instanceof Profile))
 				{
 					$field = Profile::blank();
 				}
