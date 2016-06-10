@@ -562,6 +562,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		{
 			if ($profile = User::getInstance($member))
 			{
+				// Skip invalid emails
+				if (preg_match('/^-[0-9]+@invalid$/', $profile->get('email')))
+				{
+					continue;
+				}
+
 				$groupMembers[$profile->get('email')] = $profile->get('name');
 			}
 		}
