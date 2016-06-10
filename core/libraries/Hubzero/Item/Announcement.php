@@ -304,6 +304,12 @@ class Announcement extends \JTable
 		{
 			if ($profile = Profile::getInstance($member))
 			{
+				// Skip invalid emails
+				if (preg_match('/^-[0-9]+@invalid$/', $profile->get('email')))
+				{
+					continue;
+				}
+
 				$groupMembers[$profile->get('email')] = $profile->get('name');
 			}
 		}
