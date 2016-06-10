@@ -179,6 +179,15 @@ $this->css()
 					<?php } ?>
 				</fieldset>
 
+				<?php if ($this->post->exists()) { ?>
+					<label for="field-notify" id="comment-notify-label">
+						<input class="option" type="checkbox" name="notify" id="field-notify" value="1" checked="checked" />
+						<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_NOTIFY'); ?>
+					</label>
+				<?php } else { ?>
+					<input class="option" type="hidden" name="notify" id="field-notify" value="1" />
+				<?php } ?>
+
 				<label for="field-anonymous" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
