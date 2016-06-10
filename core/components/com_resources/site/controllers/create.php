@@ -1315,7 +1315,7 @@ class Create extends SiteController
 				$eview->resource   = $resource;
 				$eview->delimiter  = '';
 
-				$plain = $eview->loadTemplate();
+				$plain = $eview->loadTemplate(false);
 				$plain = str_replace("\n", "\r\n", $plain);
 
 				$message->addPart($plain, 'text/plain');
