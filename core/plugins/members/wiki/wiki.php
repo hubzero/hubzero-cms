@@ -134,7 +134,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 			return \Components\Wiki\Models\Version::all()
 				->whereEquals('created_by', $uidNumber)
 				->whereEquals('approved', 1)
-				->group('pageid')
+				->group('page_id')
 				->count();
 		}
 		else
