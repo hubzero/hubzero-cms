@@ -1436,6 +1436,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$section = $category->section();
 		$thread  = Post::oneOrNew($post->get('thread'));
 
+		// Disable notifications
+		if ($fields['id'] && !Request::getInt('notify', 0))
+		{
+			$moving = true;
+		}
+
 		// Email the group and insert email tokens to allow them to respond to group posts via email
 		$params = Component::params('com_groups');
 		if ($params->get('email_comment_processing') && (isset($moving) && $moving == false))
