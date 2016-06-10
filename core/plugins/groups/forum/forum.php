@@ -1365,9 +1365,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$new_category = $fields['category_id'];
 			if ($new_category != $old->category_id)
 			{
-					$moving = true;
+				$moving = true;
 			}
-
 		}
 
 		if (($fields['id'] && !$this->params->get('access-edit-thread'))
@@ -1386,6 +1385,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Bind data
 		$model = new \Components\Forum\Tables\Post($this->database);
+		if ($fields['id'])
+		{
+			$model->load($fields['id']);
+		}
 
 		if (!$model->bind($fields))
 		{
@@ -1516,7 +1519,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$encryptor = new \Hubzero\Mail\Token();
+			// We need to wrap this in a try/catch because
+			// it throws an exception if it can't find a
+			// needed config file.
+			$encryptor = null;
+			try
+			{
+				$encryptor = new \Hubzero\Mail\Token();
+			}
+			catch (Exception $e)
+			{
+			}
 
 			$from = array(
 				'name'  => Config::get('sitename'),
@@ -1526,13 +1539,23 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			// Email each group member separately, each needs a user specific token
 			foreach ($userIDsToEmail as $userID)
 			{
-				// Construct User specific Email ThreadToken
-				// Version, type, userid, xforumid
-				$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
+				$unsubscribeLink = '';
+				$delimiter = '';
 
-				// add unsubscribe link
-				$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
-				$unsubscribeLink  = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
+				if ($encryptor)
+				{
+					$delimiter = '~!~!~!~!~!~!~!~!~!~!';
+
+					// Construct User specific Email ThreadToken
+					// Version, type, userid, xforumid
+					$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
+
+					// add unsubscribe link
+					$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
+					$unsubscribeLink  = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
+
+					$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
+				}
 
 				$msg = array();
 
@@ -1545,7 +1568,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				// plain text
 				$eview
-					->set('delimiter', '~!~!~!~!~!~!~!~!~!~!')
+					->set('delimiter', $delimiter)
 					->set('unsubscribe', $unsubscribeLink)
 					->set('group', $this->group)
 					->set('section', $esection)
@@ -1562,8 +1585,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$msg['multipart'] = str_replace("\n", "\r\n", $html);
 
 				$subject = ' - ' . $this->group->get('cn') . ' - ' . $posttitle;
-
-				$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
 
 				if (!Event::trigger('xmessage.onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
 				{

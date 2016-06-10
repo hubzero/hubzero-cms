@@ -59,7 +59,10 @@ $output = preg_replace_callback(
 );
 
 $message .= $output;
-$message .= "\n\n" . Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE') . ":\n" . $this->get('unsubscribe');
+if ($this->unsubscribe)
+{
+	$message .= "\n\n" . Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE') . ":\n" . $this->get('unsubscribe');
+}
 
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 

@@ -186,11 +186,13 @@ $bdcolor = '#e1e1e1';
 					<?php }*/ ?>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="2" style="padding: 2em 0 0 0; font-size: 0.9em;">
-					<?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE'); ?>:<br /><a href="<?php echo $this->get('unsubscribe'); ?>"><?php echo $this->get('unsubscribe'); ?></a>
-				</td>
-			</tr>
+			<?php if ($this->unsubscribe) { ?>
+				<tr>
+					<td colspan="2" style="padding: 2em 0 0 0; font-size: 0.9em;">
+						<?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE'); ?>:<br /><a href="<?php echo $this->get('unsubscribe'); ?>"><?php echo $this->get('unsubscribe'); ?></a>
+					</td>
+				</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 
