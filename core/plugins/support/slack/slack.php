@@ -195,7 +195,8 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 		$channel = $this->params->get('channel_updated', $this->params->get('channel'));
 		$url     = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($ticket->link()), '/');
 		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename'), $comment->creator()->get('name'));
-		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($comment->get('comment')), 300);
+		$text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
+		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
 
 		$color = 'good';
 		if ($comment->isPrivate())
