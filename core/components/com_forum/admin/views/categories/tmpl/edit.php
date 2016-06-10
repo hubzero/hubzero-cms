@@ -47,9 +47,9 @@ Toolbar::spacer();
 Toolbar::help('category');
 
 $create_date = NULL;
-if (intval($this->row->created) <> 0)
+if (intval($this->row->created_time) <> 0)
 {
-	$create_date = Date::of($this->row->created)->toSql();
+	$create_date = Date::of($this->row->created_time)->toSql();
 }
 ?>
 <script type="text/javascript">
@@ -138,8 +138,8 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->created; ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+							<?php echo $this->row->created_time; ?>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created_time; ?>" />
 						</td>
 					</tr>
 				<?php if ($this->row->modified_by) { ?>
