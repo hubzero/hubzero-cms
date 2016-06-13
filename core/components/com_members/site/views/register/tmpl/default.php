@@ -421,6 +421,8 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 						{
 							$opts[] = '#' . $formfield->id . $i;
 
+							$i++;
+
 							if (!$option->get('dependents'))
 							{
 								continue;
@@ -435,8 +437,6 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							}
 
 							$hasEvents = true;
-
-							$i++;
 						}
 
 						if ($hasEvents)
@@ -477,7 +477,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							}
 							else
 							{
-								$scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+								$scripts[] = '		if ($(this).is(":checked") && $(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
 								$show = array();
 								foreach ($events as $s)
 								{
