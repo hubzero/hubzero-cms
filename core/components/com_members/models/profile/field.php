@@ -279,8 +279,8 @@ class Field extends Relational
 		$xml[] = '<fieldset name="basic">';
 		foreach ($fields as $field)
 		{
-			$f  = '<field type="' . $field->get('type') . '" name="' . htmlentities($field->get('name'), ENT_COMPAT) . '" label="' . htmlentities($field->get('label'), ENT_COMPAT) . '"';
-			$f .= ($field->get('description')  ? ' description="' . htmlentities($field->get('description'), ENT_COMPAT) . '"' : '');
+			$f  = '<field type="' . $field->get('type') . '" name="' . htmlspecialchars($field->get('name'), ENT_COMPAT) . '" label="' . htmlspecialchars($field->get('label'), ENT_COMPAT) . '"';
+			$f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
 			$f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
 			$f .= ($field->get('option_other') ? ' option_other="1"' : '');
 			if (in_array($action, array('create', 'update', 'edit')))
@@ -292,7 +292,7 @@ class Field extends Relational
 			$xml[] = $f;
 			foreach ($field->options as $option)
 			{
-				$xml[] = '<option value="' . htmlentities($option->get('value'), ENT_COMPAT) . '">' . htmlentities($option->get('label'), ENT_COMPAT) . '</option>';
+				$xml[] = '<option value="' . htmlspecialchars($option->get('value'), ENT_COMPAT) . '">' . htmlspecialchars($option->get('label'), ENT_COMPAT) . '</option>';
 			}
 			$xml[] = '</field>';
 		}
