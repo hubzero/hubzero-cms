@@ -387,8 +387,116 @@ foreach ($profiles as $profile)
 			<?php endif; ?>
 		<?php endif; ?>
 
-		<?php foreach ($this->fields as $field): ?>
-			<?php
+		<?php
+		$scripts = array();
+		$toggle = array();
+
+		foreach ($this->fields as $field):
+			// Build scripts for toggling dependent fields
+			if ($isUser && $field->options->count())
+			{
+				$i = 0;
+				$hasEvents = false;
+				$opts = array();
+				$hide = array();
+
+				foreach ($field->options as $option)
+				{
+					$opts[] = '#profile_' . $field->get('name') . $i;
+
+					$i++;
+
+					if (!$option->get('dependents'))
+					{
+						continue;
+					}
+
+					$events = json_decode($option->get('dependents'));
+					$option->set('dependents', $events);
+
+					if (empty($events))
+					{
+						continue;
+					}
+
+					$hasEvents = true;
+				}
+
+				if ($hasEvents)
+				{
+					if ($field->get('type') == 'dropdown')
+					{
+						$scripts[] = '	$("#profile_' . $field->get('name') . '").on("change", function(e){';
+					}
+					else
+					{
+						$scripts[] = '	$("'. implode(',', $opts) . '").on("change", function(e){';
+					}
+				}
+
+				$i = 0;
+				foreach ($field->options as $option)
+				{
+					if (!$option->get('dependents'))
+					{
+						continue;
+					}
+
+					$events = $option->get('dependents');
+
+					if ($field->get('type') == 'dropdown')
+					{
+						$scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+						$show = array();
+						foreach ($events as $s)
+						{
+							$show[] = '#profile_' . $s;
+						}
+						$hide = array_merge($hide, $show);
+						$scripts[] = '			$("' . implode(', ', $show) . '").closest("li.section").show();';
+						$scripts[] = '		} else {';
+						$scripts[] = '			$("' . implode(', ', $show) . '").closest("li.section").hide();';
+						$scripts[] = '		}';
+
+						$toggle[] = '	if ($("#profile_' . $field->get('name') . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+						$toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").show();';
+						$toggle[] = '	} else {';
+						$toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").hide();';
+						$toggle[] = '	}';
+					}
+					else
+					{
+						$scripts[] = '		if ($(this).is(":checked") && $(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+						$show = array();
+						foreach ($events as $s)
+						{
+							$show[] = '#profile_' . $s;
+						}
+						$hide = array_merge($hide, $show);
+						$scripts[] = '			$("' . implode(', ', $show) . '").closest("li.section").show();';
+						$scripts[] = '		} else {';
+						$scripts[] = '			$("' . implode(', ', $show) . '").closest("li.section").hide();';
+						$scripts[] = '		}';
+
+						$toggle[] = '	if ($("#profile_' . $field->get('name') . $i . '").is(":checked") && $("#profile_' . $field->get('name') . $i . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+						$toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").show();';
+						$toggle[] = '	} else {';
+						$toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").hide();';
+						$toggle[] = '	}';
+					}
+
+					$i++;
+				}
+
+				if ($hasEvents)
+				{
+					$scripts[] = '	});';
+					$scripts[] = implode("\n", $toggle);
+				}
+			}
+
+			//---
+
 			if (!isset($fields[$field->get('name')]))
 			{
 				$fields[$field->get('name')] = Components\Members\Models\Profile::blank();
@@ -453,10 +561,10 @@ foreach ($profiles as $profile)
 					$cls[] = ($isUser) ? 'hidden' : 'hide';
 				}
 				?>
-				<li class="<?php echo implode(' ', $cls); ?> section">
+				<li class="<?php echo implode(' ', $cls); ?> section" id="input-section-<?php echo $this->escape($field->get('name')); ?>">
 					<div class="section-content">
 						<div class="key"><?php echo $field->get('label'); ?></div>
-						<div class="value"><?php echo (!empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : '(not set)'); ?></div>
+						<div class="value"><?php echo (!empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET')); ?></div>
 						<br class="clear" />
 						<?php
 						if ($isUser)
@@ -498,7 +606,13 @@ foreach ($profiles as $profile)
 					<?php endif; ?>
 				</li>
 			<?php } ?>
-		<?php endforeach; ?>
+		<?php endforeach;
+
+		if (!empty($scripts))
+		{
+			$this->js("jQuery(document).ready(function($){\n" . implode("\n", $scripts) . "\n});");
+		}
+		?>
 
 		<?php //if ($this->registration->OptIn != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_optin') == 0
