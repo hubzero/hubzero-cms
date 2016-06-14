@@ -651,6 +651,10 @@ class Register extends SiteController
 			// Compile profile data
 			foreach ($profile as $key => $data)
 			{
+				if (isset($profile[$key]) && is_array($profile[$key]))
+				{
+					$profile[$key] = array_filter($profile[$key]);
+				}
 				if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
 				{
 					if (is_array($profile[$key]))
@@ -680,7 +684,7 @@ class Register extends SiteController
 			if ($fields->count())
 			{
 				$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
-				$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'create'));
+				$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'create', $profile));
 				$form->bind(new \Hubzero\Config\Registry($profile));
 
 				if (!$form->validate($profile))

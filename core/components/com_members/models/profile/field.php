@@ -264,14 +264,96 @@ class Field extends Relational
 	}
 
 	/**
+	 * Helper method to force dependent fields to be skipped
+	 * during validation when not chosen
+	 *
+	 * @param   mixed   $fields  Iterable object or array
+	 * @param   array   $data
+	 * @return  mixed
+	 */
+	public static function resolveDependencies($fields, $data = array())
+	{
+		if (empty($data))
+		{
+			return $fields;
+		}
+
+		$skip = array();
+
+		foreach ($fields as $field)
+		{
+			foreach ($field->options as $option)
+			{
+				$selected = false;
+
+				if (!$option->get('dependents'))
+				{
+					continue;
+				}
+
+				$events = json_decode($option->get('dependents', '[]'));
+
+				if (empty($events))
+				{
+					continue;
+				}
+
+				if (isset($data[$field->get('name')]))
+				{
+					$values = $data[$field->get('name')];
+
+					if (is_array($values) && in_array($option->get('value'), $values))
+					{
+						$selected = true;
+					}
+					else if ($values == $option->get('value'))
+					{
+						$selected = true;
+					}
+				}
+
+				// If the option was chosen...
+				// pass its dependents through validation
+				if ($selected)
+				{
+					continue;
+				}
+
+				// If the option was NOT chosen...
+				// skip its dependents (no validation)
+				$skip = array_merge($skip, $events);
+			}
+		}
+
+		if (!empty($skip))
+		{
+			foreach ($fields as $field)
+			{
+				if (in_array($field->get('name'), $skip))
+				{
+					// Temporarily mark as optional
+					$field->set('action_create', self::STATE_OPTIONAL);
+					$field->set('action_update', self::STATE_OPTIONAL);
+					$field->set('action_edit', self::STATE_OPTIONAL);
+				}
+			}
+		}
+
+		return $fields;
+	}
+
+	/**
 	 * Helper method to convert list of fields and field options to XML
 	 *
-	 * @param   mixed   $fields  Iterable object or attay
+	 * @param   mixed   $fields  Iterable object or array
 	 * @param   string  $action
+	 * @param   array   $data
 	 * @return  string
 	 */
-	public static function toXml($fields, $action = null)
+	public static function toXml($fields, $action = null, $data = array())
 	{
+		$fields = self::resolveDependencies($fields, $data);
+
 		// Convert to XML so we can use the Form processor
 		$xml   = array();
 		$xml[] = '<?xml version="1.0" encoding="utf-8"?>';

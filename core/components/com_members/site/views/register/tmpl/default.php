@@ -401,6 +401,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 		$form->bind($data);
 
 		$scripts = array();
+		$toggle = array();
 
 		if ($this->fields->count() > 0): ?>
 			<fieldset>
@@ -474,6 +475,12 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 								$scripts[] = '		} else {';
 								$scripts[] = '			$("' . implode(', ', $show) . '").hide();';
 								$scripts[] = '		}';
+
+								$toggle[] = '	if ($("#profile_' . $field->get('name') . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+								$toggle[] = '		$("' . implode(', ', $show) . '").show();';
+								$toggle[] = '	} else {';
+								$toggle[] = '		$("' . implode(', ', $show) . '").hide();';
+								$toggle[] = '	}';
 							}
 							else
 							{
@@ -488,6 +495,12 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 								$scripts[] = '		} else {';
 								$scripts[] = '			$("' . implode(', ', $show) . '").hide();';
 								$scripts[] = '		}';
+
+								$toggle[] = '	if ($("#profile_' . $field->get('name') . $i . '").is(":checked") && $("#profile_' . $field->get('name') . $i . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+								$toggle[] = '		$("' . implode(', ', $show) . '").show();';
+								$toggle[] = '	} else {';
+								$toggle[] = '		$("' . implode(', ', $show) . '").hide();';
+								$toggle[] = '	}';
 							}
 
 							$i++;
@@ -496,7 +509,8 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 						if ($hasEvents)
 						{
 							$scripts[] = '	});';
-							$scripts[] = '	$("' . implode(', ', $hide) . '").hide();';
+							//$scripts[] = '	$("' . implode(', ', $hide) . '").hide();';
+							$scripts[] = implode("\n", $toggle);
 						}
 					}
 

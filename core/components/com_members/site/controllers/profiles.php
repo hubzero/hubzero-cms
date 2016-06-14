@@ -1270,6 +1270,10 @@ class Profiles extends SiteController
 		// Compile profile data
 		foreach ($profile as $key => $data)
 		{
+			if (isset($profile[$key]) && is_array($profile[$key]))
+			{
+				$profile[$key] = array_filter($profile[$key]);
+			}
 			if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
 			{
 				if (is_array($profile[$key]))
@@ -1296,7 +1300,7 @@ class Profiles extends SiteController
 			->rows();
 
 		$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
-		$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
+		$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile));
 		$form->bind(new \Hubzero\Config\Registry($profile));
 
 		$errors = array(
