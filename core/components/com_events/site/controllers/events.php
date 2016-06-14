@@ -1413,21 +1413,19 @@ class Events extends SiteController
 			}
 
 			//get timezone
-			$timezone = timezone_name_from_abbr('',$this->offset*3600, NULL);
-			$timezone = new DateTimeZone($timezone);
-
-			// get start date and time
-			$start_publish = Date::of($row->publish_up, $timezone)->format('Y-m-d');
-			$start_time = Date::of($row->publish_up, $timezone)->format('H:i');
-
-			// get end date and time
-			$stop_publish = Date::of($row->publish_down, $timezone)->format('Y-m-d');
-			$end_time = Date::of($row->publish_down, $timezone)->format('H:i');
-
 			$time_zone = $row->time_zone;
 
-			$registerby_date = Date::of($row->registerby, $timezone)->format('Y-m-d');
-			$registerby_time = Date::of($row->registerby, $timezone)->format('H:i');
+			// get start date and time
+			$start_publish = Date::of($row->publish_up, $time_zone)->format('Y-m-d', true);
+			$start_time = Date::of($row->publish_up, $time_zone)->format('H:i', true);
+
+			// get end date and time
+			$stop_publish = Date::of($row->publish_down, $time_zone)->format('Y-m-d', true);
+			$end_time = Date::of($row->publish_down, $time_zone)->format('H:i', true);
+
+
+			$registerby_date = Date::of($row->registerby, $time_zone)->format('Y-m-d', true);
+			$registerby_time = Date::of($row->registerby, $time_zone)->format('H:i', true);
 
 			$arr = array(
 				\Html::select('option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
