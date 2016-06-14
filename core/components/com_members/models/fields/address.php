@@ -67,7 +67,7 @@ class Address extends Field
 		$html = array();
 
 		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="radio addresses ' . (string) $this->element['class'] . '"' : ' class="radio addresses"';
+		$class = $this->element['class'] ? ' class="radio addresses-' . $this->id . ' ' . (string) $this->element['class'] . '"' : ' class="radio addresses-' . $this->id . '"';
 
 		// Start the radio field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
@@ -85,51 +85,54 @@ class Address extends Field
 		// Build the radio field output.
 		foreach ($values as $i => $value)
 		{
-			$value = json_decode((string)$value);
+			if (is_string($value))
+			{
+				$value = json_decode((string)$value, true);
+			}
 
 			if (!$value || json_last_error() !== JSON_ERROR_NONE)
 			{
-				$value = new \stdClass;
-				$value->address1  = '';
-				$value->address2  = '';
-				$value->postal    = '';
-				$value->city      = '';
-				$value->region    = '';
-				$value->country   = '';
-				$value->latitude  = '';
-				$value->longitude = '';
+				$value = array();
+				$value['address1']  = '';
+				$value['address2']  = '';
+				$value['postal']    = '';
+				$value['city']      = '';
+				$value['region']    = '';
+				$value['country']   = '';
+				$value['latitude']  = '';
+				$value['longitude'] = '';
 			}
 
 			$html[] = '<ul class="address-field">';
 			$html[] = '<li>';
 			$html[] = '<label for="' . $this->id . $i . '">' . $lang->txt('Street') . '</label>';
-			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" value="' . htmlspecialchars($value->address1, ENT_COMPAT, 'UTF-8') . '" />';
+			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" value="' . htmlspecialchars($value['address1'], ENT_COMPAT, 'UTF-8') . '" />';
 			$html[] = '</li>';
 			$html[] = '<li>';
 			$html[] = '<label for="' . $this->id . $i . '">' . $lang->txt('Street 2') . '</label>';
-			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][address2]" placeholder="Street 2" value="' . htmlspecialchars($value->address2, ENT_COMPAT, 'UTF-8') . '" />';
+			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][address2]" placeholder="Street 2" value="' . htmlspecialchars($value['address2'], ENT_COMPAT, 'UTF-8') . '" />';
 			$html[] = '</li>';
 			$html[] = '<li>';
 			$html[] = '<label for="' . $this->id . $i . '">' . $lang->txt('City') . '</label>';
-			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][city]" placeholder="City" value="' . htmlspecialchars($value->city, ENT_COMPAT, 'UTF-8') . '" />';
+			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][city]" placeholder="City" value="' . htmlspecialchars($value['city'], ENT_COMPAT, 'UTF-8') . '" />';
 			$html[] = '</li>';
 			$html[] = '<li>';
 			$html[] = '<div class="grid">';
 			$html[] = '<div class="col span6">';
 			$html[] = '<label for="' . $this->id . $i . '">' . $lang->txt('Postal code') . '</label>';
-			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][postal]" placeholder="Postal code" value="' . htmlspecialchars($value->postal, ENT_COMPAT, 'UTF-8') . '" />';
+			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][postal]" placeholder="Postal code" value="' . htmlspecialchars($value['postal'], ENT_COMPAT, 'UTF-8') . '" />';
 			$html[] = '</div>';
 			$html[] = '<div class="col span6 omega">';
 			$html[] = '<label for="' . $this->id . $i . '">' . $lang->txt('State/Region') . '</label>';
-			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][region]" placeholder="State/Region" value="' . htmlspecialchars($value->region, ENT_COMPAT, 'UTF-8') . '" />';
+			$html[] = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][region]" placeholder="State/Region" value="' . htmlspecialchars($value['region'], ENT_COMPAT, 'UTF-8') . '" />';
 			$html[] = '</div>';
 			$html[] = '</div>';
 			$html[] = '</li>';
 			$html[] = '<li>';
 			$html[] = '<label for="' . $this->id . $i . '">' . $lang->txt('Country') . '</label>';
-			$html[] = Dropdown::genericlist($options, $this->name . '[' . $i . '][country]', '', 'value', 'text', $value->country, $this->id . $i);
-			$html[] = '<input type="hidden" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][latitude]" value="' . htmlspecialchars($value->latitude, ENT_COMPAT, 'UTF-8') . '" />';
-			$html[] = '<input type="hidden" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][longitude]" value="' . htmlspecialchars($value->longitude, ENT_COMPAT, 'UTF-8') . '" />';
+			$html[] = Dropdown::genericlist($options, $this->name . '[' . $i . '][country]', '', 'value', 'text', $value['country'], $this->id . $i);
+			$html[] = '<input type="hidden" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][latitude]" value="' . htmlspecialchars($value['latitude'], ENT_COMPAT, 'UTF-8') . '" />';
+			$html[] = '<input type="hidden" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][longitude]" value="' . htmlspecialchars($value['longitude'], ENT_COMPAT, 'UTF-8') . '" />';
 			$html[] = '</li>';
 			$html[] = '</ul>';
 		}
@@ -140,8 +143,8 @@ class Address extends Field
 		Behavior::framework(true);
 		App::get('document')->addScriptDeclaration("
 			jQuery(document).ready(function($){
-				if ($('.addresses').length > 0) {
-					var fieldset = $('.addresses');
+				if ($('.addresses-" . $this->id . "').length > 0) {
+					var fieldset = $('.addresses-" . $this->id . "');
 					var btn = $('<button>Add address</button>').on('click', function(e){
 						e.preventDefault();
 
