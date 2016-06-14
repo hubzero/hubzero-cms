@@ -1508,7 +1508,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 					// Construct User specific Email ThreadToken
 					// Version, type, userid, xforumid
-					$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
+					$token = $encryptor->buildEmailToken(1, 2, $userID, $post->get('thread', $post->get('id')));
 
 					// add unsubscribe link
 					$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
@@ -1692,7 +1692,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				'activity' => [
 					'action'      => 'deleted',
 					'scope'       => 'forum.thread',
-					'scope_id'    => $row->get('id'),
+					'scope_id'    => $post->get('thread'),
 					'description' => Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED', '<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'),
 					'details'     => array(
 						'thread' => $post->get('thread'),
