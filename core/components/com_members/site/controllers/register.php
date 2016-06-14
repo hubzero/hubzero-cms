@@ -828,12 +828,18 @@ class Register extends SiteController
 				// If we managed to create a user
 				if ($user->save())
 				{
+					$access = array();
+					foreach ($fields as $field)
+					{
+						$access[$field->get('name')] = $field->get('access');
+					}
+
 					$profile = $xregistration->_registration['_profile'];
 
 					// Save profile data
 					$member = Member::oneOrNew($user->get('id'));
 
-					if (!$member->saveProfile($profile))
+					if (!$member->saveProfile($profile, $access))
 					{
 						$this->setError($member->getError());
 						$result = false;

@@ -12,7 +12,7 @@ if (!HUB) {
 	var HUB = {};
 }
 
-if(!HUB.Members) {
+if (!HUB.Members) {
 	HUB.Members = {};
 }
 
@@ -252,9 +252,6 @@ HUB.Members.Profile = {
 			{
 				wykiwygs   = [];
 			}
-			
-			//call ajaxLoad which triggers re-apply
-			jQuery(document).trigger('ajaxLoad');
 		}
 	},
 	
@@ -330,7 +327,10 @@ HUB.Members.Profile = {
 				//re-initalize autocompler for tags and wiki editor for bio
 				HUB.Members.Profile.editInterestsAutocompleterReinstantiate();
 				HUB.Members.Profile.editBiographyEditorReinstantiate();
-			
+
+				//call ajaxLoad which triggers re-apply
+				jQuery(document).trigger('ajaxLoad');
+
 				//update the complete ness meter
 				var new_completeness = $("#profile-page-content #member-profile-completeness #meter-percent").attr("data-percent");
 				$("#page_options #meter-percent").width( new_completeness + "%" );

@@ -610,7 +610,10 @@ foreach ($profiles as $profile)
 
 		if (!empty($scripts))
 		{
-			$this->js("jQuery(document).ready(function($){\n" . implode("\n", $scripts) . "\n});");
+			//$this->js("jQuery(document).ready(function($){\n" . implode("\n", $scripts) . "\n});");
+			$this->js("function profileDependencies(){\n" . implode("\n", $scripts) . "\n};");
+			$this->js("jQuery(document).ready(function($){\nprofileDependencies();\n});");
+			$this->js("jQuery(document).on('ajaxLoad', function($){\nprofileDependencies();\n});");
 		}
 		?>
 
