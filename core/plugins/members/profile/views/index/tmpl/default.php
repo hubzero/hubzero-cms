@@ -509,7 +509,7 @@ foreach ($profiles as $profile)
 				$profile->set('access', 5);
 			}
 
-			if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels()))
+			if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels()) || $isUser)
 			{
 				$cls = array('profile-' . $field->get('name'));
 
