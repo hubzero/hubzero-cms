@@ -34,7 +34,7 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 use Components\Courses\Tables;
-use Date;
+use Hubzero\Utility\Date;
 use User;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php');
