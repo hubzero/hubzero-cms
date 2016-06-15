@@ -76,6 +76,21 @@
 		margin-top: 65px;
 	}
 
+	.address-field-wrap {
+		position: relative;
+		padding: 0 0 1em 0;
+		margin: 0 0 1em 0;
+		border-bottom: 1px solid #eee;
+	}
+	.address-add {
+		text-align: center;
+	}
+	.address-remove {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
 /* Account Creation */
 	.account-activation {
 		margin: 3em 0;

@@ -581,6 +581,21 @@
 		margin-top: 1.65em;
 	}
 
+	#profile .address-field-wrap {
+		position: relative;
+		padding: 0 0 1em 0;
+		margin: 0 0 1em 0;
+		border-bottom: 1px solid #eee;
+	}
+	#profile .address-add {
+		text-align: center;
+	}
+	#profile .address-remove {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
 /* Member Address */
 	.member-address-form fieldset p {
 		margin: 0;

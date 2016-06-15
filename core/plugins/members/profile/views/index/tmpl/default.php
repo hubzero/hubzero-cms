@@ -388,6 +388,38 @@ foreach ($profiles as $profile)
 		<?php endif; ?>
 
 		<?php
+		function renderIfJson($v)
+		{
+			if (strstr($v, '{'))
+			{
+				$v = json_decode((string)$v, true);
+
+				if (!$v|| json_last_error() !== JSON_ERROR_NONE)
+				{
+					continue;
+				}
+
+				$o = array();
+				$o[] = '<table>';
+				$o[] = '<tbody>';
+				foreach ($v as $nm => $vl)
+				{
+					if (!trim($vl))
+					{
+						continue;
+					}
+					//$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+					$o[] = '<tr><th>' . $nm . ':</th><td>' . $vl . '</td></tr>';
+				}
+				$o[] = '</tbody>';
+				$o[] = '</table>';
+
+				//$v = implode('<br />', $v);
+				$v = implode("\n", $o);
+			}
+			return $v;
+		}
+
 		$scripts = array();
 		$toggle = array();
 
@@ -537,23 +569,13 @@ foreach ($profiles as $profile)
 				{
 					foreach ($value as $k => $v)
 					{
-						if (strstr($v, '{'))
-						{
-							$v = json_decode((string)$v, true);
-
-							if (!$v|| json_last_error() !== JSON_ERROR_NONE)
-							{
-								continue;
-							}
-
-							foreach ($v as $nm => $vl)
-							{
-								$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
-							}
-
-							$value[$k] = implode('<br />', $v);
-						}
+						$value[$k] = renderIfJson($v);
 					}
+					$value = implode('<br />', $value);
+				}
+				else
+				{
+					$value = renderIfJson($value);
 				}
 
 				if (empty($value))

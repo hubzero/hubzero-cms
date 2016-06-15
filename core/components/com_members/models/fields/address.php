@@ -103,6 +103,7 @@ class Address extends Field
 				$value['longitude'] = '';
 			}
 
+			$html[] = '<div class="address-field-wrap">';
 			$html[] = '<ul class="address-field">';
 			$html[] = '<li>';
 			$html[] = '<label for="' . $this->id . $i . '">' . $lang->txt('Street') . '</label>';
@@ -135,6 +136,7 @@ class Address extends Field
 			$html[] = '<input type="hidden" id="' . $this->id . $i . '" name="' . $this->name . '[' . $i . '][longitude]" value="' . htmlspecialchars($value['longitude'], ENT_COMPAT, 'UTF-8') . '" />';
 			$html[] = '</li>';
 			$html[] = '</ul>';
+			$html[] = '</div>';
 		}
 
 		// End the radio field output.
@@ -142,28 +144,54 @@ class Address extends Field
 
 		Behavior::framework(true);
 		App::get('document')->addScriptDeclaration("
-			jQuery(document).ready(function($){
+			function manageProfileAddresses() {
 				if ($('.addresses-" . $this->id . "').length > 0) {
 					var fieldset = $('.addresses-" . $this->id . "');
-					var btn = $('<button>Add address</button>').on('click', function(e){
+					var btn = $('<p class=\"address-add\"><a class=\"icon-add\" href=\"#\">Add another address</a></p>').on('click', function(e){
 						e.preventDefault();
 
 						var grp = fieldset
-							.find('.address-field')
+							.find('.address-field-wrap')
 							.last()
 							.clone();
 						grp.find('input').each(function(){
 							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
+							this.value = '';
 						});
 						grp.find('select').each(function(){
 							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
+							this.selectedIndex = 0;
 						});
+						if (!grp.find('.address-remove').length) {
+							var rmv = $('<a class=\"address-remove icon-remove\" href=\"#\">Remove</a>');
+							grp.append(rmv);
+						}
 						grp.appendTo(fieldset);
+
+						fieldset.find('.address-remove').off('click').on('click', function(e){
+							e.preventDefault();
+							$(this).parent().remove();
+						});
 					});
 					fieldset.after(btn);
+					fieldset.find('.address-field-wrap').each(function(i, grp){
+						if (i === 0) {
+							return;
+						}
+						grp = $(grp);
+						if (!grp.find('.address-remove').length) {
+							var rmv = $('<a class=\"address-remove icon-remove\" href=\"#\">Remove</a>').on('click', function(e){
+								e.preventDefault();
+								$(this).parent().remove();
+							});
+							grp.append(rmv);
+						}
+					});
 				}
-			});
+			};
 		");
+		App::get('document')->addScriptDeclaration("jQuery(document).ready(function($){\nmanageProfileAddresses();\n});");
+		App::get('document')->addScriptDeclaration("jQuery(document).on('ajaxLoad', function($){\nmanageProfileAddresses();\n});");
 
 		return implode($html);
 	}
