@@ -37,6 +37,7 @@ use Hubzero\Component\SiteController;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Models\Profile;
 use Components\Members\Models\Member;
+use Components\Members\Helpers\Filters;
 use Component;
 use Document;
 use Pathway;
@@ -52,6 +53,7 @@ use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php');
 
 /**
  * Members controller class for profiles
@@ -280,51 +282,67 @@ class Profiles extends SiteController
 	public function browseTask()
 	{
 		// Incoming
-		$filters = array(
-			'limit'  => Request::getVar('limit', Config::get('list_limit'), 'request'),
-			'start'  => Request::getInt('limitstart', 0, 'get'),
-			'sortby' => strtolower(Request::getWord('sortby', 'name')),
-			'search' => Request::getVar('search', ''),
-			'index'  => Request::getWord('index', ''),
-			'access' => User::getAuthorisedViewLevels()
-		);
+		$filters = Filters::getFilters("{$this->_option}.{$this->_controller}");
 
 		// Build query
-		$entries = Member::all()
+		$entries = Member::all();
+
+		$a = $entries->getTableName();
+		$b = Profile::blank()->getTableName();
+
+		$entries
 			->including(['profiles', function ($profile){
 				$profile
 					->select('*')
 					->whereIn('access', User::getAuthorisedViewLevels());
 			}])
-			->whereEquals('block', 0)
-			->whereEquals('activation', 1)
-			->where('approved', '>', 0);
+			->whereEquals($a . '.block', 0)
+			->whereEquals($a . '.activation', 1)
+			->where($a . '.approved', '>', 0);
 
+		// Take filters and apply them to the tasks
 		if ($filters['search'])
 		{
-			$entries->whereLike('name', strtolower((string)$filters['search']), 1)
-				->orWhereLike('username', strtolower((string)$filters['search']), 1)
-				->orWhereLike('email', strtolower((string)$filters['search']), 1)
-				->resetDepth();
+			foreach ($filters['search'] as $term)
+			{
+				//$entries->where($a . '.name', 'LIKE', "%{$term}%");
+
+				$entries->whereLike($a . '.name', strtolower((string)$term), 1)
+					->orWhereLike($a . '.username', strtolower((string)$term), 1)
+					->orWhereLike($a . '.email', strtolower((string)$term), 1)
+					->resetDepth();
+			}
+		}
+		if ($filters['q'])
+		{
+			/*$entries->join($b, $b . '.user_id', $a . '.id', 'inner');
+
+			foreach ($filters['q'] as $q)
+			{
+				$entries->where($b . '.profile_key', '=', $q['field'], 'and', 1)
+					->where($b . '.profile_value', $q['o'], $q['value'], 'and', 1)
+					->resetDepth();
+			}*/
+			$db = App::get('db');
+			$i = 1;
+			foreach ($filters['q'] as $q)
+			{
+				if ($q['o'] == 'LIKE')
+				{
+					$q['value'] = '%' . $q['value'] . '%';
+				}
+				$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']), 'inner');
+				$entries->whereIn('t' . $i . '.access', User::getAuthorisedViewLevels());
+				$i++;
+			}
+
+			//$entries->whereIn($b . '.access', User::getAuthorisedViewLevels());
 		}
 
-		if ($filters['index'])
-		{
-			$entries->where('surname', 'LIKE', $filters['index'] . '%');
-		}
-
-		if (!empty($filters['access']))
-		{
-			$entries->whereIn('access', $filters['access']);
-		}
+		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
 
 		switch ($filters['sortby'])
 		{
-			case 'organization':
-				$filters['sort'] = 'surname';
-				$filters['sort_Dir'] = 'asc';
-			break;
-
 			case 'name':
 			default:
 				$filters['sort'] = 'surname';
@@ -356,15 +374,6 @@ class Profiles extends SiteController
 			Lang::txt(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&task=' . $this->_task
 		);
-		// Was a specific index (letter) set?
-		if ($filters['index'])
-		{
-			// Add to the pathway
-			Pathway::append(
-				strtoupper($filters['index']),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task . '&index=' . $filters['index']
-			);
-		}
 
 		// Get stats
 		if (!($stats = Cache::get('members.stats')))
@@ -385,6 +394,69 @@ class Profiles extends SiteController
 			->set('total_members', $stats->total_members)
 			->set('total_public_members', $stats->total_public_members)
 			->display();
+	}
+
+	/**
+	 * Retrieves option values for a profile field
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /members/fieldValues
+	 * @apiParameter {
+	 * 		"name":        "field",
+	 * 		"description": "Profile field of interest",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     ""
+	 * }
+	 * @return  void
+	 */
+	public function fieldValuesTask()
+	{
+		$name = Request::getVar('field', '');
+
+		$field = Field::all()
+			->whereEquals('name', $name)
+			->row();
+
+		if (!$field->get('id'))
+		{
+			App::abort(404, 'Field not found');
+		}
+
+		// Create object with values
+		$response = new \stdClass();
+		$response->type = $field->get('type');
+
+		$values = array();
+
+		if ($field->get('type') == 'country')
+		{
+			$countries = \Hubzero\Geocode\Geocode::countries();
+
+			foreach ($countries as $option)
+			{
+				// Create a new option object based on the <option /> element.
+				$tmp = new \stdClass;
+				$tmp->value = (string) $option->code;
+				$tmp->label = trim((string) $option->name);
+
+				// Add the option object to the result set.
+				$values[] = $tmp;
+			}
+		}
+		else
+		{
+			foreach ($field->options()->ordered()->rows() as $option)
+			{
+				$values[] = $option->toObject();
+			}
+		}
+
+		$response->values = $values;
+
+		// Return object
+		echo json_encode($response);
+		exit();
 	}
 
 	/**
@@ -505,18 +577,18 @@ class Profiles extends SiteController
 			$rtrn = Request::getVar('REQUEST_URI', Route::url($profile->link()), 'server');
 			/*
 			App::redirect(
-					Route::url('index.php?option=com_members&controller=member&task=unconfirmed&return=' . base64_encode($rtrn))
-				);
-				*/
+				Route::url('index.php?option=com_members&controller=member&task=unconfirmed&return=' . base64_encode($rtrn))
+			);
+			*/
 			// Prep vars for unconfirmed page
 			$return = Request::getVar('return', urlencode('/'));
-			$this->view->title    = Lang::txt('COM_MEMBERS_REGISTER_UNCONFIRMED');
-			$this->view->email = $profile->get('email');
-			$this->view->sitename = Config::get('sitename');
-			$this->view->return = urlencode($rtrn);
 
 			// Offer explaination and eternal redemption to the user, instead of leaving them high and dry
 			$this->view
+				->set('title', Lang::txt('COM_MEMBERS_REGISTER_UNCONFIRMED'))
+				->set('email', $profile->get('email'))
+				->set('sitename', Config::get('sitename'))
+				->set('return', urlencode($rtrn))
 				->setErrors($this->getErrors())
 				->setName('register')
 				->setLayout('unconfirmed')
@@ -682,8 +754,8 @@ class Profiles extends SiteController
 		$this->view->validated = true;
 
 		$password_rules = \Hubzero\Password\Rule::all()
-					->whereEquals('enabled', 1)
-					->rows();
+			->whereEquals('enabled', 1)
+			->rows();
 
 		$this->view->password_rules = array();
 
@@ -1290,17 +1362,17 @@ class Profiles extends SiteController
 		}
 
 		// Validate profile data
-		$fields = \Components\Members\Models\Profile\Field::all()
+		$fields = Field::all()
 			->including(['options', function ($option){
 				$option
 					->select('*');
 			}])
-			->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			->where('action_edit', '!=', Field::STATE_HIDDEN)
 			->ordered()
 			->rows();
 
 		$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
-		$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile));
+		$form->load(Field::toXml($fields, 'edit', $profile));
 		$form->bind(new \Hubzero\Config\Registry($profile));
 
 		$errors = array(

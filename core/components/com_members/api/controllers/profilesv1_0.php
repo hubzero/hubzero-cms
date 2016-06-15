@@ -34,6 +34,7 @@ namespace Components\Members\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\Members\Models\Member;
 use Components\Members\Models\Profile\Field;
+use Components\Members\Helpers\Filters;
 use Component;
 use Exception;
 use stdClass;
@@ -45,6 +46,7 @@ use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php');
 
 /**
  * Members API controller class
@@ -161,10 +163,14 @@ class Profilesv1_0 extends ApiController
 			foreach ($rows as $entry)
 			{
 				$obj = new stdClass;
-				$obj->id        = $entry->get('id');
-				$obj->name      = $entry->get('name');
+				$obj->id           = $entry->get('id');
+				$obj->username     = $entry->get('username');
+				$obj->name         = $entry->get('name');
+				$obj->givenName    = $entry->get('givenName');
+				$obj->middleName   = $entry->get('middleName');
+				$obj->surname      = $entry->get('surname');
 				$obj->organization = $entry->get('organization');
-				$obj->uri       = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id')), '/'));
+				$obj->uri          = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id')), '/'));
 
 				$response->members[] = $obj;
 			}
@@ -250,9 +256,9 @@ class Profilesv1_0 extends ApiController
 		$user->set('activation', -rand(1, pow(2, 31)-1));
 		$user->set('access', 1);
 		$user->set('password', $password);
-		$user->set('password_clear', $password);
+		//$user->set('password_clear', $password);
 
-		/*$result = $user->save();
+		$result = $user->save();
 
 		$user->set('password_clear', '');
 		$user->set('password', '');
@@ -269,7 +275,7 @@ class Profilesv1_0 extends ApiController
 		// Did we successfully create/update an account?
 		if (!$result)
 		{
-			return $this->error(500, Lang::txt('Account creation failed.'));
+			App::abort(500, Lang::txt('Account creation failed.'));
 		}
 
 		if ($groups = Request::getVar('groups', array(), 'post'))
@@ -277,16 +283,17 @@ class Profilesv1_0 extends ApiController
 			foreach ($groups as $id)
 			{
 				$group = \Hubzero\User\Group::getInstance($id);
+
 				if ($group)
 				{
-					if (!in_array($user->get('id'), $group->get('members'))
+					if (!in_array($user->get('id'), $group->get('members')))
 					{
 						$group->add('members', array($user->get('id')));
 						$group->update();
 					}
 				}
 			}
-		}*/
+		}
 
 		// Create a response object
 		$response = new stdClass;
@@ -295,7 +302,7 @@ class Profilesv1_0 extends ApiController
 		$response->email    = $user->get('email');
 		$response->username = $user->get('username');
 
-		$this->seend($response);
+		$this->send($response);
 	}
 
 	/**
@@ -315,7 +322,8 @@ class Profilesv1_0 extends ApiController
 	public function readTask()
 	{
 		$userid = Request::getInt('id', 0);
-		$result = User::getInstance($userid);
+
+		$result = Member::oneOrFail($userid);
 
 		if (!$result || !$result->get('id'))
 		{
@@ -326,23 +334,14 @@ class Profilesv1_0 extends ApiController
 		$base = rtrim(Request::base(), '/');
 
 		$profile = array(
-			'id'                => $result->get('uidNumber'),
+			'id'                => $result->get('id'),
 			'username'          => $result->get('username'),
 			'name'              => $result->get('name'),
 			'first_name'        => $result->get('givenName'),
 			'middle_name'       => $result->get('middleName'),
 			'last_name'         => $result->get('surname'),
-			'bio'               => $result->get('bio'),
 			'email'             => $result->get('email'),
-			'phone'             => $result->get('phone'),
-			'webpage'           => $result->get('url'),
-			'gender'            => $result->get('gender'),
-			'organization'      => $result->get('organization'),
-			'organization_type' => $result->get('orgtype'),
-			'country_resident'  => $result->get('countryresident'),
-			'country_origin'    => $result->get('countryorigin'),
 			'member_since'      => $result->get('registerDate'),
-			'orcid'             => $result->get('orcid'),
 			'picture'   => array(
 				'thumb' => $result->picture(0, true),
 				'full'  => $result->picture(0, false)
@@ -350,6 +349,32 @@ class Profilesv1_0 extends ApiController
 			'interests' => array(),
 			'url'       => str_replace('/api', '', $base . '/' . ltrim(Route::url($result->link()), '/'))
 		);
+
+		// Get custom fields
+		$attribs = Field::all()
+			->ordered()
+			->rows();
+
+		foreach ($attribs as $attrib)
+		{
+			$key = $attrib->get('name');
+
+			if ($attrib->get('type') == 'tags')
+			{
+				$val = $result->tags('string');
+			}
+			else
+			{
+				$val = $result->get($key);
+			}
+
+			if (is_array($val))
+			{
+				$val = implode(';', $val);
+			}
+
+			$profile[$key] = $val;
+		}
 
 		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 		$cloud = new \Components\Members\Models\Tags($userid);
@@ -567,5 +592,67 @@ class Profilesv1_0 extends ApiController
 		$sql = "SELECT r.*, tv.id as revisionid FROM `#__resources` as r, `#__tool_version` as tv WHERE tv.toolname=r.alias and tv.instance=" . $database->quote($appname);
 		$database->setQuery($sql);
 		return $database->loadObject();
+	}
+
+	/**
+	 * Retrieves option values for a profile field
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /members/fieldValues
+	 * @apiParameter {
+	 * 		"name":        "field",
+	 * 		"description": "Profile field of interest",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     ""
+	 * }
+	 * @return  void
+	 */
+	public function fieldValuesTask()
+	{
+		$name = Request::getVar('field', '');
+
+		$field = Field::all()
+			->whereEquals('name', $name)
+			->row();
+
+		if (!$field->get('id'))
+		{
+			App::abort(404, 'Field not found');
+		}
+
+		// Create object with values
+		$response = new stdClass();
+		$response->type = $field->get('type');
+
+		$values = array();
+
+		if ($field->get('type') == 'country')
+		{
+			$countries = \Hubzero\Geocode\Geocode::countries();
+
+			foreach ($countries as $option)
+			{
+				// Create a new option object based on the <option /> element.
+				$tmp = new stdClass;
+				$tmp->value = (string) $option->code;
+				$tmp->label = trim((string) $option->name);
+
+				// Add the option object to the result set.
+				$values[] = $tmp;
+			}
+		}
+		else
+		{
+			foreach ($field->options()->ordered()->rows() as $option)
+			{
+				$values[] = $option->toObject();
+			}
+		}
+
+		$response->values = $values;
+
+		// Return object
+		$this->send($response);
 	}
 }
