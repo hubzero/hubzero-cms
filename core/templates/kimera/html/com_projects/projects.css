@@ -1280,7 +1280,7 @@
 		position: absolute;
 		top: 0;
 		right: -16px;
-		z-index: 1000;
+		z-index: 998;
 	}
 	ol.steps li a {
 		color: #333;
