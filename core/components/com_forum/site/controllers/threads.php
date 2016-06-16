@@ -789,6 +789,7 @@ class Threads extends SiteController
 		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
+			// This means we're just updating the file description
 			if ($row->id)
 			{
 				if (!$row->check())
@@ -838,6 +839,16 @@ class Threads extends SiteController
 			{
 				$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
 				return;
+			}
+
+			// Remove previous file
+			if ($row->filename)
+			{
+				if (!Filesystem::delete($path . DS . $row->filename))
+				{
+					$this->setError(Lang::txt('PLG_GROUPS_FORUM_ERROR_UPLOADING'));
+					return;
+				}
 			}
 
 			// File was uploaded

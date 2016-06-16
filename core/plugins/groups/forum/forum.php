@@ -1709,19 +1709,40 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Incoming
+		$description = trim(Request::getVar('description', ''));
+
+		$row = new \Components\Forum\Tables\Attachment($this->database);
+		$row->loadByPost($post_id);
+		if (!$row)
+		{
+			$row = new \Components\Forum\Tables\Attachment($this->database);
+		}
+		$row->description = $description;
+		$row->post_id = $post_id;
+		$row->parent = $listdir;
+
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
+			// This means we're just updating the file description
+			if ($row->id)
+			{
+				if (!$row->check())
+				{
+					$this->setError($row->getError());
+				}
+				if (!$row->store())
+				{
+					$this->setError($row->getError());
+				}
+			}
 			return;
 		}
 
-		// Incoming
-		$description = trim(Request::getVar('description', ''));
-
 		// Construct our file path
 		$path = PATH_APP . DS . trim($this->params->get('filepath', '/site/forum'), DS) . DS . $listdir;
-
 		if ($post_id)
 		{
 			$path .= DS . $post_id;
@@ -1750,16 +1771,27 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
+			// Perform the upload
+			if (!Filesystem::isSafe($path . DS . $file['name']))
+			{
+				$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
+				return;
+			}
+
+			// Remove previous file
+			if ($row->filename)
+			{
+				if (!Filesystem::delete($path . DS . $row->filename))
+				{
+					$this->setError(Lang::txt('PLG_GROUPS_FORUM_ERROR_UPLOADING'));
+					return;
+				}
+			}
+
 			// File was uploaded
 			// Create database entry
-			$row = new \Components\Forum\Tables\Attachment($this->database);
-			$row->bind(array(
-				'id' => 0,
-				'parent' => $listdir,
-				'post_id' => $post_id,
-				'filename' => $file['name'],
-				'description' => $description
-			));
+			$row->filename = $file['name'];
+
 			if (!$row->check())
 			{
 				$this->setError($row->getError());
