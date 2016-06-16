@@ -197,24 +197,39 @@ class Attachment extends Relational
 			if (!Filesystem::makeDirectory($destination))
 			{
 				$this->addError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH') . ': ' . substr($destination, strlen(PATH_ROOT)));
-
 				return false;
 			}
 		}
 
+		// Make sure the name is unique
 		$filename = $this->automaticFilename(array(
 			'filename' => $name,
 			'parent'   => $this->get('parent'),
 			'post_id'  => $this->get('post_id')
 		));
 
-		$destination .= DS . $filename;
-
-		if (!Filesystem::upload($temp, $destination))
+		// Upload the file
+		if (!Filesystem::upload($temp, $destination . DS . $filename))
 		{
 			$this->addError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
-
 			return false;
+		}
+
+		// Make sure the file is safe
+		if (!Filesystem::isSafe($destination . DS . $filename))
+		{
+			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
+			return false;
+		}
+
+		// Remove previous file
+		if ($this->get('filename'))
+		{
+			if (!Filesystem::delete($destination . DS . $this->get('filename')))
+			{
+				$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
+				return false;
+			}
 		}
 
 		$this->set('filename', $filename);
