@@ -160,11 +160,16 @@ class Authors extends SiteController
 				{
 					$uid = intval($cid);
 				}
+				else
+				{
+					// Zero defaults to current logged-in user
+					$uid = -99999999;
+				}
 
-				$profile = User::getInstance($authid);
+				$profile = User::getInstance($uid);
 
 				// Find the user's account info
-				if (!$profile)
+				if (!$profile->get('id'))
 				{
 					// No account
 					// This should mean we have an author that is not a site member
@@ -286,7 +291,7 @@ class Authors extends SiteController
 							'action'      => 'updated',
 							'scope'       => 'resource',
 							'scope_id'    => $resource->get('id'),
-							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
+							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $author->get('name'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
 							'details'     => array(
 								'title' => $resource->get('title'),
 								'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))

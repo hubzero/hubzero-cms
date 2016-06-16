@@ -264,37 +264,15 @@ class Author extends Relational
 
 		$uid = $row->get('authorid');
 
-		if (!$uid || $uid > 0)
+		// If not account if found, use a negative timestamp
+		if ($uid == null)
 		{
-			$row = self::all()
-				->select('authorid')
-				->ordered('authorid', 'asc')
-				->row();
-
-			$uid = $row->get('authorid');
-
-			// Check for potentially conflicting profile
-			$row = $this->getQuery()
-				->select('uidNumber')
-				->from('#__xprofiles')
-				->order('uidNumber', 'asc')
-				->limit(1)
-				->execute();
-
-			$pid = $row->uidNumber;
-			if ($pid < $uid)
-			{
-				$uid = $pid;
-			}
-
-			if ($uid > 0)
-			{
-				$uid = 0;
-			}
-			$uid--;
+			return -(time());
 		}
-
-		return $uid;
+		else
+		{
+			return $uid;
+		}
 	}
 
 	/**
