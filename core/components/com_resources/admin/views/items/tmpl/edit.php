@@ -211,19 +211,20 @@ function popratings()
 					<input type="text" name="alias" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
 				</div>
 
-				<div class="col width-50 fltlft">
-					<div class="input-wrap">
-						<label for="attrib-location"><?php echo Lang::txt('COM_RESOURCES_FIELD_LOCATION'); ?>:</label><br />
-						<input type="text" name="attrib[location]" id="attrib-location" maxlength="250" value="<?php echo $this->attribs->get('location', ''); ?>" />
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="attrib-location"><?php echo Lang::txt('COM_RESOURCES_FIELD_LOCATION'); ?>:</label><br />
+							<input type="text" name="attrib[location]" id="attrib-location" maxlength="250" value="<?php echo $this->attribs->get('location', ''); ?>" />
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="attrib-timeof"><?php echo Lang::txt('COM_RESOURCES_FIELD_TIME'); ?>:</label><br />
+							<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? Date::of($time)->toLocal('Y-m-d H:i:s') : ''; ?>" placeholder="YYYY-MM-DD hh:mm:ss" />
+						</div>
 					</div>
 				</div>
-				<div class="col width-50 fltrt">
-					<div class="input-wrap">
-						<label for="attrib-timeof"><?php echo Lang::txt('COM_RESOURCES_FIELD_TIME'); ?>:</label><br />
-						<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? Date::of($time)->toLocal('Y-m-d H:i:s') : ''; ?>" placeholder="YYYY-MM-DD hh:mm:ss" />
-					</div>
-				</div>
-				<div class="clr"></div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?>">
 					<label for="attrib-canonical"><?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL'); ?>:</label><br />
@@ -247,19 +248,20 @@ function popratings()
 					<input type="text" name="attrib[duration]" id="attrib[duration]" maxlength="100" value="<?php echo $this->attribs->get('duration', ''); ?>" />
 				</div>
 
-				<div class="col width-50 fltlft">
-					<div class="input-wrap">
-						<label for="attrib[width]"><?php echo Lang::txt('COM_RESOURCES_FIELD_WIDTH'); ?>:</label><br />
-						<input type="text" name="attrib[width]" id="attrib[width]" maxlength="250" value="<?php echo $this->attribs->get('width', ''); ?>" />
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="attrib[width]"><?php echo Lang::txt('COM_RESOURCES_FIELD_WIDTH'); ?>:</label><br />
+							<input type="text" name="attrib[width]" id="attrib[width]" maxlength="250" value="<?php echo $this->attribs->get('width', ''); ?>" />
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="attrib[height]"><?php echo Lang::txt('COM_RESOURCES_FIELD_HEIGHT'); ?>:</label><br />
+							<input type="text" name="attrib[height]" id="attrib[height]" maxlength="250" value="<?php echo $this->attribs->get('height', ''); ?>" />
+						</div>
 					</div>
 				</div>
-				<div class="col width-50 fltrt">
-					<div class="input-wrap">
-						<label for="attrib[height]"><?php echo Lang::txt('COM_RESOURCES_FIELD_HEIGHT'); ?>:</label><br />
-						<input type="text" name="attrib[height]" id="attrib[height]" maxlength="250" value="<?php echo $this->attribs->get('height', ''); ?>" />
-					</div>
-				</div>
-				<div class="clr"></div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ATTRIBUTES_HINT'); ?>">
 					<label for="attrib[attributes]"><?php echo Lang::txt('COM_RESOURCES_FIELD_ATTRIBUTES'); ?>:</label><br />

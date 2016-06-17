@@ -739,12 +739,9 @@ class Items extends AdminController
 			$authnames = array();
 			if ($this->view->row->id)
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
-
-				$ma = new \Components\Members\Tables\Association($this->database);
-				$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization
-						FROM " . $ma->getTableName() . " AS a
-						LEFT JOIN " . $mp->getTableName() . " AS n ON n.uidNumber=a.authorid
+				$sql = "SELECT n.id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization
+						FROM `#__author_assoc` AS a
+						LEFT JOIN `#__users` AS n ON n.id=a.authorid
 						WHERE a.subtable='resources'
 						AND a.subid=" . $this->view->row->id . "
 						ORDER BY a.ordering";
