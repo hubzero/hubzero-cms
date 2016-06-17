@@ -217,6 +217,7 @@ if ($this->config->get('access-manage-section')) {
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
+						<input type="hidden" name="fields[id]" value="" />
 						<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
 						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
 						<input type="hidden" name="active" value="forum" />
@@ -391,6 +392,7 @@ if ($this->config->get('access-manage-section')) {
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
+						<input type="hidden" name="fields[id]" value="" />
 						<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
 						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
 						<input type="hidden" name="active" value="forum" />

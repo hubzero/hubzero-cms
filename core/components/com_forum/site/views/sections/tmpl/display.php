@@ -82,7 +82,8 @@ $this->css()
 									<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
 									<input type="hidden" name="fields[scope]" value="site" />
 									<input type="hidden" name="fields[scope_id]" value="0" />
-									<input type="hidden" name="fields[access]" value="0" />
+									<input type="hidden" name="fields[access]" value="<?php echo $this->escape($section->get('access')); ?>" />
+									<input type="hidden" name="fields[state]" value="<?php echo $this->escape($section->get('state')); ?>" />
 									<input type="hidden" name="controller" value="sections" />
 									<input type="hidden" name="task" value="save" />
 									<?php echo Html::input('token'); ?>
@@ -274,7 +275,8 @@ $this->css()
 							<input type="hidden" name="fields[id]" value="" />
 							<input type="hidden" name="fields[scope]" value="site" />
 							<input type="hidden" name="fields[scope_id]" value="0" />
-							<input type="hidden" name="fields[access]" value="0" />
+							<input type="hidden" name="fields[access]" value="1" />
+							<input type="hidden" name="fields[state]" value="1" />
 							<?php echo Html::input('token'); ?>
 						</fieldset>
 					</form>
@@ -308,7 +310,8 @@ $this->css()
 						<input type="hidden" name="fields[id]" value="" />
 						<input type="hidden" name="fields[scope]" value="site" />
 						<input type="hidden" name="fields[scope_id]" value="0" />
-						<input type="hidden" name="fields[access]" value="0" />
+						<input type="hidden" name="fields[access]" value="1" />
+						<input type="hidden" name="fields[state]" value="1" />
 
 						<?php echo Html::input('token'); ?>
 					</fieldset>

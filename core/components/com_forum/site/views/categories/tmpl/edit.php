@@ -109,7 +109,7 @@ $this->css();
 
 			<input type="hidden" name="fields[alias]" value="<?php echo $this->category->get('alias'); ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->category->get('id'); ?>" />
-			<input type="hidden" name="fields[state]" value="1" />
+			<input type="hidden" name="fields[state]" value="<?php echo $this->category->get('state', 1); ?>" />
 			<input type="hidden" name="fields[scope]" value="site" />
 			<input type="hidden" name="fields[scope_id]" value="0" />
 

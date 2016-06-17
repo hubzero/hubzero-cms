@@ -576,6 +576,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Incoming posted data
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+		$fields['state'] = 1;
 
 		// Instantiate a new table row and bind the incoming data
 		$section = \Components\Forum\Models\Section::oneOrNew($fields['id'])->set($fields);

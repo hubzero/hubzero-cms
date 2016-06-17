@@ -537,6 +537,11 @@ class Post extends Relational
 	 */
 	public function save()
 	{
+		$section  = $this->set('section');
+		$this->removeAttribute('section');
+		$category = $this->set('category');
+		$this->removeAttribute('category');
+
 		if (!$this->get('access'))
 		{
 			$this->set('access', (int) \Config::get('access'));
@@ -627,6 +632,15 @@ class Post extends Relational
 				$attachment->set('state', $this->get('state'));
 				$attachment->save();
 			}
+		}
+
+		if ($section)
+		{
+			$this->set('section', $section);
+		}
+		if ($category)
+		{
+			$this->set('category', $category);
 		}
 
 		return $result;
