@@ -161,7 +161,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 			// Validate profile fields
 			$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
-			$form->load(Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
+			$form->load(Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile));
 			$form->bind(new Hubzero\Config\Registry($profile));
 
 			if (!$form->validate($profile))
