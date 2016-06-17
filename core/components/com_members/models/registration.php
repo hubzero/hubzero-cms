@@ -223,7 +223,11 @@ class Registration
 		// Compile profile data
 		foreach ($profile as $key => $data)
 		{
-			if (isset($profile[$key . '_other']))
+			if (isset($profile[$key]) && is_array($profile[$key]))
+			{
+				$profile[$key] = array_filter($profile[$key]);
+			}
+			if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
 			{
 				if (is_array($profile[$key]))
 				{
