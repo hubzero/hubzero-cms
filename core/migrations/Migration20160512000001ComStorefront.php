@@ -2,7 +2,7 @@
 
 use Hubzero\Content\Migration\Base;
 
-// Check to ensure this file is included in Joomla!
+// No direct access
 defined('_HZEXEC_') or die();
 
 /**
@@ -29,6 +29,9 @@ class Migration20160512000001ComStorefront extends Base
 		}
 	}
 
+	/**
+	 * Down
+	 **/
 	public function down()
 	{
 		if ($this->db->tableExists('#__storefront_products') && $this->db->tableHasField('#__storefront_products', 'publish_up'))
@@ -44,5 +47,4 @@ class Migration20160512000001ComStorefront extends Base
 			$this->db->query();
 		}
 	}
-
 }

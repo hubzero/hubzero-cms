@@ -2,7 +2,7 @@
 
 use Hubzero\Content\Migration\Base;
 
-// Check to ensure this file is included in Joomla!
+// No direct access
 defined('_HZEXEC_') or die();
 
 /**
@@ -23,7 +23,7 @@ class Migration20160524000001ComStorefront extends Base
 						`srSId` int(11) DEFAULT NULL,
 						`srStatus` varchar(10) DEFAULT NULL,
 						PRIMARY KEY (`srId`),
-  						UNIQUE KEY `unique keys for a SKU` (`srNumber`,`srSId`)
+						UNIQUE KEY `unique keys for a SKU` (`srNumber`,`srSId`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -43,5 +43,4 @@ class Migration20160524000001ComStorefront extends Base
 			$this->db->query();
 		}
 	}
-
 }
