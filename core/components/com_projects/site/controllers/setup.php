@@ -940,10 +940,17 @@ class Setup extends Base
 			return;
 		}
 
-		if ($this->config->get('edit_settings') == 'custom')
+		// Which section are we editing?
+		$sections = array('info', 'team', 'settings');
+		if ($this->config->get('edit_settings', 0) == 0)
 		{
-			$sections = array('info', 'team', 'settings');
-			$this->section = 'info_custom';
+			array_pop($sections);
+		}
+		$this->section = in_array( $this->section, $sections ) ? $this->section : 'info';
+
+		if ($this->config->get('custom_profile') == 'custom' && ($this->section == 'info' || $this->section == 'info_custom'))
+		{
+			//$sections = array('info_custom', 'team', 'settings');
 			$this->view->fields = Field::all()->order('ordering', 'ASC');
 
 			$projectID = $this->model->get('id');
@@ -952,16 +959,7 @@ class Setup extends Base
 			$projectData = Description::all()->where('project_id', '=', $projectID);
 			$data = Description::collect($projectData);
 			$this->view->data = $data;
-		}
-		else
-		{
-			// Which section are we editing?
-			$sections = array('info', 'team', 'settings');
-			if ($this->config->get('edit_settings', 0) == 0)
-			{
-				array_pop($sections);
-			}
-			$this->section = in_array( $this->section, $sections ) ? $this->section : 'info';
+			$this->section = 'info_custom';
 		}
 
 		// Set the pathway

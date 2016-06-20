@@ -67,6 +67,9 @@
 		<field name="edit_settings" type="list" default="0" label="Allow project settings editing?" description="Enable a screen to edit project settings after project setup">
 			<option value="0">NO</option>
 			<option value="1">YES</option>
+		</field>
+		<field name="custom_profile" type="list" default="0" label="Use custom profile description template?" description="Allows administrators to define project info fields">
+			<option value="0">NO</option>
 			<option value="custom">COM_PROJECTS_USE_TEMPLATE</option>
 		</field>
 		<field name="restricted_data" type="list" default="0" label="Ask about sensitive data?" description="Include a question about sensitive data (HIPAA/FERPA/Export Control)">

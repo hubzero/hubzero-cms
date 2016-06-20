@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 			<li <?php if ($section == $this->section) { echo 'class="activepane"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=' . strtolower($section)); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
 		<?php }
 		else { ?>
-			<li <?php if ($section == 'info' || $section == 'info_custom') { echo 'class="activepane"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=' . strtolower($section)); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
+			<li <?php if ($this->section == 'info' || $this->section == 'info_custom') { echo 'class="activepane"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=' . strtolower($section)); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
 		<?php } ?>
 	<?php } ?>
 </ul>
