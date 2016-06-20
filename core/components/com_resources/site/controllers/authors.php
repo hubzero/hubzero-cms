@@ -300,7 +300,7 @@ class Authors extends SiteController
 						'recipients' => array(
 							['resource', $resource->get('id')],
 							['user', $resource->get('created_by')],
-							['user', $authorid]
+							['user', $author->get('authorid')]
 						)
 					]);
 				}
