@@ -480,16 +480,13 @@ class Queries extends AdminController
 			if (!$no_html && $tmpl != 'component')
 			{
 				// Output messsage and redirect
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
-				);
+				Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED'));
+				return $this->cancelTask();
 			}
 			else
 			{
-				$this->listTask();
+				return $this->listTask();
 			}
-			return;
 		}
 
 		$this->editfolderTask($row);
@@ -523,10 +520,8 @@ class Queries extends AdminController
 		if (!$no_html)
 		{
 			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
-			);
+			Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'));
+			return $this->cancelTask();
 		}
 
 		$this->listTask();
@@ -588,10 +583,8 @@ class Queries extends AdminController
 		if (!$no_html)
 		{
 			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
-			);
+			Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'));
+			return $this->cancelTask();
 		}
 
 		$response = new stdClass;
@@ -599,5 +592,84 @@ class Queries extends AdminController
 		$response->message = Lang::txt('COM_SUPPORT_QUERY_FOLDER_ORDERING_UPDATED');
 
 		echo json_encode($response);
+	}
+
+	/**
+	 * Reset default queries and folders.
+	 * System will repopulate them.
+	 *
+	 * @return  void
+	 */
+	public function resetTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
+		$db = App::get('db');
+
+		$query  = new Query($db);
+		$folder = new QueryFolder($db);
+
+		$db->setQuery("DELETE * FROM " . $db->quoteName($query->getTableName()));
+		$db->query();
+
+		$db->setQuery("DELETE * FROM " . $db->quoteName($folder->getTableName()));
+		$db->query();
+
+		// Get all the default folders
+		$folders = $folder->find('list', array(
+			'user_id'  => 0,
+			'sort'     => 'ordering',
+			'sort_Dir' => 'asc',
+			'iscore'   => 1
+		));
+
+		if (count($folders) <= 0)
+		{
+			$defaults = array(
+				1 => array('Common', 'Mine', 'Custom'),
+				2 => array('Common', 'Mine'),
+			);
+
+			foreach ($defaults as $iscore => $fldrs)
+			{
+				$i = 1;
+
+				foreach ($fldrs as $fldr)
+				{
+					$f = new QueryFolder($db);
+					$f->iscore = $iscore;
+					$f->title = $fldr;
+					$f->check();
+					$f->ordering = $i;
+					$f->user_id = 0;
+					$f->store();
+
+					switch ($f->alias)
+					{
+						case 'common':
+							$j = ($iscore == 1 ? $query->populateDefaults('common', $f->id) : $query->populateDefaults('commonnotacl', $f->id));
+						break;
+
+						case 'mine':
+							$query->populateDefaults('mine', $f->id);
+						break;
+
+						default:
+							// Nothing for custom folder
+						break;
+					}
+
+					$i++;
+				}
+			}
+		}
+
+		$this->cancelTask();
 	}
 }

@@ -33,11 +33,16 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES'), 'support.png');
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::deleteList();
-Toolbar::spacer();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES'), 'support');
+if (User::authorise('core.admin', $this->option))
+{
+	Toolbar::custom('reset', 'refresh.png', 'refresh_f2.png', 'COM_SUPPORT_RESET', false);
+	Toolbar::spacer();
+	Toolbar::addNew();
+	Toolbar::editList();
+	Toolbar::deleteList();
+	Toolbar::spacer();
+}
 Toolbar::help('queries');
 ?>
 <script type="text/javascript">
