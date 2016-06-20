@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_storefront/config.xml
+@file           components/com_storefront/config/config.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -30,11 +30,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-    <fieldset name="basic">
-        <field name="downloadFolder" type="text" menu="hide" default="/media/software" label="COM_STORFRONT_CONFIG_DOWNLOAD_FOLDER_LABEL" description="COM_STORFRONT_CONFIG_DOWNLOAD_FOLDER_DESC" size="50" />
-        <field name="imagesFolder" type="text" menu="hide" default="/site/storefront/products" label="COM_STORFRONT_CONFIG_IMAGES_FOLDER_LABEL" description="COM_STORFRONT_CONFIG_IMAGES_FOLDER_DESC" size="50" />
-    </fieldset>
-    <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-        <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_storefront" section="component" />
-    </fieldset>
+	<fieldset name="basic">
+		<field name="downloadFolder" type="text" menu="hide" default="/media/software" label="COM_STORFRONT_CONFIG_DOWNLOAD_FOLDER_LABEL" description="COM_STORFRONT_CONFIG_DOWNLOAD_FOLDER_DESC" size="50" />
+		<field name="imagesFolder" type="text" menu="hide" default="/site/storefront/products" label="COM_STORFRONT_CONFIG_IMAGES_FOLDER_LABEL" description="COM_STORFRONT_CONFIG_IMAGES_FOLDER_DESC" size="50" />
+		<field name="requirelogin" type="list" default="0" label="COM_STOREFRONT_CONFIG_REQUIRE_LOGIN" description="COM_STOREFRONT_CONFIG_REQUIRE_LOGIN_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="landingPage" type="text" menu="hide" default="" label="COM_STORFRONT_CONFIG_LANDIBG_PAGE" description="COM_STORFRONT_CONFIG_LANDIBG_PAGE_DESC" size="50" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_storefront" section="component" />
+	</fieldset>
 </config>

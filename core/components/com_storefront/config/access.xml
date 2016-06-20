@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_blog/access.xml
+@file           components/com_storefront/config/access.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
