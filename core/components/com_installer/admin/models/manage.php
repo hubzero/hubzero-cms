@@ -305,7 +305,7 @@ class Manage extends Extension
 			}
 			else
 			{
-				$query->where('protected = 0');
+				//$query->where('protected = 0');
 				$query->where('enabled=' . intval($status));
 			}
 		}

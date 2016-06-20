@@ -130,7 +130,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php if (!$item->element) : ?>
 						<strong>X</strong>
 						<?php else : ?>
-							<?php echo Html::manage('state', $item->status, $i, $item->status < 2, 'cb'); ?>
+							<?php echo Html::manage('state', $item->enabled, $i, $item->enabled == 1, 'cb'); ?>
 						<?php endif; ?>
 					</td>
 					<td class="priority-3 center">
