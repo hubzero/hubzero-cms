@@ -36,12 +36,12 @@ $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('C
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_COLLECTION') . ': ' . $text, 'storefront.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
+	Toolbar::apply();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-//JToolBarHelper::spacer();
-//JToolBarHelper::help('category');
+Toolbar::cancel();
+//Toolbar::spacer();
+//Toolbar::help('category');
 
 ?>
 <script type="text/javascript">
@@ -124,5 +124,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>
