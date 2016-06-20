@@ -34,14 +34,14 @@ $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('download');
 Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS') . ' by SKU', 'cart.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 
 Toolbar::custom('downloadSku', 'download.png', '', 'Download CSV', false);
 
-//JToolBarHelper::spacer();
-//JToolBarHelper::help('downloads');
+//Toolbar::spacer();
+//Toolbar::help('downloads');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -65,8 +65,8 @@ $this->view('_submenu')
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_DOWNLOADED', 'downloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'downloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -131,5 +131,5 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

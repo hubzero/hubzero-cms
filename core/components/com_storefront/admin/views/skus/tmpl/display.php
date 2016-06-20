@@ -34,31 +34,31 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKUs', 'storefront.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-//JToolBarHelper::spacer();
-//JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('categories');
+//Toolbar::spacer();
+//Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('categories');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan=4">
+				<th colspan="4">
 					SKUs for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=products&task=edit&id=' . $this->product->getId()); ?>" title="<?php echo Lang::txt('Edit product'); ?>"><?php echo $this->product->getName(); ?></a>
 				</th>
 			</tr>
@@ -197,5 +197,5 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

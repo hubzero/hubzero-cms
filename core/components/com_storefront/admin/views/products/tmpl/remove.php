@@ -30,7 +30,7 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete Products', 'storefront.png');
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">
@@ -75,5 +75,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -37,14 +37,14 @@ Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s permitted users', 'storef
 Toolbar::appendButton('Popup', 'new', 'New', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId(), 570, 170);
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
 
-JToolBarHelper::spacer();
+Toolbar::spacer();
 //Toolbar::custom('upload', 'upload.png', '', 'Upload CSV', false);
 Toolbar::appendButton('Popup', 'upload', 'Upload CSV', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=upload&id=' . $this->sku->getId(), 570, 170);
-JToolBarHelper::spacer();
-JToolBarHelper::cancel();
+Toolbar::spacer();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">
@@ -133,5 +133,5 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

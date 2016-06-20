@@ -43,13 +43,13 @@ $scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'downloads');
 
 \Submenu::addEntry(
-		Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'),
-		\Route::url('index.php?option=com_cart&controller=downloads'),
-		$controllerName == 'downloads'
+	\Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'),
+	\Route::url('index.php?option=com_cart&controller=downloads'),
+	$controllerName == 'downloads'
 );
 
 \Submenu::addEntry(
-	Lang::txt('COM_CART_ORDERS'),
+	\Lang::txt('COM_CART_ORDERS'),
 	\Route::url('index.php?option=com_cart&controller=orders'),
 	$controllerName == 'orders'
 );
