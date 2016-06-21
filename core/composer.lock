@@ -712,7 +712,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "7d9f0a9058642825ae4a93135292a60f45e30d99"
+                "reference": "3f8bcf861048ff728d66c6de24a83ea45e082219"
             },
             "dist": {
                 "type": "zip",
@@ -750,7 +750,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-06-14 14:39:34"
+            "time": "2016-06-21 12:59:45"
         },
         {
             "name": "hubzero/orcid-php",
