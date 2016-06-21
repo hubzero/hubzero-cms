@@ -934,7 +934,7 @@ class Setup extends Base
 		}
 
 		// Only managers can edit project
-		if (!$this->model->access('manager'))
+		if (!$this->model->access('manager') && !($this->model->access('content') && $this->config->get('edit_description')))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;

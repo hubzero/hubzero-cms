@@ -41,7 +41,7 @@ $config = $this->model->config();
 	<h3 class="inform"><?php echo Lang::txt('COM_PROJECTS_PROJECT_INFO'); ?></h3>
 </div>
 
-<?php if ($this->model->access('manager')) { ?>
+<?php if ($this->model->access('manager') || ($this->model->access('content') && $config->get('edit_description'))) { ?>
 	<p class="editing"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=info'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></p>
 <?php } ?>
 

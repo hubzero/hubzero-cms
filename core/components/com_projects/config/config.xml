@@ -57,29 +57,33 @@
 	</fieldset>
 	<fieldset name="PROJECTSETUP">
 		<field name="grantinfo" type="list" default="0" label="Collect grant info at setup?" description="Ask project creator for grant information, e.g. [NSF] grant id, title, PI">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 		<field name="confirm_step" type="list" default="0" label="Setup - 'Agree to Terms' screen" description="Enable 'Agree to Terms' step during setup">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</field>
 		<field name="edit_settings" type="list" default="0" label="Allow project settings editing?" description="Enable a screen to edit project settings after project setup">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="edit_description" type="list" default="0" label="Collaborators can edit description?" description="Allow collaborators/authors to edit the project description?">
+			<option value="0">JNO</option>
+			<option value="1">JYes</option>
 		</field>
 		<field name="custom_profile" type="list" default="0" label="Use custom profile description template?" description="Allows administrators to define project info fields">
 			<option value="0">NO</option>
 			<option value="custom">COM_PROJECTS_USE_TEMPLATE</option>
 		</field>
 		<field name="restricted_data" type="list" default="0" label="Ask about sensitive data?" description="Include a question about sensitive data (HIPAA/FERPA/Export Control)">
-			<option value="0">NO</option>
+			<option value="0">JNO</option>
 			<option value="2">YES, with one general question</option>
 			<option value="1">YES, with HIPAA/FERPA etc. options</option>
 		</field>
 		<field name="approve_restricted" type="list" default="0" label="Must approve sensitive data projects?" description="Require approval for sensitive data projects?">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 		<field name="privacylink" type="text" menu="hide" default="/legal/privacy" label="URL to Privacy Terms" description="URL to Privacy Terms" />
 		<field name="HIPAAlink" type="text" menu="hide" default="/legal/privacy" label="URL to HIPAA information" description="URL to to HIPAA information" />
