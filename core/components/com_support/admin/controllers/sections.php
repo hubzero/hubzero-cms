@@ -36,6 +36,7 @@ use Hubzero\Component\AdminController;
 use Components\Support\Tables;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -61,12 +62,12 @@ class Sections extends AdminController
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get paging variables
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.sections.limit',
 				'limit',
@@ -84,25 +85,24 @@ class Sections extends AdminController
 		$model = new Tables\Section($this->database);
 
 		// Record count
-		$this->view->total = $model->getCount($this->view->filters);
+		$total = $model->getCount($filters);
 
 		// Fetch results
-		$this->view->rows  = $model->getRecords($this->view->filters);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
+		$rows  = $model->getRecords($filters);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
 	 * Display a form for adding/editing a record
 	 *
-	 * @return	void
+	 * @param   object  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
@@ -124,16 +124,17 @@ class Sections extends AdminController
 			}
 		}
 
-		$this->view->row = $row;
-
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			Notify::error($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -155,8 +156,7 @@ class Sections extends AdminController
 		if (!$row->bind($sec))
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Code cleaner for xhtml transitional compliance
@@ -166,29 +166,31 @@ class Sections extends AdminController
 		if (!$row->check())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
+		}
+
+		Notify::success(Lang::txt('SECTION_SUCCESSFULLY_SAVED'));
+
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($row);
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('SECTION_SUCCESSFULLY_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete one or more records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -205,24 +207,31 @@ class Sections extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('SUPPORT_ERROR_SELECT_SECTION_TO_DELETE')
-			);
-			return;
+			Notify::warning(Lang::txt('SUPPORT_ERROR_SELECT_SECTION_TO_DELETE'));
+			return $this->cancelTask();
 		}
 
+		$i = 0;
 		foreach ($ids as $id)
 		{
-			// Delete message
+			// Delete entry
 			$cat = new Tables\Section($this->database);
-			$cat->delete(intval($id));
+
+			if (!$cat->delete(intval($id)))
+			{
+				Notify::error($cat->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('SECTION_SUCCESSFULLY_DELETED', count($ids))
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('SECTION_SUCCESSFULLY_DELETED', $i));
+		}
+
+		$this->cancelTask();
 	}
 }

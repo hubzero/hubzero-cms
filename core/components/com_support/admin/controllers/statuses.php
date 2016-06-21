@@ -37,6 +37,7 @@ use Components\Support\Models\Status;
 use Components\Support\Tables;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -64,12 +65,12 @@ class Statuses extends AdminController
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get paging variables
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
@@ -101,18 +102,22 @@ class Statuses extends AdminController
 			)
 		);
 
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
 
 		$obj = new Tables\Status($this->database);
 
 		// Record count
-		$this->view->total = $obj->find('count', $this->view->filters);
+		$total = $obj->find('count', $filters);
 
 		// Fetch results
-		$this->view->rows  = $obj->find('list', $this->view->filters);
+		$rows  = $obj->find('list', $filters);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -135,16 +140,17 @@ class Statuses extends AdminController
 			$row = new Status($id);
 		}
 
-		$this->view->row = $row;
-
 		// Set any errors
 		if ($this->getError())
 		{
-			\Notify::error($this->getError());
+			Notify::error($this->getError());
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->set('row', $row)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -167,20 +173,18 @@ class Statuses extends AdminController
 		if (!$row->store(true))
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
+		Notify::success(Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_SAVED'));
+
 		// Output messsage and redirect
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -200,25 +204,31 @@ class Statuses extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_ERROR_SELECT_STATUS_TO_DELETE'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_STATUS_TO_DELETE'));
+			return $this->cancelTask();
 		}
 
+		$i = 0;
 		foreach ($ids as $id)
 		{
-			// Delete message
+			// Delete entry
 			$row = new Status(intval($id));
-			$row->delete();
+
+			if (!$row->delete())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_DELETED', count($ids))
-		);
+		if ($i)
+		{
+			Noify::success(Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_DELETED', $i));
+		}
+
+		$this->cancelTask();
 	}
 }

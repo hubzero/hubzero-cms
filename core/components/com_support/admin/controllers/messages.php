@@ -36,6 +36,7 @@ use Hubzero\Component\AdminController;
 use Components\Support\Tables\Message;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -66,7 +67,7 @@ class Messages extends AdminController
 	public function displayTask()
 	{
 		// Get paging variables
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.messages.limit',
 				'limit',
@@ -84,19 +85,17 @@ class Messages extends AdminController
 		$model = new Message($this->database);
 
 		// Record count
-		$this->view->total = $model->getCount($this->view->filters);
+		$total = $model->getCount($filters);
 
 		// Fetch results
-		$this->view->rows  = $model->getRecords($this->view->filters);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$rows  = $model->getRecords($filters);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -128,11 +127,12 @@ class Messages extends AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			\Notify::error($this->getError());
+			Notify::error($this->getError());
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -156,8 +156,7 @@ class Messages extends AdminController
 		if (!$row->bind($msg))
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Code cleaner for xhtml transitional compliance
@@ -168,28 +167,25 @@ class Messages extends AdminController
 		if (!$row->check())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
-		if ($this->_task == 'apply')
+		Notify::success(Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_SAVED'));
+
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -209,25 +205,31 @@ class Messages extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE'));
+			return $this->cancelTask();
 		}
 
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			// Delete message
 			$msg = new Message($this->database);
-			$msg->delete(intval($id));
+
+			if (!$msg->delete(intval($id)))
+			{
+				Notify::error($msg->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', count($ids))
-		);
+		if ($i)
+		{
+			Noify::success(Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', $i));
+		}
+
+		$this->cancelTask();
 	}
 }

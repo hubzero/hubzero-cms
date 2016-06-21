@@ -37,8 +37,8 @@ use Components\Support\Tables\Aro;
 use Components\Support\Tables\Aco;
 use Components\Support\Tables\AroAco;
 use Hubzero\Component\AdminController;
-use Exception;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -56,15 +56,17 @@ class Acl extends AdminController
 	public function displayTask()
 	{
 		// Instantiate a new view
-		$this->view->acl = TheACL::getACL();
-		$this->view->database = $this->database;
+		$acl = TheACL::getACL();
 
 		// Fetch results
 		$aro = new Aro($this->database);
-		$this->view->rows = $aro->getRecords();
+		$rows = $aro->getRecords();
 
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->set('acl', $acl)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -95,26 +97,25 @@ class Acl extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_ACL_SAVED')
-		);
+		Notify::success(Lang::txt('COM_SUPPORT_ACL_SAVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete one or more records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -123,6 +124,7 @@ class Acl extends AdminController
 
 		$ids = Request::getVar('id', array());
 
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			$row = new Aro($this->database);
@@ -131,23 +133,30 @@ class Acl extends AdminController
 			if ($row->id)
 			{
 				$aro_aco = new AroAco($this->database);
+
 				if (!$aro_aco->deleteRecordsByAro($row->id))
 				{
-					throw new Exception($aro_aco->getError(), 500);
+					Notify::error($aro_aco->getError());
+					continue;
 				}
 			}
 
 			if (!$row->delete())
 			{
-				throw new Exception($row->getError(), 500);
+				Notify::error($row->getError());
+				continue;
 			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_SUPPORT_ACL_REMOVED'));
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_ACL_REMOVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -168,7 +177,7 @@ class Acl extends AdminController
 		$row = new Aro($this->database);
 		if (!$row->bind($aro))
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		if ($row->foreign_key)
@@ -179,7 +188,7 @@ class Acl extends AdminController
 					$user = User::getInstance($row->foreign_key);
 					if (!is_object($user))
 					{
-						throw new Exception(Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'), 500);
+						App::abort(500, Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'));
 					}
 					$row->foreign_key = intval($user->get('id'));
 					$row->alias = $user->get('username');
@@ -189,7 +198,7 @@ class Acl extends AdminController
 					$group = \Hubzero\User\Group::getInstance($row->foreign_key);
 					if (!is_object($group))
 					{
-						throw new Exception(Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_GROUP'), 500);
+						App::abort(500, Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_GROUP'));
 					}
 					$row->foreign_key = intval($group->gidNumber);
 					$row->alias = $group->cn;
@@ -200,13 +209,13 @@ class Acl extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		if (!$row->id)
@@ -223,27 +232,27 @@ class Acl extends AdminController
 			$aroaco = new AroAco($this->database);
 			if (!$aroaco->bind($v))
 			{
-				throw new Exception($aroaco->getError(), 500);
+				App::abort(500, $aroaco->getError());
 			}
+
 			$aroaco->aro_id = (!$aroaco->aro_id) ? $row->id : $aroaco->aro_id;
 
 			// Check content
 			if (!$aroaco->check())
 			{
-				throw new Exception($aroaco->getError(), 500);
+				App::abort(500, $aroaco->getError());
 			}
 
 			// Store new content
 			if (!$aroaco->store())
 			{
-				throw new Exception($aroaco->getError(), 500);
+				App::abort(500, $aroaco->getError());
 			}
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_ACL_SAVED')
-		);
+		Notify::success(Lang::txt('COM_SUPPORT_ACL_SAVED'));
+
+		$this->cancelTask();
 	}
 }

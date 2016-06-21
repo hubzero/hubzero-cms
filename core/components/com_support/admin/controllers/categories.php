@@ -36,6 +36,7 @@ use Hubzero\Component\AdminController;
 use Components\Support\Tables\Category;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 
@@ -60,12 +61,12 @@ class Categories extends AdminController
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get paging variables
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.categories.limit',
 				'limit',
@@ -93,25 +94,23 @@ class Categories extends AdminController
 		$model = new Category($this->database);
 
 		// Record count
-		$this->view->total = $model->find('count', $this->view->filters);
+		$total = $model->find('count', $filters);
 
 		// Fetch results
-		$this->view->rows  = $model->find('list', $this->view->filters);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$rows  = $model->find('list', $filters);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
 	 * Display a form for adding/editing a record
 	 *
-	 * @param   mixed  $row
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -128,28 +127,17 @@ class Categories extends AdminController
 			$row->load($id);
 		}
 
-		$this->view->row = $row;
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
-	}
-
-	/**
-	 * Save changes to a record
-	 *
-	 * @return	void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask();
 	}
 
 	/**
@@ -170,36 +158,32 @@ class Categories extends AdminController
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Check content
 		if (!$row->check())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
-		if ($this->_task == 'apply')
+		Notify::success(Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_SAVED'));
+
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -222,25 +206,31 @@ class Categories extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE'));
+			return $this->cancelTask();
 		}
 
+		$i = 0;
 		foreach ($ids as $id)
 		{
-			// Delete message
+			// Delete entry
 			$cat = new Category($this->database);
-			$cat->delete(intval($id));
+
+			if (!$cat->delete(intval($id)))
+			{
+				Notify::error($cat->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', count($ids))
-		);
+		if ($i)
+		{
+			Noify::success(Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', $i));
+		}
+
+		$this->cancelTask();
 	}
 }
