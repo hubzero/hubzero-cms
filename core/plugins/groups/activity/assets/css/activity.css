@@ -104,6 +104,9 @@
 	.activities ul li .activity.demoted:before {
 		content: "\f0a7";
 	}
+	.activities ul li .activity.invited:before {
+		content: "\2709";
+	}
 	.activities .activity-event {
 		font-weight: 400;
 	}
