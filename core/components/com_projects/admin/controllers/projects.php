@@ -50,7 +50,7 @@ class Projects extends AdminController
 	/**
 	 * Executes a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -66,22 +66,21 @@ class Projects extends AdminController
 	/**
 	 * Include necessary scripts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _includeScripts()
 	{
 		// Enable publication management
 		if ($this->_publishing)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-				. DS . 'models' . DS . 'publication.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 		}
 	}
 
 	/**
 	 * Lists projects
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -136,13 +135,13 @@ class Projects extends AdminController
 			$this->view->filters['start'] = 0;
 		}
 
-		$obj = new Tables\Project( $this->database );
+		$obj = new Tables\Project($this->database);
 
 		// Get records
-		$this->view->rows = $obj->getRecords( $this->view->filters, true, 0, 1 );
+		$this->view->rows = $obj->getRecords($this->view->filters, true, 0, 1);
 
 		// Get a record count
-		$this->view->total = $obj->getCount( $this->view->filters, true, 0, 1 );
+		$this->view->total = $obj->getCount($this->view->filters, true, 0, 1);
 
 		// Filtering by quota
 		if ($this->view->filters['quota'] != 'all' && $this->view->rows)
@@ -150,11 +149,11 @@ class Projects extends AdminController
 			$counter = $this->view->total;
 			$rows = $this->view->rows;
 
-			for ($i=0, $n=count( $rows ); $i < $n; $i++)
+			for ($i=0, $n=count($rows); $i < $n; $i++)
 			{
-				$params = new \Hubzero\Config\Registry( $rows[$i]->params );
+				$params = new \Hubzero\Config\Registry($rows[$i]->params);
 				$quota = $params->get('quota', 0);
-				if (($this->view->filters['quota'] == 'premium' && $quota < $this->view->premiumQuota )
+				if (($this->view->filters['quota'] == 'premium' && $quota < $this->view->premiumQuota)
 					|| ($this->view->filters['quota'] == 'regular' && $quota > $this->view->defaultQuota))
 				{
 					$counter--;
@@ -170,7 +169,7 @@ class Projects extends AdminController
 			{
 				$k = 0;
 
-				for ($i=0, $n=count( $rows ); $i < $n; $i++)
+				for ($i=0, $n=count($rows); $i < $n; $i++)
 				{
 					if ($k < $this->view->start || $k >= ($this->view->limit + $this->view->start))
 					{
@@ -187,13 +186,13 @@ class Projects extends AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		// Check that master path is there
 		if ($this->config->get('offroot') && !is_dir($this->config->get('webpath')))
 		{
-			$this->view->setError( Lang::txt('Master directory does not exist. Administrator must fix this! ') . $this->config->get('webpath') );
+			$this->view->setError(Lang::txt('Master directory does not exist. Administrator must fix this! ') . $this->config->get('webpath'));
 		}
 
 		// Output the HTML
@@ -203,13 +202,13 @@ class Projects extends AdminController
 	/**
 	 * Edit project info
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask()
 	{
 		// Incoming project ID
-		$id = Request::getVar( 'id', array(0) );
-		if (is_array( $id ))
+		$id = Request::getVar('id', array(0));
+		if (is_array($id))
 		{
 			$id = $id[0];
 		}
@@ -222,24 +221,28 @@ class Projects extends AdminController
 		$this->view = $this->view;
 		$this->view->config = $this->config;
 
-		$model = new Models\Project( $id );
+		$model = new Models\Project($id);
 		$objAC = $model->table('Activity');
 
 		if ($id)
 		{
 			if (!$model->exists())
 			{
-				App::redirect(Route::url('index.php?option=' . $this->_option, false),
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option, false),
 					Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-					'error');
+					'error'
+				);
 				return;
 			}
 		}
 		if (!$id)
 		{
-			App::redirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'),
-				'error');
+				'error'
+			);
 			return;
 		}
 
@@ -248,9 +251,9 @@ class Projects extends AdminController
 		$this->view->types = $objT->getTypes();
 
 		// Get activity counts
-		$counts = Event::trigger( 'projects.onProjectCount', array( $model, 1) );
+		$counts = Event::trigger('projects.onProjectCount', array($model, 1));
 		$counts = Helpers\Html::getCountArray($counts);
-		$counts['activity'] = $objAC->getActivityCount( $model->get('id'), User:: get('id'));
+		$counts['activity'] = $objAC->getActivityCount($model->get('id'), User:: get('id'));
 		$this->view->counts = $counts;
 
 		// Get team
@@ -260,10 +263,10 @@ class Projects extends AdminController
 		$objO->sysGroup($model->get('alias'), $this->config->get('group_prefix', 'pr-'));
 
 		// Get members and managers
-		$this->view->managers   = $objO->getOwnerNames($id, 0, '1', 1);
-		$this->view->members    = $objO->getOwnerNames($id, 0, '0', 1);
-		$this->view->authors    = $objO->getOwnerNames($id, 0, '2', 1);
-		$this->view->reviewers  = $objO->getOwnerNames($id, 0, '5', 1);
+		$this->view->managers  = $objO->getOwnerNames($id, 0, '1', 1);
+		$this->view->members   = $objO->getOwnerNames($id, 0, '0', 1);
+		$this->view->authors   = $objO->getOwnerNames($id, 0, '2', 1);
+		$this->view->reviewers = $objO->getOwnerNames($id, 0, '5', 1);
 
 		// Get last activity
 		$afilters = array('limit' => 1);
@@ -275,19 +278,19 @@ class Projects extends AdminController
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if ($model->isInactive())
 		{
-			$this->view->suspended = $objAC->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$this->view->suspended = $objAC->checkActivity($id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
 		// Get project params
 		$this->view->params = $model->params;
 
-		$content = Event::trigger( 'projects.diskspace', array( $model, 'local', 'admin'));
+		$content = Event::trigger('projects.diskspace', array($model, 'local', 'admin'));
 		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		// Get tags on this item
@@ -303,7 +306,7 @@ class Projects extends AdminController
 	/**
 	 * Save a project and fall through to edit view
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -314,7 +317,8 @@ class Projects extends AdminController
 	 * Saves a project
 	 * Redirects to main listing
 	 *
-	 * @return     void
+	 * @param   boolean  $redirect
+	 * @return  void
 	 */
 	public function saveTask($redirect = false)
 	{
@@ -325,13 +329,13 @@ class Projects extends AdminController
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 		// Incoming
-		$formdata 	= $_POST;
-		$id 		= Request::getVar( 'id', 0 );
-		$action 	= Request::getVar( 'admin_action', '' );
-		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar( 'message', '' )));
+		$formdata = $_POST;
+		$id       = Request::getVar('id', 0);
+		$action   = Request::getVar('admin_action', '');
+		$message  = rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar('message', '')));
 
 		// Load model
-		$model = new Models\Project( $id );
+		$model = new Models\Project($id);
 		if (!$model->exists())
 		{
 			App::redirect('index.php?option=' . $this->_option,
@@ -347,7 +351,7 @@ class Projects extends AdminController
 		$model->set('type', $type);
 		$model->set('modified', Date::toSql());
 		$model->set('modified_by', User::get('id'));
-		$model->set('private', Request::getVar( 'private', 0 ));
+		$model->set('private', Request::getVar('private', 0));
 
 		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
@@ -355,14 +359,14 @@ class Projects extends AdminController
 		$suspended = false;
 		if ($model->isInactive())
 		{
-			$suspended = $model->table('Activity')->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$suspended = $model->table('Activity')->checkActivity($id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
 		$subject  = Lang::txt('COM_PROJECTS_PROJECT') . ' "' . $model->get('alias') . '" ';
 		$sendmail = 0;
 
 		// Get project managers
-		$managers = $model->table('Owner')->getIds( $id, 1, 1 );
+		$managers = $model->table('Owner')->getIds($id, 1, 1);
 
 		// Admin actions
 		if ($action)
@@ -399,7 +403,7 @@ class Projects extends AdminController
 			}
 
 			// Add activity
-			$model->recordActivity($what, 0, '', '', 'project', 0, $admin = 1 );
+			$model->recordActivity($what, 0, '', '', 'project', 0, $admin = 1);
 			$sendmail = 1;
 		}
 		elseif ($message)
@@ -412,7 +416,7 @@ class Projects extends AdminController
 		// Save changes
 		if (!$model->store())
 		{
-			$this->setError( $model->getError() );
+			$this->setError($model->getError());
 			return false;
 		}
 
@@ -424,7 +428,7 @@ class Projects extends AdminController
 		$cloud->setTags($tags, User::get('id'), 1);
 
 		// Save params
-		$incoming = Request::getVar( 'params', array() );
+		$incoming = Request::getVar('params', array());
 		if (!empty($incoming))
 		{
 			foreach ($incoming as $key=>$value)
@@ -432,7 +436,7 @@ class Projects extends AdminController
 				if ($key == 'quota' || $key == 'pubQuota')
 				{
 					// convert GB to bytes
-					$value = Helpers\Html::convertSize( floatval($value), 'GB', 'b');
+					$value = Helpers\Html::convertSize(floatval($value), 'GB', 'b');
 				}
 
 				$model->saveParam($key, $value);
@@ -450,9 +454,9 @@ class Projects extends AdminController
 		if ($this->config->get('messaging', 0) && $sendmail && count($managers) > 0)
 		{
 			// Email config
-			$from 			= array();
-			$from['name']  	= Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
-			$from['email'] 	= Config::get('mailfrom');
+			$from = array();
+			$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
+			$from['email'] = Config::get('mailfrom');
 
 			// Html email
 			$from['multipart'] = md5(date('U'));
@@ -462,15 +466,15 @@ class Projects extends AdminController
 				'name'   => 'emails',
 				'layout' => 'admin_plain'
 			));
-			$eview->option 			= $this->_option;
-			$eview->subject 		= $subject;
-			$eview->action 			= $action;
-			$eview->project 		= $model;
-			$eview->message			= $message;
+			$eview->option  = $this->_option;
+			$eview->subject = $subject;
+			$eview->action  = $action;
+			$eview->project = $model;
+			$eview->message = $message;
 
 			$body = array();
-			$body['plaintext'] 	= $eview->loadTemplate(false);
-			$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
+			$body['plaintext'] = $eview->loadTemplate(false);
+			$body['plaintext'] = str_replace("\n", "\r\n", $body['plaintext']);
 
 			// HTML email
 			$eview->setLayout('admin_html');
@@ -478,8 +482,8 @@ class Projects extends AdminController
 			$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 			// Send HUB message
-			Event::trigger( 'xmessage.onSendMessage',
-				array( 'projects_admin_notice', $subject, $body, $from, $managers, $this->_option ));
+			Event::trigger('xmessage.onSendMessage',
+				array('projects_admin_notice', $subject, $body, $from, $managers, $this->_option));
 		}
 
 		\Notify::message($this->_message, 'success');
@@ -498,13 +502,13 @@ class Projects extends AdminController
 	/**
 	 * Save member
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _saveMember()
 	{
 		// New member added?
-		$members = urldecode(trim(Request::getVar( 'newmember', '', 'post'  )));
-		$role = Request::getInt( 'role', 0 );
+		$members = urldecode(trim(Request::getVar('newmember', '', 'post' )));
+		$role = Request::getInt('role', 0);
 
 		$mbrs = explode(',', $members);
 
@@ -532,13 +536,13 @@ class Projects extends AdminController
 	/**
 	 * Change ownership
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _changeOwnership()
 	{
 		// Incoming
-		$user    = Request::getInt( 'owned_by_user', $this->model->get('owned_by_user'), 'post' );
-		$group   = Request::getInt( 'owned_by_group', 0, 'post' );
+		$user    = Request::getInt('owned_by_user', $this->model->get('owned_by_user'), 'post');
+		$group   = Request::getInt('owned_by_group', 0, 'post');
 
 		// Load project owner table class
 		$objO = $this->model->table('Owner');
@@ -570,13 +574,12 @@ class Projects extends AdminController
 			$objO->groupid = $group;
 			$objO->store();
 		}
-
 	}
 
 	/**
 	 * Redirects
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -588,20 +591,22 @@ class Projects extends AdminController
 	/**
 	 * Erases all project information (to be used for test projects only)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function eraseTask()
 	{
-		$id = Request::getVar( 'id', 0 );
+		$id = Request::getVar('id', 0);
 		$permanent = 1;
 
 		// Initiate extended database class
-		$obj = new Tables\Project( $this->database );
+		$obj = new Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
-			App::redirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error');
+				'error'
+			);
 			return;
 		}
 
@@ -617,51 +622,54 @@ class Projects extends AdminController
 		$obj->delete();
 
 		// Erase all owners
-		$objO = new Tables\Owner ($this->database );
-		$objO->removeOwners ( $id, '', 0, $permanent, '', $all = 1 );
+		$objO = new Tables\Owner($this->database);
+		$objO->removeOwners($id, '', 0, $permanent, '', $all = 1);
 
 		// Erase owner group
 		$group = new \Hubzero\User\Group();
-		$group->read( $prGroup );
+		$group->read($prGroup);
 		if ($group)
 		{
 			$group->delete();
 		}
 
 		// Erase all comments
-		$objC = new Tables\Comment ($this->database );
-		$objC->deleteProjectComments ( $id, $permanent );
+		$objC = new Tables\Comment($this->database);
+		$objC->deleteProjectComments($id, $permanent);
 
 		// Erase all activities
-		$objA = new Tables\Activity( $this->database );
-		$objA->deleteActivities( $id, $permanent );
+		$objA = new Tables\Activity($this->database);
+		$objA->deleteActivities($id, $permanent);
 
 		// Erase all todos
-		$objTD = new Tables\Todo( $this->database );
-		$objTD->deleteTodos( $id, '', $permanent );
+		$objTD = new Tables\Todo($this->database);
+		$objTD->deleteTodos($id, '', $permanent);
 
 		// Erase all blog entries
-		$objB = new Tables\Blog( $this->database );
-		$objB->deletePosts( $id, $permanent );
+		$objB = new Tables\Blog($this->database);
+		$objB->deletePosts($id, $permanent);
 
 		// Erase all notes
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
-
-		$masterscope = 'projects' . DS . $alias . DS . 'notes';
-
-		// Get all notes
-		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p
-			WHERE p.group_cn=" . $this->database->quote($prGroup)
-			. " AND p.scope LIKE '" . $masterscope . "%' " );
-		$notes = $this->database->loadObjectList();
-
-		if ($notes)
+		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php'))
 		{
-			foreach ($notes as $note)
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+
+			// Get all notes
+			$this->database->setQuery(
+				"SELECT DISTINCT p.id FROM `#__wiki_pages` AS p
+				WHERE p.scope_id=" . $this->database->quote($id)
+				. " AND p.scope=" . $this->database->quote('project')
+			);
+			$notes = $this->database->loadObjectList();
+
+			if ($notes)
 			{
-				$page = \Components\Wiki\Models\Page::oneOrFail($note->id);
-				// Finally, delete the page itself
-				$page->destroy();
+				foreach ($notes as $note)
+				{
+					$page = \Components\Wiki\Models\Page::oneOrFail($note->id);
+					// Finally, delete the page itself
+					$page->destroy();
+				}
 			}
 		}
 
@@ -669,10 +677,10 @@ class Projects extends AdminController
 		if ($alias)
 		{
 			// Delete base dir for .git repos
-			$dir 		= $alias;
-			$prefix 	= $this->config->get('offroot', 0) ? '' : PATH_CORE ;
-			$repodir 	= DS . trim($this->config->get('webpath'), DS);
-			$path 		= $prefix . $repodir . DS . $dir;
+			$dir     = $alias;
+			$prefix  = $this->config->get('offroot', 0) ? '' : PATH_CORE ;
+			$repodir = DS . trim($this->config->get('webpath'), DS);
+			$path    = $prefix . $repodir . DS . $dir;
 
 			if (is_dir($path))
 			{
@@ -680,7 +688,7 @@ class Projects extends AdminController
 			}
 
 			// Delete images/preview directories
-			$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
+			$webdir  = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 			$webpath = PATH_APP . $webdir . DS . $dir;
 
 			if (is_dir($webpath))
@@ -701,18 +709,19 @@ class Projects extends AdminController
 	 *
 	 * This is helpful in case git add/commit failed during file upload
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function gitaddTask()
 	{
-		$id   = Request::getVar( 'id', 0 );
-		$file = Request::getVar( 'file', '' );
+		$id   = Request::getVar('id', 0);
+		$file = Request::getVar('file', '');
 
 		// Initiate extended database class
-		$obj = new Tables\Project( $this->database );
+		$obj = new Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
-			App::redirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error'
 			);
@@ -723,7 +732,8 @@ class Projects extends AdminController
 
 		if (!$file)
 		{
-			App::redirect($url,
+			App::redirect(
+				$url,
 				Lang::txt('Please specify a file/directory path to add and commit into project'),
 				'error'
 			);
@@ -737,9 +747,11 @@ class Projects extends AdminController
 
 		if (!is_file($path . DS . $file))
 		{
-			App::redirect($url,
+			App::redirect(
+				$url,
 				Lang::txt('Error: File not found in the project, cannot add and commit'),
-				'error');
+				'error'
+			);
 			return;
 		}
 
@@ -763,22 +775,23 @@ class Projects extends AdminController
 	/**
 	 * Optimize git repo
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function gitgcTask()
 	{
-		$id = Request::getVar( 'id', 0 );
+		$id = Request::getVar('id', 0);
 
 		// Get repo model
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'repo.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'repo.php');
 
 		$project = new Models\Project($id);
 		if (!$project->exists())
 		{
-			App::redirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error');
+				'error'
+			);
 			return;
 		}
 		$repo = new \Components\Projects\Models\Repo ($project, 'local');
@@ -798,20 +811,22 @@ class Projects extends AdminController
 	/**
 	 * Unlock sync and view sync log for project
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function fixsyncTask()
 	{
-		$id = Request::getVar( 'id', 0 );
+		$id = Request::getVar('id', 0);
 		$service = 'google';
 
 		// Initiate extended database class
-		$obj = new Tables\Project( $this->database );
+		$obj = new Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
-			App::redirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error');
+				'error'
+			);
 			return;
 		}
 
@@ -842,10 +857,9 @@ class Projects extends AdminController
 	}
 
 	/**
-	 * customizeDescriptionTask 
+	 * Display a form for customizing the description
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function customizeDescriptionTask()
 	{
@@ -874,10 +888,13 @@ class Projects extends AdminController
 			->display();
 	}
 
+	/**
+	 * Save custom description schema
+	 * 
+	 * @return  void
+	 */
 	public function saveDescriptionTask()
 	{
-		//$fields = Request::getVar('descriptionFields', '');
-
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -1040,12 +1057,9 @@ class Projects extends AdminController
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false)
 			);
-			//return $this->profileTask();
 		}
 
 		// Redirect
 		$this->cancelTask();
-		ddie($fields);
-		ddie('saving');
 	}
 }
