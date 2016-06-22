@@ -38,6 +38,15 @@ $this->css()
      ->js('browse');
 
 $base = 'index.php?option=' . $this->option . '&task=browse';
+
+$exclude = array();
+if (!empty($this->filters['q']))
+{
+	foreach ($this->filters['q'] as $q)
+	{
+		$exclude[] = strtolower($q['human_field']);
+	}
+}
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -63,7 +72,7 @@ $base = 'index.php?option=' . $this->option . '&task=browse';
 				<div id="add-filters">
 					<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_RESULTS'); ?>:
 						<select name="q[field]" id="filter-field">
-							<?php foreach (Components\Members\Helpers\Filters::getFieldNames() as $c) : ?>
+							<?php foreach (Components\Members\Helpers\Filters::getFieldNames($exclude) as $c) : ?>
 								<option value="<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape($c['human']); ?></option>
 							<?php endforeach; ?>
 						</select>

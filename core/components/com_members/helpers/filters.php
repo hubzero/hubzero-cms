@@ -102,6 +102,7 @@ class Filters
 		$columns = array();
 
 		$fields = Field::all()
+			->whereIn('action_browse', User::getAuthorisedViewLevels())
 			->where('type', '!=', 'tags')
 			->ordered()
 			->rows();
@@ -136,7 +137,7 @@ class Filters
 		$html .= '	<option value="lt">is less than (&#60;)</option>';
 		$html .= '	<option value="gte">is greater than or equal to (&#62;&#61;)</option>';
 		$html .= '	<option value="lte">is less than or equal to (&#60;&#61;)</option>';
-		$html .= '	<option value="like">is like (LIKE)</option>';
+		$html .= '	<option value="like">contains (LIKE)</option>';
 		$html .= '</select>';
 
 		return $html;

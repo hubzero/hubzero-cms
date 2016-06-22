@@ -43,7 +43,7 @@ if ($canDo->get('core.edit') || $canDo->get('core.create'))
 }
 Toolbar::cancel();
 Toolbar::divider();
-Toolbar::help('user');
+Toolbar::help('profile');
 
 $elements = array();
 
@@ -67,6 +67,7 @@ foreach ($this->fields as $field)
 	$element->create   = (int)$field->get('action_create');
 	$element->update   = (int)$field->get('action_update');
 	$element->edit     = (int)$field->get('action_edit');
+	$element->browse   = (int)$field->get('action_browse');
 	$element->access   = (int)$field->get('access');
 	$element->field_id = (int)$field->get('id');
 

@@ -593,6 +593,7 @@
         UPDATE: 'update',
         EDIT: 'edit',
         ACCESS: 'access',
+        BROWSE: 'browse',
         ADMIN_ONLY: 'admin_only',
         OPTIONS: 'field_options.options',
         DESCRIPTION: 'field_options.description',
@@ -948,6 +949,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<label>Viewing level\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.ACCESS )) == null ? '' : __t) + '\'><option value="1">Public</option><option value="2">Registered</option><option value="5">Private</option></select>\n  </label>\n' +
+'<label>Browse accounts\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.BROWSE )) == null ? '' : __t) + '\'><option value="1">Public</option><option value="2">Registered</option><option value="0">Hide</option></select>\n  </label>\n' +
 '<label>Create account\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.CREATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
 //'<label>Update on next login\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.UPDATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
 '<label>Edit profile\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.EDIT )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n';
