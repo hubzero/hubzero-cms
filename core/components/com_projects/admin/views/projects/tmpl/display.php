@@ -37,7 +37,7 @@ $this->css();
 Toolbar::title( Lang::txt( 'Projects' ), 'user.png' );
 
 // Only display if enabled
-if ($this->config->get('edit_settings') == 'custom')
+if ($this->config->get('custom_profile') == 'custom')
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
 }
