@@ -85,17 +85,17 @@
 	.group_forum .section-name,
 	.group_forum .category-name {
 		max-width: 10em;
-		-ms-word-break: break-all;
-		word-wrap: break-word;
-		word-break: break-all;
+		-ms-word-break: normal;
+		word-wrap: normal;
+		word-break: normal;
 		-webkit-hyphens: auto;
 		-moz-hyphens: auto;
 		hyphens: auto;
 	}
 	.group_forum .entry-description {
-		-ms-word-break: break-all;
-		word-wrap: break-word;
-		word-break: break-all;
+		-ms-word-break: normal;
+		word-wrap: normal;
+		word-break: normal;
 		-webkit-hyphens: auto;
 		-moz-hyphens: auto;
 		hyphens: auto;
