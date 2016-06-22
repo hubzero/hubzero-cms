@@ -145,4 +145,20 @@ class Result extends Relational
 
 		return $this->get('status');
 	}
+
+	/**
+	 * Load a record by scope and scope_id
+	 *
+	 * @param   string   $scope
+	 * @param   integer  $scope_id
+	 * @return  object
+	 */
+	public static function oneByScope($scope, $scope_id)
+	{
+		return self::all()
+			->whereEquals('scope', $scope)
+			->whereEquals('scope_id', $scope_id)
+			->ordered()
+			->row();
+	}
 }
