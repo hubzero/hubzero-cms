@@ -192,6 +192,7 @@ $.TokenList = function (input, url_or_data, settings) {
 			outline: "none"
 		})
 		.attr("id", settings.idPrefix + input.id)
+		.attr("placeholder", input.placeholder)
 		.focus(function () {
 			if (settings.tokenLimit === null || settings.tokenLimit !== token_count) {
 				if (!isReadOnly) {
@@ -474,8 +475,8 @@ $.TokenList = function (input, url_or_data, settings) {
 		// Enter new content into resizer and resize input accordingly
 		var escaped = input_val.replace(/&/g, '&amp;').replace(/\s/g,' ').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		input_resizer.html(escaped);
-		input_box.width(input_resizer.width() + 30);
-		$(input_box.parent()).width(input_resizer.width() + 30);
+		//input_box.width(input_resizer.width() + 30);
+		//$(input_box.parent()).width(input_resizer.width() + 30);
 	}
 
 	function is_printable_character(keycode) {

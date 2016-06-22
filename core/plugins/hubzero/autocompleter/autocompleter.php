@@ -39,17 +39,24 @@ defined('_HZEXEC_') or die();
 class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Flag for if scripts need to be pushed to the document or not
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
 	private $_pushscripts = true;
 
 	/**
 	 * Display the autocompleter. Defaults to multi-entry for tags
 	 *
-	 * @param      array $atts Attributes for setting up the autocomplete
-	 * @return     string HTML
+	 * @param   array   $atts  Attributes for setting up the autocomplete
+	 * @return  string  HTML
 	 */
 	public function onGetAutocompleter($atts)
 	{
@@ -112,7 +119,7 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 		$html .= ($id)    ? ' id="' . $id . '"'             : '';
 		$html .= ($class) ? ' class="' . trim($class) . '"' : '';
 		$html .= ($size)  ? ' size="' . $size . '"'         : '';
-		$html .= ($dsabl) ? ' readonly="readonly"'          : '';
+		$html .= ' placeholder="' . Lang::txt('PLG_HUBZERO_AUTOCOMPLETER_' . strtoupper($opt) . '_PLACEHOLDER') . '"';
 		$html .= ' value="' . htmlentities($value, ENT_COMPAT, 'UTF-8') . '" autocomplete="off" data-css="" data-script="' . $datascript . '" />' . "\n";
 		$html .= $scripts;
 
