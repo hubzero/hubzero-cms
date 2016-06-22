@@ -72,6 +72,7 @@ foreach ($this->fields as $field)
 	$element->field_id = (int)$field->get('id');
 
 	$element->field_options = new stdClass;
+	$element->field_options->description          = (string)$field->get('description');
 	$element->field_options->include_other_option = (bool)$field->get('option_other');
 	$element->field_options->include_blank_option = (bool)$field->get('option_blank');
 
