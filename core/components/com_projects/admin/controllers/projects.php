@@ -54,6 +54,9 @@ class Projects extends AdminController
 	 */
 	public function execute()
 	{
+		$this->registerTask('applyDescription', 'saveDescription');
+		$this->registerTask('applydescription', 'savedescription');
+
 		// Publishing enabled?
 		$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
@@ -893,6 +896,16 @@ class Projects extends AdminController
 	 * 
 	 * @return  void
 	 */
+	public function applyDescriptionTask()
+	{
+		$this->saveDescriptionTask();
+	}
+
+	/**
+	 * Save custom description schema
+	 * 
+	 * @return  void
+	 */
 	public function saveDescriptionTask()
 	{
 		// Check for request forgeries
@@ -1048,14 +1061,14 @@ class Projects extends AdminController
 		}
 
 		// Set success message
-		Notify::success(Lang::txt('COM_MEMBERS_PROFILE_SCHEMA_SAVED'));
+		Notify::success(Lang::txt('COM_PROJECTS_DESCRIPTION_SCHEMA_SAVED'));
 
 		// Drop through to edit form?
-		if ($this->getTask() == 'applyprofile')
+		if ($this->getTask() == 'applydescription')
 		{
 			// Redirect, instead of falling through, to avoid caching issues
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false)
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=customizeDescription', false)
 			);
 		}
 

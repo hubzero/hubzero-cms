@@ -68,9 +68,10 @@ foreach ($this->fields as $field)
 	//$element->update   = (int)$field->get('action_update');
 	//$element->edit     = (int)$field->get('action_edit');
 	//$element->access   = (int)$field->get('access');
-	//$element->field_id = (int)$field->get('id');
+	$element->field_id = (int)$field->get('id');
 
 	$element->field_options = new stdClass;
+	$element->field_options->description          = (string)$field->get('description');
 	$element->field_options->include_other_option = (bool)$field->get('option_other');
 	$element->field_options->include_blank_option = (bool)$field->get('option_blank');
 

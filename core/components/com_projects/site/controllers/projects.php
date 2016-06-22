@@ -663,7 +663,7 @@ class Projects extends Base
 		$this->view->config 	= $this->config;
 		$this->view->msg 		= $this->_getNotifications('success');
 
-		$fields = Field::all()->rows();
+		$fields = Field::all()->order('ordering', 'ASC')->rows();
 		$projectDescription = Description::all()->where('project_id', '=', $this->model->get('id'))->rows();
 
 		$info = array();
