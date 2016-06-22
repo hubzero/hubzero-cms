@@ -47,6 +47,8 @@ if (!empty($this->filters['q']))
 		$exclude[] = strtolower($q['human_field']);
 	}
 }
+
+$fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -56,7 +58,7 @@ if (!empty($this->filters['q']))
 	<div class="section-inner">
 		<div class="subject">
 			<form action="<?php echo Route::url($base); ?>" method="get">
-				<div class="container data-entry">
+				<?php /*<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<legend><?php echo Lang::txt('COM_MEMBERS_SEARCH_LEGEND'); ?></legend>
@@ -65,6 +67,13 @@ if (!empty($this->filters['q']))
 						<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					</fieldset>
+				</div><!-- / .container -->*/ ?>
+
+				<div class="container data-entry">
+					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER'); ?>" />
+					<fieldset class="entry-search">
+						<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->filters['tags']), 'actags'); ?>
+					</fieldset>
 				</div><!-- / .container -->
 			</form>
 
@@ -72,7 +81,7 @@ if (!empty($this->filters['q']))
 				<div id="add-filters">
 					<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_RESULTS'); ?>:
 						<select name="q[field]" id="filter-field">
-							<?php foreach (Components\Members\Helpers\Filters::getFieldNames($exclude) as $c) : ?>
+							<?php foreach ($fields as $c) : ?>
 								<option value="<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape($c['human']); ?></option>
 							<?php endforeach; ?>
 						</select>

@@ -301,7 +301,7 @@ class Profiles extends SiteController
 			->where($a . '.approved', '>', 0);
 
 		// Take filters and apply them to the tasks
-		if ($filters['search'])
+		/*if ($filters['search'])
 		{
 			foreach ($filters['search'] as $term)
 			{
@@ -312,31 +312,68 @@ class Profiles extends SiteController
 					->orWhereLike($a . '.email', strtolower((string)$term), 1)
 					->resetDepth();
 			}
+		}*/
+
+		if ($filters['tags'])
+		{
+			$to = '#__tags_object';
+			$t = '#__tags';
+
+			$tags = explode(',', $filters['tags']);
+			$tags = array_map('trim', $tags);
+
+			$entries->select($a . '.*, COUNT(DISTINCT ' . $to . '.tagid) AS uniques');
+			$entries->join($to, $to . '.objectid', $a . '.id', 'inner');
+			$entries->join($t, $t . '.id', $to . '.tagid', 'inner');
+
+			$entries->whereIn($t . '.tag', $tags);
+			$entries->whereEquals($to . '.tbl', 'xprofiles');
+
+			$entries->having('uniques', '=', count($tags));
+			$entries->group($a . '.id');
 		}
+
 		if ($filters['q'])
 		{
-			/*$entries->join($b, $b . '.user_id', $a . '.id', 'inner');
-
-			foreach ($filters['q'] as $q)
-			{
-				$entries->where($b . '.profile_key', '=', $q['field'], 'and', 1)
-					->where($b . '.profile_value', $q['o'], $q['value'], 'and', 1)
-					->resetDepth();
-			}*/
 			$db = App::get('db');
 			$i = 1;
 			foreach ($filters['q'] as $q)
 			{
+				if ($q['field'] == 'name')
+				{
+					if ($q['value'] && !is_array($q['value']))
+					{
+						// Explode multiple words into array
+						$search = explode(' ', $q['value']);
+
+						// Only allow alphabetical characters for search
+						$search = preg_replace("/[^a-zA-Z]/", '', $search);
+
+						foreach ($search as $term)
+						{
+							if ($q['o'] == 'LIKE')
+							{
+								$term = '%' . $term . '%';
+							}
+							$entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term));
+							/*$entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term), 1)
+								->orWhere($a . '.username', ' ' . $q['o'] . ' ', strtolower((string)$term), 1)
+								->orWhere($a . '.email', ' ' . $q['o'] . ' ', strtolower((string)$term), 1)
+								->resetDepth();*/
+						}
+					}
+					continue;
+				}
+
 				if ($q['o'] == 'LIKE')
 				{
 					$q['value'] = '%' . $q['value'] . '%';
 				}
+
 				$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']), 'inner');
 				$entries->whereIn('t' . $i . '.access', User::getAuthorisedViewLevels());
 				$i++;
 			}
-
-			//$entries->whereIn($b . '.access', User::getAuthorisedViewLevels());
 		}
 
 		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());

@@ -34,6 +34,7 @@ namespace Components\Members\Helpers;
 use Components\Members\Models\Profile\Field;
 use Request;
 use User;
+use Lang;
 
 /**
  * Filters helper class for time component
@@ -55,14 +56,6 @@ class Filters
 			$q[] = $incoming;
 		}
 
-		// Set some defaults for the filters, if not set otherwise
-		/*if (!is_array($q))
-		{
-			$q[0]['field']    = ($namespace == 'com_members.tasks') ? 'assignee_id' : 'user_id';
-			$q[0]['operator'] = 'e';
-			$q[0]['value']    = User::get('id');
-		}*/
-
 		// Translate operators and augment query filters with human-friendly text
 		$query = self::filtersMap($q);
 
@@ -79,13 +72,17 @@ class Filters
 			$search = preg_replace("/[^a-zA-Z]/", '', $search);
 		}
 
+		$tags = Request::getVar('tags', User::getState("{$namespace}.tags", ''));
+
 		// Set some values in the session
 		User::setState("{$namespace}.search", $search);
 		User::setState("{$namespace}.query",  $query);
+		User::setState("{$namespace}.tags",   $tags);
 
 		return array(
 			'search' => $search,
 			'q'      => $query,
+			'tags'   => $tags,
 			'sortby' => strtolower(Request::getWord('sortby', 'surname'))
 		);
 	}
@@ -119,6 +116,11 @@ class Filters
 				'human' => $field->get('label')
 			);
 		}
+
+		$columns[] = array(
+			'raw'   => 'name',
+			'human' => Lang::txt('COM_MEMBERS_FIELD_NAME')
+		);
 
 		return $columns;
 	}
