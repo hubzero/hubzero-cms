@@ -711,13 +711,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/hubzero/framework.git",
-                "reference": "3f8bcf861048ff728d66c6de24a83ea45e082219"
+                "url": "git@github.com:hubzero/framework.git",
+                "reference": "ee6c3b670c4a084210daee1b989aae3ba813bdfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/3f8bcf861048ff728d66c6de24a83ea45e082219",
-                "reference": "3f8bcf861048ff728d66c6de24a83ea45e082219",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/ee6c3b670c4a084210daee1b989aae3ba813bdfa",
+                "reference": "ee6c3b670c4a084210daee1b989aae3ba813bdfa",
                 "shasum": ""
             },
             "require": {
@@ -750,7 +750,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-06-21 12:59:45"
+            "time": "2016-06-22 16:47:04"
         },
         {
             "name": "hubzero/orcid-php",
