@@ -288,13 +288,11 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		// Get records needing to be processed
 		$db = App::get('db');
 		$db->setQuery(
-			"SELECT r.*
+			"SELECT DISTINCT(r.id), r.*
 			FROM `#__resources` AS r
 			LEFT JOIN `#__audit_results` AS a ON a.scope_id=r.id
 			WHERE (a.scope=" . $db->quote('resource') . " OR a.scope='' OR a.scope IS NULL)
 			AND (DATE_ADD(a.processed, INTERVAL " . $interval . ") < " . $db->quote($now) . " OR a.processed = '0000-00-00 00:00:00' OR a.processed IS NULL)
-			GROUP BY r.id
-			ORDER BY r.id ASC
 			LIMIT 0," . $limit
 		);
 		$data = $db->loadAssocList();
@@ -315,6 +313,11 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				// Loop through each test result and save to the database
 				foreach ($reportcard['tests'] as $result)
 				{
+					$prev = Hubzero\Content\Auditor\Result::oneByScope($result->get('scope'), $result->get('scope_id'));
+					if ($prev->get('id'))
+					{
+						$result->set('id', $prev->get('id'));
+					}
 					$result->save();
 				}
 			}
