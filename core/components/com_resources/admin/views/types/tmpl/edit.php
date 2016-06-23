@@ -104,7 +104,7 @@ function submitbutton(pressbutton)
 				<?php } ?>
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_RESOURCES_FIELD_DESCIPTION'); ?>:</label><br />
-					<?php echo $this->editor('description', stripslashes($this->row->description), 45, 10, 'field-description', array('class' => 'minimal')); ?>
+					<?php echo $this->editor('type[description]', stripslashes($this->row->description), 45, 10, 'field-description', array('class' => 'minimal')); ?>
 				</div>
 
 				<input type="hidden" name="type[id]" value="<?php echo $this->row->id; ?>" />
