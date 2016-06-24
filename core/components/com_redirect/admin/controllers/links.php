@@ -88,8 +88,7 @@ class Links extends AdminController
 			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
-				-1,
-				'int'
+				'*'
 			),
 			// Get sorting variables
 			'sort' => Request::getState(
@@ -106,9 +105,9 @@ class Links extends AdminController
 
 		$entries = Link::all();
 
-		if ($filters['state'] >= 0)
+		if ($filters['state'] != '*')
 		{
-			$entries->whereEquals('state', (int)$filters['state']);
+			$entries->whereEquals('published', (int)$filters['state']);
 		}
 
 		if ($filters['search'])
@@ -145,7 +144,6 @@ class Links extends AdminController
 		if (!(User::authorise('core.create', $this->_option)))
 		{
 			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'));
-
 			return $this->cancelTask();
 		}
 
@@ -163,7 +161,6 @@ class Links extends AdminController
 		if (!User::authorise('core.edit', $this->_option))
 		{
 			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-
 			return $this->cancelTask();
 		}
 
@@ -201,7 +198,6 @@ class Links extends AdminController
 		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
 		{
 			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
-
 			return $this->cancelTask();
 		}
 
@@ -245,6 +241,13 @@ class Links extends AdminController
 	{
 		// Check for request forgeries.
 		Request::checkToken();
+
+		// Access check.
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+			return $this->cancelTask();
+		}
 
 		// Initialise variables.
 		$ids     = Request::getVar('id', array(), '', 'array');
@@ -293,6 +296,13 @@ class Links extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		// Access check.
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+			return $this->cancelTask();
+		}
 
 		// Get items to publish from the request.
 		$ids = Request::getVar('id', array(), '', 'array');
@@ -346,6 +356,52 @@ class Links extends AdminController
 			$ntext = 'COM_REDIRECT_N_ITEMS_TRASHED';
 		}
 		Notify::success(Lang::txts($ntext, $updated));
+
+		$this->cancelTask();
+	}
+
+	/**
+	 * Remove one or more entries
+	 *
+	 * @return  void
+	 */
+	public function removeTask()
+	{
+		// Access check.
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+			return $this->cancelTask();
+		}
+
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$ids = Request::getVar('id', array(), '', 'array');
+
+		if (empty($ids))
+		{
+			Notify::error(Lang::txt('COM_REDIRECT_NO_ITEM_SELECTED'));
+		}
+
+		$i = 0;
+		foreach ($ids as $id)
+		{
+			$entry = Link::oneOrFail(intval($id));
+
+			if (!$entry->destroy())
+			{
+				Notify::error($entry->getError());
+				continue;
+			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txts('COM_REDIRECT_N_ITEMS_DELETED', $i));
+		}
 
 		$this->cancelTask();
 	}

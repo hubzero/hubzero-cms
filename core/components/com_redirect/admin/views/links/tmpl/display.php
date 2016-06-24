@@ -101,13 +101,13 @@ $this->css('.adminlist tr td {
 		<div class="grid">
 			<div class="col span6">
 				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_REDIRECT_SEARCH_LINKS'); ?>" />
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_REDIRECT_SEARCH_LINKS'); ?>" />
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
-				<select name="filter_state" class="inputbox" onchange="this.form.submit()">
-					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+				<label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
+				<select name="state" id="filter_state" class="inputbox" onchange="this.form.submit()">
 					<?php echo Html::select('options', \Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->filters['state'], true);?>
 				</select>
 			</div>
