@@ -343,23 +343,24 @@ class Profiles extends SiteController
 				{
 					if ($q['value'] && !is_array($q['value']))
 					{
-						// Explode multiple words into array
-						$search = explode(' ', $q['value']);
-
-						// Only allow alphabetical characters for search
-						$search = preg_replace("/[^a-zA-Z]/", '', $search);
-
-						foreach ($search as $term)
+						if ($q['o'] == 'LIKE')
 						{
-							if ($q['o'] == 'LIKE')
+							// Explode multiple words into array
+							$search = explode(' ', $q['value']);
+
+							// Only allow alphabetical characters for search
+							//$search = preg_replace("/[^a-zA-Z]/", '', $search);
+
+							foreach ($search as $term)
 							{
-								$term = '%' . $term . '%';
+								$term = '%' . trim($term) . '%';
+
+								$entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term));
 							}
-							$entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term));
-							/*$entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term), 1)
-								->orWhere($a . '.username', ' ' . $q['o'] . ' ', strtolower((string)$term), 1)
-								->orWhere($a . '.email', ' ' . $q['o'] . ' ', strtolower((string)$term), 1)
-								->resetDepth();*/
+						}
+						else
+						{
+							$entries->where($a . '.name', ' ' . $q['o'] . ' ', (string)$q['value']);
 						}
 					}
 					continue;
@@ -393,7 +394,7 @@ class Profiles extends SiteController
 			->rows();
 
 		// Set the page title
-		$title = Lang::txt('COM_MEMBERS');
+		$title  = Lang::txt('COM_MEMBERS');
 		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
 		Document::setTitle($title);
@@ -457,7 +458,8 @@ class Profiles extends SiteController
 
 		if (!$field->get('id'))
 		{
-			App::abort(404, 'Field not found');
+			$field->set('type', 'text');
+			$field->set('name', $name);
 		}
 
 		// Create object with values
