@@ -68,7 +68,7 @@ class ComponentServiceProvider extends Middleware
 			$component = $request->getCmd('option');
 			if (!$component)
 			{
-				$this->app->abort(404);
+				$this->app->abort(404, 'Component not found.');
 			}
 
 			$contents = $this->app['component']->render($component);

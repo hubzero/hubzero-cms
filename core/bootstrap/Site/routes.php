@@ -653,11 +653,14 @@ $router->rules('parse')->append('component', function ($uri)
 		return;
 	}
 
+	// First segment is potentially a component name.
 	$uri->setVar('option', \App::get('component')->canonical($component));
 
 	if (!count($segments))
 	{
-		return true;
+		// No other segments found so no need
+		// to attempt to load component router
+		return;
 	}
 
 	if ($router = \App::get('component')->router($component, 'site'))
@@ -683,14 +686,26 @@ $router->rules('parse')->append('component', function ($uri)
 */
 $router->rules('parse')->append('redirect', function ($uri)
 {
+	// Use an alturi in case any previous rule altered
+	// the $uri by adding/removing vars
+	$alturi = new \Hubzero\Utility\Uri($uri->uri());
+
 	$db = \App::get('db');
-	$db->setQuery("SELECT * FROM `#__redirect_links` WHERE `old_url`=" . $db->Quote($uri->getPath()));
+	$db->setQuery(
+		"SELECT *
+		FROM `#__redirect_links`
+		WHERE `published`=1
+		AND (`old_url`=" . $db->quote($alturi->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'))) . "
+		OR `old_url`=" . $db->quote($alturi->toString(array('path', 'query', 'fragment'))) . ")
+		LIMIT 1"
+	);
 
 	if ($row = $db->loadObject())
 	{
-		$myuri = new \Hubzero\Routing\Uri($row->newurl);
+		$myuri = new \Hubzero\Utility\Uri($row->newurl);
 
 		$vars = $myuri->getQuery(true);
+
 		foreach ($vars as $key => $var)
 		{
 			$uri->setVar($key, $var);
@@ -714,7 +729,7 @@ $router->rules('parse')->append('post', function ($uri)
 {
 	if (\App::get('request')->method() == 'POST')
 	{
-		$component = App::get('request')->getCmd('option', '', 'post');
+		$component = \App::get('request')->getCmd('option', '', 'post');
 		$uri->setVar('option', $component);
 
 		return true;
