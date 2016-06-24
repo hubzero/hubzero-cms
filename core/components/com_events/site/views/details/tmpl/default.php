@@ -148,9 +148,7 @@ $this->css()
 			{
 				$html .= Date::of($publish_up)->format('l d F, Y') . ', ';
 				$html .= Date::of($publish_up)->format('g:i a ') . ' - ' . Date::of($publish_down)->format('g:i a ');
-				$event_timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, NULL);
-				$event_timezone = new DateTimeZone($event_timezone);
-				$html .= Date::of($publish_down, $event_timezone)->format('T', true);
+				$html .= Date::of($publish_down, $this->row->time_zone)->format('T', true);
 			}
 			else
 			{
@@ -166,11 +164,9 @@ $this->css()
 				}
 				else
 				{
-					$event_timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, NULL);
-					$event_timezone = new DateTimeZone($event_timezone);
-					$event_timezone = Date::of($publish_down, $event_timezone)->format('T', true);
-					$event_timezone_start = Date::of($publish_up, $event_timezone)->format('T', true);
-					$event_timezone_end = Date::of($publish_down, $event_timezone)->format('T', true);
+					$event_timezone = Date::of($publish_down, $this->row->time_zone)->format('T', true);
+					$event_timezone_start = Date::of($publish_up, $this->row->time_zone)->format('T', true);
+					$event_timezone_end = Date::of($publish_down, $this->row->time_zone)->format('T', true);
 				}
 
 				$html .= Date::of($publish_up, $event_timezone_start)->toLocal('l d F, Y g:i a ') . $event_timezone_start . ' - ';
