@@ -355,7 +355,7 @@ class Register extends SiteController
 
 		// Get users component config options, specifically whether or not 'simple' registration is enabled
 		$method             = Request::getMethod();
-		$usersConfig        = Component::params('com_users');
+		$usersConfig        = Component::params('com_members');
 		$simpleRegistration = $usersConfig->get('simple_registration', false);
 
 		if ($method == 'POST')
@@ -619,7 +619,7 @@ class Register extends SiteController
 		}
 
 		// If user registration is not allowed, show 403 not authorized.
-		$usersConfig = Component::params('com_users');
+		$usersConfig = Component::params('com_members');
 		if ($usersConfig->get('allowUserRegistration') == '0')
 		{
 			return App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
