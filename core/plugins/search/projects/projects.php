@@ -60,7 +60,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 
 		if (!User::authorise('core.view', 'com_groups'))
 		{
-			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=p.owned_by_group AND m.uidNumber=" . User::get('id');
+			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=p.owned_by_group AND m.uidNumber=" . User::get('id', 0);
 		}
 
 		$addtl_where = array();
