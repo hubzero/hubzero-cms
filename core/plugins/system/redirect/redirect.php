@@ -63,8 +63,6 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 	 */
 	public static function handleError(&$error)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'models' . DS . 'link.php');
-
 		$renderer = new \Hubzero\Error\Renderer\Page(
 			App::get('document'),
 			App::get('template.loader'),
@@ -72,15 +70,14 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		);
 
 		// Make sure the error is a 404 and we are not in the administrator.
-		if (!App::isAdmin() and ($error->getCode() == 404))
+		if (!App::isSite() || $error->getCode() != 404)
 		{
 			// Render the error page.
-			$renderer->render($error);
-			return;
+			return $renderer->render($error);
 		}
 
 		// Get the full current URI.
-		$uri = \Hubzero\Utility\Uri::getInstance();
+		$uri = Hubzero\Utility\Uri::getInstance();
 		$current = $uri->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'));
 
 		// Attempt to ignore idiots.
@@ -88,32 +85,34 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		 || (strpos($current, '=http://') !== false))
 		{
 			// Render the error page.
-			$renderer->render($error);
-			return;
+			return $renderer->render($error);
 		}
 
-		// See if the current url exists in the database as a redirect.
-		$link = \Components\Redirect\Models\Link::all()
-				->whereEquals('old_url', $current)
-				->row();
-
-		// If no published redirect was found try with the server-relative URL
-		if (!$link->id || $link->published != 1)
+		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'models' . DS . 'link.php'))
 		{
-			$currRel = $uri->toString(array('path', 'query', 'fragment'));
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'models' . DS . 'link.php');
 
+			// See if the current url exists in the database as a redirect.
 			$link = \Components\Redirect\Models\Link::all()
-				->whereEquals('old_url', $currRel)
-				->row();
-		}
+					->whereEquals('old_url', $current)
+					->row();
 
-		// If a redirect exists and is published, permanently redirect.
-		if ($link->id && $link->published == 1)
-		{
-			App::redirect($link->new_url, null, null, true, false);
-		}
-		else
-		{
+			// If no published redirect was found try with the server-relative URL
+			if (!$link->id || $link->published != 1)
+			{
+				$currRel = $uri->toString(array('path', 'query', 'fragment'));
+
+				$link = \Components\Redirect\Models\Link::all()
+					->whereEquals('old_url', $currRel)
+					->row();
+			}
+
+			// If a redirect exists and is published, permanently redirect.
+			if ($link->id && $link->published == 1)
+			{
+				App::redirect($link->new_url, null, null, true, false);
+			}
+
 			$referer = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
 
 			$row = \Components\Redirect\Models\Link::all()
@@ -138,9 +137,9 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			}
 
 			$row->save();
-
-			// Render the error page.
-			$renderer->render($error);
 		}
+
+		// Render the error page.
+		$renderer->render($error);
 	}
 }
