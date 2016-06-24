@@ -146,6 +146,16 @@ class Uri extends Object
 	}
 
 	/**
+	 * Method to get the original source URI.
+	 *
+	 * @return  string
+	 */
+	public function uri()
+	{
+		return $this->uri;
+	}
+
+	/**
 	 * Returns the global URI object, only creating it
 	 * if it doesn't already exist.
 	 *
