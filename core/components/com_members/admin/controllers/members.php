@@ -71,6 +71,7 @@ class Members extends AdminController
 		$this->registerTask('confirm', 'state');
 		$this->registerTask('unconfirm', 'state');
 		$this->registerTask('applyprofile', 'saveprofile');
+		$this->registerTask('unblock', 'block');
 
 		parent::execute();
 	}
@@ -714,6 +715,102 @@ class Members extends AdminController
 		if ($i)
 		{
 			Notify::success(Lang::txt('COM_MEMBERS_CONFIRMATION_CHANGED'));
+		}
+
+		$this->cancelTask();
+	}
+
+	/**
+	 * Sets the account approved state of a member
+	 *
+	 * @return  void
+	 */
+	public function approveTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$state = ($this->getTask() == 'approve' ? 2 : 0);
+
+		// Incoming user ID
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Do we have an ID?
+		if (empty($ids))
+		{
+			Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->cancelTask();
+		}
+
+		$i = 0;
+
+		foreach ($ids as $id)
+		{
+			// Load the profile
+			$user = Member::oneOrFail(intval($id));
+			$user->set('approved', $state);
+
+			if (!$user->save())
+			{
+				Notify::error($user->getError());
+				continue;
+			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_APPROVED_STATUS_CHANGED'));
+		}
+
+		$this->cancelTask();
+	}
+
+	/**
+	 * Sets the account blocked state of a member
+	 *
+	 * @return  void
+	 */
+	public function blockTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$state = ($this->getTask() == 'block' ? 1 : 0);
+
+		// Incoming user ID
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Do we have an ID?
+		if (empty($ids))
+		{
+			Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->cancelTask();
+		}
+
+		$i = 0;
+
+		foreach ($ids as $id)
+		{
+			// Load the profile
+			$user = Member::oneOrFail(intval($id));
+			$user->set('block', $state);
+
+			if (!$user->save())
+			{
+				Notify::error($user->getError());
+				continue;
+			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_BLOCK_STATUS_CHANGED'));
 		}
 
 		$this->cancelTask();
