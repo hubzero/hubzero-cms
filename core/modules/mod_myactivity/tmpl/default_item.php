@@ -39,7 +39,7 @@ if (!$row->wasViewed())
 	$row->markAsViewed();
 }
 
-$name = $this->escape(stripslashes($row->log->creator()->get('name')));
+$name = $this->escape(stripslashes($row->log->creator->get('name')));
 
 ?>
 <li
@@ -51,8 +51,8 @@ $name = $this->escape(stripslashes($row->log->creator()->get('name')));
 	<div class="activity <?php echo $this->escape($row->log->get('component')); ?>">
 		<span class="activity-details">
 			<span class="activity-actor">
-				<?php if ($row->log->creator()->get('public')) { ?>
-					<a href="<?php echo Route::url($row->log->creator()->getLink()); ?>">
+				<?php if (in_array($row->log->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+					<a href="<?php echo Route::url($row->log->creator->link()); ?>">
 						<?php echo $name; ?>
 					</a>
 				<?php } else { ?>

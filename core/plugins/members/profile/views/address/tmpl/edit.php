@@ -46,7 +46,7 @@ $this->css()
 	<div class="explaination">
 		<h3><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></h3>
 		<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE_EXPLANATION') ;?></p>
-		<p><a class="icon-prev btn" href="<?php echo Route::url('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=profile&action=manageaddresses'); ?>"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></a></p>
+		<p><a class="icon-prev btn" href="<?php echo Route::url('index.php?option=com_members&id='.$this->member->get('id').'&active=profile&action=manageaddresses'); ?>"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></a></p>
 	</div>
 	<?php endif; ?>
 	<fieldset>
@@ -96,7 +96,7 @@ $this->css()
 		<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
 	</p>
 	<input type="hidden" name="option" value="com_members" />
-	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 	<input type="hidden" name="active" value="profile" />
 	<input type="hidden" name="action" value="saveaddress" />
 	<input type="hidden" name="address[id]" value="<?php echo $this->addressId; ?>" />

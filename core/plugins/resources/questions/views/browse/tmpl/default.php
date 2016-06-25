@@ -59,10 +59,10 @@ $this->css();
 			$name = Lang::txt('PLG_RESOURCES_QUESTIONS_ANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
-				$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
-				if ($row->creator()->get('public'))
+				$name = $this->escape(stripslashes($row->creator->get('name', $name)));
+				if (in_array($row->creator->get('access'), User::getAuthorisedviewLevels()))
 				{
-					$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
+					$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 				}
 			}
 

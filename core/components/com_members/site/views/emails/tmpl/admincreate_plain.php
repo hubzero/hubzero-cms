@@ -42,4 +42,4 @@ if ($this->xprofile->get('orginization'))
 '<?php echo $this->xprofile->get('username'); ?>' on <?php echo $this->sitename; ?>.
 
 Click the following link to review this user's account:
-<?php echo $this->baseUrl . Route::url($this->xprofile->getLink()); ?>
+<?php echo $this->baseUrl . Route::url($this->xprofile->link()); ?>
