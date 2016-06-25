@@ -282,7 +282,7 @@ class Setup extends Base
 		}
 
 		// Check authorization
-		if ($this->model->exists() && !($this->model->access('owner') || $this->model->access('manager')))
+		if ($this->model->exists() && !($this->model->access('owner') || $this->model->access('manager') || ($this->model->access('content') && $this->config->get('edit_description'))))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
