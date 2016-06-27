@@ -49,7 +49,8 @@ class IndexQueue extends Relational
 	 * @var string
 	 **/
 	protected $namespace = 'search';
-	// table name jos_citations
+
+	protected $table = '#__search_indexqueue';
 
 	/**
 	 * Default order by for model
@@ -73,7 +74,7 @@ class IndexQueue extends Relational
 	 *
 	 * @var array
 	 **/
-	public $always = array(
+	public $initialize = array(
 		'created_by',
 		'created'
 	);
