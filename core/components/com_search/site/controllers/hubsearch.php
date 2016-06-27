@@ -108,7 +108,7 @@ class Hubsearch extends SiteController
 		else
 		{
 			$this->view->queryString = '';
-			$this->view->results = null; 
+			$this->view->results = null;
 		}
 
 		$this->view->terms = $terms;
@@ -224,9 +224,8 @@ class Hubsearch extends SiteController
 					}
 					$authorCnt++;
 				}
-				$result['authorString'] = $authorString; 
+				$result['authorString'] = $authorString;
 			}
-				
 		} // End foreach results
 
 		return $results;
