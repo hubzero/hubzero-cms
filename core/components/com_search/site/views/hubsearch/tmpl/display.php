@@ -101,7 +101,8 @@ $noResult = count($this->results) > 0 ? false : true;
 								<span class="result-category"><?php echo ucfirst($result['hubtype']); ?></span>
 
 								<! -- Date  : mandatory -->
-								<span class="result-timestamp"><time datetime="<?php echo $result['date'] ?>">Aug 16 2013</time></span>
+								<?php $date = new \Hubzero\Utility\Date($result['date']); ?>
+								<span class="result-timestamp"><time datetime="<?php echo $result['date'] ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
 
 								<!-- Authors -->
 								<?php if (isset($result['author'])): ?>

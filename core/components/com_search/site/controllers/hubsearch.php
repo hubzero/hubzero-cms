@@ -177,6 +177,9 @@ class Hubsearch extends SiteController
 			//@FIXME: SOLR-specific
 			$result['title'] = $result['title'][0];
 
+			// Appends http(s)://
+			$result['url']  = Request::base() . $result['url'];
+
 			$snippet = '';
 			foreach ($result as $field => &$r)
 			{
@@ -224,8 +227,7 @@ class Hubsearch extends SiteController
 					}
 					$authorCnt++;
 				}
-				$result['authorString'] = $authorString;
-			}
+				$result['authorString'] = $authorString; }
 		} // End foreach results
 
 		return $results;
