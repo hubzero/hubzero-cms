@@ -67,8 +67,8 @@
 	bottom: 0;
 	left: 11%;
 	width: 1px;
-	background-color: red;
-	background-color: rgba(255, 0, 255, 0.4);
+	background-color: #5f51ae;
+	background-color: rgba(95, 81, 174, 0.6);
 	position: absolute;
 	content: "";
 }
