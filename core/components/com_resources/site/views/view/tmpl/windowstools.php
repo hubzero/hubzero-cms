@@ -98,10 +98,32 @@ if ($mode != 'preview')
 				}
 				else
 				{
-					$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&uuid=' . $this->model->resource->path);
+					// Get summary usage data
+					$startdate = new \DateTime('midnight first day of this month');
+					$enddate = new \DateTime('midnight first day of next month');
+					$db = App::get('db');
+					$sql = 'SELECT truncate(sum(walltime)/60/60,3) as totalhours FROM sessionlog ';
+					$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
+					$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
+					$db->setQuery($sql);
+					$totalUsageFigure = $db->loadObjectList();
 
-					$html  = Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
-					$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+					$params = Component::params('com_tools');
+					$maxhours = $params->get('windows_monthly_max_hours', '100');
+
+					if (floatval($totalUsageFigure[0]->totalhours) < floatval($maxhours))
+					{
+						$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->resource->path);
+						$html = Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+					}
+					else
+					{
+						$html  = Components\Resources\Helpers\Html::primaryButton('', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+						$html .= 'AppStream tool usage over limit. Please contact the system administrator.';
+						$html .= "<br/>" . $totalUsageFigure[0]->totalhours . "/" . $maxhours;
+					}
+
 					echo $html;
 				}
 				?>

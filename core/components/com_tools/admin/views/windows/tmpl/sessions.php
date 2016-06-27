@@ -56,20 +56,21 @@ function submitbutton(pressbutton)
 	     ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=sessions'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_appname"><?php echo Lang::txt('COM_TOOLS_APPNAME'); ?>:</label>
 		<select name="appname" id="filter_appname" onchange="document.adminForm.submit();">
 			<option value=""><?php echo Lang::txt('COM_TOOLS_APPNAME_SELECT'); ?></option>
 			<?php
-			foreach ($this->appnames as $record)
+
+			foreach ($this->apps as $record)
 			{
-				$html  = ' <option value="' . $record->appname . '"';
-				if ($this->filters['appname'] == $record->appname)
+				$html  = ' <option value="' . $record->path . '"';
+				if (Request::getVar('appname','') == $record->path)
 				{
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . $this->escape(stripslashes($record->appname)) . '</option>' . "\n";
+				$html .= '>' . $this->escape(stripslashes($record->title)) .'</option>' . "\n";
 
 				echo $html;
 			}
@@ -80,56 +81,33 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SESSION', 'sessionid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_URL', 'url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_OPAQUE_DATA', 'url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_AVAILABILITY', 'availability', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_STOP'); ?></th>
 			</tr>
 		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="9">
-					<?php
-					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					?>
-				</td>
-			</tr>
-		</tfoot>
 		<tbody>
 		<?php
-		if ($this->rows)
+		if ($this->sessions)
 		{
 			$i = 0;
-			foreach ($this->rows as $row)
+			foreach ($this->sessions as $s)
 			{
 				?>
 				<tr>
+
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
-					</td>
-					<td>
-						<span><?php echo $this->escape($row->get('id')); ?></span>
+						<span><?php echo $this->escape($s['sessionid']); ?></span>
 					</td>
 					<td class="priority-2">
-						<span><?php echo $this->escape($row->get('url')); ?></span>
+						<span><?php echo $this->escape($s['opaquedata']); ?></span>
 					</td>
 					<td class="priority-3">
-						<span><?php echo $this->escape($row->get('status')); ?></span>
+						<span><?php echo $this->escape($s['status']); ?></span>
 					</td>
 					<td class="priority-3">
-						<span><?php echo $this->escape($row->get('availability')); ?></span>
-					</td>
-					<td>
-						<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=terminate&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
-							<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
-						</a>
+						<span><?php //echo $this->escape($s->get('availability')); ?></span>
 					</td>
 				</tr>
 				<?php
@@ -142,7 +120,7 @@ function submitbutton(pressbutton)
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="" autocomplete="off" />
+	<input type="hidden" name="task" value="sessions" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />

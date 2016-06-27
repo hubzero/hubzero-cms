@@ -99,8 +99,7 @@ if ($mode != 'preview')
 					}
 					else
 					{
-						$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&uuid=' . $this->model->resource->path);
-
+						$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->resource->path);
 						$html  = Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
 						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
 					}
