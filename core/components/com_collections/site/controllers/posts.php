@@ -95,13 +95,20 @@ class Posts extends SiteController
 
 		if (!$this->view->post->exists())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts')
-			);
-			return;
+			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_MISSING_POST'));
 		}
 
 		$this->view->collection = $this->model->collection($this->view->post->get('collection_id'));
+
+		if (!$this->view->collection->exists())
+		{
+			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION'));
+		}
+
+		if (!$this->view->collection->canAccess(User::get('id')))
+		{
+			App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
+		}
 
 		// Push error messages ot the view
 		foreach ($this->getErrors() as $error)
