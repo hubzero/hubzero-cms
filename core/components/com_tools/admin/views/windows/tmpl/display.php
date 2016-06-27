@@ -58,7 +58,6 @@ function submitbutton(pressbutton)
 	$this->view('_submenu')
 	     ->display();
 ?>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
@@ -69,6 +68,10 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_UUID', 'path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+
+				<th scope="col" class="priority-2">In use sessions</th>
+				<th scope="col" class="priority-1">Available sessions</th>
+
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
@@ -87,7 +90,10 @@ function submitbutton(pressbutton)
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
-			?>
+			$appinfo = exec("/usr/bin/hz-aws-appstream getapp --appid " . $this->escape(stripslashes($row->get('path'))));
+			$appinfoArray = explode("|", $appinfo);
+
+		?>
 			<tr>
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
@@ -105,11 +111,30 @@ function submitbutton(pressbutton)
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				</td>
+
 				<td class="priority-3">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('path'))); ?>
 					</a>
 				</td>
+
+				<td class="priority-2">
+
+					<?php
+						if ( count($appinfoArray) > 2)
+							print($appinfoArray[2]);
+					?>
+
+				</td>
+
+				<td class="priority-1">
+					<?php
+						if ( count($appinfoArray) > 2)
+							print($appinfoArray[3]);
+					?>	
+				</td>
+
+
 				<td>
 					<span><?php echo $this->escape($row->get('published')); ?></span>
 				</td>

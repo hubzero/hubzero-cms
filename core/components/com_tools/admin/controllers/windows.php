@@ -64,7 +64,7 @@ class Windows extends AdminController
 	}
 
 	/**
-	 * Display a list o records
+	 * Display a list of records
 	 *
 	 * @return  void
 	 */
@@ -96,8 +96,8 @@ class Windows extends AdminController
 		// Get a list of tools
 		$rows = Resource::all()
 			->whereEquals('type', $this->config->get('windows_type'))
-			->ordered('filter_order', 'filter_order_Dir')
-			->paginated('limitstart', 'limit')
+		//	->ordered('filter_order', 'filter_order_Dir')
+		//	->paginated('limitstart', 'limit')
 			->rows();
 
 		// Display results
@@ -297,18 +297,111 @@ class Windows extends AdminController
 		$total = count($rows);
 
 		// Get a list of all apps for the filters bar
-		$appnames = array();
+		$apps =
+			Resource::all()
+			->whereEquals('type', $this->config->get('windows_type'))
+//			->ordered('filter_order', 'filter_order_Dir')
+//			->paginated('limitstart', 'limit')
+			->rows();
+
+		// Get a list of all active sessions for specified app
+		$appname = Request::getVar('appname','');
+
+		$sessions = array();
+
+		if (!empty($appname))
+		{
+			exec('/usr/bin/hz-aws-appstream getappsessions --appid' . ' "' . $appname . '"', $rawsessions);
+
+			$sessions = array();
+			foreach ($rawsessions as $s)
+			{
+				$sessionsArray = explode("|", $s);
+
+				if (sizeof($sessionsArray) == 4)
+					$sessions[] = array("sessionid" => $sessionsArray[0], "status" => $sessionsArray[2], "opaquedata" => $sessionsArray[3]);
+				//else
+				//	$sessions[] = array("sessionid" => $sessionsArray[0], "status" => "cannot parse", "opaquedata" => "cannot parse");
+
+
+			}
+			usort($sessions, function($a, $b){return strcmp( $a['status'], $b['status']); } );
+		}
+
 
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
 			->set('rows', $rows)
+			->set('apps', $apps)
+			->set('sessions', $sessions)
 			->set('total', 0)
-			->set('appnames', $appnames)
 			->setErrors($this->getErrors())
 			->setLayout('sessions')
 			->display();
 	}
+
+
+	/**
+	 * Display sessions
+	 *
+	 * @return  void
+	 */
+	public function usageTask()
+	{
+
+		// Get report startdate and enddate set
+		// 'Y-m-d H:i:s'
+		$startdate = Request::getVar('startdate', '');
+		$enddate = Request::getVar('enddate', '');
+
+		if (empty($startdate))
+			$startdate = new \DateTime('midnight first day of this month');
+		else
+			$startdate = new \DateTime($startdate);
+
+		if (empty($enddate))
+			$enddate = new \DateTime('midnight first day of next month');
+		else
+			$enddate = new \DateTime($enddate);
+
+		// Get the usage data
+		$db = App::get('db');
+		$sql =  'SELECT jr.title as appname, ' ;
+		$sql .= 'count(sessnum) as sessions ';
+		$sql .= ', truncate(stddev(walltime)/60/60,3) as "standarddeviationhours" ';
+		$sql .= ', truncate(avg(walltime)/60/60,3) as "averagehours" ';
+		$sql .= ', truncate(sum(walltime)/60/60,3) as "totalhours" ';
+		$sql .= 'FROM sessionlog ';
+		$sql .= 'JOIN jos_resources jr on (jr.path = appname and jr.`type` = 64) ';
+		$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
+		$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
+		$sql .= 'GROUP BY appname;';
+
+		$db->setQuery($sql);
+		$usageFigures = $db->loadObjectList();
+
+		// Get summary usage data
+		$db = App::get('db');
+		$sql = 'SELECT ifnull(truncate(sum(walltime)/60/60,3),0) as totalhours FROM sessionlog ';
+		$sql .= 'JOIN jos_resources jr on (jr.path = appname and jr.`type` = 64) ';
+		$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
+		$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
+
+		$db->setQuery($sql);
+		$totalUsageFigure = $db->loadObjectList();
+
+		// Output the HTML
+		$this->view
+			->set('startdate', $startdate)
+			->set('enddate', $enddate)
+			->set('usageFigures', $usageFigures)
+			->set('totalUsageFigure', $totalUsageFigure)
+			->setErrors($this->getErrors())
+			->setLayout('usage')
+			->display();
+	}
+
 
 	/**
 	 * Delete one or more sessions
@@ -329,7 +422,7 @@ class Windows extends AdminController
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
-				// Stop the tession
+				// Stop the session
 			}
 		}
 

@@ -217,6 +217,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="windows_key_id" type="text" menu="hide" default="" label="Access Key ID" description="Amazon Web Services (AWS) Access Key ID" />
 		<field name="windows_secret_key" type="text" menu="hide" default="" label="Secret Access Key" description="Amazon Web Services (AWS) Secret Access Key" />
 		<field name="windows_type" type="resourcetype" menu="hide" default="" label="Resource Type" description="Resource type to use for tool information" />
+		<field name="windows_monthly_max_hours" type="text" menu="hide" default="" label="Max Monthly Hours" description="Max hours of windows applicaiton sessions per month" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_tools" section="component" />
