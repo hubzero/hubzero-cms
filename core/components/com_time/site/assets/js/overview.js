@@ -89,13 +89,13 @@ jQuery(document).ready(function ( jq ) {
 
 						if (total > 0 && total < 20) {
 							perc = -90 + perc;
-							bg1 = 'linear-gradient(90deg, transparent 50%, red 50%)';
+							bg1 = 'linear-gradient(90deg, transparent 50%, #5f51ae 50%)';
 							bg2 = 'linear-gradient(' + perc + 'deg, white 50%, transparent 50%)';
 						} else if (total >= 20 && total < 40) {
 							perc = 90 + perc;
-							bg1 = 'linear-gradient(' + perc + 'deg, red 50%, transparent 50%), linear-gradient(90deg, transparent 50%, red 50%)';
+							bg1 = 'linear-gradient(' + perc + 'deg, #5f51ae 50%, transparent 50%), linear-gradient(90deg, transparent 50%, #5f51ae 50%)';
 						} else if (total >= 40) {
-							bg1 = 'linear-gradient(90deg, red 50%, transparent 50%), linear-gradient(90deg, transparent 50%, red 50%)';
+							bg1 = 'linear-gradient(90deg, #5f51ae 50%, transparent 50%), linear-gradient(90deg, transparent 50%, #5f51ae 50%)';
 						}
 
 						$('.hourly .pie-half1').css(
@@ -147,7 +147,7 @@ jQuery(document).ready(function ( jq ) {
 								minBorderMargin : 30,
 								color : '#AAAAAA'
 							},
-							colors : ['red']
+							colors : ['#5f51ae']
 						};
 						$.plot(".week-overview", [{data : points}], options);
 					}

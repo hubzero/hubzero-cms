@@ -604,7 +604,7 @@ class Timev1_0 extends ApiController
 				'description' => $r->description,
 				'task_id'     => $r->task->id,
 				'hub_id'      => $r->task->hub->id,
-				'color'       => 'red'
+				'color'       => '#5f51ae'
 			];
 		}
 
