@@ -190,7 +190,7 @@ class Poll extends Relational
 		{
 			if (!$item->destroy())
 			{
-				$this->setError($item->getError());
+				$this->addError($item->getError());
 				return false;
 			}
 		}
@@ -200,7 +200,7 @@ class Poll extends Relational
 		{
 			if (!$dt->destroy())
 			{
-				$this->setError($dt->getError());
+				$this->addError($dt->getError());
 				return false;
 			}
 		}
@@ -210,7 +210,7 @@ class Poll extends Relational
 		{
 			if (!$menu->destroy())
 			{
-				$this->setError($menu->getError());
+				$this->addError($menu->getError());
 				return false;
 			}
 		}*/
