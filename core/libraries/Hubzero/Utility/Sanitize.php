@@ -308,6 +308,11 @@ class Sanitize
 		$config->set('Attr.EnableID', true);
 		$config->set('HTML.AllowedCommentsRegexp', '/./');
 
+		$config->set('HTML.SafeIframe', true);
+		// Allow YouTube, Vimeo, and calls to same domain
+		$root = str_replace(array('http://', 'https://', '.'), array('', '', '\.'), \App::get('request')->root());
+		$config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/|' . $root . ')%');
+
 		$path = PATH_APP . DS . 'cache' . DS . (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name) . DS . 'htmlpurifier';
 		if (!is_dir($path))
 		{
