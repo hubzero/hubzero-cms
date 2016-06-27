@@ -145,6 +145,14 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		// Execute the query
 		$database->setQuery($query);
 
+		$rows = $database->loadObjectList();
+
+		// No data found. Nothing to display.
+		if (!count($rows))
+		{
+			return;
+		}
+
 		$view = new \Hubzero\Plugin\View(array(
 			'folder'  => $this->_type,
 			'element' => $this->_name,
@@ -160,7 +168,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		// Pass the view some info
 		$view->option   = $option;
 		$view->resource = $resource;
-		$view->related  = $database->loadObjectList();
+		$view->related  = $rows;
 
 		foreach ($this->getErrors() as $error)
 		{
