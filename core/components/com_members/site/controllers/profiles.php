@@ -192,10 +192,11 @@ class Profiles extends SiteController
 		else
 		{
 			// add trailing wildcard
-			$filters['search'] = $filters['search'] . '*';
+			//$filters['search'] = $filters['search'] . '*';
 
 			// match member names on all three name parts
-			$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
+			//$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
+			$match = "LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%');
 			$query = "SELECT u.id, u.name, u.username, u.access, $match as rel
 					FROM `#__users` AS u
 					WHERE $match AND u.block = 0 AND u.activation>0 $restrict
