@@ -663,7 +663,7 @@ class Pages
 
 		// parse old wiki content
 		//$content = self::parseWiki($group, $version->get('content'), $fullparse = true);
-		$content = $version->get('content');
+		$content = $version->get('content''<p class="warning">' . Lang::txt('COM_GROUPS_PAGES_PAGE_NO_CONTENT') . '</p>');
 
 		// parse php tags and modules
 		$content = self::parse($group, $page, $content);
