@@ -34,9 +34,41 @@ namespace Components\Support\Models\Orm;
 
 use Hubzero\Database\Relational;
 
+/**
+ * Support ticket comment model
+ */
 class Comment extends Relational
 {
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
 	public $namespace = 'support';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'comment' => 'notempty',
+		'ticket'  => 'positive|nonzero'
+	);
 
 	/**
 	 * Automatic fields to populate every time a row is created
@@ -45,10 +77,26 @@ class Comment extends Relational
 	 */
 	public $initiate = array(
 		'created',
+		'created_by'
 	);
 
+	/**
+	 * Get parent ticket
+	 *
+	 * @return  object
+	 */
 	public function ticket()
 	{
-		return $this->belongsToOne('Ticket');
+		return $this->belongsToOne('Ticket', 'ticket');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between comment and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 }

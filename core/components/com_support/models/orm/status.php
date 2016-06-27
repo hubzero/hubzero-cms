@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,12 +34,10 @@ namespace Components\Support\Models\Orm;
 
 use Hubzero\Database\Relational;
 
-require_once __DIR__ . DS . 'comment.php';
-
 /**
- * Support ticket model
+ * Support ticket status model
  */
-class Ticket extends Relational
+class Status extends Relational
 {
 	/**
 	 * The table namespace
@@ -63,53 +61,11 @@ class Ticket extends Relational
 	public $orderDir = 'asc';
 
 	/**
-	 * Automatic fields to populate every time a row is created
+	 * Fields and their validation criteria
 	 *
 	 * @var  array
 	 */
-	public $initiate = array(
-		'created',
-		'created_by'
+	protected $rules = array(
+		'title' => 'notempty'
 	);
-
-	/**
-	 * Get a list of comments
-	 *
-	 * @return  object
-	 */
-	public function comments()
-	{
-		return $this->oneToMany('Comment', 'ticket');
-	}
-
-	/**
-	 * Get status
-	 *
-	 * @return  object
-	 */
-	public function status()
-	{
-		return $this->oneToOne('Status', 'id', 'status');
-	}
-
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function destroy()
-	{
-		// Remove data
-		foreach ($this->comments()->rows() as $comment)
-		{
-			if (!$comment->destroy())
-			{
-				$this->addError($comment->getError());
-				return false;
-			}
-		}
-
-		// Attempt to delete the record
-		return parent::destroy();
-	}
 }

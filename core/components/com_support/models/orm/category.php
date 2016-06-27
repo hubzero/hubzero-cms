@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,13 +33,13 @@
 namespace Components\Support\Models\Orm;
 
 use Hubzero\Database\Relational;
-
-require_once __DIR__ . DS . 'comment.php';
+use Date;
+use User;
 
 /**
- * Support ticket model
+ * Support ticket category model
  */
-class Ticket extends Relational
+class Category extends Relational
 {
 	/**
 	 * The table namespace
@@ -63,6 +63,15 @@ class Ticket extends Relational
 	public $orderDir = 'asc';
 
 	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'title' => 'notempty'
+	);
+
+	/**
 	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
@@ -73,43 +82,64 @@ class Ticket extends Relational
 	);
 
 	/**
-	 * Get a list of comments
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'alias',
+		'modified',
+		'modified_by'
+	);
+
+	/**
+	 * Defines a belongs to one relationship between comment and user
 	 *
 	 * @return  object
 	 */
-	public function comments()
+	public function creator()
 	{
-		return $this->oneToMany('Comment', 'ticket');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
-	 * Get status
+	 * Defines a belongs to one relationship between comment and user
 	 *
 	 * @return  object
 	 */
-	public function status()
+	public function modifier()
 	{
-		return $this->oneToOne('Status', 'id', 'status');
+		return $this->belongsToOne('Hubzero\User\User', 'modified_by');
 	}
 
 	/**
-	 * Delete the record and all associated data
+	 * Generates automatic created field value
 	 *
-	 * @return  boolean  False if error, True on success
+	 * @return  string
 	 */
-	public function destroy()
+	public function automaticModified()
 	{
-		// Remove data
-		foreach ($this->comments()->rows() as $comment)
-		{
-			if (!$comment->destroy())
-			{
-				$this->addError($comment->getError());
-				return false;
-			}
-		}
+		return Date::of('now')->toSql();
+	}
 
-		// Attempt to delete the record
-		return parent::destroy();
+	/**
+	 * Generates automatic created by field value
+	 *
+	 * @return  integer
+	 */
+	public function automaticModifiedBy()
+	{
+		return User::get('id', 0);
+	}
+
+	/**
+	 * Generates automatic created field value
+	 *
+	 * @param   array   $data
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		return strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($data['title'])));
 	}
 }
