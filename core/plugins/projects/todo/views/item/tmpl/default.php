@@ -68,6 +68,15 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 	&raquo; <span class="itemname"><?php echo \Hubzero\Utility\String::truncate($this->row->get('content'), 60); ?></span>
 	</h3>
 </div>
+	<?php if ($this->model->access('content')) { ?>
+	<ul id="page_options" class="pluginOptions">
+		<li>
+			<a class="icon-add add btn showinbox"  href="<?php echo Route::url($url . '&action=new'); ?>">
+				<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
+			</a>
+		</li>
+	</ul>
+	<?php } ?>
 
 <div class="pinboard">
 		<section class="section intropage">
