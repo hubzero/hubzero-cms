@@ -134,7 +134,7 @@ class Profiles extends SiteController
 				switch ($this->config->get('user_messaging'))
 				{
 					case 2:
-						$restrict = " AND xp.public=1";
+						$restrict = " AND u.access=1";
 					break;
 
 					case 1:
@@ -168,7 +168,7 @@ class Profiles extends SiteController
 							$members = array(User::get('id'));
 						}
 
-						$restrict = " AND xp.uidNumber IN (" . implode(',', $members) . ")";
+						$restrict = " AND u.id IN (" . implode(',', $members) . ")";
 					break;
 				}
 			}
@@ -183,11 +183,10 @@ class Profiles extends SiteController
 		// match against orcid id
 		if (preg_match('/\d{4}-\d{4}-\d{4}-\d{4}/', $filters['search']))
 		{
-			$query = "SELECT xp.uidNumber AS id, xp.name, xp.username, xp.organization, xp.picture, xp.public
-					FROM `#__xprofiles` AS xp
-					INNER JOIN `#__users` u ON u.id = xp.uidNumber AND u.block = 0
-					WHERE orcid= " . $this->database->quote($filters['search']) . " AND xp.emailConfirmed>0 $restrict
-					ORDER BY xp.name ASC
+			$query = "SELECT u.id, u.name, u.username, u.access
+					FROM `#__users` AS u
+					WHERE u.block = 0 AND orcid= " . $this->database->quote($filters['search']) . " AND u.activation>0 $restrict
+					ORDER BY u.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		else
@@ -196,12 +195,11 @@ class Profiles extends SiteController
 			$filters['search'] = $filters['search'] . '*';
 
 			// match member names on all three name parts
-			$match = "MATCH(xp.givenName,xp.middleName,xp.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
-			$query = "SELECT xp.uidNumber AS id, xp.name, xp.username, xp.organization, xp.picture, xp.public, $match as rel
-					FROM `#__xprofiles` AS xp
-					INNER JOIN `#__users` u ON u.id = xp.uidNumber AND u.block = 0
-					WHERE $match AND xp.emailConfirmed>0 $restrict
-					ORDER BY rel DESC, xp.name ASC
+			$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
+			$query = "SELECT u.id, u.name, u.username, u.access, $match as rel
+					FROM `#__users` AS u
+					WHERE $match AND u.block = 0 AND u.activation>0 $restrict
+					ORDER BY rel DESC, u.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
@@ -231,7 +229,6 @@ class Profiles extends SiteController
 		{
 			$originalQuery = ucwords($originalQuery);
 		}
-
 
 		//original query
 		$obj = array();
