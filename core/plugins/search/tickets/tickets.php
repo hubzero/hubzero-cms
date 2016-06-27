@@ -110,7 +110,7 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 				$cleaned = strip_tags($comment->comment);
 				$cleaned = str_replace("\n", '', $cleaned);
 				$cleaned = str_replace("\r", '', $cleaned);
-				//$cleaned = preg_replace("/[^a-zA-Z0-9\s]/", "", $cleaned);
+				$cleaned = preg_replace("/[^a-zA-Z0-9\s]/", "", $cleaned);
 
 				array_push($comments, $cleaned);
 				array_push($owners, $comment->created_by);
