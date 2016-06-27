@@ -324,7 +324,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$row->ranking  = $row->data3;
 
 		// Set the display date
-		switch ($rparams->get('show_date', $config->get('show_date', 3)))
+		switch ($config->get('show_date', 3))
 		{
 			case 0: $thedate = ''; break;
 			case 1: $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
