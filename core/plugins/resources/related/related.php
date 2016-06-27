@@ -87,8 +87,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 		if (!User::isGuest())
 		{
-			if (User::authorise('core.manage', 'com_resources')
-			 || User::authorise('core.manage', 'com_groups'))
+			if (User::authorize('com_resources', 'manage')
+			 || User::authorize('com_groups', 'manage'))
 			{
 				$sql1 .= '';
 			}
@@ -126,8 +126,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id AND r.type!=8 ";
 		if (!User::isGuest())
 		{
-			if (User::authorise('core.manage', 'com_resources')
-			 || User::authorise('core.manage', 'com_groups'))
+			if (User::authorize('com_resources', 'manage')
+			 || User::authorize('com_groups', 'manage'))
 			{
 				$sql2 .= '';
 			}
@@ -148,11 +148,19 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		// Execute the query
 		$database->setQuery($query);
 
+		$rows = $database->loadObjectList();
+
+		// No data found. Nothing to display.
+		if (!count($rows))
+		{
+			return;
+		}
+
 		// Instantiate a view
 		$view = $this->view(($miniview ? 'mini' : 'default'), 'browse')
 			->set('option', $option)
 			->set('resource', $resource)
-			->set('related', $database->loadObjectList())
+			->set('related', $rows)
 			->setErrors($this->getErrors());
 
 		// Return the output
