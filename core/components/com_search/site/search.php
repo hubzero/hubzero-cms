@@ -38,7 +38,7 @@ $controllerName = \Request::getCmd('controller', \Request::getCmd('view', $confi
 
 if ($controllerName != 'basic')
 {
-	$controllerName = 'apisearch';
+	$controllerName = 'hubsearch';
 }
 
 // Are we falling back to the default engine?
