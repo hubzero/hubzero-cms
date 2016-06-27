@@ -46,7 +46,7 @@
 			<option value="0">Public - discoverable</option>
 			<option value="1">Private - hidden</option>
 		</field>
-		<field name="internal_layout" type="list" default="standard" label="Default project page layout" description="Set the default project page layout for team members">
+		<field name="layout" type="list" default="standard" label="Default project page layout" description="Set the default project page layout for team members">
 			<option value="standard">Standard (left side menu)</option>
 			<option value="extended">New (top menu)</option>
 		</field>
