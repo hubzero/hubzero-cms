@@ -571,7 +571,7 @@ class Item extends Base
 				$a->set('filename', $asset['filename']);
 				if (strtolower($a->get('filename')) == 'http://')
 				{
-					if (!$a->remove())
+					if ($a->get('id') && !$a->remove())
 					{
 						$this->setError($a->getError());
 					}
