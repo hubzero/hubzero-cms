@@ -421,7 +421,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			 **/
 			if ($mainVersion->access == 0 && $mainVersion->state == 1)
 			{
-				$fields->access_level = 'public'; 
+				$fields->access_level = 'public';
 			}
 			else
 			{
