@@ -33,6 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Publications\Models\Orm\Publication;
+
+require_once Component::path('com_publications') . DS . 'models' . DS . 'orm' . DS . 'publication.php';
+
 /**
  * Publications child sorter class
  */
@@ -293,6 +297,141 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 		{
 			$row->set_link(Route::url($row->get_raw_link()));
 			$results->add($row);
+		}
+	}
+
+	public $hubtype = 'publication';
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 *
+	 * @param mixed $type
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		if (isset($type) && $type == $this->hubtype)
+		{
+			return $this->hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $this->hubtype;
+		}
+	}
+
+	/**
+	 * onGetModel 
+	 * 
+	 * @param string $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetModel($type = '')
+	{
+		if ($type == $this->hubtype)
+		{
+			return new Publication;
+		}
+	}
+
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row, &$db)
+	{
+		if ($type == $this->hubtype)
+		{
+			// Instantiate new $fields object
+			$fields = new stdClass;
+			$fields->author = array();
+
+			// Find the latest version of the publication
+			$mainVersion = $row->versions()->where('main', '=', '1')->row();
+
+			// Grab the authors
+			$authors = $mainVersion->authors()->select('name')->rows()->toArray();
+
+			// Place in the bucket
+			foreach ($authors as $author)
+			{
+				array_push($fields->author, $author['name']);
+			}
+
+			// Format the date for SOLR
+			$date = Date::of($row->created)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->created)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			// Title is required
+			$fields->title = $mainVersion->title;
+
+
+			$fields->description = strip_tags(htmlspecialchars_decode($mainVersion->description));
+			$fields->abstract = $mainVersion->abstract;
+			$fields->doi = $mainVersion->doi;
+
+
+			/**
+			 * Each entity should have an owner. 
+			 * Owner type can be a user or a group,
+			 * where the owner is the ID of the user or group
+			 **/
+			if ($row->group_owner == 0)
+			{
+				$fields->owner_type = 'user';
+				$fields->owner = $row->created_by;
+			}
+			else
+			{
+				$fields->owner_type = 'group';
+				$fields->owner = $row->group_owner;
+			}
+
+			/** Publications States
+			 0 - unpublished
+			 1 - published (viable by access level)
+			 2 - deleted
+			 3 - draft
+			 4 - ready
+			 5 - pending approval
+			 6 - ??
+			 7 - changes required
+			 **/
+
+			 /** Publication Access Levels
+			  0 - Public
+				1 - Registered
+				2 - Private 
+				**/
+
+			/**
+			 * A document should have an access level.
+			 * This value can be:
+			 *  public - all users can view
+			 *  registered - only registered users can view
+			 *  private - only owners (set above) can view
+			 **/
+			if ($mainVersion->access == 0 && $mainVersion->state == 1)
+			{
+				$fields->access_level = 'public'; 
+			}
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			// The URL this document is accessible through
+			$fields->url = '/publications/' . $row->id;
+
+			return $fields;
 		}
 	}
 }
