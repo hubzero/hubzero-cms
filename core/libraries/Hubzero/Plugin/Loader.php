@@ -38,7 +38,6 @@ use Hubzero\Config\Registry;
 use Exception;
 use User;
 use Lang;
-use stdClass;
 
 /**
  * Plugin loader
@@ -256,20 +255,20 @@ class Loader implements LoaderInterface
 					}
 
 					$paths[$path] = true;
+
+					if ($autocreate && class_exists($className))
+					{
+						// Makes sure we have an event dispatcher
+						if (!($dispatcher instanceof DispatcherInterface))
+						{
+							$dispatcher = new \JDispatcher();
+						}
+
+						// Instantiate and register the plugin.
+						return new $className($dispatcher, (array) $plugin);
+					}
 				}
 			}
-		}
-
-		if ($autocreate && class_exists($className))
-		{
-			// Makes sure we have an event dispatcher
-			if (!($dispatcher instanceof DispatcherInterface))
-			{
-				$dispatcher = new \JDispatcher();
-			}
-
-			// Instantiate and register the plugin.
-			return new $className($dispatcher, (array) $plugin);
 		}
 
 		return null;
