@@ -599,9 +599,7 @@ class Members extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -615,7 +613,8 @@ class Members extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('ids', array());
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		$i = 0;
@@ -635,7 +634,7 @@ class Members extends AdminController
 				$allow = User::authorise('core.delete', 'com_members');
 
 				// Don't allow non-super-admin to delete a super admin
-				$allow = (!$iAmSuperAdmin && JAccess::check($user->get('id'), 'core.admin')) ? false : $allow;
+				$allow = (!$iAmSuperAdmin && \JAccess::check($user->get('id'), 'core.admin')) ? false : $allow;
 
 				if (!$allow)
 				{
@@ -659,9 +658,7 @@ class Members extends AdminController
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
