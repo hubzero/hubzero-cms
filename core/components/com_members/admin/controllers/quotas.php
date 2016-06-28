@@ -571,6 +571,11 @@ class Quotas extends AdminController
 
 		$quota = new Tables\UsersQuotas($this->database);
 		$quota->load($id);
+
+		if ($quota->user_id == null)
+		{
+			return false;
+		}
 		$username = User::getInstance($quota->user_id)->get('username');
 
 		$info = array();
