@@ -112,7 +112,7 @@ class Router extends Base
 			{
 				$vars['controller'] = 'files';
 				$vars['id']         = $segments[0];
-				if((isset($segments[3])) && ($segments[2] == 'connections'))
+				if ((isset($segments[3])) && ($segments[2] == 'connections'))
 				{
 					$vars['cid'] = $segments[3];
 					$vars['task'] = isset($segments[4]) ? $segments[4] : 'list';
