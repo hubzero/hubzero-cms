@@ -243,19 +243,19 @@ class Auditor
 					->whereEquals('scope', $this->scope)
 					->whereEquals('test_id', $key)
 					->whereEquals('status', 0)
-					->count();
+					->total();
 
 				$tests[$key]['totals']['passed'] = Result::all()
 					->whereEquals('scope', $this->scope)
 					->whereEquals('test_id', $key)
 					->whereEquals('status', 1)
-					->count();
+					->total();
 
 				$tests[$key]['totals']['failed'] = Result::all()
 					->whereEquals('scope', $this->scope)
 					->whereEquals('test_id', $key)
 					->whereEquals('status', -1)
-					->count();
+					->total();
 
 				$tests[$key]['total'] += $tests[$key]['totals']['skipped'];
 				$tests[$key]['total'] += $tests[$key]['totals']['passed'];
