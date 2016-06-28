@@ -207,12 +207,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$html = \Hubzero\Module\Helper::renderModules('projectpage');
 
 		// Side blocks from other plugins?
-		$sections = Event::trigger( 'projects.onProjectMiniList', array( $this->model));
+		$sections = Event::trigger( 'projects.onProjectMiniList', array( $model));
 
 		if (!empty($sections))
 		{
 			// Show subscription to feed (new)
-			$subscribe = Event::trigger( 'projects.onProjectMember', array( $this->model));
+			$subscribe = Event::trigger( 'projects.onProjectMember', array( $model));
 			$html .= !empty($subscribe[0]) ? $subscribe[0] : NULL;
 
 			foreach ($sections as $section)
