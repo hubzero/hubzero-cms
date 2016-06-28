@@ -80,14 +80,13 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 			<form action="<?php echo Route::url($base); ?>" method="get">
 				<div id="add-filters">
 					<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_RESULTS'); ?>:
-						<select name="q[field]" id="filter-field">
+						<select name="q[field]" id="filter-field" data-base="<?php echo rtrim(Request::root(), '/'); ?>">
 							<?php foreach ($fields as $c) : ?>
 								<option value="<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape($c['human']); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<?php echo Components\Members\Helpers\Filters::buildSelectOperators(); ?>
-						<select name="q[value]" id="filter-value">
-						</select>
+						<input type="text" name="q[value]" id="filter-value" value="" />
 						<input class="btn btn-secondary" id="filter-submit" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_ADD'); ?>" />
 					</p>
 				</div><!-- / .filters -->

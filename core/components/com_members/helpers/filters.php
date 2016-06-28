@@ -98,6 +98,11 @@ class Filters
 		// Get the field names
 		$columns = array();
 
+		$columns[] = array(
+			'raw'   => 'name',
+			'human' => Lang::txt('COM_MEMBERS_FIELD_NAME')
+		);
+
 		$fields = Field::all()
 			->whereIn('action_browse', User::getAuthorisedViewLevels())
 			->where('type', '!=', 'tags')
@@ -117,11 +122,6 @@ class Filters
 			);
 		}
 
-		$columns[] = array(
-			'raw'   => 'name',
-			'human' => Lang::txt('COM_MEMBERS_FIELD_NAME')
-		);
-
 		return $columns;
 	}
 
@@ -133,13 +133,13 @@ class Filters
 	public static function buildSelectOperators()
 	{
 		$html  = '<select name="q[operator]" id="filter-operator">';
+		$html .= '	<option value="like">contains (LIKE)</option>';
 		$html .= '	<option value="e">equals (&#61;)</option>';
 		$html .= '	<option value="de">doesn\'t equal (&#8800;)</option>';
 		$html .= '	<option value="gt">is greater than (&#62;)</option>';
 		$html .= '	<option value="lt">is less than (&#60;)</option>';
 		$html .= '	<option value="gte">is greater than or equal to (&#62;&#61;)</option>';
 		$html .= '	<option value="lte">is less than or equal to (&#60;&#61;)</option>';
-		$html .= '	<option value="like">contains (LIKE)</option>';
 		$html .= '</select>';
 
 		return $html;

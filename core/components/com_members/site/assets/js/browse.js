@@ -50,7 +50,7 @@ HUB.Members.Browse = {
 		if (operator.val() != "like") {
 			// Create a ajax call to get relevent value options
 			$.ajax({
-				url: "/members", //"/api/members/fieldValues",
+				url: column.attr('data-base') + "/members", //"/api/members/fieldValues",
 				data: "task=fieldValues&no_html=1&field="+column.val(),
 				dataType: "json",
 				cache: false,
