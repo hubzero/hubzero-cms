@@ -38,7 +38,7 @@ class Test extends ComponentController
 	/**
 	 * Execute a task
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function execute()
 	{
@@ -57,20 +57,23 @@ class Test extends ComponentController
 	/**
 	 * Display default page
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function displayTask()
 	{
+
 		die('no access');
+
 	}
 
 	/**
 	 * Display default page
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function testgroundTask()
 	{
+
 		if (0)
 		{
 			// CREATE COUPON
@@ -206,7 +209,8 @@ class Test extends ComponentController
 
 	public function postTask()
 	{
-		//$user = User::getInstance((int)1057);
+
+		//$user =& JUser::getInstance((int)1057);
 
 		//echo '==>' . $user->get( 'gid' );
 
@@ -214,13 +218,15 @@ class Test extends ComponentController
 		//$user->delete();
 		//die;
 
-		Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		$doc =& JFactory::getDocument();
+		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
 
 	public function apipostTask()
 	{
+
 		$curl_result = '';
 		$curl_err = '';
 
@@ -268,7 +274,8 @@ class Test extends ComponentController
 		//print_r($curl_result);
 		die('+');
 
-		Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		$doc =& JFactory::getDocument();
+		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
@@ -367,7 +374,7 @@ class Test extends ComponentController
 	/**
 	 * Test payment task
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function payTask()
 	{
@@ -406,17 +413,18 @@ class Test extends ComponentController
 
 			// Redirect to confirmation page
 			App::redirect(
-				Route::url('index.php?option=' . 'com_cart') . 'order/complete?' . $req
+					Route::url('index.php?option=' . 'com_cart') . 'order/complete?' . $req
 			);
 		}
 
 		$this->view->display();
+
 	}
 
 	/**
 	 * Test express add to cart task
 	 *
-	 * @return  void
+	 * @return     void
 	 */
 	public function addTask()
 	{

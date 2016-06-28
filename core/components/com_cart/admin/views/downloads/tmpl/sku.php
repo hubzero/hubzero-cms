@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('download');
 
-Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'), 'cart.png');
+Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS') . ' by SKU', 'cart.png');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');

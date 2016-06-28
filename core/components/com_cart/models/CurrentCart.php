@@ -63,10 +63,11 @@ class CurrentCart extends Cart
 		parent::__construct();
 
 		// Get user
-		$user = User::getInstance();
+		$juser = User::getInstance();
+		//print_r($juser); die;
 
 		//Set the user scope
-		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
+		$this->warehouse->addAccessLevels($juser->getAuthorisedViewLevels());
 
 		$this->cart = new \stdClass();
 
@@ -78,7 +79,7 @@ class CurrentCart extends Cart
 		$cart = $this->liftSessionCart();
 
 		// If no session cart, try to locate a cookie cart (only for not logged in users)
-		if (!$cart && $user->isGuest())
+		if (!$cart && $juser->get('guest'))
 		{
 			$cart = $this->liftCookie();
 		}
@@ -86,14 +87,12 @@ class CurrentCart extends Cart
 		if ($cart)
 		{
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-			if (!$user->isGuest())
-			{
+			if (!$juser->get('guest')) {
 				if (empty($this->cart->linked) || !$this->cart->linked)
 				{
 					// link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
 					// if linking fails create a new cart
-					if (!$this->linkCarts())
-					{
+					if (!$this->linkCarts()) {
 						$this->createCart();
 					}
 				}
@@ -103,10 +102,10 @@ class CurrentCart extends Cart
 				$this->cart->linked = 0;
 			}
 		} // If no session & cookie cart found, but user is logged in
-		elseif (!$user->isGuest())
+		elseif (!$juser->get('guest'))
 		{
 			// Try to get the saved cart in the DB
-			if (!$this->liftUserCart($user->get('id')))
+			if (!$this->liftUserCart($juser->id))
 			{
 				// If no session, no cookie, no DB cart -- create a brand new cart
 				$this->createCart();
@@ -461,20 +460,17 @@ class CurrentCart extends Cart
 		// Get transaction info
 		$tInfo = $this->getTransactionData();
 
-		if (!$tInfo || $tInfo->tAge > $this->transactionKillAge)
-		{
-			// No transaction found
-			return false;
-		}
-
 		// Only pending and released transactions can be lifted
 		if (!$tInfo || ($tInfo->tStatus != 'pending' && $tInfo->tStatus != 'released'))
 		{
 			return false;
 		}
 
+		$params =  Component::params('com_cart');
+		$transactionTTL = ($params->get('transactionTTL'));
+
 		// See if transaction is expired
-		if ($tInfo->tAge > $this->transactionTTL)
+		if ($tInfo->tAge > $transactionTTL)
 		{
 			// If transaction has not yet been processed as expired (status is still 'pending') release the transaction
 			if ($tInfo->tStatus == 'pending')
@@ -579,7 +575,8 @@ class CurrentCart extends Cart
 				$sqlUpdateValues = str_replace('tiShipping', 'sa', $sqlUpdateValues);
 
 				// Get user
-				$uId = User::get('id');
+				$juser = User::getInstance();
+				$uId = $juser->id;
 
 				$sql = "INSERT IGNORE INTO `#__cart_saved_addresses`
 						SET `uidNumber` = {$uId}, {$sqlUpdateValues}";
@@ -893,7 +890,8 @@ class CurrentCart extends Cart
 		$this->applyCoupon($cnId);
 
 		// If user is logged in subtract coupon use count. If not logged in subtraction will happen when user logs in
-		if (User::get('id'))
+		$juser = User::getInstance();
+		if ($juser->id)
 		{
 			$coupons->apply($cnId);
 		}
@@ -1360,7 +1358,8 @@ class CurrentCart extends Cart
 		$coupons = new Coupons;
 
 		// If user is logged in return coupon back to the coupons pool.
-		if (User::get('id'))
+		$juser = User::getInstance();
+		if ($juser->id)
 		{
 			$coupons->recycle($cnId);
 		}
@@ -1409,8 +1408,11 @@ class CurrentCart extends Cart
 				$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
 				$type = $pType['ptName'];
 
+				// Get user
+				$jUser = User::getInstance();
+
 				// Get the correct membership Object
-				$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, User::get('id'));
+				$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $jUser->id);
 				// Get the expiration for the current subscription (if any)
 				$currentExpiration = $subscription->getExpiration();
 
@@ -1742,11 +1744,13 @@ class CurrentCart extends Cart
 			echo "<br>Creating new cart";
 		}
 
+		$juser = User::getInstance();
+
 		$uId = 'NULL';
 		$cart = new \stdClass();
-		if (!User::isGuest())
+		if (!$juser->get('guest'))
 		{
-			$uId = User::get('id');
+			$uId = $juser->id;
 			$cart->linked = 1;
 		}
 		else {
@@ -1764,7 +1768,7 @@ class CurrentCart extends Cart
 		$session->set('cart', $cart);
 
 		// Set cookie for non logged-in users to recover the cart
-		if (User::isGuest())
+		if ($juser->get('guest'))
 		{
 			if ($this->debug)
 			{
@@ -1797,12 +1801,12 @@ class CurrentCart extends Cart
 		setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
 
 		// Get user
-		$user = User::getInstance();
+		$juser = User::getInstance();
 
 		// Check if session cart is not someone else's. Otherwise load user's cart and done
 		if ($this->cartIsLinked($this->crtId))
 		{
-			if (!$this->liftUserCart($user->get('id')))
+			if (!$this->liftUserCart($juser->id))
 			{
 				return false;
 			}
@@ -1810,7 +1814,7 @@ class CurrentCart extends Cart
 		}
 
 		// Get user's cart
-		$userCartId = $this->getUserCartId($user->get('id'));
+		$userCartId = $this->getUserCartId($juser->id);
 
 		// Get coupons
 		$coupons = $this->getCoupons();
@@ -1818,7 +1822,7 @@ class CurrentCart extends Cart
 		// If no user cart -- make the session cart a user's cart. Easy.
 		if (!$userCartId)
 		{
-			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$user->id} WHERE `crtId` = {$this->crtId}";
+			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$juser->id} WHERE `crtId` = {$this->crtId}";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 			$existingCnIds = array();

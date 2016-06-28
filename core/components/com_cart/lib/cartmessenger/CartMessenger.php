@@ -311,8 +311,8 @@ class CartMessenger
 				'name' => 'emails',
 				'layout' => 'order_notify'
 			));
-			$eview->option     = $this->_option;
-			$eview->controller = $this->_controller;
+			//$eview->option     = $this->_option;
+			//$eview->controller = $this->_controller;
 			$eview->message = $notifyEmail;
 
 			$plain = $eview->loadTemplate();

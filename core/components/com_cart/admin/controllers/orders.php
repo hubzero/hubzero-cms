@@ -91,6 +91,11 @@ class Orders extends AdminController
 		$this->view->filters['userInfo'] = true;
 		$this->view->rows = Cart::getAllTransactions($this->view->filters);
 
+		if (!$this->view->rows)
+		{
+			$this->view->rows = array();
+		}
+
 		// update with total and items ordered
 		foreach ($this->view->rows as $r)
 		{

@@ -124,6 +124,18 @@ class Order extends ComponentController
 		// Reset the lookup to prevent displaying the page multiple times
 		//$cart->updateTransactionCustomerStatus('confirmed', $tId);
 
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+			Pathway::append(
+				Lang::txt('Order complete'),
+				'index.php?option=' . $this->_option
+			);
+		}
+
 		// Display message
 		$this->view->transactionInfo = $tInfo->info;
 		$this->view->display();

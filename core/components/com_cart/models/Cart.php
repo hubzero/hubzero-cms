@@ -53,12 +53,6 @@ abstract class Cart
 	// Debug mode
 	var $debug = false;
 
-	// TODO: Move to config
-	// Transaction time to live: TTL -- transaction active
-	var $transactionTTL = 60;    // 1 hour
-	// Transaction kill age -- age at which transaction gets deleted forever
-	var $transactionKillAge = 43200; // 30 days
-
 	protected static $securitySalt = 'ERDCVcvk$sad!ccsso====++!w';
 
 	/**
@@ -144,6 +138,95 @@ abstract class Cart
 		}
 
 		return $shippingAddresses;
+	}
+
+	/**
+	 * Gets transactions for a cart
+	 *
+	 * @param   int     Transaction ID
+	 * @return  object, false on no results
+	 */
+	public function getTransactions($filters = array(), $completedOnly = true)
+	{
+		$filters['crtId'] = $this->crtId;
+		return self::getAllTransactions($filters, $completedOnly);
+	}
+
+	/**
+	 * Get all transactions
+	 *
+	 * @param   int     Transaction ID
+	 * @return  object, false on no results
+	 */
+	public static function getAllTransactions($filters = array(), $completedOnly = true)
+	{
+		//print_r($filters); die;
+		// Get info
+		$sql = "SELECT ";
+		if (!empty($filters['userInfo']) && $filters['userInfo'])
+		{
+			$sql .= " x.`uidNumber`, x.`Name`, crt.`crtId`, ";
+		}
+		$sql .= "`tId`, `tLastUpdated`, `tStatus` FROM `#__cart_transactions` t";
+		if (!empty($filters['userInfo']) && $filters['userInfo'])
+		{
+			$sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
+			$sql .= ' LEFT JOIN `#__xprofiles` x ON (crt.`uidNumber` = x.`uidNumber`)';
+		}
+		$sql .= " WHERE 1";
+		if (!empty($filters['crtId']) && $filters['crtId'])
+		{
+			$sql .= " AND `crtId` = {$filters['crtId']}";
+		}
+		if ($completedOnly)
+		{
+			$sql .= " AND `tStatus` = 'completed'";
+		}
+		if (isset($filters['sort']) && (empty($filters['count']) || !$filters['count']))
+		{
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+		else {
+			$sql .= " ORDER BY `tLastUpdated` DESC";
+		}
+
+		if (isset($filters['limit']) && isset($filters['start']))
+		{
+			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
+		}
+
+		//echo $sql; die;
+
+		$db = \App::get('db');
+		$db->setQuery($sql);
+		$db->query();
+
+		$totalRows= $db->getNumRows();
+
+		if (!empty($filters['count']) && $filters['count'])
+		{
+			return $totalRows;
+		}
+
+		if (!$totalRows)
+		{
+			return false;
+		}
+
+		if (isset($filters['returnFormat']) && $filters['returnFormat'] == 'array')
+		{
+			return($db->loadAssocList());
+		}
+		else
+		{
+			$transactions = $db->loadObjectList();
+		}
+		return $transactions;
 	}
 
 	/**
@@ -578,7 +661,7 @@ abstract class Cart
 	 * @param int transaction ID
 	 * @return array of items in the transaction, false if no items in transaction
 	 */
-	protected static function getTransactionItems($tId)
+	public static function getTransactionItems($tId)
 	{
 		$db = \App::get('db');
 
@@ -622,7 +705,7 @@ abstract class Cart
 	 * @param   int     Transaction ID
 	 * @return  object, false on no results
 	 */
-	protected static function getTransactionInfo($tId)
+	public static function getTransactionInfo($tId)
 	{
 		$db = \App::get('db');
 
@@ -899,5 +982,33 @@ abstract class Cart
 		$sql = "DELETE FROM `#__cart_transaction_steps` WHERE `tId` = {$tId}";
 		$db->setQuery($sql);
 		$db->query();
+	}
+
+	/**
+	 * Kill all expired transactions
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public static function killExpiredTransactions()
+	{
+		$db = \App::get('db');
+		$params =  Component::params('com_cart');
+		$transactionTTL = ($params->get('transactionTTL'));
+
+
+		$sql = "SELECT t.tId
+				FROM `#__cart_transactions` t
+				WHERE t.`tStatus` = 'pending' OR t.`tStatus` = 'released' AND TIMESTAMPDIFF(MINUTE, t.`tLastUpdated`, NOW()) > {$transactionTTL}";
+
+		$db->setQuery($sql);
+		$db->query();
+		$tIds = $db->loadColumn();
+
+		foreach ($tIds as $tId)
+		{
+			self::releaseTransaction($tId);
+			self::killTransaction($tId);
+		}
 	}
 }

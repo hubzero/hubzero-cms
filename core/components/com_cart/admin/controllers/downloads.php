@@ -79,7 +79,7 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.skuRequested',
 				'skuRequested',
 				0
-			),
+			)
 		);
 
 		// Is a particular SKU requested?
@@ -234,10 +234,10 @@ class Downloads extends AdminController
 	}
 
 	/**
- * Download CSV report (default)
- *
- * @return     void
- */
+	 * Download CSV report (default)
+	 *
+	 * @return     void
+	 */
 	public function downloadTask()
 	{
 		// Get filters
@@ -287,7 +287,7 @@ class Downloads extends AdminController
 	}
 
 	/**
-	 * Download CSV report (default)
+	 * Download CSV report (SKU)
 	 *
 	 * @return     void
 	 */
