@@ -34,7 +34,7 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 
-class Version extends Relational
+class Author extends Relational
 {
 	public $namespace = 'publication';
 
@@ -49,11 +49,7 @@ class Version extends Relational
 
 	public function version()
 	{
-		return $this->belongsToOne('Publication');
+		return $this->belongsToOne('Version');
 	}
 
-	public function authors()
-	{
-		return $this->oneToMany('Author', 'publication_version_id');
-	}
 }

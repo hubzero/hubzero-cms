@@ -35,6 +35,7 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 require_once __DIR__ . DS . 'version.php';
+require_once __DIR__ . DS . 'author.php';
 
 class Publication extends Relational
 {
