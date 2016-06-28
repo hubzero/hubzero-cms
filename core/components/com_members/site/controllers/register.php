@@ -728,6 +728,7 @@ class Register extends SiteController
 				$user->set('middleName', $xregistration->get('middleName'));
 				$user->set('surname', $xregistration->get('surname'));
 				$user->set('email', $xregistration->get('email'));
+				$user->set('usageAgreement', $xregistration->get('usageAgreement'));
 				$user->set('sendEmail', -1);
 				if ($xregistration->get('sendEmail') >= 0)
 				{
