@@ -87,7 +87,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	 * @param   string   $code  Answer provided by user. Not needed for the Recaptcha implementation
 	 * @return  boolean  True if valid CAPTCHA response
 	  */
-	public function onCheckAnswer($code)
+	public function onCheckAnswer($code = null)
 	{
 		// Initialise variables
 		$privatekey = $this->params->get('private_key');
