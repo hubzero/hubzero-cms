@@ -99,23 +99,46 @@ if ($mode != 'preview')
 				else
 				{
 					// Get summary usage data
-					$startdate = new \DateTime('midnight first day of this month');
-					$enddate = new \DateTime('midnight first day of next month');
+					$startdate = new DateTime('midnight first day of this month');
+					$enddate   = new DateTime('midnight first day of next month');
 					$db = App::get('db');
-					$sql = 'SELECT truncate(sum(walltime)/60/60,3) as totalhours FROM sessionlog ';
-					$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
-					$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
+					$sql  = "SELECT truncate(sum(walltime)/60/60,3) as totalhours FROM `sessionlog`";
+					$sql .= " WHERE start > " . $db->quote($startdate->format('Y-m-d H:i:s'));
+					$sql .= " AND start < " . $db->quote($enddate->format('Y-m-d H:i:s'));
 					$db->setQuery($sql);
-					$totalUsageFigure = $db->loadObjectList();
+					$totalhours = $db->loadResult();
 
 					$params = Component::params('com_tools');
 					$maxhours = $params->get('windows_monthly_max_hours', '100');
 
-					if (floatval($totalUsageFigure[0]->totalhours) < floatval($maxhours))
+					if (floatval($totalhours) < floatval($maxhours))
 					{
 						$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->resource->path);
 						$html = Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
 						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+						$html .= '<p class="info">Read the <a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=windowstools') . '">setup/instructions</a>.</p>';
+
+						$this->js('
+							jQuery(document).ready(function($){
+								var primary = $(".btn-primary"),
+									url = "' . $lurl . '";
+
+								if (primary.length) {
+									primary.on("click", function (e){
+										e.preventDefault();
+
+										$.get(url.nohtml(), function(data){
+											var returned = jQuery.parseJSON(data);
+
+											if (returned.success)
+											{
+												window.open(returned.message);
+											}
+										});
+									});
+								}
+							});
+						');
 					}
 					else
 					{

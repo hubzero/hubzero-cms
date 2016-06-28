@@ -102,6 +102,29 @@ if ($mode != 'preview')
 						$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->resource->path);
 						$html  = Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
 						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+						$html .= '<p class="info">Read the <a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=windowstools') . '">setup/instructions</a>.</p>';
+
+						$this->js('
+							jQuery(document).ready(function($){
+								var primary = $(".btn-primary"),
+									url = "' . $lurl . '";
+
+								if (primary.length) {
+									primary.on("click", function (e){
+										e.preventDefault();
+
+										$.get(url.nohtml(), function(data){
+											var returned = jQuery.parseJSON(data);
+
+											if (returned.success)
+											{
+												window.open(returned.message);
+											}
+										});
+									});
+								}
+							});
+						');
 					}
 					echo $html;
 					?>

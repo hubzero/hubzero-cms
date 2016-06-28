@@ -39,6 +39,13 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . 
 class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Generate a Windows tool invoke URL to redirect to
 	 *
 	 * @param   string  $option  Name of the component
@@ -48,16 +55,34 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 	{
 		$url = $this->generateInvokeUrl($option);
 
+		$no_html = Request::getInt('no_html', 0);
+
+		$response = new StdClass;
+		$response->success = false;
+		$response->message = Lang::txt('No invoke URL found.');
+
 		if ($url)
 		{
-		$rurl = $_SERVER['HTTP_REFERER'];
+			$response->success = true;
+			$response->message = $url;
 
-		print("<html><body><a id=\"runapplink\" href=\"$url\">Run app</a><script> document.getElementById('runapplink').click(); window.setTimeout(function(){ window.location = \"$rurl\"; },1000);</script><br>This page should go back ot the hub application page automatically. If it doesn't, click <a href='$rurl'>here.</a></html>");
-		exit();
-			App::redirect($url);
+			if (!$no_html)
+			{
+				$rurl = $_SERVER['HTTP_REFERER'];
+
+				print("<html><body><a id=\"runapplink\" href=\"$url\">Run app</a><script> document.getElementById('runapplink').click(); window.setTimeout(function(){ window.location = \"$rurl\"; },1000);</script><br>This page should go back ot the hub application page automatically. If it doesn't, click <a href='$rurl'>here.</a></html>");
+				exit();
+				App::redirect($url);
+			}
 		}
 
-		App::abort(404, Lang::txt('No invoke URL found.'));
+		if (!$no_html)
+		{
+			App::abort(404, Lang::txt('No invoke URL found.'));
+		}
+
+		echo json_encode($response);
+		exit();
 	}
 
 	/**
@@ -124,6 +149,61 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		}
 
 		return $url;
+	}
 
+	/**
+	 * Return the alias and name for this category of content
+	 *
+	 * @param   object  $resource  Current resource
+	 * @return  array
+	 */
+	public function &onResourcesAreas($model)
+	{
+		$areas = array(
+			'windowstools' => Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SETUP')
+		);
+
+		return $areas;
+	}
+
+	/**
+	 * Return data on a resource view (this will be some form of HTML)
+	 *
+	 * @param   object  $resource  Current resource
+	 * @param   string  $option    Name of the component
+	 * @param   array   $areas     Active area(s)
+	 * @param   string  $rtrn      Data to be returned
+	 * @return  array
+	 */
+	public function onResources($model, $option, $areas, $rtrn='all')
+	{
+		$arr = array(
+			'area'     => $this->_name,
+			'html'     => '',
+			'metadata' => ''
+		);
+
+		// Check if our area is in the array of areas we want to return results for
+		if (is_array($areas))
+		{
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
+			{
+				$rtrn = 'metadata';
+			}
+		}
+
+		if ($rtrn == 'all' || $rtrn == 'html')
+		{
+			// Instantiate a view
+			$view = $this->view('default', 'display')
+				->set('option', $option)
+				->set('resource', $model->resource);
+
+			// Return the output
+			$arr['html'] = $view->loadTemplate();
+		}
+
+		return $arr;
 	}
 }
