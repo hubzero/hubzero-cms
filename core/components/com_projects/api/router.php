@@ -94,11 +94,33 @@ class Router extends Base
 			//  /projects/##/team/list
 			//  /projects/##/publications
 			//  /projects/##/publications/list
+			//  /projects/##/files/connections
+			//  /projects/##/files/connections/##/list
+			//  /projects/##/files/connections/##/insert
+			//  /projects/##/files/connections/##/update
+			//  /projects/##/files/connections/##/get
+			//  /projects/##/files/connections/##/delete
+			//  /projects/##/files/connections/##/makedirectory
+			//  /projects/##/files/connections/##/rename
+			//  /projects/##/files/connections/##/move
+			//  /projects/##/files/connections/##/upload
+			//  /projects/##/files/connections/##/download
+			//  /projects/##/files/connections/##/getmetadata
+			//  /projects/##/files/connections/##/setmetadata
+
 			if (isset($segments[1]) && $segments[1] == 'files')
 			{
 				$vars['controller'] = 'files';
 				$vars['id']         = $segments[0];
-				$vars['task']       = isset($segments[2]) ? $segments[2] : 'list';
+				if((isset($segments[3])) && ($segments[2] == 'connections'))
+				{
+					$vars['cid'] = $segments[3];
+					$vars['task'] = isset($segments[4]) ? $segments[4] : 'list';
+				}
+				else
+				{
+					$vars['task'] = isset($segments[2]) ? $segments[2] : 'list';
+				}
 			}
 			elseif (isset($segments[1]) && $segments[1] == 'team')
 			{
