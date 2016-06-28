@@ -71,19 +71,21 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Gets the challenge HTML
 	 *
-	 * @return  string  The HTML to be embedded in the form.
-	 * @since  2.5
+	 * @param   string  $name   The name of the field. Not Used.
+	 * @param   string  $id     The id of the field.
+	 * @param   string  $class  The class of the field. This should be passed as 'class="required"'.
+	 * @return  string
 	 */
-	public function onDisplay($name, $id, $class)
+	public function onDisplay($name = null, $id = 'dynamic_recaptcha_1', $class = '')
 	{
-		return '<div id="dynamic_recaptcha_1"></div>';
+		return '<div id="' . $id . '"></div>';
 	}
 
 	/**
 	  * Calls an HTTP POST function to verify if the user's guess was correct
 	  *
-	  * @return  True if the answer is correct, false otherwise
-	  * @since  2.5
+	 * @param   string   $code  Answer provided by user. Not needed for the Recaptcha implementation
+	 * @return  boolean  True if valid CAPTCHA response
 	  */
 	public function onCheckAnswer($code)
 	{
