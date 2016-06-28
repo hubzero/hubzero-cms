@@ -154,7 +154,7 @@ $this->css()
 					</table>
 
 					<p class="process">
-					<?php if ($this->funds >= $total && intval($total) > 0) { ?>
+					<?php if ($this->funds >= $total) { ?>
 						<span class="reassure">(<?php echo Lang::txt('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
 						<input type="submit" class="btn btn-primary" value="<?php echo ucfirst(Lang::txt('COM_STORE_CHECKOUT')); ?>" />
 					<?php } else { ?>
