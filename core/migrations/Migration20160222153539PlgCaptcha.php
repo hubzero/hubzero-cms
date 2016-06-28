@@ -21,15 +21,15 @@ class Migration20160222153539PlgCaptcha extends Base
 		{
 			$this->db->setQuery(
 				"UPDATE `#__extensions`
-				SET `folder`=" . $this->db->quote('captcha') . ", `name`=" . $this->db->quote('plg_captcha_math') . "
-				WHERE `folder`=" . $this->db->quote('hubzero') . " AND `name`=" . $this->db->quote('plg_hubzero_mathcaptcha')
+				SET `folder`=" . $this->db->quote('captcha') . ", `element`=" . $this->db->quote('math') . ", `name`=" . $this->db->quote('plg_captcha_math') . "
+				WHERE `folder`=" . $this->db->quote('hubzero') . " AND `element`=" . $this->db->quote('mathcaptcha')
 			);
 			$this->db->query();
 
 			$this->db->setQuery(
 				"UPDATE `#__extensions`
-				SET `folder`=" . $this->db->quote('captcha') . ", `name`=" . $this->db->quote('plg_captcha_image') . "
-				WHERE `folder`=" . $this->db->quote('hubzero') . " AND `name`=" . $this->db->quote('plg_hubzero_imagecaptcha')
+				SET `folder`=" . $this->db->quote('captcha') . ", `element`=" . $this->db->quote('image') . ", `name`=" . $this->db->quote('plg_captcha_image') . "
+				WHERE `folder`=" . $this->db->quote('hubzero') . " AND `element`=" . $this->db->quote('imagecaptcha')
 			);
 			$this->db->query();
 		}
@@ -44,15 +44,15 @@ class Migration20160222153539PlgCaptcha extends Base
 		{
 			$this->db->setQuery(
 				"UPDATE `#__extensions`
-				SET `folder`=" . $this->db->quote('hubzero') . ", `name`=" . $this->db->quote('plg_hubzero_mathcaptcha') . "
-				WHERE `folder`=" . $this->db->quote('captcha') . " AND `name`=" . $this->db->quote('plg_captcha_math')
+				SET `folder`=" . $this->db->quote('hubzero') . ", `element`=" . $this->db->quote('mathcaptcha') . ", `name`=" . $this->db->quote('plg_hubzero_mathcaptcha') . "
+				WHERE `folder`=" . $this->db->quote('captcha') . " AND `element`=" . $this->db->quote('math')
 			);
 			$this->db->query();
 
 			$this->db->setQuery(
 				"UPDATE `#__extensions`
-				SET `folder`=" . $this->db->quote('hubzero') . ", `name`=" . $this->db->quote('plg_hubzero_imagecaptcha') . "
-				WHERE `folder`=" . $this->db->quote('captcha') . " AND `name`=" . $this->db->quote('plg_captcha_image')
+				SET `folder`=" . $this->db->quote('hubzero') . ", `element`=" . $this->db->quote('imagecaptcha') . ", `name`=" . $this->db->quote('plg_hubzero_imagecaptcha') . "
+				WHERE `folder`=" . $this->db->quote('captcha') . " AND `element`=" . $this->db->quote('image')
 			);
 			$this->db->query();
 		}
