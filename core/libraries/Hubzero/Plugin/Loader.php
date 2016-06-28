@@ -230,40 +230,46 @@ class Loader implements LoaderInterface
 			'core' => PATH_CORE . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php'
 		);
 
-		foreach ($p as $path)
-		{
-			if (!isset($paths[$path]))
-			{
-				if (!file_exists($path))
-				{
-					$paths[$path] = false;
-					continue;
-				}
+		$className = 'plg' . $plugin->type . $plugin->name;
 
+		// If the class exists, the file was already loaded
+		if (!class_exists($className))
+		{
+			// Loop through each path the plugin may be located at
+			foreach ($p as $path)
+			{
+				// Was the current path already checked?
 				if (!isset($paths[$path]))
 				{
-					require_once $path;
-				}
-
-				$paths[$path] = true;
-
-				if ($autocreate)
-				{
-					// Makes sure we have an event dispatcher
-					if (!($dispatcher instanceof DispatcherInterface))
+					if (!file_exists($path))
 					{
-						$dispatcher = new \JDispatcher();
+						// File not found
+						// Move along to the next available path
+						$paths[$path] = false;
+						continue;
 					}
 
-					$className = 'plg' . $plugin->type . $plugin->name;
-
-					if (class_exists($className))
+					// File exists, try to include it
+					if (!isset($paths[$path]))
 					{
-						// Instantiate and register the plugin.
-						return new $className($dispatcher, (array) $plugin);
+						require_once $path;
 					}
+
+					$paths[$path] = true;
 				}
 			}
+		}
+
+		if ($autocreate && class_exists($className))
+		{
+			// Makes sure we have an event dispatcher
+			if (!($dispatcher instanceof DispatcherInterface))
+			{
+				$dispatcher = new \JDispatcher();
+			}
+
+			// Instantiate and register the plugin.
+			return new $className($dispatcher, (array) $plugin);
 		}
 
 		return null;
