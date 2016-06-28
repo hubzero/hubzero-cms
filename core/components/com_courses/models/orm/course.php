@@ -371,9 +371,9 @@ class Course extends Relational
 	 *
 	 * @return  boolean  False if error, True on success
 	 */
-	public function store()
+	public function save()
 	{
-		$result = parent::store();
+		$result = parent::save();
 
 		if ($result)
 		{
