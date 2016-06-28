@@ -220,9 +220,18 @@ else
 										echo $field->description;
 									}
 								}
-								echo '<hr />';
-								echo '<input type="submit" class="btn btn-success" value="' . Lang::txt('COM_PROJECTS_SAVE_CHANGES') . '"  />';
+
 								echo '</fieldset>';
+								echo '<fieldset>';
+
+								// Display project image upload
+								$this->view('_picture')
+								     ->set('model', $this->model)
+								     ->set('option', $this->option)
+								     ->display();
+
+								echo '</fieldset>';
+								echo '<input type="submit" class="btn btn-success" value="' . Lang::txt('COM_PROJECTS_SAVE_CHANGES') . '"  />';
 							break;
 							case 'team':
 								?>
