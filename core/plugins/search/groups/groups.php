@@ -33,6 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Groups\Models\Orm\Group;
+
+require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'group.php';
+
 /**
  * Search groups
  */
@@ -82,6 +86,114 @@ class plgSearchGroups extends \Hubzero\Plugin\Plugin
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));
+	}
+
+	public $hubtype = 'group';
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 *
+	 * @param mixed $type
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		if (isset($type) && $type == $this->hubtype)
+		{
+			return $this->hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $this->hubtype;
+		}
+	}
+
+	/**
+	 * onGetModel 
+	 * 
+	 * @param string $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetModel($type = '')
+	{
+		if ($type == $this->hubtype)
+		{
+			return new Group;
+		}
+	}
+
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row, &$db)
+	{
+		if ($type == $this->hubtype)
+		{
+			// Instantiate new $fields object
+			$fields = new stdClass;
+
+			// Non-standard ID number
+			$fields->id = 'group-' . $row->get('gidNumber');
+
+			// Format the date for SOLR
+			$date = Date::of($row->get('created'))->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->get('created'))->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			// Title is required
+			if ($row->get('description') == '')
+			{
+				$fields->title = $row->get('cn');
+			}
+			else
+			{
+				$fields->title = $row->get('description');
+			}
+
+			$fields->description = strip_tags(htmlspecialchars_decode($row->public_desc));
+
+
+			/**
+			 * Each entity should have an owner. 
+			 * Owner type can be a user or a group,
+			 * where the owner is the ID of the user or group
+			 **/
+			$fields->owner_type = 'group';
+			$fields->owner = $row->gidNumber;
+
+			/**
+			 * A document should have an access level.
+			 * This value can be:
+			 *  public - all users can view
+			 *  registered - only registered users can view
+			 *  private - only owners (set above) can view
+			 **/
+			if ($row->discoverability == 0 && $row->published == 1 && $row->approved == 1)
+			{
+				$fields->access_level = 'public';
+			}
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			// The URL this document is accessible through
+			// No need for systems group URL
+			if ($row->type != 0)
+			{
+				$fields->url = '/groups/' . $row->cn;
+			}
+
+			return $fields;
+		}
 	}
 }
 
