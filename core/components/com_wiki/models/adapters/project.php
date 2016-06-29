@@ -93,7 +93,7 @@ class Project extends Base
 		$segments['scope'] = Request::getVar('scope', NULL);
 		if (!$segments['scope'] && is_object($project))
 		{
-			$segments['scope'] = 'projects/' . $project->alias . '/notes';
+			$segments['scope'] = 'projects/' . $project->get('alias') . '/notes';
 		}
 		$anchor = '';
 
@@ -146,8 +146,9 @@ class Project extends Base
 		}
 
 		$segments = array_merge($segments, (array) $params);
+		$segments['t'] = 1;
 
-		return Route::url($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor) . '?t=1';
+		return Route::url($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor);
 	}
 
 	/**

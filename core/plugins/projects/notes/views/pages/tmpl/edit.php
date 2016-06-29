@@ -190,10 +190,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
 				<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
 				<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
-				<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
 		<?php } ?>
-
-			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
 
 			<?php if ($this->page->access('manage')) { ?>
 				<label for="state">
@@ -204,9 +201,6 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		</fieldset>
 		<div class="clear"></div>
 <?php } else { ?>
-		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
-		<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
-		<input type="hidden" name="page[state]" value="<?php echo $this->escape($this->page->get('state'), 0); ?>" />
 		<input type="hidden" name="authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
 		<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
 		<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
@@ -247,21 +241,26 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		</fieldset>
 		<div class="clear"></div>
 
-		<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
 		<input type="hidden" name="pagename" value="<?php echo $this->task == 'new' ? '' : $this->escape($this->page->get('pagename')); ?>" />
 
+		<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
+		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access', 0)); ?>" />
+		<input type="hidden" name="page[state]" value="<?php echo $this->escape($this->page->get('state', 1)); ?>" />
+		<input type="hidden" name="page[scope]" value="<?php echo $this->escape($this->page->get('scope', 'project')); ?>" />
+		<input type="hidden" name="page[scope_id]" value="<?php echo $this->escape($this->page->get('scope_id', 0)); ?>" />
+
 		<input type="hidden" name="revision[id]" value="<?php echo $this->escape($this->revision->get('id')); ?>" />
-		<input type="hidden" name="revision[pageid]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
+		<input type="hidden" name="revision[page_id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="revision[version]" value="<?php echo $this->escape($this->revision->get('version')); ?>" />
 		<input type="hidden" name="revision[created_by]" value="<?php echo $this->escape($this->revision->get('created_by')); ?>" />
 		<input type="hidden" name="revision[created]" value="<?php echo $this->escape($this->revision->get('created')); ?>" />
+
 		<input type="hidden" name="params[mode]" id="params_mode" value="wiki" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="page[group_cn]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
-		<input type="hidden" name="active" value="notes" />
-		<input type="hidden" name="scope" value="<?php echo trim($scope, DS); ?>" />
-		<input type="hidden" name="action" value="save" />
+
+		<?php foreach ($this->page->adapter()->routing('save') as $name => $val) { ?>
+			<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+		<?php } ?>
 
 		<?php echo Html::input('token'); ?>
 

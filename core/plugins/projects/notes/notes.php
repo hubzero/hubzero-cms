@@ -196,6 +196,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 			// Incoming
 			$this->_pagename = trim(Request::getVar('pagename', '', 'default', 'none', 2));
+
 			$this->_masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 			// Get our model
@@ -304,7 +305,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$preview = trim(Request::getVar('preview', ''));
 		$note    = Request::getVar('page', array(), 'post', 'none', 2);
 		$scope   = trim(Request::getVar('scope', $this->_masterScope), '/');
-
+		$scope   = trim(str_replace($this->_masterScope, '', $scope), '/');
 		$pagePrefix = '';
 
 		// Output HTML (wrap for notes)
@@ -336,8 +337,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$view->content = NULL;
 		$exists = $view->page->get('id') ? true : false;
 
-		Request::setVar('pagename', $this->_pagename);
-		Request::setVar('task', $this->_task);
+		Request::setVar('pagename', ($scope ? $scope . '/' : '') . $this->_pagename);
+		Request::setVar('action', $this->_task);
 		Request::setVar('scope', $scope);
 		Request::setVar('group_cn', $this->_group);
 

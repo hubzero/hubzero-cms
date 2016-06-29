@@ -1400,8 +1400,8 @@ class Groups extends Base
 			}
 
 			//load wiki page from db
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-			$page = new \Components\Wiki\Tables\Page($this->database);
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+			$page = new \Components\Wiki\Models\Page();
 
 			$pagename = Request::getVar('pagename');
 			$scope = Request::getVar('scope', $group->get('cn') . DS . 'wiki');
@@ -1417,8 +1417,10 @@ class Groups extends Base
 					}
 					$scope = implode('/', $parts);
 				}
+				$scope = str_replace($group->get('cn') . '/wiki', '', $scope);
+				$scope = ($scope ? trim($scope, '/') . '/' : $scope);
 			}
-			$page->load($pagename, $scope);
+			$page = \Components\Wiki\Models\Page::oneByPath($scope . $pagename, 'group', $group->get('gidNumber'));
 
 			//check specific wiki page access
 			if ($page->get('access') == 1 && !in_array(User::get('id'), $group->get('members')) && $authorized != 'admin')

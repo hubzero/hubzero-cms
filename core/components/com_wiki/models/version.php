@@ -207,9 +207,14 @@ class Version extends Relational
 			$page = $this->page;
 		}
 
+		$route = $page->adapter()->routing('');
+		$route['option'] = '';
+		$route = implode('/', $route);
+		$route = ($route ? $route . '/' : $route);
+
 		$wikiconfig = array(
 			'option'    => ($option ?: \Request::getCmd('option')),
-			'scope'     => $page->get('path'),
+			'scope'     => $route . $page->get('path'),
 			'pagename'  => $page->get('pagename'),
 			'pageid'    => $page->get('id'),
 			'filepath'  => '',
