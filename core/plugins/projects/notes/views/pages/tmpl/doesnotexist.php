@@ -40,7 +40,7 @@ $pagename = Request::getVar('pagename', '');
 <section class="main section">
 	<p class="s-notes">	
 		<?php if ($this->project->access('content')) { ?>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->scope . '&action=new'); ?>">
+			<a href="<?php echo Route::url($url . '&action=new'); ?>">
 				<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
 			</a>
 		<?php } else { ?>

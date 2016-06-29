@@ -89,11 +89,11 @@ class Project extends Base
 	public function link($type='', $params=null)
 	{
 		$segments = $this->_segments;
-		$project = Request::getVar('project', NULL);
+		//$project = Request::getVar('project', NULL);
 		$segments['scope'] = Request::getVar('scope', NULL);
-		if (!$segments['scope'] && is_object($project))
+		if (!$segments['scope']) // && is_object($project))
 		{
-			$segments['scope'] = 'projects/' . $project->get('alias') . '/notes';
+			$segments['scope'] = 'projects/' . $this->_segments['alias'] . '/notes';
 		}
 		$anchor = '';
 
