@@ -178,7 +178,14 @@ class Hubsearch extends SiteController
 			$result['title'] = $result['title'][0];
 
 			// Appends http(s)://
-			$result['url']  = Request::base() . $result['url'];
+			if (isset($result['url']))
+			{
+				$result['url']  = rtrim(Request::base(), "/") . $result['url'];
+			}
+			else
+			{
+				$result['url'] = '';
+			}
 
 			$snippet = '';
 			foreach ($result as $field => &$r)
