@@ -556,7 +556,7 @@ class Projects extends Base
 		$this->view->content = '';
 		if ($layout == 'internal')
 		{
-			$plugin = $this->active == 'feed' ? 'updates' : $this->active;
+			$plugin = $this->active == 'feed' ? 'blog' : $this->active;
 			$plugin = $this->active == 'info' ? '' : $plugin;
 
 			// Get active plugins (some may not be in tabs)
