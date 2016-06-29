@@ -45,12 +45,12 @@ class Base extends SiteController
 	/**
 	 * Execute function
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		// Is component on?
-		if (!$this->config->get( 'component_on', 0 ))
+		if (!$this->config->get('component_on', 0))
 		{
 			App::redirect('/');
 			return;
@@ -66,13 +66,13 @@ class Base extends SiteController
 		$this->_includeScripts();
 
 		// Incoming project identifier
-		$id    = Request::getInt( 'id', 0 );
-		$alias = Request::getVar( 'alias', '' );
+		$id    = Request::getInt('id', 0);
+		$alias = Request::getVar('alias', '');
 		$this->_identifier = $id ? $id : $alias;
 
 		// Incoming
-		$this->_task = strtolower(Request::getWord( 'task', '' ));
-		$this->_gid  = Request::getVar( 'gid', 0 );
+		$this->_task = strtolower(Request::getWord('task', ''));
+		$this->_gid  = Request::getVar('gid', 0);
 
 		// Model
 		$this->model = new Models\Project($this->_identifier);
@@ -84,7 +84,7 @@ class Base extends SiteController
 	/**
 	 * Include necessary scripts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _includeScripts()
 	{
@@ -97,25 +97,22 @@ class Base extends SiteController
 		// Include publications model
 		if ($this->_publishing)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-				. DS . 'models' . DS . 'publication.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 		}
 
 		// Logging and stats
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'stats.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'log.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'log.php');
 	}
 
 	/**
 	 * Set notifications
 	 *
-	 * @param  string $message
-	 * @param  string $type
-	 * @return void
+	 * @param   string  $message
+	 * @param   string  $type
+	 * @return  void
 	 */
-	protected function _setNotification( $message, $type = 'success' )
+	protected function _setNotification($message, $type = 'success')
 	{
 		// If message is set push to notifications
 		if ($message != '')
@@ -126,8 +123,9 @@ class Base extends SiteController
 
 	/**
 	 * Get notifications
-	 * @param  string $type
-	 * @return $messages if they exist
+	 *
+	 * @param   string     $type
+	 * @return  $messages  if they exist
 	 */
 	protected function _getNotifications($type = 'success')
 	{
@@ -157,7 +155,7 @@ class Base extends SiteController
 	/**
 	 * Login view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _login()
 	{
@@ -182,16 +180,17 @@ class Base extends SiteController
 	/**
 	 * Error view
 	 *
-	 * @return     void
+	 * @param   string  $layout
+	 * @return  void
 	 */
-	protected function _showError( $layout = 'default' )
+	protected function _showError($layout = 'default')
 	{
 		// Need to be project creator
 		$view = new \Hubzero\Component\View(
 			array('name' => 'error', 'layout' => $layout)
 		);
-		$view->error  	= $this->getError();
-		$view->title 	= $this->title;
+		$view->error = $this->getError();
+		$view->title = $this->title;
 		$view->display();
 		return;
 	}
@@ -199,7 +198,7 @@ class Base extends SiteController
 	/**
 	 * Build the title for this component
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
@@ -227,7 +226,7 @@ class Base extends SiteController
 		switch ($this->_task)
 		{
 			case 'browse':
-				$reviewer 	 = Request::getVar( 'reviewer', '' );
+				$reviewer 	 = Request::getVar('reviewer', '');
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$this->title = $reviewer == 'sponsored'
@@ -253,13 +252,12 @@ class Base extends SiteController
 			default:
 				if ($this->_task)
 				{
-					$this->title .= ': ' . Lang::txt(strtoupper($this->_option)
-						. '_' . strtoupper($this->_task));
+					$this->title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 				}
 				break;
 		}
 
-		Document::setTitle( $this->title );
+		Document::setTitle($this->title);
 
 		return $this->title;
 	}
@@ -267,7 +265,7 @@ class Base extends SiteController
 	/**
 	 * Build the "trail"
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
@@ -276,7 +274,7 @@ class Base extends SiteController
 		$active      = isset($this->active) ? $this->active : NULL;
 
 		// Point to group if group project
-		if (is_object($group) && in_array($this->_task, $group_tasks) )
+		if (is_object($group) && in_array($this->_task, $group_tasks))
 		{
 			Pathway::clear();
 			Pathway::append(
@@ -362,8 +360,7 @@ class Base extends SiteController
 						default:
 							Pathway::append(
 								ucfirst(Lang::txt('COM_PROJECTS_TAB_'.strtoupper($this->active))),
-								Route::url('index.php?option=' . $this->_option . '&alias='
-								. $alias . '&active=' . $active)
+								Route::url('index.php?option=' . $this->_option . '&alias=' . $alias . '&active=' . $active)
 							);
 						break;
 					}
@@ -384,7 +381,7 @@ class Base extends SiteController
 
 			case 'browse':
 			case 'process':
-				$reviewer 	= Request::getWord( 'reviewer', '' );
+				$reviewer 	= Request::getWord('reviewer', '');
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$title = $reviewer == 'sponsored'
@@ -393,8 +390,7 @@ class Base extends SiteController
 
 					Pathway::append(
 						$title,
-						Route::url('index.php?option=' . $this->_option
-						. '&task=browse&reviewer=' . $reviewer)
+						Route::url('index.php?option=' . $this->_option . '&task=browse&reviewer=' . $reviewer)
 					);
 				}
 				else
@@ -423,15 +419,14 @@ class Base extends SiteController
 	/**
 	 * Log project activity
 	 *
-	 * @param  int 		$pid		Project ID
-	 * @param  string 	$section	Major category of activity
-	 * @param  string 	$layout		Plugin or layout name
-	 * @param  string 	$action		Task name
-	 * @param  int 		$owner		Project owner ID if project owner
+	 * @param  int     $pid      Project ID
+	 * @param  string  $section  Major category of activity
+	 * @param  string  $layout   Plugin or layout name
+	 * @param  string  $action   Task name
+	 * @param  int     $owner    Project owner ID if project owner
 	 * @return void
 	 */
-	protected function _logActivity ($pid = 0, $section = 'general',
-		$layout = '', $action = '', $owner = 0)
+	protected function _logActivity($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
 	{
 		// Is logging enabled?
 		$enabled = $this->config->get('logging', 0);
@@ -441,14 +436,14 @@ class Base extends SiteController
 		}
 
 		// Is this an ajax call?
-		$ajax = Request::getInt( 'ajax', 0 );
+		$ajax = Request::getInt('ajax', 0);
 		if ($ajax && $enabled == 1)
 		{
 			return false;
 		}
 
 		// Log activity
-		$objLog  				= new Tables\Log( $this->database );
+		$objLog  				= new Tables\Log($this->database);
 		$objLog->projectid 		= $pid;
 		$objLog->userid 		= User::get('id');
 		$objLog->owner 			= intval($owner);
@@ -465,9 +460,8 @@ class Base extends SiteController
 	/**
 	 * Notify project team
 	 *
-	 * @param  string $action
-	 * @param  int $managers_only
-	 * @return void
+	 * @param   integer  $managers_only
+	 * @return  void
 	 */
 	protected function _notifyTeam($managers_only = 0)
 	{
@@ -486,9 +480,9 @@ class Base extends SiteController
 		}
 
 		// Set up email config
-		$from 			= array();
-		$from['name']  	= Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
-		$from['email'] 	= Config::get('mailfrom');
+		$from = array();
+		$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
+		$from['email'] = Config::get('mailfrom');
 
 		// Get team
 		$team = $this->model->team();
@@ -507,9 +501,9 @@ class Base extends SiteController
 			'name'   => 'emails',
 			'layout' => 'invite_plain'
 		));
-		$eview->option 			= $this->_option;
-		$eview->project 		= $this->model;
-		$eview->delimiter  		= '';
+		$eview->option    = $this->_option;
+		$eview->project   = $this->model;
+		$eview->delimiter = '';
 
 		// Send out message/email
 		foreach ($team as $member)
@@ -519,11 +513,11 @@ class Base extends SiteController
 				continue;
 			}
 			$eview->role = $member->role;
-			if ($member->userid && $member->userid != User::get('id') )
+			if ($member->userid && $member->userid != User::get('id'))
 			{
 				$eview->uid = $member->userid;
-				$message['plaintext'] 	= $eview->loadTemplate(false);
-				$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
+				$message['plaintext'] = $eview->loadTemplate(false);
+				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
 				$eview->setLayout('invite_html');
@@ -533,12 +527,11 @@ class Base extends SiteController
 				// Creator
 				if ($member->userid == $this->model->get('created_by_user'))
 				{
-					$subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED')
-					. ' ' . $this->model->get('alias') . '!';
+					$subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED') . ' ' . $this->model->get('alias') . '!';
 				}
 
 				// Send HUB message
-				Event::trigger( 'xmessage.onSendMessage',
+				Event::trigger('xmessage.onSendMessage',
 					array(
 						'projects_member_added',
 						$subject_active,
@@ -551,20 +544,19 @@ class Base extends SiteController
 			}
 			elseif ($member->invited_email && $member->invited_code)
 			{
-				$eview->uid 	= 0;
-				$eview->code 	= $member->invited_code;
-				$eview->email 	= $member->invited_email;
+				$eview->uid   = 0;
+				$eview->code  = $member->invited_code;
+				$eview->email = $member->invited_email;
 
-				$message['plaintext'] 	= $eview->loadTemplate(false);
-				$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
+				$message['plaintext'] = $eview->loadTemplate(false);
+				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
 				$eview->setLayout('invite_html');
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-				Helpers\Html::email($member->invited_email, Config::get('sitename')
-					. ': ' . $subject_pending, $message, $from);
+				Helpers\Html::email($member->invited_email, Config::get('sitename') . ': ' . $subject_pending, $message, $from);
 			}
 		}
 	}

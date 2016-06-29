@@ -45,7 +45,7 @@ class Reports extends Base
 	/**
 	 * Display reports
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -62,16 +62,16 @@ class Reports extends Base
 		$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
 
 		// Output HTML
-		$this->view->task 		= $this->_task;
-		$this->view->admin 		= $this->model->reviewerAccess('admin');
-		$this->view->option 	= $this->_option;
-		$this->view->config 	= $this->config;
+		$this->view->task       = $this->_task;
+		$this->view->admin      = $this->model->reviewerAccess('admin');
+		$this->view->option     = $this->_option;
+		$this->view->config     = $this->config;
 		$this->view->publishing = $this->_publishing;
-		$this->view->stats		= $this->_tblStats->getStats($this->model, false, $this->_publishing);
+		$this->view->stats      = $this->_tblStats->getStats($this->model, false, $this->_publishing);
 
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		$this->view->msg = isset($this->_msg) ? $this->_msg : '';
@@ -81,15 +81,15 @@ class Reports extends Base
 	/**
 	 * Generate report
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function generateTask()
 	{
 		// Incoming
-		$data   = Request::getVar( 'data', array(), 'post', 'array' );
-		$from   = Request::getVar( 'fromdate', Date::of('-1 month')->toLocal('Y-m') );
-		$to     = Request::getVar( 'todate', Date::of('now')->toLocal('Y-m') );
-		$filter = Request::getVar( 'searchterm', '');
+		$data   = Request::getVar('data', array(), 'post', 'array');
+		$from   = Request::getVar('fromdate', Date::of('-1 month')->toLocal('Y-m'));
+		$to     = Request::getVar('todate', Date::of('now')->toLocal('Y-m'));
+		$filter = Request::getVar('searchterm', '');
 
 		if (empty($data))
 		{
@@ -122,14 +122,12 @@ class Reports extends Base
 			}
 
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'), 403);
-			return;
 		}
 
 		// Get stats
 		if (!$this->getError())
 		{
-			require_once( PATH_CORE . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'logs.php');
+			require_once(PATH_CORE . DS . 'components'.DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
 
 			$objLog = new \Components\Publications\Tables\Log($this->database);
 
@@ -193,7 +191,7 @@ class Reports extends Base
 	/**
 	 * Custom reports
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function customTask()
 	{
@@ -220,17 +218,16 @@ class Reports extends Base
 			}
 
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'), 403);
-			return;
 		}
 
 		// Output HTML
-		$this->view->task 		= $this->_task;
-		$this->view->option 	= $this->_option;
-		$this->view->config 	= $this->config;
+		$this->view->task   = $this->_task;
+		$this->view->option = $this->_option;
+		$this->view->config = $this->config;
 
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		$this->view->msg = isset($this->_msg) ? $this->_msg : '';

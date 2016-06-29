@@ -43,7 +43,7 @@ class Get extends SiteController
 	/**
 	 * Pub view for project files, notes etc.
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -91,7 +91,5 @@ class Get extends SiteController
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
-
-		return;
 	}
 }

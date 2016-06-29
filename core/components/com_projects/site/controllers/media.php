@@ -43,13 +43,12 @@ class Media extends Base
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		// Set the default task
 		$this->registerTask('__default', 'media');
-
 		$this->registerTask('thumb', 'media');
 
 		parent::execute();
@@ -58,7 +57,7 @@ class Media extends Base
 	/**
 	 * Upload a file to the profile via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function doajaxuploadTask()
 	{
@@ -122,7 +121,7 @@ class Media extends Base
 		}
 
 		// Make sure user is authorized (project manager)
-		if (!$this->model->access('manager'))
+		if (!$this->model->access('manager') && !($this->model->access('content') && $this->config->get('edit_description')))
 		{
 			echo json_encode(array('error' => Lang::txt('Unauthorized action')));
 			return;
@@ -132,9 +131,9 @@ class Media extends Base
 		$path  = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 		$path .= DS . $this->model->get('alias') . DS . 'images';
 
-		if (!is_dir( $path ))
+		if (!is_dir($path))
 		{
-			if (!Filesystem::makeDirectory( $path, 0755, true, true ))
+			if (!Filesystem::makeDirectory($path, 0755, true, true))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
@@ -237,12 +236,12 @@ class Media extends Base
 	/**
 	 * Delete image
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteimgTask()
 	{
 		// Incoming
-		$ajax = Request::getInt( 'ajax', 0 );
+		$ajax = Request::getInt('ajax', 0);
 
 		// Check if they are logged in
 		if (User::isGuest())
@@ -257,9 +256,11 @@ class Media extends Base
 		}
 
 		// Incoming project ID
-		if (!$this->model->exists() || !$this->model->access('manager'))
+		$hasAccess = ($this->model->access('manager') || ($this->model->access('content') && $this->config->get('edit_description')));
+
+		if (!$this->model->exists() || !$hasAccess)
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_ERROR_NO_ID') );
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NO_ID'));
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -270,11 +271,11 @@ class Media extends Base
 		}
 
 		// Incoming file
-		$file = Request::getVar( 'file', '' );
+		$file = Request::getVar('file', '');
 		$file = $file ? $file : $this->model->get('picture');
 		if (!$file)
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_FILE_NOT_FOUND') );
+			$this->setError(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'));
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -290,7 +291,7 @@ class Media extends Base
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_FILE_NOT_FOUND') );
+			$this->setError(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'));
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -302,7 +303,7 @@ class Media extends Base
 			// Attempt to delete the file
 			if (!Filesystem::delete($path . DS . $file))
 			{
-				$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+				$this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
 				if ($ajax)
 				{
 					echo json_encode(array('error' => $this->getError()));
@@ -319,7 +320,7 @@ class Media extends Base
 			{
 				if (!Filesystem::delete($path . DS . $curthumb))
 				{
-					$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+					$this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
 					if ($ajax)
 					{
 						echo json_encode(array('error' => $this->getError()));
@@ -336,7 +337,7 @@ class Media extends Base
 				$this->model->set('picture', '');
 				if (!$this->model->store())
 				{
-					$this->setError( $this->model->getError() );
+					$this->setError($this->model->getError());
 					if ($ajax)
 					{
 						echo json_encode(array('error' => $this->model->getError()));
@@ -374,15 +375,15 @@ class Media extends Base
 	/**
 	 * Show images within projects
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function mediaTask()
 	{
 		// Incoming
-		$media   = trim(Request::getVar( 'media', 'thumb' ));
-		$source	 = NULL;
-		$redirect= false;
-		$dir	 = 'preview';
+		$media    = trim(Request::getVar('media', 'thumb'));
+		$source   = NULL;
+		$redirect = false;
+		$dir      = 'preview';
 
 		if (!$this->model->exists())
 		{
@@ -452,14 +453,12 @@ class Media extends Base
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
-
-		return;
 	}
 
 	/**
 	 * Get project image source
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function getProjectImageSrc()
 	{
@@ -468,7 +467,7 @@ class Media extends Base
 			return false;
 		}
 
-		$path    = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
+		$path      = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
 		$masterpic = trim($this->config->get('masterpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
 		if ($masterpic == 'components/com_projects/assets/img/projects-large.gif')
 		{
@@ -476,10 +475,10 @@ class Media extends Base
 		}
 		$default = PATH_CORE . DS . $masterpic;
 
-		$default = is_file($default ) ? $default : NULL;
+		$default = is_file($default) ? $default : NULL;
 
 		$src  = $this->model->get('picture')
-				&& is_file( PATH_APP . DS . $path . DS . $this->model->get('picture') )
+				&& is_file(PATH_APP . DS . $path . DS . $this->model->get('picture'))
 				? PATH_APP . DS . $path . DS . $this->model->get('picture')
 				: $default;
 		return $src;
@@ -488,7 +487,7 @@ class Media extends Base
 	/**
 	 * Get project thumbnail source
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function getThumbSrc()
 	{
@@ -497,8 +496,8 @@ class Media extends Base
 			return false;
 		}
 
-		$src     = '';
-		$path    = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
+		$src  = '';
+		$path = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
 
 		if (file_exists($path . DS . 'thumb.png'))
 		{

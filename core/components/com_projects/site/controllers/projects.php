@@ -70,7 +70,7 @@ class Projects extends Base
 	/**
 	 * Return results for autocompleter
 	 *
-	 * @return     string JSON
+	 * @return  string  JSON
 	 */
 	public function autocompleteTask()
 	{
@@ -117,7 +117,7 @@ class Projects extends Base
 	/**
 	 * Intro to projects (main view)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function introTask()
 	{
@@ -125,7 +125,7 @@ class Projects extends Base
 		$this->_task = 'intro';
 
 		// Incoming
-		$action  = Request::getVar( 'action', '' );
+		$action  = Request::getVar('action', '');
 
 		// When logging in
 		if (User::isGuest() && $action == 'login')
@@ -136,10 +136,10 @@ class Projects extends Base
 		}
 
 		// Filters
-		$this->view->filters 			= array();
-		$this->view->filters['mine']   	= 1;
+		$this->view->filters = array();
+		$this->view->filters['mine']    = 1;
 		$this->view->filters['updates'] = 1;
-		$this->view->filters['sortby'] 	= 'myprojects';
+		$this->view->filters['sortby']  = 'myprojects';
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -152,16 +152,16 @@ class Projects extends Base
 		$this->_logActivity();
 
 		// Output HTML
-		$this->view->option 	= $this->_option;
-		$this->view->model 		= $this->model;
+		$this->view->option     = $this->_option;
+		$this->view->model      = $this->model;
 		$this->view->publishing = $this->_publishing;
-		$this->view->msg 		= isset($this->_msg) && $this->_msg
+		$this->view->msg        = isset($this->_msg) && $this->_msg
 								? $this->_msg
 								: $this->_getNotifications('success');
 
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		$this->view->setLayout('intro')
@@ -186,13 +186,13 @@ class Projects extends Base
 		$this->_logActivity();
 
 		// Output HTML
-		$this->view->option 	= $this->_option;
-		$this->view->config 	= $this->config;
-		$this->view->publishing	= $this->_publishing;
+		$this->view->option     = $this->_option;
+		$this->view->config     = $this->config;
+		$this->view->publishing = $this->_publishing;
 
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 		$this->view->display();
 	}
@@ -205,8 +205,8 @@ class Projects extends Base
 	public function browseTask()
 	{
 		// Incoming
-		$reviewer 	= Request::getWord( 'reviewer', '' );
-		$action  	= Request::getVar( 'action', '' );
+		$reviewer = Request::getWord('reviewer', '');
+		$action   = Request::getVar('action', '');
 
 		// Set the pathway
 		$this->_task = 'browse';
@@ -224,7 +224,7 @@ class Projects extends Base
 		}
 		if ($reviewer && !$this->model->reviewerAccess($reviewer))
 		{
-			$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
+			$this->view = new \Hubzero\Component\View(array('name'=>'error', 'layout' =>'default'));
 			$this->view->error  = Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
 			$this->view->title = $reviewer == 'sponsored'
 						 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
@@ -234,22 +234,22 @@ class Projects extends Base
 		}
 
 		// Incoming
-		$this->view->filters 				= array();
-		$this->view->filters['limit']  		= Request::getVar(
+		$this->view->filters = array();
+		$this->view->filters['limit'] = Request::getVar(
 			'limit',
 			intval($this->config->get('limit', 25)),
 			'request'
 		);
-		$this->view->filters['start']  		= Request::getInt( 'limitstart', 0, 'get' );
-		$this->view->filters['sortby'] 		= Request::getVar( 'sortby', 'title' );
-		$this->view->filters['search'] 		= Request::getVar( 'search', '' );
-		$this->view->filters['sortdir']		= Request::getVar( 'sortdir', 'ASC');
-		$this->view->filters['reviewer']	= $reviewer;
-		$this->view->filters['filterby']	= 'all';
+		$this->view->filters['start']    = Request::getInt('limitstart', 0, 'get');
+		$this->view->filters['sortby']   = Request::getVar('sortby', 'title');
+		$this->view->filters['search']   = Request::getVar('search', '');
+		$this->view->filters['sortdir']  = Request::getVar('sortdir', 'ASC');
+		$this->view->filters['reviewer'] = $reviewer;
+		$this->view->filters['filterby'] = 'all';
 
 		if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
 		{
-			$this->view->filters['filterby'] = Request::getVar( 'filterby', 'pending' );
+			$this->view->filters['filterby'] = Request::getVar('filterby', 'pending');
 		}
 
 		// Login for private projects
@@ -264,15 +264,15 @@ class Projects extends Base
 		$this->_logActivity(0, 'general', 'browse');
 
 		// Output HTML
-		$this->view->model		= $this->model;
-		$this->view->option 	= $this->_option;
-		$this->view->config 	= $this->config;
-		$this->view->title 		= $this->title;
-		$this->view->reviewer 	= $reviewer;
-		$this->view->msg 		= $this->_getNotifications('success');
+		$this->view->model    = $this->model;
+		$this->view->option   = $this->_option;
+		$this->view->config   = $this->config;
+		$this->view->title    = $this->title;
+		$this->view->reviewer = $reviewer;
+		$this->view->msg      = $this->_getNotifications('success');
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		$this->view->display();
@@ -286,19 +286,19 @@ class Projects extends Base
 	public function viewTask()
 	{
 		// Incoming
-		$preview 		= Request::getInt( 'preview', 0 );
-		$this->active 	= Request::getVar( 'active', 'feed' );
-		$ajax 			= Request::getInt( 'ajax', 0 );
-		$action  		= Request::getVar( 'action', '' );
-		$confirmcode 	= Request::getVar( 'confirm', '' );
-		$email       	= Request::getVar( 'email', '' );
-		$sync 			= false;
+		$preview      = Request::getInt('preview', 0);
+		$this->active = Request::getVar('active', 'feed');
+		$ajax         = Request::getInt('ajax', 0);
+		$action       = Request::getVar('action', '');
+		$confirmcode  = Request::getVar('confirm', '');
+		$email        = Request::getVar('email', '');
+		$sync         = false;
 
 		// Stop ajax action if user got logged out
 		if ($ajax && User::isGuest())
 		{
 			// Project on hold
-			$this->view 		= new \Hubzero\Component\View( array('name' => 'error', 'layout' => 'default') );
+			$this->view = new \Hubzero\Component\View(array('name' => 'error', 'layout' => 'default'));
 			$this->view->error  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN');
 			$this->view->title  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
 			$this->view->display();
@@ -309,7 +309,6 @@ class Projects extends Base
 		if (!$this->model->exists())
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Is this a group project?
@@ -325,9 +324,9 @@ class Projects extends Base
 				$view = new \Hubzero\Component\View(
 					array('name' => 'changeowner', 'layout' => 'default')
 				);
-				$view->project  = $this->model;
-				$view->task 	= $this->_task;
-				$view->option 	= $this->_option;
+				$view->project = $this->model;
+				$view->task    = $this->_task;
+				$view->option  = $this->_option;
 				$view->display();
 				return;
 			}
@@ -367,8 +366,7 @@ class Projects extends Base
 		// Check if project is in setup
 		if ($this->model->inSetup() && !$ajax)
 		{
-			App::redirect(Route::url('index.php?option=' . $this->_option
-				. '&task=setup&alias=' . $this->model->get('alias')));
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&task=setup&alias=' . $this->model->get('alias')));
 			return;
 		}
 
@@ -424,10 +422,9 @@ class Projects extends Base
 			else
 			{
 				throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-				return;
 			}
-			$this->view->pub 	   = $pub;
-			$this->view->team 	   = $this->model->_tblOwner->getOwnerNames($this->model->get('id'));
+			$this->view->pub       = $pub;
+			$this->view->team      = $this->model->_tblOwner->getOwnerNames($this->model->get('id'));
 			$this->view->suggested = Helpers\Html::suggestAlias($pub->title);
 			$this->view->verified  = $this->model->check($this->view->suggested, $this->model->get('id'), 0);
 			$this->view->suggested = $this->view->verified ? $this->view->suggested : '';
@@ -470,7 +467,7 @@ class Projects extends Base
 
 					if (!$this->model->_tblOwner->store())
 					{
-						$this->setError( $this->model->_tblOwner->getError() );
+						$this->setError($this->model->_tblOwner->getError());
 						return false;
 					}
 					else
@@ -509,7 +506,6 @@ class Projects extends Base
 			if (!$this->model->access('member') && !$reviewer)
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-				return;
 			}
 		}
 
@@ -519,7 +515,6 @@ class Projects extends Base
 			if (!$this->model->access('member'))
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-				return;
 			}
 			$layout = 'suspended';
 		}
@@ -534,7 +529,6 @@ class Projects extends Base
 			elseif (!$this->model->access('owner'))
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-				return;
 			}
 			else
 			{
@@ -543,7 +537,7 @@ class Projects extends Base
 		}
 
 		// Set layout
-		$this->view->setLayout( $layout );
+		$this->view->setLayout($layout);
 
 		// Record join activity
 		if ($this->active == 'feed' && !$ajax)
@@ -562,7 +556,7 @@ class Projects extends Base
 		$this->view->content = '';
 		if ($layout == 'internal')
 		{
-			$plugin = $this->active == 'feed' ? 'blog' : $this->active;
+			$plugin = $this->active == 'feed' ? 'updates' : $this->active;
 			$plugin = $this->active == 'info' ? '' : $plugin;
 
 			// Get active plugins (some may not be in tabs)
@@ -593,7 +587,7 @@ class Projects extends Base
 				);
 
 				// Get plugin content
-				$sections = Event::trigger( 'projects.onProject', $plugin_params);
+				$sections = Event::trigger('projects.onProject', $plugin_params);
 
 				// Output
 				if (!empty($sections))
@@ -625,7 +619,7 @@ class Projects extends Base
 			}
 
 			// Get item counts
-			$counts = Event::trigger( 'projects.onProjectCount', array( $this->model) );
+			$counts = Event::trigger('projects.onProjectCount', array($this->model));
 			$this->model->set('counts', Helpers\Html::getCountArray($counts));
 
 			// Record page visit
@@ -638,7 +632,7 @@ class Projects extends Base
 			if ($this->active == 'feed')
 			{
 				// Hide welcome screen?
-				$c = Request::getInt( 'c', 0 );
+				$c = Request::getInt('c', 0);
 				if ($c)
 				{
 					$this->model->member()->saveParam(
@@ -653,15 +647,15 @@ class Projects extends Base
 		}
 
 		// Output HTML
-		$this->view->params     = $this->model->params;
-		$this->view->model 		= $this->model;
-		$this->view->reviewer 	= $reviewer;
-		$this->view->title  	= $this->title;
-		$this->view->active 	= $this->active;
-		$this->view->task 		= $this->_task;
-		$this->view->option 	= $this->_option;
-		$this->view->config 	= $this->config;
-		$this->view->msg 		= $this->_getNotifications('success');
+		$this->view->params   = $this->model->params;
+		$this->view->model    = $this->model;
+		$this->view->reviewer = $reviewer;
+		$this->view->title    = $this->title;
+		$this->view->active   = $this->active;
+		$this->view->task     = $this->_task;
+		$this->view->option   = $this->_option;
+		$this->view->config   = $this->config;
+		$this->view->msg      = $this->_getNotifications('success');
 
 		$fields = Field::all()->order('ordering', 'ASC')->rows();
 		$projectDescription = Description::all()->where('project_id', '=', $this->model->get('id'))->rows();
@@ -685,14 +679,14 @@ class Projects extends Base
 
 		if ($layout == 'invited')
 		{
-			$this->view->confirmcode  = $confirmcode;
-			$this->view->email		  = $email;
+			$this->view->confirmcode = $confirmcode;
+			$this->view->email       = $email;
 		}
 
 		$error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
 		if ($error)
 		{
-			$this->view->setError( $error );
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -702,7 +696,7 @@ class Projects extends Base
 	/**
 	 * Activate provisioned project
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function activateTask()
 	{
@@ -710,14 +704,12 @@ class Projects extends Base
 		if (!$this->model->exists())
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Must be project creator
 		if (!$this->model->access('owner'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
 		}
 
 		// Must be a provisioned project to be activated
@@ -741,13 +733,12 @@ class Projects extends Base
 		if (empty($pub))
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Incoming
-		$name    = trim(Request::getVar( 'new-alias', '', 'post' ));
-		$title   = trim(Request::getVar( 'title', '', 'post' ));
-		$confirm = trim(Request::getInt( 'confirm', 0, 'post' ));
+		$name    = trim(Request::getVar('new-alias', '', 'post'));
+		$title   = trim(Request::getVar('title', '', 'post'));
+		$confirm = trim(Request::getInt('confirm', 0, 'post'));
 
 		$name = preg_replace('/ /', '', $name);
 		$name = strtolower($name);
@@ -757,11 +748,11 @@ class Projects extends Base
 		if ($confirm && !$verified)
 		{
 			$error = $this->model->getError() ? $this->model->getError() : Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY');
-			$this->setError( $error );
+			$this->setError($error);
 		}
 		elseif ($confirm && ($title == '' || strlen($title) < 3))
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY'));
 		}
 
 		// Set the pathway
@@ -773,26 +764,26 @@ class Projects extends Base
 		// Display page
 		if (!$confirm || $this->getError())
 		{
-			$this->view->setLayout( 'provisioned' );
-			$this->view->model 			= $this->model;
+			$this->view->setLayout('provisioned');
+			$this->view->model = $this->model;
 
-			$this->view->team 	 		= $this->model->_tblOwner->getOwnerNames($this->model->get('alias'));
+			$this->view->team  = $this->model->_tblOwner->getOwnerNames($this->model->get('alias'));
 
 			// Output HTML
-			$this->view->pub 		 	= isset($pub) ? $pub : '';
-			$this->view->suggested 		= $name;
-			$this->view->verified  		= $verified;
-			$this->view->suggested 		= $verified ? $this->view->suggested : '';
-			$this->view->title  		= $this->title;
-			$this->view->active 		= $this->active;
-			$this->view->task 			= $this->_task;
-			$this->view->authorized 	= 1;
-			$this->view->option 		= $this->_option;
-			$this->view->msg 			= $this->_getNotifications('success');
+			$this->view->pub        = isset($pub) ? $pub : '';
+			$this->view->suggested  = $name;
+			$this->view->verified   = $verified;
+			$this->view->suggested  = $verified ? $this->view->suggested : '';
+			$this->view->title      = $this->title;
+			$this->view->active     = $this->active;
+			$this->view->task       = $this->_task;
+			$this->view->authorized = 1;
+			$this->view->option     = $this->_option;
+			$this->view->msg        = $this->_getNotifications('success');
 
 			if ($this->getError())
 			{
-				$this->view->setError( $this->getError() );
+				$this->view->setError($this->getError());
 			}
 
 			$this->view->display();
@@ -816,7 +807,7 @@ class Projects extends Base
 			// Save changes
 			if (!$this->model->store())
 			{
-				$this->setError( $this->model->getError() );
+				$this->setError($this->model->getError());
 			}
 		}
 
@@ -829,7 +820,7 @@ class Projects extends Base
 		{
 			if (!Filesystem::copyDirectory($path, $newpath))
 			{
-				$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
+				$this->setError(Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES'));
 			}
 			else
 			{
@@ -852,7 +843,7 @@ class Projects extends Base
 	/**
 	 * Change project status
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function changestateTask()
 	{
@@ -860,7 +851,6 @@ class Projects extends Base
 		if (!$this->model->exists() || $this->model->isDeleted())
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Already suspended
@@ -873,11 +863,10 @@ class Projects extends Base
 		// Suspended by admin: manager cannot activate
 		if ($this->_task == 'reinstate')
 		{
-			$suspended = $this->model->checkActivity( Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$suspended = $this->model->checkActivity(Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 			if ($suspended == 1)
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-				return;
 			}
 		}
 
@@ -893,18 +882,16 @@ class Projects extends Base
 		if (!$this->model->access('manager'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
 		}
 
 		// Fix ownership?
 		if ($this->_task == 'fixownership')
 		{
-			$keep = Request::getInt( 'keep', 0 );
+			$keep = Request::getInt('keep', 0);
 
 			if (!$this->model->access('owner'))
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-				return;
 			}
 			if (!$this->model->groupOwner('id'))
 			{
@@ -916,10 +903,10 @@ class Projects extends Base
 
 			// Make sure creator is still in team
 			$objO = $this->model->table('Owner');
-			$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), 0, 1, 1, 1 );
+			$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), 0, 1, 1, 1);
 
 			// Remove owner group affiliation for all team members
-			$objO->removeGroupDependence($this->model->get('id'), $this->model->groupOwner('id') );
+			$objO->removeGroupDependence($this->model->get('id'), $this->model->groupOwner('id'));
 
 			if ($keep)
 			{
@@ -944,7 +931,7 @@ class Projects extends Base
 
 		if (!$this->model->store())
 		{
-			$this->setError( $this->model->getError() );
+			$this->setError($this->model->getError());
 			return false;
 		}
 
@@ -985,15 +972,15 @@ class Projects extends Base
 	/**
 	 * Authenticate for outside services
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function authTask()
 	{
 		// Incoming
-		$error  = Request::getVar( 'error', '', 'get' );
-		$code   = Request::getVar( 'code', '', 'get' );
+		$error  = Request::getVar('error', '', 'get');
+		$code   = Request::getVar('code', '', 'get');
 
-		$state  = Request::getVar( 'state', '', 'get' );
+		$state  = Request::getVar('state', '', 'get');
 		$json	=  base64_decode($state);
 		$json 	=  json_decode($json);
 
@@ -1008,10 +995,8 @@ class Projects extends Base
 			if (!$this->model->exists())
 			{
 				throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-				return;
 			}
-			$return  = Route::url('index.php?option=' . $this->_option . '&alias='
-				. $this->model->get('alias') . '&active=files&action=connect');
+			$return  = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect');
 			$return .= '?service=' . $service;
 			$return .= '&code=' . $code;
 		}
@@ -1042,25 +1027,23 @@ class Projects extends Base
 	public function processTask()
 	{
 		// Incoming
-		$reviewer 	= Request::getWord( 'reviewer', '' );
-		$action  	= Request::getVar( 'action', '' );
-		$comment  	= Request::getVar( 'comment', '' );
-		$approve  	= Request::getInt( 'approve', 0 );
-		$filterby  	= Request::getVar( 'filterby', 'pending' );
-		$notify 	= Request::getVar( 'notify', 0, 'post' );
+		$reviewer = Request::getWord('reviewer', '');
+		$action   = Request::getVar('action', '');
+		$comment  = Request::getVar('comment', '');
+		$approve  = Request::getInt('approve', 0);
+		$filterby = Request::getVar('filterby', 'pending');
+		$notify   = Request::getVar('notify', 0, 'post');
 
 		// Cannot proceed without project id/alias
 		if (!$this->model->exists() || $this->model->isDeleted())
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Authorize
 		if (!$this->model->reviewerAccess($reviewer))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
 		}
 
 		// Set the pathway
@@ -1088,12 +1071,12 @@ class Projects extends Base
 			}
 			elseif ($reviewer == 'sponsored')
 			{
-				$grant_agency 		= Request::getVar( 'grant_agency', '' );
-				$grant_title 		= Request::getVar( 'grant_title', '' );
-				$grant_PI 			= Request::getVar( 'grant_PI', '' );
-				$grant_budget 		= Request::getVar( 'grant_budget', '' );
-				$grant_approval 	= Request::getVar( 'grant_approval', '' );
-				$rejected 			= Request::getVar( 'rejected', 0 );
+				$grant_agency   = Request::getVar('grant_agency', '');
+				$grant_title    = Request::getVar('grant_title', '');
+				$grant_PI       = Request::getVar('grant_PI', '');
+				$grant_budget   = Request::getVar('grant_budget', '');
+				$grant_approval = Request::getVar('grant_approval', '');
+				$rejected       = Request::getVar('rejected', 0);
 
 				// New approval
 				if (trim($params->get('grant_approval')) == '' && trim($grant_approval) != ''
@@ -1103,13 +1086,11 @@ class Projects extends Base
 					$approve = 1;
 
 					// Bump up quota
-					$premiumQuota = Helpers\Html::convertSize(
-						floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
+					$premiumQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
 					$this->model->saveParam('quota', $premiumQuota);
 
 					// Bump up publication quota
-					$premiumPubQuota = Helpers\Html::convertSize(
-						floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
+					$premiumPubQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
 					$this->model->saveParam('pubQuota', $premiumPubQuota);
 				}
 
@@ -1173,7 +1154,7 @@ class Projects extends Base
 			{
 				if (!$this->model->store())
 				{
-					$this->setError( $this->model->getError() );
+					$this->setError($this->model->getError());
 				}
 
 				$admingroup = $reviewer == 'sensitive'
@@ -1215,7 +1196,7 @@ class Projects extends Base
 				{
 					if ($reviewer == 'sensitive')
 					{
-						$this->_setNotification(Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG') );
+						$this->_setNotification(Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG'));
 
 						// Send out emails to team members
 						$this->_notifyTeam();
@@ -1230,7 +1211,7 @@ class Projects extends Base
 				}
 				elseif ($comment)
 				{
-					$this->_setNotification(Lang::txt('COM_PROJECTS_REVIEWER_COMMENT_POSTED') );
+					$this->_setNotification(Lang::txt('COM_PROJECTS_REVIEWER_COMMENT_POSTED'));
 				}
 
 				// Add to project activity feed
@@ -1250,13 +1231,13 @@ class Projects extends Base
 
 					if ($activity)
 					{
-						$aid = $this->model->recordActivity( $activity, $this->model->get('id'), '', '', 'admin', 0, 1, 1 );
+						$aid = $this->model->recordActivity($activity, $this->model->get('id'), '', '', 'admin', 0, 1, 1);
 
 						// Append comment to activity
 						if ($comment && $aid)
 						{
-							$objC = new Tables\Comment( $this->database );
-							$cid = $objC->addComment( $aid, 'activity', $comment, User::get('id'), $aid, 1 );
+							$objC = new Tables\Comment($this->database);
+							$cid = $objC->addComment($aid, 'activity', $comment, User::get('id'), $aid, 1);
 
 							if ($cid)
 							{
@@ -1264,7 +1245,7 @@ class Projects extends Base
 									Lang::txt('COM_PROJECTS_COMMENTED') . ' '
 									. Lang::txt('COM_PROJECTS_ON') . ' '
 									.  Lang::txt('COM_PROJECTS_AN_ACTIVITY'),
-									$cid, '', '', 'quote', 0, 1, 1 );
+									$cid, '', '', 'quote', 0, 1, 1);
 
 								if ($caid)
 								{
@@ -1277,31 +1258,30 @@ class Projects extends Base
 			}
 
 			// Go back to project listing
-			App::redirect(Route::url('index.php?option=' . $this->_option
-				. '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby));
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby));
 			return;
 		}
 		else
 		{
 			// Instantiate a new view
-			$this->view->setLayout( 'review' );
+			$this->view->setLayout('review');
 
 			// Output HTML
-			$this->view->reviewer 	= $reviewer;
-			$this->view->ajax 		= Request::getInt( 'ajax', 0 );
-			$this->view->title 		= $this->title;
-			$this->view->option 	= $this->_option;
-			$this->view->model		= $this->model;
-			$this->view->params		= $params;
-			$this->view->config 	= $this->config;
-			$this->view->database 	= $this->database;
-			$this->view->action		= $action;
-			$this->view->filterby	= $filterby;
-			$this->view->uid 		= User::get('id');
-			$this->view->msg 		= $this->_getNotifications('success');
+			$this->view->reviewer = $reviewer;
+			$this->view->ajax     = Request::getInt('ajax', 0);
+			$this->view->title    = $this->title;
+			$this->view->option   = $this->_option;
+			$this->view->model    = $this->model;
+			$this->view->params   = $params;
+			$this->view->config   = $this->config;
+			$this->view->database = $this->database;
+			$this->view->action   = $action;
+			$this->view->filterby = $filterby;
+			$this->view->uid      = User::get('id');
+			$this->view->msg      = $this->_getNotifications('success');
 			if ($this->getError())
 			{
-				$this->view->setError( $this->getError() );
+				$this->view->setError($this->getError());
 			}
 			$this->view->display();
 		}
