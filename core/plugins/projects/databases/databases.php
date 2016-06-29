@@ -717,7 +717,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 					for ($i = 0; $i < count($col_labels); $i++)
 					{
-						$val = isset($r[$i]) ? trim($r[$i]) : '';
+						$val = isset($r[$i]) ? mb_convert_encoding(trim($r[$i]), "UTF-8") : '';
 
 						$col_vals[] = $val;
 
@@ -779,7 +779,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 						for ($i = 0; $i < count($col_labels); $i++)
 						{
-							$val = isset($r[$i]) ? trim($r[$i]) : '';
+							$val = isset($r[$i]) ? mb_convert_encoding(trim($r[$i]), 'UTF-8') : '';
 
 							$col_vals[] = $val;
 						}
