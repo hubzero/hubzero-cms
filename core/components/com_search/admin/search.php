@@ -40,9 +40,14 @@ if (!\User::authorise('core.manage', 'com_search'))
 // Get the preferred search mechanism
 $controllerName = \Component::params('com_search')->get('engine');
 
-if (strtolower($controllerName) != 'search')
+// Prevent HUBgraph from being configured
+if (strtolower($controllerName) == 'hubgraph')
 {
 	$controllerName = 'basic';
+}
+elseif (strtolower($controllerName) != 'basic')
+{
+	$controllerName = 'search';
 }
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
