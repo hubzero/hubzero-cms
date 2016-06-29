@@ -80,7 +80,7 @@ if (!empty($errors))
 
 			<div id="cartItems" class="col span8">
 
-				<form name="shoppingCart" id="shoppingCart" method="post">
+				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="shoppingCart" id="shoppingCart" method="post">
 				<?php
 
 				if (!empty($this->couponPerks['items']))
@@ -196,7 +196,8 @@ if (!empty($errors))
 					echo '<p>' . Lang::txt('COM_CART_EMPTY') . '</p>';
 				}
 				?>
-
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				</form>
 
 			</div> <!-- // cartItems -->
