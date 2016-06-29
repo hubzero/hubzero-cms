@@ -173,7 +173,14 @@ class Newsletter extends SiteController
 		$this->_buildPathway($currentNewsletter);
 
 		//set vars for view
-		$this->view->title = $currentNewsletter->name;
+		if (is_object($currentNewsletter))
+		{
+			$this->view->title = $currentNewsletter->name;
+		}
+		else
+		{
+			$this->view->title = "No Newsletters";
+		}
 
 		//get errors if any
 		if ($this->getError())
