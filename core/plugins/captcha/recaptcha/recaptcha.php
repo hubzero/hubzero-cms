@@ -1,38 +1,74 @@
 <?php
 /**
- * @package     Joomla.Plugin
- * @subpackage  Captcha
+ * HUBzero CMS
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die;
 
-jimport('joomla.environment.browser');
-
 /**
  * Recaptcha Plugin.
+ *
  * Based on the official recaptcha library( https://developers.google.com/recaptcha/docs/php )
  */
 class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 {
-	const RECAPTCHA_API_SERVER = "http://www.google.com/recaptcha/api";
-	const RECAPTCHA_API_SECURE_SERVER = "https://www.google.com/recaptcha/api";
-	const RECAPTCHA_VERIFY_SERVER = "www.google.com";
+	/**
+	 * Path to JS library needed for ReCAPTCHA to display
+	 *
+	 * [!] Must be served over HTTPS
+	 * 
+	 * @var  string
+	 */
+	private static $_jsUrl = 'https://www.google.com/recaptcha/api.js';
 
 	/**
-	 * Constructor
+	 * Path to JS fallback library needed for ReCAPTCHA to display when JS is disabled
 	 *
-	 * @param   object  $subject
-	 * @param   array   $config
-	 * @return  void
+	 * [!] Must be served over HTTPS
+	 * 
+	 * @var  string
 	 */
-	public function __construct($subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
+	private static $_jsFallbackUrl = 'https://www.google.com/recaptcha/api/fallback?k=';
+
+	/**
+	 * ReCAPTCHA verification url
+	 * 
+	 * @var  string
+	 */
+	private static $_verifyUrl = 'https://www.google.com/recaptcha/api/siteverify?';
+
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Initialise the captcha
@@ -41,29 +77,12 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	 * @return  boolean  True on success, false otherwise
 	 * @since   2.5
 	 */
-	public function onInit($id)
+	public function onInit($id = 'dynamic_recaptcha_1')
 	{
-		// Initialise variables
-		$lang   = $this->_getLanguage();
-		$pubkey = $this->params->get('public_key', '');
-		$theme  = $this->params->get('theme', 'clean');
-
-		if ($pubkey == null || $pubkey == '')
+		if (!$this->params->get('public') || !$this->params->get('private'))
 		{
 			throw new Exception(Lang::txt('PLG_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
 		}
-
-		$server = self::RECAPTCHA_API_SERVER;
-		if (Request::isSecure())
-		{
-			$server = self::RECAPTCHA_API_SECURE_SERVER;
-		}
-
-		Html::asset('script', $server.'/js/recaptcha_ajax.js');
-
-		Document::addScriptDeclaration('jQuery(document).ready(function($) {
-			Recaptcha.create("' . $pubkey . '", "dynamic_recaptcha_1", {theme: "' . $theme . '",' . $lang . 'tabindex: 0});
-		});');
 
 		return true;
 	}
@@ -78,76 +97,104 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	public function onDisplay($name = null, $id = 'dynamic_recaptcha_1', $class = '')
 	{
-		return '<div id="' . $id . '"></div>';
+		try
+		{
+			$this->onInit($id);
+		}
+		catch (Exception $e)
+		{
+			return '<p class="error">' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_API_NEEDED') . '</p>';
+		}
+
+		// recaptcha html structure
+		// this has support for users with js off
+		$html  = '<label class="">&nbsp;</label><div class="field-wrap">';
+		$html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
+					<noscript>
+					  <div style="width: 302px; height: 352px;">
+					    <div style="width: 302px; height: 352px; position: relative;">
+					      <div style="width: 302px; height: 352px; position: absolute;">
+					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '"
+					                frameborder="0" scrolling="no"
+					                style="width: 302px; height:352px; border-style: none;">
+					        </iframe>
+					      </div>
+					      <div style="width: 250px; height: 80px; position: absolute; border-style: none;
+					                  bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">
+					        <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+					                  class="g-recaptcha-response"
+					                  style="width: 250px; height: 80px; border: 1px solid #c1c1c1;
+					                         margin: 0px; padding: 0px; resize: none;" value="">
+					        </textarea>
+					      </div>
+					    </div>
+					  </div>
+					</noscript>
+					<script type="text/javascript" src="' . static::$_jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async defer></script>';
+		$html .= '</div>';
+
+		return $html;
 	}
 
 	/**
-	  * Calls an HTTP POST function to verify if the user's guess was correct
-	  *
+	 * Calls an HTTP POST function to verify if the user's guess was correct
+	 *
 	 * @param   string   $code  Answer provided by user. Not needed for the Recaptcha implementation
 	 * @return  boolean  True if valid CAPTCHA response
-	  */
+	 */
 	public function onCheckAnswer($code = null)
 	{
-		// Initialise variables
-		$privatekey = $this->params->get('private_key');
-		$remoteip   = Request::getVar('REMOTE_ADDR', '', 'SERVER');
-		$challenge  = Request::getString('recaptcha_challenge_field', '');
-		$response   = Request::getString('recaptcha_response_field', '');;
+		// get request params
+		$response = Request::getVar('g-recaptcha-response', null);
+		$remoteIp = Request::ip();
 
-		// Check for Private Key
-		if (empty($privatekey))
+		// Discard empty solution submissions
+		if ($response == null || strlen($response) == 0)
 		{
-			$this->_subject->setError(Lang::txt('PLG_RECAPTCHA_ERROR_NO_PRIVATE_KEY'));
+			$this->setError('missing-input');
 			return false;
 		}
 
-		// Check for IP
-		if (empty($remoteip))
+		// perform a get request to the verify server with the needed data
+		$verificationResponse = $this->_submitHttpGet(static::$_verifyUrl, array(
+			'secret'   => $this->params->get('private'),
+			'remoteip' => $remoteIp,
+			'response' => $response
+		));
+
+		// json decode response
+		$verificationResponse = json_decode($verificationResponse);
+
+		// something went wrong
+		if ($verificationResponse->success !== true)
 		{
-			$this->_subject->setError(Lang::txt('PLG_RECAPTCHA_ERROR_NO_IP'));
+			$this->setError($verificationResponse->{'error-codes'});
 			return false;
 		}
 
-		// Discard spam submissions
-		if ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0)
-		{
-			$this->_subject->setError(Lang::txt('PLG_RECAPTCHA_ERROR_EMPTY_SOLUTION'));
-			return false;
-		}
-
-		$response = $this->_recaptcha_http_post(
-			self::RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/verify",
-			array(
-				'privatekey' => $privatekey,
-				'remoteip'   => $remoteip,
-				'challenge'  => $challenge,
-				'response'   => $response
-			)
-		);
-
-		$answers = explode("\n", $response[1]);
-
-		if (trim($answers[0]) == 'true')
-		{
-			return true;
-		}
-		else
-		{
-			//@todo use exceptions here
-			$this->_subject->setError(Lang::txt('PLG_RECAPTCHA_ERROR_'.strtoupper(str_replace('-', '_', $answers[1]))));
-			return false;
-		}
+		// success
+		return true;
 	}
 
 	/**
-	 * Encodes the given data into a query string format.
+	 * Submits an HTTP GET to a reCAPTCHA server.
 	 *
-	 * @param   string  $data  Array of string elements to be encoded
-	 * @return  string  Encoded request
-	 * @since   2.5
+	 * @param   string  $url   url path to recaptcha server.
+	 * @param   array   $data  array of parameters to be sent.
+	 * @return  array   response
 	 */
-	private function _recaptcha_qsencode($data)
+	private function _submitHttpGet($url, $data)
+	{
+		return file_get_contents($url . $this->_encodeQS($data));
+	}
+
+	/**
+	 * Encodes the given data into a query string format
+	 *
+	 * @param   array   $data  Array of string elements to be encoded
+	 * @return  string  Encoded request
+	 */
+	private function _encodeQs($data)
 	{
 		$req = '';
 		foreach ($data as $key => $value)
@@ -156,90 +203,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 		}
 
 		// Cut the last '&'
-		$req = rtrim($req, '&');
+		$req = substr($req, 0, strlen($req)-1);
 		return $req;
-	}
-
-	/**
-	 * Submits an HTTP POST to a reCAPTCHA server.
-	 *
-	 * @param   string  $host
-	 * @param   string  $path
-	 * @param   array   $data
-	 * @param   int     $port
-	 * @return  array   Response
-	 * @since   2.5
-	 */
-	private function _recaptcha_http_post($host, $path, $data, $port = 80)
-	{
-		$req = $this->_recaptcha_qsencode($data);
-
-		$http_request  = "POST $path HTTP/1.0\r\n";
-		$http_request .= "Host: $host\r\n";
-		$http_request .= "Content-Type: application/x-www-form-urlencoded;\r\n";
-		$http_request .= "Content-Length: " . strlen($req) . "\r\n";
-		$http_request .= "User-Agent: reCAPTCHA/PHP\r\n";
-		$http_request .= "\r\n";
-		$http_request .= $req;
-
-		$response = '';
-		if (($fs = @fsockopen($host, $port, $errno, $errstr, 10)) == false )
-		{
-			die('Could not open socket');
-		}
-
-		fwrite($fs, $http_request);
-
-		while (!feof($fs))
-		{
-			// One TCP-IP packet
-			$response .= fgets($fs, 1160);
-		}
-
-		fclose($fs);
-		$response = explode("\r\n\r\n", $response, 2);
-
-		return $response;
-	}
-
-	/**
-	 * Get the language tag or a custom translation
-	 *
-	 * @return string
-	 *
-	 * @since  2.5
-	 */
-	private function _getLanguage()
-	{
-		$tag = explode('-', Lang::getTag());
-		$tag = $tag[0];
-		$available = array('en', 'pt', 'fr', 'de', 'nl', 'ru', 'es', 'tr');
-
-		if (in_array($tag, $available))
-		{
-			return "lang : '" . $tag . "',";
-		}
-
-		// If the default language is not available, let's search for a custom translation
-		if ($language->hasKey('PLG_RECAPTCHA_CUSTOM_LANG'))
-		{
-			$custom[] ='custom_translations : {';
-			$custom[] ="\t".'instructions_visual : "' . Lang::txt('PLG_RECAPTCHA_INSTRUCTIONS_VISUAL') . '",';
-			$custom[] ="\t".'instructions_audio : "' . Lang::txt('PLG_RECAPTCHA_INSTRUCTIONS_AUDIO') . '",';
-			$custom[] ="\t".'play_again : "' . Lang::txt('PLG_RECAPTCHA_PLAY_AGAIN') . '",';
-			$custom[] ="\t".'cant_hear_this : "' . Lang::txt('PLG_RECAPTCHA_CANT_HEAR_THIS') . '",';
-			$custom[] ="\t".'visual_challenge : "' . Lang::txt('PLG_RECAPTCHA_VISUAL_CHALLENGE') . '",';
-			$custom[] ="\t".'audio_challenge : "' . Lang::txt('PLG_RECAPTCHA_AUDIO_CHALLENGE') . '",';
-			$custom[] ="\t".'refresh_btn : "' . Lang::txt('PLG_RECAPTCHA_REFRESH_BTN') . '",';
-			$custom[] ="\t".'help_btn : "' . Lang::txt('PLG_RECAPTCHA_HELP_BTN') . '",';
-			$custom[] ="\t".'incorrect_try_again : "' . Lang::txt('PLG_RECAPTCHA_INCORRECT_TRY_AGAIN') . '",';
-			$custom[] ='},';
-			$custom[] ="lang : '" . $tag . "',";
-
-			return implode("\n", $custom);
-		}
-
-		// If nothing helps fall back to english
-		return '';
 	}
 }

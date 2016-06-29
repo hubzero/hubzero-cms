@@ -1,59 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2015 HUBzero Foundation, LLC.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
 <extension version="2.5" type="plugin" group="captcha">
 	<name>plg_captcha_recaptcha</name>
-	<version>2.5.0</version>
-	<creationDate>December 2011</creationDate>
-	<author>Joomla! Project</author>
-	<authorEmail>admin@joomla.org</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
-	<copyright>Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>PLG_CAPTCHA_RECAPTCHA_XML_DESCRIPTION</description>
 	<files>
-		<filename
-			plugin="recaptcha">recaptcha.php</filename>
+		<filename plugin="recaptcha">recaptcha.php</filename>
 	</files>
 	<config>
-	<fields name="params">
-		<fieldset name="basic">
-		<field
-			name="public_key"
-			type="text"
-			default=""
-			label="PLG_RECAPTCHA_PUBLIC_KEY_LABEL"
-			description="PLG_RECAPTCHA_PUBLIC_KEY_DESC"
-			required="true"
-			filter="string"
-			size="50" />
-
-		<field
-			name="private_key"
-			type="text"
-			default=""
-			label="PLG_RECAPTCHA_PRIVATE_KEY_LABEL"
-			description="PLG_RECAPTCHA_PRIVATE_KEY_DESC"
-			required="true"
-			filter="string"
-			size="50" />
-
-		<field
-			name="theme"
-			type="list"
-			default="clean"
-			label="PLG_RECAPTCHA_THEME_LABEL"
-			description="PLG_RECAPTCHA_THEME_DESC"
-			required="true"
-			filter="">
-			<option
-				value="clean">PLG_RECAPTCHA_THEME_CLEAN</option>
-			<option
-				value="white">PLG_RECAPTCHA_THEME_WHITE</option>
-			<option
-				value="blackglass">PLG_RECAPTCHA_THEME_BLACKGLASS</option>
-			<option
-				value="red">PLG_RECAPTCHA_THEME_RED</option>
-			</field>
-		</fieldset>
-	</fields>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="text" name="public" default="" label="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY"  description="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY_DESC" />
+				<field type="text" name="private" default="" label="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY" description="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY_DESC" />
+				<field name="@spacer" type="spacer" />
+				<field type="list" name="theme" default="light" label="PLG_HUBZERO_RECAPTCHA_THEME" description="PLG_HUBZERO_RECAPTCHA_THEME_DESC">
+					<option value="light">PLG_HUBZERO_RECAPTCHA_THEME_LIGHT</option>
+					<option value="dark">PLG_HUBZERO_RECAPTCHA_THEME_DARK</option>
+				</field>
+				<field type="list" name="type" default="image" label="PLG_HUBZERO_RECAPTCHA_TYPE" description="PLG_HUBZERO_RECAPTCHA_TYPE_DESC">
+					<option value="image">PLG_HUBZERO_RECAPTCHA_TYPE_IMAGE</option>
+					<option value="audio">PLG_HUBZERO_RECAPTCHA_TYPE_AUDIO</option>
+				</field>
+				<field type="text" name="language" default="en" label="PLG_HUBZERO_RECAPTCHA_LANGUAGE_CODE" description="PLG_HUBZERO_RECAPTCHA_LANGUAGE_CODE_DESC" />
+			</fieldset>
+		</fields>
 	</config>
 </extension>

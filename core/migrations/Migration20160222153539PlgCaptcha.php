@@ -32,6 +32,16 @@ class Migration20160222153539PlgCaptcha extends Base
 				WHERE `folder`=" . $this->db->quote('hubzero') . " AND `element`=" . $this->db->quote('imagecaptcha')
 			);
 			$this->db->query();
+
+			// Remove the old recaptcha and move the hubzero recaptcha.
+			// This will preserve existing settings.
+			$this->deletePluginEntry('captcha', 'recaptcha');
+			$this->db->setQuery(
+				"UPDATE `#__extensions`
+				SET `folder`=" . $this->db->quote('captcha') . ", `element`=" . $this->db->quote('recaptcha') . ", `name`=" . $this->db->quote('plg_captcha_recaptcha') . "
+				WHERE `folder`=" . $this->db->quote('hubzero') . " AND `element`=" . $this->db->quote('recaptcha')
+			);
+			$this->db->query();
 		}
 	}
 
@@ -55,6 +65,14 @@ class Migration20160222153539PlgCaptcha extends Base
 				WHERE `folder`=" . $this->db->quote('captcha') . " AND `element`=" . $this->db->quote('image')
 			);
 			$this->db->query();
+
+			$this->db->setQuery(
+				"UPDATE `#__extensions`
+				SET `folder`=" . $this->db->quote('hubzero') . ", `element`=" . $this->db->quote('recaptcha') . ", `name`=" . $this->db->quote('plg_hubzero_recaptcha') . "
+				WHERE `folder`=" . $this->db->quote('captcha') . " AND `element`=" . $this->db->quote('recaptcha')
+			);
+			$this->db->query();
+			$this->addPluginEntry('captcha', 'recaptcha');
 		}
 	}
 }
