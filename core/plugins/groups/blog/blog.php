@@ -777,7 +777,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!in_array($row->get('created_by'), $this->group->get('managers')))
 		{
-			$recipients[] = ['user', $entry->get('created_by')];
+			$recipients[] = ['user', $row->get('created_by')];
 		}
 
 		foreach ($this->group->get('managers') as $recipient)
