@@ -30,11 +30,15 @@
 
 namespace Components\Storefront\Site\Controllers;
 
-use Pathway;
 use Components\Storefront\Models\Warehouse;
 use Components\Cart\Models\CurrentCart;
 use Components\Cart\Helpers\Audit;
 use Exception;
+use Request;
+use Pathway;
+use Lang;
+use User;
+use App;
 
 require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php';
@@ -225,7 +229,8 @@ class Product extends \Hubzero\Component\SiteController
 		$this->view->price = $priceRange;
 
 		// Add custom page JS
-		if ($data && (count($data->options) > 0 || count($data->skus) > 1)) {
+		if ($data && (count($data->options) > 0 || count($data->skus) > 1))
+		{
 			$js = $this->getDisplayJs($data->options, $data->skus, $productIdentifier);
 			Document::addScriptDeclaration($js);
 		}

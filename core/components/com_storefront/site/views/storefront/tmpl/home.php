@@ -35,6 +35,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <header id="content-header">
 	<h2><?php echo  Lang::txt('COM_STOREFRONT'); ?> homepage</h2>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="btn" href="/cart"><?php echo  Lang::txt('COM_STOREFRONT_CART'); ?></a>
+		</p>
+	</div>
 </header>
 
 <section class="section">

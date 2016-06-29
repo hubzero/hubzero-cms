@@ -29,7 +29,6 @@
  */
 
 namespace Components\Storefront\Site;
-use Filesystem;
 
 // require base component controller
 require_once(__DIR__ . DS . 'controllers' . DS . 'component.php');
@@ -47,7 +46,7 @@ if (empty($controllerName))
 }
 elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	App::abort(404, Lang::txt('Page Not Found'));
+	\App::abort(404, \Lang::txt('Page Not Found'));
 }
 
 $controllerRequested = $controllerName;
@@ -64,19 +63,19 @@ $loginRequired = $controller->config->get('requirelogin', 0);
 if ($loginRequired && $controllerRequested != 'overview')
 {
 	// Check if they're logged in
-	if (User::isGuest())
+	if (\User::isGuest())
 	{
 		$return = base64_encode($_SERVER['REQUEST_URI']);
 		// Redirect to the landing page
 		if ($controllerRequested == 'storefront')
 		{
-			App::redirect(
-				Route::url('index.php?option=com_storefront') . 'overview'
+			\App::redirect(
+				\Route::url('index.php?option=com_storefront') . 'overview'
 			);
 		}
 		// Require login
-		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . $return),
+		\App::redirect(
+			\Route::url('index.php?option=com_users&view=login&return=' . $return),
 			'Please login to continue',
 			'warning'
 		);

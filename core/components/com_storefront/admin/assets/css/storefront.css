@@ -10,6 +10,12 @@
 	padding: 1em;
 	text-align: center;
 }
+/* Firefox does not honor max-width on img properly */
+@-moz-document url-prefix() {
+	#img-container img {
+		width: 100%;
+	}
+}
 #img-delete {
 	white-space: nowrap;
 }

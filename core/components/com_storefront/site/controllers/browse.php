@@ -30,8 +30,12 @@
 
 namespace Components\Storefront\Site\Controllers;
 
-use Pathway;
 use Components\Storefront\Models\Warehouse;
+use Pathway;
+use Request;
+use Lang;
+use User;
+use App;
 
 /**
  * Product browsing controller class
@@ -41,7 +45,7 @@ class Browse extends \Hubzero\Component\SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -84,7 +88,7 @@ class Browse extends \Hubzero\Component\SiteController
 	/**
 	 * Display default page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function homeTask()
 	{
@@ -98,17 +102,22 @@ class Browse extends \Hubzero\Component\SiteController
 	/**
 	 * Display collection
 	 *
-	 * @param		$cId
-	 * @return     	void
+	 * @param   integer  $cId
+	 * @return  void
 	 */
 	private function browseCollection($cId)
 	{
-		$view = new \Hubzero\Component\View(array('name'=>'browse', 'layout' => 'collection') );
+		$view = new \Hubzero\Component\View(array('name'=>'browse', 'layout' => 'collection'));
+
+		// Get collection name
+		$collection = $this->warehouse->getCollectionInfo($cId);
+		$collectionName = $collection->cName;
 
 		// Get the collection products
 		$this->warehouse->addLookupCollection($cId);
 		$products = $this->warehouse->getProducts();
 
+		$view->collectionName = $collectionName;
 		$view->products = $products;
 
 		// Breadcrumbs
@@ -123,11 +132,9 @@ class Browse extends \Hubzero\Component\SiteController
 		}
 
 		Pathway::append(
-			Lang::txt('COM_STOREFRONT_BROWSING_COLLECTION')
+			Lang::txt($collectionName)
 		);
 
 		$view->display();
 	}
-
 }
-
