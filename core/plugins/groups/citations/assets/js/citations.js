@@ -68,6 +68,38 @@ jQuery(document).ready(function (jq) {
 		});
 	}
 
+	var links = $('.link-manager');
+	if (links.length) {
+		var btn = $('<p class=\"address-add\"><a class=\"icon-add\" href=\"#\">Add link</a></p>').on('click', function(e){
+			e.preventDefault();
+
+			var grp = links
+				.find('.link')
+				.last()
+				.clone();
+			grp.find('input').each(function(i, el){
+				this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
+				this.value = '';
+			});
+			grp.find('label').each(function(i, el){
+				$(el).attr('for', $(el).attr('for').replace(/\-(\d+)\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';}));
+			});
+			if (!grp.find('.link-remove').length) {
+				var rmv = $('<a class=\"link-remove icon-remove\" href=\"#\">Remove</a>');
+				grp.append(rmv);
+			}
+			grp.appendTo(links);
+
+			links.find('.link-remove')
+				.off('click')
+				.on('click', function(e){
+					e.preventDefault();
+					$(this).parent().remove();
+				});
+		});
+		links.after(btn);
+	}
+
 	// toggle download markers.
 	$('.checkall-download').click(function() {
 		var checked = $(this).prop('checked');

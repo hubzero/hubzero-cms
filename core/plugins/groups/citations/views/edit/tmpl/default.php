@@ -406,50 +406,52 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 		<fieldset>
 			<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINKS'); ?></legend>
 
-			<?php
-			$i = 0;
-			$links = $this->row->links()->rows();
-			foreach ($links as $link)
-			{
+			<div class="link-manager">
+				<?php
+				$i = 0;
+				$links = $this->row->links()->rows();
+				foreach ($links as $link)
+				{
+					?>
+					<div class="link grid">
+						<div class="col span6">
+							<label for="links-<?php echo $i; ?>-title">
+								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_TITLE'); ?>:
+								<input type="text" name="links[<?php echo $i; ?>][title]" id="links-<?php echo $i; ?>-title" value="<?php echo $this->escape($link->title); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_TITLE_PLACEHOLDER'); ?>" />
+							</label>
+						</div>
+						<div class="col span6 omega">
+
+							<label for="links-<?php echo $i; ?>-url">
+								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_URL'); ?>:
+								<input type="text" name="links[<?php echo $i; ?>][url]" id="links-<?php echo $i; ?>-url" value="<?php echo $this->escape($link->url); ?>" placeholder="http://" />
+							</label>
+
+							<input type="hidden" name="links[<?php echo $i; ?>][id]" value="<?php echo $link->id; ?>" />
+							<input type="hidden" name="links[<?php echo $i; ?>][citation_id]" value="<?php echo $link->citation_id; ?>" />
+						</div>
+					</div>
+					<?php
+					$i++;
+				}
 				?>
+
 				<div class="link grid">
 					<div class="col span6">
 						<label for="links-<?php echo $i; ?>-title">
 							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_TITLE'); ?>:
-							<input type="text" name="links[<?php echo $i; ?>][title]" id="links-<?php echo $i; ?>-title" value="<?php echo $this->escape($link->title); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_TITLE_PLACEHOLDER'); ?>" />
+							<input type="text" name="links[<?php echo $i; ?>][title]" id="links-<?php echo $i; ?>-title" value="" placeholder="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_TITLE_PLACEHOLDER'); ?>" />
 						</label>
 					</div>
 					<div class="col span6 omega">
-
 						<label for="links-<?php echo $i; ?>-url">
 							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_URL'); ?>:
-							<input type="text" name="links[<?php echo $i; ?>][url]" id="links-<?php echo $i; ?>-url" value="<?php echo $this->escape($link->url); ?>" placeholder="http://" />
+							<input type="text" name="links[<?php echo $i; ?>][url]" id="links-<?php echo $i; ?>-url" value="" placeholder="http://" />
 						</label>
 
-						<input type="hidden" name="links[<?php echo $i; ?>][id]" value="<?php echo $link->id; ?>" />
-						<input type="hidden" name="links[<?php echo $i; ?>][citation_id]" value="<?php echo $link->citation_id; ?>" />
+						<input type="hidden" name="links[<?php echo $i; ?>][id]" value="" />
+						<input type="hidden" name="links[<?php echo $i; ?>][citation_id]" value="<?php echo $this->row->id; ?>" />
 					</div>
-				</div>
-				<?php
-				$i++;
-			}
-			?>
-
-			<div class="link grid">
-				<div class="col span6">
-					<label for="links-<?php echo $i; ?>-title">
-						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_TITLE'); ?>:
-						<input type="text" name="links[<?php echo $i; ?>][title]" id="links-<?php echo $i; ?>-title" value="" placeholder="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_TITLE_PLACEHOLDER'); ?>" />
-					</label>
-				</div>
-				<div class="col span6 omega">
-					<label for="links-<?php echo $i; ?>-url">
-						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_LINK_URL'); ?>:
-						<input type="text" name="links[<?php echo $i; ?>][url]" id="links-<?php echo $i; ?>-url" value="" placeholder="http://" />
-					</label>
-
-					<input type="hidden" name="links[<?php echo $i; ?>][id]" value="" />
-					<input type="hidden" name="links[<?php echo $i; ?>][citation_id]" value="<?php echo $this->row->id; ?>" />
 				</div>
 			</div>
 		</fieldset><div class="clear"></div>
