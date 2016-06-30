@@ -30,8 +30,8 @@
 
 namespace Components\Cart\Helpers;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * Cart helper functions
@@ -42,57 +42,59 @@ class CartHelper
 
 	public static function getUsStates()
 	{
-		$states = array('AL' => "Alabama",
-						'AK' => "Alaska",
-						'AZ' => "Arizona",
-						'AR' => "Arkansas",
-						'CA' => "California",
-						'CO' => "Colorado",
-						'CT' => "Connecticut",
-						'DE' => "Delaware",
-						'DC' => "District Of Columbia",
-						'FL' => "Florida",
-						'GA' => "Georgia",
-						'HI' => "Hawaii",
-						'ID' => "Idaho",
-						'IL' => "Illinois",
-						'IN' => "Indiana",
-						'IA' => "Iowa",
-						'KS' => "Kansas",
-						'KY' => "Kentucky",
-						'LA' => "Louisiana",
-						'ME' => "Maine",
-						'MD' => "Maryland",
-						'MA' => "Massachusetts",
-						'MI' => "Michigan",
-						'MN' => "Minnesota",
-						'MS' => "Mississippi",
-						'MO' => "Missouri",
-						'MT' => "Montana",
-						'NE' => "Nebraska",
-						'NV' => "Nevada",
-						'NH' => "New Hampshire",
-						'NJ' => "New Jersey",
-						'NM' => "New Mexico",
-						'NY' => "New York",
-						'NC' => "North Carolina",
-						'ND' => "North Dakota",
-						'OH' => "Ohio",
-						'OK' => "Oklahoma",
-						'OR' => "Oregon",
-						'PA' => "Pennsylvania",
-						'RI' => "Rhode Island",
-						'SC' => "South Carolina",
-						'SD' => "South Dakota",
-						'TN' => "Tennessee",
-						'TX' => "Texas",
-						'UT' => "Utah",
-						'VT' => "Vermont",
-						'VA' => "Virginia",
-						'WA' => "Washington",
-						'WV' => "West Virginia",
-						'WI' => "Wisconsin",
-						'WY' => "Wyoming");
+		$states = array(
+			'AL' => "Alabama",
+			'AK' => "Alaska",
+			'AZ' => "Arizona",
+			'AR' => "Arkansas",
+			'CA' => "California",
+			'CO' => "Colorado",
+			'CT' => "Connecticut",
+			'DE' => "Delaware",
+			'DC' => "District Of Columbia",
+			'FL' => "Florida",
+			'GA' => "Georgia",
+			'HI' => "Hawaii",
+			'ID' => "Idaho",
+			'IL' => "Illinois",
+			'IN' => "Indiana",
+			'IA' => "Iowa",
+			'KS' => "Kansas",
+			'KY' => "Kentucky",
+			'LA' => "Louisiana",
+			'ME' => "Maine",
+			'MD' => "Maryland",
+			'MA' => "Massachusetts",
+			'MI' => "Michigan",
+			'MN' => "Minnesota",
+			'MS' => "Mississippi",
+			'MO' => "Missouri",
+			'MT' => "Montana",
+			'NE' => "Nebraska",
+			'NV' => "Nevada",
+			'NH' => "New Hampshire",
+			'NJ' => "New Jersey",
+			'NM' => "New Mexico",
+			'NY' => "New York",
+			'NC' => "North Carolina",
+			'ND' => "North Dakota",
+			'OH' => "Ohio",
+			'OK' => "Oklahoma",
+			'OR' => "Oregon",
+			'PA' => "Pennsylvania",
+			'RI' => "Rhode Island",
+			'SC' => "South Carolina",
+			'SD' => "South Dakota",
+			'TN' => "Tennessee",
+			'TX' => "Texas",
+			'UT' => "Utah",
+			'VT' => "Vermont",
+			'VA' => "Virginia",
+			'WA' => "Washington",
+			'WV' => "West Virginia",
+			'WI' => "Wisconsin",
+			'WY' => "Wyoming"
+		);
 
 		return $states;
 	}
@@ -145,11 +147,11 @@ class CartHelper
 	public static function validurl($url)
 	{
 		$ptrn = '/([a-z0-9_\-]{1,5}:\/\/)?(([a-z0-9_\-]{1,}):([a-z0-9_\-]{1,})\@)?((www\.)|([a-z0-9_\-]{1,}\.)+)?([a-z0-9_\-]{3,})(\.[a-z]{2,4})(\/([a-z0-9_\-]{1,}\/)+)?([a-z0-9_\-]{1,})?(\.[a-z]{2,})?(\?)?(((\&)?[a-z0-9_\-]{1,}(\=[a-z0-9_\-]{1,})?)+)?/';
-		if (preg_match($ptrn, $url)) {
+		if (preg_match($ptrn, $url))
+		{
 			return(1);
-		} else {
-			return(0);
 		}
+		return(0);
 	}
 
 	/**
@@ -162,11 +164,11 @@ class CartHelper
 	 */
 	public static function validphone($phone)
 	{
-		if (preg_match("/^[\ \#\*\+\:\,\.0-9-]*$/", $phone)) {
+		if (preg_match("/^[\ \#\*\+\:\,\.0-9-]*$/", $phone))
+		{
 			return(1);
-		} else {
-			return(0);
 		}
+		return(0);
 	}
 
 	/**
@@ -185,5 +187,4 @@ class CartHelper
 		}
 		return false;
 	}
-
 }

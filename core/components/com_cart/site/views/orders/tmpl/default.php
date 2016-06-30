@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 $this->css()
 	->js()
@@ -41,37 +41,37 @@ $this->css()
 </header>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="ordersform" method="get">
-<section class="main section">
-	<div class="section-inner">
+	<section class="main section">
+		<div class="section-inner">
+
+			<?php
+				if (!$this->transactions)
+				{
+					echo '<p class="no-results">You have not placed any orders yet. Is it time to <a href="/storefront">start shopping?</a>';
+				}
+				else {
+					echo '<ol class="entries">';
+					foreach ($this->transactions as $transaction)
+					{
+						// Instantiate a new view
+						$this->view('transaction', 'orders')
+							->set('transaction', $transaction)
+							->display();
+					}
+					echo '</ol>';
+				}
+			?>
+
+		</div>
 
 		<?php
-			if (!$this->transactions)
-			{
-				echo '<p class="no-results">You have not placed any orders yet. Is it time to <a href="/storefront">start shopping?</a>';
-			}
-			else {
-				echo '<ol class="entries">';
-				foreach ($this->transactions as $transaction)
-				{
-					// Instantiate a new view
-					$this->view('transaction', 'orders')
-						->set('transaction', $transaction)
-						->display();
-				}
-				echo '</ol>';
-			}
+		// Initiate paging
+		$pageNav = $this->pagination(
+			$this->total,
+			$this->filters['start'],
+			$this->filters['limit']
+		);
+		echo $pageNav->render();
 		?>
-
-	</div>
-
-	<?php
-	// Initiate paging
-	$pageNav = $this->pagination(
-		$this->total,
-		$this->filters['start'],
-		$this->filters['limit']
-	);
-	echo $pageNav->render();
-	?>
-</section>
+	</section>
 </form>

@@ -28,28 +28,28 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 ?>
 
 <header id="content-header">
-    <h2>Express add</h2>
+	<h2>Express add</h2>
 </header>
 
 <section class="main section">
-    <div class="section-inner">
-        <p>Add straight to the cart</p>
+	<div class="section-inner">
+		<p>Add straight to the cart</p>
 
-        <form action="<?php echo JURI::root() . 'cart'; ?>" id="frm" method="post">
+		<form action="<?php echo JURI::root() . 'cart'; ?>" id="frm" method="post">
 
-            <input type="hidden" name="updateCart" value="true">
-            <input type="hidden" name="skus" value="11">
-            <input type="hidden" name="expressCheckout" value="true">
+			<input type="hidden" name="updateCart" value="true">
+			<input type="hidden" name="skus" value="11">
+			<input type="hidden" name="expressCheckout" value="true">
 
-            <input type="submit" value="Pay">
-        </form>
-    </div>
+			<input type="submit" value="Pay">
+		</form>
+	</div>
 </section>

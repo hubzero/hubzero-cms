@@ -66,33 +66,39 @@ if (!empty($this->notifications))
 		?>
 		<div class="grid">
 			<div class="col span6">
-				<h2>Shipping address</h2>
-
 				<form name="cartShippingInfo" class="cartShippingInfo full" method="post" id="hubForm">
 					<fieldset>
-						<label for="shippingToFirst">First name:
-							<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo Request::getVar('shippingToFirst', false, 'post'); ?>" />
+						<legend><?php echo Lang::txt('Shipping address'); ?></legend>
+
+						<label for="shippingToFirst">
+							<?php echo Lang::txt('First name:'); ?>
+							<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo $this->escape(Request::getVar('shippingToFirst', User::get('givenName'), 'post')); ?>" />
 						</label>
 
-						<label for="shippingToLast">Last name:
-							<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo Request::getVar('shippingToLast', false, 'post'); ?>" />
+						<label for="shippingToLast">
+							<?php echo Lang::txt('Last name:'); ?>
+							<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo $this->escape(Request::getVar('shippingToLast', User::get('surname'), 'post')); ?>" />
 						</label>
 
-						<label for="shippingAddress">Shipping address:
-							<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo Request::getVar('shippingAddress', false, 'post'); ?>" />
+						<label for="shippingAddress">
+							<?php echo Lang::txt('Shipping address:'); ?>
+							<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo $this->escape(Request::getVar('shippingAddress', false, 'post')); ?>" />
 						</label>
 
-						<label for="shippingCity">City:
-							<input type="text" name="shippingCity" id="shippingCity" value="<?php echo Request::getVar('shippingCity', false, 'post'); ?>" />
+						<label for="shippingCity">
+							<?php echo Lang::txt('City:'); ?>
+							<input type="text" name="shippingCity" id="shippingCity" value="<?php echo $this->escape(Request::getVar('shippingCity', false, 'post')); ?>" />
 						</label>
 
-						<label for="shippingZip">Zip:
-							<input type="text" name="shippingZip" id="shippingZip" value="<?php echo Request::getVar('shippingZip', false, 'post'); ?>" />
+						<label for="shippingZip">
+							<?php echo Lang::txt('Zip:'); ?>
+							<input type="text" name="shippingZip" id="shippingZip" value="<?php echo $this->escape(Request::getVar('shippingZip', false, 'post')); ?>" />
 						</label>
 
-						<label for="shippingState">State:
+						<label for="shippingState">
+							<?php echo Lang::txt('State:'); ?>
 							<select name="shippingState" id="shippingState">
-								<option value=""> -- please select -- </option>
+								<option value=""><?php echo Lang::txt(' -- please select -- '); ?></option>
 								<?php
 									foreach ($states as $abbr => $state)
 									{
@@ -108,12 +114,15 @@ if (!empty($this->notifications))
 						</label>
 
 						<fieldset>
-							<legend>Save this address</legend>
-							<label for="saveAddress"><input type="checkbox" class="option" name="saveAddress" id="saveAddress" /> Save this address for future use</label>
+							<legend><?php echo Lang::txt('Save this address'); ?></legend>
+							<label for="saveAddress">
+								<input type="checkbox" class="option" name="saveAddress" id="saveAddress" />
+								<?php echo Lang::txt('Save this address for future use'); ?>
+							</label>
 						</fieldset>
 
 						<p class="submit">
-							<input type="submit" value="Next" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
+							<input type="submit" value="<?php echo Lang::txt('Next'); ?>" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
 						</p>
 					</fieldset>
 				</form>
@@ -122,21 +131,19 @@ if (!empty($this->notifications))
 				<?php
 				if (!empty($this->savedShippingAddresses))
 				{
-					echo '<h2>Select saved address</h2>';
+					echo '<h2>' . Lang::txt('Select saved address') . '</h2>';
 
 					foreach ($this->savedShippingAddresses as $address)
 					{
 						echo '<div class="cartSection">';
 						echo '<p>';
-						echo $address->saToFirst . ' ' . $address->saToLast . '<br>';
-						echo $address->saAddress . '<br>';
+						echo $address->saToFirst . ' ' . $address->saToLast . '<br />';
+						echo $address->saAddress . '<br />';
 						echo $address->saCity . ', ' . $address->saState . ' ' . $address->saZip;
 						echo '</p>';
 
-						echo '<a href="';
-						echo Route::url('index.php?option=com_cart') . 'checkout/shipping/select/' . $address->saId;
-						echo '">';
-						echo 'Ship to this address';
+						echo '<a href="' . Route::url('index.php?option=com_cart&controller=checkout/shipping/select/' . $address->saId) . '">';
+						echo Lang::txt('Ship to this address');
 						echo '</a>';
 
 						echo '</div>';

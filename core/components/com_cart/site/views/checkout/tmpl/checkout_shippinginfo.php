@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 ?>
 
@@ -37,8 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<h2>Shipping info</h2>
 
-<?php
-
+	<?php
 	if (!empty($this->transactionInfo))
 	{
 		echo '<p>';
@@ -59,7 +58,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	echo '<a href="';
 	echo Route::url('index.php?option=com_cart') . 'checkout/shipping';
 	echo '">Change</a>';
-
-?>
+	?>
 
 </div>

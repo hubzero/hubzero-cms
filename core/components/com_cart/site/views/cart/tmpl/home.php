@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 $this->css()
      ->js()
@@ -257,7 +257,7 @@ if (!empty($errors))
 
 						if ($this->cartInfo->totalItems)
 						{
-							echo '<p><a href="' . Route::url('index.php?option=' . $this->option) . 'checkout" class="btn">Checkout</a></p>';
+							echo '<p><a href="' . Route::url('index.php?option=' . $this->option . '&controller=checkout') . '" class="btn">Checkout</a></p>';
 						}
 
 					echo '</div>';

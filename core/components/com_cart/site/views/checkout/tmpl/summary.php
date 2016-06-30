@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 $this->css();
 ?>
@@ -140,12 +140,12 @@ if (!empty($this->notifications))
 		if ($orderTotal > 0)
 		{
 			$buttonLabel = 'Proceed to payment';
-			$buttonLink = Route::url('index.php?option=com_cart') . 'checkout/confirm';
+			$buttonLink = Route::url('index.php?option=com_cart&controller=checkout/confirm');
 		}
 		else
 		{
 			$buttonLabel = 'Place order';
-			$buttonLink = Route::url('index.php?option=com_cart') . 'order/place/' . $this->token;
+			$buttonLink = Route::url('index.php?option=com_cart&controller=order/place/' . $this->token);
 		}
 		?>
 		<p class="submit">

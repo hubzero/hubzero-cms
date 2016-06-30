@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
@@ -40,7 +40,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 </header>
 
 <section class="section">
-	<form action="/cart/" id="frm" method="post">
+	<form action="<?php echo Route::url('index.php?option=com_cart'); ?>" id="frm" method="post">
 
 		<!-- 	TO ADD PRODUCT (accepts multiple):
 				name: 	pId[productID]

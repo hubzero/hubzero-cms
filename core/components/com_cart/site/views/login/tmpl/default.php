@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 ?>
 <header id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <section class="main section">
 	<p class="warning"><?php echo Lang::txt('COM_CART_NOT_LOGGEDIN'); ?></p>
-<?php
-\Hubzero\Module\Helper::displayModules('force_mod');
-?>
+	<?php
+	\Hubzero\Module\Helper::displayModules('force_mod');
+	?>
 </section><!-- / .main section -->

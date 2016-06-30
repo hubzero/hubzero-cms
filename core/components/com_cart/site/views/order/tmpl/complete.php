@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 ?>
 
@@ -39,7 +39,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <section class="main section">
 	<div class="section-inner">
-
 
 		<p>Thank you for your order.</p>
 		<p>You will receive an email confirmation shortly at the email address associated with your account. Your transaction is now complete.</p>

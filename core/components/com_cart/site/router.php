@@ -50,10 +50,11 @@ class Router extends Base
 
 		if (!empty($query['controller']))
 		{
-			if ($query['controller'] == 'orders')
+			/*if ($query['controller'] == 'orders')
 			{
 				$segments[] = $query['controller'];
-			}
+			}*/
+			$segments[] = $query['controller'];
 			unset($query['controller']);
 		}
 

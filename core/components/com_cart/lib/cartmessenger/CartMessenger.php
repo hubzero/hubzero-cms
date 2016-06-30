@@ -27,10 +27,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
-class LoggingLevel {
+class LoggingLevel
+{
 	const INFO = 2;
 	const WARN = 1;
 	const ERROR = 0;
@@ -91,7 +92,8 @@ class CartMessenger
 		{
 			$message = 'Log info: ';
 			$message .= $this->message;
-			if (!empty($this->postback)) {
+			if (!empty($this->postback))
+			{
 				$message .= "\n" . "Postback info: " . serialize($this->postback) . "\n";
 			}
 
@@ -103,12 +105,17 @@ class CartMessenger
 			);
 			$hzl->useFiles($this->logFile);
 
-			if ($loggingLevel == 0) {
+			if ($loggingLevel == 0)
+			{
 				$hzl->error($this->caller . ': ' . $message);
-			} elseif ($loggingLevel == 1) {
+			}
+			elseif ($loggingLevel == 1)
+			{
 				$log = $hzl->warning($this->caller . ': ' . $message);
 				return $log;
-			} elseif ($loggingLevel == 2) {
+			}
+			elseif ($loggingLevel == 2)
+			{
 				$log = $hzl->info($this->caller . ': ' . $message);
 				return $log;
 			}
@@ -116,7 +123,8 @@ class CartMessenger
 			// If error, needs to send email to admin
 			$this->emailError($this->message, 'POSTBACK');
 		}
-		else {
+		else
+		{
 			$this->emailError($this->logFile, 'LOG');
 		}
 	}
@@ -300,8 +308,8 @@ class CartMessenger
 
 		// Email notifications
 		$notifyTo = $params->get('sendNotificationTo');
-		if (!empty($notifyTo)) {
-
+		if (!empty($notifyTo))
+		{
 			$notifyTo = explode(',', str_replace(' ', '', $notifyTo));
 
 			$notifyEmail = 'There is a new online store order at ' . Config::get('sitename') . "\n\n";
@@ -412,12 +420,12 @@ class CartMessenger
 
 		$mailMessage .= $error;
 
-		if ($errorType != 'LOG') {
+		if ($errorType != 'LOG')
+		{
 			$mailMessage .= "\n\n" . 'Please see log for details';
 		}
 
 		// Send emails
 		Event::trigger('onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
 	}
-
 }

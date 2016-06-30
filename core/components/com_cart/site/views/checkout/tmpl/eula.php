@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 $this->css();
 
@@ -80,8 +80,11 @@ if (!empty($this->notifications))
 							<legend>Please confirm that you accept the user agreement</legend>
 							<label for="acceptEula"><input type="checkbox" class="option" name="acceptEula" id="acceptEula" /> I Accept</label>
 
-							<p>If you don't accept the user agreement, <a href="/cart">cancel and return to cart</a></p>
+							<p>If you don't accept the user agreement, <a href="<?php echo Route::url('index.php?option=com_cart'); ?>">cancel and return to cart</a></p>
 						</fieldset>
+
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 
 						<div class="submit">
 							<input type="submit" value="Next" name="submitEula" id="submitEula" class="btn" />

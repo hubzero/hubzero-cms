@@ -27,8 +27,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * UPay payment provider
@@ -80,8 +80,8 @@ class PaymentProvider
 		$this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
 		$this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
 		$this->transactionDetails['VALIDATION_KEY'] = $this->generateValidationKey();
-		$this->transactionDetails['SUCCESS_LINK'] = JURI::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' .
-													$transactionDetails->token . '-' . $transactionDetails->info->tId;
+		$this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' .
+		$transactionDetails->token . '-' . $transactionDetails->info->tId;
 	}
 
 	/**
@@ -197,7 +197,8 @@ class PaymentProvider
 		{
 			return 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
 		}
-		else {
+		else
+		{
 			return 'https://secure.touchnet.com:8443/C21261test_upay/web/index.jsp';
 		}
 	}
@@ -211,5 +212,4 @@ class PaymentProvider
 		$base = $this->options->validationKey . $this->transactionDetails['EXT_TRANS_ID'] . $this->transactionDetails['AMT'];
 		return base64_encode(md5($base, true));
 	}
-
 }
