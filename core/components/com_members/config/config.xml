@@ -273,29 +273,15 @@ HUBzero is a registered trademark of Purdue University.
 	</fieldset>
 	<fieldset name="registration">
 		<field name="ConfirmationReturn" type="text" menu="hide" default="" label="Confirmation Return URL" description="Redirect here after confirming email..." />
-		<field name="registrationUsername"         type="text" menu="hide" default="RRUU" label="Username" description="" />
-		<field name="registrationPassword"         type="text" menu="hide" default="RRUU" label="Password" description="" />
-		<field name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />
-		<field name="registrationFullname"         type="text" menu="hide" default="RRUU" label="Full Name" description="" />
-		<field name="registrationEmail"            type="text" menu="hide" default="RRUU" label="Email" description="" />
-		<field name="registrationConfirmEmail"     type="text" menu="hide" default="RRUU" label="Email Confirmation" description="" />
-		<field name="registrationURL"              type="text" menu="hide" default="HHHO" label="URL" description="" />
-		<field name="registrationPhone"            type="text" menu="hide" default="HHHO" label="Phone" description="" />
-		<field name="registrationEmployment"       type="text" menu="hide" default="HHHO" label="Employment" description="" />
-		<field name="registrationOrganization"     type="text" menu="hide" default="HHHO" label="Organization" description="" />
-		<field name="registrationCitizenship"      type="text" menu="hide" default="HHHO" label="Citizenship" description="" />
-		<field name="registrationResidency"        type="text" menu="hide" default="HHHO" label="Residency" description="" />
-		<field name="registrationSex"              type="text" menu="hide" default="HHHO" label="Sex" description="" />
-		<field name="registrationDisability"       type="text" menu="hide" default="HHHO" label="Disability" description="" />
-		<field name="registrationHispanic"         type="text" menu="hide" default="HHHO" label="Hispanic" description="" />
-		<field name="registrationRace"             type="text" menu="hide" default="HHHO" label="Race" description="" />
-		<field name="registrationInterests"        type="text" menu="hide" default="HHHO" label="Interests" description="" />
-		<field name="registrationReason"           type="text" menu="hide" default="HHHO" label="Reason" description=""/>
-		<field name="registrationOptIn"            type="text" menu="hide" default="HHHO" label="OptIn" description="" />
-		<field name="registrationCAPTCHA"          type="text" menu="hide" default="RHHH" label="CAPTCHA" description="CAPTCHA check" />
-		<field name="registrationTOU"              type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
-		<field name="registrationAddress"          type="text" menu="hide" default="--OO" label="Address" description="" />
-		<field name="registrationORCID"            type="text" menu="hide" default="HHHH" label="ORCID" description="" />
+		<field name="registrationUsername"         type="text" menu="hide" default="RRUU" label="Username" description="In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationPassword"         type="text" menu="hide" default="RRUU" label="Password" description="In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationFullname"         type="text" menu="hide" default="RRUU" label="Full Name" description="In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationEmail"            type="text" menu="hide" default="RRUU" label="Email" description="In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationConfirmEmail"     type="text" menu="hide" default="RRUU" label="Email Confirmation" description="In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationOptIn"            type="text" menu="hide" default="HHHO" label="OptIn" description="Receieve Emails. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationCAPTCHA"          type="text" menu="hide" default="RHHH" label="CAPTCHA" description="In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
+		<field name="registrationTOU"              type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_members" section="component" />

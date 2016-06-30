@@ -275,6 +275,7 @@
 		font-weight:bold;
 		text-transform:uppercase;
 		color:#777;
+		text-align: left;
 	}
 	#member-profile-completeness #meter {
 		margin:3px 0 0 0;

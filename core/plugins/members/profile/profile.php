@@ -147,7 +147,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$xreg = new \Components\Members\Models\Registration();
 			$xreg->loadProfile($this->member);
 
-			$check = $xreg->check('edit');
+			$check = $xreg->check('update');
 
 			// Validate profile data
 			// @TODO  Move this to central validation model (e.g., registraiton)?
@@ -209,6 +209,61 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function getProfileCompleteness($fields, $profile)
 	{
+		$data = array();
+		foreach ($fields as $field)
+		{
+			$data[$field->get('name')] = $profile->get($field->get('name'));
+		}
+
+		$skip = array();
+
+		foreach ($fields as $field)
+		{
+			foreach ($field->options as $option)
+			{
+				$selected = false;
+
+				if (!$option->get('dependents'))
+				{
+					continue;
+				}
+
+				$events = json_decode($option->get('dependents', '[]'));
+
+				if (empty($events))
+				{
+					continue;
+				}
+
+				if (isset($data[$field->get('name')]))
+				{
+					$values = $data[$field->get('name')];
+
+					if (is_array($values) && in_array($option->get('value'), $values))
+					{
+						$selected = true;
+					}
+					else if ($values == $option->get('value'))
+					{
+						$selected = true;
+					}
+				}
+
+				// If the option was chosen...
+				// pass its dependents through validation
+				if ($selected)
+				{
+					continue;
+				}
+
+				// If the option was NOT chosen...
+				// skip its dependents (no validation)
+				$skip = array_merge($skip, $events);
+			}
+		}
+
+		//----
+
 		//default vars
 		$num_fields = 0;
 		$num_filled_fields = 0;
@@ -217,7 +272,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		foreach ($fields as $field)
 		{
 			// if the field is anything button hidden we want to count it
-			if ($field->get('type') != 'hidden')
+			if ($field->get('type') != 'hidden' && !in_array($field->get('name'), $skip))
 			{
 				//add to the number of fields count
 				$num_fields++;
