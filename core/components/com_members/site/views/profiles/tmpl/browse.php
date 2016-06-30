@@ -329,7 +329,6 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_SITE_MEMBERS'); ?></h3>
 				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_EXPLANATION'); ?></p>
 				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_SORTING_EXPLANATION'); ?></p>
-				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_SEARCH_EXPLANATION'); ?></p>
 			</div><!-- / .container -->
 
 			<div class="container">
