@@ -41,7 +41,7 @@ defined('_HZEXEC_') or die();
 	</div>
 	<div class="input-wrap">
 		<label for="newpass"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW'); ?>:</label>
-		<input type="password" name="newpass" id="newpass" value="" />
+		<input type="password" name="newpass" id="newpass" value="" autocomplete="off" />
 		<p class="warning"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW_WARNING'); ?></p>
 		<?php if (count($this->password_rules) > 0) : ?>
 			<?php $this->css('password.css'); ?>
@@ -90,14 +90,14 @@ defined('_HZEXEC_') or die();
 			</ul>
 		<?php endif; ?>
 	</div>
-	<!-- div class="input-wrap">
+	<?php /*<div class="input-wrap">
 		<label id="field_password2-lbl" for="field_password2"><?php echo Lang::txt('Confirm Password'); ?></label>
 		<input type="password" name="password2" id="field_password2" value="" autocomplete="off" class="inputbox validate-password" />
 	</div>
 	<div class="input-wrap" data-hint="<?php echo Lang::txt('Number of password resets since last reset date'); ?>">
 		<label id="field_resetCount-lbl" for="field_resetCount"><?php echo Lang::txt('Password Reset Count'); ?></label>
 		<input type="text" name="resetCount" id="field_resetCount" value="0" class="readonly" readonly="readonly"/>
-	</div -->
+	</div> */?>
 	<div class="input-wrap">
 		<label title="shadowLastChange"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_LAST_CHANGE'); ?>:</label>
 		<?php
