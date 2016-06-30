@@ -61,6 +61,9 @@ class Warehouse extends \Hubzero\Base\Object
 	// Access levels scope (what is allowed to display)
 	var $accessLevelsScope = false;
 
+	// Access groups scope (what is allowed to display)
+	var $accessGroupsScope = false;
+
 	// User scope (what user is trying to get the info)
 	var $userScope = false;
 
@@ -115,6 +118,17 @@ class Warehouse extends \Hubzero\Base\Object
 	public function addAccessLevels($accessLevels)
 	{
 		$this->accessLevelsScope = array_merge(array('NULL', 0), $accessLevels);
+	}
+
+	/**
+	 * Add access group scope for entities (currently products only)
+	 *
+	 * @param   array  Access group IDs
+	 * @return  void
+	 */
+	public function addAccessGroups($accessGroups)
+	{
+		$this->accessGroupsScope = (array)$accessGroups;
 	}
 
 	/**
@@ -406,14 +420,39 @@ class Warehouse extends \Hubzero\Base\Object
 		}
 
 		// Check if the product can be viewed (if access level scope is set)
-		if ($this->accessLevelsScope)
+		if (\Component::params('com_storefront')->get('productAccess'))
 		{
-			if (!in_array($pInfo->access, $this->accessLevelsScope))
+			if ($this->accessGroupsScope)
 			{
-				$response->status = 0;
-				$response->errorCode = 403;
-				$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
-				return $response;
+				$product = new Product();
+				$product->setId($pInfo->pId);
+
+				$accessgroups = $product->getAccessGroups();
+
+				// See what groups are in common
+				$groups = array_intersect($accessgroups, $this->accessGroupsScope);
+
+				// No common groups
+				if (empty($groups))
+				{
+					$response->status = 0;
+					$response->errorCode = 403;
+					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+					return $response;
+				}
+			}
+		}
+		else
+		{
+			if ($this->accessLevelsScope)
+			{
+				if (!in_array($pInfo->access, $this->accessLevelsScope))
+				{
+					$response->status = 0;
+					$response->errorCode = 403;
+					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+					return $response;
+				}
 			}
 		}
 
@@ -454,9 +493,16 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
 	{
+		$useAccessGroups = \Component::params('com_storefront')->get('productAccess');
+
 		$sql = "SELECT DISTINCT p.*, pt.ptName FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`
 				LEFT JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
+		if ($useAccessGroups)
+		{
+			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag ON p.`pId` = ag.`pId`";
+		}
+
 		$sql .= " WHERE 1";
 
 		if ($showOnlyActive)
@@ -477,16 +523,26 @@ class Warehouse extends \Hubzero\Base\Object
 			}
 		}
 		// Filter by authorized view levels (if current user scope is set)
-		if ($this->accessLevelsScope)
+		if ($useAccessGroups)
 		{
-			$sql .= " AND (p.`access` IS NULL OR p.`access` IN(";
-			$accessLevels = '0';
-			foreach ($this->accessLevelsScope as $avl)
+			if ($this->accessGroupsScope)
 			{
-				$accessLevels .= ', ' . $avl;
+				$sql .= " AND ag.`agId` IN(" . implode(',', $this->accessGroupsScope) . ")";
 			}
-			$sql .= $accessLevels;
-			$sql .= '))';
+		}
+		else
+		{
+			if ($this->accessLevelsScope)
+			{
+				$sql .= " AND (p.`access` IS NULL OR p.`access` IN(";
+				$accessLevels = '0';
+				foreach ($this->accessLevelsScope as $avl)
+				{
+					$accessLevels .= ', ' . $avl;
+				}
+				$sql .= $accessLevels;
+				$sql .= '))';
+			}
 		}
 		// Filter by filters
 		//print_r($filters);
@@ -585,6 +641,7 @@ class Warehouse extends \Hubzero\Base\Object
 		$productInfo->ptName = $product->getTypeInfo()->name;
 		$productInfo->ptModel = $product->getTypeInfo()->model;
 		$productInfo->images = $product->getImages();
+		$productInfo->accessgroups = $product->getAccessGroups();
 
 		return $productInfo;
 	}

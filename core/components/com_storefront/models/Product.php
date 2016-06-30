@@ -203,6 +203,96 @@ class Product
 		return $this->data->typeInfo;
 	}
 
+	/**
+	 * Get product access groups
+	 *
+	 * @return  array
+	 */
+	public function getAccessGroups()
+	{
+		$id = (int)$this->getId();
+
+		if (!$id)
+		{
+			return array();
+		}
+
+		$db = \App::get('db');
+		$db->setQuery("SELECT * FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id));
+
+		$accessgroups = array();
+		foreach ($db->loadObjectList() as $row)
+		{
+			$accessgroups[] = $row->agId;
+		}
+
+		return $accessgroups;
+	}
+
+	/**
+	 * Set product access groups
+	 *
+	 * @param   array  $groups
+	 * @return  boolean
+	 */
+	public function setAccessGroups($groups = array())
+	{
+		if (!is_array($groups))
+		{
+			$groups = array($groups);
+		}
+
+		$id = (int)$this->getId();
+
+		if (!$id)
+		{
+			return true;
+		}
+
+		$groups = array_map('intval', $groups);
+
+		$db = \App::get('db');
+
+		// Get the previous list of groups
+		$prev = $this->getAccessGroups();
+
+		if (empty($prev) && empty($groups))
+		{
+			// Nothing to change
+			return true;
+		}
+
+		foreach ($prev as $group)
+		{
+			// Clear old record
+			if (!in_array($group, $groups))
+			{
+				$db->setQuery("DELETE FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id) . " AND `agId`=" . $db->quote($group));
+				if (!$db->query())
+				{
+					return false;
+				}
+			}
+		}
+
+		foreach ($groups as $group)
+		{
+			if (in_array($group, $prev))
+			{
+				// Record already exists
+				continue;
+			}
+
+			// Insert new record
+			$db->setQuery("INSERT INTO `#__storefront_product_access_groups` (`id`, `pId`, `agId`) VALUES (NULL," . $db->quote($id) .  "," . $db->quote($group) . ")");
+			if (!$db->query())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	/* ****************************** Collections ******************************* */
 
@@ -1012,7 +1102,8 @@ class Product
 		$db->setQuery($sql);
 		$db->query();
 
-		foreach ($this->getOptionGroups() as $ogId) {
+		foreach ($this->getOptionGroups() as $ogId)
+		{
 			$sql = "INSERT INTO `#__storefront_product_option_groups` (pId, ogId)
 					VALUES (" . $db->quote($pId) . ", " . $db->quote($ogId) . ")";
 			$db->setQuery($sql);
@@ -1093,6 +1184,11 @@ class Product
 
 		// Delete prduct-option groups relations
 		$sql = 'DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
+
+		// Delete product access groups relations
+		$sql = "DELETE FROM `#__storefront_product_access_groups` WHERE `pId` = " . $db->quote($this->getId());
 		$db->setQuery($sql);
 		$db->query();
 	}

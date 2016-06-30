@@ -249,7 +249,8 @@ class Products extends AdminController
 		$obj = new Archive();
 
 		// Save product
-		try {
+		try
+		{
 			$product = new Product($fields['pId']);
 
 			if (isset($fields['pName']))
@@ -298,6 +299,9 @@ class Products extends AdminController
 			$product->setOptionGroups($fields['optionGroups']);
 			$product->setPublishTime($fields['publish_up'], $fields['publish_down']);
 			$product->save();
+
+			$accessgroups = Request::getVar('accessgroups', array(), 'post');
+			$product->setAccessGroups($accessgroups);
 		}
 		catch (\Exception $e)
 		{
