@@ -383,7 +383,7 @@ class Polls extends AdminController
 
 		$msg = '';
 
-		$poll = new TablePoll($db);
+		$poll = new Poll($db);
 
 		for ($i=0, $n=count($cid); $i < $n; $i++)
 		{
