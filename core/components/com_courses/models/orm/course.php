@@ -37,7 +37,7 @@ use Component;
 use Event;
 use Html;
 
-require_once __DIR__ . DS . 'tags.php';
+require_once dirname(__DIR__) . DS . 'tags.php';
 require_once __DIR__ . DS . 'offering.php';
 require_once __DIR__ . DS . 'page.php';
 
