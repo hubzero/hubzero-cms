@@ -70,7 +70,7 @@ $created = Date::of($this->group->get('created'))->toLocal(Lang::txt('DATE_FORMA
 
 		<dl>
 			<dt><?php echo Lang::txt('COM_GROUPS_INFO_DISCOVERABILITY'); ?></dt>
-			<dd><?php echo $discoverability; ?></span>
+			<dd><?php echo $discoverability; ?></dd>
 			<dt><?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?></dt>
 			<dd><?php echo $policy; ?></dd>
 			<?php if ($created) : ?>

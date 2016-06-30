@@ -422,24 +422,16 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display an RSS feed of latest entries
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _feed()
 	{
 		if (!$this->params->get('feeds_enabled', 1))
 		{
-			$this->_browse();
-			return;
+			return $this->_browse();
 		}
 
 		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
-		// Set the mime encoding for the document
-		Document::setType('feed');
-
-		// Start a new feed object
-		$doc = Document::instance();
-		$doc->link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
 		// Filters for returning results
 		$filters = array(
@@ -471,35 +463,46 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$filters['month'] = 0;
 		}
 
+		// Set the mime encoding for the document
+		Document::setType('feed');
+
+		// Start a new feed object
+		$doc = Document::instance();
+		$doc->link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+
 		// Build some basic RSS document information
 		$doc->title       = Config::get('sitename') . ': ' . Lang::txt('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . Lang::txt('Blog');
 		$doc->description = Lang::txt('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $this->group->get('cn'), Config::get('sitename'));
 		$doc->copyright   = Lang::txt('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('PLG_GROUPS_BLOG_RSS_CATEGORY');
 
-		$rows = $this->model->entries($filters)->ordered()->paginated()->rows();
+		$rows = $this->model->entries($filters)
+			->ordered()
+			->paginated()
+			->rows();
 
 		// Start outputing results if any found
-		if ($rows->total() > 0)
+		if ($rows->count() > 0)
 		{
 			foreach ($rows as $row)
 			{
 				$item = new \Hubzero\Document\Type\Feed\Item();
 
 				// Strip html from feed item description text
-				$item->description = $row->content('parsed');
-				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
+				$item->description = $row->content;
+				$item->description = \Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
 				if ($this->params->get('feed_entries') == 'partial')
 				{
 					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 				}
+				$item->description = '<![CDATA[' . $item->description . ']]>';
 
 				// Load individual item creator class
 				$item->title       = html_entity_decode(strip_tags($row->get('title')));
 				$item->link        = Route::url($row->link());
 				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $row->creator('name');
+				$item->author      = $row->creator()->get('name');
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -508,6 +511,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		// Output the feed
 		echo $doc->render();
+		exit();
 	}
 
 	/**
@@ -721,6 +725,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
@@ -807,7 +814,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _delete()
 	{
@@ -862,6 +869,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 			return $view->loadTemplate();
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Delete the entry itself
 		$entry->set('state', 2);

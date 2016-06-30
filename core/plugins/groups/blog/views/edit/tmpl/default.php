@@ -146,6 +146,8 @@ $this->css()
 	<input type="hidden" name="active" value="blog" />
 	<input type="hidden" name="action" value="save" />
 
+	<?php echo Html::input('token'); ?>
+
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SAVE'); ?>" />
 

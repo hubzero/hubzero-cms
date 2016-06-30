@@ -121,7 +121,7 @@ $this->css()
 							}
 						} ?>
 						<?php
-						/*if ($this->config->get('feeds_enabled', 1)) {
+						if ($this->config->get('feeds_enabled', 1)) {
 							$live_site = rtrim(Request::base(),'/');
 							$path  = $base . '&task=feed.rss';
 							$path .= ($this->filters['year'])  ? '&year=' . $this->filters['year']   : '';
@@ -133,10 +133,10 @@ $this->css()
 							}
 							$feed = str_replace('https:://', 'http://', $feed);
 						?>
-						<a class="feed" href="<?php echo $feed; ?>">
+						<a class="feed icon-feed" href="<?php echo $feed; ?>">
 							<?php echo Lang::txt('PLG_MEMBERS_BLOG_RSS_FEED'); ?>
 						</a>
-						<?php }*/ ?>
+						<?php } ?>
 					</h3>
 
 				<?php if ($rows->count() > 0) { ?>

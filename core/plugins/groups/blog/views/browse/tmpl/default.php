@@ -138,7 +138,7 @@ $this->css()
 								}
 								$feed = str_replace('https://', 'http://', $feed);
 						?>
-						<a class="feed" href="<?php echo $feed; ?>">
+						<a class="feed icon-feed" href="<?php echo $feed; ?>">
 							<?php echo Lang::txt('PLG_GROUPS_BLOG_RSS_FEED'); ?>
 						</a>
 						<?php endif; ?>

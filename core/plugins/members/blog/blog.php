@@ -320,13 +320,6 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
-		// Set the mime encoding for the document
-		Document::setType('feed');
-
-		// Start a new feed object
-		$doc = Document::instance();
-		$doc->link = Route::url($this->member->link() . '&active=' . $this->_name);
-
 		// Filters for returning results
 		$filters = array(
 			'limit'      => Request::getInt('limit', Config::get('list_limit')),
@@ -358,13 +351,18 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$filters['month'] = 0;
 		}
 
+		// Set the mime encoding for the document
+		Document::setType('feed');
+
+		// Start a new feed object
+		$doc = Document::instance();
+		$doc->link = Route::url($this->member->link() . '&active=' . $this->_name);
+
 		// Build some basic RSS document information
 		$doc->title       = Config::get('sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . Lang::txt('Blog');
 		$doc->description = Lang::txt('PLG_MEMBERS_BLOG_RSS_DESCRIPTION', Config::get('sitename'),stripslashes($this->member->get('name')));
 		$doc->copyright   = Lang::txt('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('PLG_MEMBERS_BLOG_RSS_CATEGORY');
-
-		$filters['state'] = 'public';
 
 		$rows = $this->model->entries($filters)
 			->ordered()
@@ -377,19 +375,20 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$item = new \Hubzero\Document\Type\Feed\Item();
 
 			// Strip html from feed item description text
-			$item->description = $row->content('parsed');
-			$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
+			$item->description = $row->content;
+			$item->description = \Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
 			if ($this->params->get('feed_entries') == 'partial')
 			{
 				$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 			}
+			$item->description = '<![CDATA[' . $item->description . ']]>';
 
 			// Load individual item creator class
 			$item->title       = html_entity_decode(strip_tags($row->get('title')));
 			$item->link        = Route::url($row->link());
 			$item->date        = date('r', strtotime($row->published()));
 			$item->category    = '';
-			$item->author      = $row->creator('name');
+			$item->author      = $row->creator()->get('name');
 
 			// Loads item info into rss array
 			$doc->addItem($item);
@@ -397,6 +396,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Output the feed
 		echo $doc->render();
+		exit();
 	}
 
 	/**
