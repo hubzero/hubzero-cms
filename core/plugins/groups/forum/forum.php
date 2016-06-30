@@ -1537,8 +1537,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 
 			$from = array(
-				'name'  => Config::get('sitename'),
-				'email' => Config::get('mailfrom')
+				'name'  => (!$epost->get('anonymous') ? $epost->creator()->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')) . ' @ ' . Config::get('sitename'),
+				'email' => Config::get('mailfrom'),
+				'replytoname'  => Config::get('sitename'),
+				'replytoemail' => Config::get('mailfrom')
 			);
 
 			// Email each group member separately, each needs a user specific token
@@ -1559,6 +1561,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
 					$unsubscribeLink  = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
 
+					$from['replytoname']  = Lang::txt('PLG_GROUPS_FORUM_REPLYTO') . ' @ ' . Config::get('sitename');
 					$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
 				}
 
@@ -1589,7 +1592,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$html = $eview->loadTemplate();
 				$msg['multipart'] = str_replace("\n", "\r\n", $html);
 
-				$subject = ' - ' . $this->group->get('cn') . ' - ' . $posttitle;
+				$subject = Lang::txt('PLG_GROUPS_FORUM') . ': ' . $this->group->get('cn') . ' - ' . $posttitle;
 
 				if (!Event::trigger('xmessage.onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
 				{

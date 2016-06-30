@@ -143,6 +143,10 @@ $bdcolor = '#e1e1e1';
 								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo Lang::txt('PLG_GROUPS_FORUM_CREATED', $this->thread->created('time'), $this->thread->created('date')); ?></td>
 							</tr>
 							<tr>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('PLG_GROUPS_FORUM_DETAILS_GROUP'); ?>:</th>
+								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->group->get('description')); ?></td>
+							</tr>
+							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('PLG_GROUPS_FORUM_DETAILS_SECTION'); ?>:</th>
 								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->section->get('title')); ?></td>
 							</tr>
@@ -169,7 +173,7 @@ $bdcolor = '#e1e1e1';
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 0 2em;">
-					<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->post->content('parsed'); ?></p>
+					<div style="line-height: 1.6em; margin: 0; padding: 0; text-align: left;"><?php echo $this->post->content('parsed'); ?></div>
 					<?php /*if ($this->post->attachments()->total()) { ?>
 						<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
 							<?php
