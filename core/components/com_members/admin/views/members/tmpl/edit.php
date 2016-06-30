@@ -395,7 +395,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="newpass"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW'); ?>:</label>
-					<input type="password" name="newpass" id="newpass" value="" />
+					<input type="password" name="newpass" id="newpass" value="" autocomplete="off" />
 					<p class="warning"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW_WARNING'); ?></p>
 					<?php if (count($this->password_rules) > 0) : ?>
 						<?php $this->css('password.css'); ?>
