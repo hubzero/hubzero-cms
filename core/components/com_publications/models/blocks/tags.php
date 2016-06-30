@@ -33,7 +33,7 @@ namespace Components\Publications\Models\Block;
 use Components\Publications\Models\Block as Base;
 use stdClass;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php');
 
 /**
  * Tags block
