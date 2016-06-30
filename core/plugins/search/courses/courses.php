@@ -33,6 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Courses\Models\Orm\Course;
+
+require_once Component::path('com_courses') . DS . 'models' . DS . 'orm' . DS . 'course.php';
+
 /**
  * Search course entries
  */
@@ -84,6 +88,111 @@ class plgSearchCourses extends \Hubzero\Plugin\Plugin
 		}
 
 		$results->add($rows);
+	}
+
+	public $hubtype = 'course';
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 *
+	 * @param mixed $type
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		if (isset($type) && $type == $this->hubtype)
+		{
+			return $this->hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $this->hubtype;
+		}
+	}
+
+	/**
+	 * onGetModel 
+	 * 
+	 * @param string $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetModel($type = '')
+	{
+		if ($type == $this->hubtype)
+		{
+			return new Course;
+		}
+	}
+
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row, &$db)
+	{
+		if ($type == $this->hubtype)
+		{
+			// Instantiate new $fields object
+			$fields = new stdClass;
+
+			// Format the date for SOLR
+			$date = Date::of($row->created)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->created)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			// Title is required
+			$fields->title = $row->title;
+
+			$fields->description = strip_tags(htmlspecialchars_decode($row->get('description')));
+
+			/**
+			 * Each entity should have an owner. 
+			 * Owner type can be a user or a group,
+			 * where the owner is the ID of the user or group
+			 **/
+			$owners = array();
+
+			// Original course creator
+			array_push($owners, $row->created_by);
+
+			$offerings = $row->offerings()->rows();
+			foreach ($offerings as $offering)
+			{
+				// Offering creators
+				array_push($owners, $offering->created_by);
+			}
+
+			$fields->owner_type = 'user';
+			$fields->owner = $owners;
+
+			/**
+			 * A document should have an access level.
+			 * This value can be:
+			 *  public - all users can view
+			 *  registered - only registered users can view
+			 *  private - only owners (set above) can view
+			 **/
+			if ($row->state == 1)
+			{
+				$fields->access_level = 'public';
+			}
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			// The URL this document is accessible through
+			$fields->url = '/courses/' . $row->alias;
+
+			return $fields;
+		}
 	}
 }
 
