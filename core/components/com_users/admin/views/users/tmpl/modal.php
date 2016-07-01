@@ -29,6 +29,16 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
 			</div>
 			<div class="col span4">
+				<select name="filter_state" class="inputbox" onchange="this.form.submit()">
+					<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_STATE');?></option>
+					<?php echo Html::select('options', UsersHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
+				</select>
+
+				<select name="filter_approved" class="inputbox" onchange="this.form.submit()">
+					<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_APPROVED');?></option>
+					<?php echo Html::select('options', UsersHelper::getApprovedOptions(), 'value', 'text', $this->state->get('filter.approved'));?>
+				</select>
+
 				<label for="filter_group_id"><?php echo Lang::txt('COM_USERS_FILTER_USER_GROUP'); ?></label>
 				<?php echo Html::access('usergroup', 'filter_group_id', $this->state->get('filter.group_id'), 'onchange="this.form.submit()"'); ?>
 			</div>
