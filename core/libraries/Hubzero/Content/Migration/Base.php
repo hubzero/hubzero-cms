@@ -200,7 +200,7 @@ class Base
 		if (is_file($secrets) && is_readable($secrets))
 		{
 			$conf = Processor::instance('ini')->parse($secrets);
-			$user = 'root';
+			$user = (isset($conf['DEFAULT']['MYSQL-ROOT-USER'])) ? $conf['DEFAULT']['MYSQL-ROOT-USER'] : 'root';
 			$pw   = (isset($conf['DEFAULT']['MYSQL-ROOT'])) ? $conf['DEFAULT']['MYSQL-ROOT'] : false;
 
 			if ($user && $pw)
