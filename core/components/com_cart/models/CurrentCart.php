@@ -467,7 +467,7 @@ class CurrentCart extends Cart
 		}
 
 		$params =  Component::params('com_cart');
-		$transactionTTL = ($params->get('transactionTTL'));
+		$transactionTTL = ($params->get('transactionTTL', 120));
 
 		// See if transaction is expired
 		if ($tInfo->tAge > $transactionTTL)
