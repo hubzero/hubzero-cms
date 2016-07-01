@@ -994,7 +994,7 @@ abstract class Cart
 	{
 		$db = \App::get('db');
 		$params =  Component::params('com_cart');
-		$transactionTTL = ($params->get('transactionTTL'));
+		$transactionTTL = ($params->get('transactionTTL', 120));
 
 
 		$sql = "SELECT t.tId
