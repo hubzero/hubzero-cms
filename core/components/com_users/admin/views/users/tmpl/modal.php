@@ -19,7 +19,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 <h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
 <form action="<?php echo Route::url('index.php?option=com_users&view=users&layout=modal&tmpl=component&groups='.Request::getVar('groups', '', 'default', 'BASE64').'&excluded='.Request::getVar('excluded', '', 'default', 'BASE64'));?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filter clearfix">
-		<div class="col width-70 fltlft">
+		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
 			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="40" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_NAME'); ?>" />
 
@@ -27,7 +27,17 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			<button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
 		</div>
-		<div class="col width-30 fltrt">
+		<div class="col width-50 fltrt">
+			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
+				<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_STATE');?></option>
+				<?php echo Html::select('options', UsersHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
+			</select>
+
+			<select name="filter_approved" class="inputbox" onchange="this.form.submit()">
+				<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_APPROVED');?></option>
+				<?php echo Html::select('options', UsersHelper::getApprovedOptions(), 'value', 'text', $this->state->get('filter.approved'));?>
+			</select>
+
 			<label for="filter_group_id"><?php echo Lang::txt('COM_USERS_FILTER_USER_GROUP'); ?></label>
 			<?php echo Html::access('usergroup', 'filter_group_id', $this->state->get('filter.group_id'), 'onchange="this.form.submit()"'); ?>
 		</div>
