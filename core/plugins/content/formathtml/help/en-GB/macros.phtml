@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die('Restricted access');
 $path = PATH_CORE . DS . 'plugins' . DS . 'content' . DS . 'formathtml' . DS . 'macros';
 
 // get all macro files
-$files = Filesystem::files($path, '.', true, true, array('CVS', '.DS_Store', '__MACOSX', 'macro-assets'));
+$files = Filesystem::files($path, '.php', true, true, array('CVS', '.DS_Store', '__MACOSX', 'macro-assets'));
 
 // include base macro class
 require_once $path . DS . '..' . DS . 'macro.php';
