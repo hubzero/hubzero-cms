@@ -33,7 +33,6 @@ defined('_HZEXEC_') or die('Restricted access');
 
 $this->css()
 	->js()
-
 ?>
 
 <header id="content-header">
@@ -43,35 +42,36 @@ $this->css()
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="ordersform" method="get">
 	<section class="main section">
 		<div class="section-inner">
-
 			<?php
-				if (!$this->transactions)
+			if (!$this->transactions)
+			{
+				echo '<p class="no-results">You have not placed any orders yet. Is it time to <a href="/storefront">start shopping?</a>';
+			}
+			else {
+				echo '<ol class="entries">';
+				foreach ($this->transactions as $transaction)
 				{
-					echo '<p class="no-results">You have not placed any orders yet. Is it time to <a href="/storefront">start shopping?</a>';
+					// Instantiate a new view
+					$this->view('transaction', 'orders')
+						->set('transaction', $transaction)
+						->display();
 				}
-				else {
-					echo '<ol class="entries">';
-					foreach ($this->transactions as $transaction)
-					{
-						// Instantiate a new view
-						$this->view('transaction', 'orders')
-							->set('transaction', $transaction)
-							->display();
-					}
-					echo '</ol>';
-				}
+				echo '</ol>';
+			}
 			?>
-
 		</div>
 
 		<?php
-		// Initiate paging
-		$pageNav = $this->pagination(
-			$this->total,
-			$this->filters['start'],
-			$this->filters['limit']
-		);
-		echo $pageNav->render();
+		if ($this->transactions)
+		{
+			// Initiate paging
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			echo $pageNav->render();
+		}
 		?>
 	</section>
 </form>

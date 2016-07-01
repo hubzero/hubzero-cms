@@ -56,29 +56,29 @@ class Products extends AdminController
 		// Get filters
 		$this->view->filters = array(
 			// Get sorting variables
-				'sort' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						'title'
-				),
-				'sort_Dir' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						'ASC'
-				),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
 			// Get paging variables
-				'limit' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limit',
-						'limit',
-						Config::get('list_limit'),
-						'int'
-				),
-				'start' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limitstart',
-						'limitstart',
-						0,
-						'int'
-				)
+			'limit' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 		//print_r($this->view->filters);
 
@@ -189,10 +189,10 @@ class Products extends AdminController
 		$this->view->config = $this->config;
 
 		// Check if meta is needed for this product
-		$pType = $this->view->row->getType();
+		$pType = $this->view->row->getTypeInfo()->name;
 		$this->view->metaNeeded = false;
 		// Only software needs meta
-		if ($pType == 30)
+		if ($pType == 'Software Download')
 		{
 			$this->view->metaNeeded = true;
 		}
@@ -326,8 +326,8 @@ class Products extends AdminController
 		if ($redirect)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					Lang::txt('COM_STOREFRONT_PRODUCT_SAVED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				Lang::txt('COM_STOREFRONT_PRODUCT_SAVED')
 			);
 
 			if ($warnings)
@@ -376,7 +376,7 @@ class Products extends AdminController
 
 				// Output the HTML
 				$this->view->display();
-			break;
+				break;
 
 			case 2:
 				// Check for request forgeries
@@ -390,9 +390,9 @@ class Products extends AdminController
 				if (empty($pIds))
 				{
 					App::redirect(
-							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-							Lang::txt('COM_STOREFRONT_NO_ID'),
-							'error'
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+						Lang::txt('COM_STOREFRONT_NO_ID'),
+						'error'
 					);
 					return;
 				}
@@ -417,9 +417,9 @@ class Products extends AdminController
 						catch (\Exception $e)
 						{
 							App::redirect(
-									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
-									$e->getMessage(),
-									$type
+								Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
+								$e->getMessage(),
+								$type
 							);
 							return;
 						}
@@ -431,9 +431,9 @@ class Products extends AdminController
 
 				// Set the redirect
 				App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
-						$msg,
-						$type
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
+					$msg,
+					$type
 				);
 				break;
 		}
@@ -484,9 +484,9 @@ class Products extends AdminController
 		if (!$id)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					Lang::txt('COM_STOREFRONT_NO_ID'),
-					'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				Lang::txt('COM_STOREFRONT_NO_ID'),
+				'error'
 			);
 			return;
 		}
@@ -499,15 +499,15 @@ class Products extends AdminController
 		if (!$row->store(true))
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					$row->getError(),
-					'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				$row->getError(),
+				'error'
 			);
 			return;
 		}
 
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 		);
 	}
 
@@ -548,9 +548,9 @@ class Products extends AdminController
 		if (count($ids) < 1)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-					'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+				'error'
 			);
 			return;
 		}
@@ -577,13 +577,13 @@ class Products extends AdminController
 		{
 			case '-1':
 				$message = Lang::txt('COM_STOREFRONT_ARCHIVED', count($ids));
-			break;
+				break;
 			case '1':
 				$message = Lang::txt('COM_STOREFRONT_PUBLISHED', count($ids));
-			break;
+				break;
 			case '0':
 				$message = Lang::txt('COM_STOREFRONT_UNPUBLISHED', count($ids));
-			break;
+				break;
 		}
 
 		$type = 'message';

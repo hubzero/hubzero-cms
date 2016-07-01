@@ -205,7 +205,7 @@ class CartMessenger
 				$action = ' Download at: ';
 				$action .= Route::url('index.php?option=com_cart', true, -1) . 'download/' . $transactionInfo->tId . '/' . $itemInfo->sId;
 
-				if ($itemMeta['serialManagement'] == 'multiple' && isset($itemMeta['serials']) && !empty($itemMeta['serials']))
+				if (isset($itemMeta['serialManagement']) && $itemMeta['serialManagement'] == 'multiple' && isset($itemMeta['serials']) && !empty($itemMeta['serials']))
 				{
 					$action .= "\n\t";
 					$action .= " Serial number";
