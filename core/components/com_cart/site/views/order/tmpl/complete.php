@@ -44,9 +44,9 @@ defined('_HZEXEC_') or die('Restricted access');
 		<p>You will receive an email confirmation shortly at the email address associated with your account. Your transaction is now complete.</p>
 
 		<section class="section">
-		<?php
+			<?php
 
-		//print_r($this->transactionInfo); die;
+			//print_r($this->transactionInfo); die;
 
 			if (!empty($this->transactionInfo))
 			{
@@ -85,7 +85,7 @@ defined('_HZEXEC_') or die('Restricted access');
 						$action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transactionInfo->tId . '/' . $info->sId;
 						$action .= '" target="_blank">Download</a>';
 
-						if ($item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials']))
+						if (isset($item['meta']['serialManagement']) && $item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials']))
 						{
 							$action .= "<br>";
 							$action .= " Serial number";
@@ -121,30 +121,30 @@ defined('_HZEXEC_') or die('Restricted access');
 					echo '<tr>';
 
 					echo '<td>';
-						echo $info->pName;
+					echo $info->pName;
 
-						if (!empty($item['options']) && count($item['options']))
+					if (!empty($item['options']) && count($item['options']))
+					{
+						foreach ($item['options'] as $oName)
 						{
-							foreach ($item['options'] as $oName)
-							{
-								echo ', ' . $oName;
-							}
+							echo ', ' . $oName;
 						}
+					}
 					echo '</td>';
 
 					echo '<td>';
-						echo $status;
+					echo $status;
 
-						// Check is there is any membership info for this item
-						if (!empty($membershipInfo[$sId]))
-						{
-							//echo ', valid until ' . date('M j, Y', $membershipInfo[$sId]->newExpires);
-						}
+					// Check is there is any membership info for this item
+					if (!empty($membershipInfo[$sId]))
+					{
+						//echo ', valid until ' . date('M j, Y', $membershipInfo[$sId]->newExpires);
+					}
 
 					echo '</td>';
 
 					echo '<td>';
-						echo $action;
+					echo $action;
 					echo '</td>';
 
 					echo '</tr>';
@@ -154,7 +154,7 @@ defined('_HZEXEC_') or die('Restricted access');
 				echo '</table>';
 
 			}
-		?>
+			?>
 		</section>
 
 	</div>
