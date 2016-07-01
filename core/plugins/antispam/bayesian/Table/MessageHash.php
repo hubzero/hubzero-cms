@@ -92,7 +92,6 @@ class MessageHash extends \JTable
 	public function find($what='list', $filters = array())
 	{
 		$what = strtolower($what);
-		$select = (array) $select;
 
 		switch ($what)
 		{
