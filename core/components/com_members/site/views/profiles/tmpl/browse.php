@@ -269,7 +269,9 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 											if (in_array($c['raw'], array('name', 'org', 'organization'))) {
 												continue;
 											}
-											if ($val = $row->get($c['raw'])) { ?>
+											if ($val = $row->get($c['raw'])) {
+												$val = (is_array($val) ? implode(', ', $val) : $val);
+											?>
 												<div class="result-snippet-<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape(Hubzero\Utility\String::truncate(strip_tags(stripslashes($val)), 150)); ?></div>
 											<?php } ?>
 										<?php } ?>
