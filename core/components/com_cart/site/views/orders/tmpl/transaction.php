@@ -95,7 +95,7 @@ $tiTotalAmount = $this->transaction->tInfo->tiSubtotal + $this->transaction->tIn
 					$action = 'This product is no longer available';
 				}
 
-				if ($item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials']))
+				if (isset($item['meta']['serialManagement']) && $item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials']))
 				{
 					$action .= "<br>";
 					$action .= " Serial number";
@@ -161,4 +161,3 @@ $tiTotalAmount = $this->transaction->tInfo->tiSubtotal + $this->transaction->tIn
 		?>
 	</div>
 </li>
-

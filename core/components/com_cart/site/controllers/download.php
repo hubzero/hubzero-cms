@@ -110,11 +110,11 @@ class Download extends \Hubzero\Component\SiteController
 		// Check if the product is valid and downloadable; find the file
 		$warehouse = new Warehouse();
 		$sku = $warehouse->getSkuInfo($sId);
-		$productType = $sku['info']->ptId;
+		$productType = $warehouse->getProductTypeInfo($sku['info']->ptId);
 		$downloadFile = $sku['meta']['downloadFile'];
 
 		// Error if needed
-		if ($productType != 30 || empty($downloadFile))
+		if ($productType['ptName'] != 'Software Download' || empty($downloadFile))
 		{
 			$messages = array(array(Lang::txt('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOABLE'), 'error'));
 			$this->messageTask($messages);

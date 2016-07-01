@@ -41,10 +41,10 @@ $this->css()
 </header>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="ordersform" method="get">
-<section class="main section">
-	<div class="section-inner">
+	<section class="main section">
+		<div class="section-inner">
 
-		<?php
+			<?php
 			if (!$this->transactions)
 			{
 				echo '<p class="no-results">You have not placed any orders yet. Is it time to <a href="/storefront">start shopping?</a>';
@@ -60,18 +60,21 @@ $this->css()
 				}
 				echo '</ol>';
 			}
+			?>
+
+		</div>
+
+		<?php
+		if ($this->transactions)
+		{
+			// Initiate paging
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			echo $pageNav->render();
+		}
 		?>
-
-	</div>
-
-	<?php
-	// Initiate paging
-	$pageNav = $this->pagination(
-		$this->total,
-		$this->filters['start'],
-		$this->filters['limit']
-	);
-	echo $pageNav->render();
-	?>
-</section>
+	</section>
 </form>

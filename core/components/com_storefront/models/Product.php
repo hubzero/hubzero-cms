@@ -282,7 +282,7 @@ class Product
 
 				// Find out product type to instantiate the correct object
 				// software
-				if ($this->getType() == 30)
+				if ($this->getTypeInfo()->name == 'Software Download')
 				{
 					//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
 					require_once(__DIR__ . DS . 'SoftwareSku.php');
@@ -307,6 +307,7 @@ class Product
 				return array();
 			}
 		}
+		die('!!!');
 		return $this->skus;
 	}
 
