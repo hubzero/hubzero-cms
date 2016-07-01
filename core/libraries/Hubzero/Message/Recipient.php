@@ -179,7 +179,7 @@ class Recipient extends \JTable
 
 		$query = "SELECT " . ($limit ? "DISTINCT m.*, r.expires, r.actionid" : "DISTINCT m.id") . "
 				FROM #__xmessage AS m, $this->_tbl AS r
-				WHERE m.id = r.mid AND r.uid=" . $this->_db->quote($uid) . " AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid=" . $this->_db->quote($uid) . ")";
+				WHERE m.id = r.mid AND r.uid=" . $this->_db->quote($uid) . " AND r.state!=2 AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid=" . $this->_db->quote($uid) . ")";
 		if ($limit)
 		{
 			$query .= " ORDER BY r.created DESC";
