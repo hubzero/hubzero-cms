@@ -42,6 +42,7 @@
 		color: #666;
 	}
 	.com_publications #content-header .span8 a,
+	.com_publications #content-header .span4 a,
 	.com_publications #content-header .aside a {
 		color: #fff;
 	}
@@ -53,6 +54,10 @@
 		border: none;
 		background: transparent;
 		padding: 0;
+	}
+	.com_publications .license {
+		color: #f1f1f1;
+		color: rgba(255, 255, 255, 0.75);
 	}
 
 /* Resource page */
