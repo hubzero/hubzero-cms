@@ -103,6 +103,7 @@ if ($this->wishlist->exists())
 
 				<input type="hidden" name="proposed_by" value="<?php echo $this->escape($this->wish->get('proposed_by')); ?>" />
 				<input type="hidden" name="task" value="savewish" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
 				<input type="hidden" name="status" value="<?php echo $this->escape($this->wish->get('status')); ?>" />
 				<input type="hidden" name="id" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
