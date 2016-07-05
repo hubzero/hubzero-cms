@@ -704,7 +704,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			{
 				$display = true;
 
-				if ($sKey == 'password_clear')
+				if ($sKey == 'password_clear' || $sKey == 'password')
 				{
 					continue;
 				}
