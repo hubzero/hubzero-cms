@@ -174,7 +174,7 @@ if (!$surname)
 			<legend><span><?php echo Lang::txt('COM_MEMBERS_STATUS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label id="field_usageAgreement-lbl" for="field-usageAgreement" class="hasTip"><?php echo Lang::txt('COM_MEMBERS_FIELD_USAGE_AGREEMENT'); ?></label>
+				<label id="field_usageAgreement-lbl" for="field-usageAgreement"><?php echo Lang::txt('COM_MEMBERS_FIELD_USAGE_AGREEMENT'); ?></label>
 				<fieldset id="field-usageAgreement" class="radio">
 					<ul>
 						<li><input type="radio" id="field-usageAgreement0" name="fields[usageAgreement]" value="0"<?php if ($this->profile->get('usageAgreement') == 0) { echo ' checked="checked"'; } ?> /><label for="field-usageAgreement0"><?php echo Lang::txt('JNo'); ?></label></li>
@@ -193,13 +193,14 @@ if (!$surname)
 				</fieldset>
 			</div>
 
-			<div class="input-wrap">
-				<label id="field_approved-lbl" for="field_approved" class="hasTip" title="<?php echo Lang::txt('Approved User::User approval status. Users not approved are as such because registration requires admin approval.'); ?>"><?php echo Lang::txt('Approved User'); ?></label>
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('Approved User::User approval status. Users not approved are as such because registration requires admin approval.'); ?>">
+				<label id="field_approved-lbl" for="field_approved"><?php echo Lang::txt('Approved User'); ?></label>
 				<select id="field_approved" name="fields[approved]">
 					<option value="0"<?php if ($this->profile->get('approved') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Not approved'); ?></option>
 					<option value="1"<?php if ($this->profile->get('approved') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Manually approved'); ?></option>
 					<option value="2"<?php if ($this->profile->get('approved') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Automatically approved'); ?></option>
 				</select>
+				<span class="hint"><?php echo Lang::txt('Approved User::User approval status. Users not approved are as such because registration requires admin approval.'); ?></span>
 			</div>
 
 			<div class="input-wrap">
@@ -241,6 +242,23 @@ if (!$surname)
 					<label for="activation"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM'); ?></label>
 				<?php endif; ?>
 			</div>
+
+			<?php if ($this->profile->get('id') && Plugin::isEnabled('system', 'spamjail')) : ?>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_SPAM_COUNT_HINT'); ?>">
+					<label id="field_approved-lbl" for="field-reputation"><?php echo Lang::txt('COM_MEMBERS_SPAM_COUNT'); ?></label>
+					<div class="input-modal">
+						<span class="input-cell">
+							<input type="text" name="spam_count" id="field-reputation" value="<?php echo $this->escape($this->profile->reputation->get('spam_count', 0)); ?>" />
+						</span>
+						<span class="input-cell">
+							<a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Joomla.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
+						</span>
+					</div>
+					<?php if ($this->profile->reputation->get('spam_count', 0) > Plugin::params('system', 'spamjail')->get('user_count', 10)) : ?>
+						<p class="warning"><?php echo Lang::txt('COM_MEMBERS_SPAM_COUNT_EXCEEDED'); ?></p>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
 		</fieldset>
 
 		<?php

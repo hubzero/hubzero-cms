@@ -589,6 +589,15 @@ class Members extends AdminController
 			}
 		}
 
+		// Check for spam count
+		$reputation = Request::getVar('spam_count', null, 'post');
+
+		if (!is_null($reputation))
+		{
+			$user->reputation->set('spam_count', $reputation);
+			$user->reputation->save();
+		}
+
 		// Set success message
 		Notify::success(Lang::txt('COM_MEMBERS_MEMBER_SAVED'));
 
