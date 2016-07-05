@@ -695,6 +695,11 @@ class CurrentCart extends Cart
 		// Get info
 		$transactionInfo = parent::getTransactionInfo($tId);
 
+		if (!$transactionInfo)
+		{
+			return false;
+		}
+
 		// Set transaction id session value (needed for expired session)
 		$this->cart->tId = $transactionInfo->tId;
 
