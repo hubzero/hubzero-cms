@@ -226,6 +226,15 @@ class Setup extends Base
 		$new = $this->model->exists() ? false : true;
 		$setup = ($new || $this->model->inSetup()) ? true : false;
 
+		// Is user authorized to create a project?
+		if ($new && !$this->model->access('create'))
+		{
+			// Dispay error
+			$this->setError(Lang::txt('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
+			$this->_showError();
+			return;
+		}
+
 		// Determine setup steps
 		$setupSteps = array('describe', 'team', 'finalize');
 		if ($this->_setupComplete < 3)
