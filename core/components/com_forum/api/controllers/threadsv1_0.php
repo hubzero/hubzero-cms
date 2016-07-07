@@ -433,6 +433,165 @@ class Threadsv1_0 extends ApiController
 	}
 
 	/**
+	 * Create a thread or post in a thread
+	 *
+	 * @apiMethod POST
+	 * @apiUri    /forum
+	 * @apiParameter {
+	 * 		"name":        "category_id",
+	 * 		"description": "Category ID",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope",
+	 * 		"description": "Scope type (site, group, etc.)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     "site"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope_id",
+	 * 		"description": "Scope object ID",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     "0"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "title",
+	 * 		"description": "Entry title",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "comment",
+	 * 		"description": "Entry content",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "created",
+	 * 		"description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "now"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "crated_by",
+	 * 		"description": "User ID of entry creator",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "state",
+	 * 		"description": "Published state (0 = unpublished, 1 = published)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "access",
+	 * 		"description": "Access level (1 = public, 2 = registered users, 5 = private)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "anonymous",
+	 * 		"description": "Commentor is anonymous?",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "parent",
+	 * 		"description": "ID of the parent post this post is in reply to.",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "thread",
+	 * 		"description": "ID of the forum thread the post belongs to. 0 if new thread.",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "sticky",
+	 * 		"description": "If the thread is sticky or not. Only applies to thread starter posts.",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "sticky",
+	 * 		"description": "If the thread is closed (no more new posts) or not. Only applies to thread starter posts.",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tags",
+	 * 		"description": "Comma-separated list of tags",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return    void
+	 */
+	public function createTask()
+	{
+		$this->requiresAuthentication();
+
+		$fields = array(
+			'category_id'    => Request::getInt('category_id', 0, 'post'),
+			'title'          => Request::getVar('title', null, 'post', 'none', 2),
+			'comment'        => Request::getVar('comment', null, 'post', 'none', 2),
+			'created'        => Request::getVar('created', new Date('now'), 'post'),
+			'created_by'     => Request::getInt('created_by', 0, 'post'),
+			'state'          => Request::getInt('state', 0, 'post'),
+			'sticky'         => Request::getInt('sticky', 0, 'post'),
+			'parent'         => Request::getInt('parent', 0, 'post'),
+			'scope'          => Request::getVar('scope', 'site', 'post'),
+			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
+			'access'         => Request::getInt('access', 0, 'post'),
+			'anonymous'      => Request::getInt('anonymous', 0, 'post'),
+			'thread'         => Request::getInt('thread', 0, 'post'),
+			'closed'         => Request::getInt('closed', 0, 'post'),
+			'hits'           => Request::getInt('hits', 0, 'post'),
+		);
+
+		$row = Post::blank();
+
+		if (!$row->set($fields))
+		{
+			throw new Exception(Lang::txt('COM_FORUM_ERROR_BINDING_DATA'), 500);
+		}
+
+		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+
+		if (!$row->save())
+		{
+			throw new Exception(Lang::txt('COM_FORUM_ERROR_SAVING_DATA'), 500);
+		}
+
+		if ($tags = Request::getVar('tags', null, 'post'))
+		{
+			if (!$row->tag($tags, User::get('id')))
+			{
+				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
+			}
+		}
+
+		$this->send($row->toObject());
+	}
+
+	/**
 	 * Retrieve a thread
 	 *
 	 * @apiMethod GET
