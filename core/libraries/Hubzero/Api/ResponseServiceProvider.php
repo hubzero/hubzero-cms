@@ -88,6 +88,8 @@ class ResponseServiceProvider extends ServiceProvider
 		$format = (isset($types[$format]) ? $format : 'json');
 
 		$this->app['response']->setStatusCode(404);
+		$this->app['response']->headers->addCacheControlDirective('no-store', true);
+		$this->app['response']->headers->addCacheControlDirective('must-revalidate', true);
 		$this->app['response']->headers->set('Content-Type', $types[$format]);
 	}
 }
