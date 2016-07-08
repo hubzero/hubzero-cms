@@ -159,6 +159,12 @@ class Entries extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -197,6 +203,12 @@ class Entries extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -244,6 +256,11 @@ class Entries extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 
@@ -285,6 +302,11 @@ class Entries extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$state = $this->_task == 'publish' ? 1 : 0;
 
@@ -348,6 +370,11 @@ class Entries extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
