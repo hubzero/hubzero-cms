@@ -313,6 +313,13 @@ class Entries extends SiteController
 			return;
 		}
 
+		if (!$this->config->get('access-create-entry')
+		 && !$this->config->get('access-edit-entry')
+		 && !$this->config->get('access-manage-entry'))
+		{
+			App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
+		}
+
 		if (is_object($row))
 		{
 			$this->view->entry = $row;
@@ -364,6 +371,13 @@ class Entries extends SiteController
 			return;
 		}
 
+		if (!$this->config->get('access-create-entry')
+		 && !$this->config->get('access-edit-entry')
+		 && !$this->config->get('access-manage-entry'))
+		{
+			App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -380,6 +394,8 @@ class Entries extends SiteController
 		{
 			$entry['publish_down'] = Date::of($entry['publish_down'], Config::get('offset'))->toSql();
 		}
+		$entry['scope'] = 'site';
+		$entry['scope_id'] = 0;
 
 		$row = $this->model->entry(0);
 
