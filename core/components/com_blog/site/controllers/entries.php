@@ -152,13 +152,13 @@ class Entries extends SiteController
 
 		if (!$row->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_BLOG_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_BLOG_NOT_FOUND'));
 		}
 
 		// Check authorization
 		if (!$row->access('view'))
 		{
-			throw new Exception(Lang::txt('COM_BLOG_NOT_AUTH'), 403);
+			App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
 		}
 
 		// Filters for returning results
@@ -208,6 +208,13 @@ class Entries extends SiteController
 			return;
 		}
 
+		if (!$this->config->get('access-create-entry')
+		 && !$this->config->get('access-edit-entry')
+		 && !$this->config->get('access-manage-entry'))
+		{
+			App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
+		}
+
 		if (!is_object($entry))
 		{
 			$entry = Entry::oneOrNew(Request::getInt('entry', 0));
@@ -252,6 +259,13 @@ class Entries extends SiteController
 			return;
 		}
 
+		if (!$this->config->get('access-create-entry')
+		 && !$this->config->get('access-edit-entry')
+		 && !$this->config->get('access-manage-entry'))
+		{
+			App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -268,6 +282,8 @@ class Entries extends SiteController
 		{
 			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
 		}
+		$fields['scope'] = 'site';
+		$fields['scope_id'] = 0;
 
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
@@ -326,14 +342,10 @@ class Entries extends SiteController
 			return;
 		}
 
-		if (!$this->config->get('access-delete-entry'))
+		if (!$this->config->get('access-delete-entry')
+		 && !$this->config->get('access-manage-entry'))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option),
-				Lang::txt('COM_BLOG_NOT_AUTHORIZED'),
-				'error'
-			);
-			return;
+			App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
 		}
 
 		// Incoming
