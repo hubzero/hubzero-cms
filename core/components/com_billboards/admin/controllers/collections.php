@@ -35,8 +35,10 @@ namespace Components\BillBoards\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Billboards\Models\Collection;
 use Request;
+use Notify;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**
@@ -45,26 +47,32 @@ use App;
 class Collections extends AdminController
 {
 	/**
-	 * Browse billboards collections (collections are used to display multiple billboards via mod_billboards)
+	 * Execute a task
 	 *
-	 * @return void
+	 * @return  void
 	 */
-	public function displayTask()
+	public function execute()
 	{
-		$this->view->rows = Collection::all()->paginated()->ordered();
-		$this->view->display();
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
 	}
 
 	/**
-	 * Create a new collection
+	 * Browse billboards collections (collections are used to display multiple billboards via mod_billboards)
 	 *
-	 * @return void
+	 * @return  void
 	 */
-	public function addTask()
+	public function displayTask()
 	{
-		$this->view->setLayout('edit');
-		$this->view->task = 'edit';
-		$this->editTask();
+		$rows = Collection::all()
+			->paginated()
+			->ordered();
+
+		$this->view
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -75,6 +83,12 @@ class Collections extends AdminController
 	 */
 	public function editTask($collection=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Hide the menu, force users to save or cancel
 		Request::setVar('hidemainmenu', 1);
 
@@ -92,19 +106,27 @@ class Collections extends AdminController
 		}
 
 		// Display
-		$this->view->row = $collection;
-		$this->view->display();
+		$this->view
+			->set('row', $collection)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a collection
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Create object
 		$collection = Collection::oneOrNew(Request::getInt('id'))->set(array(
@@ -116,31 +138,32 @@ class Collections extends AdminController
 			// Something went wrong...return errors
 			foreach ($collection->getErrors() as $error)
 			{
-				$this->view->setError($error);
+				Notify::error($error);
 			}
 
-			$this->view->setLayout('edit');
-			$this->view->task = 'edit';
-			$this->editTask($collection);
-			return;
+			return $this->editTask($collection);
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED')
-		);
+		Notify::success(Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete a billboard collection
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -151,18 +174,27 @@ class Collections extends AdminController
 
 		// Loop through the selected collections to delete
 		// @TODO: maybe we should warn people if trying to delete a collection with associated billboards?
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			$collection = Collection::oneOrFail($id);
 
 			// Delete record
-			$collection->destroy();
+			if (!$collection->destroy())
+			{
+				Notify::error($collection->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', count($ids))
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', $i));
+		}
+
+		$this->cancelTask();
 	}
 }

@@ -36,6 +36,7 @@ use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Version;
 use Components\Wiki\Helpers\Parser;
 use Request;
+use Notify;
 use User;
 use Lang;
 use Date;
@@ -125,6 +126,12 @@ class Versions extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		$pageid = Request::getInt('pageid', 0);
@@ -136,7 +143,6 @@ class Versions extends AdminController
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'error'
 			);
-			return;
 		}
 
 		$page = Page::oneOrFail(intval($pageid));
@@ -184,6 +190,12 @@ class Versions extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$revision = Request::getVar('revision', array(), 'post', 'none', 2);
@@ -264,6 +276,11 @@ class Versions extends AdminController
 	 */
 	public function removeTask()
 	{
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$pageid = Request::getInt('pageid', 0);
 
 		$ids = Request::getVar('id', array(0));
@@ -366,6 +383,11 @@ class Versions extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken('get');
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$id = Request::getInt('id', 0);
