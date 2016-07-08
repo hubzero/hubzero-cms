@@ -397,7 +397,6 @@ class Product
 				return array();
 			}
 		}
-		die('!!!');
 		return $this->skus;
 	}
 
