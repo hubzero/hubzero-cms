@@ -104,6 +104,12 @@ class Applications extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// This is a flag to disable the main menu. This makes sure the user
 		// doesn't navigate away while int he middle of editing an entry.
 		// To leave the form, one must explicitely call the "cancel" task.
@@ -148,6 +154,12 @@ class Applications extends AdminController
 	{
 		// [SECURITY] Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -248,6 +260,11 @@ class Applications extends AdminController
 		// [SECURITY] Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -293,6 +310,11 @@ class Applications extends AdminController
 	{
 		// [SECURITY] Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
@@ -366,6 +388,11 @@ class Applications extends AdminController
 		// [SECURITY] Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -418,6 +445,11 @@ class Applications extends AdminController
 	{
 		// [SECURITY] Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
