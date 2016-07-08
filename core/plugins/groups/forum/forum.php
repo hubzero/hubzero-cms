@@ -1432,6 +1432,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$sectionTbl = new \Components\Forum\Tables\Section($this->database);
 		$sectionTbl->load(intval($category->section_id));
 
+		if ($sectionTbl->alias)
+		{
+			$section = $sectionTbl->alias;
+		}
+
 		$tags = Request::getVar('tags', '', 'post');
 		$tagger = new \Components\Forum\Models\Tags($model->id);
 		$tagger->setTags($tags, User::get('id'));
