@@ -118,6 +118,12 @@ class Types extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -163,6 +169,12 @@ class Types extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$type = Request::getVar('type', array(), 'post');
 
@@ -266,6 +278,11 @@ class Types extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());

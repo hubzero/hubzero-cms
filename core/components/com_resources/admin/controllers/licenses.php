@@ -38,6 +38,7 @@ use Request;
 use Notify;
 use Route;
 use Lang;
+use User;
 use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'license.php');
@@ -117,6 +118,12 @@ class Licenses extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -155,6 +162,12 @@ class Licenses extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
@@ -188,6 +201,11 @@ class Licenses extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());
