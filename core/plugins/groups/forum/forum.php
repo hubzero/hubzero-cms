@@ -1437,19 +1437,13 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$tagger->setTags($tags, User::get('id'));
 
 		// Determine post save message
-		// Also, get subject of post for outgoing email, either the title of parent post (for replies), or title of current post (for new threads)
 		if (!$fields['parent'])
 		{
 			$message = Lang::txt('PLG_GROUPS_FORUM_THREAD_STARTED');
-			$posttitle = $model->title;
 		}
 		else
 		{
 			$message = Lang::txt('PLG_GROUPS_FORUM_POST_ADDED');
-
-			$parentForumTablePost = new \Components\Forum\Tables\Post($this->database);
-			$parentForumTablePost->load(intval($fields['parent']));
-			$posttitle = $parentForumTablePost->title;
 		}
 
 		if ($fields['id'])
@@ -1486,6 +1480,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$ethread = new \Components\Forum\Models\Thread(intval($thread));
 			$ethread->set('section', $esection->get('alias'));
 			$ethread->set('category', $ecategory->get('alias'));
+
+			$posttitle = $ethread->get('title');
 
 			$epost = new \Components\Forum\Models\Thread($model);
 			$epost->set('section', $esection->get('alias'));
