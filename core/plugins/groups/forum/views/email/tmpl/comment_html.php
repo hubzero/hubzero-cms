@@ -129,8 +129,13 @@ $bdcolor = '#e1e1e1';
 		<tbody>
 			<tr>
 				<td width="100%" style="padding: 8px;">
-					<div class="mobilehide" id="ticket-number" style="float: left; width: 1.2em; font-size: 4em; font-weight: bold; text-align: center; padding: 30px;" align="center">
-						&#8220;
+					<div class="mobilehide" id="ticket-number" style="float: left; font-weight: bold; text-align: center; padding: 10px;" align="center">
+						<?php if ($this->group->get('logo')) {
+							?><img src="<?php echo rtrim(Request::root(), '/') . '/' . ltrim($this->group->getLogo(), '/'); ?>" width="100" alt="<?php echo $this->escape($this->group->get('description')); ?>" /><?php
+						} else {
+							?><div style="width: 1.2em; font-size: 4em; padding: 20px;">&#8220;</div><?php
+						}
+						?>
 					</div>
 					<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 						<tbody>
