@@ -173,6 +173,12 @@ class Sections extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -220,6 +226,12 @@ class Sections extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		User::setState('com_forum.edit.section.data', null);
 
 		// Incoming
@@ -254,9 +266,7 @@ class Sections extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -268,6 +278,11 @@ class Sections extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -290,11 +305,13 @@ class Sections extends AdminController
 			$i++;
 		}
 
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_FORUM_SECTIONS_DELETED'));
+		}
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . Request::getInt('section_id', 0), false),
-			($i ? Lang::txt('COM_FORUM_SECTIONS_DELETED') : null)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -307,6 +324,11 @@ class Sections extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -318,12 +340,8 @@ class Sections extends AdminController
 		{
 			$action = ($state == Section::STATE_PUBLISHED) ? Lang::txt('COM_FORUM_PUBLISH') : Lang::txt('COM_FORUM_UNPUBLISH');
 
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action));
+			return $this->cancelTask();
 		}
 
 		$i = 0;
@@ -344,19 +362,21 @@ class Sections extends AdminController
 		}
 
 		// set message
-		if ($state == Section::STATE_PUBLISHED)
+		if ($i)
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
-		}
-		else
-		{
-			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
+			if ($state == Section::STATE_PUBLISHED)
+			{
+				$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
+			}
+			else
+			{
+				$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
+			}
+
+			Notify::success($message);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -369,6 +389,11 @@ class Sections extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$state = Request::getInt('access', 0);
 		$ids = Request::getVar('id', array());
@@ -377,12 +402,8 @@ class Sections extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'));
+			return $this->cancelTask();
 		}
 
 		$i = 0;
@@ -402,10 +423,11 @@ class Sections extends AdminController
 			$i++;
 		}
 
-		// set message
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', $i)
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', $i));
+		}
+
+		$this->cancelTask();
 	}
 }

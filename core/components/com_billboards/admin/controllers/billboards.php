@@ -36,6 +36,7 @@ use Hubzero\Component\AdminController;
 use Components\Billboards\Models\Billboard;
 use Components\Billboards\Models\Collection;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use User;
@@ -47,36 +48,51 @@ use App;
 class BillBoards extends AdminController
 {
 	/**
-	 * Browse the list of billboards
+	 * Execute a task
 	 *
-	 * @return void
+	 * @return  void
 	 */
-	public function displayTask()
+	public function execute()
 	{
-		$this->view->rows = Billboard::all()->paginated('limitstart')->ordered()->rows();
-		$this->view->display();
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
 	}
 
 	/**
-	 * Create a billboard
+	 * Browse the list of billboards
 	 *
-	 * @return void
+	 * @return  void
 	 */
-	public function addTask()
+	public function displayTask()
 	{
-		$this->view->setLayout('edit');
-		$this->view->task = 'edit';
-		$this->editTask();
+		$rows = Billboard::all()
+			->paginated('limitstart')
+			->ordered()
+			->rows();
+
+		$this->view
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
 	 * Edit a billboard
 	 *
-	 * @param  object $billboard
-	 * @return void
+	 * @param   object  $billboard
+	 * @return  void
 	 */
 	public function editTask($billboard=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Hide the menu, force users to save or cancel
 		Request::setVar('hidemainmenu', 1);
 
@@ -96,12 +112,8 @@ class BillBoards extends AdminController
 		// Fail if not checked out by current user
 		if ($billboard->isCheckedOut())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
-				'warning'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'));
+			return $this->cancelTask();
 		}
 
 		// Are we editing an existing entry?
@@ -112,19 +124,27 @@ class BillBoards extends AdminController
 		}
 
 		// Output the HTML
-		$this->view->row = $billboard;
-		$this->view->display();
+		$this->view
+			->set('row', $billboard)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a billboard
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming, make sure to allow HTML to pass through
 		$data = Request::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
@@ -145,13 +165,10 @@ class BillBoards extends AdminController
 			// Something went wrong...return errors
 			foreach ($billboard->getErrors() as $error)
 			{
-				$this->view->setError($error);
+				Notify::error($error);
 			}
 
-			$this->view->setLayout('edit');
-			$this->view->task = 'edit';
-			$this->editTask($billboard);
-			return;
+			return $this->editTask($billboard);
 		}
 
 		// See if we have an image coming in as well
@@ -169,31 +186,22 @@ class BillBoards extends AdminController
 			{
 				if (!\Filesystem::makeDirectory($uploadDirectory))
 				{
-					$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-					$this->view->setLayout('edit');
-					$this->view->task = 'edit';
-					$this->editTask($billboard);
-					return;
+					Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+					return $this->editTask($billboard);
 				}
 			}
 
 			// Scan for viruses
 			if (!\Filesystem::isSafe($billboard_image['tmp_name']))
 			{
-				$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
-				$this->view->setLayout('edit');
-				$this->view->task = 'edit';
-				$this->editTask($billboard);
-				return;
+				Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
+				return $this->editTask($billboard);
 			}
 
 			if (!move_uploaded_file($billboard_image['tmp_name'], $uploadDirectory . $billboard_image['name']))
 			{
-				$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
-				$this->view->setLayout('edit');
-				$this->view->task = 'edit';
-				$this->editTask($billboard);
-				return;
+				Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
+				return $this->editTask($billboard);
 			}
 			else
 			{
@@ -206,10 +214,9 @@ class BillBoards extends AdminController
 		$billboard->checkin();
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED')
-		);
+		Notify::success(Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -222,6 +229,11 @@ class BillBoards extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Initialize variables
 		$cid   = Request::getVar('cid', array(), 'post', 'array');
 		$order = Request::getVar('order', array(), 'post', 'array');
@@ -230,20 +242,20 @@ class BillBoards extends AdminController
 		if (empty($cid))
 		{
 			App::abort(500, Lang::txt('BILLBOARDS_ORDER_PLEASE_SELECT_ITEMS'));
-			return;
 		}
 
 		// Update ordering values
 		for ($i = 0; $i < count($cid); $i++)
 		{
 			$billboard = Billboard::oneOrFail($cid[$i]);
+
 			if ($billboard->ordering != $order[$i])
 			{
 				$billboard->set('ordering', $order[$i]);
+
 				if (!$billboard->save())
 				{
 					App::abort(500, $billboard->getError());
-					return;
 				}
 			}
 		}
@@ -252,21 +264,25 @@ class BillBoards extends AdminController
 		Cache::clean('com_billboards');
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED')
-		);
+		Notify::success(Lang::txt('COM_BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED'));
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete a billboard
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('cid', array());
@@ -274,6 +290,8 @@ class BillBoards extends AdminController
 		{
 			$ids = array($ids);
 		}
+
+		$i = 0;
 
 		// Make sure we have IDs to work with
 		if (count($ids) > 0)
@@ -286,46 +304,28 @@ class BillBoards extends AdminController
 				// Delete record
 				if (!$billboard->destroy())
 				{
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						Lang::txt('COM_BILLBOARDS_ERROR_CANT_DELETE')
-					);
-					return;
+					Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_CANT_DELETE'));
+					continue;
 				}
+
+				$i++;
 			}
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', count($ids))
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', $i));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
-	 * Publish billboards
+	 * Cancels out of the billboard edit view, makes sure to
+	 * check the billboard back in for other people to edit
 	 *
-	 * @return void
-	 */
-	public function publishTask()
-	{
-		$this->toggle(1);
-	}
-
-	/**
-	 * Unpublish billboards
-	 *
-	 * @return void
-	 */
-	public function unpublishTask()
-	{
-		$this->toggle(0);
-	}
-
-	/**
-	 * Cancels out of the billboard edit view, makes sure to check the billboard back in for other people to edit
-	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -343,15 +343,20 @@ class BillBoards extends AdminController
 	}
 
 	/**
-	 * Toggle a billboard between published and unpublished.  We're looking for an array of ID's to publish/unpublish
+	 * Toggle a billboard between published and unpublished.
+	 * We're looking for an array of ID's to publish/unpublish
 	 *
-	 * @param  $publish: 1 to publish and 0 for unpublish
-	 * @return void
+	 * @return  void
 	 */
-	protected function toggle($publish=1)
+	public function stateTask()
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming (we're expecting an array)
 		$ids = Request::getVar('cid', array());
@@ -359,6 +364,8 @@ class BillBoards extends AdminController
 		{
 			$ids = array($ids);
 		}
+
+		$publish = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Loop through the IDs
 		foreach ($ids as $id)
@@ -370,28 +377,22 @@ class BillBoards extends AdminController
 			if (!$row->isCheckedOut())
 			{
 				$row->set('published', $publish);
+
 				if (!$row->save())
 				{
 					App::abort(500, $row->getError());
-					return;
 				}
+
 				// Check it back in
 				$row->checkin();
 			}
 			else
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
-					'warning'
-				);
-				return;
+				Notify::warning(Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'));
 			}
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 }

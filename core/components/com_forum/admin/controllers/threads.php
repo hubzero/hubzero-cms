@@ -45,6 +45,7 @@ use Request;
 use Notify;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**
@@ -384,16 +385,6 @@ class Threads extends AdminController
 	}
 
 	/**
-	 * Create a new ticket
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Displays a question response for editing
 	 *
 	 * @param   mixed  $post
@@ -402,6 +393,12 @@ class Threads extends AdminController
 	public function editTask($post=null)
 	{
 		Request::setVar('hidemainmenu', 1);
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$parent = Request::getInt('parent', 0);
@@ -467,7 +464,7 @@ class Threads extends AdminController
 			asort($sections[$ky]);
 		}
 
-		\User::setState('com_forum.edit.thread.data', array(
+		User::setState('com_forum.edit.thread.data', array(
 			'id'       => $post->get('id'),
 			'asset_id' => $post->get('asset_id')
 		));
@@ -493,6 +490,12 @@ class Threads extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		User::setState('com_forum.edit.thread.data', null);
 
@@ -621,9 +624,12 @@ class Threads extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming
-		$category = Request::getInt('category_id', 0);
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
+		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -643,11 +649,12 @@ class Threads extends AdminController
 			$i++;
 		}
 
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			($i ? Lang::txt('COM_FORUM_POSTS_DELETED') : null)
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_FORUM_POSTS_DELETED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -660,11 +667,14 @@ class Threads extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$state = $this->getTask() == 'publish' ? Post::STATE_PUBLISHED : Post::STATE_UNPUBLISHED;
 
 		// Incoming
-		$category = Request::getInt('category_id', 0);
-
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -687,19 +697,21 @@ class Threads extends AdminController
 		}
 
 		// Set message
-		if ($state == Post::STATE_PUBLISHED)
+		if ($i)
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
-		}
-		else
-		{
-			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
+			if ($state == Post::STATE_PUBLISHED)
+			{
+				$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
+			}
+			else
+			{
+				$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
+			}
+
+			Notify::success($message);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -712,9 +724,13 @@ class Threads extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
-		$category = Request::getInt('category_id', 0);
-		$sticky   = Request::getInt('sticky', 0);
+		$sticky = Request::getInt('sticky', 0);
 
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -738,19 +754,21 @@ class Threads extends AdminController
 		}
 
 		// Set message
-		if ($sticky == 1)
+		if ($i)
 		{
-			$message = Lang::txt('COM_FORUM_ITEMS_STUCK', $i);
-		}
-		else
-		{
-			$message = Lang::txt('COM_FORUM_ITEMS_UNSTUCK', $i);
+			if ($sticky == 1)
+			{
+				$message = Lang::txt('COM_FORUM_ITEMS_STUCK', $i);
+			}
+			else
+			{
+				$message = Lang::txt('COM_FORUM_ITEMS_UNSTUCK', $i);
+			}
+
+			Notify::success($message);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -763,9 +781,13 @@ class Threads extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
-		$category = Request::getInt('category_id', 0);
-		$access   = Request::getInt('access', 0);
+		$access = Request::getInt('access', 0);
 
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -789,10 +811,12 @@ class Threads extends AdminController
 		}
 
 		// Set message
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', $i)
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', $i));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -803,10 +827,23 @@ class Threads extends AdminController
 	public function cancelTask()
 	{
 		$fields = Request::getVar('fields', array());
-		$thread = ($fields['thread']) ? $fields['thread'] : $fields['id'];
+		$thread = 0;
+		if (isset($fields['thread']) && $fields['thread'])
+		{
+			$thread = $fields['thread'];
+		}
+		else if (isset($fields['id']))
+		{
+			$thread = $fields['id'];
+		}
+
+		if (!isset($fields['category_id']))
+		{
+			$fields['category_id'] = Request::getInt('category_id', 0);
+		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&thread=' . $thread, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . ($thread ? '&task=thread&thread=' . $thread : ''), false)
 		);
 	}
 }
