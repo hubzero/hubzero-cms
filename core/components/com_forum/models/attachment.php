@@ -290,7 +290,7 @@ class Attachment extends Relational
 		{
 			$this->dimensions = array(0, 0);
 
-			if ($this->isImage())
+			if ($this->isImage() && file_exists($this->path()))
 			{
 				$this->dimensions = getimagesize($this->path());
 			}
