@@ -259,7 +259,7 @@ class Credentials extends SiteController
 		}
 
 		// Make sure the user has not exceeded the reset limit
-		if ($user->hasExceededResetLimit())
+		if ($this->hasExceededResetLimit($user))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
@@ -648,5 +648,32 @@ class Credentials extends SiteController
 			Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
 			'index.php?option=' . $this->_option . '&task=' . $this->_task
 		);
+	}
+
+	/**
+	 * Checks to see if the current user has exceeded the site
+	 * password reset request limit for a given time period
+	 *
+	 * @param 	object \Hubzero\User\User
+	 *
+	 * @return  bool
+	 */
+	private function hasExceededResetLimit($user)
+	{
+		$params     = \Component::params('com_members');
+		$resetCount = (int)$params->get('reset_count', 10);
+		$resetHours = (int)$params->get('reset_time', 1);
+		$result     = true;
+
+		// Get the user's tokens
+		$threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$resetHours} hours ago"));
+		$tokens    = $user->tokens()->where('created', '>=', $threshold)->rows();
+
+		if ($tokens->count() < $resetCount)
+		{
+			$result = false;
+		}
+
+		return $result;
 	}
 }
