@@ -1,6 +1,0 @@
-if ($this->db->tableExists('%=table_name=%'))
-		{
-			$query = "DROP TABLE `%=table_name=%`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
