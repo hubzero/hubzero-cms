@@ -63,6 +63,20 @@ class Hubsearch extends SiteController
 		$type = Request::getVar('type', '');
 		$section = Request::getVar('section', 'content');
 
+		// Map coordinates
+		if ($section == 'map')
+		{
+			$minLon = Request::getVar('minlon', false);
+			$maxLon = Request::getVar('maxlon', false);
+			$minLat = Request::getVar('minlat', false);
+			$maxLat = Request::getVar('maxlat', false);
+
+			if ($minLon && $maxLon && $minLat && $maxLat)
+			{
+				$locationFilter = 'coverage:"INTERSECTS(ENVELOPE(' . $minLon . ',' .  $maxLon. ',' . $maxLat . ',' . $minLat . '))"';
+			}
+		}
+
 		$filters = Request::getVar('filters', array());
 
 		// To pass to the view
@@ -77,6 +91,7 @@ class Hubsearch extends SiteController
 		if ($type != '')
 		{
 			$query->addFilter('Type', array('hubtype', '=', $type));
+
 			// Add a type
 			$urlQuery .= '&type='.$type;
 		}
@@ -90,6 +105,11 @@ class Hubsearch extends SiteController
 		else
 		{
 			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
+		}
+
+		if (isset($locationFilter))
+		{
+			$query->addFilter('BoundingBox', $locationFilter);
 		}
 
 		// Build the reset of the query string
