@@ -56,6 +56,7 @@ $noResult = count($this->results) > 0 ? false : true;
 			<legend>Search site</legend>
 			<label for="terms">Search terms</label>
 			<input type="text" name="terms" id="terms" value="<?php echo $terms; ?>" placeholder="Enter keyword or phrase" />
+			<input type="hidden" name="section" value="<?php echo $this->section; ?>" />
 		</fieldset>
 		<?php if ($this->section == 'map') { ?>
 		<fieldset class="map-search">
