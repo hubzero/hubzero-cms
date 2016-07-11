@@ -193,7 +193,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	private function hasExceededLoginLimit($user)
 	{
-		$params    = \Component::params('com_users');
+		$params    = \Component::params('com_members');
 		$limit     = (int)$params->get('login_attempts_limit', 10);
 		$timeframe = (int)$params->get('login_attempts_timeframe', 1);
 		$result    = true;
