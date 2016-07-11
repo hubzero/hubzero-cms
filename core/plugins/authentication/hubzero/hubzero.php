@@ -125,7 +125,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		}
 
 		// Now make sure they haven't made too many failed login attempts
-		if (\Hubzero\User\User::oneOrFail($result->id)->hasExceededLoginLimit())
+		if ($this->hasExceededLoginLimit(\Hubzero\User\User::oneOrFail($result->id)))
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_TOO_MANY_ATTEMPTS');
@@ -181,5 +181,36 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
 		}
+	}
+
+	/**
+	 * Checks to see if the current user has exceeded the site
+	 * login attempt limit for a given time period
+	 *
+	 * @param		$user \Hubzero\User\User 
+	 *
+	 * @return  bool
+	 */
+	private function hasExceededLoginLimit($user)
+	{
+		$params    = \Component::params('com_users');
+		$limit     = (int)$params->get('login_attempts_limit', 10);
+		$timeframe = (int)$params->get('login_attempts_timeframe', 1);
+		$result    = true;
+
+		// Get the user's tokens
+		$threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$timeframe} hours ago"));
+		$auths     = new \Hubzero\User\Log\Auth;
+
+		$auths->whereEquals('username', $user->username)
+		      ->whereEquals('status', 'failure')
+		      ->where('logged', '>=', $threshold);
+
+		if ($auths->count() < $limit)
+		{
+			$result = false;
+		}
+
+		return $result;
 	}
 }
