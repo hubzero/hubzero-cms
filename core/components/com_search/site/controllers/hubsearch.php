@@ -61,8 +61,12 @@ class Hubsearch extends SiteController
 		$sortBy = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
 		$type = Request::getVar('type', '');
+		$section = Request::getVar('section', 'content');
 
 		$filters = Request::getVar('filters', array());
+
+		// To pass to the view
+		$urlQuery = '?terms='.$terms;
 
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
@@ -73,6 +77,8 @@ class Hubsearch extends SiteController
 		if ($type != '')
 		{
 			$query->addFilter('Type', array('hubtype', '=', $type));
+			// Add a type
+			$urlQuery .= '&type='.$type;
 		}
 
 		// Administrators can see all records
@@ -85,6 +91,10 @@ class Hubsearch extends SiteController
 		{
 			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
 		}
+
+		// Build the reset of the query string
+		$urlQuery .= '&limit='.$limit;
+		$urlQuery .= '&start='.$start;
 
 		// Perform the query
 		$query = $query->run();
@@ -114,7 +124,9 @@ class Hubsearch extends SiteController
 		$this->view->terms = $terms;
 		$this->view->total = $numFound;
 		$this->view->type = $type;
+		$this->view->section = $section;
 		$this->view->setLayout('display');
+		$this->view->urlQuery = $urlQuery;
 		$this->view->display();
 	}
 
