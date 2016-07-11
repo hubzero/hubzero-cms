@@ -133,6 +133,19 @@ class Attachment extends Relational
 	}
 
 	/**
+	 * Ensure no invalid characters
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticFilename($data)
+	{
+		$data['filename'] = preg_replace("/[^A-Za-z0-9.]/i", '-', $data['filename']);
+
+		return $data['filename'];
+	}
+
+	/**
 	 * Ensure no conflicting file names by
 	 * renaming the incoming file if the name
 	 * already exists
@@ -140,21 +153,25 @@ class Attachment extends Relational
 	 * @param   array  $data
 	 * @return  string
 	 */
-	public function automaticFilename($data)
+	public function uniqueFilename($data)
 	{
 		$filename = $data['filename'];
+		$filename = preg_replace("/[^A-Za-z0-9.]/i", '-', $filename);
 
 		$ext = strrchr($filename, '.');
 		$prefix = substr($filename, 0, -strlen($ext));
 
-		$i = 1;
-
-		while (is_file($this->getUploadDir() . DS . $data['parent'] . DS . $data['post_id'] . DS . $filename))
+		if (file_exists($this->getUploadDir() . DS . $data['parent'] . DS . $data['post_id'] . DS . $filename))
 		{
-			$filename = $prefix . ++$i . $ext;
+			$i = 1;
+
+			while (file_exists($this->getUploadDir() . DS . $data['parent'] . DS . $data['post_id'] . DS . $filename))
+			{
+				$filename = $prefix . ++$i . $ext;
+			}
 		}
 
-		$data['filename'] = preg_replace("/[^A-Za-z0-9.]/i", '-', $filename);
+		$data['filename'] = $filename;
 
 		return $data['filename'];
 	}
@@ -202,7 +219,7 @@ class Attachment extends Relational
 		}
 
 		// Make sure the name is unique
-		$filename = $this->automaticFilename(array(
+		$filename = $this->uniqueFilename(array(
 			'filename' => $name,
 			'parent'   => $this->get('parent'),
 			'post_id'  => $this->get('post_id')

@@ -94,7 +94,7 @@ defined('_HZEXEC_') or die();
 						$attachment->set('description', $attachment->get('filename'));
 					}
 
-					$link = $this->comment->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename');
+					$link = $this->comment->link() . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename');
 
 					if ($attachment->isImage())
 					{
