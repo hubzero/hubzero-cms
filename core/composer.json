@@ -5,48 +5,13 @@
     "type": "project",
     "keywords": [ "cms" , "hubzero" ],
     "homepage": "http://hubzero.org",
-    "time": "2013-05-07 10:13:22",
+    "time": "2016-07-11 10:13:22",
     "license": "LGPL-2.1",
     "authors": [
         {
-            "name": "Nicholas J. Kisseberth",
-            "email": "nkissebe@purdue.edu",
-            "role": "Senior Software Engineer"
-        },
-        {
-            "name": "Shawn Rice",
-            "email": "zooley@purdue.edu",
-            "role": "Senior Web Application Programmer"
-        },
-        {
-            "name": "Alissa Nedossekina",
-            "email": "alisa@purdue.edu",
-            "role": "Senior Web Application Programmer"
-        },
-        {
-            "name": "Chris Smoak",
-            "email": "csmoak@purdue.edu",
-            "role": "Web Application Programmer"
-        },
-        {
-            "name": "Ilya Shunko",
-            "email": "ishunko@purdue.edu",
-            "role": "Web Application Programmer"
-        },
-        {
-            "name": "Steve Snyder",
-            "email": "snyder13@purdue.edu",
-            "role": "Web Application Programmer"
-        },
-        {
-            "name": "Sam Wilson",
-            "email": "spwilson@purdue.edu",
-            "role": "Software Engineer"
-        },
-				{
-            "name": "Dave Benham",
-            "email": "dbenham@purdue.edu",
-            "role": "Software Engineer"
+            "name": "Hubzero",
+            "email": "support@hubzero.org",
+            "role": "Platform for Scientific Computing"
         }
     ],
     "support": {
@@ -94,7 +59,6 @@
         "mockery/mockery": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Hubzero": "libraries/" },
         "psr-4": { "Bootstrap\\": "bootstrap/"},
         "classmap": [ "libraries/joomla" ]
     },
