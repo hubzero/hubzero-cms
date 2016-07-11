@@ -1803,13 +1803,13 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate an attachment object
-		if (!$post_id)
+		if (!$post)
 		{
-			$attach = Attachment::oneByThread($thread_id, $file);
+			$attach = Attachment::oneByThread($thread, $file);
 		}
 		else
 		{
-			$attach = Attachment::oneByPost($post_id);
+			$attach = Attachment::oneByPost($post);
 		}
 
 		if (!$attach->get('filename'))
@@ -1840,7 +1840,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			App::abort(404, Lang::txt('PLG_GROUPS_FILE_NOT_FOUND') . ' ' . substr($filename, strlen(PATH_ROOT)));
+			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_FILE_NOT_FOUND') . ' ' . substr($filename, strlen(PATH_ROOT)));
 		}
 
 		// Initiate a new content server and serve up the file
