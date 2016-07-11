@@ -32,14 +32,17 @@
 // No direct access
 defined('_HZEXEC_') or die();
 $this->css('search-enhanced');
-$this->js('handlebars','system');
-$this->js('moment.min', 'system');
-$this->js('search1');
 
 $terms = isset($this->terms) ? $this->terms : '';
 $noResult = count($this->results) > 0 ? false : true;
 
 ?>
+
+<?php if ($this->section == 'map') { ?>
+	<link rel="stylesheet" type="text/css" href="/core/components/com_search/site/assets/js/OpenLayers-2.13.1/theme/default/style.css"/>
+	<script type="text/javascript" src="/core/components/com_search/site/assets/js/OpenLayers-2.13.1/OpenLayers.js"></script> <!-- (2.0) -->
+	<script type="text/javascript" src="/core/components/com_search/site/assets/js/searchmap.js"></script> <!-- (2.0) -->
+<?php } ?>
 
 <!-- start component output -->
 <header id="content-header">
@@ -54,20 +57,33 @@ $noResult = count($this->results) > 0 ? false : true;
 			<label for="terms">Search terms</label>
 			<input type="text" name="terms" id="terms" value="<?php echo $terms; ?>" placeholder="Enter keyword or phrase" />
 		</fieldset>
+		<?php if ($this->section == 'map') { ?>
+		<fieldset class="map-search">
+		<input type="hidden" name="minlat" id="minlat" value="<?php if (isset($this->minlat)) echo $this->minlat; ?>" />
+		<input type="hidden" name="minlon" id="minlon" value="<?php if (isset($this->minlon)) echo $this->minlon; ?>" />
+		<input type="hidden" name="maxlat" id="maxlat" value="<?php if (isset($this->maxlat)) echo $this->maxlat; ?>" />
+		<input type="hidden" name="maxlon" id="maxlon" value="<?php if (isset($this->maxlon)) echo $this->maxlon; ?>" />
+		<?php } // end if ?>
+		</fieldset>
 	</form>
+
 
 	<nav>
 		<ul class="result-views">
-			<li class="active"><a href="#">Content</a></li>
-			<li><a href="#">Files</a></li>
-			<li><a href="#">Map</a></li>
+			<li <?php if ($this->section == 'content') { echo 'class="active"'; } ?>><a href="/search<?php echo $this->urlQuery; ?>&section=content"><?php echo Lang::txt('COM_SEARCH_CONTENT'); ?></a></li>
+			<li <?php if ($this->section == 'map') { echo 'class="active"'; } ?>><a href="/search<?php echo $this->urlQuery; ?>&section=map"><?php echo Lang::txt('COM_SEARCH_MAP'); ?></a></li>
 		</ul>
 	</nav>
 </section>
 <section class="main section">
+		<?php if ($noResult) { ?>
+			<div class="info">
+				<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
+			</div>
+		<?php } // end if ?>
 	<div class="section-inner">
+		<?php if (!$noResult): ?>
 		<nav class="aside">
-			<?php if (!$noResult): ?>
 			<div class="container facet">
 				<h3>Category</h3>
 				<ul>
@@ -87,6 +103,9 @@ $noResult = count($this->results) > 0 ? false : true;
 		</nav><!-- / .aside -->
 		<div class="subject">
 			<div class="container">
+				<?php if ($this->section == 'map') : ?>
+				<div id="map"></div>
+				<?php endif; ?>
 				<?php if (!$noResult): ?>
 				<div class="results list"><!-- add "tiled" to class for tiled view -->
 					<?php foreach ($this->results as $result): ?>
