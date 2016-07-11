@@ -694,6 +694,7 @@ class Profiles extends SiteController
 			->set('title', $title)
 			->set('cats', $cats)
 			->set('sections', $sections)
+			->set('overwrite_content', '')
 			->setErrors($this->getErrors())
 			->setLayout('view')
 			->display();
