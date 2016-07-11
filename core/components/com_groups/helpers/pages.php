@@ -769,7 +769,9 @@ class Pages
 		$groupDocument = new Document();
 
 		// strip out scripts & php tags if not super group
-		if (!$group->isSuperGroup())
+		$params = new \Hubzero\Config\Registry($group->params);
+
+		if (!$group->isSuperGroup() && !$params->get('page_trusted', 0))
 		{
 			$document = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $document);
 			$document = preg_replace('/<\?[\s\S]*?\?>/', '', $document);
