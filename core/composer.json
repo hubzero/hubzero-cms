@@ -33,7 +33,6 @@
         "swiftmailer/swiftmailer": "v5.0.2",
         "monolog/monolog": "1.11.0",
         "willdurand/geocoder": "2.8.*",
-        "guzzle/guzzle": "3.8.*@dev",
         "predis/predis": "0.8.6",
         "phpoffice/phpexcel": "1.8.0",
         "symfony/yaml": "2.5.*",
