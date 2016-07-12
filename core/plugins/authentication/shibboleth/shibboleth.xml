@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 @package        hubzero-cms
-@file           plugins/authentication/pucas.xml
+@file           core/plugins/authentication/shibboleth/shibboleth.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -30,9 +30,10 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="authentication">
 	<name>Authentication - Shibboleth</name>
-	<author>Steven Snyder</author>
+	<author>HUBzero</author>
 	<creationDate>July 2014</creationDate>
 	<copyright>Copyright (C) 2014-2015 HUBzero Foundation, LLC.</copyright>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>1.5</version>
 	<description>Handles user authentication with Shibboleth/InCommon</description>
@@ -40,7 +41,7 @@ HUBzero is a registered trademark of Purdue University.
 		<filename plugin="shibboleth">shibboleth.php</filename>
 	</files>
 	<config>
-		<fields name="params" addfieldpath="/plugins/authentication/shibboleth/fields">
+		<fields name="params" addfieldpath="/core/plugins/authentication/shibboleth/fields">
 			<fieldset name="basic">
 				<field name="site_login" type="radio" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_SITELOGIN_DESC">
 					<option value="0">JNo</option>
