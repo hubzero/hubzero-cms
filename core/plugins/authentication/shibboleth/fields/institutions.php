@@ -1,4 +1,39 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steven Snyder <snyder13@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
+// No direct access
+defined('_HZEXEC_') or die();
+
 $schemes = array(
 	'http'  => 1,
 	'https' => 1
@@ -12,10 +47,12 @@ if (isset($_GET['img']) && isset($schemes[parse_url($_GET['img'], \PHP_URL_SCHEM
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-	if (($data = curl_exec($curl)) && ($gd = @imagecreatefromstring($data))) {
+	if (($data = curl_exec($curl)) && ($gd = @imagecreatefromstring($data)))
+	{
 		$w = imagesx($gd);
 		$h = imagesy($gd);
-		if ($w && $h) {
+		if ($w && $h)
+		{
 			$max = max($w, $h);
 			$ow = floor(28 * $w/$max);
 			$oh = floor(28 * $h/$max);
@@ -39,7 +76,6 @@ if (isset($_GET['img']) && isset($schemes[parse_url($_GET['img'], \PHP_URL_SCHEM
 	curl_close($curl);
 	exit();
 }
-defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -47,13 +83,30 @@ jimport('joomla.form.formfield');
 
 class JFormFieldInstitutions extends JFormField
 {
+	/**
+	 * Metadata
+	 *
+	 * @var  string
+	 */
 	private static $mdSource = 'https://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml';
+
+	/**
+	 * Fallback metadata
+	 *
+	 * @var  string
+	 */
 	private static $mdDest = '/www/tmp/InCommon-metadata-fallback.xml';
 
+	/**
+	 * Get field input
+	 *
+	 * @return  string
+	 */
 	protected function getInput()
 	{
 		Document::addScript('/core/plugins/authentication/shibboleth/assets/js/admin.js');
-		Document::addStyleSheet('/core/plugins/authentication/shibboleth/assets/css/jquery-ui.css');
+		// Commented out due to interfering with admin styles
+		//Document::addStyleSheet('/core/plugins/authentication/shibboleth/assets/css/jquery-ui.css');
 		Document::addStyleSheet('/core/plugins/authentication/shibboleth/assets/css/admin.css');
 
 		$html = array();
@@ -66,16 +119,27 @@ class JFormFieldInstitutions extends JFormField
 		$html[] = '<p class="xml-source"><label>Shibboleth ID provider configuration file: <input type="text" name="xmlPath" value="'.$a($val['xmlPath']).'" /></label></p>';
 		list($val['xmlRead'], $val['idps']) = self::getIdpList($val);
 		$html[] = '<p class="info">Save your changes to retry loading ID providers from this file</p>';
-		$html[] = '<input type="hidden" class="serialized" name="'.$this->name.'" value="'.$a(json_encode($val)).'" />';
+		$html[] = '<input type="hidden" class="serialized" name="' . $this->name . '" value="' . $a(json_encode($val)) . '" />';
 		$html[] = '</div>';
 		// rest of the form is managed on the client side
 		return implode("\n", $html);
 	}
 
+	/**
+	 * Get Ipd list
+	 *
+	 * @param   string   $val
+	 * @param   boolean  $alwaysUpdate
+	 * @return  array
+	 */
 	private static function getIdpList($val, $alwaysUpdate = TRUE)
 	{
 		// list is up to date
-		if (($mtime = $val['xmlPath'].':'.filemtime($val['xmlPath'])) == $val['xmlRead'] && !$alwaysUpdate)
+		if (!file_exists($val['xmlPath']))
+		{
+			return array(null, 'Invalid XML path');
+		}
+		if (($mtime = $val['xmlPath'] . ':' . filemtime($val['xmlPath'])) == $val['xmlRead'] && !$alwaysUpdate)
 		{
 			return array($mtime, $val['idps']);
 		}
@@ -137,6 +201,12 @@ class JFormFieldInstitutions extends JFormField
 		return array($mtime, $rv);
 	}
 
+	/**
+	 * Get a list of research and scholarship IDs
+	 *
+	 * @param   string  $ch
+	 * @return  array
+	 */
 	private static function getResearchAndScholarshipIdps($ch)
 	{
 		// fetch the latest InCommon metadata, if needed
@@ -145,24 +215,29 @@ class JFormFieldInstitutions extends JFormField
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-		if (file_exists(self::$mdDest)) {
+		if (file_exists(self::$mdDest))
+		{
 			curl_setopt($ch, CURLOPT_HTTPHEADER, ['If-Modified-Since: '.gmdate('D, d M Y H:i:s \G\M\T', filemtime(self::$mdDest))]);
 			$xml = curl_exec($ch);
-			if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 304) {
+			if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 304)
+			{
 				$xml = file_get_contents(self::$mdDest);
 			}
-			else {
+			else
+			{
 				file_put_contents(self::$mdDest, $xml);
 			}
 		}
-		else {
+		else
+		{
 			$xml = curl_exec($ch);
 			file_put_contents(self::$mdDest, curl_exec($ch));
 		}
 		curl_setopt($ch, CURLOPT_HTTPHEADER, []);
 
 		$xp = new \SimpleXMLElement($xml);
-		foreach ($xp->getNamespaces(TRUE) as $name=>$url) {
+		foreach ($xp->getNamespaces(TRUE) as $name => $url)
+		{
 			$xp->registerXPathNamespace($name ? $name : 'base', $url);
 		}
 		$rv = [];
@@ -173,7 +248,8 @@ class JFormFieldInstitutions extends JFormField
 				mdattr:EntityAttributes/
 					saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/
 						saml:AttributeValue[text()="http://id.incommon.org/category/research-and-scholarship" or text()="http://refeds.org/category/research-and-scholarship"]
-			]') as $entity) {
+			]') as $entity)
+		{
 			// easier to work with as an array, the SimpleXMLElement class is bizarre
 			$entity = (array)$entity;
 			$id = $entity['@attributes']['entityID'];
@@ -182,16 +258,17 @@ class JFormFieldInstitutions extends JFormField
 			$host = $ma[1];
 			$logo = $xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:Logo');
 			$logo = isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico';
-//			curl_setopt($ch, CURLOPT_URL, isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico');
-//			$iconData = curl_exec($ch);
-//			$icon = NULL;
-//			if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
-//				$ctype = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-//				if ($ctype == 'text/plain') {
-//					$ctype = 'image/x-icon';
-//				}
-//				$icon = 'data:'.$ctype.';base64,'.base64_encode($iconData);
-//			}
+			/*curl_setopt($ch, CURLOPT_URL, isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico');
+			$iconData = curl_exec($ch);
+			$icon = NULL;
+			if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
+				$ctype = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+				if ($ctype == 'text/plain')
+				{
+					$ctype = 'image/x-icon';
+				}
+				$icon = 'data:'.$ctype.';base64,'.base64_encode($iconData);
+			}*/
 			$rv[] = [
 				'entity_id' => $id,
 				'label'     => $title,
