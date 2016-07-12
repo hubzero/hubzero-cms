@@ -127,8 +127,8 @@
 
 		setViewType: function(type)
 		{
-			$(type).addClass('active');
-			$(viewstyle).removeClass('active');
+			$('#' + type).addClass('active');
+			$('#' + viewstyle).removeClass('active');
 			viewstyle = type;
 			var folder = this.getFolder();
 			this._setFrameUrl('index.php?option=com_media&view=mediaList&tmpl=component&folder='+folder+'&layout='+type);
