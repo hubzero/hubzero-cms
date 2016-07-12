@@ -64,8 +64,9 @@ class Gitlab
 	{
 		$this->url    = rtrim($url, DS);
 		$this->token  = $token;
-		$this->client = new \Guzzle\Http\Client();
-		$this->client->setSslVerification(false, false);
+		$this->client = new \GuzzleHttp\Client;
+
+		$this->client->setDefaultOption('verify', false);
 	}
 
 	/**
@@ -167,13 +168,13 @@ class Gitlab
 	private function _getRequest($resource)
 	{
 		// init get request
-		$request = $this->client->get($this->url . DS . $resource);
+		$request = $this->client->createRequest('GET', $this->url . DS . $resource);
 
 		// add our auth header
 		$request->addHeader('PRIVATE-TOKEN', $this->token);
 
 		// send and return response
-		$response = $request->send($request);
+		$response = $this->client->send($request);
 		return $response->json();
 	}
 
@@ -187,19 +188,19 @@ class Gitlab
 	private function _postRequest($resource, $params = array())
 	{
 		// init post request
-		$request = $this->client->post($this->url . DS . $resource);
+		$request = $this->client->createRequest('POST', $this->url . DS . $resource);
 
 		// set post fields
 		foreach ($params as $key => $value)
 		{
-			$request->setPostField($key, $value);
+			$request->getQuery()->set($key, $value);
 		}
 
 		// add our auth header
 		$request->addHeader('PRIVATE-TOKEN', $this->token);
 
 		// send and return response
-		$response = $request->send($request);
+		$response = $this->client->send($request);
 		return $response->json();
 	}
 
