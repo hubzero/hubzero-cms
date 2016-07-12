@@ -61,7 +61,7 @@ if ($canDo->get('core.edit.state'))
 					<?php echo $this->grid('sort', 'Plugin Name', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo $this->grid('sort', 'Published', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'Published', 'p.enabled', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
 					<?php echo $this->grid('sort', 'Order', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
