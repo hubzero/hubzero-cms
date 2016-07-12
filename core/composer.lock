@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dcf8a08aa13e35efef633547c6be4e54",
+    "hash": "93202ef436c0459fa02cddb3330311c8",
     "content-hash": "fb3ba5afccd424234efc42abf46425e7",
     "packages": [
         {
@@ -713,12 +713,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "46636c0e9ea80882ea2004998467f40832996e42"
+                "reference": "ef0e773dc3cb59aea8a796c4217ddb804b879986"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/46636c0e9ea80882ea2004998467f40832996e42",
-                "reference": "46636c0e9ea80882ea2004998467f40832996e42",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/ef0e773dc3cb59aea8a796c4217ddb804b879986",
+                "reference": "ef0e773dc3cb59aea8a796c4217ddb804b879986",
                 "shasum": ""
             },
             "require": {
@@ -751,7 +751,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-07-06 20:12:48"
+            "time": "2016-07-12 10:57:48"
         },
         {
             "name": "hubzero/orcid-php",
