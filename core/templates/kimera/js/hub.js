@@ -236,6 +236,9 @@ jQuery(document).ready(function($){
 					tip.attr('title', parts[1]);
 				}
 			},
+			content: function () {
+				return $(this).attr('title');
+			},
 			tooltipClass: 'tooltip'
 		});
 	}
