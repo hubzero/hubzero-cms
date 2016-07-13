@@ -189,7 +189,11 @@ class Products extends AdminController
 		$this->view->config = $this->config;
 
 		// Check if meta is needed for this product
-		$pType = $this->view->row->getTypeInfo()->name;
+		$pType = null;
+		if ($this->view->row->getId())
+		{
+			$pType = $this->view->row->getTypeInfo()->name;
+		}
 		$this->view->metaNeeded = false;
 		// Only software needs meta
 		if ($pType == 'Software Download')
