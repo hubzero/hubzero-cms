@@ -429,8 +429,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
 
+		// Need to calculate ALL publications
+		$allRows = $view->pub->entries('list', array('project' => $this->model->get('id'), 'dev' => 1));
+
 		// Get used space
-		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows);
+		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($allRows, false);
 		$view->params  = $this->model->params;
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
@@ -1878,7 +1881,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$rows = $objP->getRecords(array('project' => $this->model->get('id'), 'dev' => 1, 'ignore_access' => 1));
 
 		// Get used space
-		$dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows);
+		$dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows, false);
 		$quota   = $this->model->params->get('pubQuota')
 				? $this->model->params->get('pubQuota')
 						: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
@@ -2795,7 +2798,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->rows = $objP->getRecords($filters);
 
 		// Get used space
-		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows);
+		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows, false);
 		$view->params  = $model->params;
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
