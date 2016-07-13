@@ -360,14 +360,9 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 
 				$mailed = array();
 
+				$message->message = stripslashes($message->message);
 				$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
 				$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
-
-				$comment = new \Components\Support\Models\Comment();
-				$comment->set('created', Date::toSql());
-				$comment->set('created_by', 0);
-				$comment->set('access', 0);
-				$comment->set('comment', $message->message);
 
 				foreach ($tickets as $submitter)
 				{
@@ -395,10 +390,10 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 					}
 
 					// Try to ensure no duplicates
-					if (in_array($email, $mailed))
+					/*if (in_array($email, $mailed))
 					{
 						continue;
-					}
+					}*/
 
 					$old = new \Components\Support\Models\Ticket($submitter->id);
 					$old->set('open', 1);
@@ -406,12 +401,22 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 					$row = clone $old;
 					$row->set('open', 0);
 
+					$comment = new \Components\Support\Models\Comment();
+					$comment->set('created', Date::toSql());
+					$comment->set('created_by', 0);
+					$comment->set('access', 0);
+					$comment->set('comment', $message->message);
 					$comment->set('comment', str_replace('#XXX', '#' . $row->get('id'), $comment->get('comment')));
 					$comment->set('comment', str_replace('{ticket#}', $row->get('id'), $comment->get('comment')));
 
 					// Compare fields to find out what has changed for this ticket and build a changelog
 					$comment->changelog()->diff($old, $row);
 					$comment->set('ticket', $row->get('id'));
+
+					if (!$comment->store())
+					{
+						$this->setError($comment->getError());
+					}
 
 					$eview = new \Hubzero\Mail\View(array(
 						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
