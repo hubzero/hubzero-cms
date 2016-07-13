@@ -111,6 +111,7 @@ function submitbutton(pressbutton)
 						<input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
 					</td>
 				</tr>
+				<?php if ($this->row->getTypeInfo() && $this->row->getTypeInfo()->name == 'Software Download') { ?>
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
 					<td>
@@ -126,6 +127,7 @@ function submitbutton(pressbutton)
 						?>
 					</td>
 				</tr>
+			<?php } ?>
 			</tbody>
 		</table>
 
