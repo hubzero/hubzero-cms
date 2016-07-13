@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "93202ef436c0459fa02cddb3330311c8",
-    "content-hash": "fb3ba5afccd424234efc42abf46425e7",
+    "hash": "c530a5ae871eab037c1c10f1ea1e9f75",
+    "content-hash": "c1cd8608434ab8349b3428bf60a93984",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -713,12 +713,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "ef0e773dc3cb59aea8a796c4217ddb804b879986"
+                "reference": "44d9fa8251eeb52d3f248083bb83a8a19dd1cf02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/ef0e773dc3cb59aea8a796c4217ddb804b879986",
-                "reference": "ef0e773dc3cb59aea8a796c4217ddb804b879986",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/44d9fa8251eeb52d3f248083bb83a8a19dd1cf02",
+                "reference": "44d9fa8251eeb52d3f248083bb83a8a19dd1cf02",
                 "shasum": ""
             },
             "require": {
@@ -751,7 +751,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-07-12 10:57:48"
+            "time": "2016-07-13 10:10:06"
         },
         {
             "name": "hubzero/orcid-php",
@@ -2043,7 +2043,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "guzzle/guzzle": 20,
         "pelago/emogrifier": 20,
         "hubzero/framework": 20,
         "hubzero/flysystem-github": 20,
