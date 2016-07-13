@@ -379,7 +379,9 @@ class JLog
 			}
 
 			// Add the entry to the logger.
-			$this->loggers[$signature]->addEntry($entry);
+			// [!] HUBZERO - Commented out to prevent Joomla files from writing logs.
+			//               System logging is handled elsewhere.
+			//$this->loggers[$signature]->addEntry($entry);
 		}
 	}
 
