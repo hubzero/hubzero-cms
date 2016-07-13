@@ -197,7 +197,7 @@ if (!empty($errors))
 				}
 				?>
 
-					<input type="hidden" name="option" value="<?php $this->option; ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</form>
 
 			</div> <!-- // cartItems -->
