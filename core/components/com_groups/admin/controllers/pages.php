@@ -252,6 +252,12 @@ class Pages extends AdminController
 			$this->version->set('approved_by', NULL);
 		}
 
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$this->version->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		// save version settings
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		if (!$this->version->store(false, $this->group->isSuperGroup()))
