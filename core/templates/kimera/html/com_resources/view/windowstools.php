@@ -107,7 +107,7 @@ if ($mode != 'preview')
 						$this->js('
 							jQuery(document).ready(function($){
 								var primary = $(".btn-primary"),
-									url = "' . $lurl . '";
+									url = "' . str_replace('&amp;', '&', $lurl) . '";
 
 								if (primary.length) {
 									primary.on("click", function (e){
