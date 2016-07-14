@@ -183,7 +183,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 		if (!empty($filterGroups))
 		{
-			$userGroups = User::get('groups');
+			$userGroups = User::getAuthorisedGroups();
+			$userGroups = (is_array($userGroups) ? $userGroups : array());
 
 			if (!array_intersect($filterGroups, $userGroups))
 			{
