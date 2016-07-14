@@ -86,7 +86,7 @@ class Migration20160508203200ComWiki extends Base
 					$row->scope = ltrim($row->scope, '/');
 
 					$query = "UPDATE `#__wiki_pages`
-						SET `scope`='group' AND `scope_id`=" . $this->db->quote($row->gidNumber) . " AND `path`=" . $this->db->quote($row->scope) . "
+						SET `scope`='group', `scope_id`=" . $this->db->quote($row->gidNumber) . ", `path`=" . $this->db->quote($row->scope) . "
 						WHERE `id`=" . $this->db->quote($row->id);
 					$this->db->setQuery($query);
 					$this->db->query();
@@ -107,7 +107,7 @@ class Migration20160508203200ComWiki extends Base
 					$row->pidNumber = $this->db->loadResult();
 
 					$query = "UPDATE `#__wiki_pages`
-						SET `scope`='project' AND `scope_id`=" . $this->db->quote($row->pidNumber) . " AND `path`=" . $this->db->quote($row->scope) . "
+						SET `scope`='project', `scope_id`=" . $this->db->quote($row->pidNumber) . ", `path`=" . $this->db->quote($row->scope) . "
 						WHERE `id`=" . $this->db->quote($row->id);
 					$this->db->setQuery($query);
 					$this->db->query();
