@@ -846,6 +846,11 @@ class Register extends SiteController
 						$result = false;
 					}
 				}
+				else
+				{
+					$this->setError($user->getError());
+					$result = false;
+				}
 
 				// If everything is OK so far...
 				if ($result)
