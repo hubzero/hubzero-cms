@@ -259,7 +259,7 @@ class Section extends Relational
 			foreach ($this->categories()->rows() as $category)
 			{
 				// If it's marked as deleted, skip it
-				if ($category->get('state') == self::SATE_DELETED)
+				if ($category->get('state') == self::STATE_DELETED)
 				{
 					continue;
 				}
