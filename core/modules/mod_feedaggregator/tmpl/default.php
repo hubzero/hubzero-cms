@@ -59,7 +59,7 @@ if ($posts != false)
 				// item title
 				?>
 				<li class="newsfeed-item">
-					<a href="<?php echo $currItem->link; ?>" target="_blank">
+					<a href="<?php echo $currItem->url; ?>" target="_blank">
 						<h5><?php echo $currItem->title; ?></h5>
 					</a>
 

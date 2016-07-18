@@ -34,6 +34,6 @@
 namespace Modules\Feedaggregator;
 
 require_once __DIR__ . DS . 'helper.php';
-require_once(PATH_CORE . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'posts.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'post.php');
 
 with(new Helper($params, $module))->display();
