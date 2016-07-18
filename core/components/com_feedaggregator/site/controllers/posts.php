@@ -182,6 +182,11 @@ class Posts extends SiteController
 
 		$messages = Notify::messages($this->_option);
 
+		if (!isset($total))
+		{
+			$total = 0;
+		}
+
 		$this->view
 			->set('messages', $messages)
 			->set('posts', $posts)
