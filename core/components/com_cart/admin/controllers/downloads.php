@@ -90,7 +90,13 @@ class Downloads extends AdminController
 		if ($skuRequested) {
 			$warehouse = new Warehouse();
 			$skuInfo = $warehouse->getSkuInfo($skuRequested);
-			$skuName = $skuInfo['info']->pName . ', ' . $skuInfo['info']->sSku;
+			if ($skuInfo)
+			{
+				$skuName = $skuInfo['info']->pName . ', ' . $skuInfo['info']->sSku;
+			}
+			else {
+				$skuName = 'Product no longer exists';
+			}
 
 			$this->view->filters['skuRequested'] = $skuRequested;
 			$this->view->skuRequestedName = $skuName;
@@ -112,7 +118,6 @@ class Downloads extends AdminController
 		$this->view->rows = CartDownload::getDownloads('list', $this->view->filters);
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 

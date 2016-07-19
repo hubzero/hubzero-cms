@@ -103,7 +103,7 @@ class CartDownload
 
 		if (!empty($filters['skuRequested']))
 		{
-			$sql .= " AND s.sId = " . $db->quote($filters['skuRequested']);
+			$sql .= " AND d.sId = " . $db->quote($filters['skuRequested']);
 		}
 
 		if (isset($filters['sort']))
