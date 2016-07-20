@@ -38,6 +38,7 @@ use Hubzero\Config\Registry;
 use Exception;
 use User;
 use Lang;
+use stdClass;
 
 /**
  * Plugin loader
