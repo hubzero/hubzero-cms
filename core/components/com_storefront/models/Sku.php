@@ -831,7 +831,8 @@ class Sku
 		self::updateOptions($product);
 	}
 
-	private static function updateOptions($product) {
+	private static function updateOptions($product)
+	{
 		$db = \App::get('db');
 
 		$productOptionGroups = $product->getOptionGroups();
