@@ -304,7 +304,7 @@ class Option
 				}
 				catch (\Exception $e)
 				{
-					$sku->unpublish();
+					$sku->unPublish();
 					$skusDisabled = true;
 				}
 			}

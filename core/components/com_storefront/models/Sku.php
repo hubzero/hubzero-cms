@@ -35,6 +35,7 @@ use Date;
 require_once(__DIR__ . DS . 'Memberships.php');
 require_once(__DIR__ . DS . 'Product.php');
 require_once(__DIR__ . DS . 'Option.php');
+require_once(__DIR__ . DS . 'OptionGroup.php');
 require_once(__DIR__ . DS . 'Warehouse.php');
 
 /**
@@ -246,19 +247,6 @@ class Sku
 
 	public function verify()
 	{
-		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
-		$integrityCheck = \Integrity::skuIntegrityCheck($this);
-
-		if ($integrityCheck->status != 'ok')
-		{
-			$errorMessage = "Integrity check error:";
-			foreach ($integrityCheck->errors as $error)
-			{
-				$errorMessage .= '<br>' . $error;
-			}
-			throw new \Exception($errorMessage);
-		}
-
 		if (!isset($this->data->price) || !is_numeric($this->data->price))
 		{
 			throw new \Exception(Lang::txt('No SKU price set'));
@@ -287,7 +275,7 @@ class Sku
 			}
 			else {
 				// There are some options set that are from option groups not applied to this product
-				// (most likely due to the removal of the option group from the product.)
+				// (most likely due to the removal of the option group from the product.) This should never happen.
 				$extraOptionsSet = true;
 			}
 		}
@@ -302,6 +290,20 @@ class Sku
 		if ($extraOptionsSet)
 		{
 			throw new \Exception(Lang::txt('Extra options are set'));
+		}
+
+		// Integrity check
+		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
+		$integrityCheck = \Integrity::skuIntegrityCheck($this);
+
+		if ($integrityCheck->status != 'ok')
+		{
+			$errorMessage = "Integrity check error:";
+			foreach ($integrityCheck->errors as $error)
+			{
+				$errorMessage .= '<br>' . $error;
+			}
+			throw new \Exception($errorMessage);
 		}
 
 		return true;
@@ -819,6 +821,43 @@ class Sku
 		}
 
 		return($sku);
+	}
+
+	// Update all SKUs' references for a given product -- called when the product is updated to bring the SKUs up to speed
+	public static function updateReferences($pId)
+	{
+		$product = new Product($pId);
+
+		self::updateOptions($product);
+	}
+
+	private static function updateOptions($product) {
+		$db = \App::get('db');
+
+		$productOptionGroups = $product->getOptionGroups();
+		$optionsSql = '(0';
+		foreach ($productOptionGroups as $ogId)
+		{
+			$optionGroup = new OptionGroup($ogId);
+			$optionGroupOptions = $optionGroup->getOptions();
+			foreach ($optionGroupOptions as $option)
+			{
+				$optionsSql .= ", " . $db->quote($option->getId());
+			}
+		}
+		$optionsSql .= ')';
+
+		$productSkus = $product->getSkus();
+		$skusSql = '(0';
+		foreach ($productSkus as $sku)
+		{
+			$skusSql .= ", " . $db->quote($sku->getId());
+		}
+		$skusSql .= ')';
+
+		$sql = "DELETE FROM `#__storefront_sku_options` WHERE `sId` IN {$skusSql} AND `oId` NOT IN {$optionsSql}";
+		$db->setQuery($sql);
+		$db->query();
 	}
 
 
