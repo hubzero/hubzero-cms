@@ -2106,7 +2106,6 @@ class Resources extends SiteController
 		{
 			$user = User::getInstance();
 		}
-
 		if ($resource->access == 1 && $user->isGuest())
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
@@ -2117,6 +2116,15 @@ class Resources extends SiteController
 		 || $resource->access == 3  // protected
 		 || !$resource->standalone) // child, no direct access
 		{
+			if ($user->isGuest())
+			{
+				$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+				App::redirect(
+					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+					Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
+					'warning'
+				);
+			}
 			if ($this->checkGroupAccess($resource, $user))
 			{
 				App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
