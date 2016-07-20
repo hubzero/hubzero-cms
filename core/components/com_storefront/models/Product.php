@@ -1195,6 +1195,9 @@ class Product
 
 	private function updateDependencies()
 	{
+		// Update SKUs' references for this product first
+		Sku::updateReferences($this->getId());
+
 		// Check all active product SKUs and disable those that do not verify anymore
 		$skus = $this->getSkus();
 		$skusDisabled = false;
@@ -1208,7 +1211,7 @@ class Product
 				}
 				catch (\Exception $e)
 				{
-					$sku->unpublish();
+					$sku->unPublish();
 					$skusDisabled = true;
 				}
 			}
