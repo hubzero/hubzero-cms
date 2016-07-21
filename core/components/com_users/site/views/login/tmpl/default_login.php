@@ -86,7 +86,7 @@ endforeach;
 			<div class="<?php echo $primary; ?> upper"></div>
 			<div class="auth">
 				<div class="person">
-					<?php if (isset($user_img) && file_exists($user_img)) : ?>
+					<?php if (isset($user_img) && file_exists($user_img) && !$user->get('block')) : ?>
 						<img src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
 					<?php endif; ?>
 				</div>
@@ -133,7 +133,7 @@ endforeach;
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
-						<?php if (isset($user) && is_object($user)) : ?>
+						<?php if (isset($user) && is_object($user) && !$user->get('block')) : ?>
 							<input type="hidden" name="username" value="<?php echo $user->get('username'); ?>" />
 							<div class="existing-name"><?php echo $user->get('name'); ?></div>
 							<div class="existing-email"><?php echo $user->get('email'); ?></div>
