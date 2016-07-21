@@ -103,6 +103,7 @@
 	#hubForm .combine_options .option {
 		margin: 0 !important;
 		padding: 0;
+		float: none;
 	}
 	#hubForm .editable label {
 		padding: 0;
