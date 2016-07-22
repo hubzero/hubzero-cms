@@ -121,6 +121,10 @@ class Browse extends \Hubzero\Component\SiteController
 		$view->collectionName = $collectionName;
 		$view->products = $products;
 
+		$view->config = $this->config;
+
+		$this->css('storefront.css', 'com_storefront');
+
 		// Breadcrumbs
 		//$this->pathway->addItem('Browsing collection', Route::url('index.php?id=' . '5'));
 

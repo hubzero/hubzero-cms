@@ -369,6 +369,30 @@ class Collection
 			// Set ID
 			$this->setId($db->insertid());
 		}
+
+		// ### Do image
+		$img = $this->getImage();
+
+		// First delete all old references
+		$sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'collection' AND `imgObjectId` = " . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
+
+		if ($img)
+		{
+			$sql = "INSERT INTO `#__storefront_images` SET
+					`imgName` = " . $db->quote($img->imgName) . ",
+					`imgObject` = 'collection',
+					`imgObjectId` = " . $db->quote($this->getId()) . ",
+					`imgPrimary` = 1";
+			$db->setQuery($sql);
+			$db->query();
+
+			// Refresh object's images info to get the latest image IDs
+			$this->getImage(true);
+		}
+
+		return true;
 	}
 
 	/**
@@ -392,6 +416,97 @@ class Collection
 		$db->query();
 
 		return true;
+	}
+
+	/* ****************************** Images ******************************* */
+
+	/**
+	 * Get collection image
+	 *
+	 * @param	void
+	 * @return	Object		Collection image
+	 */
+	public function getImage($forceReload = false)
+	{
+		if (!isset($this->data->image) || $forceReload)
+		{
+			if ($this->getId())
+			{
+				// Get collection image
+				$db = \App::get('db');
+				$sql = "SELECT imgId, imgName FROM `#__storefront_images`
+				WHERE `imgObject` = 'collection'
+				AND `imgObjectId` = " . $db->quote($this->getId());
+				$db->setQuery($sql);
+				$image = $db->loadObject();
+
+				if ($image)
+				{
+					$this->setImage($image);
+				}
+				else
+				{
+					return NULL;
+				}
+			}
+			else
+			{
+				return NULL;
+			}
+		}
+		return $this->data->image;
+	}
+
+	/**
+	 * Set collection image
+	 *
+	 * @param	array		Product images
+	 * @return	bool		true
+	 */
+	public function setImage($img)
+	{
+		if (is_object($img))
+		{
+			$this->data->image = $img;
+		}
+		else {
+			$image = new \stdClass();
+			$image->imgName = $img;
+			$this->data->image = $image;
+		}
+		return true;
+	}
+
+	/**
+	 * Remove image
+	 *
+	 * @param	int			Image ID
+	 * @return	bool		Success of Failure
+	 */
+	public function removeImage($imgId)
+	{
+		$img = $this->getImage();
+		if (empty($img))
+		{
+			return false;
+		}
+
+		if ($imgId == $img->imgId)
+		{
+			$this->data->image = false;
+
+			// Remove the actual file
+			$config = Component::params('com_storefront');
+			$imgWebPath = trim($config->get('collectionsImagesFolder', '/app/site/storefront/collections'), DS);
+			$path = PATH_ROOT . DS . $imgWebPath . DS . $this->getId();
+
+			if (!is_file($path . DS . $img->imgName))
+			{
+				return false;
+			}
+			Filesystem::delete($path . DS . $img->imgName);
+			return true;
+		}
 	}
 
 	/* ******************************** Static functions ********************************** */

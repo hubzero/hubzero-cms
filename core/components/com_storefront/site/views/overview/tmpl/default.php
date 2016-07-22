@@ -31,7 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $customLandingPage = $this->config->get('landingPage', 0);
+
+$return = base64_encode(Route::url('index.php?option=storefront'));
+$loginUrl = Route::url('index.php?option=com_users&view=login&return=' . $return);
 
 if ($customLandingPage && is_numeric($customLandingPage))
 {
@@ -64,6 +69,8 @@ if ($customLandingPage && is_numeric($customLandingPage))
 	<section class="section">
 		<div class="section-inner">
 
+			<div class="login-storefront"><a class="btn" href="<?php echo($loginUrl); ?>">Login</a></div>
+
 			<?php
 
 			echo $article->text;
@@ -76,12 +83,9 @@ if ($customLandingPage && is_numeric($customLandingPage))
 <?php
 }
 // Use default view
-else {
-
-	$return = base64_encode(Route::url('index.php?option=storefront'));
-	$loginUrl = Route::url('index.php?option=com_users&view=login&return=' . $return);
-
-	?>
+else
+{
+?>
 
 	<header id="content-header">
 		<h2><?php echo Lang::txt('COM_STOREFRONT'); ?></h2>
