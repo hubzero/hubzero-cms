@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-     ->js()
+	->js();
 ?>
 
 <header id="content-header">
