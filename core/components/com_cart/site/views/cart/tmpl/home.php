@@ -32,7 +32,7 @@
 defined('_HZEXEC_') or die('Restricted access');
 
 $this->css()
-     ->js()
+	->js();
 ?>
 
 <header id="content-header">
