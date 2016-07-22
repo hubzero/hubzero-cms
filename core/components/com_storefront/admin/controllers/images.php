@@ -32,8 +32,10 @@ namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Product;
+use Components\Storefront\Models\Collection;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php');
 
 /**
  * Manage logo for a course
@@ -184,22 +186,30 @@ class Images extends AdminController
 		{
 			case 'product':
 				// Instantiate a model, change some info and save
-				$product = new Product($id);
-				$product->setImage($filename . '.' . $ext);
-			break;
+				$object = new Product($id);
+				$object->setImage($filename . '.' . $ext);
+
+				break;
+
+			case 'collection':
+				// Instantiate a model, change some info and save
+				$object = new Collection($id);
+				$object->setImage($filename . '.' . $ext);
+				break;
 
 			default:
 				echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
 				return;
 			break;
 		}
-		if (!$product->save())
+
+		if (!$object->save())
 		{
-			echo json_encode(array('error' => 'Error updating product'));
+			echo json_encode(array('error' => 'Error updating the object'));
 			return;
 		}
 
-		$imgId = $product->getImage()->imgId;
+		$imgId = $object->getImage()->imgId;
 
 		$this_size = filesize($file);
 		list($width, $height, $type, $attr) = getimagesize($file);
@@ -351,15 +361,20 @@ class Images extends AdminController
 		}
 
 		$type = strtolower(Request::getWord('type', ''));
-		$imgId = Request::getInt('currentfile', '');
+		$imgId = Request::getVar('currentfile', '');
 
 		// Instantiate a model, change some info and save
 		switch ($type)
 		{
 			case 'product':
-				$product = new Product($id);
-				$product->removeImage($imgId);
+				$object = new Product($id);
+				$object->removeImage($imgId);
 			break;
+
+			case 'collection':
+				$object = new Collection($id);
+				$object->removeImage($imgId);
+				break;
 
 			default:
 				echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
@@ -367,9 +382,9 @@ class Images extends AdminController
 			break;
 		}
 
-		if (!$product->update())
+		if (!$object->save())
 		{
-			echo json_encode(array('error' => 'Error saving product'));
+			echo json_encode(array('error' => 'Error saving object'));
 			return;
 		}
 
@@ -407,14 +422,20 @@ class Images extends AdminController
 	protected function _path($type, $id)
 	{
 		$config = Component::params('com_storefront');
-		$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
-		$path = PATH_ROOT . DS . $imgWebPath . DS;
 
 		switch ($type)
 		{
 			case 'product':
+				$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
+				$path = PATH_ROOT . DS . $imgWebPath . DS;
 				$path .= $id;
 			break;
+
+			case 'collection':
+				$imgWebPath = trim($config->get('collectionsImagesFolder', '/app/site/storefront/collections'), DS);
+				$path = PATH_ROOT . DS . $imgWebPath . DS;
+				$path .= $id;
+				break;
 
 			default:
 				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE'));

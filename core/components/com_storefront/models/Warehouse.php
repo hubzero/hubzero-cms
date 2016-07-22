@@ -495,9 +495,10 @@ class Warehouse extends \Hubzero\Base\Object
 	{
 		$useAccessGroups = \Component::params('com_storefront')->get('productAccess');
 
-		$sql = "SELECT DISTINCT p.*, pt.ptName FROM `#__storefront_products` p
+		$sql = "SELECT DISTINCT p.*, pt.ptName, i.imgName FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`
-				LEFT JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
+				LEFT JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`
+				LEFT JOIN `#__storefront_images` i ON p.`pId` = i.`imgObjectId`";
 		if ($useAccessGroups)
 		{
 			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag ON p.`pId` = ag.`pId`";
@@ -544,6 +545,10 @@ class Warehouse extends \Hubzero\Base\Object
 				$sql .= '))';
 			}
 		}
+
+		// Image stuff (relying on the fact thet there is only one primary image per product -- otherwise the same product is returned multiple times)
+		$sql .= " AND (i.`imgObject` = 'product' OR i.`imgObject` IS NULL) AND (i.`imgPrimary` = 1 OR i.`imgPrimary` IS NULL) ";
+
 		// Filter by filters
 		//print_r($filters);
 
@@ -1459,17 +1464,20 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	private function _getCollections($collectionType = 'category', $filters = false)
 	{
-		$sql = "SELECT DISTINCT c.`cId`, c.`cAlias`, c.`cName`
+		$sql = "SELECT DISTINCT c.`cId`, c.`cAlias`, c.`cName`, i.imgName
 				FROM `#__storefront_collections` c
 				LEFT JOIN `#__storefront_product_collections` pc ON c.`cId` = pc.`cId`
 				LEFT JOIN `#__storefront_products` p ON p.`pId` = pc.`pId`
+				LEFT JOIN `#__storefront_images` i ON c.`cId` = i.`imgObjectId`
 				WHERE c.`cParent` IS NULL AND c.`cActive` = 1 AND p.`pActive` = 1";
 
 		$sql .= " AND c.`cType` = '{$collectionType}'";
 
+		// Image stuff
+		$sql .= " AND (i.`imgObject` = 'collection' OR i.`imgObject` IS NULL) AND (i.`imgPrimary` = 1 OR i.`imgPrimary` IS NULL) ";
+
 		$this->_db->setQuery($sql);
 		$res = $this->_db->loadObjectList();
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
 
 		return $res;
 	}
