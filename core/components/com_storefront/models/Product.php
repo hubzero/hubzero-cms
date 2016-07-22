@@ -93,18 +93,6 @@ class Product
 		$db->setQuery($sql);
 		$productInfo = $db->loadObject();
 
-		// Get product image(s)
-		if ($productInfo)
-		{
-			$sql = "SELECT imgId, imgName FROM `#__storefront_images`
-					WHERE `imgObject` = 'product'
-					AND `imgObjectId` = " . $db->quote($pId) . "
-					ORDER BY `imgPrimary` DESC";
-			$db->setQuery($sql);
-			$images = $db->loadObjectList();
-			$productInfo->images = $images;
-		}
-
 		if (!$productInfo)
 		{
 			throw new \Exception(Lang::txt('Error loading product'));
@@ -885,7 +873,6 @@ class Product
 	public function save()
 	{
 		$this->verify();
-
 		$pId = $this->getId();
 
 		if ($pId)

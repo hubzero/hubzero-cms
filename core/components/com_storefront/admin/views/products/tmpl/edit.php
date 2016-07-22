@@ -325,7 +325,7 @@ function submitbutton(pressbutton)
 			?>
 				<div id="img-container">
 					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
-					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($image); ?>" />
+					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
 				</div>
 
 				<table class="formed">
@@ -337,7 +337,7 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<a id="img-delete" <?php echo $image ? '' : 'style="display: none;"'; ?>
-							   href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $img->imgId; ?>&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1"
+							   href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1"
 							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
 						</td>
 					</tr>
@@ -388,6 +388,7 @@ function submitbutton(pressbutton)
 										$('#img-size').text(response.size);
 										$('#img-width').text(response.width);
 										$('#img-height').text(response.height);
+										$('#currentfile').val(response.imgId);
 
 										$('#img-delete').show();
 									}
@@ -397,7 +398,8 @@ function submitbutton(pressbutton)
 						$('#img-delete').on('click', function (e) {
 							e.preventDefault();
 							var el = $(this);
-							$.getJSON(el.attr('href').nohtml(), {}, function(response) {
+							var currentfileVal = $('#currentfile').val();
+							$.getJSON(el.attr('href').nohtml(), {currentfile: currentfileVal}, function(response) {
 								if (response.success) {
 									$('#img-display').attr('src', '<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_storefront/site/assets/img/noimage.png');
 									$('#img-name').text('[ none ]');

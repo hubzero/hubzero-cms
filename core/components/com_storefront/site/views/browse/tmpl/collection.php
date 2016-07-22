@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		if (!empty($this->products))
 		{
-			echo '<ul>';
+			echo '<ul class="rres cf">';
 			foreach ($this->products as $product)
 			{
 				// find if there is an alias
@@ -61,14 +61,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$productIdentificator = $product->pAlias;
 				}
 
-				echo '<li>';
+				echo '<li class="';
+				if ($product->imgName)
+				{
+					echo 'with-img';
+				}
+				echo '">';
+					if ($product->imgName)
+					{
+						echo '<div class="img" style="background-image: url(';
+						$imgPath = DS . trim($this->config->get('imagesFolder', '/app/site/storefront/products'), DS) . DS . $product->pId . DS;
+						echo "'" . $imgPath . $product->imgName . "'";
+						echo ')"></div>';
+					}
+					else
+					{
+						echo '<div class="img" style="background-image: url(';
+						$imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS . 'img' . DS;
+						echo "'" . $imgPath . "noimage.png'";
+						echo ')"></div>';
+					}
 					echo '<a href="';
 					echo Route::url('index.php?option=' . Request::getVar('option')) . 'product/' . $productIdentificator;
 					echo '">';
-					echo $product->pName;
+					echo '<div class="content">';
+					echo '<h3>' . $product->pName . '</h3>';
+					echo '</div>';
 					echo '</a>';
 				echo '</li>';
 			}
+			echo '<li class="stub"><div class="a"><div class="content"><p>&nbsp;</p></div></div></li>';
 			echo '</ul>';
 		}
 		else {

@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+	->js();
+
 ?>
 
 <header id="content-header">
@@ -49,12 +52,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		if (sizeof($this->categories))
 		{
-			echo '<h3>Product categories</h3>';
-			echo '<ul>';
+			//echo '<h3>Product categories</h3>';
 
+			echo '<ul class="rres cf">';
 			foreach ($this->categories as $category)
 			{
-				echo '<li>';
+				echo '<li class="';
+				if (isset($category->imgName) && $category->imgName)
+				{
+					echo 'with-img';
+				}
+				echo '">';
+				if (isset($category->imgName) && $category->imgName)
+				{
+					echo '<div class="img" style="background-image: url(';
+					$imgPath = DS . trim($this->config->get('collectionsImagesFolder', '/app/site/storefront/collections'), DS) . DS . $category->cId . DS;
+					echo "'" . $imgPath . $category->imgName . "'";
+					echo ')"></div>';
+				}
+
 				echo '<a href="';
 
 				// Use alias if exists, otherwise use pId
@@ -65,10 +81,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 
 				echo Route::url('index.php?option=' . $this->option) . 'browse/' . $categoryId;
-				echo '">' . $category->cName . '</a>';
+				echo '">';
+				echo '<div class="content">';
+				echo '<h3>' . $category->cName . '</h3>';
+				echo '</div>';
+				echo '</a>';
 				echo '</li>';
 			}
-
+			echo '<li class="stub"><div class="a"><div class="content"><p>&nbsp;</p></div></div></li>';
 			echo '</ul>';
 		}
 		else
