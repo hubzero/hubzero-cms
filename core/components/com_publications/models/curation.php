@@ -1971,7 +1971,19 @@ class Curation extends Object
 		}
 
 		$bundle = $this->_pub->path('base', true) . DS . $this->getBundleName();
-		$serveas = \Hubzero\Utility\Sanitize::paranoid($this->_pub->version->get('title')) . ' v.' . $this->_pub->version->get('version_label') . '.zip';
+		$doi = $this->_pub->version->get('doi');
+
+		if ($doi != '')
+		{
+			$doi = str_replace('.', '_', $doi);
+			$doi = str_replace('/', '_', $doi);
+			$serveas = $doi . '.zip';
+		}
+		else
+		{
+			// Already contains a '.zip' on the end.
+			$serveas = $this->getBundleName();
+		}
 
 		if (!is_file($bundle))
 		{
@@ -2028,18 +2040,25 @@ class Curation extends Object
 			return false;
 		}
 
+		// Use DOI if available
+		$doi = $this->_pub->version->get('doi');
+		if ($doi != '')
+		{
+			$doi = str_replace('.', '_', $doi);
+			$doi = str_replace('/', '_', $doi);
+			$bundleName = $doi;
+		}
+		else
+		{
+			$bundleName = rtrim($this->getBundleName(), '.zip');
+		}
+
 		// Set archival properties
-		$bundleDir  = \Hubzero\Utility\Sanitize::paranoid($this->_pub->title);
+		$bundleDir  = $bundleName;
 		$tarname 	= $this->getBundleName();
 		$tarpath 	= $this->_pub->path('base', true) . DS . $tarname;
 		$licFile 	= $this->_pub->path('base', true) . DS . 'LICENSE.txt';
 		$readmeFile = $this->_pub->path('base', true) . DS . 'README.txt';
-
-		// File already exists.
-		if (file_exists($tarpath))
-		{
-			return true;
-		}
 
 		// Get attachment type model
 		$attModel = new Attachments($this->_db);
