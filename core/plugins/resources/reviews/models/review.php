@@ -32,6 +32,7 @@
 namespace Components\Resources\Reviews\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Item\Vote;
 use Request;
 use Lang;
 use Date;
@@ -89,7 +90,8 @@ class Review extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'comment' => 'notempty'
+		'comment'     => 'notempty',
+		'resource_id' => 'positive|nonzero'
 	);
 
 	/**
@@ -99,7 +101,7 @@ class Review extends Relational
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
+		'user_id'
 	);
 
 	/**
@@ -117,6 +119,17 @@ class Review extends Relational
 	 * @var  string
 	 */
 	protected $base = null;
+
+	/**
+	 * Generates automatic user_id field value
+	 *
+	 * @return  int
+	 * @since   2.0.0
+	 **/
+	public function automaticUserId()
+	{
+		return (int)User::get('id', 0);
+	}
 
 	/**
 	 * Is the question open?
@@ -158,7 +171,7 @@ class Review extends Relational
 	 */
 	public function creator()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'user_id');
 	}
 
 	/**
@@ -172,18 +185,28 @@ class Review extends Relational
 	}
 
 	/**
+	 * Get a list of votes
+	 *
+	 * @return  object
+	 */
+	public function votes()
+	{
+		return $this->oneShiftsToMany('Hubzero\Item\Vote', 'item_id', 'item_type');
+	}
+
+	/**
 	 * Check if a user has voted for this entry
 	 *
 	 * @param   integer  $user_id  Optinal user ID to set as voter
 	 * @param   string   $ip       IP Address
 	 * @return  integer
 	 */
-	/*public function ballot($user_id = 0, $ip = null)
+	public function ballot($user_id = 0, $ip = null)
 	{
 		if (User::isGuest())
 		{
 			$vote = new Vote();
-			$vote->set('item_type', 'response');
+			$vote->set('item_type', 'review');
 			$vote->set('item_id', $this->get('id'));
 			$vote->set('created_by', $user_id);
 			$vote->set('ip', $ip);
@@ -214,14 +237,14 @@ class Review extends Relational
 		if (!$vote || !$vote->get('id'))
 		{
 			$vote = new Vote();
-			$vote->set('item_type', 'response');
+			$vote->set('item_type', 'review');
 			$vote->set('item_id', $this->get('id'));
 			$vote->set('created_by', $user_id);
 			$vote->set('ip', $ip);
 		}
 
 		return $vote;
-	}*/
+	}
 
 	/**
 	 * Vote for the entry
@@ -230,22 +253,22 @@ class Review extends Relational
 	 * @param   integer  $user_id  Optinal user ID to set as voter
 	 * @return  boolean  False if error, True on success
 	 */
-	/*public function vote($vote = 0, $user_id = 0, $ip = null)
+	public function vote($vote = 0, $user_id = 0, $ip = null)
 	{
 		if (!$this->get('id'))
 		{
-			$this->addError(Lang::txt('No record found'));
+			$this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_NO_VOTE_FOUND'));
 			return false;
 		}
 
 		if (!$vote)
 		{
-			$this->addError(Lang::txt('No vote provided'));
+			$this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_NO_VOTE_PROVIDED'));
 			return false;
 		}
 
 		$al = $this->ballot($user_id, $ip);
-		$al->set('item_type', 'response');
+		$al->set('item_type', 'review');
 		$al->set('item_id', $this->get('id'));
 		$al->set('created_by', $user_id);
 		$al->set('ip', $ip);
@@ -254,13 +277,13 @@ class Review extends Relational
 
 		if ($this->get('created_by') == $user_id)
 		{
-			$this->addError(Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
+			$this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_RECOMMEND_OWN'));
 			return false;
 		}
 
 		if ($vote != $al->get('vote', 0))
 		{
-			if ($vote > 0)
+			/*if ($vote > 0)
 			{
 				$this->set('helpful', (int) $this->get('helpful') + 1);
 				if ($al->get('id'))
@@ -280,7 +303,7 @@ class Review extends Relational
 			if (!$this->save())
 			{
 				return false;
-			}
+			}*/
 
 			$al->set('vote', $vote);
 
@@ -292,7 +315,7 @@ class Review extends Relational
 		}
 
 		return true;
-	}*/
+	}
 
 	/**
 	 * Transform comment
@@ -302,6 +325,21 @@ class Review extends Relational
 	public function transformContent()
 	{
 		return $this->comment;
+	}
+
+	/**
+	 * Load a record by resource_id and user_id
+	 *
+	 * @param   integer  $resource_id
+	 * @param   integer  $user_id
+	 * @return  object
+	 */
+	public static function oneByUser($resource_id, $user_id)
+	{
+		return self::all()
+			->whereEquals('resource_id', $resource_id)
+			->whereEquals('user_id', $user_id)
+			->row();
 	}
 
 	/**
@@ -322,14 +360,14 @@ class Review extends Relational
 		}
 
 		// Remove vote logs
-		/*foreach ($this->votes()->rows() as $vote)
+		foreach ($this->votes()->rows() as $vote)
 		{
 			if (!$vote->destroy())
 			{
 				$this->addError($vote->getError());
 				return false;
 			}
-		}*/
+		}
 
 		// Attempt to delete the record
 		return parent::destroy();

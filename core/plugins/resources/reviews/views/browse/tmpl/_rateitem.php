@@ -45,12 +45,14 @@ if ($vote = $this->item->get('vote'))
 {
 	switch ($vote)
 	{
+		case 1:
 		case 'yes':
 		case 'positive':
 		case 'like':
 			$lcls = ' chosen';
 		break;
 
+		case -1:
 		case 'no':
 		case 'negative':
 		case 'dislike':
