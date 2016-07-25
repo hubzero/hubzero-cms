@@ -33,9 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$review = new ResourcesModelReview($this->review);
-
-if ($review->exists())
+if ($this->review->get('id'))
 {
 	$title = Lang::txt('PLG_RESOURCES_REVIEWS_EDIT_YOUR_REVIEW');
 }
@@ -45,7 +43,7 @@ else
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $review->get('resource_id') . '&active=reviews'); ?>" method="post" id="commentform">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->review->get('resource_id') . '&active=reviews'); ?>" method="post" id="commentform">
 	<section class="below section">
 		<h3 id="reviewform-title">
 			<?php echo $title; ?>
@@ -54,22 +52,23 @@ else
 			<span class="comment-anchor"></span>
 			<?php
 			$anon = 1;
-			if (!$this->user->get('guest'))
+			if (!User::isGuest())
 			{
 				$anon = 0;
 			}
 			?>
-			<img src="<?php echo $review->creator()->picture($anon); ?>" alt="" />
+			<img src="<?php echo $this->review->creator()->picture($anon); ?>" alt="" />
 		</p>
 		<fieldset>
-			<input type="hidden" name="created" value="<?php echo $review->get('created'); ?>" />
-			<input type="hidden" name="reviewid" value="<?php echo $review->get('id'); ?>" />
-			<input type="hidden" name="user_id" value="<?php echo $review->get('user_id'); ?>" />
-			<input type="hidden" name="resource_id" value="<?php echo $review->get('resource_id'); ?>" />
+			<input type="hidden" name="review[created]" value="<?php echo $this->review->get('created'); ?>" />
+			<input type="hidden" name="review[id]" value="<?php echo $this->review->get('id'); ?>" />
+			<input type="hidden" name="review[user_id]" value="<?php echo $this->review->get('user_id'); ?>" />
+			<input type="hidden" name="review[resource_id]" value="<?php echo $this->review->get('resource_id'); ?>" />
+			<input type="hidden" name="review[state]" value="<?php echo $this->review->get('state'); ?>" />
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="view" />
-			<input type="hidden" name="id" value="<?php echo $review->get('resource_id'); ?>" />
-			<input type="hidden" name="state" value="<?php echo $review->get('state'); ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->review->get('resource_id'); ?>" />
 			<input type="hidden" name="action" value="savereview" />
 			<input type="hidden" name="active" value="reviews" />
 
@@ -82,27 +81,27 @@ else
 			<fieldset>
 				<legend><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FORM_RATING'); ?>:</legend>
 				<label>
-					<input class="option" id="review_rating_1" name="rating" type="radio" value="1"<?php if ($review->get('rating') == 1) { echo ' checked="checked"'; } ?> />
+					<input class="option" id="review_rating_1" name="review[rating]" type="radio" value="1"<?php if ($this->review->get('rating') == 1) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
 					<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_POOR'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_2" name="rating" type="radio" value="2"<?php if ($review->get('rating') == 2) { echo ' checked="checked"'; } ?> />
+					<input class="option" id="review_rating_2" name="review[rating]" type="radio" value="2"<?php if ($this->review->get('rating') == 2) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
 					<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_FAIR'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_3" name="rating" type="radio" value="3"<?php if ($review->get('rating') == 3) { echo ' checked="checked"'; } ?> />
+					<input class="option" id="review_rating_3" name="review[rating]" type="radio" value="3"<?php if ($this->review->get('rating') == 3) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
 					<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_GOOD'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_4" name="rating" type="radio" value="4"<?php if ($review->get('rating') == 4) { echo ' checked="checked"'; } ?> />
+					<input class="option" id="review_rating_4" name="review[rating]" type="radio" value="4"<?php if ($this->review->get('rating') == 4) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
 					<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_VERY_GOOD'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_5" name="rating" type="radio" value="5"<?php if ($review->get('rating') == 5) { echo ' checked="checked"'; } ?> />
+					<input class="option" id="review_rating_5" name="review[rating]" type="radio" value="5"<?php if ($this->review->get('rating') == 5) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
 					<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_EXCELLENT'); ?>
 				</label>
@@ -116,12 +115,12 @@ else
 				}
 				?>
 				<?php
-				echo $this->editor('comment', $this->escape($review->content('raw')), 35, 10, 'review_comments', array('class' => 'minimal no-footer'));
+				echo $this->editor('review[comment]', $this->escape($this->review->get('comment')), 35, 10, 'review_comments', array('class' => 'minimal no-footer'));
 				?>
 			</label>
 
 			<label id="comment-anonymous-label">
-				<input class="option" type="checkbox" name="anonymous" id="review-anonymous" value="1"<?php if ($review->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
+				<input class="option" type="checkbox" name="review[anonymous]" id="review-anonymous" value="1"<?php if ($this->review->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
 				<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FORM_ANONYMOUS'); ?>
 			</label>
 

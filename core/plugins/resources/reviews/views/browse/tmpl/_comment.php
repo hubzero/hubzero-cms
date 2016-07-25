@@ -38,12 +38,10 @@ $name = Lang::txt('PLG_RESOURCES_REVIEWS_ANONYMOUS');
 
 if (!$this->comment->get('anonymous'))
 {
-	$huser = $this->comment->creator();
-
-	$name = $this->escape(stripslashes($huser->get('name')));
-	if (in_array($huser->get('access'), User::getAuthorisedViewLevels()))
+	$name = $this->escape(stripslashes($this->comment->creator->get('name')));
+	if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()))
 	{
-		$name = '<a href="' . Route::url($huser->link()) . '">' . $name . '</a>';
+		$name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
 	}
 }
 
@@ -84,27 +82,25 @@ if ($this->comment->get('resource_id'))
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $huser->picture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous', 0)); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 		<?php if (!$this->comment->isReported() && $this->comment->get('resource_id')) { ?>
 			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
-				$view = $this->view('_rateitem')
-							->set('option', $this->option)
-							->set('item', $this->comment)
-							->set('type', 'review')
-							->set('vote', '')
-							->set('id', '');
-				if (!User::isGuest())
+				$this->comment->set('helpful', $this->comment->votes()->whereEquals('vote', 1)->total());
+				$this->comment->set('nothelpful', $this->comment->votes()->whereEquals('vote', -1)->total());
+
+				if (!User::isGuest() && $this->comment->get('created_by') == User::get('id'))
 				{
-					if ($this->comment->get('created_by') == User::get('username'))
-					{
-						$view->set('vote', $this->comment->get('vote'));
-						$view->set('id', $this->comment->get('id'));
-					}
+					$this->comment->set('vote', $this->comment->ballot(User::get('id'), Request::ip())->get('vote'));
 				}
-				$view->display();
+
+				$this->view('_rateitem')
+					->set('option', $this->option)
+					->set('item', $this->comment)
+					->set('type', 'review')
+					->display();
 				?>
 			</p><!-- / .comment-voting -->
 		<?php } ?>

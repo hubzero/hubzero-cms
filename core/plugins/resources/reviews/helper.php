@@ -41,7 +41,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Execute an action
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -70,25 +70,26 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			case 'savereply':    $this->savereply();    break;
 			case 'deletereply':  $this->deletereply();  break;
 			case 'rateitem':     $this->rateitem();     break;
+			default: break;
 		}
 	}
 
 	/**
 	 * Save a reply
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function savereply()
 	{
-		// Check for request forgeries
-		Request::checkToken();
-
 		// Is the user logged in?
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
 			return;
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -121,11 +122,17 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Delete a reply
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletereply()
 	{
-		$database = App::get('db');
+		// Is the user logged in?
+		if (User::isGuest())
+		{
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
+			return;
+		}
+
 		$resource =& $this->resource;
 
 		// Incoming
@@ -165,12 +172,10 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Rate an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function rateitem()
 	{
-		$database = App::get('db');
-
 		$id   = Request::getInt('refid', 0);
 		$ajax = Request::getInt('no_html', 0);
 		$cat  = Request::getVar('category', 'review');
@@ -191,37 +196,21 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		// Load answer
+		// Load entry
 		$rev = \Components\Resources\Reviews\Models\Review::oneOrNew($id);
 
-		$voted = $rev->getVote($id, $cat, User::get('id'));
-
-		if (!$voted && $vote) // && $rev->user_id != User::get('id'))
+		if (!$rev->vote($vote, User::get('id'), $ip))
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
-			$v = new \Components\Answers\Tables\Vote($database);
-			$v->referenceid = $id;
-			$v->category    = $cat;
-			$v->voter       = User::get('id');
-			$v->ip          = $ip;
-			$v->voted       = Date::toSql();
-			$v->helpful     = $vote;
-			if (!$v->check())
-			{
-				$this->setError($v->getError());
-				return;
-			}
-			if (!$v->store())
-			{
-				$this->setError($v->getError());
-				return;
-			}
+			$this->setError($rev->getError());
+			return;
 		}
 
 		// update display
 		if ($ajax)
 		{
-			$response = $rev->getRating($id, User::get('id'));
+			$rev->set('vote', $vote);
+			$rev->set('helpful', $rev->votes()->whereEquals('vote', 1)->total());
+			$rev->set('nothelpful', $rev->votes()->whereEquals('vote', -1)->total());
 
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -232,8 +221,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 				)
 			);
 			$view->option = $this->_option;
-			$view->item = \Components\Resources\Reviews\Models\Review::oneOrNew($response[0]);
-			$view->rid = $rid;
+			$view->item = $rev;
 
 			$view->display();
 			exit();
@@ -247,7 +235,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Edit a review
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editreview()
 	{
@@ -271,28 +259,28 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		// Incoming
 		$myr = Request::getInt('comment', 0);
 
-		$database = App::get('db');
+		if ($myr)
+		{
+			$review = \Components\Resources\Reviews\Models\Review::oneOrNew($myr);
+		}
+		else
+		{
+			$review = \Components\Resources\Reviews\Models\Review::oneByUser($resource->id, User::get('id'));
+		}
 
-		$review = new \Components\Resources\Tables\Review($database);
-		$review->loadUserReview($resource->id, User::get('id'));
-		if (!$review->id)
+		if (!$review->get('id'))
 		{
 			// New review, get the user's ID
-			$review->user_id = User::get('id');
-			$review->resource_id = $resource->id;
-			$review->tags = '';
+			$review->set('user_id', User::get('id'));
+			$review->set('resource_id', $resource->id);
 		}
 		else
 		{
 			// Editing a review, do some prep work
-			$review->comment = str_replace('<br />', '', $review->comment);
-
-			$RE = new \Components\Resources\Helpers\Helper($resource->id, $database);
-			$RE->getTagsForEditing($review->user_id);
-			$review->tags = ($RE->tagsForEditing) ? $RE->tagsForEditing : '';
+			$review->set('comment', str_replace('<br />', '', $review->get('comment')));
 		}
-		$review->rating = ($myr) ? $myr : $review->rating;
-		$review->state = 1;
+		$review->set('rating', ($myr ? $myr : $review->get('rating')));
+		$review->set('state', \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED);
 
 		// Store the object in our registry
 		$this->myreview = $review;
@@ -306,20 +294,17 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function savereview()
 	{
+		// Is the user logged in?
+		if (User::isGuest())
+		{
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
+			return;
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
 		// Incoming
-		$resource_id = Request::getInt('resource_id', 0);
-
-		// Do we have a resource ID?
-		if (!$resource_id)
-		{
-			// No ID - fail! Can't do anything else without an ID
-			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
-			return;
-		}
-
 		$data = Request::getVar('review', array(), 'post', 'none', 2);
 
 		// Bind the form data to our object
@@ -330,8 +315,8 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		{
 			$row->set('state', \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED);
 		}
-		$row->comment   = \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->comment));
-		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
+		$row->set('comment', \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->get('comment'))));
+		$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
 
 		// Save the data
 		if (!$row->save())
@@ -345,15 +330,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource->calculateRating();
 		$resource->updateRating();
 
-		// Process tags
-		$tags = trim(Request::getVar('review_tags', ''));
-		if ($tags)
-		{
-			$rt = new \Components\Resources\Helpers\Tags($resource_id);
-			$rt->setTags($tags, $row->user_id);
-		}
-
 		// Instantiate a helper object and get all the contributor IDs
+		$database = App::get('db');
+
 		$helper = new \Components\Resources\Helpers\Helper($resource->id, $database);
 		$helper->getContributorIDs();
 		$users = $helper->contributorIDs;
@@ -391,11 +370,17 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	/**
 	 * Delete a review
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletereview()
 	{
-		$database = App::get('db');
+		// Is the user logged in?
+		if (User::isGuest())
+		{
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
+			return;
+		}
+
 		$resource =& $this->resource;
 
 		// Incoming
