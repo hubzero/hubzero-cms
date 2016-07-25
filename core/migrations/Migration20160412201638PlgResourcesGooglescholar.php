@@ -13,6 +13,7 @@ class Migration20160412201638PlgResourcesGooglescholar extends Base
 	public function up()
 	{
 		$this->deletePluginEntry('resources', 'googleschlar');
+		$this->deletePluginEntry('resources', 'googlesochlar');
 		$this->addPluginEntry('resources', 'googlescholar');
 	}
 
@@ -21,7 +22,7 @@ class Migration20160412201638PlgResourcesGooglescholar extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('resources', 'googlesochlar');
+		$this->deletePluginEntry('resources', 'googlescholar');
 		$this->addPluginEntry('resources', 'googleschlar');
 	}
 }
