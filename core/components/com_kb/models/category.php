@@ -91,6 +91,20 @@ class Category extends Relational
 	}
 
 	/**
+	 * Retrieves one row loaded by an alias field
+	 *
+	 * @param   string  $alias  The alias to load by
+	 * @return  mixed
+	 **/
+	public static function oneByAlias($alias)
+	{
+		return self::blank()
+			->whereEquals('extension', 'com_kb')
+			->whereEquals('alias', $alias)
+			->row();
+	}
+
+	/**
 	 * Get a list of articles
 	 *
 	 * @return  object
