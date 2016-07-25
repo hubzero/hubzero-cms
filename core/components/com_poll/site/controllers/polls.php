@@ -146,7 +146,6 @@ class Polls extends SiteController
 			$votes = $poll->options()
 				->where('text', '!=', '')
 				->order('hits', 'desc')
-				->ordered()
 				->rows()
 				->raw();
 
