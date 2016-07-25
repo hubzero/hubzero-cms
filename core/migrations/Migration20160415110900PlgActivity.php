@@ -18,7 +18,7 @@ class Migration20160415110900PlgActivity extends Base
 		$this->addPluginEntry('system', 'activity');
 		$this->addPluginEntry('members', 'activity');
 		$this->addPluginEntry('groups', 'activity');
-		$this->addPluginEntry('resoures', 'watch');
+		$this->addPluginEntry('resources', 'watch');
 		$this->addModuleEntry('mod_myactivity');
 	}
 
@@ -30,7 +30,7 @@ class Migration20160415110900PlgActivity extends Base
 		$this->deletePluginEntry('system', 'activity');
 		$this->deletePluginEntry('members', 'activity');
 		$this->deletePluginEntry('groups', 'activity');
-		$this->deletePluginEntry('resoures', 'watch');
+		$this->deletePluginEntry('resources', 'watch');
 		$this->deleteModuleEntry('mod_myactivity');
 	}
 }
