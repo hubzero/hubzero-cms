@@ -114,7 +114,7 @@ class Type extends Relational
 	public function roles()
 	{
 		$model = new RoleType();
-		return $this->manyToMany('\Components\Resources\Models\Author\Role', $model->getTableName(), 'role_id', 'type_id');
+		return $this->manyToMany('\Components\Resources\Models\Author\Role', $model->getTableName(), 'type_id', 'role_id');
 	}
 
 	/**
