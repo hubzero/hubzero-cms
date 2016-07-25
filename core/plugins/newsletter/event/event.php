@@ -25,31 +25,42 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author 		Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
-defined( '_HZEXEC_' ) or die();
+defined('_HZEXEC_') or die();
 
 use Components\Events\Models\Orm\Event as CalEvent;
 
 require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'orm' . DS . 'event.php');
 
+/**
+ * Plugin class for Newsletter event
+ */
 class plgNewsletterEvent extends \Hubzero\Plugin\Plugin
 {
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
+	/**
+	 * Event call to get the name
+	 *
+	 * @return  string
+	 */
 	public function onGetEnabledDigests()
 	{
 		$name = 'event';
 		return $name;
 	}
 
+	/**
+	 * Event call to get the latest records
+	 *
+	 * @param   integer  $num
+	 * @param   string   $dateField
+	 * @param   string   $sort
+	 * @return  array
+	 */
 	public function onGetLatest($num = 5, $dateField = 'created', $sort = 'DESC')
 	{
 		$model = CalEvent::getLatest($num, $dateField, $sort)->rows()->toObject();
@@ -60,10 +71,10 @@ class plgNewsletterEvent extends \Hubzero\Plugin\Plugin
 		{
 			$object = new stdClass;
 			$object->title = $m->title;
-			$object->body = htmlspecialchars_decode($m->content);
-			$object->date = Date::of($m->publish_up)->toLocal("F j, Y");
-			$object->path = 'events/details/' . $m->id;
-			$object->id = $m->id;
+			$object->body  = htmlspecialchars_decode($m->content);
+			$object->date  = Date::of($m->publish_up)->toLocal("F j, Y");
+			$object->path  = 'events/details/' . $m->id;
+			$object->id    = $m->id;
 
 			array_push($objects, $object);
 		}
