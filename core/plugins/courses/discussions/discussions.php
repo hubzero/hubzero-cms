@@ -717,7 +717,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 				$filters['parent'] = 0;
 
-				$threads = $forum->posts($filters)->rows();
+				$data = $this->_threadsSearch($post, $filters);
+				$threads = $data->posts;
 			break;
 		}
 
