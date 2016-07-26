@@ -66,7 +66,7 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 		}
 
 		//check to make sure users account is confirmed
-		if ($user->get('emailConfirmed') <= 0)
+		if ($user->get('activation') <= 0)
 		{
 			return false;
 		}
