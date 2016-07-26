@@ -82,7 +82,7 @@ Html::behavior('multiselect');
 			var f = document.adminForm;
 			var cb='';
 <?php foreach ($this->rows as $i => $row): ?>
-	<?php if ($row->maps->count() > 0): ?>
+	<?php if ($row->maps()->select('group_id', 'count', true)->rows(false)->first()->count > 0): ?>
 			cb = f['cb'+<?php echo $i;?>];
 			if (cb && cb.checked) {
 				if (confirm('<?php echo Lang::txt('COM_MEMBERS_GROUPS_CONFIRM_DELETE'); ?>')) {
@@ -172,7 +172,7 @@ Html::behavior('multiselect');
 					<?php endif; ?>
 				</td>
 				<td class="center priority-3">
-					<?php echo $row->maps->count(); ?>
+					<?php echo $row->maps()->select('group_id', 'count', true)->rows(false)->first()->count; ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>
