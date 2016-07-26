@@ -53,13 +53,12 @@ if ($posts != false)
 			<ul class="newsfeed<?php echo $params->get('moduleclass_sfx'); ?>">
 			<?php
 			$words = $params->def('word_count', 0);
-			for ($j = 0; $j < $totalItems; $j ++)
+			foreach ($posts as $currItem)
 			{
-				$currItem = & $posts[$j];
 				// item title
 				?>
 				<li class="newsfeed-item">
-					<a href="<?php echo $currItem->link; ?>" target="_blank">
+					<a href="<?php echo $currItem->url; ?>" target="_blank">
 						<h5><?php echo $currItem->title; ?></h5>
 					</a>
 

@@ -34,7 +34,7 @@
 namespace Modules\Feedaggregator;
 
 use Hubzero\Module\Module;
-use Components\Feedaggregator\Models\Posts;
+use Components\Feedaggregator\Models\Post;
 use stdClass;
 use Lang;
 
@@ -51,8 +51,7 @@ class Helper extends Module
 	public function getPosts()
 	{
 		// Get the approved posts
-		$model = new Posts;
-		$posts = $model->getPostsByStatus(1000,0,2);
+		$posts = Post::all()->where('status', '=', '2')->rows();
 		return $posts;
 	}
 
