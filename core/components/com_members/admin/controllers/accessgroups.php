@@ -82,7 +82,7 @@ class Accessgroups extends AdminController
 
 		$entries = Accessgroup::all();
 
-		$entries
+		/*$entries
 			->including(['maps', function ($map){
 				$map
 					->select('*');
