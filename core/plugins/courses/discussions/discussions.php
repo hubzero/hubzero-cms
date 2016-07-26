@@ -1132,6 +1132,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			'authorized' => 1,
 			'scope'      => 'course',
 			'scope_id'   => $this->offering->get('id'),
+			'scope_sub_id' => 0,
 			'search'     => Request::getVar('search', ''),
 			'section_id' => 0,
 			'state'      => 1,
