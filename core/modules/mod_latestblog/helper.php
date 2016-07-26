@@ -77,11 +77,13 @@ class Helper extends Module
 			->ordered()
 			->rows();
 
-		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
+		$posts = array();
+
+		foreach ($rows as $k => $gf)
 		{
-			//make sure that the group for each blog post has the right privacy setting
-			foreach ($rows as $k => $gf)
+			if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
 			{
+				//make sure that the group for each blog post has the right privacy setting
 				if (!$gf->get('scope_id'))
 				{
 					continue;
@@ -96,18 +98,19 @@ class Helper extends Module
 					 || ($blog_access == 'registered' && User::isGuest())
 					 || ($blog_access == 'members' && !in_array(User::get('id'), $group->get('members'))))
 					{
-						$rows->offsetUnset($k);
+						continue;
 					}
 				}
 				else
 				{
-					$rows->offsetUnset($k);
+					continue;
 				}
 			}
-		}
-		//$rows->reset();
 
-		$this->posts = $rows;
+			$posts[] = $gf;
+		}
+
+		$this->posts = $posts;
 
 		require $this->getLayoutPath();
 	}
