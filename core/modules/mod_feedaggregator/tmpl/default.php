@@ -53,9 +53,8 @@ if ($posts != false)
 			<ul class="newsfeed<?php echo $params->get('moduleclass_sfx'); ?>">
 			<?php
 			$words = $params->def('word_count', 0);
-			for ($j = 0; $j < $totalItems; $j ++)
+			foreach ($posts as $currItem)
 			{
-				$currItem = & $posts[$j];
 				// item title
 				?>
 				<li class="newsfeed-item">

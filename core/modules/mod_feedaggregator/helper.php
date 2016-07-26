@@ -52,7 +52,7 @@ class Helper extends Module
 	public function getPosts()
 	{
 		// Get the approved posts
-		$posts = Post::all()->where('status', '=', $this->approvedStatus)->rows()->toObject();
+		$posts = Post::all()->where('status', '=', '2')->rows();
 		return $posts;
 	}
 
