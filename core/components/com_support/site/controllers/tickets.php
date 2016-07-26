@@ -1620,12 +1620,12 @@ class Tickets extends SiteController
 		if ($watch = Request::getWord('watch', ''))
 		{
 			// Already watching
-			if ($this->view->row->isWatching(User::getInstance()))
+			if ($this->view->row->isWatching(User::get('id')))
 			{
 				// Stop watching?
 				if ($watch == 'stop')
 				{
-					$this->view->row->stopWatching(User::getInstance());
+					$this->view->row->stopWatching(User::get('id'));
 				}
 			}
 			// Not already watching
@@ -1634,8 +1634,8 @@ class Tickets extends SiteController
 				// Start watching?
 				if ($watch == 'start')
 				{
-					$this->view->row->watch(User::getInstance());
-					if (!$this->view->row->isWatching(User::getInstance(), true))
+					$this->view->row->watch(User::get('id'));
+					if (!$this->view->row->isWatching(User::get('id'), true))
 					{
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
 					}
