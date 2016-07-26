@@ -95,13 +95,13 @@ class Download extends \Hubzero\Component\SiteController
 		// Error if needed
 		if ($tStatus !== 'completed')
 		{
-			$messages = array(array('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED', 'error'));
+			$messages = array(array(Lang::txt('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED'), 'error'));
 			$this->messageTask($messages);
 			return;
 		}
 		elseif ($cartUser != $currentUser)
 		{
-			$messages = array(array('COM_CART_DOWNLOAD_NOT_AUTHORIZED', 'error'));
+			$messages = array(array(Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error'));
 			$this->messageTask($messages);
 			return;
 
