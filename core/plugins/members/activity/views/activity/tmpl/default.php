@@ -81,7 +81,17 @@ if (!$no_html) {
 			</ul>
 			<?php echo $this->rows->pagination; ?>
 		<?php } else { ?>
-			<p class="no-results"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_NO_RESULTS'); ?></p>
+			<div class="results-none">
+				<div class="messages">
+					<p><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_NO_RESULTS'); ?></p>
+				</div>
+				<div class="questions">
+					<p>
+						<strong><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ABOUT_TITLE'); ?></strong><br />
+						<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ABOUT'); ?>
+					<p>
+				</div>
+			</div>
 		<?php } ?>
 
 <?php if (!$no_html) { ?>
