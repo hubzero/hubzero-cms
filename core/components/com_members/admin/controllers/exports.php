@@ -107,7 +107,8 @@ class Exports extends AdminController
 				continue;
 			}
 
-			array_push($keys, $key);
+			$keys[$key] = $key;
+			//array_push($keys, $key);
 		}
 
 		$attribs = Field::all()
@@ -120,13 +121,27 @@ class Exports extends AdminController
 			{
 				array_push($tags, $attrib->get('name'));
 			}
-			array_push($keys, $attrib->get('name'));
+
+			if ($attrib->get('type') == 'address')
+			{
+				$keys[$attrib->get('name')] = $attrib->get('name') . ' Street 1';
+				$keys['_' . $attrib->get('name') . '_address2']   = $attrib->get('name') . ' Street 2';
+				$keys['_' . $attrib->get('name') . '_city']      = $attrib->get('name') . ' City';
+				$keys['_' . $attrib->get('name') . '_postal']    = $attrib->get('name') . ' Post Code';
+				$keys['_' . $attrib->get('name') . '_region']    = $attrib->get('name') . ' Region';
+				$keys['_' . $attrib->get('name') . '_country']   = $attrib->get('name') . ' Country';
+				$keys['_' . $attrib->get('name') . '_latitude']  = $attrib->get('name') . ' Latitude';
+				$keys['_' . $attrib->get('name') . '_longitude'] = $attrib->get('name') . ' Longitude';
+				continue;
+			}
+
+			$keys[$attrib->get('name')] = $attrib->get('name');
+			//array_push($keys, $attrib->get('name'));
 		}
 
 
 		// Get request vars
 		$delimiter = Request::getVar('delimiter', ',');
-		//$id = 1010;
 
 		$csv = array();
 
@@ -135,8 +150,17 @@ class Exports extends AdminController
 		{
 			$tmp = array();
 
-			foreach ($keys as $key)
+			foreach ($keys as $key => $label)
 			{
+				if (substr($key, 0, 1) == '_')
+				{
+					if (!isset($tmp[$key]))
+					{
+						$tmp[$key] = '';
+					}
+					continue;
+				}
+
 				if (in_array($key, $tags))
 				{
 					$val = $member->tags('string');
@@ -149,6 +173,33 @@ class Exports extends AdminController
 				if (is_array($val))
 				{
 					$val = implode(';', $val);
+				}
+				else
+				{
+					if (strstr($val, '{'))
+					{
+						$v = json_decode((string)$val, true);
+
+						if (!$v || json_last_error() !== JSON_ERROR_NONE)
+						{
+							// Nothing else to do
+						}
+						else
+						{
+							$i = 0;
+							foreach ($v as $nm => $vl)
+							{
+								$k = '_' . $key . '_' . $nm;
+								if ($i == 0)
+								{
+									$k = $key;
+								}
+								$tmp[$k] = $vl;
+								$i++;
+							}
+							continue;
+						}
+					}
 				}
 
 				$tmp[$key] = $val;

@@ -33,27 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
-
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_EXPORT_TITLE_EXPORTS'), 'export.png');
-
-if ($canDo->get('core.admin'))
-{
-	Toolbar::custom('sample', 'sample', 'sample', 'COM_MEMBERS_EXPORT_SAMPLE', false);
-	Toolbar::spacer();
-	Toolbar::custom('run', 'script', 'script', 'COM_MEMBERS_RUN');
-	Toolbar::custom('runtest', 'runtest', 'script', 'COM_MEMBERS_TEST_RUN');
-	Toolbar::spacer();
-	Toolbar::addNew();
-	Toolbar::editList();
-	Toolbar::deleteList();
-}
-
-Toolbar::spacer();
-Toolbar::help('export');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_MENU_EXPORT'), 'export.png');
 
 ?>
-
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
 		<div class="col span4">
 			<a class='permissions button' href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=run&delimiter=,'); ?>">Download CSV of all users</a>
