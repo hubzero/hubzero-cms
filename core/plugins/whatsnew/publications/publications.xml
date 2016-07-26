@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/whatsnew/publications.xml
+@file           plugins/whatsnew/publications/publications.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -34,13 +34,11 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Allows searching of Publications component</description>
+	<description>PLG_WHATSNEW_PUBLICATIONS_DESCRIPTION</description>
 	<files>
 		<filename plugin="publications">publications.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_whatsnew_publications.ini</language>
 	</languages>
-	<config>
-	</config>
 </extension>
