@@ -241,7 +241,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 				if ($mconfig->get('user_messaging', 1) == 1 && ($type == 'member_message' || $type == 'group_message'))
 				{
-					$pgroups = $user->groups('all');
+					$pgroups = \Hubzero\User\Group\Helper::getGroups($user->get('id'), 'all', 1);
 					$profilesgroups = array();
 					if (!empty($pgroups))
 					{
