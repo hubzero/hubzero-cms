@@ -33,6 +33,7 @@ namespace Bootstrap\Site\Providers;
 
 use Hubzero\Base\ServiceProvider;
 use Hubzero\User\Picture\File;
+use Hubzero\User\Picture\Namedfile;
 use Hubzero\User\Manager;
 use Hubzero\User\User;
 
@@ -77,16 +78,21 @@ class UserServiceProvider extends ServiceProvider
 				'fallback'      => $params->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')
 			];
 
+			// File 'profile.png'
 			User::$pictureResolvers[] = new File($config);
 
-			$resolver = $params->get('picture');
+			// Legacy picture 'mypicture.jpg'
+			User::$pictureResolvers[] = new Namedfile($config);
 
-			// Build the class name
-			$cls = 'Hubzero\\User\\Picture\\' . ucfirst($resolver);
-
-			if (class_exists($cls))
+			// Specified resolver
+			if ($resolver = $params->get('picture'))
 			{
-				User::$pictureResolvers[] = new $cls($config);
+				$cls = 'Hubzero\\User\\Picture\\' . ucfirst($resolver);
+
+				if (class_exists($cls))
+				{
+					User::$pictureResolvers[] = new $cls($config);
+				}
 			}
 		}
 	}
