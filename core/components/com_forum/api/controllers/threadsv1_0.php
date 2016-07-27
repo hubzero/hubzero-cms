@@ -491,14 +491,14 @@ class Threadsv1_0 extends ApiController
 	 * 		"description": "Published state (0 = unpublished, 1 = published)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     0
+	 * 		"default":     1
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "access",
 	 * 		"description": "Access level (1 = public, 2 = registered users, 5 = private)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     0
+	 * 		"default":     1
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "anonymous",
@@ -529,7 +529,7 @@ class Threadsv1_0 extends ApiController
 	 * 		"default":     0
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "sticky",
+	 * 		"name":        "closed",
 	 * 		"description": "If the thread is closed (no more new posts) or not. Only applies to thread starter posts.",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
@@ -554,12 +554,12 @@ class Threadsv1_0 extends ApiController
 			'comment'        => Request::getVar('comment', null, 'post', 'none', 2),
 			'created'        => Request::getVar('created', new Date('now'), 'post'),
 			'created_by'     => Request::getInt('created_by', 0, 'post'),
-			'state'          => Request::getInt('state', 0, 'post'),
+			'state'          => Request::getInt('state', Post::STATE_PUBLISHED, 'post'),
 			'sticky'         => Request::getInt('sticky', 0, 'post'),
 			'parent'         => Request::getInt('parent', 0, 'post'),
 			'scope'          => Request::getVar('scope', 'site', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
-			'access'         => Request::getInt('access', 0, 'post'),
+			'access'         => Request::getInt('access', Post::AACCESS_PUBLIC, 'post'),
 			'anonymous'      => Request::getInt('anonymous', 0, 'post'),
 			'thread'         => Request::getInt('thread', 0, 'post'),
 			'closed'         => Request::getInt('closed', 0, 'post'),
