@@ -72,7 +72,7 @@ Toolbar::help('poll');
 		// do field validation
 		if (form.title.value == "") {
 			alert( "<?php echo Lang::txt('COM_POLL_ERROR_MISSING_TITLE', true); ?>" );
-		} else if (isNaN(parseInt( form.lag.value ) ) || parseInt(form.lag.value) < 1)  {
+		} else if (isNaN(parseInt( document.getElementById('field-lag').value ) ) || parseInt(document.getElementById('field-lag').value) < 1)  {
 			alert( "<?php echo Lang::txt('COM_POLL_ERROR_MISSING_LAG', true); ?>" );
 		//} else if (form.menu.options.value == ""){
 		//	alert( "COM_POLL_ERROR_MISSING_OPTIONS" );
@@ -88,16 +88,16 @@ Toolbar::help('poll');
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="field-title"><?php echo Lang::txt('COM_POLL_FIELD_TITLE'); ?>:</label><br />
+					<label for="field-title"><?php echo Lang::txt('COM_POLL_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<input class="inputbox" type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->poll->get('title')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-alias"><?php echo Lang::txt('COM_POLL_FIELD_ALIAS'); ?>:</label><br />
 					<input class="inputbox" type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->poll->get('alias')); ?>" />
 				</div>
-				<div class="input-wrap" data-hint="<?php echo Lang::txt( 'COM_POLL_FIELD_LAG_HINT'); ?>">
-					<label for="field-lag"><?php echo Lang::txt('COM_POLL_FIELD_LAG'); ?>:</label><br />
-					<input class="inputbox" type="text" name="fields[lag]" id="field-lag" value="<?php echo $this->escape($this->poll->get('lag')); ?>" />
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_POLL_FIELD_LAG_HINT'); ?>">
+					<label for="field-lag"><?php echo Lang::txt('COM_POLL_FIELD_LAG'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input class="inputbox" type="text" name="fields[lag]" id="field-lag" value="<?php echo $this->escape($this->poll->get('lag', 86400)); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_POLL_FIELD_LAG_HINT'); ?></span>
 				</div>
 				<div class="input-wrap">
