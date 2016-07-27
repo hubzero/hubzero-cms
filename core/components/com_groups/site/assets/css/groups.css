@@ -1133,7 +1133,7 @@ body.group-page-preview {
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 	height: 9em;
-	overflow-y: scroll;
+	overflow-y: auto;
 	text-overflow: ellipsis;
 }
 .member_browser .member:hover {
