@@ -105,14 +105,14 @@ $created = Date::of($this->group->get('created'))->toLocal(Lang::txt('DATE_FORMA
 				<div id="page_header">
 					<h3>
 						<?php
-							if (isset($this->trueTab) && $this->trueTab != '')
+							/*if (isset($this->trueTab) && $this->trueTab != '')
 							{
 								echo ucfirst($this->trueTab);
 							}
 							else
-							{
+							{*/
 								echo \Components\Groups\Helpers\View::displayTab($this->group);
-							}
+							//}
 						?>
 					</h3>
 

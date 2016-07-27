@@ -114,14 +114,14 @@ $no_html = Request::getInt( 'no_html', 0 );
 					<span class="divider">&#9658;</span>
 					<h3>
 						<?php
-							if (isset($this->trueTab) && $this->trueTab != '')
+							/*if (isset($this->trueTab) && $this->trueTab != '')
 							{
 								echo ucfirst($this->trueTab);
 							}
 							else
-							{
+							{*/
 								echo \Components\Groups\Helpers\View::displayTab($this->group);
-							}
+							//}
 						?>
 					</h3>
 
