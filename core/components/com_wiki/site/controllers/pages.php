@@ -1026,8 +1026,7 @@ class Pages extends SiteController
 
 		// Log activity
 		$recipients = array(
-			['wiki.site', 1],
-			['user', $this->page->get('created_by')]
+			['wiki.site', 1]
 		);
 		if ($this->page->get('scope') != 'site')
 		{
