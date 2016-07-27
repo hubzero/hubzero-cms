@@ -319,7 +319,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$arr['metadata']['count'] = $this->forum->count('threads');
+		$arr['metadata']['count'] = $this->forum->count('threads', array('state' => 1));
 
 		// Return the output
 		return $arr;
