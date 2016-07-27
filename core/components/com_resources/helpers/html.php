@@ -34,8 +34,7 @@ namespace Components\Resources\Helpers;
 
 use Document;
 use Pathway;
-use Route;
-use Lang;
+se Lang;
 use User;
 use Date;
 
