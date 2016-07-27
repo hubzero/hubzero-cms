@@ -198,6 +198,26 @@ class View
 		//get active tab
 		$tab = self::getTab($group);
 
+		// If a sub-page of the overview tab
+		$active = strtolower(Request::getVar('active', 'overview'));
+		if ($tab == 'overview' && $tab != $active)
+		{
+			$pageArchive = Archive::getInstance();
+			$pages = $pageArchive->pages('list', array(
+				'gidNumber' => $group->get('gidNumber'),
+				'state'     => array(0,1),
+				'orderby'   => 'lft ASC'
+			));
+
+			// fetch the active page
+			$activePage = Pages::getActivePage($group, $pages);
+
+			if ($activePage)
+			{
+				return $activePage->get('title');
+			}
+		}
+
 		//return title of active tab
 		foreach ($sections as $section)
 		{
