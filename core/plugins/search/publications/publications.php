@@ -371,7 +371,14 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			$fields->date = $date;
 
 			// Title is required
-			$fields->title = $mainVersion->title;
+			if ($mainVersion->title != '' && $mainVersion->title != null)
+			{
+				$fields->title = $mainVersion->title;
+			}
+			else
+			{
+				$field->title = 'Publication - #' . $row->id;
+			}
 
 
 			$fields->description = strip_tags(htmlspecialchars_decode($mainVersion->description));
