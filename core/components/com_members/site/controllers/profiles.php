@@ -289,6 +289,7 @@ class Profiles extends SiteController
 		$b = Profile::blank()->getTableName();
 
 		$entries
+			->select($a . '.*')
 			->including(['profiles', function ($profile){
 				$profile
 					->select('*')
