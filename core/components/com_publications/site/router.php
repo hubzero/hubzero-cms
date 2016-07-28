@@ -254,9 +254,13 @@ class Router extends Base
 					else
 					{
 						$vars['active'] = $segments[1];
-						if ($vars['active'] == 'share' && !empty($segments[2]))
+						//if ($vars['active'] == 'share' && !empty($segments[2]))
+						if (isset($segments[2]))
 						{
-							$vars['v'] = $segments[2];
+							if (is_numeric($segments[2]) || $segments[1] == 'dev' || $segments[1] == 'default')
+							{
+								$vars['v'] = $segments[2];
+							}
 						}
 					}
 				break;
