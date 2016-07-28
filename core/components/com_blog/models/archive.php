@@ -192,6 +192,11 @@ class Archive extends Object
 				->orWhere('content', 'LIKE', $filters['search']);
 		}
 
+		if (isset($filters['limit']) && $filters['limit'])
+		{
+			$results->limit($filters['limit']);
+		}
+
 		return $results;
 	}
 
