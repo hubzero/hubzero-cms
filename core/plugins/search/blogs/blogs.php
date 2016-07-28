@@ -243,8 +243,13 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 			elseif ($row->scope == 'group')
 			{
 				$group = Group::getInstance($row->scope_id);
-				$cn = $group->get('cn');
-				$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
+
+				// Make sure group is valid.
+				if (is_object($cn))
+				{
+					$cn = $group->get('cn');
+					$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
+				}
 			}
 
 			$fields->url = $path;
