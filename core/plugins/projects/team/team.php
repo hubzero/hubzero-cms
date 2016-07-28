@@ -288,7 +288,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		{
 			$view->filters['online']   = 1;
 		}
-
+		if ($view->filters['limit'] > $view->total)
+		{
+			$view->filters['start'] = 0;
+		}
 		// Get all active team members
 		$view->team = $this->model->team($view->filters, true);
 
