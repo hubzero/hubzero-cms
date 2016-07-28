@@ -905,7 +905,7 @@ class Members extends AdminController
 			$obj = array();
 			$obj['id']      = $row->get('id');
 			$obj['name']    = str_replace(array("\n", "\r", '\\'), '', $row->get('name'));
-			$obj['picture'] = $row->picture;
+			$obj['picture'] = $row->picture();
 
 			$json[] = $obj;
 		}

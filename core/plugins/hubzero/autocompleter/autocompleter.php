@@ -81,7 +81,7 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 		$dsabl = (isset($atts[8])) ? $atts[8] : '';      // Readonly input
 
 		$base = rtrim(Request::root(true), '/');
-		$datascript = $base . '/index.php';
+		$datascript = $base . (App::isAdmin() ? '/adminsitrator' : '') . '/index.php';
 
 		if ($opt != 'members')
 		{
