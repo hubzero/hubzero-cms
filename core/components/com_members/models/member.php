@@ -488,7 +488,7 @@ class Member extends User
 		{
 			if (!$field->destroy())
 			{
-				$this->setError($field->getError());
+				$this->addError($field->getError());
 				return false;
 			}
 		}
@@ -498,7 +498,7 @@ class Member extends User
 		{
 			if (!$note->destroy())
 			{
-				$this->setError($note->getError());
+				$this->addError($note->getError());
 				return false;
 			}
 		}
@@ -508,7 +508,7 @@ class Member extends User
 		{
 			if (!$host->destroy())
 			{
-				$this->setError($host->getError());
+				$this->addError($host->getError());
 				return false;
 			}
 		}
