@@ -379,7 +379,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 
 		// Redirect to the question
 		App::redirect(
-			Route::url($this->publication->link() . '&active=questions')
+			Route::url($this->publication->link() . '&active=questions&v=' . $this->publication->get('version_number'))
 		);
 	}
 }

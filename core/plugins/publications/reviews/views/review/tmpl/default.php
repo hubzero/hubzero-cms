@@ -51,7 +51,7 @@ else
 		<a name="reviewform"></a>
 		<?php echo $title; ?>
 	</h3>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->review->get('publication_id') . '&active=reviews'); ?>" method="post" id="commentform">
+	<form action="<?php echo Route::url($this->publication->link('reviews')); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"></span>
 				<?php
@@ -62,12 +62,13 @@ else
 			<fieldset>
 				<input type="hidden" name="created" value="<?php echo $review->get('created'); ?>" />
 				<input type="hidden" name="reviewid" value="<?php echo $review->get('id'); ?>" />
-				<input type="hidden" name="created_by" value="<?php echo $this->review->get('created_by'); ?>" />
-				<input type="hidden" name="publication_id" value="<?php echo $this->review->get('publication_id'); ?>" />
-				<input type="hidden" name="publication_version_id" value="<?php echo $this->review->get('publication_version_id'); ?>" />
+				<input type="hidden" name="created_by" value="<?php echo $review->get('created_by'); ?>" />
+				<input type="hidden" name="publication_id" value="<?php echo $review->get('publication_id'); ?>" />
+				<input type="hidden" name="publication_version_id" value="<?php echo $review->get('publication_version_id'); ?>" />
+				<input type="hidden" name="v" value="<?php echo $this->publication->get('version_number'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="view" />
-				<input type="hidden" name="id" value="<?php echo $this->review->get('publication_id'); ?>" />
+				<input type="hidden" name="id" value="<?php echo $review->get('publication_id'); ?>" />
 				<input type="hidden" name="action" value="savereview" />
 				<input type="hidden" name="active" value="reviews" />
 

@@ -140,9 +140,12 @@ defined('_HZEXEC_') or die();
 					<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('parent'); ?>" />
 					<input type="hidden" name="comment[created]" value="<?php echo $this->comment->get('created'); ?>" />
 					<input type="hidden" name="comment[created_by]" value="<?php echo $this->comment->get('created_by'); ?>" />
+					<input type="hidden" name="comment[state]" value="<?php echo $this->comment->get('state', 1); ?>" />
 
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="id" value="<?php echo $this->publication->id; ?>" />
+					<input type="hidden" name="id" value="<?php echo $this->publication->get('id'); ?>" />
+					<input type="hidden" name="task" value="view" />
+					<input type="hidden" name="v" value="<?php echo $this->publication->get('version_number'); ?>" />
 					<input type="hidden" name="active" value="reviews" />
 					<input type="hidden" name="action" value="savereply" />
 
@@ -214,9 +217,12 @@ defined('_HZEXEC_') or die();
 						<input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('publication_id') ? 0 : $this->comment->get('id')); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
+						<input type="hidden" name="comment[state]" value="<?php echo $this->comment->get('state', 1); ?>" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="id" value="<?php echo $this->publication->id; ?>" />
+						<input type="hidden" name="id" value="<?php echo $this->publication->get('id'); ?>" />
+						<input type="hidden" name="task" value="view" />
+						<input type="hidden" name="v" value="<?php echo $this->publication->get('version_number'); ?>" />
 						<input type="hidden" name="active" value="reviews" />
 						<input type="hidden" name="action" value="savereply" />
 
