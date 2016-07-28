@@ -245,7 +245,7 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 				$group = Group::getInstance($row->scope_id);
 
 				// Make sure group is valid.
-				if (is_object($cn))
+				if (is_object($group))
 				{
 					$cn = $group->get('cn');
 					$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
