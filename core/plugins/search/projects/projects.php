@@ -158,8 +158,13 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 			}
 
 			$group = Group::getInstance('pr-'.$row->alias);
-			$fields->owner_type = 'group';
-			$fields->owner = $group->get('gidNumber');
+
+			// Ensure valid group
+			if (is_object($group))
+			{
+				$fields->owner_type = 'group';
+				$fields->owner = $group->get('gidNumber');
+			}
 
 			// Build out path
 			$path = '/projects/';
