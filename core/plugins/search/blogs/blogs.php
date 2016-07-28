@@ -250,6 +250,10 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 					$cn = $group->get('cn');
 					$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
 				}
+				else
+				{
+					$path = '';
+				}
 			}
 
 			$fields->url = $path;
