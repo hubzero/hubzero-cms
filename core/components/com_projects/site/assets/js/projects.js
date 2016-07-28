@@ -178,6 +178,8 @@ HUB.Projects = {
 						wrapCSS: css,
 						closeBtn: cBtn,
 						afterShow: function() {
+							jQuery(document).trigger('afterShowinboxLoad');
+
 							if ($('#cancel-action').length) {
 								$('#cancel-action').on('click', function(e) {
 									$.fancybox.close();
