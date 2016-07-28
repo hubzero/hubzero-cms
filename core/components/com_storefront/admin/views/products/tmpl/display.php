@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -81,7 +81,11 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_PRODUCT_TYPE', 'ptName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">SKUs (published)</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php if ($this->config->get('productAccess')) { ?>
+					<th scope="col"><?php echo Lang::txt('COM_STOREFRONT_ACCESS'); ?></th>
+				<?php } else { ?>
+					<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php } ?>
 			</tr>
 		</thead>
 		<tfoot>
@@ -89,9 +93,9 @@ function submitbutton(pressbutton)
 			<td colspan="7"><?php
 				// Initiate paging
 				echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
 				);
 				?></td>
 		</tr>
@@ -99,13 +103,11 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
 $i = 0;
+$db = \App::get('db');
 
 foreach ($this->rows as $row)
 {
-	//print_r($row); die;
-	//$row =& $this->rows[$i];
 	switch ($row->pActive)
 	{
 		case 1:
@@ -195,6 +197,22 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php
+					if ($this->config->get('productAccess'))
+					{
+						$db->setQuery("SELECT `agId` FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($row->pId));
+						$accessgroups = $db->loadColumn();
+						$ag = array();
+						foreach ($accessgroups as $access)
+						{
+							if (array_key_exists($access, $this->ag))
+							{
+								$ag[] = $this->ag[$access];
+							}
+						}
+						echo implode(', ', $ag);
+					}
+					else
+					{
 						if (array_key_exists($row->access, $this->ag))
 						{
 							echo $this->ag[$row->access];
@@ -203,6 +221,7 @@ foreach ($this->rows as $row)
 						{
 							echo $this->ag[0];
 						}
+					}
 					?>
 				</td>
 			</tr>

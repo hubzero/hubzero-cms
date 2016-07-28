@@ -80,7 +80,6 @@ class Products extends AdminController
 				'int'
 			)
 		);
-		//print_r($this->view->filters);
 
 		$obj = new Archive();
 
@@ -116,27 +115,38 @@ class Products extends AdminController
 			$skus->$key = $skuCounter;
 		}
 
-		//print_r($skus); die;
 		$this->view->skus = $skus;
 
 		// access groups
-		//$ag = JHTML::_('access.assetgroups');
-		$ag = Access::assetgroups();
 		$accessGroups = array();
-		$accessGroups[0] = 'All';
-		foreach ($ag as $obj)
+		if ($this->config->get('productAccess'))
 		{
-			$accessGroups[$obj->value] = $obj->text;
+			$ag = \Hubzero\Access\Group::all()->rows();
+			$accessGroups[0] = 'None';
+			foreach ($ag as $obj)
+			{
+				$accessGroups[$obj->get('id')] = $obj->get('title');
+			}
+		}
+		else
+		{
+			$ag = Access::assetgroups();
+			$accessGroups[0] = 'All';
+			foreach ($ag as $obj)
+			{
+				$accessGroups[$obj->value] = $obj->text;
+			}
 		}
 		$this->view->ag = $accessGroups;
 
 		// Output the HTML
-		//print_r($this->view); die;
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**
-	 * Create a new category
+	 * Create a new entry
 	 *
 	 * @return  void
 	 */
@@ -146,8 +156,9 @@ class Products extends AdminController
 	}
 
 	/**
-	 * Edit a category
+	 * Edit an entry
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row = null)
@@ -218,7 +229,7 @@ class Products extends AdminController
 	}
 
 	/**
-	 * Save a category and come back to the edit form
+	 * Save an entry and return to the edit form
 	 *
 	 * @return  void
 	 */
@@ -228,7 +239,7 @@ class Products extends AdminController
 	}
 
 	/**
-	 * Save a product
+	 * Save an entry
 	 *
 	 * @param   boolean  $redirect  Redirect the page after saving
 	 * @return  void
@@ -388,7 +399,6 @@ class Products extends AdminController
 
 				// Incoming
 				$pIds = Request::getVar('pIds', 0);
-				//print_r($sId); die;
 
 				// Make sure we have IDs to work with
 				if (empty($pIds))
@@ -446,7 +456,7 @@ class Products extends AdminController
 	/**
 	 * Set the access level of an article to 'public'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accesspublicTask()
 	{
@@ -456,7 +466,7 @@ class Products extends AdminController
 	/**
 	 * Set the access level of an article to 'registered'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessregisteredTask()
 	{
@@ -466,7 +476,7 @@ class Products extends AdminController
 	/**
 	 * Set the access level of an article to 'special'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessspecialTask()
 	{
@@ -476,8 +486,8 @@ class Products extends AdminController
 	/**
 	 * Set the access level of an article
 	 *
-	 * @param      integer $access Access level to set
-	 * @return     void
+	 * @param   integer  $access  Access level to set
+	 * @return  void
 	 */
 	public function accessTask($access=0)
 	{
@@ -518,7 +528,7 @@ class Products extends AdminController
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -528,7 +538,7 @@ class Products extends AdminController
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -538,15 +548,13 @@ class Products extends AdminController
 	/**
 	 * Set the state of an entry
 	 *
-	 * @param      integer $state State to set
-	 * @return     void
+	 * @param   integer  $state  State to set
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-
-		//print_r($ids); die;
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -622,7 +630,7 @@ class Products extends AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
