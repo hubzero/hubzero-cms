@@ -31,7 +31,7 @@
 		padding: 0.2em 0;
 	}
 	.pub-selector li.even {
-		background: #f7f7fa;			
+		background: #f7f7fa;
 	}
 	ul.pub-selector {
 		max-height: 300px;
@@ -54,7 +54,8 @@
 	.abox-controls a {
 		font-size: 55%;
 	}
-	#b-filesave.disabled, #b-filesave.disabled:hover {
+	#b-filesave.disabled,
+	#b-filesave.disabled:hover {
 		background: #CCC;
 		cursor: default;
 	}
@@ -66,7 +67,6 @@
 	.requirement {
 		padding: 0 1em;
 		margin: 0;
-		/*color: #ef7f08;*/
 		width: 70%;
 	}
 	#req.success {
@@ -87,13 +87,14 @@
 		width: 180px;
 		margin: 0;
 	}
-	.search-filter label {		
+	.search-filter label {
 		margin: 0.5em;
 		position: absolute;
 	}
 	.search-filter label input {
-		border-radius: 8px;
+		-webkit-border-radius: 8px;
 		-moz-border-radius: 8px;
+		border-radius: 8px;
 		padding: 0.2em 0.5em;
 		font-size: 90%;
 		color: #666;
@@ -138,6 +139,18 @@
 		color: orange;
 	}
 
+	.type-publication {
+		padding: 0.5em;
+	}
+	.type-publication .item-thumb {
+		float: left;
+		margin: 0 1em 0 0;
+	}
+	.type-publication .item-info {
+		float: none;
+		color: #aaa;
+	}
+
 /* Selectable
 ---------------------------- */
 
@@ -177,7 +190,7 @@
 	}
 	.pub-selector li.allowed:hover {
 		background: #bbe3f3;
-	}	
+	}
 	.content-loader {
 		text-align: center;
 		padding: 3em 0;
@@ -191,7 +204,7 @@
 	#pub-selector .selectedfilter .item-fullinfo {
 		display: block;
 	}
-	
+
 /* Provisioned projects
 ---------------------------- */
 	#abox-content {

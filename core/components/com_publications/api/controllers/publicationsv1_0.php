@@ -38,6 +38,7 @@ use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
 use Request;
+use Config;
 use Route;
 use Lang;
 
@@ -93,9 +94,9 @@ class Publicationsv1_0 extends ApiController
 
 		// Set filters
 		$filters = array(
-			'limit'      => Request::getInt('limit', 0, 'post'),
-			'start'      => Request::getInt('start', 0, 'post'),
-			'sortby'     => Request::getWord('sort', 'title', 'post'),
+			'limit'      => Request::getInt('limit', Config::get('list_limit')),
+			'start'      => Request::getInt('start', 0),
+			'sortby'     => Request::getWord('sort', 'title'),
 			'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'ASC')),
 			'author'     => User::get('id')
 		);
@@ -103,6 +104,9 @@ class Publicationsv1_0 extends ApiController
 		$response = new stdClass;
 		$response->publications = array();
 		$response->total = $model->entries('count', $filters);
+
+		$database = \App::get('db');
+		$pa = new \Components\Publications\Tables\Author($database);
 
 		if ($response->total)
 		{
@@ -125,8 +129,9 @@ class Publicationsv1_0 extends ApiController
 				$obj->status        = $entry->get('state');
 				$obj->statusName    = $entry->getStatusName();
 
-				$obj->thumbUrl      = str_replace('/api', '', $base . '/'
-									. ltrim(Route::url($entry->link('thumb')), '/'));
+				$obj->authors       = $pa->getAuthors($entry->get('version_id'));
+
+				$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 				$obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('version')), '/'));
 				$obj->manageUri     = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('editversion')), '/'));
 				$obj->project       = $entry->project()->get('alias');

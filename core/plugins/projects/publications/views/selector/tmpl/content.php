@@ -37,7 +37,7 @@ $pubParams = $this->publication->params;
 $filters = array(
 	'category'    => Request::getVar('category', ''),
 	'sortby'      => Request::getCmd('sortby', 'date'),
-	'limit'       => Request::getInt('limit', Config::get('list_limit')),
+	'limit'       => Request::getInt('limit', 10000), //Config::get('list_limit')),
 	'start'       => Request::getInt('limitstart', 0),
 	'search'      => Request::getVar('search', ''),
 	'tag'         => trim(Request::getVar('tag', '', 'request', 'none', 2)),
@@ -62,6 +62,8 @@ $pageNav = new \Hubzero\Pagination\Paginator(
 $database = \App::get('db');
 $pa = new \Components\Publications\Tables\Author($database);
 ?>
+<label for="pub-search"><?php echo Lang::txt('Search'); ?></label>
+<input id="pub-search" name="search" placeholder="Start typing here" type="text" data-list=".pub-selector" autocomplete="off" />
 <ul class="pub-selector" id="pub-selector">
 	<?php
 	foreach ($results as $item)
@@ -102,18 +104,19 @@ $pa = new \Components\Publications\Tables\Author($database);
 		}
 		?>
 		<li class="type-publication allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
-			<span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
+			<div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" width="40" height="40" alt=""/></div>
+			<!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
 			<span class="item-wrap">
-				<?php echo $item->get('title'); ?>
+				<?php echo $item->get('title'); ?><br />
+				<span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
 			</span>
 			<span class="item-fullinfo">
-				<div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" alt=""/></div>
 				<?php echo $description; ?>
 				<p class="details">
 					<?php
 					if ($authors)
 					{
-						echo Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
+						echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_LIST') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
 					}
 					?>
 				</p>
