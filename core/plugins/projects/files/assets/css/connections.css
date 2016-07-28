@@ -5,6 +5,18 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
+#project-wrap #page_options {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-align: right;
+}
+#project-wrap #page_options:after {
+	content: "";
+	display: table;
+	line-height: 1;
+	clear: right;
+}
 .connections {
 	margin-top: 50px;
 }
