@@ -663,7 +663,7 @@ class Members extends AdminController
 
 		if ($i)
 		{
-			Notify::success(Lang::txt('COM_MEMBERS_REMOVED'));
+			Notify::success(Lang::txt('COM_MEMBERS_MEMBER_REMOVED'));
 		}
 
 		// Output messsage and redirect
