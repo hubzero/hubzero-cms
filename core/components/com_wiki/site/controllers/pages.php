@@ -404,13 +404,7 @@ class Pages extends SiteController
 		if ($this->preview)
 		{
 			$pageid = $this->page->get('id');
-			$lid = Request::getInt('lid', 0, 'post');
-			if ($lid != $this->page->get('id'))
-			{
-				$pageid = $lid;
-			}
 
-			// Parse the HTML
 			$lid = Request::getInt('lid', 0, 'post');
 			$pagename = $this->page->get('pagename');
 
