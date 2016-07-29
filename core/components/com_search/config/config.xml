@@ -37,11 +37,11 @@ HUBzero is a registered trademark of Purdue University.
 		</field>
 	</fieldset>
 	<fieldset name="solr">
-		<field name="solr_host" type="text" menu="hide" default="http://localhost" label="COM_SEARCH_PARAM_SOLR_HOST" description="COM_SEARCH_PARAM_SOLR_HOST_LABEL" />
-		<field name="solr_port" type="text" menu="hide" default="8983" label="COM_SEARCH_PARAM_SOLR_PORT" description="COM_SEARCH_PARAM_SOLR_PORT_LABEL" />
-		<field name="solr_core" type="text" menu="hide" default="hubsearch" label="COM_SEARCH_PARAM_SOLR_CORE" description="COM_SEARCH_PARAM_SOLR_CORE_LABEL" />
-		<field name="solr_path" type="text" menu="hide" default="/src/example/solr/data" label="COM_SEARCH_PARAM_SOLR_PATH" description="COM_SEARCH_PARAM_SOLR_PATH_LABEL" />
-		<field name="solr_log_path" type="text" menu="hide" default="/opt/solr/server/logs/solr.log" label="COM_SEARCH_PARAM_SOLR_LOG_PATH" description="COM_SEARCH_PARAM_SOLR_LOG_PATH_LABEL" />
+		<field name="solr_host" type="text" menu="hide" default="localhost" label="COM_SEARCH_PARAM_SOLR_HOST" description="COM_SEARCH_PARAM_SOLR_HOST_LABEL" />
+		<field name="solr_port" type="text" menu="hide" default="8445" label="COM_SEARCH_PARAM_SOLR_PORT" description="COM_SEARCH_PARAM_SOLR_PORT_LABEL" />
+		<field name="solr_core" type="text" menu="hide" default="hubzero-solr-core" label="COM_SEARCH_PARAM_SOLR_CORE" description="COM_SEARCH_PARAM_SOLR_CORE_LABEL" />
+		<field name="solr_path" type="text" menu="hide" default="/solr" label="COM_SEARCH_PARAM_SOLR_PATH" description="COM_SEARCH_PARAM_SOLR_PATH_LABEL" />
+		<field name="solr_log_path" type="text" menu="hide" default="/srv/hubzero-solr/logs/solr.log" label="COM_SEARCH_PARAM_SOLR_LOG_PATH" description="COM_SEARCH_PARAM_SOLR_LOG_PATH_LABEL" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_search" section="component">
