@@ -53,8 +53,8 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 		if (!$accessToken)
 		{
 			$info = [
-				'key'    => $pparams->get('app_key'),
-				'secret' => $pparams->get('app_secret')
+				'key'    => isset($params['app_key']) ? $params['app_key'] : $pparams->get('app_key'),
+				'secret' => isset($params['app_secret']) ? $params['app_secret'] : $pparams->get('app_secret')
 			];
 
 			$appInfo          = \Dropbox\AppInfo::loadFromJson($info);
