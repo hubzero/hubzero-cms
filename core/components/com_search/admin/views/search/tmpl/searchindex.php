@@ -87,7 +87,9 @@ $this->css('solr');
 				<td><input type="checkbox" class="typebox" value="<?php echo $type; ?>" /></td>
 				<td><?php echo $type; ?></td>
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=documentByType&type=' . $type);?>"><?php echo $count; ?></a></td>
-				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=dataindexing&task=matchDocumentSchema&type=' . $type); ?>" class="button">Index</a></td>
+				<td>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='.$this->controller . '&task=submitToQueue&type=' . $type); ?>" class="button disabled">Index</a>
+				</td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

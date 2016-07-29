@@ -38,7 +38,7 @@ if (!\User::authorise('core.manage', 'com_search'))
 }
 
 // Get the preferred search mechanism
-$controllerName = \Component::params('com_search')->get('engine');
+$controllerName = \Component::params('com_search')->get('engine', 'basic');
 
 // Prevent HUBgraph from being configured
 if (strtolower($controllerName) == 'hubgraph')
