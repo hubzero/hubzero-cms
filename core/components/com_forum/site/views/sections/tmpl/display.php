@@ -137,19 +137,21 @@ $this->css()
 											</span>
 										</td>
 										<td class="priority-3">
-											<span><?php echo $row->threads()
+											<span><?php
+											$threads = $row->threads()
 												->whereEquals('state', $this->filters['state'])
 												->whereIn('access', $this->filters['access'])
-												->total(); ?></span>
+												->total();
+											echo $threads; ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_DISCUSSIONS'); ?>
 											</span>
 										</td>
 										<td  class="priority-3">
-											<span><?php echo $row->posts()
+											<span><?php echo ($threads ? $row->posts()
 												->whereEquals('state', $this->filters['state'])
 												->whereIn('access', $this->filters['access'])
-												->total(); ?></span>
+												->total() : 0); ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_POSTS'); ?>
 											</span>
