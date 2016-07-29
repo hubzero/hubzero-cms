@@ -66,11 +66,11 @@ HUB.Members.Browse = {
 						} else {
 							options = '<option value="">No values are available</option>';
 						}
-						value.replaceWith('<select name="q[value]" id="filter-value"></select>');
+						value.replaceWith('<select name="q[0][value]" id="filter-value"></select>');
 						$('#filter-value').html(options);
 
 					} else {
-						value.replaceWith('<input name="q[value]" id="filter-value" type="text" />');
+						value.replaceWith('<input name="q[0][value]" id="filter-value" type="text" />');
 					}
 				}
 			});
@@ -85,9 +85,9 @@ HUB.Members.Browse = {
 		var value    = $('#filter-value');
 
 		if (operator.val() == "like") {
-			value.replaceWith('<input name="q[value]" id="filter-value" type="text" />');
+			value.replaceWith('<input name="q[0][value]" id="filter-value" type="text" />');
 		} else {
-			value.replaceWith('<select name="q[value]" id="filter-value"></select>');
+			value.replaceWith('<select name="q[0][value]" id="filter-value"></select>');
 			HUB.Members.Browse.col_change();
 		}
 	} // end operator_change

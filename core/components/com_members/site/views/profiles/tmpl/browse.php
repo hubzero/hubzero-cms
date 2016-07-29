@@ -48,7 +48,7 @@ if (!empty($this->filters['q']))
 	}
 }
 
-$fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
+$fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -69,13 +69,29 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 			<form action="<?php echo Route::url($base); ?>" method="get">
 				<div id="add-filters">
 					<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_RESULTS'); ?>:
-						<select name="q[field]" id="filter-field" data-base="<?php echo rtrim(Request::root(), '/'); ?>">
+						<select name="q[0][field]" id="filter-field" data-base="<?php echo rtrim(Request::root(), '/'); ?>">
 							<?php foreach ($fields as $c) : ?>
+								<?php
+								if (in_array($c['raw'], $exclude))
+								{
+									continue;
+								}
+								?>
 								<option value="<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape($c['human']); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<?php echo Components\Members\Helpers\Filters::buildSelectOperators(); ?>
-						<input type="text" name="q[value]" id="filter-value" value="" />
+						<input type="text" name="q[0][value]" id="filter-value" value="" />
+						<?php
+							$qs = array();
+							foreach ($this->filters['q'] as $i => $q) :
+								echo '<input type="hidden" name="q[' . ($i + 1) . '][field]" value="' . $this->escape($q['field']) . '" />' . "\n";
+								echo '<input type="hidden" name="q[' . ($i + 1) . '][operator]" value="' . $this->escape($q['operator']) . '" />' . "\n";
+								echo '<input type="hidden" name="q[' . ($i + 1) . '][value]" value="' . $this->escape($q['value']) . '" />' . "\n";
+
+								$qs[$i] = '&q[' . $i . '][field]=' . $q['field'] . '&q[' . $i . '][operator]=' . $q['operator'] . '&q[' . $i . '][value]=' . $q['value'];
+							endforeach;
+							?>
 						<input class="btn btn-secondary" id="filter-submit" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_ADD'); ?>" />
 					</p>
 				</div><!-- / .filters -->
@@ -86,9 +102,20 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 					<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_APPLIED'); ?>:</p>
 					<ul class="filters-list">
 						<?php if (!empty($this->filters['q'])) : ?>
-							<?php foreach ($this->filters['q'] as $q) : ?>
+							<?php foreach ($this->filters['q'] as $i => $q) : ?>
+								<?php
+								$route = $base;
+								foreach ($qs as $k => $s)
+								{
+									if ($k == $i)
+									{
+										continue;
+									}
+									$route .= $s;
+								}
+								?>
 								<li>
-									<a href="<?php echo Route::url($base . '&q[field]=' . $q['field'] . '&q[operator]=' . $q['operator'] . '&q[value]=' . $q['value'] . '&q[delete]'); ?>"
+									<a href="<?php echo Route::url($route); ?>"
 										class="filters-x">x
 									</a>
 									<i><?php echo $q['human_field'] . ' ' . $q['human_operator']; ?></i>: <?php echo $this->escape($q['human_value']); ?>
@@ -255,6 +282,7 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 											if (!in_array($c['raw'], array('org', 'organization'))) {
 												continue;
 											}
+
 											if ($val = $row->get($c['raw'])) { ?>
 												<span class="result-details">
 													<br />
@@ -269,6 +297,7 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 											if (in_array($c['raw'], array('name', 'org', 'organization'))) {
 												continue;
 											}
+
 											if ($val = $row->get($c['raw'])) {
 												$val = (is_array($val) ? implode(', ', $val) : $val);
 											?>
@@ -302,7 +331,27 @@ $fields = Components\Members\Helpers\Filters::getFieldNames($exclude);
 				</div>
 				<?php
 				$pageNav = $this->rows->pagination;
-				$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				if ($this->filters['search'])
+				{
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				}
+				if ($this->filters['tags'])
+				{
+					$pageNav->setAdditionalUrlParam('tags', $this->filters['tags']);
+				}
+				/*if ($this->filters['sortby'])
+				{
+					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				}*/
+				if (!empty($this->filters['q']))
+				{
+					foreach ($this->filters['q'] as $i => $q)
+					{
+						$pageNav->setAdditionalUrlParam('q[' . $i . '][field]', $q['human_field']);
+						$pageNav->setAdditionalUrlParam('q[' . $i . '][operator]', $q['o']);
+						$pageNav->setAdditionalUrlParam('q[' . $i . '][value]', strtolower($q['human_value']));
+					}
+				}
 				echo $pageNav;
 				?>
 				<div class="clearfix"></div>
