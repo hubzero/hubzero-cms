@@ -129,7 +129,7 @@ $first = $this->archive->entries(array(
 							Components\Blog\Models\Comment::STATE_PUBLISHED,
 							Components\Blog\Models\Comment::STATE_FLAGGED
 						))
-						->count();
+						->total();
 					?>
 					<dd class="comments">
 						<a href="<?php echo Route::url($this->row->link('comments')); ?>">
