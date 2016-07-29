@@ -20,7 +20,7 @@
 .connections {
 	margin-top: 50px;
 }
-#project-wrap .connections .connection {
+#project-wrap .connections .connection-wrap {
 	display: block;
 	float: left;
 	border: 1px solid transparent;
@@ -30,9 +30,13 @@
 	text-align: center;
 	position: relative;
 }
-#project-wrap .connections .connection:hover {
+#project-wrap .connections .connection-wrap:hover {
 	background-color: #F1F1F1;
 	border: 1px solid #E9E9E9;
+}
+#project-wrap .connections .connection {
+	display: block;
+	border: 1px solid transparent;
 }
 .connections .large-icon img {
 	height: 128px;
@@ -134,6 +138,31 @@
 	width: 32px;
 	line-height: 32px;
 	float: left;
+}
+.connection-actions {
+	display: block;
+	padding-top: 0.4em;
+}
+.list .connection-actions {
+	position: absolute;
+	right: 0;
+	padding-top: 0;
+}
+.connection-actions a {
+	display: inline-block;
+	font-size: 1.5em;
+	width: 1em;
+	height: 1em;
+	overflow: hidden;
+	line-height: 1;
+	margin: 0.2em;
+	color: #bbb;
+}
+.connection-actions a:hover {
+	color: #222;
+}
+.connection-actions a.connection-delete:hover {
+	color: #c00;
 }
 .connections .new-connection .new:before {
 	font-family: "fontcons";

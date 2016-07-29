@@ -16,7 +16,7 @@ jQuery(document).ready(function (jq) {
 		e.preventDefault();
 
 		var target     = $(e.target),
-			connection = $('.connection'),
+			connection = $('.connection-wrap'),
 			classname  = target.data('class');
 
 		connection.removeClass('large-icon small-icon list').addClass(classname);
@@ -30,4 +30,14 @@ jQuery(document).ready(function (jq) {
 
 		form.submit();
 	});
+
+	$('.connections')
+		// Add confirm dialog to delete links
+		.on('click', 'a.connection-delete', function (e) {
+			var res = confirm($(this).attr('data-confirm'));
+			if (!res) {
+				e.preventDefault();
+			}
+			return res;
+		});
 });

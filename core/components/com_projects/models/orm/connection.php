@@ -93,6 +93,7 @@ class Connection extends Relational
 	public function thatICanView()
 	{
 		return $this->whereEquals('owner_id', User::get('id'), 1)
+		            ->orWhereEquals('owner_id', 0, 1)
 		            ->orWhereRaw('owner_id IS NULL', [], 1);
 	}
 
@@ -103,6 +104,6 @@ class Connection extends Relational
 	 **/
 	public function isShared()
 	{
-		return is_null($this->owner_id) ? true : false;
+		return !$this->owner_id ? true : false;
 	}
 }

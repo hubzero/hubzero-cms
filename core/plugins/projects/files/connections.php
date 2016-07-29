@@ -154,14 +154,15 @@ class connections
 	 **/
 	public function newconnection()
 	{
-		$connection = Connection::blank();
+		/*$connection = Connection::blank();
 		$connection->set([
 			'project_id'  => $this->model->get('id'),
 			'provider_id' => Request::getInt('provider_id')
 		])->save();
 
 		// Redirect
-		App::redirect(Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id, false));
+		App::redirect(Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id, false));*/
+		return $this->editconnection();
 	}
 
 	/**
@@ -171,6 +172,21 @@ class connections
 	 */
 	public function editconnection()
 	{
+		$this->connection = Connection::oneOrNew(Request::getInt('connection'));
+
+		if ($this->connection->isNew())
+		{
+			$this->connection->set([
+				'project_id'  => $this->model->get('id'),
+				'provider_id' => Request::getInt('provider_id')
+			]);
+		}
+
+		if ($this->connection->get('project_id') != $this->model->get('id'))
+		{
+			App::redirect(Route::url($this->model->link('files')));
+		}
+
 		// Set up view
 		$view = new \Hubzero\Plugin\View([
 			'folder'  => 'projects',
@@ -180,10 +196,71 @@ class connections
 		]);
 
 		// Assign vars
+		$view->model      = $this->model;
 		$view->connection = $this->connection;
 
 		// Load and return view content
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Creates a new connection
+	 *
+	 * @return  void
+	 **/
+	public function saveconnection()
+	{
+		$data = Request::getVar('connect', array(), 'post');
+
+		$data['owner_id'] = User::get('id');
+		if (Request::getInt('shareconnection', 0, 'post'))
+		{
+			$data['owner_id'] = 0;
+		}
+
+		$connection = Connection::blank();
+		$connection->set($data);
+
+		if (is_array($connection->get('params')))
+		{
+			$connection->set('params', json_encode($connection->get('params')));
+		}
+
+		if (!$connection->save())
+		{
+			App::redirect(
+				Route::url($this->model->link('files'), false),
+				$connection->getError(),
+				'error'
+			);
+		}
+
+		// Redirect
+		App::redirect(Route::url($this->model->link('files'), false));
+	}
+
+	/**
+	 * Delete a connection
+	 *
+	 * @return  void
+	 **/
+	public function deleteconnection()
+	{
+		if (!$this->connection)
+		{
+			$this->connection = Connection::oneOrNew(Request::getInt('connection'));
+		}
+
+		if ($this->connection->get('id'))
+		{
+			if (!$this->connection->destroy())
+			{
+				\Notify::error($this->connection->getError());
+			}
+		}
+
+		// Redirect
+		App::redirect(Route::url($this->model->link('files'), false));
 	}
 
 	/**
