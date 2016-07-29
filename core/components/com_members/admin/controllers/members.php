@@ -42,6 +42,7 @@ use Hubzero\Utility\Validate;
 use Filesystem;
 use Request;
 use Notify;
+use Config;
 use Route;
 use User;
 use Date;
@@ -360,7 +361,14 @@ class Members extends AdminController
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Load the profile
-		$user = Member::oneOrNew($fields['id'])->set($fields);
+		$user = Member::oneOrNew($fields['id']);
+
+		// Get the user before changes so we can
+		// compare how data changed later on
+		$prev = clone $user;
+
+		// Set the incoming data
+		$user->set($fields);
 
 		if ($user->isNew())
 		{
@@ -598,6 +606,15 @@ class Members extends AdminController
 			$user->reputation->save();
 		}
 
+		// Email the user that their account has been approved
+		if (!$prev->get('approved') && $this->config->get('useractivation_email'))
+		{
+			if (!$this->emailApprovedUser($user))
+			{
+				Notify::error(Lang::txt('COM_MEMBERS_ERROR_EMAIL_FAILED'));
+			}
+		}
+
 		// Set success message
 		Notify::success(Lang::txt('COM_MEMBERS_MEMBER_SAVED'));
 
@@ -755,15 +772,29 @@ class Members extends AdminController
 		{
 			// Load the profile
 			$user = Member::oneOrFail(intval($id));
-			$user->set('approved', $state);
 
-			if (!$user->save())
+			// Extra, paranoid check that we only approve accounts that need it
+			if (!$user->get('approved'))
 			{
-				Notify::error($user->getError());
-				continue;
-			}
+				$user->set('approved', $state);
 
-			$i++;
+				if (!$user->save())
+				{
+					Notify::error($user->getError());
+					continue;
+				}
+
+				// Email the user that their account has been approved
+				if ($this->config->get('useractivation_email'))
+				{
+					if (!$this->emailApprovedUser($user))
+					{
+						Notify::error(Lang::txt('COM_MEMBERS_ERROR_EMAIL_FAILED'));
+					}
+				}
+
+				$i++;
+			}
 		}
 
 		if ($i)
@@ -772,6 +803,63 @@ class Members extends AdminController
 		}
 
 		$this->cancelTask();
+	}
+
+	/**
+	 * Send an email to a user
+	 * stating their account has been approved
+	 *
+	 * @param   object  $user
+	 * @return  bool
+	 */
+	protected function emailApprovedUser($user)
+	{
+		// Compute the mail subject.
+		$emailSubject = Lang::txt(
+			'COM_MEMBERS_APPROVED_USER_EMAIL_SUBJECT',
+			$user->get('name'),
+			Config::get('sitename')
+		);
+
+		// Compute the mail body.
+		$eview = new \Hubzero\Mail\View(array(
+			'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
+			'name'      => 'emails',
+			'layout'    => 'approved_plain'
+		));
+		$eview->option     = $this->_option;
+		$eview->controller = $this->_controller;
+		$eview->config     = $this->config;
+		$eview->baseURL    = Request::root();
+		$eview->user       = $user;
+		$eview->sitename   = Config::get('sitename');
+
+		$plain = $eview->loadTemplate(false);
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		$eview->setLayout('approved_html');
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
+
+		// Build the message and send it
+		$mail = new \Hubzero\Mail\Message();
+		$mail
+			->addFrom(
+				Config::get('mailfrom'),
+				Config::get('fromname')
+			)
+			->addTo($user->get('email'))
+			->setSubject($emailSubject);
+
+		$mail->addPart($plain, 'text/plain');
+		$mail->addPart($html, 'text/html');
+
+		if (!$mail->send())
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
