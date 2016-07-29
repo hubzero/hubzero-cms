@@ -50,7 +50,7 @@ class Filters
 	public static function getFilters($namespace)
 	{
 		// Process query filters
-		$q = Request::getVar('q', array());
+		$q = (array)Request::getVar('q', array());
 
 		// Translate operators and augment query filters with human-friendly text
 		$query = self::filtersMap($q);
@@ -161,6 +161,11 @@ class Filters
 			// Go through query filters
 			foreach ($q as $val)
 			{
+				if (!isset($val['field']) || !isset($val['operator']) || !isset($val['value']))
+				{
+					continue;
+				}
+
 				$val['human_field']    = ucwords(str_replace('_', ' ', $val['field']));
 				$val['o']              = self::translateOperator($val['operator']);
 				$val['human_operator'] = self::mapOperator($val['o']);
