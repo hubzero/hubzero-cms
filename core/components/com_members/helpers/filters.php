@@ -50,17 +50,13 @@ class Filters
 	public static function getFilters($namespace)
 	{
 		// Process query filters
-		$q = User::getState("{$namespace}.query");
-		if ($incoming = Request::getVar('q', false))
-		{
-			$q[] = $incoming;
-		}
+		$q = Request::getVar('q', array());
 
 		// Translate operators and augment query filters with human-friendly text
 		$query = self::filtersMap($q);
 
 		// Turn search into array of results, if not already
-		$search = Request::getVar('search', User::getState("{$namespace}.search", ''));
+		$search = Request::getVar('search', '');
 
 		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
 		if ($search && !is_array($search))
@@ -72,12 +68,7 @@ class Filters
 			$search = preg_replace("/[^a-zA-Z]/", '', $search);
 		}
 
-		$tags = Request::getVar('tags', User::getState("{$namespace}.tags", ''));
-
-		// Set some values in the session
-		User::setState("{$namespace}.search", $search);
-		User::setState("{$namespace}.query",  $query);
-		User::setState("{$namespace}.tags",   $tags);
+		$tags = Request::getVar('tags', '');
 
 		return array(
 			'search' => $search,
@@ -90,7 +81,7 @@ class Filters
 	/**
 	 * Gets the field names
 	 *
-	 * @param   array   $exclude  An array of columns to exclude
+	 * @param   array  $exclude  An array of columns to exclude
 	 * @return  array
 	 */
 	public static function getFieldNames($exclude=array())
@@ -132,7 +123,7 @@ class Filters
 	 */
 	public static function buildSelectOperators()
 	{
-		$html  = '<select name="q[operator]" id="filter-operator">';
+		$html  = '<select name="q[0][operator]" id="filter-operator">';
 		$html .= '	<option value="like">contains (LIKE)</option>';
 		$html .= '	<option value="e">equals (&#61;)</option>';
 		$html .= '	<option value="de">doesn\'t equal (&#8800;)</option>';
@@ -165,43 +156,24 @@ class Filters
 		$dvalue    = '';
 
 		// First, make sure we have something to iterate over
-		if (!empty($q[0]))
+		if (!empty($q))
 		{
 			// Go through query filters
 			foreach ($q as $val)
 			{
-				// Make sure we're not deleting this filter
-				if (!array_key_exists('delete', $val))
-				{
-					$val['human_field']    = ucwords(str_replace('_', ' ', $val['field']));
-					$val['o']              = self::translateOperator($val['operator']);
-					$val['human_operator'] = self::mapOperator($val['o']);
-					$val['human_value']    = $val['value'];
-					$filters[]  = $val;
-				}
-				else // we're establishing the details of the query filter to delete (which we'll do below)
-				{
-					// Values to delete
-					$dcolumn   = $val['field'];
-					$doperator = $val['operator'];
-					$dvalue    = $val['value'];
-				}
+				$val['human_field']    = ucwords(str_replace('_', ' ', $val['field']));
+				$val['o']              = self::translateOperator($val['operator']);
+				$val['human_operator'] = self::mapOperator($val['o']);
+				$val['human_value']    = $val['value'];
+
+				$filters[]  = $val;
 			}
 		}
 
 		// Distil down the results to only unique filters
 		$filters = array_map('unserialize', array_unique(array_map('serialize', $filters)));
 
-		// Now go through them again and only keep ones not marked for deletion (there's probably a much better way to do this)
-		foreach ($filters as $filter)
-		{
-			if (!($filter['field'] == $dcolumn && $filter['operator'] == $doperator && $filter['value'] == $dvalue))
-			{
-				$return[] = $filter;
-			}
-		}
-
-		return $return;
+		return $filters;
 	}
 
 	/**
@@ -209,9 +181,9 @@ class Filters
 	 *
 	 * ex: change hub_id to Hub
 	 *
-	 * @param  $vals   - incoming values
-	 * @param  $column - incoming column for which values pertain
-	 * @return $return - outgoing values
+	 * @param   array   $vals    incoming values
+	 * @param   string  $column  incoming column for which values pertain
+	 * @return  array   $return  outgoing values
 	 */
 	public static function filtersOverrides($vals, $column)
 	{
