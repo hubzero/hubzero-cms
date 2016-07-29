@@ -377,7 +377,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$field->title = 'Publication - #' . $row->id;
+				$fields->title = 'Publication - #' . $row->id;
 			}
 
 
