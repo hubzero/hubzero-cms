@@ -788,9 +788,16 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		$comments = null;
 
-		$rows = $post->thread()
-			->whereIn('state', $filters['state'])
-			->whereIn('access', $filters['access'])
+		$entries = $post->thread()
+			->whereIn('state', (array)$filters['state'])
+			->whereIn('access', $filters['access']);
+
+		if (isset($filters['start_at']) && $filters['start_at'])
+		{
+			$entries->where('created', '>', $filters['start_at']);
+		}
+
+		$rows = $entries
 			->order('lft', 'asc')
 			->rows();
 
@@ -921,14 +928,25 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$threads->html       = null;
 		$threads->total      = 0;
 
-		$results = Post::all()
+		$entries = Post::all()
 			->whereEquals('parent', 0)
+			->whereIn('state', (array)$filters['state'])
+			->whereIn('access', $filters['access']);
+
+		if (isset($filters['start_at']) && $filters['start_at'])
+		{
+			$entries->where('created', '>', $filters['start_at']);
+		}
+
+		$rows = $entries
 			->order('created', 'asc') // Needs to be reverse order that items are prepended with AJAX
 			->rows();
 
-		if ($results->count())
+		$results = array();
+
+		if ($rows->count())
 		{
-			foreach ($results as $key => $row)
+			foreach ($rows as $key => $row)
 			{
 				$threads->lastid = $row->get('id') > $threads->lastid
 								 ? $row->get('id')
@@ -954,6 +972,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					$cview->set('lecture', $this->lecture->get('alias'));
 				}
 
+				$results[$key] = $row;
 				$results[$key]->mine = ($row->get('created_by') == User::get('id')) ? true : false;
 				$results[$key]->html = $cview->loadTemplate();
 			}
@@ -980,7 +999,21 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$thread->html       = null;
 		$thread->total      = 0;
 
-		$results = $post->getTree($post->id, $filters);
+		//$results = $post->getTree($post->id, $filters);
+
+		$entries = Post::all()
+			->whereEquals('thread', $post->id)
+			->whereIn('state', (array)$filters['state'])
+			->whereIn('access', $filters['access']);
+
+		if (isset($filters['start_at']) && $filters['start_at'])
+		{
+			$entries->where('created', '>', $filters['start_at']);
+		}
+
+		$results = $entries
+			->order('created', 'asc') // Needs to be reverse order that items are prepended with AJAX
+			->rows();
 
 		if ($results->count())
 		{
@@ -1135,9 +1168,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			'scope_sub_id' => 0,
 			'search'     => Request::getVar('search', ''),
 			'section_id' => 0,
-			'state'      => 1,
+			'state'      => Post::STATE_PUBLISHED,
 			'limit'      => Request::getInt('limit', 500),
-			'start'      => Request::getInt('limitstart', 0)
+			'start'      => Request::getInt('limitstart', 0),
+			'access'     => User::getAuthorisedViewLevels()
 		);
 		if ($this->params->get('discussions_threads', 'all') != 'all')
 		{
@@ -1254,7 +1288,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
-		$filters['state'] = 1;
+		$filters['state'] = Post::STATE_PUBLISHED;
 
 		// Get Sections
 		if (!isset($this->sections))
@@ -1347,7 +1381,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$sections[] = $section;
 		}
 
-		$filters['state'] = array(1, 3);
+		$filters['state'] = array(Post::STATE_PUBLISHED, 3);
 
 		$post = Post::blank()
 			->set('scope', $filters['scope'])
@@ -2064,7 +2098,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$filters['state'] = array(1, 3);
+		$filters['state'] = array(Post::STATE_PUBLISHED, 3);
 
 		// Get authorization
 		$this->_authorize('category', $category->get('id'));
@@ -2342,7 +2376,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Set the redirect
 		App::redirect(
 			$rtrn,
-			$message,
+			Lang::txt('Post successfully saved'),
 			'passed'
 		);
 	}
@@ -2442,7 +2476,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		if (!$listdir)
+		if (!$thread_id)
 		{
 			$this->setError(Lang::txt('PLG_COURSES_DISCUSSIONS_NO_UPLOAD_DIRECTORY'));
 			return false;

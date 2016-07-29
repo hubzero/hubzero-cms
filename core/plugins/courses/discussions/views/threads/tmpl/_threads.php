@@ -44,7 +44,7 @@ if (!isset($this->category))
 ?>
 <ul class="discussions" id="<?php echo $this->category; ?>" data-lastchange="<?php echo $lastchange; ?>">
 	<?php
-	if ($this->threads && is_array($this->threads))
+	if ($this->threads)
 	{
 		$cls = 'odd';
 		if (isset($this->cls))
@@ -52,7 +52,7 @@ if (!isset($this->category))
 			$cls = ($this->cls == 'odd') ? 'even' : 'odd';
 		}
 
-		$this->depth++;
+		//$this->depth++;
 
 		if (!isset($this->search))
 		{
