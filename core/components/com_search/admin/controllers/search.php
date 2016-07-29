@@ -32,7 +32,7 @@
 namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Search\Models\NoIndex;
+use Components\Search\Models\IndexQueue;
 use \Hubzero\Search\Query;
 use stdClass;
 
@@ -101,6 +101,43 @@ class Search extends AdminController
 		$this->view->stats = $stats;
 		$this->view->display();
 	}
+
+	public function submitToQueueTask()
+	{
+		$type = Request::get('type', false);
+
+		// Quit early if no type specified
+		if ($type === false)
+		{
+			return;
+		}
+
+		$indexQueue = Indexqueue::all()->where('hubtype', '=', $type)->rows()->toObject();
+		if (count($indexQueue) == 0)
+		{
+			$newEntry = Indexqueue::oneOrNew(0);
+			$newEntry->set('hubtype', $type);
+			$newEntry->set('action', 'index');
+
+			if ($newEntry->save())
+			{
+				App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false), 'Successfully added '. $type . ' to queue.', 'success');
+			}
+			else
+			{
+				App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false), 'Failed to add '. $type . ' to queue!', 'error');
+			}
+		}
+		else
+		{
+			App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false), $type . ' is already in the queue.', 'warning');
+		}
+	}
+
+
 
 	/**
 	 * documentByTypeTask - view a type's records
