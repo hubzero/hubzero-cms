@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 	}
 	else
 	{
-		$comment = $this->comment->content('parsed');
+		$comment = $this->comment->comment;
 		if ($this->search)
 		{
 			$comment = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $comment);

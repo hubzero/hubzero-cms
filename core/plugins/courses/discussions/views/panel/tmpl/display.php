@@ -154,7 +154,8 @@ if (count($inst) > 0)
 							$posts = \Components\Forum\Models\Post::all()
 								->whereEquals('scope', $this->filters['scope'])
 								->whereEquals('scope_id', $this->filters['scope_id'])
-								->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED);
+								->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED)
+								->whereEquals('parent', 0);
 
 							if ($this->config->get('discussions_threads', 'all') != 'all')
 							{
