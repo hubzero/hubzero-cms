@@ -130,6 +130,11 @@ class Helper extends Module
 		$tags  = null;
 
 		$records = \Components\Answers\Models\Question::all()
+			->including(['responses', function ($response){
+				$response
+					->select('id')
+					->select('question_id');
+			}])
 			->whereEquals('state', 0);
 
 		if ($kind == 'mine')
@@ -181,6 +186,7 @@ class Helper extends Module
 		$results = array();
 		foreach ($data as $datum)
 		{
+			$datum->set('rcount', $datum->responses->count());
 			$results[] = $datum;
 		}
 
