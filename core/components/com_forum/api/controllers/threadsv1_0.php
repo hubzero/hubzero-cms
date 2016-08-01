@@ -559,7 +559,7 @@ class Threadsv1_0 extends ApiController
 			'parent'         => Request::getInt('parent', 0, 'post'),
 			'scope'          => Request::getVar('scope', 'site', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
-			'access'         => Request::getInt('access', Post::AACCESS_PUBLIC, 'post'),
+			'access'         => Request::getInt('access', Post::ACCESS_PUBLIC, 'post'),
 			'anonymous'      => Request::getInt('anonymous', 0, 'post'),
 			'thread'         => Request::getInt('thread', 0, 'post'),
 			'closed'         => Request::getInt('closed', 0, 'post'),
