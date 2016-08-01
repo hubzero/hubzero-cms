@@ -776,6 +776,9 @@ class Setup extends Base
 					}
 				}
 
+				// Record activity
+				$this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_INFO_UPDATED'));
+
 			break;
 
 			case 'team':
@@ -873,6 +876,9 @@ class Setup extends Base
 							}
 						}
 					}
+
+					// Record activity
+					$this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_SETTINGS_UPDATED'));
 				}
 			break;
 		}
