@@ -195,7 +195,7 @@ $this->css()
 										$lastpost = $row->lastActivity();
 										if ($lastpost->get('id'))
 										{
-											$lname = Lang::txt('COM_FORUM_ANONYMOUS');
+											$lname = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
 											if (!$lastpost->get('anonymous'))
 											{
 												$lname = $this->escape(stripslashes($lastpost->creator->get('name')));
