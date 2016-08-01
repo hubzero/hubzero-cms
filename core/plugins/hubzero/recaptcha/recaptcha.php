@@ -146,7 +146,10 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 		// something went wrong
 		if ($verificationResponse->success !== true)
 		{
-			$this->setError($verificationResponse->{'error-codes'});
+			if (isset($verificationResponse->{'error-codes'}))
+			{
+				$this->setError($verificationResponse->{'error-codes'});
+			}
 			return false;
 		}
 
