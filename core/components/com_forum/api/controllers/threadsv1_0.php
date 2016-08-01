@@ -152,10 +152,10 @@ class Threadsv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "section",
-	 * 		"description":   "Section alias",
-	 * 		"type":          "string",
+	 * 		"description":   "Section ID",
+	 * 		"type":          "integer",
 	 * 		"required":      true,
-	 *      "default":       ""
+	 *      "default":       0
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "search",
@@ -185,7 +185,7 @@ class Threadsv1_0 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'section'    => Request::getVar('section', ''),
+			'section_id' => Request::getInt('section', 0),
 			'search'     => Request::getVar('search', ''),
 			'scope'      => Request::getWord('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0),
@@ -196,13 +196,14 @@ class Threadsv1_0 extends ApiController
 
 		$forum = new Manager($filters['scope'], $filters['scope_id']);
 
-		$section = Section::all()
-			->whereEquals('alias', $filters['section'])
-			->whereEquals('scope', $forum->get('scope'))
-			->whereEquals('scope_id', $forum->get('scope_id'))
-			->row();
+		$section = Section::oneOrFail($filters['section_id']);
 
 		if (!$section->get('id'))
+		{
+			throw new Exception(Lang::txt('Section not found.'), 404);
+		}
+
+		if ($section->get('state') == Section::STATE_DELETED)
 		{
 			throw new Exception(Lang::txt('Section not found.'), 404);
 		}
@@ -290,17 +291,38 @@ class Threadsv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "section",
-	 * 		"description":   "Section alias to filter by",
-	 * 		"type":          "string",
+	 * 		"description":   "Section ID. Find all posts for all categories within a section.",
+	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 *      "default":       ""
+	 *      "default":       0
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "category",
-	 * 		"description":   "Category alias to filter by",
-	 * 		"type":          "string",
+	 * 		"description":   "Category ID. Find all posts within a category.",
+	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 *      "default":       ""
+	 *      "default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "threads_only",
+	 * 		"description":   "Return only threads (true) or any post (false)?",
+	 * 		"type":          "boolean",
+	 * 		"required":      false,
+	 *      "default":       false
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "parent",
+	 * 		"description":   "Parent post ID. Find all immediate descendent (replies) posts.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 *      "default":       null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "thread",
+	 * 		"description":   "Thread ID. Find all posts in a specified thread.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 *      "default":       0
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "scope",
@@ -321,66 +343,90 @@ class Threadsv1_0 extends ApiController
 	public function listTask()
 	{
 		$filters = array(
-			'limit'      => Request::getInt('limit', 25),
-			'start'      => Request::getInt('limitstart', 0),
-			'section'    => Request::getVar('section', ''),
-			'category'   => Request::getVar('category', ''),
-			'search'     => Request::getVar('search', ''),
-			'scope'      => Request::getWord('scope', 'site'),
-			'scope_id'   => Request::getInt('scope_id', 0),
-			'state'      => Post::STATE_PUBLISHED,
-			'parent'     => 0,
-			'access'     => User::getAuthorisedViewLevels()
+			'limit'       => Request::getInt('limit', 25),
+			'start'       => Request::getInt('limitstart', 0),
+			'section_id'  => Request::getInt('section', 0),
+			'category_id' => Request::getInt('category', 0),
+			'parent'      => Request::getInt('parent', 0),
+			'thread'      => Request::getInt('thread', 0),
+			'threads'     => Request::getBool('threads_only', false),
+			'search'      => Request::getVar('search', ''),
+			'scope'       => Request::getWord('scope', 'site'),
+			'scope_id'    => Request::getInt('scope_id', 0),
+			'state'       => Post::STATE_PUBLISHED,
+			'parent'      => 0,
+			'access'      => User::getAuthorisedViewLevels()
 		);
 
-		$forum = new Manager($filters['scope'], $filters['scope_id']);
-
-		$section = Section::all()
-			->whereEquals('alias', $filters['section'])
-			->whereEquals('scope', $forum->get('scope'))
-			->whereEquals('scope_id', $forum->get('scope_id'))
-			->row();
-
-		if (!$section->get('id'))
-		{
-			throw new Exception(Lang::txt('Section not found.'), 404);
-		}
-
-		$category = Category::all()
-			->whereEquals('alias', $filters['category'])
-			->whereEquals('scope', $forum->get('scope'))
-			->whereEquals('scope_id', $forum->get('scope_id'))
-			->row();
-
-		if (!$category->get('id'))
-		{
-			throw new Exception(Lang::txt('Category not found.'), 404);
-		}
-
-		$response = new stdClass;
-
-		$response->section = new stdClass;
-		$response->section->id         = $section->get('id');
-		$response->section->title      = $section->get('title');
-		$response->section->alias      = $section->get('alias');
-		$response->section->created    = with(new Date($section->get('created')))->format('Y-m-d\TH:i:s\Z');
-		$response->section->scope      = $section->get('scope');
-		$response->section->scope_id   = $section->get('scope_id');
-
-		$response->category = new stdClass;
-		$response->category->id          = $category->get('id');
-		$response->category->title       = $category->get('title');
-		$response->category->alias       = $category->get('alias');
-		$response->category->description = $category->get('description');
-		$response->category->created     = with(new Date($category->get('created')))->format('Y-m-d\TH:i:s\Z');
-		$response->category->scope       = $category->get('scope');
-		$response->category->scope_id    = $category->get('scope_id');
-
-		$response->threads = array();
-
-		$entries = $category->threads()
+		$entries = Post::all()
 			->whereEquals('state', $filters['state'])
-			->whereIn('access', $filters['access']);
+			->whereIn('access', $filters['access'])
+			->whereEquals('scope', $filters['scope'])
+			->whereEquals('scope_id', $filters['scope_id']);
+
+		if ($filters['thread'])
+		{
+			$entries->whereEquals('thread', $filters['thread']);
+		}
+
+		if ($filters['parent'])
+		{
+			$entries->whereEquals('parent', $filters['parent']);
+		}
+
+		if ($filters['threads'])
+		{
+			$entries->whereEquals('parent', 0);
+		}
+
+		if ($filters['section_id'])
+		{
+			// Make sure the section exists and is available
+			$section = Section::oneOrFail($filters['section_id']);
+
+			if (!$section->get('id'))
+			{
+				throw new Exception(Lang::txt('Section not found.'), 404);
+			}
+
+			if ($section->get('state') == Section::STATE_DELETED)
+			{
+				throw new Exception(Lang::txt('Section not found.'), 404);
+			}
+
+			$categories = $section->categories()
+				->whereEquals('state', $filters['state'])
+				->whereIn('access', $filters['access'])
+				->rows();
+
+			$filters['category_id'] = array();
+
+			foreach ($categories as $category)
+			{
+				$filters['category_id'][] = $category->get('id');
+			}
+		}
+
+		if ($filters['category_id'])
+		{
+			// If one category, make sure it exists and is available
+			if (is_int($filters['category_id']))
+			{
+				$category = Category::oneOrFail($filters['category_id']);
+
+				if (!$category->get('id'))
+				{
+					throw new Exception(Lang::txt('Category not found.'), 404);
+				}
+
+				if ($category->get('state') == Category::STATE_DELETED)
+				{
+					throw new Exception(Lang::txt('Category not found.'), 404);
+				}
+			}
+
+			$entries->whereIn('category_id', (array)$filters['category_id']);
+		}
 
 		if ($filters['search'])
 		{
@@ -394,7 +440,9 @@ class Threadsv1_0 extends ApiController
 			->paginated()
 			->rows();
 
-		$response->total = $threads->count();
+		$response = new stdClass;
+		$response->threads = array();
+		$response->total   = $threads->count();
 
 		if ($response->total)
 		{
@@ -408,20 +456,25 @@ class Threadsv1_0 extends ApiController
 				$obj->created     = with(new Date($thread->get('created')))->format('Y-m-d\TH:i:s\Z');
 				$obj->modified    = $thread->get('modified');
 				$obj->anonymous   = ($thread->get('anonymous') ? true : false);
-				$obj->closed      = ($thread->get('closed') ? true : false);
+				//$obj->closed      = ($thread->get('closed') ? true : false);
 				$obj->scope       = $thread->get('scope');
 				$obj->scope_id    = $thread->get('scope_id');
+				$obj->thread      = $thread->get('thread');
+				$obj->parent      = $thread->get('parent');
+				$obj->category_id = $thread->get('category_id');
+				$obj->state       = $thread->get('state');
+				$obj->access      = $thread->get('access');
 
 				$obj->creator = new stdClass;
-				$obj->creator->id = $thread->get('created_by');
-				$obj->creator->name = $thread->creator()->get('name');
+				$obj->creator->id   = $thread->get('created_by');
+				$obj->creator->name = $thread->creator->get('name');
 
 				$obj->posts       = $thread->thread()
 					->whereEquals('state', $filters['state'])
 					->whereIn('access', $filters['access'])
 					->total();
 
-				$obj->url         = $base . '/' . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')), '/');
+				$obj->url         = $base . '/' . ltrim(Route::url($thread->link()), '/');
 
 				$response->threads[] = $obj;
 			}
@@ -442,7 +495,7 @@ class Threadsv1_0 extends ApiController
 	 * 		"description": "Category ID",
 	 * 		"type":        "integer",
 	 * 		"required":    true,
-	 * 		"default":     null
+	 * 		"default":     0
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "scope",
@@ -480,7 +533,7 @@ class Threadsv1_0 extends ApiController
 	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "crated_by",
+	 * 		"name":        "created_by",
 	 * 		"description": "User ID of entry creator",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
@@ -578,6 +631,12 @@ class Threadsv1_0 extends ApiController
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_FORUM_ERROR_SAVING_DATA'), 500);
+		}
+
+		if ($fields['created_by'])
+		{
+			$row->set('created_by', (int)$fields['created_by']);
+			$row->save();
 		}
 
 		if ($tags = Request::getVar('tags', null, 'post'))
