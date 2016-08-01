@@ -82,7 +82,29 @@ $name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_
 				echo $this->escape($scope[0]);
 				//echo $this->escape($this->row->log->get('scope') . '.' . $this->row->log->get('scope_id'));
 			?></span>
-			<span class="activity-time"><time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->relative(); ?></time></span>
+			<span class="activity-time"><time datetime="<?php echo $this->row->get('created'); ?>"><?php
+				$dt = Date::of($this->row->get('created'));
+				$ct = Date::of('now');
+
+				$lapsed = $ct->toUnix() - $dt->toUnix();
+
+				if ($lapsed < 30)
+				{
+					echo Lang::txt('PLG_MEMBERS_ACTIVITY_JUST_NOW');
+				}
+				elseif ($lapsed > 86400 && $ct->format('Y') != $dt->format('Y'))
+				{
+					echo $dt->toLocal('M j, Y');
+				}
+				elseif ($lapsed > 86400)
+				{
+					echo $dt->toLocal('M j') . ' @ ' . $dt->toLocal('g:i a');
+				}
+				else
+				{
+					echo $dt->relative();
+				}
+			?></time></span>
 		</span>
 		<span class="activity-event">
 			<?php echo $this->row->log->get('description'); ?>
