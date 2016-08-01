@@ -115,7 +115,7 @@ class Economy extends Object
 		$objWish = new Tables\Wish($this->_db);
 		$wish = $objWish->get_wish($wishid, '', 1);
 
-		if ($wish->bonus > 0)
+		if (is_object($wish) && $wish->bonus > 0)
 		{
 			// Adjust credits
 			$payees = $this->getPayees($wishid);
