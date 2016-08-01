@@ -1527,7 +1527,7 @@ class Create extends SiteController
 						'action'      => 'deleted',
 						'scope'       => 'resource',
 						'scope_id'    => $resource->get('id'),
-						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . $resource->get('title') . '</a>'),
+						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($resource->link()) . '">' . $resource->get('title') . '</a>'),
 						'details'     => array(
 							'title' => $resource->get('title'),
 							'url'   => Route::url($resource->link())
