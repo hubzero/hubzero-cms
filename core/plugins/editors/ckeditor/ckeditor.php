@@ -401,7 +401,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		if ($this->params->get('sourceViewButton'))
 		{
 			array_unshift($config->toolbar[0], 'Source', '-');
-			$config->extraPlugins .= ',codemirror';
+			//$config->extraPlugins .= ',codemirror';
 		}
 
 		// height
