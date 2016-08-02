@@ -97,13 +97,26 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 		{
 			$this->member = $member;
 
-			$arr['html'] = $this->feedAction();
+			$action = Request::getCmd('action', 'feed');
+
+			if (!$this->params->get('email_digests'))
+			{
+				$action = 'feed';
+			}
+
+			switch ($action)
+			{
+				case 'settings': $arr['html'] = $this->settingsAction(); break;
+				case 'savesettings': $arr['html'] = $this->savesettingsAction(); break;
+				case 'feed':
+				default:         $arr['html'] = $this->feedAction();     break;
+			}
 		}
 
 		$arr['metadata'] = array();
 
 		// Get the number of unread messages
-		$unread = \Hubzero\Activity\Recipient::all()
+		$unread = Hubzero\Activity\Recipient::all()
 			->whereEquals('scope', 'user')
 			->whereEquals('scope_id', $member->get('id'))
 			->whereEquals('state', 1)
@@ -124,7 +137,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function feedAction()
 	{
-		$entries = \Hubzero\Activity\Recipient::all()
+		$entries = Hubzero\Activity\Recipient::all()
 			->including('log')
 			->whereEquals('scope', 'user')
 			->whereEquals('scope_id', $this->member->get('id'))
@@ -141,11 +154,123 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 			->paginated();
 		*/
 
+		$digests = $this->params->get('email_digests');
+
 		$view = $this->view('default', 'activity')
+			->set('digests', $digests)
 			->set('member', $this->member)
 			->set('categories', null)
 			->set('rows', $entries);
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Show settings form
+	 *
+	 * @return  string
+	 */
+	protected function settingsAction()
+	{
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (User::get('id') != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
+		}
+
+		if (!$this->params->get('email_digests'))
+		{
+			return $this->feedAction();
+		}
+
+		$settings = Hubzero\Activity\Digest::oneByScope(
+			$this->member->get('id'),
+			'user'
+		);
+
+		$view = $this->view('settings', 'activity')
+			->set('member', $this->member)
+			->set('settings', $settings);
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Save settings
+	 *
+	 * @return  mixed
+	 */
+	protected function savesettingsAction()
+	{
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (User::get('id') != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
+		}
+
+		if (!$this->params->get('email_digests'))
+		{
+			die('here?');
+			return $this->feedAction();
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Incoming
+		$settings = Request::getVar('settings', array(), 'post');
+		$settings['scope']    = 'user';
+		$settings['scope_id'] = $this->member->get('id');
+
+		$row = Hubzero\Activity\Digest::blank()->set($settings);
+
+		// Store new content
+		if (!$row->save())
+		{
+			$this->setError($row->getError());
+			return $this->settingsAction();
+		}
+
+		// Log the activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'updated',
+				'scope'       => 'activity.settings',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_UPDATED')
+			],
+			'recipients' => [
+				$this->member->get('id')
+			]
+		]);
+
+		// Redirect
+		App::redirect(
+			Route::url($this->member->link() . '&active=activity', false),
+			Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_SAVED')
+		);
+	}
+
+	/**
+	 * Redirect to the login page
+	 *
+	 * @return  void
+	 */
+	protected function loginAction()
+	{
+		$return = base64_encode(Route::url($this->member->link() . '&active=' . $this->_name, false, true));
+
+		App::redirect(
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+			Lang::txt('MEMBERS_LOGIN_NOTICE')
+		);
 	}
 }

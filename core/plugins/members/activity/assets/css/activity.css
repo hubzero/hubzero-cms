@@ -16,6 +16,9 @@
 	#page_content.member_activity {
 		padding: 0;
 	}
+	#page_content.member_activity #hubForm {
+		padding: 30px;
+	}
 
 	.filters {
 		background-color: #fff;

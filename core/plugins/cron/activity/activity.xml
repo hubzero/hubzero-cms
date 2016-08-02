@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/members/activity/activity.xml
+@file           plugins/cron/activity/activity.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -29,27 +29,22 @@ THE SOFTWARE.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension version="1.0" type="plugin" group="members">
-	<name>plg_members_activity</name>
+<extension version="1.7" type="plugin" group="cron">
+	<name>Cron - Activity</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>PLG_MEMBERS_ACTIVITY_XML_DESCRIPTION</description>
+	<description>PLG_CRON_ACTIVITY_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="activity">activity.php</filename>
-		<filename>assets/css/activity.css</filename>
-		<filename>assets/js/activity.js</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_members_activity.ini</language>
+		<language tag="en-GB">en-GB.plg_cron_activity.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
-				<field name="email_digests" type="list" default="0" label="PLG_MEMBERS_ACTIVITY_PARAM_EMAILDIGESTS_LABEL" description="PLG_MEMBERS_ACTIVITY_PARAM_EMAILDIGESTS_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
+			<fieldset name="basic" addfieldpath="/core/plugins/mail">
+				<field name="email_transport_mechanism" type="mailers" default="0" label="PLG_CRON_FORUM_EMAIL_TRANSPORT_MECHANISM_LABEL" description="PLG_CRON_FORUM_EMAIL_TRANSPORT_MECHANISM_DESC" />
 			</fieldset>
 		</fields>
 	</config>
