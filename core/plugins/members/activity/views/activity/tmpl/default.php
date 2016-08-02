@@ -37,8 +37,17 @@ $this->css()
 
 $no_html = Request::getInt('no_html', 0);
 
-if (!$no_html) {
-?>
+if (!$no_html) { ?>
+	<?php if ($this->digests): ?>
+		<ul id="page_options">
+			<li>
+				<a class="btn icon-config" href="<?php echo Route::url($this->member->link() . '&active=activity&action=settings'); ?>">
+					<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_EMAIL_DIGEST_SETTINGS'); ?>
+				</a>
+			</li>
+		</ul>
+	<?php endif; ?>
+
 <div class="activities">
 	<form action="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" method="get">
 		<fieldset class="filters">
