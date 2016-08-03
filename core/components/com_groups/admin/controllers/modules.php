@@ -273,6 +273,12 @@ class Modules extends AdminController
 		$this->module->set('modified', Date::toSql());
 		$this->module->set('modified_by', User::get('id'));
 
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$this->module->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		// save version settings
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		if (!$this->module->store(false, $this->group->isSuperGroup()))
@@ -359,10 +365,10 @@ class Modules extends AdminController
 	/**
 	 * Output raw content
 	 *
-	 * @param     $escape    Escape outputted content
-	 * @return    string     HTML content
+	 * @param   bool  $escape  Escape outputted content
+	 * @return  void
 	 */
-	public function rawTask( $escape = true )
+	public function rawTask($escape = true)
 	{
 		// make sure we are approvers
 		if (!Helpers\Pages::isPageApprover())
@@ -838,6 +844,12 @@ class Modules extends AdminController
 		$module->set('approved', 1);
 		$module->set('approved_on', Date::toSql());
 		$module->set('approved_by', User::get('id'));
+
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$module->set('page_trusted', $this->group->params->get('page_trusted', 0));
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		$module->store(false, $this->group->isSuperGroup());

@@ -720,6 +720,12 @@ class Pages extends AdminController
 		$currentVersion->set('approved_on', Date::toSql());
 		$currentVersion->set('approved_by', User::get('id'));
 
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$currentVersion->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		// save version with approved status
 		if (!$currentVersion->store(false, 1))
 		{
@@ -755,10 +761,10 @@ class Pages extends AdminController
 	 * @param     $escape    Escape outputted content
 	 * @return    string     HTML content
 	 */
-	public function rawTask( $escape = true )
+	public function rawTask($escape = true)
 	{
 		// make sure we are approvers
-		if (!Helpers\Pages::isPageApprover())
+		if (!User::authorise('core.admin') && !Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),

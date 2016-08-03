@@ -216,21 +216,24 @@ class Module extends Model
 	 */
 	public function store($check = true, $trustedContent = false)
 	{
-		//get content
-		$content = $this->get('content');
-
-		// if content is not trusted, strip php and scripts
-		if (!$trustedContent)
+		if (!$this->get('page_trusted', 0))
 		{
-			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+			//get content
+			$content = $this->get('content');
+
+			// if content is not trusted, strip php and scripts
+			if (!$trustedContent)
+			{
+				$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+				$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+			}
+
+			// purify content
+			$content = $this->purify($content, $trustedContent);
+
+			// set the purified content
+			$this->set('content', $content);
 		}
-
-		// purify content
-		$content = $this->purify($content, $trustedContent);
-
-		// set the purified content
-		$this->set('content', $content);
 
 		// call parent store
 		if (!parent::store($check))
