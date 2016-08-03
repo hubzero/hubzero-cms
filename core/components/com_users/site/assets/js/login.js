@@ -77,7 +77,7 @@ HUB.User = {
 						console.log(err);
 						password.val('');
 						password.focus();
-						error.html('Sorry. Something went wong. Please try logging in again.');
+						error.html('Sorry. Something went wrong. Please try logging in again.');
 						error.slideDown('fast');
 						loading.hide();
 						attempts++;
