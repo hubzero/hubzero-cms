@@ -142,7 +142,6 @@ class Questions extends SiteController
 		// Load question
 		$question = Question::oneOrFail($questionID);
 
-		/*
 		// Build the "from" info
 		$from = array(
 			'email'     => Config::get('mailfrom'),
@@ -197,7 +196,6 @@ class Questions extends SiteController
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
-		*/
 
 		// Log activity
 		$recipients = array($question->get('created_by'));
@@ -925,7 +923,6 @@ class Questions extends SiteController
 		// Load the question
 		$question = Question::oneOrFail($row->get('question_id'));
 
-		/*
 		// Build the "from" info
 		$from = array(
 			'email'     => Config::get('mailfrom'),
@@ -993,7 +990,6 @@ class Questions extends SiteController
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
-		*/
 
 		// Log activity
 		$recipients = array($row->get('created_by'));
@@ -1065,7 +1061,7 @@ class Questions extends SiteController
 		// Log the activity
 		if (!$this->getError())
 		{
-			$answer = Answer::oneOrFail($rid);
+			$answer = Response::oneOrFail($rid);
 
 			$recipients = array($answer->get('created_by'));
 			if ($answer->get('created_by') != $question->get('created_by'))
