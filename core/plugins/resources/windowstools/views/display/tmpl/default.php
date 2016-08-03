@@ -30,12 +30,16 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$browser = new \Hubzero\Browser\Detector();
 ?>
 <h3 class="section-header">
 	<?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS'); ?>
 </h3>
 
-<p class="warning">Note: Windows Tools require the use of the Chrome web browser only.</p>
+<?php if ($browser->name() != 'chrome') { ?>
+	<p class="warning">Note: Windows Tools require the use of the Chrome web browser only.</p>
+<?php } ?>
 
 <ol>
 	<li>Click <strong>Launch Tool</strong>
