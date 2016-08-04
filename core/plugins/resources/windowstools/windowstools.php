@@ -159,9 +159,12 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onResourcesAreas($model)
 	{
-		$areas = array(
-			'windowstools' => Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SETUP')
-		);
+		$areas = array();
+
+		if ($model->type->params->get('plg_' . $this->_name))
+		{
+			$areas['windowstools'] = Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SETUP');
+		}
 
 		return $areas;
 	}
