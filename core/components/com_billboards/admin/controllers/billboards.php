@@ -333,8 +333,11 @@ class BillBoards extends AdminController
 		$fields = Request::getVar('billboard', array(), 'post');
 
 		// Check the billboard back in
-		$billboard = Billboard::oneOrNew($fields['id']);
-		$billboard->checkin();
+		if (isset($fields['id']))
+		{
+			$billboard = Billboard::oneOrNew($fields['id']);
+			$billboard->checkin();
+		}
 
 		// Redirect
 		App::redirect(
