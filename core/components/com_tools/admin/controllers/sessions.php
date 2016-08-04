@@ -140,6 +140,7 @@ class Sessions extends AdminController
 
 		// Incoming
 		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$mwdb = Utils::getMWDBO();
 
