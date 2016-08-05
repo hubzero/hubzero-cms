@@ -302,37 +302,13 @@ class Sessionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('No session ID Specified.'), 401);
 		}
 
+		$screenshot = '';
+
 		//load session
 		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$sess = $ms->loadSession($sessionid);
 
-		//check to make sure we have a sessions dir
-		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($sess->username) . DS . 'data' . DS . 'sessions';
-		if (!is_dir($home_directory))
-		{
-			clearstatcache();
-			if (!is_dir($home_directory))
-			{
-				throw new Exception(Lang::txt('Unable to find users sessions directory: %s', $home_directory), 404);
-			}
-		}
-
-		//check to make sure we have an active session with the ID supplied
-		$home_directory .= DS . $sessionid . '{,L,D}';
-		$directories = glob($home_directory, GLOB_BRACE);
-		if (empty($directories))
-		{
-			throw new Exception(Lang::txt('No Session directory with the ID: %s', $sessionid), 404);
-		}
-		else
-		{
-			$home_directory = $directories[0];
-		}
-
-		// check to make sure we have a screenshot
-		$screenshot = $home_directory . DS . 'screenshot.png';
-
-		if (!file_exists($screenshot))
+		if (!$sess)
 		{
 			if ($notFound)
 			{
@@ -340,7 +316,48 @@ class Sessionsv1_0 extends ApiController
 			}
 			else
 			{
-				throw new Exception(Lang::txt('No screenshot Found.'), 404);
+				throw new Exception(Lang::txt('Session not found.'), 404);
+			}
+		}
+
+		if (!$screenshot)
+		{
+			//check to make sure we have a sessions dir
+			$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($sess->username) . DS . 'data' . DS . 'sessions';
+			if (!is_dir($home_directory))
+			{
+				clearstatcache();
+				if (!is_dir($home_directory))
+				{
+					throw new Exception(Lang::txt('Unable to find users sessions directory: %s', $home_directory), 404);
+				}
+			}
+
+			//check to make sure we have an active session with the ID supplied
+			$home_directory .= DS . $sessionid . '{,L,D}';
+			$directories = glob($home_directory, GLOB_BRACE);
+			if (empty($directories))
+			{
+				throw new Exception(Lang::txt('No Session directory with the ID: %s', $sessionid), 404);
+			}
+			else
+			{
+				$home_directory = $directories[0];
+			}
+
+			// check to make sure we have a screenshot
+			$screenshot = $home_directory . DS . 'screenshot.png';
+
+			if (!file_exists($screenshot))
+			{
+				if ($notFound)
+				{
+					$screenshot = dirname(dirname(__DIR__)) . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
+				}
+				else
+				{
+					throw new Exception(Lang::txt('No screenshot Found.'), 404);
+				}
 			}
 		}
 
