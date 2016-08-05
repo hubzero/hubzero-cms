@@ -117,11 +117,11 @@ class BillBoards extends AdminController
 		}
 
 		// Are we editing an existing entry?
-		if ($billboard->id)
+		/*if ($billboard->id)
 		{
 			// Yes, we should check it out first
 			$billboard->checkout(User::get('id'));
-		}
+		}*/
 
 		// Output the HTML
 		$this->view
