@@ -362,9 +362,14 @@ class Media extends Base
 				}
 			}
 
+			$folders = array_values($folders);
+			$files   = array_values($files);
+			sort($folders);
+			sort($files);
+
 			//reset array keys
-			$this->view->folders = array_values($folders);
-			$this->view->files   = array_values($files);
+			$this->view->folders = $folders;
+			$this->view->files   = $files;
 		}
 
 		// pass vars to view
