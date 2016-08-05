@@ -172,8 +172,8 @@ endforeach;
 					<input type="hidden" name="option" value="com_users" />
 					<input type="hidden" name="authenticator" value="hubzero" />
 					<input type="hidden" name="task" value="user.login" />
-					<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
-					<input type="hidden" name="freturn" value="<?php echo $this->freturn; ?>" />
+					<input type="hidden" name="return" value="<?php echo $this->escape($this->return); ?>" />
+					<input type="hidden" name="freturn" value="<?php echo $this->escape($this->freturn); ?>" />
 					<?php echo Html::input('token'); ?>
 				</form>
 			</div>
