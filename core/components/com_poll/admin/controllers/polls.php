@@ -431,10 +431,13 @@ class Polls extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		if ($id  = Request::getVar('id', 0, '', 'int'))
+		if ($id = Request::getVar('id', 0, '', 'int'))
 		{
-			$row = Poll::oneOrFail($id);
-			$row->checkin();
+			if (is_int($id))
+			{
+				$row = Poll::oneOrFail($id);
+				$row->checkin();
+			}
 		}
 
 		App::redirect(
