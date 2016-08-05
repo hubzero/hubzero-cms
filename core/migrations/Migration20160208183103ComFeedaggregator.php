@@ -1,9 +1,9 @@
 <?php
 
 use Hubzero\Content\Migration\Base;
-use Components\Feedaggregator\Models\Orm\Post;
+use Components\Feedaggregator\Models\Post;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'orm' . DS . 'post.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'post.php');
 
 /**
  * Migration script for converting the timestamps in the created field to
