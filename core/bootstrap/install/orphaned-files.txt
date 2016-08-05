@@ -60,6 +60,7 @@
 ./administrator/components/com_support/views/abusereports/tmpl/_submenu.php
 ./administrator/components/com_support/views/abusereports/tmpl/check.php
 ./plugins/projects/files/views/browser/tmpl/search.php
+./plugins/projects/notes/views/comments/tmpl/_list.php
 ./plugins/wiki/parserdefault/macros/redirect.php
 ./plugins/system/spamjail/language/en-GB/en-GB.plg_system_spamjail.sys.ini
 ./plugins/system/spamjail/spamjail.xml
