@@ -267,7 +267,7 @@ class Polls extends AdminController
 		foreach ($options as $i => $text)
 		{
 			$option = new Option;
-			$option->set('pollid', (int) $row->get('id'));
+			$option->set('poll_id', (int) $row->get('id'));
 			$option->set('text', htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
 
 			if ($fields['id'])
