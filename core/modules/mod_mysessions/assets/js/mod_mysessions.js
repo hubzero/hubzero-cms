@@ -20,6 +20,8 @@ if (!jq) {
 	var jq = $;
 }
 
+var failedScreenshotLookup = 0;
+
 //----------------------------------------------------------
 // My Sessions Module
 //----------------------------------------------------------
@@ -87,9 +89,13 @@ HUB.Modules.MySessions = {
 							.parent().addClass('loaded');
 					},
 					error: function(jqXHR, status, error) {
-						setTimeout(function(){
-							module.sessionSnapshotImages(true);
-						}, 5000);
+						if (failedScreenshotLookup <= 2) {
+							console.log(failedScreenshotLookup);
+							setTimeout(function(){
+								module.sessionSnapshotImages(true);
+							}, 5000);
+							failedScreenshotLookup++;
+						}
 					}
 				});
 			}
