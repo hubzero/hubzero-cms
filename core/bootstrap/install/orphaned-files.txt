@@ -114,3 +114,5 @@
 ./components/com_storefront/assets/img/noimage.png
 ./components/com_storefront/helpers/integrity.php
 ./components/com_storefront/models/SoftwareSku.php
+./administrator/components/com_members/views/quotas/tmpl/displayclasses.xml
+./administrator/components/com_members/views/quotas/tmpl/editclass.xml
