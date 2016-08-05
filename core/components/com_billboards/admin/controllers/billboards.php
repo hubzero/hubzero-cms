@@ -205,8 +205,20 @@ class BillBoards extends AdminController
 			}
 			else
 			{
+				if ($old = $billboard->get('background_img'))
+				{
+					if (file_exists($uploadDirectory . $old))
+					{
+						\Filesystem::delete($uploadDirectory . $old);
+					}
+				}
 				// Move successful, save the image url to the billboard entry
-				$billboard->set('background_img', $billboard_image['name'])->save();
+				$billboard->set('background_img', $billboard_image['name']);
+				if (!$billboard->save())
+				{
+					Notify::error($billboard->getError());
+					return $this->editTask($billboard);
+				}
 			}
 		}
 
@@ -330,14 +342,14 @@ class BillBoards extends AdminController
 	public function cancelTask()
 	{
 		// Incoming - we need an id so that we can check it back in
-		$fields = Request::getVar('billboard', array(), 'post');
+		/*$fields = Request::getVar('billboard', array(), 'post');
 
 		// Check the billboard back in
-		if (isset($fields['id']))
+		if (isset($fields['id']) && $fields['id'])
 		{
 			$billboard = Billboard::oneOrNew($fields['id']);
 			$billboard->checkin();
-		}
+		}*/
 
 		// Redirect
 		App::redirect(
