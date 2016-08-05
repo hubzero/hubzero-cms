@@ -65,7 +65,6 @@ class Option extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'text'    => 'notempty',
 		'poll_id' => 'positive|nonzero'
 	);
 
