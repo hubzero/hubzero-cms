@@ -23,7 +23,7 @@ class Migration20150826208413ComContent extends Base
 
 			if (count($results) > 0)
 			{
-				foreach($results as $r)
+				foreach ($results as $r)
 				{
 					if (empty($r->attribs))
 					{
