@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/forum/forum.css
+ * @file        plugins/courses/discussions/discussions.css
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
@@ -333,7 +333,7 @@
 	.comment-add textarea {
 		margin: 0.25em 0 0.5em 0;
 		width: 100%;
-	}	
+	}
 	.comment-add .submit input,
 	.comment-add .option {
 		width: auto;
@@ -597,7 +597,7 @@
 		overflow: hidden;
 		overflow-x: hidden;
 		overflow-y: auto;
-		background: url("../img/loading.gif") center 50px no-repeat;
+		/*background: url("../img/loading.gif") center 50px no-repeat;*/
 	}
 	.comment-threads-shadow {
 		content: "";
@@ -629,7 +629,6 @@
 		overflow-x: hidden;
 		padding: 0 1.618em;
 		margin: 0;
-		/*height: 100%;*/
 		position: absolute;
 		top: 2.6em;
 		bottom: 0;
@@ -640,7 +639,7 @@
 		    -ms-box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.1);
 		     -o-box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.1);
 		        box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.1);
-		background: url("../img/loading.gif") center 50px no-repeat;
+		/*background: url("../img/loading.gif") center 50px no-repeat;*/
 	}
 	.comments-frame .comment-thread {
 		padding: 0.618em 0;
