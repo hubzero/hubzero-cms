@@ -243,7 +243,7 @@ class Search extends AdminController
 		{
 			// Redirect back to the search page.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false), 
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false),
 					'Successfully removed ' . $id, 'success'
 			);
 		}
@@ -251,7 +251,7 @@ class Search extends AdminController
 		{
 			// Redirect back to the search page.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false), 
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false),
 					'Failed to remove '. $id, 'error'
 			);
 		}
@@ -270,7 +270,7 @@ class Search extends AdminController
 		$entry->destroy();
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false), 
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false),
 				'Successfully removed entry #' . $entryID, 'success'
 		);
 	}
