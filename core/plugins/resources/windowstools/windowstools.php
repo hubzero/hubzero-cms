@@ -61,6 +61,12 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		$response->success = false;
 		$response->message = Lang::txt('No invoke URL found.');
 
+		if (User::isGuest())
+		{
+			$response->message = Lang::txt('Login is required to perform this action.');
+			$url = '';
+		}
+
 		if ($url)
 		{
 			$response->success = true;
