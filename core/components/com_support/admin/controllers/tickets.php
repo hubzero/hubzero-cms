@@ -408,7 +408,10 @@ class Tickets extends AdminController
 		}
 
 		// Output the HTML
-		$this->view->setLayout($layout)->display();
+		$this->view
+			->set('config', $this->config)
+			->setLayout($layout)
+			->display();
 	}
 
 	/**
@@ -516,6 +519,9 @@ class Tickets extends AdminController
 		$webpath = trim($this->config->get('webpath'), '/');
 
 		$allowEmailResponses = $this->config->get('email_processing');
+
+		$this->config->set('email_terse', Request::getInt('email_terse', 0));
+
 		if ($this->config->get('email_terse'))
 		{
 			$allowEmailResponses = false;

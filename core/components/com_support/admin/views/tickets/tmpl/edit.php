@@ -444,6 +444,13 @@ if (!$no_html)
 								<span class="label"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_LEGEND_COMMENTS'); ?></span>
 								<textarea name="comment" id="comment-field-comment" cols="75" rows="15"><?php echo $this->comment->get('comment'); ?></textarea>
 							</label>
+
+							<?php if ($this->config->get('email_terse')) { ?>
+								<label for="email_terse">
+									<input class="option" type="checkbox" name="email_terse" id="email_terse" value="1" checked="checked" />
+									<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_TERSE'); ?>
+								</label>
+							<?php } ?>
 						</div>
 
 						<!--
