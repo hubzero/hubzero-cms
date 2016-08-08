@@ -568,11 +568,13 @@ $cc = array();
 				<?php } // ACL can create comments (admin) or private comments ?>
 					<textarea name="comment" id="comment" rows="13" cols="35"><?php echo $this->comment->get('comment'); ?></textarea>
 
-					<?php if ($this->config->get('email_terse')) { ?>
-						<label for="email_terse">
-							<input class="option" type="checkbox" name="email_terse" id="email_terse" value="1" checked="checked" />
-							<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_TERSE'); ?>
-						</label>
+					<?php if ($this->row->access('create', 'comments') > 0) { ?>
+						<?php if ($this->config->get('email_terse')) { ?>
+							<label for="email_terse">
+								<input class="option" type="checkbox" name="email_terse" id="email_terse" value="1" checked="checked" />
+								<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_TERSE'); ?>
+							</label>
+						<?php } ?>
 					<?php } ?>
 				</fieldset>
 
