@@ -58,7 +58,7 @@ require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'noindex.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'blacklist.php');
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
 

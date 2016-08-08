@@ -59,14 +59,6 @@ $this->css('solr');
 				<input type="submit" value="<?php echo Lang::txt('COM_SEARCH_GO'); ?>" />
 				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
-		<!--	<div class="col span6 rtl">
-				<label for="filter-state"><?php echo Lang::txt('COM_SEARCH_FILTER_BY'); ?></label>
-				<select name="state" id="filter-state" onchange="document.adminForm.submit();">
-					<option value="0"<?php //if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SEARCH_FILTER_BY_OPEN'); ?></option>
-					<option value="1"<?php //if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SEARCH_FILTER_BY_CLOSED'); ?></option>
-					<option value="-1"<?php //if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SEARCH_FILTER_BY_ALL'); ?></option>
-				</select>
-			</div> -->
 		</div>
 	</fieldset>
 

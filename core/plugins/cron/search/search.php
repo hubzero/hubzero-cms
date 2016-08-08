@@ -69,7 +69,7 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 	public function processQueue()
 	{
 		require_once PATH_CORE . DS . 'components' . DS .'com_search' . DS . 'models' . DS . 'indexqueue.php';
-		require_once PATH_CORE . DS . 'components' . DS .'com_search' . DS . 'models' . DS . 'noindex.php';
+		require_once PATH_CORE . DS . 'components' . DS .'com_search' . DS . 'models' . DS . 'blacklist.php';
 
 		// Get the type needed to be indexed;
 		$item = \Components\Search\Models\IndexQueue::all()

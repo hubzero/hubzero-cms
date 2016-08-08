@@ -70,6 +70,7 @@ $this->css('solr');
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php //echo $this->rows->count(); ?>);" /></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_DOCUMENT_COUNT', 'document_count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_LAST_INDEXED', 'document_count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scop="col">&nbsp;</th>
 			</tr>
 		</thead>
@@ -87,6 +88,17 @@ $this->css('solr');
 				<td><input type="checkbox" class="typebox" value="<?php echo $type; ?>" /></td>
 				<td><?php echo $type; ?></td>
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=documentByType&type=' . $type);?>"><?php echo $count; ?></a></td>
+				<td>
+				<?php
+					foreach ($this->queue as $qItem)
+					{
+						if ($qItem->hubtype == $type)
+						{
+							echo Date::of($qItem->modified)->toLocal();
+						}
+					}
+				?>
+				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='.$this->controller . '&task=submitToQueue&type=' . $type); ?>" class="button disabled">Index</a>
 				</td>

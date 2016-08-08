@@ -41,7 +41,7 @@ use Hubzero\Base\Object;
  *
  * @uses \Hubzero\Database\Relational
  */
-class Noindex extends Relational
+class Blacklist extends Relational
 {
 	/**
 	 * The table namespace
@@ -49,7 +49,13 @@ class Noindex extends Relational
 	 * @var string
 	 **/
 	protected $namespace = 'search';
-	// table name jos_citations
+
+	/**
+	 * The table name 
+	 *
+	 * @var string
+	 **/
+	protected $table = '#__search_blacklist';
 
 	/**
 	 * Default order by for model
@@ -64,8 +70,10 @@ class Noindex extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'type'	=> 'notempty',
-		//'title' => 'notempty'
+		'scope'	=> 'notempty',
+		'scope_id'	=> 'notempty',
+		'created_by' => 'notempty',
+		'created'
 	);
 
 	/**
