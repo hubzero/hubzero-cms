@@ -33,6 +33,7 @@ namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Search\Models\IndexQueue;
+use Components\Search\Models\Blacklist;
 use \Hubzero\Search\Query;
 use stdClass;
 
@@ -125,18 +126,24 @@ class Search extends AdminController
 			if ($newEntry->save())
 			{
 				App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false), 'Successfully added '. $type . ' to queue.', 'success');
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false),
+					'Successfully added '. $type . ' to queue.', 'success'
+				);
 			}
 			else
 			{
 				App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false), 'Failed to add '. $type . ' to queue!', 'error');
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false),
+					'Failed to add '. $type . ' to queue!', 'error'
+				);
 			}
 		}
 		else
 		{
 			App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false), $type . ' is already in the queue.', 'warning');
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false),
+				$type . ' is already in the queue.', 'warning'
+			);
 		}
 	}
 
@@ -151,7 +158,7 @@ class Search extends AdminController
 	public function documentByTypeTask()
 	{
 		$type = Request::getVar('type', '');
-		$filter = Request::getVar('filter', '*:*');
+		$filter = Request::getVar('filter', '');
 		$limitstart = Request::getInt('limitstart', 0);
 		$limit = Request::getInt('limit', 10);
 
@@ -161,39 +168,119 @@ class Search extends AdminController
 			$this->view->setError($error);
 		}
 
+		// Temporary override to get all matching documents
+		if ($filter == '')
+		{
+			$filter = '*:*';
+		}
+
+		// Instantitate and get all results for a particular document type
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
 		$results = $query->query($filter)->addFilter('hubtype', array('hubtype', '=', $type))
 			->limit($limit)->start($limitstart)->run()->getResults();
 
+		// Get the total number of records
 		$total = $query->getNumFound();
 
+		// Pass the type the view
 		$this->view->type = $type;
 
+		// Create the pagination
 		$pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
 		$pagination->setLimits(array('5','10','15','20','50','100','200'));
 		$this->view->pagination = $pagination;
 
-
-		$this->view->filter = isset($filter) ? $filter : '';
+		// Pass the filters and documents to the display
+		$this->view->filter = !isset($filter) || $filter = '*:*' ? '' : $filter;
 		$this->view->documents = isset($results) ? $results : array();
+
+		// Display the view
 		$this->view->display();
 
 	}
 
+	/**
+	 * manageBlacklistTask 
+	 * 
+	 * @access public
+	 * @return Hubzero\View\View 
+	 */
 	public function manageBlacklistTask()
 	{
-		$this->view->blacklist = NoIndex::all()->rows();
+		$this->view->blacklist = Blacklist::all()->rows();
 		$this->view->display();
 	}
+
+	/**
+	 * addToBlacklistTask - Makes a database entry and removes from index
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function addToBlacklistTask()
+	{
+		$id = Request::getVar('id', '');
+
+		// Break out the components
+		$parts = explode('-', $id);
+		$scope = $parts[0];
+		$scope_id = $parts[1];
+
+		// Make entry on blacklist
+		$entry = Blacklist::oneOrNew(0);
+		$entry->set('scope', $scope);
+		$entry->set('scope_id', $scope_id);
+		$entry->set('created', \Date::of()->toSql());
+		$entry->set('created_by', User::getInstance()->get('id', 0));
+		$entry->save();
+
+		// Remove from index
+		$config = Component::params('com_search');
+		$index = new \Hubzero\Search\Index($config);
+
+		if ($index->delete($id))
+		{
+			// Redirect back to the search page.
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false), 
+					'Successfully removed ' . $id, 'success'
+			);
+		}
+		else
+		{
+			// Redirect back to the search page.
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false), 
+					'Failed to remove '. $id, 'error'
+			);
+		}
+	}
+
+	/**
+	 * removeBlacklistEntryTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function removeBlacklistEntryTask()
 	{
 		$entryID = Request::getInt('entryID', 0);
-		$entry = NoIndex::one($entryID);
+		$entry = Blacklist::one($entryID);
 		$entry->destroy();
+
 		App::redirect(
-		Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false), 'Successfully removed entry #' . $entryID, 'success');
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false), 
+				'Successfully removed entry #' . $entryID, 'success'
+		);
 	}
+
+	/**
+	 * viewLogsTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function viewLogsTask()
 	{
 		// Instantiate Search class

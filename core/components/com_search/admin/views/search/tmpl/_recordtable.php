@@ -34,8 +34,7 @@ defined('_HZEXEC_') or die();
 
 // Generate table headers
 // @TODO create a standard document model, create view object
-$fields = array_keys($this->documents[0]);
-$fields = array('hubid','hubtype','title','access_level','owner_type','owner','id');
+$fields = array('hubid','hubtype','title','access_level','owner_type','owner');
 ?>
 <style>
 #noresults {
@@ -48,17 +47,16 @@ $fields = array('hubid','hubtype','title','access_level','owner_type','owner','i
 <table class="adminlist searchDocument">
 	<thead>
 		<tr>
-		<th>&nbsp;</th>
 		<?php foreach ($fields as $field): ?>
 			<th><?php echo $field; ?></th>
 		<?php endforeach; ?>
+		<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ($this->documents as $document)
 		{
 			echo '<tr>';
-			echo '<td><input type="checkbox" name="selection[]"/></td>';
 			foreach ($fields as $field)
 			{
 				echo '<td>';
@@ -85,6 +83,7 @@ $fields = array('hubid','hubtype','title','access_level','owner_type','owner','i
 				}
 				echo '</td>';
 			}
+			echo '<td><a class="button" href="' . Route::url('index.php?option='.$this->option.'&task=addToBlackList&controller='. $this->controller . '&id=' . $document['id']) . '">' . Lang::txt('COM_SEARCH_ADD_BLACKLIST') . '</a></td>';
 			echo '</tr>';
 		}
 		?>

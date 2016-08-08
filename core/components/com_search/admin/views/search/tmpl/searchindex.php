@@ -94,7 +94,7 @@ $this->css('solr');
 					{
 						if ($qItem->hubtype == $type)
 						{
-							echo $qItem->modified;
+							echo Date::of($qItem->modified)->toLocal();
 						}
 					}
 				?>
