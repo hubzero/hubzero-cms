@@ -124,6 +124,15 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		// Check to see if there are many blocked accounts
+		if ($this->hasExceededBlockLimit($result))
+		{
+			// Might be a moot point if Fail2Ban is triggered
+			$response->status = \Hubzero\Auth\Status::FAILURE;
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_TOO_MANY_ATTEMPTS');
+			return false;
+		}
+
 		// Now make sure they haven't made too many failed login attempts
 		if ($this->hasExceededLoginLimit(\Hubzero\User\User::oneOrFail($result->id)))
 		{
@@ -206,11 +215,76 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		      ->whereEquals('status', 'failure')
 		      ->where('logged', '>=', $threshold);
 
-		if ($auths->count() < $limit)
+		if ($auths->count() < $limit - 1)
 		{
+			// Log attempt to the database
+			Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
+			[
+				'username' => $user->username,
+				'status'   => 'blocked'
+			]);
+
 			$result = false;
 		}
 
+		return $result;
+	}
+
+	/**
+	 * hasExceededLoginLimit 
+	 * 
+	 * @param $result 
+
+	 * @return bool
+	 */
+	private function hasExceededBlockLimit($result)
+	{
+		$params    = \Component::params('com_members');
+		$limit     = (int)$params->get('blocked_accounts_limit', 10);
+		$timeframe = (int)$params->get('blocked_accounts_timeframe', 1);
+		$ip = $_SERVER['REMOTE_ADDR'];
+		$fail2ban  = $params->get('fail2ban', 0);
+		$jailname  = $params->get('fail2ban-jail', 'hub-login');
+		$result    = true;
+
+		// Get the user's tokens
+		$threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$timeframe} hours ago"));
+		$auths     = new \Hubzero\User\Log\Auth;
+
+		$auths->whereEquals('status', 'blocked')
+					->whereEquals('ip', $ip)
+		      ->where('logged', '>=', $threshold);
+					error_log($ip);
+
+		if ($auths->count() < $limit - 1)
+		{
+			$result = false;
+		}
+		else
+		{
+			// Fail2ban Enabled?
+			if ($fail2ban == 1)
+			{
+				// Check to see if fail2ban-client is installed
+				$output = array();
+				exec('which fail2ban-client', $output);
+				if (!empty($output))
+				{
+					$path = $output[0];
+				}
+				else
+				{
+					//@FIXME: Convert to HUBzero Error Logger
+					error_log('fail2ban-client not found.');
+
+					// Bail early
+					return false;
+				}
+
+				$command = 'sudo ' . $path . ' set ' . $jailname . ' banip ' . $ip;
+				exec($command);
+			}
+		}
 		return $result;
 	}
 }

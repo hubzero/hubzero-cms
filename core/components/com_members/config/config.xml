@@ -171,6 +171,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option
 				value="1">JSHOW</option>
 		</field>
+	</fieldset>
 		<field
 			name="change_login_name"
 			type="radio"
@@ -182,6 +183,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option
 				value="1">JYES</option>
 		</field>
+	<fieldset name="login">
 		<field
 			name="reset_count"
 			type="integer"
@@ -202,6 +204,7 @@ HUBzero is a registered trademark of Purdue University.
 			step="1"
 			default="1">
 		</field>
+		<field type="spacer" hr="false" />
 		<field
 			name="login_attempts_limit"
 			type="integer"
@@ -221,6 +224,38 @@ HUBzero is a registered trademark of Purdue University.
 			last="24"
 			step="1"
 			default="1">
+		</field>
+		<field type="spacer" hr="false" />
+		<field name="fail2ban" type="list" default="0" label="Fail2Ban" description="Trigger Fail2Ban when the threshold of blocked accounts per IP address is met.">
+			<option value="1">On</option>
+			<option value="0">Off</option>
+		</field>
+		<field
+			name="blocked_accounts_limit"
+			type="integer"
+			label="COM_MEMBERS_CONFIG_FIELD_BLOCKED_ACCOUNTS_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_BLOCKED_ACCOUNTS_DESC"
+			first="0"
+			last="50"
+			step="1"
+			default="10">
+		</field>
+		<field
+			name="blocked_accounts_timeframe"
+			type="integer"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_TIMEFRAME_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_TIMEFRAME_DESC"
+			first="1"
+			last="24"
+			step="1"
+			default="1">
+		</field>
+		<field
+			name="fail2ban-jail"
+			type="text"
+			label="COM_MEMBERS_CONFIG_FIELD_FAIL2BAN_JAIL"
+			description="COM_MEMBERS_CONFIG_FIELD_FAIL2BAN_JAIL_DESC"
+			default="hub-login">
 		</field>
 	</fieldset>
 	<fieldset name="basic">
