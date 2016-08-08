@@ -130,9 +130,20 @@ if ($mode != 'preview')
 										$.get(url.nohtml(), function(data){
 											var returned = jQuery.parseJSON(data);
 
-											if (returned.success)
-											{
+											if (returned.success) {
 												window.open(returned.message);
+											} else {
+												if (returned.message) {
+													var msg = $("#system-message-container");
+													if (msg.length) {
+														msg.append(
+															\'<dl id="system-message">\' +
+															\'<dt class="warning">Warning</dt>\' +
+															\'<dd class="warning message"><ul><li>\' + returned.message + \'</li></ul></dd>\' +
+															\'</dl>\'
+														);
+													}
+												}
 											}
 										});
 									});
