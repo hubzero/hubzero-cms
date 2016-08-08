@@ -1721,7 +1721,10 @@ class Tickets extends SiteController
 			$this->view->setError($error);
 		}
 
-		$this->view->setLayout('ticket')->display();
+		$this->view
+			->set('config', $this->config)
+			->setLayout('ticket')
+			->display();
 	}
 
 	/**
@@ -1951,6 +1954,8 @@ class Tickets extends SiteController
 
 			if (count($rowc->to()))
 			{
+				$this->config->set('email_terse', Request::getInt('email_terse', 0));
+
 				$allowEmailResponses = $this->config->get('email_processing');
 				if ($this->config->get('email_terse'))
 				{
