@@ -212,9 +212,6 @@ class Cloud extends \Hubzero\Base\Object
 		$tbl = Object::blank()->getTableName();
 
 		$results = Tag::all();
-		$results
-			->select($results->getTableName() . '.*')
-			->group($results->getTableName() . '.id');
 
 		if (isset($filters['sort']) && $filters['sort'] == 'taggedon')
 		{
@@ -280,6 +277,8 @@ class Cloud extends \Hubzero\Base\Object
 			case 'count':
 				if (!isset($this->_cache['tags.count']) || $clear)
 				{
+					$results->select($results->getTableName() . '.id', null, true);
+
 					$this->_cache['tags.count'] = (int) $results->total();
 				}
 				return $this->_cache['tags.count'];
@@ -291,6 +290,10 @@ class Cloud extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
+				$results
+					->select($results->getTableName() . '.*')
+					->group($results->getTableName() . '.id');
+
 				if (!$this->_cache['tags.list'] || $clear)
 				{
 					if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
