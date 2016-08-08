@@ -210,7 +210,7 @@ jQuery(document).ready(function(jq){
 		cancel:'cancel',
 		editClass:'resultItem',
 		onSubmit: function() {
-			$.get('index.php?option=com_tools&controller=attachments&task=rename&no_html=1&id=' + this.attr('data-id') + '&name='+this.text());
+			$.get('index.php?option=com_resources&controller=attachments&task=rename&no_html=1&id=' + this.attr('data-id') + '&name='+this.text());
 		}
 	});
 });
