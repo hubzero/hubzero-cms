@@ -452,8 +452,8 @@ class Sku
 		// Delete the SKU-related files
 		//	-- SKU image
 		$config = Component::params('com_storefront');
-		$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
-		$dir = PATH_ROOT . DS . $imgWebPath . DS . $this->getProductId() . DS . $this->getId();
+		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+		$dir = PATH_APP . DS . $imgWebPath . DS . $this->getProductId() . DS . $this->getId();
 
 		if (file_exists($dir))
 		{
@@ -479,8 +479,8 @@ class Sku
 		{
 			// Path and file name
 			$params = Component::params('com_storefront');
-			$downloadFolder = $params->get('downloadFolder');
-			$dir = PATH_ROOT . $downloadFolder;
+			$downloadFolder = $params->get('downloadFolder', '/site/protected/storefront/software');
+			$dir = PATH_APP . $downloadFolder;
 			$file = $dir . DS . $this->getMeta('downloadFile');
 
 			if (file_exists($file))

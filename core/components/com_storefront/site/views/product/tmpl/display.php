@@ -63,7 +63,7 @@ if (!empty($this->notifications))
 
 				<?php
 
-				$imgPath = DS . trim($this->config->get('imagesFolder', '/app/site/storefront/products'), DS) . DS . $this->pId . DS;
+				$imgPath = '/app/' . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->pId . DS;
 
 				if (empty($this->product->images))
 				{

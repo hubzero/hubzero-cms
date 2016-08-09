@@ -426,14 +426,14 @@ class Images extends AdminController
 		switch ($type)
 		{
 			case 'product':
-				$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
-				$path = PATH_ROOT . DS . $imgWebPath . DS;
+					$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+				$path = PATH_APP . DS . $imgWebPath . DS;
 				$path .= $id;
 			break;
 
 			case 'collection':
-				$imgWebPath = trim($config->get('collectionsImagesFolder', '/app/site/storefront/collections'), DS);
-				$path = PATH_ROOT . DS . $imgWebPath . DS;
+				$imgWebPath = trim($config->get('collectionsImagesFolder', '/site/storefront/collections'), DS);
+				$path = PATH_APP . DS . $imgWebPath . DS;
 				$path .= $id;
 				break;
 

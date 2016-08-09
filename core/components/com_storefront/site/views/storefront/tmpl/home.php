@@ -66,7 +66,7 @@ $this->css()
 				if (isset($category->imgName) && $category->imgName)
 				{
 					echo '<div class="img" style="background-image: url(';
-					$imgPath = DS . trim($this->config->get('collectionsImagesFolder', '/app/site/storefront/collections'), DS) . DS . $category->cId . DS;
+					$imgPath = '/app/' . trim($this->config->get('collectionsImagesFolder', '/site/storefront/collections'), DS) . DS . $category->cId . DS;
 					echo "'" . $imgPath . $category->imgName . "'";
 					echo ')"></div>';
 				}
