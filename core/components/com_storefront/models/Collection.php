@@ -497,8 +497,8 @@ class Collection
 
 			// Remove the actual file
 			$config = Component::params('com_storefront');
-			$imgWebPath = trim($config->get('collectionsImagesFolder', '/app/site/storefront/collections'), DS);
-			$path = PATH_ROOT . DS . $imgWebPath . DS . $this->getId();
+			$imgWebPath = trim($config->get('collectionsImagesFolder', '/site/storefront/collections'), DS);
+			$path = PATH_APP . DS . $imgWebPath . DS . $this->getId();
 
 			if (!is_file($path . DS . $img->imgName))
 			{

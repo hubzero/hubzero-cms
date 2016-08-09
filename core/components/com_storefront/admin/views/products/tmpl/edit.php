@@ -308,12 +308,12 @@ function submitbutton(pressbutton)
 			$width = 0;
 			$height = 0;
 			$this_size = 0;
-			$pathl = DS . trim($this->config->get('imagesFolder', '/app/site/storefront/products'), DS) . DS . $this->row->getId();
+			$pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
 
-			if ($image && file_exists(PATH_ROOT . $pathl . DS . $file))
+			if ($image && file_exists(PATH_APP . $pathl . DS . $file))
 			{
-				$this_size = filesize(PATH_ROOT . $pathl . DS . $file);
-				list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $pathl . DS . $file);
+				$this_size = filesize(PATH_APP . $pathl . DS . $file);
+				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
 				$pic  = $file;
 				$path = $pathl;
 			}
@@ -324,7 +324,7 @@ function submitbutton(pressbutton)
 			}
 			?>
 				<div id="img-container">
-					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
+					<img id="img-display" src="/app/<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
 					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
 				</div>
 

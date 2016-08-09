@@ -70,8 +70,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if ($product->imgName)
 					{
 						echo '<div class="img" style="background-image: url(';
-						$imgPath = DS . trim($this->config->get('imagesFolder', '/app/site/storefront/products'), DS) . DS . $product->pId . DS;
-						echo "'" . $imgPath . $product->imgName . "'";
+						$imgPath = trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $product->pId . DS;
+						echo "'/app/" . $imgPath . $product->imgName . "'";
 						echo ')"></div>';
 					}
 					else

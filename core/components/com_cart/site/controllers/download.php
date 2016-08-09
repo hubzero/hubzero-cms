@@ -143,9 +143,9 @@ class Download extends \Hubzero\Component\SiteController
 
 		// Path and file name
 		$storefrontConfig = Component::params('com_storefront');
-		$dir = $storefrontConfig->get('downloadFolder');
+		$dir = $storefrontConfig->get('downloadFolder', '/site/protected/storefront/software');
 
-		$file = PATH_ROOT . $dir . DS . $downloadFile;
+		$file = PATH_APP . $dir . DS . $downloadFile;
 
 		if (!file_exists($file))
 		{
