@@ -462,26 +462,18 @@ class Media extends SiteController
 
 		$attachment = Attachment::oneByFilename($file, $listdir);
 
-		// Build the file path
-		$path = $attachment->filespace() . DS . $listdir . DS . $file;
-
 		// Delete the file
-		if (!file_exists($path) or !$file)
+		if (!$attachment || !$attachment->get('id'))
 		{
 			$this->setError(Lang::txt('COM_WIKI_ERROR_NO_FILE'));
-			$this->displayTask();
 		}
 		else
 		{
 			// Attempt to delete the file
-			if (!Filesystem::delete($path))
+			// Delete the database entry for the file
+			if (!$attachment->destroy())
 			{
-				$this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $file));
-			}
-			else
-			{
-				// Delete the database entry for the file
-				$attachment->destroy();
+				$this->setError($attachment->getError());
 			}
 		}
 
