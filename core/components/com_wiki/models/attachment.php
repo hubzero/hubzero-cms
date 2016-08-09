@@ -186,13 +186,13 @@ class Attachment extends Relational
 	public function destroy()
 	{
 		// Remove files
-		$path = $this->filespace();
+		$path = $this->filespace() . DS . $this->get('page_id') . DS . $this->get('filename');
 
-		if (is_dir($path . DS . $this->get('page_id')))
+		if (file_exists($path))
 		{
-			if (!\Filesystem::deleteDirectory($path . DS . $this->get('id')))
+			if (!\Filesystem::delete($path))
 			{
-				$this->addError(Lang::txt('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
+				$this->addError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $this->get('filename')));
 				return false;
 			}
 		}
