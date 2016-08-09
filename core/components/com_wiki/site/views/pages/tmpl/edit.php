@@ -143,7 +143,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<div class="col span6">
 				<label for="parent">
 					<?php echo Lang::txt('COM_WIKI_FIELD_PARENT'); ?>:
-					<select name="scope" id="parent">
+					<select name="page[parent]" id="parent">
 						<option value="0"><?php echo Lang::txt('COM_WIKI_NONE'); ?></option>
 						<?php
 						if ($this->tree)

@@ -338,8 +338,14 @@ class Pages extends SiteController
 		$ischild = false;
 		if ($this->page->get('id') && $this->_task == 'new')
 		{
+			$this->page->set('parent', $this->page->get('id'));
 			$this->page->set('id', 0);
 			$ischild = true;
+		}
+		if (!$this->page->get('id') && $this->page->get('path'))
+		{
+			$parent = Page::oneByPath($this->page->get('path'), $this->page->get('scope'), $this->page->get('scope_id'));
+			$this->page->set('parent', $parent->get('id'));
 		}
 
 		// Get the most recent version for editing
@@ -360,7 +366,7 @@ class Pages extends SiteController
 
 			if ($ischild && $this->page->get('pagename'))
 			{
-				$this->revision->set('pagetext', '');
+				$revision->set('pagetext', '');
 
 				$this->page->set('path', $this->page->get('path') . ($this->page->get('path') ? '/' : '') . $this->page->get('pagename'));
 				$this->page->set('pagename', '');

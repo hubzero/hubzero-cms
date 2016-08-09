@@ -621,7 +621,7 @@ class Page extends Relational
 		{
 			$path = array();
 
-			foreach ($this->ancestors()->rows() as $ancestor)
+			foreach ($this->ancestors() as $ancestor)
 			{
 				$path[] = $ancestor->get('pagename');
 			}
