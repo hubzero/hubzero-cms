@@ -70,7 +70,7 @@ if ($this->task == 'new')
 }
 elseif ($page->get('id'))
 {
-	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url( $url . '&scope=' . $this->scope . '&pagename=' . $page->get('name')).'">'. $page->get('title') . '</a></span>';
+	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($page->link()).'">'. $page->get('title') . '</a></span>';
 
 }
 
@@ -97,7 +97,7 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 			<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
 		</a>
 		<?php if (count($parentNotes) < 2) { ?>
-		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $parentScope . '&action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
+		<a href="<?php echo Route::url($page->link() . '&action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
 		<?php } ?>
 	</li>
 </ul>
