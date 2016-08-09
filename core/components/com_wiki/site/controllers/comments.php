@@ -347,7 +347,7 @@ class Comments extends SiteController
 			if ($this->page->access('delete', 'comment'))
 			{
 				$comment = Comment::oneOrFail($id);
-				$comment->set('state', Comment::STATE_TRASHED);
+				$comment->set('state', Comment::STATE_DELETED);
 				if ($comment->save())
 				{
 					$msg = Lang::txt('COM_WIKI_COMMENT_DELETED');
