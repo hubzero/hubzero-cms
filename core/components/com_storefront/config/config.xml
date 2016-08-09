@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<fieldset name="basic">
-		<field name="downloadFolder" type="text" menu="hide" default="/media/software" label="COM_STOREFRONT_CONFIG_DOWNLOAD_FOLDER_LABEL" description="COM_STOREFRONT_CONFIG_DOWNLOAD_FOLDER_DESC" size="50" />
+		<field name="downloadFolder" type="text" menu="hide" default="/site/protected/storefront/software" label="COM_STOREFRONT_CONFIG_DOWNLOAD_FOLDER_LABEL" description="COM_STOREFRONT_CONFIG_DOWNLOAD_FOLDER_DESC" size="50" />
 		<field name="imagesFolder" type="text" menu="hide" default="/site/storefront/products" label="COM_STOREFRONT_CONFIG_IMAGES_FOLDER_LABEL" description="COM_STOREFRONT_CONFIG_IMAGES_FOLDER_DESC" size="50" />
 		<field name="requirelogin" type="list" default="0" label="COM_STOREFRONT_CONFIG_REQUIRE_LOGIN" description="COM_STOREFRONT_CONFIG_REQUIRE_LOGIN_DESC">
 			<option value="0">JNO</option>

@@ -81,8 +81,8 @@ class SoftwareSku extends Sku
 
 		// Check if the download file really exists
 		$storefrontConfig = Component::params('com_storefront');
-		$dir = $storefrontConfig->get('downloadFolder');
-		$file = PATH_ROOT . $dir . DS . $this->data->meta['downloadFile'];
+		$dir = $storefrontConfig->get('downloadFolder', '/site/protected/storefront/software');
+		$file = PATH_APP . $dir . DS . $this->data->meta['downloadFile'];
 
 		if (!file_exists($file))
 		{
