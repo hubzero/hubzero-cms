@@ -35,6 +35,8 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
+$groupProjectPlugins = Event::trigger('on.groupProjects');
+
 ?>
 
 <h3 class="section-header"><?php echo Lang::txt('PLG_GROUPS_PROJECTS'); ?></h3>
@@ -51,18 +53,22 @@ $this->css();
 	</li>
 </ul>
 
-<ul class="sub-menu">
-	<li class="active">
-		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
-			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
-		</a>
-	</li>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
-			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
-		</a>
-	</li>
-</ul>
+<?php 
+// Output the submenu view
+$view = new \Hubzero\Plugin\View(array(
+	'folder' => 'groups',
+	'element' => 'projects',
+	'name'   => 'partials',
+	'layout' => 'submenu'
+));
+
+// Pass Variables through to the view
+$view->group = $this->group;
+$view->projectcount = $this->projectcount;
+$view->newcount = $this->newcount;
+$view->tab = 'all';
+$view->display();
+?>
 
 <section class="main section" id="s-projects">
 	<div class="container">
