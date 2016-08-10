@@ -49,11 +49,14 @@ class Callback extends SiteController
 	 **/
 	public function dropboxAuthorizeTask()
 	{
-		$params = \Plugin::params('filesystem', 'dropbox');
+		$pparams = \Plugin::params('filesystem', 'dropbox');
+
+		$app_key = \Session::get('dropbox.app_key', false);
+		$app_secret = \Session::get('dropbox.app_secret', false);
 
 		$info = [
-			'key'    => $params->get('app_key'),
-			'secret' => $params->get('app_secret')
+			'key'    => isset($app_key) ? $app_key : $pparams->get('app_key'),
+			'secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
 		];
 
 		$appInfo          = \Dropbox\AppInfo::loadFromJson($info);
@@ -61,6 +64,9 @@ class Callback extends SiteController
 		$redirectUri      = trim(\Request::root(), '/') . '/developer/callback/dropboxAuthorize';
 		$csrfTokenStore   = new \Dropbox\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
 		$oauth            = new \Dropbox\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore);
+
+		\Session::set('dropbox.app_key', false);
+		\Session::set('dropbox.app_secret', false);
 
 		list($accessToken, $userId, $urlState) = $oauth->finish($_GET);
 
@@ -93,9 +99,15 @@ class Callback extends SiteController
 		}
 
 		$url = 'https://github.com/login/oauth/access_token';
+		$app_key = \Session::get('github.app_key', false);
+		$app_secret = \Session::get('github.app_secret', false);
+
+		\Session::set('github.app_key', false);
+		\Session::set('github.app_secret', false);
+
 		$fields = array(
-			'client_id'     => $params->get('app_key'),
-			'client_secret' => $params->get('app_secret'),
+			'client_id'     => isset($app_key) ? $app_key : $params->get('app_key'),
+			'client_secret' => isset($app_secret) ? $app_secret : $params->get('app_secret'),
 			'code'          => $code,
 			'state'         => $state
 		);

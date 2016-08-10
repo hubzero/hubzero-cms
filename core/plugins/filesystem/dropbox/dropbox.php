@@ -57,6 +57,8 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 				'secret' => isset($params['app_secret']) ? $params['app_secret'] : $pparams->get('app_secret')
 			];
 
+			\Session::set('dropbox.app_key', $info['key']);
+			\Session::set('dropbox.app_secret', $info['secret']);
 			$appInfo          = \Dropbox\AppInfo::loadFromJson($info);
 			$clientIdentifier = 'hubzero-cms/2.0';
 			$redirectUri      = trim(Request::root(), '/') . '/developer/callback/dropboxAuthorize';
@@ -71,8 +73,9 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 			App::redirect($oauth->start($return));
 		}
 
+		$app_secret = isset($params['app_secret']) ? $params['app_secret'] : $pparams->get('app_secret');
 		// Create the client
-		$client = new \Dropbox\Client($accessToken, $pparams->get('app_secret'));
+		$client = new \Dropbox\Client($accessToken, $app_secret);
 
 		// Return the adapter
 		return new \League\Flysystem\Dropbox\DropboxAdapter($client, (isset($params['subdir']) ? $params['subdir'] : null));
