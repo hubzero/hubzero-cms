@@ -3,7 +3,7 @@
 use Hubzero\Content\Migration\Base;
 
 /**
- * Migration script for creating table jos_tool_handlers
+ * Migration script for creating table #__tool_handlers
  **/
 class Migration20160217014424ComTools extends Base
 {

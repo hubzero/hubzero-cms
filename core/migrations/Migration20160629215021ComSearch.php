@@ -14,7 +14,7 @@ class Migration20160629215021ComSearch extends Base
 	{
 		if (!$this->db->tableExists('#__search_indexqueue'))
 		{
-			$createQuery = 'CREATE TABLE `jos_search_indexqueue` (
+			$createQuery = 'CREATE TABLE `#__search_indexqueue` (
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			`hubtype` varchar(12) NOT NULL DEFAULT \'\',
 			`action` varchar(12) DEFAULT NULL,

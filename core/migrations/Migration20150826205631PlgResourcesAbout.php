@@ -2,8 +2,8 @@
 
 use Hubzero\Content\Migration\Base;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_HZEXEC_') or die();
 
 /**
  * Migration script for for adding default plg_about and plg_abouttool parameters for tool resource type
@@ -45,7 +45,7 @@ class Migration20150826205631PlgResourcesAbout extends Base
 
 				if ($params != $record->params)
 				{
-					$this->db->setQuery("UPDATE #__resource_types SET params=" . $this->db->quote($params) . " WHERE `id`=" . $this->db->quote($record->id) . ";");
+					$this->db->setQuery("UPDATE `#__resource_types` SET params=" . $this->db->quote($params) . " WHERE `id`=" . $this->db->quote($record->id) . ";");
 					$this->db->query();
 				}
 			}
