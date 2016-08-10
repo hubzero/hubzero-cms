@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu> 
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,56 +33,27 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-
-$this->css();
-
-?>
-
-<?php 
-// Output the submenu view
-$view = new \Hubzero\Plugin\View(array(
-	'folder' => 'groups',
-	'element' => 'projects',
-	'name'   => 'partials',
-	'layout' => 'submenu'
-));
-
-// Pass Variables through to the view
-$view->group = $this->group;
-$view->projectcount = $this->projectcount;
-$view->newcount = $this->newcount;
-$view->tab = 'updates';
-$view->display();
+$groupProjectPlugins = Event::trigger('on.groupProjects');
 
 ?>
-
-<?php if (0): ?>
-<ul id="page_options" class="pluginOptions">
-	<li>
-		<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
-			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
-		</a>
-	</li>
-</ul>
 
 <ul class="sub-menu">
-	<li>
+	<li <?php if ($this->tab == 'all') { echo 'class="active"'; } ?> >
 		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
 			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
 		</a>
 	</li>
-	<li class="active">
+	<li <?php if ($this->tab == 'updates') { echo 'class="active"'; } ?> >
 		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
 			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
 		</a>
 	</li>
+	<?php foreach ($groupProjectPlugins as $plugin) { ?>
+	<li <?php if ($this->tab == $plugin->name) { echo 'class="active"'; } ?> >
+		<a href="<?php echo $plugin->pathRoute ?>">
+			<?php echo $plugin->title ?> <?php if ($plugin->newcount) { echo '<span class="s-new">' . $plugin->newcount . '</span>'; } ?>
+		</a>
+	</li>
+	<?php } //endforeach ?>
 </ul>
-<?php endif;?>
 
-<section class="main section" id="s-projects">
-	<div id="project-updates">
-		<?php
-		echo $this->content;
-		?>
-	</div>
-</section>
