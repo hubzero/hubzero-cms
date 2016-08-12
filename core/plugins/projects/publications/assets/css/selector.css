@@ -30,6 +30,15 @@
 		margin: 0 1em;
 		padding: 0.2em 0;
 	}
+	.pub-selector li:before,
+	.pub-selector li:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.pub-selector li:after {
+		clear: both;
+	}
 	.pub-selector li.even {
 		background: #f7f7fa;
 	}

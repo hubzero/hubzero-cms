@@ -269,6 +269,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$arr['html'] = $this->saveDraft();
 				break;
 
+			case 'orderup':
+				$arr['html'] = $this->reorder('up');
+				break;
+			case 'orderdown':
+				$arr['html'] = $this->reorder('down');
+				break;
+
 			// Individual items editing
 			case 'edititem':
 			case 'editauthor':
@@ -960,6 +967,54 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(htmlspecialchars_decode(Route::url($route)));
+		return;
+	}
+
+	/**
+	 * Move an item up in the list
+	 *
+	 * @return  void
+	 */
+	public function reorder($dir = 'down')
+	{
+		// Check permission
+		if ($this->model->exists() && !$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
+		// Incoming
+		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version = Request::getVar('version', 'dev');
+
+		// Load publication
+		$pub = new \Components\Publications\Models\Publication($pid, $version);
+
+		// Error loading publication record
+		if (!$pub->exists() && $new == false)
+		{
+			\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
+			App::redirect(Route::url($pub->link('editbase')));
+			return;
+		}
+
+		$aid     = Request::getInt('aid', 0);
+		$block   = Request::getVar('section', 'content');
+		$blockId = Request::getInt('step', 1);
+
+		$db = App::get('db');
+
+		$attachment = new Components\Publications\Tables\Attachment($db);
+		$attachment->load($aid);
+		$attachment->reorder($dir);
+
+		$route  = $pub->link('edit');
+		$route .= $version != 'default' ? '&version=' . $version : '';
+		$route .= '&section=' . $block;
+		$route .= $blockId ? '&step=' . $blockId : '';
+
+		App::redirect(Route::url($route, false));
 		return;
 	}
 

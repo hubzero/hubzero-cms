@@ -408,6 +408,29 @@
 	.item-options a:hover:before {
 		color: #5ec1da;
 	}
+	.item-options a.item-moveup,
+	.item-options a.item-movedown {
+		display: inline-block;
+		width: 22px;
+		height: 22px;
+		font-size: 22px;
+		color: #d1dcd9;
+		border: none;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	.item-options a.item-moveup:before,
+	.item-options a.item-movedown:before {
+		content: "";
+		font-family: 'Fontcons';
+		margin-right: 2em;
+	}
+	.item-options a.item-moveup:before {
+		content: "\2191";
+	}
+	.item-options a.item-movedown:before {
+		content: "\2193";
+	}
 	.item-options a.item-edit:before {
 		content: "\270D";
 	}

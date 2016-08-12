@@ -745,4 +745,74 @@ class Attachment extends \JTable
 
 		return $assoc;
 	}
+
+	/**
+	 * Reorder an attachment
+	 *
+	 * @param   string  $dir
+	 * @return  boolean
+	 */
+	public function reorder($dir = 'down')
+	{
+		$neighbor = $this->getNeighbor($dir);
+
+		switch ($dir)
+		{
+			case 'up':
+				// Switch places: give item 1 the position of item 2, vice versa
+				$orderup = $neighbor->ordering;
+				$orderdn = $this->ordering;
+
+				$this->ordering = $orderup;
+				$neighbor->ordering = $orderdn;
+			break;
+
+			case 'down':
+				// Switch places: give item 1 the position of item 2, vice versa
+				$orderup = $this->ordering;
+				$orderdn = $neighbor->ordering;
+
+				$this->ordering = $orderdn;
+				$neighbor->ordering = $orderup;
+			break;
+		}
+
+		// Save changes
+		$this->store();
+		if ($neighbor->id)
+		{
+			$neighbor->store();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get the record directly before or after this record
+	 *
+	 * @param   string   $dir  Direction to look
+	 * @return  boolean  True on success
+	 */
+	public function getNeighbor($dir = 'down')
+	{
+		$neighbor = new self($this->_db);
+
+		switch ($dir)
+		{
+			case 'up':
+				$sql = "SELECT * FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering < " . $this->_db->quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+			break;
+
+			case 'down':
+				$sql = "SELECT * FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering > " . $this->_db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
+			break;
+		}
+		$this->_db->setQuery($sql);
+		if ($result = $this->_db->loadAssoc())
+		{
+			$neighbor->bind($result);
+		}
+
+		return $neighbor;
+	}
 }
