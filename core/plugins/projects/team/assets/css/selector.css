@@ -30,6 +30,15 @@
 		padding: 0;
 		min-height: 34px;
 	}
+	.team-selector li:before,
+	.team-selector li:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.team-selector li:after {
+		clear: both;
+	}
 	.team-selector li.even {
 		background: #f7f7fa;
 	}
