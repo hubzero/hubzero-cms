@@ -582,3 +582,7 @@
 	.markup {
 		display: none;
 	}
+	.notes-content #sub-content-header-extra #page_options li.page-index,
+	.notes-content #sub-content-header-extra #page_options li.page-search {
+		display: none;
+	}
