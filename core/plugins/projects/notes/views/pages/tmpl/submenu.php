@@ -47,7 +47,7 @@ if (!isset($this->controller))
 				</a>
 			</li>
 		<?php } ?>
-			<li class="page-index" data-title="<?php echo Lang::txt('COM_WIKI_PAGE_INDEX'); ?>">
+			<?php /*<li class="page-index" data-title="<?php echo Lang::txt('COM_WIKI_PAGE_INDEX'); ?>">
 				<a class="icon-index index btn" href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:AllPages'); ?>" title="<?php echo Lang::txt('COM_WIKI_PAGE_INDEX'); ?>">
 					<span><?php echo Lang::txt('COM_WIKI_INDEX'); ?></span>
 				</a>
@@ -68,7 +68,7 @@ if (!isset($this->controller))
 						</fieldset>
 					</form>
 				</div>
-			</li>
+			</li>*/ ?>
 		</ul>
 	</div><!-- / #content-header-extra -->
 
