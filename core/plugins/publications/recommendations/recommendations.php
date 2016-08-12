@@ -91,7 +91,7 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 		include_once(__DIR__ . DS . 'models' . DS . 'recommendation.php');
 
 		// Get recommendations
-		$r = Plugins\Resources\Recommendations\Models\Recommendation::find(
+		$r = Plugins\Publications\Recommendations\Models\Recommendation::find(
 			$resource->id,
 			$this->params->get('threshold', '0.21')
 		);
