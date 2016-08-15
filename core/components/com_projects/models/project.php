@@ -1233,6 +1233,10 @@ class Project extends Model
 				$link = $this->_base . '&controller=media&media=thumb';
 			break;
 
+			case 'view':
+				$link = $this->_base . '&task=view';
+			break;
+
 			case 'stamp':
 				$link = 'index.php?option=com_projects&task=get';
 			break;
