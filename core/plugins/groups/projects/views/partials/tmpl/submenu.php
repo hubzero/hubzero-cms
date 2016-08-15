@@ -33,8 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$groupProjectPlugins = Event::trigger('on.groupProjects');
-
+$groupProjectPlugins = Event::trigger('groups.onGroupProjects', array($this->group));
 ?>
 
 <ul class="sub-menu">

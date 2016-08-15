@@ -34,9 +34,6 @@
 defined('_HZEXEC_') or die();
 
 $this->css();
-
-$groupProjectPlugins = Event::trigger('on.groupProjects');
-
 ?>
 
 <h3 class="section-header"><?php echo Lang::txt('PLG_GROUPS_PROJECTS'); ?></h3>
@@ -72,6 +69,16 @@ $view->display();
 
 <section class="main section" id="s-projects">
 	<div class="container">
+		<!-- Placeholder for Group Dashboard -->
+		<?php 
+			$dashboards = Event::trigger('groups.onGroupClassroomprojects', array($this->group));
+			foreach ($dashboards as $dashboard)
+			{
+				echo $dashboard;
+			}
+		?>
+		<!-- End placeholder for Group Dashboard -->
+
 		<?php
 		if ($this->which == 'all')
 		{
@@ -93,5 +100,5 @@ $view->display();
 		     ->set('which', $this->filters['which'])
 		     ->display();
 		?>
-	</div>
+		</div>
 </section><!-- /.main section -->
