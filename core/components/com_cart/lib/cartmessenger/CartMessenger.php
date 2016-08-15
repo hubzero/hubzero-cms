@@ -281,21 +281,12 @@ class CartMessenger
 		$from['name']  = Config::get('sitename');
 		$from['email'] = Config::get('mailfrom');
 
-		// Email to admin
-		$adminEmail = "There is a new online store order: \n\n";
-		$adminEmail .= $summary;
-
-		// Admin email
-		$to = array($params->get('storeAdminId'));
-		Event::trigger('onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
-
 		// Email to client
 		$clientEmail = 'Thank you for your order at ' . Config::get('sitename') . "!\n\n";
 		$clientEmail .= $summary;
 
 		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
 		$to = array(\Components\Cart\Models\Cart::getCartUser($transactionInfo->crtId));
-
 		Event::trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
 
 		// Email notifications
