@@ -615,10 +615,10 @@ class Queries extends AdminController
 		$query  = new Query($db);
 		$folder = new QueryFolder($db);
 
-		$db->setQuery("DELETE * FROM " . $db->quoteName($query->getTableName()));
+		$db->setQuery("DELETE FROM " . $db->quoteName($query->getTableName()));
 		$db->query();
 
-		$db->setQuery("DELETE * FROM " . $db->quoteName($folder->getTableName()));
+		$db->setQuery("DELETE FROM " . $db->quoteName($folder->getTableName()));
 		$db->query();
 
 		// Get all the default folders
