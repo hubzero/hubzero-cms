@@ -217,14 +217,16 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 
 		if ($auths->count() < $limit - 1)
 		{
+			$result = false;
+		}
+		else
+		{
 			// Log attempt to the database
 			Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
 			[
 				'username' => $user->username,
 				'status'   => 'blocked'
 			]);
-
-			$result = false;
 		}
 
 		return $result;
@@ -237,7 +239,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 
 	 * @return bool
 	 */
-	private function hasExceededBlockLimit($result)
+	private function hasExceededBlockLimit($response)
 	{
 		$params    = \Component::params('com_members');
 		$limit     = (int)$params->get('blocked_accounts_limit', 10);
@@ -245,25 +247,32 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$fail2ban  = $params->get('fail2ban', 0);
 		$jailname  = $params->get('fail2ban-jail', 'hub-login');
+		$username = $response->username;
 		$result    = true;
 
-		// Get the user's tokens
-		$threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$timeframe} hours ago"));
-		$auths     = new \Hubzero\User\Log\Auth;
-
-		$auths->whereEquals('status', 'blocked')
-					->whereEquals('ip', $ip)
-		      ->where('logged', '>=', $threshold);
-					error_log($ip);
-
-		if ($auths->count() < $limit - 1)
+		// Fail2ban Enabled?
+		if ($fail2ban == 1)
 		{
-			$result = false;
-		}
-		else
-		{
-			// Fail2ban Enabled?
-			if ($fail2ban == 1)
+			// Determine what the threshold is
+			$threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$timeframe} hours ago"));
+			$auths     = new \Hubzero\User\Log\Auth;
+
+			// Select all usernames which are blocked
+			$auths = $auths->whereEquals('status', 'blocked')
+						->select('username')
+						->whereEquals('ip', $ip)
+			      ->where('logged', '>=', $threshold)
+						->rows()
+						->fieldsByKey('username');
+
+			// Only unique blocked entries
+			$auths = array_unique($auths);
+
+			if (count($auths) < $limit)
+			{
+				$result = false;
+			}
+			else
 			{
 				// Check to see if fail2ban-client is installed
 				$output = array();
@@ -284,6 +293,11 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 				$command = 'sudo ' . $path . ' set ' . $jailname . ' banip ' . $ip;
 				exec($command);
 			}
+		}
+		else
+		{
+			// Fail2Ban disabled
+			$result = false;
 		}
 		return $result;
 	}
