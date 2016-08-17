@@ -106,16 +106,14 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		$user = JFactory::getUser();
-		$ip = $_SERVER['REMOTE_ADDR'];
-
 		// Get summary usage data
 		$startdate = new \DateTime('midnight first day of this month');
-		$enddate = new \DateTime('midnight first day of next month');
+		$enddate   = new \DateTime('midnight first day of next month');
+
 		$db = App::get('db');
-		$sql = 'SELECT truncate(sum(walltime)/60/60,3) as totalhours FROM sessionlog ';
-		$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
-		$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
+		$sql  = 'SELECT truncate(sum(walltime)/60/60,3) as totalhours FROM `sessionlog` ';
+		$sql .= 'WHERE start >' . $db->quote($startdate->format('Y-m-d H:i:s')) . ' ';
+		$sql .= 'AND start <' . $db->quote($enddate->format('Y-m-d H:i:s'));
 		$db->setQuery($sql);
 		$totalUsageFigure = $db->loadObjectList();
 
@@ -124,35 +122,35 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 
 		if (floatval($totalUsageFigure[0]->totalhours) > floatval($maxhours))
 		{
-			return "";
+			return '';
 		}
-		else
-		{
-			// Get the middleware database
-			$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-			// Get the session table
-			$ms = new \Components\Tools\Tables\Session($mwdb);
-			$ms->bind(array(
-			        'username' => $user->username,
-			        'remoteip' => $ip ));
+		// Get the middleware database
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-			// Save the entry
-			$ms->store();
+		// Get the session table
+		$ms = new \Components\Tools\Tables\Session($mwdb);
+		$ms->bind(array(
+			'username' => User::get('username'),
+			'remoteip' => $ip
+		));
 
-			// Get back the ID
-			$sessionID = $ms->sessnum;
+		// Save the entry
+		$ms->store();
 
-			// Opaque data
-			$od = "username=" . $user->username;
-			$od = $od . ",email=" . $user->email;
-			$od = $od . ",userip=" . $ip;
-			$od = $od . ",sessionid=" . $sessionID;
-			$od = $od . ",ts=" . (new \DateTime())->format('Y.m.d.H.i.s');
+		// Get back the ID
+		$sessionID = $ms->sessnum;
 
-			$eurl = exec("/usr/bin/hz-aws-appstream getentitlementurl --appid '" . $appid. "' --opaquedata '" . $od . "'");
-			$url = "http://wapps.hubzero.org/v1?standaloneUrl=" . $eurl;
-		}
+		// Opaque data
+		$od = "username=" . User::get('username');
+		$od = $od . ",email=" . User::get('email');
+		$od = $od . ",userip=" . Request::ip();
+		$od = $od . ",sessionid=" . $sessionID;
+		$od = $od . ",ts=" . (new \DateTime())->format('Y.m.d.H.i.s');
+
+		$eurl = exec("/usr/bin/hz-aws-appstream getentitlementurl --appid '" . $appid. "' --opaquedata '" . $od . "'");
+
+		$url = rtrim($this->params->get('invoke_url', 'http://wapps.hubzero.org'), '/') . '/v1?standaloneUrl=' . $eurl;
 
 		return $url;
 	}
@@ -204,10 +202,70 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
+			// Check admin access
+			$isAuthorised = User::authorise('core.manage', 'com_resources');
+
+			// Get the current page
+			include_once(__DIR__ . DS . 'models' . DS . 'page.php');
+
+			$page = Plugins\Resources\Windowstools\Models\Page::all()
+				->whereIn('access', User::getAuthorisedViewLevels())
+				->whereEquals('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED)
+				->whereEquals('plugin', $this->_name)
+				->order('ordering', 'asc')
+				->row();
+
+			if (!$page->get('id'))
+			{
+				if (file_exists(__DIR__ . DS . 'assets' . DS . 'txt' . DS . 'default.txt'))
+				{
+					$contents = file_get_contents(__DIR__ . DS . 'assets' . DS . 'txt' . DS . 'default.txt');
+
+					$page->set('content', $contents);
+					$page->set('title', Lang::txt('PLG_RESOURCES_WINDOWSTOOLS'));
+					$page->set('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED);
+					$page->set('plugin', $this->_name);
+					$page->set('access', 1);
+					$page->save();
+				}
+			}
+
 			// Instantiate a view
 			$view = $this->view('default', 'display')
 				->set('option', $option)
-				->set('resource', $model->resource);
+				->set('resource', $model->resource)
+				->set('page', $page)
+				->set('name', $this->_name)
+				->set('isAuthorised', $isAuthorised)
+				->set('base', 'index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : '&id=' . $model->resource->id) . '&active=' . $this->_name);
+
+			$action = Request::getCmd('action');
+
+			if ($action && $isAuthorised)
+			{
+				switch ($action)
+				{
+					case 'edit':
+						// Show the edit form
+						$view->setLayout('edit');
+					break;
+
+					case 'save':
+						// Save changes
+						// This will fall through to the default page
+						Request::checkToken();
+
+						$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+
+						$page->set($fields);
+
+						if (!$page->save())
+						{
+							Notify::error($page->getError());
+						}
+					break;
+				}
+			}
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
