@@ -163,30 +163,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) {
 				echo $handlerOptions;
 			?>
 		</div>
-		<?php } else { ?>
-			<div class="block-aside-omega">
-				<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file')
-				{  // Default handler for multiple files - zip together
-
-					$bundleName		= $this->pub->params->get($elName . 'bundlename', 'bundle');
-
-					$bundleUrl = Route::url($this->pub->link('serve') . '&el='
-						. $this->elementId . '&download=1');
-
-					?>
-					<div class="handler-controls block">
-						<div class="handlertype multizip">
-							<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
-							</p>
-							<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
-								<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
-								<span class="save-param-status"></span>
-								<span class="save-param-wrap"><a href="<?php echo Route::url($this->pub->link('editversionid') . '&action=saveparam'); ?>" class="btn save-param"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
-							</label>
-						</div>
-					</div>
-				<?php }
-				?>
+		<?php } ?>
 				<div class="block-info">
 				<?php
 					$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;

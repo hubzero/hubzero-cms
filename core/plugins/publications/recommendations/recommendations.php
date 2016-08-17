@@ -92,7 +92,7 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 
 		// Get recommendations
 		$r = Plugins\Publications\Recommendations\Models\Recommendation::find(
-			$resource->id,
+			$publication->id,
 			$this->params->get('threshold', '0.21')
 		);
 
