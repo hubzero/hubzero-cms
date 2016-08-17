@@ -2113,8 +2113,8 @@ class Resources extends SiteController
 
 		// Check if the resource is "private" and the user is allowed to view it
 		if ($resource->access == 4  // private
-		 || ($resource->access == 3 && $resource->path)  // protected -- We need to allow images in the sbtract to come through
-		 || !$resource->standalone) // child, no direct access
+		 || ($resource->access == 3 && $resource->path))  // protected -- We need to allow images in the sbtract to come through
+		// || !$resource->standalone) // child, no direct access
 		{
 			if ($user->isGuest())
 			{
