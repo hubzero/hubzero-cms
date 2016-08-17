@@ -209,7 +209,6 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) {
 			?>
 			</div>
 		</div>	
-		<?php } ?>
 		<?php if ($active && $this->collapse) { ?>
 		<div class="clear"></div>
 		<div class="withhandler">
