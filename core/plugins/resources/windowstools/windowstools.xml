@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/resources/windowstools.xml
+@file           plugins/resources/windowstools/windowstools.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -32,7 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Display related resources</description>
+	<description>PLG_RESOURCES_WINDOWSTOOLS_DESCRIPTION</description>
 	<files>
 		<filename plugin="windowstools">windowstools.php</filename>
 	</files>
@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="PLG_RESOURCES_RELATED_LIMIT_LABEL" description="PLG_RESOURCES_RELATED_LIMIT_DESC"/>
+				<field name="invoke_url" type="text" default="http://wapps.hubzero.org" label="PLG_RESOURCES_WINDOWSTOOLS_INVOKEURL_LABEL" description="PLG_RESOURCES_WINDOWSTOOLS_INVOKEURL_DESC"/>
 			</fieldset>
 		</fields>
 	</config>
