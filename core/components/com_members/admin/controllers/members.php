@@ -180,10 +180,17 @@ class Members extends AdminController
 
 		if ($filters['search'])
 		{
-			$entries->whereLike($a . '.name', strtolower((string)$filters['search']), 1)
-				->orWhereLike($a . '.username', strtolower((string)$filters['search']), 1)
-				->orWhereLike($a . '.email', strtolower((string)$filters['search']), 1)
-				->resetDepth();
+			if (is_numeric($filters['search']))
+			{
+				$entries->whereEquals($a . '.id', (int)$filters['search']);
+			}
+			else
+			{
+				$entries->whereLike($a . '.name', strtolower((string)$filters['search']), 1)
+					->orWhereLike($a . '.username', strtolower((string)$filters['search']), 1)
+					->orWhereLike($a . '.email', strtolower((string)$filters['search']), 1)
+					->resetDepth();
+			}
 		}
 
 		if ($filters['registerDate'])
