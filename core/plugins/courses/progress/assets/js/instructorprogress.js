@@ -78,6 +78,7 @@ HUB.Plugins.CoursesProgress = {
 										course_id    : course_id
 									},
 									html = template(context);
+									html = html.replace(/src\=\"\/data/g, 'src="data');
 
 								$('.students').append(html);
 

@@ -99,7 +99,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 			<div class="student-clickable">
 				<div class="cell student-name">
 					<div class="picture-thumb">
-						<img src="<?php echo Request::base(); ?>{{this.thumb}}" />
+						<img src="<?php /*echo Request::base();*/ ?>{{this.thumb}}" />
 					</div>
 					<div class="name-value">
 						{{this.name}}
@@ -134,7 +134,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 			<div class="student-details grades">
 				<div class="extended-info">
 					<div class="picture">
-						<img src="<?php echo Juri::base(); ?>{{this.full}}" />
+						<img src="<?php /*echo Request::base();*/ ?>{{this.full}}" />
 						<a class="more-details" href="<?php echo Route::url($base.'&id=') ?>{{this.user_id}}">More details</a>
 					</div>
 					<div class="extended-info-extra">
