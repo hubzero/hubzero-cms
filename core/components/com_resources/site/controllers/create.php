@@ -216,7 +216,7 @@ class Create extends SiteController
 		$progress['submitted'] = 0;
 		for ($i=1, $n=count($steps); $i < $n; $i++)
 		{
-			$check = 'step_' . $steps[$i] . '_check';
+			$check = 'step_' . strtolower($steps[$i]) . '_check';
 			$stepchecks[$steps[$i]] = $this->$check($id);
 
 			if ($stepchecks[$steps[$i]])
@@ -1645,12 +1645,15 @@ class Create extends SiteController
 	 */
 	public function step_tags_check($id)
 	{
-		$rt = new Tags($id);
-		$tags = $rt->tags()->count();
-
-		if ($tags > 0)
+		if ($id)
 		{
-			return 1;
+			$rt = new Tags($id);
+			$tags = $rt->tags()->count();
+
+			if ($tags > 0)
+			{
+				return 1;
+			}
 		}
 
 		return 0;
