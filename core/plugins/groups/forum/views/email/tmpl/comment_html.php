@@ -173,7 +173,7 @@ $bdcolor = '#e1e1e1';
 	<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
 			<tr>
-				<th style="text-align: left;" align="left"><?php echo (!$this->post->get('anonymous') ? $this->post->creator()->get('name') : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')); ?></th>
+				<th style="text-align: left;" align="left"><?php echo (!$this->post->get('anonymous') ? $this->post->creator->get('name') : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')); ?></th>
 				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('PLG_GROUPS_FORUM_CREATED', $this->post->created('time'), $this->post->created('date')); ?></span></th>
 			</tr>
 			<tr>

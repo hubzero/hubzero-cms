@@ -45,7 +45,7 @@ if ($this->delimiter)
 	$message .= Lang::txt('PLG_GROUPS_FORUM_EMAIL_REPLY_ABOVE') . "\n";
 	$message .= 'Message from ' . $base . ' / ' . Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id')) . "\n";
 }
-$message .= ($this->post->get('anonymous')) ? Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS') : $this->post->creator()->get('name') . ' (' . $this->post->creator()->get('username') . ')';
+$message .= ($this->post->get('anonymous')) ? Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS') : $this->post->creator->get('name') . ' (' . $this->post->creator->get('username') . ')';
 $message .= ' wrote (in ' . $this->group->get('description') . ': ' . $this->section->get('title') . ' - ' . $this->category->get('title') . ' - ' . $this->thread->get('title') . '):';
 
 $output = html_entity_decode(strip_tags($this->post->content), ENT_COMPAT, 'UTF-8');
