@@ -42,6 +42,7 @@ use Document;
 use Pathway;
 use Request;
 use Config;
+use Event;
 use Lang;
 use User;
 
@@ -69,9 +70,8 @@ class Articles extends SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->archive  = $this->archive;
-
 		$this->view
+			->set('archive', $this->archive)
 			->setLayout('display')
 			->display();
 	}
@@ -295,7 +295,9 @@ class Articles extends SiteController
 		{
 			$return = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
+				Lang::txt('COM_KB_LOGIN_NOTICE'),
+				'warning'
 			);
 			return;
 		}
@@ -314,14 +316,39 @@ class Articles extends SiteController
 		}
 
 		// Store new content
-		if (!$row->save(true))
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->articleTask();
 		}
 
+		// Log the activity
+		$article = Article::oneOrFail($row->get('entry_id'));
+
+		$recipients = array($row->get('created_by'));
+		if ($row->get('parent'))
+		{
+			$recipients[] = $row->parent()->get('created_by');
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($comment['id'] ? 'updated' : 'created'),
+				'scope'       => 'kb.article.comment',
+				'scope_id'    => $row->get('id'),
+				'anonymous'   => $row->get('anonymous', 0),
+				'description' => Lang::txt('COM_KB_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . Route::url($article->link() . '#c' . $row->get('id')) . '">' . $article->get('title') . '</a>'),
+				'details'     => array(
+					'title'    => $article->get('title'),
+					'entry_id' => $article->get('id'),
+					'url'      => $article->link()
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		App::redirect(
-			Route::url($row->link() . '#comments')
+			Route::url($article->link() . '#comments')
 		);
 	}
 

@@ -313,6 +313,7 @@ class Comments extends SiteController
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'wiki.comment',
 				'scope_id'    => $this->page->get('id'),
+				'anonymous'   => $comment->get('anonymous', 0),
 				'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . $this->page->title . '</a>'),
 				'details'     => array(
 					'title'    => $this->page->title,

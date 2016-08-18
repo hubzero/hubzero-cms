@@ -571,6 +571,7 @@ class Entries extends SiteController
 				'action'      => ($data['id'] ? 'updated' : 'created'),
 				'scope'       => 'blog.entry.comment',
 				'scope_id'    => $comment->get('id'),
+				'anonymous'   => $comment->get('anonymous', 0),
 				'description' => Lang::txt('COM_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . $entry->get('title') . '</a>'),
 				'details'     => array(
 					'title'    => $entry->get('title'),
