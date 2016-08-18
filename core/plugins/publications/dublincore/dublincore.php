@@ -78,9 +78,10 @@ class plgPublicationsDublincore extends \Hubzero\Plugin\Plugin
 
 		Document::setMetaData('dcterms.description', $view->escape($publication->abstract));
 
-		if ($license = $publication->license()->title)
+		$license = $publication->license();
+		if (is_object($license))
 		{
-			Document::setMetaData('dcterms.license', $view->escape($license));
+			Document::setMetaData('dcterms.license', $view->escape($license->title));
 		}
 
 		foreach ($publication->_authors as $contributor)
