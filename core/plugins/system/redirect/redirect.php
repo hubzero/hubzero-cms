@@ -116,7 +116,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			$referer = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
 
 			$row = \Components\Redirect\Models\Link::all()
-				->whereEquals('old_url', $current)
+				->whereEquals('old_url', substr($current, 0, 255))
 				->row();
 
 			if (!$row->get('id'))
