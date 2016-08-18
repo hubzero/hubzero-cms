@@ -39,8 +39,6 @@ if (!$this->row->wasViewed())
 	$this->row->markAsViewed();
 }
 $creator = User::getInstance($this->row->log->get('created_by'));
-//$creator = $this->row->log->creator;
-$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
 ?>
 <li
 	data-time="<?php echo $this->row->get('created'); ?>"
@@ -67,13 +65,37 @@ $name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_
 		<?php }*/ ?>
 		<span class="activity-details">
 			<span class="activity-actor">
-				<?php if (in_array($creator->get('access'), User::getAuthorisedViewLevels())) { ?>
-					<a href="<?php echo Route::url($creator->link()); ?>">
-						<?php echo $name; ?>
-					</a>
-				<?php } else { ?>
-					<?php echo $name; ?>
-				<?php } ?>
+				<?php
+				$name = Lang::txt('PLG_MEMBERS_ACTIVITY_ANONYMOUS');
+
+				// If the user was the current logged-in user...
+				if ($this->row->log->get('created_by') == User::get('id'))
+				{
+					// Same user so go ahead and link to profile
+					$name = '<a href="' . Route::url($creator->link()) . '">' . $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')))) . '</a>';
+
+					// If they posted as anonymous, indicate it
+					if ($this->row->log->get('anonymous'))
+					{
+						$name = Lang::txt('PLG_MEMBERS_ACTIVITY_AS_ANONYMOUS', $name);
+					}
+				}
+				// Someone else
+				// Is it not anonymous?
+				else if (!$this->row->log->get('anonymous'))
+				{
+					// Get their full name
+					$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
+
+					// Can we see their profile?
+					if (in_array($creator->get('access'), User::getAuthorisedViewLevels()))
+					{
+						$name = '<a href="' . Route::url($creator->link()) . '">' . $name . '</a>';
+					}
+				}
+
+				echo $name;
+				?>
 			</span>
 			<span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
 			<span class="activity-channel"><?php echo $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')); ?></span>

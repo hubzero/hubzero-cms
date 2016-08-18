@@ -601,6 +601,7 @@ class Threads extends SiteController
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.' . $type,
 				'scope_id'    => $post->get('id'),
+				'anonymous'   => $post->get('anonymous', 0),
 				'description' => $desc,
 				'details'     => array(
 					'thread' => $post->get('thread'),

@@ -216,6 +216,7 @@ class Questions extends SiteController
 				'action'      => ($comment['id'] ? 'updated' : 'created'),
 				'scope'       => 'question.answer.comment',
 				'scope_id'    => $row->get('id'),
+				'anonymous'   => $row->get('anonymous', 0),
 				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
 				'details'     => array(
 					'title' => $question->get('title'),
@@ -742,6 +743,7 @@ class Questions extends SiteController
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'question',
 				'scope_id'    => $row->get('id'),
+				'anonymous'   => $row->get('anonymous', 0),
 				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('subject') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
