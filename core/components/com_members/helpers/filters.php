@@ -52,21 +52,27 @@ class Filters
 		// Process query filters
 		$q = (array)Request::getVar('q', array());
 
-		// Translate operators and augment query filters with human-friendly text
-		$query = self::filtersMap($q);
-
 		// Turn search into array of results, if not already
 		$search = Request::getVar('search', '');
 
 		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
-		if ($search && !is_array($search))
+		if ($search) // && !is_array($search))
 		{
 			// Explode multiple words into array
-			$search = explode(' ', $search);
+			//$search = explode(' ', $search);
 
 			// Only allow alphabetical characters for search
 			$search = preg_replace("/[^a-zA-Z]/", '', $search);
+
+			$q[] = array(
+				'field'    => 'name',
+				'operator' => 'like',
+				'value'    => $search
+			);
 		}
+
+		// Translate operators and augment query filters with human-friendly text
+		$query = self::filtersMap($q);
 
 		$tags = Request::getVar('tags', '');
 

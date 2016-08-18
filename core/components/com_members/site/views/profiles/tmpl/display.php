@@ -93,8 +93,10 @@ $this->css('introduction.css', 'system')
 						<fieldset>
 							<p>
 								<label for="gsearch"><?php echo Lang::txt('COM_MEMBERS_FIND_MEMBERS_SEARCH_LABEL'); ?></label>
-								<input type="text" name="search" id="gsearch" value="" />
-								<input type="submit" value="Search" />
+								<input type="hidden" name="q[0][field]" value="name" />
+								<input type="hidden" name="q[0][operator]" value="like" />
+								<input type="text" name="q[0][value]" id="gsearch" value="" />
+								<input type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 							</p>
 							<p>
 								<?php echo Lang::txt('COM_MEMBERS_FIND_MEMBERS_BY_SEARCH'); ?>
@@ -112,88 +114,86 @@ $this->css('introduction.css', 'system')
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 
-	<?php /*if ($this->contribution_counting)
-	{
-	?>
-	<div class="grid">
-		<div class="col span3">
-			<h2><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR'); ?></h2>
-		</div><!-- / .col span3 -->
-		<div class="col span9 omega">
-			<div class="grid">
-<?php
-	$rows = \Components\Members\Models\Member::all()
-		->whereEquals('block', 0)
-		->whereEquals('activation', 1)
-		->where('approved', '>', 0)
-		->order('contributions', 'desc')
-		->limit(4)
-		->rows();
-
-	if ($rows->count())
-	{
-		$i = 0;
-		foreach ($rows as $contributor)
-		{
-			if ($i == 2)
-			{
-				$i = 0;
-			}
-
-			switch ($i)
-			{
-				case 2: $cls = ''; break;
-				case 1: $cls = 'omega'; break;
-				case 0:
-				default: $cls = ''; break;
-			}
-?>
-		<div class="col span-half <?php echo $cls; ?>">
-			<div class="contributor">
-				<p class="contributor-photo">
-					<a href="<?php echo Route::url($contributor->link()); ?>">
-						<img src="<?php echo $contributor->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_PICTURE', $this->escape(stripslashes($contributor->get('name')))); ?>" />
-					</a>
-				</p>
-				<div class="contributor-content">
-					<h4 class="contributor-name">
-						<a href="<?php echo Route::url($contributor->link()); ?>">
-							<?php echo $this->escape(stripslashes($contributor->get('name'))); ?>
-						</a>
-					</h4>
-					<?php if ($org = $contributor->get('organization')) { ?>
-						<p class="contributor-org">
-							<?php echo $this->escape(stripslashes($org)); ?>
-						</p>
-					<?php } ?>
-					<div class="clearfix"></div>
-				</div>
-				<p class="course-instructor-bio">
-					<?php if ($bio = $contributor->get('bio')) { ?>
-						<?php echo Hubzero\Utility\String::truncate(strip_tags($bio), 200); ?>
-					<?php } else { ?>
-						<em><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_NO_BIO'); ?></em>
-					<?php } ?>
-				</p>
-			</div>
-		</div><!-- / .col span-third -->
-		<?php if ($i == 1) { ?>
-		</div><!-- / .grid -->
+	<?php /*if ($this->contribution_counting) { ?>
 		<div class="grid">
-		<?php } ?>
-<?php
-			$i++;
-		}
-	}
-	else
-	{
-?>
-			<p><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_NO_RESULTS', Route::url('index.php?option=com_resources&task=new')); ?></p>
-<?php
-	}
-?>
-			</div>
-		</div><!-- / .col span9 omega -->
-	</div><!-- / .grid -->
-<?php }*/ // div class grid ?>
+			<div class="col span3">
+				<h2><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR'); ?></h2>
+			</div><!-- / .col span3 -->
+			<div class="col span9 omega">
+				<div class="grid">
+					<?php
+					$rows = \Components\Members\Models\Member::all()
+						->whereEquals('block', 0)
+						->whereEquals('activation', 1)
+						->where('approved', '>', 0)
+						->order('contributions', 'desc')
+						->limit(4)
+						->rows();
+
+					if ($rows->count())
+					{
+						$i = 0;
+						foreach ($rows as $contributor)
+						{
+							if ($i == 2)
+							{
+								$i = 0;
+							}
+
+							switch ($i)
+							{
+								case 2: $cls = ''; break;
+								case 1: $cls = 'omega'; break;
+								case 0:
+								default: $cls = ''; break;
+							}
+							?>
+							<div class="col span-half <?php echo $cls; ?>">
+								<div class="contributor">
+									<p class="contributor-photo">
+										<a href="<?php echo Route::url($contributor->link()); ?>">
+											<img src="<?php echo $contributor->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_PICTURE', $this->escape(stripslashes($contributor->get('name')))); ?>" />
+										</a>
+									</p>
+									<div class="contributor-content">
+										<h4 class="contributor-name">
+											<a href="<?php echo Route::url($contributor->link()); ?>">
+												<?php echo $this->escape(stripslashes($contributor->get('name'))); ?>
+											</a>
+										</h4>
+										<?php if ($org = $contributor->get('organization')) { ?>
+											<p class="contributor-org">
+												<?php echo $this->escape(stripslashes($org)); ?>
+											</p>
+										<?php } ?>
+										<div class="clearfix"></div>
+									</div>
+									<p class="course-instructor-bio">
+										<?php if ($bio = $contributor->get('bio')) { ?>
+											<?php echo Hubzero\Utility\String::truncate(strip_tags($bio), 200); ?>
+										<?php } else { ?>
+											<em><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_NO_BIO'); ?></em>
+										<?php } ?>
+									</p>
+								</div>
+							</div><!-- / .col span-third -->
+							<?php if ($i == 1) { ?>
+							</div><!-- / .grid -->
+							<div class="grid">
+							<?php } ?>
+							<?php
+							$i++;
+						}
+					}
+					else
+					{
+						?>
+						<p><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_NO_RESULTS', Route::url('index.php?option=com_resources&task=new')); ?></p>
+						<?php
+					}
+					?>
+				</div>
+			</div><!-- / .col span9 omega -->
+		</div><!-- / .grid -->
+	<?php }*/ ?>
 </section><!-- / .section -->
