@@ -51,7 +51,7 @@ You have <?php echo $posts; ?> new post<?php if ($posts > 1) echo 's'; ?> across
 
 <?php echo User::getInstance($post->created_by)->get('name'); ?> | <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>
 
-<?php echo $inst->content('clean'); ?>
+<?php echo strip_tags($inst->comment); ?>
 <?php $base = rtrim(Request::root(), '/'); ?>
 <?php $sef  = Route::urlForClient('site', $inst->link()); ?>
 <?php $link = $base . '/' . trim($sef, '/'); ?>
