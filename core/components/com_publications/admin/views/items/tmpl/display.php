@@ -155,7 +155,9 @@ function submitbutton(pressbutton)
 				$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
 				$time = Date::of($row->checked_out_time)->toLocal('H:i');
 
-				$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->checked_out) . '<br />' . $date . '<br />' . $time . '">';
+				$checker = User::getInstance($row->checked_out);
+
+				$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($checker->get('name', $row->checked_out)) . '<br />' . $date . '<br />' . $time . '">';
 				$checked .= '<span class="checkedout">' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
 				$checked .= '</span>';
 
