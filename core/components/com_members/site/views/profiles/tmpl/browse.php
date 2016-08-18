@@ -234,7 +234,7 @@ $fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 								{
 									case 1:
 										// Get the groups of the profile
-										$pgroups = $row->groups();
+										$pgroups = Hubzero\User\Helper::getGroups($row->get('id'), 'all', 1); //$row->groups();
 										// Get the groups the user has access to
 										$profilesgroups = array();
 										if (!empty($pgroups))
