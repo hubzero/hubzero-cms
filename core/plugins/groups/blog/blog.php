@@ -613,6 +613,10 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			array_push($filters['access'], 5);
 			$filters['authorized'] = true;
 		}
+		else
+		{
+			$filters['authorized'] = false;
+		}
 
 		$view = $this->view('default', 'entry')
 			->set('option', $this->option)
