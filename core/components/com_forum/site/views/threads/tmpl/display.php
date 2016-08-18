@@ -70,6 +70,8 @@ $now = Date::of('now')->toSql();
 				->paginated()
 				->rows();
 
+			$pageNav = $posts->pagination;
+
 			if ($posts->count() > 0)
 			{
 				if ($threading == 'tree')
@@ -103,7 +105,6 @@ $now = Date::of('now')->toSql();
 			?>
 			<form action="<?php echo Route::url($this->thread->link()); ?>" method="get">
 				<?php
-				$pageNav = $posts->pagination;
 				$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
 				$pageNav->setAdditionalUrlParam('category', $this->category->get('alias'));
 				$pageNav->setAdditionalUrlParam('thread', $this->thread->get('id'));

@@ -67,6 +67,8 @@ $this->css()
 			->paginated()
 			->rows();
 
+		$pageNav = $posts->pagination;
+
 		if ($posts->count() > 0)
 		{
 			if ($threading == 'tree')
@@ -101,7 +103,6 @@ $this->css()
 
 		<form action="<?php echo Route::url($this->thread->link()); ?>" method="get">
 			<?php
-			$pageNav = $posts->pagination;
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 			$pageNav->setAdditionalUrlParam('active', 'forum');
 			$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id'));
