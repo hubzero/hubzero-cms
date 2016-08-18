@@ -1493,7 +1493,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 
 			$from = array(
-				'name'  => (!$post->get('anonymous') ? $post->creator()->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')) . ' @ ' . Config::get('sitename'),
+				'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')) . ' @ ' . Config::get('sitename'),
 				'email' => Config::get('mailfrom'),
 				'replytoname'  => Config::get('sitename'),
 				'replytoemail' => Config::get('mailfrom')
