@@ -247,7 +247,7 @@ array_walk($this->posts, function($val, $idx) use (&$posts)
 																			</div>
 																			<div style="color: #AAAAAA; font-size: 11px;">
 																				<?php $base = rtrim(Request::root(), '/'); ?>
-																				<?php $sef  = Route::urlForClient('site', Components\Forum\Models\Post::getInstance($post->id)->link()); ?>
+																				<?php $sef  = Route::urlForClient('site', Components\Forum\Models\Post::one($post->id)->link()); ?>
 																				<?php $link = $base . '/' . trim($sef, '/'); ?>
 																				<a href="<?php echo $link; ?>">View this post on <?php echo Config::get('sitename'); ?></a>
 																			</div>
