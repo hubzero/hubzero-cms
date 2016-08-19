@@ -287,15 +287,18 @@ class Articles extends AdminController
 
 		if (count($ids) > 0)
 		{
-			$row = Article::oneOrFail(intval($id));
-
-			if (!$row->destroy())
+			foreach ($ids as $id)
 			{
-				Notify::error($row->getError());
-				continue;
-			}
+				$row = Article::oneOrFail(intval($id));
 
-			$i++;
+				if (!$row->destroy())
+				{
+					Notify::error($row->getError());
+					continue;
+				}
+
+				$i++;
+			}
 		}
 
 		if ($i)
