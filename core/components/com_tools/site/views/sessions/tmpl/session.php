@@ -339,9 +339,9 @@ if (!$this->app->sess) {
 					{
 						if ($row->viewuser != User::get('username'))
 						{
-							$user = Components\Members\Models\Member::oneOrNew($row->viewuser);
+							$user = User::getInstance($row->viewuser);
 
-							$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
+							$id = ($user->get('id') < 0) ? 'n' . -$user->get('id') : $user->get('id');
 
 							// User picture
 							$p = $user->picture();
@@ -351,11 +351,11 @@ if (!$this->app->sess) {
 								<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo $this->escape(stripslashes($user->get('name'))); ?>" />
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo Route::url('index.php?option=com_members&id='.$id); ?>">
+								<a class="entry-title" href="<?php echo Route::url('index.php?option=com_members&id=' . $id); ?>">
 									<?php echo $this->escape(stripslashes($user->get('name'))); ?>
 								</a><br />
 								<span class="entry-details">
-									<span class="organization"><?php echo $this->escape(stripslashes($user->get('organization'))); ?></span>
+									<span class="username"><?php echo $this->escape(stripslashes($user->get('username'))); ?></span>
 								</span>
 							</td>
 							<td class="entry-actions">
