@@ -185,6 +185,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		if (User::get('id') == $member->get('id'))
 		{
+			$filters['access'][] = 5;
 			$filters['authorized'] = true;
 		}
 
@@ -291,6 +292,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		if (User::get('id') == $this->member->get('id'))
 		{
+			$filters['access'][] = 5;
 			$filters['authorized'] = $this->member->get('id');
 		}
 
@@ -333,6 +335,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
 		);
+
+		if (User::get('id') == $this->member->get('id'))
+		{
+			$filters['access'][] = 5;
+			$filters['authorized'] = $this->member->get('id');
+		}
 
 		$path = Request::path();
 		if (strstr($path, '/'))
