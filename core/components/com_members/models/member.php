@@ -534,8 +534,10 @@ class Member extends User
 	 */
 	public static function clearTerms()
 	{
-		$query = $this->getQuery()
-			->update($this->getTableName())
+		$tbl = self::blank();
+
+		$query = $tbl->getQuery()
+			->update($tbl->getTableName())
 			->set(array('usageAgreement' => 0));
 
 		return $query->execute();
