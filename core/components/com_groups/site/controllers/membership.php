@@ -808,8 +808,9 @@ class Membership extends Base
 		}
 
 		// delete member roles
-		require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'role.php';
-		\GroupsMembersRole::deleteRolesForUserWithId(User::get('id'));
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member' . DS . 'role.php';
+
+		\Components\Groups\Models\Member\Role::destroyByUser(User::get('id'));
 
 		// Log the membership cancellation
 		Log::log(array(
