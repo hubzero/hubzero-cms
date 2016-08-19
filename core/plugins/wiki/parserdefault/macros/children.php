@@ -131,8 +131,6 @@ class ChildrenMacro extends WikiMacro
 			->whereEquals('state', 1)
 			->rows();
 
-		$rows = $this->getchildren($scope);
-
 		if ($rows->count())
 		{
 			$html = '<ul>';
