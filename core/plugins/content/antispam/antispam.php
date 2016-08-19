@@ -102,7 +102,16 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 			'user_agent' => Request::getVar('HTTP_USER_AGENT', null, 'server'),
 			'text'       => $content
 		);
+
 		$result = $service->check($data);
+
+		// Log errors any of the service providers may have thrown
+		if ($service->getError() && App::has('log'))
+		{
+			App::get('log')
+				->logger('debug')
+				->info(implode(' ', $service->getErrors()));
+		}
 
 		// If the content was detected as spam...
 		if ($result->isSpam())
