@@ -117,4 +117,15 @@ abstract class Base extends Object
 			'task' => $task
 		);
 	}
+
+	/**
+	 * Get permissions for a user
+	 *
+	 * @param   object  $page
+	 * @return  boolean
+	 */
+	public function authorise($page)
+	{
+		return true;
+	}
 }

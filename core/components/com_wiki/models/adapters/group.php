@@ -31,6 +31,8 @@
 
 namespace Components\Wiki\Models\Adapters;
 
+use User;
+
 require_once(__DIR__ . DS . 'base.php');
 
 /**
@@ -155,5 +157,96 @@ class Group extends Base
 			'active' => $this->_segments['active'],
 			'action' => $task
 		);
+	}
+
+	/**
+	 * Get permissions for a user
+	 *
+	 * @param   object  $page
+	 * @return  boolean
+	 */
+	public function authorise($page)
+	{
+		if ($page->config('access-check-done', false))
+		{
+			return true;
+		}
+
+		$group = \Hubzero\User\Group::getInstance($this->_scope_id);
+
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group();
+			$group->set('gidNumber', $this->_scope_id);
+		}
+
+		// Is this a group manager?
+		if ($group)
+		{
+			// Is this a group manager?
+			if ($group->is_member_of('managers', User::get('id')))
+			{
+				// Allow access to all options
+				$page->config()->set('access-page-manage', true);
+				$page->config()->set('access-page-create', true);
+				$page->config()->set('access-page-delete', true);
+				$page->config()->set('access-page-edit', true);
+				$page->config()->set('access-page-modify', true);
+
+				$page->config()->set('access-comment-view', true);
+				$page->config()->set('access-comment-create', true);
+				$page->config()->set('access-comment-delete', true);
+				$page->config()->set('access-comment-edit', true);
+			}
+			else
+			{
+				// Check permissions based on the page mode (knol/wiki)
+				switch ($page->param('mode'))
+				{
+					// Knowledge article
+					// This means there's a defined set of authors
+					case 'knol':
+						if ($page->get('created_by') == User::get('id')
+						 || $page->isAuthor(User::get('id')))
+						{
+							$page->config()->set('access-page-create', true);
+							$page->config()->set('access-page-delete', true);
+							$page->config()->set('access-page-edit', true);
+							$page->config()->set('access-page-modify', true);
+						}
+						else if ($page->param('allow_changes'))
+						{
+							$page->config()->set('access-page-modify', true); // This allows users to suggest changes
+						}
+
+						if ($page->param('allow_comments'))
+						{
+							$page->config()->set('access-comment-view', true);
+							$page->config()->set('access-comment-create', true);
+						}
+					break;
+
+					// Standard wiki
+					default:
+						if ($group->is_member_of('members', User::get('id')))
+						{
+							$page->config()->set('access-page-create', true);
+
+							if (!$page->isLocked())
+							{
+								$page->config()->set('access-page-delete', true);
+								$page->config()->set('access-page-edit', true);
+								$page->config()->set('access-page-modify', true);
+							}
+
+							$page->config()->set('access-comment-view', true);
+							$page->config()->set('access-comment-create', true);
+						}
+					break;
+				}
+			}
+		}
+
+		return true;
 	}
 }

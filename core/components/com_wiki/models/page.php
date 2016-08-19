@@ -822,75 +822,12 @@ class Page extends Relational
 			if (!$this->config('access-check-done', false))
 			{
 				// Is a group set?
-				/*if (trim($this->get('group_cn', '')))
+				if ($this->get('scope') != 'site')
 				{
-					$group = \Hubzero\User\Group::getInstance($this->get('group_cn'));
-
-					// Is this a group manager?
-					if ($group && $group->is_member_of('managers', User::get('id')))
-					{
-						// Allow access to all options
-						$this->config()->set('access-page-manage', true);
-						$this->config()->set('access-page-create', true);
-						$this->config()->set('access-page-delete', true);
-						$this->config()->set('access-page-edit', true);
-						$this->config()->set('access-page-modify', true);
-
-						$this->config()->set('access-comment-view', true);
-						$this->config()->set('access-comment-create', true);
-						$this->config()->set('access-comment-delete', true);
-						$this->config()->set('access-comment-edit', true);
-					}
-					else
-					{
-						// Check permissions based on the page mode (knol/wiki)
-						switch ($this->param('mode'))
-						{
-							// Knowledge article
-							// This means there's a defined set of authors
-							case 'knol':
-								if ($this->get('created_by') == User::get('id')
-								 || $this->isAuthor(User::get('id')))
-								{
-									$this->config()->set('access-page-create', true);
-									$this->config()->set('access-page-delete', true);
-									$this->config()->set('access-page-edit', true);
-									$this->config()->set('access-page-modify', true);
-								}
-								else if ($this->param('allow_changes'))
-								{
-									$this->config()->set('access-page-modify', true); // This allows users to suggest changes
-								}
-
-								if ($this->param('allow_comments'))
-								{
-									$this->config()->set('access-comment-view', true);
-									$this->config()->set('access-comment-create', true);
-								}
-							break;
-
-							// Standard wiki
-							default:
-								// 1 = private to group, 2 = ...um, can't remember
-								if ($group && $group->is_member_of('members', User::get('id')))
-								{
-									$this->config()->set('access-page-create', true);
-									if ($this->get('state') != 1)
-									{
-										$this->config()->set('access-page-delete', true);
-										$this->config()->set('access-page-edit', true);
-										$this->config()->set('access-page-modify', true);
-									}
-
-									$this->config()->set('access-comment-view', true);
-									$this->config()->set('access-comment-create', true);
-								}
-							break;
-						}
-					}
+					$this->adapter()->authorise($this);
 				}
 				// Check if they're a site admin
-				else */if (User::authorise('core.manage', $option))
+				else if (User::authorise('core.manage', $option))
 				{
 					$this->config()->set('access-page-admin', true);
 					$this->config()->set('access-page-manage', true);
@@ -906,7 +843,7 @@ class Page extends Relational
 
 					$this->config()->set('access-check-done', true);
 				}
-				// No group = Site wiki
+				// No scope = Site wiki
 				else
 				{
 					$this->config()->set('access-page-create', (User::authorise('core.create', $option) !== false));
@@ -938,15 +875,19 @@ class Page extends Relational
 
 						// Standard wiki
 						default:
-							$this->config()->set('access-page-delete', (User::authorise('core.delete', $option) !== false));
-							$this->config()->set('access-page-edit', (User::authorise('core.edit', $option) !== false));
-							$this->config()->set('access-page-modify', true);
+							if (!$this->isLocked())
+							{
+								$this->config()->set('access-page-delete', (User::authorise('core.delete', $option) !== false));
+								$this->config()->set('access-page-edit', (User::authorise('core.edit', $option) !== false));
+								$this->config()->set('access-page-modify', true);
+							}
 
 							$this->config()->set('access-comment-view', true);
 							$this->config()->set('access-comment-create', true);
 						break;
 					}
 				}
+				//print_r($this->config());
 				$this->config()->set('access-check-done', true);
 			}
 		}
