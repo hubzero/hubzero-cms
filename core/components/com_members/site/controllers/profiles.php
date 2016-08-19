@@ -1299,9 +1299,8 @@ class Profiles extends SiteController
 			$member->set('middleName', trim($name['middle']));
 			$member->set('surname', trim($name['last']));
 
-			$name  = trim($name['first']) . ' ';
-			$name .= (trim($name['middle']) != '') ? trim($name['middle']) . ' ' : '';
-			$name .= trim($name['last']);
+			$name = implode(' ', $name);
+			$name = preg_replace('/\s+/', ' ', $name);
 
 			$member->set('name', $name);
 		}
