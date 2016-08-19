@@ -132,18 +132,23 @@ Document::setTitle(Lang::txt('COM_KB'));
 
 						foreach ($categories as $row)
 						{
+							$articles = $row->articles()
+								->whereEquals('state', 1)
+								->whereIn('access', User::getAuthorisedViewLevels())
+								->limit(3)
+								->rows();
+
+							if ($articles->count() <= 0)
+							{
+								continue;
+							}
+
 							$i++;
 							switch ($i)
 							{
 								case 1: $cls = ''; break;
 								case 2: $cls = ' omega'; break;
 							}
-
-							$articles = $row->articles()
-								->whereEquals('state', 1)
-								->whereIn('access', User::getAuthorisedViewLevels())
-								->limit(3)
-								->rows();
 							?>
 							<div class="col span-half<?php echo $cls; ?>">
 								<h4>
@@ -151,7 +156,7 @@ Document::setTitle(Lang::txt('COM_KB'));
 										<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span>(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
 									</a>
 								</h4>
-								<?php if (count($articles) > 0) { ?>
+								<?php if ($articles->count() > 0) { ?>
 									<ul class="articles">
 									<?php foreach ($articles as $article) {
 										$article->set('calias', $row->get('path'));
