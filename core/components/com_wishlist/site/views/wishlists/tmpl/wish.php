@@ -391,6 +391,7 @@ $this->css()
 
 						<?php echo Html::input('token'); ?>
 
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="task" value="savevote" />
 						<input type="hidden" name="category" value="<?php echo $this->wishlist->get('category'); ?>" />
 						<input type="hidden" name="rid" value="<?php echo $this->wishlist->get('referenceid'); ?>" />
@@ -428,6 +429,7 @@ $this->css()
 
 							<?php echo Html::input('token'); ?>
 
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="task" value="editwish" />
 							<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
 							<input type="hidden" id="category" name="category" value="<?php echo $this->escape($this->wishlist->get('category')); ?>" />
@@ -541,6 +543,7 @@ $this->css()
 						} ?>
 							<h4><?php echo Lang::txt('COM_WISHLIST_WISH_BELONGS_TO'); ?>:</h4>
 							<fieldset>
+								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 								<input type="hidden"  name="task" value="movewish" />
 								<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->wishlist->get('id'); ?>" />
 								<input type="hidden" id="wish" name="wish" value="<?php echo $this->wish->get('id'); ?>" />
