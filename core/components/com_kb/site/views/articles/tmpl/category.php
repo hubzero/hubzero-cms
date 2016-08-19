@@ -205,6 +205,12 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 						</a>
 					</li>
 					<?php foreach ($categories as $row) { ?>
+						<?php
+						if ($row->get('articles', 0) <= 0)
+						{
+							continue;
+						}
+						?>
 						<li>
 							<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($row->link()); ?>">
 								<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
