@@ -1310,7 +1310,7 @@ class Wishlists extends SiteController
 				 && $wish->get('proposed_by') != $wish->get('assigned')
 				 && $status == 'accepted')
 				{
-					if (!Event::trigger('xmessage.onSendMessage', array('wishlist_wish_assigned', $subject2, $as_mes, $from, array($wish->get('assigned')), $this->_option)))
+					if (!Event::trigger('xmessage.onSendMessage', array('wishlist_wish_assigned', $subject2, $message, $from, array($wish->get('assigned')), $this->_option)))
 					{
 						$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 					}
