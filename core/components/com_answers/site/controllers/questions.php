@@ -344,6 +344,7 @@ class Questions extends SiteController
 
 			if ($row instanceof Question)
 			{
+				$question = $row;
 				$txt = $row->get('subject');
 			}
 			if ($row instanceof Response)
