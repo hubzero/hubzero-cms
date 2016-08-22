@@ -108,7 +108,13 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				$g = implode(",", $groups);
 				$c = implode(",", $cns);
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
+				$x = "";
+				if (count($groups))
+				{
+					$x = "(w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR";
+				}
+
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ($x w.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 		}
 		else
@@ -133,7 +139,13 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($c) OR r.created_by=" . $database->quote(User::get('id')) . "))) ";
+				$x = "";
+				if (count($groups))
+				{
+					$x = "r.group_owner IN ($c) OR";
+				}
+
+				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND ($x r.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 		}
 		else
