@@ -220,6 +220,7 @@ class Sections extends SiteController
 			->whereEquals('alias', Request::getVar('section'))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Section::STATE_DELETED)
 			->row();
 
 		// Make the sure the section exist
