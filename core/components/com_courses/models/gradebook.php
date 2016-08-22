@@ -299,9 +299,9 @@ class GradeBook extends Base
 
 		// Calculate unit completion percentage for each student
 		// Note: this is not their score, but rather, simply how many items within the unit they have viewed/completed
-		foreach ($progress as $member_id=>$m)
+		foreach ($progress as $member_id => $m)
 		{
-			foreach ($m as $unit_id=>$unit)
+			foreach ($m as $unit_id => $unit)
 			{
 				if (!isset($counts[$unit_id]))
 				{
@@ -335,6 +335,7 @@ class GradeBook extends Base
 					}
 
 					$counts[$unit_id] = $asset->count($filters);
+					$counts[$unit_id] = $counts[$unit_id] ? $counts[$unit_id] : 1; // Enforce 1. Can't divide by zero.
 				}
 
 				$progress[$member_id][$unit_id]['percentage_complete'] = round((array_sum($unit) / $counts[$unit_id]) * 100, 2);
