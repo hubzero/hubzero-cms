@@ -561,6 +561,10 @@ function renderIfJson($v)
 				{
 					$value = $profile->get('profile_value');
 					$value = $value ?: $this->profile->get($field->get('name'));
+					if ($field->get('type') == 'textarea')
+					{
+						$value = Html::content('prepare', $value);
+					}
 				}
 
 				if (is_array($value))
