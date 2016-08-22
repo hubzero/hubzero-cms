@@ -1017,14 +1017,37 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		//
 		foreach ($mbrs as $mbr)
 		{
+			// User ID
 			if (is_numeric($mbr))
 			{
 				$email_users[] = $mbr;
 			}
-			else
+			// Some Name (###)
+			else if (preg_match("/\((\d+)\)/", $mbr, $matches))
 			{
 				preg_match("/\((\d+)\)/", $mbr, $matches);
 				$email_users[] = $matches[1];
+			}
+			else
+			{
+				// Username?
+				$usr = User::getInstance($mbr);
+
+				if ($id = $usr->get('id'))
+				{
+					$email_users[] = $id;
+				}
+				else
+				{
+					// User not found
+					// Maybe it was a group?
+					$grp = \Hubzero\User\Group::getInstance($mbr);
+
+					if ($grp && $grp->get('gidNumber'))
+					{
+						$email_users = array_merge($email_users, $grp->get('members'));
+					}
+				}
 			}
 		}
 
