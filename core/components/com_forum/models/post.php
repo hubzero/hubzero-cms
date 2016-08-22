@@ -537,9 +537,9 @@ class Post extends Relational
 	 */
 	public function save()
 	{
-		$section  = $this->set('section');
+		$section  = $this->get('section');
 		$this->removeAttribute('section');
-		$category = $this->set('category');
+		$category = $this->get('category');
 		$this->removeAttribute('category');
 
 		if (!$this->get('access'))
