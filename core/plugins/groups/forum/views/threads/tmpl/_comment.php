@@ -124,7 +124,7 @@ defined('_HZEXEC_') or die();
 					 || $this->config->get('access-delete-post')
 					 || $this->config->get('access-edit-post')
 					) { ?>
-				<?php if ($this->comment->get('parent') && $this->config->get('access-delete-post')) { ?>
+				<?php if ($this->comment->get('parent') && ($this->config->get('access-delete-post') || $this->comment->get('created_by') == User::get('id'))) { ?>
 					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
 						--><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?><!--
 					--></a>
