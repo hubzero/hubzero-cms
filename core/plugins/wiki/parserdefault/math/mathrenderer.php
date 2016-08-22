@@ -396,7 +396,7 @@ class MathRenderer
 			$outmd5_sql = $this->hash; //pack('H32', $this->hash);
 			$md5_sql    = $this->md5; //pack('H32', $this->md5); // Binary packed, not hex
 
-			$wm = \Components\Wiki\Models\Forumla::oneByInputhash($md5_sql);
+			$wm = \Components\Wiki\Models\Formula::oneByInputhash($md5_sql);
 			if (!$wm->get('id'))
 			{
 				$wm->set('inputhash', $this->_encodeBlob($md5_sql));
@@ -438,7 +438,7 @@ class MathRenderer
 	{
 		$this->md5 = md5($this->tex);
 
-		$wm = \Components\Wiki\Models\Forumla::oneByInputhash($this->_encodeBlob($this->md5));
+		$wm = \Components\Wiki\Models\Formula::oneByInputhash($this->_encodeBlob($this->md5));
 
 		if ($wm->get('id'))
 		{

@@ -36,7 +36,7 @@ use Hubzero\Database\Relational;
 /**
  * Model for wiki math conversions
  */
-class Forumla extends Relational
+class Formula extends Relational
 {
 	/**
 	 * The table namespace

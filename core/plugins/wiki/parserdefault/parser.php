@@ -1354,9 +1354,9 @@ class WikiParser
 	{
 		$path = __DIR__;
 
-		if (is_file($path . DS . 'forumla.php'))
+		if (is_file($path . DS . 'formula.php'))
 		{
-			include_once($path . DS . 'forumla.php');
+			include_once($path . DS . 'formula.php');
 			include_once($path . DS . 'math' . DS . 'mathrenderer.php');
 		}
 		else
