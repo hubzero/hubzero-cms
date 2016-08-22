@@ -1663,7 +1663,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
 
-		if (!$this->params->get('access-delete-thread'))
+		if (!$this->params->get('access-delete-thread') && $post->get('created_by') != User::get('id'))
 		{
 			App::redirect(
 				$redirect,
@@ -1693,7 +1693,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$recipients[] = ['user', $recipient];
 			}
 
-			$url  = $post->link();
+			$url = $post->link();
 
 			Event::trigger('system.logActivity', [
 				'activity' => [
