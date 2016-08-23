@@ -67,10 +67,10 @@ $modelAttach = new \Components\Publications\Models\Attachments($this->database);
 $modelHandler = new \Components\Publications\Models\Handlers($this->database);
 
 // Is there handler choice?
-$handlers 	  = $this->manifest->params->typeParams->handlers;
+$handlers     = $this->manifest->params->typeParams->handlers;
 
 // Is there handler assigned?
-$handler 	  = $this->manifest->params->typeParams->handler;
+$handler      = $this->manifest->params->typeParams->handler;
 $useHandles   = ($handlers || $handler ) ? true : false;
 
 if ($handler)
@@ -89,8 +89,7 @@ $updated  = $curatorStatus->updated && (($curatorStatus->status == 3 && !$comple
 
 $handlerOptions = count($this->attachments) > 0 && $useHandles ? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : NULL;
 
-$elementUrl = Route::url($this->pub->link('editversion') . '&section='
-	. $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+$elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
 
 ?>
 
@@ -115,88 +114,95 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) {
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 			<div class="list-wrapper">
-			<ul class="itemlist">
-		<?php if (count($this->attachments) > 0) {
-			$i = 1; ?>
-				<?php foreach ($this->attachments as $att) {
-
-					// Collect data
-					$data = $modelAttach->buildDataObject(
-						$this->type,
-						$att,
-						$this,
-						$i
-					);
-					if ($data)
+				<ul class="itemlist">
+					<?php
+					if (count($this->attachments) > 0)
 					{
-						$i++;
+						$i = 1;
 
-						// Draw attachment
-						echo $modelAttach->drawAttachment(
-							$att->type,
-							$data,
-							$this->manifest->params->typeParams,
-							$handler
-						);
+						foreach ($this->attachments as $att)
+						{
+							// Collect data
+							$data = $modelAttach->buildDataObject(
+								$this->type,
+								$att,
+								$this,
+								$i
+							);
+
+							if ($data)
+							{
+								$i++;
+
+								// Draw attachment
+								echo $modelAttach->drawAttachment(
+									$att->type,
+									$data,
+									$this->manifest->params->typeParams,
+									$handler
+								);
+							}
+						}
 					}
-				}
-			}  ?>
+					?>
 				</ul>
-				<?php if ($max > count($this->attachments)) {
+				<?php
+				if ($max > count($this->attachments))
+				{
 					// Draw link to select more items
 					$this->view('_select', 'attachments')
 					     ->set('pub', $this->pub)
 					     ->set('type', $this->type)
 					     ->set('props', $props)
 					     ->display();
-				} ?>
-			</div>
+				}
+				?>
+			</div><!-- / .list-wrapper -->
 
 			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
 				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
 			<?php } ?>
-		</div>
-		<?php if ($handlerOptions)  { ?>
-		<div class="handler-aside">
-			<?php
-				// Present handler options
-				echo $handlerOptions;
-			?>
-		</div>
-		<?php } ?>
-				<div class="block-info">
+		</div><!-- / .block-subject -->
+		<?php if ($handlerOptions) { ?>
+			<div class="handler-aside">
 				<?php
-					$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
-
-					if ($shorten)
-					{
-						$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
-						$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-									. Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
-						$about.= ' <div class="hidden">';
-						$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
-						$about.= ' </div>';
-					}
-					else
-					{
-						$about = $aboutText;
-					}
-
-					echo $about;
-			?>
+					// Present handler options
+					echo $handlerOptions;
+				?>
 			</div>
-		</div>	
-		<?php if ($active && $this->collapse) { ?>
-		<div class="clear"></div>
-		<div class="withhandler">
-			<p class="element-move">
-			<?php // display error
-			 if ($this->status->getError()) { echo '<span class="element-error">' . $this->status->getError() . '</span>'; } ?>
-				<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
-				<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
-				</span>
-			</p>
-		</div>
 		<?php } ?>
-	</div>
-</div>
+		<div class="block-aside-omega">
+			<div class="block-info">
+				<?php
+				$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
+
+				if ($shorten)
+				{
+					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
+					$about.= ' <a href="#more-' . $elName . '" class="more-content">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
+					$about.= ' <div class="hidden">';
+					$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
+					$about.= ' </div>';
+				}
+				else
+				{
+					$about = $aboutText;
+				}
+
+				echo $about;
+				?>
+			</div><!-- / .block-info -->
+		</div><!-- / .block-aside-omega -->
+		<?php if ($active && $this->collapse) { ?>
+			<div class="clear"></div>
+			<div class="withhandler">
+				<p class="element-move">
+					<?php if ($this->status->getError()) { echo '<span class="element-error">' . $this->status->getError() . '</span>'; } ?>
+					<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
+						<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
+					</span>
+				</p>
+			</div>
+		<?php } ?>
+	</div><!-- / .element_editing -->
+</div><!-- / .blockelement -->
