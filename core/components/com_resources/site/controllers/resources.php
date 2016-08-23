@@ -2485,7 +2485,7 @@ class Resources extends SiteController
 				}
 				$addarray['month'] = Date::of($thedate)->toLocal($monthFormat);
 				$addarray['url']   = $url;
-				$addarray['year']  = Date::of($thedatez)->toLocal($yearFormat);
+				$addarray['year']  = Date::of($thedate)->toLocal($yearFormat);
 				if ($handle)
 				{
 					$addarray['doi'] = $handle;
