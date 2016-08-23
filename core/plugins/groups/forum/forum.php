@@ -1834,7 +1834,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Ensure the user is authorized to view this file
 		if (!$this->params->get('access-view-thread'))
 		{
-			App::abort(403, Lang::txt('PLG_GROUPS_FORUM_NOT_AUTH_FILE'));
+			$thread = Post::oneOrFail($post->get('thread'));
+			if (!in_array($thread->get('access'), User::getAuthorisedViewLevels()))
+			{
+				App::abort(403, Lang::txt('PLG_GROUPS_FORUM_NOT_AUTH_FILE'));
+			}
 		}
 
 		// Get the configured upload path
