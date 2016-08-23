@@ -89,7 +89,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-group"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_GROUP'); ?>:</label>
-					<input type="text" name="fields[group]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->get('grp'))); ?>" />
+					<input type="text" name="fields[grp]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->get('grp'))); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-class"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_CLASS'); ?>:</label>
