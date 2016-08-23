@@ -165,12 +165,12 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			{
 				$options = $field->options()->ordered()->rows();
 
-				foreach ($options as $option)
+				foreach ($options as $opt)
 				{
 					$type = new stdClass;
-					$type->id    = $option->get('id');
-					$type->type  = $option->get('value');
-					$type->title = $option->get('label');
+					$type->id    = $opt->get('id');
+					$type->type  = $opt->get('value');
+					$type->title = $opt->get('label');
 
 					$types[] = $type;
 				}
