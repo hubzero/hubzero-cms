@@ -26,12 +26,15 @@ class Migration20160425154200ComPoll extends Base
 			}
 		}
 
-		if ($this->db->tableExists('#__poll_data'))
+		if ($this->db->tableExists('#__poll_data') && !$this->db->tableExists('#__poll_options'))
 		{
 			$query = "RENAME TABLE `#__poll_data` TO `#__poll_options`";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__poll_options'))
+		{
 			if ($this->db->tableHasField('#__poll_options', 'pollid')
 			 && !$this->db->tableHasField('#__poll_options', 'poll_id'))
 			{
@@ -41,19 +44,22 @@ class Migration20160425154200ComPoll extends Base
 			}
 		}
 
-		if ($this->db->tableExists('#__poll_date'))
+		if ($this->db->tableExists('#__poll_date') && !$this->db->tableExists('#__poll_dates'))
 		{
 			$query = "RENAME TABLE `#__poll_date` TO `#__poll_dates`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
-		if ($this->db->tableExists('#__poll_menu'))
+		if ($this->db->tableExists('#__poll_menu') && !$this->db->tableExists('#__poll_menus'))
 		{
 			$query = "RENAME TABLE `#__poll_menu` TO `#__poll_menus`";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__poll_menus'))
+		{
 			if ($this->db->tableHasField('#__poll_menus', 'pollid')
 			 && !$this->db->tableHasField('#__poll_menus', 'poll_id'))
 			{
@@ -88,12 +94,15 @@ class Migration20160425154200ComPoll extends Base
 			}
 		}
 
-		if ($this->db->tableExists('#__poll_options'))
+		if ($this->db->tableExists('#__poll_options') && !$this->db->tableExists('#__poll_data'))
 		{
 			$query = "RENAME TABLE `#__poll_options` TO `#__poll_data`";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__poll_data'))
+		{
 			if ($this->db->tableHasField('#__poll_data', 'poll_id')
 			 && !$this->db->tableHasField('#__poll_data', 'pollid'))
 			{
@@ -103,7 +112,7 @@ class Migration20160425154200ComPoll extends Base
 			}
 		}
 
-		if ($this->db->tableExists('#__poll_dates'))
+		if ($this->db->tableExists('#__poll_dates') && !$this->db->tableExists('#__poll_date'))
 		{
 			$query = "RENAME TABLE `#__poll_dates` TO `#__poll_date`";
 			$this->db->setQuery($query);
@@ -115,7 +124,10 @@ class Migration20160425154200ComPoll extends Base
 			$query = "RENAME TABLE `#__poll_menus` TO `#__poll_menu`";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__poll_menu'))
+		{
 			if ($this->db->tableHasField('#__poll_menu', 'poll_id')
 			 && !$this->db->tableHasField('#__poll_menu', 'pollid'))
 			{
