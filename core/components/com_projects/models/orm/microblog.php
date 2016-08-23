@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -39,25 +38,8 @@ use Hubzero\Database\Relational;
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Project extends Relational
+class Microblog extends Relational
 {
-	/**
-	 * Defines a one to many relationship between projects and connections
-	 *
-	 * @return  \Hubzero\Database\Relationship\OneToMany
-	 **/
-	public function connections()
-	{
-		return $this->oneToMany('Connection');
-	}
-
-	public function descriptions()
-	{
-		return $this->oneToMany('Description', 'project_id');
-	}
-
-	public function team()
-	{
-		return $this->oneToMany('Owner', 'projectid');
-	}
+	protected $table = '#__project_microblog';
 }
+

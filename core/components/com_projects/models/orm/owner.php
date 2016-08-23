@@ -39,25 +39,12 @@ use Hubzero\Database\Relational;
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Project extends Relational
+class Owner extends Relational
 {
-	/**
-	 * Defines a one to many relationship between projects and connections
-	 *
-	 * @return  \Hubzero\Database\Relationship\OneToMany
-	 **/
-	public function connections()
-	{
-		return $this->oneToMany('Connection');
-	}
+	protected $table = '#__project_owners';
 
-	public function descriptions()
+	public function project()
 	{
-		return $this->oneToMany('Description', 'project_id');
-	}
-
-	public function team()
-	{
-		return $this->oneToMany('Owner', 'projectid');
+		$this->belongsToOne('Project');
 	}
 }
