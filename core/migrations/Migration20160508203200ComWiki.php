@@ -196,9 +196,12 @@ class Migration20160508203200ComWiki extends Base
 				$this->db->query();
 			}
 
-			$query = "RENAME TABLE `#__wiki_log` TO `#__wiki_logs`";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableExists('#__wiki_logs'))
+			{
+				$query = "RENAME TABLE `#__wiki_log` TO `#__wiki_logs`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 
 		if ($this->db->tableExists('#__wiki_page_metrics'))
@@ -210,9 +213,12 @@ class Migration20160508203200ComWiki extends Base
 				$this->db->query();
 			}
 
-			$query = "RENAME TABLE `#__wiki_page_metrics` TO `#__wiki_metrics`";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableExists('#__wiki_metrics'))
+			{
+				$query = "RENAME TABLE `#__wiki_page_metrics` TO `#__wiki_metrics`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 
 		if ($this->db->tableExists('#__wiki_version'))
@@ -224,9 +230,12 @@ class Migration20160508203200ComWiki extends Base
 				$this->db->query();
 			}
 
-			$query = "RENAME TABLE `#__wiki_version` TO `#__wiki_versions`";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableExists('#__wiki_versions'))
+			{
+				$query = "RENAME TABLE `#__wiki_version` TO `#__wiki_versions`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 	}
 
@@ -327,9 +336,12 @@ class Migration20160508203200ComWiki extends Base
 				$this->db->query();
 			}
 
-			$query = "RENAME TABLE `#__wiki_pages` TO `#__wiki_page`";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableExists('#__wiki_page'))
+			{
+				$query = "RENAME TABLE `#__wiki_pages` TO `#__wiki_page`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 
 		if ($this->db->tableExists('#__wiki_attachments'))
@@ -396,9 +408,12 @@ class Migration20160508203200ComWiki extends Base
 				$this->db->query();
 			}
 
-			$query = "RENAME TABLE `#__wiki_logs` TO `#__wiki_log`";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableExists('#__wiki_log'))
+			{
+				$query = "RENAME TABLE `#__wiki_logs` TO `#__wiki_log`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 
 		if ($this->db->tableExists('#__wiki_metrics'))
@@ -410,23 +425,29 @@ class Migration20160508203200ComWiki extends Base
 				$this->db->query();
 			}
 
-			$query = "RENAME TABLE `#__wiki_metrics` TO `#__wiki_page_metrics`";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableExists('#__wiki_page_metrics'))
+			{
+				$query = "RENAME TABLE `#__wiki_metrics` TO `#__wiki_page_metrics`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 
 		if ($this->db->tableExists('#__wiki_versions'))
 		{
-			if ($this->db->tableHasField('#__wiki_version', 'page_id'))
+			if ($this->db->tableHasField('#__wiki_versions', 'page_id'))
 			{
-				$query = "ALTER TABLE `#__wiki_version` CHANGE `page_id` `pageid` int(11) NOT NULL default 0;";
+				$query = "ALTER TABLE `#__wiki_versions` CHANGE `page_id` `pageid` int(11) NOT NULL default 0;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
-			$query = "RENAME TABLE `#__wiki_versions` TO `#__wiki_version`";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableExists('#__wiki_version'))
+			{
+				$query = "RENAME TABLE `#__wiki_versions` TO `#__wiki_version`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 	}
 }
