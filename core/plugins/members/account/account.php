@@ -762,7 +762,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set correct permissions on authorized_keys file
-		JPath::setPermissions($base . $user . $ssh . $auth, '0600');
+		Filesystem::setPermissions($base . $user . $ssh . $auth, '0600');
 
 		// Set the redirect
 		App::redirect(
@@ -809,7 +809,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!Filesystem::exists($base . $user . $ssh))
 		{
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700))
+			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700, true, false))
 			{
 				return $key = false;
 			}
@@ -826,7 +826,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Set correct permissions on authorized_keys file
-				JPath::setPermissions($base . $user . $ssh . $auth, '0600');
+				Filesystem::setPermissions($base . $user . $ssh . $auth, '0600');
 
 				return $key;
 			}
@@ -861,7 +861,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	{
 		// Create the database object and set the token
 		$db     = App::get('db');
-		$query	= 'UPDATE #__users'
+		$query = 'UPDATE `#__users`'
 				. ' SET activation = ' . $db->Quote($hashedToken)
 				. ' WHERE id = ' . (int) $this->user->get('id')
 				. ' AND block = 0'; // Can't do this if they are blocked
