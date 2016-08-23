@@ -39,25 +39,8 @@ use Hubzero\Database\Relational;
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Project extends Relational
+class Todo extends Relational
 {
-	/**
-	 * Defines a one to many relationship between projects and connections
-	 *
-	 * @return  \Hubzero\Database\Relationship\OneToMany
-	 **/
-	public function connections()
-	{
-		return $this->oneToMany('Connection');
-	}
-
-	public function descriptions()
-	{
-		return $this->oneToMany('Description', 'project_id');
-	}
-
-	public function team()
-	{
-		return $this->oneToMany('Owner', 'projectid');
-	}
+	protected $table = '#__project_todo';
 }
+
