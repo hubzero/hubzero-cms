@@ -809,7 +809,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!Filesystem::exists($base . $user . $ssh))
 		{
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700, true, false))
+			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700, true, true))
 			{
 				return $key = false;
 			}
