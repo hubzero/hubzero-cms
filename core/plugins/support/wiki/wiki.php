@@ -68,9 +68,9 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
 
-		$query  = "SELECT rc.id, rc.pageid AS entry_id, rc.chtml as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
+		$query  = "SELECT rc.id, rc.page_id AS entry_id, rc.chtml as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
 					FROM `#__wiki_comments` AS rc
 					WHERE rc.id=" . $refid;
 
@@ -87,7 +87,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
 
-				$entry = \Components\Wiki\Models\Comment::oneOrFail($rows[$key]->entry_id);
+				$entry = \Components\Wiki\Models\Page::oneOrFail($rows[$key]->entry_id);
 
 				$rows[$key]->text = $rows[$key]->text;
 				$rows[$key]->href = Route::url($entry->link() . '#c' . $rows[$key]->id);
