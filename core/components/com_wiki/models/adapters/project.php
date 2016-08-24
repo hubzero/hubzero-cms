@@ -166,4 +166,27 @@ class Project extends Base
 			'action' => $task
 		);
 	}
+
+	/**
+	 * Get permissions for a user
+	 *
+	 * @param   object  $page
+	 * @return  boolean
+	 */
+	public function authorise($page)
+	{
+		// Allow access to all options
+		$page->config()->set('access-page-manage', true);
+		$page->config()->set('access-page-create', true);
+		$page->config()->set('access-page-delete', true);
+		$page->config()->set('access-page-edit', true);
+		$page->config()->set('access-page-modify', true);
+
+		$page->config()->set('access-comment-view', true);
+		$page->config()->set('access-comment-create', true);
+		$page->config()->set('access-comment-delete', true);
+		$page->config()->set('access-comment-edit', true);
+
+		return true;
+	}
 }
