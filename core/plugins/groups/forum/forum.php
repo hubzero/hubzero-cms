@@ -492,7 +492,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'search'     => Request::getVar('q', ''),
-			'state'      => 1,
+			'state'      => Section::STATE_PUBLISHED,
 			'access'     => array(1),
 			'sort'       => 'ordering',
 			'sort_Dir'   => 'ASC'
@@ -777,6 +777,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->whereEquals('alias', $filters['section'])
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Section::STATE_DELETED)
 			->row();
 		if (!$section->get('id'))
 		{
@@ -787,6 +788,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->whereEquals('alias', $filters['category'])
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Category::STATE_DELETED)
 			->row();
 		if (!$category->get('id'))
 		{
@@ -917,6 +919,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->whereEquals('alias', Request::getVar('section', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Section::STATE_DELETED)
 			->row();
 
 		// Incoming
@@ -926,6 +929,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				->whereEquals('alias', Request::getVar('category', ''))
 				->whereEquals('scope', $this->forum->get('scope'))
 				->whereEquals('scope_id', $this->forum->get('scope_id'))
+				->where('state', '!=', Category::STATE_DELETED)
 				->row();
 		}
 
@@ -1151,6 +1155,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->whereEquals('alias', $filters['section'])
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Section::STATE_DELETED)
 			->row();
 		if (!$section->get('id'))
 		{
@@ -1161,6 +1166,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->whereEquals('alias', $filters['category'])
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Category::STATE_DELETED)
 			->row();
 		if (!$category->get('id'))
 		{
