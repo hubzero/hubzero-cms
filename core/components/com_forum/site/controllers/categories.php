@@ -165,6 +165,7 @@ class Categories extends SiteController
 			->whereEquals('alias', $filters['section'])
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Section::STATE_DELETED)
 			->row();
 		if (!$section->get('id'))
 		{
@@ -176,6 +177,7 @@ class Categories extends SiteController
 			->whereEquals('alias', $filters['category'])
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Category::STATE_DELETED)
 			->row();
 		if (!$category->get('id'))
 		{
@@ -319,6 +321,7 @@ class Categories extends SiteController
 			->whereEquals('alias', Request::getVar('section', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
+			->where('state', '!=', Section::STATE_DELETED)
 			->row();
 
 		// Incoming
@@ -328,6 +331,7 @@ class Categories extends SiteController
 				->whereEquals('alias', Request::getVar('category', ''))
 				->whereEquals('scope', $this->forum->get('scope'))
 				->whereEquals('scope_id', $this->forum->get('scope_id'))
+				->where('state', '!=', Category::STATE_DELETED)
 				->row();
 		}
 
