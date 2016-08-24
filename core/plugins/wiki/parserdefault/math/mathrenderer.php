@@ -330,14 +330,14 @@ class MathRenderer
 			}
 			else if ($retval == 'X')
 			{
-				$this->html = NULL;
-				$this->mathml = substr ($contents, 33);
+				//$this->html = NULL;
+				$this->mathml = substr($contents, 33);
 				$this->conservativeness = 0;
 			}
 			else if ($retval == '+')
 			{
-				$this->html = NULL;
-				$this->mathml = NULL;
+				//$this->html = NULL;
+				//$this->mathml = NULL;
 				$this->conservativeness = 0;
 			}
 			else
@@ -401,9 +401,10 @@ class MathRenderer
 			{
 				$wm->set('inputhash', $this->_encodeBlob($md5_sql));
 				$wm->set('outputhash', $this->_encodeBlob($outmd5_sql));
-				$wm->set('conservativeness', $this->conservativeness);
-				$wm->set('html', $this->html);
-				$wm->set('mathml', $this->mathml);
+				$wm->set('conservativeness', (int)$this->conservativeness);
+				$wm->set('html', (string)$this->html);
+				$wm->set('mathml', (string)$this->mathml);
+
 				if (!$wm->save())
 				{
 					return $wm->getError();
