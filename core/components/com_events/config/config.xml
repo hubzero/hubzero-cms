@@ -30,46 +30,46 @@ HUBzero is a registered trademark of Purdue University.
 -->
 <config>
 	<fieldset name="basic">
-		<field name="adminlevel" type="text" default="0" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC" />
-		<field name="starday" type="text" default="0" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC" />
-		<field name="mailview" type="list" default="NO" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="adminlevel" type="text" default="0" label="COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL" description="COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL" />
+		<field name="starday" type="text" default="0" label="COM_EVENTS_CAL_LANG_CONFIG_FIRSTDAY" description="" />
+		<field name="mailview" type="list" default="NO" label="COM_EVENTS_CAL_LANG_CONFIG_VIEWMAIL" description="">
 			<option value="NO">JNO</option>
 			<option value="YES">JYES</option>
 		</field>
-		<field name="byview" type="list" default="NO" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="byview" type="list" default="NO" label="COM_EVENTS_CAL_LANG_CONFIG_VIEWBY" description="">
 			<option value="NO">JNO</option>
 			<option value="YES">JYES</option>
 		</field>
-		<field name="hitsview" type="list" default="NO" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="hitsview" type="list" default="NO" label="COM_EVENTS_CAL_LANG_CONFIG_VIEWHITS" description="">
 			<option value="NO">JNO</option>
 			<option value="YES">JYES</option>
 		</field>
-		<field name="repeatview" type="list" default="NO" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="repeatview" type="list" default="NO" label="COM_EVENTS_CAL_LANG_CONFIG_VIEWREPEAT" description="">
 			<option value="NO">JNO</option>
 			<option value="YES">JYES</option>
 		</field>
-		<field name="dateformat" type="text" default="0" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC" />
-		<field name="calUseStdTime" type="list" default="NO" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="dateformat" type="text" default="0" label="COM_EVENTS_CAL_LANG_CONFIG_DATEFORMAT" description="" />
+		<field name="calUseStdTime" type="list" default="NO" label="COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT" description="">
 			<option value="NO">JNO</option>
 			<option value="YES">JYES</option>
 		</field>
-		<field name="navbarcolor" type="text" default="" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC" />
-		<field name="startview" type="list" default="year" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="navbarcolor" type="text" default="" label="COM_EVENTS_CAL_LANG_CONFIG_NAVCOLOR" description="" />
+		<field name="startview" type="list" default="year" label="COM_EVENTS_CAL_LANG_CONFIG_STARTPAGE" description="">
 			<option value="year">year</option>
 			<option value="month">month</option>
 			<option value="week">week</option>
 		</field>
-		<field name="calEventListRowsPpg" type="text" default="30" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC" />
-		<field name="calSimpleEventForm" type="list" default="YES" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="calEventListRowsPpg" type="text" default="30" label="COM_EVENTS_CAL_LANG_CONFIG_NUMEVENTS" description="" />
+		<field name="calSimpleEventForm" type="list" default="YES" label="COM_EVENTS_CAL_LANG_CONFIG_SIMPLEFORM" description="">
 			<option value="NO">JNO</option>
 			<option value="YES">JYES</option>
 		</field>
-		<field name="defColor" type="text" default="" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC" />
-		<field name="calForceCatColorEventForm" type="list" default="NO" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC">
+		<field name="defColor" type="text" default="" label="COM_EVENTS_CAL_LANG_CONFIG_DEFCOLOR" description="" />
+		<field name="calForceCatColorEventForm" type="list" default="NO" label="COM_EVENTS_CAL_LANG_CONFIG_FORCE_CAT_COLOR" description="">
 			<option value="NO">JNO</option>
 			<option value="YES">JYES</option>
 		</field>
-		<field name="fields" type="text" default="" label="COM_EVENTS_AUTOAPPROVE_LABEL" description="COM_EVENTS_AUTOAPPROVE_DESC" />
+		<field name="fields" type="text" default="" label="COM_EVENTS_CAL_LANG_CONFIG_FIELDS" description="" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_events" section="component" />
