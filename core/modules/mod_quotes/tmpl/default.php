@@ -136,7 +136,7 @@ $base = Request::getVar('REQUEST_URI', rtrim(Request::base(true), '/'), 'server'
 	<?php } ?>
 </div>
 <script type="text/javascript">
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 	$('.fancybox-inline').fancybox();
 	$('#shuffle').cycle({
 		fx: '<?php echo $this->params->get('cycle_fx', 'fade'); ?>',
