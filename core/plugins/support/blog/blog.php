@@ -110,7 +110,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
 
 		$comment = \Components\Blog\Models\Comment::oneOrFail($refid);
 		$comment->set('state', 3);
@@ -134,7 +134,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
 
 		$comment = \Components\Blog\Models\Comment::oneOrFail($refid);
 		$comment->set('state', 1);
@@ -159,7 +159,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
 
 		$comment = \Components\Blog\Models\Comment::oneOrFail($refid);
 		$comment->set('state', 2);
