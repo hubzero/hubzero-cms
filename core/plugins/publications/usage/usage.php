@@ -57,7 +57,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($publication->_category->_params->get('plg_usage') && $extended)
+		if ($publication->_category->_params->get('plg_usage'))
 		{
 			$areas['usage'] = Lang::txt('PLG_PUBLICATION_USAGE');
 		}
@@ -94,7 +94,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (!$publication->_category->_params->get('plg_usage') || !$extended)
+		if (!$publication->_category->_params->get('plg_usage'))
 		{
 			return $arr;
 		}
