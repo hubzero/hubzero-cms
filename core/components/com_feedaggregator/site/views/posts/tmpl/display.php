@@ -88,9 +88,9 @@ $this->js('posts')
 					<caption><?php echo Lang::txt('COM_FEEDAGGREGATOR_SHOWING_POSTS', $this->filters['filterby']); ?></caption>
 					<tbody>
 					<?php foreach ($this->posts as $post): ?>
-						<?php if (($post->status != "removed" AND $this->filters['filterby'] != "removed") OR
+						<?php /*if (($post->status != "removed" AND $this->filters['filterby'] != "removed") OR
 								($post->status == "removed" AND $this->filters['filterby'] == "removed") OR
-								($this->task == "PostsById")): ?>
+								($this->task == "PostsById")):*/ ?>
 						<tr id="row-<?php echo $post->id; ?>">
 							<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo (string) html_entity_decode(strip_tags($post->shortTitle)); ?></a></td>
 							<td><?php echo $post->created; ?>
@@ -141,7 +141,7 @@ $this->js('posts')
 								</div>
 							</td>
 						</tr>
-						<?php endif; ?>
+						<?php //endif; ?>
 					<?php endforeach; //end foreach ?>
 					</tbody>
 				</table>
