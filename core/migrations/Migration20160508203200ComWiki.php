@@ -93,7 +93,7 @@ class Migration20160508203200ComWiki extends Base
 				}
 
 				// Convert projects
-				$query = "SELECT w.id, w.scope, w.group_cn FROM `#__wiki_pages` AS w WHERE w.group_cn LIKE 'pre-%'";
+				$query = "SELECT w.id, w.scope, w.group_cn FROM `#__wiki_pages` AS w WHERE w.group_cn LIKE 'pr-%'";
 				$this->db->setQuery($query);
 				$rows = $this->db->loadObjectList();
 				foreach ($rows as $row)
