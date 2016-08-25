@@ -420,7 +420,7 @@ class Manager extends Object
 			->whereEquals('state', Post::STATE_PUBLISHED)
 			->whereIn('access', User::getAuthorisedViewLevels());
 
-		return $last->ordered('id', 'desc')
+		return $last->order('id', 'desc')
 			->limit(1)
 			->row();
 	}
