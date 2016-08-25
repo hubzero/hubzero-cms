@@ -522,7 +522,7 @@ class Registration
 			$allowNumericFirstCharacter = ($task == 'update') ? true : false;
 			if (!empty($login) && !Helpers\Utility::validlogin($login, $allowNumericFirstCharacter))
 			{
-				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';
+				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only lowercase alphanumeric characters.';
 			}
 		}
 

@@ -264,7 +264,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		$d = Date::of('now');
 
-		if ($this->raw->registerDate)
+		if (isset($this->raw->registerDate))
 		{
 			try
 			{
@@ -277,7 +277,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->raw->registerDate = $d->toSql();
 		}
 
-		if (!$this->record->entry->get('id') && !$this->raw->registerDate)
+		if (!$this->record->entry->get('id') && !isset($this->raw->registerDate))
 		{
 			$this->raw->registerDate = $d->toSql();
 		}
@@ -598,7 +598,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 */
 	private function _mapGroupsData()
 	{
-		if (isset($this->raw->groups))
+		if (isset($this->raw->groups) && $this->raw->groups != '')
 		{
 			$this->record->groups = (array)$this->_multiValueField($this->raw->groups);
 
