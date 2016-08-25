@@ -53,6 +53,7 @@ class Callback extends SiteController
 
 		$app_key = \Session::get('dropbox.app_key', false);
 		$app_secret = \Session::get('dropbox.app_secret', false);
+		$new_connection = Session::get('dropbox.connection_to_set_up', false);
 
 		$info = [
 			'key'    => isset($app_key) ? $app_key : $pparams->get('app_key'),
@@ -70,6 +71,17 @@ class Callback extends SiteController
 
 		list($accessToken, $userId, $urlState) = $oauth->finish($_GET);
 
+		//if this is a new connection, we can save the token on the server to ensure that it is used next time
+		if ($new_connection)
+		{
+			require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
+			$connection_params = json_decode($connection->get('params'));
+			$connection_params->app_token = $accessToken;
+			$connection->set('params', json_encode($connection_params));
+			$connection->save();
+		}
+			
 		\Session::set('dropbox.token', $accessToken);
 
 		// Redirect to the local endpoint
