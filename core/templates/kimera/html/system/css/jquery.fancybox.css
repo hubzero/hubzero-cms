@@ -25,37 +25,28 @@
 
 	.fancybox-skin {
 		position: relative;
-		/*background: #000;
-		background: rgba(255, 255, 255, 0.2);*/
+		background: transparent;
 		color: #444;
 		text-shadow: none;
-		/*-webkit-border-radius: 4px;
-		   -moz-border-radius: 4px;
-		    -ms-border-radius: 4px;
-		     -o-border-radius: 4px;
-		        border-radius: 4px;*/
 	}
 
 	.fancybox-opened {
 		z-index: 8030;
 	}
 
-	/*.fancybox-opened .fancybox-skin {
-		-webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0px 1px rgba(255, 255, 255, 0.6);
-		   -moz-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0px 1px rgba(255, 255, 255, 0.6);
-		    -ms-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0px 1px rgba(255, 255, 255, 0.6);
-		     -o-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0px 1px rgba(255, 255, 255, 0.6);
-		        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0px 1px rgba(255, 255, 255, 0.6);
-	}*/
-
 	.fancybox-outer, 
 	.fancybox-inner {
 		position: relative;
 		background: #f9f9f9;
+		overflow: hidden;
 	}
-
 	.fancybox-inner {
 		overflow: hidden;
+	}
+	.fancybox-outer {
+		-webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
 	}
 
 	.fancybox-type-iframe .fancybox-inner {
@@ -64,7 +55,6 @@
 
 	.fancybox-error {
 		color: #444;
-		font: 14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
 		margin: 0;
 		padding: 15px;
 		white-space: nowrap;
@@ -82,52 +72,115 @@
 		max-height: 100%;
 	}
 
-	#fancybox-loading, 
-	.fancybox-prev span, 
-	.fancybox-next span {
-		background-image: url('../../../images/overlay/fancybox_sprite.png');
-	}
-
 	#fancybox-loading {
 		position: fixed;
 		top: 50%;
 		left: 50%;
-		margin-top: -22px;
-		margin-left: -22px;
-		background-position: 0 -108px;
+		padding: 1em;
+		margin-top: -2.5em;
+		margin-left: -2.5em;
+		background: #000;
+		border-radius: 0.5em;
 		opacity: 0.8;
+	}
+	#fancybox-loading div {
 		cursor: pointer;
 		z-index: 8060;
+		font-size: 10px;
+		position: relative;
+		text-indent: -9999em;
+		border-top: 4px solid rgba(255, 255, 255, 0.2);
+		border-right: 4px solid rgba(255, 255, 255, 0.2);
+		border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+		border-left: 4px solid #fff;
+		-webkit-transform: translateZ(0);
+		-moz-transform: translateZ(0);
+		-ms-transform: translateZ(0);
+		transform: translateZ(0);
+		-webkit-animation: fbload 1.1s infinite linear;
+		-moz-animation: fbload 1.1s infinite linear;
+		-ms-animation: fbload 1.1s infinite linear;
+		animation: fbload 1.1s infinite linear;
 	}
-
-	#fancybox-loading div {
-		width: 44px;
-		height: 44px;
-		background: url('../../../images/overlay/fancybox_loading.gif') center center no-repeat;
+	#fancybox-loading div,
+	#fancybox-loading div:after {
+		border-radius: 50%;
+		width: 5em;
+		height: 5em;
+	}
+	@-webkit-keyframes fbload {
+		0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+		100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
+	}
+	@-ms-keyframes fbload {
+		0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+		100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
+	}
+	@keyframes fbload {
+		0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+		100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
 	}
 
 	a.fancybox-close,
 	.fancybox-close {
 		position: absolute;
-		top: -18px;
-		right: -18px;
-		width: 36px;
-		height: 36px;
-		font-size: 36px;
-		line-height: 0.85;
 		cursor: pointer;
 		z-index: 8040;
-		border: none;
+		width: 2em;
+		height: 2em;
+		top: -1.5em;
+		right: 0.35em;
+		padding: 0.6em 0.725em;
+		font-size: 1.5em;
+		line-height: 1;
+		overflow: hidden;
+		white-space: nowrap;
 		text-align: center;
-		color: #999;
+		-webkit-transition: all ease-in-out 0.2s;
+		transition: all ease-in-out 0.2s;
+		border: none;
+		color: #222;
 	}
 	a.fancybox-close:before,
 	.fancybox-close:before {
-		content: "\2297"; /*\22A0 */
+		content: "\2716";
+		font-family: "Fontcons";
 	}
 	a.fancybox-close:hover,
 	.fancybox-close:hover {
-		color: #222;
+		text-decoration: none;
+		color: #c00;
+		border: none;
 	}
 
 	.fancybox-nav {
@@ -199,9 +252,7 @@
 		overflow: hidden;
 		display: none;
 		z-index: 8010;
-		/*background: url('../../../images/overlay/fancybox_overlay.png');
-		background-color: rgba(227, 224, 226, 0.95);*/
-		background-color: rgba(227, 224, 226, 0.85);
+		background: rgba(200, 200, 200, 0.9); /*rgba(227, 224, 226, 0.85);*/
 	}
 
 	.fancybox-overlay-fixed {
@@ -216,10 +267,8 @@
 	}
 
 	/* Title helper */
-
 	.fancybox-title {
 		visibility: hidden;
-		font: normal 13px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
 		position: relative;
 		text-shadow: none;
 		z-index: 8050;
