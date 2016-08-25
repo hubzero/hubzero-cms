@@ -30,8 +30,6 @@
 
 namespace Components\Storefront\Models;
 
-use Date;
-
 require_once(__DIR__ . DS . 'Memberships.php');
 require_once(__DIR__ . DS . 'Product.php');
 require_once(__DIR__ . DS . 'Option.php');
