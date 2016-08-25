@@ -48,7 +48,14 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 		// Get the params
 		$pparams = Plugin::params('filesystem', 'dropbox');
 
-		$accessToken = Session::get('dropbox.token', false);
+		if (isset($params['app_token']))
+		{
+			$accessToken = $params['app_token'];
+		}
+		else
+		{
+			$accessToken = \Session::get('dropbox.token', false);
+		}
 
 		if (!$accessToken)
 		{
@@ -59,6 +66,8 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 
 			\Session::set('dropbox.app_key', $info['key']);
 			\Session::set('dropbox.app_secret', $info['secret']);
+			\Session::set('dropbox.connection_to_set_up', Request::getVar('connection', 0));
+
 			$appInfo          = \Dropbox\AppInfo::loadFromJson($info);
 			$clientIdentifier = 'hubzero-cms/2.0';
 			$redirectUri      = trim(Request::root(), '/') . '/developer/callback/dropboxAuthorize';
