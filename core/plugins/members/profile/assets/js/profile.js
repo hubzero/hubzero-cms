@@ -379,7 +379,7 @@ HUB.Members.Profile = {
 				id  = $(this).attr('data-id'),
 				url = $(this).attr('href');
 
-			if ($(this).hasClass("private")) {
+			if (!$(this).hasClass("private")) {
 				pub = 5;
 			}
 
@@ -396,7 +396,7 @@ HUB.Members.Profile = {
 				var returned = jQuery.parseJSON(data);
 
 				if (returned.success) {
-					if (pub) {
+					if (pub == 1) {
 						privacy
 							.removeClass("private")
 							.html("Public Profile :: " + privacy.attr('data-private'));
