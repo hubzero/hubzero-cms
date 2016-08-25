@@ -117,6 +117,8 @@ class Downloads extends AdminController
 		// Get records
 		$this->view->rows = CartDownload::getDownloads('list', $this->view->filters);
 
+		//print_r($this->view->rows); die;
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -271,7 +273,24 @@ class Downloads extends AdminController
 			{
 				$status = 'inactive';
 			}
-			$rows[] = array($row['dDownloaded'], $row['pName'], $row['sSku'], $row['dName'], $row['username'], $row['uId'], $row['dIp'], $status);
+
+			$metaCsv = '';
+			if ($row['mtValue'])
+			{
+				$meta = unserialize($row['mtValue']);
+				$mtIndex = 0;
+				foreach ($meta as $mtK => $mtV)
+				{
+					if ($mtIndex > 0)
+					{
+						$metaCsv .= ', ';
+					}
+					$metaCsv .= $mtV;
+					$mtIndex++;
+				}
+			}
+
+			$rows[] = array($row['dDownloaded'], $row['pName'], $row['sSku'], $row['dName'], $row['username'], $row['uId'], $metaCsv, $row['dIp'], $status);
 		}
 
 		header("Content-Type: text/csv");
@@ -282,7 +301,7 @@ class Downloads extends AdminController
 		header("Expires: 0"); // Proxies
 
 		$output = fopen("php://output", "w");
-		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'IP', 'Status');
+		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'User Details', 'IP', 'Status');
 		fputcsv($output, $row);
 		foreach ($rows as $row) {
 			fputcsv($output, $row);

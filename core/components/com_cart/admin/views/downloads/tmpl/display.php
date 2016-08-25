@@ -92,6 +92,7 @@ $this->view('_submenu')
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">IP</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -99,7 +100,7 @@ $this->view('_submenu')
 		</thead>
 		<tfoot>
 		<tr>
-			<td colspan="6"><?php
+			<td colspan="7"><?php
 				// Initiate paging
 				echo $this->pagination(
 						$this->total,
@@ -155,7 +156,28 @@ foreach ($this->rows as $row)
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>
-				<span><?php echo $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')'; ?></span>
+					<span><?php echo $this->escape(stripslashes($row->dName)) . ' / ' . $this->escape(stripslashes($row->username)); ?></span>
+				</td>
+				<td>
+					<?php
+					if ($row->mtValue)
+					{
+						$meta = unserialize($row->mtValue);
+						$mtIndex = 0;
+						foreach ($meta as $mtK => $mtV)
+						{
+							if ($mtIndex > 0)
+							{
+								echo ', ';
+							}
+							echo $mtV;
+							$mtIndex++;
+						}
+					}
+					else {
+						echo '&nbsp;';
+					}
+					?>
 				</td>
 				<td>
 					<span><?php echo $this->escape(stripslashes($row->dDownloaded)); ?></span>
