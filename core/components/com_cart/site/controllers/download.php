@@ -33,6 +33,9 @@ namespace Components\Cart\Site\Controllers;
 use Request;
 use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
+use User;
+//use Hubzero\User\Group;
+use Hubzero\Access\Group as Accessgroup;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
@@ -166,6 +169,28 @@ class Download extends \Hubzero\Component\SiteController
 				`sId` = " . $sId . ",
 				`dIp` = INET_ATON(" . $db->quote(Request::getClientIp()) . "),
 				`dDownloaded` = NOW()";
+		$db->setQuery($sql);
+		$db->query();
+		$dId = $db->insertid();
+
+		// Save the meta data
+		$userGroups = User::getAuthorisedGroups();
+		$meta = array();
+		$ignoreGroups = array('public', 'registered');
+		foreach ($userGroups as $groupId)
+		{
+			$group = Accessgroup::one($groupId);
+			if (!in_array(strtolower($group->get('title')), $ignoreGroups))
+			{
+				$meta[$groupId] = $group->get('title');
+			}
+		}
+
+		$sql = "INSERT INTO `#__cart_meta` SET
+				`scope_id` = " . $dId . ",
+				`scope` = 'download',
+				`mtKey` = 'userInfo',
+				`mtValue` = '" . serialize($meta) . "'";
 		$db->setQuery($sql);
 		$db->query();
 
