@@ -152,8 +152,8 @@ class Note extends \Components\Wiki\Models\Book
 	public function getFirstNote($prefix = '')
 	{
 		$query  = "SELECT p.pagename FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "' AND p.state!=2";
-				//AND p.path='" . $this->_scope . "'";
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . " AND p.state!=2";
+
 		$query .= $prefix ? "AND p.pagename LIKE '" . $prefix . "%'" : "";
 		$query .= " ORDER BY p.times_rated, p.id ASC LIMIT 1";
 
@@ -176,12 +176,12 @@ class Note extends \Components\Wiki\Models\Book
 		{
 			$query  = "SELECT DISTINCT p.pagename, p.title, p.path, p.scope, p.scope_id ";
 			$query .= "FROM `#__wiki_pages` AS p ";
-			$query .= "WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "' AND p.state!=2 ";
+			$query .= "WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . " AND p.state!=2 ";
 			$k = 1;
 			$where = '';
 			foreach ($remaining as $r)
 			{
-				$where .= "p.pagename='" . trim($r) . "'";
+				$where .= "p.pagename=" . $this->_db->quote(trim($r));
 				$where .= $k == count($remaining) ? '' : ' OR ';
 				$k++;
 			}
@@ -202,13 +202,13 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function getNotes($limit = 0, $orderby = 'p.scope, p.times_rated ASC, p.id')
 	{
-		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated
+		$query = "SELECT DISTINCT p.id, p.path, p.pagename, p.title, p.scope, p.times_rated
 				  FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
 				  AND p.pagename NOT LIKE 'Template:%'
 				  AND p.state!=2
 				  ORDER BY $orderby ";
-				//AND p.path LIKE '" . $this->_scope . "%'
+
 		$query .= intval($limit) ? " LIMIT $limit" : '';
 
 		$this->_db->setQuery($query);
@@ -223,9 +223,8 @@ class Note extends \Components\Wiki\Models\Book
 	public function getNoteCount()
 	{
 		$query = "SELECT COUNT(*) FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "' AND p.state!=2
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . " AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
-		//$query.= $this->_scope ? " AND p.path LIKE '" . $this->_scope . "%'" : "";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -245,10 +244,10 @@ class Note extends \Components\Wiki\Models\Book
 				  (SELECT vv.id FROM `#__wiki_versions` as vv WHERE vv.page_id=p.id
 				  ORDER by vv.id DESC LIMIT 1) as instance
 				  FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
-				//AND p.path LIKE '" . $this->_scope . "%'
+
 		$query.=  is_numeric($id) ? " AND p.id='$id' LIMIT 1" : " AND p.pagename='$id' LIMIT 1";
 
 		$this->_db->setQuery($query);
@@ -267,9 +266,8 @@ class Note extends \Components\Wiki\Models\Book
 	{
 		$scope = $scope ? $scope : $this->_scope;
 		$query = "SELECT p.times_rated FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
 				  ORDER BY p.times_rated DESC LIMIT 1";
-				//AND p.path='" . $scope . "'
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -286,7 +284,7 @@ class Note extends \Components\Wiki\Models\Book
 	public function fixScopePaths($scope, $oldpagename, $newpagename)
 	{
 		$query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, '/" . $oldpagename . "', '/" . $newpagename . "')
-				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'";
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -305,10 +303,9 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function saveNoteOrder($scope, $order = 0)
 	{
-		$query = "UPDATE `#__wiki_pages` AS p SET p.times_rated='" . $order . "'
-				  WHERE p.scope='project' AND p.scope_id='" . $this->_project_id . "'
+		$query = "UPDATE `#__wiki_pages` AS p SET p.times_rated=" . $this->_db->quote($order) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
 				  AND p.times_rated='0'";
-				//AND p.path='" . $scope . "'
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -327,7 +324,7 @@ class Note extends \Components\Wiki\Models\Book
 	public function getWikiPath($id = 0)
 	{
 		// Ensure we have an ID to work with
-		$listdir = Request::getInt('lid', 0);
+		$listdir = \Request::getInt('lid', 0);
 		$id = $id ? $id : $listdir;
 
 		if (!$id)
@@ -336,13 +333,13 @@ class Note extends \Components\Wiki\Models\Book
 		}
 
 		// Load wiki configs
-		$wiki_config = Component::params('com_wiki');
+		$wiki_config = \Component::params('com_wiki');
 
 		$path =  DS . trim($wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
 
 		if (!is_dir(PATH_APP . $path))
 		{
-			if (!Filesystem::makeDirectory(PATH_APP . $path))
+			if (!\Filesystem::makeDirectory(PATH_APP . $path))
 			{
 				return false;
 			}
