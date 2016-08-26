@@ -94,7 +94,7 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="save" />
 
-				<?php if (!$this->row->get('id')) : ?>
+				<?php if (!$this->row->get('user_id')) : ?>
 					<div class="input-wrap">
 						<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
 						<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
