@@ -136,8 +136,10 @@ class Sections extends SiteController
 			);
 		}
 
+		$this->_authorize('section');
+
 		// Permissions check
-		if (!$this->config->get('access-create-section'))
+		if (!$this->config->get('access-create-section') && !$this->config->get('access-edit-section'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
@@ -214,6 +216,8 @@ class Sections extends SiteController
 			);
 			return;
 		}
+
+		$this->_authorize('section');
 
 		// Load the section
 		$section = Section::all()
