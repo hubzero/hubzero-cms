@@ -71,8 +71,7 @@ class Quota extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'user_id'  => 'positive|nonzero',
-		'class_id' => 'positive|nonzero'
+		'user_id'  => 'positive|nonzero'
 	);
 
 	/**
@@ -134,14 +133,14 @@ class Quota extends Relational
 
 			$log = Log::blank();
 			$log->set('object_type', 'class');
-			$log->set('object_id', $this->get('id'));
-			$log->set('name', $this->get('alias'));
-			$log->set('action', $action);
-			$log->set('actor_id', User::get('id'));
-			$log->set('soft_blocks', $this->get('soft_blocks'));
-			$log->set('hard_blocks', $this->get('hard_blocks'));
-			$log->set('soft_files', $this->get('soft_files'));
-			$log->set('hard_files', $this->get('hard_files'));
+			$log->set('object_id', (int)$this->get('id'));
+			$log->set('name', (string)$this->get('alias'));
+			$log->set('action', (string)$action);
+			$log->set('actor_id', (int)User::get('id'));
+			$log->set('soft_blocks', (int)$this->get('soft_blocks'));
+			$log->set('hard_blocks', (int)$this->get('hard_blocks'));
+			$log->set('soft_files', (int)$this->get('soft_files'));
+			$log->set('hard_files', (int)$this->get('hard_files'));
 			$log->save();
 		}
 
