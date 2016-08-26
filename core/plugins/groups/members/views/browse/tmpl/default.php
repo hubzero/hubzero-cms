@@ -254,7 +254,7 @@ $option = 'com_groups';
 									<span class="status"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
 								<?php } else { ?>
 									<span class="name">
-										<?php if ($u->get('public')) { ?><a href="<?php echo Route::url($url); ?>"><?php } ?>
+										<?php if (in_array($u->get('access'), User::getAuthorisedviewLevels())) { ?><a href="<?php echo Route::url($url); ?>"><?php } ?>
 											<?php
 												//handles the comma
 												$surname = $u->get('surname');
@@ -274,7 +274,7 @@ $option = 'com_groups';
 													echo $this->escape(stripslashes($u->get('givenName')));
 												}
 											?>
-										<?php if ($u->get('public')) { ?></a><?php } ?>
+										<?php if (in_array($u->get('access'), User::getAuthorisedviewLevels())) { ?></a><?php } ?>
 									</span>
 									<span class="status"><?php echo $status; ?></span><br />
 
