@@ -33,6 +33,7 @@ namespace Components\Wiki\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Wiki\Models\Page;
+use Components\Wiki\Models\Author;
 use Request;
 use Notify;
 use User;
@@ -170,7 +171,7 @@ class Pages extends AdminController
 		{
 			$filters['search'] = strtolower((string)$filters['search']);
 
-			$records->whereLike('title', $filters['search']);
+			$results->whereLike('title', $filters['search']);
 		}
 
 		// Get records
@@ -250,6 +251,11 @@ class Pages extends AdminController
 		$fields = Request::getVar('page', array(), 'post');
 		$fields = array_map('trim', $fields);
 
+		$authors = $fields['authors'];
+		$tags    = $fields['tags'];
+		unset($fields['authors']);
+		unset($fields['tags']);
+
 		// Initiate extended database class
 		$page = Page::oneOrNew($fields['id'])->set($fields);
 
@@ -270,13 +276,13 @@ class Pages extends AdminController
 			return $this->editTask($page);
 		}
 
-		if (!$page->updateAuthors($fields['authors']))
+		if (!Author::setForPage($authors, $page->get('id')))
 		{
 			Notify::error($page->getError());
 			return $this->editTask($page);
 		}
 
-		$page->tag($fields['tags']);
+		$page->tag($tags);
 
 		Notify::success(Lang::txt('COM_WIKI_PAGE_SAVED'));
 
