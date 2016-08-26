@@ -1138,6 +1138,53 @@ class Html
 				}
 				else
 				{
+					// If the child is marked as protected
+					if ($firstChild->access == 3)
+					{
+						// Get the groups the user has access to
+						$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+						$usersgroups = array();
+						if (!empty($xgroups))
+						{
+							foreach ($xgroups as $group)
+							{
+								if ($group->regconfirmed)
+								{
+									$usersgroups[] = $group->cn;
+								}
+							}
+						}
+
+						// Get the groups that can access this resource
+						$allowedgroups = $resource->getGroups();
+
+						// Find what groups the user has in common with the resource, if any
+						$common = array_intersect($usersgroups, $allowedgroups);
+
+						// Check if the user is apart of the group that owns the resource
+						// or if they have any groups in common
+						if (!in_array($resource->group_owner, $usersgroups) || count($common) <= 0)
+						{
+							$html .= '<p class="warning">';
+							if (User::isGuest())
+							{
+								$html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(\Request::path()));
+							}
+							else
+							{
+								$ghtml = array();
+								foreach ($allowedgroups as $allowedgroup)
+								{
+									$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+								}
+								$html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml);
+							}
+							$html .= '</p>';
+
+							return $html;
+						}
+					}
+
 					$childParams = new \Hubzero\Config\Registry($firstChild->params);
 					$linkAction = intval($childParams->get('link_action', $linkAction));
 
