@@ -113,13 +113,10 @@ $this->view('_submenu')
 		<tbody>
 <?php
 $k = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
 $i = 0;
 
 foreach ($this->rows as $row)
 {
-	//print_r($row); die;
-	//$row =& $this->rows[$i];
 	switch ($row->dStatus)
 	{
 		case 1:
@@ -163,16 +160,16 @@ foreach ($this->rows as $row)
 					if ($row->mtValue)
 					{
 						$meta = unserialize($row->mtValue);
-						$mtIndex = 0;
+						$data = array();
 						foreach ($meta as $mtK => $mtV)
 						{
-							if ($mtIndex > 0)
+							if (is_array($mtV))
 							{
-								echo ', ';
+								$mtV = implode('; ', $mtV);
 							}
-							echo $mtV;
-							$mtIndex++;
+							$data[] = $mtV;
 						}
+						echo implode(', ', $data);
 					}
 					else {
 						echo '&nbsp;';
