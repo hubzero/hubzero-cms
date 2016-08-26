@@ -484,6 +484,15 @@ class Set extends \JModel implements Iterator
 			}
 		}
 
+		// Recalculate the totals
+		// [CDMHUB][#1034]
+		$total = 0;
+		foreach ($this->result_counts as $plugin => $def)
+		{
+			$total += $this->result_counts[$plugin]['count'];
+		}
+		$this->total_list_count = $this->total_count = $total;
+
 		if ($this->limit > 0)
 		{
 			$this->shown_results = array_slice($this->shown_results, $this->offset, $this->limit);
