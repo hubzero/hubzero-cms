@@ -214,7 +214,7 @@ class Version extends Relational
 
 		$wikiconfig = array(
 			'option'    => ($option ?: \Request::getCmd('option')),
-			'scope'     => $route . $page->get('path'),
+			'scope'     => $page->get('path'), // $route . $page->get('path'),
 			'pagename'  => $page->get('pagename'),
 			'pageid'    => $page->get('id'),
 			'filepath'  => '',
