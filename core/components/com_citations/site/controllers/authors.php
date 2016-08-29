@@ -148,6 +148,8 @@ class Authors extends SiteController
 			}
 		}
 
+		$this->saveAuthorsList();
+
 		// Push through to the view
 		$this->displayTask();
 	}
@@ -216,6 +218,8 @@ class Authors extends SiteController
 			}
 		}
 
+		$this->saveAuthorsList();
+
 		// Push through to the view
 		$this->displayTask();
 	}
@@ -237,6 +241,24 @@ class Authors extends SiteController
 			->set('citation', $this->citation)
 			->setLayout('display')
 			->display();
+	}
+
+	/**
+	 * Update authors string on the citations entry
+	 * This is used primarily to make searching easier
+	 *
+	 * @return  void
+	 */
+	protected function saveAuthorsList()
+	{
+		// Reset the authors string
+		$authors = $this->citation->authors();
+		foreach ($authors as $author)
+		{
+			$auths[] = $author->author . ($author->uidNumber ? '{{' . $author->uidNumber . '}}' : '');
+		}
+		$this->citation->author = implode('; ', $auths);
+		$this->citation->store();
 	}
 }
 
