@@ -53,32 +53,93 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 	 */
 	public function invoke($option)
 	{
-		$url = $this->generateInvokeUrl($option);
-
 		$no_html = Request::getInt('no_html', 0);
 
 		$response = new StdClass;
 		$response->success = false;
 		$response->message = Lang::txt('No invoke URL found.');
 
-		if (User::isGuest())
+		// Check for an imconing token.
+		if ($token = Request::getVar('token', '', 'get'))
 		{
-			$response->message = Lang::txt('Login is required to perform this action.');
-			$url = '';
+			$dtoken = base64_decode($token);
+
+			$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
+			$crypter = new \Hubzero\Encryption\Encrypter(
+				new \Hubzero\Encryption\Cipher\Simple,
+				new \Hubzero\Encryption\Key('simple', $key, $key)
+			);
+			$session_id = $crypter->decrypt($dtoken);
+
+			$session = \Hubzero\Session\Helper::getSession($session_id);
+
+			$user = User::getInstance($session->userid);
+			$user->set('guest', 0);
+			$user->set('id', $session->userid);
+			$user->set('username', $session->username);
+
+			$ip = $session->ip;
+		}
+		// No token, get the user the standard way
+		else
+		{
+			$user = User::getInstance();
+
+			$ip = Request::ip();
 		}
 
-		if ($url)
+		// Is the user validated?
+		if ($user->isGuest())
 		{
-			$response->success = true;
-			$response->message = $url;
+			$response->message = Lang::txt('Login is required to perform this action.');
+		}
+		else
+		{
+			$appid = Request::getVar('appid');
 
-			if (!$no_html)
+			// Generate the URL
+			$url = $this->generateInvokeUrl($option, $appid, $user, $ip);
+
+			if ($url)
 			{
-				$rurl = $_SERVER['HTTP_REFERER'];
+				if (!$token)
+				{
+					$session = App::get('session');
 
-				print("<html><body><a id=\"runapplink\" href=\"$url\">Run app</a><script> document.getElementById('runapplink').click(); window.setTimeout(function(){ window.location = \"$rurl\"; },1000);</script><br>This page should go back ot the hub application page automatically. If it doesn't, click <a href='$rurl'>here.</a></html>");
-				exit();
-				App::redirect($url);
+					$session_id = $session->getId();
+
+					$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
+					$crypter = new \Hubzero\Encryption\Encrypter(
+						new \Hubzero\Encryption\Cipher\Simple,
+						new \Hubzero\Encryption\Key('simple', $key, $key)
+					);
+					$token = base64_encode($crypter->encrypt($session_id));
+				}
+
+				$rurl  = rtrim($this->params->get('invoke_url', 'http://wapps.hubzero.org'), '/') . '/v1?'; //standaloneUrl=' . $url;
+				$params = array();
+				$params[] = 'token=' . $token;
+				if ($appid)
+				{
+					$params[] = 'appid=' . $appid;
+				}
+				$params[] = 'standaloneUrl=' . $url;
+				$rurl .= implode('&', $params);
+
+				$response->success = true;
+				$response->message = $rurl;
+
+				if (!$no_html)
+				{
+					$this->view('invoke', 'display')
+						->set('url', $rurl)
+						->set('rurl', $_SERVER['HTTP_REFERER'])
+						->display();
+
+					exit();
+
+					App::redirect($url);
+				}
 			}
 		}
 
@@ -87,7 +148,14 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 			App::abort(404, Lang::txt('No invoke URL found.'));
 		}
 
-		echo json_encode($response);
+		$response = json_encode($response);
+
+		if ($callback = Request::getVar('callback'))
+		{
+			$response = $callback . '(' . $response . ')';
+		}
+
+		echo $response;
 		exit();
 	}
 
@@ -95,16 +163,22 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 	 * Generate a Windows tool invoke URL to redirect to
 	 *
 	 * @param   string  $option  Name of the component
+	 * @param   string  $appid
+	 * @param   object  $user
+	 * @param   string  $ip
 	 * @return  string
 	 */
-	public function generateInvokeUrl($option, $appid = null)
+	public function generateInvokeUrl($option, $appid = null, $user = null, $ip = null)
 	{
-		$appid = ($appid ? $appid : Request::getVar('appid'));
+		$appid = $appid ?: Request::getVar('appid');
 
 		if (!$appid)
 		{
 			return '';
 		}
+return 'fasdfdsadfsdfas';
+		$user  = $user  ?: User::getInstance();
+		$ip    = $ip    ?: Request::ip();
 
 		// Get summary usage data
 		$startdate = new \DateTime('midnight first day of this month');
@@ -131,7 +205,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		// Get the session table
 		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$ms->bind(array(
-			'username' => User::get('username'),
+			'username' => $user->get('username'),
 			'remoteip' => $ip
 		));
 
@@ -142,17 +216,15 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		$sessionID = $ms->sessnum;
 
 		// Opaque data
-		$od = "username=" . User::get('username');
-		$od = $od . ",email=" . User::get('email');
-		$od = $od . ",userip=" . Request::ip();
+		$od = "username=" . $user->get('username');
+		$od = $od . ",email=" . $user->get('email');
+		$od = $od . ",userip=" . $ip;
 		$od = $od . ",sessionid=" . $sessionID;
 		$od = $od . ",ts=" . (new \DateTime())->format('Y.m.d.H.i.s');
 
-		$eurl = exec("/usr/bin/hz-aws-appstream getentitlementurl --appid '" . $appid. "' --opaquedata '" . $od . "'");
+		$eurl = exec("/usr/bin/hz-aws-appstream getentitlementurl --appid '" . $appid . "' --opaquedata '" . $od . "'");
 
-		$url = rtrim($this->params->get('invoke_url', 'http://wapps.hubzero.org'), '/') . '/v1?standaloneUrl=' . $eurl;
-
-		return $url;
+		return $eurl;
 	}
 
 	/**
