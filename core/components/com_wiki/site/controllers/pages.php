@@ -574,11 +574,14 @@ class Pages extends SiteController
 				{
 					$this->setError(\Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id')));
 				}
+			}
 
-				foreach (Attachment::all()->whereEquals('page_id', $lid) as $attachment)
+			foreach (Attachment::all()->whereEquals('page_id', $lid)->rows() as $attachment)
+			{
+				$attachment->set('page_id', $this->page->get('id'));
+				if (!$attachment->save())
 				{
-					$attachment->set('page_id', $this->page->get('id'));
-					$attachment->save();
+					$this->setError($attachment->getError());
 				}
 			}
 		}
