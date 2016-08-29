@@ -1763,16 +1763,16 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view->task       = $this->action;
-
 			$view = $this->view('delete', 'collection')
 				->set('name', $this->_name)
 				->set('option', $this->option)
 				->set('member', $this->member)
 				->set('params', $this->params)
 				->set('collection', $collection)
-				->set('no_html', $this->no_html)
+				->set('no_html', $no_html)
 				->setErrors($this->getErrors());
+
+			$view->task       = $this->action;
 
 			return $view->loadTemplate();
 		}
