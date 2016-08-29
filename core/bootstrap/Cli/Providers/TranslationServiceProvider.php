@@ -93,7 +93,12 @@ class TranslationServiceProvider extends ServiceProvider
 		// Detect default language
 		if (!$language && $this->app->has('component'))
 		{
-			$params = $this->app['component']->params('com_languages');
+			try {
+				$params = $this->app['component']->params('com_languages');
+			}
+			catch (Exception $e) {
+				$params = new \Hubzero\Config\Registry;
+			}
 
 			$language = $params->get(
 				$this->app['client']->name,
