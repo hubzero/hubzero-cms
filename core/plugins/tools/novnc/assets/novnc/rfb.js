@@ -1116,7 +1116,9 @@ var RFB;
                         if (l.protocol && l.protocol != window.location.protocol) {
                             url = url.replace('http:', 'https:');
                         }
+                    }
 
+                    if (url.indexOf('filexfer') !== -1) {
                         //This requires fancyBox 2
                         $.fancybox({
                             type: 'iframe',
