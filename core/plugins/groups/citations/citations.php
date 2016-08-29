@@ -710,12 +710,26 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						'cid' => $citation->id,
 						'ordering' => $key,
 						'author' => $a
-						));
+					));
 
-						$authorObj->save();
-					}
+					$authorObj->save();
 				}
 			}
+		}
+
+		$authors = $citation->relatedAuthors()
+			->order('ordering', 'asc')
+			->rows();
+
+		if ($authors->count())
+		{
+			foreach ($authors as $author)
+			{
+				$auths[] = $author->get('author') . ($author->get('uidNumber') ? '{{' . $author->get('uidNumber') . '}}' : '');
+			}
+			$citation->set('author', implode('; ', $auths));
+			$citation->save();
+		}
 
 		// check if we are allowing tags
 		$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
