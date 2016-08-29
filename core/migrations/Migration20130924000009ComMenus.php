@@ -373,10 +373,10 @@ class Migration20130924000009ComMenus extends Base
 				$database = \JDatabase::getInstance(
 					array(
 						'driver'   => 'mysql',
-						'host'     => $config->getValue('host'),
-						'user'     => $config->getValue('user'),
-						'password' => $config->getValue('password'),
-						'database' => $config->getValue('db')
+						'host'     => $config->get('host'),
+						'user'     => $config->get('user'),
+						'password' => $config->get('password'),
+						'database' => $config->get('db')
 					)
 				);
 
