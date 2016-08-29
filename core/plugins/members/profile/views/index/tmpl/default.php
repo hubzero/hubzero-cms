@@ -392,10 +392,10 @@ function renderIfJson($v)
 						<br class="clear" />
 						<input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
 						<?php
-							/*$this->view('default', 'edit')
+							$this->view('default', 'edit')
 							     ->set('registration_field', 'email')
 							     ->set('profile_field', 'email')
-							     ->set('registration', $this->registration->Email)
+							     ->set('registration', 1)
 							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
@@ -403,7 +403,7 @@ function renderIfJson($v)
 												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
 												. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
 							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[email]', $this->params->get('access_email'),'input-select') . '</label>')
-							     ->display();*/
+							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
