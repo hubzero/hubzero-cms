@@ -34,6 +34,8 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
+     ->css('jquery.ui.css', 'system')
+     ->js('jquery.timepicker.js', 'system')
      ->js();
 
 $status = $this->row->status('text');
@@ -498,9 +500,14 @@ $cc = array();
 						</div>
 					</div>
 
-					<?php if (isset($this->lists['categories']) && $this->lists['categories'])  { ?>
+					<label for="field-target_date">
+						<?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
+						<input type="text" name="ticket[target_date]" class="datetime-field" id="field-target_date" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?php echo ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''); ?>" />
+					</label>
+
+					<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
 					<label for="ticket-field-category">
-						<?php echo Lang::txt('COM_SUPPORT_COMMENT_CATEGORY'); ?>
+						<?php echo Lang::txt('COM_SUPPORT_COMMENT_CATEGORY'); ?>:
 						<select name="ticket[category]" id="ticket-field-category">
 							<option value=""><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
 							<?php

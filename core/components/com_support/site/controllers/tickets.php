@@ -1107,6 +1107,11 @@ class Tickets extends SiteController
 		$row->set('section', 1);
 		$row->set('group', $group);
 
+		if (isset($problem['target_date']) && $problem['target_date'] != '')
+		{
+			$row->set('target_date', Date::of($problem['target_date'], Config::get('offset'))->toSql());
+		}
+
 		// check if previous ticket submitted is the same as this one.
 		$ticket = new Tables\Ticket($this->database);
 		$filters = array('status' => 'new', 'sort' => 'id' ,'sortdir' => 'DESC', 'limit' => '1', 'start' => 0);
@@ -1757,6 +1762,11 @@ class Tickets extends SiteController
 		$comment  = Request::getVar('comment', '', 'post', 'none', 2);
 		$incoming = Request::getVar('ticket', array(), 'post');
 		$incoming = array_map('trim', $incoming);
+
+		if (isset($incoming['target_date']) && $incoming['target_date'] != '')
+		{
+			$incoming['target_date'] = Date::of($incoming['target_date'], Config::get('offset'))->toSql();
+		}
 
 		// Load the old ticket so we can compare for the changelog
 		$old = new Ticket($id);

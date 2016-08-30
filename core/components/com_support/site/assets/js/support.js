@@ -76,4 +76,13 @@ jQuery(document).ready(function($){
 			}
 		});
 	}
+
+	if ($('#commentform').length > 0) {
+		$('input.datetime-field').datetimepicker({
+			controlType: 'slider',
+			dateFormat: 'yy-mm-dd',
+			timeFormat: 'HH:mm:ss',
+			timezone: $('input.datetime-field').attr('data-timezone')
+		});
+	}
 });
