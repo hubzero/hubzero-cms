@@ -348,7 +348,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		foreach ($userIds as $k => $userid)
 		{
 			$profile = User::getInstance($userid);
-			if ($profile)
+			if ($profile->get('id'))
 			{
 				$users[$profile->get('uidNumber')] = $profile->get('surname');
 			}
@@ -1123,7 +1123,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$user_emails = array();
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('users', array(0), 'post');
+		$mbrs = Request::getVar('users', array(), 'post');
 
 		// Set a flag for emailing any changes made
 		$admchange = '';
@@ -1144,7 +1144,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$targetuser = User::getInstance($mbr);
 
 				// Ensure we found an account
-				if (is_object($targetuser))
+				if (is_object($targetuser) && $targetuser->get('id'))
 				{
 					$admchange .= "\t\t".$targetuser->get('name')."\r\n";
 					$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
