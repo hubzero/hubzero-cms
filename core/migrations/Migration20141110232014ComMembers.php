@@ -16,28 +16,21 @@ class Migration20141110232014ComMembers extends Base
 	public function up()
 	{
 		// load all members without given name or surname filled in
-		$query = "SELECT `uidNumber`
+		$query = "SELECT `uidNumber`, `username`, `name`, `surname`, `givenName`, `middleName`
 				  FROM `#__xprofiles`
 				  WHERE (`givenName` = '' OR `givenName` IS NULL)
 				  AND (`surname` = '' OR `surname` IS NULL);";
 		$this->db->setQuery($query);
-		$result = $this->db->loadColumn();
+		$result = $this->db->loadObjectList();
 
 		// fix each name
-		foreach ($result as $uidNumber)
+		foreach ($result as $profile)
 		{
-			$profile = \Hubzero\User\User::oneOrNew($uidNumber);
-
-			if (!$profile->get('id'))
-			{
-				continue;
-			}
-
-			$firstname  = $profile->get('givenName');
-			$middlename = $profile->get('middleName');
-			$lastname   = $profile->get('surname');
-			$name       = $profile->get('name');
-			$username   = $profile->get('username');
+			$firstname  = $profile->givenName;
+			$middlename = $profile->middleName;
+			$lastname   = $profile->surname;
+			$name       = $profile->name;
+			$username   = $profile->username;
 
 			// all good
 			if ($firstname && $surname)
@@ -47,10 +40,15 @@ class Migration20141110232014ComMembers extends Base
 
 			if (empty($firstname) && empty($middlename) && empty($surname) && empty($name))
 			{
-				$name = $username;
+				$query = "SELECT `name` FROM `#__users` WHERE `id`=" . $profile->uidNumber;
+				$this->db->setQuery($query);
+				$name = $this->db->loadResult();
+
+				$name = $name ?: $username;
 				$firstname = $username;
 			}
-			else if (empty($firstname) && empty($middlename) && empty($surname))
+
+			if (empty($firstname) && empty($middlename) && empty($surname))
 			{
 				$words = array_map('trim', explode(' ', $name));
 				$count = count($words);
@@ -87,24 +85,16 @@ class Migration20141110232014ComMembers extends Base
 				// reparse names with " de , del ,  in them
 			}
 
-			// update name
-			$profile->set('name', $name);
-			$firstname = trim($firstname);
-			if ($firstname)
-			{
-				$profile->set('givenName', $firstname);
-			}
+			$firstname  = trim($firstname);
 			$middlename = trim($middlename);
-			if ($middlename)
-			{
-				$profile->set('middleName', $middlename);
-			}
-			$lastname = trim($lastname);
-			if ($lastname)
-			{
-				$profile->set('surname', $lastname);
-			}
-			$profile->update();
+			$lastname   = trim($lastname);
+
+			// update name
+			$query = "UPDATE `#__xprofiles`
+				  SET `name` = " . $this->db->quote($name) . ", `givenName` = " . $this->db->quote($firstname) . ", `middleName` = " . $this->db->quote($middlename) . ", `surname` = " . $this->db->quote($lastname) . "
+				  WHERE `uidNumber`=" . $profile->uidNumber;
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }
