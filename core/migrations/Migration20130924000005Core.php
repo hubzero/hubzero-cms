@@ -241,7 +241,7 @@ class Migration20130924000005Core extends Base
 			$components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
 			foreach ($components as $c)
 			{
-				if (!is_dir(PATH_CORE . DS . 'components' . DS . $c))
+				if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'site'))
 				{
 					continue;
 				}
@@ -260,10 +260,10 @@ class Migration20130924000005Core extends Base
 			}
 
 			// Look for any components we missed...(backend?)
-			$components = array_diff(scandir(PATH_ROOT . DS . 'administrator' . DS . 'components'), array(".", ".."));
+			$components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
 			foreach ($components as $c)
 			{
-				if (!is_dir(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $c))
+				if (!is_dir(PATH_CORE . 'components' . DS . $c . DS . 'admin'))
 				{
 					continue;
 				}
@@ -309,7 +309,7 @@ class Migration20130924000005Core extends Base
 			}
 
 			// Migrate modules (site)
-			$modules = array_diff(scandir(PATH_ROOT . DS . 'modules'), array(".", ".."));
+			$modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
 			foreach ($modules as $m)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
@@ -319,7 +319,7 @@ class Migration20130924000005Core extends Base
 					continue;
 				}
 
-				if (!is_dir(PATH_ROOT . DS . 'modules' . DS . $m))
+				if (!is_dir(PATH_CORE . DS . 'modules' . DS . $m))
 				{
 					continue;
 				}
@@ -331,7 +331,8 @@ class Migration20130924000005Core extends Base
 			}
 
 			// Migrate modules (admin)
-			$modules = array_diff(scandir(PATH_ROOT . DS . 'administrator' . DS . 'modules'), array(".", ".."));
+			// @TODO: 2.0.0+ we can't differentiate admin modules at the filesystem level so this won't do anything
+			$modules = array_diff(scandir(PATH_CORE . 'modules'), array(".", ".."));
 			foreach ($modules as $m)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
@@ -341,7 +342,7 @@ class Migration20130924000005Core extends Base
 					continue;
 				}
 
-				if (!is_dir(PATH_ROOT . DS . 'administrator' . DS . 'modules' . DS . $m))
+				if (!is_dir(PATH_CORE . DS . 'modules' . DS . $m))
 				{
 					continue;
 				}
@@ -353,7 +354,7 @@ class Migration20130924000005Core extends Base
 			}
 
 			// Migrate templates
-			$templates = array_diff(scandir(PATH_ROOT . DS . 'templates'), array(".", "..", "system"));
+			$templates = array_diff(scandir(PATH_CORE . DS . 'templates'), array(".", "..", "system"));
 			foreach ($templates as $t)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
@@ -363,7 +364,7 @@ class Migration20130924000005Core extends Base
 					continue;
 				}
 
-				if (!is_dir(PATH_ROOT . DS . 'templates' . DS . $t))
+				if (!is_dir(PATH_CORE . DS . 'templates' . DS . $t))
 				{
 					continue;
 				}
@@ -375,7 +376,8 @@ class Migration20130924000005Core extends Base
 			}
 
 			// Admin templates too
-			$templates = array_diff(scandir(PATH_ROOT . DS . 'administrator' . DS . 'templates'), array(".", "..", "system"));
+			// @TODO: 2.0.0+ we can't differentiate admin templates at the filesystem level so this won't do anything
+			$templates = array_diff(scandir(PATH_CORE . DS . 'templates'), array(".", "..", "system"));
 			foreach ($templates as $t)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
@@ -385,7 +387,7 @@ class Migration20130924000005Core extends Base
 					continue;
 				}
 
-				if (!is_dir(PATH_ROOT . DS . 'administrator' . DS . 'templates' . DS . $t))
+				if (!is_dir(PATH_CORE . DS . 'templates' . DS . $t))
 				{
 					continue;
 				}
