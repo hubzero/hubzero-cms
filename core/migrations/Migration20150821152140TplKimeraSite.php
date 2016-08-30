@@ -15,17 +15,20 @@ class Migration20150821152140TplKimeraSite extends Base
 	 **/
 	public function up()
 	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = 'kimera' AND `type`='template'";
-		$this->db->setQuery($query);
-		$id = $this->db->loadResult();
-
-		if (!$id)
+		if ($this->db->tableExists('#__extensions'))
 		{
-			$this->addTemplateEntry('kimera', 'Kimera (site)', 0);
-
-			$query = "UPDATE `#__extensions` SET `protected` = 1 WHERE `element` = 'kimera' AND `type`='template'";
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = 'kimera' AND `type`='template'";
 			$this->db->setQuery($query);
-			$this->db->query();
+			$id = $this->db->loadResult();
+
+			if (!$id)
+			{
+				$this->addTemplateEntry('kimera', 'Kimera (site)', 0);
+
+				$query = "UPDATE `#__extensions` SET `protected` = 1 WHERE `element` = 'kimera' AND `type`='template'";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 	}
 

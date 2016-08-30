@@ -12,11 +12,12 @@ class Migration20160810121746PlgContentFormathtml extends Base
 	 **/
 	public function up()
 	{
-		$query = new \Hubzero\Database\Query;
-		$plugin = $query->update('#__extensions')
-                    ->set(['enabled' => 1])
-                    ->whereEquals('name', 'plg_content_formathtml')
-                    ->execute();
+		if ($this->db->tableExists('#__extensions'))
+		{
+			$query = "UPDATE `#__extensions` SET `enabled`=1 WHERE `folder`=" . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 	}
 
 	/**
@@ -24,10 +25,11 @@ class Migration20160810121746PlgContentFormathtml extends Base
 	 **/
 	public function down()
 	{
-		$query = new \Hubzero\Database\Query;
-		$plugin = $query->update('#__extensions')
-                    ->set(['enabled' => 0])
-                    ->whereEquals('name', 'plg_content_formathtml')
-                    ->execute();
+		if ($this->db->tableExists('#__extensions'))
+		{
+			$query = "UPDATE `#__extensions` SET `enabled`=0 WHERE `folder`=" . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 	}
 }

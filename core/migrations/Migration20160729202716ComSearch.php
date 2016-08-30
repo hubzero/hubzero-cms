@@ -12,10 +12,13 @@ class Migration20160729202716ComSearch extends Base
 	 **/
 	public function up()
 	{
-		$params = '{"engine":"basic"}';
-		$query = "UPDATE #__extensions SET params='".$params."' WHERE name='com_search';";
-		$this->db->setQuery($query);
-		$this->db->query();
+		if ($this->db->tableExists('#__extensions'))
+		{
+			$params = '{"engine":"basic"}';
+			$query = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_search';";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 	}
 
 	/**
