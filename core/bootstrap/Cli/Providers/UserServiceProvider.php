@@ -68,10 +68,12 @@ class UserServiceProvider extends ServiceProvider
 		// Set the picture resolver
 		if ($this->app->has('component'))
 		{
-			try {
+			try 
+			{
 				$params = $this->app['component']->params('com_members');
 			}
-			catch (Exception $e) {
+			catch (\Hubzero\Database\Exception\QueryFailedException $e)
+			{
 				$params = new \Hubzero\Config\Registry;
 			}
 
