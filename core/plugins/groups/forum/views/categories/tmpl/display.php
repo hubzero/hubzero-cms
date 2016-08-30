@@ -120,7 +120,6 @@ $this->css()
 					else
 					{
 						echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_IN', $this->escape(stripslashes($this->category->get('title'))));
-						echo 'lololol';
 					}
 					?>
 				</caption>
