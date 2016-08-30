@@ -488,6 +488,24 @@ class Changelog extends Object
 				$after->get('category', Lang::txt('COM_SUPPORT_BLANK'))
 			);
 		}
+		if ($after->get('target_date') != $before->get('target_date'))
+		{
+			$b = Lang::txt('COM_SUPPORT_BLANK');
+			$a = Lang::txt('COM_SUPPORT_BLANK');
+			if ($before->get('target_date') != '0000-00-00 00:00:00')
+			{
+				$b = \Date::of($before->get('target_date'))->toLocal('Y-m-d H:i:s');
+			}
+			if ($after->get('target_date') != '0000-00-00 00:00:00')
+			{
+				$a = \Date::of($after->get('target_date'))->toLocal('Y-m-d H:i:s');
+			}
+			$this->changed(
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_TARGET_DATE'),
+				$b,
+				$a
+			);
+		}
 
 		if ($after->get('tags') != $before->get('tags'))
 		{

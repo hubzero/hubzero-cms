@@ -612,6 +612,11 @@ if (!$no_html)
 					</div>
 				<?php } ?>
 
+					<div class="input-wrap">
+						<label for="target_date"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TARGET_DATE'); ?></label>
+						<?php echo Html::input('calendar', 'target_date', ($this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-target_date')); ?>
+					</div>
+
 					<div class="grid">
 						<div class="col span6">
 							<div class="input-wrap">

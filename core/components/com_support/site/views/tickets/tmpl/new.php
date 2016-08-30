@@ -34,6 +34,8 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
+     ->css('jquery.ui.css', 'system')
+     ->js('jquery.timepicker.js', 'system')
      ->js('new.js');
 
 $browsers = array(
@@ -272,6 +274,11 @@ $group = Request::getVar('group', '');
 						</label>
 					</div>
 				</div>
+
+				<label for="field-target_date">
+					<?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
+					<input type="text" name="problem[target_date]" class="datetime-field" id="field-target_date" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="" />
+				</label>
 
 				<?php if (isset($this->lists['categories']) && $this->lists['categories'])  { ?>
 				<label for="ticket-field-category">
