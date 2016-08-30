@@ -15,7 +15,10 @@ class Migration20150126193709ComWishlist extends Base
 	 **/
 	public function up()
 	{
-		$this->db->setQuery("UPDATE `#__wishlist` SET `title` = REPLACE(`title`, 'WISHLIST_NAME_GROUP', 'Group');");
-		$this->db->query();
+		if ($this->db->tableExists('#__wishlist'))
+		{
+			$this->db->setQuery("UPDATE `#__wishlist` SET `title` = REPLACE(`title`, 'WISHLIST_NAME_GROUP', 'Group');");
+			$this->db->query();
+		}
 	}
 }

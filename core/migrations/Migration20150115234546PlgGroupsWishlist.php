@@ -15,49 +15,52 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 	 **/
 	public function up()
 	{
-		// include com_wishlist files
-		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
-
-		// Load some objects
-		$wishlist = new \Components\Wishlist\Tables\Wishlist($this->db);
-		$wish     = new \Components\Wishlist\Tables\Wish($this->db);
-
-		// Get records
-		$lists = $wishlist->getRecords(array(
-			'category' => 'group'
-		));
-
-		// vars to hold counts
-		$deletedLists  = 0;
-		$deletedWishes = 0;
-
-		// check to make sure each group wishlist has a valid group
-		foreach ($lists as $list)
+		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php'))
 		{
-			// load group
-			$group = \Hubzero\User\Group::getInstance($list->referenceid);
+			// include com_wishlist files
+			require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
 
-			// if group doesnt exist we need to remove the list and wishes
-			if (!$group || !is_object($group))
+			// Load some objects
+			$wishlist = new \Components\Wishlist\Tables\Wishlist($this->db);
+			$wish     = new \Components\Wishlist\Tables\Wish($this->db);
+
+			// Get records
+			$lists = $wishlist->getRecords(array(
+				'category' => 'group'
+			));
+
+			// vars to hold counts
+			$deletedLists  = 0;
+			$deletedWishes = 0;
+
+			// check to make sure each group wishlist has a valid group
+			foreach ($lists as $list)
 			{
-				// Get wishes
-				$wishes = $wish->get_wishes($list->id, array(
-					'filterby' => 'all',
-					'sortby'   => ''
-				), 1);
+				// load group
+				$group = \Hubzero\User\Group::getInstance($list->referenceid);
 
-				// delete each wish
-				foreach ($wishes as $item)
+				// if group doesnt exist we need to remove the list and wishes
+				if (!$group || !is_object($group))
 				{
-					$wish->load($item->id);
-					$wish->delete();
-					$deletedWishes++;
-				}
+					// Get wishes
+					$wishes = $wish->get_wishes($list->id, array(
+						'filterby' => 'all',
+						'sortby'   => ''
+					), 1);
 
-				// delete wishlist
-				$wishlist->load($list->id);
-				$wishlist->delete();
-				$deletedLists++;
+					// delete each wish
+					foreach ($wishes as $item)
+					{
+						$wish->load($item->id);
+						$wish->delete();
+						$deletedWishes++;
+					}
+
+					// delete wishlist
+					$wishlist->load($list->id);
+					$wishlist->delete();
+					$deletedLists++;
+				}
 			}
 		}
 	}
