@@ -50,7 +50,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<?php require_once dirname(dirname(__DIR__)) . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
+<?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post">
 	<div class="grid">
