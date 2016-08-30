@@ -106,7 +106,7 @@ class Threads extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'c.id'
+				'id'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
@@ -836,6 +836,7 @@ class Threads extends AdminController
 		{
 			$thread = $fields['id'];
 		}
+		$thread = $thread ?: Request::getInt('thread', 0);
 
 		if (!isset($fields['category_id']))
 		{
