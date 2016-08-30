@@ -15,20 +15,26 @@ class Migration20150306115852ComMembers extends Base
 	 **/
 	public function up()
 	{
-		$query = "UPDATE `#__xprofiles` SET `name` = REPlACE(`name`, 0xc2ad, '')";
-		$this->db->setQuery($query);
-		$this->db->query();
-		$query = "UPDATE `#__xprofiles` SET `givenName` = REPlACE(`givenName`, 0xc2ad, '')";
-		$this->db->setQuery($query);
-		$this->db->query();
-		$query = "UPDATE `#__xprofiles` SET `middleName` = REPlACE(`middleName`, 0xc2ad, '')";
-		$this->db->setQuery($query);
-		$this->db->query();
-		$query = "UPDATE `#__xprofiles` SET `surname` = REPlACE(`surname`, 0xc2ad, '')";
-		$this->db->setQuery($query);
-		$this->db->query();
-		$query = "UPDATE `#__users` SET `name` = REPlACE(`name`, 0xc2ad, '')";
-		$this->db->setQuery($query);
-		$this->db->query();
+		if ($this->db->tableExists('#__xprofiles'))
+		{
+			$query = "UPDATE `#__xprofiles` SET `name` = REPlACE(`name`, 0xc2ad, '')";
+			$this->db->setQuery($query);
+			$this->db->query();
+			$query = "UPDATE `#__xprofiles` SET `givenName` = REPlACE(`givenName`, 0xc2ad, '')";
+			$this->db->setQuery($query);
+			$this->db->query();
+			$query = "UPDATE `#__xprofiles` SET `middleName` = REPlACE(`middleName`, 0xc2ad, '')";
+			$this->db->setQuery($query);
+			$this->db->query();
+			$query = "UPDATE `#__xprofiles` SET `surname` = REPlACE(`surname`, 0xc2ad, '')";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+		if ($this->db->tableExists('#__users'))
+		{
+			$query = "UPDATE `#__users` SET `name` = REPlACE(`name`, 0xc2ad, '')";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 	}
 }
