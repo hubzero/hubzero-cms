@@ -24,8 +24,8 @@ class Migration20141202211549PlgMembersDashboard extends Base
 		$this->db->query();
 
 		// only continue if plugin defaults are NOT set
-		$defaults = trim($pluginParams->get('defaults', ''));
-		if ($defaults != '[]')
+		$defaults = $pluginParams->get('defaults', '');
+		if ($defaults != array())
 		{
 			return;
 		}
