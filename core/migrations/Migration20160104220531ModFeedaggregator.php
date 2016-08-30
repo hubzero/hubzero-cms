@@ -12,8 +12,7 @@ class Migration20160104220531ModFeedaggregator extends Base
 	 **/
 	public function up()
 	{
-		$element = 'mod_feedaggregator';
-		$this->addModuleEntry($element);
+		$this->addModuleEntry('mod_feedaggregator');
 	}
 
 	/**
@@ -21,8 +20,6 @@ class Migration20160104220531ModFeedaggregator extends Base
 	 **/
 	public function down()
 	{
-		$query = "DELETE from `#__extensions` WHERE name = 'mod_feedaggregator';";
-		$this->db->setQuery($query);
-		$this->db->query();
+		$this->deleteModuleEntry('mod_feedaggregator');
 	}
 }

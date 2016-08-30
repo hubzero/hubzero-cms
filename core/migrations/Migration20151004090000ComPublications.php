@@ -15,8 +15,7 @@ class Migration20151004090000ComPublications extends Base
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('#__publication_blocks')
-		)
+		if ($this->db->tableExists('#__publication_blocks'))
 		{
 			$queries = array();
 

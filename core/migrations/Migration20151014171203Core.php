@@ -12,29 +12,32 @@ class Migration20151014171203Core extends Base
 	 **/
 	public function up()
 	{
-		// If a plugin is enabled, we'll assume that it should also be enabled for site login if not already saved
-		// We changed the CMS to enforce the configuration option of site_login enabled.  Prior to this, it was
-		// assuming true.  We need to default the database to emulate current behavior.
-		$query = "SELECT `element`, `params` FROM `#__extensions` WHERE `type` = 'plugin' AND `folder` = 'authentication'";
-		$this->db->setQuery($query);
-		$plugins = $this->db->loadObjectList();
-
-		if (count($plugins) > 0)
+		if ($this->db->tableExists('#__extensions'))
 		{
-			foreach ($plugins as $plugin)
+			// If a plugin is enabled, we'll assume that it should also be enabled for site login if not already saved
+			// We changed the CMS to enforce the configuration option of site_login enabled.  Prior to this, it was
+			// assuming true.  We need to default the database to emulate current behavior.
+			$query = "SELECT `element`, `params` FROM `#__extensions` WHERE `type` = 'plugin' AND `folder` = 'authentication'";
+			$this->db->setQuery($query);
+			$plugins = $this->db->loadObjectList();
+
+			if (count($plugins) > 0)
 			{
-				$params = json_decode($plugin->params);
-
-				if (is_null($params))
+				foreach ($plugins as $plugin)
 				{
-					$params = new \stdClass();
-				}
+					$params = json_decode($plugin->params);
 
-				if (!isset($params->site_login))
-				{
-					$params->site_login = "1";
+					if (is_null($params))
+					{
+						$params = new \stdClass();
+					}
 
-					$this->saveParams('plg_authentication_' . $plugin->element, (array) $params);
+					if (!isset($params->site_login))
+					{
+						$params->site_login = "1";
+
+						$this->saveParams('plg_authentication_' . $plugin->element, (array) $params);
+					}
 				}
 			}
 		}
