@@ -102,6 +102,13 @@ class Section extends Relational
 	public $assetRules = null;
 
 	/**
+	 * Scope adapter
+	 *
+	 * @var  object
+	 */
+	protected $adapter = null;
+
+	/**
 	 * Generates automatic owned by field value
 	 *
 	 * @param   array   $data  the data being saved
@@ -216,6 +223,51 @@ class Section extends Relational
 		$row = $entries->row();
 
 		return ($row->get('id') <= 0);
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
+	 */
+	public function link($type='', $params=null)
+	{
+		return $this->adapter()->build($type, $params);
+	}
+
+	/**
+	 * Get the adapter
+	 *
+	 * @return  object
+	 */
+	public function adapter()
+	{
+		if (!$this->adapter)
+		{
+			// Get the adapter
+			$scope = strtolower($this->get('scope', 'site'));
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->adapter = new $cls($this->get('scope_id'));
+
+			// Set some needed info
+			//$this->adapter->set('section', $this->get('alias'));
+		}
+
+		return $this->adapter;
 	}
 
 	/**

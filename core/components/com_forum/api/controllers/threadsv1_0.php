@@ -117,10 +117,7 @@ class Threadsv1_0 extends ApiController
 					->whereIn('access', $filters['access'])
 					->total();
 
-				//$obj->threads    = $section->count('threads');
-				//$obj->posts      = $section->count('posts');
-
-				$obj->url        = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias')), '/'));
+				$obj->url        = str_replace('/api', '', $base . '/' . ltrim(Route::url($section->link('base')), '/'));
 
 				$response->sections[] = $obj;
 			}
@@ -178,6 +175,13 @@ class Threadsv1_0 extends ApiController
 	 * 		"required":      false,
 	 *      "default":       0
 	 * }
+	 * @apiParameter {
+	 * 		"name":          "closed",
+	 * 		"description":   "If the category is marked as closed (1) or not (0). NULL to return all.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       null
+	 * }
 	 * @return    void
 	 */
 	public function categoriesTask()
@@ -190,39 +194,75 @@ class Threadsv1_0 extends ApiController
 			'scope'      => Request::getWord('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0),
 			'state'      => Category::STATE_PUBLISHED,
-			'parent'     => 0,
+			'closed'     => Request::getVar('closed', null),
 			'access'     => User::getAuthorisedViewLevels()
 		);
 
 		$forum = new Manager($filters['scope'], $filters['scope_id']);
 
-		$section = Section::oneOrFail($filters['section_id']);
-
-		if (!$section->get('id'))
-		{
-			throw new Exception(Lang::txt('Section not found.'), 404);
-		}
-
-		if ($section->get('state') == Section::STATE_DELETED)
-		{
-			throw new Exception(Lang::txt('Section not found.'), 404);
-		}
-
 		$response = new stdClass;
-
-		$response->section = new stdClass;
-		$response->section->id         = $section->get('id');
-		$response->section->title      = $section->get('title');
-		$response->section->alias      = $section->get('alias');
-		$response->section->created    = with(new Date($section->get('created')))->format('Y-m-d\TH:i:s\Z');
-		$response->section->scope      = $section->get('scope');
-		$response->section->scope_id   = $section->get('scope_id');
 		$response->categories = array();
 
-		$categories = $section->categories()
+		if ($filters['section_id'])
+		{
+			// Make sure the section exists and is available
+			$section = Section::oneOrFail($filters['section_id']);
+
+			if (!$section->get('id'))
+			{
+				throw new Exception(Lang::txt('Section not found.'), 404);
+			}
+
+			if ($section->get('state') == Section::STATE_DELETED)
+			{
+				throw new Exception(Lang::txt('Section not found.'), 404);
+			}
+
+			$response->section = new stdClass;
+			$response->section->id         = $section->get('id');
+			$response->section->title      = $section->get('title');
+			$response->section->alias      = $section->get('alias');
+			$response->section->created    = with(new Date($section->get('created')))->format('Y-m-d\TH:i:s\Z');
+			$response->section->scope      = $section->get('scope');
+			$response->section->scope_id   = $section->get('scope_id');
+		}
+		else
+		{
+			$sections = Section::all()
+				->whereEquals('scope', $filters['scope'])
+				->whereEquals('scope_id', $filters['scope_id'])
+				->whereEquals('state', $filters['state'])
+				->whereIn('access', $filters['access'])
+				->rows();
+
+			$filters['section_id'] = array();
+
+			foreach ($sections as $section)
+			{
+				$filters['section_id'][] = $section->get('id');
+			}
+		}
+
+		$entries = Category::all()
+			->whereIn('section_id', (array)$filters['section_id'])
 			->whereEquals('state', $filters['state'])
-			->whereIn('access', $filters['access'])
+			->whereIn('access', $filters['access']);
+
+		if (is_int($filters['closed']))
+		{
+			$entries->whereEquals('closed', $filters['closed']);
+		}
+
+		if ($filters['search'])
+		{
+			$entries->whereLike('description', $filters['search'], 1)
+				->orWhereLike('title', $filters['search'], 1)
+				->resetDepth();
+		}
+
+		$categories = $entries
 			->ordered()
+			->paginated()
 			->rows();
 
 		$response->total = $categories->count();
@@ -234,13 +274,15 @@ class Threadsv1_0 extends ApiController
 			foreach ($categories as $category)
 			{
 				$obj = new stdClass;
-				$obj->id          = $category->get('id');
+				$obj->id          = (int)$category->get('id');
 				$obj->title       = $category->get('title');
 				$obj->alias       = $category->get('alias');
 				$obj->description = $category->get('description');
 				$obj->created     = with(new Date($category->get('created')))->format('Y-m-d\TH:i:s\Z');
+				$obj->closed      = (int)$category->get('closed');
 				$obj->scope       = $category->get('scope');
-				$obj->scope_id    = $category->get('scope_id');
+				$obj->scope_id    = (int)$category->get('scope_id');
+				$obj->section_id  = (int)$category->get('section_id');
 
 				$obj->threads     = $category->threads()
 					->whereEquals('state', $filters['state'])
@@ -252,7 +294,7 @@ class Threadsv1_0 extends ApiController
 					->whereIn('access', $filters['access'])
 					->total();
 
-				$obj->url         = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias')), '/'));
+				$obj->url         = str_replace('/api', '', $base . '/' . ltrim(Route::url($category->link()), '/'));
 
 				$response->categories[] = $obj;
 			}
@@ -466,8 +508,14 @@ class Threadsv1_0 extends ApiController
 				$obj->access      = $thread->get('access');
 
 				$obj->creator = new stdClass;
-				$obj->creator->id   = $thread->get('created_by');
-				$obj->creator->name = $thread->creator->get('name');
+				$obj->creator->id   = 0;
+				$obj->creator->name = Lang::txt('Anonymous');
+
+				if (!$thread->get('anonymous'))
+				{
+					$obj->creator->id   = $thread->get('created_by');
+					$obj->creator->name = $thread->creator->get('name');
+				}
 
 				$obj->posts       = $thread->thread()
 					->whereEquals('state', $filters['state'])
@@ -626,7 +674,7 @@ class Threadsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_FORUM_ERROR_BINDING_DATA'), 500);
 		}
 
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+		$row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
 
 		if (!$row->save())
 		{
