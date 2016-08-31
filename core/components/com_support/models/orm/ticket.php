@@ -69,8 +69,27 @@ class Ticket extends Relational
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
 	);
+
+	/**
+	 * Get the owner object
+	 *
+	 * @return object
+	 */
+	public function get_owner()
+	{
+		return $this->oneToOne('\Hubzero\User\User', 'id', 'owner');
+	}
+
+	/**
+	 * Get a list of comments
+	 *
+	 * @return  object
+	 */
+	public function submitter()
+	{
+		return $this->oneToOne('\Hubzero\User\User', 'username', 'login');
+	}
 
 	/**
 	 * Get a list of comments
