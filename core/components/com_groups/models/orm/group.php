@@ -333,4 +333,11 @@ class Group extends Relational
 		// Attempt to delete the record
 		return parent::destroy();
 	}
+
+	public static function oneByCn($cn='')
+	{
+		return self::all()
+			->whereEquals('cn', $cn)
+			->row();
+	}
 }
