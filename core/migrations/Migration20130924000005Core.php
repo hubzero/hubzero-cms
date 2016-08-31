@@ -263,7 +263,7 @@ class Migration20130924000005Core extends Base
 			$components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
 			foreach ($components as $c)
 			{
-				if (!is_dir(PATH_CORE . 'components' . DS . $c . DS . 'admin'))
+				if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'admin'))
 				{
 					continue;
 				}
@@ -332,7 +332,7 @@ class Migration20130924000005Core extends Base
 
 			// Migrate modules (admin)
 			// @TODO: 2.0.0+ we can't differentiate admin modules at the filesystem level so this won't do anything
-			$modules = array_diff(scandir(PATH_CORE . 'modules'), array(".", ".."));
+			$modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
 			foreach ($modules as $m)
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
