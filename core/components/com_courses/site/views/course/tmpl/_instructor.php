@@ -62,13 +62,15 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 	</div><!-- / .course-instructor-content cf -->
 
 	<?php
-	$params = new \Hubzero\Config\Registry($this->instructor->get('params'));
-	if ($params->get('access_bio') == 0 // public
-	 || ($params->get('access_bio') == 1 && !User::usGuest()) // registered members
-	) {
+	if (in_array($this->instructor->get('access'), User::getAuthorisedViewLevels())) {
+		$bio = $this->instructor->get('bio');
+		if (!$bio)
+		{
+			$bio = $this->instructor->get('biography');
+		}
 	?>
 	<div class="course-instructor-bio">
-		<?php if ($bio = $this->instructor->get('bio')) { ?>
+		<?php if ($bio) { ?>
 			<?php echo $bio; ?>
 		<?php } else { ?>
 			<em><?php echo Lang::txt('COM_COURSES_INSTRUCTOR_NO_BIO'); ?></em>
