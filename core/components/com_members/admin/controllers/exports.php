@@ -145,9 +145,21 @@ class Exports extends AdminController
 
 		$csv = array();
 
+		$rows = $members
+			->ordered()
+			->rows();
+
+		// Convert to array and bind to object below
+		// This may seem counter-intuitive but it's for
+		// performance reasons. Otherwise, all the circular
+		// references eat up memery.
+		$rows = $rows->toArray();
+
 		// Gather up member information
-		foreach ($members->ordered()->rows() as $member)
+		foreach ($rows as $row)
 		{
+			$member	= Member::blank()->set($row);
+
 			$tmp = array();
 
 			foreach ($keys as $key => $label)
@@ -204,6 +216,8 @@ class Exports extends AdminController
 
 				$tmp[$key] = $val;
 			}
+
+			unset($member);
 
 			array_push($csv, $tmp);
 		}
