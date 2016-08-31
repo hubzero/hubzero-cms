@@ -120,6 +120,10 @@ $this->css()
 							'state'  => 1,
 							'access' => User::getAuthorisedViewLevels()
 						);
+						if (in_array(User::get('id'), $this->group->get('members')))
+						{
+							$filters['access'][] = 5;
+						}
 						foreach ($this->forum->sections($filters)->rows() as $section)
 						{
 							$categories = $section->categories()
