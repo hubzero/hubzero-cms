@@ -33,6 +33,7 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Members\Models\Member;
+use Components\Members\Models\Host;
 use Request;
 use Lang;
 
@@ -72,7 +73,7 @@ class Hosts extends AdminController
 		}
 
 		// Update the hosts list
-		if (Components\Members\Models\Host::addUserToHost($profile->get('id'), $host))
+		if (Host::addUserToHost($profile->get('id'), $host))
 		{
 			$this->setError(Lang::txt('Failed to add host "%s"', $host));
 		}
