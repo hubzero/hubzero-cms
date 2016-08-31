@@ -1401,6 +1401,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		if (!$post->get('category_id'))
+		{
+			Notify::error(Lang::txt('PLG_GROUPS_FORUM_ERROR_MISSING_CATEGORY'));
+			return $this->editthread($post);
+		}
+
 		// Make sure the category exists and is accepting new posts
 		$category = Category::oneOrFail($post->get('category_id'));
 
