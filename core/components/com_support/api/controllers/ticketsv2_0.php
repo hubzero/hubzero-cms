@@ -1,0 +1,600 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\Support\Api\Controllers;
+
+use Hubzero\Component\ApiController;
+use Hubzero\Utility\Date;
+use Component;
+use Exception;
+use stdClass;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm/ticket.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm/status.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php');
+require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'group.php';
+
+/**
+ * API controller class for support tickets
+ */
+class Ticketsv2_0 extends ApiController
+{
+	/**
+	 * Execute a request
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->config = Component::params('com_support');
+		$this->database = \App::get('db');
+
+		$this->acl = \Components\Support\Helpers\ACL::getACL();
+		$this->acl->setUser(User::get('id'));
+
+		parent::execute();
+	}
+
+	/**
+	 * Display a list of tickets
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /support/list
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       25
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "limitstart",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "search",
+	 * 		"description":   "A word or phrase to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sort",
+	 * 		"description":   "Field to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "created",
+	 * 		"allowedValues": "created, id, state"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sort_Dir",
+	 * 		"description":   "Direction to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "desc",
+	 * 		"allowedValues": "asc, desc"
+	 * }
+	 * @return    void
+	 */
+	public function listTask()
+	{
+		$this->requiresAuthentication();
+
+		if (!$this->acl->check('read', 'tickets'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
+		$obj = new \Components\Support\Tables\Ticket($this->database);
+
+		$filters = array(
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'sort'       => Request::getWord('sort', 'created'),
+			'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'DESC')),
+			'owner'      => Request::getVar('owner', ''),
+			'type'       => Request::getInt('type', 0),
+			'status'     => strtolower(Request::getWord('status', '')),
+			'tag'        => Request::getWord('tag', ''),
+		);
+
+		$filters['opened'] = $this->_toTimestamp(Request::getVar('opened', ''));
+		$filters['closed'] = $this->_toTimestamp(Request::getVar('closed', ''));
+
+		$response = new stdClass;
+		$response->success = true;
+		$response->total   = 0;
+		$response->tickets = array();
+
+		// Get a list of all statuses
+		$sobj = new \Components\Support\Tables\Status($this->database);
+
+		$statuses = array();
+		if ($data = $sobj->find('all'))
+		{
+			foreach ($data as $status)
+			{
+				$statuses[$status->id] = $status;
+			}
+		}
+
+		// Get a count of tickets
+		$response->total = $obj->getTicketsCount($filters);
+
+		if ($response->total)
+		{
+			$response->tickets = $obj->getTickets($filters);
+
+			foreach ($response->tickets as $i => $ticket)
+			{
+				$owner = $ticket->owner;
+
+				$response->tickets[$i]->owner = new stdClass;
+				$response->tickets[$i]->owner->username = $ticket->username;
+				$response->tickets[$i]->owner->name     = $ticket->owner_name;
+				$response->tickets[$i]->owner->id       = $ticket->owner_id;
+
+				unset($response->tickets[$i]->owner_name);
+				unset($response->tickets[$i]->owner_id);
+				unset($response->tickets[$i]->username);
+
+				$response->tickets[$i]->reporter = new stdClass;
+				$response->tickets[$i]->reporter->name     = $ticket->name;
+				$response->tickets[$i]->reporter->username = $ticket->login;
+				$response->tickets[$i]->reporter->email    = $ticket->email;
+
+				unset($response->tickets[$i]->name);
+				unset($response->tickets[$i]->login);
+				unset($response->tickets[$i]->email);
+
+				$status = $response->tickets[$i]->status;
+
+				$response->tickets[$i]->status = new stdClass;
+				if (!$status)
+				{
+					$response->tickets[$i]->status->alias = 'new';
+					$response->tickets[$i]->status->title = 'New';
+				}
+				else
+				{
+					$response->tickets[$i]->status->alias = (isset($statuses[$status]) ? $statuses[$status]->alias : 'unknown');
+					$response->tickets[$i]->status->title = (isset($statuses[$status]) ? $statuses[$status]->title : 'unknown');
+				}
+				$response->tickets[$i]->status->id    = $status;
+
+				$response->tickets[$i]->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->tickets[$i]->id), '/'));
+			}
+		}
+
+		$this->send($response);
+	}
+
+	/**
+	 * Create a new ticket
+	 *
+	 * @apiMethod POST
+	 * @apiUri    /support/tickets
+	 * @apiParameter {
+	 * 		"name":        "username",
+	 * 		"description": "The submitter's username",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "name",
+	 * 		"description": "The submitter's name",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "email",
+	 * 		"description": "The submitter's email address",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "os",
+	 * 		"description": "The submitter's operating system",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "Unknown" 
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "browser",
+	 * 		"description": "The submitter's browser type",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "Unknown"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "report",
+	 * 		"description": "Description of the user's problem",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "status",
+	 * 		"description": "The status code of the ticket",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "severity",
+	 * 		"description": "The severity of the issue: minor, normal, major, critical",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "normal" 
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "owner",
+	 * 		"description": "The id of the user to assign this ticket to",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "group",
+	 * 		"description": "Alias of the group to assign the ticket to",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "files",
+	 * 		"description": "***STUB*** NOT WORKING",
+	 * 		"type":        "binary",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return     void
+	 */
+	public function createTask()
+	{
+		//get the userid and attempt to load user profile
+		$userid = User::get('id');
+		$result = User::getInstance($userid);
+
+		//make sure we have a user
+		if (!$result || !$result->get('id'))
+		{
+			throw new Exception(Lang::txt('User not found.'), 500);
+		}
+
+		//check required fields
+		if (!Request::get('name', null, 'post'))
+		{
+			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_NAME_NOT_FOUND'), 404);
+		}
+
+		if (!Request::get('email', null, 'post'))
+		{
+			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_EMAIL_NOT_FOUND'), 404);
+		}
+
+		if (!Request::get('report', null, 'post'))
+		{
+			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_REPORT_NOT_FOUND'), 404);
+		}
+
+		// Initiate class and bind data to database fields
+		$ticket = new \Components\Support\Models\Orm\Ticket;
+
+		// Set the column values for our new row
+		$ticket->set('status', Request::getInt('status', 0, 'post'));
+
+		//check if a username was sent, otherwise fill in with the session's username
+		if (Request::getString('username', null, 'post'))
+		{
+			$ticket->set('login', Request::get('username', 'None', 'post'));
+		}
+		else
+		{
+			$ticket->set('login', $result->get('username'));
+		}
+
+		//setting more optional values
+		$ticket->set('severity', Request::get('severity', 'normal', 'post'));
+		$ticket->set('owner', Request::get('owner', 0, 'post'));
+
+		//check if the report was good
+		$ticket->set('report', Request::get('report', '', 'post', 'none', 2));
+		if (!$ticket->get('report'))
+		{
+			throw new Exception(Lang::txt('Error: Report contains no text.'), 500);
+		}
+
+		// build the summary
+		$summary = substr($ticket->get('report'), 0, 70);
+		if (strlen($summary) >= 70)
+		{
+			$summary .= '...';
+		}
+		$ticket->set('summary', $summary);
+
+		//continue setting values
+		$ticket->set('email', Request::get('email', 'None', 'post'));
+		$ticket->set('name', Request::get('name', 'None', 'post'));
+		$ticket->set('os', Request::get('os', 'Unknown', 'post'));
+		$ticket->set('browser', Request::get('browser', 'Unknown', 'post'));
+		$ticket->set('ip', Request::ip());
+		//$ticket->set('hostname', gethostbyaddr(Request::get('REMOTE_ADDR','','server')));
+		$ticket->set('uas', 'API Submission');
+		$ticket->set('referrer', '/api/v2.0/support/tickets');
+		$ticket->set('instances', 1);
+		$ticket->set('section', 1);
+		$ticket->set('group', Request::get('group', '', 'post'));
+		$ticket->set('open', 1);
+
+		// Save the data
+		if (!$ticket->save())
+		{
+			throw new Exception($ticket->getErrors(), 500);
+		}
+
+		// Set the response
+		$msg = new stdClass;
+		$msg->submitted = $ticket->get('created');
+		$msg->ticket    = $ticket->get('id');
+
+		$this->send($msg, 201);
+	}
+
+	/**
+	 * Displays details for a ticket
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /support/tickets/{ticket}
+	 * @apiParameter {
+	 * 		"name":        "ticket",
+	 * 		"description": "Ticket identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	 * @return    void
+	 */
+	public function readTask()
+	{
+		$this->requiresAuthentication();
+
+		if (!$this->acl->check('read', 'tickets'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
+		// Initiate class and bind data to database fields
+		$ticket_id = Request::getInt('ticket', 0);
+
+		// Initiate class and bind data to database fields
+		$ticket = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
+
+		$owner = $ticket->get_owner;
+		$submitter = $ticket->submitter;
+
+		$response = new stdClass;
+		$response->id = $ticket->get('id');
+
+		$response->owner = new stdClass;
+		$response->owner->username = $owner->get('username');
+		$response->owner->name     = $owner->get('name');
+		$response->owner->id       = $owner->get('id');
+		$response->owner->email		 = $owner->get('email');
+
+		$response->submitter = new stdClass;
+		$response->submitter->name     = $submitter->get('name');
+		$response->submitter->username = $submitter->get('username');
+		$response->submitter->email    = $submitter->get('email');
+		$response->submitter->id       = $submitter->get('id');
+
+
+		foreach (array('status', 'created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop)
+		{
+			$response->$prop = $ticket->get($prop);
+		}
+
+		$response->summary = $ticket->get('summary');
+		$response->report = $ticket->get('report');
+
+		$response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id), '/'));
+
+		$this->send($response);
+	}
+
+	/**
+	 * Update a ticket
+	 *
+	 * @apiMethod PUT
+	 * @apiUri    /support/tickets/{ticket}
+	 * @apiParameter {
+	 * 		"name":        "ticket",
+	 * 		"description": "Ticket identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "owner",
+	 * 		"description": "Ticket owner",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "status",
+	 * 		"description": "Ticket status",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "severity",
+	 * 		"description": "Ticket severity: minor, normal, major, critical",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "group",
+	 * 		"description": "Alias of group ticket should be assigned to",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null 
+	 * }
+	 * @return    void
+	 */
+	public function updateTask()
+	{
+		$this->requiresAuthentication();
+
+		if (!$this->acl->check('edit', 'tickets'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
+		// Initiate class and bind data to database fields
+		$ticket_id = Request::getInt('ticket', 0);
+		$status = Request::getInt('status', null);
+		$owner = Request::getInt('owner', null);
+		$severity = Request::getString('severity', null);
+		$group = Request::getString('group', null);
+
+		// Initiate class and bind data to database fields
+		$model = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
+
+		if ($status)
+		{
+			//cheap check to see if we got a valid status
+			$status_model = \Components\Support\Models\Orm\Status::oneOrFail($status);
+			if (!$status_model->get('id'))
+			{
+				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_OWNER"), 404);
+			}
+			$model->set('status', $status) ;
+			$model->set('open', $status_model->get('status'));
+		}
+
+		if ($owner)
+		{
+			//cheap check to see if we got a valid user
+			$owner_model = \Hubzero\User\User::one($owner);
+			if (!$owner_model->get('id'))
+			{
+				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_OWNER"), 404);
+			}
+			$model->set('owner', $owner);
+		}
+
+		if ($severity)
+		{
+			if (in_array($severity, ['minor', 'normal', 'major', 'critical']))
+			{
+				$model->set('severity' , $severity);
+			}
+			else
+			{
+				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_SEVERITY"), 404);
+			}
+		}
+
+		if ($group)
+		{
+			$group_model = \Components\Groups\Models\Orm\Group::oneByCn($group);
+			if ($group_model->get('gidNumber'))
+			{
+				$model->set('group', $group);
+			}
+			else
+			{
+				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_GROUP_CN"), 404);
+			}
+		}
+
+		if ($model->save())
+		{
+			$this->send(null, 204);
+		}
+		else
+		{
+			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_CANNOT_SAVE'), 500);
+		}
+	}
+
+	/**
+	 * Delete a ticket
+	 *
+	 * @apiMethod DELETE
+	 * @apiUri    /support/tickets/{ticket}
+	 * @apiParameter {
+	 * 		"name":        "ticket",
+	 * 		"description": "Ticket identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	 * @return    void
+	 */
+	public function deleteTask()
+	{
+		$this->requiresAuthentication();
+
+		if (!$this->acl->check('delete', 'tickets'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
+		// Initiate class and bind data to database fields
+		$ticket_id = Request::getInt('ticket', 0);
+
+		// Initiate class and bind data to database fields
+		$model = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
+
+		if (!$model->destroy())
+		{
+			throw new Exception($model->getError(), 500);
+		}
+
+		$this->send(null, 204);
+	}
+}
