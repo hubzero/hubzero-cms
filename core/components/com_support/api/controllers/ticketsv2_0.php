@@ -43,6 +43,7 @@ use Route;
 use Lang;
 use User;
 
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm/ticket.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm/status.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php');
@@ -73,43 +74,34 @@ class Ticketsv2_0 extends ApiController
 	 * Display a list of tickets
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /support/list
+	 * @apiUri    /support/tickets
 	 * @apiParameter {
-	 * 		"name":          "limit",
-	 * 		"description":   "Number of result to return.",
+	 * 		"name":          "owner",
+	 * 		"description":   "List tickets with a specific owner (userid)",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 * 		"default":       25
+	 * 		"default":       null
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "limitstart",
-	 * 		"description":   "Number of where to start returning results.",
+	 * 		"name":          "status",
+	 * 		"description":   "List tickets with a specific status id",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 * 		"default":       0
+	 * 		"default":       null
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "search",
-	 * 		"description":   "A word or phrase to search for.",
+	 * 		"name":          "severity",
+	 * 		"description":   "List tickets with a specific severity",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       ""
+	 * 		"default":       null
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "sort",
-	 * 		"description":   "Field to sort results by.",
+	 * 		"name":          "group",
+	 * 		"description":   "List tickets with a specific group (by alias)",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 *      "default":       "created",
-	 * 		"allowedValues": "created, id, state"
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "sort_Dir",
-	 * 		"description":   "Direction to sort results by.",
-	 * 		"type":          "string",
-	 * 		"required":      false,
-	 * 		"default":       "desc",
-	 * 		"allowedValues": "asc, desc"
+	 * 		"default":       null
 	 * }
 	 * @return    void
 	 */
@@ -122,85 +114,45 @@ class Ticketsv2_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$obj = new \Components\Support\Tables\Ticket($this->database);
+		$tickets = \Components\Support\Models\Orm\Ticket::all();
 
-		$filters = array(
-			'limit'      => Request::getInt('limit', 25),
-			'start'      => Request::getInt('limitstart', 0),
-			'sort'       => Request::getWord('sort', 'created'),
-			'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'DESC')),
-			'owner'      => Request::getVar('owner', ''),
-			'type'       => Request::getInt('type', 0),
-			'status'     => strtolower(Request::getWord('status', '')),
-			'tag'        => Request::getWord('tag', ''),
-		);
-
-		$filters['opened'] = $this->_toTimestamp(Request::getVar('opened', ''));
-		$filters['closed'] = $this->_toTimestamp(Request::getVar('closed', ''));
-
-		$response = new stdClass;
-		$response->success = true;
-		$response->total   = 0;
-		$response->tickets = array();
-
-		// Get a list of all statuses
-		$sobj = new \Components\Support\Tables\Status($this->database);
-
-		$statuses = array();
-		if ($data = $sobj->find('all'))
+		if (Request::getInt('owner', null))
 		{
-			foreach ($data as $status)
-			{
-				$statuses[$status->id] = $status;
-			}
+			$tickets = $tickets->whereEquals('owner', Request::get('owner'));
 		}
 
-		// Get a count of tickets
-		$response->total = $obj->getTicketsCount($filters);
-
-		if ($response->total)
+		if (Request::getInt('status', null))
 		{
-			$response->tickets = $obj->getTickets($filters);
+			$tickets = $tickets->whereEquals('status', Request::get('status'));
+		}
 
-			foreach ($response->tickets as $i => $ticket)
-			{
-				$owner = $ticket->owner;
+		if (Request::getString('severity', null))
+		{
+			$tickets = $tickets->whereEquals('severity', Request::get('severity'));
+		}
 
-				$response->tickets[$i]->owner = new stdClass;
-				$response->tickets[$i]->owner->username = $ticket->username;
-				$response->tickets[$i]->owner->name     = $ticket->owner_name;
-				$response->tickets[$i]->owner->id       = $ticket->owner_id;
+		if (Request::getString('group', null))
+		{
+			$tickets = $tickets->whereEquals('group', Request::getString('group'));
+		}
 
-				unset($response->tickets[$i]->owner_name);
-				unset($response->tickets[$i]->owner_id);
-				unset($response->tickets[$i]->username);
+		$response = new StdClass;
+		$response->total = $tickets->count();
+		$response->tickets = array();
+		foreach ($tickets->rows() as $row)
+		{
+			$temp = array();
+			$temp['id'] = $row->id;
+			$temp['name'] = $row->name;
+			$temp['login'] = $row->login;
+			$temp['email'] = $row->email;
+			$temp['status'] = $row->status;
+			$temp['severity'] = $row->severity;
+			$temp['owner'] = $row->owner;
+			$temp['summary'] = $row->summary;
+			$temp['group'] = $row->group;
 
-				$response->tickets[$i]->reporter = new stdClass;
-				$response->tickets[$i]->reporter->name     = $ticket->name;
-				$response->tickets[$i]->reporter->username = $ticket->login;
-				$response->tickets[$i]->reporter->email    = $ticket->email;
-
-				unset($response->tickets[$i]->name);
-				unset($response->tickets[$i]->login);
-				unset($response->tickets[$i]->email);
-
-				$status = $response->tickets[$i]->status;
-
-				$response->tickets[$i]->status = new stdClass;
-				if (!$status)
-				{
-					$response->tickets[$i]->status->alias = 'new';
-					$response->tickets[$i]->status->title = 'New';
-				}
-				else
-				{
-					$response->tickets[$i]->status->alias = (isset($statuses[$status]) ? $statuses[$status]->alias : 'unknown');
-					$response->tickets[$i]->status->title = (isset($statuses[$status]) ? $statuses[$status]->title : 'unknown');
-				}
-				$response->tickets[$i]->status->id    = $status;
-
-				$response->tickets[$i]->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->tickets[$i]->id), '/'));
-			}
+			$response->tickets[] = $temp;
 		}
 
 		$this->send($response);
@@ -262,10 +214,11 @@ class Ticketsv2_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "severity",
-	 * 		"description": "The severity of the issue: minor, normal, major, critical",
+	 * 		"description": "The severity of the issue",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     "normal" 
+	 * 		"default":     "normal" ,
+	 *		"allowed_values": "minor, normal, major, critical"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "owner",
@@ -470,10 +423,11 @@ class Ticketsv2_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "severity",
-	 * 		"description": "Ticket severity: minor, normal, major, critical",
+	 * 		"description": "Ticket severity",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     null
+	 * 		"default":     null,
+	 *		"allowed_values": "minor, normal, major, critical"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "group",
