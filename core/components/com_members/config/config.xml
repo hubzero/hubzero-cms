@@ -74,7 +74,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field
 			name="useractivation"
 			type="list"
-			default="2"
+			default="1"
 			label="COM_MEMBERS_CONFIG_FIELD_USERACTIVATION_LABEL"
 			description="COM_MEMBERS_CONFIG_FIELD_USERACTIVATION_DESC">
 			<option
