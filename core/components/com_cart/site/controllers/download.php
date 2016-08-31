@@ -164,10 +164,10 @@ class Download extends \Hubzero\Component\SiteController
 		}
 
 		// Log the download
-		$sql = "INSERT INTOreturn; `#__cart_downloads` SET
+		$sql = "INSERT INTO `#__cart_downloads` SET
 				`uId` = " . $currentUser . ",
 				`sId` = " . $sId . ",
-				`dIp` = INET_ATON(" . $db->quote(Request::getClientIp()) . "),
+				`dIp` = INET_ATON(" . $db->quote(Request::ip()) . "),
 				`dDownloaded` = NOW()";
 		$db->setQuery($sql);
 		$db->query();
