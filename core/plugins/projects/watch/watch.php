@@ -233,6 +233,8 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 
 		$params = new \Hubzero\Config\Registry($watch->get('params', ''));
 
+		$params->set('frequency', $frequency);
+
 		foreach ($cats as $param => $value)
 		{
 			if (isset($categories[$param]))
