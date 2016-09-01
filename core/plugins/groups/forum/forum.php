@@ -641,7 +641,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	public function deletesection()
 	{
 		// Is the user logged in?
-		if (User::isGuest())
+		// Login check is handled in the onGroup() method
+		/*if (User::isGuest())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base))),
@@ -649,7 +650,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				'warning'
 			);
 			return;
-		}
+		}*/
 
 		// Incoming
 		$alias = Request::getVar('section', '');
@@ -905,14 +906,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function editcategory($category=null)
 	{
-		if (User::isGuest())
+		// Login check is handled in the onGroup() method
+		/*if (User::isGuest())
 		{
 			$return = Route::url($this->base);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
-		}
+		}*/
 
 		// Get the section
 		$section = Section::all()
@@ -1047,7 +1049,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	public function deletecategory()
 	{
 		// Is the user logged in?
-		if (User::isGuest())
+		// Login check is handled in the onGroup() method
+		/*if (User::isGuest())
 		{
 			App::redirect(
 				Route::url($this->base),
@@ -1055,7 +1058,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				'warning'
 			);
 			return;
-		}
+		}*/
 
 		// Load the category
 		$category = Category::all()
@@ -1256,7 +1259,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$category = Request::getVar('category', '');
 		$section  = Request::getVar('section', '');
 
-		if (User::isGuest())
+		// Login check is handled in the onGroup() method
+		/*if (User::isGuest())
 		{
 			$return = Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category . '/new', false, true);
 			if ($id)
@@ -1267,7 +1271,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
-		}
+		}*/
 
 		// Section
 		$section = Section::all()
@@ -1329,13 +1333,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function savethread()
 	{
-		if (User::isGuest())
+		// Login check is handled in the onGroup() method
+		/*if (User::isGuest())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))
 			);
 			return;
-		}
+		}*/
 
 		// Check for request forgeries
 		Request::checkToken();
@@ -1647,14 +1652,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category);
 
 		// Is the user logged in?
-		if (User::isGuest())
+		// Login check is handled in the onGroup() method
+		/*if (User::isGuest())
 		{
 			App::redirect(
 				$redirect,
 				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
-		}
+		}*/
 
 		// Incoming
 		$id = Request::getInt('thread', 0);
@@ -1808,14 +1814,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$file     = Request::getVar('file', '');
 
 		// Check logged in status
-		if (User::isGuest())
+		// Login check is handled in the onGroup() method
+		/*if (User::isGuest())
 		{
 			$return = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
-		}
+		}*/
 
 		// Instantiate an attachment object
 		if (!$post)
