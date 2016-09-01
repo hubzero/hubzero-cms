@@ -347,7 +347,7 @@ class Threadsv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "threads_only",
-	 * 		"description":   "Return only threads (true) or any post (false)?",
+	 * 		"description":   "Return only thread starter posts (true) or any post (false).",
 	 * 		"type":          "boolean",
 	 * 		"required":      false,
 	 *      "default":       false
@@ -391,7 +391,7 @@ class Threadsv1_0 extends ApiController
 			'category_id' => Request::getInt('category', 0),
 			'parent'      => Request::getInt('parent', 0),
 			'thread'      => Request::getInt('thread', 0),
-			'threads'     => Request::getBool('threads_only', false),
+			'threads'     => Request::getVar('threads_only', false),
 			'search'      => Request::getVar('search', ''),
 			'scope'       => Request::getWord('scope', 'site'),
 			'scope_id'    => Request::getInt('scope_id', 0),
@@ -399,6 +399,7 @@ class Threadsv1_0 extends ApiController
 			'parent'      => 0,
 			'access'      => User::getAuthorisedViewLevels()
 		);
+		$filters['threads'] = (!$filters['threads'] || $filters['threads'] == 'false') ? false : true;
 
 		$entries = Post::all()
 			->whereEquals('state', $filters['state'])
