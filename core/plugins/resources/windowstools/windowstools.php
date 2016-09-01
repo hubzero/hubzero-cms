@@ -176,7 +176,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		{
 			return '';
 		}
-return 'fasdfdsadfsdfas';
+
 		$user  = $user  ?: User::getInstance();
 		$ip    = $ip    ?: Request::ip();
 
