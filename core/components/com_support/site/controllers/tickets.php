@@ -1107,9 +1107,16 @@ class Tickets extends SiteController
 		$row->set('section', 1);
 		$row->set('group', $group);
 
-		if (isset($problem['target_date']) && $problem['target_date'] != '')
+		if (isset($incoming['target_date']))
 		{
-			$row->set('target_date', Date::of($problem['target_date'], Config::get('offset'))->toSql());
+			if (!$incoming['target_date'])
+			{
+				$row->set('target_date', '0000-00-00 00:00:00');
+			}
+			else
+			{
+				$row->set('target_date', Date::of($incoming['target_date'], Config::get('offset'))->toSql());
+			}
 		}
 
 		// check if previous ticket submitted is the same as this one.
@@ -1763,9 +1770,16 @@ class Tickets extends SiteController
 		$incoming = Request::getVar('ticket', array(), 'post');
 		$incoming = array_map('trim', $incoming);
 
-		if (isset($incoming['target_date']) && $incoming['target_date'] != '')
+		if (isset($incoming['target_date']))
 		{
-			$incoming['target_date'] = Date::of($incoming['target_date'], Config::get('offset'))->toSql();
+			if (!$incoming['target_date'])
+			{
+				$incoming['target_date'] = '0000-00-00 00:00:00';
+			}
+			else
+			{
+				$incoming['target_date'] = Date::of($incoming['target_date'], Config::get('offset'))->toSql();
+			}
 		}
 
 		// Load the old ticket so we can compare for the changelog
