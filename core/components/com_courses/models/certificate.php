@@ -275,7 +275,8 @@ class Certificate extends Base
 			break;
 
 			case 'web':
-				return str_replace('administrator', '', trim(\Request::base(true), '/')) . $this->_base;
+				$base = str_replace('administrator', '', trim(\Request::base(true), '/'));
+				return rtrim($base, '/') . substr(PATH_APP, strlen(PATH_ROOT)) . $this->_base;
 			break;
 
 			default:
