@@ -531,6 +531,36 @@ class Post extends Relational
 	}
 
 	/**
+	 * Validates the set data attributes against the model rules
+	 *
+	 * @return  bool
+	 **/
+	public function validate()
+	{
+		$valid = parent::validate();
+
+		if ($valid)
+		{
+			$results = \Event::trigger('content.onContentBeforeSave', array(
+				'com_forum.post.comment',
+				&$this,
+				$this->isNew()
+			));
+
+			foreach ($results as $result)
+			{
+				if ($result === false)
+				{
+					$this->addError(Lang::txt('Content failed validation.'));
+					$valid = false;
+				}
+			}
+		}
+
+		return $valid;
+	}
+
+	/**
 	 * Save the record
 	 *
 	 * @return  boolean  False if error, True on success

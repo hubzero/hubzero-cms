@@ -697,6 +697,36 @@ class Entry extends Relational
 	}
 
 	/**
+	 * Validates the set data attributes against the model rules
+	 *
+	 * @return  bool
+	 **/
+	public function validate()
+	{
+		$valid = parent::validate();
+
+		if ($valid)
+		{
+			$results = \Event::trigger('content.onContentBeforeSave', array(
+				'com_blog.entry.content',
+				&$this,
+				$this->isNew()
+			));
+
+			foreach ($results as $result)
+			{
+				if ($result === false)
+				{
+					$this->addError(Lang::txt('Content failed validation.'));
+					$valid = false;
+				}
+			}
+		}
+
+		return $valid;
+	}
+
+	/**
 	 * Transforms a namespace to an object
 	 *
 	 * @return  object  An an object holding the namespace data
