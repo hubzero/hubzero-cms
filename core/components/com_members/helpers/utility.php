@@ -253,7 +253,7 @@ class Utility
 	{
 		$db = \App::get('db');
 
-		$query = "SELECT `uidNumber` FROM `#__xprofiles` WHERE emailConfirmed = ".$db->quote('-'.$code)." LIMIT 1";
+		$query = "SELECT `id` FROM `#__users` WHERE `activation` = " . $db->quote('-' . $code) . " LIMIT 1";
 		$db->setQuery($query);
 		$result = $db->loadResult();
 
