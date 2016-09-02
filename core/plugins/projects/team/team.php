@@ -486,16 +486,25 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 						{
 							continue;
 						}
+
+						// By ID with format of Name (ID)
 						$parts =  preg_split("/[(]/", $cid);
 						if (count($parts) == 2)
 						{
 							$name = $parts[0];
 							$uid = preg_replace('/[)]/', '', $parts[1]);
 						}
-						elseif (intval($cid) && $validUser = User::getInstance( $cid ))
+						// By user ID
+						elseif (intval($cid) && $validUser = User::getInstance($cid))
 						{
 							$uid = $cid;
 						}
+						// By username
+						elseif (!strstr($cid, ' ') && $validUser = User::getInstance($cid))
+						{
+							$uid = $validUser->get('id');
+						}
+						// By email
 						else
 						{
 							$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
@@ -513,7 +522,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 										$code = \Components\Projects\Helpers\Html::generateCode();
 
 										// Add invitee record
-										if ($objO->saveInvite ($this->model->get('id'), $cid, $code, '', $role))
+										if ($objO->saveInvite($this->model->get('id'), $cid, $code, '', $role))
 										{
 											$uids[] = $cid;
 											$m_invited++;
@@ -553,7 +562,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 						}
 						else
 						{
-							if (!User::getInstance( $uid ))
+							if (!User::getInstance($uid))
 							{
 								$invalid[] = $uid;
 								continue;
