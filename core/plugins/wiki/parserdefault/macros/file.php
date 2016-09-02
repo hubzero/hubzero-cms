@@ -465,12 +465,21 @@ class FileMacro extends WikiMacro
 
 		$file = trim($file, DS);
 
-		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
-		if ($this->scope)
+		if ($this->pageid)
 		{
-			$scope = trim($this->scope, DS);
+			$page = \Components\Wiki\Models\Page::oneOrFail($this->pageid);
+			$link = $page->link();
+		}
+		else
+		{
+			$link  = '/' . substr($this->option, 4, strlen($this->option)) . '/';
+			if ($this->scope)
+			{
+				$scope = trim($this->scope, '/');
 
-			$link .= $scope . DS;
+				$link .= $scope . '/';
+			}
+			$link .= $this->pagename;
 		}
 		$type = 'File';
 		if (in_array(strtolower(Filesystem::extension($file)), $this->imgs))
@@ -481,7 +490,7 @@ class FileMacro extends WikiMacro
 			}
 			$type = 'Image';
 		}
-		$link .= $this->pagename . DS . $type . ':' . $file;
+		$link .= '/' . $type . ':' . $file;
 
 		return Route::url($link);
 	}
