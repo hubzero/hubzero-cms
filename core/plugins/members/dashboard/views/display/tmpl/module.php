@@ -35,8 +35,13 @@ defined('_HZEXEC_') or die();
 $params = new \Hubzero\Config\Registry($this->module->params);
 
 // load module params fields
+$manifest = PATH_APP . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml';
+if (!file_exists($manifest))
+{
+	$manifest = PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml';
+}
 $fields = new JForm($this->module->module);
-$fields->loadFile(PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml', true, 'config/fields');
+$fields->loadFile($manifest, true, 'config/fields');
 
 // This is done first as the 'renderModule' method loads the language file
 // which is needed when rendering the params below
