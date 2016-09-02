@@ -335,4 +335,34 @@ class Comment extends Relational
 
 		return parent::delete();
 	}
+
+	/**
+	 * Validates the set data attributes against the model rules
+	 *
+	 * @return  bool
+	 **/
+	public function validate()
+	{
+		$valid = parent::validate();
+
+		if ($valid)
+		{
+			$results = \Event::trigger('content.onContentBeforeSave', array(
+				'com_wiki.comment.ctext',
+				&$this,
+				$this->isNew()
+			));
+
+			foreach ($results as $result)
+			{
+				if ($result === false)
+				{
+					$this->addError(Lang::txt('Content failed validation.'));
+					$valid = false;
+				}
+			}
+		}
+
+		return $valid;
+	}
 }
