@@ -434,6 +434,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$update = true;
 			}
 
+			if ($xprofile->get('homeDirectory') != $user['homeDirectory'])
+			{
+				$xprofile->set('homeDirectory', $user['homeDirectory']);
+				$update = true;
+			}
+
 			// Fix missing surname/given name as well
 			if ($xprofile->get('name') && (!$xprofile->get('surname') || !$xprofile->get('givenName')))
 			{
