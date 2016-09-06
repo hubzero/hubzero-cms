@@ -1914,8 +1914,8 @@ class Wishlists extends SiteController
 			}
 
 			// Build e-mail components
-			$name  = $row->creator()->get('name', Lang::txt('UNKNOWN'));
-			$login = $row->creator()->get('username', Lang::txt('UNKNOWN'));
+			$name  = $row->creator->get('name', Lang::txt('UNKNOWN'));
+			$login = $row->creator->get('username', Lang::txt('UNKNOWN'));
 
 			if ($row->get('anonymous'))
 			{
