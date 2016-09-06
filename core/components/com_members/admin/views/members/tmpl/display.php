@@ -78,7 +78,7 @@ function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 
-	if (pressbutton == 'clearTerms') {
+	if (pressbutton == 'clearTerms' || pressbutton == 'remove') {
 		var res = confirm('Are you sure? Make sure you know what you\'re doing, as this action cannot be undone!');
 
 		if (!res) {
