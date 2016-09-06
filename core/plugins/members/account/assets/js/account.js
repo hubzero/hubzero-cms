@@ -137,7 +137,7 @@ HUB.Plugins.MembersAccount = {
 					error.html('Password save successful!');
 					error.slideDown('fast');
 					error.delay(2000).slideUp('fast', function() {
-						window.location.reload();
+					window.location.href = returned.redirect;
 					});
 				}
 				else
