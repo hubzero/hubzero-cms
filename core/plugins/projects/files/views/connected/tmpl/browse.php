@@ -73,12 +73,16 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 		<p>
 			<?php if ($this->model->access('content')) : ?>
 				<span id="manage_assets">
+					<?php if ($this->connection->provider->alias != 'github') {?>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=upload'   . $subdirlink); ?>" class="fmanage" id="a-upload" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?></span></a>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=newdir'   . $subdirlink); ?>" id="a-folder" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span></a>
+					<?php }?>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=download' . $subdirlink . '&a=1'); ?>" class="fmanage js" id="a-download" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span></a>
+					<?php if ($this->connection->provider->alias != 'github') {?>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=move'     . $subdirlink); ?>" class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span></a>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=delete'   . $subdirlink); ?>" class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span></a>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=rename'   . $subdirlink); ?>" class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span></a>
+					<?php }?>
 					<?php if (count($metadata)) : ?>
 						<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink); ?>" class="fmanage js" id="a-annotate" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span></a>
 					<?php endif;
