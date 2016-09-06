@@ -331,12 +331,13 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Generate a new random token and hash it
-		$token       = App::hash(JUserHelper::genRandomPassword());
-		$salt        = JUserHelper::getSalt('crypt-md5');
-		$hashedToken = md5($token.$salt).':'.$salt;
+		//$token       = App::hash(JUserHelper::genRandomPassword());
+		//$salt        = JUserHelper::getSalt('crypt-md5');
+		//$hashedToken = md5($token.$salt).':'.$salt;
+		$token = abs(\Components\Members\Helpers\Utility::genemailconfirm());
 
 		// Store the hashed token
-		$this->setToken($hashedToken);
+		$this->setToken($token);
 
 		// Send the email with the token
 		$this->sendEmail($token);
@@ -398,6 +399,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
+		/*
 		// Make sure the token is the proper length
 		if (strlen($token) != 32)
 		{
@@ -406,6 +408,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 			return $view->loadTemplate();
 		}
+		*/
 
 		// Verify the token
 		if (!$row = $this->getToken())
@@ -417,16 +420,16 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Decrypt the token and compare to the one provided
-		$parts = explode( ':', $row->activation );
-		$crypt = $parts[0];
+		$parts = json_decode($row->params);
 
 		// Invalide token
-		if (!isset($parts[1]))
+		if ($parts->auth_link_token != $token)
 		{
 			App::abort(404, Lang::txt('INVALID_TOKEN'));
 			return;
 		}
 
+		/*
 		$salt = $parts[1];
 		$testcrypt = JUserHelper::getCryptedPassword($token, $salt);
 
@@ -438,10 +441,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 			return $view->loadTemplate();
 		}
+		*/
 
 		// All checks pass...
 		// Push the token into the session
-		User::setState($this->option . 'token', $crypt . ':' . $salt);
+		User::setState($this->option . 'token', $token);
 
 		// Redirect user to set local password view
 		App::redirect(
@@ -535,7 +539,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		jimport('joomla.user.helper');
 
 		// Fire the onBeforeStoreUser trigger
-		Event::trigger('user.onBeforeStoreUser', array($this->user->getProperties(), false));
+		Event::trigger('user.onBeforeStoreUser', array($this->user->toArray(), false));
 
 		// Validate the password against password rules
 		if (!empty($password1))
@@ -597,7 +601,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Fire the onAfterStoreUser trigger
-		Event::trigger('user.onAfterStoreUser', array($this->user->getProperties(), false, null, $this->getError()));
+		Event::trigger('user.onAfterStoreUser', array($this->user->toArray(), false, null, $this->getError()));
 
 		// Flush the variables from the session
 		User::setState($this->option . 'token', null);
@@ -857,12 +861,16 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return bool - true if token save successful
 	 */
-	private function setToken($hashedToken)
+	private function setToken($token)
 	{
 		// Create the database object and set the token
 		$db     = App::get('db');
+		$params = json_decode($this->user->get('params'));
+		$params['auth_link_token'] = $token;
+		$params = json_encode($params);
+
 		$query = 'UPDATE `#__users`'
-				. ' SET activation = ' . $db->Quote($hashedToken)
+				. ' SET params = ' . $db->Quote($params)
 				. ' WHERE id = ' . (int) $this->user->get('id')
 				. ' AND block = 0'; // Can't do this if they are blocked
 
@@ -888,7 +896,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	{
 		// Create database object and check that token matches that of the user stored in the db
 		$db = App::get('db');
-		$db->setQuery('SELECT id, activation FROM `#__users` WHERE block = 0 AND username = ' . $db->Quote($this->user->get('username')));
+		$db->setQuery('SELECT id, params FROM `#__users` WHERE block = 0 AND username = ' . $db->Quote($this->user->get('username')));
 
 		return $db->loadObject();
 	}
