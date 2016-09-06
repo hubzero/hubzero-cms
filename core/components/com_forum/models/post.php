@@ -193,11 +193,12 @@ class Post extends Relational
 	/**
 	 * Generates automatic created field value
 	 *
+	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function automaticModified()
+	public function automaticModified($data)
 	{
-		return Date::of('now')->toSql();
+		return ($data['id'] ? Date::of('now')->toSql() : '0000-00-00 00:00:00');
 	}
 
 	/**
@@ -205,9 +206,9 @@ class Post extends Relational
 	 *
 	 * @return  int
 	 */
-	public function automaticModifiedBy()
+	public function automaticModifiedBy($data)
 	{
-		return User::get('id');
+		return ($data['id'] ? User::get('id') : 0);
 	}
 
 	/**

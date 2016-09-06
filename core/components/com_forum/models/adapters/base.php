@@ -104,6 +104,10 @@ abstract class Base extends Object
 		$bits = array();
 		foreach ($segments as $key => $param)
 		{
+			if (!trim($param))
+			{
+				continue;
+			}
 			$bits[] = $key . '=' . $param;
 		}
 		return implode('&', $bits);
