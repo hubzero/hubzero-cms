@@ -146,7 +146,7 @@ class Project extends Base
 		}
 
 		$segments = array_merge($segments, (array) $params);
-		$segments['t'] = 1;
+		//$segments['t'] = 1;
 
 		return Route::url($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor);
 	}

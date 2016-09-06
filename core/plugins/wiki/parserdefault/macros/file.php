@@ -490,6 +490,7 @@ class FileMacro extends WikiMacro
 			}
 			$type = 'Image';
 		}
+		$link = rtrim($link, '/');
 		$link .= '/' . $type . ':' . $file;
 
 		return Route::url($link);
