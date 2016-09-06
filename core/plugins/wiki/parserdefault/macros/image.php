@@ -481,14 +481,24 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			return $this->_path($file);
 		}
 
-		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
-		if ($this->scope)
+		if ($this->pageid)
 		{
-			$scope = trim($this->scope, DS);
-
-			$link .= $scope . DS;
+			$page = \Components\Wiki\Models\Page::oneOrFail($this->pageid);
+			$link = $page->link();
 		}
-		$link .= $this->pagename . DS . 'Image:' . $file;
+		else
+		{
+			$link  = '/' . substr($this->option, 4, strlen($this->option)) . '/';
+			if ($this->scope)
+			{
+				$scope = trim($this->scope, '/');
+
+				$link .= $scope . '/';
+			}
+			$link .= $this->pagename;
+		}
+		$link = rtrim($link, '/');
+		$link .= '/Image:' . $file;
 
 		return Route::url($link);
 	}

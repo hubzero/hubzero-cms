@@ -134,7 +134,7 @@ class Router extends Base
 		}
 		elseif ($scope == 1)
 		{
-			$segments[] = !empty($query['task']) ? $query['task'] : 'view'; // wiki action
+			$segments[] = !empty($query['task']) ? $query['task'] : ''; // wiki action
 			if (!empty($query['task']))
 			{
 				unset($query['task']);
