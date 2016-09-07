@@ -152,7 +152,7 @@ class Migration2016090610110000Core extends Base
 		$this->dropIndex('#__wishlist_item','jos_wishlist_item_subject_about_ftidx');
 		$this->dropIndex('#__wishlist_item','jos_wishlist_item_wishlist_idx');
 		$this->addFulltextIndex('#__wishlist_implementation','ftidx_pagetext','pagetext');
-		$this->dropIndex('#__wishlist_item','pagetext');
+		$this->dropIndex('#__wishlist_implementation','pagetext');
 		$this->addFulltextIndex('#__wiki_versions','ftidx_pagetext','pagetext');
 		$this->dropIndex('#__wiki_versions','pagetext');
 		$this->addFulltextIndex('#__wiki_pages','ftidx_title','title');
@@ -176,6 +176,7 @@ class Migration2016090610110000Core extends Base
 		$this->dropIndex('#__tool_version_middleware','toolid');
 		$this->addUniqueIndex('#__tool_version_hostreq','uidx_tool_version_id_hostreq',array('tool_version_id','hostreq'));
 		$this->dropIndex('#__tool_version_hostreq','toolid');
+		$this->dropIndex('#__tool_version_hostreq','idx_tool_version_id_hostreq');
 		$this->addUniqueIndex('#__tool_version','uidx_toolname_instance',array('toolname','instance'));
 		$this->dropIndex('#__tool_version','toolname');
 		$this->addIndex('#__tool_version','idx_instance','instance');
@@ -231,6 +232,7 @@ class Migration2016090610110000Core extends Base
 		$this->addUniqueIndex('#__publication_master_types', 'uidx_alias', 'alias');
 		$this->dropIndex('#__publication_master_types', 'alias');
 		$this->addUniqueIndex('#__publication_categories', 'uidx_name', 'name');
+		$this->dropIndex('#__publication_categories', 'type');
 		$this->dropIndex('#__publication_categories', 'name');
 		$this->addUniqueIndex('#__publication_categories', 'uidx_alias', 'alias');
 		$this->dropIndex('#__publication_categories', 'alias');
@@ -305,7 +307,7 @@ class Migration2016090610110000Core extends Base
 		$this->dropIndex('#__courses_forms','id');
 		$this->addPrimaryIndex('#__courses_form_responses','id');
 		$this->dropIndex('#__courses_form_responses','id');
-		$this->dropIndex('#__courses_form_responses','jos_pdf_form_responses_respondent_id_idx');
+		$this->dropIndex('#__courses_form_respondents','jos_pdf_form_responses_respondent_id_idx');
 		$this->addPrimaryIndex('#__courses_form_respondents','id');
 		$this->dropIndex('#__courses_form_respondents','id');
 		$this->addUniqueIndex('#__courses_form_respondent_progress', 'uidx_respondent_id_question_id', array('respondent_id','question_id'));
