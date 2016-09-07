@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to change database engine for a few core tables that could have been missed
  **/
-class Migration2016090710490000ComCore extends Base
+class Migration2016090710490000Core extends Base
 {	
 	private function changeEngine($table,$engine)
 	{
