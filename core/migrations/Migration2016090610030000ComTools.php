@@ -132,7 +132,7 @@ class Migration2016090610030000ComTools extends Base
 
 		if ($mwdb->tableExists('domainclass') && $mwdb->tableHasField('domainclass', 'class') && !$mwdb->tableHasKey('domainclass', 'idx_class'))
 		{
-			$query = "ALTER TABLE `domainclass` ADD KEY idx_class (`class`)";
+			$query = "ALTER TABLE `domainclass` ADD KEY idx_class (`class`) USING BTREE";
 			$mwdb->setQuery($query);
 			$mwdb->query();
 		}
