@@ -40,6 +40,7 @@ use Components\Resources\Tables\Contributor;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Html;
+use Components\Resources\Helpers\Helper;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
