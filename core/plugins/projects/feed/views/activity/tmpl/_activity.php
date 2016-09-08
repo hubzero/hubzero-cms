@@ -31,24 +31,27 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$activity 	 = $this->activity;
-$a 			 = $activity['activity'];
-$class 		 = $activity['class'];
-$deletable 	 = empty($this->edit) ? $activity['deletable'] : false;
-$etbl 		 = $activity['etbl'];
-$eid 		 = $activity['eid'];
-$ebody 		 = $activity['body'];
-$comments 	 = $activity['comments'];
+$activity    = $this->activity;
+$a           = $activity['activity'];
+$class       = $activity['class'];
+$deletable   = empty($this->edit) ? $activity['deletable'] : false;
+$etbl        = $activity['etbl'];
+$eid         = $activity['eid'];
+$ebody       = $activity['body'];
+$comments    = $activity['comments'];
 $preview     = $activity['preview'];
 $showProject = isset($this->showProject) ? $this->showProject : false;
-$edit 	     = isset($this->edit) ? $this->edit : true;
+$edit        = isset($this->edit) ? $this->edit : true;
 
 $creator = User::getInstance($a->userid);
 
-$new = $this->model->member()->lastvisit
-	&& $this->model->member()->lastvisit <= $a->recorded
-	? true : false;
-
+$new = false;
+if ($this->model->member())
+{
+	$new = $this->model->member()->lastvisit
+		&& $this->model->member()->lastvisit <= $a->recorded
+		? true : false;
+}
 ?>
 		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>">
 			<div id="tr_<?php echo $a->id; ?>" class="item-control">
