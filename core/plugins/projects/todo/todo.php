@@ -72,7 +72,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			'name'    => 'todo',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_TODO'),
 			'submenu' => NULL,
-			'show'    => true
+			'show'    => true,
+			'icon'    => 'f08d'
 		);
 
 		return $area;

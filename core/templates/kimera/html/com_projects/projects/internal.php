@@ -146,14 +146,14 @@ $sideContent 	= $sideContent && !empty($sideContent)
 				<div class="col span9 main-col">
 					<?php } ?>
 					<?php if ($this->content) { echo $this->content; } ?>
-					<?php if ($this->active == 'info') {
+					<?php /*if ($this->active == 'info') {
 							// Display project info
 							$this->view('_info')
 							     ->set('model', $this->model)
-									 ->set('info', $this->info)
+							     ->set('info', $this->info)
 							     ->set('option', $this->option)
 							     ->display();
-					 } ?>
+					 }*/ ?>
 					<?php if ($sideContent) { ?>
 				</div>
 				<div class="col span3 omega side-col">

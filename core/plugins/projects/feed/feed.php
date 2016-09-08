@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,9 +33,9 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Projects Blog plugin
+ * Projects Feed plugin
  */
-class plgProjectsBlog extends \Hubzero\Plugin\Plugin
+class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -76,16 +75,18 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return     array   Plugin name and title
+	 * @param   string  $alias
+	 * @return  array   Plugin name and title
 	 */
 	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array(
-			'name'    => 'blog',
-			'alias'   => 'feed',
+			'name'    => 'feed',
+			'alias'   => null,
 			'title'   => Lang::txt('PLG_PROJECTS_UPDATES'),
-			'submenu' => NULL,
-			'show'    => true
+			'submenu' => null,
+			'show'    => true,
+			'icon'    => 'f053'
 		);
 		return $area;
 	}
@@ -93,13 +94,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $model 		Project
-	 * @return     array   integer
+	 * @param   object  $model  Project
+	 * @return  array   integer
 	 */
-	public function &onProjectCount( $model )
+	public function &onProjectCount($model)
 	{
 		// New activity count
-		$counts['new'] = $model->newCount();
+		$counts['feed'] = $model->newCount();
 
 		return $counts;
 	}
@@ -107,10 +108,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $model           Project model
-	 * @param      string  $action			Plugin task
-	 * @param      string  $areas  			Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $model   Project model
+	 * @param   string  $action  Plugin task
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onProject($model, $action = '', $areas = NULL)
 	{
@@ -150,6 +151,32 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
+			$ajax = Request::getInt('ajax', 0);
+
+			// Record page visit
+			if (!$ajax)
+			{
+				// First-time visit, record join activity
+				$model->recordFirstJoinActivity();
+
+				// Record page visit
+				$model->recordVisit();
+			}
+
+			// Hide welcome screen?
+			$c = Request::getInt('c', 0);
+			if ($c)
+			{
+				$model->member()->saveParam(
+					$model->get('id'),
+					User::get('id'),
+					$param = 'hide_welcome',
+					1
+				);
+				App::redirect(Route::url($model->link()));
+				return;
+			}
+
 			// Set vars
 			$this->_config     = $model->config();
 			$this->_task       = Request::getVar('action', '');
@@ -187,9 +214,11 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get side content
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @param   string  $area
+	 * @return  mixed
 	 */
-	public function onProjectExtras( $model, $area )
+	public function onProjectExtras($model, $area)
 	{
 		// Check if our area is the one we want to return results for
 		if ($area != 'feed')
@@ -227,9 +256,11 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get plugin notification
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @param   string  $area
+	 * @return  mixed
 	 */
-	public function onProjectNotification( $model, $area)
+	public function onProjectNotification($model, $area)
 	{
 		// Check if our area is the one we want to return results for
 		if ($area != 'feed')
@@ -254,21 +285,22 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		if ($showWelcome)
 		{
 			// Get suggestions
-			$suggestions = \Components\Projects\Helpers\Html::getSuggestions( $model );
+			$suggestions = \Components\Projects\Helpers\Html::getSuggestions($model);
 
 			// Display welcome message
 			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'projects',
-					'element' => 'blog',
+					'element' => $this->_name,
 					'name'    => 'modules',
 					'layout'  => '_welcome'
 				)
 			);
-			$view->option 		= $this->_option;
-			$view->suggestions  = $suggestions;
-			$view->model	    = $model;
-			$html 		       .= $view->loadTemplate();
+			$view->option      = $this->_option;
+			$view->suggestions = $suggestions;
+			$view->model       = $model;
+
+			$html .= $view->loadTemplate();
 		}
 
 		return $html;
@@ -277,7 +309,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * View of project updates
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function page()
 	{
@@ -285,7 +317,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'projects',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'view'
 			)
 		);
@@ -316,13 +348,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		// Output html
-		$view->params 		= $this->model->params;
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->config 		= $this->_config;
-		$view->title		= $this->_area['title'];
+		$view->params   = $this->model->params;
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->model    = $this->model;
+		$view->uid      = $this->_uid;
+		$view->config   = $this->_config;
+		$view->title    = $this->_area['title'];
 
 		return $view->loadTemplate();
 	}
@@ -330,7 +362,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save new blog entry
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _save()
 	{
@@ -405,13 +437,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($this->model->link()));
-		return;
 	}
 
 	/**
 	 * Delete blog entry
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _delete()
 	{
@@ -494,22 +525,21 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			Notify::message($this->getError(), 'error', 'projects');
 		}
 		elseif (!empty($this->_msg))
 		{
-			\Notify::message($this->_msg, 'success', 'projects');
+			Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Redirect
 		App::redirect(Route::url($this->model->link('feed')));
-		return;
 	}
 
 	/**
 	 * Update activity feed (load more entries)
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function updateFeed()
 	{
@@ -517,24 +547,25 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'projects',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'activity'
 			)
 		);
 
-		$objAC                  = $this->model->table('Activity');
-		$view->filters 			= array();
+		$objAC = $this->model->table('Activity');
 
-		$view->total 			= $objAC->getActivities(
+		$view->filters = array();
+
+		$view->total = $objAC->getActivities(
 			$this->model->get('id'),
 			$view->filters,
 			1,
 			$this->_uid
 		);
-		$view->limit 			= intval($this->params->get('limit', 25));
+		$view->limit = intval($this->params->get('limit', 25));
 		$view->filters['limit'] = Request::getVar('limit', $view->limit, 'request');
-		$view->option 			= $this->_option;
-		$view->model 			= $this->model;
+		$view->option = $this->_option;
+		$view->model  = $this->model;
 
 		$activities = $objAC->getActivities(
 			$this->model->get('id'),
@@ -548,26 +579,28 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$view->limit
 		);
 
-		$view->uid 				= $this->_uid;
-		$view->database 		= $this->_database;
-		$view->title			= $this->_area['title'];
+		$view->uid      = $this->_uid;
+		$view->database = $this->_database;
+		$view->title    = $this->_area['title'];
 		return $view->loadTemplate();
 	}
 
 	/**
 	 * Activity data in multiple projects (members/groups plugins)
 	 *
-	 * @param      array 	$filters    Query filters
-	 * @param      integer  $limit 		Number of entries
-	 *
-	 * @return     array
+	 * @param   string   $area
+	 * @param   object   $model
+	 * @param   array    $projects
+	 * @param   integer  $uid
+	 * @param   array    $filters  Query filters
+	 * @return  string
 	 */
 	public function onShared($area, $model, $projects, $uid, $filters)
 	{
 		// Check if our area is the one we want to return results for
 		if ($area != 'feed')
 		{
-			return;
+			return '';
 		}
 
 		$this->model     = $model;
@@ -579,7 +612,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'projects',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'activity',
 				'layout'  => 'shared'
 			)
@@ -607,10 +640,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Collect activity data
 	 *
-	 * @param      array 	$filters    Query filters
-	 * @param      integer  $limit 		Number of entries
-	 *
-	 * @return     array
+	 * @param   array    $activities
+	 * @param   array    $filters     Query filters
+	 * @param   integer  $limit       Number of entries
+	 * @return  array
 	 */
 	protected function _prepActivities($activities, $filters, $limit)
 	{
@@ -671,8 +704,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					// Display hyperlink
 					if ($a->highlighted && $a->url)
 					{
-						$a->activity = str_replace($a->highlighted, '<a href="' . $a->url . '">'
-							. $a->highlighted . '</a>', $a->activity);
+						$a->activity = str_replace($a->highlighted, '<a href="' . $a->url . '">' . $a->highlighted . '</a>', $a->activity);
 					}
 
 					// Set vars
@@ -695,9 +727,9 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 						}
 
 						$ebody = $this->drawBodyText($blog[0]->blogentry);
-						$eid 		= $a->referenceid;
-						$etbl 		= 'blog';
-						$deletable  = 1;
+						$eid       = $a->referenceid;
+						$etbl      = 'blog';
+						$deletable = 1;
 					}
 					elseif ($class == 'todo')
 					{
@@ -711,10 +743,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 							continue;
 						}
 
-						$content    = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
-						$ebody 		= $this->drawBodyText($content);
-						$eid 		= $a->referenceid;
-						$etbl 		= 'todo';
+						$content = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
+						$ebody   = $this->drawBodyText($content);
+						$eid     = $a->referenceid;
+						$etbl    = 'todo';
 					}
 
 					// Get/parse & save item preview if available
@@ -757,9 +789,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display 'more' link if text is too long
 	 *
-	 * @param      string	$body   	Text body to shorten
-	 * @param      object	$activity   Individual activity
-	 * @return     HTML
+	 * @param   string  $body      Text body to shorten
+	 * @return  mixed
 	 */
 	public function drawBodyText($body = NULL)
 	{
@@ -800,9 +831,11 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get preview
 	 *
-	 * @param      string	$type    	Item type (files, notes etc.)
-	 * @param      object	$activity   Individual activity
-	 * @return     HTML
+	 * @param   string  $type      Item type (files, notes etc.)
+	 * @param   object  $activity  Individual activity
+	 * @param   string  $body
+	 * @param   bool    $reload
+	 * @return  string
 	 */
 	public function getItemPreview($type = NULL, $activity = NULL, $body = NULL, $reload = false)
 	{
@@ -850,8 +883,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get Note Previews
 	 *
-	 * @param      string	$ref   	 	 Reference to note
-	 * @return     void, redirect
+	 * @param   string  $ref  Reference to note
+	 * @return  bool
 	 */
 	protected function _getNotesPreview($ref = '')
 	{
@@ -862,8 +895,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get File Previews
 	 *
-	 * @param      string 	$ref    Reference to files
-	 * @return     void, redirect
+	 * @param   string  $ref  Reference to files
+	 * @return  mixed
 	 */
 	protected function _getFilesPreview($ref = '')
 	{
@@ -884,12 +917,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$files 	  	 = explode(',', $ref);
-		$selected 	 = array();
-		$maxHeight   = 0;
-		$minHeight   = 0;
-		$minWidth    = 0;
-		$maxWidth	 = 0;
+		$files     = explode(',', $ref);
+		$selected  = array();
+		$maxHeight = 0;
+		$minHeight = 0;
+		$minWidth  = 0;
+		$maxWidth  = 0;
 
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($this->model->get('alias')) . DS . 'preview';
@@ -950,32 +983,31 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'projects',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'preview',
 				'layout'  => 'files'
 			)
 		);
-		$view->maxHeight	= $maxHeight;
-		$view->maxWidth		= $maxWidth;
-		$view->minHeight	= ($minHeight > 400) ? 400 : $minHeight;
-		$view->selected		= $selected;
-		$view->option 		= $this->_option;
-		$view->model 		= $this->model;
+		$view->maxHeight = $maxHeight;
+		$view->maxWidth  = $maxWidth;
+		$view->minHeight = ($minHeight > 400) ? 400 : $minHeight;
+		$view->selected  = $selected;
+		$view->option    = $this->_option;
+		$view->model     = $this->model;
 		return $view->loadTemplate();
 	}
 
 	/**
 	 * Save comment
 	 *
-	 * @return     void, redirect
+	 * @return  void
 	 */
 	protected function _saveComment()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Incoming
@@ -992,12 +1024,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$objC = new \Components\Projects\Tables\Comment($this->_database);
 		if ($comment)
 		{
-			$objC->itemid 			= $itemid;
-			$objC->tbl 				= $tbl;
-			$objC->parent_activity  = $parent_activity;
-			$objC->comment 			= $comment;
-			$objC->created 			= Date::toSql();
-			$objC->created_by 		= $this->_uid;
+			$objC->itemid          = $itemid;
+			$objC->tbl             = $tbl;
+			$objC->parent_activity = $parent_activity;
+			$objC->comment         = $comment;
+			$objC->created         = Date::toSql();
+			$objC->created_by      = $this->_uid;
 			if (!$objC->store())
 			{
 				$this->setError($objC->getError());
@@ -1037,30 +1069,28 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			Notify::message($this->getError(), 'error', 'projects');
 		}
 		elseif (!empty($this->_msg))
 		{
-			\Notify::message($this->_msg, 'success', 'projects');
+			Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Redirect
 		App::redirect(Route::url($this->model->link()));
-		return;
 	}
 
 	/**
 	 * Delete comment
 	 *
-	 * @return     void, redirect
+	 * @return  void
 	 */
 	protected function _deleteComment()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Incoming
@@ -1090,15 +1120,14 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			Notify::message($this->getError(), 'error', 'projects');
 		}
 		elseif (!empty($this->_msg))
 		{
-			\Notify::message($this->_msg, 'success', 'projects');
+			Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Redirect
 		App::redirect(Route::url($this->model->link()));
-		return;
 	}
 }

@@ -110,7 +110,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			'name'    => 'databases',
 			'title'   => 'Databases',
 			'submenu' => 'Assets',
-			'show'    => true
+			'show'    => true,
+			'icon'    => 'f001'
 		);
 
 		return $area;
