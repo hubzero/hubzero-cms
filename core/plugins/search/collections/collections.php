@@ -33,6 +33,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Collections\Models\Orm\Collection;
+use Components\Collections\Models\Orm\Post;
+
+require_once Component::path('com_collections') . DS . 'models' . DS . 'orm' . DS . 'collection.php';
+require_once Component::path('com_collections') . DS . 'models' . DS . 'orm' . DS . 'post.php';
+
 /**
  * Search groups
  */
@@ -78,5 +84,154 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 			" ORDER BY $weight DESC"
 		));
 	}
-}
 
+
+/************************************************
+ *
+ * HubSearch Required Methods
+ * @author Kevin Wojkovich <kevinw@purdue.edu>
+ *
+ ***********************************************/
+
+	/****************************
+	Query-time / General Methods
+	****************************/
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'collection';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	public function onGetModel($type = '')
+	{
+		if ($type == 'collection')
+		{
+			return new Collection;
+		}
+	}
+	/*********************
+		Index-time methods
+	*********************/
+	/**
+	 * onProcessFields - Set SearchDocument fields which have conditional processing
+	 *
+	 * @param mixed $type 
+	 * @param mixed $row
+	 * @access public
+	 * @return void
+	 */
+	public function onProcessFields($type, $row)
+	{
+		if ($type == 'collection')
+		{
+			// Instantiate new $fields object
+			$fields = new stdClass;
+
+			// Calculate Permissions
+			// Public condition
+			if ($row->state == 1 && $row->access == 0)
+			{
+				$fields->access_level = 'public';
+			}
+			// Registered condition
+			elseif ($row->state == 1 && $row->access == 1)
+			{
+				$fields->access_level = 'registered';
+			}
+			// Default private
+			else
+			{
+				$fields->access_level = 'private';
+			}
+
+			if ($row->object_type == 'member')
+			{
+				$fields->owner_type = 'user';
+				$fields->owner = $row->object_id;
+
+				// Determine the author of the Entry
+				$fields->author = User::getInstance($row->created_by)->get('name');
+			}
+			else
+			{
+				$fields->owner_type = 'group';
+				$fields->owner = $row->object_id;
+			}
+
+			// Build out path
+			$alias = $row->alias;
+
+			if ($row->object_type == 'member')
+			{
+				$path = '/members/'. $row->object_id . '/collections/' . $alias;
+			}
+			elseif ($row->object_type == 'group')
+			{
+				$group = \Hubzero\User\Group::getInstance($row->object_id);
+
+				// Make sure group is valid.
+				if (is_object($group))
+				{
+					$cn = $group->get('cn');
+					$path = '/groups/'. $cn . '/collections/' . $alias;
+				}
+				else
+				{
+					$path = '';
+				}
+			}
+
+			$fields->url = $path;
+			$fields->title = $row->title;
+			$fields->alias = $row->alias;
+			$fields->description = strip_tags(trim(html_entity_decode($row->description)));
+
+			// Format the date for SOLR
+			$date = Date::of($row->created)->format('Y-m-d');
+			$date .= 'T';
+			$date .= Date::of($row->created)->format('h:m:s') . 'Z';
+			$fields->date = $date;
+
+			// Append posts as comments
+			$comments = array();
+			$posts = $row->posts()->rows();
+			if (count($posts) > 0)
+			{
+				foreach ($posts as $post)
+				{
+					$item = $post->item()->row();
+					if ($item->title != '')
+					{
+						array_push($comments, $item->title);
+					}
+					elseif ($item->description != '')
+					{
+						array_push($comments, $item->description);
+					}
+				}
+			}
+
+			// The comments section holds posts descriptions, etc.
+			$fields->comments = $comments;
+
+			return $fields;
+		}
+	}
+}
