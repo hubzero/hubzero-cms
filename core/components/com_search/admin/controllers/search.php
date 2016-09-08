@@ -88,6 +88,8 @@ class Search extends AdminController
 		$config = Component::params('com_search');
 		$hubtypes = Event::trigger('search.onGetTypes');
 
+		$queue = IndexQueue::all()->rows();
+
 		$stats = array();
 		foreach ($hubtypes as $type)
 		{
@@ -100,6 +102,7 @@ class Search extends AdminController
 		// Display the view
 		$this->view->types = $hubtypes;
 		$this->view->stats = $stats;
+		$this->view->queue = $queue;
 		$this->view->display();
 	}
 
