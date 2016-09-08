@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/projects/blog.xml
+@file           plugins/projects/info/info.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -30,15 +30,15 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" group="projects">
-	<name>Projects - Blog</name>
+	<name>Projects - Info</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Manage project micro blog entries</description>
+	<description>Display project info</description>
 	<files>
-		<filename plugin="blog">blog.php</filename>
+		<filename plugin="info">info.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_projects_blog.ini</language>
+		<language tag="en-GB">en-GB.plg_projects_info.ini</language>
 	</languages>
 </extension>

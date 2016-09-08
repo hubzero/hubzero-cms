@@ -287,7 +287,7 @@ class Projects extends Base
 	{
 		// Incoming
 		$preview      = Request::getInt('preview', 0);
-		$this->active = Request::getVar('active', 'feed');
+		$this->active = Request::getVar('active', '');
 		$ajax         = Request::getInt('ajax', 0);
 		$action       = Request::getVar('action', '');
 		$confirmcode  = Request::getVar('confirm', '');
@@ -539,13 +539,6 @@ class Projects extends Base
 		// Set layout
 		$this->view->setLayout($layout);
 
-		// Record join activity
-		if ($this->active == 'feed' && !$ajax)
-		{
-			// First-time visit, record join activity
-			$this->model->recordFirstJoinActivity();
-		}
-
 		// Get available plugins
 		$plugins = Event::trigger('projects.onProjectAreas', array($this->model->get('alias')));
 
@@ -556,94 +549,73 @@ class Projects extends Base
 		$this->view->content = '';
 		if ($layout == 'internal')
 		{
-			$plugin = $this->active == 'feed' ? 'blog' : $this->active;
-			$plugin = $this->active == 'info' ? '' : $plugin;
+			$plugin = $this->active;
 
 			// Get active plugins (some may not be in tabs)
 			$activePlugins = Helpers\Html::getPluginNames($plugins);
 
-			// Get plugin content
-			if ($this->active != 'info')
+			if (!$plugin && !empty($activePlugins))
 			{
-				// Do not go further if plugin is inactive or does not exist
-				if (!in_array($plugin, $activePlugins))
-				{
-					if ($ajax)
-					{
-						// Plugin not active in this project
-						echo '<p class="error">' . Lang::txt('COM_PROJECTS_ERROR_CONTENT_CANNOT_LOAD') . '</p>';
-						return;
-					}
+				$plugin = $activePlugins[0];
+				$this->active = $plugin;
+			}
 
-					App::redirect(Route::url($this->model->link()));
+			// Get plugin content
+			// Do not go further if plugin is inactive or does not exist
+			if (!in_array($plugin, $activePlugins))
+			{
+				if ($ajax)
+				{
+					// Plugin not active in this project
+					echo '<p class="error">' . Lang::txt('COM_PROJECTS_ERROR_CONTENT_CANNOT_LOAD') . '</p>';
 					return;
 				}
 
-				// Plugin params
-				$plugin_params = array(
-					$this->model,
-					$action,
-					array($plugin)
-				);
+				App::redirect(Route::url($this->model->link()));
+				return;
+			}
 
-				// Get plugin content
-				$sections = Event::trigger('projects.onProject', $plugin_params);
+			// Plugin params
+			$plugin_params = array(
+				$this->model,
+				$action,
+				array($plugin)
+			);
 
-				// Output
-				if (!empty($sections))
+			// Get plugin content
+			$sections = Event::trigger('projects.onProject', $plugin_params);
+
+			// Output
+			if (!empty($sections))
+			{
+				foreach ($sections as $section)
 				{
-					foreach ($sections as $section)
+					if (isset($section['html']) && $section['html'])
 					{
-						if (isset($section['html']) && $section['html'])
+						if ($ajax)
 						{
-							if ($ajax)
-							{
-								// AJAX output
-								echo $section['html'];
-								return;
-							}
-							else
-							{
-								// Normal output
-								$this->view->content .= $section['html'];
-							}
+							// AJAX output
+							echo $section['html'];
+							return;
+						}
+						else
+						{
+							// Normal output
+							$this->view->content .= $section['html'];
 						}
 					}
 				}
-				else
-				{
-					// No html output
-					App::redirect(Route::url($this->model->link()));
-					return;
-				}
 			}
+			/*else
+			{
+				// No html output
+				App::redirect(Route::url($this->model->link()));
+				return;
+			}*/
 
 			// Get item counts
 			$counts = Event::trigger('projects.onProjectCount', array($this->model));
 			$this->model->set('counts', Helpers\Html::getCountArray($counts));
-
-			// Record page visit
-			if ($this->active == 'feed' && !$ajax)
-			{
-				$this->model->recordVisit();
-			}
-
-			// Hide suggestions
-			if ($this->active == 'feed')
-			{
-				// Hide welcome screen?
-				$c = Request::getInt('c', 0);
-				if ($c)
-				{
-					$this->model->member()->saveParam(
-						$this->model->get('id'),
-						User::get('id'),
-						$param = 'hide_welcome', 1
-					);
-					App::redirect(Route::url($this->model->link()));
-					return;
-				}
-			}
 		}
 
 		// Output HTML
@@ -657,24 +629,8 @@ class Projects extends Base
 		$this->view->config   = $this->config;
 		$this->view->msg      = $this->_getNotifications('success');
 
-		$fields = Field::all()->order('ordering', 'ASC')->rows();
-		$projectDescription = Description::all()->where('project_id', '=', $this->model->get('id'))->rows();
-
-		$info = array();
-		foreach ($fields as $field)
-		{
-			foreach ($projectDescription as $description)
-			{
-				if ($description->description_key == $field->name)
-				{
-					$f = new stdClass;
-					$f->label = $field->label;
-					$f->value = $description->description_value;
-					array_push($info, $f);
-				}
-			}
-		}
-		$this->view->info = $info;
+		/// Info block moved to info plugin
+		$this->view->info = array();
 
 
 		if ($layout == 'invited')

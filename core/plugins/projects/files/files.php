@@ -100,7 +100,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			'name'    => 'files',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_FILES'),
 			'submenu' => 'Assets',
-			'show'    => true
+			'show'    => true,
+			'icon'    => 'f016'
 		);
 
 		return $area;

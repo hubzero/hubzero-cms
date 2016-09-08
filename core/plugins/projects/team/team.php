@@ -70,7 +70,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			'name'    => 'team',
 			'title'   => Lang::txt('PLG_PROJECTS_TEAM_TAB_TEAM'),
 			'submenu' => NULL,
-			'show'    => true
+			'show'    => true,
+			'icon'    => 'f042'
 		);
 
 		return $area;

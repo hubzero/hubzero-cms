@@ -110,7 +110,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			'name'    => 'notes',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_NOTES'),
 			'submenu' => NULL,
-			'show'    => true
+			'show'    => true,
+			'icon'    => 'f0c1'
 		);
 
 		return $area;

@@ -45,6 +45,8 @@
 }
 .main-menu ul.projecttools li a:before {
 	color: #ccc;
+	font-family: "Fontcons";
+	content: attr(data-icon);
 }
 .main-menu ul.projecttools li a:hover {
 	border: none;

@@ -86,7 +86,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			'name'    => 'publications',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
 			'submenu' => NULL,
-			'show'    => true
+			'show'    => true,
+			'icon'    => 'f058'
 		);
 
 		return $area;

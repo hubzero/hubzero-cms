@@ -46,68 +46,60 @@ $a = 0;
 $counts = $this->model->get('counts');
 
 ?>
-	<ul class="projecttools">
-		<li<?php if ($this->active == 'feed') { echo ' class="active"'; }?>>
-			<a class="newsupdate" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=feed'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><span><?php echo Lang::txt('COM_PROJECTS_TAB_FEED'); ?></span>
-			<span id="c-new" class="mini highlight <?php if (empty($counts['new'])) { echo 'hidden'; } ?>"><span id="c-new-num"><?php echo empty($counts['new']) ? 0 : $counts['new']; ?></span></span></a>
-		</li>
-		<li<?php if ($this->active == 'info') { echo ' class="active"'; }?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=info'); ?>" class="inform" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_INFO')); ?>">
-			<span><?php echo Lang::txt('COM_PROJECTS_TAB_INFO'); ?></span></a>
-		</li>
-<?php
-foreach ($this->tabs as $tab)
-{
-	if ($tab['name'] == 'blog')
+<ul class="projecttools">
+	<?php
+	foreach ($this->tabs as $tab)
 	{
-		continue;
-	}
-
-	if (isset($tab['submenu']) && $tab['submenu'] == 'Assets' && count($assetTabs) > 0)
-	{
-		// counter for asset tabs
-		$a++;
-
-		// Header tab
-		if ($a == 1)
+		if (isset($tab['submenu']) && $tab['submenu'] == 'Assets' && count($assetTabs) > 0)
 		{
-			?>
-			<li class="assets">
-				<span><?php echo Lang::txt('COM_PROJECTS_TAB_ASSETS'); ?></span>
+			// counter for asset tabs
+			$a++;
 
-				<ul class="assetlist">
-					<?php
-					foreach ($assetTabs as $aTab)
-					{
-						?>
-						<li<?php if ($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
-							<a class="<?php echo $aTab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=' . $aTab['name']); ?>/" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
-								<span><?php echo $aTab['title']; ?></span>
-								<?php if (isset($counts[$aTab['name']]) && $counts[$aTab['name']] != 0) { ?>
-									<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $counts[$aTab['name']]; ?></span></span>
-								<?php } ?>
-							</a>
-						</li>
+			// Header tab
+			if ($a == 1)
+			{
+				?>
+				<li class="assets">
+					<span class="tab-assets" data-icon="&#xf0d7"><?php echo Lang::txt('COM_PROJECTS_TAB_ASSETS'); ?></span>
+
+					<ul class="assetlist">
 						<?php
-					}
-					?>
-				</ul>
-			</li>
-			<?php
+						foreach ($assetTabs as $aTab)
+						{
+							?>
+							<li<?php if ($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
+								<a class="tab-<?php echo $aTab['name']; ?>" data-icon="&#x<?php echo $aTab['icon']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=' . $aTab['name']); ?>/" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
+									<span><?php echo $aTab['title']; ?></span>
+									<?php if (isset($counts[$aTab['name']]) && $counts[$aTab['name']] != 0) { ?>
+										<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $counts[$aTab['name']]; ?></span></span>
+									<?php } ?>
+								</a>
+							</li>
+							<?php
+						}
+						?>
+					</ul>
+				</li>
+				<?php
+			}
+
+			continue;
 		}
 
-		continue;
+		if (!isset($tab['icon']))
+		{
+			$tab['icon'] = 'f009';
+		}
+		?>
+		<li<?php if ($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
+			<a class="tab-<?php echo $tab['name']; ?>" data-icon="&#x<?php echo $tab['icon']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=' . $tab['name']); ?>/" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
+				<span><?php echo $tab['title']; ?></span>
+				<?php if (isset($counts[$tab['name']]) && $counts[$tab['name']] != 0) { ?>
+					<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $counts[$tab['name']]; ?></span></span>
+				<?php } ?>
+			</a>
+		</li>
+		<?php
 	}
-
 	?>
-	<li<?php if ($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
-		<a class="<?php echo $tab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=' . $tab['name']); ?>/" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
-			<span><?php echo $tab['title']; ?></span>
-		<?php if (isset($counts[$tab['name']]) && $counts[$tab['name']] != 0) { ?>
-			<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $counts[$tab['name']]; ?></span></span>
-		<?php } ?>
-		</a>
-	</li>
-	<?php
-}
-?>
 </ul>
