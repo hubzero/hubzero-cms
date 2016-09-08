@@ -133,7 +133,7 @@ class Collection extends Relational
 	 */
 	public function posts()
 	{
-		return $this->oneToMany('Post', 'collection_id');
+		return $this->oneToMany('Post');
 	}
 
 	/**

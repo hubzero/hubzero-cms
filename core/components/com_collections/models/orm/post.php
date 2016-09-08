@@ -143,7 +143,6 @@ class Post extends Relational
 	 */
 	public function item()
 	{
-		return $this->oneToOne('Item');
+		return $this->oneToOne('Item', 'id', 'item_id');
 	}
 }
-
