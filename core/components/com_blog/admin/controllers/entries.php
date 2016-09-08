@@ -330,7 +330,7 @@ class Entries extends AdminController
 			$row->set('state', $state);
 
 			// Store new content
-			if (!$row->store())
+			if (!$row->save())
 			{
 				Notify::error($row->getError());
 				continue;
