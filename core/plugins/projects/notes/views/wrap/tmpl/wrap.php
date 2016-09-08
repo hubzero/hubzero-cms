@@ -97,7 +97,11 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 			<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
 		</a>
 		<?php if (count($parentNotes) < 2) { ?>
-		<a href="<?php echo Route::url($page->link() . '&action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
+			<?php
+			$base = $page->link();
+			$chr  = strstr($base, '?') ? '&' : '?';
+			?>
+			<a href="<?php echo Route::url($base . $chr . 'action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
 		<?php } ?>
 	</li>
 </ul>
