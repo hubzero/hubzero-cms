@@ -69,8 +69,7 @@ if ($pNotes)
 		}
 		else if ($level >= 3)
 		{
-			$r = array_shift($remaining);
-			$thirdlevel[$r][] = $note;
+			$thirdlevel[$parent][] = $note;
 		}
 	}
 }
