@@ -383,7 +383,10 @@ class Sessionsv1_0 extends ApiController
 		$result = User::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false) return $this->not_found();
+		if (!$result->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
 		//get request vars
 		$tool_name    = Request::getVar('app', '');
@@ -591,7 +594,10 @@ class Sessionsv1_0 extends ApiController
 		$profile = User::getInstance($userid);
 
 		// Make sure we have a user
-		if ($profile === false) return $this->not_found();
+		if (!$profile->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
 		// Grab tool name and version
 		$tool_name    = Request::getVar('app', '');
@@ -799,8 +805,10 @@ class Sessionsv1_0 extends ApiController
 		$profile = User::getInstance(App::get('authn')['user_id']);
 		$session = Request::getInt('session_num', 0);
 
-		// Require authorization
-		if ($profile === false) return $this->not_found();
+		if (!$profile->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
 		// Get the middleware database
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -948,7 +956,10 @@ class Sessionsv1_0 extends ApiController
 		$result = User::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false) return $this->not_found();
+		if (!$result->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
 		//include needed tool libs
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
@@ -1048,10 +1059,13 @@ class Sessionsv1_0 extends ApiController
 		$result = User::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false) return $this->not_found();
+		if (!$result->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
 		//include needed libraries
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.session.php');
+		require_once(dirname(dirname(__DIR__)) . '/models/middleware/session.php');
 
 		//instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -1113,23 +1127,26 @@ class Sessionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		//get the userid and attempt to load user profile
+		// get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
 		$result = User::getInstance($userid);
 
-		//make sure we have a user
-		if ($result === false) return $this->not_found();
+		// make sure we have a user
+		if (!$result->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
-		//include needed libraries
+		// include needed libraries
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php');
 
-		//instantiate middleware database object
+		// instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-		//get request vars
+		// get request vars
 		$sessionid = Request::getVar('sessionid', '');
 
-		//check to make sure we have session id
+		// check to make sure we have session id
 		if (!$sessionid)
 		{
 			throw new Exception(Lang::txt('Missing session ID.'), 404);
@@ -1164,31 +1181,37 @@ class Sessionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		//get the userid and attempt to load user profile
+		// get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
 		$result = User::getInstance($userid);
 
-		//make sure we have a user
-		if ($result === false) return $this->not_found();
+		// make sure we have a user
+		if (!$result->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
-		//get request vars
-		$type   = Request::getVar('type', 'soft');
+		// get request vars
+		$type = Request::getVar('type', 'soft');
 
-		//get storage quota
+		// get storage quota
 		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php');
 		$disk_usage = \Components\Tools\Helpers\Utils::getDiskUsage($result->get('username'));
 
-		//get the tools storage path
+		// get the tools storage path
 		$com_tools_params = Component::params('com_tools');
 		$path = DS . $com_tools_params->get('storagepath', 'webdav' . DS . 'home') . DS . $result->get('username');
 
-		//get a list of files
+		// get a list of files
 		$files = array();
 		//$files = Filesystem::files($path, '.', true, true, array('.svn', 'CVS'));
 
-		//return result
+		// return result
 		$object = new stdClass();
-		$object->storage = array('quota' => $disk_usage, 'files' => $files);
+		$object->storage = array(
+			'quota' => $disk_usage,
+			'files' => $files
+		);
 
 		$this->send($object);
 	}
@@ -1205,27 +1228,30 @@ class Sessionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		//get the userid and attempt to load user profile
+		// get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
 		$result = User::getInstance($userid);
 
-		//make sure we have a user
-		if ($result === false) return $this->not_found();
+		// make sure we have a user
+		if (!$result->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
 
-		//get request vars
+		// get request vars
 		$degree = Request::getVar('degree', '');
 
-		//get the hubs storage host
+		// get the hubs storage host
 		$tool_params = Component::params('com_tools');
 		$storage_host = $tool_params->get('storagehost', '');
 
-		//check to make sure we have a storage host
+		// check to make sure we have a storage host
 		if ($storage_host == '')
 		{
 			throw new Exception(Lang::txt('Unable to find storage host.'), 500);
 		}
 
-		//list of acceptable purge degrees
+		// list of acceptable purge degrees
 		$accepted_degrees = array(
 			'default' => 'Minimally',
 			'olderthan1' => 'Older than 1 Day',
@@ -1234,16 +1260,16 @@ class Sessionsv1_0 extends ApiController
 			'all' => 'All'
 		);
 
-		//check to make sure we have a degree
+		// check to make sure we have a degree
 		if ($degree == '' || !in_array($degree, array_keys($accepted_degrees)))
 		{
 			throw new Exception(Lang::txt('No purge level supplied.'), 401);
 		}
 
-		//var to hold purge info
+		// var to hold purge info
 		$purge_info = array();
 
-		//open stream to purge files
+		// open stream to purge files
 		if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30))
 		{
 			throw new Exception("$error_str ($error_num)", 500);
@@ -1258,13 +1284,13 @@ class Sessionsv1_0 extends ApiController
 			fclose($fp);
 		}
 
-		//trim array values
-		$purge_info = array_map("trim", $purge_info);
+		// trim array values
+		$purge_info = array_map('trim', $purge_info);
 
-		//check to make sure the purge was successful
+		// check to make sure the purge was successful
 		if (in_array('Success.', $purge_info))
 		{
-			//return result
+			// return result
 			$object = new stdClass();
 			$object->purge = array('degree' => $accepted_degrees[$degree], 'success' => 1);
 
@@ -1286,9 +1312,24 @@ class Sessionsv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "username",
+	 * 		"description":   "Username",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       null
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "ip",
+	 * 		"name":          "private_ip",
+	 * 		"description":   "Private IP Address",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "public_ip",
+	 * 		"description":   "Public IP Address",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       null
 	 * }
 	 * @return     void
 	 *
@@ -1304,22 +1345,22 @@ class Sessionsv1_0 extends ApiController
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
 
-		//instantiate middleware database object
+		// instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-		//get any request vars
-		$username  = Request::getVar('username');
-		$sessionid = Request::getVar('id');
-		$private_ip  = Request::getVar('private_ip');
-		$public_ip  = Request::getVar('public_ip', \Request::ip());
+		// get any request vars
+		$username   = Request::getVar('username');
+		$sessionid  = Request::getVar('id');
+		$private_ip = Request::getVar('private_ip');
+		$public_ip  = Request::getVar('public_ip', Request::ip());
 
-		//check to make sure we have a valid sessionid
+		// check to make sure we have a valid sessionid
 		if ($sessionid == '' || !is_numeric($sessionid))
 		{
 			throw new Exception(Lang::txt('No session ID Specified.'), 401);
 		}
 
-		//load session
+		// load session
 		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$sess = $ms->loadSession($sessionid);
 
@@ -1327,9 +1368,9 @@ class Sessionsv1_0 extends ApiController
 		$command = escapeshellcmd($command);
 
 		$descriptorspec = array(
-		    0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-		    1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-		    2 => array("pipe", "w")   // stderr is a pipe that the child with write to
+			0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+			2 => array("pipe", "w")   // stderr is a pipe that the child with write to
 		);
 
 		$process = proc_open($command, $descriptorspec, $pipes, "/", NULL);
@@ -1357,12 +1398,12 @@ class Sessionsv1_0 extends ApiController
 			$joutput = json_decode($output);
 
 			$object = array(
-			    'fileserver'   => '128.46.19.124',
-			    'username'     => $username,
-			    'session'      => $sessionid,
-			    'ipsec_ip1'    => $public_ip,
-			    'ipsec_ip2'    => $private_ip,
-			    'smb_username' => 'smb-' . $sessionid
+				'fileserver'   => '128.46.19.124',
+				'username'     => $username,
+				'session'      => $sessionid,
+				'ipsec_ip1'    => $public_ip,
+				'ipsec_ip2'    => $private_ip,
+				'smb_username' => 'smb-' . $sessionid
 			);
 
 			$object['smb_password'] = $joutput->smb_password;
@@ -1370,14 +1411,14 @@ class Sessionsv1_0 extends ApiController
 		else
 		{
 			$object = array(
-			    'fileserver'   => '128.46.19.124',
-			    'username'     => $username,
-			    'session'      => $sessionid,
-			    'ipsec_ip1'    => $public_ip,
-			    'ipsec_ip2'    => $private_ip,
-			    'ipsec_password' => NULL,
-			    'smb_username' => 'smb-' . $sessionid,
-			    'smb_password' => NULL
+				'fileserver'     => '128.46.19.124',
+				'username'       => $username,
+				'session'        => $sessionid,
+				'ipsec_ip1'      => $public_ip,
+				'ipsec_ip2'      => $private_ip,
+				'ipsec_password' => NULL,
+				'smb_username'   => 'smb-' . $sessionid,
+				'smb_password'   => NULL
 			);
 		}
 		$this->send($object);
