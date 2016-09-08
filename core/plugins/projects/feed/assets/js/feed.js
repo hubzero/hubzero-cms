@@ -106,17 +106,17 @@ HUB.ProjectMicroblog = {
 			$(item).on('keypress', function(e)
 			{
 				if (e.keyCode == 13)
-			    {
-			        e.preventDefault();
-			    }
+				{
+					e.preventDefault();
+				}
 			});
 
 			$(item).on('keyup', function(e)
 			{
 				if (e.keyCode == 13)
-			    {
-			        $(this).trigger("enterKey");
-			    }
+				{
+					$(this).trigger("enterKey");
+				}
 			});
 
 			if ($(item).val() == '')
@@ -127,37 +127,52 @@ HUB.ProjectMicroblog = {
 			{
 				HUB.ProjectMicroblog.focusTextArea(this);
 			});
+			$(item).on('blur', function(e)
+			{
+				if ($(this).val() == '')
+				{
+					HUB.ProjectMicroblog.unfocusTextArea(this);
+				}
+			});
 		});
 
 		// Blog entry form
-		if ($('#blogentry'))
+		var blogentry = $('#blogentry');
+		if (blogentry.length)
 		{
-			if ($('#blogentry').val() == '')
-			{
-				HUB.ProjectMicroblog.unfocusTextArea($('#blogentry'));
-				$('#blog-submit').addClass('hidden');
-				$('#blog-submitarea').css('height', '0');
-			}
+			HUB.ProjectMicroblog.unfocusTextArea(blogentry);
+			$('#blog-submit').addClass('hidden');
+			$('#blog-submitarea').css('height', '0');
 
-			$('#blogentry').on('focus', function(e)
+			blogentry.on('blur', function(e)
 			{
-				HUB.ProjectMicroblog.focusTextArea($('#blogentry'));
+				if (blogentry.val() == '')
+				{
+					HUB.ProjectMicroblog.unfocusTextArea(blogentry);
+					$('#blog-submit').addClass('hidden');
+					$('#blog-submitarea').css('height', '0');
+				}
+			});
+
+			blogentry.on('focus', function(e)
+			{
+				HUB.ProjectMicroblog.focusTextArea(blogentry);
 				$('#blog-submit').removeClass('hidden');
 				$('#blog-submitarea').css('height', '20px');
 			});
 
 			// On click outside
-			if ($('#blog-submitarea')) {
+			if ($('#blog-submitarea').length) {
 				$('#blog-submitarea').on('click', function(e) {
-						HUB.ProjectMicroblog.unfocusTextArea($('#blogentry'));
-						$('#blog-submit').addClass('hidden');
-						$('#blog-submitarea').css('height', '0');
+					HUB.ProjectMicroblog.unfocusTextArea(blogentry);
+					$('#blog-submit').addClass('hidden');
+					$('#blog-submitarea').css('height', '0');
 				});
 			}
 		}
 
 		// Do not allow to post empty values
-		if ($('#blog-submit')) {
+		if ($('#blog-submit').length) {
 			$('#blog-submit').on('click', function(e){
 				if ($('#blogentry').val() == '') {
 					e.preventDefault();
@@ -198,7 +213,7 @@ HUB.ProjectMicroblog = {
 		});
 
 		// Show more updates
-		if ($('#more-updates') && $('#pid')) {
+		if ($('#more-updates').length && $('#pid').length) {
 			$('#more-updates').on('click', function(e) {
 				e.preventDefault();
 
@@ -221,18 +236,14 @@ HUB.ProjectMicroblog = {
 	{
 		var $ = this.jQuery;
 
-		$(item).css('color', '#000')
-			   .css('height', '100px')
-			   .css('border', '2px solid #6bb7d6');
+		$(item).addClass('focused');
 	},
 
 	unfocusTextArea: function(item)
 	{
 		var $ = this.jQuery;
 
-		$(item).css('color', '#999')
-			   .css('height', '35px')
-			   .css('border', '1px solid #CCC');
+		$(item).removeClass('focused');
 	}
 }
 

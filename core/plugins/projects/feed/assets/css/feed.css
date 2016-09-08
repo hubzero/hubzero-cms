@@ -45,26 +45,32 @@
 		width: 100%;
 	}
 	#blab fieldset {
-		padding: 0.5em 1em;
+		padding: 1em;
 		border: none;
-		float: none !important;
-		width: 97%;
+		float: none;
 		margin: 1em 0 1em 0;
 		color: #777;
 		background: #F5F7F2;
 		border: 1px solid #DEE4CD;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+		background: transparent;
+		border: 2px solid #eee;
+		border: 2px solid rgba(0, 0, 0, 0.1);
 	}
 	#blab textarea {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
 		margin: 0;
 		height: 40px;
-		width: 98%;
-		padding: 0.2em;
+		width: 100%;
 		display: block;
 		overflow: hidden;
 	}
-	#blab input, .content-feed .addcomment input {
+	#blab input,
+	.content-feed .addcomment input {
 		width: auto;
 	}
 	.content-feed #blab input.blog-submit:hover {
@@ -104,18 +110,21 @@
 		margin-bottom: 2em;
 		margin-top: 1em;
 	}
-	.content-feed .sidebox h4 a.hlink, .content-feed .sidebox h4 a.hlink:hover {
+	.content-feed .sidebox h4 a.hlink,
+	.content-feed .sidebox h4 a.hlink:hover {
 		border: none;
 		color: #333;
 	}
-	.content-feed .sidebox p, .sidebox p {
+	.content-feed .sidebox p,
+	.sidebox p {
 		margin-top: 0;
 		padding: 0.5em;
 	}
 	.content-feed .sidebox p.editing {
 		padding-top: 0;
 	}
-	.content-feed .sidebox h4 span, #hubForm .infofeed h4 span {
+	.content-feed .sidebox h4 span,
+	#hubForm .infofeed h4 span {
 		float: right;
 		font-weight: normal;
 		font-size: 85%;
@@ -172,10 +181,11 @@
 	.infofeed .activity {
 		color: #666;
 	}
-	.infofeed . blog-content {
+	.infofeed .blog-content {
 		padding-left: 5em;
 	}
-	.activity-item:hover .m_options, .activity-item:hover .quote:hover .m_options {
+	.activity-item:hover .m_options,
+	.activity-item:hover .quote:hover .m_options {
 		display: block;
 	}
 	.activity-item:hover .quote .m_options {
@@ -218,7 +228,8 @@
 
 /* New item
 --------------------------------------------- */
-	.infofeed .newitem, #plg-content .comments li.newitem {
+	.infofeed .newitem,
+	#plg-content .comments li.newitem {
 		background: #fff6ef;
 		border-right: 5px solid #f5ddcc;
 		padding-bottom: 1em;
@@ -273,7 +284,7 @@
 /* Preview net
 --------------------------------------------- */
 	.photos {
-	   /* Prevent vertical gaps */
+		/* Prevent vertical gaps */
 		line-height: 0;
 		-webkit-column-count: 5;
 		-webkit-column-gap:   0px;
@@ -288,7 +299,7 @@
 		border: 5px solid #e4ecee;
 	}
 	.photos img {
-	  /* Just in case there are inline attributes */
+		/* Just in case there are inline attributes */
 		width: auto !important;
 		height: 100% !important;
 	}
@@ -406,30 +417,11 @@
 		margin-top: 0.5em;
 		width: 30px;
 	}
-/* Misc
---------------------------------------------- */
 
-
-/* IE7 hacks
---------------------------------------------- */
-
-	#blab input.blog-submit {
-		*text-align: center;
-	}
-	#blab {
-		*margin-bottom: 2em;
-	}
-	#blog-submitarea {
-		*padding-bottom: 1em;
-	}
-	#hubForm .infofeed h4 span, .content-feed .sidebox h4 span {
-		*margin-top: -1.5em;
-	}
-	#blab fieldset {
-		*padding-left: 35px;
-		*background: #F5F7F2 url("images/talker_big.gif") 0 5px no-repeat;
-		*width: 93%;
-	}
-	.infofeed span.body {
-		*padding: 0 100px 0 20px;
+/* Misc */
+	#blab textarea.focused,
+	#plg-content .addcomment textarea.focused {
+		height: 100px;
+		/*color: #222;
+		border: 2px solid #6bb7d6;*/
 	}
