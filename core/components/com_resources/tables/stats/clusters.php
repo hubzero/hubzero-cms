@@ -86,6 +86,9 @@ class Clusters extends \JTable
 
 		$this->_db->setQuery($sql);
 
+		$this->users = 0;
+		$this->classes = 0;
+
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
