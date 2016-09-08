@@ -72,7 +72,6 @@ $this->js('posts')
 				<?php endforeach; ?>
 			<?php endif; ?>
 
-		<?php if ($this->posts->count() > 0):?>
 			<div class="container">
 				<nav class="entries-filters">
 					<ul class="entries-menu filter-options">
@@ -84,16 +83,20 @@ $this->js('posts')
 					</ul>
 				</nav>
 
+		<?php if ($this->posts->count() > 0):?>
 				<table class="ideas entries feedtable">
 					<caption><?php echo Lang::txt('COM_FEEDAGGREGATOR_SHOWING_POSTS', $this->filters['filterby']); ?></caption>
 					<tbody>
 					<?php foreach ($this->posts as $post): ?>
-						<?php /*if (($post->status != "removed" AND $this->filters['filterby'] != "removed") OR
-								($post->status == "removed" AND $this->filters['filterby'] == "removed") OR
-								($this->task == "PostsById")):*/ ?>
+						<?php 
+							$post->created = Date::of($post->created)->toLocal();
+							$post->description = wordwrap($post->description, 100, "<br />\n");
+							$post->title = wordwrap($post->title, 65, "<br />\n");
+							$post->status = $post->getStatus();
+						?>
 						<tr id="row-<?php echo $post->id; ?>">
-							<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo (string) html_entity_decode(strip_tags($post->shortTitle)); ?></a></td>
-							<td><?php echo $post->created; ?>
+							<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo (string) html_entity_decode(strip_tags($post->shortTitle())); ?></a></td>
+							<td><?php echo $post->created; ?></td>
 							<td><?php echo $post->name;?></td>
 							<td id="status-<?php echo $post->id; ?>">
 								<?php if ($post->status == "under review")
@@ -145,20 +148,16 @@ $this->js('posts')
 					<?php endforeach; //end foreach ?>
 					</tbody>
 				</table>
-			</div> <!--  / .container  -->
 
 			<?php
 			if ($this->fromfeed != TRUE)
 			{
+				?>
+				<input type="hidden" name="filterby" value="<?php echo $this->filters['filterby'];?>"/>
+				<?php
 				// Initiate paging
-				$pageNav = $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+				echo $this->posts->pagination->setAdditionalUrlParam('filterby', $this->filters['filterby'])->render();
 
-				echo $pageNav->render();
 			}
 			?>
 		<?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
@@ -168,6 +167,7 @@ $this->js('posts')
 			<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_NEED_TO_REVIEW_POSTS'); ?></p>
 			<p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_NEW_POSTS'); ?></a></p>
 		<?php endif; ?>
+			</div> <!--  / .container  -->
 
 			<!--  Generate Feed -->
 			<div class="postpreview-container">

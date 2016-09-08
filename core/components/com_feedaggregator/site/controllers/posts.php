@@ -91,7 +91,9 @@ class Posts extends SiteController
 			'limit'    => Request::getInt('limit', 25),
 			'start'    => Request::getInt('limitstart', 0),
 			'time'     => Request::getString('timesort', ''),
-			'filterby' => Request::getString('filterby', 'all')
+			'filterby' => Request::getString('filterby', 'all'),
+			'orderby'	 => Request::getString('orderby', 'created'),
+			'orderdir' => Request::getString('orderdir', 'desc'),
 		);
 
 		if (isset($posts))
@@ -113,19 +115,19 @@ class Posts extends SiteController
 			switch ($filters['filterby'])
 			{
 				case 'new':
-					$posts = $model
+					$model = $model
 						->whereEquals('status', 0);
 				break;
 				case 'approved':
-					$posts = $model
+					$model = $model
 						->whereEquals('status', 2);
 				break;
 				case 'review':
-					$posts = $model
+					$model = $model
 						->whereEquals('status', 1);
 				break;
 				case 'removed':
-					$posts = $model
+					$model = $model
 						->whereEquals('status', 3);
 				break;
 				case 'all':
@@ -133,66 +135,17 @@ class Posts extends SiteController
 
 				break;
 			}
+			$posts = $model->ordered()->paginated();
 
-			$posts = $model
-				->ordered()
-				->limit($filters['limit'])
-				->start($filters['start'])
-				->rows();
-
-			$total = intval($posts->count());
 		}
-
-		// Truncates the title to save screen real-estate. Full version shown in FancyBox
-		foreach ($posts as $post)
-		{
-			if (strlen($post->title) >= 60)
-			{
-				$string = substr($post->title, 0, 60);
-				$string = substr($string, 0, strrpos($string, ' ')) . '...';
-				$post->set('shortTitle', $string);
-			}
-			else
-			{
-				$post->set('shortTitle', $post->title);
-			}
-
-			// output = 2012-08-15 00:00:00
-			$post->created = Date::of($post->created)->toLocal();
-
-			$post->description = wordwrap($post->description, 100, "<br />\n");
-			$post->title = wordwrap($post->title, 65, "<br />\n");
-
-			switch ($post->status)
-			{
-				case 0:
-					$post->status = 'new';
-				break;
-				case 1:
-					$post->status = 'under review';
-				break;
-				case 2:
-					$post->status = 'approved';
-				break;
-				case 3:
-					$post->status = 'removed';
-				break;
-			} //end switch
-		} //end foreach
 
 		$messages = Notify::messages($this->_option);
-
-		if (!isset($total))
-		{
-			$total = 0;
-		}
 
 		$this->view
 			->set('messages', $messages)
 			->set('posts', $posts)
 			->set('filters', $filters)
 			->set('fromfeed', $fromfeed)
-			->set('total', $total)
 			->set('title', Lang::txt('COM_FEEDAGGREGATOR'))
 			->setLayout('display')
 			->display();

@@ -54,7 +54,7 @@ class Post extends Relational
 	 *
 	 * @var  string
 	 **/
-	public $orderBy = 'id';
+	public $orderBy = 'created';
 
 	/**
 	 * Fields and their validation criteria
@@ -102,5 +102,49 @@ class Post extends Relational
 			->limit($limit);
 
 		return $rows;
+	}
+
+	/**
+	 * Get a shortened title
+	 *
+	 * @param integer $size
+	 * @return string
+	 */
+	public function shortTitle($size = 60)
+	{
+			if (strlen($this->get('title')) >= $size)
+			{
+				$string = substr($this->get('title'), 0, $size);
+				$string = substr($string, 0, strrpos($string, ' ')) . '...';
+				return $string;
+			}
+			else
+			{
+				return($this->get('title'));
+			}
+	}
+
+	/**
+	 * Get a human readable status
+	 *
+	 * @return string
+	 */
+	public function getStatus()
+	{
+		switch ($this->get('status'))
+		{
+			case 0:
+				return 'new';
+			break;
+			case 1:
+				return 'under review';
+			break;
+			case 2:
+				return 'approved';
+			break;
+			case 3:
+				return 'removed';
+			break;
+		} //end switch
 	}
 }
