@@ -91,6 +91,7 @@ if ($label == 'none') {
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<legend><?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+					<label for="entry-search-field"><?php echo Lang::txt('COM_CITATIONS_BROWSE_SEARCH_HELP'); ?></label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 				</fieldset>
 			</div><!-- /.container .data-entry -->

@@ -65,7 +65,8 @@ if (count($this->notifications) > 0)
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_COURSES_SEARCH'); ?>" />
 					<fieldset class="entry-search">
-						<input type="text" name="search" value="" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_INTRO_PLACEHOLDER'); ?>" />
+						<label for="entry-search-field"><?php echo Lang::txt('COM_COURSES_SEARCH_INTRO_LABEL'); ?></label>
+						<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_INTRO_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- / .container -->
 				<p><?php echo Lang::txt('COM_COURSES_WATCH_LEARN_TEST_EARN'); ?></p>

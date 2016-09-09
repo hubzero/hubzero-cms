@@ -151,6 +151,7 @@ foreach ($cats as $cat)
 				<input type="hidden" name="task" value="view" />
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
+					<label for="tag"><?php echo Lang::txt('COM_TAGS_SEARCH_LABEL'); ?></label>
 					<?php echo $this->autocompleter('tags', 'tag', $this->escape($this->search), 'actags'); ?>
 				</fieldset>
 			</div><!-- / .container -->
