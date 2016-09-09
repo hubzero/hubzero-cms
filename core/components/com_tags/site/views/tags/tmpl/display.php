@@ -46,6 +46,7 @@ $this->css('introduction.css', 'system')
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=view'); ?>" method="get" class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
+					<label for="tag"><?php echo Lang::txt('COM_TAGS_SEARCH_LABEL'); ?></label>
 					<?php echo $this->autocompleter('tags', 'tag', '', 'actags'); ?>
 				</fieldset>
 			</form><!-- / .container -->
