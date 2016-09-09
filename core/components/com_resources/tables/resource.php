@@ -601,6 +601,10 @@ class Resource extends \JTable
 		if (isset($filters['author']))
 		{
 			$query .= "AND (aa.authorid=" . $this->_db->quote(intval($filters['author'])) . ") "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in #__author_assoc, making his profile page look wildly incorrect
+			if (isset($filters['notauthorrole']))
+			{
+				$query .= "AND (NOT (aa.role =" . $this->_db->quote($filters['notauthorrole']) . ")) ";
+			}
 		}
 
 		if (isset($filters['tag'])) {
