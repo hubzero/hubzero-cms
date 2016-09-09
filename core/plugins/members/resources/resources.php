@@ -193,6 +193,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		// Build query
 		$filters = array();
 		$filters['author'] = $uidNumber;
+		$filters['notauthorrole'] = 'submitter';
 		$filters['sortby'] = $sort;
 		$filters['usergroups'] = $member->groups();
 
