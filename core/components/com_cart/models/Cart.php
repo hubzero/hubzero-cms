@@ -665,7 +665,7 @@ abstract class Cart
 	{
 		$db = \App::get('db');
 
-		$sql = "SELECT `sId`, `tiQty`, `tiPrice` FROM `#__cart_transaction_items` ti WHERE ti.`tId` = {$tId}";
+		$sql = "SELECT `sId`, `tiQty`, `tiPrice`, `tiMeta` FROM `#__cart_transaction_items` ti WHERE ti.`tId` = {$tId}";
 		$db->setQuery($sql);
 		$db->query();
 
@@ -687,6 +687,7 @@ abstract class Cart
 			$transactionInfo = new \stdClass();
 			$transactionInfo->qty = $allSkuInfo[$sId]->tiQty;
 			$transactionInfo->tiPrice = $allSkuInfo[$sId]->tiPrice;
+			$transactionInfo->tiMeta = json_decode($allSkuInfo[$sId]->tiMeta);
 			$skuInfo[$sId]['transactionInfo'] = $transactionInfo;
 			unset($transactionInfo);
 		}

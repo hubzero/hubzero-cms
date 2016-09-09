@@ -84,10 +84,11 @@ class Download extends \Hubzero\Component\SiteController
 		// Get the landing page flag
 		$direct = Request::getVar('p1');
 
-		// Check if the transaction is complete and belongs to the user and is active
+		// Check if the transaction is complete and belongs to the user and is active and the SKU requested is valid
 		$transaction = Cart::getTransactionFacts($tId);
+		$transactionExistingItems = $transaction->items;
 		$transaction = $transaction->info;
-
+		$transactionItems = unserialize($transaction->tiItems);
 		$tStatus = $transaction->tStatus;
 		$crtId = $transaction->crtId;
 
@@ -102,12 +103,19 @@ class Download extends \Hubzero\Component\SiteController
 			$this->messageTask($messages);
 			return;
 		}
+		// Transaction requested doesn't belong to the user
 		elseif ($cartUser != $currentUser)
 		{
 			$messages = array(array(Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error'));
 			$this->messageTask($messages);
 			return;
-
+		}
+		// The SKU requested is not in the transaction
+		elseif (!array_key_exists($sId, $transactionItems))
+		{
+			$messages = array(array(Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error'));
+			$this->messageTask($messages);
+			return;
 		}
 
 		// Check if the product is valid and downloadable; find the file
@@ -119,7 +127,7 @@ class Download extends \Hubzero\Component\SiteController
 		// Error if needed
 		if ($productType['ptName'] != 'Software Download' || empty($downloadFile))
 		{
-			$messages = array(array(Lang::txt('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOABLE'), 'error'));
+			$messages = array(array(Lang::txt('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOADABLE'), 'error'));
 			$this->messageTask($messages);
 			return;
 		}
@@ -198,6 +206,21 @@ class Download extends \Hubzero\Component\SiteController
 				`mtValue` = '" . serialize($meta) . "'";
 		$db->setQuery($sql);
 		$db->query();
+
+		// Figure out if the EULA was accepted
+		$itemTransactionInfoMeta = $transactionExistingItems[$sId]['transactionInfo']->tiMeta;
+		$eulaAccepted = ($itemTransactionInfoMeta && property_exists($itemTransactionInfoMeta, 'eulaAccepted') && $itemTransactionInfoMeta->eulaAccepted) ? true : false;
+
+		if ($eulaAccepted)
+		{
+			$sql = "INSERT INTO `#__cart_meta` SET
+					`scope_id` = " . $dId . ",
+					`scope` = 'download',
+					`mtKey` = 'eulaAccepted',
+					`mtValue` = '" . $eulaAccepted . "'";
+			$db->setQuery($sql);
+			$db->query();
+		}
 
 		// Serve up the file
 		$xserver = new \Hubzero\Content\Server();
