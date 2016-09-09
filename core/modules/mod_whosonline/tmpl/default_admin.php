@@ -92,7 +92,7 @@ $editAuthorized = User::authorise('com_users', 'manage');
 									// Display link if we are authorized
 									if ($editAuthorized)
 									{
-										echo '<a href="' . Route::url('index.php?option=com_users&task=user.edit&id='. $row->userid) . '" title="' . Lang::txt('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
+										echo '<a href="' . Route::url('index.php?option=com_members&task=edit&id='. $row->userid) . '" title="' . Lang::txt('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
 									}
 									else
 									{
