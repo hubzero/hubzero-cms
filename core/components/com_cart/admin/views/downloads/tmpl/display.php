@@ -93,6 +93,7 @@ $this->view('_submenu')
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">IP</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -100,7 +101,7 @@ $this->view('_submenu')
 		</thead>
 		<tfoot>
 		<tr>
-			<td colspan="7"><?php
+			<td colspan="8"><?php
 				// Initiate paging
 				echo $this->pagination(
 						$this->total,
@@ -160,18 +161,38 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php
-					if ($row->mtValue)
+					if ($row->meta)
 					{
-						$meta = unserialize($row->mtValue);
-						$mtIndex = 0;
-						foreach ($meta as $mtK => $mtV)
+						if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo'])
 						{
-							if ($mtIndex > 0)
+							$meta = unserialize($row->meta['userInfo']['mtValue']);
+							$data = array();
+							foreach ($meta as $mtK => $mtV)
 							{
-								echo ', ';
+								if (is_array($mtV))
+								{
+									$mtV = implode('; ', $mtV);
+								}
+								$data[] = $mtV;
 							}
-							echo $mtV;
-							$mtIndex++;
+							echo implode(', ', $data);
+						}
+					}
+					else {
+						echo '&nbsp;';
+					}
+					?>
+				</td>
+				<td>
+					<?php
+					if ($row->meta)
+					{
+						if (array_key_exists('eulaAccepted', $row->meta) && $row->meta['eulaAccepted'])
+						{
+							if ($row->meta['eulaAccepted']['mtValue'])
+							{
+								echo 'EULA accepted';
+							}
 						}
 					}
 					else {

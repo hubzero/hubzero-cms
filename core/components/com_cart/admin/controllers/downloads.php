@@ -254,6 +254,11 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
+			),
+			'skuRequested' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.skuRequested',
+				'skuRequested',
+				0
 			)
 		);
 		$rowsRaw = CartDownload::getDownloads('array', $filters);
@@ -264,28 +269,49 @@ class Downloads extends AdminController
 		foreach ($rowsRaw as $row)
 		{
 			$status = 'active';
-			if (!$row['dStatus'])
+			if (!$row->dStatus)
 			{
 				$status = 'inactive';
 			}
 
-			$metaCsv = '';
-			if ($row['mtValue'])
+			if ($row->meta)
 			{
-				$meta = unserialize($row['mtValue']);
-				$mtIndex = 0;
-				foreach ($meta as $mtK => $mtV)
+				// userInfo
+				if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo'])
 				{
-					if ($mtIndex > 0)
+					$metaUserInfo = unserialize($row->meta['userInfo']['mtValue']);
+					$metaUserInfoCsv = '';
+					$mtIndex = 0;
+					foreach ($metaUserInfo as $mtK => $mtV)
 					{
-						$metaCsv .= ', ';
+						if ($mtIndex > 0)
+						{
+							$metaUserInfoCsv .= ', ';
+						}
+						$metaUserInfoCsv .= $mtV;
+						$mtIndex++;
 					}
-					$metaCsv .= $mtV;
-					$mtIndex++;
+				}
+
+				// eulaAccepted
+				if (array_key_exists('eulaAccepted', $row->meta) && $row->meta['eulaAccepted'])
+				{
+					if ($row->meta['eulaAccepted']['mtValue'])
+					{
+						$metaEula = 'EULA accepted';
+					}
+				}
+				else {
+					$metaEula = '';
 				}
 			}
+			else
+			{
+				$metaUserInfoCsv = '';
+				$metaEula = '';
+			}
 
-			$rows[] = array($row['dDownloaded'], $row['pName'], $row['sSku'], $row['dName'], $row['username'], $row['uId'], $metaCsv, $row['dIp'], $status);
+			$rows[] = array($row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username, $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status);
 		}
 
 		header("Content-Type: text/csv");
@@ -296,7 +322,7 @@ class Downloads extends AdminController
 		header("Expires: 0"); // Proxies
 
 		$output = fopen("php://output", "w");
-		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'User Details', 'IP', 'Status');
+		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'User Details', 'EULA', 'IP', 'Status');
 		fputcsv($output, $row);
 		foreach ($rows as $row) {
 			fputcsv($output, $row);

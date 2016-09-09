@@ -88,11 +88,11 @@ class CartDownload
 
 		$db = \App::get('db');
 
-		$sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.name AS dName, x.username, s.sSku, p.pId, p.pName, mt.mtValue FROM `#__cart_downloads` d ';
+		$sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
 		$sql .= ' LEFT JOIN `#__xprofiles` x ON (d.uId = x.uidNumber)';
 		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
 		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
-		$sql .= ' LEFT JOIN `#__cart_meta` mt ON (d.dId = mt.scope_id AND mt.scope = \'download\')';
+		//$sql .= ' LEFT JOIN `#__cart_meta` mt ON (d.dId = mt.scope_id AND mt.scope = \'download\')';
 		$sql .= ' WHERE 1';
 
 		// Filter by filters
@@ -150,12 +150,23 @@ class CartDownload
 		{
 			return($db->getNumRows());
 		}
-		elseif ($rtrn == 'array')
-		{
-			return($db->loadAssocList());
-		}
 
 		$res = $db->loadObjectList();
+
+		// Get the meta for all returned objects
+		foreach ($res as $download)
+		{
+			$dId = $download->dId;
+
+			$sql = "SELECT `mtKey`, `mtValue` FROM `#__cart_meta` WHERE `scope` = 'download' AND `scope_id` = {$dId}";
+			$db->setQuery($sql);
+			$db->execute();
+
+			$meta = $db->loadAssocList('mtKey');
+			$download->meta = $meta;
+
+		}
+
 		return $res;
 	}
 
@@ -233,6 +244,7 @@ class CartDownload
 		{
 			return($db->getNumRows());
 		}
+
 		elseif ($rtrn == 'array')
 		{
 			return($db->loadAssocList());
