@@ -128,38 +128,32 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
 
-		// Build query
+		$versions = \Components\Wiki\Models\Version::all()
+			->whereEquals('created_by', $uidNumber)
+			->whereEquals('approved', 1)
+			->group('page_id')
+			->rows();
+
+		$ids = array();
+
+		foreach ($versions as $version)
+		{
+			$ids[] = $version->get('page_id');
+		}
+		$rows = \Components\Wiki\Models\Page::all()
+			->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+			->whereEquals('scope', 'site')
+			->whereIn('id', $ids)
+			->limit($limit)
+			->start($limitstart);
+
 		if (!$limit)
 		{
-			return \Components\Wiki\Models\Version::all()
-				->whereEquals('created_by', $uidNumber)
-				->whereEquals('approved', 1)
-				->group('page_id')
-				->count();
+			return $rows->count();
 		}
 		else
 		{
-			$versions = \Components\Wiki\Models\Version::all()
-				->whereEquals('created_by', $uidNumber)
-				->whereEquals('approved', 1)
-				->group('page_id')
-				->rows();
-
-			$ids = array();
-
-			foreach ($versions as $version)
-			{
-				$ids[] = $version->get('page_id');
-			}
-
-			$rows = \Components\Wiki\Models\Page::all()
-				->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
-				->whereIn('id', $ids)
-				->limit($limit)
-				->start($limitstart)
-				->rows();
-
-			return $rows;
+			return $rows->rows();
 		}
 	}
 
