@@ -56,15 +56,15 @@ Toolbar::cancel();
 		<tbody>
 		<?php
 		$rows = 50;
-		$i = 1;
+		$i = 0;
 		for ( $r = 0; $r < $rows; $r++ )
 		{
 			?>
 			<tr>
-				<th scope="row">(<?php echo $i; ?>)</th>
-				<td><input type="text" name="points[<?php echo $i; ?>]" value="<?php echo @$this->params[$i-1]->points; ?>" size="10" maxlength="10" /></td>
-				<td><input type="text" name="alias[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i-1]->alias); ?>" size="20" maxlength="50" /></td>
-				<td><input type="text" name="description[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i-1]->description); ?>" size="100" maxlength="255" /></td>
+				<th scope="row">(<?php echo ($i + 1); ?>)</th>
+				<td><input type="text" name="points[<?php echo $i; ?>]" value="<?php echo @$this->params[$i]->points; ?>" size="10" maxlength="10" /></td>
+				<td><input type="text" name="alias[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i]->alias); ?>" size="20" maxlength="50" /></td>
+				<td><input type="text" name="description[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i]->description); ?>" size="100" maxlength="255" /></td>
 			</tr>
 			<?php
 			$i++;
