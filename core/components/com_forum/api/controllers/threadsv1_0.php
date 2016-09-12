@@ -467,16 +467,19 @@ class Threadsv1_0 extends ApiController
 				throw new Exception(Lang::txt('Section not found.'), 404);
 			}
 
-			$categories = $section->categories()
-				->whereEquals('state', $filters['state'])
-				->whereIn('access', $filters['access'])
-				->rows();
-
-			$filters['category_id'] = array();
-
-			foreach ($categories as $category)
+			if (!$filters['category_id'])
 			{
-				$filters['category_id'][] = $category->get('id');
+				$categories = $section->categories()
+					->whereEquals('state', $filters['state'])
+					->whereIn('access', $filters['access'])
+					->rows();
+
+				$filters['category_id'] = array();
+
+				foreach ($categories as $category)
+				{
+					$filters['category_id'][] = $category->get('id');
+				}
 			}
 		}
 
