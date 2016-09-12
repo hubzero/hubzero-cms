@@ -991,7 +991,7 @@ class Membership extends Base
 					'action'      => 'joined',
 					'scope'       => 'group',
 					'scope_id'    => $this->view->group->get('gidNumber'),
-					'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_CANCELLED', '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
+					'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_JOINED', '<a href="' . $url . '">' . $this->view->group->get('description') . '</a>'),
 					'details'     => array(
 						'title'     => $this->view->group->get('description'),
 						'url'       => $url,
