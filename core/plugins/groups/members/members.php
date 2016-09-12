@@ -252,8 +252,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$view->filter = ($view->filter == 'managers') ? $view->filter : 'members';
 				}
 
-				//get messages plugin access level
-				$view->messages_acl = \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages');
+				try {
+					// Get messages plugin access level
+					$view->messages_acl = \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages');
+				}
+				catch (Exception $e)
+				{
+					// Plugin is not enabled.
+					$view->messages_acl = 'nobody';
+				}
 
 				//get all member roles
 				$db = App::get('db');
