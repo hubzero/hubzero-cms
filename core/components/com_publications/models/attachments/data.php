@@ -687,22 +687,38 @@ class Data extends Base
 		// Get configs
 		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
-		$firstChild = $attachments[0];
-		$db_name 	= $firstChild->object_name;
-		$db_version = $firstChild->object_revision;
-
-		// Add CSV file
-		if ($db_name && $db_version)
+		foreach ($attachments as $attachment)
 		{
-			$tmpFile 	= $configs->dataPath . DS . 'data.csv';
-			$csv 		= $this->getCsvData($db_name, $db_version, $tmpFile);
-
-			if ($csv && file_exists($tmpFile))
+			if ($attachment->type != 'data')
 			{
-				$where = $bundleDir . DS . 'data.csv';
-				if ($zip->addFile($tmpFile, $where))
+				return false;
+			}
+
+			$db_name 	= $attachment->object_name;
+			$db_version = $attachment->object_revision;
+
+			if ($attachment->title != '')
+			{
+				$title = $attachment->title;
+			}
+			else
+			{
+				$title = $db_name;
+			}
+
+			// Add CSV file
+			if ($db_name && $db_version && $title)
+			{
+				$tmpFile 	= $configs->dataPath . DS . $title . '-' . $db_version . '.csv';
+				$csv 		= $this->getCsvData($db_name, $db_version, $tmpFile);
+
+				if ($csv && file_exists($tmpFile))
 				{
-					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+					$where = $bundleDir . DS . $title . '-' . $db_version . '.csv';
+					if ($zip->addFile($tmpFile, $where))
+					{
+						$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+					}
 				}
 			}
 		}
