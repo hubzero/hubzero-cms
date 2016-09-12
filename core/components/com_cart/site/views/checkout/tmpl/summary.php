@@ -128,13 +128,29 @@ if (!empty($this->notifications))
 			?>
 		</div>
 		<?php
+
+		if ($this->transactionInfo->tiNotes)
+		{
+			echo '<div class="section">';
+			echo '<h2>Notes/Comments</h2>';
+			echo '<p>';
+			echo $this->transactionInfo->tiNotes;
+			echo '</p>';
+			echo '<a href="';
+			echo Route::url('index.php?option=com_cart') . 'checkout/notes';
+			echo '">Change</a>';
+			echo '</div>';
+		};
+
 		if (in_array('shipping', $this->transactionInfo->steps))
 		{
 			$view = new \Hubzero\Component\View(array('name'=>'checkout', 'layout' => 'checkout_shippinginfo'));
 			$view->transactionInfo = $this->transactionInfo;
 			$view->display();
 		}
+		?>
 
+		<?php
 		$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
 
 		if ($orderTotal > 0)

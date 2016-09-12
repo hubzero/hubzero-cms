@@ -393,7 +393,7 @@ class CurrentCart extends Cart
 	public function getNextCheckoutStep()
 	{
 		// Get DB steps for this transaction
-		$sql = "SELECT `tsStep`, `tsMeta` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId DESC";
+		$sql = "SELECT `tsStep`, `tsMeta` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId ASC";
 		$this->_db->setQuery($sql);
 		$nextStep = $this->_db->loadObject();
 
@@ -649,6 +649,25 @@ class CurrentCart extends Cart
 	}
 
 	/**
+	 * Saves transaction notes
+	 *
+	 * @param 	string 		notes
+	 * @return 	bool		true
+	 */
+	public function setTransactionNotes($notes)
+	{
+		$notes = \Hubzero\Utility\Sanitize::stripAll($notes);
+		$sql = "UPDATE `#__cart_transaction_info` SET
+				`tiNotes` = " . $this->_db->quote($notes) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId);
+
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+
+		return true;
+	}
+
+	/**
 	 * Set the meta information for a given transaction item
 	 *
 	 * @param int 		sId		SKU id of the item that needs to e updated
@@ -848,7 +867,7 @@ class CurrentCart extends Cart
 	 *
 	 * @param 	string Step
 	 * @param 	mixed Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA steps for each SKU)
-	 * @param 	bool Completed (true) ar not completed (false)
+	 * @param 	bool Completed (true) or not completed (false)
 	 * @return 	bool
 	 */
 	public function setStepStatus($step, $meta = '', $status = true)
@@ -2028,6 +2047,11 @@ class CurrentCart extends Cart
 			//print_r($sku); die;
 			$sku->reserveInventory($skuInfo['cartInfo']->qty);
 		}
+
+		// add commnets/notes step
+		$step = new \stdClass();
+		$step->name = 'notes';
+		$postSteps[] = $step;
 
 		// populate items
 		$sql = "INSERT INTO `#__cart_transaction_items` (`tId`, `sId`, `tiQty`, `tiPrice`) VALUES {$sqlValues}";
