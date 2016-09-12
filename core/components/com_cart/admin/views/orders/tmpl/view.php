@@ -178,11 +178,21 @@ function submitbutton(pressbutton)
 			<?php
 				}
 			?>
-
 				</tbody>
 			</table>
-
 		</fieldset>
+
+		<?php
+		if ($this->tInfo->tiNotes)
+		{
+		?>
+		<fieldset class="adminform">
+			<legend><span>Notes</span></legend>
+			<p><?php echo $this->tInfo->tiNotes; ?></p>
+		</fieldset>
+		<?php
+		}
+		?>
 	</div>
 	<div class="clr"></div>
 

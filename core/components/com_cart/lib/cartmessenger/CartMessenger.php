@@ -140,7 +140,7 @@ class CartMessenger
 
 		// Build order summary
 		$summary = 'Order number: ' . $transactionInfo->tId . "\n\n";
-		$summary .= "\n====================\n\n";
+		$summary .= "====================\n\n";
 
 		$summary .= 'Subtotal: ' . '$' . number_format($transactionInfo->tiSubtotal, 2) . "\n";
 		if (!$transactionInfo->tiShipping)
@@ -172,6 +172,11 @@ class CartMessenger
 			$summary .= $transactionInfo->tiShippingToFirst . ' ' . $transactionInfo->tiShippingToLast . "\n";
 			$summary .= $transactionInfo->tiShippingAddress . "\n";
 			$summary .= $transactionInfo->tiShippingCity . ', ' . $transactionInfo->tiShippingState . ' ' . $transactionInfo->tiShippingZip . "\n";
+		}
+
+		if ($transactionInfo->tiNotes)
+		{
+			$summary .= "\n" . 'Notes/Comments: ' . "\n" . $transactionInfo->tiNotes . "\n";
 		}
 
 		$summary .= "\n\nItems ordered:";

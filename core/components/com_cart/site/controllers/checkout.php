@@ -249,6 +249,66 @@ class Checkout extends ComponentController
 	}
 
 	/**
+	 * Notes comments
+	 *
+	 * @return     void
+	 */
+	public function notesTask()
+	{
+		$cart = new CurrentCart();
+		$cart->setStepStatus('notes', '', false);
+
+		$transaction = $cart->liftTransaction();
+
+		if (!$transaction)
+		{
+			// Redirect to cart if transaction cannot be lifted
+			$cart->redirect('home');
+		}
+
+		$nextStep = $cart->getNextCheckoutStep();
+
+		// Double check that the current step is indeed EULA, redirect if needed
+		if ($nextStep->step != 'notes')
+		{
+			$cart->redirect($nextStep->step);
+		}
+
+		$notesSubmitted = Request::getVar('submitNotes', false, 'post');
+
+		if ($notesSubmitted)
+		{
+			$notes = Request::getVar('notes', false, 'post');
+
+			// Save order's notes
+			$cart->setTransactionNotes($notes);
+
+			// Mark this step as completed
+			$cart->setStepStatus('notes');
+
+			// All good, continue
+			$nextStep = $cart->getNextCheckoutStep()->step;
+			$cart->redirect($nextStep);
+		}
+
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+		if ($this->_task)
+		{
+			Pathway::append(
+				Lang::txt('Notes')
+			);
+		}
+
+		$this->view->display();
+	}
+
+	/**
 	 * Shipping step of the checkout
 	 *
 	 * @return     void
