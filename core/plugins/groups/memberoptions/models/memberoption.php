@@ -77,7 +77,6 @@ class Memberoption extends Relational
 	 */
 	protected $rules = array(
 		'optionname'  => 'notempty',
-		'optionvalue' => 'notempty',
 		'gidNumber'   => 'positive|nonzero',
 		'userid'      => 'positive|nonzero'
 	);
