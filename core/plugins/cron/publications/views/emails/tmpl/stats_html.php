@@ -60,13 +60,8 @@ $boxBgColor      = '#f6eddd';
 $append = '?from=' . $this->user->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
-//ddie(get_class_methods($this->user));
-
-//$profileLink  = $base . DS . 'members' . DS . $this->user->get('id');
 $profileLink = $this->user->link();
-
 $profileThumb = $this->user->picture();
-//$profileThumb = $base . DS . 'members' . DS . $this->user->get('id') . DS . 'Image:thumb.png';
 
 // More publications?
 $more = count($this->pubstats) - $this->limit;
