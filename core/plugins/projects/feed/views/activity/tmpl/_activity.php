@@ -53,7 +53,7 @@ if ($this->model->member())
 		? true : false;
 }
 ?>
-		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>">
+		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>" data-recorded="<?php echo $a->recorded; ?>">
 			<div id="tr_<?php echo $a->id; ?>" class="item-control">
 				<?php if ($deletable) { ?>
 				<span class="m_options">
@@ -89,26 +89,26 @@ if ($this->model->member())
 			</div>
 
 			<?php
-				// Show comments
-				$this->view('_comments')
-			     ->set('comments', $comments)
-			     ->set('model', $this->model)
-				 ->set('activity', $a)
-				 ->set('uid', $this->uid)
-				 ->set('edit', $edit)
-			     ->display();
+			// Show comments
+			$this->view('_comments')
+				->set('comments', $comments)
+				->set('model', $this->model)
+				->set('activity', $a)
+				->set('uid', $this->uid)
+				->set('edit', $edit)
+				->display();
 
-				// Add comment
-				if ($edit && $this->model->access('content'))
-				{
-					$this->view('_addcomment')
-				     ->set('comments', $comments)
-				     ->set('model', $this->model)
-					 ->set('activity', $a)
-					 ->set('uid', $this->uid)
-					 ->set('etbl', $etbl)
-					 ->set('eid', $eid)
-				     ->display();
-				}
+			// Add comment
+			if ($edit && $this->model->access('content'))
+			{
+				$this->view('_addcomment')
+					->set('comments', $comments)
+					->set('model', $this->model)
+					->set('activity', $a)
+					->set('uid', $this->uid)
+					->set('etbl', $etbl)
+					->set('eid', $eid)
+					->display();
+			}
 			?>
 		</div>

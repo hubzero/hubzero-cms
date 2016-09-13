@@ -19,11 +19,15 @@
 --------------------------------------------- */
 	.activity-item {
 		padding: 1em;
-		border: 1px solid #e8ecf1;
-		margin-bottom: 2em;
-		-moz-box-shadow: 3px 3px 3px #e8ecf1;
+		border: 1px solid #e1e1e1;
+		margin-bottom: 1em;
+		/*-moz-box-shadow: 3px 3px 3px #e8ecf1;
 		-webkit-box-shadow: 3px 3px 3px #e8ecf1;
-		box-shadow: 3px 3px 3px #e8ecf1;
+		box-shadow: 3px 3px 3px #e8ecf1;*/
+	}
+	.activity-item:hover {
+		border-color: #ccc;
+		background-color: #fff;
 	}
 	.item-control {
 		margin-bottom: 1.5em;
@@ -41,9 +45,6 @@
 /* Blog form
 --------------------------------------------- */
 
-	#blab {
-		width: 100%;
-	}
 	#blab fieldset {
 		padding: 1em;
 		border: none;
@@ -64,10 +65,22 @@
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 		margin: 0;
-		height: 40px;
+		height: 3em;
 		width: 100%;
 		display: block;
 		overflow: hidden;
+	}
+	#blab p {
+		padding: 1em 0 0 0;
+		margin: 0;
+		text-align: right;
+		display: none;
+	}
+	#blab .focused textarea {
+		height: 8em;
+	}
+	#blab .focused p {
+		display: block;
 	}
 	#blab input,
 	.content-feed .addcomment input {
@@ -81,19 +94,6 @@
 		margin: 0;
 		padding: 0;
 		text-align: right;
-	}
-	#blog-submitarea {
-		padding: 0;
-		margin: 0;
-		text-align: right;
-		width: 100%;
-	}
-	#blog-submitarea .btn {
-		margin-top: 0.5em;
-		margin-right: 0.5em;
-	}
-	#blog-submitarea input {
-		float: right;
 	}
 	.blog-time {
 		font-size: 85%;
@@ -268,10 +268,10 @@
 		margin-left: 0;
 	}
 	.m_options span a {
-		border: 1px solid #CCC;
+		border: none;
 		margin: 0;
 		padding: 0 0.3em;
-		background: #FFF;
+		background: transparent;
 		color: #CCC;
 	}
 	.m_options span a:hover {
@@ -419,8 +419,7 @@
 	}
 
 /* Misc */
-	#blab textarea.focused,
-	#plg-content .addcomment textarea.focused {
+	#plg-content .addcomment .focused textarea {
 		height: 100px;
 		/*color: #222;
 		border: 2px solid #6bb7d6;*/

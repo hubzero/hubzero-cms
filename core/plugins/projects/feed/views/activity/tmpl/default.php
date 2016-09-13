@@ -31,36 +31,38 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if (count($this->activities) > 0 ) {
-?>
-<div class="activity-items" id="activity-feed">
-<?php
-// Loop through activities
-	foreach ($this->activities as $activity)
-	{
-		// Show activity
-		$this->view('_activity')
-	     ->set('option', $this->option)
-	     ->set('model', $this->model)
-		 ->set('activity', $activity)
-		 ->set('uid', $this->uid)
-	     ->display();
-	}  ?>
-</div>
+if (count($this->activities) > 0 ) { ?>
+	<div class="activity-items" id="activity-feed">
+		<?php
+		// Loop through activities
+		foreach ($this->activities as $activity)
+		{
+			// Show activity
+			$this->view('_activity')
+				->set('option', $this->option)
+				->set('model', $this->model)
+				->set('activity', $activity)
+				->set('uid', $this->uid)
+				->display();
+		}
+		?>
+	</div>
 <?php } else { ?>
-<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_BLOG_NO_ACTIVITIES'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_BLOG_NO_ACTIVITIES'); ?></p>
 <?php } ?>
 
 <div id="more-updates" class="nav_pager">
-<?php
-if ($this->total > $this->filters['limit'])
-{
-	$limit = $this->filters['limit'] + $this->limit; ?>
-	<p><a href="<?php echo Route::url($this->model->link() . '&limit=' . $limit . '&amp;prev=' . $this->filters['limit']);  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
-<?php } else if ($this->filters['limit'] != $this->limit) { ?>
-	<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
-<?php } else if ($this->total > 5 && $this->total < $this->filters['limit']) { ?>
-	<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
-<?php
-} ?>
+	<?php
+	if ($this->total > $this->filters['limit'])
+	{
+		$limit = $this->filters['limit'] + $this->limit;
+		?>
+		<p><a href="<?php echo Route::url($this->model->link() . '&limit=' . $limit . '&prev=' . $this->filters['limit']);  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
+	<?php } else if ($this->filters['limit'] != $this->limit) { ?>
+		<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+	<?php } else if ($this->total > 5 && $this->total < $this->filters['limit']) { ?>
+		<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+		<?php
+	}
+	?>
 </div><!-- / #more-updates -->
