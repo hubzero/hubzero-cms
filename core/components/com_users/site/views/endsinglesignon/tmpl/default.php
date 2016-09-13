@@ -43,12 +43,12 @@ defined('_HZEXEC_') or die();
 		If you would like to end all <?php echo $this->display_name; ?> account shared sessions as well, you may do so now.
 	</p>
 	<p>
-		<a class="logout btn" href="<?php echo Route::url('index.php?option=com_users&task=user.logout&authenticator=' . $this->authenticator); ?>">
+		<a class="logout btn" href="<?php echo Route::url('index.php?option=com_users&task=user.logout&sso=all&authenticator=' . $this->authenticator); ?>">
 			End all <?php echo $this->display_name; ?> account sessions!
 		</a>
 	</p>
 	<p>
-		<a class="home btn" href="<?php echo Request::base(); ?>">
+		<a class="home btn" href="<?php echo Route::url('index.php?option=com_users&task=user.logout&sso=none&authenticator=' . $this->authenticator .'&return=' . Request::base()); ?>">
 			Leave other <?php echo $this->display_name; ?> account sessions untouched.
 		</a>
 	</p>

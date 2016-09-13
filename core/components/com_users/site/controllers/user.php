@@ -193,6 +193,12 @@ class UsersControllerUser extends UsersController
 		$user = User::getInstance();
 
 		$authenticator = Request::getVar('authenticator', '', 'method');
+		$singleSignOn = Request::getVar('sso', false);
+
+		if (empty($authenticator) || $authenticator == '')
+		{
+			$authenticator = \Hubzero\Utility\Cookie::eat('authenticator')->authenticator;
+		}
 
 		// If a specific authenticator is specified try to call the logout method for that plugin
 		if (!empty($authenticator))
@@ -216,15 +222,42 @@ class UsersControllerUser extends UsersController
 					{
 						$myplugin = new $className($this,(array)$plugin);
 
-						$result = $myplugin->logout();
-					}
+						// Redirect to user third party signout view
+						// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
+						if ($authenticator == 'pucas')
+						{
+							// Get plugin params
+							$plugin      = Plugin::byType('authentication', $authenticator);
 
-					break;
-				}
-			}
-		}
+							$pparams = new \Hubzero\Config\Registry($plugin->params);
+							$auto_logoff = $pparams->get('auto_logoff', false);
 
-		// Perform the log in.
+							if ($auto_logoff || $singleSignOn == 'all')
+							{
+								$result = $myplugin->logout();
+								break;
+							}
+							elseif ($singleSignOn === false)
+							{
+								App::redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $authenticator, false));
+								return;
+							}
+							else
+							{
+								break;
+							}
+						} // End PUCAS check
+						else
+						{
+							$result = $myplugin->logout();
+							break;
+						} // Normal path
+					} // End verification of logout() method
+				} // End plugin check
+			} // End foreach
+		} // End check for specified authenticator
+
+		// Perform the log out
 		$error = $app->logout();
 
 		// Check if the log out succeeded.
