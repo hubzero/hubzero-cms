@@ -866,6 +866,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Create the database object and set the token
 		$db     = App::get('db');
 		$params = json_decode($this->user->get('params'));
+
+		if (empty($params) || !is_object($params))
+		{
+			$params = new \stdClass;
+		}
+
 		$params->auth_link_token = $token;
 		$params = json_encode($params);
 
