@@ -92,6 +92,7 @@ defined('_HZEXEC_') or die();
 			<legend><?php echo Lang::txt('COM_JOBS_EDITJOB_JOB_OVERVIEW'); ?></legend>
 
 			<input type="hidden" name="task" value="savejob" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="code" value="<?php echo $job->code; ?>" />
 			<input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
 			<input type="hidden" name="status" value="<?php echo $status; ?>" />
