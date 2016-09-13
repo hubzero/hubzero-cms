@@ -60,8 +60,13 @@ $boxBgColor      = '#f6eddd';
 $append = '?from=' . $this->user->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
-$profileLink  = $base . DS . 'members' . DS . $this->user->get('id');
-$profileThumb = $base . DS . 'members' . DS . $this->user->get('id') . DS . 'Image:thumb.png';
+//ddie(get_class_methods($this->user));
+
+//$profileLink  = $base . DS . 'members' . DS . $this->user->get('id');
+$profileLink = $this->user->link();
+
+$profileThumb = $this->user->picture();
+//$profileThumb = $base . DS . 'members' . DS . $this->user->get('id') . DS . 'Image:thumb.png';
 
 // More publications?
 $more = count($this->pubstats) - $this->limit;
@@ -252,7 +257,7 @@ $more = count($this->pubstats) - $this->limit;
 													$sefManage = $baseManage . DS . $stat->publication_id;
 													$sefView   = $baseView . DS . $stat->publication_id;
 
-													$thumb = $baseView . DS . $stat->publication_id . DS . $stat->publication_version_id . DS . 'Image:thumb';
+													$thumb = $base . DS . $baseView . DS . $stat->publication_id . DS . $stat->publication_version_id . DS . 'Image:thumb';
 													$link  = $base . DS . trim($sefView, DS) . $append;
 													$manageLink  = $base . DS . trim($sefManage, DS) . $append;
 											?>
