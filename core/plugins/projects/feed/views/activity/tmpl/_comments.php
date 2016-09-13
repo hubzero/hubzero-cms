@@ -31,23 +31,24 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if (!$this->comments || count($this->comments) == 0)
+if ($this->comments && count($this->comments) > 0)
 {
-	return false;
+	// Show Comments
+	?>
+	<ol class="comments" id="comments_<?php echo $this->activity->id; ?>">
+		<?php
+		foreach ($this->comments as $comment)
+		{
+			// Show comments
+			$this->view('_comment')
+				->set('comment', $comment)
+				->set('model', $this->model)
+				->set('activity', $this->activity)
+				->set('uid', $this->uid)
+				->set('edit', $this->edit)
+				->display();
+		}
+		?>
+	</ol>
+	<?php
 }
-// Show Comments
-?>
-<ol class="comments" id="comments_<?php echo $this->activity->id; ?>">
-	<?php foreach ($this->comments as $comment)
-	{
-		// Show comments
-		$this->view('_comment')
-	     ->set('comment', $comment)
-	     ->set('model', $this->model)
-		 ->set('activity', $this->activity)
-		 ->set('uid', $this->uid)
-		 ->set('edit', $this->edit)
-	     ->display();
-	} ?>
-</ol>
-

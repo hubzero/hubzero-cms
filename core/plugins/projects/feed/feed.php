@@ -178,17 +178,13 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			}
 
 			// Set vars
-			$this->_config     = $model->config();
-			$this->_task       = Request::getVar('action', '');
-			$this->_database   = App::get('db');
-			$this->_uid        = User::get('id');
+			$this->_config   = $model->config();
+			$this->_task     = Request::getVar('action', '');
+			$this->_database = App::get('db');
+			$this->_uid      = User::get('id');
 
 			switch ($this->_task)
 			{
-				case 'page':
-				default:
-					$arr['html'] = $this->page();
-					break;
 				case 'delete':
 					$arr['html'] = $this->_delete();
 					break;
@@ -203,6 +199,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					break;
 				case 'update':
 					$arr['html'] = $this->updateFeed();
+					break;
+				case 'page':
+				default:
+					$arr['html'] = $this->page();
 					break;
 			}
 		}
@@ -236,14 +236,14 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$html = \Hubzero\Module\Helper::renderModules('projectpage');
 
 		// Side blocks from other plugins?
-		$sections = Event::trigger( 'projects.onProjectMiniList', array( $model));
+		$sections = Event::trigger('projects.onProjectMiniList', array($model));
 
 		if (!empty($sections))
 		{
 			// Show subscription to feed (new)
-			$subscribe = Event::trigger( 'projects.onProjectMember', array( $model));
-			$html .= !empty($subscribe[0]) ? $subscribe[0] : NULL;
+			$subscribe = Event::trigger('projects.onProjectMember', array($model));
 
+			$html .= !empty($subscribe[0]) ? $subscribe[0] : NULL;
 			foreach ($sections as $section)
 			{
 				$html .= !empty($section) ? $section : NULL;
@@ -288,17 +288,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			$suggestions = \Components\Projects\Helpers\Html::getSuggestions($model);
 
 			// Display welcome message
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'projects',
-					'element' => $this->_name,
-					'name'    => 'modules',
-					'layout'  => '_welcome'
-				)
-			);
-			$view->option      = $this->_option;
-			$view->suggestions = $suggestions;
-			$view->model       = $model;
+			$view = $this->view('_welcome', 'modules')
+				->set('option', $this->_option)
+				->set('suggestions', $suggestions)
+				->set('model', $model);
 
 			$html .= $view->loadTemplate();
 		}
@@ -313,48 +306,48 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	 */
 	public function page()
 	{
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'projects',
-				'element' => $this->_name,
-				'name'    => 'view'
-			)
-		);
+		$limit = intval($this->params->get('limit', 25));
 
-		$view->limit = intval($this->params->get('limit', 25));
-
-		// Get activities
-		$objAC = $this->model->table('Activity');
-		$view->filters = array(
+		$filters = array(
 			'role'    => $this->model->member()->role,
-			'limit'   => Request::getVar('limit', $view->limit, 'request')
+			'limit'   => Request::getVar('limit', $limit, 'request')
 		);
+
+		$objAC = $this->model->table('Activity');
 
 		// Get count
-		$view->total = $objAC->getActivities($this->model->get('id'), $view->filters, 1, $this->_uid);
+		$total = $objAC->getActivities(
+			$this->model->get('id'),
+			$filters,
+			1,
+			$this->_uid
+		);
 
 		// get activities
-		$activities = $objAC->getActivities (
+		$activities = $objAC->getActivities(
 			$this->model->get('id'),
-			$view->filters,
+			$filters,
 			0,
 			$this->_uid
 		);
-		$view->activities = $this->_prepActivities(
+		$activities = $this->_prepActivities(
 			$activities,
-			$view->filters,
-			$view->limit
+			$filters,
+			$limit
 		);
 
 		// Output html
-		$view->params   = $this->model->params;
-		$view->option   = $this->_option;
-		$view->database = $this->_database;
-		$view->model    = $this->model;
-		$view->uid      = $this->_uid;
-		$view->config   = $this->_config;
-		$view->title    = $this->_area['title'];
+		$view = $this->view('default', 'view')
+			->set('params', $this->model->params)
+			->set('option', $this->_option)
+			->set('database', $this->_database)
+			->set('model', $this->model)
+			->set('uid', $this->_uid)
+			->set('filters', $filters)
+			->set('limit', $limit)
+			->set('total', $activities)
+			->set('activities', $activities)
+			->set('title', $this->_area['title']);
 
 		return $view->loadTemplate();
 	}
@@ -370,7 +363,6 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		if (!$this->model->access('content'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
 		}
 
 		// Incoming
@@ -428,11 +420,11 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			Notify::message($this->getError(), 'error', 'projects');
 		}
 		elseif (!empty($this->_msg))
 		{
-			\Notify::message($this->_msg, 'success', 'projects');
+			Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Redirect
@@ -450,7 +442,6 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		if (!$this->model->access('content'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
 		}
 
 		// Incoming
@@ -543,45 +534,43 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	 */
 	public function updateFeed()
 	{
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'projects',
-				'element' => $this->_name,
-				'name'    => 'activity'
-			)
-		);
-
 		$objAC = $this->model->table('Activity');
 
-		$view->filters = array();
+		$filters = array();
 
-		$view->total = $objAC->getActivities(
+		$total = $objAC->getActivities(
 			$this->model->get('id'),
-			$view->filters,
+			$filters,
 			1,
 			$this->_uid
 		);
-		$view->limit = intval($this->params->get('limit', 25));
-		$view->filters['limit'] = Request::getVar('limit', $view->limit, 'request');
-		$view->option = $this->_option;
-		$view->model  = $this->model;
+		$limit = intval($this->params->get('limit', 25));
+		$filters['limit'] = Request::getVar('limit', $limit, 'request');
 
 		$activities = $objAC->getActivities(
 			$this->model->get('id'),
-			$view->filters,
+			$filters,
 			0,
 			$this->_uid
 		);
-		$view->activities = $this->_prepActivities(
+
+		$activities = $this->_prepActivities(
 			$activities,
-			$view->filters,
-			$view->limit
+			$filters,
+			$limit
 		);
 
-		$view->uid      = $this->_uid;
-		$view->database = $this->_database;
-		$view->title    = $this->_area['title'];
+		$view = $this->view('default', 'activity')
+			->set('option', $this->_option)
+			->set('model', $this->model)
+			->set('filters', $filters)
+			->set('limit', $limit)
+			->set('total', $activities)
+			->set('activities', $activities)
+			->set('uid', $this->_uid)
+			->set('database', $this->_database)
+			->set('title', $this->_area['title']);
+
 		return $view->loadTemplate();
 	}
 
@@ -608,32 +597,30 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$this->_uid      = $uid;
 		$this->miniView  = true;
 
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'projects',
-				'element' => $this->_name,
-				'name'    => 'activity',
-				'layout'  => 'shared'
-			)
-		);
-		$view->limit   = isset($filters['limit']) ? $filters['limit'] : 0;
-		$view->filters = $filters;
+		$limit = (isset($filters['limit']) ? $filters['limit'] : 0);
 
 		// Get and sort activities
 		$objAC = $this->model->table('Activity');
+
 		$activities = $objAC->getActivities(0, $filters, 0, $uid, $projects);
-		$view->activities = $this->_prepActivities(
+		$activities = $this->_prepActivities(
 			$activities,
 			$filters,
-			$view->limit
+			$limit
 		);
 
 		// Get total
-		$view->total = $objAC->getActivities(0, array(), 1, $uid, $projects);
+		$total = $objAC->getActivities(0, array(), 1, $uid, $projects);
 
-		$view->uid   = $this->_uid;
-		$view->model = $this->model;
+		// Output HTML
+		$view = $this->view('shared', 'activity')
+			->set('limit', $limit)
+			->set('filters', $filters)
+			->set('activities', $activities)
+			->set('total', $total)
+			->set('uid', $this->_uid)
+			->set('model', $model);
+
 		return $view->loadTemplate();
 	}
 
@@ -650,8 +637,8 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$objAC = $this->model->table('Activity');
 
 		// Instantiate some classes
-		$objM = new \Components\Projects\Tables\Blog($this->_database);
-		$objC = new \Components\Projects\Tables\Comment($this->_database);
+		$objM  = new \Components\Projects\Tables\Blog($this->_database);
+		$objC  = new \Components\Projects\Tables\Comment($this->_database);
 		$objTD = new \Components\Projects\Tables\Todo($this->_database);
 
 		// Collectors

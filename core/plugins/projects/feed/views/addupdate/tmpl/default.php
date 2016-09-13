@@ -37,9 +37,10 @@ if (!$this->model->access('content'))
 }
 ?>
 <div id="blab" class="miniblog">
-	<form id="blogForm" method="post" action="<?php echo Route::url($this->model->link()); ?>">
+	<form id="blogForm" method="post" class="focused" action="<?php echo Route::url($this->model->link()); ?>">
 		<fieldset>
-			<textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="Got an update?"></textarea>
+			<textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="<?php echo Lang::txt('Got an update?'); ?>"></textarea>
+			<?php //echo $this->editor('blogentry', '', 5, 3, 'blogentry', array('class' => 'minimal no-footer')); ?>
 			<p id="blog-submitarea">
 				<span id="counter_number_blog" class="leftfloat mini"></span>
 				<input type="hidden" name="task" value="view" />

@@ -45,7 +45,7 @@ $shorten = (strlen($longComment) > 250) ? 1 : 0;
 $shortComment = $shorten
 	? \Hubzero\Utility\String::truncate($longComment, 250, array('html' => true)) : $longComment;
 
-$longComment = \Components\Projects\Helpers\Html::replaceUrls($longComment, 'external');
+$longComment  = \Components\Projects\Helpers\Html::replaceUrls($longComment, 'external');
 $shortComment = \Components\Projects\Helpers\Html::replaceUrls($shortComment, 'external');
 
 // Emotions (new)
@@ -53,15 +53,14 @@ $longComment  = \Components\Projects\Helpers\Html::replaceEmoIcons($longComment)
 $shortComment = \Components\Projects\Helpers\Html::replaceEmoIcons($shortComment);
 
 $creator = User::getInstance($comment->created_by);
-
 ?>
 	<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
-	<?php if ($this->edit && $deletable && $this->model->access('content')) { ?>
-		<span class="m_options">
-			<span class="delit" id="pu_<?php echo $comment->id; ?>">
-			 <a href="<?php echo Route::url($this->model->link('feed') .'&action=deletecomment&amp;cid=' . $comment->id); ?>">x</a>
+		<?php if ($this->edit && $deletable && $this->model->access('content')) { ?>
+			<span class="m_options">
+				<span class="delit" id="pu_<?php echo $comment->id; ?>">
+				 <a href="<?php echo Route::url($this->model->link('feed') .'&action=deletecomment&cid=' . $comment->id); ?>">x</a>
+				</span>
 			</span>
-		</span>
 		<?php } ?>
 		<img class="comment-author" src="<?php echo $creator->picture($comment->admin); ?>" alt="" />
 		<div class="comment-show">
@@ -69,16 +68,17 @@ $creator = User::getInstance($comment->created_by);
 				<span class="actor"><?php echo $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
 				<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($comment->created, true); ?></span>
 			</span>
-	<?php 	echo '<div class="body">' . $shortComment;
+			<?php
+			echo '<div class="body">' . $shortComment;
 			if ($shorten)
 			{
 				echo ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
 			}
-			echo '</div>'; ?>
-	<?php 	if ($shorten)
+			echo '</div>';
+			if ($shorten)
 			{
-			echo '<div class="fullbody hidden">' . $longComment . '</div>' ;
+				echo '<div class="fullbody hidden">' . $longComment . '</div>' ;
 			}
-	?>
+			?>
 		</div>
 	</li>
