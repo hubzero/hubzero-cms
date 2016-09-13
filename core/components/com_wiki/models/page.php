@@ -46,6 +46,7 @@ require_once(__DIR__ . DS . 'version.php');
 require_once(__DIR__ . DS . 'comment.php');
 require_once(__DIR__ . DS . 'author.php');
 require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'link.php');
 require_once(__DIR__ . DS . 'log.php');
 
 /**
