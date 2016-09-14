@@ -12,88 +12,118 @@ class Migration2016090610110000Core extends Base
 {
 	private function addIndex($table,$key,$fields)
 	{
+		if (!$this->db->tableExists($table))
+		{
+			return;
+		}
+
 		if (is_array($fields))
 		{
 			$indexfields = '';
 
 			foreach ($fields as $f)
 			{
+				if (!$this->db->tableHasField($table, $f))
+				{
+					return;
+				}
 				$indexfields .= "`" . $f . "`,";
 			}
 		}
 		else
 		{
+			if (!$this->db->tableHasField($table, $fields))
+			{
+				return;
+			}
 			$indexfields = "`" . $fields . "`";
 		}
 
 		$indexfields = trim($indexfields,",");
 
-		if ($this->db->tableExists($table))
+		if (!$this->db->tableHasKey($table, $key))
 		{
-			if (!$this->db->tableHasKey($table, $key))
-			{
-				$query = "ALTER TABLE `" . $table . "` ADD INDEX `" . $key . "` (" . $indexfields . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+			$query = "ALTER TABLE `" . $table . "` ADD INDEX `" . $key . "` (" . $indexfields . ");";
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	private function addPrimaryIndex($table,$fields)
 	{
+		if (!$this->db->tableExists($table))
+		{
+			return;
+		}
+
 		if (is_array($fields))
 		{
 			$indexfields = '';
 
 			foreach ($fields as $f)
 			{
+				if (!$this->db->tableHasField($table, $f))
+				{
+					return;
+				}
 				$indexfields .= "`" . $f . "`,";
 			}
 		}
 		else
 		{
+			if (!$this->db->tableHasField($table, $fields))
+			{
+				return;
+			}
 			$indexfields = "`" . $fields . "`";
 		}
 
 		$indexfields = trim($indexfields,",");
 
-		if ($this->db->tableExists($table))
+		if (!$this->db->tableHasKey($table, 'PRIMARY'))
 		{
-			if (!$this->db->tableHasKey($table, 'PRIMARY'))
-			{
-				$query = "ALTER TABLE `" . $table . "` ADD PRIMARY KEY (" . $indexfields . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+			$query = "ALTER TABLE `" . $table . "` ADD PRIMARY KEY (" . $indexfields . ");";
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
 	private function addFulltextIndex($table,$key,$fields)
 	{
+		if (!$this->db->tableExists($table))
+		{
+			return;
+		}
+
 		if (is_array($fields))
 		{
 			$indexfields = '';
 
 			foreach ($fields as $f)
 			{
+				if (!$this->db->tableHasField($table, $f))
+				{
+					return;
+				}
 				$indexfields .= "`" . $f . "`,";
 			}
 		}
 		else
 		{
+			if (!$this->db->tableHasField($table, $fields))
+			{
+				return;
+			}
 			$indexfields = "`" . $fields . "`";
 		}
 
 		$indexfields = trim($indexfields,",");
 
-		if ($this->db->tableExists($table))
+		if (!$this->db->tableHasKey($table, $key))
 		{
-			if (!$this->db->tableHasKey($table, $key))
-			{
-				$query = "ALTER TABLE `" . $table . "` ADD FULLTEXT INDEX `" . $key . "` (" . $indexfields . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+			$query = "ALTER TABLE `" . $table . "` ADD FULLTEXT INDEX `" . $key . "` (" . $indexfields . ");";
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
@@ -105,11 +135,19 @@ class Migration2016090610110000Core extends Base
 
 			foreach ($fields as $f)
 			{
+				if (!$this->db->tableHasField($table, $f))
+				{
+					return;
+				}
 				$indexfields .= "`" . $f . "`,";
 			}
 		}
 		else
 		{
+			if (!$this->db->tableHasField($table, $fields))
+			{
+				return;
+			}
 			$indexfields = "`" . $fields . "`";
 		}
 
@@ -259,7 +297,10 @@ class Migration2016090610110000Core extends Base
 		$this->addIndex('#__project_logs', 'idx_projectid', 'projectid');
 		$this->dropIndex('#__project_logs', 'projectid');
 
-		if ($this->db->tableExists('#__poll_options') && !$this->db->tableHasKey('#__poll_options', 'idx_pollid_text'))
+		if ($this->db->tableExists('#__poll_options')
+		 && $this->db->tableHasField('#__poll_options', 'poll_id')
+		 && $this->db->tableHasField('#__poll_options', 'text')
+		 && !$this->db->tableHasKey('#__poll_options', 'idx_pollid_text'))
 		{
 			$query = "ALTER TABLE `#__poll_options` ADD INDEX `idx_pollid_text` (`poll_id`, `text`(1))";
 			$this->db->setQuery($query);
@@ -350,7 +391,13 @@ class Migration2016090610110000Core extends Base
 		$this->dropIndex('#__citations_authors', 'uidNumber');
 		$this->dropIndex('#__citations', 'jos_citations_title_isbn_doi_abstract_ftidx');
 
-		if ($this->db->tableExists('#__cart_saved_addresses') && !$this->db->tableHasKey('#__cart_saved_addresses', 'uidx_uidNumber_saToFirst_saToLast_saAddress_saZip'))
+		if ($this->db->tableExists('#__cart_saved_addresses')
+		 && $this->db->tableHasField('#__cart_saved_addresses', 'uidNumber')
+		 && $this->db->tableHasField('#__cart_saved_addresses', 'saToFirst')
+		 && $this->db->tableHasField('#__cart_saved_addresses', 'saToLast')
+		 && $this->db->tableHasField('#__cart_saved_addresses', 'saAddress')
+		 && $this->db->tableHasField('#__cart_saved_addresses', 'saZip')
+		 && !$this->db->tableHasKey('#__cart_saved_addresses', 'uidx_uidNumber_saToFirst_saToLast_saAddress_saZip'))
 		{
 			$query = "ALTER TABLE `#__cart_saved_addresses` ADD UNIQUE INDEX `uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)";
 			$this->db->setQuery($query);
