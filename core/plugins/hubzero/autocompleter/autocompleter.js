@@ -490,12 +490,17 @@ $.TokenList = function (input, url_or_data, settings) {
 	function insert_token(item) {
 		var this_token = settings.tokenFormatter(item);
 		this_token = $(this_token)
-		  .addClass(settings.classes.token)
+		  .addClass(settings.classes.token);
+		for (var key in item)
+		{
+			this_token.attr('data-' + key, item[key].replace('"', '&quot;'));
+		}
+		this_token
 		  .insertBefore(input_token);
 
 		// The 'delete token' button
 		if (!isReadOnly) 
-		{	
+		{
 			$("<span>" + settings.deleteText + "</span>")
 				.addClass(settings.classes.tokenDelete)
 				.appendTo(this_token)
