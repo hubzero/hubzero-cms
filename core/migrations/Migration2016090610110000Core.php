@@ -135,7 +135,7 @@ class Migration2016090610110000Core extends Base
 
 			foreach ($fields as $f)
 			{
-				if (!$this->db->tableHasField($table, $f))
+				if ($this->db->tableExists($table) && !$this->db->tableHasField($table, $f))
 				{
 					return;
 				}
@@ -144,7 +144,7 @@ class Migration2016090610110000Core extends Base
 		}
 		else
 		{
-			if (!$this->db->tableHasField($table, $fields))
+			if (!$this->db->tableExists($table) || !$this->db->tableHasField($table, $fields))
 			{
 				return;
 			}
