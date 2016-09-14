@@ -115,7 +115,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 					    <div style="width: 302px; height: 352px; position: relative;">
 					      <div style="width: 302px; height: 352px; position: absolute;">
 					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '"
-					                frameborder="0" scrolling="no"
+					                frameborder="0" scrolling="no" title="' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_TITLE') . '"
 					                style="width: 302px; height:352px; border-style: none;">
 					        </iframe>
 					      </div>
