@@ -87,11 +87,13 @@ if (count($this->authors) > 0)
 
 									if (uid)
 									{
-										var name = $('.token-input-token-acm p')[0];
-
-										if ($(name).length)
+										var item = $($('.token-input-token-acm')[0]);
+										if (item.length)
 										{
-											name = $(name).html();
+											var name = item.attr('data-name');
+											var org  = item.attr('data-org');
+
+											$('#organization').val(org);
 
 											var parts = name.split(" ");
 
@@ -103,7 +105,6 @@ if (count($this->authors) > 0)
 												var first = parts.join(" ");
 												$('#firstName').val(first);
 											}
-
 										}
 									}
 								});
@@ -135,7 +136,7 @@ if (count($this->authors) > 0)
 					<div class="block-liner">
 					<label for="organization">
 						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>*:</span>
-						<input type="text" class="inputrequired" name="organization" value="" maxlength="255" />
+						<input type="text" class="inputrequired" name="organization" id="organization" value="" maxlength="255" />
 					<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_HINT'); ?></p>
 					</label>
 					</div>
