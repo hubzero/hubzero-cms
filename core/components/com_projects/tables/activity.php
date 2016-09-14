@@ -193,6 +193,11 @@ class Activity extends \JTable
 
 		$query  .= " AND a.state != 2 ";
 
+		if (isset($filters['recorded']) && $filters['recorded'])
+		{
+			$query  .= " AND a.recorded > " . $this->_db->quote($filters['recorded']);
+		}
+
 		$query  .= " ORDER BY ";
 		$query  .=  $sortby == 'recorded' ? " a.recorded $sortdir " : "";
 		$query  .=  $sortby == 'class' ? " a.class $sortdir " : "";
