@@ -49,6 +49,7 @@ if ($this->page->exists())
 else
 {
 	$lid = Request::getInt('lid', (time() . rand(0,10000)), 'post');
+	$lid = '-' . substr($lid, -8);
 }
 
 // Incoming
