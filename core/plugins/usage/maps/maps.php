@@ -331,7 +331,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 		$html  = '<h3>' . Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)) . '</h3>' . "\n";
 		$html .= '<p><a class="map" href="' . Route::url('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . Lang::txt('PLG_USAGE_MAPS_RESET') . '</a></p>';
-		$html .= '<iframe src="' . Route::url('index.php?option=' . $option . '&task=' . $task . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom) . '" width="100%" height="600px" scrolling="no" frameborder="0"></iframe>' . "\n";
+		$html .= '<iframe src="' . Route::url('index.php?option=' . $option . '&task=' . $task . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom) . '" width="100%" height="600px" scrolling="no" frameborder="0" title="' . Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)) . '"></iframe>' . "\n";
 
 		return $html;
 	}
