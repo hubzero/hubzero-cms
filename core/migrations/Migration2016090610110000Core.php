@@ -28,12 +28,15 @@ class Migration2016090610110000Core extends Base
 
 		$indexfields = trim($indexfields,",");
 
-                if (!$this->db->tableHasKey($table, $key))
-                {
-                        $query = "ALTER TABLE `" . $table . "` ADD INDEX `" . $key . "` (" . $indexfields . ");";
-			$this->db->setQuery($query);
-			$this->db->query();
-                }
+		if ($this->db->tableExists($table))
+		{
+			if (!$this->db->tableHasKey($table, $key))
+			{
+				$query = "ALTER TABLE `" . $table . "` ADD INDEX `" . $key . "` (" . $indexfields . ");";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
 	}
 
 	private function addPrimaryIndex($table,$fields)
@@ -54,12 +57,15 @@ class Migration2016090610110000Core extends Base
 
 		$indexfields = trim($indexfields,",");
 
-                if (!$this->db->tableHasKey($table, 'PRIMARY'))
-                {
-                        $query = "ALTER TABLE `" . $table . "` ADD PRIMARY KEY (" . $indexfields . ");";
-			$this->db->setQuery($query);
-			$this->db->query();
-                }
+		if ($this->db->tableExists($table))
+		{
+			if (!$this->db->tableHasKey($table, 'PRIMARY'))
+			{
+				$query = "ALTER TABLE `" . $table . "` ADD PRIMARY KEY (" . $indexfields . ");";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
 	}
 
 	private function addFulltextIndex($table,$key,$fields)
@@ -80,12 +86,15 @@ class Migration2016090610110000Core extends Base
 
 		$indexfields = trim($indexfields,",");
 
-                if (!$this->db->tableHasKey($table, $key))
-                {
-                        $query = "ALTER TABLE `" . $table . "` ADD FULLTEXT INDEX `" . $key . "` (" . $indexfields . ");";
-			$this->db->setQuery($query);
-			$this->db->query();
-                }
+		if ($this->db->tableExists($table))
+		{
+			if (!$this->db->tableHasKey($table, $key))
+			{
+				$query = "ALTER TABLE `" . $table . "` ADD FULLTEXT INDEX `" . $key . "` (" . $indexfields . ");";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
 	}
 
 	private function addUniqueIndex($table,$key,$fields,$using='')
@@ -106,28 +115,31 @@ class Migration2016090610110000Core extends Base
 
 		$indexfields = trim($indexfields,",");
 
-                if (!$this->db->tableHasKey($table, $key))
-                {
-                        $query = "ALTER TABLE `" . $table . "` ADD UNIQUE INDEX `" . $key . "` (" . $indexfields . ")";
+		if ($this->db->tableExists($table) && !$this->db->tableHasKey($table, $key))
+		{
+			$query = "ALTER TABLE `" . $table . "` ADD UNIQUE INDEX `" . $key . "` (" . $indexfields . ")";
 			if (!empty($using))
 			{
 				$query .= " USING $using";
 			}
 			$this->db->setQuery($query);
 			$this->db->query();
-                }
+		}
 	}
 
 	private function dropIndex($table,$key)
 	{
-                if ($this->db->tableHasKey($table,$key))
-                {
-                        $query = "DROP INDEX `" . $key . "` ON `" . $table . "`;";
+		if ($this->db->tableExists($table) && $this->db->tableHasKey($table,$key))
+		{
+			$query = "DROP INDEX `" . $key . "` ON `" . $table . "`;";
 			$this->db->setQuery($query);
 			$this->db->query();
-                }
+		}
 	}
 
+	/**
+	 * Up
+	 **/
 	public function up()
 	{
 		$this->addIndex('#__xsession', 'idx_ip', 'ip');
@@ -247,12 +259,12 @@ class Migration2016090610110000Core extends Base
 		$this->addIndex('#__project_logs', 'idx_projectid', 'projectid');
 		$this->dropIndex('#__project_logs', 'projectid');
 
-		if (!$this->db->tableHasKey('#__poll_options', 'idx_pollid_text'))
-                {
-                        $query = "ALTER TABLE #__poll_options ADD INDEX `idx_pollid_text` (`poll_id`, `text`(1))";
-                        $this->db->setQuery($query);
-                        $this->db->query();
-                }
+		if ($this->db->tableExists('#__poll_options') && !$this->db->tableHasKey('#__poll_options', 'idx_pollid_text'))
+		{
+			$query = "ALTER TABLE `#__poll_options` ADD INDEX `idx_pollid_text` (`poll_id`, `text`(1))";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 
 		$this->dropIndex('#__poll_options', 'pollid');
 		$this->addIndex('#__poll_dates', 'idx_poll_id', 'poll_id');
@@ -338,12 +350,12 @@ class Migration2016090610110000Core extends Base
 		$this->dropIndex('#__citations_authors', 'uidNumber');
 		$this->dropIndex('#__citations', 'jos_citations_title_isbn_doi_abstract_ftidx');
 
-		if (!$this->db->tableHasKey('#__cart_saved_addresses', 'uidx_uidNumber_saToFirst_saToLast_saAddress_saZip'))
-                {
-                        $query = "ALTER TABLE #__cart_saved_addresses ADD UNIQUE INDEX `uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)";
-                        $this->db->setQuery($query);
-                        $this->db->query();
-                }
+		if ($this->db->tableExists('#__cart_saved_addresses') && !$this->db->tableHasKey('#__cart_saved_addresses', 'uidx_uidNumber_saToFirst_saToLast_saAddress_saZip'))
+		{
+			$query = "ALTER TABLE `#__cart_saved_addresses` ADD UNIQUE INDEX `uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 
 		$this->dropIndex('#__cart_saved_addresses', 'uidNumber');
 		$this->addUniqueIndex('#__cart_memberships', "uidx_pId_crtId", array('pId','crtId'));
@@ -362,6 +374,9 @@ class Migration2016090610110000Core extends Base
 		$this->dropIndex('#__answers_questions','subject');
 	}
 
+	/**
+	 * Down
+	 **/
 	public function down()
 	{
 	}
