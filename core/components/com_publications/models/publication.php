@@ -840,7 +840,17 @@ class Publication extends Object
 				if ($contributor->lastName || $contributor->firstName)
 				{
 					$name  = stripslashes($contributor->lastName);
+					if (strstr($contributor->firstName, ' '))
+					{
+						$parts = explode(' ', $contributor->firstName);
+						$contributor->firstName = array_shift($parts);
+						$contributor->middleName = implode(' ', $parts);
+					}
 					$name .= ', ' . substr(stripslashes($contributor->firstName), 0, 1) . '.';
+					if ($contributor->middleName)
+					{
+						$name .= ' ' . substr(stripslashes($contributor->middleName), 0, 1) . '.';
+					}
 				}
 				else
 				{
