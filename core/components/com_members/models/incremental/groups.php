@@ -30,13 +30,14 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Members\Models\Incremental;
+
+use App;
 
 /**
  * Class for incremental registration groups
  */
-class ModIncrementalRegistrationGroups
+class Groups
 {
 	/**
 	 * Possible columns

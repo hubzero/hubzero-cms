@@ -73,9 +73,9 @@ if (isset($this->registration_update))
 
 /*
 //incremental registration
-require_once PATH_CORE . '/components/com_members/tables/incremental/awards.php';
-require_once PATH_CORE . '/components/com_members/tables/incremental/groups.php';
-require_once PATH_CORE . '/components/com_members/tables/incremental/options.php';
+require_once PATH_CORE . '/components/com_members/models/incremental/awards.php';
+require_once PATH_CORE . '/components/com_members/models/incremental/groups.php';
+require_once PATH_CORE . '/components/com_members/models/incremental/options.php';
 
 $uid = (int)$this->profile->get('id');
 $incrOpts = new ModIncrementalRegistrationOptions;
@@ -200,7 +200,7 @@ function renderIfJson($v)
 		/*
 		if ($isUser && $isIncrementalEnabled)
 		{
-			$awards = new ModIncrementalRegistrationAwards($this->profile);
+			$awards = new Components\Members\Models\Incremental\Awards($this->profile);
 			$awards = $awards->award();
 
 			$increm  = '<div id="award-info">';

@@ -33,9 +33,9 @@
 namespace Modules\IncrementalRegistration;
 
 use Hubzero\Module\Module;
-use ModIncrementalRegistrationOptions;
-use ModIncrementalRegistrationGroups;
-use ModIncrementalRegistrationAwards;
+use Components\Members\Models\Incremental\Options;
+use Components\Members\Models\Incremental\Groups;
+use Components\Members\Models\Incremental\Awards;
 use Component;
 use Request;
 use User;
@@ -88,13 +88,13 @@ class Helper extends Module
 
 		$dbg = isset($_GET['dbg']);
 		$uid = (int) User::get('id');
-		$dbh = \App::get('db');
+		$dbh = App::get('db');
 
-		require_once Component::path('com_members') . '/tables/incremental/awards.php';
-		require_once Component::path('com_members') . '/tables/incremental/groups.php';
-		require_once Component::path('com_members') . '/tables/incremental/options.php';
+		require_once Component::path('com_members') . '/models/incremental/awards.php';
+		require_once Component::path('com_members') . '/models/incremental/groups.php';
+		require_once Component::path('com_members') . '/models/incremental/options.php';
 
-		$opts = new ModIncrementalRegistrationOptions;
+		$opts = new Options;
 		if (!$opts->isEnabled($uid))
 		{
 			return;
@@ -114,12 +114,12 @@ class Helper extends Module
 
 		if (isset($_POST['incremental-registration']) && isset($_POST['submit']) && $_POST['submit'] === 'opt-out')
 		{
-			$awards = new ModIncrementalRegistrationAwards($uid);
+			$awards = new Awards($uid);
 			$awards->optOut();
 			return;
 		}
 
-		$groups = new ModIncrementalRegistrationGroups;
+		$groups = new Groups;
 
 		$hasCurl = file_exists(__DIR__ . '/assets/img/bigcurl.png');
 		if (($row = $groups->getActiveColumns($uid)) || $hasCurl)
