@@ -25,78 +25,69 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Members\Tables;
+namespace Components\Members\Models;
 
-use Lang;
+use Hubzero\Database\Relational;
 
 /**
- * Table class for member addresses
+ * User address model
  */
-class Address extends \JTable
+class Address extends Relational
 {
 	/**
-	 * Object constructor to set table and key field
+	 * The table namespace
 	 *
-	 * @param   object  $db  Database object
-	 * @return  void
+	 * @var  string
 	 */
-	public function __construct($db)
+	protected $namespace = 'xprofiles';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'uidNumber' => 'positive|nonzero'
+	);
+
+	/**
+	 * Get parent member
+	 *
+	 * @return  object
+	 */
+	public function member()
 	{
-		parent::__construct('#__xprofiles_address', 'id', $db);
+		return $this->belongsToOne('Components\Members\Models\Member', 'uidNumber');
 	}
 
 	/**
-	 * Method for checking that fields are valid before sending to the database
+	 * Get addresses for a user
 	 *
-	 * @return  boolean  True if the object is ok
+	 * @param   integer  $uidNumber
+	 * @return  object
 	 */
-	public function check()
+	public static function getAddressesForMember($uidNumber)
 	{
-		if (!isset($this->uidNumber) || $this->uidNumber == '')
-		{
-			$this->setError(Lang::txt('You must supply a user id.'));
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to verify we can delete address
-	 *
-	 * @param   unknown  $pk
-	 * @param   unknown  $joins
-	 * @return  boolean
-	 */
-	public function canDelete($pk = NULL, $joins = NULL)
-	{
-		return true;
-	}
-
-	/**
-	 * Method to get addressed for member
-	 *
-	 * @param   integer  $uidNumber  Member User Id
-	 * @return  array
-	 */
-	public function getAddressesForMember($uidNumber)
-	{
-		// Make sure we have a user id
-		if (!isset($uidNumber))
-		{
-			$this->setError(Lang::txt('You must supply a user id.'));
-			return false;
-		}
-
-		// Query database for addresses for user id
-		$sql = "SELECT * FROM {$this->_tbl} WHERE uidNumber=" . $this->_db->quote($uidNumber);
-		$this->_db->setQuery($sql);
-
-		return $this->_db->loadObjectList();
+		return self::all()
+			->whereEquals('uidNumber', $uidNumber)
+			->rows();
 	}
 }

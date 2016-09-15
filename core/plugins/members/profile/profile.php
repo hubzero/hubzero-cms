@@ -305,35 +305,29 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method to edit a user address
 	 *
+	 * @param   objct  $address
 	 * @return  void
 	 */
-	public function editAddress()
+	public function editAddress($address = null)
 	{
-		$this->view = $this->view('edit', 'address');
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'address.php';
 
-		//get request vars
-		$this->view->addressId = Request::getInt('addressid', 0);
-
-		//get member addresses
-		$database = App::get('db');
-		$this->view->address = new \Components\Members\Tables\Address($database);
-		$this->view->address->load($this->view->addressId);
-
-		//are we passing back the vars from save
-		if (isset($this->address))
+		// get member addresses
+		if (!$address)
 		{
-			$this->view->address = $this->address;
+			//get request vars
+			$addressId = Request::getInt('addressid', 0);
+
+			$address = Components\Members\Models\Address::oneOrNew($addressId);
 		}
 
 		//set vars for view
-		$this->view->member = $this->member;
+		$view = $this->view('edit', 'address')
+			->set('member', $this->member)
+			->set('address', $address)
+			->setErrors($this->getErrors());
 
-		//set errors and display
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-		return $this->view->loadTemplate();
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -343,33 +337,20 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function saveAddress()
 	{
-		//get request vars
-		$address = Request::getVar('address', array());
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'address.php';
 
-		//set up objects
-		$database = App::get('db');
-		$membersAddress = new \Components\Members\Tables\Address($database);
+		// get request vars
+		$data = Request::getVar('address', array());
+		$data['uidNumber'] = User::get('id');
 
-		//create object from vars
-		$addressObj = new stdClass;
-		$addressObj->id               = $address['id'];
-		$addressObj->uidNumber        = User::get('id');
-		$addressObj->addressTo        = $address['addressTo'];
-		$addressObj->address1         = $address['address1'];
-		$addressObj->address2         = $address['address2'];
-		$addressObj->addressCity      = $address['addressCity'];
-		$addressObj->addressRegion    = $address['addressRegion'];
-		$addressObj->addressPostal    = $address['addressPostal'];
-		$addressObj->addressCountry   = $address['addressCountry'];
-		$addressObj->addressLatitude  = $address['addressLatitude'];
-		$addressObj->addressLongitude = $address['addressLongitude'];
+		// set up objects
+		$address = Components\Members\Models\Address::blank()->set($data);
 
-		//attempt to save
-		if (!$membersAddress->save($addressObj))
+		// attempt to save
+		if (!$address->save())
 		{
-			$this->address = $addressObj;
-			$this->setError($membersAddress->getError());
-			return $this->editAddress();
+			$this->setError($address->getError());
+			return $this->editAddress($address);
 		}
 
 		//inform and redirect
@@ -387,44 +368,35 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteAddress()
 	{
-		//get request vars
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'address.php';
+
+		// get request vars
 		$addressId = Request::getInt('addressid', 0);
 
-		//set up objects
-		$database = App::get('db');
-		$membersAddress = new \Components\Members\Tables\Address($database);
+		// set up objects
+		$address = Components\Members\Models\Address::oneOrNew($addressId);
 
-		//load address object
-		$membersAddress->load($addressId);
-
-		//make sure we have a valid member address object
-		if (!is_object($membersAddress) || !$membersAddress->id)
+		// make sure we have a valid member address object
+		if (!$address->get('id'))
 		{
 			return $this->view();
 		}
 
-		//make sure user can delete this address
-		if ($membersAddress->uidNumber != User::get('id'))
+		// make sure user can delete this address
+		if ($address->get('uidNumber') != User::get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
 			return $this->view();
 		}
 
-		//make sure we dont have another stimulation
-		if (!$membersAddress->canDelete())
+		// attempt to delete address
+		if (!$address->destroy())
 		{
-			$this->setError($membersAddress->getError());
+			$this->setErrror($address->getError());
 			return $this->view();
 		}
 
-		//attempt to delete address
-		if (!$membersAddress->delete($addressId))
-		{
-			$this->setErrror($membersAddress->getError());
-			return $this->view();
-		}
-
-		//inform and redirect
+		// inform and redirect
 		App::redirect(
 			Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'),
 			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
