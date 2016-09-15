@@ -32,6 +32,7 @@
 
 namespace Components\Support\Api;
 
+use Exception;
 use Hubzero\Component\Router\Base;
 
 /**
@@ -74,33 +75,46 @@ class Router extends Base
 	{
 		$vars = array();
 
-		$vars['controller'] = 'tickets';
 
 		if (isset($segments[0]))
 		{
-			if (is_numeric($segments[0]))
+			//set up RESTful routing
+			$vars['controller'] = $segments[0];
+			if (\App::get('request')->method() == 'POST')
 			{
-				$vars['id'] = $segments[0];
-				if (\App::get('request')->method() == 'GET')
-				{
-					$vars['task'] = 'read';
-				}
+				$vars['task'] = 'create';
 			}
-			else
+			if (\App::get('request')->method() == 'GET')
 			{
-				$vars['task'] = $segments[0];
+				$vars['task'] = 'list';
+			}
+			if (\App::get('request')->method() == 'PUT')
+			{
+				$vars['task'] = 'update';
+			}
+			if (\App::get('request')->method() == 'DEL')
+			{
+				$vars['task'] = 'delete';
 			}
 
+			//the next url segment should be the id
 			if (isset($segments[1]))
 			{
-				if ($segments[1] == 'comments')
+				if (is_numeric($segments[1]))
 				{
-					$vars['controller'] = $segments[1];
-					$vars['task'] = 'list';
+					$vars['id'] = $segments[1];
+					if (\App::get('request')->method() == 'GET')
+					{
+						$vars['task'] = 'read';
+					}
+					if (\App::get('request')->method() == 'POST')
+					{
+						$vars['task'] = 'create';
+					}
 				}
 				else
 				{
-					$vars['task'] = $segments[1];
+					throw new Exception(Lang::txt("COM_SUPPORT_TASK_NOT_FOUND"), 404);
 				}
 			}
 		}
