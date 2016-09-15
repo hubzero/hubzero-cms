@@ -30,13 +30,15 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Members\Models\Incremental;
+
+use Hubzero\Bank\Teller;
+use App;
 
 /**
  * Class for incremental registration awards
  */
-class ModIncrementalRegistrationAwards
+class Awards
 {
 	/**
 	 * Database connection
@@ -118,7 +120,7 @@ class ModIncrementalRegistrationAwards
 		{
 			return NULL;
 		}
-		$opts = new ModIncrementalRegistrationOptions;
+		$opts = new Options;
 		$awardPer = $opts->getAwardPerField();
 
 		$fieldMap = array(
@@ -187,7 +189,7 @@ class ModIncrementalRegistrationAwards
 			self::$dbh->setQuery('SELECT COALESCE((SELECT balance FROM `#__users_transactions` WHERE uid = ' . $this->uid . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = ' . $this->uid . ')), 0)');
 			$newAmount = self::$dbh->loadResult() + $alreadyComplete;
 
-			$BTL = new \Hubzero\Bank\Teller($this->uid);
+			$BTL = new Teller($this->uid);
 			$BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0);
 		}
 

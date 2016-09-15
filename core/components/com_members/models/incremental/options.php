@@ -30,13 +30,16 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Members\Models\Incremental;
+
+use Module;
+use User;
+use App;
 
 /**
  * Class for incremental registration options
  */
-class ModIncrementalRegistrationOptions
+class Options
 {
 	/**
 	 * Database connection
@@ -64,7 +67,8 @@ class ModIncrementalRegistrationOptions
 	 */
 	public function isEnabled($uid = NULL)
 	{
-		$dbg = isset($_GET['dbg']);
+		// What is the next line for?
+		//$dbg = isset($_GET['dbg']);
 		if (!$uid)
 		{
 			$uid = (int)User::get('id');
@@ -75,7 +79,7 @@ class ModIncrementalRegistrationOptions
 		}
 
 		$dbh = App::get('db');
-		$dbh->setQuery('SELECT emailConfirmed FROM `#__xprofiles` WHERE uidNumber = ' . $uid);
+		$dbh->setQuery('SELECT `activation` FROM `#__users` WHERE `id` = ' . $uid);
 		if ($dbh->loadResult() < 0)
 		{
 			return false;
