@@ -263,10 +263,8 @@ class Registration
 		}
 
 		//get member addresses
-		/*require_once(dirname(__DIR__) . DS . 'tables' . DS . 'address.php');
-		$database = \App::get('db');
-		$membersAddress = new Tables\Address($database);
-		$addresses = $membersAddress->getAddressesForMember($xprofile->get("uidNumber"));
+		/*require_once __DIR__ . DS . 'address.php';
+		$addresses = Address::getAddressesForMember($xprofile->get("uidNumber"));
 
 		$this->set('countryresident', $xprofile->get('countryresident'));
 		$this->set('countryorigin', $xprofile->get('countryorigin'));
