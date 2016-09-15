@@ -151,6 +151,7 @@ class Ticketsv2_0 extends ApiController
 			$temp['owner'] = $row->owner;
 			$temp['summary'] = $row->summary;
 			$temp['group'] = $row->group;
+			$temp['target_date'] = $row->target_date;
 
 			$response->tickets[] = $temp;
 		}
@@ -189,7 +190,7 @@ class Ticketsv2_0 extends ApiController
 	 * 		"description": "The submitter's operating system",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     "Unknown" 
+	 * 		"default":     "Unknown"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "browser",
@@ -256,17 +257,17 @@ class Ticketsv2_0 extends ApiController
 		}
 
 		//check required fields
-		if (!Request::get('name', null, 'post'))
+		if (!Request::get('name', null))
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_NAME_NOT_FOUND'), 404);
 		}
 
-		if (!Request::get('email', null, 'post'))
+		if (!Request::get('email', null))
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_EMAIL_NOT_FOUND'), 404);
 		}
 
-		if (!Request::get('report', null, 'post'))
+		if (!Request::get('report', null))
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_REPORT_NOT_FOUND'), 404);
 		}
@@ -275,12 +276,12 @@ class Ticketsv2_0 extends ApiController
 		$ticket = new \Components\Support\Models\Orm\Ticket;
 
 		// Set the column values for our new row
-		$ticket->set('status', Request::getInt('status', 0, 'post'));
+		$ticket->set('status', Request::getInt('status', 0));
 
 		//check if a username was sent, otherwise fill in with the session's username
-		if (Request::getString('username', null, 'post'))
+		if (Request::getString('username', null))
 		{
-			$ticket->set('login', Request::get('username', 'None', 'post'));
+			$ticket->set('login', Request::get('username', 'None'));
 		}
 		else
 		{
@@ -288,11 +289,11 @@ class Ticketsv2_0 extends ApiController
 		}
 
 		//setting more optional values
-		$ticket->set('severity', Request::get('severity', 'normal', 'post'));
-		$ticket->set('owner', Request::get('owner', 0, 'post'));
+		$ticket->set('severity', Request::get('severity', 'normal'));
+		$ticket->set('owner', Request::get('owner', 0));
 
 		//check if the report was good
-		$ticket->set('report', Request::get('report', '', 'post', 'none', 2));
+		$ticket->set('report', Request::get('report', '', 'none', 2));
 		if (!$ticket->get('report'))
 		{
 			throw new Exception(Lang::txt('Error: Report contains no text.'), 500);
@@ -307,17 +308,17 @@ class Ticketsv2_0 extends ApiController
 		$ticket->set('summary', $summary);
 
 		//continue setting values
-		$ticket->set('email', Request::get('email', 'None', 'post'));
-		$ticket->set('name', Request::get('name', 'None', 'post'));
-		$ticket->set('os', Request::get('os', 'Unknown', 'post'));
-		$ticket->set('browser', Request::get('browser', 'Unknown', 'post'));
+		$ticket->set('email', Request::get('email', 'None'));
+		$ticket->set('name', Request::get('name', 'None'));
+		$ticket->set('os', Request::get('os', 'Unknown'));
+		$ticket->set('browser', Request::get('browser', 'Unknown'));
 		$ticket->set('ip', Request::ip());
 		//$ticket->set('hostname', gethostbyaddr(Request::get('REMOTE_ADDR','','server')));
 		$ticket->set('uas', 'API Submission');
 		$ticket->set('referrer', '/api/v2.0/support/tickets');
 		$ticket->set('instances', 1);
 		$ticket->set('section', 1);
-		$ticket->set('group', Request::get('group', '', 'post'));
+		$ticket->set('group', Request::get('group', ''));
 		$ticket->set('open', 1);
 
 		// Save the data
@@ -358,7 +359,7 @@ class Ticketsv2_0 extends ApiController
 		}
 
 		// Initiate class and bind data to database fields
-		$ticket_id = Request::getInt('ticket', 0);
+		$ticket_id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
 		$ticket = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
@@ -434,7 +435,7 @@ class Ticketsv2_0 extends ApiController
 	 * 		"description": "Alias of group ticket should be assigned to",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     null 
+	 * 		"default":     null
 	 * }
 	 * @return    void
 	 */
@@ -448,7 +449,7 @@ class Ticketsv2_0 extends ApiController
 		}
 
 		// Initiate class and bind data to database fields
-		$ticket_id = Request::getInt('ticket', 0);
+		$ticket_id = Request::getInt('id', 0);
 		$status = Request::getInt('status', null);
 		$owner = Request::getInt('owner', null);
 		$severity = Request::getString('severity', null);
@@ -463,10 +464,10 @@ class Ticketsv2_0 extends ApiController
 			$status_model = \Components\Support\Models\Orm\Status::oneOrFail($status);
 			if (!$status_model->get('id'))
 			{
-				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_OWNER"), 404);
+				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_STATUS"), 404);
 			}
 			$model->set('status', $status) ;
-			$model->set('open', $status_model->get('status'));
+			$model->set('open', $status_model->get('open'));
 		}
 
 		if ($owner)
@@ -539,7 +540,7 @@ class Ticketsv2_0 extends ApiController
 		}
 
 		// Initiate class and bind data to database fields
-		$ticket_id = Request::getInt('ticket', 0);
+		$ticket_id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
 		$model = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
