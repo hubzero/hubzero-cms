@@ -863,8 +863,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Check authorization
 		// If the collection is registered and the user is NOT logged in OR
 		// If the collection is private and the user is NOT a member of the group...
-		if (($view->collection->get('access') == 1 && User::isGuest())
-		 || ($view->collection->get('access') == 4 && !in_array(User::get('id'), $this->members)))
+		if (($collection->get('access') == 1 && User::isGuest())
+		 || ($collection->get('access') == 4 && !in_array(User::get('id'), $this->members)))
 		{
 			App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 		}
