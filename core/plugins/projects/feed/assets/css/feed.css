@@ -74,7 +74,7 @@
 		padding: 1em 0 0 0;
 		margin: 0;
 		text-align: right;
-		display: none;
+		/*display: none;*/
 	}
 	#blab .focused textarea {
 		height: 8em;
@@ -91,7 +91,7 @@
 	}
 	.blog-submit {
 		display: block;
-		margin: 0;
+		margin: 1em 0 0 0;
 		padding: 0;
 		text-align: right;
 	}
@@ -162,7 +162,7 @@
 	}
 	.infofeed .newline {
 		display: block;
-		margin: 1.5em 1em 0 5em;
+		/*margin: 1.5em 1em 0 5em;*/
 	}
 	.infofeed span.actor {
 		font-weight: bold;
@@ -365,12 +365,12 @@
 		padding: 0;
 		margin: 0;
 		display: block;
-		margin-right: 1.5em;
+		/*margin-right: 1.5em;*/
 	}
 	#plg-content .comments,
 	#project-updates .comments {
 		list-style: none;
-		padding: 0.5em 0 0 0;
+		padding: 0;
 		margin: 1em 0 0 0;
 		border: none;
 		width: 100%;

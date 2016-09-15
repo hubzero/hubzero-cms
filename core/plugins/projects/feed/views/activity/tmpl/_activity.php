@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -52,14 +53,27 @@ if ($this->model->member())
 		&& $this->model->member()->lastvisit <= $a->recorded
 		? true : false;
 }
+
+$recorded = $a->recorded;
+if ($comments)
+{
+	foreach ($comments as $comment)
+	{
+		if ($comment->created > $recorded)
+		{
+			$recorded = $comment->created;
+		}
+	}
+}
 ?>
-		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>" data-recorded="<?php echo $a->recorded; ?>">
+		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>" data-recorded="<?php echo $recorded; ?>">
 			<div id="tr_<?php echo $a->id; ?>" class="item-control">
 				<?php if ($deletable) { ?>
-				<span class="m_options">
-					<span class="delit" id="mo_<?php echo $a->id; ?>"><a href="<?php echo Route::url($this->model->link('feed') .  '&action=delete&tbl=' . $etbl . '&eid=' . $eid);  ?>">x</a>
+					<span class="m_options">
+						<span class="delit" id="mo_<?php echo $a->id; ?>">
+							<a href="<?php echo Route::url($this->model->link('feed') .  '&action=delete&tbl=' . $etbl . '&eid=' . $eid);  ?>">x</a>
+						</span>
 					</span>
-				</span>
 				<?php } ?>
 				<div class="blog-item">
 					<?php if ($showProject) { ?>
@@ -69,16 +83,16 @@ if ($this->model->member())
 					<?php } ?>
 					<div class="blog-content">
 						<?php if ($showProject) { ?>
-						<span class="project-name"><a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\String::truncate($this->model->get('title'), 65); ?></a>
-						</span>
+							<span class="project-name">
+								<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\String::truncate($this->model->get('title'), 65); ?></a>
+							</span>
 						<?php } ?>
 						<span class="actor"><?php echo $a->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $a->name; ?></span>
 						<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></span>
-						<?php  if ($edit && $a->commentable && count($comments) == 0) { ?>
-						<span class="item-time">
-						<?php if ($this->model->access('content')) { ?>
-							&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" class="showc"><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?></a>
-						</span><?php } ?>
+						<?php  if ($edit && $a->commentable) { ?>
+							<?php if ($this->model->access('content')) { ?>
+								<span class="item-comment">&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" data-inactive="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>" class="showc"><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?></a></span>
+							<?php } ?>
 						<?php } ?>
 						<div class="<?php echo $class; ?> activity <?php if ($a->admin) { echo ' admin-action'; } ?>">
 							 <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>

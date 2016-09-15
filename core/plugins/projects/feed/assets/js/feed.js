@@ -51,26 +51,24 @@ jQuery(document).ready(function($){
 
 			var id = $(this).attr('id').replace('addc_', '');
 			var acid = $('#commentform_' + id);
-			var scrollTo = acid.offset().top - 100;
 
 			if (acid.length) {
 				if (acid.hasClass('hidden')) {
 					acid.removeClass('hidden');
 
-					$('html, body').animate({
-						scrollTop: scrollTo
-					}, 1000);
+					$(this).text($(this).attr('data-active'));
 
-					var frm = acid.find('form')[0];
+					/*
+					var frm = acid.find('form');
 					frm.addClass('focused');
 
 					var txt = acid.find('.commentarea')[0];
 					$(txt)
-						.focus();
-				} else if (!acid.hasClass('hidden')) {
-					$('html, body').animate({
-						scrollTop: scrollTo
-					}, 1000);
+						.focus();*/
+				} else {
+					acid.addClass('hidden');
+
+					$(this).text($(this).attr('data-inactive'));
 				}
 			}
 		})
@@ -182,34 +180,70 @@ jQuery(document).ready(function($){
 		});
 	}
 
-	/*setInterval(function () {
-		var url = container.attr('data-base').nohtml() + '&ajax=1&action=update&start=';
+	// New content URL
+	var url = container.attr('data-base').nohtml() + '&ajax=1&action=update&recorded=';
 
+	// Frequency to poll for new content (in seconds)
+	// Default to 60 if nothing found
+	var freq = container.attr('data-frequency');
+	freq = (freq ? freq : 60);
+
+	setInterval(function () {
 		var first = container.find('.activity-item');
 		if (first.length) {
-			url += first[0].attr('data-recorded')
+			url += first.attr('data-recorded');
 		}
 
 		if (_DEBUG) {
 			window.console && console.log('called:' + url);
 		}
 
-		$.get(url, {}, function(data) {
-			container.html(data);
-
-			if (data.length > 0) {
-				var last = $('#lastchange'),
-					last_id = $('#lastid');
-
-				for (var i = 0; i< data.length; i++)
-				{
-					var item = data[i];
-
-					container.prepend($(item.html).hide().fadeIn());
+		$.getJSON(url, {}, function(data){
+			if (data.activities.length <= 0) {
+				if (_DEBUG) {
+					window.console && console.log('No results found');
 				}
-				
-				jQuery(document).trigger('ajaxLoad');
+				return;
 			}
+
+			for (var i = 0; i< data.activities.length; i++)
+			{
+				var item = data.activities[i];
+
+				if (item.class = 'quote' && $('#comments_'+item.parent).length) {
+					if ($('#c_' + item.eid).length) {
+						if (_DEBUG) {
+							window.console && console.log('Comment #' + item.eid + ' already exists!');
+						}
+						// Comment already exists!
+						continue;
+					}
+
+					$('#comments_' + item.parent).append($(item.body).hide().fadeIn());
+
+					if ($('#li_' + item.parent).length) {
+						$('#li_' + item.parent).attr('data-recorded', item.activity.recorded);
+					}
+
+					continue;
+				}
+
+				if ($('#li_' + item.eid).length) {
+					if (_DEBUG) {
+						window.console && console.log('Activity #' + item.eid + ' already exists!');
+					}
+					// Activity already exists!
+					continue;
+				}
+
+				$('#activity-feed').prepend($(item.body).hide().fadeIn());
+			}
+
+			setTimeout(function() {
+				$('.newitem').removeClass('newitem');
+			}, 5 * 1000);
+
+			jQuery(document).trigger('ajaxLoad');
 		});
-	}, 60 * 1000);*/
+	}, freq * 1000);
 });

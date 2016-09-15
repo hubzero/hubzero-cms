@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -39,8 +40,8 @@ if (!$this->model->access('content'))
 <div id="blab" class="miniblog">
 	<form id="blogForm" method="post" class="focused" action="<?php echo Route::url($this->model->link()); ?>">
 		<fieldset>
-			<textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="<?php echo Lang::txt('Got an update?'); ?>"></textarea>
-			<?php //echo $this->editor('blogentry', '', 5, 3, 'blogentry', array('class' => 'minimal no-footer')); ?>
+			<!-- <textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="<?php echo Lang::txt('Got an update?'); ?>"></textarea> -->
+			<?php echo $this->editor('blogentry', '', 5, 3, 'blogentry', array('class' => 'minimal no-footer')); ?>
 			<p id="blog-submitarea">
 				<span id="counter_number_blog" class="leftfloat mini"></span>
 				<input type="hidden" name="task" value="view" />

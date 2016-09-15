@@ -545,7 +545,14 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			$this->_uid
 		);
 		$limit = intval($this->params->get('limit', 25));
-		$filters['limit'] = Request::getVar('limit', $limit, 'request');
+		$filters['limit'] = Request::getVar('limit', $limit);
+
+		if ($start = Request::getVar('recorded'))
+		{
+			$filters['recorded'] = $start;
+			$filters['sortby']   = 'recorded';
+			$filters['sortdir']  = 'ASC';
+		}
 
 		$activities = $objAC->getActivities(
 			$this->model->get('id'),
@@ -553,6 +560,153 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			0,
 			$this->_uid
 		);
+
+		// In this case, we're expecting JSON output
+		// @TODO: Move to API
+		if (isset($filters['recorded']))
+		{
+			$data = new stdClass();
+			$data->activities = array();
+
+			if (count($activities))
+			{
+				$objM  = new \Components\Projects\Tables\Blog($this->_database);
+				$objC  = new \Components\Projects\Tables\Comment($this->_database);
+				$objTD = new \Components\Projects\Tables\Todo($this->_database);
+
+				$shown = array();
+
+				// Loop through activities
+				foreach ($activities as $a)
+				{
+					if (in_array($a->id, $shown))
+					{
+						continue;
+					}
+
+					$shown[] = $a->id;
+
+					// Is this a comment?
+					$class = $a->class ? $a->class : 'activity';
+
+					// Display hyperlink
+					if ($a->highlighted && $a->url)
+					{
+						$a->activity = str_replace($a->highlighted, '<a href="' . $a->url . '">' . $a->highlighted . '</a>', $a->activity);
+					}
+
+					// Set vars
+					$ebody     = '';
+					$eid       = $a->id;
+					$etbl      = 'activity';
+					$deletable = 0;
+					$parent    = 0;
+					$comments  = null;
+
+					// Get blog entry
+					if ($class == 'blog')
+					{
+						$blog = $objM->getEntries(
+							$a->projectid,
+							$bfilters = array('activityid' => $a->id),
+							$a->referenceid
+						);
+						if (!$blog)
+						{
+							continue;
+						}
+
+						$ebody = $this->drawBodyText($blog[0]->blogentry);
+						$eid       = $a->referenceid;
+						$etbl      = 'blog';
+						$deletable = 1;
+					}
+					elseif ($class == 'todo')
+					{
+						$todo = $objTD->getTodos(
+							$a->projectid,
+							$tfilters = array('activityid' => $a->id),
+							$a->referenceid
+						);
+						if (!$todo)
+						{
+							continue;
+						}
+
+						$content = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
+						$ebody   = $this->drawBodyText($content);
+						$eid     = $a->referenceid;
+						$etbl    = 'todo';
+					}
+					else if ($a->class == 'quote')
+					{
+						$comment = $objC->getComments(NULL, 'blog', $a->id);
+						if (!$comment)
+						{
+							continue;
+						}
+
+						$objM->load($comment->itemid);
+
+						$content = $comment->comment;
+						$ebody   = $this->drawBodyText($content);
+						$eid     = $a->referenceid;
+						$etbl    = 'quote';
+						$parent  = $objM->activityid;
+					}
+
+					// Get/parse & save item preview if available
+					$preview = empty($this->miniView) ? $this->getItemPreview($class, $a) : '';
+
+					// Is user allowed to delete item?
+					$deletable = empty($this->miniView)
+						&& $deletable
+						&& $this->model->access('content')
+						&& ($a->userid == $this->_uid or $this->model->access('manager'))
+						? 1 : 0;
+
+					$prep = array(
+						'activity'   => $a,
+						'eid'        => $eid,
+						'etbl'       => $etbl,
+						'body'       => $ebody,
+						'deletable'  => $deletable,
+						'comments'   => $comments,
+						'class'      => $class,
+						'preview'    => $preview,
+						'parent'     => $parent
+					);
+
+					if ($a->class == 'quote')
+					{
+						$prep['body'] = $this->view('_comment', 'activity')
+							->set('option', $this->_option)
+							->set('model', $this->model)
+							->set('activity', $prep)
+							->set('uid', $this->_uid)
+							->set('comment', $comment)
+							->set('edit', true)
+							->loadTemplate();
+					}
+					else
+					{
+						$prep['body'] = $this->view('_activity', 'activity')
+							->set('option', $this->_option)
+							->set('model', $this->model)
+							->set('activity', $prep)
+							->set('uid', $this->_uid)
+							->loadTemplate();
+					}
+
+					$data->activities[] = $prep;
+				}
+			}
+
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode($data);
+			exit();
+		}
 
 		$activities = $this->_prepActivities(
 			$activities,
@@ -670,7 +824,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					{
 						// get and add parent activity
 						$filters['id'] = $c->parent_activity;
-						$pa = $objAC->getActivities ($a->projectid, $filters, 0, $this->_uid);
+						$pa = $objAC->getActivities($a->projectid, $filters, 0, $this->_uid);
 						if ($pa && count($pa) > 0)
 						{
 							$a = $pa[0];
@@ -786,8 +940,14 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		$isHtml = false;
+		if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
+		{
+			$isHtml = true;
+		}
+
 		$shorten = ($body && strlen($body) > 250) ? 1 : 0;
-		$shortBody = $shorten ? \Hubzero\Utility\String::truncate($body, 250) : $body;
+		$shortBody = $shorten ? \Hubzero\Utility\String::truncate($body, 250, array('html' => true)) : $body;
 
 		// Embed links
 		$body      = \Components\Projects\Helpers\Html::replaceUrls($body, 'external');
@@ -799,7 +959,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		// Style body text
 		$ebody  = '<div class="body';
-		$ebody .= strlen($shortBody) > 50 ? ' newline' : ' sameline';
+		$ebody .= strlen($shortBody) > 50 || $isHtml ? ' newline' : ' sameline';
 		$ebody .= '">' . preg_replace("/\n/", '<br />', trim($shortBody));
 		if ($shorten)
 		{

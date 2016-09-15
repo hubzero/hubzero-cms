@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -35,7 +36,7 @@ $a = $this->activity;
 
 // Add Comment
 if ($a->commentable && $this->model->access('content')) { ?>
-<div class="addcomment <?php if (count($this->comments) == 0) { echo 'hidden'; } ?>" id="commentform_<?php echo $a->id; ?>">
+<div class="addcomment hidden" id="commentform_<?php echo $a->id; ?>">
 	<form action="<?php echo Route::url($this->model->link('feed')); ?>" method="post">
 		<fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
@@ -47,9 +48,10 @@ if ($a->commentable && $this->model->access('content')) { ?>
 			<input type="hidden" name="parent_activity" value="<?php echo $a->id; ?>" />
 			<img class="comment-author" src="<?php echo User::getInstance($this->uid)->picture(); ?>" alt="" />
 			<label class="comment-show">
-				<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo Lang::txt('PLG_PROJECTS_BLOG_ENTER_COMMENT'); ?>" id="ca_<?php echo $a->id; ?>"></textarea>
+				<!-- <textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo Lang::txt('PLG_PROJECTS_BLOG_ENTER_COMMENT'); ?>" id="ca_<?php echo $a->id; ?>"></textarea> -->
+				<?php echo $this->editor('comment', '', 5, 3, 'ca_' . $a->id, array('class' => 'commentarea minimal no-footer')); ?>
 			</label>
-			<p class="blog-submit"><input type="submit" class="btn c-submit nojs" id="cs_<?php echo $a->id; ?>" value="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" /></p>
+			<p class="blog-submit"><input type="submit" class="btn c-submit" id="cs_<?php echo $a->id; ?>" value="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" /></p>
 		</fieldset>
 	</form>
 </div>
