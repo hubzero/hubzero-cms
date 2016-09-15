@@ -138,7 +138,7 @@ if (!$no_html) {
 								$who = '<a href="' . Route::url($this->post->creator()->link() . '&active=collections') . '">' . $name . '</a>';
 							}
 
-							$where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+							$where = '<a href="' . Route::url($this->collection->link()) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
 
 							echo Lang::txt('COM_COLLECTIONS_ONTO', $who, $where);
 							?>
