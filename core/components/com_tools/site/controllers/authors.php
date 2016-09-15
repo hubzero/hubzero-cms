@@ -418,7 +418,6 @@ class Authors extends SiteController
 		}
 
 		// Get a list of all existing contributors
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
 
 		$resource = new \Components\Resources\Tables\Resource($this->database);
