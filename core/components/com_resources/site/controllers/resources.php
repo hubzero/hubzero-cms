@@ -1568,6 +1568,10 @@ class Resources extends SiteController
 		}
 
 		// Output HTML
+		if (Request::get('noview', null))
+		{
+			return $this->view->setName('view');
+		}
 		$this->view->setName('view')->display();
 	}
 

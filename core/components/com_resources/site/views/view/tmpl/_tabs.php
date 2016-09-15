@@ -32,7 +32,11 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$base = 'index.php?option=' . $this->option . '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id);
+$base = Request::get('tab_base_url', null) ? Request::get('tab_base_url') : 'index.php?option=' . $this->option;
+$base .= '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id);
+
+$active_key = Request::get('tab_active_key', null) ? Request::get('tab_active_key') : 'active';
+
 ?>
 <ul id="sub-menu" class="sub-menu">
 	<?php
@@ -47,8 +51,7 @@ $base = 'index.php?option=' . $this->option . '&' . ($this->resource->alias ? 'a
 
 		$active = false;
 
-		$url = $base . '&active=' . $name;
-
+		$url = $base . '&' . $active_key . '=' . $name;
 		if (strtolower($name) == $this->active)
 		{
 			Pathway::append($cat[$name], $url);

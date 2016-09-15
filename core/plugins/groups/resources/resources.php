@@ -128,6 +128,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
+		$this->group = $group;
 		$return = 'html';
 		$active = 'resources';
 
@@ -353,31 +354,64 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		switch ($return)
 		{
 			case 'html':
-				// Instantiate a vew
-				$view = $this->view('default', 'results');
-
-				// Pass the view some info
-				$view->option = $option;
-				$view->group = $group;
-				$view->authorized = $authorized;
-				$view->totals = $totals;
-				$view->results = $results;
-				$view->cats = $cats;
-				$view->active = $active;
-				$view->limitstart = $limitstart;
-				$view->limit = $limit;
-				$view->total = $total;
-				$view->sort = $sort;
-				$view->access = $access;
-
-				foreach ($this->getErrors() as $error)
+				// If we have a specific ID and we're a supergroup, serve a resource page inside supergroup template
+				if (Request::get('id', null) && $this->group->type == 3)
 				{
-					$view->setError($error);
-				}
+					// Load neccesities for com_resources controller
+					$lang = App::get('language');
+					$lang->load('com_resources', Component::path('com_resources') . DS . 'site');
+					require_once Component::path('com_resources') . DS .'models' . DS . 'resource.php';
+					require_once Component::path('com_resources') . DS .'site' . DS . 'controllers' . DS . 'resources.php';
+					require_once Component::path('com_resources') . DS .'helpers' . DS . 'helper.php';
+					require_once Component::path('com_resources') . DS .'helpers' . DS . 'html.php';
+					require_once Component::path('com_resources') . DS .'helpers' . DS . 'tags.php';
 
-				// Return the output
-				$arr['metadata']['count'] = $total;
-				$arr['html'] = $view->loadTemplate();
+					// Set the request up to make it look like a user made the request to the controller
+					Request::setVar('task', 'view');
+					Request::setVar('option', 'com_resources');
+					Request::setVar('active', Request::get('tab_active', 'about'));
+					// Add some extra variables to let the tab view know we need a different base url
+					Request::setVar('tab_active_key', 'tab_active');
+					Request::setVar('tab_base_url', 'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=resources');
+					// Added a noview variable to indicate to the controller that we do not want it to try to display the view, simply build it
+					Request::setVar('noview', 1);
+
+					// Instantiate the controller and have it execute
+					$newtest = new \Components\Resources\Site\Controllers\Resources(array('base_path'=>Component::path('com_resources') . DS . 'site'));
+					$newtest->execute();
+
+					// Set up the return for the plugin 'view'
+					$arr['html'] = $newtest->view->loadTemplate();
+					$arr['metadata']['count'] = $total;
+				}
+				else
+				{
+					// Instantiate a vew
+					$view = $this->view('default', 'results');
+
+					// Pass the view some info
+					$view->option = $option;
+					$view->group = $group;
+					$view->authorized = $authorized;
+					$view->totals = $totals;
+					$view->results = $results;
+					$view->cats = $cats;
+					$view->active = $active;
+					$view->limitstart = $limitstart;
+					$view->limit = $limit;
+					$view->total = $total;
+					$view->sort = $sort;
+					$view->access = $access;
+
+					foreach ($this->getErrors() as $error)
+					{
+						$view->setError($error);
+					}
+
+					// Return the output
+					$arr['metadata']['count'] = $total;
+					$arr['html'] = $view->loadTemplate();
+				}
 			break;
 
 			case 'metadata':
@@ -605,13 +639,27 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					if ($row->alias)
+					if ($this->group->type == '3')
 					{
-						$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
+						if ($row->alias)
+						{
+							$rows[$key]->href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&alias=' . $row->alias);
+						}
+						else
+						{
+							$rows[$key]->href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&id=' . $row->id);
+						}
 					}
 					else
 					{
-						$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
+						if ($row->alias)
+						{
+							$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
+						}
+						else
+						{
+							$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
+						}
 					}
 				}
 			}

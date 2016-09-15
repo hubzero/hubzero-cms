@@ -1283,6 +1283,7 @@ class Html
 	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => Component::path('com_resources') . DS . 'site',
 			'name'   => 'view',
 			'layout' => '_primary'
 		));
