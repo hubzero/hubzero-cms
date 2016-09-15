@@ -31,6 +31,7 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+require_once '/var/www/hub/core/components/com_resources/helpers/html.php';
 
 $this->css()
      ->js();
