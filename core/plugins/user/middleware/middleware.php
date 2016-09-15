@@ -62,24 +62,17 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 				// Quota class
 				//
 
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php');
-
-				$row = new \Components\Members\Tables\UsersQuotas($db);
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php');
 
 				// Check for an existing quota record
-				$db->setQuery("SELECT * FROM `#__users_quotas` WHERE `user_id`=" . $userId);
-				if ($quota = $db->loadObject())
-				{
-					$row->bind($quota);
-				}
-				else
-				{
-					$row->user_id = $userId;
-				}
+				$row = Components\Members\Models\Quota::all()
+					->whereEquals('user_id', $userId)
+					->row();
+
+				$row->set('user_id', $userId);
 
 				// If (no quota record OR a record and a quota class [e.g., not custom]) ...
-				if (!$row->id || ($row->id && $row->class_id))
+				if (!$row->get('id') || ($row->get('id') && $row->get('class_id')))
 				{
 					$val = array(
 						'hard_files'  => 0,
@@ -104,7 +97,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 						if ($cls->hard_blocks > $val['hard_blocks']
 						 && $cls->soft_blocks > $val['soft_blocks'])
 						{
-							$row->class_id = $cls->id;
+							$row->set('class_id', $cls->id);
 						}
 						//$val['hard_files']  = ($val['hard_files']  > $cls->hard_files  ?: $cls->hard_files);
 						//$val['soft_files']  = ($val['soft_files']  > $cls->soft_files  ?: $cls->soft_files);
@@ -112,17 +105,12 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 						$val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks ? $val['soft_blocks'] : $cls->soft_blocks);
 					}
 
-					$row->hard_files  = $val['hard_files'];
-					$row->soft_files  = $val['soft_files'];
-					$row->hard_blocks = $val['hard_blocks'];
-					$row->soft_blocks = $val['soft_blocks'];
+					$row->set('hard_files',  $val['hard_files']);
+					$row->set('soft_files',  $val['soft_files']);
+					$row->set('hard_blocks', $val['hard_blocks']);
+					$row->set('soft_blocks', $val['soft_blocks']);
 
-					if (!$row->check())
-					{
-						throw new Exception($row->getError());
-					}
-
-					if (!$row->store())
+					if (!$row->save())
 					{
 						throw new Exception($row->getError());
 					}
@@ -229,7 +217,6 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 					throw new Exception($db->getErrorMsg());
 				}
 
-				$db = App::get('db');
 				$db->setQuery("DELETE FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);
 
 				if (!$db->query())
