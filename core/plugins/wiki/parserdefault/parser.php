@@ -88,6 +88,7 @@ class WikiParser
 		'macros'    => true,
 		'domain'    => '',
 		'domain_id' => 0,
+		'url'       => '',
 
 		'fullparse' => true,
 		'camelcase' => true,
@@ -3094,8 +3095,11 @@ class WikiParser
 	 */
 	private function _tocLine($anchor, $tocLine, $tocnumber, $level)
 	{
+		$url = $this->get('url');
+		$url = $url ?: 'index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename');
+
 		return "\n" . '<li class="toclevel-' . $level . '">' .
-						'<a href="' . Route::url('index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename')) . '#' . $anchor . '">' .
+						'<a href="' . Route::url($url) . '#' . $anchor . '">' .
 							'<span class="tocnumber">' . $tocnumber . ' </span>' .
 							'<span class="toctext">' . $tocLine . '</span>' .
 						'</a>';

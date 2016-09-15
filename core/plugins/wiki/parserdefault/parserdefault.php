@@ -79,6 +79,7 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 			$config['filepath'] = (isset($config['filepath'])) ? $config['filepath'] : '';
 			$config['domain']   = (isset($config['domain']))   ? $config['domain']   : null;
 			$config['domain_id'] = (isset($config['domain_id']))   ? $config['domain_id']   : null;
+			$config['url']      = (isset($config['url']))      ? $config['url'] : null;
 			$config['loglinks'] = (isset($config['loglinks'])) ? $config['loglinks'] : null;
 
 			$this->parser = new WikiParser($config);
