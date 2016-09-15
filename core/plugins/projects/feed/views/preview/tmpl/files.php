@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -34,15 +35,15 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$body   	= '';
-$selected 	= $this->selected;
+$body     = '';
+$selected = $this->selected;
 
 if (!$selected || empty($selected))
 {
 	return false;
 }
-$rows 	= 1;
-$cols 	= count($selected);
+$rows   = 1;
+$cols   = count($selected);
 $limit  = 12; // Do not show more that 12 previews
 $empty  = 0;
 
@@ -81,7 +82,9 @@ if ($empty)
 }
 ?>
 <section class="photos grid<?php echo $cols; ?>">
-	<?php for ($i = 0; $i < count($selected); $i++) {
+	<?php
+	for ($i = 0; $i < count($selected); $i++)
+	{
 		if ($i >= $limit)
 		{
 			break;
@@ -100,7 +103,9 @@ if ($empty)
 			// Single image - do not scale
 			$style .= 'background-size:contain !important;background-position: center;';
 		}
-	?>
+		?>
 		<span style="<?php echo $style; ?>"></span>
-	<?php } ?>
+		<?php
+	}
+	?>
 </section>
