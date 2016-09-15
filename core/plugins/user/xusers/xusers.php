@@ -255,33 +255,31 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
 
-			$quota = new \Components\Members\Tables\UsersQuotas($this->database);
-			$quota->load(array('user_id' => $xuser->get('id')));
+			$quota = Components\Members\Models\Quota::all()
+				->whereEquals('user_id', $xuser->get('id'))
+				->row();
 
-			if (!$quota->id)
+			if (!$quota->get('id'))
 			{
-				$class = new \Components\Members\Tables\QuotasClasses($this->database);
-				$class->load(array('alias'=>'default'));
+				$class = Components\Members\Models\Quota\Category::defaultEntry();
 
-				if ($class->id)
+				if ($class->get('id'))
 				{
 					$quota->set('user_id'    , $xuser->get('id'));
-					$quota->set('class_id'   , $class->id);
-					$quota->set('soft_blocks', $class->soft_blocks);
-					$quota->set('hard_blocks', $class->hard_blocks);
-					$quota->set('soft_files' , $class->soft_files);
-					$quota->set('hard_files' , $class->hard_files);
-					$quota->store();
+					$quota->set('class_id'   , $class->get('id'));
+					$quota->set('soft_blocks', $class->get('soft_blocks'));
+					$quota->set('hard_blocks', $class->get('hard_blocks'));
+					$quota->set('soft_files' , $class->get('soft_files'));
+					$quota->set('hard_files' , $class->get('hard_files'));
+					$quota->save();
 				}
 			}
-			else if ($quota->class_id)
+			else if ($quota->get('class_id'))
 			{
 				// Here, we're checking to make sure their class matches their actual quota values
-				$class = new \Components\Members\Tables\QuotasClasses($this->database);
-				$class->load($quota->class_id);
+				$class = Components\Members\Models\Quota\Category::oneOrNew($quota->get('class_id'));
 
 				if ($quota->get('soft_blocks') != $class->get('soft_blocks')
 				 || $quota->get('hard_blocks') != $class->get('hard_blocks')
@@ -289,12 +287,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				 || $quota->get('hard_files')  != $class->get('hard_files'))
 				{
 					$quota->set('user_id'    , $xuser->get('id'));
-					$quota->set('class_id'   , $class->id);
-					$quota->set('soft_blocks', $class->soft_blocks);
-					$quota->set('hard_blocks', $class->hard_blocks);
-					$quota->set('soft_files' , $class->soft_files);
-					$quota->set('hard_files' , $class->hard_files);
-					$quota->store();
+					$quota->set('class_id'   , $class->get('id'));
+					$quota->set('soft_blocks', $class->get('soft_blocks'));
+					$quota->set('hard_blocks', $class->get('hard_blocks'));
+					$quota->set('soft_files' , $class->get('soft_files'));
+					$quota->set('hard_files' , $class->get('hard_files'));
+					$quota->save();
 				}
 			}
 		}
@@ -541,26 +539,25 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
 
-			$quota = new \Components\Members\Tables\UsersQuotas($this->database);
-			$quota->load(array('user_id'=>$user['id']));
+			$quota = Components\Members\Models\Quota::all()
+				->whereEquals('user_id', $user['id'])
+				->row();
 
-			if (!$quota->id)
+			if (!$quota->get('id'))
 			{
-				$class = new \Components\Members\Tables\QuotasClasses($this->database);
-				$class->load(array('alias'=>'default'));
+				$class = Components\Members\Models\Quota\Category::defaultEntry();
 
-				if ($class->id)
+				if ($class->get('id'))
 				{
 					$quota->set('user_id'    , $user['id']);
-					$quota->set('class_id'   , $class->id);
-					$quota->set('soft_blocks', $class->soft_blocks);
-					$quota->set('hard_blocks', $class->hard_blocks);
-					$quota->set('soft_files' , $class->soft_files);
-					$quota->set('hard_files' , $class->hard_files);
-					$quota->store();
+					$quota->set('class_id'   , $class->get('id'));
+					$quota->set('soft_blocks', $class->get('soft_blocks'));
+					$quota->set('hard_blocks', $class->get('hard_blocks'));
+					$quota->set('soft_files' , $class->get('soft_files'));
+					$quota->set('hard_files' , $class->get('hard_files'));
+					$quota->save();
 				}
 			}
 		}
@@ -607,13 +604,15 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		\Hubzero\Auth\Link::delete_by_user_id($user['id']);
 
 		// Check if quota exists for the user
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
 
-		$quota = new \Components\Members\Tables\UsersQuotas($this->database);
-		$quota->load(array('user_id'=>$user['id']));
-		if ($quota->id)
+		$quota = Components\Members\Models\Quota::all()
+			->whereEquals('user_id', $user['id'])
+			->row();
+
+		if ($quota->get('id'))
 		{
-			$quota->delete();
+			$quota->destroy();
 		}
 
 		if ($success)
