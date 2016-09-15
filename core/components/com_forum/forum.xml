@@ -35,50 +35,56 @@ HUBzero is a registered trademark of Purdue University.
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Community forum</description>
+	<files folder="helpers">
+		<filename>permissions.php</filename>
+	</files>
+	<files folder="models">
+		<filename>adapters/base.php</filename>
+		<filename>adapters/site.php</filename>
+		<filename>attachment.php</filename>
+		<filename>category.php</filename>
+		<filename>manager.php</filename>
+		<filename>post.php</filename>
+		<filename>section.php</filename>
+		<filename>tags.php</filename>
+	</files>
 	<files folder="site">
 		<filename>router.php</filename>
-		<filename>answers.css</filename>
-		<filename>answers.html.php</filename>
-		<filename>answers.php</filename>
-		<filename>answers.js</filename>
-		<filename>answers.tags.php</filename>
-		<filename>vote.css</filename>
-		<filename>vote.js</filename>
-		<filename>controller.php</filename>
+		<filename>forum.php</filename>
 		<filename>index.html</filename>
-		<filename>images/answer.gif</filename>
-		<filename>images/ask.gif</filename>
-		<filename>images/contributor.gif</filename>
-		<filename>images/green-check.gif</filename>
-		<filename>images/minus_small.gif</filename>
-		<filename>images/plus_small.gif</filename>
-		<filename>images/q.gif</filename>
-		<filename>images/qa.gif</filename>
-		<filename>images/question_answerbutton.gif</filename>
-		<filename>images/question_bg.gif</filename>
-		<filename>images/question_bg1.gif</filename>
-		<filename>images/srch.gif</filename>
-		<filename>images/a_letter.gif</filename>
-		<filename>images/abuse.gif</filename>
-		<filename>images/accepted.gif</filename>
-		<filename>images/checker.gif</filename>
-		<filename>images/coin.gif</filename>
-		<filename>images/comment.gif</filename>
-		<filename>images/delete.gif</filename>
-		<filename>images/earn.gif</filename>
-		<filename>images/no_lit.gif</filename>
-		<filename>images/q_letter.gif</filename>
-		<filename>images/qr.gif</filename>
-		<filename>images/redflag.gif</filename>
-		<filename>images/reply.gif</filename>
-		<filename>images/thumb.gif</filename>
-		<filename>images/thumbdown.gif</filename>
-		<filename>images/thumbup.gif</filename>
-		<filename>images/thumbup_ok.gif</filename>
-		<filename>images/yes_lit.gif</filename>
+		<filename>assets/css/forum.css</filename>
+		<filename>assets/css/forum.js</filename>
+		<filename>controllers/categories.php</filename>
+		<filename>controllers/sections.php</filename>
+		<filename>controllers/threads.php</filename>
+		<filename>help/en-GB/categories.phtml</filename>
+		<filename>help/en-GB/faqs.phtml</filename>
+		<filename>help/en-GB/guidelines.phtml</filename>
+		<filename>help/en-GB/index.phtml</filename>
+		<filename>help/en-GB/sections.phtml</filename>
+		<filename>help/en-GB/threads.phtml</filename>
+		<filename>language/en-GB/en-GB.com_forum.ini</filename>
+		<filename>views/categories/tmpl/display.php</filename>
+		<filename>views/categories/tmpl/display.xml</filename>
+		<filename>views/categories/tmpl/edit.php</filename>
+		<filename>views/categories/tmpl/edit.xml</filename>
+		<filename>views/categories/tmpl/search.php</filename>
+		<filename>views/categories/tmpl/search.xml</filename>
+		<filename>views/emails/tmpl/digest_html.php</filename>
+		<filename>views/emails/tmpl/digest_html.xml</filename>
+		<filename>views/emails/tmpl/digest_plain.php</filename>
+		<filename>views/emails/tmpl/digest_plain.xml</filename>
+		<filename>views/sections/tmpl/display.php</filename>
+		<filename>views/sections/tmpl/display.xml</filename>
+		<filename>views/threads/tmpl/display.php</filename>
+		<filename>views/threads/tmpl/display.xml</filename>
+		<filename>views/threads/tmpl/edit.php</filename>
+		<filename>views/threads/tmpl/edit.xml</filename>
+		<filename>views/threads/tmpl/_comment.php</filename>
+		<filename>views/threads/tmpl/_list.php</filename>
 	</files>
 	<languages folder="site">
-		<language tag="en-GB">en-GB.com_answers.ini</language>
+		<language tag="en-GB">en-GB.com_forum.ini</language>
 	</languages>
 	<install>
 		<sql>
@@ -88,16 +94,7 @@ HUBzero is a registered trademark of Purdue University.
 	<administration>
 		<menu>Forum</menu>
 		<files folder="admin">
-			<filename>install.sql</filename>
-			<filename>admin.answers.html.php</filename>
-			<filename>admin.answers.php</filename>
-			<filename>admin.controller.php</filename>
-			<filename>answers.config.php</filename>
-			<filename>vote.class.php</filename>
-			<filename>answers.class.php</filename>
-			<filename>toolbar.answers.php</filename>
-			<filename>toolbar.answers.html.php</filename>
-			<filename>config.xml</filename>
+			<filename>forum.php</filename>
 			<filename>index.html</filename>
 		</files>
 	</administration>
