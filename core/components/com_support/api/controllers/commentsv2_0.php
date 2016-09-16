@@ -238,13 +238,12 @@ class Commentsv2_0 extends ApiController
 		
 		$ticket = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
 		$comment = new \Components\Support\Models\Orm\Comment();
-		$debug = $comment;
 		$changelog = new stdClass;
 
 		$comment->set('ticket', Request::get('ticket', ''));
 		$comment->set('comment', nl2br(Request::get('comment')));
 		$comment->set('created_by', User::get('id'));
-		$comment->set('access', Request::get('private', 0));
+		$comment->set('access', (Request::get('private', false) == 'true' ? 1 : 0));
 
 		$changes = array();
 		foreach(['group', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
@@ -327,7 +326,6 @@ class Commentsv2_0 extends ApiController
 		}
 
 		$msg = new stdClass;
-		$msg->debug = $debug;
 		$msg->id  = $comment->get('id');
 		$msg->notified = $comment->get('changelog');
 
@@ -469,16 +467,9 @@ class Commentsv2_0 extends ApiController
 	 * Displays details for a ticket comment
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /support/{ticket}/comments/{comment}
+	 * @apiUri    /support/comments/{id}
 	 * @apiParameter {
-	 * 		"name":        "ticket",
-	 * 		"description": "Ticket identifier",
-	 * 		"type":        "integer",
-	 * 		"required":    true,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "comment",
+	 * 		"name":        "id",
 	 * 		"description": "Comment identifier",
 	 * 		"type":        "integer",
 	 * 		"required":    true,
@@ -496,24 +487,25 @@ class Commentsv2_0 extends ApiController
 		}
 
 		// Initiate class and bind data to database fields
-		$id = Request::getInt('comment', 0);
+		$id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
-		$ticket = new \Components\Support\Models\Comment($id);
+		$comment = \Components\Support\Models\Orm\Comment::oneOrFail($id);
 
 		$response = new stdClass;
 		$response->id = $comment->get('id');
 		$response->ticket = $comment->get('ticket');
+		$response->comment = $comment->get('comment');
+		$response->created = $comment->get('created');
 
-		$response->owner = new stdClass;
-		$response->owner->username = $ticket->owner('username');
-		$response->owner->name     = $ticket->owner('name');
-		$response->owner->id       = $ticket->owner('id');
+		$creator = $comment->creator;
+		$response->created_by = new stdClass;
+		$response->created_by->username = $creator->get('username');
+		$response->created_by->name     = $creator->get('name');
+		$response->created_by->id       = $creator->get('id');
+		$response->created_by->email    = $creator->get('email');
 
-		$response->content = $comment->content('raw');
-
-		$response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $comment->get('ticket') . '#c' . $comment->get('id')), '/'));
-
+		$response->changelog = $comment->get('changelog');
 		$response->private = ($comment->get('access') ? true : false);
 
 		$this->send($response);
@@ -523,14 +515,7 @@ class Commentsv2_0 extends ApiController
 	 * Update a ticket comment
 	 *
 	 * @apiMethod PUT
-	 * @apiUri    /support/{ticket}/comments/{comment}
-	 * @apiParameter {
-	 * 		"name":        "ticket",
-	 * 		"description": "Ticket identifier",
-	 * 		"type":        "integer",
-	 * 		"required":    true,
-	 * 		"default":     0
-	 * }
+	 * @apiUri    /support/comments/{id}
 	 * @apiParameter {
 	 * 		"name":        "comment",
 	 * 		"description": "Comment identifier",
@@ -548,25 +533,9 @@ class Commentsv2_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
+		
+		throw new Exception(Lang::txt('Operation not supported'), 404);
 
-		$ticket_id  = Request::getInt('ticket', 0);
-		$comment_id = Request::getInt('comment', 0);
-
-		$ticket = new \Components\Support\Models\Ticket($ticket_id);
-
-		if (!$ticket->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
-
-		$comment = new \Components\Support\Models\Comment($comment_id);
-
-		if (!$comment->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
-
-		$this->send(null, 204);
 	}
 
 	/**
@@ -599,33 +568,6 @@ class Commentsv2_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$ticket_id  = Request::getInt('ticket', 0);
-		$comment_id = Request::getInt('comment', 0);
-
-		$ticket = new \Components\Support\Models\Ticket($ticket_id);
-
-		if (!$ticket->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
-
-		$comment = new \Components\Support\Models\Comment($comment_id);
-
-		if (!$comment->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
-
-		if ($comment->isPrivate() && !$this->acl->check('delete', 'private_comments'))
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_UNAUTHORIZED'), 403);
-		}
-
-		if (!$comment->delete())
-		{
-			throw new Exception($comment->getError(), 500);
-		}
-
-		$this->send(null, 204);
+		throw new Exception(Lang::txt('Operation not supported'), 404);
 	}
 }
