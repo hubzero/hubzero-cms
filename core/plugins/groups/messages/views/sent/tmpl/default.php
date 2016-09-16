@@ -61,7 +61,7 @@ defined('_HZEXEC_') or die();
 					</tr>
 				</thead>
 				<tbody>
-					<?php if (count($this->rows) > 0) { ?>
+					<?php if ($this->rows->count() > 0) { ?>
 						<?php foreach ($this->rows as $row) { ?>
 							<tr>
 								<td><a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=viewmessage&msg='.$row->id); ?>"><?php echo $this->escape(stripslashes($row->subject)); ?></a></td>

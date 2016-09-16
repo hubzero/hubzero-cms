@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 		<label for="field-component"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
 		<select name="component" id="field-component">
 			<option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_COMPONENT'); ?></option>
-			<?php if ($this->components) { ?>
+			<?php if ($this->components->count()) { ?>
 				<?php foreach ($this->components as $component) { ?>
 					<option value="<?php echo $component; ?>"<?php if ($this->filters['component'] == $component) { echo ' selected="selected"'; } ?>><?php echo $component; ?></option>
 				<?php } ?>
@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count();?>);" /></th>
 				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_COMPONENT', 'component', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_ACTION', 'action', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -103,9 +103,9 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
+$i = 0;
+foreach ($this->rows as $row)
 {
-	$row = &$this->rows[$i];
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -139,6 +139,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 			</tr>
 <?php
+	$i++;
 	$k = 1 - $k;
 }
 ?>

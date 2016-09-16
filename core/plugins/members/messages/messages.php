@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -26,6 +23,11 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -139,28 +141,31 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				default:              $body = $this->inbox($database, $option, $member);         break;
 			}
 
-			//html for the messages
-			$view = $this->view('default', 'default');
-			$view->option = $option;
-			$view->member = $member;
-			$view->task   = $task;
-
-			$view->filters = array();
-			$view->filters['limit'] = Request::getState(
-				$option . '.plugin.messages.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			);
-			$view->filters['start'] = Request::getState(
-				$option . '.plugin.messages.limitstart',
-				'limitstart',
-				0,
-				'int'
+			$filters = array(
+				'limit' => Request::getState(
+					$option . '.plugin.messages.limit',
+					'limit',
+					Config::get('list_limit'),
+					'int'
+				),
+				'start' => Request::getState(
+					$option . '.plugin.messages.limitstart',
+					'limitstart',
+					0,
+					'int'
+				)
 			);
 
-			$view->body = $body;
-			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+			$notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+
+			$view = $this->view('default', 'default')
+				->set('option', $option)
+				->set('member', $member)
+				->set('task', $task)
+				->set('filters', $filters)
+				->set('body', $body)
+				->set('notifications', $notifications);
+
 			$arr['html'] = $view->loadTemplate();
 		}
 
@@ -168,17 +173,17 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$arr['metadata'] = array();
 
 		//get the number of unread messages
-		$recipient = new \Hubzero\Message\Recipient($database);
-		$inboxCount = $recipient->getMessagesCount($member->get('id'), array('state' => '0'));
+		$recipient = Hubzero\Message\Recipient::blank();
+		$inboxCount = $recipient->getMessagesCount($member->get('id'), array('state' => 0));
 		$unreadMessages = $recipient->getUnreadMessages($member->get('id'), 0);
 
 		//return total message count
 		$arr['metadata']['count'] = $inboxCount;
 
 		//if we have unread messages show alert
-		if (count($unreadMessages) > 0)
+		if ($unreadMessages->count() > 0)
 		{
-			$title = count($unreadMessages) . ' unread message(s).';
+			$title = $unreadMessages->count() . ' unread message(s).';
 			$link = Route::url($member->link() . '&active=messages');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><strong>Messages Alert</strong>{$title}</span></a>";
 		}
@@ -190,57 +195,50 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show inbox
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     string
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  string
 	 */
 	public function inbox($database, $option, $member)
 	{
-		$view = $this->view('inbox', 'default');
-		$view->option = $option;
-		$view->member = $member;
-
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = Request::getState(
-			$option . '.plugin.messages.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
-		);
-		$filters['start'] = Request::getState(
-			$option . '.plugin.messages.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$filters['state'] = 0;
-
-		$view->filter = Request::getVar('filter', '');
-		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
-
-		$recipient = new \Hubzero\Message\Recipient($database);
-
-		$view->total = $recipient->getMessagesCount($member->get('id'), $filters);
-
-		$view->rows = $recipient->getMessages($member->get('id'), $filters);
-
-		$pageNav = new \Hubzero\Pagination\Paginator(
-			$view->total,
-			$filters['start'],
-			$filters['limit']
+		$filters = array(
+			'limit' => Request::getState(
+				$option . '.plugin.messages.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$option . '.plugin.messages.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'state'  => 0,
+			'filter' => Request::getVar('filter', '')
 		);
 
-		$xmc = new \Hubzero\Message\Component($database);
-		$view->components = $xmc->getComponents();
+		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
-		$pageNav->setAdditionalUrlParam('active', 'messages');
-		$pageNav->setAdditionalUrlParam('task', 'inbox');
-		$pageNav->setAdditionalUrlParam('action', '');
+		// Retrieve data
+		$recipient = Hubzero\Message\Recipient::blank();
 
-		$view->pagenavhtml = $pageNav->render();
+		$total = $recipient->getMessagesCount($member->get('id'), $filters);
+
+		$rows = $recipient->getMessages($member->get('id'), $filters);
+
+		$components = Hubzero\Message\Component::blank()->getComponents();
+
+		// Output view
+		$view = $this->view('inbox', 'default')
+			->set('option', $option)
+			->set('member', $member)
+			->set('filters', $filters)
+			->set('components', $components)
+			->set('total', $total)
+			->set('rows', $rows);
 
 		return $view->loadTemplate();
 	}
@@ -248,56 +246,50 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show archived messages
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     string
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  string
 	 */
 	public function archive($database, $option, $member)
 	{
-		$view = $this->view('archive', 'default');
-		$view->option = $option;
-		$view->member = $member;
-
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = Request::getState(
-			$option . '.plugin.messages.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
-		);
-		$filters['start'] = Request::getState(
-			$option . '.plugin.messages.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$filters['state'] = 1;
-		$view->filter = Request::getVar('filter', '');
-		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
-
-		$recipient = new \Hubzero\Message\Recipient($database);
-
-		$view->total = $recipient->getMessagesCount($member->get('id'), $filters);
-
-		$view->rows = $recipient->getMessages($member->get('id'), $filters);
-
-		$pageNav = new \Hubzero\Pagination\Paginator(
-			$view->total,
-			$filters['start'],
-			$filters['limit']
+		$filters = array(
+			'limit' => Request::getState(
+				$option . '.plugin.messages.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$option . '.plugin.messages.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'state'  => 1,
+			'filter' => Request::getVar('filter', '')
 		);
 
-		$xmc = new \Hubzero\Message\Component($database);
-		$view->components = $xmc->getComponents();
+		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
-		$pageNav->setAdditionalUrlParam('active', 'messages');
-		$pageNav->setAdditionalUrlParam('task', 'archive');
-		$pageNav->setAdditionalUrlParam('action', '');
+		// Retrieve data
+		$recipient = Hubzero\Message\Recipient::blank();
 
-		$view->pagenavhtml = $pageNav->render();
+		$total = $recipient->getMessagesCount($member->get('id'), $filters);
+
+		$rows = $recipient->getMessages($member->get('id'), $filters);
+
+		$components = Hubzero\Message\Component::blank()->getComponents();
+
+		// Output view
+		$view = $this->view('archive', 'default')
+			->set('option', $option)
+			->set('member', $member)
+			->set('filters', $filters)
+			->set('components', $components)
+			->set('total', $total)
+			->set('rows', $rows);
 
 		return $view->loadTemplate();
 	}
@@ -305,61 +297,50 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show trashed messages
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     string
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  string
 	 */
 	public function trash($database, $option, $member)
 	{
-		$view = $this->view('trash', 'default');
-		$view->option = $option;
-		$view->member = $member;
-
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = Request::getState(
-			$option . '.plugin.messages.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
-		);
-		$filters['start'] = Request::getState(
-			$option . '.plugin.messages.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$filters['state'] = 2;
-		$view->filter = Request::getVar('filter', '');
-		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
-
-		$recipient = new \Hubzero\Message\Recipient($database);
-
-		$view->total = $recipient->getMessagesCount($member->get('id'), $filters);
-
-		$view->rows = $recipient->getMessages($member->get('id'), $filters);
-
-		$pageNav = new \Hubzero\Pagination\Paginator(
-			$view->total,
-			$filters['start'],
-			$filters['limit']
+		$filters = array(
+			'limit' => Request::getState(
+				$option . '.plugin.messages.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$option . '.plugin.messages.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'state'  => 2,
+			'filter' => Request::getVar('filter', '')
 		);
 
-		$xmc = new \Hubzero\Message\Component($database);
-		$view->components = $xmc->getComponents();
+		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
-		$pageNav->setAdditionalUrlParam('active', 'messages');
-		$pageNav->setAdditionalUrlParam('task', 'trash');
-		$pageNav->setAdditionalUrlParam('action', '');
+		// Retrieve data
+		$recipient = Hubzero\Message\Recipient::blank();
 
-		$view->pagenavhtml = $pageNav->render();
+		$total = $recipient->getMessagesCount($member->get('id'), $filters);
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$rows = $recipient->getMessages($member->get('id'), $filters);
+
+		$components = Hubzero\Message\Component::blank()->getComponents();
+
+		// Output view
+		$view = $this->view('trash', 'default')
+			->set('option', $option)
+			->set('member', $member)
+			->set('filters', $filters)
+			->set('components', $components)
+			->set('total', $total)
+			->set('rows', $rows);
 
 		return $view->loadTemplate();
 	}
@@ -367,56 +348,43 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show sent messages
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     string
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  string
 	 */
 	public function sent($database, $option, $member)
 	{
-		$view = $this->view('sent', 'default');
-		$view->option = $option;
-		$view->member = $member;
-
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = Request::getState(
-			$option . '.plugin.messages.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
-		);
-		$filters['start'] = Request::getState(
-			$option . '.plugin.messages.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$filters['created_by'] = $member->get('id');
-
-		$recipient = new \Hubzero\Message\Message($database);
-
-		$view->total = $recipient->getSentMessagesCount($filters);
-
-		$view->rows = $recipient->getSentMessages($filters);
-
-		$pageNav = new \Hubzero\Pagination\Paginator(
-			$view->total,
-			$filters['start'],
-			$filters['limit']
+		$filters = array(
+			'limit' => Request::getState(
+				$option . '.plugin.messages.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$option . '.plugin.messages.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'created_by' => $member->get('id')
 		);
 
-		$pageNav->setAdditionalUrlParam('id', $member->get('id'));
-		$pageNav->setAdditionalUrlParam('active', 'messages');
-		$pageNav->setAdditionalUrlParam('task', 'sent');
-		$pageNav->setAdditionalUrlParam('action', '');
+		$recipient = Hubzero\Message\Message::blank();
 
-		$view->pagenavhtml = $pageNav->render();
+		$total = $recipient->getSentMessagesCount($filters);
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$rows = $recipient->getSentMessages($filters);
+
+		// Output view
+		$view = $this->view('sent', 'default')
+			->set('option', $option)
+			->set('member', $member)
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows);
 
 		return $view->loadTemplate();
 	}
@@ -424,21 +392,22 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show a form for settings
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     string
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  string
 	 */
 	public function settings($database, $option, $member)
 	{
-		$xmc = new \Hubzero\Message\Component($database);
+		$xmc = Hubzero\Message\Component::blank();
 		$components = $xmc->getRecords();
 
-		$view = $this->view('settings', 'default');
-		$view->option = $option;
-		$view->member = $member;
-		$view->components = $components;
-		if (!$components)
+		$view = $this->view('settings', 'default')
+			->set('option', $option)
+			->set('member', $member)
+			->set('components', $components);
+
+		if (!$components->count())
 		{
 			if ($this->getError())
 			{
@@ -450,7 +419,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$settings = array();
 		foreach ($components as $component)
 		{
-			$settings[$component->action] = array();
+			$settings[$component->get('action')] = array();
 		}
 
 		// Fetch message methods
@@ -460,7 +429,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$default_method = null;
 
 		// Instantiate our notify object
-		$notify = new \Hubzero\Message\Notify($database);
+		$notify = Hubzero\Message\Notify::blank();
 
 		// Get the user's selected methods
 		$methods = $notify->getRecords($member->get('id'));
@@ -498,27 +467,26 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$view->settings = $settings;
-		$view->notimethods = $notimethods;
+		$view->set('settings', $settings);
+		$view->set('notimethods', $notimethods);
+
 		return $view->loadTemplate();
 	}
 
 	/**
 	 * Create a message
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  string
 	 */
 	private function create($database, $option, $member)
 	{
-		$view = $this->view('create', 'default');
-
-		//list of message to's
+		// list of message to's
 		$tos = array();
 
-		//get members name and id
+		// get members name and id
 		$mbrs = Request::getVar('to', array());
 		foreach ($mbrs as $mbr)
 		{
@@ -526,15 +494,12 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$tos[] = $mem->get('name') . ' (' . $mem->get('id') . ')';
 		}
 
-		$view->option = $option;
-		$view->member = $member;
-		$view->tos = implode(',', $tos);
-		$view->no_html = Request::getInt('no_html', 0);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view = $this->view('create', 'default')
+			->set('option', $option)
+			->set('member', $member)
+			->set('tos', implode(',', $tos))
+			->set('no_html', Request::getInt('no_html', 0))
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -542,69 +507,37 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * View a message
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @param      integer $mid      MEssage ID
-	 * @return     void
+	 * @param   object   $database  Database
+	 * @param   string   $option    Name of the component
+	 * @param   object   $member    Current member
+	 * @param   integer  $mid       Message ID
+	 * @return  string
 	 */
 	public function message($database, $option, $member, $mid)
 	{
-		$xmessage = new \Hubzero\Message\Message($database);
-		$xmessage->load($mid);
-		$xmessage->message = stripslashes($xmessage->message);
+		$xmessage = Hubzero\Message\Message::oneOrFail($mid);
 
-		$xmr = new \Hubzero\Message\Recipient($database);
-		$xmr->loadRecord($mid, $member->get('id'));
+		$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
 
-		$xmessage->message = str_replace("\n","\n ",$xmessage->message);
-		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-		$xmessage->message = preg_replace_callback("/$UrlPtrn/", array($this,'autolink'), $xmessage->message);
-		$xmessage->message = nl2br($xmessage->message);
-		$xmessage->message = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;', $xmessage->message);
-
-		if (substr($xmessage->component,0,4) == 'com_')
+		if (substr($xmessage->get('component'),0,4) == 'com_')
 		{
-			$xmessage->component = substr($xmessage->component, 4);
+			$xmessage->set('component', substr($xmessage->get('component'), 4));
 		}
-
-		$xseen = new \Hubzero\Message\Seen($database);
-		$xseen->mid = $mid;
-		$xseen->uid = $member->get('id');
-		$xseen->loadRecord();
 
 		if (User::get('id') == $member->get('id'))
 		{
-			if (!$xseen->whenseen || $xseen->whenseen == $database->getNullDate())
+			if (!$recipient->markAsRead())
 			{
-				$xseen->mid = $mid;
-				$xseen->uid = $member->get('id');
-				$xseen->whenseen = Date::toSql();
-				$xseen->store(true);
+				$this->setError($recipient->getError());
 			}
 		}
 
-		if (substr($xmessage->type, -8) == '_message')
-		{
-			$u = User::getInstance($xmessage->created_by);
-			$from = '<a href="'.Route::url('index.php?option=' . $option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
-		}
-		else
-		{
-			$from = Lang::txt('PLG_MEMBERS_MESSAGES_SYSTEM', $xmessage->component);
-		}
-
-		$view = $this->view('message', 'default');
-		$view->option = $option;
-		$view->member = $member;
-		$view->xmr = $xmr;
-		$view->xmessage = $xmessage;
-		$view->from = $from;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view = $this->view('message', 'default')
+			->set('option', $option)
+			->set('member', $member)
+			->set('xmr', $recipient)
+			->set('xmessage', $xmessage)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -612,10 +545,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Move message to archive
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function sendtoarchive($database, $option, $member)
 	{
@@ -630,24 +563,21 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 			foreach ($mids as $mid)
 			{
-				$recipient = new \Hubzero\Message\Recipient($database);
-				$recipient->mid = $mid;
-				$recipient->uid = $member->get('id');
-				$recipient->loadRecord();
-				$recipient->state = 1;
-				if (!$recipient->store())
+				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+				$recipient->set('mid', $mid);
+				$recipient->set('uid', $member->get('id'));
+				$recipient->set('state', 1);
+
+				if (!$recipient->save())
 				{
 					$this->setError($recipient->getError());
+					continue;
 				}
 
-				$xseen = new \Hubzero\Message\Seen($database);
-				$xseen->mid = $mid;
-				$xseen->uid = $member->get('id');
-				$xseen->loadRecord();
-				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
+				if (!$recipient->markAsRead())
 				{
-					$xseen->whenseen = Date::toSql();
-					$xseen->store(true);
+					$this->setError($recipient->getError());
+					continue;
 				}
 			}
 			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your archive.", "passed");
@@ -663,10 +593,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Move message to inbox
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function sendtoinbox($database, $option, $member)
 	{
@@ -681,12 +611,12 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 			foreach ($mids as $mid)
 			{
-				$recipient = new \Hubzero\Message\Recipient($database);
-				$recipient->mid = $mid;
-				$recipient->uid = $member->get('id');
-				$recipient->loadRecord();
-				$recipient->state = 0;
-				if (!$recipient->store())
+				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+				$recipient->set('mid', $mid);
+				$recipient->set('uid', $member->get('id'));
+				$recipient->set('state', 0);
+
+				if (!$recipient->save())
 				{
 					$this->setError($recipient->getError());
 				}
@@ -704,10 +634,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark messages as "trashed"
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function sendtotrash($database, $option, $member)
 	{
@@ -722,26 +652,22 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 			foreach ($mids as $mid)
 			{
-				$recipient = new \Hubzero\Message\Recipient($database);
-				$recipient->mid = $mid;
-				$recipient->uid = $member->get('id');
-				$recipient->loadRecord();
+				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+				$recipient->set('mid', $mid);
+				$recipient->set('uid', $member->get('id'));
+				$recipient->set('state', 2);
+				$recipient->set('expires', Date::of(time()+(10*60*60*60))->toSql());
 
-				$xseen = new \Hubzero\Message\Seen($database);
-				$xseen->mid = $mid;
-				$xseen->uid = $member->get('id');
-				$xseen->loadRecord();
-				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
-				{
-					$xseen->whenseen = Date::toSql();
-					$xseen->store(true);
-				}
-
-				$recipient->state = 2;
-				$recipient->expires = Date::of(time()+(10*60*60*60))->toSql();
-				if (!$recipient->store())
+				if (!$recipient->save())
 				{
 					$this->setError($recipient->getError());
+					continue;
+				}
+
+				if (!$recipient->markAsRead())
+				{
+					$this->setError($recipient->getError());
+					continue;
 				}
 			}
 			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your trash.", "passed");
@@ -757,16 +683,16 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete "trashed" messages
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function emptytrash($database, $option, $member)
 	{
-		$recipient = new \Hubzero\Message\Recipient($database);
-		$recipient->uid = $member->get('id');
-		if (!$recipient->deleteTrash())
+		$recipient = Hubzero\Message\Recipient::blank();
+
+		if (!$recipient->deleteTrash($member->get('id')))
 		{
 			$this->setError($recipient->getError());
 		}
@@ -777,10 +703,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a message
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function delete($database, $option, $member)
 	{
@@ -795,11 +721,14 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 			foreach ($mids as $mid)
 			{
-				$recipient = new \Hubzero\Message\Recipient($database);
-				$recipient->mid = $mid;
-				$recipient->uid = $member->get('id');
-				$recipient->loadRecord();
-				if (!$recipient->delete())
+				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+				if (!$recipient->get('id'))
+				{
+					// User isn't a recipient
+					// This shouldn't ever happen
+					continue;
+				}
+				if (!$recipient->destroy())
 				{
 					$this->setError($recipient->getError());
 				}
@@ -817,10 +746,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark messages as read
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function markasread($database, $option, $member)
 	{
@@ -835,14 +764,17 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 			foreach ($ids as $mid)
 			{
-				$xseen = new \Hubzero\Message\Seen($database);
-				$xseen->mid = $mid;
-				$xseen->uid = $member->get('id');
-				//$xseen->loadRecord();
-				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
+				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+				if (!$recipient->get('id'))
 				{
-					$xseen->whenseen = Date::toSql();
-					$xseen->store(true);
+					// User isn't a recipient
+					// This shouldn't ever happen
+					continue;
+				}
+				if (!$recipient->markAsRead())
+				{
+					$this->setError($recipient->getError());
+					continue;
 				}
 			}
 			$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as read.', 'passed');
@@ -858,10 +790,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark messages as unread
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function markasunread($database, $option, $member)
 	{
@@ -874,11 +806,16 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			// Check for request forgeries
 			Request::checkToken(['get', 'post']);
 
-			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('id') . " AND `mid` IN(" . implode(',', $ids) . ")";
-			$database = App::get('db');
-			$database->setQuery($sql);
-			$database->query();
+			foreach ($ids as $mid)
+			{
+				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
 
+				if (!$recipient->markAsUnread())
+				{
+					$this->setError($recipient->getError());
+					continue;
+				}
+			}
 			$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as unread.', 'passed');
 		}
 		else
@@ -892,10 +829,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save settings
 	 *
-	 * @param      object  $database JDatabase
-	 * @param      string  $option   Name of the component
-	 * @param      object  $member   Current member
-	 * @return     void
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  void
 	 */
 	public function savesettings($database, $option, $member)
 	{
@@ -911,57 +848,56 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if ($settings && count($settings) > 0)
 		{
 			// Loop through each setting
-			foreach ($settings as $key=>$value)
+			foreach ($settings as $key => $value)
 			{
 				foreach ($value as $v)
 				{
 					if ($v)
 					{
 						// Instantiate a Notify object and set its values
-						$notify = new \Hubzero\Message\Notify($database);
-						$notify->uid = $member->get('id');
-						$notify->method = $v;
-						$notify->type = $key;
-						$notify->priority = 1;
+						$notify = Hubzero\Message\Notify::blank();
+						$notify->set('uid', $member->get('id'));
+						$notify->set('method', $v);
+						$notify->set('type', $key);
+						$notify->set('priority', 1);
+
 						// Do we have an ID for this setting?
-						// Determines if the store() method is going to INSERT or UPDATE
+						// Determines if the save() method is going to INSERT or UPDATE
 						if ($ids[$key][$v] > 0)
 						{
-							$notify->id = $ids[$key][$v];
+							$notify->set('id', $ids[$key][$v]);
 							$ids[$key][$v] = -1;
-							//echo 'updated: '.$key.':'.$v.'<br />';
-						//} else {
-							//echo 'created: '.$key.':'.$v.'<br />';
 						}
+
 						// Save
-						if (!$notify->store())
+						if (!$notify->save())
 						{
-							$this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method));
+							$this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->get('method')));
 						}
 					}
 				}
 			}
 
-			$notify = new \Hubzero\Message\Notify($database);
-			foreach ($ids as $key=>$value)
+			foreach ($ids as $key => $value)
 			{
-				foreach ($value as $k=>$v)
+				foreach ($value as $k => $v)
 				{
 					if ($v > 0)
 					{
-						$notify->delete($v);
-						//echo 'deleted: '.$v.'<br />';
+						$notify = Hubzero\Message\Notify::oneOrNew($v);
+						$notify->destroy();
 					}
 				}
 			}
 
 			// If they previously had everything turned off, we need to remove that entry saying so
 			$records = $notify->getRecords($member->get('id'), 'all');
-			if ($records)
+
+			if ($records->count())
 			{
 				foreach ($records as $record)
 				{
-					$notify->delete($record->id);
+					$record->destroy();
 				}
 			}
 		}
@@ -970,32 +906,40 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			// This creates a single entry to let the system know that the user has explicitly chosen "none" for all options
 			// It ensures we can know the difference between someone who has never changed their settings (thus, no database entries)
 			// and someone who purposely wants everything turned off.
-			$notify = new \Hubzero\Message\Notify($database);
-			$notify->uid = $member->get('id');
+			$notify = Hubzero\Message\Notify::blank();
+			$notify->set('uid', $member->get('id'));
 
 			$records = $notify->getRecords($member->get('id'), 'all');
-			if (!$records)
+
+			if (!$records->count())
 			{
-				$notify->clearAll();
-				$notify->method = 'none';
-				$notify->type = 'all';
-				$notify->priority = 1;
-				if (!$notify->store())
+				$notify->deleteByUser($member->get('id'));
+
+				$notify->set('uid', $member->get('id'));
+				$notify->set('method', 'none');
+				$notify->set('type', 'all');
+				$notify->set('priority', 1);
+
+				if (!$notify->save())
 				{
-					$this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method));
+					$this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->get('method')));
 				}
 			}
 		}
 
 		// Push through to the settings view
 		$this->addPluginMessage(Lang::txt('You have successfully saved your message settings.'), 'passed');
+
 		return App::redirect(Route::url($member->link() . '&active=messages&action=settings'));
 	}
 
 	/**
 	 * Send a message
 	 *
-	 * @return     mixed
+	 * @param   object  $database  Database
+	 * @param   string  $option    Name of the component
+	 * @param   object  $member    Current member
+	 * @return  mixed
 	 */
 	public function send($database, $option, $member)
 	{
@@ -1041,7 +985,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				{
 					// User not found
 					// Maybe it was a group?
-					$grp = \Hubzero\User\Group::getInstance($mbr);
+					$grp = Hubzero\User\Group::getInstance($mbr);
 
 					if ($grp && $grp->get('gidNumber'))
 					{
@@ -1087,51 +1031,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Auto-link mailto, ftp, and http strings in text
-	 *
-	 * @param      array  $matches Text to autolink
-	 * @return     string
-	 */
-	public function autolink($matches)
-	{
-		$href = $matches[0];
-
-		if (substr($href, 0, 1) == '!')
-		{
-			return substr($href, 1);
-		}
-
-		$href = str_replace('"', '', $href);
-		$href = str_replace("'", '', $href);
-		$href = str_replace('&#8221', '', $href);
-
-		$h = array('h', 'm', 'f', 'g', 'n');
-		if (!in_array(substr($href,0,1), $h))
-		{
-			$href = substr($href, 1);
-		}
-		$name = trim($href);
-		if (substr($name, 0, 7) == 'mailto:')
-		{
-			$name = substr($name, 7, strlen($name));
-			$name = \Hubzero\Utility\String::obfuscate($name);
-
-			$href = 'mailto:' . $name;
-		}
-		$l = sprintf(
-			' <a class="ext-link" href="%s" rel="external">%s</a>', $href, $name
-		);
-		return $l;
-	}
-
-	/**
 	 * Build a select list of methods
 	 *
-	 * @param      array  $notimethods Methods
-	 * @param      string $name        Field name
-	 * @param      array  $values      Option values
-	 * @param      array  $ids         Option IDs
-	 * @return     string
+	 * @param   array   $notimethods  Methods
+	 * @param   string  $name         Field name
+	 * @param   array   $values       Option values
+	 * @param   array   $ids          Option IDs
+	 * @return  string
 	 */
 	public static function selectMethod($notimethods, $name, $values=array(), $ids=array())
 	{

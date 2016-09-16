@@ -86,7 +86,7 @@ class Messages extends AdminController
 			)
 		);
 
-		$obj = new Message\Component($this->database);
+		$obj = Message\Component::blank();
 
 		// Get a record count
 		$total = $obj->getCount($filters, true);
@@ -138,8 +138,7 @@ class Messages extends AdminController
 			}
 
 			// Initiate database class and load info
-			$row = new Message\Component($this->database);
-			$row->load($id);
+			$row = Message\Component::oneOrNew($id);
 		}
 
 		$this->view->row = $row;
@@ -176,26 +175,14 @@ class Messages extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming profile edits
+		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 
-		// Load the profile
-		$row = new Message\Component($this->database);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError(), 'error');
-			return $this->editTask($row);
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError(), 'error');
-			return $this->editTask($row);
-		}
+		// Load the record
+		$row = Message\Component::blank()->set($fields);
 
 		// Store content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError(), 'error');
 			return $this->editTask($row);
@@ -230,21 +217,20 @@ class Messages extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$notify = new Message\Notify($this->database);
+			$notify = Message\Notify::blank();
 
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
 				$id = intval($id);
 
-				$row = new Message\Component($this->database);
-				$row->load($id);
+				$row = Message\Component::oneOrFail($id);
 
 				// Remove any associations
-				$notify->deleteType($row->action);
+				$notify->deleteByType($row->get('action'));
 
 				// Remove the record
-				$row->delete($id);
+				$row->destroy();
 			}
 		}
 
@@ -272,7 +258,7 @@ class Messages extends AdminController
 
 		$database = App::get('db');
 
-		$xmc = new \Hubzero\Message\Component($database);
+		$xmc = Message\Component::blank();
 		$components = $xmc->getRecords();
 
 		/*if ($components)
@@ -283,7 +269,7 @@ class Messages extends AdminController
 		$settings = array();
 		foreach ($components as $component)
 		{
-			$settings[$component->action] = array();
+			$settings[$component->get('action')] = array();
 		}
 
 		// Fetch message methods
@@ -293,16 +279,16 @@ class Messages extends AdminController
 		$default_method = null;
 
 		// Instantiate our notify object
-		$notify = new \Hubzero\Message\Notify($database);
+		$notify = Message\Notify::blank();
 
 		// Get the user's selected methods
 		$methods = $notify->getRecords($member->get('id'));
-		if ($methods)
+		if ($methods->count())
 		{
 			foreach ($methods as $method)
 			{
-				$settings[$method->type]['methods'][] = $method->method;
-				$settings[$method->type]['ids'][$method->method] = $method->id;
+				$settings[$method->get('type')]['methods'][] = $method->get('method');
+				$settings[$method->get('type')]['ids'][$method->get('method')] = $method->get('id');
 			}
 		}
 		else
@@ -375,48 +361,49 @@ class Messages extends AdminController
 					if ($v)
 					{
 						// Instantiate a Notify object and set its values
-						$notify = new \Hubzero\Message\Notify($database);
-						$notify->uid = $member->get('id');
-						$notify->method = $v;
-						$notify->type = $key;
-						$notify->priority = 1;
+						$notify = Message\Notify::blank();
+						$notify->set('uid', $member->get('id'));
+						$notify->set('method', $v);
+						$notify->set('type', $key);
+						$notify->set('priority', 1);
 
 						// Do we have an ID for this setting?
 						// Determines if the store() method is going to INSERT or UPDATE
 						if ($ids[$key][$v] > 0)
 						{
-							$notify->id = $ids[$key][$v];
+							$notify->set('id', $ids[$key][$v]);
 							$ids[$key][$v] = -1;
 						}
 
 						// Save
-						if (!$notify->store())
+						if (!$notify->save())
 						{
-							Notify::error(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method));
+							Notify::error(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->get('method')));
 						}
 					}
 				}
 			}
 
-			$notify = new \Hubzero\Message\Notify($database);
-			foreach ($ids as $key=>$value)
+			foreach ($ids as $key => $value)
 			{
-				foreach ($value as $k=>$v)
+				foreach ($value as $k => $v)
 				{
 					if ($v > 0)
 					{
-						$notify->delete($v);
+						$notify = Message\Notify::oneOrFail($v);
+						$notify->destroy();
 					}
 				}
 			}
 
 			// If they previously had everything turned off, we need to remove that entry saying so
+			$notify = Message\Notify::blank();
 			$records = $notify->getRecords($member->get('uidNumber'), 'all');
 			if ($records)
 			{
 				foreach ($records as $record)
 				{
-					$notify->delete($record->id);
+					$record->destroy();
 				}
 			}
 		}
@@ -425,19 +412,19 @@ class Messages extends AdminController
 			// This creates a single entry to let the system know that the user has explicitly chosen "none" for all options
 			// It ensures we can know the difference between someone who has never changed their settings (thus, no database entries)
 			// and someone who purposely wants everything turned off.
-			$notify = new \Hubzero\Message\Notify($database);
-			$notify->uid = $member->get('uidNumber');
+			$notify = Message\Notify::blank();
+			$notify->set('uid', $member->get('uidNumber'));
 
 			$records = $notify->getRecords($member->get('uidNumber'), 'all');
-			if (!$records)
+			if (!$records->count())
 			{
-				$notify->clearAll();
-				$notify->method   = 'none';
-				$notify->type     = 'all';
-				$notify->priority = 1;
-				if (!$notify->store())
+				$notify->deleteByUser($member->get('uidNumber'));
+				$notify->set('method', 'none');
+				$notify->set('type', 'all');
+				$notify->set('priority', 1);
+				if (!$notify->save())
 				{
-					$this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method));
+					$this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->get('method')));
 				}
 			}
 		}

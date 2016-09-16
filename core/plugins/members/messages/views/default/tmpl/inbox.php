@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -26,6 +23,11 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -46,9 +48,9 @@ $this->css()
 				{
 					foreach ($this->components as $component)
 					{
-						$component = substr($component, 4);
+						$component = substr($component->component, 4);
 						$sbjt  = '<option value="'.$component.'"';
-						$sbjt .= ($component == $this->filter) ? ' selected="selected"' : '';
+						$sbjt .= ($component == $this->filters['filter']) ? ' selected="selected"' : '';
 						$sbjt .= '>'.$component.'</option>'."\n";
 						echo $sbjt;
 					}
@@ -85,12 +87,24 @@ $this->css()
 		<tfoot>
 			<tr>
 				<td colspan="6">
-					<?php echo $this->pagenavhtml; ?>
+					<?php
+					$pageNav = new \Hubzero\Pagination\Paginator(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
+					$pageNav->setAdditionalUrlParam('active', 'messages');
+					$pageNav->setAdditionalUrlParam('task', 'inbox');
+					$pageNav->setAdditionalUrlParam('action', '');
+
+					echo $pageNav->render();
+					?>
 				</td>
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if ($this->rows) : ?>
+			<?php if ($this->rows->count()) : ?>
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
 						//get the message status
