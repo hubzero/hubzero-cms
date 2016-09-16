@@ -285,17 +285,15 @@ class Downloads extends AdminController
 				if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo'])
 				{
 					$metaUserInfo = unserialize($row->meta['userInfo']['mtValue']);
-					$metaUserInfoCsv = '';
-					$mtIndex = 0;
+					$metaUserInfoCsv = array();
 					foreach ($metaUserInfo as $mtK => $mtV)
 					{
-						if ($mtIndex > 0)
-						{
-							$metaUserInfoCsv .= ', ';
+						if(is_array($mtV)) {
+							$mtV = implode('; ', $mtV);
 						}
-						$metaUserInfoCsv .= $mtV;
-						$mtIndex++;
+						$metaUserInfoCsv[] = $mtV;
 					}
+					$metaUserInfoCsv = implode(', ', $metaUserInfoCsv);
 				}
 
 				// eulaAccepted
