@@ -71,24 +71,21 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			foreach ($uids as $uid)
 			{
 				// Find any actions the user needs to take for this $component and $element
-				$action = new \Hubzero\Message\Action($database);
-				$mids = $action->getActionItems($type, $component, $element, $uid);
+				$mids = Hubzero\Message\Action::getActionItems($type, $component, $element, $uid);
 
 				// Check if the user has any action items
 				if (count($mids) > 0)
 				{
 					foreach ($mids as $mid)
 					{
-						$xseen = new \Hubzero\Message\Seen($database);
-						$xseen->mid = $mid;
-						$xseen->uid = $uid;
-						$xseen->loadRecord();
-						if ($xseen->whenseen == ''
-						 || $xseen->whenseen == $database->getNullDate()
-						 || $xseen->whenseen == NULL)
+						$xseen = Hubzero\Message\Seen::oneByMessageAndUser($mid, $uid);
+
+						if ($xseen->get('whenseen') == ''
+						 || $xseen->get('whenseen') == $database->getNullDate()
+						 || $xseen->get('whenseen') == NULL)
 						{
-							$xseen->whenseen = Date::toSql();
-							$xseen->store(true);
+							$xseen->set('whenseen', Date::toSql());
+							$xseen->save();
 						}
 					}
 				}
@@ -123,7 +120,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// Create the message object
-		$xmessage = new \Hubzero\Message\Message($database);
+		$xmessage = Hubzero\Message\Message::blank();
 
 		if ($type == 'member_message')
 		{
@@ -147,7 +144,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			$filters['limit'] = 1;
 			$filters['start'] = 0;
 			$sent = $xmessage->getSentMessages($filters);
-			if (count($sent) > 0)
+			if ($sent->count() > 0)
 			{
 				$last_sent = $sent[0];
 
@@ -166,33 +163,33 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		}
 
 		// Store the message in the database
-		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
+		$xmessage->set('message', (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message);
 
 		// Do we have a subject line? If not, create it from the message
-		if (!$subject && $xmessage->message)
+		if (!$subject && $xmessage->get('message'))
 		{
-			$subject = substr($xmessage->message, 0, 70);
+			$subject = substr($xmessage->get('message'), 0, 70);
 			if (strlen($subject) >= 70)
 			{
 				$subject .= '...';
 			}
 		}
-		$xmessage->subject    = $subject;
 
-		$xmessage->created    = Date::toSql();
-		$xmessage->created_by = User::get('id');
-		$xmessage->component  = $component;
-		$xmessage->type       = $type;
-		$xmessage->group_id   = $group_id;
+		$xmessage->set('subject', $subject);
+		$xmessage->set('created', Date::toSql());
+		$xmessage->set('created_by', User::get('id'));
+		$xmessage->set('component', $component);
+		$xmessage->set('type', $type);
+		$xmessage->set('group_id', $group_id);
 
-		if (!$xmessage->store())
+		if (!$xmessage->save())
 		{
 			return $xmessage->getError();
 		}
 
 		if (is_array($message))
 		{
-			$xmessage->message = $message;
+			$xmessage->set('message', $message);
 		}
 
 		// Do we have any recipients?
@@ -221,18 +218,17 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			foreach ($to as $uid)
 			{
 				// Create a recipient object that ties a user to a message
-				$recipient = new \Hubzero\Message\Recipient($database);
-				$recipient->uid      = $uid;
-				$recipient->mid      = $xmessage->id;
-				$recipient->created  = Date::toSql();
-				$recipient->expires  = Date::of(time() + (168 * 24 * 60 * 60))->toSql();
-				$recipient->actionid = 0; //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
+				$recipient = Hubzero\Message\Recipient::blank();
+				$recipient->set('uid', $uid);
+				$recipient->set('mid', $xmessage->get('id'));
+				$recipient->set('created', Date::toSql());
+				$recipient->set('expires', Date::of(time() + (168 * 24 * 60 * 60))->toSql());
+				$recipient->set('actionid', 0); //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
 				// Get the user's methods for being notified
-				$notify = new \Hubzero\Message\Notify($database);
+				$notify = Hubzero\Message\Notify::blank();
 				$methods = $notify->getRecords($uid, $type);
 
-				//$user = User::getInstance($uid);
 				$user = User::getInstance($uid);
 				if (!is_object($user) || !$user->get('username'))
 				{
@@ -265,7 +261,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				}
 
 				// Do we have any methods?
-				if ($methods)
+				if ($methods->count())
 				{
 					// Loop through each method
 					foreach ($methods as $method)
@@ -273,7 +269,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						$action = strtolower($method->method);
 						if ($action == 'internal')
 						{
-							if (!$recipient->store())
+							if (!$recipient->save())
 							{
 								$this->setError($recipient->getError());
 							}
@@ -292,7 +288,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 					// First check if they have ANY methods saved (meaning they've changed their default settings)
 					// If They do have some methods, then they simply turned off everything for this $type
 					$methods = $notify->getRecords($uid);
-					if (!$methods || count($methods) <= 0)
+					if (!$methods || $methods->count() <= 0)
 					{
 						// Load the default method
 						$p = Plugin::byType('members', 'messages');
@@ -300,7 +296,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 						$d = $pp->get('default_method', 'email');
 
-						if (!$recipient->store())
+						if (!$recipient->save())
 						{
 							$this->setError($recipient->getError());
 						}

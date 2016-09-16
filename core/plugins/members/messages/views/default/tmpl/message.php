@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -26,6 +23,11 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -44,18 +46,29 @@ $this->css()
 		<tbody>
 			<tr>
 				<th><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DATE_RECEIVED'); ?></th>
-				<td><?php echo Date::of($this->xmessage->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+				<td><?php echo Date::of($this->xmessage->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 			<tr>
 				<th><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
-				<td><?php echo $this->from; ?></td>
+				<td><?php
+				if (substr($this->xmessage->get('type'), -8) == '_message')
+				{
+					$u = $this->xmessage->creator;
+					$from = '<a href="'.Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
+				}
+				else
+				{
+					$from = Lang::txt('PLG_MEMBERS_MESSAGES_SYSTEM', $this->xmessage->get('component'));
+				}
+				echo $from;
+				?></td>
 			</tr>
 			<tr>
 				<th><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
 				<td>
 					<?php
-						$subject = stripslashes($this->xmessage->subject);
-						if ($this->xmessage->component == 'support')
+						$subject = stripslashes($this->xmessage->get('subject'));
+						if ($this->xmessage->get('component') == 'support')
 						{
 							$fg = explode(' ', $subject);
 							$fh = array_pop($fg);

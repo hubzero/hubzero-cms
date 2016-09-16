@@ -209,7 +209,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		// Instantiate our message object
 		$database = App::get('db');
-		$recipient = new \Hubzero\Message\Message($database);
+		$recipient = Hubzero\Message\Message::blank();
 
 		// Retrieve data
 		$total = $recipient->getSentMessagesCount($filters);
@@ -256,17 +256,11 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// Load the message and parse it
-		$xmessage = new \Hubzero\Message\Message($database);
-		$xmessage->load($message);
-		$xmessage->message = stripslashes($xmessage->message);
-		$xmessage->message = str_replace("\n", "\n ", $xmessage->message);
-		$xmessage->message = preg_replace_callback("/[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])/", array('plgGroupsMessages', 'autolink'), $xmessage->message);
-		$xmessage->message = nl2br($xmessage->message);
-		$xmessage->message = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $xmessage->message);
+		$xmessage = Hubzero\Message\Message::oneOrFail($message);
 
-		if (substr($xmessage->component, 0, 4) == 'com_')
+		if (substr($xmessage->get('component'), 0, 4) == 'com_')
 		{
-			$xmessage->component = substr($xmessage->component, 4);
+			$xmessage->set('component', substr($xmessage->get('component'), 4));
 		}
 
 		// Instantiate the view
@@ -385,7 +379,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 					{
 						$role = explode('_', $mbr);
 						$db = App::get('db');
-						$sql = "SELECT uidNumber FROM #__xgroups_member_roles WHERE roleid=" . $db->Quote($role[1]);
+						$sql = "SELECT uidNumber FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role[1]);
 						$db->setQuery($sql);
 						$member_roles = $db->loadAssocList();
 						foreach ($member_roles as $member)
@@ -517,44 +511,6 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 			return $html;
 		}
-	}
-
-	/**
-	 * Auto-link mailto, ftp, and http strings in text
-	 *
-	 * @param      array  $matches Text to autolink
-	 * @return     string
-	 */
-	public function autolink($matches)
-	{
-		$href = $matches[0];
-
-		if (substr($href, 0, 1) == '!')
-		{
-			return substr($href, 1);
-		}
-
-		$href = str_replace('"', '', $href);
-		$href = str_replace("'", '', $href);
-		$href = str_replace('&#8221', '', $href);
-
-		$h = array('h', 'm', 'f', 'g', 'n');
-		if (!in_array(substr($href,0,1), $h))
-		{
-			$href = substr($href, 1);
-		}
-		$name = trim($href);
-		if (substr($name, 0, 7) == 'mailto:')
-		{
-			$name = substr($name, 7, strlen($name));
-			$name = self::obfuscate($name);
-
-			$href = 'mailto:' . $name;
-		}
-		$l = sprintf(
-			' <a class="ext-link" href="%s" rel="external">%s</a>', $href, $name
-		);
-		return $l;
 	}
 
 	/**

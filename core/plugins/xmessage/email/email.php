@@ -135,23 +135,26 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (is_array($xmessage->message))
+		$m = $xmessage->get('message');
+
+		if (is_array($m))
 		{
-			if (isset($xmessage->message['attachments']))
+
+			if (isset($m['attachments']))
 			{
-				if (!is_array($xmessage->message['attachments']))
+				if (!is_array($m['attachments']))
 				{
-					$xmessage->message['attachments'] = array($xmessage->message['attachments']);
+					$m['attachments'] = array($m['attachments']);
 				}
-				foreach ($xmessage->message['attachments'] as $path)
+				foreach ($m['attachments'] as $path)
 				{
 					if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path))
 					{
 						$file = basename($path);
-						$xmessage->message['multipart'] = preg_replace(
+						$m['multipart'] = preg_replace(
 							'/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i',
 							'<img src="' . $message->getEmbed($path) . '" alt="" />',
-							$xmessage->message['multipart']
+							$m['multipart']
 						);
 					}
 					else
@@ -161,12 +164,12 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$message->addPart($xmessage->message['plaintext'], 'text/plain')
-			        ->addPart($xmessage->message['multipart'], 'text/html');
+			$message->addPart($m['plaintext'], 'text/plain')
+			        ->addPart($m['multipart'], 'text/html');
 		}
 		else
 		{
-			$message->setBody($xmessage->message);
+			$message->setBody($m);
 		}
 
 		// send mail
