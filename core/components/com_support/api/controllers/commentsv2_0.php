@@ -113,7 +113,7 @@ class Commentsv2_0 extends ApiController
 		$response = new stdClass;
 		$response->total = $comments->count();
 		$response->comments = array();
-		foreach($comments->rows() as $row)
+		foreach ($comments->rows() as $row)
 		{
 			$temp = array();
 			$changelog = json_decode($row->changelog);
@@ -223,7 +223,6 @@ class Commentsv2_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-	
 		$ticket_id = Request::getInt('ticket', null);
 		if (!isset($ticket_id))
 		{
@@ -235,7 +234,7 @@ class Commentsv2_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('Bad request - comment required'), 400);
 		}
-		
+
 		$ticket = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
 		$comment = new \Components\Support\Models\Orm\Comment();
 		$changelog = new stdClass;
@@ -246,7 +245,7 @@ class Commentsv2_0 extends ApiController
 		$comment->set('access', (Request::get('private', false) == 'true' ? 1 : 0));
 
 		$changes = array();
-		foreach(['group', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
+		foreach (['group', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
 		{
 			if (Request::get($index, null))
 			{
@@ -314,7 +313,7 @@ class Commentsv2_0 extends ApiController
 				$ticket->set('status', 0);
 			}
 		}
-		
+
 		$comment->set('changelog', json_encode($changelog));
 		if (!$comment->save())
 		{
@@ -533,9 +532,8 @@ class Commentsv2_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
-		
-		throw new Exception(Lang::txt('Operation not supported'), 404);
 
+		throw new Exception(Lang::txt('Operation not supported'), 404);
 	}
 
 	/**
