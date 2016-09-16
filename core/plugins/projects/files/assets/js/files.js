@@ -1025,9 +1025,12 @@ HUB.ProjectFiles = {
 		var keyupTimer2 = '';
 		var preview_open = 0;
 		var in_preview = 0;
-		var subtract = $('.main-content').offset();
+		var subtract = null;
 
-		subtract.left -= $('.main-content').css('margin-left').replace('px', '');
+		if ($('.main-content').length) {
+			subtract = $('.main-content').offset();
+			subtract.left -= $('.main-content').css('margin-left').replace('px', '');
+		}
 
 		if ($('#plg-content').length > 0 && div.length > 0)
 		{
@@ -1055,8 +1058,10 @@ HUB.ProjectFiles = {
 			{
 				e.preventDefault();
 				var coord = $(item).offset();
-				coord.top -= subtract.top;
-				coord.left -= subtract.left;
+				if (substract) {
+					coord.top -= subtract.top;
+					coord.left -= subtract.left;
+				}
 
 				if (keyupTimer2) {
 					clearTimeout(keyupTimer2);
