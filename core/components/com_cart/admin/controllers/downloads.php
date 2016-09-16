@@ -283,7 +283,8 @@ class Downloads extends AdminController
 					$metaUserInfoCsv = array();
 					foreach ($metaUserInfo as $mtK => $mtV)
 					{
-						if(is_array($mtV)) {
+						if (is_array($mtV))
+						{
 							$mtV = implode('; ', $mtV);
 						}
 						$metaUserInfoCsv[] = $mtV;
