@@ -130,7 +130,11 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 
 		$channel = $this->params->get('channel');
 		$url     = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($ticket->link()), '/');
-		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename'));//, $ticket->get('name', $ticket->get('email')));
+		if (App::isAdmin())
+		{
+			$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
+		}
+		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
 		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
 
 		if (Component::params('com_support')->get('email_terse'))
@@ -195,6 +199,10 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 
 		$channel = $this->params->get('channel_updated', $this->params->get('channel'));
 		$url     = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($ticket->link()), '/');
+		if (App::isAdmin())
+		{
+			$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
+		}
 		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename')); //, $comment->creator()->get('name'));
 		$text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
 		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
