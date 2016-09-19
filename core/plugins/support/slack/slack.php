@@ -134,7 +134,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 		{
 			$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
 		}
-		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename'), $ticket->get('name', $ticket->get('email')));
+		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
 		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
 
 		if (Component::params('com_support')->get('email_terse'))
@@ -164,6 +164,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 			'title_link' => $url,
 			'text'       => $text, // The text for inside the attachment
 			'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
+			'author_name' => $ticket->get('name', $ticket->get('email')),
 		);
 
 		$this->send($channel, $data);
@@ -202,7 +203,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 		{
 			$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
 		}
-		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename'), $comment->creator()->get('name'));
+		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename')); //, $comment->creator()->get('name'));
 		$text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
 		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
 
@@ -231,7 +232,38 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 			'title_link' => $url,
 			'text'       => $text, // The text for inside the attachment
 			'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
+			'author_name' => $comment->creator()->get('name'),
 		);
+		if (!Component::params('com_support')->get('email_terse'))
+		{
+			$fields = array();
+			foreach ($comment->changelog()->lists() as $type => $log)
+			{
+				if (is_array($log) && count($log) > 0)
+				{
+					if ($type != 'changes')
+					{
+						continue;
+					}
+
+					foreach ($log as $items)
+					{
+						if ($items->before != $items->after)
+						{
+							$fields[] = array(
+								'title' => ucfirst($items->field),
+								'value' => $items->after,
+								'short' => true
+							);
+						}
+					}
+				}
+			}
+			if (!empty($fields))
+			{
+				$data['fields'] = $fields;
+			}
+		}
 
 		$this->send($channel, $data);
 	}
