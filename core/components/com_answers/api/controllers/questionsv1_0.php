@@ -56,24 +56,28 @@ class Questionsv1_0 extends ApiController
 	 * @apiParameter {
 	 * 		"name":          "limit",
 	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       25
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "start",
 	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       0
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "search",
 	 * 		"description":   "A word or phrase to search for.",
+	 * 		"type":          "string",
 	 * 		"required":      false,
 	 * 		"default":       ""
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "sort",
 	 * 		"description":   "Field to sort results by.",
+	 * 		"type":          "string",
 	 * 		"required":      false,
 	 *      "default":       "created",
 	 * 		"allowedValues": "created, title, alias, id, publish_up, publish_down, state"
@@ -81,6 +85,7 @@ class Questionsv1_0 extends ApiController
 	 * @apiParameter {
 	 * 		"name":          "sort_Dir",
 	 * 		"description":   "Direction to sort results by.",
+	 * 		"type":          "string",
 	 * 		"required":      false,
 	 * 		"default":       "desc",
 	 * 		"allowedValues": "asc, desc"
@@ -296,7 +301,7 @@ class Questionsv1_0 extends ApiController
 	 * 		"description": "Question identifier",
 	 * 		"type":        "integer",
 	 * 		"required":    true,
-	 * 		"default":     null
+	 * 		"default":     0
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "email",
