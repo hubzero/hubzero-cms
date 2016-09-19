@@ -2174,24 +2174,14 @@ class Tickets extends SiteController
 		$tags = new Tags($id);
 		$tags->removeAll();
 
-		// Delete comments
-		$comment = new Tables\Comment($this->database);
-		$comment->deleteComments($id);
-
-		$attach = new Tables\Attachment($this->database);
-		if (!$attach->deleteAllForTicket($id))
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
-				$attach->getError(),
-				'error'
-			);
-			return;
-		}
-
 		// Load the record
-		$ticket = new Tables\Ticket($this->database);
-		$ticket->load($id);
+		$ticket = new Ticket($id);
+
+		// Delete ticket
+		if (!$ticket->delete())
+		{
+			Notify::error($ticket->getError());
+		}
 
 		// Log the activity
 		$recipients = array(
@@ -2220,9 +2210,6 @@ class Tickets extends SiteController
 			],
 			'recipients' => $recipients
 		]);
-
-		// Delete ticket
-		$ticket->delete();
 
 		// Output messsage and redirect
 		App::redirect(
