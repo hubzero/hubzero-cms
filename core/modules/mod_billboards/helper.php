@@ -138,10 +138,8 @@ class Helper extends Module
 		// Add the javascript ready function with variables based on this specific billboard
 		// Pause: true - means the billbaord stops scrolling on hover
 		$js = '
-			var $jQ = jQuery.noConflict();
-
-			$jQ(document).ready(function() {
-				$jQ(\'#' . $this->collection . '\').cycle({
+			jQuery(document).ready(function() {
+				$(\'#' . $this->collection . '\').cycle({
 					fx: "' . $transition . '",
 					timeout: ' . $timeout .',
 					pager: ' . $js_pager . ',
