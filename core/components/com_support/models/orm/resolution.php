@@ -35,9 +35,9 @@ namespace Components\Support\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Support ticket status model
+ * Support ticket resolution model
  */
-class Status extends Relational
+class Resolution extends Relational
 {
 	/**
 	 * The table namespace

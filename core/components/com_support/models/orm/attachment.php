@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,13 +33,12 @@
 namespace Components\Support\Models\Orm;
 
 use Hubzero\Database\Relational;
-
-require_once __DIR__ . DS . 'comment.php';
+use Filesystem;
 
 /**
- * Support ticket model
+ * Support ticket attachment model
  */
-class Ticket extends Relational
+class Attachment extends Relational
 {
 	/**
 	 * The table namespace
@@ -63,6 +62,16 @@ class Ticket extends Relational
 	public $orderDir = 'asc';
 
 	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'filename' => 'notempty',
+		'ticket'   => 'positive|nonzero'
+	);
+
+	/**
 	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
@@ -73,72 +82,119 @@ class Ticket extends Relational
 	);
 
 	/**
-	 * Get a list of comments
+	 * Automatically fillable fields
 	 *
-	 * @return  object
+	 * @var  array
 	 */
-	public function comments()
+	public $always = array(
+		'filename'
+	);
+
+	/**
+	 * Ensure no invalid characters
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticFilename($data)
 	{
-		return $this->oneToMany('Comment', 'ticket');
+		$data['filename'] = preg_replace("/[^A-Za-z0-9.]/i", '-', $data['filename']);
+
+		return $data['filename'];
 	}
 
 	/**
-	 * Get a list of attachments
+	 * Get parent ticket
 	 *
 	 * @return  object
 	 */
-	public function attachments()
+	public function ticket()
 	{
-		return $this->oneToMany('Attachment', 'ticket');
+		return $this->belongsToOne('Ticket', 'ticket');
 	}
 
 	/**
-	 * Get status
+	 * Get parent comment
 	 *
 	 * @return  object
 	 */
-	public function status()
+	public function comment()
 	{
-		return $this->oneToOne('Status', 'id', 'status');
+		return $this->belongsToOne('Comment', 'comment_id');
 	}
 
 	/**
-	 * Get category
+	 * Defines a belongs to one relationship between comment and user
 	 *
 	 * @return  object
 	 */
-	public function category()
+	public function creator()
 	{
-		return $this->oneToOne('Category', 'id', 'category');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
-	 * Delete the record and all associated data
+	 * Is the file an image?
 	 *
-	 * @return  boolean  False if error, True on success
+	 * @return  boolean
+	 */
+	public function isImage()
+	{
+		return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
+	}
+
+	/**
+	 * Does the file exist on the server?
+	 *
+	 * @return  boolean
+	 */
+	public function hasFile()
+	{
+		return file_exists($this->path());
+	}
+
+	/**
+	 * File path
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		return PATH_APP . '/site/support/' . $this->get('ticket') . '/' . $this->get('comment_id') . '/' . $this->get('filename');
+	}
+
+	/**
+	 * Delete record
+	 *
+	 * @return  boolean  True if successful, False if not
 	 */
 	public function destroy()
 	{
-		// Remove data
-		foreach ($this->comments()->rows() as $comment)
+		if ($this->hasFile())
 		{
-			if (!$comment->destroy())
+			if (!Filesystem::delete($this->path()))
 			{
-				$this->addError($comment->getError());
+				$this->addError('Unable to delete file.');
+
 				return false;
 			}
 		}
 
-		foreach ($this->attachments()->rows() as $attachment)
-		{
-			if (!$attachment->destroy())
-			{
-				$this->addError($attachment->getError());
-				return false;
-			}
-		}
-
-		// Attempt to delete the record
 		return parent::destroy();
+	}
+
+	/**
+	 * Load a record by comment ID and filename
+	 *
+	 * @param   integer  $comment_id
+	 * @param   string   $filename
+	 * @return  object
+	 */
+	public static function oneByComment($comment_id, $filename)
+	{
+		return self::all()
+			->whereEquals('comment_id', (int)$comment_id)
+			->whereEquals('filename', (string)$filename)
+			->row();
 	}
 }
