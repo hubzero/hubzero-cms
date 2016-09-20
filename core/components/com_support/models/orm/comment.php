@@ -99,4 +99,35 @@ class Comment extends Relational
 	{
 		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
+
+	/**
+	 * Get a list of attachments
+	 *
+	 * @return  object
+	 */
+	public function attachments()
+	{
+		return $this->oneToMany('Attachment', 'comment_id');
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove data
+		foreach ($this->attachments()->rows() as $attachment)
+		{
+			if (!$attachment->destroy())
+			{
+				$this->addError($attachment->getError());
+				return false;
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
 }

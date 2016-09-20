@@ -68,4 +68,34 @@ class Status extends Relational
 	protected $rules = array(
 		'title' => 'notempty'
 	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'alias'
+	);
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = strip_tags($alias);
+		$alias = trim($alias);
+		if (strlen($alias) > 250)
+		{
+			$alias = substr($alias . ' ', 0, 250);
+			$alias = substr($alias, 0, strrpos($alias,' '));
+		}
+		$alias = str_replace(' ', '-', $alias);
+
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+	}
 }
