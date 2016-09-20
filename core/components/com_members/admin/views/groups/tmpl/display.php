@@ -33,6 +33,9 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="groups">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
 		<table>
 			<tbody>
