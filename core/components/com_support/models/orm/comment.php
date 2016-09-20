@@ -34,6 +34,8 @@ namespace Components\Support\Models\Orm;
 
 use Hubzero\Database\Relational;
 
+require_once __DIR__ . DS . 'attachment.php';
+
 /**
  * Support ticket comment model
  */

@@ -35,6 +35,8 @@ namespace Components\Support\Models\Orm;
 use Hubzero\Database\Relational;
 
 require_once __DIR__ . DS . 'comment.php';
+require_once __DIR__ . DS . 'status.php';
+require_once __DIR__ . DS . 'category.php';
 
 /**
  * Support ticket model
