@@ -34,7 +34,9 @@ namespace Modules\MyMessages;
 
 use Hubzero\Module\Module;
 use Hubzero\Message\Recipient;
+use Plugin;
 use User;
+use Lang;
 
 /**
  * Module class for displaying the latest messages
@@ -48,19 +50,26 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = \App::get('db');
-
-		$this->moduleclass = $this->params->get('moduleclass');
-		$this->limit = intval($this->params->get('limit', 10));
-
-		// Find the user's most recent support tickets
-		$recipient = Recipient::blank();
-		$this->rows  = $recipient->getUnreadMessages(User::get('id'), $this->limit);
-		$this->total = $recipient->getUnreadMessages(User::get('id'))->count();
-
-		if ($recipient->getError())
+		if (!Plugin::isEnabled('members', 'messages'))
 		{
-			$this->setError($recipient->getError());
+			$this->setError(Lang::txt('MOD_MYMESSAGES_REQUIRED_PLUGIN_DISABLED'));
+		}
+		else
+		{
+			$database = \App::get('db');
+
+			$this->moduleclass = $this->params->get('moduleclass');
+			$this->limit = intval($this->params->get('limit', 10));
+
+			// Find the user's most recent support tickets
+			$recipient = Recipient::blank();
+			$this->rows  = $recipient->getUnreadMessages(User::get('id'), $this->limit);
+			$this->total = $recipient->getUnreadMessages(User::get('id'))->count();
+
+			if ($recipient->getError())
+			{
+				$this->setError($recipient->getError());
+			}
 		}
 
 		require $this->getLayoutPath();

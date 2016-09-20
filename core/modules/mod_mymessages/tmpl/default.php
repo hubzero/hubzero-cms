@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 if ($this->getError())
 {
-	echo '<p class="error">' . Lang::txt('MOD_MYMESSAGES_ERROR') . '</p>' . "\n";
+	echo '<p class="error">' . $this->getError() . '</p>' . "\n";
 }
 else
 {
