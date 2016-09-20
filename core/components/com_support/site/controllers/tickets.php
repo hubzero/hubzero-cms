@@ -881,9 +881,6 @@ class Tickets extends SiteController
 
 			$lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-			$sr = new Tables\Resolution($this->database);
-			$lists['resolutions'] = $sr->getResolutions();
-
 			$sc = new Tables\Category($this->database);
 			$lists['categories'] = $sc->find('list');
 		}
@@ -1656,10 +1653,6 @@ class Tickets extends SiteController
 		}
 
 		$this->view->lists = array();
-
-		// Get resolutions
-		$sr = new Tables\Resolution($this->database);
-		$this->view->lists['resolutions'] = $sr->getResolutions();
 
 		$sc = new Tables\Category($this->database);
 		$this->view->lists['categories'] = $sc->find('list');

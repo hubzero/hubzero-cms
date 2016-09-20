@@ -36,7 +36,6 @@ use Hubzero\Component\AdminController;
 use Components\Support\Models\Conditions;
 use Components\Support\Helpers\Utilities;
 use Components\Support\Tables\Ticket;
-use Components\Support\Tables\Resolution;
 use Components\Support\Tables\Query;
 use Components\Support\Tables\QueryFolder;
 use stdClass;
@@ -126,10 +125,6 @@ class Queries extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		$this->view->lists = array();
-
-		// Get resolutions
-		$sr = new Resolution($this->database);
-		$this->view->lists['resolutions'] = $sr->getResolutions();
 
 		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 

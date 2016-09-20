@@ -42,7 +42,6 @@ include_once(dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'watching.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'message.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'resolution.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
