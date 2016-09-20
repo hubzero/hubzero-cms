@@ -17,9 +17,6 @@
 	#introduction:after {
 		content: "\f055";
 	}
-	#introduction {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf055;</small>');  /* [!] HACKS - IE 7 and older */
-	}
 	#ticketForm {
 		position: relative;
 		overflow: hidden;
@@ -1323,6 +1320,13 @@
 	#commentform .submit {
 		margin-top: 1em;
 		text-align: center;
+	}
+	#commentform.private textarea {
+		/*background-color: #fdfbe9;
+		border-color: #e1dec3;
+		color: #aaa9a0;*/
+		background-color: #fdf7f6;
+		border-color: #ecada2;
 	}
 	.icon-help {
 		display: inline-block;
