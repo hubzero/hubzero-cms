@@ -48,6 +48,21 @@ use App;
 class Credentials extends SiteController
 {
 	/**
+	 * Default task
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		if (!User::isGuest())
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option));
+		}
+
+		$this->remindTask();
+	}
+
+	/**
 	 * Displays the username recovery form
 	 *
 	 * @return  void
