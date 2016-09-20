@@ -81,6 +81,19 @@ class Groups extends AdminController
 		// Load the group page
 		$group = Group::getInstance($gid);
 
+		// Make sure the user isn't already a member
+		if (in_array($id, $group->get($tbl)))
+		{
+			$this->setError(Lang::txt('COM_MEMBERS_ALREADY_A_MEMBER_OF_GROUP'));
+			return $this->displayTask($id);
+		}
+
+		// Remove the user from any other lists they may be apart of
+		$group->remove('invitees', array($id));
+		$group->remove('applicants', array($id));
+		$group->remove('members', array($id));
+		$group->remove('managers', array($id));
+
 		// Add the user to the group table
 		$group->add($tbl, array($id));
 		if ($tbl == 'managers')
@@ -106,44 +119,30 @@ class Groups extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
-
-		// Load the group page
-		$group = Group::getInstance($gid);
-
-		// Get all the group's managers
-		$managers = $group->get('managers');
-
-		// Get all the group's members
-		$members = $group->get('members');
-
-		$users_mem = array();
-		$users_man = array();
-
-		// User ID
+		// Incoming member ID
 		$id = Request::getInt('id', 0);
-
-		// Ensure we found an account
 		if (!$id)
 		{
-			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->displayTask($id);
 		}
 
-		if (in_array($id, $members))
+		// Incoming group ID
+		$gid = Request::getVar('gid', '');
+		if (!$gid)
 		{
-			$users_mem[] = $id;
+			$this->setError(Lang::txt('COM_MEMBERS_NO_GROUP_ID'));
+			return $this->displayTask($id);
 		}
 
-		if (in_array($id, $managers))
-		{
-			$users_man[] = $id;
-		}
+		// Load the group
+		$group = Group::getInstance($gid);
 
-		// Remove users from members list
-		$group->remove('members', $users_mem);
-
-		// Remove users from managers list
-		$group->remove('managers', $users_man);
+		// Remove the user from any other lists they may be apart of
+		$group->remove('invitees', array($id));
+		$group->remove('applicants', array($id));
+		$group->remove('members', array($id));
+		$group->remove('managers', array($id));
 
 		// Save changes
 		$group->update();
