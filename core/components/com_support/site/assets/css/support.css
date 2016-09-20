@@ -1364,8 +1364,6 @@
 	#ticket-number a {
 		border: none;
 	}
-	#messagebox {
-	}
 	#messagebox .wrap {
 		background: #fff;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
@@ -1380,6 +1378,10 @@
 	#messagebox h3 {
 		margin-top: 0;
 		padding-top: 0;
+	}
+	.ticket-btn {
+		margin-top: 2em;
+		text-align: center;
 	}
 	#ticket-group {
 		max-width: 20em;

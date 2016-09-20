@@ -79,6 +79,9 @@ if (!$this->no_html)
 					<?php } ?>
 					</div>
 				</div>
+				<p class="ticket-btn">
+					<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?></a>
+				</p>
 			</div><!-- / .col span-half omega -->
 		</div><!-- / .grid -->
 	</section><!-- / .main section -->
