@@ -33,16 +33,15 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Models\Status;
-use Components\Support\Tables;
+use Components\Support\Models\Orm\Status;
 use Request;
-use Config;
 use Notify;
 use Route;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'status.php');
+require_once dirname(dirname(__DIR__)) . '/models/orm/status.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
 
 /**
  * Support controller class for managing ticket statuses
@@ -71,18 +70,6 @@ class Statuses extends AdminController
 	{
 		// Get paging variables
 		$filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
 			'open' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.open',
 				'open',
@@ -102,20 +89,22 @@ class Statuses extends AdminController
 			)
 		);
 
-		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
-
-		$obj = new Tables\Status($this->database);
-
-		// Record count
-		$total = $obj->find('count', $filters);
-
 		// Fetch results
-		$rows  = $obj->find('list', $filters);
+		$entries = Status::all();
+
+		if ($filters['open'] >= 0)
+		{
+			$entries->whereEquals('open', (int)$filters['open']);
+		}
+
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
-			->set('total', $total)
 			->set('rows', $rows)
 			->display();
 	}
@@ -128,6 +117,12 @@ class Statuses extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -137,13 +132,7 @@ class Statuses extends AdminController
 			$id = (is_array($id) ? $id[0] : $id);
 
 			// Initiate database class and load info
-			$row = new Status($id);
-		}
-
-		// Set any errors
-		if ($this->getError())
-		{
-			Notify::error($this->getError());
+			$row = Status::oneOrNew($id);
 		}
 
 		// Output the HTML
@@ -163,16 +152,22 @@ class Statuses extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Trim and addslashes all posted items
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
-		$row = new Status($fields);
+		$row = Status::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
@@ -197,6 +192,11 @@ class Statuses extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -212,9 +212,9 @@ class Statuses extends AdminController
 		foreach ($ids as $id)
 		{
 			// Delete entry
-			$row = new Status(intval($id));
+			$row = Status::oneOrFail(intval($id));
 
-			if (!$row->delete())
+			if (!$row->destroy())
 			{
 				Notify::error($row->getError());
 				continue;
@@ -226,7 +226,7 @@ class Statuses extends AdminController
 		// Output messsage and redirect
 		if ($i)
 		{
-			Noify::success(Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_DELETED', $i));
+			Notify::success(Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_DELETED', $i));
 		}
 
 		$this->cancelTask();

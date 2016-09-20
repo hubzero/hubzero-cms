@@ -33,12 +33,14 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Tables\Category;
+use Components\Support\Models\Orm\Category;
 use Request;
-use Config;
 use Notify;
 use Route;
 use Lang;
+
+require_once dirname(dirname(__DIR__)) . '/models/orm/category.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
 
 /**
  * Support controller class for categories
@@ -67,42 +69,27 @@ class Categories extends AdminController
 	{
 		// Get paging variables
 		$filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.categories.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.categories.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
 			'sort' => Request::getState(
-				$this->_option . '.categories.sort',
+				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'title'
 			),
 			'sort_Dir' => Request::getState(
-				$this->_option . '.categories.sortdir',
+				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			)
 		);
 
-		$model = new Category($this->database);
-
-		// Record count
-		$total = $model->find('count', $filters);
-
 		// Fetch results
-		$rows  = $model->find('list', $filters);
+		$rows = Category::all()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
-			->set('total', $total)
 			->set('rows', $rows)
 			->display();
 	}
@@ -115,22 +102,25 @@ class Categories extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getInt('id', 0);
+			$id = Request::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? $id[0] : 0);
+			}
 
 			// Initiate database class and load info
-			$row = new Category($this->database);
-			$row->load($id);
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			Notify::error($error);
+			$row = Category::oneOrNew($id);
 		}
 
 		// Output the HTML
@@ -150,28 +140,22 @@ class Categories extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Trim and addslashes all posted items
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
-		$row = new Category($this->database);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Category::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
@@ -182,7 +166,7 @@ class Categories extends AdminController
 			return $this->editTask($row);
 		}
 
-		// Output messsage and redirect
+		// Redirect
 		$this->cancelTask();
 	}
 
@@ -195,6 +179,11 @@ class Categories extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
@@ -214,11 +203,11 @@ class Categories extends AdminController
 		foreach ($ids as $id)
 		{
 			// Delete entry
-			$cat = new Category($this->database);
+			$row = Category::oneOrFail(intval($id));
 
-			if (!$cat->delete(intval($id)))
+			if (!$row->destroy())
 			{
-				Notify::error($cat->getError());
+				Notify::error($row->getError());
 				continue;
 			}
 
@@ -228,7 +217,7 @@ class Categories extends AdminController
 		// Output messsage and redirect
 		if ($i)
 		{
-			Noify::success(Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', $i));
+			Notify::success(Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', $i));
 		}
 
 		$this->cancelTask();

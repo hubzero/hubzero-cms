@@ -33,13 +33,16 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Tables\Message;
+use Components\Support\Models\Orm\Message;
 use Request;
 use Config;
 use Notify;
 use Route;
 use Lang;
 use App;
+
+require_once dirname(dirname(__DIR__)) . '/models/orm/message.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
 
 /**
  * Support controller class for message templates
@@ -68,33 +71,28 @@ class Messages extends AdminController
 	{
 		// Get paging variables
 		$filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.messages.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
 			),
-			'start' => Request::getState(
-				$this->_option . '.messages.limitstart',
-				'limitstart',
-				0,
-				'int'
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
 			)
 		);
 
-		$model = new Message($this->database);
-
-		// Record count
-		$total = $model->getCount($filters);
-
 		// Fetch results
-		$rows  = $model->getRecords($filters);
+		$rows = Message::all()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
-			->set('filters', $filters)
-			->set('total', $total)
 			->set('rows', $rows)
+			->set('filters', $filters)
 			->display();
 	}
 
@@ -106,6 +104,12 @@ class Messages extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -118,16 +122,7 @@ class Messages extends AdminController
 			}
 
 			// Initiate database class and load info
-			$row = new Message($this->database);
-			$row->load($id);
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			Notify::error($this->getError());
+			$row = Message::oneOrNew($id);
 		}
 
 		// Output the HTML
@@ -147,33 +142,23 @@ class Messages extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Trim and addslashes all posted items
-		$msg = Request::getVar('msg', array(), 'post');
-		$msg = array_map('trim', $msg);
+		$fields = Request::getVar('fields', array(), 'post');
+		$fields = array_map('trim', $fields);
 
 		// Initiate class and bind posted items to database fields
-		$row = new Message($this->database);
-		if (!$row->bind($msg))
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
-
-		// Code cleaner for xhtml transitional compliance
-		$row->title   = trim($row->title);
-		$row->message = trim($row->message);
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Message::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
@@ -184,7 +169,7 @@ class Messages extends AdminController
 			return $this->editTask($row);
 		}
 
-		// Output messsage and redirect
+		// Redirect
 		$this->cancelTask();
 	}
 
@@ -197,6 +182,11 @@ class Messages extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -213,11 +203,11 @@ class Messages extends AdminController
 		foreach ($ids as $id)
 		{
 			// Delete message
-			$msg = new Message($this->database);
+			$row = Message::oneOrFail(intval($id));
 
-			if (!$msg->delete(intval($id)))
+			if (!$row->destroy())
 			{
-				Notify::error($msg->getError());
+				Notify::error($row->getError());
 				continue;
 			}
 
@@ -227,7 +217,7 @@ class Messages extends AdminController
 		// Output messsage and redirect
 		if ($i)
 		{
-			Noify::success(Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', $i));
+			Notify::success(Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', $i));
 		}
 
 		$this->cancelTask();

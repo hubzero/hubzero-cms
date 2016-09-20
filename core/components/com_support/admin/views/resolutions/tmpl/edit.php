@@ -32,12 +32,20 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$canDo = Components\Support\Helpers\Permissions::getActions('resolution');
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_RESOLUTIONS') . ': ' . $text, 'support.png');
-Toolbar::save();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_RESOLUTIONS') . ': ' . $text, 'support');
+if ($canDo->get('core.edit'))
+{
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
-
+Toolbar::spacer();
+Toolbar::help('resolution');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -62,12 +70,12 @@ function submitbutton(pressbutton)
 	<fieldset class="adminform">
 		<div class="input-wrap">
 			<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_RESOLUTION_TEXT'); ?>:</label><br />
-			<input type="text" name="res[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" />
+			<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" />
 		</div>
 	</fieldset>
 
-	<input type="hidden" name="res[alias]" value="<?php echo $this->escape($this->row->alias); ?>" />
-	<input type="hidden" name="res[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="fields[alias]" value="<?php echo $this->escape($this->row->get('alias')); ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="save" />

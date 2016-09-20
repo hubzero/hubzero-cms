@@ -33,12 +33,14 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Models\Status;
-use Components\Support\Tables\Resolution;
+use Components\Support\Models\Orm\Resolution;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
+
+require_once dirname(dirname(__DIR__)) . '/models/orm/resolution.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
 
 /**
  * Support controller class for managing ticket resolutions
@@ -61,73 +63,69 @@ class Resolutions extends AdminController
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get paging variables
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.resolutions.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
+		$filters = array(
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
 			),
-			'start' => Request::getState(
-				$this->_option . '.resolutions.limitstart',
-				'limitstart',
-				0,
-				'int'
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
 			)
 		);
 
-		$obj = new Resolution($this->database);
-
-		// Record count
-		$this->view->total = $obj->getCount($this->view->filters);
-
 		// Fetch results
-		$this->view->rows = $obj->getRecords($this->view->filters);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
+		$rows = Resolution::all()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Display a form for adding/editing a record
 	 *
-	 * @return	void
+	 * @param   object  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getInt('id', 0);
+			$id = Request::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? intval($id[0]) : 0);
+			}
 
 			// Initiate database class and load info
-			$row = new Resolution($this->database);
-			$row->load($id);
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			\Notify::error($this->getError());
+			$row = Resolution::oneOrNew($id);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -135,84 +133,86 @@ class Resolutions extends AdminController
 	/**
 	 * Save changes to a record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Trim and addslashes all posted items
-		$res = Request::getVar('res', array(), 'post');
-		$res = array_map('trim', $res);
+		$fields = Request::getVar('fields', array(), 'post');
+		$fields = array_map('trim', $fields);
 
 		// Initiate class and bind posted items to database fields
-		$row = new Resolution($this->database);
-		if (!$row->bind($res))
+		$row = Resolution::oneOrNew($fields['id'])->set($fields);
+
+		// Store content
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		// Check content
-		if (!$row->check())
+		Notify::success(Lang::txt('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_SAVED'));
+
+		if ($this->getTask() == 'apply')
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
-		// Store new content
-		if (!$row->store())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
-
-		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_SAVED')
-		);
+		// Redirect
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete one or more records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_ERROR_SELECT_RESOLUTION_TO_DELETE'),
-				'error'
-			);
-			return;
-		}
+		$i = 0;
 
+		// Loop through each ID
 		foreach ($ids as $id)
 		{
-			// Delete message
-			$msg = new Resolution($this->database);
-			$msg->delete(intval($id));
+			$row = Resolution::oneOrFail(intval($id));
+
+			// Remove this section
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
-		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_DELETED', count($ids))
-		);
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_DELETED', $i));
+		}
+
+		// Redirect
+		$this->cancelTask();
 	}
 }

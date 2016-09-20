@@ -32,12 +32,17 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$canDo = Components\Support\Helpers\Permissions::getActions('message');
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_MESSAGES') . ': ' . $text, 'support.png');
-Toolbar::apply();
-Toolbar::save();
-Toolbar::spacer();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_MESSAGES') . ': ' . $text, 'support');
+if ($canDo->get('core.edit'))
+{
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('messages');
@@ -69,12 +74,12 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_MESSAGE_SUMMARY'); ?>:</label><br />
-					<input type="text" name="msg[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-message"><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<textarea name="msg[message]" id="field-message" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->message)); ?></textarea>
+					<textarea name="fields[message]" id="field-message" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->get('message'))); ?></textarea>
 				</div>
 			</fieldset>
 		</div>
@@ -93,7 +98,7 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<input type="hidden" name="msg[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="save" />

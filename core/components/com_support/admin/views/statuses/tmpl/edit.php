@@ -32,13 +32,20 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$canDo = Components\Support\Helpers\Permissions::getActions('status');
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATUS') . ': ' . $text, 'support.png');
-Toolbar::apply();
-Toolbar::save();
-Toolbar::spacer();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATUS') . ': ' . $text, 'support');
+if ($canDo->get('core.edit'))
+{
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('status');
 
 $this->css('jquery.colpick.css', 'system')
      ->js('jquery.colpick.js', 'system');
