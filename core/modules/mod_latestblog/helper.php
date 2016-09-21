@@ -36,6 +36,8 @@ use Hubzero\Module\Module;
 use Hubzero\User\Group\Helper as GroupHelper;
 use Components\Blog\Models\Archive;
 use User;
+use Lang;
+
 
 /**
  * Module class for displaying the latest blog posts
@@ -49,6 +51,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
+		Lang::load('com_blog', Component::path('com_blog').'/site');
 		include_once(\Component::path('com_blog') . DS . 'models' . DS . 'archive.php');
 
 		$this->pullout   = $this->params->get('pullout', 'yes');
