@@ -199,18 +199,6 @@ $this->css()
 								<?php else : ?>
 									<div class="grid">
 										<div class="col span6">
-											<?php
-											/*switch ($group->join_policy)
-											{
-												case 3: echo '<span class="closed join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_CLOSED') . '</span>'."\n"; break;
-												case 2: echo '<span class="inviteonly join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_INVITE') . '</span>'."\n"; break;
-												case 1: echo '<span class="restricted join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_RESTRICTED') . '</span>'."\n";  break;
-												case 0:
-												default: echo '<span class="open join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_OPEN') . '</span>'."\n"; break;
-											}
-											?>
-											<?php echo Lang::txt('PLG_MEMBERS_GROUPS_JOIN_POLICY');*/
-											?>
 											<span><?php
 											$activity = \Hubzero\Activity\Recipient::all()
 												->including('log')
@@ -237,7 +225,7 @@ $this->css()
 												echo $dt->relative('week');
 											}
 											?></span>
-											<?php echo Lang::txt('Last Activity'); ?>
+											<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_LAST'); ?>
 										</div>
 										<div class="col span6 omega">
 											<span><?php
