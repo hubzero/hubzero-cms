@@ -90,91 +90,239 @@
 	float:right;
 }
 
-/*===========================================
-	Group Browse
-===========================================*/
-.com_groups .order-options a:before {
-	content: "\2193";
-	font-family: "Fontcons";
-	margin-right: 0.2em;
+/* Group Browse */
+	/* Entries */
+	.groups-container {
+		margin-top: 30px;
+	}
+	.groups-container:before,
+	.groups-container:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: left;
+	}
+	.groups-container * {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	.groups-container .group {
+		display: block;
+		margin-bottom: 2em;
+		background: #fff;
+		position: relative;
+	}
+	.groups-container .group.notpublished,
+	.groups-container .group.inactive {
+		background: #f1f1f1;
+	}
+	.groups-container .group-contents {
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+	}
+	.groups-container .group-contents:hover {
+		border: 1px solid rgba(0, 0, 0, 0.3);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+	.groups-container .group-contents:hover .user-actions {
+		opacity: 1;
+	}
+	.groups-container .group-details {
+		padding: 1em;
+		min-height: 6.5em;
+		text-align: center;
+	}
+	.groups-container img {
+		height: 100%;
+	}
+	.groups-container .group-identity {
+		display: block;
+		overflow: hidden;
+		border: none;
+		position: relative;
+		background: #f1f1f1;
+		text-align: center;
+		width: 80px;
+		height: 80px;
+		margin: 1.5em auto 0 auto;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+	}
+	.groups-container .group-identity:hover {
+		border: none;
+	}
+	.groups-container .group-identity>span {
+		display: block;
+		color: transparent;
+		overflow: hidden;
+	}
+	.groups-container .group-identity>span:after {
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		content: "\f042";
+		font-family: "Fontcons";
+		font-size: 7em;
+		line-height: 1.3em;
+		color: #e1e1e1;
+	}
+	.groups-container .group-alias {
+		color: #aaa;
+		display: block;
+		font-size: 85%;
+	}
+/* Group member status */
+	.group-membership-status {
+		border: 1px solid #ddd;
+		background-color: #fff;
+		color: #fff;
+		padding: 0.1em 0.6em;
+		text-transform: uppercase;
+		border-radius: 0.25em;
+		font-size: 0.75em;
+		letter-spacing: 0.1em;
+		display: block;
+		position: absolute;
+		top: 1rem;
+		right: -0.3em;
+	}
+	.group-membership-status.member {
+		border-color: #66AA00;
+		color: #66AA00;
+	}
+	.group-membership-status.manager {
+		border-color: #ff1177;
+		color: #ff1177;
+	}
+	.group-membership-status.pending {
+		border-color: #AA3300;
+		color: #AA3300;
+	}
+	.group-membership-status.invitee {
+		border-color: #aaaaaa;
+		color: #aaaaaa;
+	}
+/* Metadata */
+	.group-meta {
+		background-color: rgba(0, 0, 0, 0.02);
+		padding: 1em;
+		color: #aaa;
+		text-align: center;
+		font-size: 85%;
+	}
+	.group-meta span {
+		color: #666;
+		display: block;
+	}
+/* User actions */
+	.groups-container .user-actions {
+		font-size: 1.4em;
+		width: 1em;
+		position: absolute;
+		top: 1em;
+		left: 1em;
+		opacity: 0.5;
+		-webkit-transition: opacity 0.2s ease;
+		-moz-transition: opacity 0.2s ease;
+		transition: opacity 0.2s ease;
+	}
+	.groups-container .user-actions a {
+		display: block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		border: none;
+		margin: 0 0 0.5em 0;
+		color: #ccc;
+		background: transparent;
+		padding: 0;
+	}
+	.groups-container .user-actions a:hover {
+		color: #333;
+	}
+	.groups-container .user-actions .manage:before {
+		font-family: "Fontcons";
+		content: "\f007";
+	}
+	.groups-container .user-actions .customize:before {
+		font-family: "Fontcons";
+		content: "\2699";
+	}
+	.groups-container .user-actions .cancel:before {
+		font-family: "Fontcons";
+		content: "\2716";
+	}
+	.groups-container .user-actions .accept:before {
+		font-family: "Fontcons";
+		content: "\2714";
+	}
+	.groups-container .user-actions .delete:before {
+		font-family: "Fontcons";
+		content: "\f014";
+	}
+	.groups-container .user-actions a:before {
+		margin-right: 2em;
+	}
+	/* No results */
+	.groups-container .results-none {
+		max-width: 30em;
+		margin: 90px auto;
+		padding: 5em 0 0 0;
+		text-align: center;
+		position: relative;
+	}
+	.groups-container .results-none p {
+		font-size: 1.5em;
+		line-height: 1.8em;
+		font-weight: 300;
+		margin: 0 0 2em 0;
+	}
+	.groups-container .results-none:before {
+		position: absolute;
+		top: 0px;
+		left: 50%;
+		font-size: 5em;
+		margin-left: -0.5em;
+		content: "\2298";
+		font-family: "Fontcons";
+		color: rgba(0, 0, 0, 0.2);
+	}
+
+@media (min-width: 40em) {
+	.groups-container .group {
+		float: left;
+		width: 48.38709677419355%;
+		margin-left: 3.225806451612903%;
+	}
+	.groups-container .group:first-child,
+	.groups-container .group:nth-child(2n+1) {
+		margin-left: 0;
+	}
 }
-.com_groups .order-options a.desc:before {
-	content: "\2191";
+@media (min-width: 50em) {
+	.groups-container .group,
+	.groups-container .group:nth-child(2n+1) {
+		width: 31.18279569892473%;
+		margin-left: 3.225806451612903%;
+	}
+	.groups-container .group:nth-child(3n+1) {
+		margin-left: 0;
+	}
 }
-.com_groups .entries thead th {
-	text-align: left;
-	font-size: 85%;
-	background-color: #fafafa;
-}
-.com_groups .entries thead th {
-	padding: 3px 10px;
-}
-.com_groups .entries tbody tr.me {
-	background-color: #f6f6f1;
-}
-.com_groups .entries .activity {
-	color: #999;
-}
-.com_groups .entries .entry-id:before {
-	content: "\f042";
-}
-.com_groups .container-block .entry-details {
-	padding: 0.7em 0 0.7em 0;
-}
-.groups tbody .status {
-	font-size: 85%;
-	font-weight: bold;
-	display: inline-block;
-	background-color: #6a0;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-ms-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-	margin: 0;
-	padding: 0em 0.4em;
-	color: #fff;
-	white-space: nowrap;
-}
-.groups tbody .status.member {
-	background-color: #66AA00;
-}
-.groups tbody .status.manager {
-	background-color: #ff1177;
-}
-.groups tbody .status.pending {
-	background-color: #AA3300;
-}
-.groups tbody .status.invitee {
-	background-color: #aaaaaa;
-}
-.groups tbody .join-policy {
-	font-size: 85%;
-	font-weight: bold;
-	display: inline-block;
-	background-color: #6a0;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-ms-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-	margin: 0;
-	padding: 0em 0.4em;
-	color: #fff;
-	white-space: nowrap;
-	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
-}
-.groups tbody .open {
-	background-color: #66AA00;
-}
-.groups tbody .restricted {
-	background-color: #AA3300;
-}
-.groups tbody .inviteonly {
-	background-color: #aaaaaa;
-}
-.groups tbody .closed {
-	background-color: #c00;
+@media (min-width: 70em) {
+	.groups-container .group,
+	.groups-container .group:nth-child(2n+1),
+	.groups-container .group:nth-child(3n+1) {
+		width: 22.58064516129032%;
+		margin-left: 3.225806451612903%;
+	}
+	.groups-container .group:nth-child(4n+1) {
+		margin-left: 0;
+	}
 }
 
 /* Responsive */
@@ -196,7 +344,7 @@
 
 /*===========================================
 	Unapproved Group
-===========================================*/
+===========================================
 .group-unapproved {
 	width:60%;
 	margin:0 auto;
