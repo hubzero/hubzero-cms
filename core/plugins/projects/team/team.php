@@ -488,6 +488,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 							continue;
 						}
 
+						$validUser = User::getInstance($cid);
+						$uid = $validUser->get('id');
 						// By ID with format of Name (ID)
 						$parts =  preg_split("/[(]/", $cid);
 						if (count($parts) == 2)
@@ -496,12 +498,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 							$uid = preg_replace('/[)]/', '', $parts[1]);
 						}
 						// By user ID
-						elseif (intval($cid) && $validUser = User::getInstance($cid))
+						elseif (intval($cid) && $uid)
 						{
 							$uid = $cid;
 						}
 						// By username
-						elseif (!strstr($cid, ' ') && $validUser = User::getInstance($cid))
+						elseif (!strstr($cid, ' ') && $uid)
 						{
 							$uid = $validUser->get('id');
 						}
