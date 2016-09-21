@@ -35,20 +35,21 @@ defined('_HZEXEC_') or die();
 
 $base = $this->member->link() . '&active=groups';
 
-$this->css();
+$this->css()
+	->js();
 ?>
 <h3 class="section-header">
 	<?php echo Lang::txt('PLG_MEMBERS_GROUPS'); ?>
 </h3>
 
 <?php if (User::authorise('core.create', 'com_groups')) { ?>
-<ul id="page_options">
-	<li>
-		<a class="icon-add btn add" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_GROUPS_CREATE'); ?>
-		</a>
-	</li>
-</ul>
+	<ul id="page_options">
+		<li>
+			<a class="icon-add btn add" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_GROUPS_CREATE'); ?>
+			</a>
+		</li>
+	</ul>
 <?php } ?>
 
 <?php if ($this->total) { ?>
@@ -56,118 +57,118 @@ $this->css();
 		<nav class="entries-filters">
 			<ul class="entries-menu filter-options">
 				<li>
-					<a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base); ?>">
+					<a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url($base); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_ALL', $this->total); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=managers'); ?>">
+					<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url($base . '&filter=managers'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=members'); ?>">
+					<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> data-status="member" href="<?php echo Route::url($base . '&filter=members'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=applicants'); ?>">
+					<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> data-status="applicant" href="<?php echo Route::url($base . '&filter=applicants'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_APPLICANT'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=invitees'); ?>">
+					<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> data-status="invitee" href="<?php echo Route::url($base . '&filter=invitees'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITEES'); ?>
 					</a>
 				</li>
 			</ul>
 		</nav>
 
-		<table class="groups entries">
-			<?php /*<caption>
-				<?php echo Lang::txt('PLG_MEMBERS_GROUPS_YOURS'); ?>
-				<span>(<?php echo count($this->groups); ?>)</span>
-			</caption>*/ ?>
-			<tbody>
+		<div class="groups-container">
 			<?php
-			if ($this->groups)
+			$db = App::get('db');
+
+			foreach ($this->groups as $group)
 			{
-				foreach ($this->groups as $group)
+				$status    = '';
+				$options   = '';
+				$published = false;
+				$approved  = false;
+
+				if ($group->manager)
 				{
-					$status = '';
-					$options = '';
-					$approved = false;
+					$status = 'manager';
 
-					if ($group->manager)
-					{
-						$status = 'manager';
+					//$options  = '<a class="manage tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
+					$options .= ' <a class="customize tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
+					//$options .= ' <a class="delete tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
+				}
+				else if ($group->registered && $group->regconfirmed)
+				{
+					$status = 'member';
 
-						$options  = '<a class="manage tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
-						$options .= ' <a class="customize tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
-						$options .= ' <a class="delete tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
-					}
-					else if ($group->registered && $group->regconfirmed)
-					{
-						$status = 'member';
+					$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+				}
+				else if ($group->registered && !$group->regconfirmed)
+				{
+					$status = 'pending';
 
-						$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-					}
-					else if ($group->registered && !$group->regconfirmed)
-					{
-						$status = 'pending';
+					$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+				}
+				else if (!$group->registered && $group->regconfirmed)
+				{
+					$status = 'invitee';
 
-						$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-					}
-					else if (!$group->registered && $group->regconfirmed)
-					{
-						$status = 'invitee';
+					//$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
+					$options .= ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+				}
 
-						$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
-						$options .= ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-					}
+				// do we have a new unpublished group
+				$approved  = ($group->approved) ? true : false;
 
-					//do we have a new unpublished group
-					$approved = (!$group->approved) ? true : false;
-
-					//are we published
-					$published = ($group->published) ? true : false;
-			?>
-				<tr class=" <?php echo (!$published) ? 'notpublished' : '' ?>">
-					<th class="priority-5">
-						<span class="entry-id"><?php echo $group->gidNumber; ?></span>
-					</th>
-					<td>
+				// are we published
+				$published = ($group->published) ? true : false;
+				?>
+				<div class="group <?php echo (!$published) ? 'notpublished' : '' ?>" id="group<?php echo $group->gidNumber; ?>"
+					data-id="<?php echo $group->gidNumber; ?>"
+					data-status="<?php echo $this->escape($status); ?>"
+					data-title="<?php echo $this->escape(stripslashes($group->description) . ' ' . $group->cn); ?>">
+					<div class="group-contents">
 						<?php if ($published) : ?>
-							<a class="entry-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn='. $group->cn); ?>">
-								<?php echo $this->escape(stripslashes($group->description)); ?>
-							</a><br />
+							<a class="group-identity" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn='. $group->cn); ?>">
 						<?php else : ?>
-							<span class="entry-title">
-								<?php echo $this->escape(stripslashes($group->description)); ?>
-							</span><br />
+							<div class="group-identity">
 						<?php endif; ?>
-						<span class="entry-details">
-							<span class="entry-alias"><?php echo $this->escape($group->cn); ?></span>
-						</span>
-					</td>
-					<td class="priority-4">
-						<?php
-							if ($published) :
-								switch ($group->join_policy)
-								{
-									case 3: echo '<span class="closed join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_CLOSED') . '</span>'."\n"; break;
-									case 2: echo '<span class="inviteonly join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_INVITE') . '</span>'."\n"; break;
-									case 1: echo '<span class="restricted join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_RESTRICTED') . '</span>'."\n";  break;
-									case 0:
-									default: echo '<span class="open join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_OPEN') . '</span>'."\n"; break;
-								}
-							endif;
-						?>
-					</td>
-					<td class="priority-3">
+							<?php
+							$path = PATH_APP . '/site/groups/' . $group->gidNumber . '/uploads/' . $group->logo;
+
+							if ($group->logo && is_file($path)):
+							?>
+								<img src="<?php echo with(new Hubzero\Content\Moderator($path))->getUrl(); ?>" alt="<?php echo $this->escape(stripslashes($group->description)); ?>" />
+							<?php else : ?>
+								<span><?php echo $this->escape(stripslashes($group->description)); ?></span>
+							<?php endif; ?>
 						<?php if ($published) : ?>
-							<span class="<?php echo $status; ?> status">
-								<?php
+							</a>
+						<?php else : ?>
+							</div>
+						<?php endif; ?>
+
+						<div class="group-details">
+							<span class="group-alias"><?php echo $this->escape($group->cn); ?></span>
+							<?php if ($published) : ?>
+								<a class="group-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn='. $group->cn); ?>">
+									<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($group->description), 60)); ?>
+								</a>
+							<?php else : ?>
+								<span class="group-title">
+									<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($group->description), 60)); ?>
+								</span>
+							<?php endif; ?>
+
+							<?php if ($published) : ?>
+								<span class="<?php echo $status; ?> group-membership-status">
+									<?php
 									switch ($status)
 									{
 										case 'manager': echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); break;
@@ -176,48 +177,96 @@ $this->css();
 										case 'invitee': echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITED'); break;
 										default: break;
 									}
-								?>
-							</span>
-						<?php endif; ?>
-					</td>
-					<td class="priority-4">
+									?>
+								</span>
+							<?php endif; ?>
+						</div>
+
 						<?php if (!$published) : ?>
-							<span class="not-published status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
-						<?php elseif ($approved) : ?>
-							<span class="pending-approval status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); ?></span>
+							<div class="group-meta">
+								<span class="not-published group-status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
+							</div>
+						<?php elseif (!$approved) : ?>
+							<div class="group-meta">
+								<span class="pending-approval group-status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); ?></span>
+							</div>
+						<?php else : ?>
+							<div class="group-meta">
+								<?php if ($group->registered && !$group->regconfirmed) : ?>
+									<?php echo Lang::txt('Membership request requires approval.'); ?>
+								<?php elseif (!$group->registered && $group->regconfirmed) : ?>
+									<a class="btn btn-success accept tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT'); ?></a>
+								<?php else : ?>
+									<div class="grid">
+										<div class="col span6">
+											<?php
+											/*switch ($group->join_policy)
+											{
+												case 3: echo '<span class="closed join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_CLOSED') . '</span>'."\n"; break;
+												case 2: echo '<span class="inviteonly join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_INVITE') . '</span>'."\n"; break;
+												case 1: echo '<span class="restricted join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_RESTRICTED') . '</span>'."\n";  break;
+												case 0:
+												default: echo '<span class="open join-policy">' . Lang::txt('PLG_MEMBERS_GROUPS_STATE_OPEN') . '</span>'."\n"; break;
+											}
+											?>
+											<?php echo Lang::txt('PLG_MEMBERS_GROUPS_JOIN_POLICY');*/
+											?>
+											<span><?php
+											$activity = \Hubzero\Activity\Recipient::all()
+												->including('log')
+												->whereEquals('scope', 'group')
+												->whereEquals('scope_id', $group->gidNumber)
+												->whereEquals('state', 1)
+												->ordered()
+												->row();
+											$dt = Date::of($activity->get('created'));
+											$ct = Date::of('now');
+
+											$lapsed = $ct->toUnix() - $dt->toUnix();
+
+											if ($lapsed < 30)
+											{
+												echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
+											}
+											elseif ($lapsed > 30 && $lapsed < 60)
+											{
+												echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
+											}
+											else
+											{
+												echo $dt->relative('week');
+											}
+											?></span>
+											<?php echo Lang::txt('Last Activity'); ?>
+										</div>
+										<div class="col span6 omega">
+											<span><?php
+											// @TODO: Move this to a model
+											$db->setQuery("SELECT COUNT(*) FROM `#__xgroups_members` WHERE `gidNumber`=" . $group->gidNumber);
+											echo $db->loadResult();
+											?></span>
+											<?php echo Lang::txt('PLG_MEMBERS_GROUPS_MEMBERS'); ?>
+										</div>
+									</div>
+								<?php endif; ?>
+							</div>
+							<div class="user-actions">
+								<?php echo $options; ?>
+							</div>
 						<?php endif; ?>
-					</td>
-					<td class="user-actions">
-						<?php if ($published) : ?>
-							<?php echo $options; ?>
-						<?php endif; ?>
-					</td>
-				</tr>
-			<?php
-				}
-			}
-			else
-			{
-			?>
-				<tr>
-					<td colspan="6">
-						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_NONE_FOUND'); ?>
-					</td>
-				</tr>
-			<?php
+					</div>
+				</div><!-- / .group -->
+				<?php
 			}
 			?>
-			</tbody>
-		</table>
+			<div class="results-none" <?php if (count($this->groups)) { echo 'style="display:none;"'; } ?>>
+				<p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_NONE_FOUND'); ?></p>
+			</div>
+		</div><!-- / .groups -->
 	</div><!-- / .container -->
 <?php } else { ?>
 	<div class="introduction">
 		<div class="instructions">
-			<!-- <ol>
-				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_FIND_COURSE', Route::url('index.php?option=com_courses')); ?></li>
-				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_ENROLL'); ?></li>
-				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_GET_LEARNING'); ?></li>
-			</ol> -->
 			<p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_YOURS_EXPLANATION'); ?></p>
 		</div><!-- / .instructions -->
 		<div class="questions">
