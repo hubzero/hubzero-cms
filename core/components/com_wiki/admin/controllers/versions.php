@@ -341,7 +341,7 @@ class Versions extends AdminController
 
 					// Get a count of all approved revisions
 					$count = Version::all()
-						->whereEquals('pageid', $pageid)
+						->whereEquals('page_id', $pageid)
 						->whereEquals('approved', 1)
 						->total();
 
