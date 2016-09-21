@@ -67,7 +67,7 @@ class Attachment extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'pageid'   => 'positive|nonzero',
+		'page_id'  => 'positive|nonzero',
 		'filename' => 'notempty'
 	);
 

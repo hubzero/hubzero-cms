@@ -76,7 +76,7 @@ $rows = \Components\Wiki\Models\Version::all()
 							<?php echo $row->get('id'); ?>
 						</td>
 						<td>
-							<?php echo $row->get('pageid'); ?>
+							<?php echo $row->get('page_id'); ?>
 						</td>
 						<td>
 							<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', $row->get('length')); ?>

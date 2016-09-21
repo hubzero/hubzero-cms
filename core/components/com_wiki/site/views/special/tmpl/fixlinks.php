@@ -72,22 +72,8 @@ $rows = $this->book->pages($filters)
 			<?php
 			if ($rows->count())
 			{
-				//$p = \Components\Wiki\Helpers\Parser::getInstance();
-
 				foreach ($rows as $row)
 				{
-					/*$wikiconfig = array(
-						'option'    => $this->option,
-						'scope'     => $row->get('path'),
-						'pagename'  => $row->get('pagename'),
-						'pageid'    => $row->get('id'),
-						'filepath'  => '',
-						'domain'    => $row->get('scope'),
-						'domain_id' => $row->get('scope_id'),
-						'loglinks'  => true
-					);
-
-					$row->pagehtml = $p->parse($row->pagetext, $wikiconfig, true, true);*/
 					$content = $row->version()->content();
 					?>
 					<tr>
