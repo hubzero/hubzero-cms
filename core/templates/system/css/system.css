@@ -6,7 +6,7 @@
  */
 
 /* Import project-level system CSS */
-@import url("../../../core/assets/css/system.css");
+@import url("../../../assets/css/system.css");
 
 /* Unpublished */
 .system-unpublished, tr.system-unpublished {
