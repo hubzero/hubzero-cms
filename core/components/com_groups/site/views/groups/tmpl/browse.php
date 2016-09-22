@@ -187,13 +187,13 @@ $this->css()
 								if (in_array(User::get('id'), $members))
 								{
 									$status  = 'member';
-									$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('COM_GROUPS_ACTION_CANCEL').'</a>';
+									$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">'.Lang::txt('COM_GROUPS_TOOLBAR_CANCEL').'</a>';
 
 									$managers = $g->get('managers');
 									if (in_array(User::get('id'), $managers))
 									{
 										$status  = 'manager';
-										$options = ' <a class="customize tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="' . Lang::txt('COM_GROUPS_ACTION_EDIT_TITLE') . '">'.Lang::txt('COM_GROUPS_ACTION_EDIT').'</a>';
+										$options = ' <a class="customize tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '">'.Lang::txt('COM_GROUPS_TOOLBAR_EDIT').'</a>';
 									}
 								}
 								else
@@ -204,12 +204,12 @@ $this->css()
 									if (in_array(User::get('id'), $invitees))
 									{
 										$status  = 'invitee';
-										$options = ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('COM_GROUPS_ACTION_CANCEL').'</a>';
+										$options = ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">'.Lang::txt('COM_GROUPS_TOOLBAR_CANCEL').'</a>';
 									}
 									elseif (in_array(User::get('id'), $applicants))
 									{
 										$status  = 'pending';
-										$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('COM_GROUPS_ACTION_CANCEL').'</a>';
+										$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">'.Lang::txt('COM_GROUPS_TOOLBAR_CANCEL').'</a>';
 									}
 								}
 							}
