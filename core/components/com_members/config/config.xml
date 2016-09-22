@@ -283,6 +283,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="defaultpic" type="text" menu="hide" default="/core/components/com_members/site/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<field name="picture" type="list" default="" label="Picture Handler" description="Select a handler for user pictures">
 			<option value="">default</option>
+			<option value="initialcon">initialcon</option>
 			<option value="identicon">identicon</option>
 			<option value="gravatar">gravatar</option>
 		</field>
