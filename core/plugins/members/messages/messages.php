@@ -175,15 +175,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		//get the number of unread messages
 		$recipient = Hubzero\Message\Recipient::blank();
 		$inboxCount = $recipient->getMessagesCount($member->get('id'), array('state' => 0));
-		$unreadMessages = $recipient->getUnreadMessages($member->get('id'), 0);
+		$unreadMessages = $recipient->getUnreadMessagesCount($member->get('id'));
 
 		//return total message count
 		$arr['metadata']['count'] = $inboxCount;
 
 		//if we have unread messages show alert
-		if ($unreadMessages->count() > 0)
+		if ($unreadMessages > 0)
 		{
-			$title = $unreadMessages->count() . ' unread message(s).';
+			$title = $unreadMessages . ' unread message(s).';
 			$link = Route::url($member->link() . '&active=messages');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><strong>Messages Alert</strong>{$title}</span></a>";
 		}
