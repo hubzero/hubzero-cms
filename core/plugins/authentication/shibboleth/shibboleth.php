@@ -375,7 +375,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				'id' => $sid,
 				'idp' => isset($_SERVER['REDIRECT_Shib-Identity-Provider']) ? $_SERVER['REDIRECT_Shib-Identity-Provider'] : $_SERVER['Shib-Identity-Provider']
 			);
-			foreach (array('email', 'eppn', 'displayName', 'givenName', 'sn') as $key)
+			foreach (array('email', 'eppn', 'displayName', 'givenName', 'sn', 'mail') as $key)
 			{
 				if (isset($_SERVER[$key]))
 				{
@@ -385,6 +385,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				{
 					$attrs[$key] = $_SERVER['REDIRECT_'.$key];
 				}
+			}
+			if (isset($attrs['mail']) && strpos($attrs['mail'], '@'))
+			{
+				$attrs['email'] = $attrs['mail'];
+				unset($attrs['mail']);
 			}
 			// normalize things a bit
 			if (!isset($attrs['username']) && isset($attrs['eppn']))
