@@ -153,8 +153,6 @@ class Job extends Model
 
 					$this->set('description.parsed', $this->get('description'));
 					$this->set('description', $content);
-
-					return $this->content($as, $shorten);
 				}
 
 				$options['html'] = true;
