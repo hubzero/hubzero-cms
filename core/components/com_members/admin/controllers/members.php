@@ -163,8 +163,8 @@ class Members extends AdminController
 		{
 			$entries
 				->join($b, $b . '.user_id', $a . '.id', 'left')
-				->whereEquals($b . '.group_id', (int)$filters['group_id'])
-				->group($a . '.id')
+				->whereEquals($b . '.group_id', (int)$filters['group_id']);
+				/*->group($a . '.id')
 				->group($a . '.name')
 				->group($a . '.username')
 				->group($a . '.password')
@@ -175,7 +175,7 @@ class Members extends AdminController
 				->group($a . '.lastvisitDate')
 				->group($a . '.activation')
 				->group($a . '.params')
-				->group($a . '.email');
+				->group($a . '.email');*/
 		}
 
 		if ($filters['search'])
