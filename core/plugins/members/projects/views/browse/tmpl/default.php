@@ -38,13 +38,15 @@ $this->css();
 ?>
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS'); ?></h3>
 
-<ul id="page_options" class="pluginOptions">
-	<li>
-		<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_ADD'); ?>
-		</a>
-	</li>
-</ul>
+<?php if (User::authorise('core.create', 'com_projects')) { ?>
+	<ul id="page_options" class="pluginOptions">
+		<li>
+			<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_ADD'); ?>
+			</a>
+		</li>
+	</ul>
+<?php } ?>
 
 <ul class="sub-menu">
 	<li class="active">
