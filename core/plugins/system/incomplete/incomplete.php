@@ -59,6 +59,18 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 				'com_members.changepassword'
 			];
 
+			if ($allowed = trim($this->params->get('exceptions')))
+			{
+				$allowed = str_replace("\r", '', $allowed);
+				$allowed = str_replace('\n', "\n", $allowed);
+				$allowed = explode("\n", $allowed);
+				$allowed = array_map('trim', $allowed);
+				$allowed = array_map('strtolower', $allowed);
+
+				$exceptions = array_merge($exceptions, $allowed);
+				$exceptions = array_unique($exceptions);
+			}
+
 			$current  = Request::getWord('option', '');
 			$current .= ($controller = Request::getWord('controller', false)) ? '.' . $controller : '';
 			$current .= ($task       = Request::getWord('task', false)) ? '.' . $task : '';
@@ -75,13 +87,15 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 					return;
 				}
 
-				// Joomla tmp users
+				// Tmp users
 				if (User::get('tmp_user'))
 				{
 					Request::setVar('option',     'com_members');
 					Request::setVar('controller', 'register');
 					Request::setVar('task',       'create');
 					Request::setVar('act',        '');
+
+					$this->event->stop();
 				}
 				else if (substr(User::get('email'), -8) == '@invalid') // force auth_link users to registration update page
 				{
@@ -100,16 +114,25 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 						Request::setVar('task',       'update');
 						Request::setVar('act',        '');
 					}
+
+					$this->event->stop();
 				}
 				else // otherwise, send to profile to fill in missing info
 				{
-					Request::setVar('option', 'com_members');
-					Request::setVar('task',   'view');
-					Request::setVar('id',      User::get('id'));
-					Request::setVar('active', 'profile');
-				}
+					// Does the user even have access to the profile plugin?
+					// If not, then we can't redirect them there
+					$plugin = Plugin::byType('members', 'profile');
 
-				$this->event->stop();
+					if (!empty($plugin))
+					{
+						Request::setVar('option', 'com_members');
+						Request::setVar('task',   'view');
+						Request::setVar('id',      User::get('id'));
+						Request::setVar('active', 'profile');
+
+						$this->event->stop();
+					}
+				}
 			}
 		}
 	}
