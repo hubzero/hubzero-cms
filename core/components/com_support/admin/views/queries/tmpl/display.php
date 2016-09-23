@@ -34,6 +34,8 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES'), 'support.png');
+Toolbar::custom('reset', 'refresh.png', 'refresh_f2.png', 'Reset to defaults', false);
+Toolbar::spacer();
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::deleteList();
