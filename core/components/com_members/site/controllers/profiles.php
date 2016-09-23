@@ -659,9 +659,11 @@ class Profiles extends SiteController
 			}
 		}
 
-		if ($tab != 'profile' && !in_array($tab, $available))
+		//if ($tab != 'profile' && !in_array($tab, $available))
+		if (!in_array($tab, $available))
 		{
-			$tab = 'profile';
+			//$tab = 'profile';
+			$tab = $available[0];
 		}
 
 		// Get the sections
