@@ -132,6 +132,13 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 
 						$this->event->stop();
 					}
+					else
+					{
+						// Nothing else we can do, so let them go
+						// and mark the incompleteness state so we don't
+						// keep checking on every page load
+						Session::get('registration.incomplete', false);
+					}
 				}
 			}
 		}
