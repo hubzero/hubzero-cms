@@ -107,6 +107,8 @@ function submitbutton(pressbutton)
 		form.submit();
 		return;
 	}
+
+	<?php echo $this->editor()->save('text'); ?>
  // for ckeditor values
  var descriptionEditor = $('#cke_description').find(".cke_inner").children().eq(1).children().eq(1).contents().find("body").text();
 	// do field validation
