@@ -31,10 +31,18 @@ HUBzero is a registered trademark of Purdue University.
 
 <install version="1.5" type="plugin" group="system">
 	<name>System - Incomplete</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Routing plugin to check user registration status for missing/required fields</description>
 	<files>
 		<filename plugin="incomplete">incomplete.php</filename>
 	</files>
 	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="exceptions" type="textarea" rows="15" cols="40" default="" label="Routing Exceptions" description="A list of routes to be allowed even when the user's profile is incomplete. One rule per line, composed of dot notation: component.controller.task" />
+			</fieldset>
+		</fields>
 	</config>
 </install>
