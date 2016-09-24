@@ -660,7 +660,7 @@ class Profiles extends SiteController
 		}
 
 		//if ($tab != 'profile' && !in_array($tab, $available))
-		if (!in_array($tab, $available))
+		if (!in_array($tab, $available) && isset($available[0]))
 		{
 			//$tab = 'profile';
 			$tab = $available[0];
