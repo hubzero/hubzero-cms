@@ -64,7 +64,7 @@ class Helper extends Module
 			// Find the user's most recent support tickets
 			$recipient = Recipient::blank();
 			$this->rows  = $recipient->getUnreadMessages(User::get('id'), $this->limit);
-			$this->total = $recipient->getUnreadMessages(User::get('id'))->count();
+			$this->total = $recipient->getUnreadMessagesCount(User::get('id'));
 
 			if ($recipient->getError())
 			{
