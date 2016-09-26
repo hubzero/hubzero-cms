@@ -66,7 +66,7 @@ $now = Date::of('now')->toSql();
 			$posts = $this->thread->thread()
 				->whereIn('state', $this->filters['state'])
 				->whereIn('access', $this->filters['access'])
-				->order(($threading == 'tree' ? 'lft' : 'created'), 'asc')
+				->order(($threading == 'tree' ? 'lft' : 'id'), 'asc')
 				->paginated()
 				->rows();
 
