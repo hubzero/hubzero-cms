@@ -95,26 +95,29 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 
 		if ($sharewith)
 		{
-			// Log the activity
-			Event::trigger('system.logActivity', [
-				'activity' => [
-					'action'      => 'shared',
-					'scope'       => 'publication',
-					'scope_id'    => $publication->id,
-					'description' => Lang::txt('PLG_PUBLICATIONS_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $publication->title . '</a>', $sharewith),
-					'details'     => array(
-						'with'    => $sharewith,
-						'title'   => $publication->title,
-						'url'     => $sef,
-						'version' => $publication->version_number
-					)
-				],
-				'recipients' => [
-					['publication', $publication->id],
-					['user', $publication->created_by],
-					['user', User::get('id')]
-				]
-			]);
+			if (!User::isGuest())
+			{
+				// Log the activity
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'shared',
+						'scope'       => 'publication',
+						'scope_id'    => $publication->id,
+						'description' => Lang::txt('PLG_PUBLICATIONS_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $publication->title . '</a>', $sharewith),
+						'details'     => array(
+							'with'    => $sharewith,
+							'title'   => $publication->title,
+							'url'     => $sef,
+							'version' => $publication->version_number
+						)
+					],
+					'recipients' => [
+						['publication', $publication->id],
+						['user', $publication->created_by],
+						['user', User::get('id')]
+					]
+				]);
+			}
 
 			return $this->share($sharewith, $url, $mediaUrl, $publication, $version);
 		}
