@@ -96,24 +96,27 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 		if ($sharewith)
 		{
 			// Log the activity
-			Event::trigger('system.logActivity', [
-				'activity' => [
-					'action'      => 'shared',
-					'scope'       => 'resource',
-					'scope_id'    => $resource->id,
-					'description' => Lang::txt('PLG_RESOURCES_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $resource->title . '</a>', $sharewith),
-					'details'     => array(
-						'with'  => $sharewith,
-						'title' => $resource->title,
-						'url'   => $sef
-					)
-				],
-				'recipients' => [
-					['resource', $resource->id], // The resource itself
-					['user', $resource->created_by], // The creator
-					['user', User::get('id')] // The sharer
-				]
-			]);
+			if (!User::isGuest())
+			{
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'action'      => 'shared',
+						'scope'       => 'resource',
+						'scope_id'    => $resource->id,
+						'description' => Lang::txt('PLG_RESOURCES_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $resource->title . '</a>', $sharewith),
+						'details'     => array(
+							'with'  => $sharewith,
+							'title' => $resource->title,
+							'url'   => $sef
+						)
+					],
+					'recipients' => [
+						['resource', $resource->id], // The resource itself
+						['user', $resource->created_by], // The creator
+						['user', User::get('id')] // The sharer
+					]
+				]);
+			}
 
 			// Email form
 			if ($sharewith == 'email')
