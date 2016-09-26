@@ -455,17 +455,40 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				$this->raw->password = $this->record->entry->get('username');
 			}
 
-			$usersConfig = Component::params('com_users');
-			$newUsertype = $usersConfig->get('new_usertype');
+			$newUsertype = null;
+
+			if (isset($this->raw->usertype))
+			{
+				if (is_numeric($this->raw->usertype))
+				{
+					$newUsertype = (int)$this->raw->usertype;
+				}
+				else
+				{
+					$db = \App::get('db');
+					$query = $db->getQuery(true)
+						->select('id')
+						->from('#__usergroups')
+						->where('title=' . $db->quote($this->raw->usertype));
+					$db->setQuery($query);
+					$newUsertype = (int)$db->loadResult();
+				}
+			}
+
 			if (!$newUsertype)
 			{
-				$db = \App::get('db');
-				$query = $db->getQuery(true)
-					->select('id')
-					->from('#__usergroups')
-					->where('title = "Registered"');
-				$db->setQuery($query);
-				$newUsertype = $db->loadResult();
+				$usersConfig = Component::params('com_users');
+				$newUsertype = $usersConfig->get('new_usertype');
+				if (!$newUsertype)
+				{
+					$db = \App::get('db');
+					$query = $db->getQuery(true)
+						->select('id')
+						->from('#__usergroups')
+						->where('title = "Registered"');
+					$db->setQuery($query);
+					$newUsertype = $db->loadResult();
+				}
 			}
 
 			$d = Date::of('now');
