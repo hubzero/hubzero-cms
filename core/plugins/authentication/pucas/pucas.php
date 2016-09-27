@@ -275,12 +275,19 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 					'user_img'      => $user->picture(0, false),
 					'authenticator' => 'pucas'
 				);
-
-				$namespace = 'authenticator';
-				$lifetime  = time() + 365*24*60*60;
-
-				\Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
 			}
+			else
+			{
+				// A partially baked cookie when a new user account is created.
+				$prefs = array(
+					'authenticator' => 'pucas'
+				);
+			}
+
+			$namespace = 'authenticator';
+			$lifetime  = time() + 365*24*60*60;
+
+			\Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
 		}
 		else
 		{
