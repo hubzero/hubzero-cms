@@ -85,7 +85,7 @@ if ($this->comment->get('resource_id'))
 			<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous', 0)); ?>" alt="" />
 		</p>
 		<div class="comment-content">
-		<?php if (!$this->comment->isReported() && $this->comment->get('resource_id')) { ?>
+		<?php if (!$this->comment->isReported() && $this->comment->get('resource_id') && $this->config->get('voting')) { ?>
 			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
 				$this->comment->set('helpful', $this->comment->votes()->whereEquals('vote', 1)->total());
