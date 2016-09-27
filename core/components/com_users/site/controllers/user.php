@@ -197,7 +197,15 @@ class UsersControllerUser extends UsersController
 
 		if (empty($authenticator) || $authenticator == '')
 		{
-			$authenticator = \Hubzero\Utility\Cookie::eat('authenticator')->authenticator;
+			$cookie = \Hubzero\Utility\Cookie::eat('authenticator');
+			if (isset($cookie->authenticator))
+			{
+				$authenticator = $cookie->authenticator;
+			}
+			else
+			{
+				$authenticator = null;
+			}
 		}
 
 		// If a specific authenticator is specified try to call the logout method for that plugin
