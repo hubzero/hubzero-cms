@@ -135,7 +135,7 @@ $revisions = $this->page->versions()
 							$cls = ($cls == 'odd') ? 'even' : 'odd';
 							$level = ($revision->get('minor_edit')) ? 'minor' : 'major';
 
-							$xname = $revision->creator()->get('name', Lang::txt('COM_WIKI_AUTHOR_UNKNOWN'));
+							$xname = $revision->creator->get('name', Lang::txt('COM_WIKI_AUTHOR_UNKNOWN'));
 
 							$summary = (trim($revision->get('summary')) ? $revision->get('summary') : Lang::txt('COM_WIKI_REVISION_NO_SUMMARY'));
 
