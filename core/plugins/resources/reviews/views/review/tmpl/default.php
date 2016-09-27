@@ -57,7 +57,7 @@ else
 				$anon = 0;
 			}
 			?>
-			<img src="<?php echo $this->review->creator()->picture($anon); ?>" alt="" />
+			<img src="<?php echo $this->review->creator->picture($anon); ?>" alt="" />
 		</p>
 		<fieldset>
 			<input type="hidden" name="review[created]" value="<?php echo $this->review->get('created'); ?>" />
