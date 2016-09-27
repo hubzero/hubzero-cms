@@ -35,12 +35,22 @@ function view()
 	global $html_path, $com_name, $dv_conf;
 
 	$base_path = $dv_conf['base_path'];
-	$file = Request::getString('f', false);
 
-	$pi = pathinfo($file);
-	$file_name = $pi['basename'];
+	$hash = Request::getVar('hash');
 
-	$full_path = $base_path . $file;
+	if ($hash != '')
+	{
+		$file = $_SESSION['dv']['file_download']['list'][$hash];
+		$file_name = basename($file);
+		$full_path = $file;
+	}
+	else
+	{
+		$file = Request::getString('f', false);
+		$pi = pathinfo($file);
+		$file_name = $pi['basename'];
+		$full_path = $base_path . $file;
+	}
 
 	if (!$file || !file_exists($full_path)) {
 		header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');

@@ -436,11 +436,11 @@ function filter($res, $dd)
 						if (isset($dd['cols'][$key]['dl'])) {
 							$path = $rec[$dd['cols'][$key]['dl']];
 							$link = '';
-							if (strpos($path, JPATH_BASE) === 0) {
-								$link = substr($path, strlen(JPATH_BASE)+1);
+							if (strpos($path, PATH_ROOT) === 0) {
+								$link = substr($path, strlen(PATH_ROOT)+1);
 							} else {
 								$hash = get_dl_hash($path);
-								$link = $com_name . '/?task=file&hash=' . $hash;
+								$link = $com_name . '/file/' . $db_id . '/?hash=' . $hash;
 							}
 							$dl .= '<a title="Download File" data-data-file="' . $path . '" class="dv_tools_dl_link" target="_blank" href="/' . $link . '"><img src="' . $html_path . '/download.png' . '" /></a>';
 						}
@@ -637,8 +637,8 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 				$label .= isset($dd['cols'][$key]['ext'])? '.' . $pi['extension']: '';
 			}
 		}
-	} elseif (strpos($path, JPATH_BASE) === 0) {
-		$link = substr($path, strlen(JPATH_BASE));
+	} elseif (strpos($path, PATH_ROOT) === 0) {
+		$link = substr($path, strlen(PATH_ROOT));
 		if (!$label) {
 			$pi = pathinfo($path);
 			$label = isset($pi['filename'])? $pi['filename']: false;
@@ -646,7 +646,7 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 				$label .= isset($dd['cols'][$key]['ext'])? '.' . $pi['extension']: '';
 			}
 		}
-	} elseif (strpos($path, '/site/') === 0) {
+	} elseif (strpos($path, '/site/') === 0 || strpos($path, '/app/site/') === 0) {
 		$link = $path;
 		if (!$label) {
 			$pi = pathinfo($path);
