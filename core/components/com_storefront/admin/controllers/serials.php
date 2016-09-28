@@ -108,7 +108,7 @@ class Serials extends AdminController
 	{
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getVar('id', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getVar('sId', 0), false)
 		);
 	}
 
