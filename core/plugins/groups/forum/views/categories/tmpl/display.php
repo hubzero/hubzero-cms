@@ -61,7 +61,7 @@ $this->css()
 </ul>
 
 <section class="main section">
-	<form action="<?php echo Route::url($base); ?>" method="get">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=search'); ?>" method="get">
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH'); ?>" />
 			<fieldset class="entry-search">
@@ -246,7 +246,7 @@ $this->css()
 			echo $pageNav;
 			?>
 		</div><!-- / .container -->
-		<input type='hidden' name='sortdir' value='<?php echo $this->filters['sort_Dir']; ?>' />
-		<input type='hidden' name='sortby' value='<?php echo $this->filters['sortby']; ?>' />
+		<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+		<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 	</form>
 </section><!-- /.main -->
