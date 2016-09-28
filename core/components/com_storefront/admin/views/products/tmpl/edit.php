@@ -46,28 +46,28 @@ Toolbar::help('product');
 $this->css();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	<?php echo $this->editor()->save('text'); ?>
+	function submitbutton(pressbutton)
+	{
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
+		<?php echo $this->editor()->save('text'); ?>
 
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert("<?php echo 'Title cannot be empty' ?>");
+		// do field validation
+		if (document.getElementById('field-title').value == ''){
+			alert("<?php echo 'Title cannot be empty' ?>");
+		}
+		else if (document.getElementById('field-pTagline').value == ''){
+			alert("<?php echo 'Tagline cannot be empty' ?>");
+		}
+		else if (document.getElementById('field-description').value == ''){
+			alert("<?php echo 'Description cannot be empty' ?>");
+		}
+		else {
+			submitform(pressbutton);
+		}
 	}
-	else if (document.getElementById('field-pTagline').value == ''){
-		alert("<?php echo 'Tagline cannot be empty' ?>");
-	}
-	else if (document.getElementById('field-description').value == ''){
-		alert("<?php echo 'Description cannot be empty' ?>");
-	}
-	else {
-		submitform(pressbutton);
-	}
-}
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
@@ -104,14 +104,14 @@ function submitbutton(pressbutton)
 	<div class="col width-40 fltrt">
 		<table class="meta">
 			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
-					<td>
-						<?php echo $this->row->getId(); ?>
-						<input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
-					</td>
-				</tr>
-				<?php if ($this->row->getTypeInfo() && $this->row->getTypeInfo()->name == 'Software Download') { ?>
+			<tr>
+				<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
+				<td>
+					<?php echo $this->row->getId(); ?>
+					<input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
+				</td>
+			</tr>
+			<?php if ($this->row->getTypeInfo() && $this->row->getTypeInfo()->name == 'Software Download') { ?>
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
 					<td>
@@ -152,10 +152,10 @@ function submitbutton(pressbutton)
 
 			<?php
 			if ($this->metaNeeded) {
-			?>
-			<p>
-				<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options (save product first if you updated the type)</a></p>
-			<?php
+				?>
+				<p>
+					<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options (save product first if you updated the type)</a></p>
+				<?php
 			}
 			?>
 
@@ -196,29 +196,29 @@ function submitbutton(pressbutton)
 					<?php
 					echo Html::access('usergroups', 'accessgroups', $this->row->getAccessGroups(), true); ?>
 					<script type="text/javascript">
-					jQuery(document).ready(function($){
-						var groups = $('.usergroups');
-						if (groups.length) {
-							var boxes = groups.find('input[type=checkbox]');
+						jQuery(document).ready(function($){
+							var groups = $('.usergroups');
+							if (groups.length) {
+								var boxes = groups.find('input[type=checkbox]');
 
-							boxes.on('change', function(e){
-								checkDescendents(boxes, $(this));
-							});
-						}
-
-						function checkDescendents(boxes, el) {
-							var rel = el.attr('id');
-
-							if (el.is(":checked") && rel) {
-								boxes.each(function(i, el){
-									if ($(el).attr('rel') == rel) {
-										$(el).prop('checked', true);
-										checkDescendents(boxes, $(el));
-									}
+								boxes.on('change', function(e){
+									checkDescendents(boxes, $(this));
 								});
 							}
-						}
-					});
+
+							function checkDescendents(boxes, el) {
+								var rel = el.attr('id');
+
+								if (el.is(":checked") && rel) {
+									boxes.each(function(i, el){
+										if ($(el).attr('rel') == rel) {
+											$(el).prop('checked', true);
+											checkDescendents(boxes, $(el));
+										}
+									});
+								}
+							}
+						});
 					</script>
 				</div>
 			<?php } else { ?>
@@ -232,46 +232,46 @@ function submitbutton(pressbutton)
 		<?php
 		if ($this->collections->total())
 		{
-		?>
-		<fieldset class="adminform">
-			<legend><span><?php echo 'Collections'; ?></span></legend>
+			?>
+			<fieldset class="adminform">
+				<legend><span><?php echo 'Collections'; ?></span></legend>
 
-			<div class="input-wrap">
-				<ul class="checklist catgories">
-					<?php
-					$collections = $this->row->getCollections();
-
-					foreach ($this->collections as $cat)
-					{
-					?>
+				<div class="input-wrap">
+					<ul class="checklist catgories">
 						<?php
-						if ($cat->cActive || in_array($cat->cId, $collections))
+						$collections = $this->row->getCollections();
+
+						foreach ($this->collections as $cat)
 						{
-						?>
-						<li>
-							<input type="checkbox" name="fields[collections][]" <?php if (in_array($cat->cId, $collections)) { echo 'checked';} ?> value="<?php echo $cat->cId; ?>"
-								   id="collection_<?php echo $cat->cId; ?>">
-							<label for="collection_<?php echo $cat->cId; ?>">
-								<?php echo $cat->cName; ?>
-							</label>
-						</li>
-						<?php
+							?>
+							<?php
+							if ($cat->cActive || in_array($cat->cId, $collections))
+							{
+								?>
+								<li>
+									<input type="checkbox" name="fields[collections][]" <?php if (in_array($cat->cId, $collections)) { echo 'checked';} ?> value="<?php echo $cat->cId; ?>"
+										   id="collection_<?php echo $cat->cId; ?>">
+									<label for="collection_<?php echo $cat->cId; ?>">
+										<?php echo $cat->cName; ?>
+									</label>
+								</li>
+								<?php
+							}
+							?>
+							<?php
 						}
 						?>
-					<?php
-					}
-					?>
-				</ul>
-			</div>
-		</fieldset>
-		<?php
+					</ul>
+				</div>
+			</fieldset>
+			<?php
 		}
 		?>
 
 		<?php
 		if ($this->optionGroups->total())
 		{
-		?>
+			?>
 
 			<fieldset class="adminform">
 				<legend><span><?php echo 'Product option groups'; ?></span></legend>
@@ -281,31 +281,31 @@ function submitbutton(pressbutton)
 						<?php
 						foreach ($this->optionGroups as $og)
 						{
-						?>
+							?>
 							<?php
 							if ($og->ogActive || in_array($og->ogId, $this->productOptionGroups))
 							{
-							?>
-							<li>
-								<input type="checkbox"
-									   name="fields[optionGroups][]" <?php if (in_array($og->ogId, $this->productOptionGroups)) {
-									echo 'checked';
-								} ?> value="<?php echo $og->ogId; ?>"
-									   id="optionGroup_<?php echo $og->ogId; ?>">
-								<label for="optionGroup_<?php echo $og->ogId; ?>">
-									<?php echo $og->ogName; ?>
-								</label>
-							</li>
-							<?php
+								?>
+								<li>
+									<input type="checkbox"
+										   name="fields[optionGroups][]" <?php if (in_array($og->ogId, $this->productOptionGroups)) {
+										echo 'checked';
+									} ?> value="<?php echo $og->ogId; ?>"
+										   id="optionGroup_<?php echo $og->ogId; ?>">
+									<label for="optionGroup_<?php echo $og->ogId; ?>">
+										<?php echo $og->ogName; ?>
+									</label>
+								</li>
+								<?php
 							}
 							?>
-						<?php
+							<?php
 						}
 						?>
 					</ul>
 				</div>
 			</fieldset>
-		<?php
+			<?php
 		}
 		?>
 
@@ -346,16 +346,17 @@ function submitbutton(pressbutton)
 				$this_size = filesize(PATH_APP . $pathl . DS . $file);
 				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
 				$pic  = $file;
-				$path = $pathl;
+				$path = '/app/' . $pathl;
 			}
 			else
 			{
+				$image = false;
 				$pic = 'noimage.png';
 				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img' . DS;
 			}
 			?>
 				<div id="img-container">
-					<img id="img-display" src="/app/<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
+					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
 					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
 				</div>
 
