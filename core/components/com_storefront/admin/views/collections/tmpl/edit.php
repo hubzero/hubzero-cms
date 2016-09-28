@@ -147,16 +147,17 @@ function submitbutton(pressbutton)
 				$this_size = filesize(PATH_APP . $pathl . DS . $file);
 				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
 				$pic  = $file;
-				$path = $pathl;
+				$path = '/app/' . $pathl;
 			}
 			else
 			{
+				$image = false;
 				$pic = 'noimage.png';
 				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img';
 			}
 			?>
 				<div id="img-container">
-					<img id="img-display" src="/app/<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
+					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
 					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
 				</div>
 

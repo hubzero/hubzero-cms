@@ -33,41 +33,36 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT') . ': ' . $text, 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_COLLECTION') . ': ' . $text, 'storefront.png');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
 	Toolbar::save();
 }
 Toolbar::cancel();
-Toolbar::spacer();
-Toolbar::help('category');
+//Toolbar::spacer();
+//Toolbar::help('category');
 
 $this->css();
+
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	<?php echo $this->editor()->save('text'); ?>
+	function submitbutton(pressbutton)
+	{
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
 
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert("<?php echo 'Title cannot be empty' ?>");
+		<?php echo $this->editor()->save('text'); ?>
+
+		// do field validation
+		if (document.getElementById('field-title').value == ''){
+			alert("<?php echo Lang::txt('COM_STOREFRONT_ERROR_MISSING_TITLE'); ?>");
+		} else {
+			submitform(pressbutton);
+		}
 	}
-	else if (document.getElementById('field-pTagline').value == ''){
-		alert("<?php echo 'Tagline cannot be empty' ?>");
-	}
-	else if (document.getElementById('field-description').value == ''){
-		alert("<?php echo 'Description cannot be empty' ?>");
-	}
-	else {
-		submitform(pressbutton);
-	}
-}
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
@@ -77,213 +72,49 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[pName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+				<input type="text" name="fields[cName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-alais"><?php echo Lang::txt('Alias'); ?>:</label><br />
-				<input type="text" name="fields[pAlias]" id="field-alais" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
+				<label for="field-alias"><?php echo Lang::txt('Alias'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
 			</div>
 
-			<div class="input-wrap">
-				<label for="field-pTagline"><?php echo Lang::txt('COM_STOREFRONT_TAGLINE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[pTagline]" id="field-pTagline" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getTagline())); ?>" />
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-description"><?php echo Lang::txt('COM_STOREFRONT_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo $this->editor('fields[pDescription]', $this->escape(stripslashes($this->row->getDescription())), 50, 10, 'field-description', array('buttons' => false)); ?>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-features"><?php echo Lang::txt('COM_STOREFRONT_FEATURES'); ?>:</label><br />
-				<?php echo $this->editor('fields[pFeatures]', $this->escape(stripslashes($this->row->getFeatures())), 50, 10, 'field-features', array('buttons' => false)); ?>
-			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta">
 			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
-					<td>
-						<?php echo $this->row->getId(); ?>
-						<input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
-					</td>
-				</tr>
-				<?php if ($this->row->getTypeInfo() && $this->row->getTypeInfo()->name == 'Software Download') { ?>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
-					<td>
-						<?php
-						echo $this->downloaded;
-						if ($this->downloaded == 0 || $this->downloaded > 1)
-						{
-							echo(' times');
-						}
-						else {
-							echo 'time';
-						}
-						?>
-					</td>
-				</tr>
-			<?php } ?>
+			<tr>
+				<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
+				<td>
+					<?php echo $this->row->getId(); ?>
+					<input type="hidden" name="fields[cId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
+				</td>
+			</tr>
 			</tbody>
 		</table>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_OPTIONS'); ?></span></legend>
-
-			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_TYPE'); ?>:</label>
-				<select name="fields[ptId]" id="field-state">
-					<?php
-
-					foreach ($this->types as $type)
-					{
-						?>
-						<option value="<?php echo $type->ptId; ?>"<?php if ($this->row->getType() == $type->ptId) { echo ' selected="selected"'; } ?>><?php echo $type->ptName; ?></option>
-						<?php
-					}
-
-					?>
-				</select>
-			</div>
-
-			<?php
-			if ($this->metaNeeded) {
-			?>
-			<p>
-				<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options (save product first if you updated the type)</a></p>
-			<?php
-			}
-			?>
-
-			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
-				<select name="fields[pAllowMultiple]" id="field-state">
-					<option value="0"<?php if ($this->row->getAllowMultiple() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
-					<option value="1"<?php if ($this->row->getAllowMultiple() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
-				</select>
-			</div>
-		</fieldset>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_PUBLISH_OPTIONS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_STATE'); ?>:</label>
+				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_PUBLISH'); ?>:</label>
 				<select name="fields[state]" id="field-state">
 					<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
 					<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-					<option value="2"<?php if ($this->row->getActiveStatus() == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
 			</div>
-
-			<div class="input-wrap">
-				<label for="field-publish_up"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-access"><?php echo Lang::txt('COM_STOREFRONT_ACCESS_LEVEL'); ?>:</label>
-				<?php
-				echo JHtml::_('access.level', 'fields[access]', $this->row->getAccessLevel());
-				?>
-			</div>
 		</fieldset>
-
-		<?php
-		if ($this->collections->total())
-		{
-		?>
-		<fieldset class="adminform">
-			<legend><span><?php echo 'Collections'; ?></span></legend>
-
-			<div class="input-wrap">
-				<ul class="checklist catgories">
-					<?php
-					$collections = $this->row->getCollections();
-
-					foreach ($this->collections as $cat)
-					{
-					?>
-						<?php
-						if ($cat->cActive || in_array($cat->cId, $collections))
-						{
-						?>
-						<li>
-							<input type="checkbox" name="fields[collections][]" <?php if (in_array($cat->cId, $collections)) { echo 'checked';} ?> value="<?php echo $cat->cId; ?>"
-								   id="collection_<?php echo $cat->cId; ?>">
-							<label for="collection_<?php echo $cat->cId; ?>">
-								<?php echo $cat->cName; ?>
-							</label>
-						</li>
-						<?php
-						}
-						?>
-					<?php
-					}
-					?>
-				</ul>
-			</div>
-		</fieldset>
-		<?php
-		}
-		?>
-
-		<?php
-		if ($this->optionGroups->total())
-		{
-		?>
-
-			<fieldset class="adminform">
-				<legend><span><?php echo 'Product option groups'; ?></span></legend>
-
-				<div class="input-wrap">
-					<ul class="checklist optionGroups">
-						<?php
-						foreach ($this->optionGroups as $og)
-						{
-						?>
-							<?php
-							if ($og->ogActive || in_array($og->ogId, $this->productOptionGroups))
-							{
-							?>
-							<li>
-								<input type="checkbox"
-									   name="fields[optionGroups][]" <?php if (in_array($og->ogId, $this->productOptionGroups)) {
-									echo 'checked';
-								} ?> value="<?php echo $og->ogId; ?>"
-									   id="optionGroup_<?php echo $og->ogId; ?>">
-								<label for="optionGroup_<?php echo $og->ogId; ?>">
-									<?php echo $og->ogName; ?>
-								</label>
-							</li>
-							<?php
-							}
-							?>
-						<?php
-						}
-						?>
-					</ul>
-				</div>
-			</fieldset>
-		<?php
-		}
-		?>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('Image'); ?></span></legend>
 
 			<?php
 			if ($this->row->getId()) {
+
 				$img = $this->row->getImage();
+
 				if (!empty($img))
 				{
 					$image = stripslashes($img->imgName);
@@ -298,9 +129,9 @@ function submitbutton(pressbutton)
 				}
 				?>
 				<div style="padding-top: 2.5em">
-					<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;task=upload&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
+					<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;task=upload&amp;type=collection&amp;id=<?php echo $this->row->getId(); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
 						<noscript>
-							<iframe height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>"></iframe>
+							<iframe height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;type=collection&amp;id=<?php echo $this->row->getId(); ?>"></iframe>
 						</noscript>
 					</div>
 				</div>
@@ -308,23 +139,24 @@ function submitbutton(pressbutton)
 			$width = 0;
 			$height = 0;
 			$this_size = 0;
-			$pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
+			$pathl = DS . trim($this->config->get('collectionsImagesFolder', '/site/storefront/collections'), DS) . DS . $this->row->getId();
 
 			if ($image && file_exists(PATH_APP . $pathl . DS . $file))
 			{
 				$this_size = filesize(PATH_APP . $pathl . DS . $file);
 				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
 				$pic  = $file;
-				$path = $pathl;
+				$path = '/app/' . $pathl;
 			}
 			else
 			{
+				$image = false;
 				$pic = 'noimage.png';
-				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img' . DS;
+				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img';
 			}
 			?>
 				<div id="img-container">
-					<img id="img-display" src="/app/<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
+					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
 					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
 				</div>
 
@@ -337,7 +169,7 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<a id="img-delete" <?php echo $image ? '' : 'style="display: none;"'; ?>
-							   href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1"
+							   href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $img->imgId; ?>&amp;type=collection&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1"
 							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
 						</td>
 					</tr>
@@ -418,7 +250,6 @@ function submitbutton(pressbutton)
 			}
 			?>
 		</fieldset>
-
 	</div>
 	<div class="clr"></div>
 
