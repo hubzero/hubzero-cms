@@ -852,6 +852,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'state'      => 1,
 			'access'     => array(1)
 		);
+		if (!$filters['search'])
+		{
+			return $this->sections();
+		}
+
 		if (!User::isGuest())
 		{
 			$filters['access'][] = 2;
