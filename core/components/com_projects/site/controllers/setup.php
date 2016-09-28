@@ -38,6 +38,11 @@ use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description;
 use Components\Projects\Models\Orm\Project as ProjectORM;
 use Exception;
+use Request;
+use Route;
+use User;
+use Lang;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
@@ -70,6 +75,15 @@ class Setup extends Base
 				: Lang::txt('COM_PROJECTS_LOGIN_SETUP');
 			$this->_login();
 			return;
+		}
+
+		if (!User::authorise('core.create', $this->_option))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('ALERTNOTAUTH'),
+				'warning'
+			);
 		}
 
 		parent::execute();

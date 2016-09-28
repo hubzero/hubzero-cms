@@ -49,11 +49,13 @@ $total = $this->model->entries('count', $this->filters);
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
-	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
-		</ul>
-	</div><!-- / #content-header-extra -->
+	<?php if (User::authorise('core.create', $this->option)) { ?>
+		<div id="content-header-extra">
+			<ul id="useroptions">
+				<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
+			</ul>
+		</div><!-- / #content-header-extra -->
+	<?php } ?>
 </header><!-- / #content-header -->
 
 <form method="get" id="browseForm" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
