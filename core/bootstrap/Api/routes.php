@@ -323,7 +323,15 @@ $router->rules('parse')->append('component', function ($uri)
 
 	$uri->setVar('option', \App::get('component')->canonical($component));
 
-	if ($router = \App::get('component')->router($component, 'api'))
+	if ($uri->getVar('version', null))
+	{
+		$router = \App::get('component')->router($component, 'api', str_replace(".", "_", $uri->getVar('version')));
+	}
+	else
+	{
+		$router = \App::get('component')->router($component, 'api');
+	}
+	if ($router)
 	{
 		if ($vars = $router->parse($segments))
 		{
