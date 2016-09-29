@@ -180,7 +180,7 @@ HUB.GroupsMediaBrowser = {
 		// trigger clicking of active folder
 		$('.foldertree .tree-folder').each(function(index, element){
 			var $element = $(element);
-			if (activeFolder == $element.attr('data-folder'))
+			if (activeFolder == $element.attr('data-folder').toLowerCase())
 			{
 				$element
 					// trigger clicking of folder - sets filelist frames source
