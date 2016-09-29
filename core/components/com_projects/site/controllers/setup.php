@@ -77,7 +77,9 @@ class Setup extends Base
 			return;
 		}
 
-		if (!User::authorise('core.create', $this->_option))
+		if (!User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.manage', $this->_option))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
