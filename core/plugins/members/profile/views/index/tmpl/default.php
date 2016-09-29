@@ -82,7 +82,19 @@ $incrOpts = new ModIncrementalRegistrationOptions;
 
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 */
-$profiles = $this->profile->profiles()->ordered()->rows();
+//$profiles = $this->profile->profiles()->ordered()->rows();
+$entries = $this->profile->profiles();
+
+$p = $entries->getTableName();
+$f = Components\Members\Models\Profile\Field::blank()->getTableName();
+$o = Components\Members\Models\Profile\Option::blank()->getTableName();
+
+$profiles = $entries
+	->select($p . '.*,' . $o . '.label')
+	->join($f, $f . '.name', $p . '.profile_key', 'inner')
+	->joinRaw($o, $o . '.field_id=' . $f . '.id AND ' . $o . '.value=' . $p . '.profile_value', 'left')
+	->ordered()
+	->rows();
 
 // Convert to XML so we can use the Form processor
 $xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
@@ -104,12 +116,12 @@ foreach ($profiles as $profile)
 {
 	if (isset($fields[$profile->get('profile_key')]))
 	{
-		$values = $fields[$profile->get('profile_key')]->get('profile_value');
+		$values = $fields[$profile->get('profile_key')]->get('label', $fields[$profile->get('profile_key')]->get('profile_value'));
 		if (!is_array($values))
 		{
 			$values = array($values);
 		}
-		$values[] = $profile->get('profile_value');
+		$values[] = $profile->get('label', $profile->get('profile_value'));
 
 		$fields[$profile->get('profile_key')]->set('profile_value', $values);
 	}
@@ -559,7 +571,7 @@ function renderIfJson($v)
 				}
 				else
 				{
-					$value = $profile->get('profile_value');
+					$value = $profile->get('label', $profile->get('profile_value'));
 					$value = $value ?: $this->profile->get($field->get('name'));
 					if ($field->get('type') == 'textarea')
 					{
