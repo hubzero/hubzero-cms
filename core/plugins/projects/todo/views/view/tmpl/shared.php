@@ -45,37 +45,39 @@ $rows = $this->todo->entries('list', $this->filters);
 ?>
 
 <div class="list-menu">
-	<ul class="entries-menu order-options">
-		<li>
-			<a class="sort-content<?php if ($this->filters['sortby'] == 'content') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=content'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_CONTENT'); ?>">
-				&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_CONTENT'); ?>
-			</a>
-		</li>
-		<li>
-			<a class="sort-project<?php if ($this->filters['sortby'] == 'project') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=project'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_PROJECT'); ?>">
-				&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_PROJECT'); ?>
-			</a>
-		</li>
-		<?php if ($this->filters['state']  == 1) { ?>
-		<li>
-			<a class="sort-due<?php if ($this->filters['sortby'] == 'complete') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=complete'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_COMPLETE'); ?>">
-				&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_COMPLETE'); ?>
-			</a>
-		</li>
-	<?php } else { ?>
-		<li>
-			<a class="sort-complete<?php if ($this->filters['sortby'] == 'due') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=due'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_DUE'); ?>">
-				&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_DUE'); ?>
-			</a>
-		</li>
-		<?php } ?>
-	</ul>
+	<nav class="entries-filters">
+		<ul class="entries-menu order-options">
+			<li>
+				<a class="sort-content<?php if ($this->filters['sortby'] == 'content') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=content'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_CONTENT'); ?>">
+					&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_CONTENT'); ?>
+				</a>
+			</li>
+			<li>
+				<a class="sort-project<?php if ($this->filters['sortby'] == 'project') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=project'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_PROJECT'); ?>">
+					&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_PROJECT'); ?>
+				</a>
+			</li>
+			<?php if ($this->filters['state']  == 1) { ?>
+			<li>
+				<a class="sort-due<?php if ($this->filters['sortby'] == 'complete') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=complete'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_COMPLETE'); ?>">
+					&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_COMPLETE'); ?>
+				</a>
+			</li>
+		<?php } else { ?>
+			<li>
+				<a class="sort-complete<?php if ($this->filters['sortby'] == 'due') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=due'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_DUE'); ?>">
+					&darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_DUE'); ?>
+				</a>
+			</li>
+			<?php } ?>
+		</ul>
 
-	<ul class="entries-menu filter-options">
-		<li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=0&state=0'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?>" class="filter-active<?php if (!$this->filters['mine'] && !$this->filters['state']) { echo ' active'; } ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?></a></li>
-		<li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE'); ?>" class="filter-mine<?php if ($this->filters['mine'] == 1) { echo ' active'; } ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE'); ?></a></li>
-		<li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?>" class="filter-complete<?php if ($this->filters['state'] == 1) { echo ' active'; } ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?></a></li>
-	</ul>
+		<ul class="entries-menu filter-options">
+			<li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=0&state=0'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?>" class="filter-active<?php if (!$this->filters['mine'] && !$this->filters['state']) { echo ' active'; } ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?></a></li>
+			<li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE'); ?>" class="filter-mine<?php if ($this->filters['mine'] == 1) { echo ' active'; } ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE'); ?></a></li>
+			<li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?>" class="filter-complete<?php if ($this->filters['state'] == 1) { echo ' active'; } ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?></a></li>
+		</ul>
+	</nav>
 </div>
 <table class="listing entries" id="todo-table">
 	<thead>
