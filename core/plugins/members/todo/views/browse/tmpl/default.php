@@ -62,8 +62,7 @@ $cfilters = array(
 		</li>
 	</ul>
 <?php } ?>
-<?php if (User::get('id') == $this->member->get('id') && empty($this->projects) || !$this->todo->entries('count', $filters)) { ?>
-
+<?php if ((User::get('id') == $this->member->get('id') && empty($this->projects)) || !$this->todo->entries('count', $filters)) { ?>
 	<div class="introduction">
 		<div class="introduction-message">
 			<p><?php echo Lang::txt('PLG_MEMBERS_TODO_INTRO_EMPTY'); ?></p>
@@ -73,22 +72,21 @@ $cfilters = array(
 			<p><?php echo Lang::txt('PLG_MEMBERS_TODO_INTRO_HOW_TO_START_EXPLANATION', Route::url('index.php?option=com_projects')); ?></p>
 		</div>
 	</div><!-- / .introduction -->
-
 <?php } else { ?>
-<div class="container">
-	<?php if ($this->getError()) : ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php endif; ?>
-	<?php 
-	// Get shared todo items from blog plugin
-	$results = Event::trigger( 'projects.onShared', array(
-		'todo',
-		$this->model,
-		$this->projects,
-		$this->member->get('id'),
-		$this->filters
-	));
-	echo !empty($results) && isset($results[0]) ? $results[0] : NULL;
-	 ?>
-</div>
+	<div class="container">
+		<?php if ($this->getError()) : ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php endif; ?>
+		<?php 
+		// Get shared todo items from blog plugin
+		$results = Event::trigger('projects.onShared', array(
+			'todo',
+			$this->model,
+			$this->projects,
+			$this->member->get('id'),
+			$this->filters
+		));
+		echo implode("\n", $results);
+		?>
+	</div>
 <?php } ?>
