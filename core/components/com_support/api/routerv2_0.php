@@ -32,6 +32,7 @@
 
 namespace Components\Support\Api;
 
+use Exception;
 use Hubzero\Component\Router\Base;
 
 /**
@@ -73,34 +74,33 @@ class Router extends Base
 	public function parse(&$segments)
 	{
 		$vars = array();
-
-		$vars['controller'] = 'tickets';
-
 		if (isset($segments[0]))
 		{
-			if (is_numeric($segments[0]))
+			$vars['controller'] = $segments[0];
+
+			// The next url segment should be the id
+			// Task should already be set by the loader
+			if (isset($segments[1]))
 			{
-				$vars['id'] = $segments[0];
-				if (\App::get('request')->method() == 'GET')
+				if (is_numeric($segments[1]))
 				{
-					$vars['task'] = 'read';
+					$vars['id'] = $segments[1];
+					// Read needs to be set explictly because read, list, and the api docblock all use GETs
+					if (\App::get('request')->method() == 'GET')
+					{
+						$vars['task'] = 'read';
+					}
+				}
+				else
+				{
+					throw new Exception(Lang::txt("COM_SUPPORT_TASK_NOT_FOUND"), 404);
 				}
 			}
 			else
 			{
-				$vars['task'] = $segments[0];
-			}
-
-			if (isset($segments[1]))
-			{
-				if ($segments[1] == 'comments')
+				if (\App::get('request')->method() == 'GET')
 				{
-					$vars['controller'] = $segments[1];
 					$vars['task'] = 'list';
-				}
-				else
-				{
-					$vars['task'] = $segments[1];
 				}
 			}
 		}
