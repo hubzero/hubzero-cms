@@ -206,10 +206,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				if (User::isGuest()
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
-					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
+					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
 					App::redirect(
-						Route::url('index.php?option=com_users&view=login?return=' . base64_encode($url)),
+						Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 						Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 						'warning'
 					);
