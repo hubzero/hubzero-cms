@@ -386,7 +386,7 @@ class Members extends AdminController
 				$newUsertype = Accessgroup::oneByTitle('Registered')->get('id');
 			}
 
-			$user->set('groups', array($newUsertype));
+			$user->set('accessgroups', array($newUsertype));
 
 			// Check that username is filled
 			if (!Validate::username($user->get('username')))
