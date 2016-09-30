@@ -83,16 +83,12 @@ jQuery(document).ready(function($){
 			$(longBody).removeClass('hidden');
 		})
 		// Confirm delete
-		.on('click', '.delit', function(e) {
-			e.preventDefault();
-
-			if (HUB.Projects) {
-				HUB.Projects.addConfirm($(link), 'Permanently delete this entry?', 'yes, delete', 'cancel');
-
-				if ($('#confirm-box')) {
-					$('#confirm-box').css('margin-left', '-100px');
-				}
+		.on('click', '.delete', function(e) {
+			var res = confirm($(this).attr('data-confirm'));
+			if (!res) {
+				e.preventDefault();
 			}
+			return res;
 		})
 		// Have submit button reset the form
 		.on('click', '.c-submit', function(e) {
