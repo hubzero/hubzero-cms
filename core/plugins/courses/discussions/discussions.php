@@ -1017,15 +1017,17 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		if ($results->count())
 		{
-			$results = $post->toTree($results);
-
-			foreach ($results as $key => $row)
+			//$results = $post->toTree($results);
+			$res = array();
+			$i = 0;
+			foreach ($results as $row)
 			{
 				$thread->lastchange = ($row->get('created') > $thread->lastchange)
 									? $row->get('created')
 									: $thread->lastchange;
 
-				$results[$key]->replies = null;
+				$res[$i] = new stdClass;
+				$res[$i]->replies = null;
 
 				$cview = $this->view('comment', 'threads')
 					->set('option', $this->option)
@@ -1047,10 +1049,16 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					$cview->set('lecture', $this->lecture->get('alias'));
 				}
 
-				$results[$key]->html = $cview->loadTemplate();
+				foreach ($row->toArray() as $key => $val)
+				{
+					$res[$i]->$key = $val;
+				}
+
+				$res[$i]->html = $cview->loadTemplate();
+				$i++;
 			}
-			$thread->total = count($results);
-			$thread->posts = $results;
+			$thread->total = count($res);
+			$thread->posts = $res;
 		}
 
 		return $thread;
