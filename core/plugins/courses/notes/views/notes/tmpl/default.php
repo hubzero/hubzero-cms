@@ -121,7 +121,7 @@ $base = $this->offering->link();
 		var url = "<?php echo Request::base(true) . '/' . $this->offering->link() . '&active=notes&no_html=1&note='; ?>";
 
 		$('#page_content textarea').each(function(i, el) {
-			var hgt = hgt = $(this).parent().parent().height();
+			var hgt = $(this).parent().parent().height();
 				$(this).css('height', hgt - 32);
 
 			$(el).on('keyup', function (e) {
