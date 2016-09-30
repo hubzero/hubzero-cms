@@ -70,8 +70,8 @@ if ($comments)
 			<div id="tr_<?php echo $a->id; ?>" class="item-control">
 				<?php if ($deletable) { ?>
 					<span class="m_options">
-						<span class="delit" id="mo_<?php echo $a->id; ?>">
-							<a href="<?php echo Route::url($this->model->link('feed') .  '&action=delete&tbl=' . $etbl . '&eid=' . $eid);  ?>">x</a>
+						<span id="mo_<?php echo $a->id; ?>">
+							<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('Permanently delete this entry?'); ?>" href="<?php echo Route::url($this->model->link('feed') .  '&action=delete&tbl=' . $etbl . '&eid=' . $eid);  ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
 						</span>
 					</span>
 				<?php } ?>

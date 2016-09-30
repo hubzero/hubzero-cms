@@ -21,6 +21,7 @@
 		padding: 1em;
 		border: 1px solid #e1e1e1;
 		margin-bottom: 1em;
+		position: relative;
 		/*-moz-box-shadow: 3px 3px 3px #e8ecf1;
 		-webkit-box-shadow: 3px 3px 3px #e8ecf1;
 		box-shadow: 3px 3px 3px #e8ecf1;*/
@@ -248,37 +249,33 @@
 /* On-mouseover item options (in listings)
 --------------------------------------------- */
 	.m_options {
-		display: none;
-		font-size: 100%;
+		line-height: 1;
 		color: #999;
-		float: right;
-		margin: 0;
-		padding: 0;
-		margin-top: -1.2em;
-		margin-right: 0.2em;
-	}
-	.quote .m_options {
-		margin: 0;
-		margin-right: -0.5em;
-	}
-	.m_options span {
+		display: none;
+		text-align: right;
 		position: absolute;
-		display: block;
-		padding: 0;
-		margin-left: 0;
+		top: 1em;
+		right: 0.8em;
 	}
 	.m_options span a {
 		border: none;
+		display: block;
+		overflow: hidden;
+		font-size: 1.2em;
+		height: 1em;
+		width: 1em;
 		margin: 0;
-		padding: 0 0.3em;
+		padding: 0;
 		background: transparent;
 		color: #CCC;
 	}
+	.m_options span a.icon-delete:before {
+		content: "\2716";
+		margin-right: 0.5em;
+	}
 	.m_options span a:hover {
-		border: 1px solid #333;
-		padding: 0 0.3em;
-		background: #333;
-		color: #FFF;
+		border: none;
+		color: #222;
 	}
 
 /* Preview net
