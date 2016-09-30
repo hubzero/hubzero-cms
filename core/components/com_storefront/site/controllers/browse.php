@@ -112,7 +112,7 @@ class Browse extends \Hubzero\Component\SiteController
 
 		// Get the collection products
 		$this->warehouse->addLookupCollection($cId);
-		$products = $this->warehouse->getProducts();
+		$products = $this->warehouse->getProducts('rows', true, array('sort' => 'title'));
 
 		$view->collectionName = $collectionName;
 		$view->products = $products;

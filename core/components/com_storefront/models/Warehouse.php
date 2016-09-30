@@ -1469,6 +1469,7 @@ class Warehouse extends \Hubzero\Base\Object
 				WHERE c.`cParent` IS NULL AND c.`cActive` = 1 AND p.`pActive` = 1";
 
 		$sql .= " AND c.`cType` = '{$collectionType}'";
+		$sql .= " ORDER BY c.`cName`";
 
 		$this->_db->setQuery($sql);
 		$res = $this->_db->loadObjectList();
@@ -1541,7 +1542,7 @@ class Warehouse extends \Hubzero\Base\Object
 		}
 
 		$res = $this->_db->loadObjectList();
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+		//print_r($this->_db->toString());
 
 		return $res;
 	}
