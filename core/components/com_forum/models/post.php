@@ -81,9 +81,7 @@ class Post extends Relational
 	 **/
 	public $always = array(
 		'title',
-		'scope',
-		'modified',
-		'modified_by'
+		'scope'
 	);
 
 	/**
