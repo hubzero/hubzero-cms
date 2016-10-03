@@ -495,6 +495,8 @@ class Threads extends SiteController
 			{
 				$this->config->set('access-edit-' . $assetType, true);
 			}
+			$fields['modified'] = \Date::toSql();
+			$fields['modified_by'] = User::get('id');
 		}
 
 		// Authorization check

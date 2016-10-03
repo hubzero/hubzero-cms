@@ -1385,6 +1385,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			{
 				$moving = true;
 			}
+
+			$fields['modified'] = \Date::toSql();
+			$fields['modified_by'] = User::get('id');
 		}
 
 		if (!$this->params->get('access-edit-thread')

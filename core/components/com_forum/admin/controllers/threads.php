@@ -507,6 +507,12 @@ class Threads extends AdminController
 		$fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
 		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
+		if ($fields['id'])
+		{
+			$fields['modified'] = \Date::toSql();
+			$fields['modified_by'] = User::get('id');
+		}
+
 		// Initiate extended database class
 		$post = Post::oneOrNew(intval($fields['id']))->set($fields);
 
