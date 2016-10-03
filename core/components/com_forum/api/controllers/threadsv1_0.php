@@ -701,6 +701,11 @@ class Threadsv1_0 extends ApiController
 			'hits'           => Request::getInt('hits', 0, 'post'),
 		);
 
+		if (!$fields['category_id'])
+		{
+			throw new Exception(Lang::txt('Category ID must be specified.'), 400);
+		}
+
 		$row = Post::blank();
 
 		if (!$row->set($fields))
@@ -709,6 +714,18 @@ class Threadsv1_0 extends ApiController
 		}
 
 		$row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
+
+		$category = Category::all()
+			->whereEquals('category_id', $row->get('category_id'))
+			->whereEquals('scope', $row->get('scope'))
+			->whereEquals('scope_id', $row->get('scope_id'))
+			->where('state', '!=', Category::STATE_DELETED)
+			->row();
+
+		if (!$category->get('id'))
+		{
+			throw new Exception(Lang::txt('Specified category could not be found for the provided scope and scope_id.'), 400);
+		}
 
 		if (!$row->save())
 		{
@@ -725,7 +742,7 @@ class Threadsv1_0 extends ApiController
 		{
 			if (!$row->tag($tags, User::get('id')))
 			{
-				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
+				throw new Exception(Lang::txt('COM_FORUM_ERROR_SAVING_TAGS'), 500);
 			}
 		}
 
