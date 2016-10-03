@@ -116,10 +116,10 @@ foreach ($profiles as $profile)
 {
 	if (isset($fields[$profile->get('profile_key')]))
 	{
-		$values = $fields[$profile->get('profile_key')]->get('label', $fields[$profile->get('profile_key')]->get('profile_value'));
+		$values = $fields[$profile->get('profile_key')]->get('profile_value');
 		if (!is_array($values))
 		{
-			$values = array($values);
+			$values = array($fields[$profile->get('profile_key')]->get('label', $values));
 		}
 		$values[] = $profile->get('label', $profile->get('profile_value'));
 
@@ -571,7 +571,11 @@ function renderIfJson($v)
 				}
 				else
 				{
-					$value = $profile->get('label', $profile->get('profile_value'));
+					$value = $profile->get('profile_value');
+					if (!is_array($value))
+					{
+						$value = $profile->get('label', $value);
+					}
 					$value = $value ?: $this->profile->get($field->get('name'));
 					if ($field->get('type') == 'textarea')
 					{
