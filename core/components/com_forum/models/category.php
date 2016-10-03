@@ -298,6 +298,7 @@ class Category extends Relational
 	{
 		$entries = self::all()
 			->whereEquals('alias', $this->get('alias'))
+			->whereEquals('section_id', $this->get('section_id'))
 			->whereEquals('scope', $this->get('scope'))
 			->whereEquals('scope_id', $this->get('scope_id'))
 			->where('state', '!=', self::STATE_DELETED);

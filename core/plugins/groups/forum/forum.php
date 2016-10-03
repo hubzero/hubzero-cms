@@ -1016,7 +1016,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$category->set('section_id', (int) $category->get('section_id'));
 			Request::setVar('section_id', $category->get('section_id'));
 
-			Notify::error(Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_ALREADY_EXISTS'));
+			Notify::error(Lang::txt('PLG_GROUPS_FORUM_CATEGORY_ALREADY_EXISTS'));
 			return $this->editcategory($category);
 		}
 
