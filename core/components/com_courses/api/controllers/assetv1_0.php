@@ -483,6 +483,7 @@ class Assetv1_0 extends base
 
 		$files    = array();
 		$database = App::get('db');
+		$row = (object) array();
 
 		// If we're creating a new asset, we should also create a new asset association
 		if (!$id)
@@ -538,7 +539,7 @@ class Assetv1_0 extends base
 			'asset_subtype'  => $asset->get('subtype'),
 			'asset_url'      => $url,
 			'asset_state'    => $asset->get('state'),
-			'scope_id'       => (isset($row)) ? $row->scope_id : '',
+			'scope_id'       => (isset($row) && isset($row->scope_id)) ? $row->scope_id : '',
 			'course_id'      => $this->course_id,
 			'offering_alias' => Request::getCmd('offering', '')
 		);
