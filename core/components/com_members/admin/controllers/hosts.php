@@ -62,6 +62,7 @@ class Hosts extends AdminController
 
 		// Load the profile
 		$profile = Member::oneOrFail($id);
+		$profile->disableCaching();
 
 		// Incoming host
 		$host = Request::getVar('host', '');
@@ -73,7 +74,7 @@ class Hosts extends AdminController
 		}
 
 		// Update the hosts list
-		if (Host::addUserToHost($profile->get('id'), $host))
+		if (!Host::addUserToHost($profile->get('id'), $host))
 		{
 			$this->setError(Lang::txt('Failed to add host "%s"', $host));
 		}
@@ -111,12 +112,11 @@ class Hosts extends AdminController
 			return $this->displayTask($profile);
 		}
 
-		foreach ($profile->hosts as $h)
+		$h = Host::oneByHostAndUser($host, $id);
+
+		if (!$h->destroy())
 		{
-			if ($h->get('host') == $host)
-			{
-				$h->destroy();
-			}
+			$this->setError(Lang::txt('MEMBERS_NO_HOST'));
 		}
 
 		// Push through to the hosts view
@@ -134,7 +134,7 @@ class Hosts extends AdminController
 		// Incoming
 		if (!$profile)
 		{
-			$id = Request::getInt('id', 0, 'get');
+			$id = Request::getInt('id', 0);
 
 			$profile = Member::oneOrFail($id);
 		}
@@ -142,7 +142,7 @@ class Hosts extends AdminController
 		// Output the HTML
 		$this->view
 			->set('id', $profile->get('id'))
-			->set('rows', $profile->hosts)
+			->set('rows', $profile->purgeCache()->hosts)
 			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
