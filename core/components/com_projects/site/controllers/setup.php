@@ -848,6 +848,7 @@ class Setup extends Base
 					foreach ($incoming as $key => $value)
 					{
 						$this->model->saveParam($key, $value);
+						$this->model->params->set($key, $value);
 
 						// If grant information changed
 						if ($key == 'grant_status')
