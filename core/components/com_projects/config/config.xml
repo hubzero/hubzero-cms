@@ -24,6 +24,10 @@
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</field>
+		<field name="suggest_feature" type="list" default="1" label="Allow Feature Suggestion?" description="Display links on the Features page for suggesting new features. Note: This requires the Wishlist component be enabled.">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="min_name_length" type="text" menu="hide" default="6" label="Minimum characters in name" description="Min number of characters a project alias name can contain" />
 		<field name="max_name_length" type="text" menu="hide" default="25" label="Maximum characters in name" description="Max number of characters a project alias name can contain" />
 		<field name="reserved_names" type="text" menu="hide" default="clone, temp, test" label="Reserved project names" description="Words that cannot be used as project names" />
