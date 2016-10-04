@@ -183,10 +183,25 @@ class Media extends Base
 			$hi = new \Hubzero\Image\Processor($path . DS . $file);
 			if (count($hi->getErrors()) == 0)
 			{
-				$hi->autoRotate();
-				$hi->resize(200);
-				$hi->setImageType(IMAGETYPE_PNG);
-				$hi->save($path . DS . $file);
+				try
+				{
+					$hi->autoRotate();
+					$hi->resize(200);
+					$hi->setImageType(IMAGETYPE_PNG);
+					$hi->save($path . DS . $file);
+				}
+				catch (\Exception $e)
+				{
+					if (strpos($e->getMessage(), 'Illegal IFD size') !== false)
+					{
+						// PURR #1186, QUBES #618
+						continue;
+					}
+					else
+					{
+						App::abort('500', $e);
+					}
+				}
 			}
 			else
 			{
@@ -205,7 +220,14 @@ class Media extends Base
 			if (count($hi->getErrors()) == 0)
 			{
 				$hi->resize(50, false, true, true);
-				$hi->save($path . DS . 'thumb.png');
+				try
+				{
+					$hi->save($path . DS . 'thumb.png');
+				}
+				catch (\Exception $e)
+				{
+					error_log($e->getMessage());
+				}
 			}
 			else
 			{
