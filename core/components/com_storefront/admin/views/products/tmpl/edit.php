@@ -70,7 +70,7 @@ $this->css();
 	}
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
@@ -191,34 +191,41 @@ $this->css();
 
 			<?php if ($this->config->get('productAccess')) { ?>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_STOREFRONT_ACCESS_GROUPS_HINT'); ?>">
-					<label><?php echo Lang::txt('COM_STOREFRONT_ACCESS_GROUPS'); ?>:</label>
+					<label><?php echo Lang::txt('User is <strong>one</strong> of the following'); ?>:</label>
 					<p class="hint"><?php echo Lang::txt('COM_STOREFRONT_ACCESS_GROUPS_HINT'); ?></p>
 					<?php
-					echo Html::access('usergroups', 'accessgroups', $this->row->getAccessGroups(), true); ?>
+					echo Html::access('usergroups', 'accessgroupsyes', $this->row->getAccessGroups('include'), true); ?>
+				</div>
+				<p>AND</p>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_STOREFRONT_ACCESS_GROUPS_HINT'); ?>">
+					<label><?php echo Lang::txt('User is <strong>not</strong> one of the following'); ?>:</label>
+					<p class="hint"><?php echo Lang::txt('COM_STOREFRONT_ACCESS_GROUPS_HINT'); ?></p>
+					<?php
+					echo Html::access('usergroups', 'accessgroupsno', $this->row->getAccessGroups('exclude'), true); ?>
 					<script type="text/javascript">
-						jQuery(document).ready(function($){
-							var groups = $('.usergroups');
-							if (groups.length) {
-								var boxes = groups.find('input[type=checkbox]');
+					jQuery(document).ready(function($){
+						var groups = $('.usergroups');
+						if (groups.length) {
+							var boxes = groups.find('input[type=checkbox]');
 
-								boxes.on('change', function(e){
-									checkDescendents(boxes, $(this));
+							boxes.on('change', function(e){
+								checkDescendents(boxes, $(this));
+							});
+						}
+
+						function checkDescendents(boxes, el) {
+							var rel = el.attr('id');
+
+							if (el.is(":checked") && rel) {
+								boxes.each(function(i, el){
+									if ($(el).attr('rel') == rel) {
+										$(el).prop('checked', true);
+										checkDescendents(boxes, $(el));
+									}
 								});
 							}
-
-							function checkDescendents(boxes, el) {
-								var rel = el.attr('id');
-
-								if (el.is(":checked") && rel) {
-									boxes.each(function(i, el){
-										if ($(el).attr('rel') == rel) {
-											$(el).prop('checked', true);
-											checkDescendents(boxes, $(el));
-										}
-									});
-								}
-							}
-						});
+						}
+					});
 					</script>
 				</div>
 			<?php } else { ?>
