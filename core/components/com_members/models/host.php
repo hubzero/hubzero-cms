@@ -185,6 +185,7 @@ class Host extends Relational
 	{
 		// Get the user's existing entries
 		$entries = self::all()
+			->disableCaching()
 			->whereEquals('uidNumber', $user_id)
 			->rows();
 
