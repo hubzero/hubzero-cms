@@ -466,14 +466,18 @@ class Log extends \JTable
 		{
 			$query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
 			$query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.user_id=" . $this->_db->quote($id);
+
+			$query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND ";
 		}
 		else
 		{
 			$query .= " JOIN #__publications as P ON P.id = L.publication_id AND P.project_id=" . $this->_db->quote($id);
 			$query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
+
+			$query .= " WHERE ";
 		}
 
-		$query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND V.state=1 AND V.main=1 AND V.published_up < '" . Date::toSql() . "'";
+		$query .= " V.state=1 AND V.main=1 AND V.published_up < '" . Date::toSql() . "'";
 
 		$this->_db->setQuery( $query );
 		$totals = $this->_db->loadObjectList();
