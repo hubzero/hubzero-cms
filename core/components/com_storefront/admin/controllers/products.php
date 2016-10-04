@@ -315,8 +315,11 @@ class Products extends AdminController
 			$product->setPublishTime($fields['publish_up'], $fields['publish_down']);
 			$product->save();
 
-			$accessgroups = Request::getVar('accessgroups', array(), 'post');
-			$product->setAccessGroups($accessgroups);
+			$accessgroups = Request::getVar('accessgroupsyes', array(), 'post');
+			$product->setAccessGroups($accessgroups, 'include');
+
+			$accessgroups = Request::getVar('accessgroupsno', array(), 'post');
+			$product->setAccessGroups($accessgroups, 'exclude');
 		}
 		catch (\Exception $e)
 		{

@@ -427,13 +427,27 @@ class Warehouse extends \Hubzero\Base\Object
 				$product = new Product();
 				$product->setId($pInfo->pId);
 
-				$accessgroups = $product->getAccessGroups();
+				$accessgroups = $product->getAccessGroups('include');
 
 				// See what groups are in common
 				$groups = array_intersect($accessgroups, $this->accessGroupsScope);
 
 				// No common groups
 				if (empty($groups))
+				{
+					$response->status = 0;
+					$response->errorCode = 403;
+					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+					return $response;
+				}
+
+				$accessgroups = $product->getAccessGroups('exclude');
+
+				// See what groups are in common
+				$groups = array_intersect($accessgroups, $this->accessGroupsScope);
+
+				// User in disallowed groups
+				if (!empty($groups))
 				{
 					$response->status = 0;
 					$response->errorCode = 403;
@@ -501,7 +515,8 @@ class Warehouse extends \Hubzero\Base\Object
 				LEFT JOIN `#__storefront_images` i ON (p.`pId` = i.`imgObjectId` AND i.`imgObject` = 'product' AND i.`imgPrimary` = 1)";
 		if ($useAccessGroups)
 		{
-			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag ON p.`pId` = ag.`pId`";
+			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag1 ON p.`pId` = ag1.`pId` AND ag1.`exclude`=0";
+			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag2 ON p.`pId` = ag2.`pId` AND ag2.`exclude`=1";
 		}
 
 		$sql .= " WHERE 1";
@@ -528,7 +543,10 @@ class Warehouse extends \Hubzero\Base\Object
 		{
 			if ($this->accessGroupsScope)
 			{
-				$sql .= " AND ag.`agId` IN(" . implode(',', $this->accessGroupsScope) . ")";
+				$sql .= " AND (
+					(ag1.`agId` IN(" . implode(',', $this->accessGroupsScope) . ")) AND
+					(ag2.`agId` IS NULL OR ag2.`agId` NOT IN(" . implode(',', $this->accessGroupsScope) . "))
+				)";
 			}
 		}
 		else

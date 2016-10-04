@@ -195,7 +195,7 @@ class Product
 	 *
 	 * @return  array
 	 */
-	public function getAccessGroups()
+	public function getAccessGroups($type = 'include')
 	{
 		$id = (int)$this->getId();
 
@@ -204,8 +204,10 @@ class Product
 			return array();
 		}
 
+		$type = ($type == 'include' ? 0 : 1);
+
 		$db = \App::get('db');
-		$db->setQuery("SELECT * FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id));
+		$db->setQuery("SELECT * FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id) . " AND `exclude`=" . $db->quote($type));
 
 		$accessgroups = array();
 		foreach ($db->loadObjectList() as $row)
@@ -219,10 +221,11 @@ class Product
 	/**
 	 * Set product access groups
 	 *
-	 * @param   array  $groups
+	 * @param   array   $groups
+	 * @param   string  $type
 	 * @return  boolean
 	 */
-	public function setAccessGroups($groups = array())
+	public function setAccessGroups($groups = array(), $type = 'include')
 	{
 		if (!is_array($groups))
 		{
@@ -241,7 +244,7 @@ class Product
 		$db = \App::get('db');
 
 		// Get the previous list of groups
-		$prev = $this->getAccessGroups();
+		$prev = $this->getAccessGroups($type);
 
 		if (empty($prev) && empty($groups))
 		{
@@ -249,12 +252,14 @@ class Product
 			return true;
 		}
 
+		$type = ($type == 'include' ? 0 : 1);
+
 		foreach ($prev as $group)
 		{
 			// Clear old record
 			if (!in_array($group, $groups))
 			{
-				$db->setQuery("DELETE FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id) . " AND `agId`=" . $db->quote($group));
+				$db->setQuery("DELETE FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id) . " AND `agId`=" . $db->quote($group) . " AND `exclude`=" . $db->quote($type));
 				if (!$db->query())
 				{
 					return false;
@@ -271,7 +276,7 @@ class Product
 			}
 
 			// Insert new record
-			$db->setQuery("INSERT INTO `#__storefront_product_access_groups` (`id`, `pId`, `agId`) VALUES (NULL," . $db->quote($id) .  "," . $db->quote($group) . ")");
+			$db->setQuery("INSERT INTO `#__storefront_product_access_groups` (`id`, `pId`, `agId`, `exclude`) VALUES (NULL," . $db->quote($id) .  "," . $db->quote($group) . "," . $db->quote($type) . ")");
 			if (!$db->query())
 			{
 				return false;
