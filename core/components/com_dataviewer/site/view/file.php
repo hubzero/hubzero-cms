@@ -34,8 +34,6 @@ function view()
 {
 	global $html_path, $com_name, $dv_conf;
 
-	$base_path = $dv_conf['base_path'];
-
 	$hash = Request::getVar('hash');
 
 	if ($hash != '')
@@ -46,6 +44,7 @@ function view()
 	}
 	else
 	{
+		$base_path = $dv_conf['base_path'];
 		$file = Request::getString('f', false);
 		$pi = pathinfo($file);
 		$file_name = $pi['basename'];
