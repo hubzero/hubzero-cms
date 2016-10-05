@@ -115,7 +115,7 @@ if ($this->categories) {
 
 			foreach ($this->categories as $category)
 			{
-				if ($category->id == 7 && !JComponentHelper::isEnabled('com_tools', true))
+				if ($category->id == 7 && !Component::isEnabled('com_tools', true))
 				{
 					continue;
 				}
