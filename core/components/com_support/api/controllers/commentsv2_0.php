@@ -216,6 +216,7 @@ class Commentsv2_0 extends ApiController
 	 */
 	public function createTask()
 	{
+		
 		$this->requiresAuthentication();
 
 		if (!$this->acl->check('create', 'comments'))
@@ -323,6 +324,26 @@ class Commentsv2_0 extends ApiController
 		{
 			throw new Exception(print_r($ticket->getErrors(),1), 500);
 		}
+
+		// There's now a ticket and a comment, lets add attachments
+		$attachments = Request::getVar('attachments', null, 'files', 'array');
+		if (is_array($attachments) && is_array($attachments['name']))
+		{
+			for($i=0; $i < count($attachments['name']); $i++)
+			{
+				$attachment = new \Components\Support\Models\Orm\Attachment();
+				$attachment->set('ticket', $ticket->get('id'));
+				$attachment->set('comment_id', $comment->get('id'));
+				$attachment->addFile($attachments['tmp_name'][$i], $attachments['name'][$i], $ticket->get('id'));
+				if (!$attachment->save())
+				{
+					throw new Exception(print_r($attachment->getErrors(), 1), 500);
+				}
+
+			}
+
+		}
+
 
 		$msg = new stdClass;
 		$msg->id  = $comment->get('id');
