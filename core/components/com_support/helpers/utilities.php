@@ -325,5 +325,26 @@ class Utilities
 		}
 		return $lifetime;
 	}
+
+	public static function addAttachments($ticketid, $commentid=0)
+	{
+		$attachments = Request::getVar('attachments', null, 'files', 'array');
+		if (is_array($attachments) && is_array($attachments['name']))
+		{
+			for($i=0; $i < count($attachments['name']); $i++)
+			{
+				$attachment = new \Components\Support\Models\Orm\Attachment();
+				$attachment->set('ticket', $ticketid);
+				$attachment->set('comment_id', $commentid);
+				$attachment->addFile($attachments['tmp_name'][$i], $attachments['name'][$i], $ticketid);
+				if (!$attachment->save())
+				{
+					throw new Exception(print_r($attachment->getErrors(), 1), 500);
+				}
+
+			}
+
+		}
+	}
 }
 
