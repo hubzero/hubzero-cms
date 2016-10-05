@@ -98,7 +98,7 @@ class Attachment extends Relational
 	 */
 	public function automaticFilename($data)
 	{
-		$data['filename'] = preg_replace("/[^A-Za-z0-9.]/i", '-', $data['filename']);
+		$data['filename'] = preg_replace("/[^A-Za-z0-9._]/i", '-', $data['filename']);
 
 		return $data['filename'];
 	}
@@ -196,5 +196,77 @@ class Attachment extends Relational
 			->whereEquals('comment_id', (int)$comment_id)
 			->whereEquals('filename', (string)$filename)
 			->row();
+	}
+
+	public function test()
+	{
+		error_log($this->comment_id);
+
+	}
+
+	// Take a file existing on the local filesystem and place it in a ticket
+	public function addFile($currentfile, $filename, $ticketid)
+	{
+		$config = Component::params('com_support');
+
+		// Construct our file path for new file
+		$path = PATH_APP . DS . trim($config->get('webpath', '/site/tickets'), DS) . DS . $ticketid;
+
+		// Build the path if it doesn't exist
+		if (!is_dir($path))
+		{
+			if (!Filesystem::makeDirectory($path))
+			{
+				$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return '';
+			}
+		}
+
+		// Make the filename safe
+		$filename = Filesystem::clean($filename);
+		$filename = str_replace(' ', '_', $filename);
+		$ext = strtolower(Filesystem::extension($filename));
+
+		//make sure that file is acceptable type
+		if (!in_array($ext, explode(',', $config->get('file_ext'))))
+		{
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+			return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
+		}
+
+		$newname = Filesystem::name($filename);
+		while (file_exists($path . DS . $newname . '.' . $ext))
+		{
+			$newname .= rand(10, 99);
+		}
+		$newname = $newname . '.' . $ext;
+		// We should ask the model if the name we generated is OK
+		$data = array();
+		$data['filename'] = $newname;
+		$newname = $this->automaticFilename($data);
+
+		$finalfile = $path . DS . $newname;
+
+		// Perform the upload
+		if (!Filesystem::upload($currentfile, $finalfile))
+		{
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_UPLOADING'));
+			return '';
+		}
+		else
+		{
+			// Scan for viruses
+			if (!\Filesystem::isSafe($finalfile))
+			{
+				if (\Filesystem::delete($finalfile))
+				{
+					$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN'));
+					return Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN');
+				}
+			}
+
+		}
+
+		$this->set('filename', $newname);
 	}
 }
