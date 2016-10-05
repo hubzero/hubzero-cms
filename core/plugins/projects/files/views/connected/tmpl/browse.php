@@ -86,7 +86,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 					<?php if (count($metadata)) : ?>
 						<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink); ?>" class="fmanage js" id="a-annotate" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span></a>
 					<?php endif;
-					if (!$this->connection->id) : ?>
+					if ($this->connection->id) : ?>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=compile'  . $subdirlink); ?>" class="fmanage js" id="a-handle" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span></a>
 					<?php endif; ?>
 				</span>
