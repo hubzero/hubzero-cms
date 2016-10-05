@@ -459,6 +459,10 @@ class Tickets extends AdminController
 		{
 			$row->set('target_date', Date::of($row->get('target_date'), Config::get('offset'))->toSql());
 		}
+		else
+		{
+			$row->set('target_date', '0000-00-00 00:00:00');
+		}
 
 		$comment = Request::getVar('comment', '', 'post', 'none', 2);
 		$rowc = new Comment();
