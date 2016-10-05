@@ -240,7 +240,8 @@ class Profiles extends SiteController
 		$obj['orig'] = true;
 
 		//add back original query
-		array_unshift($json, $obj);
+		// [!] Removing. Seems to confuse people.
+		//array_unshift($json, $obj);
 
 		echo json_encode($json);
 	}
