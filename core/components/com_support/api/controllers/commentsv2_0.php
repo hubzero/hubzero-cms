@@ -217,7 +217,6 @@ class Commentsv2_0 extends ApiController
 	 */
 	public function createTask()
 	{
-		
 		$this->requiresAuthentication();
 
 		if (!$this->acl->check('create', 'comments'))
@@ -325,7 +324,6 @@ class Commentsv2_0 extends ApiController
 		{
 			throw new Exception(print_r($ticket->getErrors(),1), 500);
 		}
-		
 
 		// There's now a ticket and a comment, lets add attachments
 		\Components\Support\Helpers\Utilities::addAttachments($ticket->get('id'), $comment->get('id'));
