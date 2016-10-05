@@ -66,12 +66,14 @@ class Contributor extends Macro
 			return '';
 		}
 		$id = 0;
+		$name = null;
+
 		// Is it numeric?
 		if (is_numeric($et))
 		{
 			// Yes, then get contributor by ID
 			$id = intval($et);
-			$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM `#__xprofiles` WHERE uidNumber=".$id;
+			$sql = "SELECT id, givenName, middleName, surname, name FROM `#__users` WHERE id=".$id;
 			// Perform query
 			$this->_db->setQuery($sql);
 			$a = $this->_db->loadRow();
@@ -116,7 +118,7 @@ class Contributor extends Macro
 			else
 			{
 				$bits = explode(' ',$n);
-				$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM `#__xprofiles` WHERE givenName=" . $this->_db->quote($bits[0]) . " AND surname=" . $this->_db->quote(end($bits));
+				$sql = "SELECT id, givenName, middleName, surname, name FROM `#__users` WHERE givenName=" . $this->_db->quote($bits[0]) . " AND surname=" . $this->_db->quote(end($bits));
 				// Perform query
 				$this->_db->setQuery($sql);
 				$a = $this->_db->loadRow();
