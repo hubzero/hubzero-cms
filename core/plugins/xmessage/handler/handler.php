@@ -146,7 +146,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			$sent = $xmessage->getSentMessages($filters);
 			if ($sent->count() > 0)
 			{
-				$last_sent = $sent[0];
+				$last_sent = $sent->first();
 
 				$last_time = 0;
 				if ($last_sent->created)
