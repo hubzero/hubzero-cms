@@ -46,7 +46,7 @@
 				addButton("wiki-button-resource","Embedded resource","[[Resource(",")]]","123","mw-editbutton-resource-"+id);
 			}
 			addButton("wiki-button-math","Mathematical formula (LaTeX)","\x3cmath\x3e","\x3c/math\x3e","Insert formula here","mw-editbutton-math-"+id);
-			addButton("wiki-button-nowiki","Ignore wiki formatting","{{{","}}}","Insert non-formatted text here","mw-editbutton-nowiki-"+id);
+			addButton("wiki-button-nowiki","Ignore wiki formatting","\n{{{\n","\n}}}\n","Insert non-formatted text here","mw-editbutton-nowiki-"+id);
 			if (!textbox.hasClass('minimal')) {
 				addButton("wiki-button-hr","Horizontal line (use sparingly)","\n----\n","","","mw-editbutton-hr-"+id);
 				addButton("wiki-button-table","Table","\n||cell1||cell2||\n||cell3||cell4||\n","","","mw-editbutton-table-"+id);
