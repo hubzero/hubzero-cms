@@ -42,11 +42,12 @@ use Config;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'comment.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'ticket.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'status.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php');
+require_once(dirname(dirname(__DIR__)) . '/models/orm/comment.php');
+require_once(dirname(dirname(__DIR__)) . '/models/orm/ticket.php');
+require_once(dirname(dirname(__DIR__)) . '/models/orm/status.php');
+require_once(dirname(dirname(__DIR__)) . '/models/orm/attachment.php');
+require_once(dirname(dirname(__DIR__)) . '/helpers/acl.php');
+require_once(dirname(dirname(__DIR__)) . '/helpers/utilities.php');
 
 /**
  * API controller class for support tickets
@@ -324,26 +325,10 @@ class Commentsv2_0 extends ApiController
 		{
 			throw new Exception(print_r($ticket->getErrors(),1), 500);
 		}
+		
 
 		// There's now a ticket and a comment, lets add attachments
-		$attachments = Request::getVar('attachments', null, 'files', 'array');
-		if (is_array($attachments) && is_array($attachments['name']))
-		{
-			for($i=0; $i < count($attachments['name']); $i++)
-			{
-				$attachment = new \Components\Support\Models\Orm\Attachment();
-				$attachment->set('ticket', $ticket->get('id'));
-				$attachment->set('comment_id', $comment->get('id'));
-				$attachment->addFile($attachments['tmp_name'][$i], $attachments['name'][$i], $ticket->get('id'));
-				if (!$attachment->save())
-				{
-					throw new Exception(print_r($attachment->getErrors(), 1), 500);
-				}
-
-			}
-
-		}
-
+		\Components\Support\Helpers\Utilities::addAttachments($ticket->get('id'), $comment->get('id'));
 
 		$msg = new stdClass;
 		$msg->id  = $comment->get('id');
