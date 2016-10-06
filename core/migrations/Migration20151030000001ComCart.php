@@ -35,13 +35,7 @@ class Migration20151030000001ComCart extends Base
 				}
 			}
 
-			if ($this->db->tableExists('#__cart_transaction_steps') && !$this->db->tableHasField('#__cart_transaction_steps', 'tsMeta'))
-			{
-				$query = "ALTER TABLE `#__cart_transaction_steps` ADD `tsMeta` CHAR(255)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-			else
+			if ($this->db->tableHasField('#__cart_transaction_steps' , 'tsMeta'))
 			{
 				// Change tsMeta to 255 chars long
 				$query = "ALTER TABLE `#__cart_transaction_steps` MODIFY `tsMeta` CHAR(255)";
