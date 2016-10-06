@@ -350,6 +350,40 @@ class Resource extends Object
 					}
 				}
 			}
+
+			if (!$this->params->get('access-admin-resource')
+			 && !$this->params->get('access-manage-resource'))
+			{
+				// If logged in and resource is published and public or registered
+				if ($this->published() && ($this->resource->access == 0 || $this->resource->access == 1))
+				{
+					// Allow view access
+					$this->params->set('access-view-resource', true);
+					$this->params->set('access-view-all-resource', true);
+				}
+
+				$obj = new \Components\Tools\Tables\Tool($this->_db);
+				$obj->loadFromName($this->resource->alias);
+
+				// check if user in tool dev team
+				if ($developers = $obj->getToolDevelopers($obj->id))
+				{
+					foreach ($developers as $dv)
+					{
+						if ($dv->uidNumber == User::get('id'))
+						{
+							$this->params->set('access-create-resource', true);
+							$this->params->set('access-delete-resource', true);
+							$this->params->set('access-edit-resource', true);
+							$this->params->set('access-edit-state-resource', true);
+							$this->params->set('access-edit-own-resource', true);
+						}
+					}
+				}
+			}
+
+			$this->_authorized = true;
+			return;
 		}
 		else
 		{
@@ -367,13 +401,13 @@ class Resource extends Object
 				$this->params->set('access-edit-resource', true);
 				$this->params->set('access-edit-state-resource', true);
 				$this->params->set('access-edit-own-resource', true);
-			}
-		}
 
-		// If they're not an admin
-		if (!$this->params->get('access-admin-resource')
-		 && !$this->params->get('access-manage-resource'))
-		{
+				$this->_authorized = true;
+				return;
+			}
+
+			// If they're not an admin
+
 			// If logged in and resource is published and public or registered
 			if ($this->published() && ($this->resource->access == 0 || $this->resource->access == 1))
 			{
