@@ -131,7 +131,7 @@ class Category extends Relational
 
 		if (isset($filters['access']))
 		{
-			$categories->whereEquals('access', $filters['access']);
+			$categories->whereIn('access', $filters['access']);
 		}
 
 		return $categories;
