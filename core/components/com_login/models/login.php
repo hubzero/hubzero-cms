@@ -140,7 +140,16 @@ class Login extends \JModelLegacy
 		$cacheid     = 'com_modules.' . md5(serialize(array($clientId, $lang)));
 		$loginmodule = array();
 
-		if (!($clean = $cache->get($cacheid)))
+		try
+		{
+			$clean = $cache->get($cacheid);
+		}
+		catch (\Exception $e)
+		{
+			$clean = null;
+		}
+
+		if (!$clean)
 		{
 			$db = \App::get('db');
 
