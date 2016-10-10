@@ -362,6 +362,48 @@ class Resource extends Object
 					$this->params->set('access-view-all-resource', true);
 				}
 
+				if ($this->resource->group_owner)
+				{
+					// For protected resources, make sure users can see abstract
+					if ($this->resource->access < 3)
+					{
+						$this->params->set('access-view-resource', true);
+						$this->params->set('access-view-all-resource', true);
+					}
+					else if ($this->resource->access == 3)
+					{
+						$this->params->set('access-view-resource', true);
+					}
+
+					// Get the groups the user has access to
+					$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+					$usersgroups = array();
+					if (!empty($xgroups))
+					{
+						foreach ($xgroups as $group)
+						{
+							if ($group->regconfirmed)
+							{
+								$usersgroups[] = $group->cn;
+							}
+						}
+					}
+
+					// Get the groups that can access this resource
+					$allowedgroups = $this->resource->getGroups();
+
+					// Find what groups the user has in common with the resource, if any
+					$common = array_intersect($usersgroups, $allowedgroups);
+
+					// Check if the user is apart of the group that owns the resource
+					// or if they have any groups in common
+					if (in_array($this->resource->group_owner, $usersgroups) || count($common) > 0)
+					{
+						$this->params->set('access-view-resource', true);
+						$this->params->set('access-view-all-resource', true);
+					}
+				}
+
 				$obj = new \Components\Tools\Tables\Tool($this->_db);
 				$obj->loadFromName($this->resource->alias);
 
