@@ -1088,9 +1088,20 @@ class Items extends AdminController
 					['resource', $row->get('id')],
 					['user', $row->get('created_by')]
 				);
-				foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+
+				$helper = new Helper($row->id, $this->database);
+				$helper->getContributorIDs();
+
+				$contributors = $helper->contributorIDs;
+
+				//foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+				foreach ($contributors as $author)
 				{
-					$recipients[] = ['user', $author->get('authorid')];
+					//$recipients[] = ['user', $author->get('authorid')];
+					if ($author > 0)
+					{
+						$recipients[] = ['user', $author];
+					}
 				}
 
 				Event::trigger('system.logActivity', [
@@ -1391,6 +1402,39 @@ class Items extends AdminController
 					if ($resource->published == 1 && $old == 3)
 					{
 						$this->_emailContributors($resource, $this->database);
+
+						// Log activity
+						$recipients = array(
+							['resource', $resource->id],
+							['user', $resource->created_by]
+						);
+
+						$helper = new Helper($resource->id, $this->database);
+						$helper->getContributorIDs();
+
+						$contributors = $helper->contributorIDs;
+
+						foreach ($contributors as $author)
+						{
+							if ($author > 0)
+							{
+								$recipients[] = ['user', $author];
+							}
+						}
+
+						Event::trigger('system.logActivity', [
+							'activity' => [
+								'action'      => 'published',
+								'scope'       => 'resource',
+								'scope_id'    => $resource->title,
+								'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED', '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->id) . '">' . $resource->title . '</a>'),
+								'details'     => array(
+									'title' => $resource->title,
+									'url'   => Route::url('index.php?option=com_resources&id=' . $resource->id)
+								)
+							],
+							'recipients' => $recipients
+						]);
 					}
 				}
 
