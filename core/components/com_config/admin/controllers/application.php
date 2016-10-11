@@ -34,6 +34,7 @@ namespace Components\Config\Controllers;
 
 use Components\Config\Models;
 use Hubzero\Component\AdminController;
+use Hubzero\Error;
 use Exception;
 use Component;
 use Notify;
@@ -176,9 +177,25 @@ class Application extends AdminController
 			return false;
 		}
 
-		// Attempt to save the configuration.
-		$data   = $return;
-		$return = $model->save($data);
+		try
+		{
+			// Attempt to save the configuration.
+			$data   = $return;
+			$return = $model->save($data);
+
+		}
+		catch (\Hubzero\Config\Exception\FileNotFoundException $e)
+		{
+			$message = $e->getMessage();
+			if (strpos($message, 'No configuration file found and no installation code available.') !== false)
+			{
+				error_log($message);
+			}
+			else
+			{
+				throw new Exception($message, 500);
+			}
+		}
 
 		// Check the return value.
 		if ($return === false)
