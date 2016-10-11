@@ -1734,11 +1734,9 @@ class Items extends AdminController
 
 		if (!is_object($profile) || !$profile->get('id'))
 		{
-			$this->database->setQuery("SELECT id FROM `#__users` WHERE `name`=" . $this->database->Quote($this->view->id));
-			if ($id = $this->database->loadResult())
-			{
-				$profile->load($id);
-			}
+			$profile = User::all()
+				->whereEquals('name', $this->view->id)
+				->row();
 		}
 
 		if (is_object($profile) && $profile->get('id'))
