@@ -1921,7 +1921,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				->set('group', $this->group)
 				->set('params', $this->params)
 				->set('collection', $collection)
-				->set('no_html', $this->no_html);
+				->set('no_html', $no_html);
 
 			return $view->loadTemplate();
 		}
