@@ -297,7 +297,7 @@ class Profiles extends SiteController
 					->whereIn('access', User::getAuthorisedViewLevels());
 			}])
 			->whereEquals($a . '.block', 0)
-			->whereEquals($a . '.activation', 1)
+			->where($a . '.activation', '>', 0)
 			->where($a . '.approved', '>', 0);
 
 		// Take filters and apply them to the tasks
@@ -510,7 +510,7 @@ class Profiles extends SiteController
 		// Get record count of all members
 		$stats->total_members = Member::all()
 			->whereEquals('block', 0)
-			->whereEquals('activation', 1)
+			->where('activation', '>', 0)
 			->where('approved', '>', 0)
 			->total();
 
