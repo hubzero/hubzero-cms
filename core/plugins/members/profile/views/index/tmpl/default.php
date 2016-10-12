@@ -137,9 +137,9 @@ function renderIfJson($v)
 	{
 		$v = json_decode((string)$v, true);
 
-		if (!$v|| json_last_error() !== JSON_ERROR_NONE)
+		if (!$v || json_last_error() !== JSON_ERROR_NONE)
 		{
-			continue;
+			return $v;
 		}
 
 		$o = array();
