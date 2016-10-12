@@ -128,7 +128,10 @@ if ($start_date == $stop_date) {
 }
 $html .= "\t\t".'</dl><div class="ewrap">'."\n";
 $html .= "\t\t".'<p class="title"><a href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. $this->escape(stripslashes($this->row->title)) .'</a></p>'."\n";
-$html .= "\t\t".'<p class="category"><strong>Category:</strong> '. stripslashes($this->categories[$this->row->catid]) .'</p>'."\n";
+if (isset($this->categories[$this->row->catid]))
+{
+	$html .= "\t\t".'<p class="category"><strong>Category:</strong> '. stripslashes($this->categories[$this->row->catid]) .'</p>'."\n";
+}
 $info = '';
 foreach ($this->fields as $field)
 {
