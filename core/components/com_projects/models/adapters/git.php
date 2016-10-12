@@ -84,13 +84,12 @@ class Git extends Models\Adapter
 	/**
 	 * Get file count
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  array
 	 */
-	public function count ($params = array())
+	public function count($params = array())
 	{
-		$cmd  = 'cd ' . $this->_path . ' && ';
+		$cmd  = 'cd ' . escapeshellarg($this->_path) . ' && ';
 		$cmd .='find . \( -path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
 
 		return shell_exec($cmd);
@@ -152,7 +151,7 @@ class Git extends Models\Adapter
 		$files = array_unique($files);
 
 		// Output containers
-		$items 	 = [];
+		$items   = [];
 		$sorting = [];
 
 		// Apply the filter early, reduces iterations through foreach()
@@ -242,7 +241,7 @@ class Git extends Models\Adapter
 	 *
 	 * @return     array
 	 */
-	public function content ($params = array())
+	public function content($params = array())
 	{
 		$fileName      = isset($params['fileName']) ? $params['fileName'] : NULL;
 		$hash          = isset($params['hash']) ? $params['hash'] : NULL;
@@ -266,7 +265,7 @@ class Git extends Models\Adapter
 		$start         = isset($params['start']) ? $params['start'] : 0;
 		$pubLinks      = isset($params['getPubConnections']) ? $params['getPubConnections'] : false;
 		$extended      = isset($params['showFullMetadata']) ? $params['showFullMetadata'] : true;
-		$folders			 = count($folders) > 0 ? $folders : false;
+		$folders       = count($folders) > 0 ? $folders : false;
 
 		// Skip forward?
 		if ($start)
@@ -333,7 +332,7 @@ class Git extends Models\Adapter
 	 *
 	 * @return     array
 	 */
-	public function history ($params = array(), &$versions, &$timestamps)
+	public function history($params = array(), &$versions, &$timestamps)
 	{
 		$file = isset($params['file']) ? $params['file'] : NULL;
 
