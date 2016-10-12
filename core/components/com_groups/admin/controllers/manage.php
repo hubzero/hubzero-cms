@@ -144,10 +144,13 @@ class Manage extends AdminController
 		$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
 
 		// Get a list of all groups
-		$this->view->rows = null;
+		$this->view->rows = array();
 		if ($this->view->total > 0)
 		{
-			$this->view->rows = Group::find($this->view->filters);
+			if ($rows = Group::find($this->view->filters))
+			{
+				$this->view->rows = $rows;
+			}
 		}
 
 		// Set any errors
