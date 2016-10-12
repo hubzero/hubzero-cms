@@ -219,7 +219,14 @@ class ResourceMapGenerator
 	 */
 	private function dataTypeDescriptor($aggregation, $xmlwriter)
 	{
-		$datatype = mime_content_type(rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/'));
+		$path = rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/');
+
+		if (!file_exists($path))
+		{
+			return;
+		}
+
+		$datatype = mime_content_type($path);
 
 		if (isset($datatype) && !empty($datatype))
 		{
