@@ -449,12 +449,11 @@ HUB.Plugins.MemberDashboard = {
 			modulesAreasWidth  = 0,
 			moduleBaseWidth    = 0,
 			moduleBaseHeight   = 0,
-			innerWrapWidth     = $('.innerwrap').width(),
-			sidebarWidth       = $('#page_sidebar').width(),
+			innerWrapWidth     = $('#page_main').width(),
 			pageContentMargins = 20;
 
 		// calculate total working area width
-		modulesAreasWidth = innerWrapWidth - sidebarWidth - pageContentMargins;
+		modulesAreasWidth = innerWrapWidth - pageContentMargins;
 
 		// get module width
 		moduleBaseWidth = parseInt(modulesAreasWidth / this.settings.max_cols);
