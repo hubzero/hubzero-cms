@@ -443,7 +443,7 @@ class Response extends Relational
 	public function destroy()
 	{
 		// Remove comments
-		foreach ($this->comments()->rows() as $comment)
+		foreach ($this->replies()->rows() as $comment)
 		{
 			if (!$comment->destroy())
 			{
