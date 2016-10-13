@@ -355,7 +355,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		{
 			case 'html':
 				// If we have a specific ID and we're a supergroup, serve a resource page inside supergroup template
-				if (Request::get('id', null) && $this->group->type == 3)
+				if (Request::getVar('id', Request::getVar('alias', null)) && $this->group->type == 3)
 				{
 					// Load neccesities for com_resources controller
 					$lang = App::get('language');
@@ -365,6 +365,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 					require_once Component::path('com_resources') . DS .'helpers' . DS . 'helper.php';
 					require_once Component::path('com_resources') . DS .'helpers' . DS . 'html.php';
 					require_once Component::path('com_resources') . DS .'helpers' . DS . 'tags.php';
+					require_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
+					require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
+					require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
 
 					// Set the request up to make it look like a user made the request to the controller
 					Request::setVar('task', 'view');
