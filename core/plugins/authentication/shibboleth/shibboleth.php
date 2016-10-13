@@ -287,30 +287,6 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Actions to perform when logging out a user session
-	 *
-	 * @return     void
-	 */
-	public function logout()
-	{
-		list($service) = self::getLoginParams();
-		$return = '/';
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
-		{
-			$return = base64_decode($return);
-
-			if (!\Hubzero\Utility\Uri::isInternal($return))
-			{
-				$return = '';
-			}
-
-			$return = '/' . ltrim($return, '/');
-		}
-
-		App::redirect($return);
-	}
-
-	/**
 	 * Check login status
 	 *
 	 * @access	public
