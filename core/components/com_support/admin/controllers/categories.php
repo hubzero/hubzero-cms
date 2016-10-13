@@ -228,7 +228,7 @@ class Categories extends AdminController
 		// Output messsage and redirect
 		if ($i)
 		{
-			Noify::success(Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', $i));
+			Notify::success(Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', $i));
 		}
 
 		$this->cancelTask();

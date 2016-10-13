@@ -227,7 +227,7 @@ class Messages extends AdminController
 		// Output messsage and redirect
 		if ($i)
 		{
-			Noify::success(Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', $i));
+			Notify::success(Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', $i));
 		}
 
 		$this->cancelTask();
