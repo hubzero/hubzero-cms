@@ -215,7 +215,7 @@ class Licenses extends AdminController
 		if (empty($ids))
 		{
 			// Redirect with error message
-			Noify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
+			Notify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
 			return $this->cancelTask();
 		}
 
