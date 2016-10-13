@@ -147,7 +147,7 @@ Toolbar::help('notes');
 		<?php
 		$i = 0;
 		foreach ($this->rows as $row) : ?>
-			<?php $canChange = User::authorise('core.edit.state', 'com_users'); ?>
+			<?php $canChange = User::authorise('core.edit.state', $this->option); ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center checklist">
 					<?php echo Html::grid('id', $i, $row->get('id')); ?>
