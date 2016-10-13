@@ -38,6 +38,10 @@ $this->css()
 $no_html = Request::getInt('no_html', 0);
 
 if (!$no_html) { ?>
+	<h3 class="section-header">
+		<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_LATEST'); ?>
+	</h3>
+
 	<?php if ($this->digests): ?>
 		<ul id="page_options">
 			<li>
@@ -50,9 +54,8 @@ if (!$no_html) { ?>
 
 <div class="activities">
 	<form action="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" method="get">
-		<fieldset class="filters">
-			<h3><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_LATEST'); ?></h3>
-			<?php /*<label for="filter-category">
+		<?php /*<fieldset class="filters">
+			<label for="filter-category">
 				<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FROM'); ?>
 				<select name="category" id="filter-category">
 					<option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ALL'); ?></option>
@@ -72,8 +75,8 @@ if (!$no_html) { ?>
 				</select>
 			</label>
 
-			<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER'); ?>" />*/ ?>
-		</fieldset>
+			<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER'); ?>" />
+		</fieldset>*/ ?>
 <?php } ?>
 
 		<?php if ($this->rows->count()) { ?>
