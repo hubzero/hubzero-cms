@@ -510,6 +510,7 @@ class Members extends AdminController
 
 		// Save profile data
 		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+		$access  = Request::getVar('profileaccess', array(), 'post', 'none', 2);
 
 		foreach ($profile as $key => $data)
 		{
@@ -532,7 +533,7 @@ class Members extends AdminController
 			}
 		}
 
-		if (!$user->saveProfile($profile))
+		if (!$user->saveProfile($profile, $access))
 		{
 			Notify::error($user->getError());
 			return $this->editTask($user);
