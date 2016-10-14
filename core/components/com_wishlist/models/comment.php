@@ -81,5 +81,52 @@ class Comment extends ItemComment
 
 		return $link;
 	}
+
+	/**
+	 * Parses content string as directed
+	 *
+	 * @param   string  $field  The field to parse
+	 * @param   string  $as     The format to return state in
+	 * @return  string
+	 * @since   2.0.0
+	 **/
+	public function parse($field, $as = 'parsed')
+	{
+		switch (strtolower($as))
+		{
+			case 'parsed':
+				$property = "_{$field}Parsed";
+
+				if (!isset($this->$property))
+				{
+					$this->$property = Html::content('prepare', $this->get($field, ''));
+				}
+
+				if ($field == 'content')
+				{
+					$config = \Component::params('com_wishlist');
+					$db = \App::get('db');
+
+					require_once __DIR__ . '/attachment.php';
+					$attach = new \Components\Wishlist\Tables\Wish\Attachment($db);
+					$attach->output = 'web';
+					$attach->uppath = PATH_APP . '/' . trim($config->get('webpath'), '/') . '/' . $this->get('item_id');
+					$attach->webpath = $config->get('webpath');
+
+					$this->$property = $attach->parse($this->$property);
+
+					$this->set('attachment', $attach->description);
+				}
+
+				return $this->$property;
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get($field, ''));
+				return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+	}
 }
 
