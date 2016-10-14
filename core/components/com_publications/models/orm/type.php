@@ -35,16 +35,26 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Model class for publication version
+ * Model class for publication type
  */
-class Version extends Relational
+class Type extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	public $namespace = 'publication';
+	public $namespace = 'publication_master';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'type'  => 'notempty',
+		'alias' => 'notempty'
+	);
 
 	/**
 	 * Automatic fields to populate every time a row is created
@@ -56,43 +66,42 @@ class Version extends Relational
 	);
 
 	/**
-	 * Establish relationship to parent publication
+	 * Get last order
 	 *
-	 * @return  object
+	 * @return  integer
 	 */
-	public function publication()
+	public function getLastOrder()
 	{
-		return $this->belongsToOne('Publication');
+		return self::all()
+			->order('ordering', 'desc')
+			->row()
+			->get('ordering', 0);
 	}
 
 	/**
-	 * Establish relationship to authors
+	 * Check usage
 	 *
-	 * @return  object
+	 * @return  integer
 	 */
-	public function authors()
+	public function checkUsage()
 	{
-		return $this->oneToMany('Author', 'publication_version_id');
+		require_once __DIR__ . DS . 'publication.php';
+
+		return Publication::all()
+			->whereEquals('master_type', $this->get('id'))
+			->total();
 	}
 
 	/**
-	 * Delete the record and all associated data
+	 * Find one record by ordering
 	 *
-	 * @return  boolean  False if error, True on success
+	 * @param   integer  $ordering
+	 * @return  object
 	 */
-	public function destroy()
+	public static function oneByOrdering($ordering)
 	{
-		// Remove comments
-		foreach ($this->authors as $author)
-		{
-			if (!$author->destroy())
-			{
-				$this->addError($author->getError());
-				return false;
-			}
-		}
-
-		// Attempt to delete the record
-		return parent::destroy();
+		return self::all()
+			->whereEquals('ordering', (int)$ordering)
+			->row();
 	}
 }

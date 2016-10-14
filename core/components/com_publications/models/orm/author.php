@@ -34,9 +34,27 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 
+/**
+ * Model class for publication version author
+ */
 class Author extends Relational
 {
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
 	public $namespace = 'publication';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'user_id' => 'positive|nonzero',
+		'publication_version_id' => 'positive|nonzero'
+	);
 
 	/**
 	 * Automatic fields to populate every time a row is created
@@ -47,9 +65,27 @@ class Author extends Relational
 		'created',
 	);
 
+	/**
+	 * Establish relationship to parent version
+	 *
+	 * @return  object
+	 */
 	public function version()
 	{
 		return $this->belongsToOne('Version');
 	}
 
+	/**
+	 * Get last order
+	 *
+	 * @return  integer
+	 */
+	public function getLastOrder()
+	{
+		return self::all()
+			->whereEquals('publication_version_id', $this->get('publication_version_id'))
+			->order('ordering', 'desc')
+			->row()
+			->get('ordering', 0);
+	}
 }

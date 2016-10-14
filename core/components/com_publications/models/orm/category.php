@@ -35,9 +35,9 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Model class for publication version
+ * Model class for publication category
  */
-class Version extends Relational
+class Category extends Relational
 {
 	/**
 	 * The table namespace
@@ -47,52 +47,27 @@ class Version extends Relational
 	public $namespace = 'publication';
 
 	/**
-	 * Automatic fields to populate every time a row is created
+	 * Fields and their validation criteria
 	 *
 	 * @var  array
 	 */
-	public $initiate = array(
-		'created',
+	protected $rules = array(
+		'name' => 'notempty',
+		'alias' => 'notempty',
+		'url_alias' => 'notempty'
 	);
 
 	/**
-	 * Establish relationship to parent publication
+	 * Check usage
 	 *
-	 * @return  object
+	 * @return  integer
 	 */
-	public function publication()
+	public function checkUsage()
 	{
-		return $this->belongsToOne('Publication');
-	}
+		require_once __DIR__ . DS . 'publication.php';
 
-	/**
-	 * Establish relationship to authors
-	 *
-	 * @return  object
-	 */
-	public function authors()
-	{
-		return $this->oneToMany('Author', 'publication_version_id');
-	}
-
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function destroy()
-	{
-		// Remove comments
-		foreach ($this->authors as $author)
-		{
-			if (!$author->destroy())
-			{
-				$this->addError($author->getError());
-				return false;
-			}
-		}
-
-		// Attempt to delete the record
-		return parent::destroy();
+		return Publication::all()
+			->whereEquals('category', $this->get('id'))
+			->total();
 	}
 }

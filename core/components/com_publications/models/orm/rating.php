@@ -35,9 +35,9 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Model class for publication version
+ * Model class for publication rating
  */
-class Version extends Relational
+class Rating extends Relational
 {
 	/**
 	 * The table namespace
@@ -47,12 +47,23 @@ class Version extends Relational
 	public $namespace = 'publication';
 
 	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'rating' => 'positive|nonzero',
+		'publication_id' => 'positive|nonzero'
+	);
+
+	/**
 	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
 	 */
 	public $initiate = array(
 		'created',
+		'created_by',
 	);
 
 	/**
@@ -60,39 +71,41 @@ class Version extends Relational
 	 *
 	 * @return  object
 	 */
-	public function publication()
+	public function publiation()
 	{
 		return $this->belongsToOne('Publication');
 	}
 
 	/**
-	 * Establish relationship to authors
+	 * Establish relationship to parent version
 	 *
 	 * @return  object
 	 */
-	public function authors()
+	public function version()
 	{
-		return $this->oneToMany('Author', 'publication_version_id');
+		return $this->belongsToOne('Version', 'publication_version_id');
 	}
 
 	/**
-	 * Delete the record and all associated data
+	 * Get a record by publication ID and user ID, optional version ID
 	 *
-	 * @return  boolean  False if error, True on success
+	 * @param   integer  $publication_id
+	 * @param   integer  $created_by
+	 * @param   integer  $publication_version_id
+	 * @return  object
 	 */
-	public function destroy()
+	public function oneByPublicationAndUser($publication_id, $created_by, $publication_version_id = null)
 	{
-		// Remove comments
-		foreach ($this->authors as $author)
+		$entry = self::all()
+			->whereEquals('publication_id', $publication_id)
+			->whereEquals('created_by', $created_by);
+
+		if ($publication_version_id)
 		{
-			if (!$author->destroy())
-			{
-				$this->addError($author->getError());
-				return false;
-			}
+			$entry->whereEquals('publication_version_id', $publication_version_id);
 		}
 
-		// Attempt to delete the record
-		return parent::destroy();
+		return $entry
+			->row();
 	}
 }
