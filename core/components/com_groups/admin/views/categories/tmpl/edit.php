@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
-Toolbar::title($this->group->get('description') . ': ' . Lang::txt('COM_GROUPS_PAGES_CATEGORIES'), 'groups.png');
+Toolbar::title($this->group->get('description') . ': ' . Lang::txt('COM_GROUPS_PAGES_CATEGORIES'), 'groups');
 
 if ($canDo->get('core.edit'))
 {
@@ -69,6 +69,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="category[id]" value="<?php echo $this->category->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+	<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo Html::input('token'); ?>

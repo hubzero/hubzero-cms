@@ -116,6 +116,8 @@ class Categories extends AdminController
 	 */
 	public function editTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		// get request vars
 		$ids = Request::getVar('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : null;
