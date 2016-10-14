@@ -65,14 +65,14 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->categories->count();?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count();?>);" /></th>
 				<th><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?></th>
 				<th class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php if ($this->categories->count() > 0) : ?>
-				<?php foreach ($this->categories as $k => $category) : ?>
+			<?php if ($this->rows->count() > 0) : ?>
+				<?php foreach ($this->rows as $k => $category) : ?>
 					<tr>
 						<td>
 							<?php if ($canDo->get('core.edit')) : ?>
