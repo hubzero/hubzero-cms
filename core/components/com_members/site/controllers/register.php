@@ -1193,7 +1193,7 @@ class Register extends SiteController
 		$xprofile = User::getInstance();
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
-		$email_confirmed = $xprofile->get('emailConfirmed');
+		$email_confirmed = $xprofile->get('activation');
 
 		// Incoming
 		$return = urldecode(Request::getVar('return', '/'));
@@ -1335,10 +1335,11 @@ class Register extends SiteController
 						// Attempt to send a new confirmation code
 						$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 
-						$xprofile = new \Hubzero\User\Profile();
-						$xprofile->load($login);
-						$xprofile->set('emailConfirmed', $confirm);
-						$xprofile->update();
+						$xprofile = User::getInstance();
+						$xprofile->get('username');
+						$xprofile->get('email');
+						$xprofile->set('activation', $confirm);
+						$xprofile->save();
 
 						$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
