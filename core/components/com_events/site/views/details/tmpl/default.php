@@ -169,8 +169,8 @@ $this->css()
 					$event_timezone_end = Date::of($publish_down, $this->row->time_zone)->format('T', true);
 				}
 
-				$html .= Date::of($publish_up, $event_timezone_start)->toLocal('l d F, Y g:i a ') . $event_timezone_start . ' - ';
-				$html .= Date::of($publish_down, $event_timezone_end)->toLocal('l d F, Y g:i a ') . $event_timezone_end;
+				$html .= Date::of($publish_up, $this->row->time_zone)->toLocal('l d F, Y g:i a ') . $event_timezone_start . ' - ';
+				$html .= Date::of($publish_down, $this->row->time_zone)->toLocal('l d F, Y g:i a ') . $event_timezone_end;
 			}
 
 			$html .= '   </td>'."\n";
