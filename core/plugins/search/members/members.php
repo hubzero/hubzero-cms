@@ -207,19 +207,20 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
-		$weight = '(match(p.name) against (\'' . join(' ', $terms['stemmed']) . '\') + match(b.bio) against(\'' . join(' ', $terms['stemmed']) . '\'))';
+		//$weight = '(match(u.name) against (\'' . join(' ', $terms['stemmed']) . '\') + match(p.profile_key) against(\'' . join(' ', $terms['stemmed']) . '\'))';
+		$weight = '(u.name LIKE \'' . join(' ', $terms['stemmed']) . '\' OR p.profile_value LIKE \'' . join(' ', $terms['stemmed']) . '\')';
 
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 		{
-			$addtl_where[] = "(p.name LIKE '%$mand%' OR b.bio LIKE '%$mand%')";
+			$addtl_where[] = "(u.name LIKE '%$mand%' OR p.profile_value LIKE '%$mand%')";
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(p.name NOT LIKE '%$forb%' AND b.bio NOT LIKE '%$forb%')";
+			$addtl_where[] = "(u.name NOT LIKE '%$forb%' AND p.profile_value NOT LIKE '%$forb%')";
 		}
 
-		$results->add(new \Components\Search\Models\Basic\Result\Sql(
+		/*$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				p.uidNumber AS id,
 				p.name AS title,
@@ -234,6 +235,25 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				ON b.uidNumber = p.uidNumber
 			WHERE
 				public AND $weight > 0" .
+				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
+			" ORDER BY $weight DESC"
+		));*/
+
+		$results->add(new \Components\Search\Models\Basic\Result\Sql(
+			"SELECT
+				u.id,
+				u.name AS title,
+				coalesce(p.profile_key, '') AS description,
+				concat('index.php?option=com_members&id=', CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END) AS link,
+				$weight AS weight,
+				NULL AS date,
+				'Members' AS section,
+				NULL AS img_href
+			FROM `#__users` AS u
+			LEFT JOIN `#__user_profiles` AS p
+				ON u.id = p.user_id AND p.profile_key = 'bio'
+			WHERE
+				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));
@@ -259,15 +279,15 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($pos as $term)
 			{
-				$addtl_where[] = "(p.name LIKE '%$term%')";
+				$addtl_where[] = "(u.name LIKE '%$term%')";
 			}
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(p.name NOT LIKE '%$forb%')";
+			$addtl_where[] = "(u.name NOT LIKE '%$forb%')";
 		}
 
-		$sql = new \Components\Search\Models\Basic\Result\Sql(
+		/*$sql = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				p.uidNumber AS id,
 				p.name AS title,
@@ -281,6 +301,21 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				ON b.uidNumber = p.uidNumber
 			WHERE
 				public AND " . join(' AND ', $addtl_where)
+		);*/
+		$sql = new \Components\Search\Models\Basic\Result\Sql(
+			"SELECT
+				u.id,
+				u.name AS title,
+				coalesce(p.profile_key, '') AS description,
+				concat('index.php?option=com_members&id=', CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END) AS link,
+				NULL AS date,
+				'Members' AS section,
+				NULL AS img_href
+			FROM `#__users` AS u
+			LEFT JOIN `#__user_profiles` AS p
+				ON u.id = p.user_id AND p.profile_key = 'bio'
+			WHERE
+				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND " . join(' AND ', $addtl_where)
 		);
 		$assoc = $sql->to_associative();
 		if (!count($assoc))
