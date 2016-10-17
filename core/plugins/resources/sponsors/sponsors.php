@@ -147,6 +147,11 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	 */
 	public function onManage($option, $controller='plugins', $task='default')
 	{
+		if (Request::getCmd('plugin') != $this->_name)
+		{
+			return;
+		}
+
 		$task = ($task) ?  $task : 'default';
 
 		require_once(__DIR__ . DS . 'models' . DS . 'sponsor.php');
