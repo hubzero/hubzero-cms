@@ -101,7 +101,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		$members    = array();
 		$managers   = array();
 
-		$groups = Hubzero\User\Helper::getGroups($member->get('id'), 'all', 1);
+		$groups = self::getGroups($member->get('id'), 'all', 1);
 
 		if ($groups)
 		{
@@ -242,5 +242,64 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		}
 
 		return $arr;
+	}
+
+	/**
+	 * Get a list of groups for a user
+	 *
+	 * @param   string  $uid
+	 * @param   string  $type
+	 * @param   string  $cat
+	 * @return  boolean
+	 */
+	public static function getGroups($uid, $type='all', $cat = null)
+	{
+		$db = \App::get('db');
+
+		$g = '';
+		if ($cat == 1)
+		{
+			$g .= "(g.type='".$cat."' OR g.type='3') AND";
+		}
+		elseif ($cat !== null)
+		{
+			$g .= "g.type=" . $db->quote($cat) . " AND ";
+		}
+
+		// Get all groups the user is a member of
+		$query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query2 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query3 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query4 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+
+		switch ($type)
+		{
+			case 'all':
+				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
+			break;
+			case 'applicants':
+				$query = $query1." ORDER BY description, cn";
+			break;
+			case 'members':
+				$query = $query2." ORDER BY description, cn";
+			break;
+			case 'managers':
+				$query = $query3." ORDER BY description, cn";
+			break;
+			case 'invitees':
+				$query = $query4." ORDER BY description, cn";
+			break;
+		}
+
+		$db->setQuery($query);
+
+		$result = $db->loadObjectList();
+
+		if (empty($result))
+		{
+			return false;
+		}
+
+		return $result;
 	}
 }

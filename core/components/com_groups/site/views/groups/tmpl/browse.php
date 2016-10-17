@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,19 +37,17 @@ $this->css()
 ?>
 
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_GROUPS'); ?>: <?php echo $this->title; ?></h2>
 
-	<?php if (User::authorise('core.create', $this->option)) { ?>
-	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
+	<?php if (User::authorise('core.create', $this->option)) : ?>
+		<div id="content-header-extra">
+			<p>
 				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=new'); ?>">
 					<?php echo Lang::txt('COM_GROUPS_NEW'); ?>
 				</a>
-			</li>
-		</ul>
-	</div><!-- / #content-header-extra -->
-	<?php } ?>
+			</p>
+		</div><!-- / #content-header-extra -->
+	<?php endif; ?>
 </header>
 
 <?php
@@ -98,180 +95,68 @@ $this->css()
 						<li><a class="filter-restricted<?php echo ($this->filters['policy'] == 'restricted') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=restricted' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></a></li>
 						<li><a class="filter-invite<?php echo ($this->filters['policy'] == 'invite') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=invite' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?></a></li>
 						<li><a class="filter-closed<?php echo ($this->filters['policy'] == 'closed') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=closed' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?></a></li>
+						<?php /*<li>
+							<select name="index">
+								<option value="">- All -</option>
+								<?php
+								$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+								foreach ($letters as $letter)
+								{
+									echo '<option value="' . strtolower($letter) . '"';
+									if ($this->filters['index'] == strtolower($letter))
+									{
+										echo ' selected="selected"';
+									}
+									echo '>' . $letter . '</option>';
+								}
+								?>
+							</select>
+						</li>
+						<li>
+							<select name="index">
+								<option value="">- All Join Policies -</option>
+								<option value="open" <?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></option>
+								<option value="restricted" <?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></option>
+								<option value="invite" <?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?></option>
+								<option value="closed" <?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?></option>
+							</select>
+						</li>*/ ?>
 					</ul>
 				</nav>
 
-				<?php
-				$qs = array();
-				foreach ($this->filters as $f=>$v)
-				{
-					$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'type' && $f != 'fields') ? $f.'='.$v : '';
-				}
-				$qs[] = 'limitstart=0';
-				$qs = implode('&amp;',$qs);
-
-				$url  = 'index.php?option='.$this->option.'&task=browse';
-				$url .= ($qs) ? '&'.$qs : '';
-
-				$html  = '<a href="'.Route::url($url).'"';
-				if ($this->filters['index'] == '')
-				{
-					$html .= ' class="active-index"';
-				}
-				$html .= '>'.Lang::txt('JALL').'</a> '."\n";
-
-				$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-				foreach ($letters as $letter)
-				{
-					$url  = 'index.php?option='.$this->option.'&task=browse&index='.strtolower($letter);
-					$url .= ($qs) ? '&'.$qs : '';
-
-					$html .= "\t\t\t\t\t\t\t\t".'<a href="'.Route::url($url).'"';
-					if ($this->filters['index'] == strtolower($letter))
-					{
-						$html .= ' class="active-index"';
-					}
-					$html .= '>'.$letter.'</a> '."\n";
-				}
-				?>
-				<div class="clearfix"></div>
-
-				<table class="groups entries">
-					<caption>
-						<?php
-						$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
-						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-
-						if ($this->filters['search'] != '')
-						{
-							echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_FOR_IN', $this->filters['search']);
-						}
-						else
-						{
-							echo Lang::txt('COM_GROUPS');
-						}
-						?>
-						<?php if ($this->filters['index']) { ?>
-							<?php echo Lang::txt('COM_GROUPS_STARTING_WITH'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
-						<?php } ?>
-						<?php if ($this->groups) { ?>
-							<span>(<?php echo Lang::txt('COM_GROUPS_BROWSE_RESULTS_OF', $s, $e, $this->total); ?>)</span>
-						<?php } ?>
-					</caption>
-					<thead>
-						<tr>
-							<th colspan="4">
-								<span class="index-wrap">
-									<span class="index">
-										<?php echo $html; ?>
-									</span>
-								</span>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
+				<div class="groups-container">
 					<?php
-					if ($this->groups) {
+					if ($this->groups)
+					{
 						foreach ($this->groups as $group)
 						{
-							//
-							$g = \Hubzero\User\Group::getInstance($group->gidNumber);
-							$invitees = $g->get('invitees');
-							$applicants = $g->get('applicants');
-							$members = $g->get('members');
-							$managers = $g->get('managers');
-
-							//get status
-							$status = '';
-
-							//determine group status
-							if ($g->get('published') && in_array(User::get('id'), $managers))
-							{
-								$status = 'manager';
-							}
-							elseif ($g->get('published') && in_array(User::get('id'), $members))
-							{
-								$status = 'member';
-							}
-							elseif ($g->get('published') && in_array(User::get('id'), $invitees))
-							{
-								$status = 'invitee';
-							}
-							elseif ($g->get('published') && in_array(User::get('id'), $applicants))
-							{
-								$status = 'pending';
-							}
-							else
-							{
-								if (!$g->get('published'))
-								{
-									$status = 'new';
-								}
-							}
-					?>
-						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
-							<th class="priority-4">
-								<span class="entry-id"><?php echo $group->gidNumber; ?></span>
-							</th>
-							<td>
-								<a class="entry-title" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$group->cn); ?>"><?php echo stripslashes($group->description); ?></a><br />
-								<span class="entry-details">
-									<span class="entry-alias"><?php echo $group->cn; ?></span>
-								</span>
-							</td>
-							<td class="priority-2">
-								<?php
-								switch ($group->join_policy)
-								{
-									case 3: echo '<span class="closed join-policy">'.Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED').'</span>'."\n"; break;
-									case 2: echo '<span class="inviteonly join-policy">'.Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY').'</span>'."\n"; break;
-									case 1: echo '<span class="restricted join-policy">'.Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED').'</span>'."\n";  break;
-									case 0:
-									default: echo '<span class="open join-policy">'.Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN').'</span>'."\n"; break;
-								}
-								?>
-							</td>
-							<td class="priority-3">
-								<span class="<?php echo $status; ?> status"><?php
-									switch ($status)
-									{
-										case 'manager': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_MANAGER'); break;
-										case 'new': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_NEW'); break;
-										case 'member': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_MEMBER'); break;
-										case 'pending': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_PENDING'); break;
-										case 'invitee': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_INVITED'); break;
-										default: break;
-									}
-								?></span>
-							</td>
-						</tr>
-					<?php
+							$this->view('_group')
+								->set('group', $group)
+								->display();
 						} // for loop
-					} else {
-					?>
-						<tr>
-							<td colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
-								<p class="warning"><?php echo Lang::txt('COM_GROUPS_BROWSE_NO_GROUPS'); ?></p>
-							</td>
-						</tr>
+						?>
+					<?php } else { ?>
+						<div class="results-none">
+							<p><?php echo Lang::txt('COM_GROUPS_BROWSE_NO_GROUPS'); ?></p>
+						</div>
 					<?php } ?>
-					</tbody>
-				</table>
-				<?php
-				// Initiate paging
-				$pageNav = $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
-				$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-				$pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
-				$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				</div><!-- / .groups -->
+				<?php if ($this->groups) : ?>
+					<?php
+					// Initiate paging
+					$pageNav = $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					$pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 
-				echo $pageNav->render();
-				?>
-				<div class="clearfix"></div>
+					echo $pageNav->render();
+					?>
+				<?php endif; ?>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<aside class="aside">
@@ -282,10 +167,12 @@ $this->css()
 				<p><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_THREE'); ?></p>
 			</div><!-- / .container -->
 
-			<div class="container">
-				<h3><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
-				<p><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', Route::url('index.php?option=com_members')); ?></p>
-			</div><!-- / .container -->
+			<?php if (Component::isEnabled('com_members')) : ?>
+				<div class="container">
+					<h3><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
+					<p><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', Route::url('index.php?option=com_members')); ?></p>
+				</div><!-- / .container -->
+			<?php endif; ?>
 		</aside><!-- / .aside -->
 	</section><!-- / .main section -->
 </form>
