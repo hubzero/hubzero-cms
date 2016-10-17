@@ -1053,8 +1053,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event             = new stdClass;
 		$event->title      = $title;
 		$event->content    = stripslashes(str_replace('\n', "\n", $description));
-		$event->start      = $start->format("m/d/Y @ g:i a");
-		$event->end        = $end->format("m/d/Y @ g:i a");
+		$event->start      = $start->format("m/d/Y");
+		$event->start_time = $start->format("g:i a");
+		$event->end        = $end->format("m/d/Y");
+		$event->end_time   = $end->format("g:i a");
 		$event->location   = $location;
 		$event->website    = $website;
 		$event->recurrence = $recurrence;
