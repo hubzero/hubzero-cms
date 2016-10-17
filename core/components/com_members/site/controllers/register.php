@@ -907,6 +907,7 @@ class Register extends SiteController
 					}
 
 					// Notify administration
+					/* Moved to user plugin
 					if ($usersConfig->get('mail_to_admin', 0))
 					{
 						$eview  = new \Hubzero\Mail\View(array(
@@ -944,7 +945,7 @@ class Register extends SiteController
 						{
 							\Log::error('Members admin notification email failed: ' . Lang::txt('Failed to mail %s', $hubMonitorEmail));
 						}
-					}
+					}*/
 
 					// Instantiate a new view
 					$this->view
