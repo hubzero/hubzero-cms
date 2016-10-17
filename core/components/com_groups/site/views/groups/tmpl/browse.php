@@ -76,18 +76,18 @@ $this->css()
 			<div class="container">
 				<nav class="entries-filters">
 					<?php
-						$fltrs  = ($this->filters['index'])  ? '&index=' . $this->filters['index']   : '';
-						$fltrs .= ($this->filters['policy']) ? '&policy=' . $this->filters['policy'] : '';
-						$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
+						$fltrs  = ($this->filters['index'])  ? '&index=' . $this->escape($this->filters['index'])   : '';
+						$fltrs .= ($this->filters['policy']) ? '&policy=' . $this->escape($this->filters['policy']) : '';
+						$fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
 					?>
 					<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT'); ?>">
 						<li><a class="sort-title<?php echo ($this->filters['sortby'] == 'title') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=title' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_GROUPS_GROUP_TITLE'); ?></a></li>
 						<li><a class="sort-alias<?php echo ($this->filters['sortby'] == 'alias') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=alias' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS'); ?>"><?php echo Lang::txt('COM_GROUPS_GROUP_ALIAS'); ?></a></li>
 					</ul>
 					<?php
-					$fltrs  = ($this->filters['index'])  ? '&index=' . $this->filters['index']   : '';
-					$fltrs .= ($this->filters['sortby']) ? '&sortby=' . $this->filters['sortby'] : '';
-					$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
+					$fltrs  = ($this->filters['index'])  ? '&index=' . $this->escape($this->filters['index'])   : '';
+					$fltrs .= ($this->filters['sortby']) ? '&sortby=' . $this->escape($this->filters['sortby']) : '';
+					$fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
 					?>
 					<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW'); ?>">
 						<li><a class="filter-all<?php echo ($this->filters['policy'] == '') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_ALL'); ?>"><?php echo Lang::txt('JALL'); ?></a></li>
