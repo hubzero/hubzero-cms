@@ -435,7 +435,6 @@ if ($label == 'none') {
 				</fieldset>
 
 				<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
-				<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
 
 				<p class="submit">
 					<input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_FILTER'); ?>" />
