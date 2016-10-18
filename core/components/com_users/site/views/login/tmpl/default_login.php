@@ -59,7 +59,7 @@ if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getIn
 	}
 }
 
-$usersConfig = Component::params('com_users');
+$usersConfig = Component::params('com_members');
 $primary     = Request::getWord('primary', false);
 
 // use some reflections to inspect plugins for special behavior (added for shibboleth)
