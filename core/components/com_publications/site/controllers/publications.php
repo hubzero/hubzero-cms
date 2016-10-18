@@ -402,6 +402,11 @@ class Publications extends SiteController
 			'tag_ignored' => array()
 		);
 
+		if (!in_array($this->view->filters['sortby'], array('date', 'title', 'id', 'rating', 'ranking', 'popularity')))
+		{
+			$this->view->filters['sortby'] = $default_sort;
+		}
+
 		// Get projects user has access to
 		if (!User::isGuest())
 		{
@@ -422,6 +427,11 @@ class Publications extends SiteController
 					$this->view->filters['category'] = $cat->id;
 					break;
 				}
+			}
+
+			if (!is_int($this->view->filters['category']))
+			{
+				$this->view->filters['category'] = null;
 			}
 		}
 
