@@ -34,25 +34,21 @@
 defined('_HZEXEC_') or die();
 
 // Include external file connection
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'tables' . DS . 'remotefile.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'connect.php');
+require_once Component::path('com_projects') . DS . 'tables' . DS . 'remotefile.php';
+require_once Component::path('com_projects') . DS . 'helpers' . DS . 'connect.php';
 
 // Include some helpers
-include_once(PATH_CORE . DS . 'components' . DS .'com_projects'
-	. DS . 'helpers' . DS . 'compiler.php' );
+require_once Component::path('com_projects') . DS . 'helpers' . DS . 'compiler.php';
 
 // Get repo model
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'models' . DS . 'repo.php');
+require_once Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
 
-require_once(__DIR__ . '/helpers/sync.php');
+require_once __DIR__ . '/helpers/sync.php';
 
 // Include [temporary] ORM models (these will be merged with existing models at some point in the future)
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'project.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'provider.php';
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
 
 use Components\Projects\Models\Orm\Connection;
 
@@ -64,14 +60,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Repository path
 	 *
-	 * @var	   array
+	 * @var  string
 	 */
 	protected $_path = NULL;
 
@@ -85,24 +81,64 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Store internal message
 	 *
-	 * @var	   array
+	 * @var  array
 	 */
 	protected $_msg = NULL;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return     array   Plugin name and title
+	 * @return  array  Plugin name and title
 	 */
 	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array(
-			'name'    => 'files',
+			'name'    => $this->_name,
 			'title'   => Lang::txt('COM_PROJECTS_TAB_FILES'),
 			'submenu' => 'Assets',
 			'show'    => true,
 			'icon'    => 'f016'
 		);
+
+		if ($this->params->get('default_action', 'browse') == 'connections')
+		{
+			$model = new Components\Projects\Models\Project(Request::getVar('alias', ''));
+
+			$active = Request::getInt('connection', 0);
+
+			$area['children'] = array();
+			$area['children'][] = array(
+				'name'  => 'default',
+				'title' => sprintf($this->params->get('default_connection_name', '%s Master Repository'), $model->get('title')),
+				'url'   => $model->link('files') . '&action=browse',
+				'class' => 'filesystem default' . (Request::getVar('action') == 'browse' && !$active ? ' active' : ''),
+				//'image' => '/core/plugins/filesystem/local/assets/img/icon.png',
+				'icon'  => 'f0a0'
+			);
+
+			if ($model->exists() && $model->access('member'))
+			{
+				$connections = Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))->connections()->thatICanView();
+
+				if ($connections->count())
+				{
+					foreach ($connections as $connection)
+					{
+						//$imgRel = '/plugins/filesystem/' . $connection->provider->alias . '/assets/img/icon.png';
+						//$img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel;
+
+						$area['children'][] = array(
+							'title' => $connection->name,
+							'name'  => $connection->provider->alias,
+							'url'   => $model->link('files') . '&action=browse&connection=' . $connection->id,
+							'class' => 'filesystem ' . $connection->provider->alias . (!$connection->isShared() ? ' private' : '') . ($active == $connection->id ? ' active' : ''),
+							//'image' => $img,
+							'icon'  => 'f0a0'
+						);
+					}
+				}
+			}
+		}
 
 		return $area;
 	}
@@ -110,12 +146,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $model		Project
-	 * @return     array   integer
+	 * @param   object  $model   Project
+	 * @return  array   integer
 	 */
-	public function &onProjectCount( $model )
+	public function &onProjectCount($model)
 	{
-		$repo  = new \Components\Projects\Models\Repo ($model, 'local');
+		$repo  = new \Components\Projects\Models\Repo($model, 'local');
 		$counts['files'] = $repo->count();
 
 		return $counts;
@@ -124,12 +160,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $model           Project model
-	 * @param      string  $action			Plugin task
-	 * @param      string  $areas  			Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $model   Project model
+	 * @param   string  $action  Plugin task
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
-	public function onProject ( $model, $action = '', $areas = null, $params = array())
+	public function onProject($model, $action = '', $areas = null, $params = array())
 	{
 		$returnhtml = true;
 
@@ -142,7 +178,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
 			{
@@ -163,16 +199,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Load repo model
-			$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar( 'repo', 'local');
-			$this->repo = new \Components\Projects\Models\Repo ($this->model, $repoName);
+			$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar('repo', 'local');
+			$this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
 
 			$default = $this->params->get('default_action', 'browse');
 
 			$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 			$this->_database   = \App::get('db');
-			$this->_uid 	   = User::get('id');
+			$this->_uid        = User::get('id');
 			$this->_task       = $action ? $action : Request::getVar('action', $default);
-			$this->subdir 	   = trim(urldecode(Request::getVar('subdir', '')), DS);
+			$this->subdir      = trim(urldecode(Request::getVar('subdir', '')), DS);
 			$this->publication = Request::getInt('pid', 0);
 
 			// Set repo path
@@ -187,7 +223,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$this->repo->exists())
 				{
 					// Default to local repo (will redirect to add repo page in the future)
-					$this->repo = new \Components\Projects\Models\Repo ($this->model, 'local');
+					$this->repo = new \Components\Projects\Models\Repo($this->model, 'local');
 				}
 				$this->_path = $this->repo->get('path');
 			}
@@ -222,114 +258,108 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// File actions
 			switch ($this->_task)
 			{
-				// File browser
-				case 'browse':
-				default:
-					$arr['html'] 	= $this->_browse();
-					break;
-
 				// Basic file management
 				case 'upload':
-					$arr['html'] 	= $this->_upload();
+					$arr['html'] = $this->_upload();
 					break;
 
 				case 'save':
 				case 'saveprov':
-					$arr['html'] 	= $this->_save();
+					$arr['html'] = $this->_save();
 					break;
 
 				case 'delete':
 				case 'removeit':
-					$arr['html'] 	= $this->_delete();
+					$arr['html'] = $this->_delete();
 					break;
 
 				case 'move':
 				case 'moveit':
-					$arr['html'] 	= $this->_move();
+					$arr['html'] = $this->_move();
 					break;
 
 				case 'rename':
 				case 'renameit':
-					$arr['html'] 	= $this->_rename();
+					$arr['html'] = $this->_rename();
 					break;
 
 				case 'share':
 				case 'shareit':
-					$arr['html'] 	= $this->_share();
+					$arr['html'] = $this->_share();
 					break;
 
 				// History
 				case 'history':
-					$arr['html'] 	= $this->_history();
+					$arr['html'] = $this->_history();
 					break;
 				case 'diff':
-					$arr['html'] 	= $this->_diff();
+					$arr['html'] = $this->_diff();
 					break;
 
 				// Serve/preview
 				case 'compile':
-					$arr['html'] 	= $this->_compile();
+					$arr['html'] = $this->_compile();
 					break;
 				case 'serve':
-					$arr['html'] 	= $this->serve();
+					$arr['html'] = $this->serve();
 					break;
 				case 'download':
 				case 'open':
-					$arr['html'] 	= $this->_download();
+					$arr['html'] = $this->_download();
 					break;
 
 				// Manage directory
 				case 'newdir':
-					$arr['html'] 	= $this->_newDir();
+					$arr['html'] = $this->_newDir();
 					break;
 				case 'deletedir':
-					$arr['html'] 	= $this->_deleteDir();
+					$arr['html'] = $this->_deleteDir();
 					break;
 				case 'savedir':
-					$arr['html'] 	= $this->_saveDir();
+					$arr['html'] = $this->_saveDir();
 					break;
 
 				// Manage deleted
 				case 'trash':
-					$arr['html'] 	= $this->_showTrash();
+					$arr['html'] = $this->_showTrash();
 					break;
 				case 'restore':
-					$arr['html'] 	= $this->_restore();
+					$arr['html'] = $this->_restore();
 					break;
 
 				// Disk space management
 				case 'diskspace':
-					$arr['html'] 	= $this->diskspace(
+					$arr['html'] = $this->diskspace(
 						$this->model, $this->repo->get('name'), $this->_uid
 					);
 					break;
 				case 'optimize':
 				case 'advoptimize':
-					$arr['html'] 	= $this->optimize(
+					$arr['html'] = $this->optimize(
 						$this->model, $this->repo->get('name'));
 					break;
 
 				// Publishing selectors
 				case 'select':
 				case 'filter':
-					$arr['html'] 	= $this->_select();
+					$arr['html'] = $this->_select();
 					break;
 
 				// Connections
 				case 'connect':
 				case 'disconnect':
-					$arr['html'] 	= $this->_connect();
+					$arr['html'] = $this->_connect();
 					break;
 
 				// Sync with remote
 				case 'sync':
-					$arr['html'] 	= $this->_iniSync();
+					$arr['html'] = $this->_iniSync();
 					break;
 				case 'sync_status':
-					$arr['html'] 	= $this->syncStatus();
+					$arr['html'] = $this->syncStatus();
 					break;
 				case 'sync_error':
-					$arr['html'] 	= $this->syncError();
+					$arr['html'] = $this->syncError();
 					break;
 
 				// New connected methods
@@ -337,6 +367,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					require_once __DIR__ . DS . 'connections.php';
 					$controller  = new connections($this, $this->_option, $connection);
 					$arr['html'] = $controller->execute($ctask);
+					break;
+				// File browser
+				case 'browse':
+				default:
+					$arr['html'] = $this->_browse();
 					break;
 			}
 		}
@@ -349,7 +384,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get side content for main project page
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @return  string
 	 */
 	public function onProjectMiniList($model)
 	{
@@ -369,12 +405,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Set params
 		$view->params = array(
-			'limit'                => $model->config()->get('sidebox_limit', 5),
-			'start'                => 0,
-			'sortby'               => 'modified',
-			'sortdir'              => 'DESC',
-			'getParents'           => false,
-			'getChildren'          => false
+			'limit'       => $model->config()->get('sidebox_limit', 5),
+			'start'       => 0,
+			'sortby'      => 'modified',
+			'sortdir'     => 'DESC',
+			'getParents'  => false,
+			'getChildren' => false
 		);
 
 		// Retrieve items
@@ -386,17 +422,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * View of project files
 	 *
-	 * @return     string
+	 * @param   integer  $sync
+	 * @return  string
 	 */
 	protected function _browse($sync = 0)
 	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder' 	=> 'projects',
-				'element' 	=> 'files',
-				'name' 		=> 'browse',
-				'layout' 	=> 'display'
+				'folder'  => 'projects',
+				'element' => 'files',
+				'name'    => 'browse',
+				'layout'  => 'display'
 			)
 		);
 
@@ -415,9 +452,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Sync active?
 		$remotes = array();
-		$view->connect       = $this->_connect;
-		$view->services      = $this->_connect->_active;
-		$view->connections	 = $this->_connect->getConnections($this->_uid);
+		$view->connect     = $this->_connect;
+		$view->services    = $this->_connect->_active;
+		$view->connections = $this->_connect->getConnections($this->_uid);
 
 		// Get stored remote connections
 		if (!empty($this->_remoteService))
@@ -430,9 +467,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			);
 			$forceSync = $this->get('forceSync', $this->model->params->get('google_sync_queue', 0));
 
-			$view->sync 		 = $sync == 2 ? 0 : $forceSync;
-			$view->rSync 		 = new Sync($this->_connect);
-			$view->sharing 		 = 1;
+			$view->sync    = $sync == 2 ? 0 : $forceSync;
+			$view->rSync   = new Sync($this->_connect);
+			$view->sharing = 1;
 		}
 
 		// Set params
@@ -452,15 +489,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Retrieve items
 		$view->items = $this->repo->filelist($view->params);
 
-		$view->publishing	= false; // do not show publishing info
-		$view->title		= $this->_area['title'];
-		$view->option 		= $this->_option;
-		$view->subdir 		= $this->subdir;
-		$view->model 		= $this->model;
-		$view->repo    		= $this->repo;
-		$view->uid 			= $this->_uid;
-		$view->fileparams 	= $this->params;
-		$view->database		= $this->_database;
+		$view->publishing = false; // do not show publishing info
+		$view->title      = $this->_area['title'];
+		$view->option     = $this->_option;
+		$view->subdir     = $this->subdir;
+		$view->model      = $this->model;
+		$view->repo       = $this->repo;
+		$view->uid        = $this->_uid;
+		$view->fileparams = $this->params;
+		$view->database   = $this->_database;
 
 		return $view->loadTemplate();
 	}
@@ -523,7 +560,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->publication->setCuration();
 
 		// Make sure block exists, else use default
-		$view->publication->_curationModel->setBlock( $block, $step );
+		$view->publication->_curationModel->setBlock($block, $step);
 
 		// Get file list
 		$view->items = NULL;
@@ -591,19 +628,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Upload view
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _upload()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Incoming
-		$ajax 	= Request::getInt('ajax', 0);
+		$ajax = Request::getInt('ajax', 0);
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -614,17 +650,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->url          = Route::url($this->model->link('files'));
-		$view->unused 		= $this->model->repo()->getAvailableDiskSpace();
-		$view->option 		= $this->_option;
-		$view->model 		= $this->model;
-		$view->repo			= $this->repo;
-		$view->subdir 		= $this->subdir;
-		$view->ajax			= $ajax;
-		$view->config 		= $this->model->config();
-		$view->sizelimit 	= $this->params->get('maxUpload', '104857600');
-		$view->title		= $this->_area['title'];
-		$view->params 		= $this->params;
+		$view->url       = Route::url($this->model->link('files'));
+		$view->unused    = $this->model->repo()->getAvailableDiskSpace();
+		$view->option    = $this->_option;
+		$view->model     = $this->model;
+		$view->repo      = $this->repo;
+		$view->subdir    = $this->subdir;
+		$view->ajax      = $ajax;
+		$view->config    = $this->model->config();
+		$view->sizelimit = $this->params->get('maxUpload', '104857600');
+		$view->title     = $this->_area['title'];
+		$view->params    = $this->params;
 
 		return $view->loadTemplate();
 	}
@@ -632,15 +668,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Upload file(s) and add to repository
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _save()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Incoming
@@ -663,10 +698,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Set params
 		$params = array(
-			'subdir'      => $this->subdir,
-			'expand'      => Request::getInt('expand_zip', 0),
-			'ajaxUpload'  => $ajaxUpload,
-			'path'        => $this->_path
+			'subdir'     => $this->subdir,
+			'expand'     => Request::getInt('expand_zip', 0),
+			'ajaxUpload' => $ajaxUpload,
+			'path'       => $this->_path
 		);
 
 		// Upload file
@@ -696,9 +731,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						else
 						{
 							return json_encode(array(
-								'success'   => 1,
-								'file'      => $file,
-								'isNew'		=> $updateType == 'uploaded' ? true : false
+								'success' => 1,
+								'file'    => $file,
+								'isNew'   => $updateType == 'uploaded' ? true : false
 								)
 							);
 						}
@@ -731,8 +766,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->onAfterUpdate();
 
 			return json_encode(array(
-				'error'     => $this->getError(),
-				'success'	=> $this->_msg
+				'error'   => $this->getError(),
+				'success' => $this->_msg
 			));
 		}
 
@@ -743,13 +778,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect($url);
-		return;
 	}
 
 	/**
 	 * New directory form
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _newDir()
 	{
@@ -765,17 +799,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->option 		= $this->_option;
-		$view->model 		= $this->model;
-		$view->repo			= $this->repo;
-		$view->uid 			= $this->_uid;
-		$view->ajax 		= 1;
-		$view->subdir 		= $this->subdir;
-		$view->url			= Route::url($this->model->link('files'));
+		$view->option = $this->_option;
+		$view->model  = $this->model;
+		$view->repo   = $this->repo;
+		$view->uid    = $this->_uid;
+		$view->ajax   = 1;
+		$view->subdir = $this->subdir;
+		$view->url    = Route::url($this->model->link('files'));
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -783,7 +817,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save new directory
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _saveDir()
 	{
@@ -796,9 +830,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Set params
 		$params = array(
-			'subdir'  => $this->subdir,
-			'newDir'  => trim(Request::getVar('newdir', '')),
-			'path'    => $this->_path
+			'subdir' => $this->subdir,
+			'newDir' => trim(Request::getVar('newdir', '')),
+			'path'   => $this->_path
 		);
 
 		// Create
@@ -826,7 +860,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
@@ -839,8 +872,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Set params
@@ -874,21 +906,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
 	 * Delete items
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _delete()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Get incoming array of items
@@ -915,19 +945,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->items 		= array();
-			$view->services		= $this->_connect->_active;
-			$view->connections	= $this->_connect->getConnections();
-			$view->connect		= $this->_connect;
-			$view->database 	= $this->_database;
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->repo    		= $this->repo;
-			$view->uid 			= $this->_uid;
-			$view->ajax 		= Request::getInt('ajax', 0);
-			$view->subdir 		= $this->subdir;
-			$view->url			= Route::url($this->model->link('files'));
-			$view->path 		= $this->_path;
+			$view->items       = array();
+			$view->services    = $this->_connect->_active;
+			$view->connections = $this->_connect->getConnections();
+			$view->connect     = $this->_connect;
+			$view->database    = $this->_database;
+			$view->option      = $this->_option;
+			$view->model       = $this->model;
+			$view->repo        = $this->repo;
+			$view->uid         = $this->_uid;
+			$view->ajax        = Request::getInt('ajax', 0);
+			$view->subdir      = $this->subdir;
+			$view->url         = Route::url($this->model->link('files'));
+			$view->path        = $this->_path;
 			if (empty($items))
 			{
 				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
@@ -1012,21 +1042,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
 	 * Rename
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _rename()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Confirm request
@@ -1059,14 +1087,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->repo			= $this->repo;
-			$view->uid 			= $this->_uid;
-			$view->ajax 		= 1;
-			$view->subdir 		= $this->subdir;
-			$view->url			= Route::url($this->model->link('files'));
-			$view->path 		= $this->_path;
+			$view->option = $this->_option;
+			$view->model  = $this->model;
+			$view->repo   = $this->repo;
+			$view->uid    = $this->_uid;
+			$view->ajax   = 1;
+			$view->subdir = $this->subdir;
+			$view->url    = Route::url($this->model->link('files'));
+			$view->path   = $this->_path;
 			return $view->loadTemplate();
 		}
 
@@ -1074,9 +1102,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$params = array(
 			'subdir'  => $this->subdir,
 			'path'    => $this->_path,
-			'from'    => Request::getVar( 'oldname', ''),
-			'to'      => Request::getVar( 'newname', ''),
-			'type'    => Request::getVar( 'type', 'file')
+			'from'    => Request::getVar('oldname', ''),
+			'to'      => Request::getVar('newname', ''),
+			'type'    => Request::getVar('type', 'file')
 		);
 
 		// Rename
@@ -1102,21 +1130,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
 	 * Move file(s)
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _move()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Get incoming array of items
@@ -1138,26 +1164,26 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			);
 
 			$listParams = array(
-				'subdir'               => NULL,
-				'sortby'               => 'localpath', // important for selector!
-				'showFullMetadata'     => false,
-				'dirsOnly'             => true,
+				'subdir'           => NULL,
+				'sortby'           => 'localpath', // important for selector!
+				'showFullMetadata' => false,
+				'dirsOnly'         => true,
 			);
 
-			$view->list			= $this->repo->filelist($listParams);
-			$view->path 		= $this->_path;
-			$view->items 		= array();
-			$view->database 	= $this->_database;
-			$view->services		= $this->_connect->_active;
-			$view->connections	= $this->_connect->getConnections();
-			$view->connect		= $this->_connect;
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->repo    		= $this->repo;
-			$view->uid 			= $this->_uid;
-			$view->ajax 		= Request::getInt('ajax', 0);
-			$view->subdir 		= $this->subdir;
-			$view->url			= Route::url($this->model->link('files'));
+			$view->list        = $this->repo->filelist($listParams);
+			$view->path        = $this->_path;
+			$view->items       = array();
+			$view->database    = $this->_database;
+			$view->services    = $this->_connect->_active;
+			$view->connections = $this->_connect->getConnections();
+			$view->connect     = $this->_connect;
+			$view->option      = $this->_option;
+			$view->model       = $this->model;
+			$view->repo        = $this->repo;
+			$view->uid         = $this->_uid;
+			$view->ajax        = Request::getInt('ajax', 0);
+			$view->subdir      = $this->subdir;
+			$view->url         = Route::url($this->model->link('files'));
 			if (empty($items))
 			{
 				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
@@ -1230,8 +1256,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Output message
 		if ($moved > 0)
 		{
-			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED'). ' '
-				. $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'), 'success', 'projects');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED') . ' ' . $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'), 'success', 'projects');
 
 			// Force sync
 			if ($this->repo->isLocal())
@@ -1251,13 +1276,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
 	 * Show file history
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _history()
 	{
@@ -1290,10 +1314,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=> 'projects',
-				'element'	=> 'files',
-				'name'		=> 'history',
-				'layout' 	=> 'advanced'
+				'folder'  => 'projects',
+				'element' => 'files',
+				'name'    => 'history',
+				'layout'  => 'advanced'
 			)
 		);
 
@@ -1301,8 +1325,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->url = Route::url($this->model->link('files'));
 
 		// Collective vars
-		$versions 		= array();
-		$timestamps 	= array();
+		$versions   = array();
+		$timestamps = array();
 
 		// Make sure we have a file to work with
 		if (empty($params['file']))
@@ -1323,7 +1347,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 			return $view->loadTemplate();
 		}
 
@@ -1379,25 +1403,25 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$revision->set('modified', gmdate('Y-m-d H:i:s', strtotime($v['date'])));
 			}
 
-			$hash 		= $v['remote'] ? NULL : $v['hash'];
+			$hash = $v['remote'] ? NULL : $v['hash'];
 
 			$versions[$i]['preview'] = $revision->getPreview($this->model, $hash, 'url');
 			$i++;
 		}
 
-		$view->versions     = $versions;
-		$view->path 		= $this->_path;
-		$view->option 		= $this->_option;
-		$view->model 		= $this->model;
-		$view->repo    		= $this->repo;
-		$view->uid 			= $this->_uid;
-		$view->ajax			= Request::getInt( 'ajax');
-		$view->title		= $this->_area['title'];
-		$view->subdir 		= $this->subdir;
+		$view->versions = $versions;
+		$view->path     = $this->_path;
+		$view->option   = $this->_option;
+		$view->model    = $this->model;
+		$view->repo     = $this->repo;
+		$view->uid      = $this->_uid;
+		$view->ajax     = Request::getInt('ajax');
+		$view->title    = $this->_area['title'];
+		$view->subdir   = $this->subdir;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		$view->msg = isset($this->_msg) ? $this->_msg : '';
 		return $view->loadTemplate();
@@ -1406,7 +1430,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show revision diffs
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _diff()
 	{
@@ -1430,39 +1454,39 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$params['rev1']      = urldecode(Request::getVar( 'old', ''));
-		$params['rev2']      = urldecode(Request::getVar( 'new', ''));
-		$params['fullDiff']  = Request::getInt( 'full', 0);
-		$params['mode']      = urldecode(Request::getVar( 'mode', 'side-by-side'));
+		$params['rev1']     = urldecode(Request::getVar('old', ''));
+		$params['rev2']     = urldecode(Request::getVar('new', ''));
+		$params['fullDiff'] = Request::getInt('full', 0);
+		$params['mode']     = urldecode(Request::getVar('mode', 'side-by-side'));
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=> 'projects',
-				'element'	=> 'files',
-				'name'		=> 'history',
-				'layout' 	=> 'diff'
+				'folder'  => 'projects',
+				'element' => 'files',
+				'name'    => 'history',
+				'layout'  => 'diff'
 			)
 		);
 
 		// Run diff
 		$view->diff = $this->repo->diff($params);
 
-		$view->url 	        = Route::url($this->model->link('files'));
-		$view->config		= $this->model->config();
-		$view->file 		= $params['file'];
-		$view->option 		= $this->_option;
-		$view->model 		= $this->model;
-		$view->repo    		= $this->repo;
-		$view->uid 			= $this->_uid;
-		$view->title		= $this->_area['title'];
-		$view->subdir 		= $this->subdir;
-		$view->ajax			= 0;
-		$view->params		= $params;
+		$view->url    = Route::url($this->model->link('files'));
+		$view->config = $this->model->config();
+		$view->file   = $params['file'];
+		$view->option = $this->_option;
+		$view->model  = $this->model;
+		$view->repo   = $this->repo;
+		$view->uid    = $this->_uid;
+		$view->title  = $this->_area['title'];
+		$view->subdir = $this->subdir;
+		$view->ajax   = 0;
+		$view->params = $params;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		$view->msg = isset($this->_msg) ? $this->_msg : '';
 		return $view->loadTemplate();
@@ -1472,10 +1496,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Serve file (usually via public link)
 	 *
-	 * @param   int  	$projectid
+	 * @param   string   $type
+	 * @param   integer  $projectid
+	 * @param   string   $query
 	 * @return  void
 	 */
-	public function serve( $type = '', $projectid = 0, $query = '')
+	public function serve($type = '', $projectid = 0, $query = '')
 	{
 		$this->_area = $this->onProjectAreas();
 		if ($type != $this->_area['name'])
@@ -1489,11 +1515,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$file 		= $data->file;
-		$disp 		= isset($data->disp) ? $data->disp : 'inline';
-		$limited 	= isset($data->limited) ? $data->limited : 0;
-		$hash 		= isset($data->hash) ? $data->hash : 0;
-		$repoName	= isset($data->repo) ? $data->repo : 'local';
+		$file     = $data->file;
+		$disp     = isset($data->disp) ? $data->disp : 'inline';
+		$limited  = isset($data->limited) ? $data->limited : 0;
+		$hash     = isset($data->hash) ? $data->hash : 0;
+		$repoName = isset($data->repo) ? $data->repo : 'local';
 
 		// Instantiate a project
 		$model = new \Components\Projects\Models\Project($projectid);
@@ -1501,12 +1527,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$model->exists() || ($limited == 1 && !$model->access('member')))
 		{
 			// Throw error
-			throw new Exception(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'), 403);
-			return;
+			App::abort(403, Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'));
 		}
 
 		// Load repo
-		$repo = new \Components\Projects\Models\Repo ($model, $repoName);
+		$repo = new \Components\Projects\Models\Repo($model, $repoName);
 
 		$deleteTemp = false;
 		if ($hash)
@@ -1534,8 +1559,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!file_exists($serve))
 		{
 			// Throw error
-			throw new Exception(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'), 404);
-			return;
+			App::abort(404, Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'));
 		}
 
 		// Initiate a new content server and serve up the file
@@ -1556,7 +1580,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$result)
 		{
 			// Should only get here on error
-			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
+			App::abort(404, Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'));
 		}
 		else
 		{
@@ -1569,19 +1593,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Restore deleted files
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _restore()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Incoming
-		$item = urldecode(Request::getVar( 'asset', ''));
+		$item = urldecode(Request::getVar('asset', ''));
 		$hash = Request::getVar('hash', '');
 
 		// Params for repo call
@@ -1616,19 +1639,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
 	 * Download file(s)
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _download()
 	{
 		// Incoming
-		$render    = Request::getVar('render', 'download');
-		$hash      = Request::getVar('hash', '');
+		$render = Request::getVar('render', 'download');
+		$hash   = Request::getVar('hash', '');
 
 		// Metadata collector
 		$collector = array();
@@ -1675,8 +1697,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (empty($collector))
 		{
 			// Throw error
-			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404 );
-			return;
+			App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
 		}
 
 		// File preview?
@@ -1685,13 +1706,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=>'projects',
-					'element'	=>'files',
-					'name'		=>'preview'
+					'folder'  =>'projects',
+					'element' =>'files',
+					'name'    =>'preview'
 				)
 			);
 
-			$view->file			= isset($collector[0]) ? $collector[0] : NULL;
+			$view->file = isset($collector[0]) ? $collector[0] : NULL;
 
 			// Get last revision
 			if (!$view->file->get('converted') && !$hash)
@@ -1700,12 +1721,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$hash = $this->repo->getLastRevision($params);
 				$view->file->set('hash', $hash);
 			}
-			$view->option 		= $this->_option;
-			$view->model		= $this->model;
+			$view->option = $this->_option;
+			$view->model  = $this->model;
 
 			if (!($view->file instanceof \Components\Projects\Models\File))
 			{
-				$view->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND') );
+				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));
 			}
 			return $view->loadTemplate();
 		}
@@ -1716,8 +1737,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$file = isset($collector[0]) ? $collector[0] : NULL;
 			if (!($file instanceof \Components\Projects\Models\File))
 			{
-				throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404 );
-				return;
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
 			}
 			// Get last revision
 			if (!$file->get('converted') && !$hash)
@@ -1758,8 +1778,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$file = isset($collector[0]) ? $collector[0] : NULL;
 			if (!($file instanceof \Components\Projects\Models\File))
 			{
-				throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404 );
-				return;
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
 			}
 			$serveas = $file->get('name');
 
@@ -1776,7 +1795,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 					// Redirect
 					App::redirect(Route::url($this->model->link('files') . '&action=connect'));
-					return;
 				}
 
 				// Load remote resource
@@ -1789,13 +1807,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$openLink)
 				{
 					// Throw error
-					throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file->get('name'), 404 );
-					return;
+					App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file->get('name'));
 				}
 
 				// Redirect
 				App::redirect($openLink);
-				return;
 			}
 
 			// Import & download converted file
@@ -1832,7 +1848,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Download local revision
 			elseif ($hash)
 			{
-				$tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 ) . $serveas;
+				$tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0) . $serveas;
 				$downloadPath = sys_get_temp_dir() . DS . $tempPath;
 
 				// Get file content
@@ -1854,8 +1870,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (!file_exists($downloadPath))
 			{
 				// Throw error
-				throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404);
-				return;
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
 			}
 
 			// Cannot download zero byte files
@@ -1878,7 +1893,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$result)
 				{
 					// Should only get here on error
-					throw new Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
+					App::abort(404, Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'));
 				}
 				else
 				{
@@ -1909,14 +1924,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
 	 * Compile PDF/image preview for any kind of file
 	 *
 	 *
-	 * @return     array or false
+	 * @return  mixed  array or false
 	 */
 	protected function _compile()
 	{
@@ -1933,13 +1947,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Incoming
-		$commit     = Request::getInt( 'commit', 0 );
-		$download   = Request::getInt( 'download', 0 );
+		$commit     = Request::getInt('commit', 0);
+		$download   = Request::getInt('download', 0);
 
 		// Check that we have compile enabled
 		if (!$this->params->get('latex'))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_COMPILE_NOTALLOWED') );
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_COMPILE_NOTALLOWED'));
 			return;
 		}
 
@@ -1985,11 +1999,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$outputDir = DS . $imagePath . DS . strtolower($this->model->get('alias')) . DS . 'compiled';
 
 		// Make sure output dir exists
-		if (!is_dir( PATH_APP . $outputDir ))
+		if (!is_dir(PATH_APP . $outputDir))
 		{
-			if (!Filesystem::makeDirectory( PATH_APP . $outputDir ))
+			if (!Filesystem::makeDirectory(PATH_APP . $outputDir))
 			{
-				$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
 			}
 		}
@@ -2003,7 +2017,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->file    = $file;
 		$view->oWidth  = '780';
 		$view->oHeight = '460';
-		$view->url	   = Route::url($this->model->link('files'));
+		$view->url     = Route::url($this->model->link('files'));
 		$cExt          = 'pdf';
 
 		// Take out Google native extension if present
@@ -2067,7 +2081,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Read log (to show in case of error)
 			$logFile = $tempBase . '.log';
-			if (file_exists(PATH_APP . $outputDir . DS . $logFile ))
+			if (file_exists(PATH_APP . $outputDir . DS . $logFile))
 			{
 				$view->log = Filesystem::read(PATH_APP . $outputDir . DS . $logFile);
 			}
@@ -2143,7 +2157,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$result)
 				{
 					// Should only get here on error
-					throw new Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
+					App::abort(404, Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'));
 				}
 				else
 				{
@@ -2155,7 +2169,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if ($commit && $tex)
 			{
 				$pdfName = str_replace('temp__', '', basename($contentFile));
-				$where 	 = $this->subdir ? $this->subdir. DS . $pdfName : $pdfName;
+				$where   = $this->subdir ? $this->subdir. DS . $pdfName : $pdfName;
 
 				if (Filesystem::copy(PATH_APP . $outputDir . DS . $contentFile, $this->_path . DS . $where))
 				{
@@ -2182,15 +2196,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				// GS path
 				$gspath = trim($this->params->get('gspath'), DS);
-				if ($gspath && file_exists(DS . $gspath . DS . 'gs' ))
+				if ($gspath && file_exists(DS . $gspath . DS . 'gs'))
 				{
 					$gspath = DS . $gspath . DS;
 
-					$pdfName 	= $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
-					$pdfPath 	= PATH_APP . $outputDir . DS . $contentFile;
+					$pdfName    = $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
+					$pdfPath    = PATH_APP . $outputDir . DS . $contentFile;
 					$exportPath = PATH_APP . $outputDir . DS . $tempBase . '%d.jpg';
 
-					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=$exportPath $pdfPath 2>&1", $out );
+					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=$exportPath $pdfPath 2>&1", $out);
 
 					if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg'))
 					{
@@ -2217,19 +2231,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_PREVIEW_FAILED'));
 		}
 
-		$view->file 		= $file;
-		$view->outputDir	= $outputDir;
-		$view->embed		= $contentFile;
-		$view->cType		= $cType;
-		$view->subdir 		= $this->subdir;
-		$view->option 		= $this->_option;
-		$view->image		= !empty($image) ? $image : NULL;
-		$view->model		= $this->model;
-		$view->repo    		= $this->repo;
+		$view->file      = $file;
+		$view->outputDir = $outputDir;
+		$view->embed     = $contentFile;
+		$view->cType     = $cType;
+		$view->subdir    = $this->subdir;
+		$view->option    = $this->_option;
+		$view->image     = !empty($image) ? $image : NULL;
+		$view->model     = $this->model;
+		$view->repo      = $this->repo;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		return $view->loadTemplate();
@@ -2239,22 +2253,21 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * Send file back or from to remote service for remote editing
 	 * Local repo only
 	 *
-	 * @return     void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _share()
 	{
 		// Check permission
 		if (!$this->model->access('content'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Incoming
-		$converted  = Request::getInt('converted', 0);
-		$service 	= Request::getVar('service', 'google');
-		$sync		= false;
-		$shared     = 0;
+		$converted = Request::getInt('converted', 0);
+		$service   = Request::getVar('service', 'google');
+		$sync      = false;
+		$shared    = 0;
 
 		// Get stored remote connections
 		$remotes = $this->_getRemoteConnections(false);
@@ -2275,8 +2288,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Sharing for a single file
-			$type 	= key($items[0]);
-			$item 	= $items[0][$type];
+			$type = key($items[0]);
+			$item = $items[0][$type];
 
 			// Build metadata object
 			$file = $this->repo->getMetadata($item, $type, $params);
@@ -2297,7 +2310,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				\Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
 
 				App::redirect(Route::url($this->model->link('files') . '&action=connect'));
-				return;
 			}
 		}
 		else
@@ -2317,22 +2329,22 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->repo    		= $this->repo;
-			$view->uid 			= $this->_uid;
-			$view->subdir 		= $this->subdir;
-			$view->path 		= $this->_path;
+			$view->option = $this->_option;
+			$view->model  = $this->model;
+			$view->repo   = $this->repo;
+			$view->uid    = $this->_uid;
+			$view->subdir = $this->subdir;
+			$view->path   = $this->_path;
 
 			if ($this->getError())
 			{
-				$view->setError( $this->getError() );
+				$view->setError($this->getError());
 			}
 			else
 			{
-				$view->file 		= !empty($file) ? $file : NULL;
-				$view->connect		= $this->_connect;
-				$view->service		= $this->_remoteService;
+				$view->file    = !empty($file) ? $file : NULL;
+				$view->connect = $this->_connect;
+				$view->service = $this->_remoteService;
 			}
 
 			return $view->loadTemplate();
@@ -2352,7 +2364,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 			return $view->loadTemplate();
 		}
 
@@ -2400,7 +2412,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 					// Download remote file
 					if ($this->_connect->importFile($this->_remoteService, $this->_uid, $resource,
-						$file->get('localPath'), $this->repo->get('path'), $importExt ))
+						$file->get('localPath'), $this->repo->get('path'), $importExt))
 					{
 						// Checkin into repo
 						$params['file'] = $file;
@@ -2556,22 +2568,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Redirect to file list
 		App::redirect(Route::url($url));
-		return;
 	}
 
 	/**
 	 * Optimize repository
 	 *
-	 * @param      object  	$model Project model
-	 * @param      string  	$repoName
-	 *
-	 * @return     string
+	 * @param   object  $model     Project model
+	 * @param   string  $repoName
+	 * @return  string
 	 */
 	public function optimize($model, $repoName = 'local')
 	{
 		if (!isset($this->repo))
 		{
-			$this->repo = new \Components\Projects\Models\Repo ($model, $repoName);
+			$this->repo = new \Components\Projects\Models\Repo($model, $repoName);
 		}
 		$adv = $this->_task == 'advoptimize' ? true : false;
 		$params = array(
@@ -2585,11 +2595,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show disk usage
 	 *
-	 * @param      object  	$model Project model
-	 * @param      string  	$repoName
-	 * @param      integer  $by
-	 *
-	 * @return     string
+	 * @param   object   $model     Project model
+	 * @param   string   $repoName
+	 * @param   integer  $by
+	 * @return  string
 	 */
 	public function diskspace($model, $repoName = 'local', $by = '')
 	{
@@ -2604,11 +2613,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!isset($this->repo))
 		{
-			$this->repo = new \Components\Projects\Models\Repo ($model, $repoName);
+			$this->repo = new \Components\Projects\Models\Repo($model, $repoName);
 		}
 
-		$url = Route::url('index.php?option=' . $this->_option
-			. '&alias=' . $model->get('alias') . '&active=files&action=diskspace');
+		$url = Route::url('index.php?option=' . $this->_option . '&alias=' . $model->get('alias') . '&active=files&action=diskspace');
 
 		// Report usage with all history?
 		if ($this->params->get('disk_usage') == true || $by == 'admin')
@@ -2631,34 +2639,33 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get publication usage
 		if (Plugin::isEnabled('projects', 'publications') && $by == 'admin')
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-				. DS . 'helpers' . DS . 'html.php');
+			require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
 
-			$filters 					= array();
-			$filters['project']  		= $model->get('id');
-			$filters['ignore_access']   = 1;
-			$filters['dev']   	 		= 1;
+			$filters = array();
+			$filters['project']       = $model->get('id');
+			$filters['ignore_access'] = 1;
+			$filters['dev']           = 1;
 
 			$database = \App::get('db');
 
-			$objP 				= new \Components\Publications\Tables\Publication( $database );
-			$pubs 				= $objP->getRecords($filters);
+			$objP = new \Components\Publications\Tables\Publication($database);
+			$pubs = $objP->getRecords($filters);
 
 			$view->pubDiskUsage = \Components\Publications\Helpers\Html::getDiskUsage($pubs);
-			$view->pubQuota 	= $model->params->get('pubQuota')
+			$view->pubQuota     = $model->params->get('pubQuota')
 								? $model->params->get('pubQuota')
-								: \Components\Projects\Helpers\Html::convertSize( floatval($model->config()->get('pubQuota', '1')), 'GB', 'b');
+								: \Components\Projects\Helpers\Html::convertSize(floatval($model->config()->get('pubQuota', '1')), 'GB', 'b');
 		}
 
 		$view->total  = $this->repo->count();
-		$view->quota  = $model->params->get('quota', \Components\Projects\Helpers\Html::convertSize( floatval($model->config()->get('defaultQuota', '1')), 'GB', 'b'));
+		$view->quota  = $model->params->get('quota', \Components\Projects\Helpers\Html::convertSize(floatval($model->config()->get('defaultQuota', '1')), 'GB', 'b'));
 
-		$view->by 		= $by;
-		$view->model 	= $model;
-		$view->option 	= $this->_option;
-		$view->config 	= $model->config();
-		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
-		$view->params 	= $this->params;
+		$view->by     = $by;
+		$view->model  = $model;
+		$view->option = $this->_option;
+		$view->config = $model->config();
+		$view->title  = isset($this->_area['title']) ? $this->_area['title'] : '';
+		$view->params = $this->params;
 
 		return $view->loadTemplate();
 	}
@@ -2666,7 +2673,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show deleted files
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	protected function _showTrash()
 	{
@@ -2695,7 +2702,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -2703,15 +2710,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Manage connections to outside services
 	 *
-	 * @param      string	$service	Service name (google/dropbox)
-	 * @param      string	$callback	URL to return to after authorization
-	 * @return     string
+	 * @param   string  $service   Service name (google/dropbox)
+	 * @param   string  $callback  URL to return to after authorization
+	 * @return  string
 	 */
 	protected function _connect($service = '', $callback = '')
 	{
 		// Incoming
-		$service 	= $service ? $service : Request::getVar('service', '');
-		$reauth 	= Request::getInt('reauth', 0);
+		$service    = $service ? $service : Request::getVar('service', '');
+		$reauth     = Request::getInt('reauth', 0);
 		$removeData = Request::getInt('removedata', 1);
 
 		// Build pub url
@@ -2771,28 +2778,28 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->url 			= $url;
-		$view->title		= $this->_area['title'];
-		$view->services		= $this->_connect->getServices();
-		$view->connect		= $this->_connect;
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->model    = $this->model;
+		$view->uid      = $this->_uid;
+		$view->url      = $url;
+		$view->title    = $this->_area['title'];
+		$view->services = $this->_connect->getServices();
+		$view->connect  = $this->_connect;
 
 		// Get refreshed params
 		$this->model->reloadProject();
-		$view->params = new \Hubzero\Config\Registry( $this->model->table()->params );
+		$view->params = new \Hubzero\Config\Registry($this->model->table()->params);
 
 		// Get connection details for user
 		$member = $this->model->member(true);
-		$view->oparams = new \Hubzero\Config\Registry( $member->params );
+		$view->oparams = new \Hubzero\Config\Registry($member->params);
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -2800,14 +2807,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Initiate sync
 	 *
-	 * @return   void
+	 * @return  void
 	 */
 	protected function _iniSync()
 	{
 		// Incoming
-		$ajax 	 = Request::getInt('ajax', 0);
-		$auto 	 = Request::getInt('auto', 0);
-		$queue 	 = Request::getInt('queue', 0);
+		$ajax  = Request::getInt('ajax', 0);
+		$auto  = Request::getInt('auto', 0);
+		$queue = Request::getInt('queue', 0);
 
 		// Timed sync?
 		$autoSync = $this->params->get('auto_sync', 0);
@@ -2874,32 +2881,31 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Sync error
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function syncError()
 	{
-		$service 	= Request::getVar('service', 'google');
+		$service = Request::getVar('service', 'google');
 
 		$this->_rSync = new Sync($this->_connect);
-		$this->_rSync->writeToFile( '' );
+		$this->_rSync->writeToFile('');
 		$this->_rSync->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR'));
 		$this->_rSync->lockSync($service, true);
-		return;
 	}
 
 	/**
 	 * Get sync status (AJAX call)
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function syncStatus()
 	{
 		$this->_rSync = new Sync($this->_connect);
 
 		// Incoming
-		$pid 		= Request::getInt('id', 0);
-		$service 	= Request::getVar('service', 'google');
-		$status 	= array('status' => '', 'msg' => time(), 'output' => '');
+		$pid     = Request::getInt('id', 0);
+		$service = Request::getVar('service', 'google');
+		$status  = array('status' => '', 'msg' => time(), 'output' => '');
 
 		// Read status file
 		$rFile = $this->_rSync->readFile();
@@ -2914,8 +2920,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Get time of last sync
 			$this->model->reloadProject();
 
-			$synced 	= $this->model->params->get($service . '_sync');
-			$syncLock 	= $this->model->params->get($service . '_sync_lock', '');
+			$synced   = $this->model->params->get($service . '_sync');
+			$syncLock = $this->model->params->get($service . '_sync_lock', '');
 
 			// Report last sync time
 			$msg = $synced && $synced != 1
@@ -2959,11 +2965,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Archive files
 	 *
-	 * @param      array 	$files
-	 *
-	 * @return     array or false
+	 * @param   array  $items
+	 * @return  mixed  array or false
 	 */
-	private function _archiveFiles( $items)
+	private function _archiveFiles($items)
 	{
 		if (!extension_loaded('zip'))
 		{
@@ -2980,14 +2985,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$maxDownload 	= intval($this->params->get('maxDownload', 104857600));
+		$maxDownload  = intval($this->params->get('maxDownload', 104857600));
 
 		// Get temp directory
-		$base_path 		= sys_get_temp_dir();
-		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6, 6, 0, 1, 1) . '.zip';
-		$path 			= $this->subdir ? $this->_path. DS . $this->subdir : $this->_path;
-		$combinedSize   = 0;
-		$tarpath        =  $base_path . DS . $tarname;
+		$base_path    = sys_get_temp_dir();
+		$tarname      = 'project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip';
+		$path         = $this->subdir ? $this->_path . DS . $this->subdir : $this->_path;
+		$combinedSize = 0;
+		$tarpath      =  $base_path . DS . $tarname;
 
 		$zip = new ZipArchive;
 
@@ -3017,7 +3022,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Check against maximum allowable size
 						if ($combinedSize > $maxDownload)
 						{
-							$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_DOWNLOAD_LIMIT') );
+							$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_DOWNLOAD_LIMIT'));
 							return false;
 						}
 
@@ -3027,11 +3032,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-		    $zip->close();
+			$zip->close();
 
 			if ($i == 0)
 			{
-				$this->setError( Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR') );
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'));
 				return false;
 			}
 
@@ -3040,16 +3045,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$archive['name'] = $tarname;
 			return $archive;
 		}
-		else
-		{
-		    return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * Get stored remote connections
 	 *
-	 * @return     array
+	 * @param   bool   $remoteEdit
+	 * @return  array
 	 */
 	protected function _getRemoteConnections($remoteEdit = true)
 	{
@@ -3071,20 +3075,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get path to member dir (for provisioned projects)
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function getMembersPath()
 	{
 		// Get members config
-		$mconfig = Component::params( 'com_members' );
+		$mconfig = Component::params('com_members');
 
 		// Build upload path
-		$dir  = \Hubzero\Utility\String::pad( $this->_uid );
+		$dir  = \Hubzero\Utility\String::pad($this->_uid);
 		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
-		if (!is_dir( PATH_APP . $path ))
+		if (!is_dir(PATH_APP . $path))
 		{
-			if (!Filesystem::makeDirectory( PATH_APP . $path, 0755, true, true ))
+			if (!Filesystem::makeDirectory(PATH_APP . $path, 0755, true, true))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -3097,17 +3101,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get member files (provisioned project)
 	 *
-	 * @param      string	$path
-	 * @param      string  	$subdir
-	 * @param      boolean  $recurse
-	 *
-	 * @return     array
+	 * @param   boolean  $recurse
+	 * @return  array
 	 */
 	protected function _getMemberFiles($recurse = true)
 	{
 		// Check path format
 		$subdir = trim($this->subdir, DS);
-		$fullpath = $subdir ? $this->_path. DS . $subdir : $this->_path;
+		$fullpath = $subdir ? $this->_path . DS . $subdir : $this->_path;
 
 		$get = Filesystem::files($fullpath);
 
@@ -3131,9 +3132,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Register update info in user session
 	 *
-	 * @return     void
+	 * @param   string  $type
+	 * @param   string  $file
+	 * @param   bool    $append
+	 * @param   string  $appendMessage
+	 * @return  void
 	 */
-	public function registerUpdate( $type = '' , $file = '', $append = true, $appendMessage = '')
+	public function registerUpdate($type = '' , $file = '', $append = true, $appendMessage = '')
 	{
 		if (!$type || !$file)
 		{
@@ -3147,8 +3152,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($append == true)
 		{
-			$exVal  = $jsession->get($kind);
-			$val 	= $exVal ? $exVal . ', ' . $file : $file;
+			$exVal = $jsession->get($kind);
+			$val   = $exVal ? $exVal . ', ' . $file : $file;
 		}
 		else
 		{
@@ -3164,7 +3169,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call after file update
 	 *
-	 * @return     void
+	 * @param   object  $model
+	 * @param   array   $changes
+	 * @return  void
 	 */
 	public function onAfterUpdate($model = NULL, $changes = array())
 	{
@@ -3181,12 +3188,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$jsession = App::get('session');
 
 			// Get values from session
-			$updated 	= $jsession->get('projects.' . $model->get('alias') . '.updated');
-			$uploaded 	= $jsession->get('projects.' . $model->get('alias') . '.uploaded');
-			$failed 	= $jsession->get('projects.' . $model->get('alias') . '.failed');
-			$deleted 	= $jsession->get('projects.' . $model->get('alias') . '.deleted');
-			$restored 	= $jsession->get('projects.' . $model->get('alias') . '.restored');
-			$expanded 	= $jsession->get('projects.' . $model->get('alias') . '.expanded');
+			$updated  = $jsession->get('projects.' . $model->get('alias') . '.updated');
+			$uploaded = $jsession->get('projects.' . $model->get('alias') . '.uploaded');
+			$failed   = $jsession->get('projects.' . $model->get('alias') . '.failed');
+			$deleted  = $jsession->get('projects.' . $model->get('alias') . '.deleted');
+			$restored = $jsession->get('projects.' . $model->get('alias') . '.restored');
+			$expanded = $jsession->get('projects.' . $model->get('alias') . '.expanded');
 
 			// Clean up session values
 			$jsession->set('projects.' . $model->get('alias') . '.failed', '');
@@ -3198,12 +3205,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$updated 	= !empty($changes['updated']) ? $changes['updated'] : NULL;
-			$uploaded 	= !empty($changes['uploaded']) ? $changes['uploaded'] : NULL;
-			$failed 	= !empty($changes['failed']) ? $changes['failed'] : NULL;
-			$deleted 	= !empty($changes['deleted']) ? $changes['deleted'] : NULL;
-			$restored 	= !empty($changes['restored']) ? $changes['restored'] : NULL;
-			$expanded 	= !empty($changes['expanded']) ? $changes['expanded'] : NULL;
+			$updated  = !empty($changes['updated'])  ? $changes['updated']  : NULL;
+			$uploaded = !empty($changes['uploaded']) ? $changes['uploaded'] : NULL;
+			$failed   = !empty($changes['failed'])   ? $changes['failed']   : NULL;
+			$deleted  = !empty($changes['deleted'])  ? $changes['deleted']  : NULL;
+			$restored = !empty($changes['restored']) ? $changes['restored'] : NULL;
+			$expanded = !empty($changes['expanded']) ? $changes['expanded'] : NULL;
 		}
 
 		// Provisioned project?
@@ -3227,8 +3234,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				if (count($uploadParts) > 2)
 				{
-					$message = 'uploaded ' . basename($uploadParts[0]) . ' and '
-						. (count($uploadParts) - 1) . ' more files ' ;
+					$message = 'uploaded ' . basename($uploadParts[0]) . ' and ' . (count($uploadParts) - 1) . ' more files ' ;
 				}
 				else
 				{
@@ -3250,7 +3256,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$message .= $uploaded ? '. Updated ' : 'updated ';
 				if (count($updateParts) > 2)
 				{
-					$message.= basename($updateParts[0]) . ' and ' . (count($updateParts) - 1) . ' more files ' ;
+					$message .= basename($updateParts[0]) . ' and ' . (count($updateParts) - 1) . ' more files ' ;
 				}
 				else
 				{
@@ -3279,12 +3285,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$delParts = explode(',', $deleted);
 
-			$what = count($delParts) == 1 ? $deleted : count($delParts)
-				. ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS');
+			$what = count($delParts) == 1 ? $deleted : count($delParts) . ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS');
 
 			// Output message
-			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED')
-				. ' ' . $what, 'success', 'projects');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED') . ' ' . $what, 'success', 'projects');
 		}
 		elseif ($restored)
 		{
@@ -3297,8 +3301,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$activity = 'restored deleted file ' . basename($resParts[0]);
 
 			// Output message
-			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED')
-				. ' ' . basename($resParts[0]), 'success', 'projects');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED') . ' ' . basename($resParts[0]), 'success', 'projects');
 		}
 
 		// Add activity to feed
@@ -3357,7 +3360,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			$aid = $model->recordActivity( $activity, $parsedRef, 'files',
+			$aid = $model->recordActivity($activity, $parsedRef, 'files',
 				Route::url($model->link('files')), 'files', 1
 			);
 		}
@@ -3366,14 +3369,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Clean incoming data
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	protected function _cleanData()
 	{
 		// Clean up empty values
-		$checked = Request::getVar( 'asset', array() );
+		$checked = Request::getVar('asset', array());
 		$checked = (!is_array($checked) ? array($checked) : $checked);
-		$folders = Request::getVar( 'folder', array() );
+		$folders = Request::getVar('folder', array());
 		$folders = (!is_array($folders) ? array($folders) : $folders);
 
 		foreach ($checked as $key => $value)
@@ -3400,14 +3403,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		Request::setVar( 'asset', $checked);
-		Request::setVar( 'folder', $folders);
+		Request::setVar('asset', $checked);
+		Request::setVar('folder', $folders);
 	}
 
 	/**
 	 * Sort incoming file/folder data
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	protected function _sortIncoming()
 	{
