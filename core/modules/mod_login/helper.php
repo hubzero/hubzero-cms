@@ -34,11 +34,11 @@ namespace Modules\Login;
 
 use Hubzero\Module\Module;
 use Hubzero\Config\Registry;
-use Plugin;
-use JFactory;
-use JURI;
+use Hubzero\Utility\Uri;
 use Request;
+use Plugin;
 use User;
+use App;
 
 /**
  * Module class for displaying a login form
@@ -54,8 +54,6 @@ class Helper extends Module
 	 */
 	static function getReturnURL($params, $type)
 	{
-		$app    = JFactory::getApplication();
-		$router = $app->getRouter();
 		$url = null;
 		if ($itemid =  $params->get($type))
 		{
@@ -70,49 +68,34 @@ class Helper extends Module
 			$db->setQuery($query);
 			if ($link = $db->loadResult())
 			{
-				if ($router->getMode() == JROUTER_MODE_SEF)
-				{
-					$url = 'index.php?Itemid=' . $itemid;
-				}
-				else
-				{
-					$url = $link . '&Itemid=' . $itemid;
-				}
+				$url = 'index.php?Itemid=' . $itemid;
 			}
 		}
 
 		if (!$url)
 		{
 			// stay on the same page
-			$uri = clone JFactory::getURI();
-			$vars = $router->parse($uri);
+			$uri = clone Uri::getInstance();
+			$vars = $uri->parse($uri->toString());
 			unset($vars['lang']);
 
-			if ($router->getMode() == JROUTER_MODE_SEF)
+			if (isset($vars['Itemid']))
 			{
-				if (isset($vars['Itemid']))
+				$itemid = $vars['Itemid'];
+				$item = App::get('menu')->getItem($itemid);
+				unset($vars['Itemid']);
+				if (isset($item) && $vars == $item->query)
 				{
-					$itemid = $vars['Itemid'];
-					$menu = \App::get('menu');
-					$item = $menu->getItem($itemid);
-					unset($vars['Itemid']);
-					if (isset($item) && $vars == $item->query)
-					{
-						$url = 'index.php?Itemid=' . $itemid;
-					}
-					else
-					{
-						$url = 'index.php?' . JURI::buildQuery($vars) . '&Itemid=' . $itemid;
-					}
+					$url = 'index.php?Itemid=' . $itemid;
 				}
 				else
 				{
-					$url = 'index.php?' . JURI::buildQuery($vars);
+					$url = 'index.php?' . $uri->buildQuery($vars) . '&Itemid=' . $itemid;
 				}
 			}
 			else
 			{
-				$url = 'index.php?' . JURI::buildQuery($vars);
+				$url = 'index.php?' . $uri->buildQuery($vars);
 			}
 		}
 
@@ -143,7 +126,7 @@ class Helper extends Module
 		// Make sure we're using a secure connection
 		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
 		{
-			\App::redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			App::redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			die('insecure connection and redirection failed');
 		}
 
