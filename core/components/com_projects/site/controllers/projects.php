@@ -235,21 +235,31 @@ class Projects extends Base
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit'] = Request::getVar(
+		$this->view->filters['limit'] = Request::getInt(
 			'limit',
 			intval($this->config->get('limit', 25)),
 			'request'
 		);
 		$this->view->filters['start']    = Request::getInt('limitstart', 0, 'get');
-		$this->view->filters['sortby']   = Request::getVar('sortby', 'title');
+		$this->view->filters['sortby']   = strtolower(Request::getWord('sortby', 'title'));
 		$this->view->filters['search']   = Request::getVar('search', '');
-		$this->view->filters['sortdir']  = Request::getVar('sortdir', 'ASC');
+		$this->view->filters['sortdir']  = strtoupper(Request::getWord('sortdir', 'ASC'));
 		$this->view->filters['reviewer'] = $reviewer;
 		$this->view->filters['filterby'] = 'all';
 
+		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status')))
+		{
+			$this->view->filters['sortby'] = 'title';
+		}
+
+		if (!in_array($this->view->filters['sortdir'], array('DESC', 'ASC')))
+		{
+			$this->view->filters['sortdir'] = 'ASC';
+		}
+
 		if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
 		{
-			$this->view->filters['filterby'] = Request::getVar('filterby', 'pending');
+			$this->view->filters['filterby'] = Request::getWord('filterby', 'pending');
 		}
 
 		// Login for private projects
