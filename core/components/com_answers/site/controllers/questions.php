@@ -409,7 +409,7 @@ class Questions extends SiteController
 			'search'   => Request::getVar('q', ''),
 			'filterby' => Request::getWord('filterby', ''),
 			'sortby'   => Request::getWord('sortby', 'date'),
-			'sort_Dir' => Request::getWord('sortdir', 'DESC'),
+			'sort_Dir' => strtolower(Request::getWord('sortdir', 'desc')),
 			'area'     => Request::getVar('area', '')
 		);
 
@@ -425,6 +425,11 @@ class Questions extends SiteController
 		if (!in_array($filters['sortby'], array('date', 'votes', 'rewards')))
 		{
 			$filters['sortby'] = 'date';
+		}
+
+		if (!in_array($filters['sort_Dir'], array('desc', 'asc')))
+		{
+			$filters['sort_Dir'] = 'desc';
 		}
 
 		if ($filters['area']
