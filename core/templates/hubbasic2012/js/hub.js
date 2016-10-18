@@ -27,7 +27,7 @@ jQuery(document).ready(function(jq){
 	var $ = jq,
 		w = 760,
 		h = 520,
-		templatepath = '/templates/hubbasic2012/';
+		templatepath = '/core/templates/hubbasic2012/';
 
 	// Set focus on username field for login form
 	if ($('#username').length > 0) {
