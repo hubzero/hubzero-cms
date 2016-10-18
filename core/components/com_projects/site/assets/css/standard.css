@@ -29,9 +29,11 @@
 	padding: 0;
 	border-top: 1px solid #e8e8e8;
 }
-.main-menu ul.assetlist {
+.main-menu ul.projecttools ul {
 	padding: 0;
 	margin: 0 0 -1px 0;
+	border-top: 1px solid #CCC;
+	background: #f7f3ed;
 }
 .main-menu ul.projecttools li {
 	padding: 0;
@@ -48,20 +50,13 @@
 .main-menu ul.projecttools li a:hover {
 	color: #666;
 }
-.main-menu ul.projecttools li.active a:before,
-#plg-header h3:before {
-	color: black;
-}
-.main-menu ul.assetlist li {
-	background: #f7f3ed;
-}
 .main-menu ul.projecttools li a,
 .main-menu ul.projecttools li.assets>span {
 	padding: 0.5em 0.5em 0.5em 1.5em;
 	outline: none;
 	display: block;
 }
-.main-menu ul.projecttools li.active {
+.main-menu ul.projecttools>li.active {
 	background: #fff;
 	border-right: 1px solid #FFF;
 	margin-right: -1px;
@@ -72,25 +67,26 @@
 .main-menu ul.projecttools li.active:first-child {
 	border-top: 1px solid #e8e8e8;
 }
-.main-menu ul.projecttools li.active a {
+.main-menu ul.projecttools li.active>a {
 	color: #000;
 }
-.main-menu ul.projecttools li.active a span {
+.main-menu ul.projecttools li.active>a:before,
+#plg-header h3:before {
+	color: black;
+}
+.main-menu ul.projecttools li.active>a span {
 	font-weight: bold;
 }
 .main-menu ul.projecttools li.editing {
 	background: #fff;
 	padding-right: 0;
 }
-.main-menu ul.assetlist {
-	border-top: 1px solid #CCC;
-}
 .main-menu ul.projecttools li>a:hover,
 .main-menu ul.projecttools li>span:hover {
 	background: #fff;
 }
 .main-menu ul.projecttools li.pt_title,
-ul.projecttools li.pt_title:hover {
+.main-menu ul.projecttools li.pt_title:hover {
 	font-weight: bold;
 	font-size: 110%;
 	background: #e6dac6;
@@ -98,9 +94,9 @@ ul.projecttools li.pt_title:hover {
 	border: none;
 }
 .main-menu ul.projecttools a:hover,
-ul.projecttools a:focus {
+.main-menu ul.projecttools a:focus {
 	border: none;
-	outline: none; 
+	outline: none;
 }
 
 .main-menu ul.jsm li {
