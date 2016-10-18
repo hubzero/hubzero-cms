@@ -30,6 +30,7 @@
 	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25em;
 	border-radius: 0.25em;
+	background: #333;
 	color: #FFFFFF;
 }
 .auth .account:hover,
@@ -74,21 +75,21 @@
 	font-size: 1.2em;
 }
 
-.facebook:before { content: "\f012"; }
-.facebook { background: #3B5998; }
-.google:before { content: "\f02b"; }
-.google { background: #D6492C; }
-.linkedin:before { content: "\f016"; }
-.linkedin { background: #4875B4; }
-.pucas:before { content: "\f005"; }
-.pucas { background: #A3792C; }
-.twitter:before { content: "\f010"; }
-.twitter { background: #55ACEE; }
-.orcid:before { content: "\f02d"; }
-.orcid { background: #A6CE39; }
-.hubzero:before { content: "\f001"; }
-.hubzero { background: #999; }
-.shibboleth { background: #007db1; }
+.auth .facebook:before { content: "\f012"; }
+.auth .facebook { background: #3B5998; }
+.auth .google:before { content: "\f02b"; }
+.auth .google { background: #D6492C; }
+.auth .linkedin:before { content: "\f016"; }
+.auth .linkedin { background: #4875B4; }
+.auth .pucas:before { content: "\f005"; }
+.auth .pucas { background: #A3792C; }
+.auth .twitter:before { content: "\f010"; }
+.auth .twitter { background: #55ACEE; }
+.auth .orcid:before { content: "\f02d"; }
+.auth .orcid { background: #A6CE39; }
+.auth .hubzero:before { content: "\f001"; }
+.auth .hubzero { background: #999; }
+.auth .shibboleth { background: #007db1; }
 
 .auth .certificate:before {
 	content: "\f040";
