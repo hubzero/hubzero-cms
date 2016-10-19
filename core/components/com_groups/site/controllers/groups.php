@@ -517,7 +517,7 @@ class Groups extends Base
 		if (is_dir($asset_path))
 		{
 			// Get all images that are in group asset folder and could be a possible group logo
-			$this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', false, true);
+			$this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', true, true);
 		}
 
 		// Trigger the functions that return the areas we'll be using
@@ -646,8 +646,9 @@ class Groups extends Base
 		$logo = '';
 		if (isset($customization['logo']))
 		{
-			$logo_parts = explode("/",$customization['logo']);
-			$logo = array_pop($logo_parts);
+			$logo_path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber') . DS . 'uploads';
+			$logo_path = substr($logo_path, strlen(PATH_ROOT));
+			$logo = substr($customization['logo'], strlen($logo_path));
 		}
 
 		// Plugin settings
