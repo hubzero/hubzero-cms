@@ -1771,6 +1771,11 @@
 		visibility: visible;
 	}
 
+	.attachment:before {
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+
 /* File upload */
 	.qq-uploading {
 		position: absolute;
