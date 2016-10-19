@@ -148,8 +148,8 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="mwDBDriver" type="text" menu="hide" label="Middleware DB Driver" default="" description="Middleware DB Driver" />
 		<field name="mwDBHost" type="text" menu="hide" label="Middleware DB Host" default="" description="Middleware DB Host" />
 		<field name="mwDBPort" type="text" menu="hide" label="Middleware DB Port" default="" description="Middleware DB Port" />
-		<field name="mwDBUsername" type="text" menu="hide" label="Middleware DB Username" default="" description="Middleware DB Username" />
-		<field name="mwDBPassword" type="password" menu="hide" label="Middleware DB Password" default="" description="Middleware DB Password" />
+		<field name="mwDBUsername" type="text" menu="hide" label="Middleware DB Username" default="" description="Middleware DB Username" autocomplete="off" />
+		<field name="mwDBPassword" type="password" menu="hide" label="Middleware DB Password" default="" description="Middleware DB Password" autocomplete="off" />
 		<field name="mwDBDatabase" type="text" menu="hide" label="Middleware Database" default="" description="Middleware Database" />
 		<field name="mwDBPrefix" type="text" menu="hide" label="Middleware DB Prefix" default="" description="Middleware DB Prefix" />
 	</fieldset>
