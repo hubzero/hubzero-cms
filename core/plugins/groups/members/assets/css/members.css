@@ -87,7 +87,30 @@
 	border-radius: 0.25em;
 	padding: 0 5px;
 }
-
+.entries .photo-wrap {
+	display: block;
+	position: relative;
+	width: 50px;
+	height: 50px;
+}
+.entries .online {
+	display: block;
+	width: 14px;
+	height: 14px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	border: 2px solid #fff;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	bottom: -5px;
+	right: -5px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-indent: 5em;
+	background-color: #ABD037;
+}
 .entries .remove-member,
 .entries .demote-member,
 .entries .promote-member,

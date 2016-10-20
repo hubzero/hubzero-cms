@@ -177,6 +177,12 @@ $option = 'com_groups';
 						<?php
 						if ($this->groupusers)
 						{
+							// get all sessions
+							$sessions = Hubzero\Session\Helper::getAllSessions(array(
+								'guest'    => 0,
+								'distinct' => 1
+							));
+
 							// Loop through the results
 							$html = '';
 							if ($this->limit == 0)
@@ -238,11 +244,30 @@ $option = 'com_groups';
 									$cls .= ' me';
 								}
 
+								// Member online?
+								$online = 0;
+								if ($sessions)
+								{
+									// see if any session matches our userid
+									foreach ($sessions as $session)
+									{
+										if ($session->userid == $u->get('id'))
+										{
+											$online = 1;
+										}
+									}
+								}
+
 								$url = $this->group->isSuperGroup() ? 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&scope=' . $u->get('id') : $u->link();
 						?>
 						<tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
 							<td class="photo">
-								<img width="50" height="50" src="<?php echo $pic; ?>" alt="" />
+								<span class="photo-wrap<?php if ($online) { echo ' tooltips" title="' . Lang::txt('PLG_GROUPS_MEMBERS_ONLINE'); } ?>">
+									<img width="50" height="50" src="<?php echo $pic; ?>" alt="" />
+									<?php if ($online) { ?>
+										<span class="online"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ONLINE'); ?></span>
+									<?php } ?>
+								</span>
 							</td>
 							<td>
 								<?php if ($inviteemail) { ?>
