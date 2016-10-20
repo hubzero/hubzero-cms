@@ -32,7 +32,8 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$base = Request::getVar('REQUEST_URI', rtrim(Request::base(true), '/'), 'server');
+//$base = Request::getVar('REQUEST_URI', rtrim(Request::base(true), '/'), 'server');
+$base = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITIZE_URL);
 
 ?>
 <?php if ($this->params->get('button', 0) == 1) { ?>
