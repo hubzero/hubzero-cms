@@ -80,12 +80,15 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if ($action = Request::getVar('action'))
+		if ($action = Request::getCmd('action'))
 		{
-			return $this->$action();
+			if (method_exists($this, $action))
+			{
+				return $this->$action();
+			}
 		}
 
-		$period = $this->periodToInt(Request::getVar('period', $this->params->get('period', 'prior12')));
+		$period = (int)$this->periodToInt(Request::getCmd('period', $this->params->get('period', 'prior12')));
 
 		$cur_year  = $this->params->get('currentYear', floor(date("Y")));
 		$cur_month = $this->params->get('currentMonth', floor(date("n")));
@@ -135,6 +138,10 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 			case '0':
 			case 'year':
 				$period = 0;
+			break;
+
+			default:
+				$period = 12;
 			break;
 		}
 
