@@ -37,12 +37,12 @@ use ContentHelperRoute;
 use Component;
 use JModelLegacy;
 use JFactory;
-use JAccess;
 use Route;
 use Event;
 use Lang;
 use Html;
 use User;
+use App;
 
 /**
  * Module class for displaying news articles
@@ -75,9 +75,8 @@ class Helper extends Module
 	{
 		require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
 
-		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/models', 'ContentModel');
+		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/site/models', 'ContentModel');
 
-		$app = JFactory::getApplication();
 		$db  = App::get('db');
 
 		// Get an instance of the generic articles model
@@ -99,7 +98,7 @@ class Helper extends Module
 
 		// Access filter
 		$access = !Component::params('com_content')->get('show_noauth');
-		$authorised = JAccess::getAuthorisedViewLevels(User::get('id'));
+		$authorised = User::getAuthorisedViewLevels();
 		$model->setState('filter.access', $access);
 
 		// Category filter
