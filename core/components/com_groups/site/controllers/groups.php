@@ -517,7 +517,7 @@ class Groups extends Base
 		if (is_dir($asset_path))
 		{
 			// Get all images that are in group asset folder and could be a possible group logo
-			$this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', true, true);
+			$this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.svg|.PNG|.JPG|.JPEG|.GIF|.SVG', true, true);
 		}
 
 		// Trigger the functions that return the areas we'll be using
