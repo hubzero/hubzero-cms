@@ -373,6 +373,8 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		$instance->set('usertype',       'deprecated');
 		$instance->set('accessgroups',   array($defaultUserGroup));
 		$instance->set('activation',     1);
+		$instance->set('loginShell',    '/bin/bash');
+		$instance->set('ftpShell',      '/usr/lib/sftp-server');
 
 		// Check joomla user activation setting
 		// 0 = automatically confirmed
