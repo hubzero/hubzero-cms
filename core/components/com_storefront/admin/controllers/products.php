@@ -554,7 +554,7 @@ class Products extends AdminController
 	 * @param   integer  $state  State to set
 	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask($state = 0)
 	{
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -571,8 +571,6 @@ class Products extends AdminController
 		}
 
 		// Update record(s)
-		$obj = new Archive();
-
 		foreach ($ids as $pId)
 		{
 			// Save product

@@ -1088,12 +1088,14 @@ class Product
 		}
 
 		// ### Do option groups
-		// erase all old option groups
+		$optionGroups = $this->getOptionGroups();
+
+		// First erase all old option groups
 		$sql = "DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = " . $db->quote($pId);
 		$db->setQuery($sql);
 		$db->query();
 
-		foreach ($this->getOptionGroups() as $ogId)
+		foreach ($optionGroups as $ogId)
 		{
 			$sql = "INSERT INTO `#__storefront_product_option_groups` (pId, ogId)
 					VALUES (" . $db->quote($pId) . ", " . $db->quote($ogId) . ")";
