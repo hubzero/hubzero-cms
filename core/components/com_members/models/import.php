@@ -105,6 +105,14 @@ class Import extends Base
 			'access',
 			'visibility',
 		),
+		'block' => array(
+			'block',
+			'blocked',
+		),
+		'approved' => array(
+			'approve',
+			'approved',
+		),
 		'interests' => array(
 			'tags',
 			'interests',
@@ -146,6 +154,12 @@ class Import extends Base
 			'homefolder',
 			'homedir',
 		),
+		'loginShell' => array(
+			'loginshell'
+		),
+		'ftpShell' => array(
+			'ftpshell'
+		),
 		'usageAgreement' => array(
 			'usageagreement',
 			'termsofservice',
@@ -178,6 +192,11 @@ class Import extends Base
 			'validemail',
 			'emailconfirm',
 			'activation',
+		),
+		'access' => array(
+			'access',
+			'permissions',
+			'public',
 		),
 		/* @deprecated
 		'countryresident' => array(
