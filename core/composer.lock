@@ -252,12 +252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "v4.5.0"
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
-                "reference": "v4.5.0",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
                 "shasum": ""
             },
             "require": {
@@ -714,12 +714,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "1a87c2bde01b2a63fe50cee406aa6e6b4a0c7d8b"
+                "reference": "fe698874df7dd08a45522168bee9174e97f16d0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/1a87c2bde01b2a63fe50cee406aa6e6b4a0c7d8b",
-                "reference": "1a87c2bde01b2a63fe50cee406aa6e6b4a0c7d8b",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/fe698874df7dd08a45522168bee9174e97f16d0a",
+                "reference": "fe698874df7dd08a45522168bee9174e97f16d0a",
                 "shasum": ""
             },
             "require": {
@@ -752,7 +752,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-10-19 12:17:37"
+            "time": "2016-10-21 19:48:37"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1630,7 +1630,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
