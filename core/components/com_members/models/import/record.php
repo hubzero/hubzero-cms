@@ -76,7 +76,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		$this->_mode    = strtoupper($mode);
 
 		// Core objects
-		$this->_user    = User::getInstance();
+		//$this->_user    = User::getInstance();
 		$this->_profile = array();
 
 		// Create objects
@@ -204,7 +204,15 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// Are we running in dry run mode?
 		if ($dryRun || count($this->record->errors) > 0)
 		{
-			$this->record->entry = $this->record->entry->toObject();
+			//$this->record->entry = $this->record->entry->toObject();
+			$entry = $this->record->entry->toArray();
+
+			$this->record->entry = new stdClass;
+
+			foreach ($entry as $field => $value)
+			{
+				$this->record->entry->$field = $value;
+			}
 			foreach ($this->_profile as $field => $value)
 			{
 				$this->record->entry->$field = $value;
@@ -231,7 +239,16 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			array_push($this->record->errors, $e->getMessage());
 		}
 
-		$this->record->entry = $this->record->entry->toObject();
+		$entry = $this->record->entry->toArray();
+
+		$this->record->entry = new stdClass;
+
+		foreach ($entry as $field => $value)
+		{
+			$this->record->entry->$field = $value;
+		}
+
+		//$this->record->entry = $this->record->entry->toObject();
 		foreach ($this->_profile as $field => $value)
 		{
 			$this->record->entry->$field = $value;
@@ -293,6 +310,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber' || $key == 'groups')
 			{
 				continue;
+			}
+
+			if (function_exists('mb_convert_encoding'))
+			{
+				$val = mb_convert_encoding($val, 'UTF-8');
 			}
 
 			// In PATCH mode, skip fields with no values
@@ -611,7 +633,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		// save tags
 		$tags = new \Components\Members\Models\Tags($this->record->entry->get('id'));
-		$tags->setTags($this->record->tags, $this->_user->get('id'));
+		$tags->setTags($this->record->tags, User::get('id'));
 	}
 
 	/**
@@ -725,7 +747,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 *
 	 * @return  string
 	 */
-	public function toString()
+	/*public function toString()
 	{
 		// Reflect on class to get private or protected props
 		$privateProperties = with(new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PROTECTED);
@@ -737,13 +759,23 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			unset($this->$name);
 		}
 
-		$this->record->entry = $this->record->entry->toObject();
+		if ($this->record->entry instanceof \Hubzero\User\User)
+		{
+			$entry = $this->record->entry->toArray();
+
+			$this->record->entry = new stdClass;
+
+			foreach ($entry as $field => $value)
+			{
+				$this->record->entry->$field = $value;
+			}
+		}
 		foreach ($this->_profile as $field => $value)
 		{
 			$this->record->entry->$field = $value;
 		}
 
 		// Output as json
-		return json_encode($this);
-	}
+		return $this;
+	}*/
 }
