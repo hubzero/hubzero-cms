@@ -29,8 +29,22 @@ define('DS', DIRECTORY_SEPARATOR);
 */
 
 define('JPATH_BASE', __DIR__);
+define('PATH_ROOT', dirname(__DIR__));
 
-require_once dirname(JPATH_BASE) . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
+
+/*
+|--------------------------------------------------------------------------
+| Define CMS version
+|--------------------------------------------------------------------------
+|
+| Pull in the version number. Although just a simple `define()` statement,
+| we only want to define it in one place for the CMS and then have every
+| application instance pull it in. Easier to maintain!
+|
+*/
+
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'version.php';
 
 /*
 |--------------------------------------------------------------------------

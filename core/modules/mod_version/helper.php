@@ -56,12 +56,12 @@ class Helper extends Module
 
 		if ($this->params->get('format', 'short') == 'short')
 		{
-			$parts = explode('-', App::version());
+			$parts = explode('-', HVERSION);
 			$version .= ' ' . array_shift($parts);
 		}
 		else
 		{
-			$version .= ' ' . App::version();
+			$version .= ' ' . HVERSION;
 		}
 
 		// Get the view
