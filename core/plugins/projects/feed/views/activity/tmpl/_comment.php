@@ -33,8 +33,12 @@
 defined('_HZEXEC_') or die();
 
 $comment = $this->comment;
-$newComment = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $comment->created
-	? true : false;
+$newComment = false;
+if ($this->model->member())
+{
+	$newComment = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $comment->created
+		? true : false;
+}
 
 // Is user allowed to delete item?
 $deletable = ($comment->created_by == $this->uid or $this->model->member()->role == 1) ? 1 : 0;
