@@ -129,7 +129,11 @@ if (!$this->app->sess) {
 				<form method="get" action="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
 					<fieldset>
 						<?php
-						$viewer = ($declared ? $declared : $this->output->rendered); //Session::get('tool_viewer'));
+						$viewer = ($declared ? $declared : null); //Session::get('tool_viewer'));
+						if (isset($this->output->rendered))
+						{
+							$viewer = $this->output->rendered;
+						}
 						?>
 						<?php echo $viewer ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE')) : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER'); ?>
 
