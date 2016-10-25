@@ -118,7 +118,7 @@ $flavor = $this->params->get('flavor', false);
 
 			<header>
 				<div class="inner">
-					<h1><?php echo Lang::txt('TPL_WELCOME_CONGRATS' . ($this->params->get('flavor') ? '_' . strtoupper($this->params->get('flavor')) : ''), App::version()); ?></h1>
+					<h1><?php echo Lang::txt('TPL_WELCOME_CONGRATS' . ($this->params->get('flavor') ? '_' . strtoupper($this->params->get('flavor')) : ''), HVERSION); ?></h1>
 
 					<div class="displays">
 						<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/screen-x2.png" class="display" alt="" />
