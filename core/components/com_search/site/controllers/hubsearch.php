@@ -165,7 +165,7 @@ class Hubsearch extends SiteController
 		$isAdmin = User::authorise('core.admin', 'com_users');
 		if ($isAdmin)
 		{
-			$query = $query->query($terms)->limit($limit)->start($start);
+			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
 		}
 		else
 		{
@@ -206,71 +206,88 @@ class Hubsearch extends SiteController
 		// Format the results for the view
 		foreach ($results as &$result)
 		{
-			//@FIXME: SOLR-specific
-			$result['title'] = $result['title'][0];
+			// Event for special formatting
+			$override = Event::trigger('search.onFormatResult', array($result['hubtype'], &$result, $terms, $highlightOptions));
 
-			// Appends http(s)://
-			if (isset($result['url']))
+			// Only allow one override per result 
+			if (count($override) == 1)
 			{
-				$result['url']  = rtrim(Request::base(), "/") . $result['url'];
+				$override = $override[0];
+			}
+
+			if (empty($override))
+			{
+				//@FIXME: SOLR-specific
+				$result['title'] = $result['title'][0];
+
+				// Appends http(s)://
+				if (isset($result['url']))
+				{
+					$result['url']  = rtrim(Request::base(), "/") . $result['url'];
+				}
+				else
+				{
+					$result['url'] = '';
+				}
+
+				$snippet = '';
+				foreach ($result as $field => &$r)
+				{
+					// Only work on strings
+					if (is_string($r))
+					{
+						$r = strip_tags($r);
+					}
+
+					// Highlight everything except the URL
+					if ($field != 'url')
+					{
+						$r = \Hubzero\Utility\String::highlight($r, $terms, $highlightOptions);
+					}
+
+					/** 
+					 * Generate the snippet
+					 * A snippet is the search result text which is displayed
+					 **/
+					if (in_array($field, $snippetFields))
+					{
+						$snippet .= $r . " ";
+					}
+				}
+
+				// Do some filtering 
+				$snippet = str_replace("\n", '', $snippet);
+				$snippet = str_replace("\r", '', $snippet);
+				$snippet = str_replace("<br/>", '', $snippet);
+				$snippet = str_replace("<br>", '', $snippet);
+				$snippet  = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+				$result['snippet'] = $snippet;
+
+				if (isset($result['author']))
+				{
+					$authorCnt = 1;
+					$authorString = '';
+					foreach ($result['author'] as $author)
+					{
+						if ($authorCnt < count($result['author']))
+						{
+							$authorString .= $author;
+							$authorString .= ',';
+						}
+						else
+						{
+							$authorString .= $author;
+						}
+						$authorCnt++;
+					}
+					$result['authorString'] = $authorString; }
 			}
 			else
 			{
-				$result['url'] = '';
+				$result = $override;
 			}
-
-			$snippet = '';
-			foreach ($result as $field => &$r)
-			{
-				// Only work on strings
-				if (is_string($r))
-				{
-					$r = strip_tags($r);
-				}
-
-				// Highlight everything except the URL
-				if ($field != 'url')
-				{
-					$r = \Hubzero\Utility\String::highlight($r, $terms, $highlightOptions);
-				}
-
-				// Generate the snippet
-				if (in_array($field, $snippetFields))
-				{
-					$snippet .= $r . " ";
-				}
-			}
-
-			// Do some filtering 
-			$snippet = str_replace("\n", '', $snippet);
-			$snippet = str_replace("\r", '', $snippet);
-			$snippet = str_replace("<br/>", '', $snippet);
-			$snippet = str_replace("<br>", '', $snippet);
-			$snippet  = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
-			$result['snippet'] = $snippet;
-
-			if (isset($result['author']))
-			{
-				$authorCnt = 1;
-				$authorString = '';
-				foreach ($result['author'] as $author)
-				{
-					if ($authorCnt < count($result['author']))
-					{
-						$authorString .= $author;
-						$authorString .= ',';
-					}
-					else
-					{
-						$authorString .= $author;
-					}
-					$authorCnt++;
-				}
-				$result['authorString'] = $authorString; }
 		} // End foreach results
-
-		return $results;
-
+			return $results;
 	}
 }
 
