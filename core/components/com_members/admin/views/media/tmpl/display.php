@@ -62,7 +62,7 @@ defined('_HZEXEC_') or die();
 		}
 		?>
 		<div class="input-wrap" style="text-align: center; max-width: 300px;">
-			<img style="width: 100%;" src="<?php echo $this->profile->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" />
+			<img style="width: 100%;" src="<?php echo $this->profile->picture(0, false); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" />
 		</div>
 		<?php echo Html::input('token'); ?>
 	</form>
