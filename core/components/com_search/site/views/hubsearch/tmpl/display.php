@@ -109,50 +109,57 @@ $noResult = count($this->results) > 0 ? false : true;
 				<?php endif; ?>
 				<?php if (!$noResult): ?>
 				<div class="results list"><!-- add "tiled" to class for tiled view -->
+
 					<?php foreach ($this->results as $result): ?>
-					<div class="result">
-						<div class="result-body">
+						<?php if (is_array($result)): ?>
+						<div class="result">
+							<div class="result-body">
 
-							<!-- Title : mandatory -->
-							<h3 class="result-title"><a href="<?php echo $result['url']; ?>"><b><!-- highlight portion --></b><?php echo $result['title']; ?></a></h3>
+								<!-- Title : mandatory -->
+								<h3 class="result-title"><a href="<?php echo $result['url']; ?>"><b><!-- highlight portion --></b><?php echo $result['title']; ?></a></h3>
 
-							<div class="result-extras">
-								<!-- Cateogory : mandatory -->
-								<span class="result-category"><?php echo ucfirst($result['hubtype']); ?></span>
+								<div class="result-extras">
+									<!-- Cateogory : mandatory -->
+									<span class="result-category"><?php echo ucfirst($result['hubtype']); ?></span>
 
-								<! -- Date  : mandatory -->
-								<?php $date = new \Hubzero\Utility\Date($result['date']); ?>
-								<span class="result-timestamp"><time datetime="<?php echo $result['date'] ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
+									<! -- Date  : mandatory -->
+									<?php $date = new \Hubzero\Utility\Date($result['date']); ?>
+									<span class="result-timestamp"><time datetime="<?php echo $result['date'] ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
 
-								<!-- Authors -->
-								<?php if (isset($result['author'])): ?>
-								<span class="result-authors">
-									<span class="result-author"><?php echo $result['authorString']; ?></span>
-								</span>
+									<!-- Authors -->
+									<?php if (isset($result['author'])): ?>
+									<span class="result-authors">
+										<span class="result-author"><?php echo $result['authorString']; ?></span>
+									</span>
+									<?php endif; ?>
+
+								</div>
+								<!-- Snippet : mandatory -->
+								<div class="result-snippet">
+								<?php echo $result['snippet']; ?>
+								</div><!-- end result snippet -->
+
+								<?php if (isset($result['tags'])): ?>
+								<!-- Tags -->
+								<div class="result-tags">
+									<ul class="tags">
+										<?php foreach ($result['tags'] as $tag): ?>
+										<li><a class="tag" href="#"><?php echo $tag; ?></a></li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
 								<?php endif; ?>
 
-							</div>
-							<!-- Snippet : mandatory -->
-							<div class="result-snippet">
-							<?php echo $result['snippet']; ?>
-							</div><!-- end result snippet -->
+								<!-- Result URL -->
+								<div class="result-url"><a href="<?php echo $result['url'] ?>"><?php echo $result['url']; ?></a></div>
 
-							<?php if (isset($result['tags'])): ?>
-							<!-- Tags -->
-							<div class="result-tags">
-								<ul class="tags">
-									<?php foreach ($result['tags'] as $tag): ?>
-									<li><a class="tag" href="#"><?php echo $tag; ?></a></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-							<?php endif; ?>
-
-							<!-- Result URL -->
-							<div class="result-url"><a href="<?php echo $result['url'] ?>"><?php echo $result['url']; ?></a></div>
-
-						</div> <!-- End Result Body -->
-					</div> <!-- End Result -->
+							</div> <!-- End Result Body -->
+						</div> <!-- End Result -->
+						<?php else:
+						// View override 
+							echo $result->display();
+						?>	
+						<?php endif; ?>
 					<?php endforeach; ?>
 				</div>
 				<form action="/search/" method="get">
