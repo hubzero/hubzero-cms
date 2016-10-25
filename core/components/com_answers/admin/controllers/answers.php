@@ -130,7 +130,7 @@ class Answers extends AdminController
 		}
 
 		$rows = $records
-			->ordered('filter_order', 'filter_order_Dir')
+			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 
