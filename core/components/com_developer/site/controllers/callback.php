@@ -81,8 +81,6 @@ class Callback extends SiteController
 			$connection->set('params', json_encode($connection_params));
 			$connection->save();
 		}
-			
-		\Session::set('dropbox.token', $accessToken);
 
 		// Redirect to the local endpoint
 		App::redirect(base64_decode($urlState));
