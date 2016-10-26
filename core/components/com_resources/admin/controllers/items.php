@@ -803,6 +803,8 @@ class Items extends AdminController
 			$isNew = 1;
 		}
 
+		$old = new Resource($this->database);
+
 		if ($isNew)
 		{
 			// New entry
@@ -812,7 +814,6 @@ class Items extends AdminController
 		}
 		else
 		{
-			$old = new Resource($this->database);
 			$old->load($row->id);
 
 			$created_by_id = Request::getInt('created_by_id', 0);
