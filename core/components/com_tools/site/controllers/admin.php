@@ -591,6 +591,7 @@ class Admin extends SiteController
 			$new_hztv->member        = $hztv_dev->member;
 			$new_hztv->vnc_timeout   = $hztv_dev->vnc_timeout;
 			$new_hztv->hostreq       = $hztv_dev->hostreq;
+			$new_hztv->params        = $status['params'];
 
 			if (!$new_hztv->update())
 			{
