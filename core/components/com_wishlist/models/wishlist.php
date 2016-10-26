@@ -252,7 +252,7 @@ class Wishlist extends Base
 				if (!is_file($path))
 				{
 					//throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
-					throw new RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
+					throw new \RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
 				}
 				include_once($path);
 			}
@@ -552,7 +552,7 @@ class Wishlist extends Base
 
 			default:
 				//throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
-				throw new RuntimeException("Lang::txt('Owner type not supported.')", 404);
+				throw new \RuntimeException("Lang::txt('Owner type not supported.')", 404);
 			break;
 		}
 
