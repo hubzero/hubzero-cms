@@ -134,6 +134,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 				?>
 				<div class="explaination">
 					<p class="info">You can choose to log in via one of these services, and we'll help you fill in the info below!</p>
+					<p>Already have an account? <a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>">Log in here.</a></p>
 				</div>
 				<fieldset>
 					<legend>Connect With</legend>
