@@ -794,7 +794,7 @@ class Items extends AdminController
 		$row = new Resource($this->database);
 		if (!$row->bind($_POST))
 		{
-			throw new Exception($row->getError(), 400);
+			App::abort(400, $row->getError());
 		}
 
 		$isNew = 0;
@@ -932,7 +932,7 @@ class Items extends AdminController
 
 				if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required)
 				{
-					throw new Exception(Lang::txt('RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label), 500);
+					App::abort(500, Lang::txt('RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 				}
 
 				$found[] = $tagname;
@@ -958,13 +958,13 @@ class Items extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Store content
 		if (!$row->store())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Checkin resource
