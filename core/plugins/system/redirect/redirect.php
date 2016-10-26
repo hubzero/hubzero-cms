@@ -98,7 +98,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 					->row();
 
 			// If no published redirect was found try with the server-relative URL
-			if (!$link->id || $link->published != 1)
+			if (!$link->get('id') || $link->get('published') != 1)
 			{
 				$currRel = $uri->toString(array('path', 'query', 'fragment'));
 
@@ -108,7 +108,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			}
 
 			// If a redirect exists and is published, permanently redirect.
-			if ($link->id && $link->published == 1)
+			if ($link->get('id') && $link->get('published') == 1)
 			{
 				App::redirect($link->new_url, null, null, true, false);
 			}
@@ -133,10 +133,18 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$row->set('hits', intval($row->get('hits')) + 1);
+				$row->set('hits', intval($row->get('hits', 0)) + 1);
 			}
 
-			$row->save();
+			try
+			{
+				$row->save();
+			}
+			catch (Exception $e)
+			{
+				// Do nothing for now.
+				// @TODO  Log this?
+			}
 		}
 
 		// Render the error page.
