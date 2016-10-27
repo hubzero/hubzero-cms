@@ -115,8 +115,8 @@ class Tags extends SiteController
 				App::redirect(
 					Route::url('index.php?option=' . $this->_option)
 				);
-				return;
 			}
+
 			throw new Exception(Lang::txt('COM_TAGS_NO_TAG'), 404);
 		}
 
@@ -147,6 +147,11 @@ class Tags extends SiteController
 			$tagobj = Tag::oneByTag($tag);
 
 			if (in_array($tagobj->get('tag'), $added))
+			{
+				continue;
+			}
+
+			if ($tagobj->get('admin') && !User::authorise('core.manage', $this->_option))
 			{
 				continue;
 			}
