@@ -29,7 +29,9 @@ jQuery(function($) {
 		val = JSON.parse(serialized.val()),
 		// update hidden input to reflect form state
 		update = function() {
+			console.log('upd');
 			serialized.val(JSON.stringify(val));
+			console.log('update', serialized.val());
 		},
 		// update active idp list state
 		updateIdps = function() {
@@ -77,6 +79,7 @@ jQuery(function($) {
 
 	// try to show a preview of the given logo URL
 	var updateLogo = function(li) {
+		return;
 		var logoInp = li.find('input[name="logo"]'),
 			href = logoInp ? logoInp.val() : null;
 		if (!href || !href.replace(/s+/g, '')) {
@@ -86,7 +89,7 @@ jQuery(function($) {
 		li.find('.preview').remove();
 		if (href != logoInp.data('orig') || !(imgData = logoInp.data('logo_data'))) {
 			$.ajax({
-				'url': prnt.data('iconify'),
+				'url': '/core/plugins/authentication/shibboleth/fields/institutions.php',
 				'data': {'img': href},
 				'success': function(res) {
 					li.append($('<img class="preview">').attr('src', res));
@@ -120,18 +123,18 @@ jQuery(function($) {
 			}
 			var control = mkInp(k, idp[k]);
 			if (k == 'logo') {
-				control.input.change(function() {
-					updateLogo(li);
-				});
+//				control.input.change(function() {
+//					updateLogo(li);
+//				});
 			}
 			else {
 				control.input.change(updateIdps);
 			}
 			li.append(control.label);
 		}
-		if (idp.logo_data) {
-			li.find('input[name="logo"]').data('logo_data', idp.logo_data);
-		}
+//		if (idp.logo_data) {
+//			li.find('input[name="logo"]').data('logo_data', idp.logo_data);
+//		}
 		updateLogo(li);
 	};
 
@@ -177,6 +180,9 @@ jQuery(function($) {
 				$(this).parent().remove();
 			}));
 			for (var k in idp) {
+				if (k == 'logo') {
+					continue;
+				}
 				li.append($('<p>').append($('<label>').append($('<span>').text(keyToLabel(k))).append(document.createTextNode(idp[k]))))
 			}
 			ul.append(li);
@@ -207,7 +213,7 @@ jQuery(function($) {
 		var idp = {};
 		addNew.find('input').each(function(_, inp) {
 			inp = $(inp);
-			idp[inp.attr('name')] = inp.val();
+			idp[inp.attr('name')] = inp.val().replace(/^\s+|\s+$/g, '');
 			inp.val('');
 		});
 		newActiveIdp(idp, true);
