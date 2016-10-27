@@ -64,8 +64,9 @@ class UsersModelLogin extends JModelForm
 			}
 		}
 
-		// Set the return URL if empty.
-		if (!isset($data['return']) || empty($data['return']))
+
+		// Set the return URL if empty or if it doesn't look anything like an URL (which will happen thanks to shibd setting it to encrypted data).
+		if (!isset($data['return']) || empty($data['return']) || !preg_match('#^(/|index[.]php|https?://)#', $data['return']))
 		{
 			$data['return'] = 'index.php?option=com_members&task=myaccount';
 		}
