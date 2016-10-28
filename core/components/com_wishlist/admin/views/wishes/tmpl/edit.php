@@ -146,6 +146,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="fieldassigned"><?php echo Lang::txt('COM_WISHLIST_ASSIGNED'); ?>:</label>
 					<select name="fields[assigned]" id="fieldassigned">
+						<option value="0"><?php echo Lang::txt('COM_WISHLIST_UNASSIGNED'); ?></option>
 						<?php if ($this->assignees) { ?>
 							<?php foreach ($this->assignees as $assignee) { ?>
 								<option value="<?php echo $assignee->id; ?>"<?php echo ($this->row->assigned == $assignee->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($assignee->name)); ?></option>
@@ -168,7 +169,7 @@ function submitbutton(pressbutton)
 				<?php } ?>
 			</fieldset>
 		</div>
-		<div class="col span6">
+		<div class="col span5">
 			<table class="meta">
 				<tbody>
 					<tr>
