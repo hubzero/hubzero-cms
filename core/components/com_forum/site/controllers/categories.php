@@ -160,6 +160,11 @@ class Categories extends SiteController
 			break;
 		}
 
+		if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+
 		// Section
 		$section = Section::all()
 			->whereEquals('alias', $filters['section'])

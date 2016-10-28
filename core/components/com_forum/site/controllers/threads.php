@@ -147,7 +147,7 @@ class Threads extends SiteController
 		$filters = array(
 			'limit'    => Request::getInt('limit', 25),
 			'start'    => Request::getInt('limitstart', 0),
-			'section'  => Request::getVar('section', ''),
+			'section'  => Request::getCmd('section', ''),
 			'category' => Request::getCmd('category', ''),
 			'thread'   => Request::getInt('thread', 0),
 			'state'    => Post::STATE_PUBLISHED,
@@ -377,7 +377,7 @@ class Threads extends SiteController
 	{
 		$id       = Request::getInt('thread', 0);
 		$category = Request::getCmd('category', '');
-		$section  = Request::getVar('section', '');
+		$section  = Request::getCmd('section', '');
 
 		if (User::isGuest())
 		{
