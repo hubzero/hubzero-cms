@@ -39,6 +39,7 @@ use Components\Wishlist\Tables\Wish;
 use Exception;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use User;
@@ -208,7 +209,7 @@ class Comments extends AdminController
 	}
 
 	/**
-	 * Edit a category
+	 * Edit an entry
 	 *
 	 * @param   mixed  $row
 	 * @return  void
@@ -216,6 +217,12 @@ class Comments extends AdminController
 	public function editTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$wish = Request::getInt('wish', 0);
 
@@ -241,12 +248,6 @@ class Comments extends AdminController
 			$row->set('created_by', User::get('id'));
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			Notify::error($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->set('row', $row)
@@ -265,6 +266,12 @@ class Comments extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
@@ -277,9 +284,8 @@ class Comments extends AdminController
 		// Store new content
 		if (!$row->save())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		Notify::success(Lang::txt('COM_WISHLIST_COMMENT_SAVED'));
@@ -290,9 +296,9 @@ class Comments extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id, false)
-		);
+		Request::setVar('wish', $row->item_id);
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -305,12 +311,18 @@ class Comments extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$wish = Request::getInt('wish', 0);
 		$ids  = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Loop through each ID
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			$comment = Comment::oneOrFail(intval($id));
@@ -318,14 +330,19 @@ class Comments extends AdminController
 			if (!$comment->destroy())
 			{
 				Notify::error($comment->getError());
+				continue;
 			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $i));
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false),
-			Lang::txt('COM_WISHLIST_ITEMS_REMOVED', count($ids))
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -338,6 +355,11 @@ class Comments extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Incoming
@@ -348,42 +370,45 @@ class Comments extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
-				($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH')),
-				'error'
-			);
-			return;
+			Notify::error($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+			return $this->cancelTask();
 		}
 
 		// Update record(s)
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			// Updating a category
 			$row = Comment::oneOrFail($id);
 			$row->set('state', $state);
-			$row->save();
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Set message
-		switch ($state)
+		if ($i)
 		{
-			case '-1':
-				$message = Lang::txt('COM_WISHLIST_ARCHIVED', count($ids));
-			break;
-			case '1':
-				$message = Lang::txt('COM_WISHLIST_PUBLISHED', count($ids));
-			break;
-			case '0':
-				$message = Lang::txt('COM_WISHLIST_UNPUBLISHED', count($ids));
-			break;
+			switch ($state)
+			{
+				case '-1':
+					Notify::success(Lang::txt('COM_WISHLIST_ARCHIVED', $i));
+				break;
+				case '1':
+					Notify::success(Lang::txt('COM_WISHLIST_PUBLISHED', $i));
+				break;
+				case '0':
+					Notify::success(Lang::txt('COM_WISHLIST_UNPUBLISHED', $i));
+				break;
+			}
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -396,6 +421,11 @@ class Comments extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$state = $this->getTask() == 'anonymize' ? 1 : 0;
 
 		// Incoming
@@ -406,10 +436,7 @@ class Comments extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		// Update record(s)
@@ -418,13 +445,14 @@ class Comments extends AdminController
 			// Updating a category
 			$row = Comment::oneOrFail($id);
 			$row->set('anonymous', $state);
-			$row->save();
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+			}
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
-		);
+		$this->cancelTask();
 	}
 
 	/**

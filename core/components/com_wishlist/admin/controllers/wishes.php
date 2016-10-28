@@ -42,6 +42,7 @@ use Components\Wishlist\Models\Tags;
 use Exception;
 use stdClass;
 use Request;
+use Notify;
 use Config;
 use Route;
 use Lang;
@@ -153,12 +154,19 @@ class Wishes extends AdminController
 	}
 
 	/**
-	 * Edit a category
+	 * Edit an entry
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		$this->view->wishlist = Request::getInt('wishlist', 0);
@@ -221,7 +229,7 @@ class Wishes extends AdminController
 			{
 				if ($list->category == 'resource')
 				{
-					include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+					include_once(\Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
 					$list->resource = new \Components\Resources\Tables\Resource($this->database);
 					$list->resource->load($list->referenceid);
 				}
@@ -264,12 +272,6 @@ class Wishes extends AdminController
 		$tagging = new Tags($this->view->row->id);
 		$this->view->tags = $tagging->render('string');
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			\Notify::error($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -286,6 +288,12 @@ class Wishes extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
@@ -294,9 +302,8 @@ class Wishes extends AdminController
 		$row = new Wish($this->database);
 		if (!$row->bind($fields))
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		$row->anonymous = (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0;
@@ -306,17 +313,15 @@ class Wishes extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
@@ -357,18 +362,18 @@ class Wishes extends AdminController
 
 			if (!$page->check())
 			{
-				$this->setError($page->getError());
-				$this->editTask($row);
-				return;
+				Notify::error($page->getError());
+				return $this->editTask($row);
 			}
 
 			if (!$page->store())
 			{
-				$this->setError($page->getError());
-				$this->editTask($row);
-				return;
+				Notify::error($page->getError());
+				return $this->editTask($row);
 			}
 		}
+
+		Notify::success(Lang::txt('COM_WISHLIST_WISH_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -377,8 +382,7 @@ class Wishes extends AdminController
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wishlist=' . $row->wishlist, false),
-			Lang::txt('COM_WISHLIST_WISH_SAVED')
+			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wishlist=' . $row->wishlist, false)
 		);
 	}
 
@@ -392,13 +396,17 @@ class Wishes extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming
-		$wishlist = Request::getInt('wishlist', 0);
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
+		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
+		$i = 0;
 		if (count($ids) > 0)
 		{
 			$tbl = new Wish($this->database);
@@ -410,16 +418,21 @@ class Wishes extends AdminController
 
 				if (!$tbl->delete($id))
 				{
-					throw new Exception($tbl->getError(), 500);
+					Notify::error($tbl->getError());
+					continue;
 				}
+
+				$i++;
 			}
 		}
 
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $i));
+		}
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist, false),
-			Lang::txt('COM_WISHLIST_ITEMS_REMOVED', count($ids))
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -432,18 +445,19 @@ class Wishes extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_WISHLIST_NO_ID'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_WISHLIST_NO_ID'));
+			return $this->cancelTask();
 		}
 
 		switch ($this->getTask())
@@ -461,27 +475,17 @@ class Wishes extends AdminController
 		// Check and store the changes
 		if (!$row->check())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
+			Notify::error($row->getError());
+			return $this->cancelTask();
 		}
 		if (!$row->store())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
+			Notify::error($row->getError());
+			return $this->cancelTask();
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -493,6 +497,11 @@ class Wishes extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$state = $this->getTask() == 'grant' ? 1 : 0;
 
