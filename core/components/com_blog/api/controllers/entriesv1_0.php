@@ -305,6 +305,26 @@ class Entriesv1_0 extends ApiController
 			$row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
 		}
 
+		// Log activity
+		$base = rtrim(Request::base(), '/');
+		$url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'created',
+				'scope'       => 'blog.entry',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . $row->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $row->get('title'),
+					'url'   => $url
+				)
+			],
+			'recipients' => [
+				$row->get('created_by')
+			]
+		]);
+
 		$this->send($row->toObject());
 	}
 
@@ -512,6 +532,26 @@ class Entriesv1_0 extends ApiController
 			$row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
 		}
 
+		// Log activity
+		$base = rtrim(Request::base(), '/');
+		$url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'updated',
+				'scope'       => 'blog.entry',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . $row->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $row->get('title'),
+					'url'   => $url
+				)
+			],
+			'recipients' => [
+				$row->get('created_by')
+			]
+		]);
+
 		$this->send($row->toObject());
 	}
 
@@ -554,6 +594,26 @@ class Entriesv1_0 extends ApiController
 			{
 				throw new Exception($row->getError(), 500);
 			}
+
+			// Log activity
+			$base = rtrim(Request::base(), '/');
+			$url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
+
+			Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => 'deleted',
+					'scope'       => 'blog.entry',
+					'scope_id'    => $id,
+					'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . $row->get('title') . '</a>'),
+					'details'     => array(
+						'title' => $row->get('title'),
+						'url'   => $url
+					)
+				],
+				'recipients' => [
+					$entry->get('created_by')
+				]
+			]);
 		}
 
 		$this->send(null, 204);
