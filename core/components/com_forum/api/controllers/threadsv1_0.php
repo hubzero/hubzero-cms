@@ -43,6 +43,7 @@ use Exception;
 use stdClass;
 use Request;
 use Config;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -230,12 +231,12 @@ class Threadsv1_0 extends ApiController
 
 			if (!$section->get('id'))
 			{
-				throw new Exception(Lang::txt('Section not found.'), 404);
+				throw new Exception(Lang::txt('COM_FORUM_ERROR_SECTION_NOT_FOUND'), 404);
 			}
 
 			if ($section->get('state') == Section::STATE_DELETED)
 			{
-				throw new Exception(Lang::txt('Section not found.'), 404);
+				throw new Exception(Lang::txt('COM_FORUM_ERROR_SECTION_NOT_FOUND'), 404);
 			}
 
 			$response->section = new stdClass;
@@ -459,12 +460,12 @@ class Threadsv1_0 extends ApiController
 
 			if (!$section->get('id'))
 			{
-				throw new Exception(Lang::txt('Section not found.'), 404);
+				throw new Exception(Lang::txt('COM_FORUM_ERROR_SECTION_NOT_FOUND'), 404);
 			}
 
 			if ($section->get('state') == Section::STATE_DELETED)
 			{
-				throw new Exception(Lang::txt('Section not found.'), 404);
+				throw new Exception(Lang::txt('COM_FORUM_ERROR_SECTION_NOT_FOUND'), 404);
 			}
 
 			if (!$filters['category_id'])
@@ -492,12 +493,12 @@ class Threadsv1_0 extends ApiController
 
 				if (!$category->get('id'))
 				{
-					throw new Exception(Lang::txt('Category not found.'), 404);
+					throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'), 404);
 				}
 
 				if ($category->get('state') == Category::STATE_DELETED)
 				{
-					throw new Exception(Lang::txt('Category not found.'), 404);
+					throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'), 404);
 				}
 			}
 
@@ -543,7 +544,7 @@ class Threadsv1_0 extends ApiController
 
 				$obj->creator = new stdClass;
 				$obj->creator->id   = 0;
-				$obj->creator->name = Lang::txt('Anonymous');
+				$obj->creator->name = Lang::txt('COM_FORUM_ANONYMOUS');
 
 				if (!$thread->get('anonymous'))
 				{
@@ -703,7 +704,7 @@ class Threadsv1_0 extends ApiController
 
 		if (!$fields['category_id'])
 		{
-			throw new Exception(Lang::txt('Category ID must be specified.'), 400);
+			throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_ID_MISSING'), 400);
 		}
 
 		$row = Post::blank();
@@ -724,7 +725,7 @@ class Threadsv1_0 extends ApiController
 
 		if (!$category->get('id'))
 		{
-			throw new Exception(Lang::txt('Specified category could not be found for the provided scope and scope_id.'), 400);
+			throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'), 400);
 		}
 
 		if (!$row->save())
@@ -746,11 +747,64 @@ class Threadsv1_0 extends ApiController
 			}
 		}
 
+		// Record the activity
+		$base = rtrim(Request::base(), '/');
+		$url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
+
+		$recipients = array(
+			['forum.site', 1],
+			['forum.section', $category->get('section_id')],
+			['user', $row->get('created_by')]
+		);
+		$type = 'thread';
+		$desc = Lang::txt(
+			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
+			'<a href="' . $url . '">' . $row->get('title') . '</a>'
+		);
+
+		// If this is a post in a thread and not the thread starter...
+		if ($row->get('parent'))
+		{
+			$thread = Post::oneOrFail($row->get('thread'));
+			$thread->set('last_activity', ($fields['id'] ? $row->get('modified') : $row->get('created')));
+			$thread->save();
+
+			$type = 'post';
+			$desc = Lang::txt(
+				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
+				$row->get('id'),
+				'<a href="' . $url . '">' . $thread->get('title') . '</a>'
+			);
+
+			// If the parent post is not the same as the
+			// thread starter (i.e., this is a reply)
+			if ($row->get('parent') != $row->get('thread'))
+			{
+				$parent = Post::oneOrFail($row->get('parent'));
+				$recipients[] = ['user', $parent->get('created_by')];
+			}
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'created',
+				'scope'       => 'forum.' . $type,
+				'scope_id'    => $row->get('id'),
+				'anonymous'   => $row->get('anonymous', 0),
+				'description' => $desc,
+				'details'     => array(
+					'thread' => $row->get('thread'),
+					'url'    => $url
+				)
+			],
+			'recipients' => $recipients
+		]);
+
 		$obj = $row->toObject();
 
 		$obj->creator = new stdClass;
 		$obj->creator->id   = 0;
-		$obj->creator->name = Lang::txt('Anonymous');
+		$obj->creator->name = Lang::txt('COM_FORUM_ANONYMOUS');
 
 		if (!$row->get('anonymous'))
 		{
