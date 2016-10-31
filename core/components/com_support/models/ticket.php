@@ -282,6 +282,8 @@ class Ticket extends Model
 		switch ($as)
 		{
 			case 'text':
+				$status = ($this->get('open') ? Lang::txt('COM_SUPPORT_TICKET_STATUS_NEW') : Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED'));
+
 				if ($this->get('status'))
 				{
 					foreach ($this->statuses() as $s)
@@ -293,13 +295,11 @@ class Ticket extends Model
 						}
 					}
 				}
-				else
-				{
-					$status = ($this->get('open') ? Lang::txt('COM_SUPPORT_TICKET_STATUS_NEW') : Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED'));
-				}
 			break;
 
 			case 'open':
+				$status = ($this->get('open') ? 1 : 0);
+
 				if ($this->get('status'))
 				{
 					foreach ($this->statuses() as $s)
@@ -311,13 +311,11 @@ class Ticket extends Model
 						}
 					}
 				}
-				else
-				{
-					$status = ($this->get('open') ? 1 : 0);
-				}
 			break;
 
 			case 'color':
+				$status ='transparent';
+
 				if ($this->get('status'))
 				{
 					foreach ($this->statuses() as $s)
@@ -329,13 +327,11 @@ class Ticket extends Model
 						}
 					}
 				}
-				else
-				{
-					$status ='transparent';
-				}
 			break;
 
 			case 'class':
+				$status = ($this->get('open') ? 'new' : 'closed');
+
 				if ($this->get('status'))
 				{
 					foreach ($this->statuses() as $s)
@@ -347,16 +343,13 @@ class Ticket extends Model
 						}
 					}
 				}
-				else
-				{
-					$status = ($this->get('open') ? 'new' : 'closed');
-				}
 			break;
 
 			default:
 				$status = $this->get('status');
 			break;
 		}
+
 		return $status;
 	}
 
