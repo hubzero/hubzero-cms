@@ -500,6 +500,11 @@ class Threadsv1_0 extends ApiController
 				{
 					throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'), 404);
 				}
+
+				if ($filters['section_id'] && $category->get('section_id') != $filters['section_id'])
+				{
+					throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'), 404);
+				}
 			}
 
 			$entries->whereIn('category_id', (array)$filters['category_id']);
