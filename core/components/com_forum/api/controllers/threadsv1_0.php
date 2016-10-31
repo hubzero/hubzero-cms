@@ -717,7 +717,7 @@ class Threadsv1_0 extends ApiController
 		$row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
 
 		$category = Category::all()
-			->whereEquals('category_id', $row->get('category_id'))
+			->whereEquals('id', $row->get('category_id'))
 			->whereEquals('scope', $row->get('scope'))
 			->whereEquals('scope_id', $row->get('scope_id'))
 			->where('state', '!=', Category::STATE_DELETED)
