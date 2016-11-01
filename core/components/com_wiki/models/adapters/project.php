@@ -90,11 +90,11 @@ class Project extends Base
 	{
 		$segments = $this->_segments;
 		//$project = Request::getVar('project', NULL);
-		$segments['scope'] = Request::getVar('scope', NULL);
-		if (!$segments['scope']) // && is_object($project))
+		/*$segments['scope'] = Request::getVar('scope', NULL);
+		if (!$segments['scope'])
 		{
 			$segments['scope'] = 'projects/' . $this->_segments['alias'] . '/notes';
-		}
+		}*/
 		$anchor = '';
 
 		// If it doesn't exist or isn't published
@@ -117,7 +117,7 @@ class Project extends Base
 			case 'deleterevision':
 			case 'addcomment':
 			case 'save':
-				$segments['task'] = $type;
+				$segments['action'] = $type;
 			break;
 
 			case 'permalink':
