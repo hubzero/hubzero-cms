@@ -648,5 +648,7 @@ class TemplatesModelStyle extends JModelAdmin
 	{
 		parent::cleanCache('com_templates');
 		parent::cleanCache('_system');
+
+		Event::trigger('system.onCleanCache', array($group, $client_id));
 	}
 }
