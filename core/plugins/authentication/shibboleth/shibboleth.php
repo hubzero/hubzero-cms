@@ -51,8 +51,6 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	private static function log($msg, $data='')
 	{
 		static $params;
-		error_log('shib: '.$msg.' - '.print_r($data, 1));
-		return;
 
 		if (!isset($params))
 		{
