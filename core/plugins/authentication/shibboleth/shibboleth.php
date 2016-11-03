@@ -293,21 +293,10 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function logout()
 	{
-		list($service) = self::getLoginParams();
-		$return = '/';
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
-		{
-			$return = base64_decode($return);
-
-			if (!\Hubzero\Utility\Uri::isInternal($return))
-			{
-				$return = '';
-			}
-
-			$return = '/' . ltrim($return, '/');
-		}
-
-		App::redirect($return);
+		/**
+		 * Placeholder if Shibboleth needs to perform any cleanup.
+		 * CMS handles redirection.
+		 **/
 	}
 
 	/**
