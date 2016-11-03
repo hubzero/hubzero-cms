@@ -70,12 +70,12 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (Notify::any())
+		if (Notify::any() || !App::has('cache'))
 		{
 			return;
 		}
 
-		if (User::isGuest() && Request::method() == 'GET')
+		if (User::isGuest() && Request::method() == 'GET' && $this->params->get('pagecache', false))
 		{
 			$id = $this->getId();
 
@@ -117,12 +117,12 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (Notify::any())
+		if (Notify::any() || !App::has('cache'))
 		{
 			return;
 		}
 
-		if (User::isGuest())
+		if (User::isGuest() && $this->params->get('pagecache', false))
 		{
 			// We need to check again here, because auto-login plugins
 			// have not been fired before the first aid check
@@ -131,6 +131,36 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 				App::get('response')->getContent(),
 				App::get('config')->get('lifetime', 45)
 			);
+		}
+	}
+
+	/**
+	 * Clean out cached CSS files
+	 *
+	 * @param   string   $group
+	 * @param   integer  $client_id
+	 * @return  void
+	 */
+	public function onCleanCache($group = null, $client_id = 0)
+	{
+		$dir = PATH_APP . DS . 'cache';
+
+		if (!is_dir($dir))
+		{
+			return;
+		}
+
+		$paths = array(
+			$dir . '/site/site.css',
+			$dir . '/site/site.less.cache'
+		);
+
+		foreach ($paths as $path)
+		{
+			if (file_exists($path))
+			{
+				Filesystem::delete($path);
+			}
 		}
 	}
 }
