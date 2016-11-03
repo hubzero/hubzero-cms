@@ -37,7 +37,7 @@ $eventLink = 'http://' . $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->gro
 
 $message  = 'Thank you for registering for the "' . $this->event->title . '" event. (' . $eventLink . ')';
 $message .= "\n\n" . '-------------------------------------------------------------------' . "\n\n";
-$message .= 'Below is your registration details:';
+$message .= 'Below are your registration details:';
 $message .= "\n\n" . '-------------------------------------------------------------------' . "\n\n";
 
 $message .= 'Name: '. $this->register['first_name'].' '.$this->register['last_name'] ."\n";
