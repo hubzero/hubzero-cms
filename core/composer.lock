@@ -252,12 +252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "v4.5.0"
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
-                "reference": "v4.5.0",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
                 "shasum": ""
             },
             "require": {
@@ -714,12 +714,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "a735cd61be4f8ccf0fadb4d7ca2b3abc078a45de"
+                "reference": "761423fb0d32c72b2844e157a05ebcb223766a50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/a735cd61be4f8ccf0fadb4d7ca2b3abc078a45de",
-                "reference": "a735cd61be4f8ccf0fadb4d7ca2b3abc078a45de",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/761423fb0d32c72b2844e157a05ebcb223766a50",
+                "reference": "761423fb0d32c72b2844e157a05ebcb223766a50",
                 "shasum": ""
             },
             "require": {
@@ -752,7 +752,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-10-26 11:15:39"
+            "time": "2016-11-04 16:32:35"
         },
         {
             "name": "hubzero/orcid-php",
