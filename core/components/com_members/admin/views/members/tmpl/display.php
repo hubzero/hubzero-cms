@@ -35,6 +35,8 @@ defined('_HZEXEC_') or die();
 Document::addStyleDeclaration('
 	.toolbar-box .icon-32-buildprofile:before { content: "\f007"; }
 	.toolbar-box .icon-32-buildprofile:after { content: "\f0ad"; right: 0px; bottom: -2px; }
+	.authenticator, .authenticator-status { display: inline-block; text-transform: uppercase; font-size: 0.85em; color: #777; border-radius: 0.25em; padding: 0.2em 0.4em; line-height: 1; border: 1px solid #777; margin: 0 0.5em; }
+	.authenticator-status { display: inline-block; color: red; border-color: red; }
 ');
 
 $canDo = Components\Members\Helpers\Admin::getActions('component');
@@ -231,6 +233,19 @@ function submitbutton(pressbutton)
 				$groups[] = $this->accessgroups->seek($agroup->get('group_id'))->get('title');
 			}
 			$row->set('group_names', implode('<br />', $groups));
+
+			$incomplete = false;
+			$authenticator = 'hub';
+			if (substr($row->get('email'), -8) == '@invalid')
+			{
+				$authenticator = Lang::txt('COM_MEMBERS_UNKNOWN');
+				if ($lnk = Hubzero\Auth\Link::find_by_id(abs($row->get('username'))))
+				{
+					$domain = Hubzero\Auth\Domain::find_by_id($lnk->auth_domain_id);
+					$authenticator = $domain->authenticator;
+				}
+				$incomplete = true;
+			}
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -268,12 +283,21 @@ function submitbutton(pressbutton)
 						</a>
 					<?php endif; ?>
 				</td>
-				<td class="priority-5">
-					<?php echo $this->escape($row->get('username')); ?>
-				</td>
-				<td class="priority-6">
-					<?php echo $this->escape($row->get('email')); ?>
-				</td>
+				<?php if ($incomplete) : ?>
+					<td class="priority-5">
+						<?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR'); ?>: <span class="authenticator"><?php echo $authenticator; ?></span>
+					</td>
+					<td class="priority-6">
+						<?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR_STATUS'); ?>: <span class="authenticator-status"><?php echo Lang::txt('COM_MEMBERS_INCOMPLETE'); ?></span>
+					</td>
+				<?php else : ?>
+					<td class="priority-5">
+						<?php echo $this->escape($row->get('username')); ?>
+					</td>
+					<td class="priority-6">
+						<?php echo $this->escape($row->get('email')); ?>
+					</td>
+				<?php endif; ?>
 				<td class="center priority-3">
 					<?php if (substr_count($row->get('group_names'), "\n") > 1) : ?>
 						<span class="hasTip" title="<?php echo Lang::txt('COM_MEMBERS_HEADING_GROUPS') . '::' . $row->get('group_names'); ?>"><?php echo Lang::txt('COM_MEMBERS_MULTIPLE_GROUPS'); ?></span>
