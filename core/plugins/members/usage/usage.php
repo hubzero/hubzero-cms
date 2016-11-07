@@ -134,7 +134,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable='resources'
-					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND aa.authorid=" . $database->quote(intval($member->get('id')) . " AND aa.role!='submitter' AND (r.access=0 OR r.access=3)
+					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND aa.authorid=" . $database->quote(intval($member->get('id'))) . " AND aa.role!='submitter' AND (r.access=0 OR r.access=3)
 					ORDER BY r.publish_up DESC";
 
 			$database->setQuery($sql);
