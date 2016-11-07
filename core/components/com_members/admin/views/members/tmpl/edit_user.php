@@ -50,6 +50,19 @@ if (!$surname)
 		$middleName = implode(' ', $bits);
 	}
 }
+
+$incomplete = false;
+$authenticator = 'hub';
+if (substr($this->profile->get('email'), -8) == '@invalid')
+{
+	$authenticator = Lang::txt('COM_MEMBERS_UNKNOWN');
+	if ($lnk = Hubzero\Auth\Link::find_by_id(abs($this->profile->get('username'))))
+	{
+		$domain = Hubzero\Auth\Domain::find_by_id($lnk->auth_domain_id);
+		$authenticator = $domain->authenticator;
+	}
+	$incomplete = true;
+}
 ?>
 <div class="grid">
 	<div class="col span7">
@@ -161,12 +174,22 @@ if (!$surname)
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_LASTVISITDATE'); ?></th>
-					<th><?php echo $this->profile->get('lastvisitDate'); ?></th>
+					<th><?php echo (!$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate')); ?></th>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_MODIFIED'); ?></th>
-					<th><?php echo $this->profile->get('modifiedDate'); ?></th>
+					<th><?php echo (!$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate')); ?></th>
 				</tr>
+				<?php if ($incomplete) : ?>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR'); ?></th>
+						<th><?php echo $authenticator; ?></th>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR_STATUS'); ?></th>
+						<th><?php echo Lang::txt('COM_MEMBERS_INCOMPLETE'); ?></th>
+					</tr>
+				<?php endif; ?>
 			</tbody>
 		</table>
 
