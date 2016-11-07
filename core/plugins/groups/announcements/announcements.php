@@ -586,7 +586,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		// plain text
 		$eview->set('announcement', $announcement);
-		$plain = $eview->loadTemplate();
+		$plain = $eview->loadTemplate(false);
 		$plain = str_replace("\n", "\r\n", $plain);
 
 		// HTML
