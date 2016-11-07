@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 ?>
 Thank you for creating an account on <?php echo $this->sitename; ?>! Your username is: <?php echo $this->xregistration->get('login'); ?>
 
-You must click the following link to confirm your email address and activate your account:
-<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->xprofile->get('activation')); ?>
+You must follow the activation link to confirm your email address and activate your account. After navigating to the link, you will be asked to login. Use the credentials you registered with this account and you're done!
+Activation link: <?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->xprofile->get('activation')); ?>
 
 Do not reply to this email.  Replying to this email will not confirm or activate your account.
