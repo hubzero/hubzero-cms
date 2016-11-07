@@ -1137,20 +1137,19 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$message['multipart'] 	= $eview->loadTemplate();
 		$message['multipart'] 	= str_replace("\n", "\r\n", $message['multipart']);
 
-		if ($uid)
+		if (isset($uid) && $uid != 0 && $uid != false)
 		{
 			// Send HUB message
-			if (Event::trigger( 'xmessage.onSendMessage',
-				array(
-					'projects_member_added',
-					$subject,
-					$message,
-					$from,
-					array($uid),
-					$option
-					)
-				)
-			)
+			$recipient = User::getInstance($uid);
+
+			$email = new \Hubzero\Mail\Message();
+			$email->setSubject($subject)
+				->addFrom($from['email'], $from['name'])
+				->addPart($message['plaintext'], 'text/plain')
+				->addPart($message['multipart'], 'text/html')
+				->setTo($recipient->email, $recipient->name);
+
+			if ($email->send())
 			{
 				return true;
 			}
