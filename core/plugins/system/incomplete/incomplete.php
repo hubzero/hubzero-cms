@@ -56,7 +56,9 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 				'com_members.save.profiles',
 				'com_members.profiles.save',
 				'com_members.profiles.save.profiles',
-				'com_members.changepassword'
+				'com_members.changepassword',
+				'com_content.article',
+				'/legal/terms'
 			];
 
 			if ($allowed = trim($this->params->get('exceptions')))
@@ -75,6 +77,12 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 			$current .= ($controller = Request::getWord('controller', false)) ? '.' . $controller : '';
 			$current .= ($task       = Request::getWord('task', false)) ? '.' . $task : '';
 			$current .= ($view       = Request::getWord('view', false)) ? '.' . $view : '';
+
+			// If exception not found, let's try by raw URL path
+			if (!in_array($current, $exceptions))
+			{
+				$current = Request::path();
+			}
 
 			if (!in_array($current, $exceptions) && Session::get('registration.incomplete'))
 			{
