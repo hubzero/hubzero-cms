@@ -460,10 +460,11 @@ class Membership extends Base
 		foreach ($inviteemails as $mbr)
 		{
 			// Message body for HUB user
-			$eview2 = new \Hubzero\Component\View(array(
+			$eview2 = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
-				'layout' => 'inviteemail'
+				'layout' => 'inviteemail_plain'
 			));
+
 			$eview2->option   = $this->_option;
 			$eview2->sitename = Config::get('sitename');
 			$eview2->user     = User::getInstance();
