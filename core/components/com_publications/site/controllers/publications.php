@@ -428,7 +428,7 @@ class Publications extends SiteController
 			{
 				if (trim($this->view->filters['category']) == $cat->url_alias)
 				{
-					$this->view->filters['category'] = $cat->id;
+					$this->view->filters['category'] = (int)$cat->id;
 					break;
 				}
 			}
