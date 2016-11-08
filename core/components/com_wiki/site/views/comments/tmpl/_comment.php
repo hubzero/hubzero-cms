@@ -39,7 +39,13 @@ if ($this->page->get('created_by') == $this->comment->get('created_by'))
 }
 $cls .= ($this->comment->isReported()) ? ' abusive' : '';
 
-$this->comment->base = $this->page->link() . '&' . ($this->page->get('scope_id') ? 'action' : 'task');
+$lnk = $this->page->link();
+$d = '?';
+if (strstr($lnk, '?'))
+{
+	$d = '&';
+}
+$this->comment->base = $lnk . $d . ($this->page->get('scope_id') ? 'action' : 'task');
 
 $name = Lang::txt('COM_WIKI_ANONYMOUS');
 if (!$this->comment->get('anonymous'))
