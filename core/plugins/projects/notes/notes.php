@@ -146,7 +146,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 * @param   string  $tool    Name of tool wiki belongs to
 	 * @return  array   Return array of html
 	 */
-	public function onProject ($model, $action = '', $areas = null, $tool = NULL)
+	public function onProject($model, $action = '', $areas = null, $tool = NULL)
 	{
 		$returnhtml = true;
 
@@ -197,7 +197,13 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 			// Incoming
 			$this->_pagename = trim(Request::getVar('pagename', '', 'default', 'none', 2));
-
+			if (strstr($this->_pagename, '/'))
+			{
+				$bits = explode('/', $this->_pagename);
+				$this->_pagename = array_pop($bits);
+				$scope = implode('/', $bits);
+				Request::setVar('scope', $scope);
+			}
 			$this->_masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 			// Get our model

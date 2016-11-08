@@ -191,10 +191,10 @@ $revisions = $this->page->versions()
 									</td>
 								<?php } ?>
 								<td>
-									<a href="<?php echo Route::url($this->page->link() . '&version=' . $revision->get('version')); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
-										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toSql(true)); ?></time>
+									<a href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version'))); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
+										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d h:i:s')); ?></time>
 									</a>
-									<a class="tooltips markup" href="<?php echo Route::url($this->page->link() . '&version=' . $revision->get('version') . '&format=raw'); ?>" title="<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE'); ?>">
+									<a class="tooltips markup" href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version') . '&format=raw')); ?>" title="<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE'); ?>">
 										<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP'); ?>
 									</a>
 								</td>
@@ -208,14 +208,14 @@ $revisions = $this->page->versions()
 									<?php echo $status; ?>
 									<?php if (!$revision->get('approved') && $this->page->access('manage')) { ?>
 										<br />
-										<a href="<?php echo Route::url($this->page->link('approve') . '&oldid=' . $revision->get('id')); ?>">
+										<a href="<?php echo Route::url($this->page->link('approve', 'oldid=' . $revision->get('id'))); ?>">
 											<?php echo Lang::txt('COM_WIKI_ACTION_APPROVED'); ?>
 										</a>
 									<?php } ?>
 								</td>
 								<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
 									<td>
-										<a class="icon-trash delete" href="<?php echo Route::url($this->page->link('deleterevision') . '&oldid=' . $revision->get('id')); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
+										<a class="icon-trash delete" href="<?php echo Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
 											<?php echo Lang::txt('JACTION_DELETE'); ?>
 										</a>
 									</td>

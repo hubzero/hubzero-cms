@@ -277,7 +277,13 @@ class Comment extends Relational
 	{
 		if (!isset($this->base))
 		{
-			$this->base = $this->page->link() . '&' . ($this->page->get('scope_id') ? 'action' : 'task');
+			$lnk = $this->page->link();
+			$d = '?';
+			if (strstr($lnk, '?'))
+			{
+				$d = '&';
+			}
+			$this->base = $lnk . $d . ($this->page->get('scope_id') ? 'action' : 'task');
 		}
 
 		$link = $this->base;
