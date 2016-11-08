@@ -137,16 +137,16 @@
 .primary .upper.orcid:before { content: "ORCiD"; }
 /*.primary .upper.pucas:before { content: "Purdue Career Account"; }*/
 
-.primary .facebook { color: #FFFFFF; }
+.primary .facebook { color: #3B5998; }
 .primary .google:before { content: ""; }
-.primary .google { color: #D6492C; }
+.primary .google { background-color: #D6492C; }
 .primary .linkedin:before { content: ""; }
-.primary .linkedin { color: #4875B4; }
+.primary .linkedin { background-color: #4875B4; }
 .primary .pucas:before { content: ""; }
 .primary .pucas { background: #D1D3D4 url('/core/plugins/authentication/pucas/assets/img/logo.png') no-repeat 75px 7px; }
 .primary .twitter:before { content: ""; }
-.primary .twitter { color: #55ACEE; }
+.primary .twitter { background-color: #55ACEE; }
 .primary .orcid:before { content: ""; }
-.primary .orcid { color: #A6CE39; }
+.primary .orcid { background-color: #A6CE39; }
 .primary .hubzero:before { content: ""; }
-.primary .hubzero { color: #999; }
+.primary .hubzero { background-color: #999; }
