@@ -418,6 +418,10 @@ class Publications extends SiteController
 		$t = new Tables\Category($this->database);
 		$this->view->categories = $t->getCategories();
 
+		if (is_numeric($this->view->filters['category']))
+		{
+			$this->view->filters['category'] = (int)$this->view->filters['category'];
+		}
 		if (!is_int($this->view->filters['category']))
 		{
 			foreach ($this->view->categories as $cat)
