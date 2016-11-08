@@ -72,9 +72,7 @@ $this->css()
 
 			$fieldSet = $form->getFieldset('credentials');
 
-			if (!count($fieldSet)) :
-				?><div class="input-wrap"><p class="warning"><?php echo Lang::txt('COM_PLUGINS_OPTIONS_NOT_FOUND'); ?></p></div><?php
-			else :
+			if (count($fieldSet)) :
 				?>
 				<fieldset class="panelform">
 					<legend><?php echo Lang::txt('Credentials'); ?></legend>
