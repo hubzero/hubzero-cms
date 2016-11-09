@@ -958,9 +958,13 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$shortBody = \Components\Projects\Helpers\Html::replaceEmoIcons($shortBody);
 
 		// Style body text
+		if (!$isHtml)
+		{
+			$shortBody = preg_replace("/\n/", '<br />', trim($shortBody));
+		}
 		$ebody  = '<div class="body';
 		$ebody .= strlen($shortBody) > 50 || $isHtml ? ' newline' : ' sameline';
-		$ebody .= '">' . preg_replace("/\n/", '<br />', trim($shortBody));
+		$ebody .= '">' . $shortBody;
 		if ($shorten)
 		{
 			$ebody .= ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
@@ -969,7 +973,11 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		if ($shorten)
 		{
-			$ebody .= '<div class="fullbody hidden">' . preg_replace("/\n/", '<br />', trim($body)) . '</div>' ;
+			if (!$isHtml)
+			{
+				$body = preg_replace("/\n/", '<br />', trim($body));
+			}
+			$ebody .= '<div class="fullbody hidden">' . $body . '</div>' ;
 		}
 
 		return $ebody;
