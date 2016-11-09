@@ -93,7 +93,8 @@ class Format
 		"year" => "{YEAR}",
 		"month" => "{MONTH}",
 		"search_string" => "{SECONDARY LINK}",
-		"sec_cnt" => "{SECONDARY COUNT}"
+		"sec_cnt" => "{SECONDARY COUNT}",
+		"version" => "{VERSION}"
 	);
 
 	/**
@@ -400,12 +401,17 @@ class Format
 				{
 					$replace_values[$v] = "pg: " . $citation->$k;
 				}
+
+				if ($k == 'version')
+				{
+					$replace_values[$v] = "(Version " . $citation->$k . ")";
+				}
 			}
 		}
 
 		// Add more to coins
 
-		$tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;;
+		$tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;
 		$cite = strtr($tmpl, $replace_values);
 
 		// Strip empty tags

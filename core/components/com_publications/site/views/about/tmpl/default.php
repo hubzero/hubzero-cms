@@ -196,19 +196,22 @@ $schema 	= $metaElements->getSchema();
 	{
 		// Build our citation object
 		$cite = new stdClass();
-		$cite->title = $this->publication->title;
-		$cite->year = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? Date::of($this->publication->published_up)->toLocal('Y') : Date::of('now')->toLocal('Y');
+		$cite->title     = $this->publication->title;
+		$cite->year      = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? Date::of($this->publication->published_up)->toLocal('Y') : Date::of('now')->toLocal('Y');
 
-		$cite->location = '';
-		$cite->date = '';
+		$cite->location  = '';
+		$cite->date      = '';
 
-		$cite->doi 		= $this->publication->doi ? $this->publication->doi : '';
-		$cite->url 		= $cite->doi ? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), DS) . DS . $cite->doi
-							: NULL;
-		$cite->type 	= '';
-		$cite->pages 	= '';
-		$cite->author 	= $this->publication->getUnlinkedContributors();
-		$cite->publisher= $this->config->get('doi_publisher', '' );
+		$cite->doi       = $this->publication->doi ? $this->publication->doi : '';
+		$cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : NULL;
+		$cite->type      = '';
+		$cite->pages     = '';
+		$cite->author    = $this->publication->getUnlinkedContributors();
+		$cite->publisher = $this->config->get('doi_publisher', '' );
+		if ($this->publication->version_label > 1)
+		{
+			$cite->version   = $this->publication->version_label;
+		}
 
 		if ($this->publication->params->get('show_citation') == 2)
 		{
