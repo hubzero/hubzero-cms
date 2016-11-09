@@ -199,7 +199,7 @@ foreach ($this->rows as $row)
 					<?php
 					if ($this->config->get('productAccess'))
 					{
-						$db->setQuery("SELECT `agId` FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($row->pId));
+						$db->setQuery("SELECT `agId` FROM `#__storefront_product_access_groups` WHERE `exclude`=0 AND `pId`=" . $db->quote($row->pId));
 						$accessgroups = $db->loadColumn();
 						$ag = array();
 						foreach ($accessgroups as $access)
@@ -209,7 +209,19 @@ foreach ($this->rows as $row)
 								$ag[] = $this->ag[$access];
 							}
 						}
-						echo implode(', ', $ag);
+						echo Lang::txt('User is:') . ' ' . (!empty($ag) ? implode(', ', $ag) : Lang::txt('(none)'));
+
+						$db->setQuery("SELECT `agId` FROM `#__storefront_product_access_groups` WHERE `exclude`=1 AND `pId`=" . $db->quote($row->pId));
+						$accessgroups = $db->loadColumn();
+						$ag = array();
+						foreach ($accessgroups as $access)
+						{
+							if (array_key_exists($access, $this->ag))
+							{
+								$ag[] = $this->ag[$access];
+							}
+						}
+						echo '<br />' . Lang::txt('User is not:') . ' ' . (!empty($ag) ? implode(', ', $ag) : Lang::txt('(none)'));
 					}
 					else
 					{
