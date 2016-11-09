@@ -297,7 +297,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
 						<span class="access <?php echo $color_access; ?>">
-							<span><?php echo $row->groupname; ?></span>
+							<span><?php echo Lang::txt($row->groupname); ?></span>
 						</span>
 					<?php } else { ?>
 						<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->child_id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">
