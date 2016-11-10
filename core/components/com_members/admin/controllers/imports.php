@@ -126,7 +126,7 @@ class Imports extends AdminController
 		}
 
 		$imports = $model->ordered()
-			->paginated()
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// Output the HTML
