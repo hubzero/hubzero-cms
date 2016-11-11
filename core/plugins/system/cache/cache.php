@@ -124,6 +124,14 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 
 		if (User::isGuest() && $this->params->get('pagecache', false))
 		{
+			$path = trim(str_replace(Request::base(), '', Request::current()));
+			$path = trim($path, '/');
+
+			if ($this->isExempt($path) || $this->isExempt(Request::current()))
+			{
+				return;
+			}
+
 			// We need to check again here, because auto-login plugins
 			// have not been fired before the first aid check
 			App::get('cache')->put(
@@ -135,6 +143,31 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Check if the current URL is exempt from caching
+	 *
+	 * @param   string   $path
+	 * @return  boolean  True if the current page is a rule
+	 */
+	private function isExempt($path)
+	{
+		$defs = str_replace("\r", '', $this->params->def('cacheexempt', '/about/contact'));
+		$defs = explode("\n", $defs);
+
+		foreach ($defs As $def)
+		{
+			$result = trim($def);
+			$result = trim($result, '/');
+
+			if ($result == $path)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Clean out cached CSS files
 	 *
 	 * @param   string   $group
@@ -143,7 +176,7 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCleanCache($group = null, $client_id = 0)
 	{
-		$dir = PATH_APP . DS . 'cache';
+		$dir = PATH_APP . '/cache';
 
 		if (!is_dir($dir))
 		{

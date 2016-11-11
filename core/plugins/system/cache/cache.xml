@@ -28,6 +28,7 @@
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				<field name="cacheexempt" type="textarea" cols="30" rows="10" default="/about/contact" label="PLG_CACHE_FIELD_EXEMPT_LABEL" description="PLG_CACHE_FIELD_EXEMPT_DESC" />
 			</fieldset>
 		</fields>
 	</config>
