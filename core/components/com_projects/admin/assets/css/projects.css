@@ -37,9 +37,15 @@
 	.maxitd {
 		width: 50%;
 	}
-	span.private {
+	.privacy.private {
 		color: red;
 	}
-	span.public {
+	.privacy.public {
 		color: green;
+	}
+	.toolbar-box .icon-32-accessprivate:before {
+		content: "\f070";
+	}
+	.toolbar-box .icon-32-accesspublic:before {
+		content: "\f06e";
 	}
