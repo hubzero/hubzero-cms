@@ -593,4 +593,7 @@
 	#system-debug .debug-tab-lang-untranslated:before {
 		content: "\f0e6";
 	}
+	#system-debug .debug-tab-events:before {
+		content: "\26A1";
+	}
 }
