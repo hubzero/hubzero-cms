@@ -46,6 +46,11 @@ class plgSystemMobile extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDispatch()
 	{
+		if (!App::isSite())
+		{
+			return;
+		}
+
 		$session = App::get('session');
 		$tmpl = Request::getVar('tmpl', '');
 
@@ -60,7 +65,6 @@ class plgSystemMobile extends \Hubzero\Plugin\Plugin
 				Request::setVar('tmpl', 'mobile');
 			}
 		}
-
 
 		// Are we requesting to view full site again?
 		if ($tmpl == 'fullsite')
