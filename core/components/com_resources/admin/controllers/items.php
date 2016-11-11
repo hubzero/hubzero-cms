@@ -794,7 +794,7 @@ class Items extends AdminController
 		$row = new Resource($this->database);
 		if (!$row->bind($_POST))
 		{
-			App::abort(400, $row->getError());
+			App::abort(500, $row->getError());
 		}
 
 		$isNew = 0;
@@ -932,7 +932,7 @@ class Items extends AdminController
 
 				if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required)
 				{
-					App::abort(500, Lang::txt('RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
+					$this->setError(Lang::txt('COM_RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 				}
 
 				$found[] = $tagname;
@@ -943,7 +943,7 @@ class Items extends AdminController
 				if (!in_array($field->name, $found) && $field->required)
 				{
 					$found[] = $field->name;
-					$this->setError(Lang::txt('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
+					$this->setError(Lang::txt('COM_RESOURCES_REQUIRED_FIELD_CHECK', $field->label));
 				}
 			}
 		}
