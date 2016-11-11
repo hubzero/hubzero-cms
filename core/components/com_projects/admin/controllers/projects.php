@@ -38,7 +38,13 @@ use Components\Projects\Models;
 use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description\Option;
 use Components\Projects\Helpers;
-
+use Request;
+use Notify;
+use Plugin;
+use Route;
+use Lang;
+use User;
+use App;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
 
@@ -56,6 +62,8 @@ class Projects extends AdminController
 	{
 		$this->registerTask('applyDescription', 'saveDescription');
 		$this->registerTask('applydescription', 'savedescription');
+		$this->registerTask('accesspublic', 'access');
+		$this->registerTask('accessprivate', 'access');
 
 		// Publishing enabled?
 		$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
@@ -76,7 +84,7 @@ class Projects extends AdminController
 		// Enable publication management
 		if ($this->_publishing)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+			require_once(\Component::path('com_publications') . DS . 'models' . DS . 'publication.php');
 		}
 	}
 
@@ -209,20 +217,20 @@ class Projects extends AdminController
 	 */
 	public function editTask()
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		Request::setVar('hidemainmenu', 1);
+
 		// Incoming project ID
 		$id = Request::getVar('id', array(0));
 		if (is_array($id))
 		{
-			$id = $id[0];
+			$id = (!empty($id) ? intval($id[0]) : 0);
 		}
-
-		// Push some styles to the template
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace.css');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace.js');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files');
-
-		$this->view = $this->view;
-		$this->view->config = $this->config;
 
 		$model = new Models\Project($id);
 		$objAC = $model->table('Activity');
@@ -231,23 +239,18 @@ class Projects extends AdminController
 		{
 			if (!$model->exists())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option, false),
-					Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-					'error'
-				);
-				return;
+				Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+				return $this->cancelTask();
 			}
 		}
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'));
+			return $this->cancelTask();
 		}
+
+		$this->view = $this->view;
+		$this->view->config = $this->config;
 
 		// Get project types
 		$objT = $model->table('Type');
@@ -341,10 +344,11 @@ class Projects extends AdminController
 		$model = new Models\Project($id);
 		if (!$model->exists())
 		{
-			App::redirect('index.php?option=' . $this->_option,
+			App::redirect(
+				'index.php?option=' . $this->_option,
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error');
-			return;
+				'error'
+			);
 		}
 
 		$title = $formdata['title'] ? rtrim($formdata['title']) : $model->get('title');
@@ -354,7 +358,7 @@ class Projects extends AdminController
 		$model->set('type', $type);
 		$model->set('modified', Date::toSql());
 		$model->set('modified_by', User::get('id'));
-		$model->set('private', Request::getVar('private', 0));
+		$model->set('private', Request::getInt('private', 0));
 
 		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
@@ -485,11 +489,10 @@ class Projects extends AdminController
 			$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 			// Send HUB message
-			Event::trigger('xmessage.onSendMessage',
-				array('projects_admin_notice', $subject, $body, $from, $managers, $this->_option));
+			Event::trigger('xmessage.onSendMessage', array('projects_admin_notice', $subject, $body, $from, $managers, $this->_option));
 		}
 
-		\Notify::message($this->_message, 'success');
+		Notify::message($this->_message, 'success');
 
 		// Redirect to edit view?
 		if ($redirect)
@@ -577,6 +580,64 @@ class Projects extends AdminController
 			$objO->groupid = $group;
 			$objO->store();
 		}
+	}
+
+	/**
+	 * Sets the access of one or more entries
+	 *
+	 * @return  void
+	 */
+	public function accessTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$private = ($this->getTask() == 'accesspublic' ? 0 : 1); //Request::getInt('private', 0);
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Check for an ID
+		if (count($ids) < 1)
+		{
+			Notify::warning(Lang::txt('COM_PROJECTS_SELECT_ENTRY_TO_CHANGE_PRIVACY'));
+			return $this->cancelTask();
+		}
+
+		$i = 0;
+
+		foreach ($ids as $id)
+		{
+			// Update record(s)
+			$model = new Models\Project($id);
+			$model->set('private', $private);
+
+			if (!$model->exists())
+			{
+				Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+				continue;
+			}
+
+			if (!$model->store())
+			{
+				Notify::error($model->getError());
+				continue;
+			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_PROJECTS_ITEMS_PRIVACY_CHANGED', $i));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**

@@ -32,6 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+// Push some styles to the template
+Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace.css');
+Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace.js');
+Hubzero\Document\Assets::addPluginScript('projects', 'files');
+
 // Connections enabled?
 $p_params = Plugin::params( 'projects', 'files' );
 
@@ -39,10 +44,14 @@ $service = 'google';
 $cEnabled = $p_params->get('enable_' . $service, 0);
 $connected = $this->params->get($service . '_token');
 
-Toolbar::title( Lang::txt( 'Projects' ) . ': ' . stripslashes($this->model->get('title')) . ' (' . $this->model->get('alias') . ', #' . $this->model->get('id') . ')', 'addedit.png' );
-Toolbar::spacer();
-Toolbar::apply();
-Toolbar::save();
+Toolbar::title(Lang::txt('Projects') . ': ' . stripslashes($this->model->get('title')) . ' (' . $this->model->get('alias') . ', #' . $this->model->get('id') . ')', 'projects');
+
+if (User::authorise('core.edit', $this->option))
+{
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 
 // Determine status & options
@@ -76,12 +85,12 @@ elseif ($this->model->isPending())
 	$status  = '<span class="inactive">' . Lang::txt('COM_PROJECTS_PENDING_APPROVAL') . '</span> ';
 }
 
-$sysgroup 	= $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
-$quota 		= $this->params->get('quota');
-$quota 		= $quota ? $quota : \Components\Projects\Helpers\Html::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+$sysgroup = $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
+$quota    = $this->params->get('quota');
+$quota    = $quota ? $quota : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
 
-$pubQuota 	= $this->params->get('pubQuota');
-$pubQuota 	= $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+$pubQuota = $this->params->get('pubQuota');
+$pubQuota = $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 $this->css();
 
@@ -184,31 +193,31 @@ function submitbutton(pressbutton)
 					<label for="owned_by_user">
 						<?php echo Lang::txt('COM_PROJECTS_OWNER_LEAD'); ?>:
 						<select name="owned_by_user" class="block">
-					<?php foreach ($this->model->team($filters = array('status' => 1), true) as $member) {  ?>
-						<option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) { echo 'selected="selected"'; } ?>><?php echo $member->fullname; ?> <?php if ($member->userid == $this->model->get('owned_by_user')) { echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'; } ?></option>
-					<?php } ?>
+							<?php foreach ($this->model->team($filters = array('status' => 1), true) as $member) {  ?>
+								<option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) { echo 'selected="selected"'; } ?>><?php echo $member->fullname; ?> <?php if ($member->userid == $this->model->get('owned_by_user')) { echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'; } ?></option>
+							<?php } ?>
 						</select>
 					</label>
 				</div>
-					<?php if (!empty($groups)) {
-						$used = array();
-						?>
-				<div class="input-wrap">
-					<label for="owned_by_group">
-						<?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:
-						<select name="owned_by_group" class="block">
-							<option value="0" <?php if (!$this->model->groupOwner()) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
-					<?php foreach ($groups as $g) {
-						if (in_array($g->gidNumber, $used))
-						{
-							continue;
-						}
-						$used[] = $g->gidNumber; ?>
-						<option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
-					<?php } ?>
-						</select>
-					</label>
-				</div>
+				<?php if (!empty($groups)) {
+					$used = array();
+					?>
+					<div class="input-wrap">
+						<label for="owned_by_group">
+							<?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:
+							<select name="owned_by_group" class="block">
+								<option value="0" <?php if (!$this->model->groupOwner()) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
+								<?php foreach ($groups as $g) {
+									if (in_array($g->gidNumber, $used))
+									{
+										continue;
+									}
+									$used[] = $g->gidNumber; ?>
+									<option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+								<?php } ?>
+							</select>
+						</label>
+					</div>
 				<?php } ?>
 
 				<div class="input-wrap">

@@ -34,18 +34,25 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title( Lang::txt( 'Projects' ), 'user.png' );
+Toolbar::title(Lang::txt('Projects'), 'projects');
 
+if (User::authorise('core.edit.state', $this->option))
+{
+	Toolbar::custom('accessprivate', 'accessprivate', 'accessprivate_h', 'COM_PROJECTS_PRIVATE', true);
+	Toolbar::custom('accesspublic', 'accesspublic', 'accesspublic_h', 'COM_PROJECTS_PUBLIC', true);
+	Toolbar::spacer();
+}
 // Only display if enabled
-if ($this->config->get('custom_profile') == 'custom')
+if ($this->config->get('custom_profile') == 'custom' && User::authorise('core.manage', $this->option))
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
 }
-
+if (User::authorise('core.edit', $this->option))
+{
+	Toolbar::editList();
+}
 Toolbar::spacer();
 Toolbar::preferences('com_projects', '550');
-Toolbar::editList();
-
 
 Html::behavior('tooltip');
 
@@ -163,11 +170,19 @@ function submitbutton(pressbutton)
 					$params = new \Hubzero\Config\Registry( $row->params );
 					$quota  = $params->get('quota', $this->defaultQuota);
 					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
+
+					$cls  = 'public';
+					$task = 'accessprivate';
+					if ($row->private)
+					{
+						$cls  = 'private';
+						$task = 'accesspublic';
+					}
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td><?php echo Html::grid('id', $i, $row->id, false, 'id' ); ?></td>
 					<td class="priority-5"><?php echo $row->id; ?></td>
-					<td class="priority-5"><?php echo '<img src="' . rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media' . '" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
+					<td class="priority-5"><?php echo '<img src="' . rtrim($base, '/') . '/projects/' . $row->alias . '/media/thumb" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
 					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
 						<strong><?php echo stripslashes($row->alias); ?></strong>
@@ -180,7 +195,17 @@ function submitbutton(pressbutton)
 					<td class="priority-3"><?php echo $ownerclass; ?></td>
 					<td class="priority-3"><?php echo $owner; ?></td>
 					<td><?php echo $status; ?></td>
-					<td class="priority-4"><?php echo ($row->private == 1) ? '<span class="private">' . Lang::txt('COM_PROJECTS_FLAG_PRIVATE') . '</span>' : '<span class="public">' . Lang::txt('COM_PROJECTS_FLAG_PUBLIC') . '</span>'; ?></td>
+					<td class="priority-4">
+						<?php if (User::authorise('core.edit.state', $this->option)) { ?>
+							<a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
+								<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
+							</a>
+						<?php } else { ?>
+							<span class="privacy <?php echo $cls; ?>">
+								<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
+							</span>
+						<?php } ?>
+					</td>
 					<td class="priority-4"><?php echo $quota . 'GB'; ?></td>
 				</tr>
 				<?php
