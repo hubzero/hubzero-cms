@@ -127,12 +127,16 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="admingroup" type="text" menu="hide" default="apps" label="Admin group" description="Name of contribtool admin group" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="storagehost" type="text" menu="hide" label="Storage host" default="" description="The host the storage indicator should use" />
-		<field name="show_storage" type="list" default="1" label="Show storage" description="Select wether to show the storage meter or not.">
+		<field name="show_storage" type="list" default="1" label="Show storage" description="Select whether to show the storage meter or not.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="params_whitelist" type="text" menu="hide" label="Directory parameter whitelist" default="/home" description="White-list of directories acceptable to include in tool parameter passing feature" />
+		<field name="github" type="list" default="0" label="Accept Github repo" description="Offer an option to pull code from a remote (public) Github repository.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
 	</fieldset>
 	<fieldset name="middleware">
 		<field name="mw_on" type="list" default="0" label="Middleware" description="Indicate whether the component is active or not">
