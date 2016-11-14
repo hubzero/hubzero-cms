@@ -568,6 +568,9 @@ class Tool extends \JTable
 		$mw         = $this->config->get('default_mw', 'narwhal');
 		$hostreq    = $this->config->get('default_hostreq', 'sessions');
 
+		// Load version params
+		$params = new \Hubzero\Config\Registry($version[0]->params);
+
 		// build status array
 		$status = array(
 			'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
@@ -607,7 +610,9 @@ class Tool extends \JTable
 			'vncGeometry'   => (isset($version[0]->vnc_geometry) && $version[0]->vnc_geometry !='') ? $version[0]->vnc_geometry : $vnc,
 			'license'       => isset($version[0]->license) ? $version[0]->license : '',
 			'hostreq'       => (isset($version[0]->hostreq) ? implode(', ', $version[0]->hostreq) : $hostreq),
-			'params'        => isset($version[0]->params) ? $version[0]->params : ''
+			'params'        => isset($version[0]->params) ? $version[0]->params : '',
+			'github'		=> $params->get('github'),
+			'publishType'	=> ($params->get('publishType') == 'weber=') ? 'jupyter' : 'standard'
 		);
 
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
