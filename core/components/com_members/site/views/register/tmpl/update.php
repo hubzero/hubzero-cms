@@ -41,7 +41,8 @@ $this->css('register')
 </header><!-- / #content-header -->
 
 <section class="main section">
-<?php if ($this->self) { ?>
+
+<?php if (isset($this->self) && $this->self) { ?>
 	<p class="passed">Your account has been updated successfully.</p>
 	<?php if ($this->updateEmail) { ?>
 		<p>Thank you for updating your account. In order to continue to use this account you must verify your new email address.</p>
