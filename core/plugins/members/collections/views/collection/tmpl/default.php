@@ -125,9 +125,6 @@ $this->css()
 			?>
 			<div class="post <?php echo $item->type(); ?>" id="post_<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>">
 				<div class="content">
-					<?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->filters['sort'] == 'ordering') { ?>
-						<div class="sort-handle tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRAB_TO_REORDER'); ?>"></div>
-					<?php } ?>
 					<?php
 						$this->view('default_' . $item->type(), 'post')
 						     ->set('name', $this->name)
@@ -227,7 +224,9 @@ $this->css()
 							</span>
 						</p>
 					</div><!-- / .attribution -->
-
+					<?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->filters['sort'] == 'ordering') { ?>
+						<div class="sort-handle tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRAB_TO_REORDER'); ?>"></div>
+					<?php } ?>
 				</div><!-- / .content -->
 			</div><!-- / .post -->
 		<?php } ?>
