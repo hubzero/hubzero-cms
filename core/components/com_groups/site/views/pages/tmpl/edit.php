@@ -126,12 +126,19 @@ if ($this->page->get('id'))
 
 							// only allow super groups to use php & scrips
 							// strip out php and scripts if somehow it made it through
-							if (!$this->group->isSuperGroup())
+							if (!is_object($this->group->params))
 							{
-								$allowPhp     = false;
-								$allowScripts = false;
-								$content      = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-								$content      = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+								$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+							}
+							if (!$this->group->params->get('page_trusted', 0))
+							{
+								if (!$this->group->isSuperGroup())
+								{
+									$allowPhp     = false;
+									$allowScripts = false;
+									$content      = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+									$content      = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+								}
 							}
 
 							// open in source mode if contains php or scripts
