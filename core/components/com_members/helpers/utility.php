@@ -231,7 +231,7 @@ class Utility
 		$baseURL = rtrim(Request::base(), '/');
 
 		$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
-		
+
 		$eview = new \Hubzero\Mail\View(array(
 			'name'   => 'emails',
 			'layout' => 'create'
@@ -242,24 +242,24 @@ class Utility
 		$eview->xprofile      = $user;
 		$eview->baseURL       = $baseURL;
 		$eview->xregistration = $xregistration;
-		
+
 		$msg = new \Hubzero\Mail\Message();
 		$msg->setSubject($subject)
 		    ->addTo($user->get('email'), $user->get('name'))
 		    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 		    ->addHeader('X-Component', 'com_members');
-		
+
 		$message = $eview->loadTemplate(false);
 		$message = str_replace("\n", "\r\n", $message);
-		
+
 		$msg->addPart($message, 'text/plain');
-		
+
 		$eview->setLayout('create_html');
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
-		
+
 		$msg->addPart($message, 'text/html');
-		
+
 		if (!$msg->send())
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
