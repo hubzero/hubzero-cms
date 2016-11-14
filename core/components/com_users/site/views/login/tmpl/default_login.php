@@ -53,9 +53,12 @@ if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getIn
 	if (array_key_exists($primary, $this->authenticators)
 	|| (isset($this->local) && $this->local && $primary == 'hubzero'))
 	{
-		$user     = User::getInstance($cookie->user_id);
-		$user_img = $cookie->user_img;
-		Request::setVar('primary', $primary);
+		if (isset($cookie->user_id))
+		{
+			$user     = User::getInstance($cookie->user_id);
+			$user_img = $cookie->user_img;
+			Request::setVar('primary', $primary);
+		}
 	}
 }
 
