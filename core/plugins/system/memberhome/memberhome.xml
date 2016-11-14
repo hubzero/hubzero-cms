@@ -42,8 +42,6 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename plugin="memberhome">memberhome.php</filename>
 		<filename>index.html</filename>
-		<folder>assets</folder>
-		<folder>fields</folder>
 	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_system_memberhome.ini</language>
@@ -55,10 +53,6 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="menuId" type="menuitem" default="0" class="chzn-color-state" required="1" label="PLG_SYSTEM_MEMBERHOME_FIELD_MENUID_LABEL" description="PLG_SYSTEM_MEMBERHOME_FIELD_MENUID_DESC">
 					<option	value="0">PLG_SYSTEM_MEMBERHOME_DEFAULT_LABEL</option>
 				</field>
-				<!--
-				<field name="ignore_urls" type="textarea" rows="10" default="" label="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_URLS_LABEL" description="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_URLS_DESC" />
-				<field name="ignore_options" type="textarea" rows="10" default="" label="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_OPTIONS_LABEL" description="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_OPTIONS_DESC" />
-				-->
 			</fieldset>
 		</fields>
 	</config>
