@@ -175,7 +175,8 @@ class Register extends SiteController
 
 		if ($xregistration->get('email') != $xprofile->get('email'))
 		{
-			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
+			$code = Components\Members\Helper\Utility::genemailconfirm();
+			$xprofile->set('activation', $code);
 			$updateEmail = true;
 		}
 
@@ -251,6 +252,8 @@ class Register extends SiteController
 		{
 			if ($updateEmail)
 			{
+				// Send confirmation email
+				// @TODO consolidate
 				$subject  = Config::get('sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
 				$eview = new \Hubzero\Component\View(array(
@@ -293,15 +296,6 @@ class Register extends SiteController
 			$eaview->baseURL    = $this->baseURL;
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
-
-			/*$msg = new \Hubzero\Mail\Message();
-			$msg->setSubject($subject)
-			    ->addTo($hubMonitorEmail)
-			    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-			    ->addHeader('X-Component', $this->_option)
-			    ->setBody($message)
-			    ->send();*/
-			// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 
 			// Determine action based on if the user chaged their email or not
 			if (!$updateEmail)
@@ -442,14 +436,6 @@ class Register extends SiteController
 				$xprofile->set('registerIP', Request::getVar('REMOTE_ADDR','','server'));
 			}
 
-			/*if ($xprofile->get('registerHost') == '')
-			{
-				if (isset($_SERVER['REMOTE_HOST']))
-				{
-					$xprofile->set('registerHost', Request::getVar('REMOTE_HOST','','server'));
-				}
-			}*/
-
 			if ($xprofile->get('registerDate') == '')
 			{
 				$xprofile->set('registerDate', Date::toSql());
@@ -463,7 +449,8 @@ class Register extends SiteController
 				}
 				else
 				{
-					$xprofile->set('activation', -rand(1, pow(2, 31)-1));
+					$code = \Components\Members\Helpers\Utility::genemailconfirm();
+					$xprofile->set('activation', $code);
 					$updateEmail = true;
 				}
 			}
@@ -508,32 +495,7 @@ class Register extends SiteController
 			// Notify the user
 			if ($updateEmail)
 			{
-				$subject  = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
-
-				$eview = new \Hubzero\Component\View(array(
-					'name'   => 'emails',
-					'layout' => 'update'
-				));
-				$eview->option     = $this->_option;
-				$eview->controller = $this->_controller;
-				$eview->sitename   = Config::get('sitename');
-				$eview->xprofile   = $xprofile;
-				$eview->baseURL    = $this->baseURL;
-				$message = $eview->loadTemplate();
-				$message = str_replace("\n", "\r\n", $message);
-
-				$msg = new \Hubzero\Mail\Message();
-				$msg->setSubject($subject)
-				    ->addTo($xprofile->get('email'))
-				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-				    ->addHeader('X-Component', $this->_option)
-				    ->setBody($message);
-
-				if (!$msg->send())
-				{
-					$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*,$hubMonitorEmail*/));
-					// @FIXME: LOG ERROR SOMEWHERE
-				}
+				\Components\Members\Helpers\Utility::sendConfirmEmail($xprofile, $xregistration);
 			}
 
 			// Notify administration
@@ -552,15 +514,6 @@ class Register extends SiteController
 				$eaview->baseURL    = $this->baseURL;
 				$message = $eaview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
-
-				/*$msg = new \Hubzero\Mail\Message();
-				$msg->setSubject($subject)
-				    ->addTo($hubMonitorEmail)
-				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-				    ->addHeader('X-Component', $this->_option)
-				    ->setBody($message)
-				    ->send();*/
-				// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 			}
 
 			if (!$updateEmail)
@@ -805,10 +758,6 @@ class Register extends SiteController
 					{
 						$user->set('activation', 3);
 					}
-					/*else
-					{
-						$user->set('activation', -rand(1, pow(2, 31)-1));
-					}*/
 				}
 				else if ($useractivation == 0)
 				{
@@ -869,83 +818,8 @@ class Register extends SiteController
 					// Send confirmation email
 					if ($user->get('activation') < 0)
 					{
-						$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
-
-						$eview = new \Hubzero\Mail\View(array(
-							'name'   => 'emails',
-							'layout' => 'create'
-						));
-						$eview->option        = $this->_option;
-						$eview->controller    = $this->_controller;
-						$eview->sitename      = Config::get('sitename');
-						$eview->xprofile      = $user;
-						$eview->baseURL       = $this->baseURL;
-						$eview->xregistration = $xregistration;
-
-						$msg = new \Hubzero\Mail\Message();
-						$msg->setSubject($subject)
-						    ->addTo($user->get('email'), $user->get('name'))
-						    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-						    ->addHeader('X-Component', $this->_option);
-
-						$message = $eview->loadTemplate(false);
-						$message = str_replace("\n", "\r\n", $message);
-
-						$msg->addPart($message, 'text/plain');
-
-						$eview->setLayout('create_html');
-						$message = $eview->loadTemplate();
-						$message = str_replace("\n", "\r\n", $message);
-
-						$msg->addPart($message, 'text/html');
-
-						if (!$msg->send())
-						{
-							$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
-							// @FIXME: LOG ERROR SOMEWHERE
-						}
+						\Components\Members\Helpers\Utility::sendConfirmEmail($user, $xregistration);
 					}
-
-					// Notify administration
-					/* Moved to user plugin
-					if ($usersConfig->get('mail_to_admin', 0))
-					{
-						$eview  = new \Hubzero\Mail\View(array(
-							'name'   => 'emails',
-							'layout' => 'admincreate_plain'
-						));
-						$eview->option     = $this->_option;
-						$eview->controller = $this->_controller;
-						$eview->sitename   = Config::get('sitename');
-						$eview->xprofile   = $user;
-						$eview->baseUrl    = $this->baseURL;
-
-						$plain = $eview->loadTemplate(false);
-						$plain = str_replace("\n", "\r\n", $plain);
-
-						// HTML
-						$eview->setLayout('admincreate_html');
-
-						$html = $eview->loadTemplate();
-						$html = str_replace("\n", "\r\n", $html);
-
-						$hubMonitorEmail = Config::get('mailfrom');
-
-						$message = new \Hubzero\Mail\Message();
-						$message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION'))
-						        ->addTo($hubMonitorEmail)
-						        ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-						        ->addHeader('X-Component', $this->_option)
-						        ->addHeader('X-Component-Object', 'user_creation_admin_notification')
-						        ->addPart($plain, 'text/plain')
-						        ->addPart($html, 'text/html');
-
-						// Send mail
-						if (!$message->send())
-						{
-							\Log::error('Members admin notification email failed: ' . Lang::txt('Failed to mail %s', $hubMonitorEmail));
-						}
-					}*/
 
 					// Instantiate a new view
 					$this->view
@@ -1427,6 +1301,8 @@ class Register extends SiteController
 			$code = Request::getVar('code', false);
 		}
 
+		$cookie = \Hubzero\Utility\Cookie::eat('authenticator');
+
 		// Check if the user is logged in
 		if (User::isGuest())
 		{
@@ -1438,7 +1314,22 @@ class Register extends SiteController
 			);
 		}
 
-		$xprofile = User::getInstance();
+		// @FIXME The session is overriding the activation code
+		$xprofile = User::oneByActivationToken(-$code);
+		$user = User::getInstance();
+
+		if ($xprofile->get('id') != $user->get('id'))
+		{
+			// Profile and logged in user does not math
+			$this->setError('login mismatch');
+
+			// Build logout/login/confirm redirect flow
+			$login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
+			$logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
+
+			$redirect = Route::url('index.php?option=com_users&view=logout&return=' . $logout_return);
+		}
+
 
 		$email_confirmed = $xprofile->get('activation');
 
@@ -1620,38 +1511,4 @@ class Register extends SiteController
 		}
 		\Document::setTitle($title);
 	}
-
-	/**
-	 * Determine if cookies are enabled
-	 *
-	 * @return  boolean  True if cookies are enabled
-	 */
-	/*private function _cookie_check()
-	{
-		$jcookie = Session::getName();
-
-		if (!isset($_COOKIE[$jcookie]))
-		{
-			if (Request::getVar('cookie', '', 'get') != 'no')
-			{
-				$uri = \JURI::getInstance();
-				$uri->setVar('cookie', 'no');
-
-				App::redirect($uri->toString());
-				return;
-			}
-
-			return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_COOKIES'));
-		}
-		else if (Request::getVar('cookie', '', 'get') == 'no')
-		{
-			$uri = \JURI::getInstance();
-			$uri->delVar('cookie');
-
-			App::redirect($uri->toString());
-			return;
-		}
-
-		return true;
-	}*/
 }
