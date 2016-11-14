@@ -51,7 +51,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>
-		<field name="jupiter" type="list" default="0" label="Enable Jupyter" description="Offer an option to publish as a Jupyter notebook.">
+		<field name="jupyter" type="list" default="0" label="Enable Jupyter" description="Offer an option to publish as a Jupyter notebook.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>

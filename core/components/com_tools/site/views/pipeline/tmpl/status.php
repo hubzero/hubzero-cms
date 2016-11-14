@@ -177,6 +177,15 @@ $this->css('pipeline.css')
 							<th><?php echo Lang::txt('COM_TOOLS_PROJECT_AREA'); ?></th>
 							<td><?php echo \Components\Tools\Helpers\Html::getWikiAccess($this->status['wiki']); ?></td>
 						</tr>
+						
+						<?php if ($this->status['github'])
+						{ ?>
+							<tr>
+								<th><?php echo Lang::txt('Github URL:'); ?></th>
+								<td><a href="<?php echo $this->status['github']; ?>"><?php echo $this->status['github']; ?></a></td>
+							</tr>
+						<?php } ?>
+						
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?></th>
 							<td><?php echo \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']); ?></td>
