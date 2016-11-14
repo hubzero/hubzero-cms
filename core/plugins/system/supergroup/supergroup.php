@@ -191,7 +191,7 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Method that fires after an SEF route is built
+	 * Get the file upload path for a group
 	 *
 	 * @param   object  $group
 	 * @return  string

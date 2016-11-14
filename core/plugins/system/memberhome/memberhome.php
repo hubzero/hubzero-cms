@@ -24,9 +24,7 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   HUBzero
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -40,7 +38,7 @@ defined('_HZEXEC_') or die();
 class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Method to catch the onAfterRoute event.
 	 *
 	 * @return  boolean
 	 */
@@ -53,40 +51,6 @@ class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		/*$ignoredURLs = (string) $this->params->get('ignore_urls', '');
-
-		if ($ignoredURLs)
-		{
-			$ignoredURLArray = explode("\r\n",$ignoredURLs);
-
-			$fullURL = Request::current();
-
-			foreach ($ignoredURLArray as $str)
-			{
-				$pos = strpos($fullURL, $str);
-				if ($pos !== false)
-				{
-					return false;
-				}
-			}
-		}
-
-		$ignoredOptions = (string) $this->params->get('ignore_options', '');
-
-		if ($ignoredOptions)
-		{
-			$option = Request::getCmd('option', '');
-			$ignoredOptionsArray = explode("\r\n", $ignoredOptions);
-
-			foreach ($ignoredOptionsArray as $str)
-			{
-				if ($str == $option)
-				{
-					return false;
-				}
-			}
-		}*/
-
 		$menuId = $this->params->get('menuId', 0);
 
 		if (!$menuId)
@@ -98,10 +62,14 @@ class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
 		$activeMenu  = $menu->getActive();
 		$defaultMenu = $menu->getDefault();
 
+		// If routing to the home page...
 		if ($activeMenu == $defaultMenu)
 		{
+			// Reset the active menu item and
+			// overwrite request vars
 			$menu->setActive($menuId);
 			$menu->setDefault($menuId, $defaultMenu->language);
+
 			$item = $menu->getItem($menuId);
 			$vars = $item->query;
 			$vars['Itemid'] = $menuId;
@@ -110,10 +78,8 @@ class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
 			{
 				Request::setVar($key, $var);
 			}
-
-			//Request::set($vars, 'method', true);
-			//App::redirect(Route::url('index.php?Itemid=' . $menuId, false));
 		}
+
 		return true;
 	}
 }
