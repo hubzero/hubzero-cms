@@ -694,24 +694,28 @@ class Pipeline extends SiteController
 	 */
 	public function createTask()
 	{
+		$this->view->setLayout( 'edit' );
+
 		// set defaults
 		list($vncGeometryX, $vncGeometryY) = preg_split('/[x]/', $this->config->get('default_vnc'));
 
 		$this->view->defaults = array(
-			'toolname'     => 'shortname',
+			'toolname'     => '',
 			'title'        => '',
 			'version'      => '1.0',
 			'description'  => '',
-			'exec'         => '',
+			'exec'         => '@OPEN',
 			'membergroups' => array(),
 			'published'    => '',
-			'code'         => '',
-			'wiki'         => '',
+			'code'         => '@OPEN',
+			'wiki'         => '@OPEN',
 			'developers'   => array(User::get('id')),
 			'vncGeometryX' => $vncGeometryX,
 			'vncGeometryY' => $vncGeometryY,
 			'team'         => User::get('username'),
-			'hostreq'      => $this->config->get('default_hostreq', 'sessions')
+			'hostreq'      => $this->config->get('default_hostreq', 'sessions'),
+			'github'	   => '',
+			'publishType'  => 'standard'
 		);
 
 		// Set the page title
@@ -737,7 +741,6 @@ class Pipeline extends SiteController
 		$this->view->config = $this->config;
 		$this->view->id     = '';
 		$this->view->editversion = 'dev';
-		//$this->view->error = $this->_error;
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -1013,6 +1016,23 @@ class Pipeline extends SiteController
 			}
 		}
 
+		// NEW: save github repo as param
+		$params  = '';
+		$version = $objV->getVersionInfo($this->_toolid, 'dev');
+		if ($version && !empty($version[0]))
+		{
+			$txt = new \Hubzero\Config\Registry($version[0]->params);
+		}
+		else
+		{
+			$txt = new \Hubzero\Config\Registry('');
+		}
+		$txt->set('github', $tool['github']);
+
+		$ptype = (empty($tool['publishType']) || $tool['publishType'] == 'standard') ? 'standard': 'weber=';
+		$txt->set('publishType', $ptype);
+		$params = $txt->toString();
+
 		if ($editversion == 'dev')
 		{
 			if ($hztv === false)
@@ -1048,6 +1068,7 @@ class Pipeline extends SiteController
 			$hztv->instance      = $tool['toolname'] . $dev_suffix;
 			$hztv->mw            = $this->config->get('default_mw', 'narwhal');
 			$hztv->hostreq       = $tool['hostreq'];
+			$hztv->params		 = $params;
 
 			$hzt->add('version', $hztv->instance);
 		}

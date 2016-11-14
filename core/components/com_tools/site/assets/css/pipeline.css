@@ -210,12 +210,15 @@
 	.developer.actions {
 		list-style: none;
 		margin: 0;
-		padding: 0 0 0 1em;
+		padding: 0 0 2em 1em;
 		line-height: 2em;
+		border: none;
+		display: block;
 	}
 	.developer.actions li {
 		display: inline;
 		padding: 0 0.5em 0 0.2em;
+		margin-right: 0.5em;
 		background: none;
 	}
 	.developer.actions li a, 
@@ -733,23 +736,29 @@
 
 /* Tool Info */
 	.toolinfo {
-		border: 1px solid #b1a997;
+		border: 4px solid #f1ede1;
 		color: #59554c;
 		background: #f9f7f1;
-		padding: 0.5em;
+		padding: 1em;
 		position: relative;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+	}
+	.toolinfo table {
+		border: none;
 	}
 	.toolinfo table th, .toolinfo table td {
 		border: none;
 		width: auto;
 	}
 	.toolinfo_abandoned {
-		border: 1px solid #ccc;
+		border-color:#ccc;
 		color: #666;
 		background: #eee;
 	}
 	.toolinfo_closed {
-		border: 1px solid #ccc;
+		border-color: #ccc;
 		color: #666;
 		background: #f0f9ff;
 	}
@@ -772,7 +781,8 @@
 	#toolstatus th.toolinfo_hed {
 		font-weight: bold;
 		color: #333333;
-		font-size: 110%;
+		font-size: 120%;
+		padding-top: 1em;
 	}
 	#toolstatus span.admin_label, 
 	.admin_label {
@@ -864,4 +874,13 @@
 	}
 	span.ttitle { 
 		float: left;
+	}
+	
+/* New for Mozfest */
+	.question-mark {
+		float: right;
+		color: #7a8db0;
+	}
+	.tooltip {
+		max-width: 400px;
 	}
