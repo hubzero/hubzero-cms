@@ -64,8 +64,13 @@ if ($this->group->isSuperGroup())
 	<?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
-				<a class="invited btn" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
+				<a class="invited btn btn-success icon" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
 					<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
+				</a>
+			</li>
+			<li>
+				<a class="invited btn btn-secondary" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
+					<?php echo Lang::txt('COM_GROUPS_TOOLBAR_DECLINE'); ?>
 				</a>
 			</li>
 		<?php endif; ?>

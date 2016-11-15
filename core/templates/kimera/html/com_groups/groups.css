@@ -108,6 +108,7 @@
 		padding: 1em;
 		min-height: 6.5em;
 		text-align: center;
+		overflow: hidden;
 	}
 	.groups-container img {
 		height: 100%;
@@ -189,6 +190,7 @@
 		color: #aaa;
 		text-align: center;
 		font-size: 85%;
+		min-height: 6em;
 	}
 	.group-meta span {
 		color: #666;
@@ -378,6 +380,9 @@
 		background: rgba(255, 255, 255, 0.1);
 		padding: 1em 30px;
 	}
+	#group_options>li {
+		text-align: center;
+	}
 	#group_options .btn {
 		border-color: #ccc;
 		border-color: rgba(255, 255, 255, 0.7);
@@ -396,6 +401,7 @@
 	#group_options .btn-group {
 		display: table;
 		width: 100%;
+		text-align: left;
 	}
 
 	#page_menu {

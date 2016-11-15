@@ -63,7 +63,7 @@ if ($group->get('published') && !User::isGuest())
 		if (in_array(User::get('id'), $invitees))
 		{
 			$status  = 'invitee';
-			$options = ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</a>';
+			$options = ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '</a>';
 		}
 		elseif (in_array(User::get('id'), $applicants))
 		{
@@ -138,7 +138,7 @@ $published = ($group->get('published')) ? true : false;
 					<?php if ($status == 'pending') : ?>
 						<?php echo Lang::txt('Membership request requires approval.'); ?>
 					<?php elseif ($status == 'invitee') : ?>
-						<a class="btn btn-success accept tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept'); ?>" title="<?php echo Lang::txt('COM_GROUPS_ACTION_ACCEPT_TITLE'); ?>"><?php echo Lang::txt('COM_GROUPS_ACTION_ACCEPT'); ?></a>
+						<a class="btn btn-success accept tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept'); ?>" title="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?></a>
 					<?php else : ?>
 						<div class="grid">
 							<div class="col span6">
