@@ -147,16 +147,17 @@
 		padding-left: 0.5em;
 		border-bottom: 1px solid #ececec;
 	}
-	.infofeed .body, .infofeed .fullbody {
+	.infofeed .body,
+	.infofeed .fullbody {
 		color: #000;
 		margin: 0;
 		padding: 0 3em 0 0;
 		display: inline-block;
 		text-align: justify;
 	}
-	.infofeed .fullbody {
+	/*.infofeed .fullbody {
 		margin: 1.5em 1em 1em 5em;
-	}
+	}*/
 	.infofeed .comment-show .fullbody {
 		margin: 0;
 		font-size: 90%;
