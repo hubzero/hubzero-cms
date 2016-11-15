@@ -106,6 +106,8 @@ class Author extends Relational
 		{
 			$last = self::all()
 				->select('ordering')
+				->whereEquals('subid', (int)$data['subid'])
+				->whereEquals('subtable', 'resources')
 				->order('ordering', 'desc')
 				->row();
 
