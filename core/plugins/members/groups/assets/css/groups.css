@@ -81,8 +81,9 @@
 	}
 	.group .group-details {
 		padding: 1em;
-		min-height: 6.5em;
+		height: 6.5em;
 		text-align: center;
+		overflow: hidden;
 	}
 	.group img {
 		height: 100%;
@@ -164,6 +165,7 @@
 		color: #aaa;
 		text-align: center;
 		font-size: 85%;
+		min-height: 6em;
 	}
 	.group-meta span {
 		color: #666;

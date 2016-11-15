@@ -132,6 +132,7 @@
 		padding: 1em;
 		min-height: 6.5em;
 		text-align: center;
+		overflow: hidden;
 	}
 	.groups-container img {
 		height: 100%;
@@ -213,6 +214,7 @@
 		color: #aaa;
 		text-align: center;
 		font-size: 85%;
+		min-height: 6em;
 	}
 	.group-meta span {
 		color: #666;
@@ -821,10 +823,11 @@
 		position: relative;
 	}
 	#group_options > li {
-		margin: 0;
+		text-align: center;
+		margin: 1em 0 0 0;
 		padding: 0;
 	}
-	#group_options .invited,
+	/*#group_options .invited,
 	#group_options .join,
 	#group_options .request,
 	#group_options .login {
@@ -851,14 +854,14 @@
 	}
 	#page_options .pending {
 		color: #A30;
-	}
+	}*/
 	#group_options .btn-group {
 		display: block;
+		text-align: left;
 	}
 	#group_options .btn-group > a {
 		width: 83%;
 	}
-
 	#group_options .btn-group > .btn {
 		border-color: #000;
 		background: #444;

@@ -14,6 +14,9 @@
 */
 
 /* Status */
+	.mod_mygroups .compactlist li span {
+		margin-left: 0;
+	}
 	.mod_mygroups .compactlist li span span.status {
 		position: static;
 	}
@@ -60,7 +63,7 @@
 		-ms-border-radius: 0.5em;
 		-o-border-radius: 0.5em;
 		border-radius: 0.5em;
-		margin: 0;
+		margin: 0 1em 0 0;
 	}
 	.mod_mygroups .compactlist li.group .actions a:hover {
 		border: none;
