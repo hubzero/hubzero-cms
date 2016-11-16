@@ -1052,9 +1052,6 @@
 		margin: 0;
 		font-size: 0.85em;
 	}
-	ol.comments .comment-changelog ul {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<li class="changelog-before"></li>' + this.innerHTML + '<li class="changelog-after"></li>');  /* [!] HACKS - IE 7 and older */
-	}
 	ol.comments .comment-changelog li.changelog-before,
 	ol.comments .comment-changelog li.changelog-after,
 	ol.comments .comment-changelog ul:before, 
@@ -1081,11 +1078,6 @@
 	ol.comments .comment-changelog ul.notifications li.changelog-before,
 	ol.comments .comment-changelog ul.notifications:before {
 		content: '\2709';
-	}
-	ol.comments .attachment:before {
-		content: '\f092';
-		font-family: 'Fontcons';
-		margin-right: 0.4em;
 	}
 
 /* Abuse Item */

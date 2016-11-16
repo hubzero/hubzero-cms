@@ -37,18 +37,10 @@
 	}
 
 	/* Comments */
-	ol.comments .attachment:before {
-		content: "\f092";
-		font-family: "Fontcons";
-		margin-right: 0.2em;
-	}
 	ol.comments .img:before {
 		content: "";
 		display: none;
 	}
-	/*ol.comments .comment-options a.active:before {
-		content: "\2716";
-	}*/
 	ol.comments + .list-footer {
 		margin-top: 2em;
 	}
@@ -130,9 +122,6 @@
 		margin-right: 0.2em;
 		color: #999;
 	}
-	.com_forum .entries .entry-id {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="entry-id-before">&#xf086;</small>' + this.innerHTML);
-	}
 	.com_forum h3.closed:before,
 	.com_forum .entries .closed .entry-id:before {
 		content: "\f023";
@@ -145,9 +134,6 @@
 	}
 	.com_forum .categories tbody th + td {
 		width: 70%;
-	}
-	.com_forum .categories .entry-id {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="entry-id-before">&#xf07b;</small>' + this.innerHTML);
 	}
 	.com_forum .categories .closed .entry-id:before {
 		content: "\f023";
@@ -291,17 +277,4 @@
 	.instructions .input-cell:last-child {
 		width: 5.75em;
 		text-align: right;
-	}
-
-/* IE 7 */
-	html>body .entries .entry-options .edit,
-	html>body .entries .entry-options .delete {
-		*display: block;
-		*float: right;
-	}
-	html>body .entries caption a.edit,
-	html>body .entries caption a.delete {
-		*display: block;
-		*margin-top: -1.5em;
-		*background-position: 0 0;
 	}
