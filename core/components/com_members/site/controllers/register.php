@@ -791,13 +791,16 @@ class Register extends SiteController
 
 					if (!$member->saveProfile($profile, $access))
 					{
-						$this->setError($member->getError());
-						$result = false;
+						\Notify::error($member->getError());
+						// Don't stop the registration process!
+						// At this point, the account was successfully created.
+						// The profile info, however, may have issues. But, it's not crucial.
+						//$result = false;
 					}
 				}
 				else
 				{
-					$this->setError($user->getError());
+					\Notify::error($user->getError());
 					$result = false;
 				}
 
