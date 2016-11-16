@@ -236,6 +236,98 @@
 				width: 50%;
 			}
 		}
+
+		.attachment {
+			margin: 1em 0;
+			padding: 1em 1em 1em 4em;
+			display: block;
+			position: relative;
+			border: 1px solid rgba(0, 0, 0, 0.1);
+			.border-radius(0.25em);
+			color: #666;
+
+			&:hover {
+				border-color: rgba(0, 0, 0, 0.4);
+			}
+			p {
+				margin: 0;
+				padding: 0;
+			}
+			.attachment-meta {
+				color: #aaa;
+			}
+			.attachment-action:before {
+				content: "\2014";
+				margin: 0 0.2em;
+			}
+			&:before {
+				position: absolute;
+				top: 0.4em;
+				left: 0.25em;
+				font-size: 3em;
+				line-height: 1;
+				content: '\f0f5';
+				font-family: 'Fontcons';
+				color: rgba(0, 0, 0, 0.4);
+			}
+			&.pdf:before,
+			&.rtf:before,
+			&.txt:before {
+				content: '\f0f6';
+			}
+			&.js:before,
+			&.css:before,
+			&.xml:before,
+			&.html:before,
+			&.htm:before,
+			&.py:before,
+			&.rb:before,
+			&.cc:before,
+			&.php:before {
+				content: '\f07e';
+			}
+			&.keynote:before,
+			&.ppt:before,
+			&.pps:before,
+			&.pptx:before {
+				content: "\f000";
+			}
+			&.pages:before,
+			&.doc:before,
+			&.docx:before {
+				content: '\f0f5';
+			}
+			&.xsl:before,
+			&.csv:before,
+			&.xslx:before {
+				content: '\f0ce';
+			}
+			&.mpg:before,
+			&.mpeg:before,
+			&.mov:before,
+			&.wmv:before,
+			&.asf:before,
+			&.asx:before,
+			&.ra:before,
+			&.rm:before,
+			&.avi:before,
+			&.qt:before,
+			&.mp4:before,
+			&.m4v:before {
+				content: '\f008';
+			}
+			&.mp3:before,
+			&.aiff:before,
+			&.wav:before,
+			&.m4a:before {
+				content: '\266B';
+			}
+			&.tar:before,
+			&.zip:before,
+			&.gz:before {
+				content: '\f005';
+			}
+		}
 	}
 	#commentform .comment-date-at,
 	#commentform .comment-date-on,

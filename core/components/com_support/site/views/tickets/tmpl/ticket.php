@@ -178,7 +178,15 @@ $cc = array();
 								}
 								else
 								{
-									echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+									?>
+									<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $attachment->get('description'); ?>">
+										<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
+										<p class="attachment-meta">
+											<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
+											<span class="attachment-action"><?php echo Lang::txt('Click to download'); ?></span>
+										</p>
+									</a>
+									<?php
 								}
 							}
 							?>
@@ -344,7 +352,15 @@ $cc = array();
 							}
 							else
 							{
-								echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+								?>
+								<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $attachment->get('description'); ?>">
+									<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
+									<p class="attachment-meta">
+										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
+										<span class="attachment-action"><?php echo Lang::txt('Click to download'); ?></span>
+									</p>
+								</a>
+								<?php
 							}
 						}
 						?>

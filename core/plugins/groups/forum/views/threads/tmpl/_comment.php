@@ -109,7 +109,13 @@ defined('_HZEXEC_') or die();
 					}
 					else
 					{
-						$html = '<p class="attachment"><a href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">' . $attachment->get('description') . '</a></p>';
+						$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+						$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+						$html .= '<p class="attachment-meta">';
+						$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+						$html .= '<span class="attachment-action">' . Lang::txt('Click to download') . '</span>';
+						$html .= '</p>';
+						$html .= '</a>';
 					}
 
 					echo $html;
