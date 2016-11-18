@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
 			if (dv_settings.serverside) {
 				$('.dv_header_select_all').each(function() {
 					var id = $(this).val();
-					if(dv.selected_cells[id]) {
+					if(dv.selected_cells && dv.selected_cells[id]) {
 						for (i=0; i<dv.selected_cells[id].length; i++) {
 							$('.' + id + ':checkbox[value="' + dv.selected_cells[id][i] + '"]').prop('checked', true);
 						}
