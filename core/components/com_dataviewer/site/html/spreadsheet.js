@@ -533,10 +533,10 @@ jQuery(document).ready(function($) {
 		}
 
 		$(dv_table.fnGetNodes()).find('.' + id + ':checkbox:checked').each(function() {
-			url += $(this).val() + ',';
+			url += 'file:' + $(this).val() + '%0A%0B';
 		});
 
-		url = url.slice(0, (url.length-1));
+		url = url.slice(0, (url.length-6));
 
 		if (typeof pageTracker != 'undefined') {
 			pageTracker._trackEvent('Data viewer', 'Tools launch (multiple)', url);
