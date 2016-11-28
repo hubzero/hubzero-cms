@@ -228,7 +228,7 @@ $fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 
 							// User messaging
 							$messageuser = false;
-							if ($messaging && $row->get('id') > 0 && $row->get('uidNumber') != User::get('id'))
+							if ($messaging && $row->get('id') > 0 && $row->get('uidNumber') != User::get('id') && substr($row->get('email'), -8) != '@invalid')
 							{
 								switch ($this->config->get('user_messaging'))
 								{

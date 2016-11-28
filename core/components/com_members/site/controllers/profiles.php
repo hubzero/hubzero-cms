@@ -199,7 +199,7 @@ class Profiles extends SiteController
 			$match = "LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%');
 			$query = "SELECT u.id, u.name, u.username, u.access, $match as rel
 					FROM `#__users` AS u
-					WHERE $match AND u.block = 0 AND u.activation>0 $restrict
+					WHERE $match AND u.block=0 AND u.activation>0 AND u.email NOT LIKE '%@invalid' $restrict
 					ORDER BY rel DESC, u.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
