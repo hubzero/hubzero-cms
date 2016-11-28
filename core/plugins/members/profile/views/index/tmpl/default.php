@@ -31,7 +31,7 @@
  */
 
 // No direct access
-defined('_HZEXEC_') or die( 'Restricted access');
+defined('_HZEXEC_') or die('Restricted access');
 
 $this->css()
      ->js()
@@ -565,6 +565,7 @@ function renderIfJson($v)
 					$cls[] = 'private';
 				}
 
+				// Tags need to be rendered a little differently
 				if ($field->get('type') == 'tags')
 				{
 					$value = $this->profile->tags();
@@ -577,9 +578,19 @@ function renderIfJson($v)
 						$value = $profile->get('label', $value);
 					}
 					$value = $value ?: $this->profile->get($field->get('name'));
-					if ($field->get('type') == 'textarea')
+
+					if ($value)
 					{
-						$value = Html::content('prepare', $value);
+						// If the type is a block of text, parse for macros
+						if ($field->get('type') == 'textarea')
+						{
+							$value = Html::content('prepare', $value);
+						}
+						// IF the type is a URL, link it
+						if ($field->get('type') == 'url')
+						{
+							$value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
+						}
 					}
 				}
 
@@ -609,6 +620,10 @@ function renderIfJson($v)
 						<?php
 						if ($isUser)
 						{
+							if ($field->get('type') == 'url')
+							{
+								$value = strip_tags($value);
+							}
 							if ($field->get('type') == 'tags')
 							{
 								$value = $this->profile->tags('string');
