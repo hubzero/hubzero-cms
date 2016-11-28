@@ -328,8 +328,8 @@ class Wishlists extends SiteController
 		$wishid  = Request::getInt('wishid', 0);
 		$id      = Request::getInt('id', 0);
 		$refid   = Request::getInt('rid', 0);
-		$cat     = Request::getVar('category', '');
-		$action  = Request::getVar('action', '');
+		$cat     = Request::getCmd('category', '');
+		$action  = Request::getWord('action', '');
 		$com     = Request::getInt('com', 0, 'get');
 		$canedit = false;
 		$saved   = Request::getInt('saved', 0);
@@ -530,7 +530,7 @@ class Wishlists extends SiteController
 	public function savesettingsTask()
 	{
 		$listid  = Request::getInt('listid', 0);
-		$action  = Request::getVar('action', '');
+		$action  = Request::getWord('action', '');
 
 		// Make sure we have list id
 		if (!$listid)
@@ -824,7 +824,7 @@ class Wishlists extends SiteController
 		$wishid   = Request::getInt('wishid', 0);
 		$listid   = Request::getInt('id', 0);
 		$refid    = Request::getInt('rid', 0);
-		$category = Request::getVar('category', '');
+		$category = Request::getCmd('category', '');
 
 		$wish = new Wish($wishid);
 
@@ -1135,8 +1135,8 @@ class Wishlists extends SiteController
 	public function editwishTask()
 	{
 		$refid  = Request::getInt('rid', 0);
-		$cat    = Request::getVar('category', '');
-		$status = Request::getVar('status', '');
+		$cat    = Request::getCmd('category', '');
+		$status = Request::getWord('status', '');
 		$vid    = Request::getInt('vid', 0);
 
 		// Check if wish exists on this list
@@ -1192,7 +1192,7 @@ class Wishlists extends SiteController
 			}
 		}
 
-		if ($this->_task == 'editwish' && ($status = Request::getVar('status', '')))
+		if ($this->_task == 'editwish' && ($status = Request::getWord('status', '')))
 		{
 			$former_status   = $wish->get('status');
 			$former_accepted = $wish->get('accepted');
@@ -1332,11 +1332,11 @@ class Wishlists extends SiteController
 	{
 		$listid   = Request::getInt('wishlist', 0);
 		$wishid   = Request::getInt('wish', 0);
-		$category = Request::getVar('type', '');
+		$category = Request::getCmd('type', '');
 		$refid    = Request::getInt('resource', 0);
 		if ($category == 'group')
 		{
-			$refid    = Request::getVar('group', '');
+			$refid    = Request::getCmd('group', '');
 		}
 
 		// some transfer options
@@ -1605,7 +1605,7 @@ class Wishlists extends SiteController
 		// Check if wish exists on this list
 		$wishlist = new Wishlist(
 			Request::getInt('rid', 0),
-			Request::getVar('category', '')
+			Request::getCmd('category', '')
 		);
 		if (!$wishlist->exists())
 		{
@@ -1706,7 +1706,7 @@ class Wishlists extends SiteController
 		Request::checkToken();
 
 		$refid    = Request::getInt('rid', 0);
-		$category = Request::getVar('category', '');
+		$category = Request::getCmd('category', '');
 
 		$wishlist = Wishlist::getInstance($refid, $category);
 		if (!$wishlist->exists())
@@ -1846,7 +1846,7 @@ class Wishlists extends SiteController
 		$listid   = Request::getInt('listid', 0);
 		$wishid   = Request::getInt('wishid', 0);
 		$ajax     = Request::getInt('ajax', 0);
-		$category = Request::getVar('cat', '');
+		$category = Request::getCmd('cat', '');
 		$when     = Date::toSql();
 
 		// Get wishlist info
@@ -2128,7 +2128,7 @@ class Wishlists extends SiteController
 			// Get wishlist info
 			$wishlist = new Wishlist(
 				Request::getInt('refid', 0),
-				Request::getVar('cat', '')
+				Request::getCmd('cat', '')
 			);
 
 			// Set page title
@@ -2181,7 +2181,7 @@ class Wishlists extends SiteController
 		}
 
 		// Incoming
-		$page = Request::getVar('page', 'wishlist');
+		$page = Request::getCmd('page', 'wishlist');
 		$vote = Request::getWord('vote', ''); // assuming text only vote. Fix for sql injection ticket 1182
 
 		//$this->authorize_admin($listid);
@@ -2231,8 +2231,8 @@ class Wishlists extends SiteController
 	{
 		// Query filters defaults
 		$filters = array();
-		$filters['sortby']   = Request::getVar('sortby', '');
-		$filters['filterby'] = Request::getVar('filterby', 'all');
+		$filters['sortby']   = Request::getWord('sortby', '');
+		$filters['filterby'] = Request::getWord('filterby', 'all');
 		$filters['search']   = Request::getVar('search', '');
 		$filters['tag']      = Request::getVar('tags', '');
 
