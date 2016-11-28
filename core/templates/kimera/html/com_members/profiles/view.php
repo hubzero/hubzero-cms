@@ -51,7 +51,7 @@ switch ($user_messaging)
 		$mssaging = false;
 		break;
 	case 1:
-		$common = \Hubzero\User\Helper::getCommonGroups(User::get('id'), $this->profile->get('id') );
+		$common = \Hubzero\User\Helper::getCommonGroups(User::get('id'), $this->profile->get('id'));
 		if (count($common) > 0)
 		{
 			$messaging = true;
@@ -74,8 +74,8 @@ if ($this->profile->get('id') == User::get("id"))
 	$prefix = "My";
 }
 
-//no messaging if guest
-if (User::isGuest())
+// No messaging if guest or account has an invalid email (incomplete 3rd-party registration)
+if (User::isGuest() || substr($this->profile->get('email'), -8) == '@invalid')
 {
 	$messaging = false;
 }
