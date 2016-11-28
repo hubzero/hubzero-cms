@@ -51,8 +51,12 @@ Html::behavior('switcher', 'submenu');
 // are we using the email gateway for group forum
 $params =  Component::params('com_groups');
 $allowEmailResponses = $params->get('email_comment_processing', 0);
-$autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup', 0);
 
+$autoEmailResponses  = $this->group->get('discussion_email_autosubscribe');
+if (is_null($autoEmailResponses))
+{
+	$autoEmailResponses = $params->get('email_member_groupsidcussionemail_autosignup', 0);
+}
 if ($this->group->get('discussion_email_autosubscribe', null) == 1
 	|| ($this->group->get('discussion_email_autosubscribe', null) == null && $autoEmailResponses))
 {
