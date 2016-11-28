@@ -218,6 +218,11 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 			$userid,
 			'receive-forum-email'
 		);
+		if ($row->get('id'))
+		{
+			// They already have a record, so ignore.
+			return;
+		}
 		$row->set('gidNumber', $gidNumber);
 		$row->set('userid', $userid);
 		$row->set('optionname', 'receive-forum-email');
