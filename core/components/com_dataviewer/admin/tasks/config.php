@@ -57,7 +57,7 @@ function dv_config()
 	var db_back_link = "/administrator/index.php?option=com_<?php echo $conf['com_name']; ?>";
 </script>
 
-<div style="font-size: 1.5em;">Editing configuation file : <strong><?php echo $dv_conf_file; ?></strong></div>
+<div style="font-size: 1.5em;">Editing configuration file : <strong><?php echo $dv_conf_file; ?></strong></div>
 <br />
 
 
