@@ -704,7 +704,7 @@ class Items extends AdminController
 		$title          = trim(Request::getVar('title', '', 'post'));
 		$title          = htmlspecialchars($title);
 		$abstract       = trim(Request::getVar('abstract', '', 'post'));
-		$abstract       = \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
+		$abstract       = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($abstract));
 		$description    = trim(Request::getVar('description', '', 'post', 'none', 2));
 		$release_notes  = stripslashes(trim(Request::getVar('release_notes', '', 'post', 'none', 2)));
 		$group_owner    = Request::getInt('group_owner', 0, 'post');
