@@ -302,7 +302,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-			->set('description', JText::_('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f086');

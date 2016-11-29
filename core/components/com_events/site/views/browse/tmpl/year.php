@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-		 ->js();
+	->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -123,20 +123,20 @@ $this->css()
 				$this_datetime = new DateTime($this->year . '-01-01');
 				//get a DateTime for the first day of the year and check if there's an event earlier
 				if ($this_datetime > $first_event_time) {
-					$prev = JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task));
-					$prev_text = JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR');
+					$prev = Route::url('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task));
+					$prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
 				} else {
 					$prev = "javascript:void(0);";
-					$prev_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR');
+					$prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
 				}
 				//get a DateTime for the first day of the next year and see if there's an event after
 				$this_datetime->add(new DateInterval("P1Y"));
 				if ($this_datetime <= $last_event_time) {
-					$next = JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task));
-					$next_text = JText::_('EVENTS_CAL_LANG_NEXTYEAR');
+					$next = Route::url('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task));
+					$next_text = Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
 				} else {
 					$next = "javascript:void(0);";
-					$next_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_NEXTYEAR');
+					$next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
 				}
 
 				?>
