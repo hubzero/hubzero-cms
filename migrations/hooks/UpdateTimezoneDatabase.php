@@ -81,7 +81,7 @@ class UpdateTimezoneDatabase extends Base
 		$this->db->select('mysql');
 
 		// Run command to generate SQL
-		$sql = shell_exec("/usr/bin/mysql_tzinfo_to_sql {$zoneinfo} 2>&1");
+		$sql = shell_exec("/usr/bin/mysql_tzinfo_to_sql {$zoneinfo} 2>/dev/null");
 		$sql = explode(";", $sql);
 
 		if (count($sql) > 0)
