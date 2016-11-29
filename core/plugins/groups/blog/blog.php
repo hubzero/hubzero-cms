@@ -231,7 +231,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		// Build the HTML meant for the "profile" tab's metadata overview
-		$arr['metadata']['count'] = $this->model->entries($filters)->count();
+		$arr['metadata']['count'] = $this->model->entries($filters)->total();
 
 		return $arr;
 	}
