@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/projects/team.xml
+@file           plugins/projects/team/team.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -34,18 +34,11 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display and manage project team</description>
+	<description>PLG_PROJECTS_TEAM_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="team">team.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_projects_team.ini</language>
 	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="display_limit" type="text" menu="hide" label="Display limit" default="50" description="Number of items to return" />
-			</fieldset>
-		</fields>
-	</config>
 </extension>
