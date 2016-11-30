@@ -305,6 +305,14 @@ class Members extends AdminController
 	 */
 	public function editTask($user=null)
 	{
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!$user)
@@ -361,7 +369,7 @@ class Members extends AdminController
 		 && !User::authorise('core.create', $this->_option)
 		 && !User::authorise('core.edit', $this->_option))
 		{
-			return $this->cancelTask();
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// Incoming profile edits
@@ -510,6 +518,7 @@ class Members extends AdminController
 
 		// Save profile data
 		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+		$access  = Request::getVar('profileaccess', array(), 'post', 'none', 2);
 
 		foreach ($profile as $key => $data)
 		{
@@ -532,7 +541,7 @@ class Members extends AdminController
 			}
 		}
 
-		if (!$user->saveProfile($profile))
+		if (!$user->saveProfile($profile, $access))
 		{
 			Notify::error($user->getError());
 			return $this->editTask($user);
@@ -645,6 +654,13 @@ class Members extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -704,6 +720,13 @@ class Members extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$state = ($this->getTask() == 'confirm' ? 1 : 0);
 
 		// Incoming user ID
@@ -759,6 +782,13 @@ class Members extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$state = ($this->getTask() == 'approve' ? 2 : 0);
 
@@ -926,6 +956,13 @@ class Members extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Update registration config value to require re-agreeing upon next login
 		$currentTOU = $this->config->get('registrationTOU', 'RHRH');
