@@ -92,7 +92,7 @@ class Posts extends SiteController
 			'start'    => Request::getInt('limitstart', 0),
 			'time'     => Request::getString('timesort', ''),
 			'filterby' => Request::getString('filterby', 'all'),
-			'orderby'	 => Request::getString('orderby', 'created'),
+			'orderby'  => Request::getString('orderby', 'created'),
 			'orderdir' => Request::getString('orderdir', 'desc'),
 		);
 
@@ -135,8 +135,10 @@ class Posts extends SiteController
 
 				break;
 			}
-			$posts = $model->ordered()->paginated();
-
+			$posts = $model
+				->order($filters['orderby'], $filters['orderdir'])
+				->paginated()
+				->rows();
 		}
 
 		$messages = Notify::messages($this->_option);
