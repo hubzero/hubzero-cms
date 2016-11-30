@@ -1,10 +1,8 @@
 /**
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
+ * @package     hubzero-cms
+ * @file        plugins/projects/team/assets/css/team.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -115,24 +113,32 @@
 	#hubForm .editable .btn {
 		font-size: 90%;
 	}
-	
-/* Publication authors listing
---------------------------------------------- */
+
+/* Publication authors listing */
 	#author-access {
 		margin-top: 2em;
 	}
-	
-/* Team table 
---------------------------------------------- */
 
-	table th.activesort {
-		font-weight: bold !important;
+/* Team table */
+	table.listing th .active {
+		font-weight: bold;
+		color: #222;
 	}
-	table th.activesort a {
-		color: #000;
+	table.listing th .asc:before {
+		content: "\2193";
+		font-family: "Fontcons";
 	}
-	table#teamlist img {
-		border: 1px solid #CCCCCC;
+	table.listing th .desc:before {
+		content: "\2191";
+		font-family: "Fontcons";
+	}
+	table.listing .user-img-wrap,
+	table.listing .user-img-wrap:hover,
+	table.listing .user-img-wrap:focus {
+		border: none;
+		text-decoration: none;
+	}
+	table.listing .imagebox img {
 		width: 30px;
 	}
 	table.listing tbody tr.native {
@@ -144,13 +150,8 @@
 		border: 1px solid #f6f6f6;
 	}
 
-/* Misc
---------------------------------------------- */
+/* Misc */
 	.online {
 		color: #52ad4b;
 		font-weight: bold;
 	}
-	
-/* IE7 hacks 
---------------------------------------------- */
-	

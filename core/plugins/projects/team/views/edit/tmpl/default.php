@@ -129,8 +129,6 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 		{
 			// Get profile thumb image
 			$profile = User::getInstance($owner->userid);
-			$actor   = User::getInstance($this->uid);
-			$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 
 			$username = $owner->username ? $owner->username : $owner->invited_email;
 			$creator = $this->model->get('owned_by_user') == $owner->userid ? 1 : 0;
@@ -150,8 +148,8 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 			}
 			?>
 			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } else if ($owner->status == 0) { echo 'u_invited'; } ?>" id="tr_<?php echo $owner->id; ?>">
-				<td><input type="checkbox" value="<?php echo $owner->id?>" name="owner[]" class="checkmember <?php if ($owner->groupid) { echo 'group:' . $owner->groupid; } ?>"  <?php if ($owner->native && (($group && in_array($owner->userid, $members)) || ($this->managers_count == 1 && $owner->role == 1))) { echo 'disabled="disabled"'; } ?> /></td>
-				<td class="imagebox"><img src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>
+				<td><input type="checkbox" value="<?php echo $owner->id; ?>" name="owner[]" class="checkmember <?php if ($owner->groupid) { echo 'group:' . $owner->groupid; } ?>"  <?php if ($owner->native && (($group && in_array($owner->userid, $members)) || ($this->managers_count == 1 && $owner->role == 1))) { echo 'disabled="disabled"'; } ?> /></td>
+				<td class="imagebox"><img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->escape($owner->fullname); ?>" /></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini nobsp"><?php if (!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if (!$creator) { ?></span><?php } ?></td>
 				<td class="mini"><?php echo $owner->status == 1 ? Date::of($owner->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('PLG_PROJECTS_TEAM_INVITED') . '</span>';  ?></td>
@@ -164,7 +162,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 </table>
 <div class="nav_pager">
 	<p>
-		<?php if ($this->filters['start'] == 0) {	?>
+		<?php if ($this->filters['start'] == 0) { ?>
 			<span>&laquo; <?php echo Lang::txt('PLG_PROJECTS_TEAM_PREVIOUS'); ?></span>
 		<?php } else { ?>
 			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=' . $this->task . '&active=team&sortby=' . $this->filters['sortby'] . '&start=' . $prev_start . '&sortdir=' . $this->filters['sortdir']); ?>">&laquo; <?php echo Lang::txt('PLG_PROJECTS_TEAM_PREVIOUS'); ?></a>

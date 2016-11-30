@@ -561,17 +561,12 @@ class Owner extends \JTable
 		$query  .= " ORDER BY ";
 		switch ($sortby)
 		{
-			case 'status':
-			default:
-				$query  .=  " o.status $sortdir, o.added DESC ";
-				break;
-
 			case 'group':
 				$query  .= " g.cn $sortdir, fullname ASC ";
 				break;
 
 			case 'added':
-				$query  .= " o.added DESC ";
+				$query  .= " o.added $sortdir ";
 				break;
 
 			case 'date':
@@ -580,6 +575,15 @@ class Owner extends \JTable
 
 			case 'role':
 				$query  .= " o.role $sortdir, fullname ASC ";
+				break;
+
+			case 'name':
+				$query  .= " fullname $sortdir ";
+				break;
+
+			case 'status':
+			default:
+				$query  .=  " o.status $sortdir, o.added DESC ";
 				break;
 		}
 

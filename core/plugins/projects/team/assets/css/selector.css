@@ -1,10 +1,8 @@
 /**
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
+ * @package     hubzero-cms
+ * @file        plugins/projects/team/assets/css/selector.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -116,8 +114,7 @@
 		color: green;
 	}
 
-/* Add author form
----------------------------- */
+/* Add author form */
 	.newauthor-question {
 		padding: 1em;
 		font-size: 90%;
@@ -195,7 +192,7 @@
 		cursor: pointer;
 		position: relative;
 	}
-	.team-selector .selectedfilter .item-info:after, 
+	.team-selector .selectedfilter .item-info:after,
 	.team-selector .selectedfilter:hover .item-info:after {
 		width: 16px;
 		height: 16px;
@@ -222,7 +219,7 @@
 	}
 	.team-selector li.allowed:hover {
 		background: #bbe3f3;
-	}	
+	}
 	.content-loader {
 		text-align: center;
 		padding: 3em 0;
@@ -235,8 +232,7 @@
 		text-transform: uppercase;
 	}
 
-/* Provisioned projects
----------------------------- */
+/* Provisioned projects */
 	#abox-content {
 		text-align: left;
 	}
