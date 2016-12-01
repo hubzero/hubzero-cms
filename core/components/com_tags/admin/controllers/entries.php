@@ -74,11 +74,11 @@ class Entries extends AdminController
 				'search',
 				''
 			)),
-			'by' => Request::getState(
+			'by' => strtolower(Request::getState(
 				$this->_option . '.' . $this->_controller . '.by',
 				'filterby',
 				'all'
-			),
+			)),
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
@@ -100,6 +100,15 @@ class Entries extends AdminController
 			$model->whereLike('raw_tag', $filters['search'], 1)
 				->orWhereLike('tag', $filters['search'], 1)
 				->resetDepth();
+		}
+
+		if ($filters['by'] == 'admin')
+		{
+			$model->whereEquals('admin', 1);
+		}
+		else if ($filters['by'] == 'user')
+		{
+			$model->whereEquals('admin', 0);
 		}
 
 		// Get records
