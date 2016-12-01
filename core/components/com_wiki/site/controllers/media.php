@@ -465,16 +465,17 @@ class Media extends SiteController
 		// Delete the file
 		if (!$attachment || !$attachment->get('id'))
 		{
-			$this->setError(Lang::txt('COM_WIKI_ERROR_NO_FILE'));
+			// No database record for some reason
+			// Set some data so the model can still remove the file
+			$attachment->set('page_id', $listdir);
+			$attachment->set('filename', $file);
 		}
-		else
+
+		// Attempt to delete the file
+		// Delete the database entry for the file
+		if (!$attachment->destroy())
 		{
-			// Attempt to delete the file
-			// Delete the database entry for the file
-			if (!$attachment->destroy())
-			{
-				$this->setError($attachment->getError());
-			}
+			$this->setError($attachment->getError());
 		}
 
 		// Push through to the media view

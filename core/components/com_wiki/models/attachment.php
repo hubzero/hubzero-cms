@@ -67,7 +67,7 @@ class Attachment extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'page_id'  => 'positive|nonzero',
+		'page_id'  => 'nonzero',
 		'filename' => 'notempty'
 	);
 
@@ -195,6 +195,11 @@ class Attachment extends Relational
 				$this->addError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $this->get('filename')));
 				return false;
 			}
+		}
+
+		if (!$this->get('id'))
+		{
+			return true;
 		}
 
 		return parent::destroy();
