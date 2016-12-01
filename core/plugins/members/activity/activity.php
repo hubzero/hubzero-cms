@@ -49,7 +49,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   object  $user    Current user
 	 * @param   object  $member  Member profile
-	 * @return  array   Plugin   name
+	 * @return  array
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -68,7 +68,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 	 * Event call to return data for a specific member
 	 *
 	 * @param   object  $user    User
-	 * @param   object  $member  MembersProfile
+	 * @param   object  $member  Members Profile
 	 * @param   string  $option  Component name
 	 * @param   string  $areas   Plugins to return data
 	 * @return  array
@@ -106,8 +106,11 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'settings': $arr['html'] = $this->settingsAction(); break;
+				case 'settings':     $arr['html'] = $this->settingsAction(); break;
 				case 'savesettings': $arr['html'] = $this->savesettingsAction(); break;
+				case 'remove':       $arr['html'] = $this->removeAction(); break;
+				case 'unstar':       $arr['html'] = $this->starAction(); break;
+				case 'star':         $arr['html'] = $this->starAction(); break;
 				case 'feed':
 				default:         $arr['html'] = $this->feedAction();     break;
 			}
@@ -137,13 +140,47 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function feedAction()
 	{
-		$entries = Hubzero\Activity\Recipient::all()
+		$filters = array();
+		$filters['filter'] = Request::getWord('filter');
+		$filters['search'] = Request::getVar('q');
+		$filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
+		$filters['start']  = Request::getInt('start', 0);
+
+		if (!in_array($filters['filter'], ['starred']))
+		{
+			$filters['filter'] = '';
+		}
+
+		$recipient = Hubzero\Activity\Recipient::all();
+
+		$r = $recipient->getTableName();
+		$l = Hubzero\Activity\Log::blank()->getTableName();
+
+		$recipient
+			->select($r . '.*')
 			->including('log')
-			->whereEquals('scope', 'user')
-			->whereEquals('scope_id', $this->member->get('id'))
-			->whereEquals('state', 1)
+			->join($l, $l . '.id', $r . '.log_id')
+			->whereEquals($r . '.scope', 'user')
+			->whereEquals($r . '.scope_id', $this->member->get('id'))
+			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+
+		if ($filters['filter'] == 'starred')
+		{
+			$recipient->whereEquals($r . '.starred', 1);
+		}
+
+		if ($filters['search'])
+		{
+			$recipient->whereLike($l . '.description', $filters['search']);
+		}
+
+		$total = $recipient->copy()->total();
+
+		$entries = $recipient
 			->ordered()
-			->paginated()
+			//->paginated()
+			->limit($filters['limit'])
+			->start($filters['start'])
 			->rows();
 
 		/* @TODO  Add lists of scopes and actions to filter by
@@ -160,9 +197,216 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 			->set('digests', $digests)
 			->set('member', $this->member)
 			->set('categories', null)
+			->set('filters', $filters)
+			->set('total', $total)
 			->set('rows', $entries);
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Unpublish an entry
+	 *
+	 * @return  string
+	 */
+	protected function removeAction()
+	{
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (User::get('id') != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$id      = Request::getInt('activity', 0);
+		$no_html = Request::getInt('no_html', 0);
+
+		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
+
+		if (!$entry->markAsUnpublished())
+		{
+			$this->setError($entry->getError());
+		}
+
+		$success = Lang::txt('PLG_MEMBERS_ACTIVITY_RECORD_REMOVED');
+
+		if ($no_html)
+		{
+			$response = new stdClass;
+			$response->success = true;
+			$response->message = $success;
+			if ($err = $this->getError())
+			{
+				$response->success = false;
+				$response->message = $err;
+			}
+
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode($response);
+			exit();
+		}
+
+		if ($err = $this->getError())
+		{
+			Notify::error($err);
+		}
+		else
+		{
+			Notify::success($success);
+		}
+
+		// Redirect
+		App::redirect(
+			Route::url($this->member->link() . '&active=activity', false)
+		);
+	}
+
+	/**
+	 * Stop receiving activity of a specific type
+	 *
+	 * @return  string
+	 */
+	/*protected function unsubscribeAction()
+	{
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (User::get('id') != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
+		}
+
+		$scope   = Request::getCmd('scope');
+		$no_html = Request::getInt('no_html', 0);
+
+		$entry = Hubzero\Activity\Subscription::all()
+			->whereEquals('scope', $scope)
+			->whereEquals('action', $act)
+			->whereEquals('user_id', User::get('id'))
+			->row();
+
+		$entry->set([
+			'scope'   => $scope,
+			'action'  => $act,
+			'user_id' => User::get('id'),
+			'exclude' => 1
+		]);
+
+		if (!$entry->save())
+		{
+			$this->setError($entry->getError());
+		}
+
+		$result = Hubzero\Activity\Recipient::blank()
+			->update()
+			->set('state', Hubzero\Activity\Recipient::STATE_UNPUBLISHED)
+			->whereEquals('user_id', User::get('id'))
+			->execute();
+
+		if ($no_html)
+		{
+			$response = new stdClass;
+			$response->success = true;
+			$response->message = Lang::txt('PLG_MEMBERS_ACTIVITY_RECORDS_REMOVED');
+			if ($err = $this->getError())
+			{
+				$response->success = false;
+				$response->message = $err;
+			}
+
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode($response);
+			exit();
+		}
+
+		if ($err = $this->getError())
+		{
+			Notify::error($err);
+		}
+		else
+		{
+			Notify::success(Lang::txt('PLG_MEMBERS_ACTIVITY_RECORDS_REMOVED'));
+		}
+
+		// Redirect
+		App::redirect(
+			Route::url($this->member->link() . '&active=activity', false)
+		);
+	}*/
+
+	/**
+	 * Star/unstar an entry
+	 *
+	 * @return  string
+	 */
+	protected function starAction()
+	{
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (User::get('id') != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
+		}
+
+		$id      = Request::getInt('activity', 0);
+		$no_html = Request::getInt('no_html', 0);
+		$action  = Request::getVar('action', 'star');
+
+		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
+		$entry->set('starred', ($action == 'star' ? 1 : 0));
+
+		if (!$entry->save())
+		{
+			$this->setError($entry->getError());
+		}
+
+		$success = $action == 'star'
+			? Lang::txt('PLG_MEMBERS_ACTIVITY_RECORD_STARRED')
+			: Lang::txt('PLG_MEMBERS_ACTIVITY_RECORD_UNSTARRED');
+
+		if ($no_html)
+		{
+			$response = new stdClass;
+			$response->success = true;
+			$response->message = $success;
+			if ($err = $this->getError())
+			{
+				$response->success = false;
+				$response->message = $err;
+			}
+
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode($response);
+			exit();
+		}
+
+		if ($err = $this->getError())
+		{
+			Notify::error($err);
+		}
+		else
+		{
+			Notify::success($success);
+		}
+
+		// Redirect
+		App::redirect(
+			Route::url($this->member->link() . '&active=activity', false)
+		);
 	}
 
 	/**
@@ -218,7 +462,6 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('email_digests'))
 		{
-			die('here?');
 			return $this->feedAction();
 		}
 
