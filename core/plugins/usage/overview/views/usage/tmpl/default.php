@@ -682,7 +682,7 @@ if ($this->message) { ?>
 						tickFormatter: function (val, axis) {
 							var d = new Date(val);
 							//return month_short[d.getUTCMonth()] + ' ' + d.getFullYear();//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
-							return (d.getUTCMonth() + 1) + "/" + d.getFullYear().toString().substr(2,2);
+							return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
 						}//,
 						//zoomRange: [0.1, 1],
 						//panRange: [new Date('2000/01/01'), new Date('2014/12/01')]
@@ -767,7 +767,7 @@ if ($this->message) { ?>
 							tickDecimals: 0,
 							tickFormatter: function (val, axis) {
 								var d = new Date(val);
-								return (d.getUTCMonth() + 1) + "/" + d.getFullYear().toString().substr(2,2);
+								return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
 							}
 						},
 						yaxis: {
@@ -855,7 +855,7 @@ if ($this->message) { ?>
 						tickFormatter: function (val, axis) {
 							var d = new Date(val);
 							//return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
-							return (d.getUTCMonth() + 1) + "/" + d.getFullYear().toString().substr(2,2);
+							return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
 						}
 					},
 					yaxis: {
@@ -919,7 +919,7 @@ if ($this->message) { ?>
 						tickFormatter: function (val, axis) {
 							var d = new Date(val);
 							//return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
-							return (d.getUTCMonth() + 1) + "/" + d.getFullYear().toString().substr(2,2);
+							return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
 						}
 					},
 					yaxis: {
