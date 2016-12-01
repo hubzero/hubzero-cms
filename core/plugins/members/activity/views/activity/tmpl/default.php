@@ -37,58 +37,82 @@ $this->css()
 
 $no_html = Request::getInt('no_html', 0);
 
-if (!$no_html) { ?>
-	<?php if ($this->digests): ?>
-		<ul id="page_options">
-			<li>
-				<a class="btn icon-config" href="<?php echo Route::url($this->member->link() . '&active=activity&action=settings'); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_EMAIL_DIGEST_SETTINGS'); ?>
-				</a>
-			</li>
-		</ul>
-	<?php endif; ?>
+// get all sessions
+$online = array();
+$sessions = Hubzero\Session\Helper::getAllSessions(array(
+	'guest'    => 0,
+	'distinct' => 1
+));
+if ($sessions)
+{
+	// see if any session matches our userid
+	foreach ($sessions as $session)
+	{
+		$online[] = $session->userid;
+	}
+}
 
+if (!$no_html) { ?>
 <div class="activities">
 	<form action="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" method="get">
 		<fieldset class="filters">
-			<h3><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_LATEST'); ?></h3>
-			<?php /*<label for="filter-category">
-				<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FROM'); ?>
-				<select name="category" id="filter-category">
-					<option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ALL'); ?></option>
-					<?php
-						if ($this->categories)
-						{
-							foreach ($this->components as $component)
-							{
-								$component = substr($component, 4);
-								$sbjt  = '<option value="'.$component.'"';
-								$sbjt .= ($component == $this->filter) ? ' selected="selected"' : '';
-								$sbjt .= '>'.$component.'</option>'."\n";
-								echo $sbjt;
-							}
-						}
-					?>
-				</select>
-			</label>
-
-			<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER'); ?>" />*/ ?>
+			<div class="grid">
+				<div class="col span6">
+					<input type="text" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH_PLACEHOLDER'); ?>" />
+					<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH'); ?>" />
+				</div>
+				<div class="col span6 omega">
+					<?php if ($this->filters['filter'] == 'starred') { ?>
+						<a class="icon-star tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>">
+							<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>
+						</a>
+					<?php } else { ?>
+						<a class="icon-star-empty tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity&filter=starred'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_STARRED'); ?>">
+							<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_STARRED'); ?>
+						</a>
+					<?php } ?>
+					<?php if ($this->digests) { ?>
+						<a class="icon-config tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity&action=settings'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS'); ?>">
+							<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS'); ?>
+						</a>
+					<?php } ?>
+				</div>
+			</div>
 		</fieldset>
 <?php } ?>
 
 		<?php if ($this->rows->count()) { ?>
-			<ul class="activity-feed" data-url="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('id') . '&active=activity'); ?>">
+			<ul class="activity-feed" data-url="<?php echo Route::url($this->member->link() . '&active=activity'); ?>">
 				<?php
 				foreach ($this->rows as $row)
 				{
 					$this->view('default_item')
-					     ->set('member', $this->member)
-					     ->set('row', $row)
-					     ->display();
+						->set('member', $this->member)
+						->set('row', $row)
+						->set('online', $online)
+						->display();
 				}
 				?>
 			</ul>
-			<?php echo $this->rows->pagination; ?>
+			<?php
+			//echo $this->rows->pagination;
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
+			$pageNav->setAdditionalUrlParam('active', 'activity');
+			if ($this->filters['filter'])
+			{
+				$pageNav->setAdditionalUrlParam('filter', $this->filters['filter']);
+			}
+			if ($this->filters['search'])
+			{
+				$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+			}
+			echo $pageNav;
+			?>
 		<?php } else { ?>
 			<div class="results-none">
 				<div class="messages">

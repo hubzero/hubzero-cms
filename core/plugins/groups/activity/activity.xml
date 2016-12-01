@@ -37,7 +37,8 @@ HUBzero is a registered trademark of Purdue University.
 	<description>PLG_GROUPS_ACTIVITY_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="activity">activity.php</filename>
-		<filename>groups.js</filename>
+		<filename>assets/js/activity.js</filename>
+		<filename>assets/css/activity.css</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_groups_activity.ini</language>
