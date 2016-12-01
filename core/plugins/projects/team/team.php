@@ -899,6 +899,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Remove member from team if not owner & other managers exist
 		if ($confirm && !$onlymanager && !$this->model->access('owner'))
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			$deleted = $objO->removeOwners($this->model->get('id'), array($this->_uid));
 			if ($deleted)
 			{
@@ -964,7 +967,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$checked = Request::getVar('owner', array());
 		$groups  = Request::getVar('group', array());
 		$owner   = Request::getVar('owner', '');
-		$role    = Request::getInt ('role', 0);
+		$role    = Request::getInt('role', 0);
 
 		if ($owner)
 		{
@@ -999,13 +1002,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->selected 	= $selected;
-			$view->checked 		= $checked;
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->uid 			= $this->_uid;
-			$view->aid 			= $objO->getOwnerID($this->model->get('id'), $this->_uid);
-			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
+			$view->selected = $selected;
+			$view->checked  = $checked;
+			$view->option   = $this->_option;
+			$view->model    = $this->model;
+			$view->uid      = $this->_uid;
+			$view->aid      = $objO->getOwnerID($this->model->get('id'), $this->_uid);
+			$view->msg      = isset($this->_msg) ? $this->_msg : '';
 			if ($this->getError())
 			{
 				$view->setError($this->getError());
@@ -1049,7 +1052,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 * @param   string   $email
 	 * @param   string   $code
 	 * @param   integer  $role
-	 * @param   object   $project
+	 * @param   object   $model
+	 * @param   string   $option
 	 * @return  boolean  True on success
 	 */
 	public function sendInviteEmail($uid = 0, $email = '', $code = '', $role = 0, $model = '', $option = 'com_projects')
