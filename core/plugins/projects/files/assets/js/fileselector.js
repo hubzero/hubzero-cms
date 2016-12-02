@@ -317,6 +317,7 @@ HUB.ProjectFilesFileSelect = {
 						}
 						statusBox.html('<p class="status-success">Upload successful</p>');
 						HUB.ProjectFilesFileSelect.fadeMessage();
+						$('.file-selector').find('.collapsor').first().trigger('click');
 					}
 					else
 					{
@@ -488,7 +489,7 @@ HUB.ProjectFilesFileSelect = {
 
 		$('.file-selector').on('click', '.collapsor', function ( e )
 		{
-			var parent   = $(this).parent().parent(),
+			var parent   = $(this).parent(),
 				parentId = $(parent).attr('id').replace('dir-', ''),
 				action   = $(parent).hasClass('collapsed') ? 'uncollapse' : 'collapse';
 
