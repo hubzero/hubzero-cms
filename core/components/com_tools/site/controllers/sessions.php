@@ -147,7 +147,8 @@ class Sessions extends SiteController
 	/**
 	 * Show a login form
 	 *
-	 * @return     void
+	 * @param   string  $rtrn
+	 * @return  void
 	 */
 	public function loginTask($rtrn='')
 	{
@@ -190,7 +191,8 @@ class Sessions extends SiteController
 	/**
 	 * Show an Bad Parameters error
 	 *
-	 * @return     void
+	 * @param   string  $badparams
+	 * @return  void
 	 */
 	public function badparamsTask($badparams = '')
 	{
@@ -1063,7 +1065,7 @@ class Sessions extends SiteController
 		// Drop through and re-view the session...
 		//$this->viewTask();
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app . '&task=session&sess=' . $sess )
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app . '&task=session&sess=' . $sess)
 		);
 	}
 
@@ -1192,6 +1194,26 @@ class Sessions extends SiteController
 
 		// Call the view command
 		$status = $this->middleware($command, $output);
+
+		// If weber_auth is defined, set a cookie for it.
+		if (isset($output->weber_auth))
+		{
+			$domain = rtrim(Request::base(), '/');
+			$domain = preg_replace('/^http:\/\//', '', $domain);
+			$domain = preg_replace('/^https:\/\//', '', $domain);
+			$name = 'weber-auth-' . preg_replace('/\./', '-', $domain);
+			$secure = true;
+			$httponly = true;
+			setcookie($name, $output->weber_auth, time()+86400*30, "/", $domain, $secure, $httponly);
+		}
+
+		// If this is something other than VNC, such as Jupyter,
+		// redirect to the proxy URL provided.  And we're done.
+		if (isset($output->redirect_url))
+		{
+			App::Redirect($output->redirect_url);
+			return; // Do no more after this.
+		}
 
 		if ($app->params->get('vncEncoding',0))
 		{
@@ -1390,8 +1412,8 @@ class Sessions extends SiteController
 			);
 		}
 
-		//get users groups
-		$this->view->mygroups = \Hubzero\User\Helper::getGroups( User::get('id'), 'members', 1 );
+		// Get users groups
+		$this->view->mygroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
 
 		$this->view->app      = $app;
 		$this->view->config   = $this->config;
