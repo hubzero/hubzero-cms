@@ -196,6 +196,8 @@ class Publication extends \JTable
 					$query .=" AND V.curator != " . User::get('id');
 				}
 			}
+			// Make sure we get the max version
+			$query .= " AND V.id = (SELECT MAX(wv2.id) FROM `#__publication_versions` AS wv2 WHERE wv2.publication_id = C.id)";
 		}
 		else
 		{
