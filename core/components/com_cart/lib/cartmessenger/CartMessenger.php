@@ -265,13 +265,18 @@ class CartMessenger
 			$summary .= "\n";
 
 			// Build low inventory level notifications if needed
-			if ($item['info']->sTrackInventory && $item['meta']['inventoryNotificationThreshold'])
+			if ($item['info']->sTrackInventory)
 			{
 				// get the latest SKU info
 				$sInfo = $warehouse->getSkuInfo($item['info']->sId);
 
+				// Set the inventoryNotificationThreshold to 0 is it is not set
+				if (!array_key_exists('inventoryNotificationThreshold', $sInfo['meta']))
+				{
+					$sInfo['meta']['inventoryNotificationThreshold'] = 0;
+				}
+
 				if ($sInfo['info']->sTrackInventory &&
-					$sInfo['meta']['inventoryNotificationThreshold'] &&
 					$sInfo['info']->sInventory <= $sInfo['meta']['inventoryNotificationThreshold']
 				)
 				{

@@ -256,8 +256,6 @@ class Checkout extends ComponentController
 	public function notesTask()
 	{
 		$cart = new CurrentCart();
-		$cart->setStepStatus('notes', '', false);
-
 		$transaction = $cart->liftTransaction();
 
 		if (!$transaction)
@@ -266,6 +264,7 @@ class Checkout extends ComponentController
 			$cart->redirect('home');
 		}
 
+		$cart->setStepStatus('notes', '', false);
 		$nextStep = $cart->getNextCheckoutStep();
 
 		// Double check that the current step is indeed EULA, redirect if needed
