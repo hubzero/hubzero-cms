@@ -1018,9 +1018,12 @@ class Warehouse extends \Hubzero\Base\Object
 			{
 				$filters['sort'] = 'sSku';
 			}
-			if ($filters['sort'] == 'state')
+			elseif ($filters['sort'] == 'state')
 			{
 				$filters['sort'] = 'sActive';
+			}
+			else {
+				$filters['sort'] = 'sSku';
 			}
 
 			$sql .= " ORDER BY " . $filters['sort'];
@@ -1029,20 +1032,12 @@ class Warehouse extends \Hubzero\Base\Object
 			{
 				$sql .= ' ' . $filters['sort_Dir'];
 			}
+
+			$sql .= ", `sId`";
 		}
 		else
 		{
 			$sql .= " ORDER BY s.`sId`";
-		}
-
-		if (isset($filters['limit']) && is_numeric($filters['limit']))
-		{
-			$sql .= ' LIMIT ' . $filters['limit'];
-
-			if (isset($filters['start']) && is_numeric($filters['start']))
-			{
-				$sql .= ' OFFSET ' . $filters['start'];
-			}
 		}
 
 		$this->_db->setQuery($sql);
@@ -1050,6 +1045,8 @@ class Warehouse extends \Hubzero\Base\Object
 		$this->_db->execute();
 
 		$rawSkusInfo = $this->_db->loadObjectList();
+
+		//print_r($rawSkusInfo); die(); //
 
 		/*
 			Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the number of options):
@@ -1152,7 +1149,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 * @param	int			product id
 	 * @return	array 		SKU IDs
 	 */
-	public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true)
+	public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true, $filters = false)
 	{
 		$sql = "SELECT";
 		if ($return == 'all')
@@ -1169,8 +1166,53 @@ class Warehouse extends \Hubzero\Base\Object
 			$sql .= " AND `sActive` = 1";
 		}
 		$sql .= " AND `pId` = " . $this->_db->quote($pId);
+
+		// Filter by filters
+		//print_r($filters); die;
+		if (isset($filters['sort']))
+		{
+			if ($filters['sort'] == 'title')
+			{
+				$filters['sort'] = 'sSku';
+			}
+			elseif ($filters['sort'] == 'state')
+			{
+				$filters['sort'] = 'sActive';
+			}
+			else {
+				$filters['sort'] = 'sSku';
+			}
+
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+
+			$sql .= ", `sId`";
+		}
+		else
+		{
+			$sql .= " ORDER BY `sId`";
+		}
+
+		if ($filters && isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
+
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+
+		if ($return != 'count')
+		{
+			//echo $this->_db->toString(); die;
+		}
 
 		$this->_db->execute();
 		if ($return == 'count')

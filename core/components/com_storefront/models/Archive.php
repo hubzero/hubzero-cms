@@ -145,7 +145,7 @@ class Archive extends \Hubzero\Base\Object
 			case 'rows':
 			case 'results':
 			default:
-				if (!$results = $warehouse->getProductSkus($pId, 'rows', false))
+				if (!$results = $warehouse->getProductSkus($pId, 'rows', false, $filters))
 				{
 					$results = array();
 				}
