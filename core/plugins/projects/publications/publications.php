@@ -2198,6 +2198,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if (!$doi || $doiService->getError())
 			{
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
 			}
 		}
 
@@ -2230,8 +2231,19 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->onAfterChangeState( $pub, $originalStatus );
 
 		// Redirect
-		App::redirect(Route::url($pub->link('editversion')));
-		return;
+		$link = $pub->link('editversion');
+	
+		/** Make message persist when plugin is abused.
+		* [QUBES][#732]
+		* @FIXME Better error handling across Event
+		* Does not bubble up to component
+		**/
+		if (isset($doiErr) && $doiErr === true)
+		{
+			$link .= '&doierr=1';
+		}
+
+		App::redirect(Route::url($link, false));
 	}
 
 	/**

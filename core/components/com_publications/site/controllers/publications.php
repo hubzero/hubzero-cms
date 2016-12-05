@@ -1170,6 +1170,7 @@ class Publications extends SiteController
 		$active  = Request::getVar('active', 'publications');
 		$action  = $this->_task == 'start' ? 'start' : $action;
 		$ajax    = Request::getInt('ajax', 0);
+		$doiErr  = Request::getInt('doierr', 0);
 
 		// Redirect if publishing is turned off
 		if (!$this->_contributable)
@@ -1289,6 +1290,12 @@ class Publications extends SiteController
 			// plugin disabled?
 			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
+		}
+
+		// @FIXME: Handle errors appropriately. [QUBES][#732]
+		if ($doiErr == 1)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 		}
 
 		// Output HTML
