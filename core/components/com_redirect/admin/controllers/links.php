@@ -212,7 +212,7 @@ class Links extends AdminController
 			$this->_task = 'apply';
 		}
 
-		$row = Entry::oneOrNew($fields['id'])->set($fields);
+		$row = Link::oneOrNew($fields['id'])->set($fields);
 
 		// Attempt to save the data.
 		if (!$row->save())
