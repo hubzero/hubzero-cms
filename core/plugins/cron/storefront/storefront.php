@@ -71,14 +71,22 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		if (is_object($params) &&
 			($params->get('publish_down_notification1') || $params->get('publish_down_notification2')))
 		{
-			if($params->get('publish_down_notification1'))
+			if ($params->get('publish_down_notification1') &&
+				is_numeric($params->get('publish_down_notification1')) &&
+				$params->get('publish_down_notification1') > 0)
 			{
 				$days[] = $params->get('publish_down_notification1');
 			}
-			if($params->get('publish_down_notification2'))
+			if ($params->get('publish_down_notification2') &&
+				is_numeric($params->get('publish_down_notification2')) &&
+				$params->get('publish_down_notification2') > 0)
 			{
 				$days[] = $params->get('publish_down_notification2');
 			}
+		}
+		if (!$days)
+		{
+			return;
 		}
 
 		// Database connection
