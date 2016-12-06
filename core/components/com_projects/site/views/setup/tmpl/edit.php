@@ -140,7 +140,7 @@ else
 				<?php } ?>
 			</div><!-- / .aside -->
 			<div id="edit-project" class="col span9 omega">
-				<form id="hubForm" method="post" action="<?php echo Route::url($this->model->link() . '&task=save'); ?>">
+				<form id="hubForm" class="full" method="post" action="<?php echo Route::url($this->model->link() . '&task=save'); ?>">
 					<div>
 						<input type="hidden" id="pid" name="id" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden"  name="task" value="save" />

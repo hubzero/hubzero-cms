@@ -141,7 +141,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Set vars
-			$this->_task     = $action ? $action : Request::getVar('action', '');
+			$act = Request::getVar('action', '');
+			$this->_task     = $action ? $action : $act;
+			if ($act && ($this->_task == 'edit' || $this->_task == 'setup'))
+			{
+				$this->_task = $act;
+			}
 			$this->_database = App::get('db');
 			$this->_uid      = User::get('id');
 			$this->_config   = $model->config();
@@ -169,6 +174,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 				case 'save':
 					$arr['html'] = $this->_save();
+					break;
+
+				case 'sync':
+					$arr['html'] = $this->_sync();
+					break;
+
+				case 'choose':
+					$arr['html'] = $this->_choose();
 					break;
 
 				case 'quit':
@@ -331,6 +344,62 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Choose team from group members
+	 *
+	 * @return  string
+	 */
+	protected function _choose()
+	{
+		$no_html = (Request::getInt('no_html', 0) || Request::getInt('ajax', 0));
+
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => $this->_name,
+				'name'    => 'edit',
+				'layout'  => 'choose'
+			)
+		);
+
+		$view->filters = array();
+		$view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
+		$view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
+		if (!in_array($view->filters['sortdir'], array('ASC', 'DESC')))
+		{
+			$view->filters['sortdir'] = 'ASC';
+		}
+		if (!in_array($view->filters['sortby'], array('role', 'name')))
+		{
+			$view->filters['sortby'] = 'name';
+		}
+
+		$view->params   = $this->model->params;
+		$view->option   = $this->_option;
+		$view->controller = Request::getCmd('controller', 'projects');
+		$view->database = $this->_database;
+		$view->model    = $this->model;
+		$view->uid      = $this->_uid;
+		$view->config   = $this->_config;
+		$view->task     = $this->_task;
+		$view->section  = $this->_name;
+		$view->step     = 1;
+		$view->ajax     = $no_html;
+		$view->setErrors($this->getErrors());
+
+		$output = $view->loadTemplate();
+
+		if ($no_html)
+		{
+			// We need to
+			echo $output;
+			exit();
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Browser within publications NEW
 	 *
 	 * @return  string
@@ -417,15 +486,15 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		$view->mc = Event::trigger('hubzero.onGetSingleEntry', array(array('members', 'uid', 'uid')));
 
-		$view->option 		= $this->model->isProvisioned() ? 'com_publications' : $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->ajax			= $ajax;
-		$view->task			= $this->_task;
-		$view->block		= $block;
-		$view->step 		= $step;
-		$view->props		= $props;
+		$view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->_option;
+		$view->database = $this->_database;
+		$view->model    = $this->model;
+		$view->uid      = $this->_uid;
+		$view->ajax     = $ajax;
+		$view->task     = $this->_task;
+		$view->block    = $block;
+		$view->step     = $step;
+		$view->props    = $props;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -442,7 +511,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function _save()
 	{
 		// Incoming
-		$members = urldecode(trim(Request::getVar('newmember', '', 'post' )));
+		$newm    = Request::getVar('newmember', '', 'post');
+		if (is_string($newm))
+		{
+			$newm = trim(urldecode($newm));
+			$newm = explode(',', $newm);
+			$newm = array_filter($newm);
+		}
+		$newm    = (array)$newm;
 		$groups  = urldecode(trim(Request::getVar('newgroup', '')));
 		$role    = Request::getInt('role', 0);
 
@@ -465,7 +541,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$xregistration = new \Components\Members\Models\Registration();
 
 		// Owner names not supplied
-		if (!$members && !$groups)
+		if (empty($newm) && !$groups)
 		{
 			if (!$setup)
 			{
@@ -478,116 +554,118 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			if ($members)
+			// Do we have new authors?
+			if (!empty($newm))
 			{
-				$newm = explode(',', $members);
+				// This will be coming from the "choose group members" form
+				//
+				// Hackish and ugly but needed a way to specify that the incoming
+				// authors were from a specific group
+				$forgroup = Request::getInt('group_id', 0);
 
-				// Do we have new authors?
-				if ($newm)
+				for ($i=0, $n=count($newm); $i < $n; $i++)
 				{
-					for ($i=0, $n=count($newm); $i < $n; $i++)
+					$cid = strtolower(trim($newm[$i]));
+					$uid = 0;
+					if ($cid == '')
 					{
-						$cid = strtolower(trim($newm[$i]));
-						$uid = 0;
-						if ($cid == '')
-						{
-							continue;
-						}
+						continue;
+					}
 
-						$validUser = User::getInstance($cid);
+					$validUser = User::getInstance($cid);
+					$uid = $validUser->get('id');
+					// By ID with format of Name (ID)
+					$parts =  preg_split("/[(]/", $cid);
+					if (count($parts) == 2)
+					{
+						$name = $parts[0];
+						$uid = preg_replace('/[)]/', '', $parts[1]);
+					}
+					// By user ID
+					elseif (intval($cid) && $uid)
+					{
+						$uid = $cid;
+					}
+					// By username
+					elseif (!strstr($cid, ' ') && $uid)
+					{
 						$uid = $validUser->get('id');
-						// By ID with format of Name (ID)
-						$parts =  preg_split("/[(]/", $cid);
-						if (count($parts) == 2)
+					}
+					// By email
+					else
+					{
+						$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
+						if (preg_match($regex, $cid))
 						{
-							$name = $parts[0];
-							$uid = preg_replace('/[)]/', '', $parts[1]);
-						}
-						// By user ID
-						elseif (intval($cid) && $uid)
-						{
-							$uid = $cid;
-						}
-						// By username
-						elseif (!strstr($cid, ' ') && $uid)
-						{
-							$uid = $validUser->get('id');
-						}
-						// By email
-						else
-						{
-							$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
-							if (preg_match($regex, $cid))
+							// This is an email - check if user with the email exists
+							$uid = $xregistration->getEmailId($cid);
+							if (!$uid)
 							{
-								// This is an email - check if user with the email exists
-								$uid = $xregistration->getEmailId($cid);
-								if (!$uid)
+								// Make sure we aren't inviting twice
+								$invitee = $objO->checkInvited($this->model->get('id'), $cid);
+								if (!$invitee)
 								{
-									// Make sure we aren't inviting twice
-									$invitee = $objO->checkInvited($this->model->get('id'), $cid);
-									if (!$invitee)
-									{
-										// Generate invitation code
-										$code = \Components\Projects\Helpers\Html::generateCode();
+									// Generate invitation code
+									$code = \Components\Projects\Helpers\Html::generateCode();
 
-										// Add invitee record
-										if ($objO->saveInvite($this->model->get('id'), $cid, $code, '', $role))
+									// Add invitee record
+									if ($objO->saveInvite($this->model->get('id'), $cid, $code, '', $role))
+									{
+										$uids[] = $cid;
+										$m_invited++;
+										if (!$setup && $this->_config->get('messaging') == 1)
 										{
-											$uids[] = $cid;
-											$m_invited++;
-											if (!$setup && $this->_config->get('messaging') == 1)
-											{
-												$this->sendInviteEmail(0, $cid, $code, $role);
-											}
+											$this->sendInviteEmail(0, $cid, $code, $role);
 										}
 									}
-									elseif ($objO->load($invitee))
+								}
+								elseif ($objO->load($invitee))
+								{
+									// Previously deleted invite
+									if ($objO->status == 2)
 									{
-										// Previously deleted invite
-										if ($objO->status == 2)
+										$objO->status = 0;
+										$objO->role = $role;
+										$uids[] = $cid;
+										$objO->store();
+										$m_invited++;
+										if (!$setup && $this->_config->get('messaging') == 1)
 										{
-											$objO->status = 0;
-											$objO->role = $role;
-											$uids[] = $cid;
-											$objO->store();
-											$m_invited++;
-											if (!$setup && $this->_config->get('messaging') == 1)
-											{
-												$this->sendInviteEmail(0, $cid, $objO->invited_code, $objO->role);
-											}
+											$this->sendInviteEmail(0, $cid, $objO->invited_code, $objO->role);
 										}
 									}
 								}
 							}
-							else
-							{
-								$invalid[] = $cid;
-							}
-						}
-
-						if (!$uid or !is_numeric($uid))
-						{
-							continue;
 						}
 						else
 						{
-							if (!User::getInstance($uid))
-							{
-								$invalid[] = $uid;
-								continue;
-							}
+							$invalid[] = $cid;
 						}
+					}
 
-						// Save new author
-						$native = ($this->model->access('owner')) ? 1 : 0;
-						if ($objO->saveOwners($this->model->get('id'), $this->_uid, $uid,
-							0, $role, $status = 1, $native))
+					if (!$uid or !is_numeric($uid))
+					{
+						continue;
+					}
+					else
+					{
+						$user = User::getInstance($uid);
+						if (!$user->get('id'))
 						{
-							$uids[] = $uid;
+							$invalid[] = $uid;
+							continue;
 						}
+					}
+
+					// Save new author
+					$native = ($this->model->access('owner')) ? 1 : 0;
+					if ($objO->saveOwners($this->model->get('id'), $this->_uid, $uid, $forgroup, $role, $status = 1, $native))
+					{
+						$uids[] = $uid;
 					}
 				}
 			}
+
 			if ($groups)
 			{
 				// Save new authors from group
@@ -615,8 +693,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				$this->_msg .= '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES');
 			}
 
-			if (!$setup) {
-
+			if (!$setup)
+			{
 				$note  = strtolower(Lang::txt('PLG_PROJECTS_TEAM_SUCCESS_ADDED_OR_INVITED')) . ' ';
 				for ($i=0; $i< count($uids); $i++)
 				{
@@ -636,8 +714,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 						$left = count($uids) - 3;
 						if ($left)
 						{
-							$note .= ' '.Lang::txt('PLG_PROJECTS_TEAM_AND') . ' ' . $left . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MORE') . ' ';
-							$note .= $left == 1 ? Lang::txt('PLG_PROJECTS_TEAM_ACTIVITY_PERSON')
+							$note .= ' ' . Lang::txt('PLG_PROJECTS_TEAM_AND') . ' ' . $left . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MORE') . ' ';
+							$note .= $left == 1
+								? Lang::txt('PLG_PROJECTS_TEAM_ACTIVITY_PERSON')
 								: Lang::txt('PLG_PROJECTS_TEAM_ACTIVITY_PERSONS');
 						}
 						break;
@@ -672,6 +751,48 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		elseif (!empty($this->_msg))
 		{
 			Notify::message($this->_msg, 'success', 'projects');
+		}
+
+		$url = $setup
+				? Route::url($this->model->link('setup') . '&section=team')
+				: Route::url($this->model->link('edit') . '&section=team');
+
+		App::redirect($url);
+	}
+
+	/**
+	 * Sync group members
+	 *
+	 * @return  void
+	 */
+	protected function sync()
+	{
+		// Setup stage?
+		$setup = $this->model->inSetup();
+
+		if ($this->model->groupOwner())
+		{
+			// Save group sync settings
+			$this->model->set('sync_group', 1);
+
+			if (!$this->model->store())
+			{
+				$this->setError($this->model->getError());
+			}
+			else
+			{
+				// Are we syncing group membership?
+				if ($this->model->get('sync_group'))
+				{
+					$objO = $this->model->table('Owner');
+					$objO->saveOwners($this->model->get('id'), User::get('id'), 0, $this->model->get('owned_by_group'), 0, 1, 1, '', $split_group_roles = 0);
+				}
+			}
+		}
+
+		if ($this->getError())
+		{
+			Notify::message($this->getError(), 'error', 'projects');
 		}
 
 		$url = $setup
@@ -720,14 +841,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->selected 	= $selected;
-			$view->checked 		= $checked;
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->uid 			= $this->_uid;
-			$view->setup 		= $setup;
-			$view->aid 			= $objO->getOwnerID($this->model->get('id'), $this->_uid);
-			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
+			$view->selected = $selected;
+			$view->checked  = $checked;
+			$view->option   = $this->_option;
+			$view->model    = $this->model;
+			$view->uid      = $this->_uid;
+			$view->setup    = $setup;
+			$view->aid      = $objO->getOwnerID($this->model->get('id'), $this->_uid);
+			$view->msg      = isset($this->_msg) ? $this->_msg : '';
 			$view->setErrors($this->getErrors());
 
 			return $view->loadTemplate();
@@ -848,10 +969,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				$view->groups[] = $this->model->groupOwner();
 			}
 
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
-			$view->title		= $this->_area['title'];
+			$view->option = $this->_option;
+			$view->model  = $this->model;
+			$view->msg    = isset($this->_msg) ? $this->_msg : '';
+			$view->title  = $this->_area['title'];
 			if ($this->getError())
 			{
 				$view->setError($this->getError());

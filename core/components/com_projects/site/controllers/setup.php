@@ -145,7 +145,12 @@ class Setup extends Base
 			if ($this->model->exists())
 			{
 				$objO = $this->model->table('Owner');
-				$objO->reconcileGroups($this->model->get('id'));
+				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $this->model->get('sync_group'));
+			}
+			else
+			{
+				// Set group syncing to "undecided" state
+				$this->model->set('sync_group', -1);
 			}
 		}
 
@@ -158,7 +163,7 @@ class Setup extends Base
 		{
 			// Check group authorization to create a project
 			if (!$this->group->is_member_of('members', User::get('id'))
-				&& !$this->group->is_member_of('managers', User::get('id')))
+			 && !$this->group->is_member_of('managers', User::get('id')))
 			{
 				throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
 			}
@@ -293,7 +298,12 @@ class Setup extends Base
 			if ($this->model->exists())
 			{
 				$objO = $this->model->table('Owner');
-				$objO->reconcileGroups($this->model->get('id'));
+				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $this->model->get('sync_group'));
+			}
+			else
+			{
+				// Set group syncing to "undecided" state
+				$this->model->set('sync_group', -1);
 			}
 		}
 
@@ -306,25 +316,10 @@ class Setup extends Base
 		{
 			// Check group authorization to create a project
 			if (!$this->group->is_member_of('members', User::get('id'))
-				&& !$this->group->is_member_of('managers', User::get('id')))
+			 && !$this->group->is_member_of('managers', User::get('id')))
 			{
 				throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
 			}
-		}
-
-		// Get group ID
-		if ($this->_gid)
-		{
-			// Load the group
-			$this->group = \Hubzero\User\Group::getInstance($this->_gid);
-
-			// Ensure we found the group info
-			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')))
-			{
-				throw new Exception(Lang::txt('COM_PROJECTS_NO_GROUP_FOUND'), 404);
-			}
-			$this->_gid = $this->group->get('gidNumber');
-			$this->model->set('owned_by_group', $this->_gid);
 		}
 
 		if ($this->section == 'finalize')
@@ -651,11 +646,11 @@ class Setup extends Base
 			case 'info':
 			case 'info_custom':
 				// Incoming
-				$name       = trim(Request::getVar('name', '', 'post'));
-				$title      = trim(Request::getVar('title', '', 'post'));
+				$name  = trim(Request::getVar('name', '', 'post'));
+				$title = trim(Request::getVar('title', '', 'post'));
 
-				$name = preg_replace('/ /', '', $name);
-				$name = strtolower($name);
+				$name  = preg_replace('/ /', '', $name);
+				$name  = strtolower($name);
 
 				// Clean up title from any scripting
 				$title = preg_replace('/\s+/', ' ', $title);
@@ -765,13 +760,11 @@ class Setup extends Base
 					$objO = $this->model->table('Owner');
 					if ($this->_gid)
 					{
-						if (!$objO->saveOwners(
-							$this->model->get('id'), User::get('id'),
-							0, $this->_gid, 0, 1, 1, '', $split_group_roles = 0
-						))
+						// Only add the creator
+						// They'll choose if they want to sync the entire group or not in the next step
+						if (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 0, 1, 1, '', $split_group_roles = 0))
 						{
-							$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS')
-								. ': ' . $objO->getError());
+							$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
 							return false;
 						}
 						// Make sure project creator is manager
@@ -782,12 +775,9 @@ class Setup extends Base
 							1
 						);
 					}
-					elseif (!$objO->saveOwners($this->model->get('id'), User::get('id'),
-						User::get('id'), $this->_gid, 1, 1, 1)
-					)
+					elseif (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 1, 1, 1))
 					{
-						$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS')
-							. ': ' . $objO->getError());
+						$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
 						return false;
 					}
 				}
@@ -802,6 +792,25 @@ class Setup extends Base
 				if ($new)
 				{
 					return false;
+				}
+
+				if ($this->model->groupOwner())
+				{
+					// Save group sync settings
+					$this->model->set('sync_group', Request::getInt('sync_group', 0, 'post'));
+
+					if (!$this->model->store())
+					{
+						$this->setError($this->model->getError());
+						return false;
+					}
+
+					// Are we syncing group membership?
+					if ($this->model->get('sync_group'))
+					{
+						$objO = $this->model->table('Owner');
+						$objO->saveOwners($this->model->get('id'), User::get('id'), 0, $this->_gid, 0, 1, 1, '', $split_group_roles = 0);
+					}
 				}
 
 				// Save team

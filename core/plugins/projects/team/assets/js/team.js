@@ -37,6 +37,10 @@ if (!jq) {
 	var jq = $;
 }
 
+String.prototype.nohtml = function () {
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+};
+
 HUB.ProjectTeam = {
 	jQuery: jq,
 	bchecked: 0,
@@ -93,23 +97,19 @@ HUB.ProjectTeam = {
 			{
 				$(item).on('click', function(e)
 				{
-					var classes = $(item).attr('class').split(" ");
-					for (k=classes.length-1;k>=0;k--)
-					{
-						if (classes[k].search("group:") >= 0)
-						{
-							var group = classes[k].split(":")[1];
-						}
-					}
+					var group = $(this).attr('data-group');
 
 					// Is item checked?
 					if ($(item).attr('checked') != 'checked')
 					{
-					 	bchecked = bchecked - 1;
+						bchecked = bchecked - 1;
 						//var idx = bselected.indexOf($(item).val());
 						var idx = HUB.Projects.getArrayIndex($(item).val(), bselected);
-						if (idx!=-1) bselected.splice(idx, 1);
-						if (group)
+						if (idx!=-1)
+						{
+							bselected.splice(idx, 1);
+						}
+						/*if (group)
 						{
 							//var gidx = bgroups.indexOf(group);
 							var gidx = HUB.Projects.getArrayIndex(group, bgroups);
@@ -118,17 +118,17 @@ HUB.ProjectTeam = {
 								HUB.ProjectTeam.selectGroup(group, 'uncheck');
 								bgroups.splice(gidx, 1);
 							}
-						}
+						}*/
 					}
 					else
 					{
 						bchecked = bchecked + 1;
 						bselected.push($(item).val());
-						if (group)
+						/*if (group)
 						{
 							HUB.ProjectTeam.selectGroup(group, 'check');
 							bgroups.push(group);
-						}
+						}*/
 					}
 
 					HUB.ProjectTeam.watchSelections(bchecked);
@@ -146,7 +146,7 @@ HUB.ProjectTeam = {
 		{
 			boxes.each(function(i, item)
 			{
-				if ($(item).attr('class').search('group:' + group) >= 0)
+				if ($(item).attr('data-group') == group)
 				{
 					if (action == 'check')
 					{
@@ -175,17 +175,18 @@ HUB.ProjectTeam = {
 			ops.each(function(i, item)
 			{
 				// disable options until a box is checked
-				$(item).addClass('inactive');
-				$(item).on('click', function(e) {
-					e.preventDefault();
-					var aid = $(item).attr('id');
+				$(item)
+					.addClass('inactive')
+					.on('click', function(e) {
+						e.preventDefault();
+						var aid = $(item).attr('id');
 
-					if ($(item).hasClass('inactive'))
-					{
-						// do nothing
-					}
-					else
-					{
+						if ($(item).hasClass('inactive'))
+						{
+							// do nothing
+							return;
+						}
+
 						// Clean up url
 						var clean = $(item).attr('href').split('&owner[]=', 1);
 						$(item).attr('href', clean);
@@ -241,8 +242,7 @@ HUB.ProjectTeam = {
 								}
 							}
 						});
-					}
-				});
+					});
 			});
 		}
 	},
@@ -250,20 +250,8 @@ HUB.ProjectTeam = {
 	editRole: function (el)
 	{
 		var $ = this.jQuery;
-		var classes = $(el).attr('class').split(" ");
-		var owner = '';
-		var role = '';
-
-		for ( i=classes.length-1; i>=0; i-- ) {
-			if (classes[i].search("owner:") >= 0)
-			{
-				owner = classes[i].split(":")[1];
-			}
-			if (classes[i].search("role:") >= 0)
-			{
-				role = classes[i].split(":")[1];
-			}
-		}
+		var owner = $(el).attr('data-owner');
+		var role  = $(el).attr('data-role');
 
 		var m_selected = role == 1 ? ' selected="selected"' : '';
 		var c_selected = (role == 0 || role == 2 || role == 3) ? ' selected="selected"' : '';
@@ -271,8 +259,8 @@ HUB.ProjectTeam = {
 
 		// Hide your target element
 		$(el).addClass('hidden');
-		var form = 'form_' + $(el).attr('id');
-		var save = 'save_' + $(el).attr('id');
+		var form   = 'form_' + $(el).attr('id');
+		var save   = 'save_' + $(el).attr('id');
 		var cancel = 'cancel_' + $(el).attr('id');
 
 		if ($(form) && $(form).hasClass('hidden'))
@@ -280,20 +268,22 @@ HUB.ProjectTeam = {
 			$(form).removeClass('hidden');
 		}
 
-		$(el).after('<form id="' + form + '" class="editable" action="index.php">' +
-			'<label>' +
-				'<select name="role">' +
-					'<option value="1" ' + m_selected + '>manager</option>' +
-					'<option value="0" ' + c_selected + '>collaborator</option>' +
-					'<option value="5" ' + r_selected + '>reviewer (read-only)</option>' +
-				'<select>' +
-			'</label>' +
-			'<input type="hidden" name="ajax" value="1" />' +
-			'<input type="hidden" name="no_html" value="1" />' +
-			'<input type="hidden" name="owner" value="' + owner + '" />' +
-			'<input type="submit" class="btn btn-success active" id="' + save + '" value="save" />' +
-			'<input type="button" class="btn btn-cancel" id="' + cancel + '" value="cancel" />' +
-		'</form>');
+		$(el).after(
+			'<form id="' + form + '" class="editable" action="index.php">' +
+				'<label>' +
+					'<select name="role">' +
+						'<option value="1" ' + m_selected + '>manager</option>' +
+						'<option value="0" ' + c_selected + '>collaborator</option>' +
+						'<option value="5" ' + r_selected + '>reviewer (read-only)</option>' +
+					'<select>' +
+				'</label>' +
+				'<input type="hidden" name="ajax" value="1" />' +
+				'<input type="hidden" name="no_html" value="1" />' +
+				'<input type="hidden" name="owner" value="' + owner + '" />' +
+				'<input type="submit" class="btn btn-success active" id="' + save + '" value="save" />' +
+				'<input type="button" class="btn btn-cancel" id="' + cancel + '" value="cancel" />' +
+			'</form>'
+		);
 
 		$('#' + cancel).on('click', function(e){
 			e.preventDefault();
@@ -305,8 +295,8 @@ HUB.ProjectTeam = {
 		$('#' + save).on('click', function(e){
 			e.preventDefault();
 			$.ajax({ type:'POST', url: formAction, data:$('#' + form).serialize(), success: function(response) {
-			      $('#cbody').html(response);
-				  HUB.ProjectTeam.initialize();
+				$('#cbody').html(response);
+				HUB.ProjectTeam.initialize();
 			}});
 		});
 	},
@@ -326,9 +316,9 @@ HUB.ProjectTeam = {
 				}
 			});
 		}
-		else if (bchecked > 0 )
+		else if (bchecked > 0)
 		{
-			if ($('#t-delete') && $('#t-delete').hasClass('inactive')) {
+			if ($('#t-delete').length && $('#t-delete').hasClass('inactive')) {
 				$('#t-delete').removeClass('inactive');
 			}
 		}
@@ -337,4 +327,37 @@ HUB.ProjectTeam = {
 
 jQuery(document).ready(function($){
 	HUB.ProjectTeam.initialize();
+
+	var go = $('.group-options');
+	if (go.length) {
+		go.on('click', 'input[type=radio]', function(e) {
+			go.find('.input-wrap').removeClass('active');
+			$(this).closest('.input-wrap').addClass('active');
+
+			/*if ($(this).attr('data-action') == 'selective') {
+				$('.checkmember').prop('disabled', false);
+			}*/
+		});
+	}
+
+	$('#choosemember').fancybox({
+		type: 'ajax',
+		width: 600,
+		height: 600,
+		autoSize: false,
+		fitToView: false,
+		titleShow: false,
+		wrapCSS: 'sbp-window',
+		beforeLoad: function() {
+			href = $(this).attr('href');
+			$(this).attr('href', href.nohtml());
+		},
+		afterShow: function() {
+			if ($('#cancel-action')) {
+				$('#cancel-action').on('click', function(e) {
+					$.fancybox.close();
+				});
+			}
+		}
+	});
 });
