@@ -43,7 +43,7 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="emailPublishDownNotifications">
+			<fieldset group="emailPublishDownNotifications">
 				<field name="publish_down_notification1" default="0" label="PLG_CRON_STOREFRONT_PUBLISH_DOWN_NOTIFY1" description="PLG_CRON_STOREFRONT_PUBLISH_DOWN_NOTIFY1_DESC" />
 				<field name="publish_down_notification2" default="0" label="PLG_CRON_STOREFRONT_PUBLISH_DOWN_NOTIFY1" description="PLG_CRON_STOREFRONT_PUBLISH_DOWN_NOTIFY2_DESC" />
 			</fieldset>
