@@ -47,13 +47,14 @@ if (!empty($this->skus))
 
 ?>
 
-Approaching publish down notification digest.
+Publish down notifications
+--------------------------
 
 <?php
 
 if ($skusCount + $productsCount == 1)
 {
-	echo 'An item in the storefront is set to be published down soon:';
+	echo 'One item in the storefront is set to be published down soon:';
 	echo "\n";
 }
 else
@@ -62,9 +63,6 @@ else
 	echo "\n";
 }
 
-?>
-
-<?php
 if (!empty($this->products))
 {
 ?>
@@ -111,7 +109,8 @@ foreach ($this->skus as $sku)
 {
 	echo "{$sku->sSku} will be unpublished in {$sku->daysLeftUntilPublishDown} day";
 	echo $sku->daysLeftUntilPublishDown > 1 ? 's' : '';
-	echo " (Publish down is set to {$sku->publish_down})";
+	$local = Date::of($sku->publish_down)->toLocal();
+	echo " (Publish down is set to {$local})";
 	echo "\n";
 }
 }
