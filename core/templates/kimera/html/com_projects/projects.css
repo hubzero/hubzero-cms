@@ -1642,12 +1642,11 @@
 		overflow: visible;
 	}
 	.notice {
-		padding: 0.3em 1em;
 		border: 1px solid #f6bc56;
 		background: #ffefd3;
 		color: #7f3e0f;
-		margin: 0;
-		padding: 0.61803399em 0.61803399em 0.61803399em 2.31803399em;
+		margin: 1em 0;
+		padding: 0.61803399em 0.61803399em 0.61803399em 0.61803399em;
 		position: relative;
 		overflow: hidden;
 		zoom: 1;
