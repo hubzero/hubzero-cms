@@ -224,20 +224,20 @@ var typewatch = (function(){
 
 			//if (note.timestamp && note.timestamp != '00:00:00') {
 				var tm = '00:00:00';
-				//console.log(HUB);
+
 				if (typeof HUB.Presenter !== 'undefined' || typeof HUB.Video !== 'undefined') {
-					var tm = (typeof HUB.Presenter !== 'undefined') 
-					       ? HUB.Presenter.getCurrent()
-					       : HUB.Video.getCurrent();
+					tm = (typeof HUB.Presenter !== 'undefined') 
+						? HUB.Presenter.getCurrent()
+						: HUB.Video.getCurrent();
 
 					if (_DEBUG) {
 						window.console && console.log(tm);
 					}
 					if (tm) {
-						var formatted = (typeof HUB.Presenter !== 'undefined') 
+						tm = (typeof HUB.Presenter !== 'undefined') 
 						              ? HUB.Presenter.formatTime(tm)
 						              : HUB.Video.formatTime(tm);
-						_div_header.append(jQuery('<span></span>').addClass('time').text(formatted));
+						_div_header.append(jQuery('<span></span>').addClass('time').text(tm));
 					}
 				}
 			//}
