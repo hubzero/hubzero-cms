@@ -77,6 +77,12 @@ class Orders extends AdminController
 					'limitstart',
 					0,
 					'int'
+			),
+			'report-notes' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-notes',
+				'report-notes',
+				0,
+				'int'
 			)
 		);
 
@@ -230,6 +236,12 @@ class Orders extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
+			),
+			'report-notes' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-notes',
+				'report-notes',
+				0,
+				'int'
 			)
 		);
 
