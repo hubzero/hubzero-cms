@@ -62,6 +62,19 @@ $this->view('_submenu')
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+
+	<fieldset id="filter-bar">
+		<div class="grid">
+			<div class="col span12 align-right">
+				<label for="filter-reportnotes"><?php echo Lang::txt('COM_CART_SHOW_NOTES'); ?>:</label>
+				<select name="report-notes" id="filter-report-notes" onchange="this.form.submit();">
+					<option value="0"<?php if ($this->filters['report-notes'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ALL'); ?></option>
+					<option value="1"<?php if ($this->filters['report-notes'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ONLY'); ?></option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+
 	<table class="adminlist">
 		<thead>
 			<tr>

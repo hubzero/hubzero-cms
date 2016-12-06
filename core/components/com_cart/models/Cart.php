@@ -167,16 +167,29 @@ abstract class Cart
 		{
 			$sql .= " x.`uidNumber`, x.`Name`, crt.`crtId`, ";
 		}
-		$sql .= "`tId`, `tLastUpdated`, `tStatus` FROM `#__cart_transactions` t";
+		if (!empty($filters['report-notes']) && $filters['report-notes'])
+		{
+			$sql .= " ti.`tiNotes`, ";
+		}
+		$sql .= "t.`tId`, `tLastUpdated`, `tStatus` FROM `#__cart_transactions` t";
 		if (!empty($filters['userInfo']) && $filters['userInfo'])
 		{
 			$sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
 			$sql .= ' LEFT JOIN `#__xprofiles` x ON (crt.`uidNumber` = x.`uidNumber`)';
 		}
+		if (!empty($filters['report-notes']) && $filters['report-notes'])
+		{
+			$sql .= " LEFT JOIN `#__cart_transaction_info` ti ON (ti.`tId` = t.`tId`)";
+		}
+
 		$sql .= " WHERE 1";
 		if (!empty($filters['crtId']) && $filters['crtId'])
 		{
 			$sql .= " AND `crtId` = {$filters['crtId']}";
+		}
+		if (!empty($filters['report-notes']) && $filters['report-notes'])
+		{
+			$sql .= " AND (ti.`tiNotes` IS NOT NULL AND ti.`tiNotes` != '')";
 		}
 		if ($completedOnly)
 		{
@@ -200,10 +213,9 @@ abstract class Cart
 			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
 
-		//echo $sql; die;
-
 		$db = \App::get('db');
 		$db->setQuery($sql);
+		//print_r($db->toString()); die('*');
 		$db->query();
 
 		$totalRows= $db->getNumRows();
