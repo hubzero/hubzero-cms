@@ -302,7 +302,7 @@ class Calendar extends Model
 		//make sure the calendar url is valid
 		if (!strstr($statusCode, '200 OK'))
 		{
-			$this->set('failed_attempts', $this->failed_attempts + 1);
+			$this->set('failed_attempts', (int)$this->get('failed_attempts', 0) + 1);
 			$this->set('last_fetched_attempt', Date::toSql());
 			$this->store(true);
 			$this->setError($this->get('title'));
