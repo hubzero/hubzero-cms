@@ -57,6 +57,10 @@
 	.abox-controls {
 		float: right;
 	}
+	.abox-controls a,
+	.abox-controls input {
+		font-size: 55%;
+	}
 	#b-save.disabled,
 	#b-save.disabled:hover {
 		background: #CCC;

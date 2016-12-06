@@ -358,7 +358,8 @@ class Projects extends Base
 		{
 			if ($this->model->_tblOwner->reconcileGroups(
 				$this->model->get('id'),
-				$this->model->get('owned_by_group')
+				$this->model->get('owned_by_group'),
+				$this->model->get('sync_group')
 			))
 			{
 				$sync = true;

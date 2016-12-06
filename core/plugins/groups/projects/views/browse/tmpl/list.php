@@ -52,6 +52,7 @@ switch ($this->which)
 				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_TITLE'); ?></th>
 				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_STATUS'); ?></th>
 				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_MY_ROLE'); ?></th>
+				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_MEMBERSHIP'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -88,13 +89,15 @@ switch ($this->which)
 					<td class="th_status">
 						<?php
 						$html = '';
-						if ($row->access('owner')) {
-							if ($row->isActive()) {
+						if ($row->access('owner'))
+						{
+							if ($row->isActive())
+							{
 								$html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
 							}
 							else if ($row->inSetup())
 							{
-									$html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
+								$html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
 							}
 							else if ($row->isInactive())
 							{
@@ -110,6 +113,9 @@ switch ($this->which)
 					</td>
 					<td class="th_role">
 						<?php echo $role; ?>
+					</td>
+					<td class="th_membership">
+						<?php echo ($row->get('sync_group') ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>'); ?>
 					</td>
 				</tr>
 				<?php

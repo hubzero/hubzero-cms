@@ -41,16 +41,16 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -90,7 +90,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -107,15 +107,15 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -141,8 +141,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'project.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
 
 		// Model
 		$this->model = new \Components\Projects\Models\Project();
@@ -152,19 +151,19 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			User::get('id')
 		);
 
-		// Set filters
-		$this->_filters = array(
-			'mine'    => 1,
-			'updates' => 1,
-			'getowner'=> 1,
-			'group'   => $group->get('gidNumber'),
-			'sortby'  => Request::getVar('sortby', 'title'),
-			'sortdir' => Request::getVar('sortdir', 'ASC')
-		);
-
 		//if we want to return content
 		if ($return == 'html')
 		{
+			// Set filters
+			$this->_filters = array(
+				'mine'    => 1,
+				'updates' => 1,
+				'getowner'=> 1,
+				'group'   => $group->get('gidNumber'),
+				'sortby'  => Request::getVar('sortby', 'title'),
+				'sortdir' => Request::getVar('sortdir', 'ASC')
+			);
+
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
@@ -218,10 +217,10 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//get meta
+		// get meta
 		$arr['metadata'] = array();
 
-		//return total message count
+		// return total record count
 		$arr['metadata']['count'] = count($this->_projects);
 
 		// Return the output
@@ -231,14 +230,13 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * On after group membership changes - re-sync with projects
 	 *
-	 * @param      object  $group      Current group
-	 * @return     array
+	 * @param   object  $group  Current group
+	 * @return  void
 	 */
 	public function onAfterStoreGroup($group)
 	{
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'project.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
 
 		// Model
 		$this->model = new \Components\Projects\Models\Project();
@@ -254,7 +252,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($projects as $project)
 			{
-				$this->model->table('Owner')->reconcileGroups($project->id, $project->owned_by_group);
+				$this->model->table('Owner')->reconcileGroups($project->id, $project->owned_by_group, $project->sync_group);
 				$this->model->table('Owner')->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
 			}
 		}
@@ -263,8 +261,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * View entries
 	 *
-	 * @param      string $which The type of entries to display
-	 * @return     string
+	 * @param   string  $which  The type of entries to display
+	 * @return  string
 	 */
 	protected function _view($which = 'owned')
 	{
@@ -311,7 +309,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display updates
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	protected function _updates()
 	{
@@ -335,8 +333,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			$view->filters
 		));
 
-		$view->content      = !empty($results) && isset($results[0]) ? $results[0] : NULL;
-		$view->newcount     = $this->model->table()->getUpdateCount(
+		$view->content  = !empty($results) && isset($results[0]) ? $results[0] : NULL;
+		$view->newcount = $this->model->table()->getUpdateCount(
 			$this->_projects,
 			User::get('id')
 		);
@@ -344,11 +342,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$view->uid      = User::get('id');
 		$view->config   = $this->_config;
 		$view->group    = $this->group;
-
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}

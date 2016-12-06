@@ -50,9 +50,9 @@
 	#setup #team-save {
 		margin-top: 2em !important;
 	}
-	#setup .combine_options label  {
+	#setup .combine_options label {
 		padding-right: 0;
-		margin-right: -1em;
+		/*margin-right: -1em;*/
 	}
 	#t-delete.inactive {
 		background: #E2E2E2;
@@ -112,6 +112,31 @@
 	}
 	#hubForm .editable .btn {
 		font-size: 90%;
+	}
+
+	.group-options .group-action {
+		display: none;
+		text-align: center;
+	}
+	.group-options .icon-success {
+		color: green;
+	}
+	.group-options .icon-info {
+		color: #ccc;
+		color: rgba(0, 0, 0, 0.4);
+	}
+	.group-options .active .group-action {
+		display: block;
+	}
+	.group-options .group-members-wrap {
+		max-height: 30em;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		padding: 1em;
+		margin: 1em 0;
+		overflow: auto;
+	}
+	.group-options input {
+		width: auto;
 	}
 
 /* Publication authors listing */
