@@ -40,7 +40,7 @@ use stdClass;
 /**
  * Search AdminController Class
  */
-class Search extends AdminController
+class Solr extends AdminController
 {
 	/**
 	 * Display the overview
@@ -54,16 +54,30 @@ class Search extends AdminController
 
 		// Instantiate Search class
 		$config = Component::params('com_search');
-		$index = new \Hubzero\Search\Index($config);
-
-		// Get the last 10 entries
-		$this->view->logs = array_slice($index->getLogs(), -10, 10, true);
 
 		// Get the last insert date
-		$insertTime = Date::of($index->lastInsert())->format('relative');
+		try
+		{
+			$index = new \Hubzero\Search\Index($config);
+			$timestamp = $insertTime = $index->lastInsert();
+			$insertTime = Date::of($timestamp)->format('relative');
+			$status = $index->status();
 
-		$this->view->status = $index->status();
+			// Get the last 10 entries
+			$logs = array_slice($index->getLogs(), -10, 10, true);
+
+		}
+		catch (\Solarium\Exception\HttpException $e)
+		{
+			$this->view->setError($e->getMessage());
+			$insertTime = '';
+			$status = 'failed';
+			$logs = array();
+		}
+
 		$this->view->mechanism = $config->get('engine');
+		$this->view->status = $status;
+		$this->view->logs = $logs;
 		$this->view->lastInsert = $insertTime;
 		$this->view->setLayout('overview');
 
@@ -91,14 +105,26 @@ class Search extends AdminController
 		$queue = IndexQueue::all()->rows();
 
 		$stats = array();
-		foreach ($hubtypes as $type)
+		try
 		{
-			$query = new \Hubzero\Search\Query($config);
-			$result = $query->query('*:*')->addFilter('hubtype', array('hubtype', '=', $type))->run()->getNumFound();
-
-			$stats[$type] = $result;
+			foreach ($hubtypes as $type)
+			{
+				$query = new \Hubzero\Search\Query($config);
+				$result = $query->query('*:*')
+					->addFilter('hubtype', array('hubtype', '=', $type))
+					->run()
+					->getNumFound();
+	
+				$stats[$type] = $result;
+			}
 		}
-
+		catch (\Solarium\Exception\HttpException $e)
+		{
+			App::redirect(
+				Route::url('index.php?option=com_search&task=display', false)
+			);
+		}
+	
 		// Display the view
 		$this->view->types = $hubtypes;
 		$this->view->stats = $stats;
@@ -176,12 +202,21 @@ class Search extends AdminController
 
 		// Instantitate and get all results for a particular document type
 		$config = Component::params('com_search');
-		$query = new \Hubzero\Search\Query($config);
-		$results = $query->query($filter)->addFilter('hubtype', array('hubtype', '=', $type))
-			->limit($limit)->start($limitstart)->run()->getResults();
+		try
+		{
+			$query = new \Hubzero\Search\Query($config);
+			$results = $query->query($filter)->addFilter('hubtype', array('hubtype', '=', $type))
+				->limit($limit)->start($limitstart)->run()->getResults();
 
-		// Get the total number of records
-		$total = $query->getNumFound();
+			// Get the total number of records
+			$total = $query->getNumFound();
+		}
+		catch (\Solarium\Exception\HttpException $e)
+		{
+			App::redirect(
+				Route::url('index.php?option=com_search&task=display', false)
+			);
+		}
 
 		// Pass the type the view
 		$this->view->type = $type;
