@@ -114,7 +114,7 @@ class Solr extends AdminController
 					->addFilter('hubtype', array('hubtype', '=', $type))
 					->run()
 					->getNumFound();
-	
+
 				$stats[$type] = $result;
 			}
 		}
@@ -124,7 +124,7 @@ class Solr extends AdminController
 				Route::url('index.php?option=com_search&task=display', false)
 			);
 		}
-	
+
 		// Display the view
 		$this->view->types = $hubtypes;
 		$this->view->stats = $stats;

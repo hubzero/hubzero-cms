@@ -149,7 +149,7 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 				{
 					$path = $row->alias;
 				}
-					
+
 				if ($row->state == 1 && $row->access == 1)
 				{
 					$access_level = 'public';

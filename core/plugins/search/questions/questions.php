@@ -275,7 +275,7 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 						$responseString .= $response->answer . ' ';
 					}
 				}
-				
+
 				// Determine the path
 				$path = '/answers/qustion/' . $id;
 
