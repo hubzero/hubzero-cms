@@ -90,108 +90,140 @@ class plgSearchCourses extends \Hubzero\Plugin\Plugin
 		$results->add($rows);
 	}
 
-	public $hubtype = 'course';
-
 	/**
 	 * onGetTypes - Announces the available hubtype
-	 *
-	 * @param mixed $type
+	 * 
+	 * @param mixed $type 
 	 * @access public
 	 * @return void
 	 */
 	public function onGetTypes($type = null)
 	{
-		if (isset($type) && $type == $this->hubtype)
+		// The name of the hubtype
+		$hubtype = 'course';
+
+		if (isset($type) && $type == $hubtype)
 		{
-			return $this->hubtype;
+			return $hubtype;
 		}
 		elseif (!isset($type))
 		{
-			return $this->hubtype;
+			return $hubtype;
 		}
 	}
 
 	/**
-	 * onGetModel 
+	 * onIndex 
 	 * 
-	 * @param string $type 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onGetModel($type = '')
+	public function onIndex($type, $id, $run = false)
 	{
-		if ($type == $this->hubtype)
+		if ($type == 'course')
 		{
-			return new Course;
-		}
-	}
-
-	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
-	 * @access public
-	 * @return void
-	 */
-	public function onProcessFields($type, $row, &$db)
-	{
-		if ($type == $this->hubtype)
-		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
-
-			// Format the date for SOLR
-			$date = Date::of($row->created)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->created)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			// Title is required
-			$fields->title = $row->title;
-
-			$fields->description = strip_tags(htmlspecialchars_decode($row->get('description')));
-
-			/**
-			 * Each entity should have an owner. 
-			 * Owner type can be a user or a group,
-			 * where the owner is the ID of the user or group
-			 **/
-			$owners = array();
-
-			// Original course creator
-			array_push($owners, $row->created_by);
-
-			$offerings = $row->offerings()->rows();
-			foreach ($offerings as $offering)
+			if ($run === true)
 			{
-				// Offering creators
-				array_push($owners, $offering->created_by);
-			}
+				// Establish a db connection
+				$db = App::get('db');
 
-			$fields->owner_type = 'user';
-			$fields->owner = $owners;
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-			/**
-			 * A document should have an access level.
-			 * This value can be:
-			 *  public - all users can view
-			 *  registered - only registered users can view
-			 *  private - only owners (set above) can view
-			 **/
-			if ($row->state == 1)
-			{
-				$fields->access_level = 'public';
+				// Get the record
+				$sql = "SELECT * FROM #__courses WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Get the name of the author
+				$sql1 = "SELECT user_id, name, title, alias, student FROM #__courses_members
+				LEFT JOIN #__courses_roles
+				ON #__courses_members.role_id = #__courses_roles.id
+				LEFT JOIN #__users
+				ON #__courses_members.user_id = #__users.id;";
+				$members = $db->setQuery($sql1)->query()->loadObjectList();
+
+				$authors = array();
+				$author_ids = array();
+				$students = array();
+
+				foreach ($members as $member)
+				{
+					if ($member->student == 0)
+					{
+						array_push($authors, $member->name);
+						array_push($author_ids, $member->user_id);
+					}
+					else
+					{
+						array_push($students, $member->user_id);
+					}
+				}
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'courses';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+
+				// Determine the path
+				$path = '/courses/' . $row->alias;
+
+				// Public condition
+				if ($row->state == 1 && $row->access == 1)
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->state == 1 && $row->access == 2)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				$owner_type = 'user';
+				$owner = array_merge($students, $author_ids);
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = $row->blurb . ' ' . $row->description;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = $authors;
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
 			else
 			{
-				$fields->access_level = 'private';
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__courses;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
 			}
-
-			// The URL this document is accessible through
-			$fields->url = '/courses/' . $row->alias;
-
-			return $fields;
 		}
 	}
 }
