@@ -34,7 +34,9 @@ namespace Components\Projects\Helpers;
 
 use Exception;
 use Hubzero\Base\Object;
+use Hubzero\Filesystem\Entity;
 use Filesystem;
+use StdClass;
 use Component;
 use Config;
 use Event;
@@ -1218,7 +1220,7 @@ class Html extends Object
 	 * @param      string $url
 	 * @return     string
 	 */
-	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = NULL, $linkit = true)
+	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = NULL, $linkit = true, $adapter = NULL, $seperator = '&raquo;')
 	{
 		$bc = NULL;
 		$href = '';
@@ -1231,22 +1233,31 @@ class Html extends Object
 			{
 				$parent   = count($desectPath) > 1 && $p != count($desectPath)  ? $href  : '';
 				$href  	 .= DS . $desectPath[$p];
+				$name = $desectPath[$p];
+				if ($adapter)
+				{
+					$temp = Entity::fromPath($desectPath[$p], $adapter);
+					if ($temp)
+					{
+						$name = $temp->displayName();
+					}
+				}
 				if ($linkit)
 				{
 					if (strpos($url, '?') !== false)
 					{
 						$currentUrl = Route::url($url . '&subdir=' . urlencode($href));
-						$bc .= ' &raquo; <span><a href="' . $currentUrl . '" class="folder">' . $desectPath[$p] . '</a></span> ';
+						$bc .= ' &raquo; <span><a href="' . $currentUrl . '" class="folder">' . $name . '</a></span> ';
 					}
 					else
 					{
 						$bc .= ' &raquo; <span><a href="' . $url . '/?subdir=';
-						$bc .= urlencode($href) . '" class="folder">' . $desectPath[$p] . '</a></span> ';
+						$bc .= urlencode($href) . '" class="folder">' . $name . '</a></span> ';
 					}
 				}
 				else
 				{
-					$bc .= ' <span class="folder">' . $desectPath[$p] . '</span> &raquo; ';
+					$bc .= ' <span class="folder">' . $name . '</span> ' . $seperator;
 				}
 			}
 		}
@@ -1324,5 +1335,44 @@ class Html extends Object
 				$option
 			)
 		);
+	}
+
+	public static function listDirHtml($dir = null, $currentDir = '')
+	{
+		if ($dir == null)
+		{
+			$dir = new stdClass;
+		}
+
+		$leftMargin = ($dir->depth * 15) . 'px';
+
+		$html = '<li style="margin-left:';
+		$html .= $leftMargin;
+		$html .= '"><input type="radio" name="newpath" value="';
+		$html .= urlencode($dir->path);
+		$html .= '"';
+		
+		if ($currentDir == $dir->path)
+		{
+			$html .= 'disabled="disabled" ';
+		}
+		$html .= '/> <span><span class="folder ';
+		if ($currentDir == $dir->path)
+		{
+			$html .= 'prominent ';
+		}
+		$html .= '">';
+		$html .= $dir->name;
+		$html .= '</span></span></li>';
+		
+		if (count($dir->subdirs) > 0)
+		{
+			foreach($dir->subdirs as $subdir)
+			{
+				$html .= \Components\Projects\Helpers\Html::listDirHtml($subdir, $currentDir);
+			}
+		}
+
+		return $html;
 	}
 }

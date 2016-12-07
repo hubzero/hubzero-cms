@@ -33,9 +33,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-
 <div id="abox-content">
-	<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) { ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_IN'); ?> <span class="folder"><?php echo $this->subdir; ?></span> <?php } ?></h3>
+	<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) { ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_IN'); ?> <?php echo \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->model->link('files') . '&action=browse&connection=' . $this->connection->id, $parent, false, $this->connection->adapter()); ?></span> <?php } ?></h3>
+			<?php  ?>
 	<?php if ($this->getError()) : ?>
 		<p class="witherror"><?php echo $this->getError(); ?></p>
 	<?php else : ?>

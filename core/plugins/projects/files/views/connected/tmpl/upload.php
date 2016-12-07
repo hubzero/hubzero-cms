@@ -45,7 +45,7 @@ $rUrl       = $this->url . '&action=browse&a=1' . $subdirlink;
 $basic = Request::getInt('basic', 0);
 
 // Directory path breadcrumbs
-$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
+$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent, false, $this->connection->adapter());
 
 ?>
 <?php if ($this->ajax) { ?>
@@ -64,9 +64,9 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 	<?php } ?>
 	<fieldset class="uploader">
 		<p id="upload-instruct"><?php echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
-			if ($this->subdir)
+			if ($bc)
 			{
-				echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->subdir . '</span> ' . Lang::txt('PLG_PROJECTS_FILES_DIR') . ':';
+				echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $bc . '</span> ' . ':';
 			}
 			else
 			{

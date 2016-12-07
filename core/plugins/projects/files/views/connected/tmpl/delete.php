@@ -63,8 +63,8 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 							<?php echo \Components\Projects\Models\File::drawIcon($file->getExtension()); ?>
 							<?php echo $file->getName(); ?>
 							<?php echo $file->isDir()
-								? '<input type="hidden" name="folder[]" value="' . urlencode($file->getName()) . '" />'
-								: '<input type="hidden" name="asset[]"  value="' . urlencode($file->getName()) . '" />'; ?>
+								? '<input type="hidden" name="folder[]" value="' . urlencode($file->getPath()) . '" />'
+								: '<input type="hidden" name="asset[]"  value="' . urlencode($file->getPath()) . '" />'; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>
