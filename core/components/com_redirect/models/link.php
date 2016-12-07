@@ -89,16 +89,17 @@ class Link extends Relational
 	{
 		$this->addRule('old_url', function($data)
 		{
-			$row = Link::blank();
+			$entries = Link::blank()
+				->whereEquals('old_url', substr($data['old_url'], 0, 255));
 
 			if (isset($data['id']))
 			{
-				$row->whereEquals('old_url', substr($data['old_url'], 0, 255))
-					->where('id', '!=', $data['id'])
-					->row();
+				$entries->where('id', '!=', $data['id']);
 			}
 
-			return !$row->id ? false : Lang::txt('COM_REDIRECT_ERROR_DUPLICATE_OLD_URL');
+			$row = $entries->row();
+
+			return !$row->get('id') ? false : Lang::txt('COM_REDIRECT_ERROR_DUPLICATE_OLD_URL');
 		});
 	}
 
