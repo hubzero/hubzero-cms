@@ -34,6 +34,7 @@ namespace Components\Tags\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
+use Components\Tags\Models\Substitute;
 use Request;
 use Notify;
 use Cache;
@@ -93,27 +94,36 @@ class Entries extends AdminController
 
 		$model = Tag::all();
 
+		$t = $model->getTableName();
+		$s = Substitute::blank()->getTableName();
+
+		$model
+			->select('DISTINCT ' . $t . '.*')
+			->join($s, $s . '.tag_id', $t . '.id', 'left');
+
 		if ($filters['search'])
 		{
 			$filters['search'] = strtolower((string)$filters['search']);
 
-			$model->whereLike('raw_tag', $filters['search'], 1)
-				->orWhereLike('tag', $filters['search'], 1)
+			$model->whereLike($t . '.raw_tag', $filters['search'], 1)
+				->orWhereLike($t . '.tag', $filters['search'], 1)
+				->orWhereLike($s . '.raw_tag', $filters['search'], 1)
+				->orWhereLike($s . '.tag', $filters['search'], 1)
 				->resetDepth();
 		}
 
 		if ($filters['by'] == 'admin')
 		{
-			$model->whereEquals('admin', 1);
+			$model->whereEquals($t . '.admin', 1);
 		}
 		else if ($filters['by'] == 'user')
 		{
-			$model->whereEquals('admin', 0);
+			$model->whereEquals($t . '.admin', 0);
 		}
 
 		// Get records
 		$rows = $model
-			->ordered('filter_order', 'filter_order_Dir')
+			->order($t . '.' . $filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 
