@@ -59,7 +59,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 				<?php echo $this->connection->name; ?>
 			</a>
 			&nbsp;
-			<?php echo \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->model->link('files') . '&action=browse&connection=' . $this->connection->id, $parent); ?>
+			<?php echo \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->model->link('files') . '&action=browse&connection=' . $this->connection->id, $parent, true, $this->connection->adapter()); ?>
 		</h3>
 	</div>
 	<fieldset>
@@ -102,8 +102,8 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 				<?php if ($this->model->access('content')) : ?>
 					<th class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
 				<?php endif; ?>
-				<th class="asset_doc <?php if ($this->sortby == 'basename') { echo ' activesort'; } ?>">
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=basename&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
+				<th class="asset_doc <?php if ($this->sortby == 'filename') { echo ' activesort'; } ?>">
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=filename&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
 						<?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>
 					</a>
 				</th>

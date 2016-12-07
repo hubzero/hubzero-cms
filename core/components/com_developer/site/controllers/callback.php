@@ -182,4 +182,57 @@ class Callback extends SiteController
 		// Redirect to the local endpoint
 		App::redirect(base64_decode($state));
 	}
+
+	/**
+	 * Processes the google callback from oauth authorize requests
+	 *
+	 * @return    void
+	 **/
+	public function googledriveAuthorizeTask()
+	{
+		$pparams = \Plugin::params('filesystem', 'google');
+
+		$app_id = \Session::get('googledrive.app_id', false);
+		$app_secret = \Session::get('googledrive.app_secret', false);
+		$new_connection = Session::get('googledrive.connection_to_set_up', false);
+
+		$info = [
+			'key'    => isset($app_key) ? $app_key : $pparams->get('app_key'),
+			'secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
+		];
+
+		$client = new \Google_Client();
+		$client->setClientId($app_id);
+		$client->setClientSecret($app_secret);
+		$client->setAccessType('offline');
+		$client->addScope(\Google_Service_Drive::DRIVE);
+		$redirectUri      = trim(Request::root(), '/') . '/developer/callback/googledriveAuthorize';
+		$client->setRedirectUri($redirectUri);
+
+		$code = Request::get('code', false);
+
+		if ($code)
+		{
+			$client->authenticate($code);
+			$accessToken = $client->getAccessToken();
+		}
+		else
+		{
+			throw new \Exception("No state found", 400);
+		}
+
+		//if this is a new connection, we can save the token on the server to ensure that it is used next time
+		if ($new_connection)
+		{
+			require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
+			$connection_params = json_decode($connection->get('params'));
+			$connection_params->app_token = $accessToken;
+			$connection->set('params', json_encode($connection_params));
+			$connection->save();
+		}
+
+		// Redirect to the local endpoint
+		App::redirect(base64_decode(\Session::get('googledrive.state')));
+	}
 }
