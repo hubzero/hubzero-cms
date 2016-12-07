@@ -125,5 +125,168 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 		$sql2 .= " AND c.id NOT IN(" . $sql_result_one . ")";
 		$results->add(new \Components\Search\Models\Basic\Result\Sql($sql2));
 	}
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'citation';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	/**
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
+	 * @access public
+	 * @return void
+	 */
+	public function onIndex($type, $id, $run = false)
+	{
+		if ($type == 'citation')
+		{
+			if ($run === true)
+			{
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__citations WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Obtain list of related authors
+				$sql1 = "SELECT author FROM #__citations_authors WHERE cid={$id};";
+				$authors = $db->setQuery($sql1)->query()->loadColumn();
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'citations';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Determine the path
+				if ($row->scope == 'member')
+				{
+					$path = '/members/'. $row->scope_id  . '/citations';
+				}
+				elseif ($row->scope == 'group')
+				{
+					$group = Group::getInstance($row->scope_id);
+
+					// Make sure group is valid.
+					if (is_object($group))
+					{
+						$cn = $group->get('cn');
+						$path = '/groups/'. $cn . '/citations';
+					}
+					else
+					{
+						$path = '';
+					}
+				}
+				else
+				{
+					$path = '/citations/view/' . $id;
+				}
+
+				$access_level = 'public';
+
+				if ($row->scope != 'group')
+				{
+					$owner_type = 'user';
+					$owner = $row->uid;
+				}
+				else
+				{
+					$owner_type = 'group';
+					$owner = $row->scope_id;
+				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = $row->address . ' ' .
+					$row->author . ' ' .
+					$row->booktitle . ' ' .
+					$row->chapter . ' ' .
+					$row->cite . ' ' .
+					$row->edition . ' ' .
+					$row->eprint . ' ' .
+					$row->howpublished . ' ' .
+					$row->institution . ' ' .
+					$row->isbn . ' ' .
+					$row->journal . ' ' .
+					$row->month . ' ' .
+					$row->note . ' ' . 
+					$row->number . ' ' .
+					$row->organization . ' ' .
+					$row->pages . ' ' .
+					$row->publisher . ' ' .
+					$row->series . ' ' .
+					$row->school . ' ' .
+					$row->title . ' ' .
+					$row->url . ' ' .
+					$row->volume . ' ' .
+					$row->year . ' ' .
+					$row->doi . ' ' .
+					$row->ref_type . ' ' .
+					$row->date_submit . ' ' .
+					$row->date_accept . ' ' .
+					$row->date_publish . ' ' .
+					$row->software_use . ' ' .
+					$row->notes . ' ' .
+					$row->language . ' ' .
+					$row->label . ' ';
+
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = $authors;
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
+			}
+			else
+			{
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__citations;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
+			}
+		}
+	}
 }
 
