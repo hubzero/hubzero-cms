@@ -31,7 +31,7 @@
         "tecnickcom/tcpdf": "6.0.017",
         "leafo/lessphp": "0.5.0",
         "swiftmailer/swiftmailer": "v5.0.2",
-        "monolog/monolog": "1.11.0",
+        "monolog/monolog": "1.17.0",
         "willdurand/geocoder": "2.8.*",
         "predis/predis": "0.8.6",
         "phpoffice/phpexcel": "1.8.0",
@@ -40,8 +40,8 @@
         "simshaun/recurr": "0.3.2",
         "pelago/emogrifier": "dev-master",
         "aferrandini/phpqrcode": "1.0.1",
-        "google/apiclient": "1.1.*",
-        "guzzlehttp/guzzle": "5.2.*",
+        "google/apiclient": "^2.0",
+        "guzzlehttp/guzzle": "5.3.*",
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
         "phpdocumentor/reflection-docblock": "2.0.4",
@@ -52,7 +52,10 @@
         "league/flysystem-dropbox": "1.0.*",
         "hubzero/framework": "dev-master",
         "solarium/solarium": "3.5.1",
-        "hubzero/flysystem-github": "dev-develop"
+        "hubzero/flysystem-github": "dev-develop",
+        "nao-pon/flysystem-google-drive": "~1.1",
+				"php-amqplib/php-amqplib": "2.5.*",
+        "facebook/graph-sdk": "^5.4"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"
