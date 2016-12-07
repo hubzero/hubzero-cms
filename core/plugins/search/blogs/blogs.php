@@ -36,8 +36,6 @@ defined('_HZEXEC_') or die();
 use Components\Blog\Models\Entry;
 use Hubzero\User\Group;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php';
-
 /**
  * Search blog entries
  */
@@ -136,17 +134,6 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 		$results->add($rows);
 	}
 
-/************************************************
- *
- * HubSearch Required Methods
- * @author Kevin Wojkovich <kevinw@purdue.edu>
- *
- ***********************************************/
-
-	/****************************
-	Query-time / General Methods
-	****************************/
-
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
@@ -169,115 +156,129 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 		}
 	}
 
-	public function onGetModel($type = '')
-	{
-		if ($type == 'blog-entry')
-		{
-			return new Entry;
-		}
-	}
-	/*********************
-		Index-time methods
-	*********************/
 	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onProcessFields($type, $row)
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'blog-entry')
 		{
-			// Determine the author of the Entry
-			$user = User::getInstance($row->created_by);
-			$authorArr = array();
-			array_push($authorArr, $user->name);
+			if ($run === true)
+			{
+				// Establish a db connection
+				$db = App::get('db');
 
-			// Instantiate new $fields object
-			$fields = new stdClass;
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-			// Calculate Permissions
-			// Public condition
-			if ($row->state == 1 && $row->access == 1)
-			{
-				$fields->access_level = 'public';
-			}
-			// Registered condition
-			elseif ($row->state == 1 && $row->access == 2)
-			{
-				$fields->access_level = 'registered';
-			}
-			// Default private
-			else
-			{
-				$fields->access_level = 'private';
-			}
+				// Get the record
+				$sql = "SELECT * FROM #__blog_entries WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
 
-			if ($row->scope != 'group')
-			{
-				$fields->owner_type = 'user';
-				$fields->owner = $row->created_by;
-			}
-			else
-			{
-				$fields->owner_type = 'group';
-				$fields->owner = $row->scope_id;
-			}
+				// Get the name of the author
+				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$author = $db->setQuery($sql1)->query()->loadResult();
 
-			// Build out path
-			$year = Date::of(strtotime($row->publish_up))->toLocal('Y');
-			$month = Date::of(strtotime($row->publish_up))->toLocal('m');
-			$alias = $row->alias;
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'blog';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
 
-			if ($row->scope == 'site')
-			{
-				$path = '/blog/' . $year . '/' . $month . '/' . $alias;
-			}
-			elseif ($row->scope == 'member')
-			{
-				$path = '/members/'. $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
-			}
-			elseif ($row->scope == 'group')
-			{
-				$group = Group::getInstance($row->scope_id);
+				// Determine the path
+				$year = Date::of(strtotime($row->publish_up))->toLocal('Y');
+				$month = Date::of(strtotime($row->publish_up))->toLocal('m');
+				$alias = $row->alias;
 
-				// Make sure group is valid.
-				if (is_object($group))
+				if ($row->scope == 'site')
 				{
-					$cn = $group->get('cn');
-					$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
+					$path = '/blog/' . $year . '/' . $month . '/' . $alias;
+				}
+				elseif ($row->scope == 'member')
+				{
+					$path = '/members/'. $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
+				}
+				elseif ($row->scope == 'group')
+				{
+					$group = Group::getInstance($row->scope_id);
+
+					// Make sure group is valid.
+					if (is_object($group))
+					{
+						$cn = $group->get('cn');
+						$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
+					}
+					else
+					{
+						$path = '';
+					}
+				}
+
+				// Public condition
+				if ($row->state == 1 && $row->access == 1)
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->state == 1 && $row->access == 2)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				if ($row->scope != 'group')
+				{
+					$owner_type = 'user';
+					$owner = $row->created_by;
 				}
 				else
 				{
-					$path = '';
+					$owner_type = 'group';
+					$owner = $row->scope_id;
 				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = preg_replace('/<[^>]*>/', ' ', $row->content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = array($author);
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
-
-			$fields->url = $path;
-			$fields->author = $authorArr;
-			$fields->tags = $row->tags('array');
-
-			$fields->title = $row->title;
-			$fields->alias = $row->alias;
-
-			// Monkeying around to adapt for console application
-			$content = $row->get('content');
-			$content = html_entity_decode($content);
-			$content = strip_tags($content);
-			$fields->fulltext = $content;
-
-			// Format the date for SOLR
-			$date = Date::of($row->publish_up)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			$fields->description = html_entity_decode($row->description);
-
-			return $fields;
+			else
+			{
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__blog_entries;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
+			}
 		}
 	}
 }
