@@ -86,13 +86,13 @@ Html::behavior('keepalive');
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_OLD_URL_DESC'); ?>">
 					<label id="fields-old_url-lbl" for="fields-old_url"><?php echo Lang::txt('COM_REDIRECT_FIELD_OLD_URL_LABEL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[old_url]" id="fields-old_url" value="<?php echo $this->escape($this->row->old_url); ?>" class="inputbox required" />
+					<input type="text" name="fields[old_url]" id="fields-old_url" value="<?php echo $this->escape($this->row->old_url); ?>" class="inputbox required" maxlength="255" />
 					<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_OLD_URL_DESC'); ?></span>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?>">
 					<label id="fields-new_url-lbl" for="fields-new_url"><?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_LABEL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[new_url]" id="fields-new_url" value="<?php echo $this->escape($this->row->new_url); ?>" class="inputbox required" />
+					<input type="text" name="fields[new_url]" id="fields-new_url" value="<?php echo $this->escape($this->row->new_url); ?>" class="inputbox required" maxlength="255" />
 					<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?></span>
 				</div>
 

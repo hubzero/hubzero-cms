@@ -93,7 +93,7 @@ class Link extends Relational
 
 			if (isset($data['id']))
 			{
-				$row->whereEquals('old_url', $data['old_url'])
+				$row->whereEquals('old_url', substr($data['old_url'], 0, 255))
 					->where('id', '!=', $data['id'])
 					->row();
 			}
