@@ -239,7 +239,7 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 					$row->isbn . ' ' .
 					$row->journal . ' ' .
 					$row->month . ' ' .
-					$row->note . ' ' . 
+					$row->note . ' ' .
 					$row->number . ' ' .
 					$row->organization . ' ' .
 					$row->pages . ' ' .
