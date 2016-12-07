@@ -162,13 +162,13 @@ $revisions = $this->page->versions()
 										$cur = $revision->get('version'); ?>
 										( cur )
 									<?php } else { ?>
-										(<a href="<?php echo Route::url($this->page->link('compare') . '&oldid=' . $revision->get('version') . '&diff=' . $cur); ?>">
+										(<a href="<?php echo Route::url($this->page->link('compare', 'oldid=' . $revision->get('version') . '&diff=' . $cur)); ?>">
 											<?php echo Lang::txt('COM_WIKI_HISTORY_CURRENT'); ?>
 										</a>)
 									<?php } ?>
 										&nbsp;
 									<?php if ($i != $total) { ?>
-										(<a href="<?php echo Route::url($this->page->link('compare') . '&oldid=' . ($revision->get('version') - 1) . '&diff=' . $revision->get('version')); ?>">
+										(<a href="<?php echo Route::url($this->page->link('compare', '&oldid=' . ($revision->get('version') - 1) . '&diff=' . $revision->get('version'))); ?>">
 											<?php echo Lang::txt('COM_WIKI_HISTORY_LAST'); ?>
 										</a>)
 									<?php } else { ?>
@@ -232,8 +232,7 @@ $revisions = $this->page->versions()
 
 			<div class="clear"></div>
 
-			<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
-			<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
+			<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
 			<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 
 			<?php foreach ($this->page->adapter()->routing('compare') as $name => $val) { ?>
