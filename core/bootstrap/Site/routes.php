@@ -702,7 +702,7 @@ $router->rules('parse')->append('redirect', function ($uri)
 
 	if ($row = $db->loadObject())
 	{
-		$myuri = new \Hubzero\Utility\Uri($row->newurl);
+		$myuri = new \Hubzero\Utility\Uri($row->new_url);
 
 		$vars = $myuri->getQuery(true);
 
