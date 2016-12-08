@@ -16,6 +16,11 @@
 	#page_content.group_activity {
 		padding: 0;
 	}
+	#page_content.group_activity * {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
 
 /* Filters */
 	.filters {
