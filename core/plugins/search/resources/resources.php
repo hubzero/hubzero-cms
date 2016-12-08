@@ -418,7 +418,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 				$children = $db->setQuery($sql3)->query()->loadAssocList();
 
 				$fileData = '';
-				$content = ''; 
+				$content = '';
 				foreach ($children as $child)
 				{
 					if (isset($fileScan) && $fileScan == true)
@@ -434,7 +434,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 				$title = $row->title;
 
 				// Build the description, clean up text
-				$content .= $row->introtext . ' ' . $row->fulltxt . ' ' . $fileData; 
+				$content .= $row->introtext . ' ' . $row->fulltxt . ' ' . $fileData;
 				$content = preg_replace('/<[^>]*>/', ' ', $content);
 				$content = preg_replace('/ {2,}/', ' ', $content);
 				$description = \Hubzero\Utility\Sanitize::stripAll($content);
