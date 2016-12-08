@@ -127,6 +127,16 @@
 		display: block;
 		font-size: 85%;
 	}
+
+	.group-title {
+		display: block;
+		font-size: 0.8rem;
+		line-height: 1.2rem;
+		height: 3.6rem;
+		overflow: hidden;
+		border: none;
+	}
+
 /* Group member status */
 	.group-membership-status {
 		border: 1px solid #ddd;
