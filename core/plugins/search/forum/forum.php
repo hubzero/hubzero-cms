@@ -150,5 +150,196 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 			$results->add($row);
 		}
 	}
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'forum';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	/**
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
+	 * @access public
+	 * @return void
+	 */
+	public function onIndex($type, $id, $run = false)
+	{
+		if ($type == 'forum')
+		{
+			if ($run === true)
+			{
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT #__forum_posts.title, 
+				#__forum_posts.id,
+				#__forum_posts.comment,
+				#__forum_posts.created,
+				#__forum_posts.created_by,
+				#__forum_posts.scope,
+				#__forum_posts.scope_id,
+				#__forum_posts.anonymous,
+				#__forum_posts.thread,
+				#__forum_posts.parent,
+				#__forum_categories.alias as category,
+				#__forum_categories.state,
+				#__forum_categories.access,
+				#__forum_sections.alias as section
+				FROM #__forum_posts
+				LEFT JOIN #__forum_categories
+				ON #__forum_posts.category_id = #__forum_categories.id
+				LEFT JOIN #__forum_sections
+				ON #__forum_categories.section_id = #__forum_sections.id
+				WHERE thread={$id};";
+				$rows = $db->setQuery($sql)->query()->loadObjectList();
+
+				$titles = array();
+				$authors = array();
+				$tags = array();
+				$content = '';
+				foreach ($rows as $row)
+				{
+					array_push($titles, $row->title);
+					if ($row->anonymous == 0)
+					{
+						// Get the scope
+						if ($row->parent == 0)
+						{
+							$scope =  $row->scope;
+							$scope_id = $row->scope_id;
+							$access = $row->access;
+							$state = $row->state;
+							$category = $row->category;
+							$section = $row->section;
+							$owner = $row->created_by;
+						}
+
+						// Get the name of the author
+						$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+						$author = $db->setQuery($sql1)->query()->loadResult();
+						array_push($authors, $author);
+
+						// Get any tags
+						$sql2 = "SELECT tag 
+							FROM #__tags
+							LEFT JOIN #__tags_object
+							ON #__tags.id=#__tags_object.tagid
+							WHERE #__tags_object.objectid = {$row->id} AND #__tags_object.tbl = 'forum';";
+						$taglist = $db->setQuery($sql2)->query()->loadColumn();
+						foreach ($taglist as $t)
+						{
+							array_push($tags, $t);
+						}
+
+						$content = $content . ' ' . $row->comment;
+
+					}
+				}
+
+
+				// Remove duplicates
+				$tags = array_unique($tags);
+
+				if ($scope == 'site')
+				{
+					$path = '/forum/' . $section. '/' . $category . '/' . $id;
+				}
+				elseif ($scope == 'group')
+				{
+					$group = \Hubzero\User\Group::getInstance($scope_id);
+
+					// Make sure group is valid.
+					if (is_object($group))
+					{
+						$cn = $group->get('cn');
+						$path = '/groups/'. $cn . '/forum/' . $section . '/' . $category . '/' . $id;
+					}
+					else
+					{
+						$path = '';
+					}
+				}
+
+				// Public condition
+				if ($state == 1 && $access == 1 && $scope == 'site')
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($state == 1 && $access == 2 && $scope == 'site')
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				if ($scope == 'group')
+				{
+					$owner_type = 'group';
+					$owner = $scope_id;
+				}
+				else
+				{
+					$owner_type = 'user';
+					// Owner set above
+				}
+
+				// Build the description, clean up text
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $titles;
+				$record->description = $description;
+				$record->author = array($author);
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+				ddie($record);
+
+				// Return the formatted record
+				return $record;
+			}
+			else
+			{
+				$db = App::get('db');
+				$sql = "SELECT DISTINCT thread FROM #__forum_posts;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
+			}
+		}
+	}
 }
 
