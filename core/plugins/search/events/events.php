@@ -147,14 +147,11 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 			<span class="year">' . date('Y', $date) . '</span>
 			</p>';
 	}
-	/****************************
-	Query-time / General Methods
-	****************************/
 
 	/**
 	 * onGetTypes - Announces the available hubtype
-	 *
-	 * @param mixed $type
+	 * 
+	 * @param mixed $type 
 	 * @access public
 	 * @return void
 	 */
@@ -174,78 +171,120 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onGetModel 
+	 * onIndex 
 	 * 
-	 * @param string $type 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onGetModel($type = '')
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'event')
 		{
-			return new CalEvent;
-		}
-	}
-
-	/*********************
-		Index-time methods
-	*********************/
-	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
-	 * @access public
-	 * @return void
-	 */
-	public function onProcessFields($type, $row, &$db)
-	{
-		if ($type == 'event')
-		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
-
-			// Format the date for SOLR
-			$date = Date::of($row->publish_up)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			// Clean up the title
-			$fields->title = $row->title;
-
-			$fields->fulltext = $row->content;
-			$fields->location = $row->adress_info;
-
-			// Permissions and other scope-based parameter
-			if ($row->scope == 'group')
+			if ($run === true)
 			{
-				$fields->access_level = 'private';
-				$fields->owner_type = 'group';
-				$fields->owner = $row->scope_id;
+				// Establish a db connection
+				$db = App::get('db');
 
-				$group = \Hubzero\User\Group::getInstance($row->scope_id);
-				if (isset($group) && is_object($group))
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__events WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Get the (start) date of the event
+				// Format the date for SOLR
+				$date = Date::of($row->publish_up)->format('Y-m-d');
+				$date .= 'T';
+				$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
+
+				// Get the name of the author
+				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$author = $db->setQuery($sql1)->query()->loadResult();
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'events';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				if ($row->scope == 'event')
 				{
-					$groupCN = $group->get('cn');
-					$fields->url = '/groups/' . $groupCN . '/calendar/details/' . $row->id;
+					$path = '/events/details/' . $row->id;
 				}
-			}
-			elseif ($row->scope == 'event' && $row->approved == 1 && $row->state == 1)
-			{
-				$fields->access_level = 'public';
-				$fields->url = '/events/details/' . $row->id;
+				elseif ($row->scope == 'group')
+				{
+					$group = \Hubzero\User\Group::getInstance($row->scope_id);
+
+					// Make sure group is valid.
+					if (is_object($group))
+					{
+						$cn = $group->get('cn');
+						$path = '/groups/'. $cn . '/calendar/details/' . $row->id;
+					}
+					else
+					{
+						$path = '';
+					}
+				}
+
+				// Public condition
+				if ($row->state == 1 && $row->approved == 1 && $row->scope != 'group')
+				{
+					$access_level = 'public';
+				}
+				else
+				{
+					// Default private
+					$access_level = 'private';
+				}
+
+				if ($row->scope != 'group')
+				{
+					$owner_type = 'user';
+					$owner = $row->created_by;
+				}
+				else
+				{
+					$owner_type = 'group';
+					$owner = $row->scope_id;
+				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = preg_replace('/<[^>]*>/', ' ', $row->content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = array($author);
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
 			else
 			{
-				$fields->access_level = 'private';
-				$fields->owner_type = 'user';
-				$fields->owner = $row->created_by;
-				$fields->url = '/events/details/' . $row->id;
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__events;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
 			}
-
-			return $fields;
 		}
 	}
 }
