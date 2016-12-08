@@ -299,146 +299,158 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			$results->add($row);
 		}
 	}
-
-	public $hubtype = 'publication';
-
 	/**
 	 * onGetTypes - Announces the available hubtype
-	 *
-	 * @param mixed $type
+	 * 
+	 * @param mixed $type 
 	 * @access public
 	 * @return void
 	 */
 	public function onGetTypes($type = null)
 	{
-		if (isset($type) && $type == $this->hubtype)
+		// The name of the hubtype
+		$hubtype = 'publication';
+
+		if (isset($type) && $type == $hubtype)
 		{
-			return $this->hubtype;
+			return $hubtype;
 		}
 		elseif (!isset($type))
 		{
-			return $this->hubtype;
+			return $hubtype;
 		}
 	}
 
 	/**
-	 * onGetModel 
+	 * onIndex 
 	 * 
-	 * @param string $type 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onGetModel($type = '')
+	public function onIndex($type, $id, $run = false)
 	{
-		if ($type == $this->hubtype)
+		if ($type == 'publication')
 		{
-			return new Publication;
-		}
-	}
-
-	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
-	 * @access public
-	 * @return void
-	 */
-	public function onProcessFields($type, $row, &$db)
-	{
-		if ($type == $this->hubtype)
-		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
-			$fields->author = array();
-
-			// Find the latest version of the publication
-			$mainVersion = $row->versions()->where('main', '=', '1')->row();
-
-			// Grab the authors
-			$authors = $mainVersion->authors()->select('name')->rows()->toArray();
-
-			// Place in the bucket
-			foreach ($authors as $author)
+			if ($run === true)
 			{
-				array_push($fields->author, $author['name']);
-			}
+				// Establish a db connection
+				$db = App::get('db');
 
-			// Format the date for SOLR
-			$date = Date::of($row->created)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->created)->format('h:m:s') . 'Z';
-			$fields->date = $date;
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-			// Title is required
-			if ($mainVersion->title != '' && $mainVersion->title != null)
-			{
-				$fields->title = $mainVersion->title;
+				// Get the record
+				$sql = "SELECT
+					#__publications.id,
+					alias,
+					#__publications.access,
+					master_doi,
+					published_up,
+					#__publications.created_by,
+					abstract,
+					description,
+					title,
+					doi,
+					state,
+					release_notes,
+					MAX(#__publication_versions.id) as latestVersion
+					FROM #__publications 
+				LEFT JOIN #__publication_versions
+				ON #__publications.id = #__publication_versions.publication_id
+				WHERE #__publications.id = {$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Get the name of the author
+				$sql1 = "SELECT user_id, name FROM #__publication_authors WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
+				$authors = $db->setQuery($sql1)->query()->loadAssocList();
+
+				// @TODO: PHP 5.5 includes array_column()
+				$owners = array();
+				foreach ($authors as $author)
+				{
+					array_push($owners, $author['user_id']);
+				}
+
+				$authorNames = array();
+				foreach ($authors as $author)
+				{
+					array_push($authorNames, $author['name']);
+				}
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$row->latestVersion} AND #__tags_object.tbl = 'publications';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Determine the path
+				if ($row->alias != '')
+				{
+					$path = '/publications/' . $row->alias;
+				}
+				else
+				{
+					$path = '/publications/' . $id;
+				}
+
+				// Public condition
+				if ($row->state == 1 && $row->access == 0)
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->state == 1 && $row->access == 1)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				// Authors have access
+				$owner_type = 'user';
+
+				// So does submitter;
+				array_push($owners, $row->created_by);
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = $row->abstract . ' ' . $row->description . ' ' . $row->release_notes;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = $authors;
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owners;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
 			else
 			{
-				$fields->title = 'Publication - #' . $row->id;
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__blog_entries;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
 			}
-
-
-			$fields->description = strip_tags(htmlspecialchars_decode($mainVersion->description));
-			$fields->abstract = $mainVersion->abstract;
-			$fields->doi = $mainVersion->doi;
-
-
-			/**
-			 * Each entity should have an owner. 
-			 * Owner type can be a user or a group,
-			 * where the owner is the ID of the user or group
-			 **/
-			if ($row->group_owner == 0)
-			{
-				$fields->owner_type = 'user';
-				$fields->owner = $row->created_by;
-			}
-			else
-			{
-				$fields->owner_type = 'group';
-				$fields->owner = $row->group_owner;
-			}
-
-			/** Publications States
-			 0 - unpublished
-			 1 - published (viable by access level)
-			 2 - deleted
-			 3 - draft
-			 4 - ready
-			 5 - pending approval
-			 6 - ??
-			 7 - changes required
-			 **/
-
-			 /** Publication Access Levels
-			  0 - Public
-				1 - Registered
-				2 - Private 
-				**/
-
-			/**
-			 * A document should have an access level.
-			 * This value can be:
-			 *  public - all users can view
-			 *  registered - only registered users can view
-			 *  private - only owners (set above) can view
-			 **/
-			if ($mainVersion->access == 0 && $mainVersion->state == 1)
-			{
-				$fields->access_level = 'public';
-			}
-			else
-			{
-				$fields->access_level = 'private';
-			}
-
-			// The URL this document is accessible through
-			$fields->url = '/publications/' . $row->id;
-
-			return $fields;
 		}
 	}
 }
