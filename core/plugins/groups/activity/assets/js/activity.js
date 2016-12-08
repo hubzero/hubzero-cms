@@ -131,6 +131,13 @@ jQuery(document).ready(function(jq){
 					.attr('title', bt.attr('data-txt-inactive'))
 					.text(bt.attr('data-txt-inactive'));
 			}
+		})
+		// Show more
+		.on('click', '.more-content', function(e) {
+			e.preventDefault();
+
+			$(this).closest('.activity-event-preview').addClass('hide');
+			$($(this).attr('href')).removeClass('hide');
 		});
 
 	$('.inputfile').each(function() {

@@ -146,7 +146,28 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 			</div><!-- / .activity-details -->
 
 			<div class="activity-event">
-				<?php echo $this->row->log->get('description'); ?>
+				<?php
+				$content = $this->row->log->get('description');
+				$short = null;
+
+				if (strlen(strip_tags($content)) > 150)
+				{
+					$short = Hubzero\Utility\String::truncate($content, 150, array('html' => true));
+					?>
+					<div class="activity-event-preview">
+						<?php echo $short; ?>
+						<p>
+							<a class="more-content" href="#activity-event-content<?php echo $this->row->get('id'); ?>">
+								<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_MORE'); ?>
+							</a>
+						</p>
+					</div>
+					<?php
+				}
+				?>
+				<div class="activity-event-content<?php echo ($short ? ' hide' : ''); ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
+					<?php echo $content; ?>
+				</div>
 			</div><!-- / .activity-event -->
 
 			<div class="activity-options">
