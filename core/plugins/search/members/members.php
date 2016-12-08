@@ -109,14 +109,10 @@ class ContributionSorter
  */
 class plgSearchMembers extends \Hubzero\Plugin\Plugin
 {
-	/****************************
-	Query-time / General Methods
-	****************************/
-
 	/**
 	 * onGetTypes - Announces the available hubtype
-	 *
-	 * @param mixed $type
+	 * 
+	 * @param mixed $type 
 	 * @access public
 	 * @return void
 	 */
@@ -136,66 +132,98 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onGetModel 
+	 * onIndex 
 	 * 
-	 * @param string $type 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onGetModel($type = '')
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'member')
 		{
-			return new Member;
-		}
-	}
-
-	/*********************
-		Index-time methods
-	*********************/
-	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
-	 * @access public
-	 * @return void
-	 */
-	public function onProcessFields($type, $row, &$db)
-	{
-		if ($type == 'member')
-		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
-
-			// Format the date for SOLR
-			$date = Date::of($row->registerDate)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->registerDate)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			$fields->title = $row->name;
-			$fields->alias = $row->username;
-			$fields->address = $row->email;
-
-			$fields->owner_type = 'user';
-			$fields->owner = $row->id;
-			$fields->type = $row->usertype;
-
-			if ($row->access == 1 && $row->block == 0 && $row->approved == 2)
+			if ($run === true)
 			{
-				$fields->access_level = 'public';
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__users WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Determine the path
+				$path = '/members/' . $id;
+
+				// Public condition
+				if ($row->approved != 0 && $row->access == 1)
+				{
+					$access_level = 'public';
+				}
+				else
+				{
+					$access_level = 'private';
+				}
+
+				// Owner is self
+				$owner_type = 'user';
+				$owner = $row->id;
+
+				// Get the title
+				$title = $row->name;
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'xprofiles';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Get any profile fields that are public
+				$sql3 = "SELECT profile_key, profile_value FROM #__user_profiles WHERE user_id={$id} AND access=1;";
+				$profileFields = $db->setQuery($sql3)->query()->loadAssocList();
+
+				$profile = '';
+				foreach ($profileFields as $field)
+				{
+					$profile .= $field['profile_value'] . ' ';
+				}
+
+				// Build the description, clean up text
+				$content = $row->email .  ' ' . $profile;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $title;
+				$record->description = $description;
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
 			else
 			{
-				$fields->access_level = 'private';
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__users;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
 			}
-
-			$fields->url = '/members/' . $row->id;
-
-			return $fields;
 		}
 	}
+
 	/**
 	 * Build search query and add it to the $results
 	 *
