@@ -128,54 +128,85 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 			</div><!-- / .activity-details -->
 
 			<div class="activity-event">
-				<?php echo $this->row->log->get('description'); ?>
+				<?php
+				$content = $this->row->log->get('description');
+				$short = null;
 
-				<?php if ($attachments = $this->row->log->details->get('attachments')) { ?>
-					<div class="activity-attachments">
-						<?php
-						foreach ($attachments as $attachment)
-						{
-							$attachment = new Plugins\Groups\Activity\Models\Attachment($attachment);
-							$attachment->setUploadDir('/site/groups/' . $this->group->get('gidNumber') . '/uploads');
+				$attachments = $this->row->log->details->get('attachments');
+				$attachments = $attachments ?: array();
 
-							if (!$attachment->exists())
+				$attached = count($attachments);
+
+				if (strlen(strip_tags($content)) > 150 || $attached)
+				{
+					$short = Hubzero\Utility\String::truncate($content, 150, array('html' => true));
+					?>
+					<div class="activity-event-preview">
+						<?php echo $short; ?>
+						<p>
+							<a class="more-content" href="#activity-event-content<?php echo $this->row->get('id'); ?>">
+								<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_MORE'); ?>
+								<?php if ($attached) { ?>
+									<span class="attachment-count"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_NUM_ATTACHMENTS', $attached); ?></span>
+								<?php } ?>
+							</a>
+						</p>
+					</div>
+					<?php
+				}
+				?>
+				<div class="activity-event-content<?php echo ($short ? ' hide' : ''); ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
+					<?php echo $content; ?>
+
+					<?php if ($attached) { ?>
+						<div class="activity-attachments">
+							<?php
+							foreach ($attachments as $attachment)
 							{
-								continue;
-							}
+								$attachment = new Plugins\Groups\Activity\Models\Attachment($attachment);
+								$attachment->setUploadDir('/site/groups/' . $this->group->get('gidNumber') . '/uploads');
 
-							if (!trim($attachment->get('description')))
-							{
-								$attachment->set('description', $attachment->get('filename'));
-							}
+								if (!$attachment->exists())
+								{
+									continue;
+								}
 
-							$link = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=File:/uploads/' . ($attachment->get('subdir') ? $attachment->get('subdir') . '/' : '') . $attachment->get('filename');
+								if (!trim($attachment->get('description')))
+								{
+									$attachment->set('description', $attachment->get('filename'));
+								}
 
-							if ($attachment->isImage())
-							{
-								?>
-								<p class="attachment-image">
-									<a href="<?php echo Route::url($link); ?>">
+								$link = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=File:/uploads/' . ($attachment->get('subdir') ? $attachment->get('subdir') . '/' : '') . $attachment->get('filename');
+
+								if ($attachment->isImage())
+								{
+									?>
+									<a class="attachment img" rel="lightbox" href="<?php echo Route::url($link); ?>">
 										<img src="<?php echo Route::url($link); ?>" alt="<?php echo $this->escape($attachment->get('description')); ?>" width="<?php echo ($attachment->width() > 400 ? 400 : $attachment->width()); ?>" />
+										<p class="attachment-meta">
+											<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
+											<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
+										</p>
 									</a>
-								</p>
-								<?php
+									<?php
+								}
+								else
+								{
+									?>
+									<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($link); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
+										<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
+										<p class="attachment-meta">
+											<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
+											<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
+										</p>
+									</a>
+									<?php
+								}
 							}
-							else
-							{
-								?>
-								<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($link); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
-									<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
-									<p class="attachment-meta">
-										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-										<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
-									</p>
-								</a>
-								<?php
-							}
-						}
-						?>
-					</div><!-- / .activity-attachments -->
-				<?php } ?>
+							?>
+						</div><!-- / .activity-attachments -->
+					<?php } ?>
+				</div>
 			</div><!-- / .activity-event -->
 
 			<div class="activity-options">

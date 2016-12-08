@@ -488,6 +488,9 @@
 	}
 
 /* Attachment */
+	.attachment-image {
+		text-align: center;
+	}
 	.attachment {
 		margin: 1em 0 0 0;
 		padding: 1em 1em 1em 4em;
@@ -580,6 +583,36 @@
 	.attachment.gz:before {
 		content: '\f005'
 	}
+	.attachment.img {
+		text-align: center;
+		padding: 0;
+		border: none;
+	}
+	.attachment.img:before {
+		content: "";
+		display: none;
+	}
+	.attachment.img .attachment-meta {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: rgba(255, 255, 255, 0.9);
+	}
+	/*.attachment.img:hover .attachment-meta {
+		display: block;
+	}*/
+	.attachment-count {
+		color: #aaa;
+	}
+	.attachment-count:before {
+		content: "\f092";
+		font-family: "Fontcons";
+		margin-left: 2em;
+		margin-right: 0.2em;
+	}
 
 /* No results */
 	.results-none {
@@ -604,6 +637,12 @@
 		content: "\2298";
 		font-family: "Fontcons";
 		color: rgba(0, 0, 0, 0.2);
+	}
+
+	.more-content:before {
+		content: "\2304";
+		font-family: "Fontcons";
+		margin-right: 0.3em;
 	}
 
 /* Online indicator */
