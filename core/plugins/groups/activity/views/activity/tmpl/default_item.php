@@ -272,7 +272,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 						<div class="input-wrap">
 							<label class="upload-label" for="activity-<?php echo $this->row->get('id'); ?>-file">
 								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_FILE'); ?></span>
-								<input type="file" name="activity_file" id="activity-<?php echo $this->row->get('id'); ?>-file" />
+								<input type="file" class="inputfile" name="activity_file" id="activity-<?php echo $this->row->get('id'); ?>-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
 							</label>
 						</div>
 
