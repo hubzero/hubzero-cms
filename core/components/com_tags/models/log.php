@@ -62,7 +62,7 @@ class Log extends Relational
 	 *
 	 * @var string
 	 */
-	public $orderBy = 'taggedon';
+	public $orderBy = 'id';
 
 	/**
 	 * Default order direction for select queries
