@@ -204,8 +204,9 @@ class Callback extends SiteController
 		$client = new \Google_Client();
 		$client->setClientId($app_id);
 		$client->setClientSecret($app_secret);
-		$client->setAccessType('offline');
 		$client->addScope(\Google_Service_Drive::DRIVE);
+		$client->setAccessType('offline');
+		$client->setApprovalPrompt('force');
 		$redirectUri      = trim(Request::root(), '/') . '/developer/callback/googledriveAuthorize';
 		$client->setRedirectUri($redirectUri);
 
@@ -213,7 +214,7 @@ class Callback extends SiteController
 
 		if ($code)
 		{
-			$client->authenticate($code);
+			$client->fetchAccessTokenWithAuthCode($code);
 			$accessToken = $client->getAccessToken();
 		}
 		else

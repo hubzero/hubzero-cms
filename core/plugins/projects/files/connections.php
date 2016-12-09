@@ -203,6 +203,22 @@ class connections
 		return $view->loadTemplate();
 	}
 
+	public function refreshaccess()
+	{
+		$connection = Connection::oneOrNew(Request::getInt('connection'));
+		
+		if ($this->connection)
+		{
+			$connection_params = json_decode($connection->get('params'));
+			unset($connection_params->app_token);
+			$connection->set('params', json_encode($connection_params));
+			$connection->save();
+		}
+
+		Notify::message(Lang::txt("Connection " . $connection->get('name') . " reset."));
+		App::redirect(Route::url($this->model->link('files')));
+	}
+
 	/**
 	 * Creates a new connection
 	 *
