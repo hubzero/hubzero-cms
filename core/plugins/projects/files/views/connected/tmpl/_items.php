@@ -53,7 +53,7 @@ $handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'pr
 			<?php if ($item->isFile()) : ?>
 				<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase . $this->model->get('alias') . DS . $item->getPath())) ? ' hasMultiple' : ''; ?>">
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
-						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getDisplayName(), 60); ?>
+						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getFileName(), 60); ?>
 					</a>
 					<?php if ($handlers && count($handlers) > 0) : ?>
 						<?php foreach ($handlers as $handler) : ?>

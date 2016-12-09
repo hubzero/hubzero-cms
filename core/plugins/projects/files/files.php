@@ -249,7 +249,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			  || $this->_task == 'editconnection'
 			  || $this->_task == 'saveconnection'
 			  || $this->_task == 'newconnection'
-			  || $this->_task == 'deleteconnection')
+			  || $this->_task == 'deleteconnection'
+				|| $this->_task == 'refreshconnection')
 			{
 				$ctask       = $this->_task;
 				$this->_task = 'connections';
