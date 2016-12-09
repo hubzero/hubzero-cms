@@ -206,7 +206,7 @@ class connections
 	public function refreshaccess()
 	{
 		$connection = Connection::oneOrNew(Request::getInt('connection'));
-		
+
 		if ($this->connection)
 		{
 			$connection_params = json_decode($connection->get('params'));
