@@ -209,7 +209,7 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 				// Determine the path
 				if ($row->scope == 'site')
 				{
-					$path = '/blog/' . $year . '/' . $month . '/' . $alias;
+					$path = '/wiki/' . $row->path;
 				}
 				elseif ($row->scope == 'group')
 				{
