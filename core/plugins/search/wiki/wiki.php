@@ -142,4 +142,145 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 			$results->add($row);
 		}
 	}
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'wiki';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	/**
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
+	 * @access public
+	 * @return void
+	 */
+	public function onIndex($type, $id, $run = false)
+	{
+		if ($type == 'wiki')
+		{
+			if ($run === true)
+			{
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM jos_wiki_pages
+					JOIN jos_wiki_versions
+					ON jos_wiki_pages.version_id = jos_wiki_versions.id
+					WHERE jos_wiki_pages.id = {$id} AND jos_wiki_pages.state = 1;";
+
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Get the name of the author
+				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$author = $db->setQuery($sql1)->query()->loadResult();
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'wiki';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Determine the path
+				if ($row->scope == 'site')
+				{
+					$path = '/blog/' . $year . '/' . $month . '/' . $alias;
+				}
+				elseif ($row->scope == 'group')
+				{
+					$group = \Hubzero\User\Group::getInstance($row->scope_id);
+
+					// Make sure group is valid.
+					if (is_object($group))
+					{
+						$cn = $group->get('cn');
+						$path = '/groups/'. $cn . '/wiki/' . $row->path;
+					}
+				}
+
+				// Public condition
+				if ($row->state == 1 && ($row->access == 0 || $row->access = 1))
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->state == 1 && $row->access == 2)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				if ($row->scope != 'group')
+				{
+					$owner_type = 'user';
+					$owner = $row->created_by;
+				}
+				else
+				{
+					$owner_type = 'group';
+					$owner = $row->scope_id;
+				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = $row->pagehtml;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = array($author);
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
+			}
+			else
+			{
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__wiki_pages WHERE state = 1;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return array($type => $ids);
+			}
+		}
+	}
 }
