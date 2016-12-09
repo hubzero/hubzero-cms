@@ -155,7 +155,7 @@ Toolbar::help('tagged');
 				<td class="priority-4">
 					<?php if ($row->get('taggerid')) { ?>
 						<a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->get('taggerid')); ?>">
-							<?php echo $row->creator()->get('name', Lang::txt('COM_TAGS_UNKNOWN')); ?>
+							<?php echo $row->creator->get('name', Lang::txt('COM_TAGS_UNKNOWN')); ?>
 						</a>
 					<?php } else { ?>
 						<?php echo Lang::txt('COM_TAGS_UNKNOWN'); ?>

@@ -502,7 +502,7 @@ class Tag extends Relational
 		// Loop through the associations and link them to a different tag
 		if (!Object::moveTo($this->get('id'), $tag_id))
 		{
-			$this->addError($to->getError());
+			$this->addError(Lang::txt('Failed to move objects attached to tag.'));
 			return false;
 		}
 
@@ -510,7 +510,7 @@ class Tag extends Relational
 		// Loop through the records and link them to a different tag
 		if (!Substitute::moveTo($this->get('id'), $tag_id))
 		{
-			$this->addError($ts->getError());
+			$this->addError(Lang::txt('Failed to move substitutes attached to tag.'));
 			return false;
 		}
 

@@ -378,12 +378,20 @@ class Entries extends AdminController
 				else
 				{
 					// No, we're merging into an existing tag
-					$mtag = $tag_exist;
+					$existtag = Tag::oneOrFail($tag_exist);
+					$mtag = $existtag->get('id');
 				}
 
 				if ($this->getError())
 				{
-					App::abort(500, $this->getError());
+					Notyf::error($this->getError());
+					return $this->cancelTask();
+				}
+
+				if (!$mtag)
+				{
+					Notify::error(Lang::txt('Failed to find destination tag.'));
+					return $this->cancelTask();
 				}
 
 				foreach ($ids as $id)
