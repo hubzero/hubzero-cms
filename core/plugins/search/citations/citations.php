@@ -192,7 +192,7 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 				}
 				elseif ($row->scope == 'group')
 				{
-					$group = \Hubzero\Group\Group::getInstance($row->scope_id);
+					$group = \Hubzero\User\Group::getInstance($row->scope_id);
 
 					// Make sure group is valid.
 					if (is_object($group))
