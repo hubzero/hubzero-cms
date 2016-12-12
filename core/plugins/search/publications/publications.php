@@ -377,6 +377,11 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 						WHERE #__tags_object.objectid = {$row->latestVersion} AND #__tags_object.tbl = 'publications';";
 					$tags = $db->setQuery($sql2)->query()->loadColumn();
 				}
+				else
+				{
+					$authors = array();
+					$tags = array();
+				}
 
 				// @TODO: PHP 5.5 includes array_column()
 				$owners = array();
