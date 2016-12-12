@@ -196,7 +196,7 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__blog_entries;";
+				$sql = "SELECT id FROM #__content;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
