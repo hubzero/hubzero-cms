@@ -33,6 +33,7 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('Solr Search: Indexed HubTypes'));
+Toolbar::custom('fullindex', 'refresh', 'refresh', 'COM_SEARCH_SOLR_FULLINDEX', false);
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
 
@@ -71,7 +72,6 @@ $this->css('solr');
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_DOCUMENT_COUNT', 'document_count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_LAST_INDEXED', 'document_count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scop="col">&nbsp;</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -86,8 +86,12 @@ $this->css('solr');
 		<?php foreach ($this->stats as $type => $count): ?>
 			<tr>
 				<td><input type="checkbox" class="typebox" value="<?php echo $type; ?>" /></td>
-				<td><?php echo $type; ?></td>
-				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=documentByType&type=' . $type);?>"><?php echo $count; ?></a></td>
+				<td>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=documentByType&type=' . $type);?>">
+						<?php echo $type; ?>
+					</a>
+				</td>
+				<td><?php echo $count; ?></td>
 				<td>
 				<?php
 					foreach ($this->queue as $qItem)
@@ -98,9 +102,6 @@ $this->css('solr');
 						}
 					}
 				?>
-				</td>
-				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='.$this->controller . '&task=submitToQueue&type=' . $type); ?>" class="button disabled">Index</a>
 				</td>
 			</tr>
 		<?php endforeach; ?>

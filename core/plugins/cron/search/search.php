@@ -72,50 +72,46 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 		require_once PATH_CORE . DS . 'components' . DS .'com_search' . DS . 'models' . DS . 'blacklist.php';
 
 		// Get the type needed to be indexed;
-		$item = \Components\Search\Models\IndexQueue::all()
-			->where('complete', '=', 0)
-			->where('lock', '=', 0)
-			->order('created', 'ASC')
-			->limit(1)
-			->row();
+		$items = \Components\Search\Models\QueueDB::all()
+			->where('status', '=', 0)
+			->limit(100)
+			->rows();
 
-		// Check to see if anything need to be processed
-		$itemArr = $item->toArray();
-
-		// Bail early if nothing next
-		if (empty($itemArr))
+		// Refresh indexed material if no work to do
+		if ($items->count() <= 0)
 		{
-			// Create some work
-			$item = \Components\Search\Models\IndexQueue::all()
-				->where('complete', '=', 1)
-				->where('lock', '=', 0)
+			$items = \Components\Search\Models\QueueDB::all()
+				->where('status', '=', 1)
+				->where('action', '=', 'index')
 				->order('modified', 'ASC')
-				->limit(1)
-				->row();
-
-			// Prevent another process from working on it 
-			$item->set('lock', 1);
-
-			// Clear complete status
-			$item->set('complete', 0);
-
-			// Do another full-index
-			$item->set('start', 0);
-			$item->save();
+				->limit(100)
+				->rows();
 		}
 
-		if ($item->action == 'index')
+		// Get the blacklist
+		$sql = "SELECT doc_id FROM #__search_blacklist;";
+		$db = App::get('db');
+		$db->setQuery($sql);
+		$blacklist = $db->query()->loadColumn();
+
+		foreach ($items as $item)
 		{
-			$item->set('lock', 1);
-			$item->save();
-			$this->processRows($item);
-		}
+			$format = Event::trigger('search.onIndex', array($item->type, $item->type_id, true));
+			if (isset($format[0]))
+			{
+				$this->processRows($format[0], $item->action, $blacklist);
 
-		// Remove lock. 
-		$timestamp = \Hubzero\Utility\Date::of()->toSql();
-		$item->set('modified', $timestamp);
-		$item->set('lock', 0);
-		$item->save();
+				$timestamp = \Hubzero\Utility\Date::of()->toSql();
+				$item->set('modified', $timestamp);
+				$item->set('status', 1);
+			}
+			else
+			{
+				$item->set('status', '2');
+			}
+
+			$item->save();
+		}
 	}
 
 	/**
@@ -125,79 +121,24 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 	 * @access private
 	 * @return void
 	 */
-	private function processRows($item)
+	private function processRows($item, $action, $blacklist)
 	{
-		// @TODO dynamically determine blocksize? 
-		// Size of chunk
-		$blocksize = 5000;
-
-		// Fire plugin event to get the model to process
-		$models = Event::trigger('search.onGetModel', $item->hubtype);
-
-		// We only process one model at a time
-		if (count($models) > 0)
-		{
-			$model = $models[0];
-		}
-		else
-		{
-			$this->output->addLine('Check to see if Search - ' . $item->hubtype . ' plugin is enabled.', ['color' => 'yellow', 'format' => 'bold']);
-			return false;
-		}
-
-		$total = $model->total();
-
-		// Bail early
-		if ($item->start > $total)
-		{
-			// Mark as complete
-			$item->set('complete', 1);
-			$item->save();
-
-			// Move to next item
-			$this->processQueue();
-		}
-
-		$rows = $model::all()->start($item->start)->limit($blocksize);
-
-		// Used for ancillary querying
-		$db = App::get('db');
-
 		$config = Component::params('com_search');
 		$index = new Index($config);
 
-		// Process Rows
-		foreach ($rows as $row)
+		if ($action == 'index' && !in_array($item->id, $blacklist))
 		{
-			// Instantiate a new Search Document
-			$document = new stdClass;
-
-			// Mandatory fields
-			$document->hubid = $row->id;
-			$document->hubtype = $item->hubtype;
-			$document->id = $item->hubtype . '-' . $row->id;
-
-			// Processed fields
-			$processedFields = Event::trigger('search.onProcessFields', array($item->hubtype, $row, $db))[0];
-			foreach ($processedFields as $key => $value)
+			// @TODO Fix the Solr schema to use 'path' instead of 'url' 
+			if (isset($item->path))
 			{
-				$document->$key = $value;
+				$item->url = $item->path;
+				unset($item->path);
 			}
-
-			// Index the document
-			$index->index($document);
-		} // end foreach
-
-		// Are we done processing rows for this model?
-		if ($item->get('start') + $blocksize >= $total)
-		{
-			$item->set('complete', 1);
-			$item->set('start', $total);
+			$index->index($item);
 		}
-		else
+		elseif ($action == 'delete' || in_array($item->id, $blacklist))
 		{
-			$item->set('start', $item->start + $blocksize);
+			$index->delete($item->id);
 		}
-		$item->save();
-	} // end processRows()
+	}
 } //end plgCronSearch

@@ -41,7 +41,7 @@ use Hubzero\Base\Object;
  *
  * @uses \Hubzero\Database\Relational
  */
-class IndexQueue extends Relational
+class QueueDB extends Relational
 {
 	/**
 	 * The table namespace
@@ -50,7 +50,7 @@ class IndexQueue extends Relational
 	 **/
 	protected $namespace = 'search';
 
-	protected $table = '#__search_indexqueue';
+	protected $table = '#__search_queue';
 
 	/**
 	 * Default order by for model
