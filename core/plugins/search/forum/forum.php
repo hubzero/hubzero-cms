@@ -296,7 +296,7 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 					ON #__courses_offerings.course_id = #__courses.id
 					WHERE #__courses_offerings.id = {$scope_id};";
 
-					$course = $db->setQuery($sql2)->query()->loadAssoc();
+					$course = $db->setQuery($sql)->query()->loadAssoc();
 
 					$path = '/courses/' . $course['course'] . '/'. $course['offering'] . '/discussions/' . $row->category . '/' . $row->category_id . '?thread=' . $id;
 				}
