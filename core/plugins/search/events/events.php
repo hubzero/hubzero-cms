@@ -213,7 +213,7 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'events';";
 				$tags = $db->setQuery($sql2)->query()->loadColumn();
 
-				if ($row->scope == 'event')
+				if ($row->scope == 'event' || $row->scope == '')
 				{
 					$path = '/events/details/' . $row->id;
 				}
