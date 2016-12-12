@@ -574,7 +574,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		if (!$row->get('id'))
+		if (!$row->get('id') || $row->get('state') == 2)
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_BLOG_NO_ENTRY_FOUND'));
 			return; // $this->_browse(); Can cause infinite loop

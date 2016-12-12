@@ -181,9 +181,9 @@ function submitbutton(pressbutton)
 			}
 			else if ($row->get('state') == 2)
 			{
-				$alt  = Lang::txt('COM_BLOG_FIELD_STATE_REGISTERED');
+				$alt  = Lang::txt('JTRASHED');
 				$task = 'publish';
-				$cls  = 'publish';
+				$cls  = 'trash';
 			}
 
 			$times = '';
