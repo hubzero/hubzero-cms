@@ -61,11 +61,27 @@ defined('_HZEXEC_') or die();
 						<?php 
 							if ($document['owner_type'] == 'user')
 							{
-								echo \Hubzero\User\User::one($document['owner'][0])->get('name');
+								$user = \Hubzero\User\User::one($document['owner'][0]);
+								if (isset($user) && is_object($user))
+								{
+									echo $user->get('name');
+								}
+								else
+								{
+									echo Lang::txt('UNKNOWN');
+								}
 							}
 							elseif ($document['owner_type'] == 'group')
 							{
-								echo \Hubzero\User\Group::getInstance($document['owner'][0])->get('description');
+								$group = \Hubzero\User\Group::getInstance($document['owner'][0]);
+								if (isset($group) && is_object($group))
+								{
+									echo $group->get('description');
+								}
+								else
+								{
+									echo Lang::txt('UNKNOWN');
+								}
 							}
 						?>
 					</td>
