@@ -282,7 +282,7 @@ class Entry extends Relational
 	 */
 	public function isDeleted()
 	{
-		return ($this->get('state') == -1);
+		return ($this->get('state') == -1 || $this->get('state') == 2);
 	}
 
 	/**
