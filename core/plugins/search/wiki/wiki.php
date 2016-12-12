@@ -222,6 +222,12 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 						$path = '/groups/'. $cn . '/wiki/' . $row->path;
 					}
 				}
+				else
+				{
+					// Only group and site wiki is supported right now
+					// @TODO: Project Notes
+					return;
+				}
 
 				// Public condition
 				if ($row->state == 1 && ($row->access == 0 || $row->access = 1))
