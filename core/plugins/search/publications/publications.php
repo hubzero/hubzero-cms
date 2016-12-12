@@ -432,6 +432,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				// Create a record object
 				$record = new \stdClass;
 				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
 				$record->author = $authors;
@@ -447,9 +448,9 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__blog_entries;";
+				$sql = "SELECT id FROM #__publications;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return array($type => $ids);
+				return $ids;
 			}
 		}
 	}

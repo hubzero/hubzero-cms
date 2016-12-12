@@ -214,8 +214,10 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 				ON #__forum_posts.category_id = #__forum_categories.id
 				LEFT JOIN #__forum_sections
 				ON #__forum_categories.section_id = #__forum_sections.id
-				WHERE thread={$id};";
+				WHERE thread={$id}
+				AND parent=0;";
 				$rows = $db->setQuery($sql)->query()->loadObjectList();
+				
 
 				$titles = array();
 				$authors = array();
@@ -226,17 +228,6 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 					array_push($titles, $row->title);
 					if ($row->anonymous == 0)
 					{
-						// Get the scope
-						if ($row->parent == 0)
-						{
-							$scope =  $row->scope;
-							$scope_id = $row->scope_id;
-							$access = $row->access;
-							$state = $row->state;
-							$category = $row->category;
-							$section = $row->section;
-							$owner = $row->created_by;
-						}
 
 						// Get the name of the author
 						$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
@@ -255,11 +246,26 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 							array_push($tags, $t);
 						}
 
+						// Concatenate the comments.
 						$content = $content . ' ' . $row->comment;
+					}
+					else
+					{
+						$author = 'anonymous';
+					}
 
+					// Get the scope
+					if ($row->parent == 0)
+					{
+						$scope =  $row->scope;
+						$scope_id = $row->scope_id;
+						$access = $row->access;
+						$state = $row->state;
+						$category = $row->category;
+						$section = $row->section;
+						$owner = $row->created_by;
 					}
 				}
-
 
 				// Remove duplicates
 				$tags = array_unique($tags);
@@ -319,6 +325,7 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 				// Create a record object
 				$record = new \stdClass;
 				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
 				$record->title = $titles;
 				$record->description = $description;
 				$record->author = array($author);
@@ -327,7 +334,6 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 				$record->access_level = $access_level;
 				$record->owner = $owner;
 				$record->owner_type = $owner_type;
-				ddie($record);
 
 				// Return the formatted record
 				return $record;
@@ -337,7 +343,7 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 				$db = App::get('db');
 				$sql = "SELECT DISTINCT thread FROM #__forum_posts;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return array($type => $ids);
+				return $ids;
 			}
 		}
 	}

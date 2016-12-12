@@ -84,19 +84,6 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 			" ORDER BY $weight DESC"
 		));
 	}
-
-
-/************************************************
- *
- * HubSearch Required Methods
- * @author Kevin Wojkovich <kevinw@purdue.edu>
- *
- ***********************************************/
-
-	/****************************
-	Query-time / General Methods
-	****************************/
-
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
@@ -119,119 +106,127 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 		}
 	}
 
-	public function onGetModel($type = '')
-	{
-		if ($type == 'collection')
-		{
-			return new Collection;
-		}
-	}
-	/*********************
-		Index-time methods
-	*********************/
 	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onProcessFields($type, $row)
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'collection')
 		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
+			if ($run === true)
+			{
+				// Establish a db connection
+				$db = App::get('db');
 
-			// Calculate Permissions
-			// Public condition
-			if ($row->state == 1 && $row->access == 0)
-			{
-				$fields->access_level = 'public';
-			}
-			// Registered condition
-			elseif ($row->state == 1 && $row->access == 1)
-			{
-				$fields->access_level = 'registered';
-			}
-			// Default private
-			else
-			{
-				$fields->access_level = 'private';
-			}
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-			if ($row->object_type == 'member')
-			{
-				$fields->owner_type = 'user';
-				$fields->owner = $row->object_id;
+				// Get the record
+				$sql = "SELECT * FROM #__collections WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
 
-				// Determine the author of the Entry
-				$fields->author = User::getInstance($row->created_by)->get('name');
-			}
-			else
-			{
-				$fields->owner_type = 'group';
-				$fields->owner = $row->object_id;
-			}
+				// Get the name of the author
+				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$author = $db->setQuery($sql1)->query()->loadResult();
 
-			// Build out path
-			$alias = $row->alias;
+				// Get any tags
+				// Unable to tag a collection
+				/*
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'collection';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+				*/
+				$tags = array();
 
-			if ($row->object_type == 'member')
-			{
-				$path = '/members/'. $row->object_id . '/collections/' . $alias;
-			}
-			elseif ($row->object_type == 'group')
-			{
-				$group = \Hubzero\User\Group::getInstance($row->object_id);
-
-				// Make sure group is valid.
-				if (is_object($group))
+				if ($row->object_type == 'member')
 				{
-					$cn = $group->get('cn');
-					$path = '/groups/'. $cn . '/collections/' . $alias;
+					$path = '/members/collections/'. $row->alias;
+				}
+				elseif ($row->object_type == 'group')
+				{
+					$group = Group::getInstance($row->object_id);
+
+					// Make sure group is valid.
+					if (is_object($group))
+					{
+						$cn = $group->get('cn');
+						$path = '/groups/'. $cn . '/collections/'. $row->alias;
+					}
+					else
+					{
+						$path = '';
+					}
+				}
+
+				// Public condition
+				if ($row->state == 1 && $row->access == 0)
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->state == 1 && $row->access == 1)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				if ($row->object_type != 'group')
+				{
+					$owner_type = 'user';
+					$owner = $row->created_by;
 				}
 				else
 				{
-					$path = '';
+					$owner_type = 'group';
+					$owner = $row->scope_id;
 				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = $row->description;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = array($author);
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+				ddie($record);
+
+				// Return the formatted record
+				return $record;
 			}
-
-			$fields->url = $path;
-			$fields->title = $row->title;
-			$fields->alias = $row->alias;
-			$fields->description = strip_tags(trim(html_entity_decode($row->description)));
-
-			// Format the date for SOLR
-			$date = Date::of($row->created)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->created)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			// Append posts as comments
-			$comments = array();
-			$posts = $row->posts()->rows();
-			if (count($posts) > 0)
+			else
 			{
-				foreach ($posts as $post)
-				{
-					$item = $post->item()->row();
-					if ($item->title != '')
-					{
-						array_push($comments, $item->title);
-					}
-					elseif ($item->description != '')
-					{
-						array_push($comments, $item->description);
-					}
-				}
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__blog_entries;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
 			}
-
-			// The comments section holds posts descriptions, etc.
-			$fields->comments = $comments;
-
-			return $fields;
 		}
 	}
 }

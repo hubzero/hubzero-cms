@@ -34,20 +34,13 @@
 defined('_HZEXEC_') or die();
 
 use Hubzero\Utility\Sanitize;
-use Components\Support\Models\Orm\Ticket;
-
-require_once Component::path('com_support') . DS . 'models' . DS . 'orm' . DS . 'ticket.php';
 
 class plgSearchTickets extends \Hubzero\Plugin\Plugin
 {
-	/****************************
-	Query-time / General Methods
-	****************************/
-
 	/**
 	 * onGetTypes - Announces the available hubtype
-	 *
-	 * @param mixed $type
+	 * 
+	 * @param mixed $type 
 	 * @access public
 	 * @return void
 	 */
@@ -67,87 +60,130 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onGetModel 
+	 * onIndex 
 	 * 
-	 * @param string $type 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onGetModel($type = '')
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'ticket')
 		{
-			return new Ticket;
-		}
-	}
-
-	/*********************
-		Index-time methods
-	*********************/
-	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
-	 * @access public
-	 * @return void
-	 */
-	public function onProcessFields($type, $row, &$db)
-	{
-		if ($type == 'ticket')
-		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
-
-			// Get data needed from comments
-			$comments = array();
-			$owners = array();
-
-			$cRows = $row->comments()->rows();
-			foreach ($cRows as $comment)
+			if ($run === true)
 			{
-				// Strips out some nasty stuff
-				$cleaned = strip_tags($comment->comment);
-				$cleaned = str_replace("\n", '', $cleaned);
-				$cleaned = str_replace("\r", '', $cleaned);
-				$cleaned = preg_replace("/[^a-zA-Z0-9\s]/", "", $cleaned);
+				// Establish a db connection
+				$db = App::get('db');
 
-				array_push($comments, $cleaned);
-				array_push($owners, $comment->created_by);
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__support_tickets WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+				ddie($row);
+
+				// Get the name of the author
+				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$author = $db->setQuery($sql1)->query()->loadResult();
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'blog';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Determine the path
+				$year = Date::of(strtotime($row->publish_up))->toLocal('Y');
+				$month = Date::of(strtotime($row->publish_up))->toLocal('m');
+				$alias = $row->alias;
+
+				if ($row->scope == 'site')
+				{
+					$path = '/blog/' . $year . '/' . $month . '/' . $alias;
+				}
+				elseif ($row->scope == 'member')
+				{
+					$path = '/members/'. $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
+				}
+				elseif ($row->scope == 'group')
+				{
+					$group = Group::getInstance($row->scope_id);
+
+					// Make sure group is valid.
+					if (is_object($group))
+					{
+						$cn = $group->get('cn');
+						$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
+					}
+					else
+					{
+						$path = '';
+					}
+				}
+
+				// Public condition
+				if ($row->state == 1 && $row->access == 1)
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->state == 1 && $row->access == 2)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				if ($row->scope != 'group')
+				{
+					$owner_type = 'user';
+					$owner = $row->created_by;
+				}
+				else
+				{
+					$owner_type = 'group';
+					$owner = $row->scope_id;
+				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = preg_replace('/<[^>]*>/', ' ', $row->content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = array($author);
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
-
-			$fields->comments = $comments;
-
-			// Format the date for SOLR
-			$date = Date::of($row->created)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->created)->format('h:m:s') . 'Z';
-
-			// Look up ID by username
-			$authorIDquery = "SELECT id, name FROM #__users WHERE username = '" . $row->login . "';";
-			$db->setQuery($authorIDquery);
-			$author = $db->query()->loadAssoc();
-
-			// Valid?
-			if (isset($author['id']) && $author['id'] != 0)
+			else
 			{
-				array_push($owners, $author['id']);
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__blog_entries;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
 			}
-
-			// Clean up the title
-			$title = $row->summary;
-			$title = trim(preg_replace('/\s+/', ' ', $title));
-			$fields->title = $title;
-
-			$fields->date = $date;
-			$fields->fulltext = $row->report;
-			$fields->author = isset($author['name']) ? $author['name'] : '';
-			$fields->access_level = "private";
-			$fields->url = '/support/ticket/' . $row->id;
-			$fields->owner_type = 'user';
-			$fields->owner = $owners;
-
-			return $fields;
 		}
 	}
 }
