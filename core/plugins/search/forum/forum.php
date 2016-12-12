@@ -269,7 +269,7 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 				// Remove duplicates
 				$tags = array_unique($tags);
 
-				if ($scope == 'site')
+				if ($scope == 'site' || $scope == '')
 				{
 					$path = '/forum/' . $section. '/' . $category . '/' . $id;
 				}
