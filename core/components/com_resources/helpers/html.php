@@ -947,11 +947,15 @@ class Html
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 				// Create some tool objects
+				$toolgroups = null;
 				$hztv = \Components\Tools\Models\Version::getInstance($resource->tool);
-				$ht = \Components\Tools\Models\Tool::getInstance($hztv->toolid);
-				if ($ht)
-				{ // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
-					$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->tool);
+				if ($hztv)
+				{
+					$ht = \Components\Tools\Models\Tool::getInstance($hztv->toolid);
+					if ($ht)
+					{ // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
+						$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->tool);
+					}
 				}
 
 				// Get current users groups
