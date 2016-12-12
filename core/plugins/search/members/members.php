@@ -203,6 +203,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				// Create a record object
 				$record = new \stdClass;
 				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
 				$record->tags = $tags;
@@ -219,7 +220,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				$db = App::get('db');
 				$sql = "SELECT id FROM #__users;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return array($type => $ids);
+				return $ids;
 			}
 		}
 	}

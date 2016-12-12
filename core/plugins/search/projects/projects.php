@@ -171,6 +171,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 				// Create a record object
 				$record = new \stdClass;
 				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
 				$record->path = $path;
@@ -184,9 +185,9 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__project AND type=1;";
+				$sql = "SELECT id FROM #__projects WHERE type=1;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return array($type => $ids);
+				return $ids;
 			}
 		}
 	}

@@ -263,15 +263,22 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 				$content = preg_replace('/ {2,}/', ' ', $content);
 				$description = \Hubzero\Utility\Sanitize::stripAll($content);
 
+				// Format the date for SOLR
+				$date = Date::of($row->publish_up)->format('Y-m-d');
+				$date .= 'T';
+				$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
+
 				// Create a record object
 				$record = new \stdClass;
 				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
 				$record->author = array($author);
 				$record->tags = $tags;
 				$record->path = $path;
 				$record->access_level = $access_level;
+				$record->date = $date;
 				$record->owner = $owner;
 				$record->owner_type = $owner_type;
 
@@ -283,7 +290,7 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 				$db = App::get('db');
 				$sql = "SELECT id FROM #__events;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return array($type => $ids);
+				return $ids;
 			}
 		}
 	}

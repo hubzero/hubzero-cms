@@ -172,6 +172,7 @@ class plgSearchGroups extends \Hubzero\Plugin\Plugin
 				// Create a record object
 				$record = new \stdClass;
 				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
 				$record->tags = $tags;
@@ -188,7 +189,7 @@ class plgSearchGroups extends \Hubzero\Plugin\Plugin
 				$db = App::get('db');
 				$sql = "SELECT gidNumber FROM #__xgroups WHERE type=1 OR type=3;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return array($type => $ids);
+				return $ids;
 			}
 		}
 }
