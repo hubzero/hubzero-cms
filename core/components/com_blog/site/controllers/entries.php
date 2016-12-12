@@ -150,7 +150,7 @@ class Entries extends SiteController
 			$this->model->get('scope_id')
 		);
 
-		if (!$row->get('id') || $row->get('state') == 2)
+		if (!$row->get('id') || $row->isDeleted())
 		{
 			App::abort(404, Lang::txt('COM_BLOG_NOT_FOUND'));
 		}
