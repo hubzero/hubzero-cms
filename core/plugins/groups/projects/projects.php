@@ -83,7 +83,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$lang = \App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
 	}
 
