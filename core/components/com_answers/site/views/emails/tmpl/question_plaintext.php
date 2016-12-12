@@ -44,7 +44,7 @@ $message .= strtoupper(Lang::txt('COM_ANSWERS_SUMMARY')) . ': ' . $this->questio
 $message .= strtoupper(Lang::txt('COM_ANSWERS_CREATED')) . ': ' . $this->question->get('created') . "\n";
 $message .= '----------------------------' . "\n\n";
 $message .= 'A new question #' . $this->question->get('id') . ' has been posted by: ';
-$message .= ($this->question->get('anonymous')) ? 'Anonymous' . "\n" : $this->question->creator()->get('name') . "\n\n";
+$message .= ($this->question->get('anonymous')) ? 'Anonymous' . "\n" : $this->question->creator->get('name') . "\n\n";
 $message .= 'To view the full question and take actions, go to: ' . "\n";
 $message .= $this->link . "\n";
 
