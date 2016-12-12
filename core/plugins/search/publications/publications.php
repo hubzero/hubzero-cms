@@ -381,7 +381,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				}
 
 				// Get any tags
-				$sql2 = "SELECT tag 
+				$sql2 = "SELECT tag
 					FROM #__tags
 					LEFT JOIN #__tags_object
 					ON #__tags.id=#__tags_object.tagid
