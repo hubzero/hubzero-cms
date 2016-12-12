@@ -3,7 +3,7 @@
 use Hubzero\Content\Migration\Base;
 
 /**
- * Migration script for ...
+ * Migration script for refactoring the blacklist table
  **/
 class Migration20161212181802ComSearch extends Base
 {
@@ -12,7 +12,7 @@ class Migration20161212181802ComSearch extends Base
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('#__search_blacklist') && 
+		if ($this->db->tableExists('#__search_blacklist') &&
 			$this->db->tableHasField('#__search_blacklist', 'scope_id'))
 		{
 			$sql = "ALTER TABLE `#__search_blacklist` CHANGE `scope` `doc_id` VARCHAR(255) NOT NULL  DEFAULT '';";
@@ -30,7 +30,7 @@ class Migration20161212181802ComSearch extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('#__search_blacklist') && 
+		if ($this->db->tableExists('#__search_blacklist') &&
 			!$this->db->tableHasField('#__search_blacklist', 'scope_id'))
 		{
 			$sql = "ALTER TABLE `#__search_blacklist` CHANGE `doc_id` `scope` VARCHAR(255) NOT NULL  DEFAULT '';";

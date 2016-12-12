@@ -217,7 +217,6 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 				WHERE thread={$id}
 				AND parent=0;";
 				$rows = $db->setQuery($sql)->query()->loadObjectList();
-				
 
 				$titles = array();
 				$authors = array();

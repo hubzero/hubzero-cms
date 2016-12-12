@@ -6,7 +6,7 @@ use stdClass;
 use \Solarium;
 
 
-class SolrHelper 
+class SolrHelper
 {
 	/**
 	 * enqueueDB
