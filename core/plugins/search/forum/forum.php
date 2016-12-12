@@ -288,6 +288,21 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 						$path = '';
 					}
 				}
+				elseif ($scope == 'course')
+				{
+					$sql = "SELECT #__courses_offerings.alias AS offering, #__courses.alias AS course FROM #__courses_offerings
+					LEFT JOIN #__courses
+					ON #__courses_offerings.course_id = #__courses.id
+					WHERE #__courses_offerings.id = {$scope_id};";
+
+					$course = $db->setQuery($sql2)->query()->loadAssoc();
+
+					$path = '/courses/' . $course['course'] . '/'. $course['offering'] . '/discussions/' . $row->category . '/' . $row->category_id . '?thread=' . $id;
+				}
+				else
+				{
+					$path = '';
+				}
 
 				// Public condition
 				if ($state == 1 && $access == 1 && $scope == 'site')
