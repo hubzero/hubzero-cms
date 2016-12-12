@@ -205,6 +205,7 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 				#__forum_posts.anonymous,
 				#__forum_posts.thread,
 				#__forum_posts.parent,
+				#__forum_posts.category_id,
 				#__forum_categories.alias as category,
 				#__forum_categories.state,
 				#__forum_categories.access,
