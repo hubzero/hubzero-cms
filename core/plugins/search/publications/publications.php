@@ -372,15 +372,18 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 
 				// @TODO: PHP 5.5 includes array_column()
 				$owners = array();
-				foreach ($authors as $author)
-				{
-					array_push($owners, $author['user_id']);
-				}
-
 				$authorNames = array();
-				foreach ($authors as $author)
+				if (isset($authors) && !empty($authors))
 				{
-					array_push($authorNames, $author['name']);
+					foreach ($authors as $author)
+					{
+						array_push($owners, $author['user_id']);
+					}
+
+					foreach ($authors as $author)
+					{
+						array_push($authorNames, $author['name']);
+					}
 				}
 
 				// Get any tags
