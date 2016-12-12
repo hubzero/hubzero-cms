@@ -78,7 +78,6 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 			" ORDER BY $weight DESC"
 		));
 	}
-
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
