@@ -364,8 +364,11 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Get the name of the author
-				$sql1 = "SELECT user_id, name FROM #__publication_authors WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
-				$authors = $db->setQuery($sql1)->query()->loadAssocList();
+				if (isset($row->latestVersion))
+				{
+					$sql1 = "SELECT user_id, name FROM #__publication_authors WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
+					$authors = $db->setQuery($sql1)->query()->loadAssocList();
+				}
 
 				// @TODO: PHP 5.5 includes array_column()
 				$owners = array();
