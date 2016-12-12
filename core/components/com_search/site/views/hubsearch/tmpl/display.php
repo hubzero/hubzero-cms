@@ -122,9 +122,10 @@ $noResult = count($this->results) > 0 ? false : true;
 									<!-- Cateogory : mandatory -->
 									<span class="result-category"><?php echo ucfirst($result['hubtype']); ?></span>
 
-									<! -- Date  : mandatory -->
-									<?php $date = new \Hubzero\Utility\Date($result['date']); ?>
-									<span class="result-timestamp"><time datetime="<?php echo $result['date'] ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
+									<?php if (isset($result['date'])): ?>
+										<?php $date = new \Hubzero\Utility\Date($result['date']); ?>
+										<span class="result-timestamp"><time datetime="<?php echo $result['date'] ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
+									<?php endif; ?>
 
 									<!-- Authors -->
 									<?php if (isset($result['author'])): ?>
