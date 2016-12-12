@@ -368,6 +368,14 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				{
 					$sql1 = "SELECT user_id, name FROM #__publication_authors WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
 					$authors = $db->setQuery($sql1)->query()->loadAssocList();
+
+					// Get any tags
+					$sql2 = "SELECT tag
+						FROM #__tags
+						LEFT JOIN #__tags_object
+						ON #__tags.id=#__tags_object.tagid
+						WHERE #__tags_object.objectid = {$row->latestVersion} AND #__tags_object.tbl = 'publications';";
+					$tags = $db->setQuery($sql2)->query()->loadColumn();
 				}
 
 				// @TODO: PHP 5.5 includes array_column()
@@ -385,14 +393,6 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 						array_push($authorNames, $author['name']);
 					}
 				}
-
-				// Get any tags
-				$sql2 = "SELECT tag
-					FROM #__tags
-					LEFT JOIN #__tags_object
-					ON #__tags.id=#__tags_object.tagid
-					WHERE #__tags_object.objectid = {$row->latestVersion} AND #__tags_object.tbl = 'publications';";
-				$tags = $db->setQuery($sql2)->query()->loadColumn();
 
 				// Determine the path
 				if ($row->alias != '')
