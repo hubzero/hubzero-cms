@@ -134,7 +134,11 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 				$item->url = $item->path;
 				unset($item->path);
 			}
-			$index->index($item);
+
+			if (isset($item->title) || $item->title != '')
+			{
+				$index->index($item);
+			}
 		}
 		elseif ($action == 'delete' || in_array($item->id, $blacklist))
 		{
