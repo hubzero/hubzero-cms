@@ -429,13 +429,23 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				$content = preg_replace('/ {2,}/', ' ', $content);
 				$description = \Hubzero\Utility\Sanitize::stripAll($content);
 
+				if (isset($row->doi))
+				{
+					$doi = $row->doi;
+				}
+				else
+				{
+					$doi = '';
+				}
+
 				// Create a record object
 				$record = new \stdClass;
 				$record->id = $type . '-' . $id;
 				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
-				$record->author = $authors;
+				$record->author = $authorNames;
+				$row->doi = $doi;
 				$record->tags = $tags;
 				$record->path = $path;
 				$record->access_level = $access_level;
