@@ -187,10 +187,10 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM jos_wiki_pages
-					JOIN jos_wiki_versions
-					ON jos_wiki_pages.version_id = jos_wiki_versions.id
-					WHERE jos_wiki_pages.id = {$id} AND jos_wiki_pages.state = 1;";
+				$sql = "SELECT * FROM #__wiki_pages
+					JOIN #__wiki_versions
+					ON #__wiki_pages.version_id = #__wiki_versions.id
+					WHERE #__wiki_pages.id = {$id} AND #__wiki_pages.state = 1;";
 
 				$row = $db->setQuery($sql)->query()->loadObject();
 
@@ -278,7 +278,10 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__wiki_pages WHERE state = 1;";
+				$sql = "SELECT #__wiki_pages.id FROM #__wiki_pages
+					JOIN #__wiki_versions
+					ON #__wiki_pages.version_id = #__wiki_versions.id
+					WHERE #__wiki_pages.state = 1;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
