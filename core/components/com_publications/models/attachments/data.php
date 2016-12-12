@@ -197,10 +197,10 @@ class Data extends Base
 			}
 
 			// One launcher for all items
-			$label = Lang::txt('View publication');
+			$label = Lang::txt('Go to data');
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
-			$title = $configs->title ? $configs->title : Lang::txt('View publication');
+			$title = $configs->title ? $configs->title : Lang::txt('Go to data');
 			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
 					$title, 'rel="external"', $disabled, $pop);
 		}
