@@ -356,7 +356,7 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT DISTINCT thread FROM #__forum_posts;";
+				$sql = "SELECT DISTINCT thread FROM #__forum_posts WHERE parent = 0;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
