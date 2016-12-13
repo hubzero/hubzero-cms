@@ -58,7 +58,7 @@ $noResult = count($this->results) > 0 ? false : true;
 			<input type="text" name="terms" id="terms" value="<?php echo $terms; ?>" placeholder="Enter keyword or phrase" />
 			<input type="hidden" name="section" value="<?php echo $this->section; ?>" />
 		</fieldset>
-		<?php if ($this->section == 'map') { ?>
+		<?php if ($this->section == 'map' && 0) { ?>
 		<fieldset class="map-search">
 		<input type="hidden" name="minlat" id="minlat" value="<?php if (isset($this->minlat)) echo $this->minlat; ?>" />
 		<input type="hidden" name="minlon" id="minlon" value="<?php if (isset($this->minlon)) echo $this->minlon; ?>" />
@@ -67,15 +67,8 @@ $noResult = count($this->results) > 0 ? false : true;
 		<?php } // end if ?>
 		</fieldset>
 	</form>
-
-
-	<nav>
-		<ul class="result-views">
-			<li <?php if ($this->section == 'content') { echo 'class="active"'; } ?>><a href="/search<?php echo $this->urlQuery; ?>&section=content"><?php echo Lang::txt('COM_SEARCH_CONTENT'); ?></a></li>
-			<li <?php if ($this->section == 'map') { echo 'class="active"'; } ?>><a href="/search<?php echo $this->urlQuery; ?>&section=map"><?php echo Lang::txt('COM_SEARCH_MAP'); ?></a></li>
-		</ul>
-	</nav>
 </section>
+
 <section class="main section">
 		<?php if ($noResult) { ?>
 			<div class="info">
@@ -104,9 +97,6 @@ $noResult = count($this->results) > 0 ? false : true;
 		</nav><!-- / .aside -->
 		<div class="subject">
 			<div class="container">
-				<?php if ($this->section == 'map') : ?>
-				<div id="map"></div>
-				<?php endif; ?>
 				<?php if (!$noResult): ?>
 				<div class="results list"><!-- add "tiled" to class for tiled view -->
 
