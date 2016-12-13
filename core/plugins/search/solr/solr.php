@@ -49,12 +49,12 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentAvailable($table, $model)
 	{
-		 $type = $this->getType($table);
-		 $id = $model->getPkValue();
+		$type = $this->getType($table);
+		$id = $model->getPkValue();
 
-		 if ($type != false)
-		 {	
-		 	\Components\Search\Helpers\SolrHelper::enqueueDB($type, array($id), 'index');	
+		if ($type != false)
+		{
+			\Components\Search\Helpers\SolrHelper::enqueueDB($type, array($id), 'index');
 		}
 	}
 
