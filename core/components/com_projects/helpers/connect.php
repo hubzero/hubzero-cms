@@ -673,9 +673,9 @@ class Connect extends Object
 			{
 				$file = new Google_Service_Drive_DriveFile;
 				$file->setMimeType('application/vnd.google-apps.folder');
-				$file->setTitle($config['remote_dir']);
+				$file->setName($config['remote_dir']);
 
-				$createdFolder = $apiService->files->insert($file, array(
+				$createdFolder = $apiService->files->create($file, array(
 					  'mimeType' => 'application/vnd.google-apps.folder'
 				));
 
