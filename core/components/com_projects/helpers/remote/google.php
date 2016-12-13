@@ -216,11 +216,8 @@ class Google extends Object
 		// Create file instance
 		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType($mimeType);
-		$file->setTitle($title);
-
-		$parent = new Google_Service_Drive_ParentReference;
-		$parent->setId($parentId);
-		$file->setParents(array($parent));
+		$file->setName($title);
+		$file->setParents(array($parentId));
 
 		// Determine file size
 		$size = filesize($localPath);
@@ -255,7 +252,7 @@ class Google extends Object
 			try
 			{
 				// Create remote file
-				$createdFile = $apiService->files->insert($file, $fparams);
+				$createdFile = $apiService->files->create($file, $fparams);
 				$metadata = $createdFile;
 				return $createdFile['id'];
 			}
