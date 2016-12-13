@@ -80,6 +80,9 @@ class Solr extends AdminController
 			$logs = array();
 		}
 
+		// Get queue status
+		$this->view->queueStats = SolrHelper::queueStatus();
+
 		$this->view->mechanism = $config->get('engine');
 		$this->view->status = $status;
 		$this->view->logs = $logs;

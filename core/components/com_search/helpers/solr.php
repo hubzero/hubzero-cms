@@ -60,6 +60,32 @@ class SolrHelper
 	}
 
 	/**
+	 * queueStatus - a rudimentary report to check up on the queue
+	 * 
+	 * @static
+	 * @access public
+	 * @return void
+	 */
+	public static function queueStatus()
+	{
+		$sql = "SELECT 
+		MAX(modified) as modified,
+		MAX(created) as created,
+		count(*) as total,
+		FLOOR(AVG(modified - created) / 60) as serviceTime,
+		(SELECT count(*) FROM `#__search_queue` WHERE status = 0) as notstarted,
+		(SELECT count(*) FROM `#__search_queue` WHERE status = 1) as indexed,
+		(SELECT count(*) FROM `#__search_queue` WHERE status = 2) as failed
+		FROM #__search_queue;";
+
+		$db = App::get('db');
+		$db->setQuery($sql);
+		$report = $db->query()->loadAssoc();
+
+		return $report;
+	}
+
+	/**
 	 * parseDocumentID - returns a friendly way to access the type and id from a solr ID 
 	 * 
 	 * @param string $id 
