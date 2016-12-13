@@ -973,7 +973,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/hubzero/framework/zipball/4275d584744979cbf03fd5b3c460758b155925e0",
-                "reference": "4275d584744979cbf03fd5b3c460758b155925e0"
+                "reference": "4275d584744979cbf03fd5b3c460758b155925e0",
                 "shasum": ""
             },
             "require": {
