@@ -178,7 +178,7 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__blog_entries WHERE id={$id};";
+				$sql = "SELECT * FROM #__blog_entries WHERE id={$id} AND state != 2;";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Get the name of the author
@@ -276,7 +276,7 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__blog_entries;";
+				$sql = "SELECT id FROM #__blog_entries WHERE state != 2";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
