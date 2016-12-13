@@ -43,7 +43,7 @@ use stdClass;
 /**
  * Search controller class
  */
-class Hubsearch extends SiteController
+class Solr extends SiteController
 {
 	/**
 	 * Display search form and results (if any)
