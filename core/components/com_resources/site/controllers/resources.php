@@ -1537,7 +1537,7 @@ class Resources extends SiteController
 		$layout = 'default';
 
 		if ($type_alias
-		 && (is_file(PATH_CORE . DS . 'templates' . DS .  App::get('template')->template  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
+		 && (is_file(App::get('template')->path  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
 			|| is_file(dirname(__DIR__) . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php')))
 		{
 			$layout = $type_alias;
