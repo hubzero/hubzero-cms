@@ -972,8 +972,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/d363a2e0970a0defd69c1d5dd7de8d64ade275b7",
-                "reference": "d363a2e0970a0defd69c1d5dd7de8d64ade275b7",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/4275d584744979cbf03fd5b3c460758b155925e0",
+                "reference": "4275d584744979cbf03fd5b3c460758b155925e0"
                 "shasum": ""
             },
             "require": {
