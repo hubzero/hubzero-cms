@@ -41,6 +41,8 @@ $handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'pr
 ?>
 
 <?php foreach ($this->items as $item) : ?>
+<?php //Skip the file if we can verify that it's got a mimetype that we can't handle properly at this point in time ?> 
+<?php if ($item->isFile() && strpos($item->getMimeType(), "application/vnd.google") === 0) :  continue; endif;?>
 	<tr class="mini faded mline connections">
 		<?php if ($this->model->access('content')) : ?>
 			<td class="middle_valign">
