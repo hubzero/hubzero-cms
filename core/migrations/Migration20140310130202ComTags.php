@@ -46,6 +46,10 @@ class Migration20140310130202ComTags extends Base
 							}
 
 							$oldtag = new $cls($tag->id);
+							if ($oldtag instanceof \Hubzero\Database\Relational)
+							{
+								$oldtag = \Components\Tags\Models\Tag::oneOrNew($tag->id);
+							}
 							if (!$oldtag->mergeWith($result->id))
 							{
 								continue;

@@ -66,7 +66,23 @@ class Migration20140131091600HubzeroComments extends Base
 					$record->state      = $r->state;
 					$record->anonymous  = $r->anonymous;
 					$record->notify     = $r->email;
-					$record->store();
+					if ($record instanceof \Hubzero\Database\Relational)
+					{
+						$record
+							->set([
+								'content'    => $r->comment,
+								'created'    => $r->added,
+								'created_by' => $r->added_by,
+								'state'      => $r->state,
+								'anonymous'  => $r->anonymous,
+								'notify'     => $r->email
+							])
+							->save();
+					}
+					else
+					{
+						$record->store();
+					}
 
 					if (substr($r->category, -7) != 'comment' && isset($parents[$r->id]))
 					{
