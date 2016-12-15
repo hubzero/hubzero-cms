@@ -86,7 +86,12 @@ defined('_HZEXEC_') or die();
 						?>
 					</td>
 					<td>
-						<a class="button" href="<?php echo Route::url('index.php?option='.$this->option.'&task=addToBlackList&controller='. $this->controller . '&id=' . $document['id']); ?>"><?php echo Lang::txt('COM_SEARCH_ADD_BLACKLIST'); ?></a>
+						<?php if (!in_array($document['id'], $this->blacklist)): ?>
+							<a class="button" href="<?php echo Route::url('index.php?option='.$this->option.'&task=addToBlackList&controller='. $this->controller . '&id=' . $document['id']); ?>"><?php echo Lang::txt('COM_SEARCH_ADD_BLACKLIST'); ?></a>
+						<?php else: ?>
+							<span><?php echo Lang::txt('COM_SEARCH_MARKED_FOR_REMOVAL'); ?></span>
+						<?php endif; ?>
+
 					</td>
 			</tr>
 			<?php endforeach; ?>
