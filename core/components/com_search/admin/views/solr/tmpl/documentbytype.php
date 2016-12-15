@@ -66,6 +66,7 @@ $this->css('solr');
 	$this->view('_recordtable')
 		->set('documents', $this->documents)
 		->set('type', $this->type)
+		->set('blacklist', $this->blacklist)
 		->set('pagination', $this->pagination->render())
 		->display();
 	?>

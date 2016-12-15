@@ -236,6 +236,20 @@ class Solr extends AdminController
 			$this->view->setError($error);
 		}
 
+		// Get the blacklist to indidicate marked for removal
+		$blacklistEntries = Blacklist::all()
+			->select('doc_id')
+			->where('doc_id', 'LIKE', $type.'%')
+			->rows()
+			->toObject();
+
+		// @TODO: PHP 5.5+ supports array_column()
+		$blacklist = array();
+		foreach ($blacklistEntries as $entry)
+		{
+			array_push($blacklist, $entry->doc_id);
+		}
+
 		// Temporary override to get all matching documents
 		if ($filter == '')
 		{
@@ -267,12 +281,6 @@ class Solr extends AdminController
 		$pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
 		$pagination->setLimits(array('5','10','15','20','50','100','200'));
 		$this->view->pagination = $pagination;
-
-		// Get the blacklist
-		$sql = "SELECT doc_id FROM #__search_blacklist;";
-		$db = App::get('db');
-		$db->setQuery($sql);
-		$blacklist = $db->query()->loadColumn();
 
 		// Pass the filters and documents to the display
 		$this->view->filter = !isset($filter) || $filter = '*:*' ? '' : $filter;
