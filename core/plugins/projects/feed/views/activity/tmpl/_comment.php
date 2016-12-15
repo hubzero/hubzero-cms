@@ -62,8 +62,8 @@ $creator = User::getInstance($comment->created_by);
 	<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
 		<?php if ($this->edit && $deletable && $this->model->access('content')) { ?>
 			<span class="m_options">
-				<span class="delit" id="pu_<?php echo $comment->id; ?>">
-					<a href="<?php echo Route::url($this->model->link('feed') .'&action=deletecomment&cid=' . $comment->id); ?>">x</a>
+				<span id="pu_<?php echo $comment->id; ?>">
+					<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('Permanently delete this entry?'); ?>" href="<?php echo Route::url($this->model->link('feed') .'&action=deletecomment&cid=' . $comment->id); ?>">x</a>
 				</span>
 			</span>
 		<?php } ?>
@@ -77,12 +77,15 @@ $creator = User::getInstance($comment->created_by);
 			echo '<div class="body">' . $shortComment;
 			if ($shorten)
 			{
-				echo ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
+				echo ' <a href="#fullbodyc' . $comment->id . '" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
 			}
 			echo '</div>';
 			if ($shorten)
 			{
-				echo '<div class="fullbody hidden">' . $longComment . '</div>' ;
+				$fragment = ltrim(Hubzero\Utility\Uri::getInstance()->toString(['fragment']), '#');
+				$cls = ($fragment == 'fullbodyc' . $comment->id ? '' : ' hidden');
+
+				echo '<div class="fullbody' . $cls . '" id="fullbodyc' . $comment->id . '">' . $longComment . '</div>' ;
 			}
 			?>
 		</div>
