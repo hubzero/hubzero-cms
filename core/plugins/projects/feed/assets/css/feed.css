@@ -10,7 +10,7 @@
 /*
 
 	-- -- -- -- -- -- --
-	Project blog CSS
+	Project feed CSS
 	-- -- -- -- -- -- --
 
 */
@@ -22,9 +22,6 @@
 		border: 1px solid #e1e1e1;
 		margin-bottom: 1em;
 		position: relative;
-		/*-moz-box-shadow: 3px 3px 3px #e8ecf1;
-		-webkit-box-shadow: 3px 3px 3px #e8ecf1;
-		box-shadow: 3px 3px 3px #e8ecf1;*/
 	}
 	.activity-item:hover {
 		border-color: #ccc;
@@ -45,7 +42,6 @@
 
 /* Blog form
 --------------------------------------------- */
-
 	#blab fieldset {
 		padding: 1em;
 		border: none;
@@ -75,7 +71,6 @@
 		padding: 1em 0 0 0;
 		margin: 0;
 		text-align: right;
-		/*display: none;*/
 	}
 	#blab .focused textarea {
 		height: 8em;
@@ -101,12 +96,11 @@
 		float: right;
 		color: #999;
 		margin-left: 2em;
-		margin-right: 0.5em ;
+		margin-right: 0.5em;
 	}
 
 /* Side blocks
 --------------------------------------------- */
-
 	.content-feed .sidebox {
 		margin-bottom: 2em;
 		margin-top: 1em;
@@ -153,18 +147,20 @@
 		margin: 0;
 		padding: 0 3em 0 0;
 		display: inline-block;
-		text-align: justify;
+		/*text-align: justify;*/
+		-ms-word-break: normal;
+		word-wrap: normal;
+		word-break: normal;
+		-webkit-hyphens: auto;
+		-moz-hyphens: auto;
+		hyphens: auto;
 	}
-	/*.infofeed .fullbody {
-		margin: 1.5em 1em 1em 5em;
-	}*/
 	.infofeed .comment-show .fullbody {
 		margin: 0;
 		font-size: 90%;
 	}
 	.infofeed .newline {
 		display: block;
-		/*margin: 1.5em 1em 0 5em;*/
 	}
 	.infofeed span.actor {
 		font-weight: bold;
@@ -237,7 +233,7 @@
 		padding-bottom: 1em;
 	}
 	.infofeed .newitem:hover {
-		background: #fcf1e9 !important;
+		background: #fcf1e9;
 	}
 	.infofeed .newitem .blog-time,
 	#plg-content .comments li.newitem .c-time {
