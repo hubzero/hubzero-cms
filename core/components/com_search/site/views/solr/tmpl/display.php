@@ -135,7 +135,7 @@ $noResult = count($this->results) > 0 ? false : true;
 								<div class="result-tags">
 									<ul class="tags">
 										<?php foreach ($result['tags'] as $tag): ?>
-										<li><a class="tag" href="#"><?php echo $tag; ?></a></li>
+										<li><a class="tag" href="/search?terms=<?php echo $tag; ?>"><?php echo $tag; ?></a></li>
 										<?php endforeach; ?>
 									</ul>
 								</div>

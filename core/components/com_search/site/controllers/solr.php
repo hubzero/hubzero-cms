@@ -250,7 +250,7 @@ class Solr extends SiteController
 					}
 
 					// Highlight everything except the URL
-					if ($field != 'url')
+					if ($field != 'url' && $field != 'tags')
 					{
 						$r = \Hubzero\Utility\String::highlight($r, $terms, $highlightOptions);
 					}
