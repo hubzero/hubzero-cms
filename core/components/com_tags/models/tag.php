@@ -430,7 +430,10 @@ class Tag extends Relational
 			return false;
 		}
 
-		$this->set('objects', $this->objects()->total());
+		if ($this->hasAttribute('objects'))
+		{
+			$this->set('objects', $this->objects()->total());
+		}
 		$this->save();
 
 		return true;
@@ -478,7 +481,10 @@ class Tag extends Relational
 			return false;
 		}
 
-		$this->set('objects', $this->objects()->total());
+		if ($this->hasAttribute('objects'))
+		{
+			$this->set('objects', $this->objects()->total());
+		}
 		$this->save();
 
 		return true;
@@ -657,8 +663,14 @@ class Tag extends Relational
 			}
 		}
 
-		$this->set('objects', $this->objects()->total());
-		$this->set('substitutes', $this->substitutes()->total());
+		if ($this->hasAttribute('objects'))
+		{
+			$this->set('objects', $this->objects()->total());
+		}
+		if ($this->hasAttribute('substitutes'))
+		{
+			$this->set('substitutes', $this->substitutes()->total());
+		}
 		$this->save();
 
 		return true;
