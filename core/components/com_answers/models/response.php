@@ -151,7 +151,7 @@ class Response extends Relational
 	 */
 	public function replies()
 	{
-		return $this->oneShiftsToMany('Comment', 'item_id', 'item_type');
+		return $this->oneShiftsToMany('Comment', 'item_id', 'item_type')->whereEquals('parent', 0);
 	}
 
 	/**
