@@ -369,7 +369,7 @@ class Post extends Relational
 			}
 		}
 
-		$cloud = new Tags($this->get('id'));
+		$cloud = new Tags($this->get('thread'));
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
@@ -384,7 +384,7 @@ class Post extends Relational
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new Tags($this->get('id'));
+		$cloud = new Tags($this->get('thread'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
