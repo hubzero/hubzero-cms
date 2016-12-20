@@ -1157,8 +1157,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$filters = array(
-			'limit'    => Request::getInt('limit', 25),
-			'start'    => Request::getInt('limitstart', 0),
+			'limit'    => (int)Request::getState('groups.forum.thread', 'limit', Config::get('list_limit'), 'int'),
+			'start'    => (int)Request::getState('groups.forum.thread.' . Request::getInt('thread', 0), 'limitstart', 0, 'int'),
 			'section'  => Request::getVar('section', ''),
 			'category' => Request::getCmd('category', ''),
 			'thread'   => Request::getInt('thread', 0),

@@ -60,14 +60,24 @@ $this->css()
 		<?php
 		$threading = $this->config->get('threading', 'list');
 
+		$total = $this->thread->thread()
+			->whereIn('state', $this->filters['state'])
+			->whereIn('access', $this->filters['access'])
+			->total();
+
 		$posts = $this->thread->thread()
 			->whereIn('state', $this->filters['state'])
 			->whereIn('access', $this->filters['access'])
 			->order(($threading == 'tree' ? 'lft' : 'id'), 'asc')
-			->paginated()
+			->limit($this->filters['limit'])
+			->start($this->filters['start'])
 			->rows();
 
-		$pageNav = $posts->pagination;
+		$pageNav = new Hubzero\Pagination\Paginator(
+			$total,
+			$this->filters['start'],
+			$this->filters['limit']
+		);
 
 		if ($posts->count() > 0)
 		{
