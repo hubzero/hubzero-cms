@@ -124,11 +124,11 @@ class Review extends \JTable
 		}
 
 		$this->_db->setQuery(
-			"SELECT rr.*, rr.id as id, v.helpful AS vote,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful
+			"SELECT rr.*, rr.id as id, v.vote,
+			(SELECT COUNT(*) FROM `#__item_votes` AS v WHERE v.vote='1' AND v.item_type='review' AND v.item_id=rr.id) AS helpful,
+			(SELECT COUNT(*) FROM `#__item_votes` AS v WHERE v.vote='-1' AND v.item_type='review' AND v.item_id=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->quote(\User::get('id')) . "
+			LEFT JOIN `#__item_votes` AS v ON v.item_id=rr.id AND v.item_type='review' AND v.created_by=" . $this->_db->quote(\User::get('id')) . "
 			WHERE rr.resource_id=" . $this->_db->quote($resource_id) . " AND rr.state IN (1, 3) ORDER BY rr.created DESC"
 		);
 		return $this->_db->loadObjectList();
@@ -156,11 +156,11 @@ class Review extends \JTable
 		}
 
 		$this->_db->setQuery(
-			"SELECT rr.*, rr.id as id, v.helpful AS vote,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful
+			"SELECT rr.*, rr.id as id, v.vote,
+			(SELECT COUNT(*) FROM `#__item_votes` AS v WHERE v.vote='1' AND v.item_type='review' AND v.item_id=rr.id) AS helpful,
+			(SELECT COUNT(*) FROM `#__item_votes` AS v WHERE v.vote='-1' AND v.item_type='review' AND v.item_id=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->quote($userid) . "
+			LEFT JOIN `#__item_votes` AS v ON v.item_id=rr.id AND v.item_type='review' AND v.created_by=" . $this->_db->quote($userid) . "
 			WHERE rr.state IN (1, 3) AND rr.id=" . $this->_db->quote($id)
 		);
 		return $this->_db->loadObjectList();
@@ -187,10 +187,10 @@ class Review extends \JTable
 		}
 
 		$this->_db->setQuery(
-			"SELECT v.helpful FROM `#__vote_log` as v
-			WHERE v.referenceid=" . $this->_db->quote($id) . "
-			AND v.category=" . $this->_db->quote($category) . "
-			AND v.voter=" . $this->_db->quote($uid) . " LIMIT 1"
+			"SELECT v.vote FROM `#__item_votes` as v
+			WHERE v.item_id=" . $this->_db->quote($id) . "
+			AND v.item_type=" . $this->_db->quote($category) . "
+			AND v.created_by=" . $this->_db->quote($uid) . " LIMIT 1"
 		);
 		return $this->_db->loadResult();
 	}

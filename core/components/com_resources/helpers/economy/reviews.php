@@ -72,8 +72,8 @@ class Reviews extends Object
 		// get all eligible reviews
 		$sql = "SELECT r.id, r.user_id AS author, r.resource_id as rid, "
 			."\n (SELECT COUNT(*) FROM #__abuse_reports AS a WHERE a.category='review' AND a.state!=1 AND a.referenceid=r.id) AS reports,"
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=r.id) AS helpful, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=r.id) AS nothelpful "
+			."\n (SELECT COUNT(*) FROM #__item_votes AS v WHERE v.vote='1' AND v.item_type='review' AND v.item_id=r.id) AS helpful, "
+			."\n (SELECT COUNT(*) FROM #__item_votes AS v WHERE v.vote='-1' AND v.item_type='review' AND v.item_id=r.id) AS nothelpful "
 			."\n FROM #__resource_ratings AS r";
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
