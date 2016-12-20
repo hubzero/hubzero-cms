@@ -70,6 +70,8 @@ $this->css()
 				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
+	</form>
+	<form action="<?php echo Route::url($this->category->link()); ?>" method="get">
 
 		<?php if ($this->category->get('closed')) { ?>
 			<p class="warning">
