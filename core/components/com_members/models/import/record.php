@@ -530,6 +530,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->record->entry->set('accessgroups', array($newUsertype));
 			$this->record->entry->set('registerDate', $d->toSql());
 			$this->record->entry->set('password', $this->raw->password);
+			if (!$this->record->entry->get('loginShell'))
+			{
+				$this->record->entry->set('loginShell', '/bin/bash');
+			}
+			if (!$this->record->entry->get('ftpShell'))
+			{
+				$this->record->entry->set('ftpShell', '/usr/lib/sftp-server');
+			}
 
 			if (!$this->record->entry->get('activation', null))
 			{

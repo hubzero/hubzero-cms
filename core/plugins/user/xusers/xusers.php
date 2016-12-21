@@ -390,8 +390,8 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			$xprofile->set('gid', $params->get('gid', 'users'));
 			$xprofile->set('uidNumber', $user['id']);
 			$xprofile->set('homeDirectory', isset($user['homeDirectory']) ? $user['homeDirectory'] : $hubHomeDir . DS . $user['username']);
-			$xprofile->set('loginShell', isset($user['loginShell']) ? $user['loginShell'] : '/bin/bash');
-			$xprofile->set('ftpShell', isset($user['ftpShell']) ? $user['ftpShell'] : '/usr/lib/sftp-server');
+			$xprofile->set('loginShell', isset($user['loginShell']) && $user['loginShell'] ? $user['loginShell'] : '/bin/bash');
+			$xprofile->set('ftpShell', isset($user['ftpShell']) && $user['ftpShell'] ? $user['ftpShell'] : '/usr/lib/sftp-server');
 			$xprofile->set('name', $user['name']);
 			$xprofile->set('email', $user['email']);
 			$xprofile->set('username', $user['username']);
@@ -512,13 +512,13 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$update = true;
 			}
 
-			if ($xprofile->get('loginShell') == '')
+			if (!$xprofile->get('loginShell'))
 			{
 				$xprofile->set('loginShell', '/bin/bash');
 				$update = true;
 			}
 
-			if ($xprofile->get('ftpShell') == '')
+			if (!$xprofile->get('ftpShell'))
 			{
 				$xprofile->set('ftpShell', '/usr/lib/sftp-server');
 
@@ -560,6 +560,46 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 					$quota->save();
 				}
 			}
+		}
+
+		if (!$user['loginShell'])
+		{
+			$db = App::get('db');
+
+			$query = "SELECT `loginShell` FROM `#__xprofiles` WHERE `uidNumber`=" . $db->quote($user['id']);
+			$db->setQuery($query);
+			$result = $db->loadResult();
+
+			if (!$result)
+			{
+				$result = '/bin/bash';
+			}
+
+			$query = "UPDATE `#__users` SET `loginShell` = " . $db->quote($result) . " WHERE u.`id`=" . $db->quote($user['id']);
+			$db->setQuery($query);
+			$db->query();
+
+			$user['loginShell'] = $result;
+		}
+
+		if (!$user['ftpShell'])
+		{
+			$db = App::get('db');
+
+			$query = "SELECT `ftpShell` FROM `#__xprofiles` WHERE `uidNumber`=" . $db->quote($user['id']);
+			$db->setQuery($query);
+			$result = $db->loadResult();
+
+			if (!$result)
+			{
+				$result = '/bin/bash';
+			}
+
+			$query = "UPDATE `#__users` SET `ftpShell` = " . $db->quote($result) . " WHERE u.`id`=" . $db->quote($user['id']);
+			$db->setQuery($query);
+			$db->query();
+
+			$user['ftpShell'] = $result;
 		}
 
 		if ($success)
