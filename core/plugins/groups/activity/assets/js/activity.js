@@ -26,7 +26,7 @@ jQuery(document).ready(function(jq){
 		container.infinitescroll({
 				navSelector  : '.list-footer',    // selector for the paged navigation
 				nextSelector : '.list-footer .next a',  // selector for the NEXT link (to page 2)
-				itemSelector : '.activity-feed li.activity',     // selector for all items you'll retrieve
+				itemSelector : '.activity-feed>li.activity',     // selector for all items you'll retrieve
 				loading: {
 					finishedMsg: 'No more pages to load.'
 				},
