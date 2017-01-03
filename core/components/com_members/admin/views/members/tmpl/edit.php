@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Members\Helpers\Admin::getActions('component');
 
-$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
+$text = ($this->profile->isNew() ? Lang::txt('JACTION_CREATE') : Lang::txt('JACTION_EDIT'));
 
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . $text, 'user');
 if ($canDo->get('core.edit') || $canDo->get('core.create'))
