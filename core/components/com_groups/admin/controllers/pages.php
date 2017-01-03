@@ -462,6 +462,12 @@ class Pages extends AdminController
 		$currentVersion->set('scanned', 1);
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$currentVersion->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		$currentVersion->store(false, 1);
 
 		// were all set
@@ -540,6 +546,12 @@ class Pages extends AdminController
 		$currentVersion->set('checked_errors', 1);
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$currentVersion->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		$currentVersion->store(false, 1);
 
 		// delete temp file
