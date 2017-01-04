@@ -44,10 +44,7 @@ defined('_HZEXEC_') or die();
 
 		<form action="<?php echo Route::url($this->offering->link() . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
-				<?php
-				$user = Components\Members\Models\Member::oneOrNew(User::get('id'));
-				?>
-				<img src="<?php echo $user->picture(); ?>" alt="" />
+				<img src="<?php echo User::picture(); ?>" alt="" />
 			</p>
 
 			<fieldset>
