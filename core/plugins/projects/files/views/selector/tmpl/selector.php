@@ -84,11 +84,10 @@ defined('_HZEXEC_') or die();
 		?>
 		<li class="<?php echo $item->get('type') == 'folder' ? 'type-folder collapsed' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) { echo ' selectedfilter preselected'; } ?><?php echo $allowed; ?>" id="<?php echo $liId; ?>" data-path="<?php echo $item->get('localPath'); ?>" data-connection="<?php echo Request::getInt('cid', 0); ?>">
 			<span class="item-info"><?php echo $item->get('type') == 'file' ? $item->getSize('formatted') : ''; ?></span>
-			<span class="item-wrap <?php echo $levelCss; ?>" id="<?php echo urlencode($item->get('localPath')); ?>">
-				<?php if ($item->get('type') == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
+			<span class="item-wrap <?php echo ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss; ?>" id="<?php echo urlencode($item->get('localPath')); ?>">
+				<?php if ($item->get('type') == 'folder') { ?><span class="collapsor-indicator">&nbsp;</span><?php } ?>
 				<img src="<?php echo $item->get('icon'); ?>" alt="" /> <span title="<?php echo $item->get('localPath'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($item->get('name'), 50); ?></span>
 			</span>
-
 		</li>
 	<?php } ?>
 <?php else : ?>
