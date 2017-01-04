@@ -48,7 +48,7 @@
 	#page_header:after {
 		position: absolute;
 		top: -20px;
-		left: 215px;
+		left: 0; /*215px;*/
 		content: "";
 		display: block;
 		border: 10px solid #fff;
@@ -65,19 +65,17 @@
 	#page_header h2:after {
 		position: absolute;
 		top: -20px;
-		left: 235px;
+		left: 20px; /*235px;*/
 		right: 20px;
 		content: "";
 		display: block;
 		background: #fff;
 		height: 20px;
 	}
+	#page_main>#page_content.group_files {
+		margin-top: 6em;
+		height: auto;
+		min-height: 20em;
+		bottom: 0;
+	}
 }
-/*@media (max-width: 800px) {
-	#page_header:before {
-		left: 6em;
-	}
-	#page_header h2:after {
-		left: 95px;
-	}
-}*/

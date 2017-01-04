@@ -2335,7 +2335,7 @@ fieldset.assignment label {
 		display: table-cell;
 		vertical-align: top;
 		width: 100%;
-		position: static;
+		/*position: static;*/
 	}
 	#page_menu {
 		margin: 25px 0;
