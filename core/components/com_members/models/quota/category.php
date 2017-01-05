@@ -85,15 +85,6 @@ class Category extends Relational
 	);
 
 	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'ordering'
-	);
-
-	/**
 	 * Sets up additional custom rules
 	 *
 	 * @return  void
@@ -126,27 +117,6 @@ class Category extends Relational
 
 			return false;
 		});
-	}
-
-	/**
-	 * Generates automatic ordering field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticOrdering($data)
-	{
-		if (!isset($data['ordering']))
-		{
-			$last = self::all()
-				->select('ordering')
-				->order('ordering', 'desc')
-				->row();
-
-			$data['ordering'] = (int)$last->get('ordering', 0) + 1;
-		}
-
-		return $data['ordering'];
 	}
 
 	/**
