@@ -101,6 +101,7 @@ class Verb
 			$redis = new Predis\Client(array(
 				"host" => "127.0.0.1",
 				"port" => 6379,
+				"password" => "GXDG7qm378XqRNJezrh6",
 				"database" => 9,
 			));
 		}
@@ -137,6 +138,7 @@ class Verb
 			$redis = new Predis\Client(array(
 				"host" => "127.0.0.1",
 				"port" => 6379,
+				"password" => "GXDG7qm378XqRNJezrh6",
 				"database" => 8,
 			));
 			}
