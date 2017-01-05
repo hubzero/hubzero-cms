@@ -107,36 +107,37 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Helpers
-		require_once(PATH_CORE . DS . 'components'. DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
+		//require_once(PATH_CORE . DS . 'components'. DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
 		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
 		// Get all registered authors who subscribed to email
 		$query  = "SELECT A.user_id, P.picture ";
-		$query .= " FROM #__publication_authors as A ";
-		$query .= " JOIN #__xprofiles as P ON A.user_id = P.uidNumber ";
-		$query .= " WHERE P.mailPreferenceOption != 0 "; // either 1 (set to YES) or -1 (never set)
+		$query .= " FROM `#__publication_authors` as A ";
+		$query .= " JOIN `#__users` as P ON A.user_id = P.id ";
+		$query .= " WHERE P.block=0 AND P.activation > 0 AND P.sendEmail=1"; // either 1 (set to YES), 0 = NO, or -1 (never set)
 		$query .= " AND A.user_id > 0 AND A.status=1 ";
 
 		// If we need to restrict to selected authors
 		$params = $job->params;
 		if (is_object($params) && $params->get('userids'))
 		{
-			$apu    = explode(',', $params->get('userids'));
-			$apu    = array_map('trim',$apu);
-			$query .= " AND A.user_id IN (";
+			$apu = explode(',', $params->get('userids'));
+			$apu = array_map('trim', $apu);
 
-			$tquery = '';
-			foreach ($apu as $a)
+			if (count($apu) > 0)
 			{
-				$tquery .= "'".$a."',";
+				foreach ($apu as $i => $a)
+				{
+					$apu[$i] = $database->quote($a);
+				}
+
+				$query .= " AND A.user_id IN (" . implode(',', $apu) . ") ";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery . ") ";
 		}
 
 		$query .= " GROUP BY A.user_id ";
 
-		$database->setQuery( $query );
+		$database->setQuery($query);
 		if (!($authors = $database->loadObjectList()))
 		{
 			return true;
@@ -152,6 +153,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$subject = Lang::txt('Monthly Publication Usage Report');
 
 		$i = 0;
+		$mailed = array();
 		foreach ($authors as $author)
 		{
 			// Get the user's account
@@ -159,6 +161,12 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			if (!$user->get('id'))
 			{
 				// Skip if not registered
+				continue;
+			}
+
+			if (in_array($user->get('email'), $mailed))
+			{
+				// Already did this one
 				continue;
 			}
 
@@ -215,6 +223,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			{
 				$this->setError(Lang::txt('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $user->get('email')));
 			}
+
 			$mailed[] = $user->get('email');
 		}
 
@@ -302,7 +311,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 
 		// Get all unarchived publication versions
 		$query  = "SELECT V.*, C.id as id, V.id as version_id ";
-		$query .= " FROM #__publication_versions as V, #__publications as C ";
+		$query .= " FROM `#__publication_versions` as V, `#__publications` as C ";
 		$query .= " WHERE C.id=V.publication_id AND V.state=1 ";
 		$query .= " AND V.doi IS NOT NULL ";
 		$query .= " AND V.accepted IS NOT NULL AND V.accepted !='0000-00-00 00:00:00' ";
@@ -418,7 +427,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get all publications without master DOI
-		$sql  = "SELECT V.* FROM #__publication_versions as V, #__publications as C";
+		$sql  = "SELECT V.* FROM `#__publication_versions` as V, `#__publications` as C";
 		$sql .= " WHERE C.id=V.publication_id AND (C.master_doi IS NULL OR master_doi=0)";
 		$sql .= " AND V.state=1 GROUP BY C.id ORDER BY V.version_number ASC";
 
