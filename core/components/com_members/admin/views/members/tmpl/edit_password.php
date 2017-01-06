@@ -35,10 +35,12 @@ defined('_HZEXEC_') or die();
 <fieldset class="adminform">
 	<legend><span><?php echo Lang::txt('COM_MEMBERS_FIELD_PASSWORD'); ?></span></legend>
 
-	<div class="input-wrap">
-		<?php echo Lang::txt('COM_MEMBERS_PASSWORD_CURRENT'); ?>:
-		<input type="text" name="currentpassword" disabled="disabled" <?php echo ($this->profile->get('password')) ? 'value="' . $this->profile->get('password') . '"' : 'placeholder="' . Lang::txt('no local password set') . '"'; ?> />
-	</div>
+	<?php if (is_object($this->password)) : ?>
+		<div class="input-wrap">
+			<?php echo Lang::txt('COM_MEMBERS_PASSWORD_CURRENT'); ?>:
+			<input type="text" name="currentpassword" disabled="disabled" <?php echo ($this->profile->get('password')) ? 'value="' . $this->profile->get('password') . '"' : 'placeholder="' . Lang::txt('no local password set') . '"'; ?> />
+		</div>
+	<?php endif; ?>
 	<div class="input-wrap">
 		<label for="newpass"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW'); ?>:</label>
 		<input type="password" name="newpass" id="newpass" value="" autocomplete="off" />
@@ -46,36 +48,34 @@ defined('_HZEXEC_') or die();
 		<?php if (count($this->password_rules) > 0) : ?>
 			<?php $this->css('password.css'); ?>
 			<script type="text/javascript">
-				/*jQuery(document).ready(function ( $ )
-				{
+				jQuery(document).ready(function ($) {
 					var password = $('#newpass'),
-					checkPass    = function() {
-						// Create an ajax call to check the potential password
-						$.ajax({
-							url: "/api/members/checkpass",
-							type: "POST",
-							data: "password1="+password.val(),
-							dataType: "html",
-							cache: false,
-							success: function ( html ) {
-								if (html.length > 0 && password.val() != '')
-								{
-									$('.passrules').html(html);
-								}
-								else
-								{
-									// Probably deleted password, so reset classes
-									$('.passrules').find('li').removeClass('error passed').addClass('empty');
-								}
-							}
-						});
-					};
+						passrule = $('#passrules');
 
-					password.on('keyup', checkPass);
-				});*/
+					if (password.length > 0 && passrule.length > 0) {
+						password.on('keyup', function(){
+							// Create an ajax call to check the potential password
+							$.ajax({
+								url: "/api/members/checkpass",
+								type: "POST",
+								data: "password1="+password.val(),
+								dataType: "json",
+								cache: false,
+								success: function(json) {
+									if (json.html.length > 0 && password.val() !== '') {
+										passrule.html(json.html);
+									} else {
+										// Probably deleted password, so reset classes
+										passrule.find('li').switchClass('error passed', 'empty', 200);
+									}
+								}
+							});
+						});
+					}
+				});
 			</script>
 			<div><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES'); ?>:</div>
-			<ul class="passrules">
+			<ul id="passrules" class="passrules">
 				<?php foreach ($this->password_rules as $rule) : ?>
 					<?php if (!empty($rule)) : ?>
 						<?php if ($this->validated && is_array($this->validated) && in_array($rule, $this->validated)) : ?>
@@ -98,33 +98,35 @@ defined('_HZEXEC_') or die();
 		<label id="field_resetCount-lbl" for="field_resetCount"><?php echo Lang::txt('Password Reset Count'); ?></label>
 		<input type="text" name="resetCount" id="field_resetCount" value="0" class="readonly" readonly="readonly"/>
 	</div> */?>
-	<div class="input-wrap">
-		<label title="shadowLastChange"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_LAST_CHANGE'); ?>:</label>
-		<?php
-			if (is_object($this->password) && $this->password->get('shadowLastChange'))
-			{
-				$shadowLastChange = $this->password->get('shadowLastChange')*86400;
-				echo date("Y-m-d", $shadowLastChange);
-				echo " ({$this->password->get('shadowLastChange')})";
-				echo " - " . intval((time()/86400) - ($shadowLastChange/86400)) . " days ago";
-			}
-			else
-			{
-				echo Lang::txt('COM_MEMBERS_NEVER');
-			}
-		?>
-	</div>
-	<div class="input-wrap">
-		<label title="shadowMax" class="key"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_MAX'); ?>:</label>
-		<input type="text" name="shadowMax" value="<?php echo $this->escape($this->password->get('shadowMax')); ?>" />
-	</div>
-	<div class="input-wrap">
-		<label title="shadowWarning" class="key"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_WARNING'); ?>:</label>
-		<input type="text" name="shadowWarning" value="<?php echo $this->escape($this->password->get('shadowWarning')); ?>" />
-	</div>
-	<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?>">
-		<label title="shadowExpire"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE'); ?>:</label>
-		<input type="text" name="shadowExpire" value="<?php echo $this->escape($this->password->get('shadowExpire')); ?>" />
-		<span class="hint"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?></span>
-	</div>
+	<?php if (is_object($this->password)) : ?>
+		<div class="input-wrap">
+			<label title="shadowLastChange"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_LAST_CHANGE'); ?>:</label>
+			<?php
+				if (is_object($this->password) && $this->password->get('shadowLastChange'))
+				{
+					$shadowLastChange = $this->password->get('shadowLastChange')*86400;
+					echo date("Y-m-d", $shadowLastChange);
+					echo " ({$this->password->get('shadowLastChange')})";
+					echo " - " . intval((time()/86400) - ($shadowLastChange/86400)) . " days ago";
+				}
+				else
+				{
+					echo Lang::txt('COM_MEMBERS_NEVER');
+				}
+			?>
+		</div>
+		<div class="input-wrap">
+			<label title="shadowMax" class="key"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_MAX'); ?>:</label>
+			<input type="text" name="shadowMax" value="<?php echo $this->escape($this->password->get('shadowMax')); ?>" />
+		</div>
+		<div class="input-wrap">
+			<label title="shadowWarning" class="key"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_WARNING'); ?>:</label>
+			<input type="text" name="shadowWarning" value="<?php echo $this->escape($this->password->get('shadowWarning')); ?>" />
+		</div>
+		<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?>">
+			<label title="shadowExpire"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE'); ?>:</label>
+			<input type="text" name="shadowExpire" value="<?php echo $this->escape($this->password->get('shadowExpire')); ?>" />
+			<span class="hint"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?></span>
+		</div>
+	<?php endif; ?>
 </fieldset>
