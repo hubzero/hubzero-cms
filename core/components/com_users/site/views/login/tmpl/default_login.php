@@ -136,7 +136,7 @@ endforeach;
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
-						<?php if (isset($user) && is_object($user) && !$user->get('block')) : ?>
+						<?php if (isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != '') : ?>
 							<input type="hidden" name="username" value="<?php echo $user->get('username'); ?>" />
 							<div class="existing-name"><?php echo $user->get('name'); ?></div>
 							<div class="existing-email"><?php echo $user->get('email'); ?></div>

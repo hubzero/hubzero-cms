@@ -70,9 +70,12 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 			$current .= ($task       = Request::getWord('task', false)) ? '.' . $task : '';
 			$current .= ($view       = Request::getWord('view', false)) ? '.' . $view : '';
 
+			$id = User::get('id');
+			$activation = User::one($id)->get('activation');
+
 			if (User::get('id')
-			&& (User::get('activation') != 1)
-			&& (User::get('activation') != 3)
+			&& ($activation != 1)
+			&& ($activation != 3)
 			&& !in_array($current, $exceptions))
 			{
 				Request::setVar('option', 'com_members');
