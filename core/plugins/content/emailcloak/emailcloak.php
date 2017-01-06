@@ -350,7 +350,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 * subject=Text">anytext</a>
 		 */
 		$pattern = $this->_getPattern($searchEmailLink, $searchText);
-		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)
+		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE))
 		{
 			$mail = $regs[2][0] . $regs[3][0];
 			$mailText = addslashes($regs[5][0]);
@@ -413,7 +413,8 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 * <a href="mailto:email@amail.com?subject=Text"><img anything></a>
 		 */
 		$pattern = $this->_getPattern($searchEmailLink, $searchImage);
-		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
+		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE))
+		{
 			$mail = $regs[1][0] . $regs[2][0] . $regs[3][0];
 			$mailText = $regs[5][0];
 
