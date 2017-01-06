@@ -39,17 +39,11 @@ defined('_HZEXEC_') or die;
 class plgContentVote extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param  object  $subject  The object to observe
-	 * @param  array   $config   An array that holds the plugin configuration
-	 * @since  1.5
+	 * @var  boolean
 	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Prepare content
@@ -90,7 +84,7 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
 
 			if ($view == 'article' && $row->state == 1)
 			{
-				$uri = JFactory::getURI();
+				$uri = Hubzero\Utility\Uri::getInstance();
 				$uri->setQuery($uri->getQuery() . '&hitcount=0');
 
 				$html .= '<form method="post" action="' . htmlspecialchars($uri->toString()) . '">';
