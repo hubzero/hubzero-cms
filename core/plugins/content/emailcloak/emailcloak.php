@@ -120,7 +120,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		}
 
 		// Simple performance check to determine whether bot should process further.
-		if (Hubzero\Utility\String::strpos($text, '@') === false)
+		if (Hubzero\Utility\String::contains($text, '@') === false)
 		{
 			return true;
 		}
