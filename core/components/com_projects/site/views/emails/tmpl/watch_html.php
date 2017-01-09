@@ -134,8 +134,8 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 							<tr>
 								<td style="text-align: center; padding: 0 1em;" width="100%" align="left">There has been no activity in this project.</td>
 							</tr>
-						<?php } else
-						{
+						<?php } else { ?>
+							<?php
 							foreach ($this->activities as $a)
 							{
 								$body     = NULL;
@@ -151,7 +151,6 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 											$body = stripslashes($objC->comment);
 											$body = str_replace('<!-- {FORMAT:HTML} -->', '', $body);
 										}
-
 										break;
 
 									case 'blog':
@@ -162,7 +161,11 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 											$bfilters = array('activityid' => $a->id),
 											$a->referenceid
 										);
-										$body = $blog && !empty($blog[0]) ? preg_replace("/\n/", '<br />', trim($blog[0]->blogentry)) : NULL;
+										$body = $blog && !empty($blog[0]) ? trim($blog[0]->blogentry) : '';
+										if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
+										{
+											$body = preg_replace("/\n/", '<br />', $body);
+										}
 										break;
 
 									case 'todo':
@@ -181,8 +184,7 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 								// Display hyperlink
 								if ($a->highlighted && $a->url)
 								{
-									$activity = str_replace($a->highlighted, '<a href="' . $base . $a->url . '">'
-										. $a->highlighted . '</a>', $activity);
+									$activity = str_replace($a->highlighted, '<a href="' . $base . $a->url . '">' . $a->highlighted . '</a>', $activity);
 								}
 								?>
 								<tr>
@@ -190,16 +192,17 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 									<td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?php echo $a->admin == 1 ? Lang::txt('Administrator') : $a->name; ?></span> <?php echo $activity; ?><?php if ($body) { ?>:<?php } ?></td>
 								</tr>
 								<?php if ($body) { ?>
-								<tr>
-									<th></th>
-									<td style="text-align: <?php echo count($this->activities) > 0 ? 'left' : 'center'; ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?php echo $body; ?></td>
-								</tr>
+									<tr>
+										<th></th>
+										<td style="text-align: <?php echo count($this->activities) > 0 ? 'left' : 'center'; ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?php echo $body; ?></td>
+									</tr>
 								<?php } ?>
 								<tr>
 									<th style="text-align: center; padding: 0.5em 1em; <?php if (count($this->activities) > 0) echo 'border-bottom: 1px solid #e9e9e9;'; ?>"></th>
 									<td style="text-align: center; padding: 0.5em 1em; <?php if (count($this->activities) > 0) echo 'border-bottom: 1px solid #e9e9e9;'; ?>" width="100%" align="left"></td>
 								</tr>
-						<?php }
+								<?php
+							}
 							?>
 						<?php } ?>
 					</tbody>
