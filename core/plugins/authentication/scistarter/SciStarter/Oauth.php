@@ -275,6 +275,10 @@ class Oauth
 			throw new Exception('Redirect URI is required');
 		}
 
+		$url  = 'https://';
+		$url .= (!empty($this->environment)) ? $this->environment . '.' : '';
+		$url .= self::HOSTNAME . '/' . self::TOKEN . '?key=' . $this->clientSecret;
+
 		$fields = [
 			'client_id'     => $this->clientId,
 			'client_secret' => $this->clientSecret,
@@ -282,10 +286,6 @@ class Oauth
 			'redirect_uri'  => urlencode($this->redirectUri),
 			'grant_type'    => 'authorization_code'
 		];
-
-		$url  = 'https://';
-		$url .= (!empty($this->environment)) ? $this->environment . '.' : '';
-		$url .= self::HOSTNAME . '/' . self::TOKEN;
 
 		$this->http->setUrl($url)
 				   ->setPostFields($fields)
@@ -300,7 +300,7 @@ class Oauth
 		else
 		{
 			// Seems like the response format changes on occasion... not sure what's going on there?
-			$error = (isset($data->error_description)) ? $data->error_description : $data->{'error-desc'}->value;
+			$error = (isset($data->error)) ? $data->error : 'unknown error';
 
 			throw new Exception($error);
 		}
@@ -332,7 +332,7 @@ class Oauth
 		$url .= (!empty($this->environment)) ? $this->environment . '.' : '';
 		$url .= self::HOSTNAME;
 
-		$this->http->setUrl($this->getApiEndpoint($url . '/api/user_data'));
+		$this->http->setUrl($url . '/api/user_data?access_token=' . $this->getAccessToken());
 
 		// If using the members api, we have to have an access token set
 		if (!$this->getAccessToken())
