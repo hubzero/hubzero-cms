@@ -72,7 +72,11 @@ else
 					$bfilters = array('activityid' => $a->id),
 					$a->referenceid
 				);
-				$body = $blog && !empty($blog[0]) ? preg_replace("/\n/", '<br />', trim($blog[0]->blogentry)) : NULL;
+				$body = $blog && !empty($blog[0]) ? trim($blog[0]->blogentry) : '';
+				if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
+				{
+					$body = preg_replace("/\n/", '<br />', $body);
+				}
 				break;
 
 			case 'todo':
