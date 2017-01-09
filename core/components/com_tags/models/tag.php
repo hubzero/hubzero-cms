@@ -659,7 +659,7 @@ class Tag extends Relational
 				Substitute::moveTo($tag->get('id'), $this->get('id'));
 
 				// Delete the tag
-				$tag->destroy();
+				$tag->purgeCache()->destroy();
 			}
 		}
 
