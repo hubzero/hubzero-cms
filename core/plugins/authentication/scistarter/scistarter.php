@@ -85,8 +85,8 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 			$client->useSandboxEnvironment();
 		}
 		$client->setClientId($this->params->get('app_id'))
-		       ->setClientSecret($this->params->get('app_secret'));
-		//$client->setRedirectUri(self::getRedirectUri('scistarter'));
+		       ->setClientSecret($this->params->get('app_secret'))
+		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
 		if ($code = Request::getVar('code', NULL))
