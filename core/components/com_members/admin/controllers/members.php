@@ -69,6 +69,7 @@ class Members extends AdminController
 		$this->registerTask('modal', 'display');
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('save2new', 'save');
 		$this->registerTask('confirm', 'state');
 		$this->registerTask('unconfirm', 'state');
 		$this->registerTask('applyprofile', 'saveprofile');
@@ -638,6 +639,11 @@ class Members extends AdminController
 		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($user);
+		}
+
+		if ($this->getTask() == 'save2new')
+		{
+			return $this->editTask();
 		}
 
 		// Redirect
