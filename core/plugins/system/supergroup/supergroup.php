@@ -64,7 +64,9 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
 		{
 			// get com_groups params to get upload path
-			$uploadPath      = $this->filespace($group);
+			//$uploadPath      = $this->filespace($group);
+			$params = \App::get('component')->params('com_groups');
+			$uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 			$componentPath   = $uploadPath . DS . 'components';
 			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
 
@@ -78,24 +80,42 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 				$parseRouteFunction = ucfirst($active) . 'ParseRoute';
 				$parseRouteFunction = str_replace(array('-', '.'), '', $parseRouteFunction);
 
+				$name = '\\Components\\' . ucfirst($active) . '\\Site\\Router';
+				$alt  = '\\Components\\' . ucfirst($active) . '\\Router';
+
+				// get current route and remove prefix
+				$currentRoute = rtrim(Request::path(), '/');
+				$currentRoute = trim(str_replace('groups/' . $group->get('cn') . '/' . $active, '', $currentRoute), '/');
+
+				// split route into segements
+				$segments = explode('/', $currentRoute);
+				$vars = array();
+
+				if (class_exists($name))
+				{
+					$router = new $name;
+
+					// get segments from router
+					$vars = $router->parse($segments);
+				}
+				else if (class_exists($alt))
+				{
+					$router = new $alt;
+
+					// get segments from router
+					$vars = $router->parse($segments);
+				}
 				// if we have a build route functions, run it
 				if (function_exists($parseRouteFunction))
 				{
-					// get current route and remove prefix
-					$currentRoute = rtrim(Request::path(), '/');
-					$currentRoute = trim(str_replace('groups/' . $group->get('cn') . '/' . $active, '', $currentRoute), '/');
-
-					// split route into segements
-					$segments = explode('/', $currentRoute);
-
 					// run segments through parser
 					$vars = $parseRouteFunction($segments);
+				}
 
-					// set each var
-					foreach ($vars as $key => $var)
-					{
-						Request::setVar($key, $var);
-					}
+				// set each var
+				foreach ($vars as $key => $var)
+				{
+					Request::setVar($key, $var);
 				}
 			}
 
@@ -111,83 +131,110 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Method that fires after an SEF route is built
+	 * Push a new routing rule after the CMS has been initialized
 	 *
-	 * @param   object  $uri  URI after route has been built
 	 * @return  void
 	 */
-	public function onAfterBuildSefRoute($uri)
+	public function onAfterInitialise()
 	{
-		// get the current segments
-		$currentSegments = explode('/', trim(Request::path(), '/'));
-
-		// make sure were building within groups
-		if (!isset($currentSegments[0]) || !isset($currentSegments[1]) || $currentSegments[0] != 'groups')
+		\App::get('router')->rules('build')->append('supergroup', function ($uri)
 		{
-			return;
-		}
+			// get the current segments
+			$currentSegments = explode('/', trim(\App::get('request')->path(), '/'));
 
-		// get option from uri
-		$url         = $uri->toString();
-		$url         = str_replace('index.php', '', $url);
-		$urlSegments = explode('/', trim($url, '/'));
-
-		// make sure this is not a group route.
-		if (!isset($urlSegments[0]) || $urlSegments[0] == 'groups')
-		{
-			return;
-		}
-
-		// get query string
-		$query = $uri->getQuery(true);
-
-		// get request options
-		$cn     = Request::getVar('cn', '');
-		$active = Request::getVar('active', '');
-
-		// load group object
-		$group  = \Hubzero\User\Group::getInstance($cn);
-
-		// make sure we have all the needed stuff
-		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
-		{
-			// get com_groups params to get upload path
-			$uploadPath      = $this->filespace($group);
-			$componentPath   = $uploadPath . DS . 'components';
-			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
-
-			// make sure uri is a super group component
-			if (!is_dir($componentPath . DS . 'com_' . $urlSegments[0]))
+			// make sure were building within groups
+			if (!isset($currentSegments[0]) || !isset($currentSegments[1]) || $currentSegments[0] != 'groups')
 			{
-				return;
+				return $uri;
 			}
 
-			// if we have a router
-			if (file_exists($componentRouter))
+			// get option from uri
+			$url         = $uri->toString();
+			$url         = str_replace('index.php', '', $url);
+			$urlSegments = explode('/', trim($url, '/'));
+
+			// make sure this is not a group route.
+			if (!isset($urlSegments[0]) || $urlSegments[0] == 'groups')
 			{
-				// include router
-				require_once $componentRouter;
+				return $uri;
+			}
 
-				// build function name
-				$buildRouteFunction = ucfirst($active) . 'BuildRoute';
-				$buildRouteFunction = str_replace(array('-', '.'), '', $buildRouteFunction);
+			// get request options
+			$cn     = \App::get('request')->getVar('cn', '');
+			$active = \App::get('request')->getVar('active', '');
 
-				// if we have a build route functions, run it
-				if (function_exists($buildRouteFunction))
+			// load group object
+			$group  = \Hubzero\User\Group::getInstance($cn);
+
+			// make sure we have all the needed stuff
+			if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
+			{
+				$params = \App::get('component')->params('com_groups');
+
+				// get com_groups params to get upload path
+				$uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber'); //$this->filespace($group);
+				$componentPath   = $uploadPath . DS . 'components';
+				$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
+
+				// make sure uri is a super group component
+				if (!is_dir($componentPath . DS . 'com_' . $urlSegments[0]))
 				{
-					// get segments from router
-					$routeParts = $buildRouteFunction($query);
+					return $uri;
+				}
+
+				// if we have a router
+				if (file_exists($componentRouter))
+				{
+					// include router
+					require_once $componentRouter;
+
+					// build function name
+					$buildRouteFunction = ucfirst($active) . 'BuildRoute';
+					$buildRouteFunction = str_replace(array('-', '.'), '', $buildRouteFunction);
+
+					$name = '\\Components\\' . ucfirst($active) . '\\Site\\Router';
+					$alt  = '\\Components\\' . ucfirst($active) . '\\Router';
+
+					$uri->parse($uri->uri());
+
+					// get query string
+					$query = $uri->getQuery(true);
+
+					$routeParts = array();
+
+					if (class_exists($name))
+					{
+						$router = new $name;
+
+						// get segments from router
+						$routeParts = $router->build($query);
+					}
+					else if (class_exists($alt))
+					{
+						$router = new $alt;
+
+						// get segments from router
+						$routeParts = $router->build($query);
+					}
+					// if we have a build route functions, run it
+					else if (function_exists($buildRouteFunction))
+					{
+						// get segments from router
+						$routeParts = $buildRouteFunction($query);
+					}
 
 					// build result
-					$routeResult = implode('/', $routeParts);
-					$routeResult = DS . 'groups' . DS . $group->get('cn') . DS . $active . DS . $routeResult;
+					$routeResult = '/groups/' . $group->get('cn') . '/' . $active . '/' . implode('/', $routeParts);
 
 					// set the new uri path and query string
 					$uri->setPath($routeResult);
 					$uri->setQuery($query);
+					$uri->delVar('option');
 				}
 			}
-		}
+
+			return $uri;
+		});
 	}
 
 	/**
