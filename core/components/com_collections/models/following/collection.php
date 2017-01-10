@@ -33,7 +33,6 @@
 namespace Components\Collections\Models\Following;
 
 use Components\Collections\Models;
-use Hubzero\User\Group;
 
 require_once(__DIR__ . DS . 'base.php');
 require_once(dirname(__DIR__) . DS . 'collection.php');
@@ -77,7 +76,7 @@ class Collection extends Base
 		switch ($this->_obj->get('object_type'))
 		{
 			case 'group':
-				$group = Group::getInstance($this->_obj->get('object_id'));
+				$group = \Hubzero\User\Group::getInstance($this->_obj->get('object_id'));
 				$this->_baselink = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->_obj->get('alias');
 			break;
 
@@ -105,7 +104,7 @@ class Collection extends Base
 			case 'group':
 				if (!isset($this->_creator) || !is_object($this->_creator))
 				{
-					$this->_creator = Group::getInstance($this->_obj->get('object_id'));
+					$this->_creator = \Hubzero\User\Group::getInstance($this->_obj->get('object_id'));
 				}
 				if ($property)
 				{
