@@ -105,6 +105,13 @@ class Git extends Object
 		// Build .git repo
 		$gitRepoBase = $path . DS . '.git';
 
+		// Check to see if a commit needs to be made
+		$gitInitCheck = $this->callGit('status');
+		if (in_array('# Changes to be committed:', $gitInitCheck))
+		{
+			$this->callGit('commit -am "Initial commit"');
+		} 
+
 		// Need to create .git repository if not yet there
 		if (!is_dir($gitRepoBase))
 		{
