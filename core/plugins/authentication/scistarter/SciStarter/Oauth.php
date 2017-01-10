@@ -330,9 +330,9 @@ class Oauth
 	{
 		$url  = 'https://';
 		$url .= (!empty($this->environment)) ? $this->environment . '.' : '';
-		$url .= self::HOSTNAME;
+		$url .= self::HOSTNAME . '/api/user_data';
 
-		$this->http->setUrl($url . '/api/user_data?access_token=' . $this->getAccessToken());
+		$this->http->setUrl($url);
 
 		// If using the members api, we have to have an access token set
 		if (!$this->getAccessToken())
@@ -341,7 +341,8 @@ class Oauth
 		}
 
 		$this->http->setHeader([
-			'Content-Type'  => 'application/json',
+			//'Content-Type'  => 'application/json',
+			'Accept'        => 'application/json',
 			'Authorization' => 'Bearer ' . $this->getAccessToken()
 		]);
 
