@@ -6,7 +6,6 @@ HUBzero is an open source software platform for building powerful Web sites that
 
 For more information about HUBzero, visit https://hubzero.org.
 
-
 ## Installation
 
 ### Virtual Machine
