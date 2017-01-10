@@ -640,12 +640,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function _unlink()
 	{
-		// Get the id of the account to be unlinked
-		$hzal_id = Request::getInt('hzal_id', null);
-
-		// Get instance
-		$hzal = \Hubzero\Auth\Link::find_by_id($hzal_id);
-
 		// Determine what type of password change the user needs
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 		if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('id'))) <= 1)
@@ -657,11 +651,19 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		// Delete the auth_link
-		if (!$hzal->delete())
+		// Get the id of the account to be unlinked
+		$hzal_id = Request::getInt('hzal_id', null);
+
+		// Get instance
+		$hzal = \Hubzero\Auth\Link::find_by_id($hzal_id);
+
+		if ($hzal)
 		{
-			App::abort(500, Lang::txt('PLG_MEMBERS_UNLINK_FAILED'));
-			return;
+			// Delete the auth_link
+			if (!$hzal->delete())
+			{
+				App::abort(500, Lang::txt('PLG_MEMBERS_UNLINK_FAILED'));
+			}
 		}
 
 		// Set the redirect
