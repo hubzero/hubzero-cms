@@ -52,7 +52,7 @@ HUB.ProjectTeam = {
 		var $ = this.jQuery;
 
 		// Show manage options
-		if ($('#team-manage'))
+		if ($('#team-manage').length > 0)
 		{
 			if ($('#team-manage').hasClass('hidden'))
 			{
@@ -100,7 +100,8 @@ HUB.ProjectTeam = {
 					var group = $(this).attr('data-group');
 
 					// Is item checked?
-					if ($(item).attr('checked') != 'checked')
+					//if ($(item).attr('checked') != 'checked')
+					if ($(item).prop('checked') != true)
 					{
 						bchecked = bchecked - 1;
 						//var idx = bselected.indexOf($(item).val());
@@ -331,12 +332,7 @@ jQuery(document).ready(function($){
 	var go = $('.group-options');
 	if (go.length) {
 		go.on('click', 'input[type=radio]', function(e) {
-			go.find('.input-wrap').removeClass('active');
-			$(this).closest('.input-wrap').addClass('active');
-
-			/*if ($(this).attr('data-action') == 'selective') {
-				$('.checkmember').prop('disabled', false);
-			}*/
+			$(this).closest('form').submit();
 		});
 	}
 
@@ -353,7 +349,7 @@ jQuery(document).ready(function($){
 			$(this).attr('href', href.nohtml());
 		},
 		afterShow: function() {
-			if ($('#cancel-action')) {
+			if ($('#cancel-action').length) {
 				$('#cancel-action').on('click', function(e) {
 					$.fancybox.close();
 				});
