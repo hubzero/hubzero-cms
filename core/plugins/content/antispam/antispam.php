@@ -51,7 +51,14 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentBeforeSave($context, $article, $isNew)
 	{
+		// Only run for site
 		if (!App::isSite())
+		{
+			return;
+		}
+
+		// Don't bother with admins
+		if (User::authorise('core.admin'))
 		{
 			return;
 		}
