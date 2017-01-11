@@ -944,6 +944,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			if ($group != $this->model->get('owned_by_group'))
 			{
 				$this->model->set('owned_by_group', $group);
+				if (!$group)
+				{
+					$this->model->set('sync_group', 0);
+				}
 				$this->model->store();
 
 				// Make sure project lead is affiliated with group
