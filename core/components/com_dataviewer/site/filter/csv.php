@@ -28,6 +28,7 @@ function filter($res, &$dd, $ob_mode = false)
 		header('Content-Type: text/csv; charset=UTF-8');
 		header('Content-Disposition: attachment;filename=' . $file_name);
 
+		ob_end_flush();
 		ob_end_clean();
 	} else {
 		ob_clean();
