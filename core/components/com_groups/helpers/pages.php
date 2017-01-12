@@ -149,7 +149,7 @@ class Pages
 		$cn = Request::getVar('cn','');
 		$group = \Hubzero\User\Group::getInstance($cn);
 
-		// use JRoute so in case the hub is /members/groups/... instead of top level /groups
+		// use Route so in case the hub is /members/groups/... instead of top level /groups
 		$base = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
 
 		if (preg_match("/^\/?groups\/(.*?)/i", Request::path()))

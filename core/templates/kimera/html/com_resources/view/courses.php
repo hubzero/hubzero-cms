@@ -29,8 +29,8 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_HZEXEC_') or die();
 
 $this->css()
      ->js();
@@ -128,7 +128,7 @@ if ($mode != 'preview')
 
 						echo $html;
 
-						$live_site = rtrim(JURI::base(),'/');
+						$live_site = rtrim(Request::base(),'/');
 						?>
 						<p>
 							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
