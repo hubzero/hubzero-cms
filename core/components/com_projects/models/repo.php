@@ -38,6 +38,7 @@ use Components\Projects\Helpers;
 use Components\Projects\Models;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'repo.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php');
 require_once(__DIR__ . DS . 'file.php');
 require_once(__DIR__ . DS . 'adapter.php');
 
@@ -123,6 +124,14 @@ class Repo extends Object
 		}
 		else
 		{
+			$helper = new Helpers\Git(Helpers\Html::getProjectRepoPath(
+				$this->get('project')->get('alias')));
+			$gitInitCheck = $helper->callGit('status');
+			if (in_array('# Changes to be committed:', $gitInitCheck))
+			{
+				$helper->callGit('commit -am "Initial commit"');
+			}
+
 			// Local Git repo  (/files)
 			$this->set('project_id', $this->get('project')->get('id'));
 			$this->set('engine', 'git');
@@ -1429,6 +1438,7 @@ class Repo extends Object
 
 		// Initialize
 		$this->_adapter->ini();
+
 
 		return true;
 	}
