@@ -34,12 +34,10 @@ namespace Modules\AdminMenu;
 
 include_once __DIR__ . DS . 'node.php';
 
-jimport('joomla.base.tree');
-
 /**
  * Extended class for rendering nested menus
  */
-class Tree extends \JTree
+class Tree extends \Hubzero\Base\Object
 {
 	/**
 	 * CSS string to add to document head
@@ -47,6 +45,20 @@ class Tree extends \JTree
 	 * @var  string
 	 */
 	protected $_css = null;
+
+	/**
+	 * Root node
+	 *
+	 * @var  object
+	 */
+	protected $_root = null;
+
+	/**
+	 * Current working node
+	 *
+	 * @var  object
+	 */
+	protected $_current = null;
 
 	/**
 	 * Constructor
@@ -57,6 +69,43 @@ class Tree extends \JTree
 	{
 		$this->_root = new Node('ROOT');
 		$this->_current =& $this->_root;
+	}
+
+	/**
+	 * Method to add a child
+	 *
+	 * @param   array    &$node       The node to process
+	 * @param   boolean  $setCurrent  True to set as current working node
+	 * @return  mixed
+	 */
+	public function addChild(&$node, $setCurrent = false)
+	{
+		$this->_current->addChild($node);
+
+		if ($setCurrent)
+		{
+			$this->_current = &$node;
+		}
+	}
+
+	/**
+	 * Method to get the parent
+	 *
+	 * @return  void
+	 */
+	public function getParent()
+	{
+		$this->_current = &$this->_current->getParent();
+	}
+
+	/**
+	 * Method to get the parent
+	 *
+	 * @return  void
+	 */
+	public function reset()
+	{
+		$this->_current = &$this->_root;
 	}
 
 	/**

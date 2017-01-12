@@ -307,7 +307,7 @@ class Page extends Model
 		// loag group
 		$group = \Hubzero\User\Group::getInstance($this->get('gidNumber'));
 
-		// base link, jroute
+		// base link
 		$pageLink = '';
 		if ($includeBase)
 		{

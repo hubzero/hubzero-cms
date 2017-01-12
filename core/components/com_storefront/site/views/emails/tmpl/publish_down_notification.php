@@ -114,4 +114,3 @@ foreach ($this->skus as $sku)
 	echo "\n";
 }
 }
-?>

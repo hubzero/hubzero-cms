@@ -38,7 +38,7 @@ class TemplatesViewPrevuuw extends JViewLegacy
 		$this->option   = Request::getCmd('option');
 		$this->template = TemplatesHelper::getTemplateName($this->id);
 		$this->tp       = true;
-		$this->url      = $client->id ? Request::base() : JURI::root();
+		$this->url      = $client->id ? Request::base() : Request::root();
 
 		if (!$this->template)
 		{
