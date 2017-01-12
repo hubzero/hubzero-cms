@@ -62,7 +62,7 @@ $this->css()
 		<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
 
 		<label<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-			<?php echo Lang::txt('PLG_GROUPS_BLOG_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
+			<?php echo Lang::txt('PLG_GROUPS_BLOG_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 			<input type="text" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
@@ -70,7 +70,7 @@ $this->css()
 		<?php } ?>
 
 		<label for="entry_content">
-			<?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
+			<?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 			<?php echo $this->editor('entry[content]', $this->escape($this->entry->get('content')), 50, 30, 'entry_content'); ?>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>

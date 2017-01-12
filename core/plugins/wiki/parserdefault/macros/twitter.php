@@ -30,8 +30,8 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * Wiki macro class for dipslaying a twitter feed

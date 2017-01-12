@@ -166,7 +166,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = $_SERVER['REQUEST_URI'];
-				if (!JURI::isInternal($url))
+				if (!Hubzero\Utility\Uri::isInternal($url))
 				{
 					$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
 				}

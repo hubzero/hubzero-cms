@@ -30,8 +30,8 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_HZEXEC_') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die();
 
 $group_statuses = array(
 	'all' => Lang::txt('All Group Members'),
@@ -67,18 +67,18 @@ if ($role_id)
 		<fieldset class="hub-mail">
 			<div class="cont" style="background:#fff url('<?php echo $this->params->get('stamp_logo'); ?>') no-repeat 99% 4%;">
 				<h3><?php echo Lang::txt('Compose Message to Group'); ?></h3>
-				<label class="width-65"><?php echo Lang::txt('GROUP_MESSAGE_USERS'); ?>  <span class="required">Required</span>
+				<label class="width-65"><?php echo Lang::txt('GROUP_MESSAGE_USERS'); ?>  <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<select name="users[]" id="msg-recipient">
 						<optgroup label="Group Status">
 							<?php foreach ($group_statuses as $val => $name) { ?>
-								<?php $sel = ($val == $this->users[0]) ? "selected" : ""; ?>
+								<?php $sel = ($val == $this->users[0]) ? 'selected="selected"' : ''; ?>
 								<option <?php echo $sel; ?> value="<?php echo $val; ?>"><?php echo $name; ?></option>
 							<?php } ?>
 						</optgroup>
 						<?php if (count($this->member_roles) > 0) { ?>
 							<optgroup label="Group Member Roles">
 								<?php foreach ($this->member_roles as $role) { ?>
-									<?php $sel = ($role['name'] == $role_name) ? "selected" : ""; ?>
+									<?php $sel = ($role['name'] == $role_name) ? 'selected="selected"' : ''; ?>
 									<option <?php echo $sel; ?> value="role_<?php echo $role['id']; ?>"><?php echo $role['name']; ?></option>
 								<?php } ?>
 							</optgroup>
@@ -87,7 +87,7 @@ if ($role_id)
 							<optgroup label="Group Members">
 								<?php foreach ($this->members as $m) { ?>
 									<?php $u = User::getInstance($m); ?>
-									<?php $sel = ($u->get('id') == $this->users[0]) ? "selected" : ""; ?>
+									<?php $sel = ($u->get('id') == $this->users[0]) ? 'selected="selected"' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $u->get('id'); ?>"><?php echo $u->get('name'); ?></option>
 								<?php } ?>
 							</optgroup>
@@ -95,11 +95,11 @@ if ($role_id)
 					</select>
 				</label>
 				<label>
-					<?php echo Lang::txt('GROUP_MESSAGE_SUBJECT'); ?> <span class="required">Required</span>
+					<?php echo Lang::txt('GROUP_MESSAGE_SUBJECT'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<input type="text" name="subject" id="msg-subject" value="" />
 				</label>
 				<label>
-					<?php echo Lang::txt('GROUP_MESSAGE'); ?> <span class="required">Required</span>
+					<?php echo Lang::txt('GROUP_MESSAGE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 				</label>
 				<p class="submit">

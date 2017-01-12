@@ -58,7 +58,7 @@ foreach (Request::query() as $key => $value)
 
 <div class="plg_time_csv">
 	<?php if ($this->records->count()) : ?>
-		<a target="_blank" href="<?php echo Route::url($base . '&' . JURI::getInstance()->getQuery() . '&method=download'); ?>">
+		<a target="_blank" href="<?php echo Route::url($base . '&' . Hubzero\Utility\Uri::getInstance()->getQuery() . '&method=download'); ?>">
 			<div class="download btn icon-save">Download</div>
 		</a>
 	<?php endif; ?>

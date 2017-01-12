@@ -43,7 +43,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 	<div class="section-inner">
 		<p>Add straight to the cart</p>
 
-		<form action="<?php echo JURI::root() . 'cart'; ?>" id="frm" method="post">
+		<form action="<?php echo Route::url('index.php?option=com_cart'); ?>" id="frm" method="post">
 
 			<input type="hidden" name="updateCart" value="true">
 			<input type="hidden" name="skus" value="11">

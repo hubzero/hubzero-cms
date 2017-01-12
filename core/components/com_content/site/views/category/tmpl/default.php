@@ -49,7 +49,7 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 	<div class="cat-children">
 		<?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
 		<h3>
-			<?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?>
+			<?php echo Lang::txt('JGLOBAL_SUBCATEGORIES'); ?>
 		</h3>
 		<?php endif; ?>
 		<?php echo $this->loadTemplate('children'); ?>

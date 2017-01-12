@@ -148,15 +148,7 @@ class Helper extends Module
 							break;
 
 						default:
-							/*
-							if (\App::get('router')->getMode() == JROUTER_MODE_SEF)
-							{*/
-								$item->flink = 'index.php?Itemid=' . $item->id;
-							/*}
-							else
-							{
-								$item->flink .= '&Itemid=' . $item->id;
-							}*/
+							$item->flink = 'index.php?Itemid=' . $item->id;
 							break;
 					}
 
