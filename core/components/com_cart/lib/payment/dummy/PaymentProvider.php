@@ -32,14 +32,28 @@ defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * UPay payment provider
- *
- * Long description (if any) ...
  */
 class PaymentProvider
 {
+	/**
+	 * List of button vars
+	 *
+	 * @var  array
+	 */
 	private $buttonVars;
+
+	/**
+	 * Credentials
+	 *
+	 * @var  array
+	 */
 	private $credentials;
 
+	/**
+	 * Constructor
+	 *
+	 * @return  void
+	 */
 	public function __construct()
 	{
 		$this->options = new \stdClass();
@@ -50,6 +64,8 @@ class PaymentProvider
 	/**
 	 * Set transaction details
 	 *
+	 * @param   object  $transactionDetails
+	 * @return  void
 	 */
 	public function setTransactionDetails($transactionDetails)
 	{
@@ -59,10 +75,11 @@ class PaymentProvider
 	/**
 	 * Get HTML code for payment button
 	 *
+	 * @return  string
 	 */
 	public function getPaymentCode()
 	{
-		$code  = '<form method="post" action="' . JURI::root() . 'cart/test/pay">';
+		$code  = '<form method="post" action="' . rtrim(Request::root(), '/') . '/cart/test/pay">';
 		$code .= '<input type="hidden" value="dodummypayment" name="cmd">';
 
 		foreach ($this->buttonVars as $k => $v)
@@ -80,8 +97,8 @@ class PaymentProvider
 	/**
 	 * Set post back info ($_POST)
 	 *
-	 * @param 	array $_POST
-	 * @return 	int associated transaction ID if $_POST data is valid, false otherwise
+	 * @param   array  $postMessage
+	 * @return  int    associated transaction ID if $_POST data is valid, false otherwise
 	 */
 	public function setPostBack($postMessage)
 	{
@@ -94,6 +111,8 @@ class PaymentProvider
 
 	/**
 	 * Get the post back action (payment, cancel transaction...)
+	 *
+	 * @return  string
 	 */
 	public function getPostBackAction()
 	{
@@ -103,8 +122,8 @@ class PaymentProvider
 	/**
 	 * Verify the payment -- make sure it matches the transaction awaiting payment
 	 *
-	 * @param 	object transaction info
-	 * @return 	bool
+	 * @param   object  $tInfo  transaction info
+	 * @return  bool
 	 */
 	public function verifyPayment($tInfo)
 	{

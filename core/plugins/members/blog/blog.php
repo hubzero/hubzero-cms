@@ -320,8 +320,6 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Filters for returning results
 		$filters = array(
 			'limit'      => Request::getInt('limit', Config::get('list_limit')),
