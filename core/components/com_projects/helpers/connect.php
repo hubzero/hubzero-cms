@@ -695,11 +695,11 @@ class Connect extends Object
 				$permEmails = array();
 
 				// Collect permission names
-				foreach ($permlist['items'] as $p)
+				foreach ($permlist as $p)
 				{
-					if (isset($p['emailAddress']))
+					if ($email = $p->getEmailAddress())
 					{
-						$permEmails[] = $p['emailAddress'];
+						$permEmails[] = $email;
 					}
 				}
 
@@ -712,12 +712,12 @@ class Connect extends Object
 						$permission = new Google_Service_Drive_Permission;
 						$permission->setRole('writer');
 						$permission->setType('user');
-						$permission->setValue($email);
+						$permission->setEmailAddress($email);
 						$params = array('sendNotificationEmails' => 'false');
 
 						try
 						{
-							$perm = $apiService->permissions->insert($folderID, $permission, $params);
+							$perm = $apiService->permissions->create($folderID, $permission, $params);
 						}
 						catch (Exception $e)
 						{
