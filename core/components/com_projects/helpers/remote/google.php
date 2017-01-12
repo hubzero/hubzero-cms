@@ -115,15 +115,15 @@ class Google extends Object
 		$permlist = $apiService->permissions->listPermissions($itemId);
 
 		// Collect permission names
-		foreach ($permlist['items'] as $p)
+		foreach ($permlist as $p)
 		{
-			$pName = isset($p['name']) ? $p['name'] : NULL;
-			if (!$pName )
+			$pName = $p->getDisplayName();
+			if (!$pName)
 			{
 				continue;
 			}
 
-			$permissionId = $p['id'];
+			$permissionId = $p->getId();
 
 			// Go through array of connected users
 			foreach ($shared as $name => $email)
@@ -169,14 +169,12 @@ class Google extends Object
 
 		if ($title)
 		{
-			$file->setTitle($title);
+			$file->setName($title);
 		}
 
 		if ($parentId)
 		{
-			$parent = new Google_Service_Drive_ParentReference;
-			$parent->setId($parentId);
-			$file->setParents(array($parent));
+			$file->setParents(array($parentId));
 		}
 
 		try
@@ -269,7 +267,7 @@ class Google extends Object
 
 			// Call the API with the media upload, defer so it doesn't immediately return.
 			$client->setDefer(true);
-			$request = $apiService->files->insert($file);
+			$request = $apiService->files->create($file);
 
 			$media = new Google_Http_MediaFileUpload(
 				$client,
@@ -335,13 +333,11 @@ class Google extends Object
 		// Create file instance
 		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType($mimeType);
-		$file->setTitle($title);
+		$file->setName($title);
 
 		if ($parentId)
 		{
-			$parent = new Google_Service_Drive_ParentReference;
-			$parent->setId($parentId);
-			$file->setParents(array($parent));
+			$file->setParents(array($parentId));
 		}
 
 		// Determine file size
@@ -443,7 +439,8 @@ class Google extends Object
 
 		try
 		{
-			$success = $apiService->files->untrash($id);
+			$file = $apiService->files->get($id);
+			$success = $apiService->files->update($id, $file, array('trash' => false));
 			return true;
 		}
 		catch (Exception $e)
@@ -547,7 +544,8 @@ class Google extends Object
 			}
 			else
 			{
-				$success = $apiService->files->trash($id);
+				$file = $apiService->files->get($id);
+				$success = $apiService->files->update($id, $file, array('trashed' => true));
 			}
 			return true;
 		}
@@ -577,18 +575,16 @@ class Google extends Object
 
 		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType('application/vnd.google-apps.folder');
-		$file->setTitle($title);
+		$file->setName($title);
 
 		if ($parentId != null)
 		{
-			$parent = new Google_Service_Drive_ParentReference;
-			$parent->setId($parentId);
-			$file->setParents(array($parent));
+			$file->setParents(array($parentId));
 		}
 
 		try
 		{
-			$createdFolder = $apiService->files->insert($file, array(
+			$createdFolder = $apiService->files->create($file, array(
 				  'mimeType' => 'application/vnd.google-apps.folder'
 			));
 
