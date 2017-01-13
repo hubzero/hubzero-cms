@@ -130,8 +130,16 @@ class MailtoController extends JControllerLegacy
 		$body    = JMailHelper::cleanBody($body);
 		$sender  = JMailHelper::cleanAddress($sender);
 
+		$mailer = new Hubzero\Mail\Message();
+		$return = $mailer
+			->addFrom($from, $sender)
+			->addTo($email)
+			->setSubject($subject)
+			->setBody($body)
+			->send();
+
 		// Send the email
-		if (JFactory::getMailer()->sendMail($from, $sender, $email, $subject, $body) !== true)
+		if ($return !== true)
 		{
 			throw new Exception(Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'), 500);
 			return $this->mailto();

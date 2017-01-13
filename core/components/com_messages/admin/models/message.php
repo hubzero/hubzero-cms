@@ -303,9 +303,16 @@ class MessagesModelMessage extends JModelAdmin
 			$siteURL  = \Request::root() . 'administrator/index.php?option=com_messages&view=message&message_id=' . $table->message_id;
 			$sitename = \Config::get('sitename');
 
-			$subject = sprintf ($lang->_('COM_MESSAGES_NEW_MESSAGE_ARRIVED'), $sitename);
-			$msg     = sprintf ($lang->_('COM_MESSAGES_PLEASE_LOGIN'), $siteURL);
-			JFactory::getMailer()->sendMail($fromUser->email, $fromUser->name, $toUser->email, $subject, $msg);
+			$subject = sprintf($lang->_('COM_MESSAGES_NEW_MESSAGE_ARRIVED'), $sitename);
+			$msg     = sprintf($lang->_('COM_MESSAGES_PLEASE_LOGIN'), $siteURL);
+
+			$mailer = new Hubzero\Mail\Message();
+			$return = $mailer
+				->addFrom($fromUser->email, $fromUser->name)
+				->addTo($toUser->email)
+				->setSubject($subject)
+				->setBody($msg)
+				->send();
 		}
 
 		return true;

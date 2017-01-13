@@ -357,6 +357,11 @@ abstract class JFactory
 	 */
 	public static function getMailer()
 	{
+		if (class_exists('\\App'))
+		{
+			return new \Hubzero\Mail\Message();
+		}
+
 		if (!self::$mailer)
 		{
 			self::$mailer = self::createMailer();
