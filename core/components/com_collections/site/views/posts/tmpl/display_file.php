@@ -71,21 +71,43 @@ if ($assets->total() > 0)
 		//$assets->rewind();
 		$first = array_shift($images);
 
-		list($originalWidth, $originalHeight) = getimagesize($path . DS . $first->file('thumbnail'));
-		$ratio = $originalWidth / $originalHeight;
+		$isLocal = (filter_var($first->file('original'), FILTER_VALIDATE_URL)) ? false : true;
+		$imgPath = $isLocal ? $path . DS . $first->file('thumbnail') : $first->file('original');
 
-		$height = (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 260) / $ratio, 0, PHP_ROUND_HALF_UP) : ($originalHeight > 500 ? 500 : $originalHeight);
-		?>
-			<div class="holder">
-				<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS) . '&size=original'); ?>"  data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-					<img src="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo $height; ?>px;" />
-				</a>
+		if (file_exists($imgPath))
+		{
+			list($originalWidth, $originalHeight) = getimagesize($imgPath);
+			$ratio = $originalWidth / $originalHeight;
+
+			$height = (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 260) / $ratio, 0, PHP_ROUND_HALF_UP) : ($originalHeight > 500 ? 500 : $originalHeight);
+
+			if ($isLocal) : ?>
+				<div class="holder">
+					<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS) . '&size=original'); ?>"  data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
+						<img src="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo $height; ?>px;" />
+					</a>
+				</div>
+			<?php else : ?>
+				<div class="holder">
+					<a target="_blank" class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo $imgPath; ?>" data-download="<?php echo $imgPath; ?>" data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
+						<img src="<?php echo $imgPath; ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>px;" />
+					</a>
+				</div>
+			<?php endif;
+		}
+		else
+		{
+			?>
+			<div class="holder notfound">
+				<p class="warning"><?php echo Lang::txt('Image not found.'); ?></p>
 			</div>
 			<?php
-			if (count($images) > 0)
-			{
-				?>
-				<div class="gallery">
+		}
+
+		if (count($images) > 0)
+		{
+			?>
+			<div class="gallery">
 				<?php
 				foreach ($images as $asset)
 				{
@@ -98,7 +120,7 @@ if ($assets->total() > 0)
 				?>
 				<div class="clearfix"></div>
 			</div>
-		<?php
+			<?php
 		}
 	}
 	//$assets->rewind();
