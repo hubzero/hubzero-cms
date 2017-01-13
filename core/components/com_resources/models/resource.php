@@ -414,6 +414,8 @@ class Resource extends Object
 					{
 						if ($dv->uidNumber == User::get('id'))
 						{
+							$this->params->set('access-view-resource', true);
+							$this->params->set('access-view-all-resource', true);
 							$this->params->set('access-create-resource', true);
 							$this->params->set('access-delete-resource', true);
 							$this->params->set('access-edit-resource', true);
