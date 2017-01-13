@@ -295,6 +295,17 @@ class Curation extends Object
 	}
 
 	/**
+	 * getBlockSchema - returns the Blocks of this curation flow 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function getBlockSchema()
+	{
+		return $this->_blocks;
+	}
+
+	/**
 	 * Get schema for metadata elements
 	 *
 	 * @return  array
