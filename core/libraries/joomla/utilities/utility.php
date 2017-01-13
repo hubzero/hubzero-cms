@@ -45,10 +45,34 @@ class JUtility
 		// Deprecation warning.
 		JLog::add('JUtility::sendmail() is deprecated.', JLog::WARNING, 'deprecated');
 
-		// Get a JMail instance
-		$mail = JFactory::getMailer();
+		$mail = new Hubzero\Mail\Message();
+		$mail
+			->addFrom($from, $fromname)
+			->addTo($recipient)
+			->setSubject($subject)
+			->setBody($body);
 
-		return $mail->sendMail($from, $fromname, $recipient, $subject, $body, $mode, $cc, $bcc, $attachment, $replyto, $replytoname);
+		if ($cc)
+		{
+			$mail->addCc($cc);
+		}
+
+		if ($bcc)
+		{
+			$mail->addBcc($bcc);
+		}
+
+		if ($replyto)
+		{
+			$mail->setReplyTo($replyto, $replytoname);
+		}
+
+		if ($attachment)
+		{
+			$mail->attach($attachment);
+		}
+
+		return $mail->send();
 	}
 
 	/**
@@ -73,10 +97,23 @@ class JUtility
 		// Deprecation warning.
 		JLog::add('JUtility::sendAdminMail() is deprecated.', JLog::WARNING, 'deprecated');
 
-		// Get a JMail instance
-		$mail = JFactory::getMailer();
+		$subject = JText::sprintf('JLIB_MAIL_USER_SUBMITTED', $type);
 
-		return $mail->sendAdminMail($adminName, $adminEmail, $email, $type, $title, $author, $url);
+		$message = sprintf(JText::_('JLIB_MAIL_MSG_ADMIN'), $adminName, $type, $title, $author, $url, $url, 'administrator', $type);
+		$message .= JText::_('JLIB_MAIL_MSG') . "\n";
+
+		$mail = new Hubzero\Mail\Message();
+		$mail
+			->addFrom($adminEmail)
+			->addTo($adminEmail)
+			->setSubject($subject)
+			->setBody($message);
+
+		$this->addRecipient($adminEmail);
+		$this->setSubject($subject);
+		$this->setBody($message);
+
+		return $mail->send();
 	}
 
 	/**
