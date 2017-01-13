@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan=5">
-					Serial numbers for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=edit&sId=' . $this->sku->getId()); ?>" title="<?php echo Lang::txt('Edit SKU'); ?>"><?php echo $this->sku->getName(); ?></a>
+					Serial numbers for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=edit&id=' . $this->sku->getId()); ?>" title="<?php echo Lang::txt('Edit SKU'); ?>"><?php echo $this->sku->getName(); ?></a>
 				</th>
 			</tr>
 			<tr>
