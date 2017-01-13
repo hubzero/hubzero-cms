@@ -48,6 +48,12 @@ class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 		$uri = $_SERVER['REQUEST_URI'];
 		$bits = explode('?', $uri);
 		$bit = $bits[0];
+
+		if (!strpos($bit, '.'))
+		{
+			return;
+		}
+
 		$bi = explode('.', $bit);
 		$b = end($bi);
 		$b = strtolower($b);

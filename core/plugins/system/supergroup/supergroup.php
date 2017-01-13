@@ -58,14 +58,14 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 		$active = Request::getVar('active', '');
 
 		// load group object
-		$group  = \Hubzero\User\Group::getInstance($cn);
+		$group  = Hubzero\User\Group::getInstance($cn);
 
 		// make sure we have all the needed stuff
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
 		{
 			// get com_groups params to get upload path
 			//$uploadPath      = $this->filespace($group);
-			$params = \App::get('component')->params('com_groups');
+			$params = App::get('component')->params('com_groups');
 			$uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 			$componentPath   = $uploadPath . DS . 'components';
 			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
@@ -137,7 +137,7 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterInitialise()
 	{
-		\App::get('router')->rules('build')->append('supergroup', function ($uri)
+		App::get('router')->rules('build')->append('supergroup', function ($uri)
 		{
 			// get the current segments
 			$currentSegments = explode('/', trim(\App::get('request')->path(), '/'));
