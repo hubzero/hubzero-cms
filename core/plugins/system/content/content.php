@@ -37,6 +37,13 @@ defined('_HZEXEC_') or die();
  */
 class plgSystemContent extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Hook for after parsing route
+	 *
+	 * @param   object  $table
+	 * @param   object  $model
+	 * @return  void
+	 */
 	public function onContentSave($table, $model)
 	{
 		//@TODO: Add check for isIndexable

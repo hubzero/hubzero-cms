@@ -41,7 +41,7 @@ class plgSystemPassword extends \Hubzero\Plugin\Plugin
 	/**
 	 * Hook for after parsing route
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function onAfterRoute()
 	{
