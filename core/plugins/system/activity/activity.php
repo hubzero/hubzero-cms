@@ -56,6 +56,6 @@ class plgSystemActivity extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		\Hubzero\Activity\Log::log($activity, $recipients);
+		Hubzero\Activity\Log::log($activity, $recipients);
 	}
 }

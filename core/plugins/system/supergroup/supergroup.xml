@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/system/supergroup.xml
+@file           plugins/system/supergroup/supergroup.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -41,6 +41,7 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename plugin="supergroup">supergroup.php</filename>
 	</files>
-	<config>
-	</config>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_supergroup.sys.ini</language>
+	</languages>
 </extension>

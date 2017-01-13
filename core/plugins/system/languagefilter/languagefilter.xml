@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/system/languagefilter/languagefilter.xml
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
+@license        http://opensource.org/licenses/MIT MIT
+
+Copyright 2005-2015 HUBzero Foundation, LLC.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
 <extension version="2.5" type="plugin" group="system">
 	<name>plg_system_languagefilter</name>
-	<author>Joomla! Project</author>
-	<creationDate>July 2010</creationDate>
-	<copyright>Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<authorEmail>admin@joomla.org</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
+	<author>HUBzero</author>
+	<creationDate>June 2012</creationDate>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
 	<version>2.5.0</version>
 	<description>PLG_SYSTEM_LANGUAGEFILTER_XML_DESCRIPTION</description>
 	<files>
@@ -20,52 +50,27 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="detect_browser" type="list"
-					description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_DETECT_BROWSER_DESC"
-					label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_DETECT_BROWSER_LABEL"
-					default="1"
-				>
+				<field name="detect_browser" type="list" description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_DETECT_BROWSER_DESC" label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_DETECT_BROWSER_LABEL" default="1">
 					<option value="0">PLG_SYSTEM_LANGUAGEFILTER_SITE_LANGUAGE</option>
 					<option value="1">PLG_SYSTEM_LANGUAGEFILTER_BROWSER_SETTINGS</option>
 				</field>
-				<field name="automatic_change" type="radio"
-					description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_AUTOMATIC_CHANGE_DESC"
-					label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_AUTOMATIC_CHANGE_LABEL"
-					default="1"
-				>
+				<field name="automatic_change" type="radio" description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_AUTOMATIC_CHANGE_DESC" label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_AUTOMATIC_CHANGE_LABEL" default="1">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="menu_associations" type="radio"
-					description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_MENU_ASSOCIATIONS_DESC"
-					label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_MENU_ASSOCIATIONS_LABEL"
-					default="0"
-				>
+				<field name="menu_associations" type="radio" description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_MENU_ASSOCIATIONS_DESC" label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_MENU_ASSOCIATIONS_LABEL" default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="remove_default_prefix" type="radio"
-					description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_REMOVE_DEFAULT_PREFIX_DESC"
-					label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_REMOVE_DEFAULT_PREFIX_LABEL"
-					default="0"
-				>
+				<field name="remove_default_prefix" type="radio" description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_REMOVE_DEFAULT_PREFIX_DESC" label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_REMOVE_DEFAULT_PREFIX_LABEL" default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="lang_cookie" type="radio"
-					description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_COOKIE_DESC"
-					label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_COOKIE_LABEL"
-					default="1"
-					class="btn-group"
-				>
+				<field name="lang_cookie" type="radio" description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_COOKIE_DESC" label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_COOKIE_LABEL" default="1" class="btn-group">
 					<option value="0">PLG_SYSTEM_LANGUAGEFILTER_OPTION_SESSION</option>
 					<option value="1">PLG_SYSTEM_LANGUAGEFILTER_OPTION_YEAR</option>
 				</field>
-				<field name="alternate_meta" type="radio"
-					description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_ALTERNATE_META_DESC"
-					label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_ALTERNATE_META_LABEL"
-					default="0"
-				>
+				<field name="alternate_meta" type="radio" description="PLG_SYSTEM_LANGUAGEFILTER_FIELD_ALTERNATE_META_DESC" label="PLG_SYSTEM_LANGUAGEFILTER_FIELD_ALTERNATE_META_LABEL" default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>

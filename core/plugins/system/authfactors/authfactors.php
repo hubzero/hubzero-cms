@@ -41,7 +41,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Hook for after parsing route
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function onAfterRoute()
 	{
@@ -83,7 +83,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Logs out of the admin client
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function logoutAdmin()
 	{
@@ -94,7 +94,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Logs out of the site client
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function logoutSite()
 	{
@@ -106,7 +106,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Sends to factor input view
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function factorsAdmin()
 	{
@@ -117,7 +117,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	/**
 	 * Sends to factor input view
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function factorsSite()
 	{
