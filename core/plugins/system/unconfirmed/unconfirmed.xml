@@ -29,12 +29,19 @@ THE SOFTWARE.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install version="1.5" type="plugin" group="system">
+<extension version="1.5" type="plugin" group="system">
 	<name>System - Unconfirmed</name>
-	<description>Routing plugin to check user email confirmation status</description>
+	<author>HUBzero</author>
+	<creationDate>June 2014</creationDate>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<description>PLG_SYSTEM_UNCONFIRMED_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="unconfirmed">unconfirmed.php</filename>
 	</files>
-	<config>
-	</config>
-</install>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_unconfirmed.sys.ini</language>
+	</languages>
+</extension>

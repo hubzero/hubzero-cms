@@ -31,9 +31,17 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="system">
 	<name>System - xFeed</name>
-	<description>Enables feed links to end in .rss</description>
+	<author>HUBzero</author>
+	<creationDate>June 2015</creationDate>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<description>PLG_SYSTEM_XFEED_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="xfeed">xfeed.php</filename>
 	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_xfeed.sys.ini</language>
+	</languages>
 </extension>
-

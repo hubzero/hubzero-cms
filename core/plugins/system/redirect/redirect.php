@@ -93,7 +93,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'models' . DS . 'link.php');
 
 			// See if the current url exists in the database as a redirect.
-			$link = \Components\Redirect\Models\Link::all()
+			$link = Components\Redirect\Models\Link::all()
 					->whereEquals('old_url', $current)
 					->row();
 
@@ -102,7 +102,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			{
 				$currRel = $uri->toString(array('path', 'query', 'fragment'));
 
-				$link = \Components\Redirect\Models\Link::all()
+				$link = Components\Redirect\Models\Link::all()
 					->whereEquals('old_url', $currRel)
 					->row();
 			}
@@ -115,7 +115,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 
 			$referer = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
 
-			$row = \Components\Redirect\Models\Link::all()
+			$row = Components\Redirect\Models\Link::all()
 				->whereEquals('old_url', substr($current, 0, 255))
 				->row();
 
