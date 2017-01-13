@@ -141,9 +141,10 @@ HUB.ProjectPublicationsSelector = {
 		var success = false;
 
 		checker = $('.selectedfilter').length;
+		optional = $('.el-optional').length;
 
 		// Check that we satisfy minimum/maximum requirements
-		if (checker >= 1)
+		if (checker >= 1 || optional >= 1)
 		{
 			success = true;
 		}

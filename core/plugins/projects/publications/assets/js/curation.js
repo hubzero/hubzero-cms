@@ -1019,31 +1019,36 @@ HUB.ProjectPublicationsDraft = {
 	{
 		var $ = this.jQuery;
 
-		var complete 	= $('#license').val() ? 1 : 0;
+		var license = $('#license').val() ? 1 : 0;
 		var ltext 		= $('#license-text');
 		var agree 		= $('#agreement');
 		var element 	= $('#licensePick');
 		var required 	= $(element).hasClass('el-required') ? 1 : 0;
 		var custom 		= $('.customfield');
 
-		// Check for default text
-		if (ltext.length && !HUB.ProjectPublicationsDraft.checkLicenseText(ltext.val()))
+		if (required && license && agree.attr('checked') == 'checked')
+		{
+			// If required, but license is selected and "I agree".
+			complete = 1;
+		}
+		else if (!required && license && agree.attr('checked') == 'checked')
+		{
+			// If not required, but license is selected and "I agree".
+			complete = 1;
+		}
+		else if (!required && !license)
+		{
+			// If not required and no license selected.
+			complete = 1;
+		}
+		else if (ltext.length && HUB.ProjectPublicationsDraft.checkLicenseText(ltext.val()))
+		{
+			// If something entered into custom license box.
+			complete = 1;
+		}
+		else
 		{
 			complete = 0;
-		}
-		if (agree.length && agree.attr('checked') != 'checked')
-		{
-			complete = 0;
-		}
-		if (custom.length)
-		{
-			custom.each(function(i, item)
-			{
-				if ($(item).val() == '')
-				{
-					complete = 0;
-				}
-			});
 		}
 
 		// Enable/disable control buttons
