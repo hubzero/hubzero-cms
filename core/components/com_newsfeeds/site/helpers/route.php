@@ -36,11 +36,13 @@ abstract class NewsfeedsHelperRoute
 		//Create the link
 		$link = 'index.php?option=com_newsfeeds&view=newsfeed&id='. $id;
 
-		if ((int)$catid > 1) {
+		if ((int)$catid > 1)
+		{
 			$categories = JCategories::getInstance('Newsfeeds');
 			$category = $categories->get((int)$catid);
 
-			if ($category) {
+			if ($category)
+			{
 				//TODO Throw error that the category either not exists or is unpublished
 				$needles['category'] = array_reverse($category->getPath());
 				$needles['categories'] = $needles['category'];
@@ -48,7 +50,8 @@ abstract class NewsfeedsHelperRoute
 			}
 		}
 
-		if ($item = self::_findItem($needles)) {
+		if ($item = self::_findItem($needles))
+		{
 			$link .= '&Itemid='.$item;
 		}
 
@@ -94,25 +97,27 @@ abstract class NewsfeedsHelperRoute
 
 	protected static function _findItem($needles = null)
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu('site');
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu('site');
 
 		// Prepare the reverse lookup array.
 		if (self::$lookup === null)
 		{
 			self::$lookup = array();
 
-			$component	= JComponentHelper::getComponent('com_newsfeeds');
-			$items		= $menus->getItems('component_id', $component->id);
+			$component = \Component::params('com_newsfeeds');
+			$items     = $menus->getItems('component_id', $component->id);
 			foreach ($items as $item)
 			{
 				if (isset($item->query) && isset($item->query['view']))
 				{
 					$view = $item->query['view'];
-					if (!isset(self::$lookup[$view])) {
+					if (!isset(self::$lookup[$view]))
+					{
 						self::$lookup[$view] = array();
 					}
-					if (isset($item->query['id'])) {
+					if (isset($item->query['id']))
+					{
 						self::$lookup[$view][$item->query['id']] = $item->id;
 					}
 				}
@@ -127,7 +132,8 @@ abstract class NewsfeedsHelperRoute
 				{
 					foreach ($ids as $id)
 					{
-						if (isset(self::$lookup[$view][(int)$id])) {
+						if (isset(self::$lookup[$view][(int)$id]))
+						{
 							return self::$lookup[$view][(int)$id];
 						}
 					}

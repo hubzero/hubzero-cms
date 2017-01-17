@@ -101,7 +101,7 @@ class CartMessenger
 
 			$hzl = new \Hubzero\Log\Writer(
 				new \Monolog\Logger(Config::get('application_env')),
-				\JDispatcher::getInstance()
+				\App::get('dispatcher')
 			);
 			$hzl->useFiles($this->logFile);
 
@@ -384,10 +384,6 @@ class CartMessenger
 	{
 		$params = Component::params(Request::getVar('option'));
 
-		// Get message plugin
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-
 		// "from" info
 		$from = array();
 
@@ -427,6 +423,6 @@ class CartMessenger
 		}
 
 		// Send emails
-		Event::trigger('onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
+		Event::trigger('xmessage.onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
 	}
 }
