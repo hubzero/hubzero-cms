@@ -42,21 +42,23 @@ $this->css();
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<ul id="page_options" class="pluginOptions">
-	<li>
-		<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
-			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
-		</a>
-	</li>
-</ul>
+<?php if (User::authorise('core.create', 'com_projects')) { ?>
+	<ul id="page_options" class="pluginOptions">
+		<li>
+			<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
+			</a>
+		</li>
+	</ul>
+<?php } ?>
 
 <?php 
 // Output the submenu view
 $view = new \Hubzero\Plugin\View(array(
-	'folder' => 'groups',
+	'folder'  => 'groups',
 	'element' => 'projects',
-	'name'   => 'partials',
-	'layout' => 'submenu'
+	'name'    => 'partials',
+	'layout'  => 'submenu'
 ));
 
 // Pass Variables through to the view

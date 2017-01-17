@@ -60,9 +60,10 @@ switch ($this->which)
 			$i = 0;
 			foreach ($this->rows as $row)
 			{
-				$role = $row->access('manager')
-					? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER')
-					: Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR');
+				$role = $row->access('member')
+					? ($row->access('manager') ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR'))
+					: Lang::txt('PLG_GROUPS_PROJECTS_STATUS_NOTMEMBER');
+
 				$role = $row->access('readonly')
 					? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_REVIEWER')
 					: $role;
@@ -73,15 +74,28 @@ switch ($this->which)
 				?>
 				<tr class="mline">
 					<td class="th_image">
-						<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
-							<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>"  class="project-image" />
-						</a> <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?>
+						<?php if ($row->access('member') || $row->access('readonly')) { ?>
+							<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
+								<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>" class="project-image" />
+							</a>
+						<?php } else { ?>
+							<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>" class="project-image" />
+						<?php } ?>
+						<?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?>
+							<span class="s-new"><?php echo $row->get('newactivity'); ?></span>
+						<?php } ?>
 					</td>
 					<td class="th_privacy">
 						<?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ; } ?>
 					</td>
 					<td class="th_title">
-						<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
+						<?php if ($row->access('member') || $row->access('readonly')) { ?>
+							<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
+								<?php echo $this->escape($row->get('title')); ?>
+							</a>
+						<?php } else { ?>
+							<?php echo $this->escape($row->get('title')); ?>
+						<?php } ?>
 						<?php if ($this->which != 'owned') { ?>
 							<span class="block"><?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
 						<?php } ?>
