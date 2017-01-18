@@ -61,6 +61,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	private $_profile = array();
 
 	/**
+	 * Handlers instances container
+	 *
+	 * @var  array
+	 */
+	protected static $handlers = array();
+
+	/**
 	 *  Constructor
 	 *
 	 * @param   mixes   $raw      Raw data
@@ -105,11 +112,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			// Map profile data
 			$this->_mapEntryData();
 
-			// Map tags
-			$this->_mapTagsData();
-
-			// Map groups
-			$this->_mapGroupsData();
+			// Map extras
+			$this->_mapExtraData();
 		}
 		catch (Exception $e)
 		{
@@ -168,13 +172,39 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			}
 		}
 
+		$keys = array();
+		if ($this->_mode == 'PATCH')
+		{
+			foreach ($this->_profile as $k => $p)
+			{
+				if (!$p)
+				{
+					continue;
+				}
+
+				if (is_array($p) && empty($p))
+				{
+					continue;
+				}
+
+				$keys[] = $k;
+			}
+		}
+
 		// Validate profile data
-		$fields = \Components\Members\Models\Profile\Field::all()
+		$f = \Components\Members\Models\Profile\Field::all()
 			->including(['options', function ($option){
 				$option
 					->select('*');
 			}])
-			->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN);
+
+		if (!empty($keys))
+		{
+			$f->whereIn('name', $keys);
+		}
+
+		$fields = $f
 			->ordered()
 			->rows();
 
@@ -204,7 +234,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// Are we running in dry run mode?
 		if ($dryRun || count($this->record->errors) > 0)
 		{
-			//$this->record->entry = $this->record->entry->toObject();
 			$entry = $this->record->entry->toArray();
 
 			$this->record->entry = new stdClass;
@@ -228,11 +257,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			// Save profile
 			$this->_saveEntryData();
 
-			// Save tags
-			$this->_saveTagsData();
-
-			// Save groups
-			$this->_saveGroupsData();
+			// Save extras
+			$this->_saveExtraData();
 		}
 		catch (Exception $e)
 		{
@@ -307,7 +333,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
 			// These two need some extra loving and care, so we skip them for now...
-			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber' || $key == 'groups')
+			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber' || $this->hasHandler($key))
 			{
 				continue;
 			}
@@ -615,137 +641,77 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	}
 
 	/**
-	 * Map Tags
+	 * Map extra data
 	 *
 	 * @return  void
 	 */
-	private function _mapTagsData()
+	private function _mapExtraData()
 	{
-		if (isset($this->raw->interests))
+		foreach ($this->handlers() as $handler)
 		{
-			$this->record->tags = $this->_multiValueField($this->raw->interests);
-		}
-	}
+			$this->record = $handler->bind($this->raw, $this->record, $this->_mode);
 
-	/**
-	 * Save tags
-	 *
-	 * @return  void
-	 */
-	private function _saveTagsData()
-	{
-		if ($this->_mode == 'PATCH' && !$this->record->tags)
-		{
-			return;
-		}
-
-		// save tags
-		$tags = new \Components\Members\Models\Tags($this->record->entry->get('id'));
-		$tags->setTags($this->record->tags, User::get('id'));
-	}
-
-	/**
-	 * Map groups
-	 *
-	 * @return  void
-	 */
-	private function _mapGroupsData()
-	{
-		if (isset($this->raw->groups) && $this->raw->groups != '')
-		{
-			$this->record->groups = (array)$this->_multiValueField($this->raw->groups);
-
-			foreach ($this->record->groups as $i => $gid)
+			foreach ($handler->getErrors() as $error)
 			{
-				$gid = trim($gid, '"');
-				$gid = trim($gid, "'");
+				array_push($this->record->notices, $error);
+			}
+		}
+	}
 
-				$this->record->groups[$i] = $gid;
+	/**
+	 * Save extra data
+	 *
+	 * @return  void
+	 */
+	private function _saveExtraData()
+	{
+		foreach ($this->handlers() as $handler)
+		{
+			$this->record = $handler->store($this->raw, $this->record, $this->_mode);
 
-				$group = \Hubzero\User\Group::getInstance($gid);
-				if (!$group || !$group->get('gidNumber'))
+			foreach ($handler->getErrors() as $error)
+			{
+				array_push($this->record->notices, $error);
+			}
+		}
+	}
+
+	/**
+	 * Return a list of all available processors.
+	 *
+	 * @return  array
+	 */
+	public function handlers()
+	{
+		foreach (glob(__DIR__ . DIRECTORY_SEPARATOR . 'handler' . DIRECTORY_SEPARATOR . '*.php') as $path)
+		{
+			$type = basename($path, '.php');
+
+			if (!isset(self::$handlers[$type]))
+			{
+				$class = __NAMESPACE__ . '\\Handler\\' . ucfirst($type);
+
+				if (!class_exists($class))
 				{
-					array_push($this->record->notices, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
-					continue;
+					include_once $path;
 				}
+
+				self::$handlers[$type] = new $class;
 			}
 		}
+
+		return self::$handlers;
 	}
 
 	/**
-	 * Save groups
+	 * Is there a handler for this type?
 	 *
-	 * @return  void
+	 * @param   string  $type
+	 * @return  bool
 	 */
-	private function _saveGroupsData()
+	public function hasHandler($type)
 	{
-		if (!isset($this->record->groups))
-		{
-			return;
-		}
-
-		if ($this->_mode == 'PATCH' && !$this->record->groups)
-		{
-			return;
-		}
-
-		$id = $this->record->entry->get('id');
-
-		// Get all the user's current groups
-		$existing = \Hubzero\User\Helper::getGroups($id);
-		$gids = array();
-		if ($existing)
-		{
-			foreach ($existing as $e)
-			{
-				$gids[] = $e->gidNumber;
-			}
-		}
-
-		// Add user to specified groups
-		$added = array();
-		foreach ($this->record->groups as $gid)
-		{
-			$group = \Hubzero\User\Group::getInstance($gid);
-			if (!$group || !$group->get('gidNumber'))
-			{
-				array_push($this->record->notices, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
-				continue;
-			}
-
-			// Track groups added to
-			$added[] = $group->get('gidNumber');
-
-			// No need to add if already in the group
-			if (in_array($group->get('gidNumber'), $gids))
-			{
-				continue;
-			}
-
-			$group->add('members', array($id));
-			$group->update();
-		}
-
-		// Remove user from all old groups that weren't in the new list
-		foreach ($gids as $gid)
-		{
-			if (in_array($gid, $added))
-			{
-				continue;
-			}
-
-			$group = \Hubzero\User\Group::getInstance($gid);
-			if (!$group || !$group->get('gidNumber'))
-			{
-				continue;
-			}
-
-			$group->remove('members', array($id));
-			$group->remove('managers', array($id));
-			$group->remove('invitees', array($id));
-			$group->remove('applicants', array($id));
-			$group->update();
-		}
+		return isset(self::$handlers[$type]);
 	}
 
 	/**
