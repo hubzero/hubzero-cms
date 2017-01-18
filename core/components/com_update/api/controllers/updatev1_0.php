@@ -41,7 +41,7 @@ use Lang;
 
 
 /**
- * API controller class for blog entries
+ * API controller class for internal CMS updates
  */
 class Updatev1_0 extends ApiController
 {
