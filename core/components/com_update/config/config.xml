@@ -37,4 +37,9 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="git_repository_source" type="text" menu="hide" default="" label="COM_UPDATE_SYSTEM_GIT_REPOSITORY_UPSTREAM_LABEL" description="COM_UPDATE_SYSTEM_GIT_REPOSITORY_UPSTREAM_DESC" size="50" />
 		<field name="git_auto_push_ref" type="text" menu="hide" default="" label="COM_UPDATE_SYSTEM_GIT_AUTO_PUSH_REF_LABEL" description="COM_UPDATE_SYSTEM_GIT_AUTO_PUSH_REF_DESC" size="50" />
 	</fieldset>
+	<fieldset name="github">
+		<field name="github_branch" type="text" menu="hide" default="" label="COM_UPDATE_BRANCH_LABEL" description="COM_UPDATE_BRANCH_DESC" size="50" />
+		<field name="github_secret" type="text" menu="hide" default="" label="COM_UPDATE_GIT_SECRET_LABEL" description="COM_UPDATE_GIT_SECRET_DESC" size="50" />
+		<field name="update_script_path" type="text" menu="hide" default="/var/www/hub/githookpullscript.sh" label="COM_UPDATE_UPDATE_SCRIPT_PATH_LABEL" description="COM_UPDATE_UPDATE_SCRIPT_PATH_DESC" size="50" />
+	</fieldset>
 </config>
