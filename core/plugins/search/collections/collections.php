@@ -34,17 +34,17 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Search groups
+ * Search Collections
  */
 class plgSearchCollections extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -69,21 +69,22 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				$weight AS `weight`,
 				p.created AS `date`,
 				'Collections' AS `section`
-			FROM #__collections_posts AS p
-			INNER JOIN #__collections AS c ON c.id=p.collection_id
-			INNER JOIN #__collections_items AS i ON p.item_id=i.id
+			FROM `#__collections_posts` AS p
+			INNER JOIN `#__collections` AS c ON c.id=p.collection_id
+			INNER JOIN `#__collections_items` AS i ON p.item_id=i.id
 			WHERE
 				i.state=1 AND i.access=0 AND c.state=1 AND c.access=0 AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));
 	}
+
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
+	 * @param   mixed   $type 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onGetTypes($type = null)
 	{
@@ -103,11 +104,11 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * onIndex 
 	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * @param   string   $type
+	 * @param   integer  $id 
+	 * @param   boolean  $run 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -122,11 +123,11 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__collections WHERE id={$id};";
+				$sql = "SELECT * FROM `#__collections` WHERE id={$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Get the name of the author
-				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
 				$author = $db->setQuery($sql1)->query()->loadResult();
 
 				// Get any tags
@@ -143,7 +144,7 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 
 				if ($row->object_type == 'member')
 				{
-					$path = '/members/collections/'. $row->alias;
+					$path = '/members/' . $row->object_id . '/collections/'. $row->alias;
 				}
 				elseif ($row->object_type == 'group')
 				{
@@ -209,7 +210,6 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				$record->access_level = $access_level;
 				$record->owner = $owner;
 				$record->owner_type = $owner_type;
-				ddie($record);
 
 				// Return the formatted record
 				return $record;
@@ -217,7 +217,7 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__blog_entries;";
+				$sql = "SELECT id FROM `#__collections`;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}

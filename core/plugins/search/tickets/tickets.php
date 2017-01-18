@@ -40,9 +40,9 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
+	 * @param   mixed   $type 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onGetTypes($type = null)
 	{
@@ -62,11 +62,11 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 	/**
 	 * onIndex 
 	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * @param   string   $type
+	 * @param   integer  $id 
+	 * @param   boolean  $run 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -81,13 +81,21 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__support_tickets WHERE id={$id};";
+				$sql = "SELECT * FROM `#__support_tickets` WHERE id={$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
-				ddie($row);
 
 				// Get the name of the author
-				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$sql1 = "SELECT name FROM `#__users` WHERE username={$row->login};";
 				$author = $db->setQuery($sql1)->query()->loadResult();
+				if (!$author)
+				{
+					$sql1 = "SELECT name FROM `#__users` WHERE email={$row->email};";
+					$author = $db->setQuery($sql1)->query()->loadResult();
+				}
+				if (!$author)
+				{
+					$author = $row->name;
+				}
 
 				// Get any tags
 				$sql2 = "SELECT tag 
@@ -98,66 +106,19 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 				$tags = $db->setQuery($sql2)->query()->loadColumn();
 
 				// Determine the path
-				$year = Date::of(strtotime($row->publish_up))->toLocal('Y');
-				$month = Date::of(strtotime($row->publish_up))->toLocal('m');
-				$alias = $row->alias;
+				$path = '/support/ticket/' . $row->id;
 
-				if ($row->scope == 'site')
-				{
-					$path = '/blog/' . $year . '/' . $month . '/' . $alias;
-				}
-				elseif ($row->scope == 'member')
-				{
-					$path = '/members/'. $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
-				}
-				elseif ($row->scope == 'group')
-				{
-					$group = Group::getInstance($row->scope_id);
-
-					// Make sure group is valid.
-					if (is_object($group))
-					{
-						$cn = $group->get('cn');
-						$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
-					}
-					else
-					{
-						$path = '';
-					}
-				}
-
-				// Public condition
-				if ($row->state == 1 && $row->access == 1)
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
-				}
 				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
+				$access_level = 'private';
 
-				if ($row->scope != 'group')
-				{
-					$owner_type = 'user';
-					$owner = $row->created_by;
-				}
-				else
-				{
-					$owner_type = 'group';
-					$owner = $row->scope_id;
-				}
+				$owner_type = 'user';
+				$owner = $row->login;
 
 				// Get the title
-				$title = $row->title;
+				$title = $row->summary;
 
 				// Build the description, clean up text
-				$content = preg_replace('/<[^>]*>/', ' ', $row->content);
+				$content = preg_replace('/<[^>]*>/', ' ', $row->report);
 				$content = preg_replace('/ {2,}/', ' ', $content);
 				$description = \Hubzero\Utility\Sanitize::stripAll($content);
 
@@ -180,7 +141,7 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__blog_entries;";
+				$sql = "SELECT id FROM `#__support_tickets`;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
