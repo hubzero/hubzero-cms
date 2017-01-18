@@ -62,7 +62,7 @@ $formatting->set('scope', $this->book->get('scope'))
 $authors = array();
 foreach ($this->page->authors()->rows() as $auth)
 {
-	$authors[] = $auth->user()->get('username');
+	$authors[] = $auth->user->get('username');
 }
 $authors = implode(', ', $authors);
 ?>
