@@ -120,7 +120,17 @@ $this->css('formbuilder.css')
 </form>
 
 <script type="text/javascript">
-	var fb = null;
+	var fb = null,
+		accesses = [
+			<?php
+			$levels = array();
+			foreach (Html::access('assetgroups') as $level)
+			{
+				$levels[] = '{"value":' . $level->value . ',"text":"' . $this->escape($level->text) . '"}';
+			}
+			echo implode(",\n", $levels);
+			?>
+		];
 
 	jQuery(document).ready(function($){
 		fb = new Formbuilder({
@@ -129,7 +139,6 @@ $this->css('formbuilder.css')
 		});
 
 		fb.on('save', function(payload){
-			//console.log(payload);
 			$('#profile-schema').val(payload);
 		});
 	});
