@@ -353,6 +353,17 @@ class Import extends Base
 			'group_cn',
 			'group_membership',
 		),
+		'projects' => array(
+			'project',
+			'projects',
+			'pid',
+			'pids',
+			'pidNumber',
+			'pidNumbers',
+			'project_alias',
+			'project_aliases',
+			'project_membership',
+		),
 	);
 
 	/**

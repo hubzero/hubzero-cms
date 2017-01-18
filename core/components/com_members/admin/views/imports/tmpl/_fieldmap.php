@@ -73,6 +73,7 @@ if ($this->import->get('id')) { ?>
 								<option value="loginShell" <?php if ($mapping['field'] == 'loginShell') { echo 'selected="selected"'; } ?>>loginShell</option>
 								<option value="ftpShell" <?php if ($mapping['field'] == 'ftpShell') { echo 'selected="selected"'; } ?>>ftpShell</option>
 								<option value="groups" <?php if ($mapping['field'] == 'groups') { echo 'selected="selected"'; } ?>>groups</option>
+								<option value="projects" <?php if ($mapping['field'] == 'projects') { echo 'selected="selected"'; } ?>>projects</option>
 								<option value="access" <?php if ($mapping['field'] == 'access') { echo 'selected="selected"'; } ?>>access</option>
 							</optgroup>
 							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_REGISTER'); ?>">
