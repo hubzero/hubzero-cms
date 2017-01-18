@@ -347,6 +347,6 @@ class Oauth
 		]);
 
 		$account = json_decode($this->http->execute());
-		return $account->data;
+		return $account;
 	}
 }
