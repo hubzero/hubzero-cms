@@ -34,20 +34,16 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Short description for 'plgSearchWishlists'
- *
- * Long description (if any) ...
+ * Plugin class for Wishlists
  */
 class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Short description for 'onSearch'
+	 * Basic search
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $request Parameter description (if any) ...
-	 * @param      object &$results Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $request
+	 * @param   object  &$results
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results)
 	{
@@ -74,14 +70,14 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 				concat(wl.title) AS section,
 				CASE
 				WHEN wli.anonymous THEN NULL
-				ELSE (SELECT name FROM #__users ju WHERE ju.id = wli.proposed_by)
+				ELSE (SELECT name FROM `#__users` ju WHERE ju.id = wli.proposed_by)
 				END AS contributors,
 				CASE
 				WHEN wli.anonymous THEN NULL
 				ELSE wli.proposed_by
 				END AS contributor_ids
-			FROM #__wishlist_item wli
-			INNER JOIN #__wishlist wl
+			FROM `#__wishlist_item` wli
+			INNER JOIN `#__wishlist` wl
 				ON wl.id = wli.wishlist AND wl.public = 1
 			WHERE
 				NOT wli.private AND $weight > 0".
@@ -102,9 +98,9 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
+	 * @param   mixed   $type 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onGetTypes($type = null)
 	{
@@ -124,11 +120,11 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 	/**
 	 * onIndex 
 	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * @param   string   $type
+	 * @param   integer  $id 
+	 * @param   boolean  $run 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -143,11 +139,11 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__wishlist WHERE id={$id};";
+				$sql = "SELECT * FROM `#__wishlist` WHERE id={$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Get the name of the author
-				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
 				$author = $db->setQuery($sql1)->query()->loadResult();
 
 				// Get any tags
@@ -159,43 +155,12 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 				$tags = $db->setQuery($sql2)->query()->loadColumn();
 
 				// Determine the path
-				$year = Date::of(strtotime($row->publish_up))->toLocal('Y');
-				$month = Date::of(strtotime($row->publish_up))->toLocal('m');
-				$alias = $row->alias;
-
-				if ($row->scope == 'site')
-				{
-					$path = '/blog/' . $year . '/' . $month . '/' . $alias;
-				}
-				elseif ($row->scope == 'member')
-				{
-					$path = '/members/'. $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
-				}
-				elseif ($row->scope == 'group')
-				{
-					$group = Group::getInstance($row->scope_id);
-
-					// Make sure group is valid.
-					if (is_object($group))
-					{
-						$cn = $group->get('cn');
-						$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
-					}
-					else
-					{
-						$path = '';
-					}
-				}
+				$path = '/wishlist/' . $row->category . '/' . $row->referenceid; // . '/wish/' . $row->id;
 
 				// Public condition
-				if ($row->state == 1 && $row->access == 1)
+				if ($row->public == 1)
 				{
 					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
 				}
 				// Default private
 				else
@@ -203,37 +168,35 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 					$access_level = 'private';
 				}
 
-				if ($row->scope != 'group')
+				$owner_type = 'user';
+				$owner = $row->created_by;
+
+				if ($row->category && $row->referenceid > 0)
 				{
-					$owner_type = 'user';
-					$owner = $row->created_by;
-				}
-				else
-				{
-					$owner_type = 'group';
-					$owner = $row->scope_id;
+					$owner_type = $row->category;
+					$owner = $row->referenceid;
 				}
 
 				// Get the title
 				$title = $row->title;
 
 				// Build the description, clean up text
-				$content = preg_replace('/<[^>]*>/', ' ', $row->content);
+				$content = preg_replace('/<[^>]*>/', ' ', $row->description);
 				$content = preg_replace('/ {2,}/', ' ', $content);
 				$description = \Hubzero\Utility\Sanitize::stripAll($content);
 
 				// Create a record object
 				$record = new \stdClass;
-				$record->id = $type . '-' . $id;
-				$record->hubtype = $type;
-				$record->title = $title;
-				$record->description = $description;
-				$record->author = array($author);
-				$record->tags = $tags;
-				$record->path = $path;
+				$record->id           = $type . '-' . $id;
+				$record->hubtype      = $type;
+				$record->title        = $title;
+				$record->description  = $description;
+				$record->author       = array($author);
+				$record->tags         = $tags;
+				$record->path         = $path;
 				$record->access_level = $access_level;
-				$record->owner = $owner;
-				$record->owner_type = $owner_type;
+				$record->owner        = $owner;
+				$record->owner_type   = $owner_type;
 
 				// Return the formatted record
 				return $record;
@@ -241,7 +204,7 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__blog_entries;";
+				$sql = "SELECT id FROM `#__wishlist`;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
