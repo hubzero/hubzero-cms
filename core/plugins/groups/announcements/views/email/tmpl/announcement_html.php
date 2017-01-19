@@ -118,7 +118,7 @@ if ($this->announcement->priority == 1)
 						<tbody>
 							<tr>
 								<td style="text-align: left; padding: 20px;" align="left">
-									<?php echo $this->announcement->content; ?>
+									<?php echo $this->announcement->get('content'); ?>
 								</td>
 							</tr>
 						</tbody>
