@@ -80,7 +80,7 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php if ($this->authorized == 'manager') : ?>
 			<dd class="entry-author">
 				<?php
-				$profile = $this->announcement->creator();
+				$profile = $this->announcement->creator;
 				echo $this->escape($profile->get('name', Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_UNKNOWN')));
 				?>
 			</dd>
