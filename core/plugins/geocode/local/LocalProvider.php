@@ -384,6 +384,38 @@ class LocalProvider extends AbstractProvider implements ProviderInterface
 	}
 
 	/**
+	 * Get the continent for a country based on name or code
+	 *
+	 * @param  string $address
+	 * @return string
+	 */
+	protected function _getContinent($address)
+	{
+		$address = trim($address);
+
+		if ($address)
+		{
+			$key = 'name';
+
+			if (strlen($address) == 2)
+			{
+				$address = strtoupper($address);
+				$key = 'code';
+			}
+
+			foreach (self::$countries as $country)
+			{
+				if ($country[$key] == $address)
+				{
+					return $country['continent'];
+				}
+			}
+		}
+
+		return $address;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function getReversedData(array $coordinates)
