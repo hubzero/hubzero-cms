@@ -75,4 +75,3 @@ class plgGeocodeLocal extends \Hubzero\Plugin\Plugin
 		);
 	}
 }
-
