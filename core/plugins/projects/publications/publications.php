@@ -2066,7 +2066,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Contact info is required for repositories
-		if ($pub->config()->get('repository'))
+		if ($pub->config()->get('repository') && $this->_task != 'revert')
 		{
 			$contact = Request::getVar('contact', array(), 'post');
 
