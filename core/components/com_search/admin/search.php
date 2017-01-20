@@ -52,6 +52,7 @@ if ($engine != 'basic' && $engine != 'hubgraph')
 	if ($controller == null)
 	{
 		$controllerName = \Component::params('com_search')->get('engine', 'basic');
+		$controllerName = ($controllerName == 'hubgraph' ? 'basic' : $controllerName);
 	}
 	else
 	{
