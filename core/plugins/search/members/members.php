@@ -36,73 +36,7 @@ defined('_HZEXEC_') or die();
 use Components\Members\Models\Member;
 
 require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
-/**
- * Short description for 'ContributionSorter'
- *
- * Long description (if any) ...
- */
-class ContributionSorter
-{
-	/**
-	 * Short description for 'sort'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public static function sort($a, $b)
-	{
-		$sec_diff = strcmp($a->get_section(), $b->get_section());
-		if ($sec_diff < 0)
-		{
-			return -1;
-		}
-		if ($sec_diff > 0)
-		{
-			return 1;
-		}
-		$a_ord = $a->get('ordering');
-		$b_ord = $b->get('ordering');
-		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
-	}
-
-	/**
-	 * Short description for 'sort_weight'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public static function sort_weight($a, $b)
-	{
-		$aw = $a->get_weight();
-		$bw = $b->get_weight();
-		if ($aw == $bw)
-		{
-			return 0;
-		}
-		return $aw > $bw ? -1 : 1;
-	}
-
-	/**
-	 * Short description for 'sort_title'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
-	 */
-	public static function sort_title($a, $b)
-	{
-		return strcmp($a->get_title(), $b->get_title());
-	}
-}
+require_once __DIR__ . DS . 'contributionsorter.php';
 
 /**
  * Search members
@@ -112,9 +46,9 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
+	 * @param   mixed   $type 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onGetTypes($type = null)
 	{
@@ -134,11 +68,11 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * onIndex 
 	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * @param   string   $type
+	 * @param   integer  $id 
+	 * @param   boolean  $run 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -153,14 +87,14 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__users WHERE id={$id};";
+				$sql = "SELECT * FROM `#__users` WHERE id={$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Determine the path
 				$path = '/members/' . $id;
 
 				// Public condition
-				if ($row->approved != 0 && $row->access == 1)
+				if ($row->block != 0 && $row->approved != 0 && $row->access == 1)
 				{
 					$access_level = 'public';
 				}
@@ -218,7 +152,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__users;";
+				$sql = "SELECT id FROM `#__users`;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
@@ -228,10 +162,10 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -249,25 +183,6 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 			$addtl_where[] = "(u.name NOT LIKE '%$forb%' AND p.profile_value NOT LIKE '%$forb%')";
 		}
 
-		/*$results->add(new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
-				p.uidNumber AS id,
-				p.name AS title,
-				coalesce(b.bio, '') AS description,
-				concat('index.php?option=com_members&id=', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
-				$weight AS weight,
-				NULL AS date,
-				'Members' AS section,
-				CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
-			FROM #__xprofiles p
-			LEFT JOIN #__xprofiles_bio b
-				ON b.uidNumber = p.uidNumber
-			WHERE
-				public AND $weight > 0" .
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-			" ORDER BY $weight DESC"
-		));*/
-
 		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				u.id,
@@ -282,6 +197,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 			LEFT JOIN `#__user_profiles` AS p
 				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
+				u.block=0 AND u.approved>0 AND
 				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
@@ -291,9 +207,9 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  YSearchModelRequest
-	 * @param      object &$results YSearchModelResultSet
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @return  void
 	 */
 	public static function onSearchCustom($request, &$results)
 	{
@@ -316,21 +232,6 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 			$addtl_where[] = "(u.name NOT LIKE '%$forb%')";
 		}
 
-		/*$sql = new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
-				p.uidNumber AS id,
-				p.name AS title,
-				coalesce(b.bio, '') AS description,
-				concat('index.php?option=com_members&id=', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
-				NULL AS date,
-				'Members' AS section,
-				CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
-			FROM #__xprofiles p
-			LEFT JOIN #__xprofiles_bio b
-				ON b.uidNumber = p.uidNumber
-			WHERE
-				public AND " . join(' AND ', $addtl_where)
-		);*/
 		$sql = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				u.id,
@@ -344,6 +245,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 			LEFT JOIN `#__user_profiles` AS p
 				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
+				u.block=0 AND u.approved>0 AND
 				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND " . join(' AND ', $addtl_where)
 		);
 		$assoc = $sql->to_associative();
@@ -475,8 +377,8 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	 * Generate an <img> tag with the user's picture, if set
 	 * Otherwise, use default image
 	 *
-	 * @param      object $res YSearchResult
-	 * @return     string
+	 * @param   object  $res  \Components\Search\Models\Basic\Result
+	 * @return  string
 	 */
 	public static function onBeforeSearchRenderMembers($res)
 	{
