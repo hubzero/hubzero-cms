@@ -618,10 +618,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->model   = $this->model;
-		$view->option  = $this->_option;
-		$view->files   = $files;
-		$view->msg     = null;
+		$view->model  = $this->model;
+		$view->option = $this->_option;
+		$view->files  = $files;
+		$view->msg    = null;
 
 		if ($error)
 		{
