@@ -178,7 +178,7 @@ class ConfigHelper
 		$text = preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
 		$text = preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
 		$matches = array();
-		preg_match_all('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U',$text, $matches);
+		preg_match_all('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', $text, $matches);
 
 		// Copy the original string
 		$path = $text;

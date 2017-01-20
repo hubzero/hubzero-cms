@@ -88,7 +88,7 @@ class HubType extends Relational
 
 		$classpath = $this->get('class_path');
 
-		if (strpos($classpath, 'Tables') === FALSE)
+		if (strpos($classpath, 'Tables') === false)
 		{
 			$model = new $classpath;
 		}

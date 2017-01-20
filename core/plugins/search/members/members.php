@@ -390,4 +390,3 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 		return '<img src="' . $href . '" alt="' . htmlentities($res->get_title()) . '" title="' . htmlentities($res->get_title()) . '" />';
 	}
 }
-

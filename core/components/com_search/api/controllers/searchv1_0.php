@@ -246,7 +246,7 @@ class Searchv1_0 extends ApiController
 		$config = Component::params('com_search');
 		$query = new Query($config);
 
-		$terms = Request::getVar('terms','*:*');
+		$terms = Request::getVar('terms', '*:*');
 		$type  = Request::getVar('type', '');
 		$limit = 0;
 		$start = 0;
