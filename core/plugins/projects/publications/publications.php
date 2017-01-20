@@ -208,7 +208,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','curation');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'publications', 'curation');
 
 		// Actions
@@ -608,7 +608,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
 		// Set curation
 		$view->publication->setCuration();
@@ -1111,7 +1111,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					: $this->model->link('publications');
 
 		// Do we have a choice?
-		if (count($choices) <= 1 )
+		if (count($choices) <= 1)
 		{
 			App::redirect(Route::url($view->route . '&action=edit'));
 			return;
@@ -2275,7 +2275,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			case 4:
 				$this->_msg = $this->_task == 'revert'
 							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_REVERTED')
-							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED') ;
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED');
 				$action 	= $this->_task == 'revert'
 							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REVERTED')
 							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SAVED');
