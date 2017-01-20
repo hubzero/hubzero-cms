@@ -60,14 +60,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var	   array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array();
 
@@ -85,7 +85,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name'    => 'publications',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
-			'submenu' => NULL,
+			'submenu' => null,
 			'show'    => true,
 			'icon'    => 'f058'
 		);
@@ -491,7 +491,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			'layout' => 'editor',
 		));
 
-		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$view->publication = new \Components\Publications\Models\Publication( $pid, null, $vid );
 
 		if (!$view->publication->exists())
 		{
@@ -588,7 +588,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$view->publication = new \Components\Publications\Models\Publication( $pid, null, $vid );
 
 		if (!$view->publication->exists())
 		{
@@ -674,7 +674,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication
-		$publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$publication = new \Components\Publications\Models\Publication( $pid, null, $vid );
 
 		// Make sure the publication belongs to the project
 		if (!$publication->exists() || !$publication->belongsToProject($this->model->get('id')))
@@ -763,7 +763,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$next    = Request::getInt( 'next', 0 );
 		$json    = Request::getInt( 'json', 0 );
 		$move    = Request::getVar( 'move', '' ); // draft flow?
-		$back    = Request::getVar( 'backUrl', Request::getVar('HTTP_REFERER', NULL, 'server') );
+		$back    = Request::getVar( 'backUrl', Request::getVar('HTTP_REFERER', null, 'server') );
 		$new	 = false;
 		$props   = Request::getVar( 'p', '' );
 		$parts   = explode('-', $props);
@@ -1466,7 +1466,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication
-		$pub = new \Components\Publications\Models\Publication(NULL, NULL, $row->publication_version_id);
+		$pub = new \Components\Publications\Models\Publication(null, null, $row->publication_version_id);
 		if (!$pub->exists())
 		{
 			$this->setError($error);
@@ -1522,7 +1522,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->project 	= $this->model;
 		$view->pub		= $pub;
 		$view->row		= $row;
-		$view->backUrl	= Request::getVar('HTTP_REFERER', NULL, 'server');
+		$view->backUrl	= Request::getVar('HTTP_REFERER', null, 'server');
 		$view->ajax		= Request::getInt( 'ajax', 0 );
 		$view->props	= $props;
 
@@ -1652,7 +1652,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$report 	 .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL') . ': ' . $l_url . "\r\n";
 				$report 	 .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_COMMENTS') . ': ' . $l_text ."\r\n";
 				$row->report 	= $report;
-				$row->referrer 	= Request::getVar('HTTP_REFERER', NULL, 'server');
+				$row->referrer 	= Request::getVar('HTTP_REFERER', null, 'server');
 				$row->type	 	= 0;
 				$row->severity	= 'normal';
 
@@ -2140,7 +2140,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pa = new \Components\Publications\Tables\Author( $this->_database );
 			$pa->saveSubmitter($pub->version->id, $submitter, $this->model->get('id'));
 
-			if ($this->_pubconfig->get('autoapprove') == 1 )
+			if ($this->_pubconfig->get('autoapprove') == 1)
 			{
 				$state = 1;
 			}
@@ -2148,9 +2148,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$apu = $this->_pubconfig->get('autoapproved_users');
 				$apu = explode(',', $apu);
-				$apu = array_map('trim',$apu);
+				$apu = array_map('trim', $apu);
 
-				if (in_array(User::get('username'),$apu))
+				if (in_array(User::get('username'), $apu))
 				{
 					// Set status to published
 					$state = 1;
