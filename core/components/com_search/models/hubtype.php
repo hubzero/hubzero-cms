@@ -27,7 +27,7 @@
  * @package   hubzero-cms
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since	 Class available since release 1.3.2
+ * @since     2.1.1
  */
 
 namespace Components\Search\Models;
@@ -37,70 +37,57 @@ use Hubzero\Utility\String;
 use Hubzero\Base\Object;
 
 /**
- * Hubs database model
+ * Database model for search hub types
  *
- * @uses \Hubzero\Database\Relational
+ * @uses  \Hubzero\Database\Relational
  */
 class HubType extends Relational
 {
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = 'search';
-	// table name jos_citations
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'id';
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $rules = array(
-		//'type'	=> 'notempty',
+		//'type'  => 'notempty',
 		//'title' => 'notempty'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var array
+	 * @var  array
 	 **/
-	public $always = array(
+	public $initiate = array(
 		'created_by',
 		'created'
 	);
 
 	/**
-	 * Defines a one to many relationship with authors
+	 * Get structure for a type
 	 *
-	 * @return $this
-	 * @since  1.3.2
-	 **/
-	/*public function relatedAuthors()
-	{
-		return $this->oneToMany('Author', 'cid', 'id')->order('ordering', 'ASC');
-	}
-	*/
-	public function created_by()
-	{
-		$this->set('created_by', User::get('id'));
-	}
-	public function created()
-	{
-		$this->set('created', \Date::of()->toSql());
-	}
+	 * @return  mixed  Iterable
+	 */
 	public function structure()
 	{
-		require_once(PATH_ROOT . DS . $this->get('file_path'));
+		require_once PATH_ROOT . DS . $this->get('file_path');
+
 		$classpath = $this->get('class_path');
+
 		if (strpos($classpath, 'Tables') === FALSE)
 		{
 			$model = new $classpath;
@@ -123,6 +110,7 @@ class HubType extends Relational
 		{
 			$modelStructure = $model->getFields();
 		}
+
 		return $modelStructure;
 	}
 }

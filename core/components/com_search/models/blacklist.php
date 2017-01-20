@@ -27,7 +27,7 @@
  * @package   hubzero-cms
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since	 Class available since release 1.3.2
+ * @since     2.1.1
  */
 
 namespace Components\Search\Models;
@@ -37,72 +37,49 @@ use Hubzero\Utility\String;
 use Hubzero\Base\Object;
 
 /**
- * Hubs database model
+ * Database model for search blacklist
  *
- * @uses \Hubzero\Database\Relational
+ * @uses  \Hubzero\Database\Relational
  */
 class Blacklist extends Relational
 {
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = 'search';
 
 	/**
 	 * The table name 
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $table = '#__search_blacklist';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'id';
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $rules = array(
-		'scope'	=> 'notempty',
-		'scope_id'	=> 'notempty',
-		'created_by' => 'notempty',
-		'created'
+		'doc_id' => 'notempty'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var array
+	 * @var  array
 	 **/
-	public $always = array(
+	public $initiate = array(
 		'created_by',
 		'created'
 	);
-
-	/**
-	 * Defines a one to many relationship with authors
-	 *
-	 * @return $this
-	 * @since  1.3.2
-	 **/
-	/*public function relatedAuthors()
-	{
-		return $this->oneToMany('Author', 'cid', 'id')->order('ordering', 'ASC');
-	}
-	*/
-	public function created_by()
-	{
-		$this->set('created_by', User::get('id'));
-	}
-	public function created()
-	{
-		$this->set('created', \Date::of()->toSql());
-	}
 }

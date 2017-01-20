@@ -32,32 +32,87 @@
 namespace Components\Search\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-use Exception;
+use Hubzero\Utility\Inflector;
+use Hubzero\Utility\String;
+use Hubzero\Search\Query;
+use Component;
 use stdClass;
 use Request;
-use Route;
-use Lang;
-
-use Hubzero\Search\Query;
-
+use Event;
+use User;
 
 /**
- * API controller class for blog entries
+ * API controller class for search
  */
 class Searchv1_0 extends ApiController
 {
+	/**
+	 * Display a list of entries
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /search/list
+	 * @apiParameter {
+	 * 		"name":          "type",
+	 * 		"description":   "Content type (groups, members, etc.)",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       10
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "start",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "terms",
+	 * 		"description":   "Terms to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       "*:*"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sortBy",
+	 * 		"description":   "Field to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "",
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sortDir",
+	 * 		"description":   "Direction to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "",
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "filters",
+	 * 		"description":   "Filters to apply to results.",
+	 * 		"type":          "array",
+	 * 		"required":      false,
+	 * 		"default":       "[]",
+	 * }
+	 * @return  void
+	 */
 	public function listTask()
 	{
 		$config = Component::params('com_search');
-		$query = new \Hubzero\Search\Query($config);
+		$query = new Query($config);
 
-		$terms = Request::getVar('terms', '*:*');
-		$limit = Request::getInt('limit', 10);
-		$start = Request::getInt('start', 0);
-		$sortBy = Request::getVar('sortBy', '');
+		$terms   = Request::getVar('terms', '*:*');
+		$limit   = Request::getInt('limit', 10);
+		$start   = Request::getInt('start', 0);
+		$sortBy  = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
-		$type = Request::getVar('type', '');
-
+		$type    = Request::getVar('type', '');
 		$filters = Request::getVar('filters', array());
 
 		// Apply the sorting
@@ -87,10 +142,11 @@ class Searchv1_0 extends ApiController
 		$results = $query->getResults();
 		$numFound = $query->getNumFound();
 
-		$highlightOptions = array('format' =>'<span class="highlight">\1</span>',
-															'html' => false,
-															'regex'  => "|%s|iu"
-														);
+		$highlightOptions = array(
+			'format' =>'<span class="highlight">\1</span>',
+			'html'   => false,
+			'regex'  => "|%s|iu"
+		);
 
 		foreach ($results as &$result)
 		{
@@ -104,7 +160,7 @@ class Searchv1_0 extends ApiController
 
 				if ($field != 'url')
 				{
-					$r = \Hubzero\Utility\String::highlight($r, $terms, $highlightOptions);
+					$r = String::highlight($r, $terms, $highlightOptions);
 				}
 
 				if ($field == 'description' || $field == 'fulltext' || $field == 'abstract')
@@ -118,7 +174,7 @@ class Searchv1_0 extends ApiController
 
 			$snippet = str_replace("\n", "", $snippet);
 			$snippet = str_replace("\r", "", $snippet);
-			$snippet  = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+			$snippet  = String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
 
 			$result['snippet'] = $snippet;
 		}
@@ -132,6 +188,20 @@ class Searchv1_0 extends ApiController
 		$this->send($response);
 	}
 
+	/**
+	 * Display a list of suggestions for a term
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /search/suggest
+	 * @apiParameter {
+	 * 		"name":          "terms",
+	 * 		"description":   "Terms to get suggestions for.",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @return  void
+	 */
 	public function suggestTask()
 	{
 		$terms = Request::getVar('terms', '');
@@ -147,15 +217,37 @@ class Searchv1_0 extends ApiController
 		$response = new stdClass;
 		$response->results = $suggest;
 		$response->success = true;
+
 		$this->send($response);
 	}
 
+	/**
+	 * Display a list of hub types for a term
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /search/getHubTypes
+	 * 		"name":          "type",
+	 * 		"description":   "Content type (groups, members, etc.)",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "terms",
+	 * 		"description":   "Terms to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       "*:*"
+	 * }
+	 * @return  void
+	 */
 	public function getHubTypesTask()
 	{
 		$config = Component::params('com_search');
-		$query = new \Hubzero\Search\Query($config);
+		$query = new Query($config);
+
 		$terms = Request::getVar('terms','*:*');
-		$type = Request::getVar('type', '');
+		$type  = Request::getVar('type', '');
 		$limit = 0;
 		$start = 0;
 
@@ -191,7 +283,7 @@ class Searchv1_0 extends ApiController
 			$total += $count;
 
 
-			$name = ucfirst(\Hubzero\Utility\Inflector::pluralize($name));
+			$name = ucfirst(Inflector::pluralize($name));
 			array_push($facets, array('type'=> $type, 'name' => $name,'count' => $count));
 		}
 
@@ -199,6 +291,7 @@ class Searchv1_0 extends ApiController
 		$response->results = json_encode($facets);
 		$response->total = $total;
 		$response->success = true;
+
 		$this->send($response);
 	}
 }
