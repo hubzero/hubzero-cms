@@ -1,4 +1,5 @@
 # The HUBzero® Platform for Scientific Collaboration
+[![Build Status](https://travis-ci.org/hubzero/hubzero-cms.svg?branch=2.1.0)](https://travis-ci.org/hubzero/hubzero-cms)
 
 ## What is HUBzero?
 
