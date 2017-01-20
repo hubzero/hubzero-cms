@@ -67,7 +67,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Event call after databases initialized
@@ -372,10 +372,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);
 
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases', 'selector');
 		if (!$ajax)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 		}
 
 		$view->option   = $this->_option;
@@ -621,7 +621,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->model   = $this->model;
 		$view->option  = $this->_option;
 		$view->files   = $files;
-		$view->msg     = NULL;
+		$view->msg     = null;
 
 		if ($error)
 		{
@@ -668,7 +668,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$path .= DS . $dir;
 		}
 
-		if (file_exists($path . DS . $file) && ($handle = fopen($path . '/' . $file, "r")) !== FALSE)
+		if (file_exists($path . DS . $file) && ($handle = fopen($path . '/' . $file, "r")) !== false)
 		{
 			$table = array();
 			$dd = array();
