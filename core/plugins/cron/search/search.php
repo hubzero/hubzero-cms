@@ -29,18 +29,19 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
 use Hubzero\Search\Query;
 use Hubzero\Search\Index;
 
 /**
- * Cron plugin for support tickets
+ * Cron plugin for Search indexing
  */
 class plgCronSearch extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a list of events
 	 *
-	 * @return	array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -50,8 +51,8 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 		$obj->plugin = $this->_name;
 		$obj->events = array(
 			array(
-				'name'	 => 'processQueue',
-				'label'	=> Lang::txt('PLG_CRON_SEARCH_PROCESS_QUEUE'),
+				'name'   => 'processQueue',
+				'label'  => Lang::txt('PLG_CRON_SEARCH_PROCESS_QUEUE'),
 				'params' => ''
 			)
 		);
@@ -64,12 +65,20 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 	 *
 	 * @museDescription  Processes the index queue
 	 *
-	 * @return  void
-	 **/
+	 * @return  bool
+	 */
 	public function processQueue()
 	{
-		require_once PATH_CORE . DS . 'components' . DS .'com_search' . DS . 'models' . DS . 'indexqueue.php';
-		require_once PATH_CORE . DS . 'components' . DS .'com_search' . DS . 'models' . DS . 'blacklist.php';
+		$config = Component::params('com_search');
+
+		// For now, we can only process the queue for Solr
+		if ($config->get('engine', 'basic') != 'solr')
+		{
+			return true;
+		}
+
+		require_once Component::path('com_search') . DS . 'models' . DS . 'indexqueue.php';
+		require_once Component::path('com_search') . DS . 'models' . DS . 'blacklist.php';
 
 		// Get the type needed to be indexed;
 		$items = \Components\Search\Models\QueueDB::all()
@@ -89,7 +98,7 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the blacklist
-		$sql = "SELECT doc_id FROM #__search_blacklist;";
+		$sql = "SELECT doc_id FROM `#__search_blacklist`;";
 		$db = App::get('db');
 		$db->setQuery($sql);
 		$blacklist = $db->query()->loadColumn();
@@ -101,25 +110,29 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 			{
 				$this->processRows($format[0], $item->action, $blacklist);
 
-				$timestamp = \Hubzero\Utility\Date::of()->toSql();
+				$timestamp = with(new \Hubzero\Utility\Date('now'))->toSql();
 				$item->set('modified', $timestamp);
 				$item->set('status', 1);
 			}
 			else
 			{
-				$item->set('status', '2');
+				$item->set('status', 2);
 			}
 
 			$item->save();
 		}
+
+		return true;
 	}
 
 	/**
 	 * processRows - Fires plugin events to facilitate indexing data 
 	 * 
-	 * @param mixed $item 
-	 * @access private
-	 * @return void
+	 * @param   mixed    $item
+	 * @param   string   $action
+	 * @param   array    $blacklist 
+	 * @access  private
+	 * @return  void
 	 */
 	private function processRows($item, $action, $blacklist)
 	{
