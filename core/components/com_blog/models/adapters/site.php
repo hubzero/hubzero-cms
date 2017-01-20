@@ -35,7 +35,7 @@ namespace Components\Blog\Models\Adapters;
 use Component;
 use Date;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once (__DIR__ . DS . 'base.php');
 
 /**
  * Adapter class for an entry link for the site-wide blog

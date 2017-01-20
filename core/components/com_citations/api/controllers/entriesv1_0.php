@@ -39,14 +39,14 @@ use Route;
 
 $base = dirname(dirname(__DIR__)) . DS . 'tables' . DS;
 
-require_once($base . 'citation.php');
-require_once($base . 'association.php');
-require_once($base . 'author.php');
-require_once($base . 'secondary.php');
-require_once($base . 'tags.php');
-require_once($base . 'type.php');
-require_once($base . 'sponsor.php');
-require_once($base . 'format.php');
+require_once ($base . 'citation.php');
+require_once ($base . 'association.php');
+require_once ($base . 'author.php');
+require_once ($base . 'secondary.php');
+require_once ($base . 'tags.php');
+require_once ($base . 'type.php');
+require_once ($base . 'sponsor.php');
+require_once ($base . 'format.php');
 
 /**
  * API controller class for Citations

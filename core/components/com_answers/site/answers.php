@@ -31,18 +31,17 @@
 
 namespace Components\Answers\Site;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
+require_once (dirname(__DIR__) . DS . 'models' . DS . 'question.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'questions'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'questions';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once (__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-

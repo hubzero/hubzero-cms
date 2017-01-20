@@ -37,7 +37,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Base\Object;
 
-require_once(__DIR__ . DS . 'link.php');
+require_once (__DIR__ . DS . 'link.php');
 
 /**
  * Hubs database model
@@ -130,7 +130,7 @@ class Citation extends Relational
 	 * @return  object
 	 */
 	//public function formatted($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
-	public function formatted($config = array('format' => 'apa'), $highlight = NULL)
+	public function formatted($config = array('format' => 'apa'), $highlight = null)
 	{
 		//get hub specific details
 		$hub_name = \Config::get('sitename');
@@ -681,7 +681,7 @@ class Citation extends Relational
 		if (isset($citation->isbn) && $citation->isbn != '')
 		{
 			// get the issn/isbn in db
-			$issn_isbn = $citation->isbn;;
+			$issn_isbn = $citation->isbn;
 
 			// check to see if we need to do any special processing to the issn/isbn before outputting
 			if (strstr($issn_isbn, "\r\n"))

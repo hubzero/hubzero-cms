@@ -77,7 +77,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// CREATE COUPON
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
+			include_once (JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
 			try
 			{
 				// Constructor take the coupon code
@@ -125,7 +125,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// CREATE NEW COURSE
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+			include_once (JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
 			$course = new Course();
 			$course->setName('Name of the course');
@@ -175,7 +175,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// UPDATE COURSE by recreating it
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
+			include_once (JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
 			$course = new Course();
 			$course->setName('Operations Management 104');
 			$course->setDescription('Operations Management 104 is some kind of test course for now...');
@@ -263,7 +263,7 @@ class Test extends ComponentController
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 		$curl_result = @curl_exec($ch);
@@ -307,7 +307,7 @@ class Test extends ComponentController
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 		$curl_result = @curl_exec($ch);
@@ -401,8 +401,8 @@ class Test extends ComponentController
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_VERBOSE, 0);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 			$curl_result = @curl_exec($ch);
@@ -431,4 +431,3 @@ class Test extends ComponentController
 		$this->view->display();
 	}
 }
-

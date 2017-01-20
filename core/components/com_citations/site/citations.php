@@ -34,21 +34,20 @@ namespace Components\Citations\Site;
 
 foreach (array('citation', 'association', 'author', 'secondary', 'tags', 'type', 'sponsor', 'format') as $inc)
 {
-	require_once(dirname(__DIR__) . DS . 'tables' . DS . $inc . '.php');
+	require_once (dirname(__DIR__) . DS . 'tables' . DS . $inc . '.php');
 }
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'download.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'download.php');
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'citations'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'citations';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once (__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

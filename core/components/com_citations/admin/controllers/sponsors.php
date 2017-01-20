@@ -183,4 +183,3 @@ class Sponsors extends AdminController
 		);
 	}
 }
-

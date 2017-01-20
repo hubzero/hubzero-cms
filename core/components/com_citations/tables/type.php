@@ -64,4 +64,3 @@ class Type extends \JTable
 		return $this->_db->loadAssocList();
 	}
 }
-

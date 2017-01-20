@@ -83,7 +83,7 @@ class Order extends ComponentController
 		$paymentGatewayProivder = $params->get('paymentProvider');
 
 		// Get the transaction ID variable name to pull from URL
-		require_once(dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+		require_once (dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 		$verificationVar = \PaymentDispatcher::getTransactionIdVerificationVarName($paymentGatewayProivder);
 
 		if ($verificationVar)
@@ -190,7 +190,7 @@ class Order extends ComponentController
 			// Get payment provider
 			$paymentGatewayProivder = $params->get('paymentProvider');
 
-			require_once(dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+			require_once (dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 			$verificationVar = \PaymentDispatcher::getTransactionIdVerificationVarName($paymentGatewayProivder);
 
 			// redirect to thank you page
@@ -231,7 +231,7 @@ class Order extends ComponentController
 		{
 			$paymentGatewayProivder = $params->get('paymentProvider');
 
-			require_once(dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+			require_once (dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 			$paymentDispatcher = new \PaymentDispatcher($paymentGatewayProivder);
 			$pay = $paymentDispatcher->getPaymentProvider();
 
@@ -251,7 +251,7 @@ class Order extends ComponentController
 		// test
 		else
 		{
-			require_once(dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+			require_once (dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 			$paymentDispatcher = new \PaymentDispatcher('DUMMY AUTO PAYMENT');
 			$pay = $paymentDispatcher->getPaymentProvider();
 		}

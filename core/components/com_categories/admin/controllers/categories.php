@@ -89,11 +89,11 @@ class CategoriesControllerCategories extends JControllerAdmin
 		}
 	}
 
-	/** Deletes and returns correctly.
- 	 *
- 	 * @return	void
- 	 * @since	2.5.12
- 	 */
+	/** Deletes and returns correctly.  
+	 *
+	 * @return	void
+	 * @since	2.5.12
+	 */
 	public function delete()
 	{
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));

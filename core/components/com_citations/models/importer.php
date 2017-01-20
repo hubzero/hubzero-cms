@@ -37,9 +37,9 @@ use Hubzero\Utility\Date;
 use Hubzero\Base\Object;
 use App;
 
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'citation.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'tags.php');
+include_once (dirname(__DIR__) . DS . 'tables' . DS . 'citation.php');
+include_once (dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
+include_once (dirname(__DIR__) . DS . 'tables' . DS . 'tags.php');
 
 /**
  * Citation importer

@@ -34,7 +34,7 @@ namespace Components\Blog\Models;
 
 use Components\Tags\Models\Cloud;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Blog Tagging class
@@ -48,4 +48,3 @@ class Tags extends Cloud
 	 */
 	protected $_scope = 'blog';
 }
-

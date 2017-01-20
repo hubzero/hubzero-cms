@@ -34,7 +34,7 @@ use Hubzero\Component\AdminController;
 use Components\Cart\Helpers\CartDownload;
 use Components\Storefront\Models\Warehouse;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**

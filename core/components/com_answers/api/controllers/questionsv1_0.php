@@ -41,7 +41,7 @@ use Route;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'question.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'question.php');
 
 /**
  * API controller class for Questions

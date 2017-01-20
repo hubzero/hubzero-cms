@@ -622,6 +622,17 @@ class Posts extends SiteController
 			Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts')
 		);
 	}
+	
+	public function shareTask(){
+
+		Event::trigger('system.logActivity', [
+                      'activity' => [
+                               'action'      => 'created',
+			       'scope'       => 'collections.posts.share'
+			]
+                ]);
+
+	}
 
 	/**
 	 * Save post reordering

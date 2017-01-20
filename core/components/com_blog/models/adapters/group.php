@@ -36,7 +36,7 @@ use Hubzero\User\Group as UserGroup;
 use Component;
 use Date;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once (__DIR__ . DS . 'base.php');
 
 /**
  * Adapter class for an entry link for the group blog

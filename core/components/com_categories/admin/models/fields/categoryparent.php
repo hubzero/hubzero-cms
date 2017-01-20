@@ -42,13 +42,13 @@ class JFormFieldCategoryParent extends JFormFieldList
 		// For categories the old category is the category id 0 for new category.
 		if ($this->element['parent'])
 		{
-			$oldCat = $jinput->get('id',0);
+			$oldCat = $jinput->get('id', 0);
 			$oldParent = $this->form->getValue($name);
 		}
 		else
 		// For items the old category is the category they are in when opened or 0 if new.
 		{
-			$thisItem = $jinput->get('id',0);
+			$thisItem = $jinput->get('id', 0);
 			$oldCat = $this->form->getValue($name);
 		}
 
@@ -117,7 +117,7 @@ class JFormFieldCategoryParent extends JFormFieldList
 				// To take save or create in a category you need to have create rights for that category
 				// unless the item is already in that category.
 				// Unset the option if the user isn't authorised for it. In this field assets are always categories.
-				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true )
+				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 				{
 					unset($options[$i]);
 				}

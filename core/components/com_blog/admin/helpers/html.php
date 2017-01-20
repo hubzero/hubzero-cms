@@ -72,4 +72,3 @@ class Html
 		return $out;
 	}
 }
-

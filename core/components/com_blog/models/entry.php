@@ -114,7 +114,7 @@ class Entry extends Relational
 	 *
 	 * @var  object
 	 */
-	public $params = NULL;
+	public $params = null;
 
 	/**
 	 * Scope adapter
@@ -154,7 +154,7 @@ class Entry extends Relational
 		if (strlen($alias) > 100)
 		{
 			$alias = substr($alias . ' ', 0, 100);
-			$alias = substr($alias, 0, strrpos($alias,' '));
+			$alias = substr($alias, 0, strrpos($alias, ' '));
 		}
 		$alias = str_replace(' ', '-', $alias);
 
@@ -393,10 +393,13 @@ class Entry extends Relational
 		{
 			switch ($this->get('state'))
 			{
-				case 1:  return 'published';   break;
-				case 2:  return 'trashed';     break;
+				case 1:  return 'published';
+				break;
+				case 2:  return 'trashed';
+				break;
 				case 0:
-				default: return 'unpublished'; break;
+				default: return 'unpublished';
+				break;
 			}
 		}
 
@@ -489,7 +492,7 @@ class Entry extends Relational
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id')));
 				}
 
-				include_once($path);
+				include_once ($path);
 			}
 
 			$this->adapter = with(new $cls($this->get('scope_id')))

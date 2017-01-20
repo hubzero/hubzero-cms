@@ -693,8 +693,8 @@ class Citations extends SiteController
 			return false;
 		}
 
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		require_once (PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once (PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Get connections to publications
 		foreach ($assocs as $entry)
@@ -1053,12 +1053,12 @@ class Citations extends SiteController
 		{
 			if (array_key_exists($ignore, $b))
 			{
-				$b[$ignore] = NULL;
+				$b[$ignore] = null;
 			}
 		}
 		if (array_key_exists('id', $b))
 		{
-			$b['id'] = NULL;
+			$b['id'] = null;
 		}
 		$values = array_values($b);
 		$e = true;

@@ -37,9 +37,9 @@ if (!\User::authorise('core.manage', 'com_blog'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
+require_once (dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
+require_once (__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+require_once (__DIR__ . DS . 'helpers' . DS . 'html.php');
 
 $scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'entries');
@@ -59,11 +59,10 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'entries';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once (__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

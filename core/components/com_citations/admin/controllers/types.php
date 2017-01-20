@@ -186,4 +186,3 @@ class Types extends AdminController
 		);
 	}
 }
-

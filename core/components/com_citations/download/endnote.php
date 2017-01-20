@@ -34,7 +34,7 @@ namespace Components\Citations\Download;
 
 use Components\Citations\Tables\Type;
 
-include_once(__DIR__ . DS . 'downloadable.php');
+include_once (__DIR__ . DS . 'downloadable.php');
 
 /**
  * Citations download class for Endnote format
@@ -66,7 +66,7 @@ class Endnote extends Downloadable
 		//get fields to not include for all citations
 		$config = \Component::params('com_citations');
 		$exclude = $config->get('citation_download_exclude', '');
-		if (strpos($exclude,",") !== false)
+		if (strpos($exclude, ",") !== false)
 		{
 			$exclude = str_replace(',', "\n", $exclude);
 		}
@@ -267,7 +267,7 @@ class Endnote extends Downloadable
 
 		$citation_endnote_tags = array();
 		$citation_badges_key = "";
-		foreach ($custom_tags  as $ct)
+		foreach ($custom_tags as $ct)
 		{
 			$citation_endnote_tags[] = explode("-", trim($ct));
 		}
@@ -290,4 +290,3 @@ class Endnote extends Downloadable
 		return $doc;
 	}
 }
-

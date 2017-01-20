@@ -141,6 +141,15 @@ $this->css()
 											<a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=collect'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 											</a>
+											        <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=share'); ?>">
+                                                                                                <span><?php echo Lang::txt('Share'); ?></span>
+                                                                                        </a>
+											<?php $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+											 <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo 'https://twitter.com/intent/tweet?hashtags=HUBzero&text=HUBzero&url='. $actual_link; ?>">
+                                                                                                <span><?php echo Lang::txt('Tweet'); ?></span>
+                                                                                        </a>
+
+
 									<?php } else { ?>
 											<a class="btn vote like tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>

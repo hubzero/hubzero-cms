@@ -34,10 +34,10 @@ use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Sku;
 use Components\Cart\Helpers\CartDownload;
 
-require_once('BaseAuditor.php');
+require_once ('BaseAuditor.php');
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
 
 class Software_Auditor extends BaseAuditor
 {
@@ -105,7 +105,7 @@ class Software_Auditor extends BaseAuditor
 					$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
 				}
 			}
-			return($this->getResponse());
+			return ($this->getResponse());
 		}
 
 		// Get product download limit
@@ -122,6 +122,6 @@ class Software_Auditor extends BaseAuditor
 				$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
 			}
 		}
-		return($this->getResponse());
+		return ($this->getResponse());
 	}
 }

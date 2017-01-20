@@ -32,8 +32,8 @@
 
 namespace Components\Citations\Helpers;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
+require_once (PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+require_once (PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
 
 use Components\Citations\Tables\Association;
 use Components\Citations\Tables\Type;
@@ -188,7 +188,7 @@ class Format
 	 * @param   boolean  $coins_only     Only output COINs?
 	 * @return  string   Formatted citation
 	 */
-	public function formatCitation($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
+	public function formatCitation($citation, $highlight = null, $include_coins = true, $config, $coins_only = false)
 	{
 		//get hub specific details
 		$hub_name = \Config::get('sitename');
@@ -923,7 +923,7 @@ class Format
 			$a = array();
 			foreach ($auths as $auth)
 			{
-				preg_match('/{{(.*?)}}/s',$auth, $matches);
+				preg_match('/{{(.*?)}}/s', $auth, $matches);
 				if (isset($matches[0]) && $matches[0]!='')
 				{
 					$matches[0] = preg_replace('/{{(.*?)}}/s', '\\1', $matches[0]);
@@ -999,8 +999,10 @@ class Format
 		{
 			switch ($row->type)
 			{
-				case 'phdthesis': $html .= ' (' . \Lang::txt('PhD Thesis') . ')'; break;
-				case 'mastersthesis': $html .= ' (' . \Lang::txt('Masters Thesis') . ')'; break;
+				case 'phdthesis': $html .= ' (' . \Lang::txt('PhD Thesis') . ')';
+				break;
+				case 'mastersthesis': $html .= ' (' . \Lang::txt('Masters Thesis') . ')';
+				break;
 				default: break;
 			}
 		}

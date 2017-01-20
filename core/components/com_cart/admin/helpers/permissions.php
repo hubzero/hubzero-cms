@@ -76,4 +76,3 @@ class Permissions
 		return $result;
 	}
 }
-

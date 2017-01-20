@@ -259,4 +259,3 @@ class Download extends \Hubzero\Component\SiteController
 		return;
 	}
 }
-

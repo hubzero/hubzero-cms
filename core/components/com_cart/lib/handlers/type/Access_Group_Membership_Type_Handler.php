@@ -59,7 +59,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 		try
 		{
 			// Get user ID for the cart
-			require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+			require_once (dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
 			$userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
 			// Get the user group ID to set the user to (from meta)

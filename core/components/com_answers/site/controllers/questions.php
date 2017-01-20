@@ -53,7 +53,7 @@ use Date;
 use User;
 use App;
 
-require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
+require_once (\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 
 /**
  * Answers controller class for questions
@@ -442,7 +442,7 @@ class Questions extends SiteController
 		// @TODO: Remove reference to members. Add getTags() to user?
 		if ($filters['area'] == 'interest')
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			require_once (PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 			// Get tags of interest
 			$mt = new \Components\Members\Models\Tags(User::get('id'));
@@ -454,7 +454,7 @@ class Questions extends SiteController
 		// @TODO: Remove reference to tools. Turn into an event call?
 		if ($filters['area'] == 'assigned')
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+			require_once (PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 			// What tools did this user contribute?
 			$db = App::get('db');
@@ -524,10 +524,13 @@ class Questions extends SiteController
 
 		switch ($filters['sortby'])
 		{
-			case 'rewards': $order = 'reward';  break;
-			case 'votes':   $order = 'helpful'; break;
+			case 'rewards': $order = 'reward';
+			break;
+			case 'votes':   $order = 'helpful';
+			break;
 			case 'date':
-			default:        $order = 'created'; break;
+			default:        $order = 'created';
+			break;
 		}
 
 		$results = $records

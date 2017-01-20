@@ -76,4 +76,3 @@ class CartControllerDo extends ComponentController
 	}
 
 }
-

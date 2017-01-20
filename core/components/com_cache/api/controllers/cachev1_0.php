@@ -38,7 +38,7 @@ use stdClass;
 use Request;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php');
 
 /**
  * API controller class for cache manager

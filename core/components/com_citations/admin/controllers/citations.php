@@ -86,7 +86,7 @@ class Citations extends AdminController
 				''
 			)),
 			'published' => array(0, 1),
-			'scope' => Request::getVar('scope','all')
+			'scope' => Request::getVar('scope', 'all')
 		);
 
 		$obj = new Citation($this->database);
@@ -398,13 +398,13 @@ class Citations extends AdminController
 		$this->sponsors = Request::getVar('sponsors', array(), 'post');
 
 		// toggle the affiliation
-		if (!isset($citation['affiliated']) || $citation['affiliated'] == NULL)
+		if (!isset($citation['affiliated']) || $citation['affiliated'] == null)
 		{
 				$citation['affiliated'] = 0;
 		}
 
 		// toggle fundeby
-		if (!isset($citation['fundedby']) || $citation['fundedby'] == NULL)
+		if (!isset($citation['fundedby']) || $citation['fundedby'] == null)
 		{
 				$citation['fundedby'] = 0;
 		}
@@ -454,7 +454,7 @@ class Citations extends AdminController
 		$ignored = array();
 		foreach ($arr as $a)
 		{
-			$a = array_map('trim',$a);
+			$a = array_map('trim', $a);
 
 			// Initiate extended database class
 			$assoc = new Association($this->database);
@@ -524,12 +524,12 @@ class Citations extends AdminController
 		{
 			if (array_key_exists($ignore, $b))
 			{
-				$b[$ignore] = NULL;
+				$b[$ignore] = null;
 			}
 		}
-		if (array_key_exists('id',$b))
+		if (array_key_exists('id', $b))
 		{
-			$b['id'] = NULL;
+			$b['id'] = null;
 		}
 		$values = array_values($b);
 		$e = true;

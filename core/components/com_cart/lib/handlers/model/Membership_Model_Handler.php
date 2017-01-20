@@ -45,7 +45,7 @@ class Membership_Model_Handler extends Model_Handler
 		$itemInfo = $this->item['info'];
 
 		// Get user
-		require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+		require_once (dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
 		$uId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
 		// Get product type

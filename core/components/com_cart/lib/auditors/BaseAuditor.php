@@ -32,9 +32,9 @@ namespace Components\Cart\Lib\Auditors;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
 
-class BaseAuditor {
-
-	public function __construct($type, $pId = NULL, $crtId = NULL)
+class BaseAuditor
+{
+	public function __construct($type, $pId = null, $crtId = null)
 	{
 		$this->type = $type;
 		$this->pId = $pId;
@@ -67,7 +67,7 @@ class BaseAuditor {
 
 	public function audit()
 	{
-		return($this->getResponse());
+		return ($this->getResponse());
 	}
 
 	protected function setResponseStatus($status)

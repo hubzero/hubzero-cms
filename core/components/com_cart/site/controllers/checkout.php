@@ -568,4 +568,3 @@ class Checkout extends ComponentController
 		echo '</div>';
 	}
 }
-

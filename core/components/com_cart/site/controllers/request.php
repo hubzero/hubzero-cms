@@ -43,7 +43,7 @@ class Request extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::etVar('task', '');
 
 		parent::execute();
 	}
@@ -53,7 +53,7 @@ class Request extends ComponentController
 		$response = new \stdClass();
 		$response->status = 'ok';
 
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
+		include_once (JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
 		$cart = new CurrentCart();
 
 		// update cart
@@ -142,4 +142,3 @@ class Request extends ComponentController
 		die();
 	}
 }
-
