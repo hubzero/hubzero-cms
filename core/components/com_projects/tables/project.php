@@ -43,9 +43,9 @@ class Project extends \JTable
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__projects', 'id', $db );
+		parent::__construct('#__projects', 'id', $db);
 	}
 
 	/**
@@ -55,15 +55,15 @@ class Project extends \JTable
 	 */
 	public function check()
 	{
-		if (trim( $this->alias ) == '')
+		if (trim($this->alias) == '')
 		{
-			$this->setError( Lang::txt('PROJECT_MUST_HAVE_ALIAS') );
+			$this->setError(Lang::txt('PROJECT_MUST_HAVE_ALIAS'));
 			return false;
 		}
 
-		if (trim( $this->title ) == '')
+		if (trim($this->title) == '')
 		{
-			$this->setError( Lang::txt('PROJECT_MUST_HAVE_TITLE') );
+			$this->setError(Lang::txt('PROJECT_MUST_HAVE_TITLE'));
 			return false;
 		}
 
@@ -80,18 +80,18 @@ class Project extends \JTable
 	 * @param      integer $setup_complete
 	 * @return     string
 	 */
-	public function buildQuery( $filters=array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3 )
+	public function buildQuery($filters=array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
 	{
 		// Process filters
-		$mine 		= isset($filters['mine']) && $filters['mine'] == 1 ? 1: 0;
-		$sortby 	= isset($filters['sortby']) ? $filters['sortby'] : 'title';
-		$search 	= isset($filters['search']) && $filters['search'] != ''  ? $filters['search'] : '';
-		$filterby 	= isset($filters['filterby']) && $filters['filterby'] != ''  ? $filters['filterby'] : '';
-		$getowner 	= isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
-		$type 		= isset($filters['type']) ? intval($filters['type']) : NULL;
-		$group 		= isset($filters['group']) && intval($filters['group']) > 0 ? $filters['group'] : '';
-		$reviewer 	= isset($filters['reviewer']) && $filters['reviewer'] != '' ? $filters['reviewer'] : '';
-		$which 		= isset($filters['which'])
+		$mine     = isset($filters['mine']) && $filters['mine'] == 1 ? 1: 0;
+		$sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
+		$search   = isset($filters['search']) && $filters['search'] != ''  ? $filters['search'] : '';
+		$filterby = isset($filters['filterby']) && $filters['filterby'] != ''  ? $filters['filterby'] : '';
+		$getowner = isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
+		$type     = isset($filters['type']) ? intval($filters['type']) : null;
+		$group    = isset($filters['group']) && intval($filters['group']) > 0 ? $filters['group'] : '';
+		$reviewer = isset($filters['reviewer']) && $filters['reviewer'] != '' ? $filters['reviewer'] : '';
+		$which    = isset($filters['which'])
 					&& $filters['which'] != ''
 					&& $filters['which'] != 'all'
 					? $filters['which'] : '';
@@ -121,14 +121,14 @@ class Project extends \JTable
 			$query .= " OR p.params LIKE '%export_data=yes%' ";
 			$query .= " OR p.params LIKE 'restricted_data=maybe%' ";
 			$query .= " OR p.params LIKE '%followup=yes%') ";
-			$query .= " AND p.state != 2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . " ) ";
+			$query .= " AND p.state != 2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ") ";
 		}
 		elseif ($reviewer == 'sponsored')
 		{
-			$query .= " WHERE ((( p.params LIKE '%grant_title=%' AND p.params NOT LIKE '%grant_title=\\n%') ";
-			$query .= " OR ( p.params LIKE '%grant_agency=%' AND p.params NOT LIKE '%grant_agency=\\n%') ";
-			$query .= " OR ( p.params LIKE '%grant_budget=%' AND p.params NOT LIKE '%grant_budget=\\n%') ";
-			$query .= " ) AND p.state=1 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . " ) ";
+			$query .= " WHERE (((p.params LIKE '%grant_title=%' AND p.params NOT LIKE '%grant_title=\\n%') ";
+			$query .= " OR (p.params LIKE '%grant_agency=%' AND p.params NOT LIKE '%grant_agency=\\n%') ";
+			$query .= " OR (p.params LIKE '%grant_budget=%' AND p.params NOT LIKE '%grant_budget=\\n%') ";
+			$query .= ") AND p.state=1 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ") ";
 		}
 		elseif ($admin)
 		{
@@ -142,7 +142,7 @@ class Project extends \JTable
 				$query .= $uid
 						? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
 							AND ((p.state != 2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " ))) "
+							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
 						: " WHERE 1=2";
 				if (!empty($filters['editor']))
 				{
@@ -203,7 +203,7 @@ class Project extends \JTable
 		// Exclude
 		if (!empty($filters['exclude']))
 		{
-			$query .= " AND p.id NOT IN ( ";
+			$query .= " AND p.id NOT IN (";
 
 			$tquery = '';
 			foreach ($filters['exclude'] as $ex)
@@ -217,7 +217,7 @@ class Project extends \JTable
 		// Include
 		if (!empty($filters['include']))
 		{
-			$query .= " AND p.id IN ( ";
+			$query .= " AND p.id IN (";
 
 			$tquery = '';
 			foreach ($filters['include'] as $ex)
@@ -275,7 +275,7 @@ class Project extends \JTable
 					else
 					{
 						$sort .= 'p.owned_by_group ' . $sortdir
-							  . ', p.owned_by_user ' . $sortdir . ' ';
+							. ', p.owned_by_user ' . $sortdir . ' ';
 					}
 					break;
 
@@ -297,7 +297,7 @@ class Project extends \JTable
 
 				case 'status':
 					$sort .= 'p.setup_stage ' . $sortdir . ', p.state '
-						  . $sortdir . ', p.created ' . $sortdir;
+						. $sortdir . ', p.created ' . $sortdir;
 					break;
 
 				default:
@@ -321,15 +321,15 @@ class Project extends \JTable
 	 * @param      integer $setup_complete
 	 * @return     integer
 	 */
-	public function getCount( $filters = array(), $admin = false, $uid = 0 , $showall = 0, $setup_complete = 3 )
+	public function getCount($filters = array(), $admin = false, $uid = 0 , $showall = 0, $setup_complete = 3)
 	{
 		$filters['count'] = true;
 		$admin = $admin == 'admin' ? true : false;
 
 		$query  = "SELECT count(DISTINCT p.id) ";
-		$query .= $this->buildQuery( $filters, $admin, $uid, $showall, $setup_complete );
+		$query .= $this->buildQuery($filters, $admin, $uid, $showall, $setup_complete);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
@@ -343,7 +343,7 @@ class Project extends \JTable
 	 * @param      integer $setup_complete
 	 * @return     object
 	 */
-	public function getRecords( $filters = array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3 )
+	public function getRecords($filters = array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
 	{
 		$filters['count'] 	= false;
 		$admin 				= $admin == 'admin' ? true : false;
@@ -365,14 +365,14 @@ class Project extends \JTable
 						WHERE pa.projectid=p.id AND pa.recorded >= o.lastvisit
 						AND o.lastvisit IS NOT NULL AND o.id IS NOT NULL
 						AND pa.state != 2 AND (pa.managers_only = 0
-						OR (pa.managers_only=1 AND o.role=1)) ) as newactivity ";
+						OR (pa.managers_only=1 AND o.role=1))) as newactivity ";
 		}
 		if ($activity)
 		{
 			$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa
-						WHERE pa.projectid=p.id AND pa.state != 2 ) as activity ";
+						WHERE pa.projectid=p.id AND pa.state != 2) as activity ";
 		}
-		$query .= $this->buildQuery( $filters, $admin, $uid, $showall, $setup_complete );
+		$query .= $this->buildQuery($filters, $admin, $uid, $showall, $setup_complete);
 
 		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != 0)
 		{
@@ -380,7 +380,7 @@ class Project extends \JTable
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
@@ -389,7 +389,7 @@ class Project extends \JTable
 	 *
 	 * @return     array
 	 */
-	public function getProjectsByTag( $tag = 'test', $include = true, $get = 'id')
+	public function getProjectsByTag($tag = 'test', $include = true, $get = 'id')
 	{
 		$ids = array();
 
@@ -401,7 +401,7 @@ class Project extends \JTable
 		  			WHERE TA.tag=" . $this->_db->quote($tag) . " AND RTA.objectid=p.id) as count";
 		$query .= " FROM $this->_tbl AS p ";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		if ($result)
 		{
@@ -426,13 +426,13 @@ class Project extends \JTable
 	 * @param      integer $setup_complete
 	 * @return     object
 	 */
-	public function getGroupProjects ( $groupid = 0, $uid = 0, $filters = array(), $setup_complete = 3 )
+	public function getGroupProjects ($groupid = 0, $uid = 0, $filters = array(), $setup_complete = 3)
 	{
 		$query  = "SELECT DISTINCT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 		$query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
 		$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa WHERE pa.projectid=p.id
 					AND pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
-					AND o.id IS NOT NULL AND pa.state != 2 ) as newactivity ";
+					AND o.id IS NOT NULL AND pa.state != 2) as newactivity ";
 		$query .= " FROM #__project_owners as po, $this->_tbl AS p";
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid="
 					. $this->_db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
@@ -457,7 +457,7 @@ class Project extends \JTable
 				: " AND p.state = 1 ";
 
 		// Sorting
-		if (!isset($filters['count']) OR $filters['count'] == 0)
+		if (!isset($filters['count']) or $filters['count'] == 0)
 		{
 			$sort = '';
 			$sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';
@@ -470,7 +470,7 @@ class Project extends \JTable
 					break;
 
 				case 'status':
-					$sort .= 'p.setup_stage ' . $sortdir . ', p.state ' . $sortdir . ', p.title ASC' ;
+					$sort .= 'p.setup_stage ' . $sortdir . ', p.state ' . $sortdir . ', p.title ASC';
 					break;
 
 				case 'title':
@@ -484,7 +484,7 @@ class Project extends \JTable
 
 		if (isset($filters['count']) && $filters['count'] == 1)
 		{
-			$this->_db->setQuery( $query );
+			$this->_db->setQuery($query);
 			return $this->_db->loadResult();
 		}
 		else if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != 0)
@@ -493,7 +493,7 @@ class Project extends \JTable
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
@@ -505,7 +505,7 @@ class Project extends \JTable
 	 * @param      integer $include_provisioned
 	 * @return     array
 	 */
-	public function getUserProjectIds ( $uid = 0, $active = 1, $include_provisioned = 0 )
+	public function getUserProjectIds ($uid = 0, $active = 1, $include_provisioned = 0)
 	{
 		$ids = array();
 
@@ -519,7 +519,7 @@ class Project extends \JTable
 					: "AND p.state !=2 ";
 			$query .= $include_provisioned ? "" : " AND p.provisioned=0";
 			$query .= " AND o.userid=" . $uid;
-			$this->_db->setQuery( $query );
+			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
 			if ($result)
 			{
@@ -541,7 +541,7 @@ class Project extends \JTable
 	 * @param      integer $active
 	 * @return     array
 	 */
-	public function getGroupProjectIds ( $groupid = 0, $uid = 0, $active = 1 )
+	public function getGroupProjectIds ($groupid = 0, $uid = 0, $active = 1)
 	{
 		$ids = array();
 
@@ -556,7 +556,7 @@ class Project extends \JTable
 					? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state !=2))  "
 					: " AND p.state !=2 ";
 			$query .= " AND p.provisioned=0";
-			$this->_db->setQuery( $query );
+			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
 			if ($result)
 			{
@@ -585,16 +585,16 @@ class Project extends \JTable
 			$query .= " JOIN #__project_owners as o ON o.projectid=pa.projectid AND o.userid=" . $this->_db->quote($uid);
 			$query .= " WHERE pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
 						AND pa.state !=2 AND pa.recorded >= o.added";
-			$query .= " AND pa.projectid IN ( ";
+			$query .= " AND pa.projectid IN (";
 
 			$tquery = '';
 			foreach ($projects as $project)
 			{
 				$tquery .= "'".$project."',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery.") ";
-			$this->_db->setQuery( $query );
+			$this->_db->setQuery($query);
 			return $this->_db->loadResult();
 		}
 		else
@@ -611,9 +611,9 @@ class Project extends \JTable
 	 * @param      integer $pubid
 	 * @return     mixed (array or false)
 	 */
-	public function getProject( $identifier = NULL, $uid = 0, $pubid = 0 )
+	public function getProject($identifier = null, $uid = 0, $pubid = 0)
 	{
-		if ($identifier === NULL && !$pubid)
+		if ($identifier === null && !$pubid)
 		{
 			return false;
 		}
@@ -649,9 +649,9 @@ class Project extends \JTable
 		}
 		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		return $result ? $result[0] : NULL;
+		return $result ? $result[0] : null;
 	}
 
 	/**
@@ -662,12 +662,12 @@ class Project extends \JTable
 	 * @param      integer $limit
 	 * @return     mixed (string or object)
 	 */
-	public function selectWhere( $select, $where, $limit = 0 )
+	public function selectWhere($select, $where, $limit = 0)
 	{
 		$query  = "SELECT $select FROM $this->_tbl WHERE $where";
 		$query .= $limit ? " LIMIT 1 " : "";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $limit ? $this->_db->loadResult() : $this->_db->loadObjectList();
 	}
 
@@ -677,14 +677,14 @@ class Project extends \JTable
 	 * @param      integer $id
 	 * @return     string
 	 */
-	public function getAlias( $id = 0 )
+	public function getAlias($id = 0)
 	{
 		if (!$id)
 		{
 			return false;
 		}
 		$query = "SELECT alias FROM $this->_tbl WHERE id=" . $this->_db->quote($id);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
@@ -696,9 +696,9 @@ class Project extends \JTable
 	 * @param      string $value
 	 * @return     void
 	 */
-	public function saveParam ( $projectid = NULL, $param = '', $value = 0 )
+	public function saveParam ($projectid = null, $param = '', $value = 0)
 	{
-		if ($projectid === NULL)
+		if ($projectid === null)
 		{
 			return false;
 		}
@@ -755,18 +755,18 @@ class Project extends \JTable
 	 * @param      string $identifier project id or alias name
 	 * @return     object or false
 	 */
-	public function loadProject ( $identifier = NULL )
+	public function loadProject ($identifier = null)
 	{
-		if ($identifier === NULL)
+		if ($identifier === null)
 		{
 			return false;
 		}
 		$name = is_numeric($identifier) ? 'id' : 'alias';
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->quote($identifier) . " LIMIT 1" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->quote($identifier) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
@@ -780,17 +780,17 @@ class Project extends \JTable
 	 * @param      string $identifier project id or alias name
 	 * @return     object or false
 	 */
-	public function loadProvisionedProject ( $pid = NULL )
+	public function loadProvisionedProject ($pid = null)
 	{
 		if (!intval($pid))
 		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT p.* FROM #__publications AS pu JOIN $this->_tbl AS p ON pu.project_id=p.id WHERE pu.id=" . $this->_db->quote($pid) . " LIMIT 1" );
+		$this->_db->setQuery("SELECT p.* FROM `#__publications` AS pu JOIN $this->_tbl AS p ON pu.project_id=p.id WHERE pu.id=" . $this->_db->quote($pid) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
@@ -805,15 +805,16 @@ class Project extends \JTable
 	 * @param      integer $pid
 	 * @return     boolean
 	 */
-	public function checkUniqueName ( $name, $pid = 0 )
+	public function checkUniqueName ($name, $pid = 0)
 	{
-		if ($name === NULL) {
+		if ($name === null)
+		{
 			return false;
 		}
 		$query  =  "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->quote($name);
 		$query .= $pid ? " AND id!=" . $this->_db->quote($pid) : "";
 		$query .= " LIMIT 1 ";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($this->_db->loadResult())
 		{
 			return false;
@@ -828,22 +829,22 @@ class Project extends \JTable
 	 * @param      integer $stage
 	 * @return     boolean
 	 */
-	public function saveStage ( $projectid = NULL, $stage = 0 )
+	public function saveStage ($projectid = null, $stage = 0)
 	{
-		if ($projectid === NULL)
+		if ($projectid === null)
 		{
 			return false;
 		}
 		$query  = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($projectid) . " LIMIT 1";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 
 		if ($result = $this->_db->loadAssoc())
 		{
-			$this->bind( $result );
+			$this->bind($result);
 			$this->setup_stage = $stage;
 			if (!$this->store())
 			{
-				$this->setError( Lang::txt('Failed to update setup stage.') );
+				$this->setError(Lang::txt('Failed to update setup stage.'));
 				return false;
 			}
 			return true;
