@@ -48,20 +48,6 @@ defined('_HZEXEC_') or die;
 class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 *
-	 * @param   object  $subject  The object to observe
-	 * @param   array   $config   An array that holds the plugin configuration
-	 * @return  void
-	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
 	 * @param   string   $context  The context of the content being passed to the plugin.
 	 * @param   object   $row      The article object.  Note $article->text is also available
 	 * @param   object   $params   The article params
@@ -73,7 +59,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		$canProceed = $context == 'com_content.article';
 		if (!$canProceed)
 		{
-			return;
+			return true;
 		}
 
 		$style = $this->params->get('style', 'pages');
@@ -113,7 +99,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		if ($params->get('intro_only') || $params->get('popup') || $full || $view != 'article')
 		{
 			$row->text = preg_replace($regex, '', $row->text);
-			return;
+			return true;
 		}
 
 		// Find all instances of plugin and put in $matches.
@@ -147,6 +133,8 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		// We have found at least one plugin, therefore at least 2 pages.
 		if ($n > 1)
 		{
+			$this->loadLanguage();
+
 			$title  = $this->params->get('title', 1);
 			$hasToc = $this->params->get('multipage_toc', 1);
 
@@ -188,7 +176,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
 				// Page counter.
 				$row->text .= '<div class="pagenavcounter">';
-				$row->text .= $pageNav->getPagesCounter();
+				$row->text .= $pageNav->get('pages.total');
 				$row->text .= '</div>';
 
 				// Page text.
@@ -206,7 +194,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 				// Page links shown at bottom of page if TOC disabled.
 				if (!$hasToc)
 				{
-					$row->text .= $pageNav->getPagesLinks();
+					$row->text .= $pageNav->render();
 				}
 				$row->text .= '</div>';
 
@@ -216,6 +204,15 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 				$t[] = $text[0];
 
 				$t[] = (string) Html::$style('start');
+
+				if ($style == 'tabs')
+				{
+					$this->css('jquery.tabs.css', 'system');
+				}
+				if ($style == 'sliders')
+				{
+					$this->css('jquery.ui.css', 'system');
+				}
 
 				foreach ($text as $key => $subtext)
 				{
@@ -235,9 +232,10 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 						{
 							$title = Lang::txt('PLG_CONTENT_PAGEBREAK_PAGE_NUM', $key + 1);
 						}
-						$t[] = (string) Html::$style('panel', $title, 'basic-details');
+						$t[] = (string) Html::$style('panel', $title, 'basic-details' . $key);
+
+						$t[] = (string) $subtext;
 					}
-					$t[] = (string) $subtext;
 				}
 
 				$t[] = (string) Html::$style('end');
@@ -265,7 +263,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		// TOC header.
 		$row->toc = '<div id="article-index">';
 
-		if ($this->params->get('article_index')==1)
+		if ($this->params->get('article_index') == 1)
 		{
 			$headingtext = Lang::txt('PLG_CONTENT_PAGEBREAK_ARTICLE_INDEX');
 
@@ -288,7 +286,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
 		foreach ($matches as $bot)
 		{
-			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart='. ($i-1));
+			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart='. ($i - 1));
 
 			if (@$bot[0])
 			{
