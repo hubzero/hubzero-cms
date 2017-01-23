@@ -124,7 +124,7 @@ class Membership extends Base
 		}
 
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))
+		if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite')))
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
@@ -182,7 +182,7 @@ class Membership extends Base
 		}
 
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))
+		if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite')))
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
@@ -885,7 +885,6 @@ class Membership extends Base
 			'passed'
 		);
 	}
-
 
 	/**
 	 * Join Group Method

@@ -50,6 +50,7 @@ if ($canDo->get('core.edit.state'))
 {
 	Toolbar::publishList();
 	Toolbar::unpublishList();
+	Toolbar::archiveList();
 	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
@@ -66,6 +67,8 @@ if ($canDo->get('core.delete'))
 }
 Toolbar::spacer();
 Toolbar::help('groups');
+
+$this->css();
 
 Html::behavior('tooltip');
 ?>
@@ -84,52 +87,64 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
+		<div class="grid">
+			<div class="col span4">
+				<label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
 
-		<label for="filter-type"><?php echo Lang::txt('COM_GROUPS_TYPE'); ?>:</label>
-		<select name="type" id="filter-type">
-			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE'); ?></option>
-			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
-			<option value="super"<?php echo ($this->filters['type'][0] == 'super') ? ' selected="selected"' : ''; ?>>Super</option>
-			<?php if ($canDo->get('core.admin')) { ?>
-				<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>System</option>
-			<?php } ?>
-			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
-			<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
-		</select>
+				<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
+				<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=manage&type=hub&discoverability=&policy=&approved=&published=&created=&state='); ?>"><?php echo Lang::txt('COM_GROUPS_RESET'); ?></a>
+			</div>
+			<div class="col span8 align-right">
+				<label for="filter-type"><?php echo Lang::txt('COM_GROUPS_TYPE'); ?>:</label>
+				<select name="type" id="filter-type" onchange="this.form.submit();">
+					<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE'); ?></option>
+					<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
+					<option value="super"<?php echo ($this->filters['type'][0] == 'super') ? ' selected="selected"' : ''; ?>>Super</option>
+					<?php if ($canDo->get('core.admin')) { ?>
+						<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>System</option>
+					<?php } ?>
+					<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
+					<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
+				</select>
 
-		<label for="filter-discoverability"><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY'); ?>:</label>
-		<select name="discoverability" id="filter-discoverability">
-			<option value=""<?php echo ($this->filters['discoverability'] == null) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY'); ?></option>
-			<option value="0"<?php echo ($this->filters['discoverability'] == 0 && $this->filters['discoverability'] != null) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE'); ?></option>
-			<option value="1"<?php echo ($this->filters['discoverability'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN'); ?></option>
-		</select>
+				<label for="filter-discoverability"><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY'); ?>:</label>
+				<select name="discoverability" id="filter-discoverability" onchange="this.form.submit();">
+					<option value=""<?php echo ($this->filters['discoverability'] == null) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY'); ?></option>
+					<option value="0"<?php echo ($this->filters['discoverability'] == 0 && $this->filters['discoverability'] != null) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE'); ?></option>
+					<option value="1"<?php echo ($this->filters['discoverability'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN'); ?></option>
+				</select>
 
-		<label for="filter-policy"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?>:</label>
-		<select name="policy" id="filter-policy">
-			<option value=""<?php echo ($this->filters['policy'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?></option>
-			<option value="open"<?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC'); ?></option>
-			<option value="restricted"<?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED'); ?></option>
-			<option value="invite"<?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE'); ?></option>
-			<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED'); ?></option>
-		</select>
+				<label for="filter-policy"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?>:</label>
+				<select name="policy" id="filter-policy" onchange="this.form.submit();">
+					<option value=""<?php echo ($this->filters['policy'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?></option>
+					<option value="open"<?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC'); ?></option>
+					<option value="restricted"<?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED'); ?></option>
+					<option value="invite"<?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE'); ?></option>
+					<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED'); ?></option>
+				</select>
 
-		<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
-		|
-		<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=manage&type=hub&discoverability=&policy=&approved=&published=&created='); ?>"><?php echo Lang::txt('COM_GROUPS_RESET'); ?></a>
+				<label for="filter-state"><?php echo Lang::txt('COM_GROUPS_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php echo ($this->filters['state'] == -1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_STATE'); ?></option>
+					<option value="0"<?php echo ($this->filters['state'] == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></option>
+					<option value="1"<?php echo ($this->filters['state'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></option>
+					<option value="2"<?php echo ($this->filters['state'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_ARCHIVED'); ?></option>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col" class="priority-6"><?php echo $this->grid('sort', 'COM_GROUPS_ID', 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_GROUPS_NAME', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_CN', 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_GROUPS_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_GROUPS_PUBLISHED', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_GROUPS_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_GROUPS_ID', 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_GROUPS_NAME', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_GROUPS_CN', 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_GROUPS_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_GROUPS_PUBLISHED', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_GROUPS_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MEMBERS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES'); ?></th>
 			</tr>
@@ -223,14 +238,20 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-3">
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<?php if ($row->published) { ?>
-							<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNPUBLISH'); ?>">
+						<?php if ($row->published == 2) { ?>
+							<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->cn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_GROUPS_PUBLISH'); ?>">
+								<span class="state archive">
+									<span class="text"><?php echo Lang::txt('COM_GROUPS_ARCHIVED'); ?></span>
+								</span>
+							</a>
+						<?php } elseif ($row->published == 1) { ?>
+							<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->cn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNPUBLISH'); ?>">
 								<span class="state publish">
 									<span class="text"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></span>
 								</span>
 							</a>
 						<?php } else { ?>
-							<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_PUBLISH'); ?>">
+							<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->cn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_GROUPS_PUBLISH'); ?>">
 								<span class="state unpublish">
 									<span class="text"><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></span>
 								</span>
@@ -241,13 +262,13 @@ function submitbutton(pressbutton)
 				<td class="priority-3">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<?php if (!$group->get('approved')) { ?>
-							<a class="jgrid state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_APPROVE'); ?>">
+							<a class="jgrid state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->cn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_GROUPS_APPROVE'); ?>">
 								<span class="not-approved">
 									<span class="text"><?php echo Lang::txt('COM_GROUPS_APPROVE'); ?></span>
 								</span>
 							</a>
 						<?php } else { ?>
-							<a class="jgrid state yes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unapprove&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNAPPROVE'); ?>">
+							<a class="jgrid state yes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unapprove&id=' . $row->cn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNAPPROVE'); ?>">
 								<span class="approved">
 									<span class="text"><?php echo Lang::txt('COM_GROUPS_APPROVED'); ?></span>
 								</span>

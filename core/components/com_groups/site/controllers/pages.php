@@ -83,7 +83,7 @@ class Pages extends Base
 		}
 
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))
+		if ($this->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages')))
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
@@ -324,12 +324,12 @@ class Pages extends Base
 		}
 
 		// update current rights
-		$sql = "UPDATE `#__xgroups_pages` SET rgt=rgt+2 WHERE rgt>".($start-1)." AND gidNumber=1053;";
+		$sql = "UPDATE `#__xgroups_pages` SET rgt=rgt+2 WHERE rgt>" . ($start-1) . " AND gidNumber=" . $this->group->get('gidNumber');
 		$this->database->setQuery($sql);
 		$this->database->query();
 
 		// update current lefts
-		$sql2 = "UPDATE `#__xgroups_pages` SET lft=lft+2 WHERE lft>".($start-1)." AND gidNumber=1053;";
+		$sql2 = "UPDATE `#__xgroups_pages` SET lft=lft+2 WHERE lft>" . ($start-1) . " AND gidNumber=" . $this->group->get('gidNumber');
 		$this->database->setQuery($sql2);
 		$this->database->query();
 
@@ -386,8 +386,8 @@ class Pages extends Base
 			strpos($newContent, '<script') !== false)
 		{
 			$this->version->set('approved', 0);
-			$this->version->set('approved_on', NULL);
-			$this->version->set('approved_by', NULL);
+			$this->version->set('approved_on', null);
+			$this->version->set('approved_by', null);
 		}
 
 		// only create a new version and send approve notif if content has changed

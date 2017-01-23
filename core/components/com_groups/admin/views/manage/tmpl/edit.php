@@ -147,6 +147,7 @@ function submitbutton(pressbutton)
 										<select name="group[published]" id="field-published">
 											<option <?php if ($this->group->published == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></option>
 											<option <?php if ($this->group->published == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></option>
+											<option <?php if ($this->group->published == 2) { echo 'selected="selected"'; } ?> value="1"><?php echo Lang::txt('COM_GROUPS_ARCHIVED'); ?></option>
 										</select>
 									</div>
 								</div>
