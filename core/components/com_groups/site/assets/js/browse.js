@@ -16,8 +16,12 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	$('.entries-filters select').on('change', function(e){
+		$(this).closest('form').submit();
+	});
+
 	// Create the dropdown base
-	$('.entries-menu').each(function(i, el){
+	$('.order-options').each(function(i, el){
 		el = $(el);
 		el.addClass('js');
 

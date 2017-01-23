@@ -114,6 +114,9 @@
 	.mod_mygroups .tab_panel li.group:hover:before {
 		color: #999;
 	}
+	.mod_mygroups .tab_panel li.archived:before {
+		content: "\f005";
+	}
 	.mod_mygroups .tab_panel p {
 		margin: 0.5em;
 		padding: 0;

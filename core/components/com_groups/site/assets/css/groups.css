@@ -4,7 +4,9 @@
 #introduction:after {
 	content: "\f042";
 }
-
+.filter-options select {
+	margin-right: 1em;
+}
 .group-list {
 	overflow: hidden;
 	margin: 10px 0 0 0;

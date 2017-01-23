@@ -83,7 +83,7 @@ class Modules extends Base
 		}
 
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))
+		if ($this->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages')))
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
@@ -244,8 +244,8 @@ class Modules extends Base
 			if ($contentChanged)
 			{
 				$this->module->set('approved', 0);
-				$this->module->set('approved_on', NULL);
-				$this->module->set('approved_by', NULL);
+				$this->module->set('approved_on', null);
+				$this->module->set('approved_by', null);
 				$this->module->set('checked_errors', 0);
 				$this->module->set('scanned', 0);
 			}

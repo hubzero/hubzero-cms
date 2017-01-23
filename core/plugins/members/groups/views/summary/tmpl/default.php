@@ -129,7 +129,7 @@ $this->css()
 				// are we published
 				$published = ($group->published) ? true : false;
 				?>
-				<div class="group <?php echo (!$published) ? 'notpublished' : '' ?>" id="group<?php echo $group->gidNumber; ?>"
+				<div class="group <?php echo (!$published) ? 'notpublished' : ($group->published == 2 ? 'archived' : 'published'); ?>" id="group<?php echo $group->gidNumber; ?>"
 					data-id="<?php echo $group->gidNumber; ?>"
 					data-status="<?php echo $this->escape($status); ?>"
 					data-title="<?php echo $this->escape(stripslashes($group->description) . ' ' . $group->cn); ?>">
@@ -199,33 +199,38 @@ $this->css()
 								<?php else : ?>
 									<div class="grid">
 										<div class="col span6">
-											<span><?php
-											$activity = \Hubzero\Activity\Recipient::all()
-												->including('log')
-												->whereEquals('scope', 'group')
-												->whereEquals('scope_id', $group->gidNumber)
-												->whereEquals('state', 1)
-												->ordered()
-												->row();
-											$dt = Date::of($activity->get('created'));
-											$ct = Date::of('now');
+											<?php if ($group->published == 2) : ?>
+												<span><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED_HINT'); ?></span>
+												<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED'); ?>
+											<?php else : ?>
+												<span><?php
+												$activity = \Hubzero\Activity\Recipient::all()
+													->including('log')
+													->whereEquals('scope', 'group')
+													->whereEquals('scope_id', $group->gidNumber)
+													->whereEquals('state', 1)
+													->ordered()
+													->row();
+												$dt = Date::of($activity->get('created'));
+												$ct = Date::of('now');
 
-											$lapsed = $ct->toUnix() - $dt->toUnix();
+												$lapsed = $ct->toUnix() - $dt->toUnix();
 
-											if ($lapsed < 30)
-											{
-												echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
-											}
-											elseif ($lapsed > 30 && $lapsed < 60)
-											{
-												echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
-											}
-											else
-											{
-												echo $dt->relative('week');
-											}
-											?></span>
-											<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_LAST'); ?>
+												if ($lapsed < 30)
+												{
+													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
+												}
+												elseif ($lapsed > 30 && $lapsed < 60)
+												{
+													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
+												}
+												else
+												{
+													echo $dt->relative('week');
+												}
+												?></span>
+												<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_LAST'); ?>
+											<?php endif; ?>
 										</div>
 										<div class="col span6 omega">
 											<span><?php
@@ -238,9 +243,11 @@ $this->css()
 									</div>
 								<?php endif; ?>
 							</div>
-							<div class="user-actions">
-								<?php echo $options; ?>
-							</div>
+							<?php if ($group->published != 2) : ?>
+								<div class="user-actions">
+									<?php echo $options; ?>
+								</div>
+							<?php endif; ?>
 						<?php endif; ?>
 					</div>
 				</div><!-- / .group -->

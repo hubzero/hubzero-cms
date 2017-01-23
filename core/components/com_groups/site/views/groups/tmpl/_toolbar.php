@@ -108,6 +108,7 @@ if ($this->group->isSuperGroup())
 				</a>
 				<span class="btn dropdown-toggle"></span>
 				<ul class="dropdown-menu">
+				<?php if ($this->group->get('published') != 2) : ?>
 					<?php if ($isManager) : ?>
 						<?php if ($membership_control == 1) : ?>
 							<li>
@@ -156,6 +157,7 @@ if ($this->group->isSuperGroup())
 							</a>
 						</li>
 					<?php endif; ?>
+				<?php endif; ?>
 
 					<?php if ($canCancel) : ?>
 						<?php if ($membership_control == 1) : ?>
