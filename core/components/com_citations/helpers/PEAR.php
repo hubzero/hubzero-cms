@@ -454,18 +454,18 @@ class PEAR
 					$deleted = false;
 				}
 			}
-			return $deleted ? true : PEAR::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
+			return $deleted ? true : self::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
 		} elseif (!empty($error_code)) {
 			// $error_code comes alone, trying to unset it
 			if ($this->_checkDelExpect($error_code)) {
 				return true;
 			} else {
-				return PEAR::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
+				return self::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
 			}
 		}
 
 		// $error_code is empty
-		return PEAR::raiseError("The expected error you submitted is empty"); // IMPROVE ME
+		return self::raiseError("The expected error you submitted is empty"); // IMPROVE ME
 	}
 
 	// }}}
@@ -588,7 +588,7 @@ class PEAR
 			return $a;
 		}
 
-		$a = &PEAR::raiseError($message, $code, null, null, $userinfo);
+		$a = &self::raiseError($message, $code, null, null, $userinfo);
 		return $a;
 	}
 
@@ -693,7 +693,7 @@ class PEAR
 		if (isset($this) && is_a($this, 'PEAR')) {
 			$this->setErrorHandling($mode, $options);
 		} else {
-			PEAR::setErrorHandling($mode, $options);
+			self::setErrorHandling($mode, $options);
 		}
 		$stack[] = array($mode, $options);
 		return true;
@@ -718,7 +718,7 @@ class PEAR
 		if (isset($this) && is_a($this, 'PEAR')) {
 			$this->setErrorHandling($mode, $options);
 		} else {
-			PEAR::setErrorHandling($mode, $options);
+			self::setErrorHandling($mode, $options);
 		}
 		return true;
 	}

@@ -175,11 +175,11 @@ class Citation extends Relational
 		// default to IEEE
 		try
 		{
-			$format = \Components\Citations\Models\Format::oneOrFail($config['citationFormat']);
+			$format = self::oneOrFail($config['citationFormat']);
 		}
 		catch (\Exception $e)
 		{
-			$format = \Components\Citations\Models\Format::all()->where('style', 'LIKE', '%IEEE%')->row()->toObject();
+			$format = self::all()->where('style', 'LIKE', '%IEEE%')->row()->toObject();
 		}
 
 		// get the template keys

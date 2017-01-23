@@ -59,7 +59,7 @@ class CartDownload
 
 	public static function countUserSkuDownloads($sId, $uId)
 	{
-		return CartDownload::countSkuDownloads($sId, $uId);
+		return self::countSkuDownloads($sId, $uId);
 	}
 
 	/**

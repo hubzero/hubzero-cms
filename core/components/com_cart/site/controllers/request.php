@@ -43,7 +43,7 @@ class Request extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::etVar('task', '');
+		$this->_task  = self::getVar('task', '');
 
 		parent::execute();
 	}
@@ -57,8 +57,8 @@ class Request extends ComponentController
 		$cart = new CurrentCart();
 
 		// update cart
-		$updateCartRequest = Request::getVar('updateCart', false, 'post');
-		$pIds = Request::getVar('pId', false, 'post');
+		$updateCartRequest = self::getVar('updateCart', false, 'post');
+		$pIds = self::getVar('pId', false, 'post');
 
 		//print_r($pIds); die;
 
@@ -85,7 +85,7 @@ class Request extends ComponentController
 		}
 		else
 		{
-			$skus = Request::getVar('skus', false, 'post');
+			$skus = self::getVar('skus', false, 'post');
 		}
 		//print_r($skus); die;
 
@@ -110,8 +110,8 @@ class Request extends ComponentController
 		}
 
 		// add coupon if needed
-		$addCouponRequest = Request::getVar('addCouponCode', false, 'post');
-		$couponCode = Request::getVar('couponCode', false, 'post');
+		$addCouponRequest = self::getVar('addCouponCode', false, 'post');
+		$couponCode = self::getVar('couponCode', false, 'post');
 
 		if ($addCouponRequest && $couponCode)
 		{

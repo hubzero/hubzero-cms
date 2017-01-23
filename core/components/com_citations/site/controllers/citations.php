@@ -1084,7 +1084,7 @@ class Citations extends SiteController
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean()):
 
 		$fsize = filesize($p . DS. $f);
 		$mod_date = date('r', filemtime($p . DS . $f));
@@ -1168,8 +1168,9 @@ class Citations extends SiteController
 		$image = Request::getVar('image', '');
 
 		// if we dont have an image were done
-		if ($image == '') return;
-
+		if ($image == ''){
+			return;
+		}
 		// file details
 		$image_details = pathinfo($image);
 
