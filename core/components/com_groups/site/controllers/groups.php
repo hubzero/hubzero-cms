@@ -497,7 +497,7 @@ class Groups extends Base
 		}
 
 		// Create dir for uploads
-		$this->view->lid = time().rand(0,1000);
+		$this->view->lid = time() . rand(0, 1000);
 		if ($this->lid != '')
 		{
 			$this->view->lid = $this->lid;
@@ -591,7 +591,7 @@ class Groups extends Base
 		$g_cn              = trim(Request::getVar('cn', '', 'post'));
 		$g_description     = preg_replace('/\s+/', ' ', trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
 		$g_discoverability = Request::getInt('discoverability', 0, 'post');
-		$g_public_desc     = Sanitize::clean(trim(Request::getVar('public_desc',  '', 'post', 'none', 2)));
+		$g_public_desc     = Sanitize::clean(trim(Request::getVar('public_desc', '', 'post', 'none', 2)));
 		$g_private_desc    = Sanitize::clean(trim(Request::getVar('private_desc', '', 'post', 'none', 2)));
 		$g_restrict_msg    = Sanitize::clean(trim(Request::getVar('restrict_msg', '', 'post', 'none', 2)));
 		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
@@ -977,7 +977,7 @@ class Groups extends Base
 		}
 
 		// Start log
-		$this->view->log = Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG',count($this->view->group->get('members')));
+		$this->view->log = Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG', count($this->view->group->get('members')));
 
 		// Trigger the functions that delete associated content
 		// Should return logs of what was deleted
@@ -997,7 +997,7 @@ class Groups extends Base
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		// Set some vars for view
-		$this->view->title = Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');;
+		$this->view->title = Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');
 		$this->view->msg = Request::getVar('msg', '');
 
 		// Display view
