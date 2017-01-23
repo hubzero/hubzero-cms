@@ -335,7 +335,7 @@ class Modules extends Base
 		// Push success message and redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
 		App::redirect($url);
-		if ($return = Request::getVar('return', '','post'))
+		if ($return = Request::getVar('return', '', 'post'))
 		{
 			App::redirect(base64_decode($return));
 		}
@@ -412,7 +412,7 @@ class Modules extends Base
 		//inform user & redirect
 		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=modules');
 
-		if ($return = Request::getVar('return', '','get'))
+		if ($return = Request::getVar('return', '', 'get'))
 		{
 			$url = base64_decode($return);
 		}

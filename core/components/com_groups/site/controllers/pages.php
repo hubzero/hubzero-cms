@@ -167,7 +167,7 @@ class Pages extends Base
 	public function editTask()
 	{
 		//get request vars
-		$pageid = Request::getInt('pageid', 0,'get');
+		$pageid = Request::getInt('pageid', 0, 'get');
 
 		// load page object
 		$this->view->page    = new Page($pageid);
@@ -419,7 +419,7 @@ class Pages extends Base
 		Helpers\Pages::checkin($this->page->get('id'));
 
 		// redirect to return url
-		if ($return = Request::getVar('return', '','post'))
+		if ($return = Request::getVar('return', '', 'post'))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED', $task), 'passed');
 			App::redirect(base64_decode($return));
@@ -479,7 +479,7 @@ class Pages extends Base
 	public function versionsTask()
 	{
 		//get request vars
-		$pageid = Request::getInt('pageid', 0,'get');
+		$pageid = Request::getInt('pageid', 0, 'get');
 
 		// load page object
 		$this->view->page = new Page($pageid);
@@ -622,7 +622,7 @@ class Pages extends Base
 
 		//inform user & redirect
 		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages');
-		if ($r = Request::getVar('return', '','get'))
+		if ($r = Request::getVar('return', '', 'get'))
 		{
 			$url = base64_decode($r);
 		}
@@ -751,7 +751,7 @@ class Pages extends Base
 
 		// redirect
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
-		if ($return = Request::getVar('return', '','get'))
+		if ($return = Request::getVar('return', '', 'get'))
 		{
 			App::redirect(base64_decode($return));
 		}
