@@ -173,7 +173,7 @@ class Mailinglist extends \JTable
 
 		// default select
 		$select = "mle.*, (SELECT reason FROM #__newsletter_mailinglist_unsubscribes AS u
-				WHERE mle.email=u.email AND mle.mid=u.mid) AS unsubscribe_reason";
+				WHERE mle.email=u.email AND mle.mid=u.mid LIMIT 1) AS unsubscribe_reason";
 
 		// specific select
 		if (isset($filters['select']))
