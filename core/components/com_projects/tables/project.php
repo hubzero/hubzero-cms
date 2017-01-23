@@ -192,7 +192,7 @@ class Project extends \JTable
 		}
 		if ($search)
 		{
-			$query .= " AND (p.title LIKE '%" . $search . "%' OR p.alias LIKE '%" . $search . "%') ";
+			$query .= " AND (p.title LIKE " . $this->_db->quote('%' . $search . '%') . " OR p.alias LIKE " . $this->_db->quote('%' . $search . '%') . ") ";
 		}
 
 		if (isset($filters['private']))
