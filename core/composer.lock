@@ -968,12 +968,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "d363a2e0970a0defd69c1d5dd7de8d64ade275b7"
+                "reference": "ab7c4124cda7fd24a39fe1e1ff88248bc84c3704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/4275d584744979cbf03fd5b3c460758b155925e0",
-                "reference": "4275d584744979cbf03fd5b3c460758b155925e0",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/ab7c4124cda7fd24a39fe1e1ff88248bc84c3704",
+                "reference": "ab7c4124cda7fd24a39fe1e1ff88248bc84c3704",
                 "shasum": ""
             },
             "require": {
