@@ -143,8 +143,8 @@ class Membership extends Base
 
 		//set some vars for view
 		$this->view->title  = Lang::txt('Invite Members: ' . $this->view->group->get('description'));
-		$this->view->msg    = trim(Request::getVar('msg',''));
-		$this->view->return = trim(Request::getVar('return',''));
+		$this->view->msg    = trim(Request::getVar('msg', ''));
+		$this->view->return = trim(Request::getVar('return', ''));
 
 		//display view
 		$this->view->display();
@@ -188,8 +188,8 @@ class Membership extends Base
 		}
 
 		//get request vars
-		$logins = trim(Request::getVar('logins',''));
-		$msg    = trim(Request::getVar('msg',''));
+		$logins = trim(Request::getVar('logins', ''));
+		$msg    = trim(Request::getVar('msg', ''));
 
 		if (!$logins)
 		{
@@ -496,7 +496,7 @@ class Membership extends Base
 		}
 
 		// Push all invitees together
-		$all_invites = array_merge($invitees,$inviteemails);
+		$all_invites = array_merge($invitees, $inviteemails);
 
 		// Declare success/error message vars
 		$success_message = '';
@@ -559,7 +559,7 @@ class Membership extends Base
 	public function acceptTask()
 	{
 		//get invite token
-		$token = Request::getVar('token','','get');
+		$token = Request::getVar('token', '', 'get');
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -635,7 +635,7 @@ class Membership extends Base
 
 			if ($invite)
 			{
-				$this->view->group->add('members',array(User::get('id')));
+				$this->view->group->add('members', array(User::get('id')));
 				$this->view->group->update();
 
 				$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']);
@@ -645,16 +645,16 @@ class Membership extends Base
 		}
 		elseif (in_array(User::get('email'), $inviteemails))
 		{
-			$this->view->group->add('members',array(User::get('id')));
+			$this->view->group->add('members', array(User::get('id')));
 			$this->view->group->update();
-			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email='" . User::get('email') . "' AND gidNumber='" . $this->view->group->get('gidNumber') . "'";
+			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email=" . $this->database->quote(User::get('email')) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber'));
 			$this->database->setQuery($sql);
 			$this->database->query();
 		}
 		elseif (in_array(User::get('id'), $invitees))
 		{
-			$this->view->group->add('members',array(User::get('id')));
-			$this->view->group->remove('invitees',array(User::get('id')));
+			$this->view->group->add('members', array(User::get('id')));
+			$this->view->group->remove('invitees', array(User::get('id')));
 			$this->view->group->update();
 		}
 		else
@@ -1198,8 +1198,8 @@ class Membership extends Base
 		$str = '';
 		for ($i=0; $i<$strLength; $i++)
 		{
-			$d = rand(1,30)%2;
-			$str .= $d ? chr(rand(65,90)) : chr(rand(48,57));
+			$d = rand(1, 30)%2;
+			$str .= $d ? chr(rand(65, 90)) : chr(rand(48, 57));
 		}
 		return strtoupper($str);
 	}
