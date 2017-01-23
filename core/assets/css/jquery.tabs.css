@@ -1,0 +1,110 @@
+/**
+ * @package     hubzero-cms
+ * @file        core/assets/css/jquery.tabs.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+@charset "UTF-8";
+
+dl.tabs {
+	float: left;
+	margin: 0;
+	padding: 0;
+	z-index: 50;
+	position: relative;
+	clear: left;
+	width: 100%;
+	background: #eee;
+}
+dl.tabs>dt {
+	float: left;
+	padding: 1em;
+	margin: 0;
+	border: none;
+	margin-left: 3px;
+	color: #999;
+	-webkit-transition: all ease-in-out 0.2s;
+	-moz-transition: all ease-in-out 0.2s;
+	transition: all ease-in-out 0.2s;
+	line-height: 1em;
+	font-size: 1em;
+}
+dl.tabs>dt a {
+	color: #999;
+	text-decoration: none;
+	border: none;
+}
+dl.tabs>dt:hover,
+dl.tabs>dt a:hover {
+	color: #000;
+	text-decoration: none;
+	border: none;
+}
+dl.tabs>dt.open,
+dl.tabs>dt.open a,
+dl.tabs>dt.current,
+dl.tabs>dt.current a {
+	z-index: 100;
+	color: #424242;
+	font-weight: bold;
+	position: relative;
+}
+dl.tabs>dt.open:before,
+dl.tabs>dt.current:before {
+	position: absolute;
+	width: 0px;
+	height: 0px;
+	display: block;
+	content: "";
+	border: 8px solid #d6d6d6;
+	border-color: transparent transparent rgba(0, 0, 0, 0.15) transparent;
+	overflow: hidden;
+	bottom: -1px;
+	left: 50%;
+	margin-left: -8px;
+}
+
+dl.tabs>dd {
+	margin: 0;
+	padding: 1.618em;
+	position: absolute;
+	top: 3em;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: #f9f9f9;
+	border-top: 1px solid #d6d6d6;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+div.current {
+	clear: both;
+	border-top: 1px solid #d6d6d6;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 1.618em;
+}
+div.current dd {
+	padding: 0;
+	margin: 0;
+}
+
+div.current ul,
+div.current li {
+	list-style: none;
+}
+div.current li {
+	padding: 0.8em 0;
+	border-bottom: 1px solid #eee;
+}
+div.current li:after {
+	content: ".";
+	display: block;
+	height: 0;
+	font-size: 0;
+	line-height: 0;
+	clear: both;
+	visibility: hidden;
+}
+div.current li:last-child {
+	border: none;
+}
