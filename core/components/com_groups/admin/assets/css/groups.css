@@ -13,7 +13,6 @@
 
 */
 /* Group member status */
-	/* Table column */
 	.adminlist tbody .status {
 		font-size: 85%;
 		font-weight: bold;
@@ -30,24 +29,25 @@
 		white-space: nowrap;
 		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
 	}
-	.adminlist tbody .member {
+	.adminlist tbody .status.member {
 		background-color: #66AA00;
 	}
-	.adminlist tbody .member:before {
+	.adminlist tbody .status.member:before {
 		content: "";
 		display: none;
 	}
-	.adminlist tbody .manager {
+	.adminlist tbody .status.manager {
 		background-color: #ff1177;
 	}
-	.adminlist tbody .pending {
+	.adminlist tbody .status.pending {
 		background-color: #AA3300;
 	}
-	.adminlist tbody .invitee,
-	.adminlist tbody .inviteemail {
+	.adminlist tbody .status.invitee,
+	.adminlist tbody .status.inviteemail {
 		background-color: #aaaaaa;
 	}
 
+/* Icons */
 	.toolbar-box .icon-32-promote:before,
 	.state.promote:before {
 		content: "\2191";
@@ -62,9 +62,14 @@
 	.state.demote:hover:before {
 		color: #c55500;
 	}
-	
-	
-	table.adminlist.attention { 
+	.state.archive:before {
+		content: "\f005";
+	}
+	.state.archive:hover:before {
+		color: #7F913C;
+	}
+
+	table.adminlist.attention {
 		border: 1px solid rgba(255,0,0,0.3);
 		background: #fae8e8;
 	}
@@ -72,6 +77,8 @@
 		color: #e55454;
 		border-bottom: 1px solid rgba(255,0,0,0.3);
 	}
+
+/* Needs attention */
 	.attention-view,
 	.attention-actions {
 		margin: 0 0 0 0px;
@@ -107,8 +114,7 @@
 	.attention-view li.preview:before {
 		content: '\f002';
 	}
-	
-	
+
 	.code table {
 		border:2px solid #ccc;
 	}
@@ -132,7 +138,6 @@
 		font-size: 12px;
 		line-height: 16px;
 	}
-	
 
 	.merge-success {
 		position: relative;

@@ -39,7 +39,7 @@ $status  = '';
 $options = '';
 
 //determine group status
-if ($group->get('published') && !User::isGuest())
+if ($group->get('published') == 1 && !User::isGuest())
 {
 	$members = $group->get('members');
 
@@ -75,7 +75,7 @@ if ($group->get('published') && !User::isGuest())
 
 $published = ($group->get('published')) ? true : false;
 ?>
-<div class="group <?php echo (!$published) ? 'notpublished' : '' ?>" id="group<?php echo $group->get('gidNumber'); ?>"
+<div class="group <?php echo (!$published) ? 'notpublished' : ($group->get('published') == 2 ? 'archived' : 'published'); ?>" id="group<?php echo $group->get('gidNumber'); ?>"
 	data-id="<?php echo $group->get('gidNumber'); ?>"
 	data-status="<?php echo $this->escape($status); ?>"
 	data-title="<?php echo $this->escape(stripslashes($group->get('description')) . ' ' . $group->get('cn')); ?>">
@@ -142,33 +142,38 @@ $published = ($group->get('published')) ? true : false;
 					<?php else : ?>
 						<div class="grid">
 							<div class="col span6">
-								<span><?php
-								$activity = \Hubzero\Activity\Recipient::all()
-									->including('log')
-									->whereEquals('scope', 'group')
-									->whereEquals('scope_id', $group->get('gidNumber'))
-									->whereEquals('state', 1)
-									->ordered()
-									->row();
-								$dt = Date::of($activity->get('created'));
-								$ct = Date::of('now');
+								<?php if ($group->published == 2) : ?>
+									<span><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED_HINT'); ?></span>
+									<?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED'); ?>
+								<?php else : ?>
+									<span><?php
+									$activity = \Hubzero\Activity\Recipient::all()
+										->including('log')
+										->whereEquals('scope', 'group')
+										->whereEquals('scope_id', $group->get('gidNumber'))
+										->whereEquals('state', 1)
+										->ordered()
+										->row();
+									$dt = Date::of($activity->get('created'));
+									$ct = Date::of('now');
 
-								$lapsed = $ct->toUnix() - $dt->toUnix();
+									$lapsed = $ct->toUnix() - $dt->toUnix();
 
-								if ($lapsed < 30)
-								{
-									echo Lang::txt('COM_GROUPS_ACTIVITY_JUST_NOW');
-								}
-								elseif ($lapsed > 30 && $lapsed < 60)
-								{
-									echo Lang::txt('COM_GROUPS_ACTIVITY_A_MINUTE_AGO');
-								}
-								else
-								{
-									echo $dt->relative('week');
-								}
-								?></span>
-								<?php echo Lang::txt('COM_GROUPS_ACTIVITY_LAST'); ?>
+									if ($lapsed < 30)
+									{
+										echo Lang::txt('COM_GROUPS_ACTIVITY_JUST_NOW');
+									}
+									elseif ($lapsed > 30 && $lapsed < 60)
+									{
+										echo Lang::txt('COM_GROUPS_ACTIVITY_A_MINUTE_AGO');
+									}
+									else
+									{
+										echo $dt->relative('week');
+									}
+									?></span>
+									<?php echo Lang::txt('COM_GROUPS_ACTIVITY_LAST'); ?>
+								<?php endif; ?>
 							</div>
 							<div class="col span6 omega">
 								<span><?php echo count($members); ?></span>
@@ -176,6 +181,9 @@ $published = ($group->get('published')) ? true : false;
 							</div>
 						</div>
 					<?php endif; ?>
+				<?php elseif ($group->published == 2) : ?>
+					<span><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED_HINT'); ?></span>
+					<?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED'); ?>
 				<?php else : ?>
 					<?php if (!$group->get('join_policy') || $group->get('join_policy') == 1) : ?>
 						<div class="grid">
@@ -188,7 +196,7 @@ $published = ($group->get('published')) ? true : false;
 								<?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
 							</div>
 							<div class="col span6 omega">
-						<a class="btn btn-success tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
+								<a class="btn btn-success tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
 							</div>
 						</div>
 					<?php elseif ($group->get('join_policy') == 3) : ?>

@@ -80,7 +80,7 @@ class Categories extends Base
 		}
 
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))
+		if ($this->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages')))
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}

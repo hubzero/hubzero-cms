@@ -3,6 +3,9 @@
 		content: "\f042";
 	}
 
+	.filter-options select {
+		margin-right: 1em;
+	}
 	.group-list {
 		overflow: hidden;
 		margin: 1em 0 0 0;
