@@ -426,30 +426,63 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'sections':       $response->set('html', $this->sections());       break;
-				case 'newsection':     $response->set('html', $this->sections());       break;
-				case 'editsection':    $response->set('html', $this->sections());       break;
-				case 'savesection':    $response->set('html', $this->savesection());    break;
-				case 'deletesection':  $response->set('html', $this->deletesection());  break;
-
-				case 'categories':     $response->set('html', $this->categories());     break;
-				case 'savecategory':   $response->set('html', $this->savecategory());   break;
-				case 'newcategory':    $response->set('html', $this->editcategory());   break;
-				case 'editcategory':   $response->set('html', $this->editcategory());   break;
-				case 'deletecategory': $response->set('html', $this->deletecategory()); break;
-
-				case 'threads':        $response->set('html', $this->threads());        break;
-				case 'savethread':     $response->set('html', $this->savethread());     break;
-				case 'editthread':     $response->set('html', $this->editthread());     break;
-				case 'deletethread':   $response->set('html', $this->deletethread());   break;
-
-				case 'orderup':        $response->set('html', $this->orderup());        break;
-				case 'orderdown':      $response->set('html', $this->orderdown());      break;
-
-				case 'download':       $response->set('html', $this->download());       break;
-				case 'search':         $response->set('html', $this->panel());          break;
-
-				default: $response->set('html', $this->panel()); break;
+				case 'sections':
+					$response->set('html', $this->sections());
+					break;
+				case 'newsection':
+					$response->set('html', $this->sections());
+					break;
+				case 'editsection':
+					$response->set('html', $this->sections());
+					break;
+				case 'savesection':
+					$response->set('html', $this->savesection());
+					break;
+				case 'deletesection':
+					$response->set('html', $this->deletesection());
+					break;
+				case 'categories':
+					$response->set('html', $this->categories());
+					break;
+				case 'savecategory':
+					$response->set('html', $this->savecategory());
+					break;
+				case 'newcategory':
+					$response->set('html', $this->editcategory());
+					break;
+				case 'editcategory':
+					$response->set('html', $this->editcategory());
+					break;
+				case 'deletecategory':
+					$response->set('html', $this->deletecategory());
+					break;
+				case 'threads':
+					$response->set('html', $this->threads());
+					break;
+				case 'savethread':
+					$response->set('html', $this->savethread());
+					break;
+				case 'editthread':
+					$response->set('html', $this->editthread());
+					break;
+				case 'deletethread':
+					$response->set('html', $this->deletethread());
+					break;
+				case 'orderup':
+					$response->set('html', $this->orderup());
+					break;
+				case 'orderdown':
+					$response->set('html', $this->orderdown());
+					break;
+				case 'download':
+					$response->set('html', $this->download());
+					break;
+				case 'search':
+					$response->set('html', $this->panel());
+					break;
+				default:
+					$response->set('html', $this->panel());
+					break;
 			}
 		}
 
