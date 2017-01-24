@@ -17,7 +17,7 @@ class Migration20170124191209ComCitations extends Base
 	{
 		if ($this->db->tableExists('#__citations_authors'))
 		{
-			if (!$this->db->tableHasKey('#__citations_authors', 'idx_cid'))
+			if ($this->db->tableHasField('#__citations_authors', 'cid') && !$this->db->tableHasKey('#__citations_authors', 'idx_cid'))
 			{
 				$query = "ALTER IGNORE TABLE `#__citations_authors` ADD INDEX `idx_cid` (`cid`)";
 				$this->db->setQuery($query);
@@ -38,7 +38,7 @@ class Migration20170124191209ComCitations extends Base
 				$this->db->query();
 			}
 
-			if (!$this->db->tableHasKey('#__citations_authors', 'idx_uidNumber'))
+			if ($this->db->tableHasField('#__citations_authors', 'uidNumber') && !$this->db->tableHasKey('#__citations_authors', 'idx_uidNumber'))
 			{
 				$query = "ALTER IGNORE TABLE `#__citations_authors` ADD INDEX `idx_uidNumber` (`uidNumber`)";
 				$this->db->setQuery($query);
@@ -48,7 +48,7 @@ class Migration20170124191209ComCitations extends Base
 
 		if ($this->db->tableExists('#__citations_format'))
 		{
-			if (!$this->db->tableHasKey('#__citations_format', 'idx_typeid'))
+			if ($this->db->tableHasField('#__citations_format', 'typeid') && !$this->db->tableHasKey('#__citations_format', 'idx_typeid'))
 			{
 				$query = "ALTER IGNORE TABLE `#__citations_format` ADD INDEX `idx_typeid` (`typeid`)";
 				$this->db->setQuery($query);
@@ -58,7 +58,7 @@ class Migration20170124191209ComCitations extends Base
 
 		if ($this->db->tableExists('#__citations_links'))
 		{
-			if (!$this->db->tableHasKey('#__citations_links', 'idx_citation_id'))
+			if ($this->db->tableHasField('#__citations_links', 'citation_id') && !$this->db->tableHasKey('#__citations_links', 'idx_citation_id'))
 			{
 				$query = "ALTER IGNORE TABLE `#__citations_links` ADD INDEX `idx_citation_id` (`citation_id`)";
 				$this->db->setQuery($query);
