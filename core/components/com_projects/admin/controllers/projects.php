@@ -259,7 +259,7 @@ class Projects extends AdminController
 		// Get activity counts
 		$counts = Event::trigger('projects.onProjectCount', array($model, 1));
 		$counts = Helpers\Html::getCountArray($counts);
-		$counts['activity'] = $objAC->getActivityCount($model->get('id'), User:: get('id'));
+		$counts['activity'] = $objAC->getActivityCount($model->get('id'), User::get('id'));
 		$this->view->counts = $counts;
 
 		// Get team
@@ -438,7 +438,7 @@ class Projects extends AdminController
 		$incoming = Request::getVar('params', array());
 		if (!empty($incoming))
 		{
-			foreach ($incoming as $key=>$value)
+			foreach ($incoming as $key => $value)
 			{
 				if ($key == 'quota' || $key == 'pubQuota')
 				{
@@ -790,7 +790,7 @@ class Projects extends AdminController
 		{
 			// Delete base dir for .git repos
 			$dir     = $alias;
-			$prefix  = $this->config->get('offroot', 0) ? '' : PATH_CORE ;
+			$prefix  = $this->config->get('offroot', 0) ? '' : PATH_CORE;
 			$repodir = DS . trim($this->config->get('webpath'), DS);
 			$path    = $prefix . $repodir . DS . $dir;
 
@@ -853,7 +853,7 @@ class Projects extends AdminController
 		}
 
 		// Delete base dir for .git repos
-		$prefix  = $this->config->get('offroot', 0) ? '' : PATH_APP ;
+		$prefix  = $this->config->get('offroot', 0) ? '' : PATH_APP;
 		$repodir = trim($this->config->get('webpath'), DS);
 		$path    = $prefix . DS . $repodir . DS . $obj->alias . DS . 'files';
 
