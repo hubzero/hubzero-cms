@@ -94,7 +94,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 
 	<div class="activity-content <?php echo $this->escape($this->row->log->get('action')); ?> <?php echo $this->escape(str_replace('.', '-', $this->row->log->get('scope'))); ?>">
 		<div class="activity-body">
-				<div class="activity-details">
+			<div class="activity-details">
 				<span class="activity-actor"><?php echo $name; ?></span>
 				<span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
 				<span class="activity-channel"><?php echo $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')); ?></span>
@@ -207,6 +207,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 			</div><!-- / .activity-event -->
 
 			<div class="activity-options">
+				<?php if ($this->group->published == 1) { ?>
 				<ul class="activity-options-main">
 					<?php if ($this->row->log->get('scope') == 'activity.comment' && !$this->row->log->get('parent')) { ?>
 						<li>
@@ -266,10 +267,12 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 						</ul>
 					</li>*/ ?>
 				</ul>
+				<?php } ?>
 			</div><!-- / .activity-options -->
+			
 		</div><!-- / .activity-body -->
 
-		<?php if ($this->row->log->get('scope') == 'activity.comment') { ?>
+		<?php if ($this->group->published == 1 && $this->row->log->get('scope') == 'activity.comment') { ?>
 			<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->row->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->row->get('id'); ?>">
 				<form id="cform<?php echo $this->row->get('id'); ?>" action="<?php echo Route::url($base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>

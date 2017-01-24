@@ -98,11 +98,14 @@ if ($this->cats)
 }
 
 ?>
-<ul id="page_options">
-	<li>
-		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&group=' . $this->group->get('cn')); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'); ?></a>
-	</li>
-</ul>
+
+<?php if ($this->group->published == 1) { ?>
+	<ul id="page_options">
+		<li>
+			<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&group=' . $this->group->get('cn')); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'); ?></a>
+		</li>
+	</ul>
+<?php } ?>
 
 <section class="section">
 	<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources'); ?>">

@@ -52,7 +52,7 @@ $baseURI .= $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn')
 $type          = Request::getWord('type', '', 'get');
 $ckeditor      = Request::getVar('CKEditor', '', 'get');
 $ckeditorFunc  = Request::getInt('CKEditorFuncNum', 0, 'get');
-$ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' . $ckeditorFunc;
+$ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' . $ckeditorFunc;
 ?>
 
 <script type="text/javascript">
@@ -191,12 +191,16 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 								<a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return ckeditorInsertFile('<?php echo $downloadPath; ?>');"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
 							<?php endif; ?>
 							<a href="<?php echo $downloadPath; ?>" class="btn btn-secondary icon-download action-download"><?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
-							<a href="<?php echo $renamePath; ?>" class="btn btn-secondary icon-edit action-rename"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></a>
-							<a href="<?php echo $movePath; ?>" class="btn btn-secondary icon-move action-move"><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?></a>
+							<?php if ($this->group->published == 1) : ?>
+								<a href="<?php echo $renamePath; ?>" class="btn btn-secondary icon-edit action-rename"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></a>
+								<a href="<?php echo $movePath; ?>" class="btn btn-secondary icon-move action-move"><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?></a>
+							<?php endif; ?>
 							<?php if ($isArchive) : ?>
 								<a href="<?php echo $extractPath; ?>" class="btn btn-secondary icon-extract action-extract"><?php echo Lang::txt('COM_GROUPS_MEDIA_EXTRACT'); ?></a>
 							<?php endif; ?>
-							<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
+							<?php if ($this->group->published == 1) : ?>
+								<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
+							<?php endif; ?>
 						</li>
 					</ul>
 				</div>

@@ -45,7 +45,7 @@ $first = $this->archive->entries(array(
 	->limit(1)
 	->row();
 ?>
-<?php if ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+<?php if ($this->group->published == 1 && ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
 	<ul id="page_options">
 	<?php if ($this->canpost) { ?>
 		<li>
@@ -127,14 +127,16 @@ $first = $this->archive->entries(array(
 				<dd class="state">
 					<?php echo $this->row->visibility('text'); ?>
 				</dd>
-				<dd class="entry-options">
-					<a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
-						<span><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?></span>
-					</a>
-					<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
-						<span><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?></span>
-					</a>
-				</dd>
+				<?php if ($this->group->published == 1) { ?>
+					<dd class="entry-options">
+						<a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
+							<span><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?></span>
+						</a>
+						<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
+							<span><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?></span>
+						</a>
+					</dd>
+				<?php } ?>
 			<?php } ?>
 			</dl>
 
@@ -147,32 +149,32 @@ $first = $this->archive->entries(array(
 			if ($name = $this->row->creator->get('name'))
 			{
 				$name = $this->escape(stripslashes($name));
-			?>
-			<div class="entry-author">
-				<h3><?php echo Lang::txt('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
-				<p class="entry-author-photo">
-					<img src="<?php echo $this->row->creator->picture(); ?>" alt="" />
-				</p>
-				<div class="entry-author-content">
-					<h4>
-						<?php if (in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
-							<a href="<?php echo Route::url($this->row->creator->link()); ?>">
-								<?php echo $name; ?>
-							</a>
-						<?php } else { ?>
-							<?php echo $name; ?>
-						<?php } ?>
-					</h4>
-					<p class="entry-author-bio">
-						<?php if ($this->row->creator->get('bio')) { ?>
-							<?php echo $this->row->creator->get('bio'); ?>
-						<?php } else { ?>
-							<em><?php echo Lang::txt('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?></em>
-						<?php } ?>
+				?>
+				<div class="entry-author">
+					<h3><?php echo Lang::txt('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
+					<p class="entry-author-photo">
+						<img src="<?php echo $this->row->creator->picture(); ?>" alt="" />
 					</p>
+					<div class="entry-author-content">
+						<h4>
+							<?php if (in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+								<a href="<?php echo Route::url($this->row->creator->link()); ?>">
+									<?php echo $name; ?>
+								</a>
+							<?php } else { ?>
+								<?php echo $name; ?>
+							<?php } ?>
+						</h4>
+						<p class="entry-author-bio">
+							<?php if ($this->row->creator->get('bio')) { ?>
+								<?php echo $this->row->creator->get('bio'); ?>
+							<?php } else { ?>
+								<em><?php echo Lang::txt('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?></em>
+							<?php } ?>
+						</p>
+					</div>
 				</div>
-			</div>
-			<?php
+				<?php
 			}
 			?>
 		</div>
@@ -248,98 +250,103 @@ $first = $this->archive->entries(array(
 				</p>
 			<?php } ?>
 
-			<h3 class="below_heading">
-				<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_COMMENT'); ?>
-			</h3>
+			<?php if ($this->group->published == 1) { ?>
+				<h3 class="below_heading">
+					<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_COMMENT'); ?>
+				</h3>
 
-			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
-				<p class="comment-member-photo">
-					<img src="<?php echo User::picture(User::isGuest() ? 1 : 0); ?>" alt="" />
-				</p>
-				<fieldset>
-					<?php
-						$replyto = $this->row->comments()
-							->whereEquals('id', Request::getInt('reply', 0))
-							->whereIn('state', array(
-								Components\Blog\Models\Comment::STATE_PUBLISHED,
-								Components\Blog\Models\Comment::STATE_FLAGGED
-							))
-							->row();
+				<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
+					<p class="comment-member-photo">
+						<img src="<?php echo User::picture(User::isGuest() ? 1 : 0); ?>" alt="" />
+					</p>
+					<fieldset>
+						<?php
+							$replyto = $this->row->comments()
+								->whereEquals('id', Request::getInt('reply', 0))
+								->whereIn('state', array(
+									Components\Blog\Models\Comment::STATE_PUBLISHED,
+									Components\Blog\Models\Comment::STATE_FLAGGED
+								))
+								->row();
 
-						if ($replyto->get('id'))
-						{
-							$name = Lang::txt('PLG_GROUPS_BLOG_ANONYMOUS');
-							if (!$replyto->get('anonymous'))
+							if ($replyto->get('id'))
 							{
-								$name = $this->escape(stripslashes($replyto->creator->get('name', $name)));
-								if (in_array($replyto->creator->get('access'), User::getAuthorisedViewLevels()))
+								$name = Lang::txt('PLG_GROUPS_BLOG_ANONYMOUS');
+								if (!$replyto->get('anonymous'))
 								{
-									$name = '<a href="' . Route::url($replyto->creator->link()) . '">' . $name . '</a>';
+									$name = $this->escape(stripslashes($replyto->creator->get('name', $name)));
+									if (in_array($replyto->creator->get('access'), User::getAuthorisedViewLevels()))
+									{
+										$name = '<a href="' . Route::url($replyto->creator->link()) . '">' . $name . '</a>';
+									}
 								}
-							}
-					?>
-					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
-						<p>
-							<strong><?php echo $name; ?></strong>
-							<span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span>
-							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
-							<span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
-							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
-						</p>
-						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?></p>
-					</blockquote>
-					<?php } ?>
+						?>
+						<blockquote cite="c<?php echo $replyto->get('id'); ?>">
+							<p>
+								<strong><?php echo $name; ?></strong>
+								<span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span>
+								<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
+								<span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
+								<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+							</p>
+							<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?></p>
+						</blockquote>
+						<?php } ?>
 
-					<?php if (!User::isGuest()) { ?>
-						<label for="comment_content">
-							Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-							<?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
-						</label>
+						<?php if (!User::isGuest()) { ?>
+							<label for="comment_content">
+								Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
+								<?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
+							</label>
 
-						<label id="comment-anonymous-label">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
-						</label>
+							<label id="comment-anonymous-label">
+								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+								<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
+							</label>
 
-						<p class="submit">
-							<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
-						</p>
-					<?php } else { ?>
-						<p class="warning">
-							<?php echo Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="'. Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
-						</p>
-					<?php } ?>
+							<p class="submit">
+								<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
+							</p>
+						<?php } else { ?>
+							<p class="warning">
+								<?php echo Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="'. Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
+							</p>
+						<?php } ?>
 
-					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
-					<input type="hidden" name="comment[id]" value="0" />
-					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->get('id'); ?>" />
-					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
-					<input type="hidden" name="comment[created]" value="" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
-					<input type="hidden" name="comment[state]" value="1" />
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="active" value="blog" />
-					<input type="hidden" name="action" value="savecomment" />
+						<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+						<input type="hidden" name="comment[id]" value="0" />
+						<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->get('id'); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
+						<input type="hidden" name="comment[created]" value="" />
+						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
+						<input type="hidden" name="comment[state]" value="1" />
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="active" value="blog" />
+						<input type="hidden" name="action" value="savecomment" />
 
-					<?php echo Html::input('token'); ?>
+						<?php echo Html::input('token'); ?>
 
-					<div class="sidenote">
-						<p>
-							<strong><?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
-						</p>
-						<p>
-							<?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENT_HELP'); ?>
-						</p>
-					</div>
-				</fieldset>
-			</form>
+						<div class="sidenote">
+							<p>
+								<strong><?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
+							</p>
+							<p>
+								<?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENT_HELP'); ?>
+							</p>
+						</div>
+					</fieldset>
+				</form>
+			<?php } ?>
 		</div><!-- / .subject -->
 		<aside class="aside">
-			<p>
-				<a class="icon-add btn" href="#post-comment">
-					<?php echo Lang::txt('PLG_GROUPS_BLOG_ADD_A_COMMENT'); ?>
-				</a>
-			</p>
+			<?php if ($this->group->published == 1) { ?>
+				<p>
+					<a class="icon-add btn" href="#post-comment">
+						<?php echo Lang::txt('PLG_GROUPS_BLOG_ADD_A_COMMENT'); ?>
+					</a>
+				</p>
+			<?php } ?>
 		</aside><!-- / .aside -->
 	</section>
 <?php } //end if allow comments ?>
+

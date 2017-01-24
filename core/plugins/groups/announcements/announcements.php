@@ -58,13 +58,13 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$extension = 'plg_' . $this->_type . '_' . $this->_name;
 		}
 
-		$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+		$group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
 		if ($group && $group->isSuperGroup())
 		{
 			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
 		}
 
-		$lang = \App::get('language');
+		$lang = App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
@@ -98,7 +98,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	public function onBeforeGroup($group, $authorized)
 	{
 		// Get plugin access
-		$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'announcements');
+		$access = Hubzero\User\Group\Helper::getPluginAccess($group, 'announcements');
 
 		// if set to nobody make sure cant access
 		// check if guest and force login if plugin access is registered or members
@@ -111,10 +111,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Find announcements
-		$rows = \Hubzero\Item\Announcement::all()
+		$rows = Hubzero\Item\Announcement::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $group->get('gidNumber'))
-			->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED)
+			->whereEquals('state', Hubzero\Item\Announcement::STATE_PUBLISHED)
 			->whereEquals('sticky', 1)
 			->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
 				->orWhere('publish_up', '<=', Date::toSql(), 1)
@@ -163,7 +163,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			'metadata'=>''
 		);
 
-		//get this area details
+		// Get this area details
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
@@ -175,7 +175,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//get the group members
+		// Get the group members
 		$members = $group->get('members');
 
 		// Set some variables so other functions have access
@@ -186,23 +186,23 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$this->action     = $action;
 		$this->access     = $access;
 
-		//if we want to return content
+		// If we want to return content
 		if ($returnhtml)
 		{
-			//set group members plugin access level
+			// Set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//if were not trying to subscribe
+			// If were not trying to subscribe
 			if ($this->action != 'subscribe')
 			{
-				//if set to nobody make sure cant access
+				// If set to nobody make sure cant access
 				if ($group_plugin_acl == 'nobody')
 				{
 					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 
-				//check if guest and force login if plugin access is registered or members
+				// Check if guest and force login if plugin access is registered or members
 				if (User::isGuest()
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
@@ -216,7 +216,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 					return;
 				}
 
-				//check to see if user is member and plugin access requires members
+				// Check to see if user is member and plugin access requires members
 				if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members')
 				{
 					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
@@ -224,21 +224,30 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			//run task based on action
+			// Run task based on action
 			switch ($this->action)
 			{
-				case 'save':   $arr['html'] .= $this->_save();   break;
-				case 'new':    $arr['html'] .= $this->_edit();   break;
-				case 'edit':   $arr['html'] .= $this->_edit();   break;
-				case 'delete': $arr['html'] .= $this->_delete(); break;
-				default:       $arr['html'] .= $this->_list();
+				case 'save':
+					$arr['html'] .= $this->_save();
+					break;
+				case 'new':
+					$arr['html'] .= $this->_edit();
+					break;
+				case 'edit':
+					$arr['html'] .= $this->_edit();
+					break;
+				case 'delete':
+					$arr['html'] .= $this->_delete();
+					break;
+				default:
+					$arr['html'] .= $this->_list();
 			}
 		}
 
 		if (!isset($this->total))
 		{
 			// Find announcements
-			$model = \Hubzero\Item\Announcement::all()
+			$model = Hubzero\Item\Announcement::all()
 				->whereEquals('scope', 'group')
 				->whereEquals('scope_id', $group->get('gidNumber'))
 				->whereEquals('state', 1);
@@ -280,10 +289,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		);
 
 		// Find announcements
-		$model = \Hubzero\Item\Announcement::all()
+		$model = Hubzero\Item\Announcement::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $this->group->get('gidNumber'))
-			->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED);
+			->whereEquals('state', Hubzero\Item\Announcement::STATE_PUBLISHED);
 
 		if ($filters['search'])
 		{
@@ -334,14 +343,20 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$id = Request::getInt('id', 0);
 
 			// Create new announcement Object
-			$model = \Hubzero\Item\Announcement::oneOrNew($id);
+			$model = Hubzero\Item\Announcement::oneOrNew($id);
+		}
+
+		// Make sure the group is published
+		if ($this->group->published != 1)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
+			return $this->_list();
 		}
 
 		// Make sure its this groups announcement
 		if (!$model->belongsToObject('group', $this->group->get('gidNumber')))
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
-
 			return $this->_list();
 		}
 
@@ -361,14 +376,21 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save an entry
 	 *
-	 * @return   mixed  An html view on error, redirects on success
+	 * @return  mixed  An html view on error, redirects on success
 	 */
 	private function _save()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
-		//verify were authorized
+		// Make sure the group is published
+		if ($this->group->published != 1)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
+			return $this->_list();
+		}
+
+		// Verify were authorized
 		if ($this->authorized != 'manager')
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_CREATE'));
@@ -379,16 +401,16 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
-		// email announcement
+		// Email announcement
 		$email = (isset($fields['email']) && $fields['email'] == 1) ? true : false;
 
-		//mark as not sent if we want to email again
+		// Mark as not sent if we want to email again
 		if ($email === true)
 		{
 			$fields['sent'] = 0;
 		}
 
-		// are we creating the announcement?
+		// Are we creating the announcement?
 		if (!isset($fields['id']) || $fields['id'] == 0)
 		{
 			$fields['id']         = 0;
@@ -398,26 +420,26 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$fields['created_by'] = User::get('id');
 		}
 
-		//do we want to mark sticky?
+		// Do we want to mark sticky?
 		$fields['sticky'] = (isset($fields['sticky']) && $fields['sticky'] == 1) ? 1 : 0;
 
-		//do we want to mark as high priority
+		// Do we want to mark as high priority
 		$fields['priority'] = (isset($fields['priority']) && $fields['priority'] == 1) ? 1 : 0;
 
-		//format publish up
+		// Format publish up
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00')
 		{
 			$fields['publish_up'] = Date::of(str_replace('@', '', $fields['publish_up']), Config::get('offset'))->toSql();
 		}
 
-		//format publish down
+		// Format publish down
 		if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00')
 		{
 			$fields['publish_down'] = Date::of(str_replace('@', '', $fields['publish_down']), Config::get('offset'))->toSql();
 		}
 
 		// Bind data
-		$model = \Hubzero\Item\Announcement::oneOrNew($fields['id'])->set($fields);
+		$model = Hubzero\Item\Announcement::oneOrNew($fields['id'])->set($fields);
 
 		if ($model->get('publish_down') != '0000-00-00 00:00:00'
 		 && $model->get('publish_up') > $model->get('publish_down'))
@@ -458,7 +480,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'announcement',
 				'scope_id'    => $model->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
 				'details'     => array(
 					'url'   => Route::url($url),
 					'id'    => $this->group->get('gidNumber'),
@@ -484,7 +506,14 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	 */
 	private function _delete()
 	{
-		//verify were authorized
+		// Make sure the group is published
+		if ($this->group->published != 1)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
+			return $this->_list();
+		}
+
+		// Verify were authorized
 		if ($this->authorized != 'manager')
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_DELETE'));
@@ -494,7 +523,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$id = Request::getInt('id', 0);
 
-		$model = \Hubzero\Item\Announcement::oneOrFail($id);
+		$model = Hubzero\Item\Announcement::oneOrFail($id);
 
 		// Make sure we are the one who created it
 		if ($model->get('created_by') != User::get('id') && $this->authorized != 'manager')
@@ -504,7 +533,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set to deleted state
-		$model->set('state', \Hubzero\Item\Announcement::STATE_DELETED);
+		$model->set('state', Hubzero\Item\Announcement::STATE_DELETED);
 
 		// Attempt to delete announcement
 		if (!$model->save())
@@ -528,7 +557,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				'action'      => 'deleted',
 				'scope'       => 'announcement',
 				'scope_id'    => $model->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
 				'details'     => array(
 					'url'   => Route::url($url),
 					'id'    => $this->group->get('gidNumber'),
@@ -556,7 +585,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	 */
 	public static function send($announcement, $group)
 	{
-		// get all group members
+		// Get all group members
 		$groupMembers = array();
 		foreach ($group->get('members') as $member)
 		{
@@ -577,14 +606,14 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		// create view object
-		$eview = new \Hubzero\Mail\View(array(
+		// Create view object
+		$eview = new Hubzero\Mail\View(array(
 			'base_path' => __DIR__,
 			'name'      => 'email',
 			'layout'    => 'announcement_plain'
 		));
 
-		// plain text
+		// Plain text
 		$eview->set('announcement', $announcement);
 		$plain = $eview->loadTemplate(false);
 		$plain = str_replace("\n", "\r\n", $plain);
@@ -594,21 +623,21 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
-		// set from address
+		// Set from address
 		$from = array(
-			'name'  => Config::get('sitename') . ' Groups',
+			'name'  => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_NAME', Config::get('sitename')),
 			'email' => Config::get('mailfrom')
 		);
 
-		// define subject
-		$subject = $group->get('description') . ' Group Announcement';
+		// Define subject
+		$subject = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_SUBJECT', $group->get('description'));
 
 		foreach ($groupMembers as $email => $name)
 		{
-			// create message object
-			$message = new \Hubzero\Mail\Message();
+			// Create message object
+			$message = new Hubzero\Mail\Message();
 
-			// set message details and send
+			// Set message details and send
 			$message->setSubject($subject)
 					->addReplyTo($from['email'], $from['name'])
 					->addFrom($from['email'], $from['name'])
@@ -618,7 +647,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 					->send();
 		}
 
-		// all good
+		// All good
 		return true;
 	}
 }

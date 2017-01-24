@@ -143,14 +143,29 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 			$action = Request::getCmd('action', 'feed');
 
+			if ($this->group->published != 1)
+			{
+				$action = 'feed';
+			}
+
 			switch ($action)
 			{
-				case 'post':     $arr['html'] = $this->postAction(); break;
-				case 'remove':   $arr['html'] = $this->removeAction(); break;
-				case 'unstar':   $arr['html'] = $this->starAction(); break;
-				case 'star':     $arr['html'] = $this->starAction(); break;
+				case 'post':
+					$arr['html'] = $this->postAction();
+					break;
+				case 'remove':
+					$arr['html'] = $this->removeAction();
+					break;
+				case 'unstar':
+					$arr['html'] = $this->starAction();
+					break;
+				case 'star':
+					$arr['html'] = $this->starAction();
+					break;
 				case 'feed':
-				default:         $arr['html'] = $this->feedAction(); break;
+				default:
+					$arr['html'] = $this->feedAction();
+					break;
 			}
 
 			$arr['html'] = $this->feedAction();

@@ -216,19 +216,21 @@ $this->css()
 										<?php } ?>
 									</span>
 								</td>
-								<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread') || User::get('id') == $row->get('created_by')) { ?>
-									<td class="entry-options">
-										<?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
-											<a class="icon-edit edit" href="<?php echo Route::url($base . '/' . $row->get('id') . '/edit'); ?>">
-												<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>
-											</a>
-										<?php } ?>
-										<?php if ($this->config->get('access-delete-thread')) { ?>
-											<a class="icon-delete delete" href="<?php echo Route::url($base . '/' . $row->get('id') . '/delete'); ?>">
-												<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>
-											</a>
-										<?php } ?>
-									</td>
+								<?php if ($this->group->published == 1) { ?>
+									<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread') || User::get('id') == $row->get('created_by')) { ?>
+										<td class="entry-options">
+											<?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
+												<a class="icon-edit edit" href="<?php echo Route::url($base . '/' . $row->get('id') . '/edit'); ?>">
+													<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>
+												</a>
+											<?php } ?>
+											<?php if ($this->config->get('access-delete-thread')) { ?>
+												<a class="icon-delete delete" href="<?php echo Route::url($base . '/' . $row->get('id') . '/delete'); ?>">
+													<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>
+												</a>
+											<?php } ?>
+										</td>
+									<?php } ?>
 								<?php } ?>
 							</tr>
 						<?php } ?>

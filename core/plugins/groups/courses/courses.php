@@ -41,7 +41,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -59,13 +59,13 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 			$extension = 'plg_' . $this->_type . '_' . $this->_name;
 		}
 
-		$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+		$group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
 		if ($group && $group->isSuperGroup())
 		{
 			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
 		}
 
-		$lang = \App::get('language');
+		$lang = App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
@@ -75,7 +75,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -92,15 +92,15 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -110,7 +110,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
+			'html' => '',
 			'name' => $active
 		);
 
@@ -126,11 +126,8 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$this->group    = $group;
-		$this->database = App::get('db');
-
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-		$model = \Components\Courses\Models\Courses::getInstance();
+		require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
+		$model = Components\Courses\Models\Courses::getInstance();
 
 		$filters = array(
 			'group'    => $group->get('cn'),
@@ -143,57 +140,56 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 		// Build the HTML
 		if ($return == 'html')
 		{
-			$view = $this->view('default', 'display');
-			$view->option = $option;
-			$view->group  = $group;
-
-			$view->filters = $filters;
-			$view->filters['count'] = false;
-			$view->filters['limit'] = Request::getState(
+			$filters['count'] = false;
+			$filters['limit'] = Request::getState(
 				$option . '.plugin.courses.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			);
-			$view->filters['start'] = Request::getState(
+			$filters['start'] = Request::getState(
 				$option . '.plugin.courses.limitstart',
 				'limitstart',
 				0,
 				'int'
 			);
-			$view->filters['sortby'] = Request::getState(
+			$filters['sortby'] = Request::getState(
 				$option . '.plugin.courses.sortby',
 				'sortby',
 				''
 			);
-			$view->filters['search'] = Request::getState(
+			$filters['search'] = Request::getState(
 				$option . '.plugin.courses.search',
 				'search',
 				''
 			);
-			$view->filters['index'] = '';
-			$view->filters['tag'] = '';
+			$filters['index'] = '';
+			$filters['tag'] = '';
 
-			if (!in_array($view->filters['sortby'], array('alias', 'title', 'popularity')))
+			if (!in_array($filters['sortby'], array('alias', 'title', 'popularity')))
 			{
-				$view->filters['sortby'] = 'title';
+				$filters['sortby'] = 'title';
 			}
-			switch ($view->filters['sortby'])
+			switch ($filters['sortby'])
 			{
 				case 'popularity':
-					$view->filters['sort']  = 'students';
-					$view->filters['sort_Dir'] = 'DESC';
+					$filters['sort']  = 'students';
+					$filters['sort_Dir'] = 'DESC';
 				break;
 				case 'title':
 				case 'alias':
 				default:
-					$view->filters['sort']  = $view->filters['sortby'];
-					$view->filters['sort_Dir'] = 'ASC';
+					$filters['sort']  = $filters['sortby'];
+					$filters['sort_Dir'] = 'ASC';
 				break;
 			}
 
-			$view->total   = $arr['metadata']['count'];
-			$view->results = $model->courses($view->filters);
+			$view = $this->view('default', 'display')
+				->set('filters', $filters)
+				->set('option', $option)
+				->set('group', $group)
+				->set('total', $arr['metadata']['count'])
+				->set('results', $model->courses($filters));
 
 			$arr['html'] = $view->loadTemplate();
 		}

@@ -122,6 +122,7 @@ defined('_HZEXEC_') or die();
 				}
 				?>
 			</div><!-- / .comment-attachments -->
+		<?php if ($this->group->published == 1) { ?>
 			<p class="comment-options">
 			<?php if (
 						$this->config->get('access-manage-thread')
@@ -210,6 +211,7 @@ defined('_HZEXEC_') or die();
 					</form>
 				</div><!-- / .addcomment -->
 			<?php } ?>
+		<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
 		if ($this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3))

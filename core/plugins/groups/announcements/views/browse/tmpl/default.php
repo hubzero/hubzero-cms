@@ -38,7 +38,7 @@ $this->css();
 $this->js();
 ?>
 
-<?php if ($this->authorized == 'manager') : ?>
+<?php if ($this->group->published == 1 && $this->authorized == 'manager') : ?>
 	<ul id="page_options">
 		<li>
 			<a class="icon-add btn add" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=announcements&action=new'); ?>">

@@ -251,6 +251,9 @@
 	}
 
 	/* Options */
+	.activity-options {
+		min-height: 3em;
+	}
 	.activity-options .icon-share:before {
 		content: "\f064";
 	}
