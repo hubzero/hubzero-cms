@@ -56,7 +56,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<span>&ndash;&nbsp;<?php echo $this->calendar->get('title'); ?></span>
 		<?php endif; ?>
 	</span>
-	<?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
+	<?php if ($this->group->published == 1 && ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager')) : ?>
 		<?php if (!isset($this->calendar) || !$this->calendar->get('readonly')) : ?>
 			<a class="delete" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
 				Delete

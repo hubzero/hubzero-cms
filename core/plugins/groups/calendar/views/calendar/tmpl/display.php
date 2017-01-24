@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if (in_array(User::get('id'), $this->members)) : ?>
+<?php if ($this->group->published == 1 && in_array(User::get('id'), $this->members)) : ?>
 	<ul id="page_options">
 		<li>
 			<a class="icon-add btn add" title="<?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=add'); ?>">

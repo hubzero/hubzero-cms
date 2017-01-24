@@ -37,25 +37,20 @@ defined('_HZEXEC_') or die();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
+<?php if ($this->group->published == 1) { ?>
+	<ul id="page_options">
+		<li>
+			<a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
+				<?php echo Lang::txt('Back to Events Calendar'); ?>
+			</a>
+			<a class="icon-add btn add" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">
+				<?php echo Lang::txt('Add Calendar'); ?>
+			</a>
 
-<ul id="page_options">
-	<li>
-		<a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
-			<?php echo Lang::txt('Back to Events Calendar'); ?>
-		</a>
-		<a class="icon-add btn add" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">
-			<?php echo Lang::txt('Add Calendar'); ?>
-		</a>
+		</li>
+	</ul>
+<?php } ?>
 
-	</li>
-</ul>
-<!--
-<div class="event-title-bar">
-	<span class="event-title">
-		<?php echo Lang::txt('Group Calendars'); ?>
-	</span>
-</div>
--->
 <table class="group-calendars">
 	<thead>
 		<tr>
