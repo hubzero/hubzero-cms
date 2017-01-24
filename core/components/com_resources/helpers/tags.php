@@ -288,7 +288,7 @@ class Tags extends Cloud
 			$query .= $fquery;
 		}
 		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->quote($now) . ") ";
-		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '" . $this->_db->quote($now) . ") AND ";
+		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
 
 		if (!\User::isGuest())
 		{
