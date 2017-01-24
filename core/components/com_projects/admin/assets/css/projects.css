@@ -49,3 +49,14 @@
 	.toolbar-box .icon-32-accesspublic:before {
 		content: "\f06e";
 	}
+
+	.inactive {
+		color: #ccc;
+		font-style: italic;
+	}
+	.archived {
+		color: #ccc;
+	}
+	.setup {
+		color: orange;
+	}

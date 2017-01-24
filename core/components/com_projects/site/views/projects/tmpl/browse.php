@@ -51,9 +51,11 @@ $total = $this->model->entries('count', $this->filters);
 
 	<?php if (User::authorise('core.create', $this->option)) { ?>
 		<div id="content-header-extra">
-			<ul id="useroptions">
-				<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
-			</ul>
+			<p>
+				<a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>">
+					<?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?>
+				</a>
+			</p>
 		</div><!-- / #content-header-extra -->
 	<?php } ?>
 </header><!-- / #content-header -->
@@ -72,9 +74,9 @@ $total = $this->model->entries('count', $this->filters);
 		<div class="container">
 			<nav class="entries-filters">
 				<?php
-				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-				$qs .= ($this->filters['start'] ? '&limitstart=' . $this->escape($this->filters['start']) : '');
-				$qs .= ($this->filters['limit'] ? '&limit=' . $this->escape($this->filters['limit']) : '');
+				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search'])    : '');
+				$qs .= ($this->filters['start']  ? '&limitstart=' . $this->escape($this->filters['start']) : '');
+				$qs .= ($this->filters['limit']  ? '&limit=' . $this->escape($this->filters['limit'])      : '');
 				$qs .= '&sortdir=' . $sortbyDir;
 				if ($this->filters['reviewer'])
 				{
@@ -85,16 +87,23 @@ $total = $this->model->entries('count', $this->filters);
 					<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
 					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
 				</ul>
-				<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
-					<ul class="entries-menu filter-options">
-						<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=all&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_ALL')); ?></a></li>
-						<li><a class="filter-pending<?php if ($this->filters['filterby'] == 'pending') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=pending&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_PENDING')); ?></a></li>
-					</ul>
-				<?php } ?>
+				<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_PROJECTS_BROWSE_SHOW'); ?>">
+					<li>
+						<select name="filterby">
+							<option value="all" <?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_ALL'); ?></option>
+							<option value="archived" <?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_ARCHIVED'); ?></option>
+							<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
+								<option value="pending" <?php echo ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PENDING'); ?></option>
+							<?php } ?>
+						</select>
+					</li>
+				</ul>
 			</nav>
 
 			<?php
-			if ($rows = $this->model->entries('list', $this->filters))
+			$rows = $this->model->entries('list', $this->filters);
+
+			if (count($rows))
 			{
 				// Display List of items
 				$this->view('_list')

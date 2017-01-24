@@ -57,7 +57,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		$this->_config = Component::params('com_projects');
-		$this->_database = App::get('db');
 	}
 
 	/**
@@ -140,7 +139,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
+		require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 		// Model
 		$this->model = new \Components\Projects\Models\Project();
@@ -209,10 +208,18 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 			switch ($task)
 			{
-				case 'all':     $arr['html'] = $this->_view('all');   break;
-				case 'owned':   $arr['html'] = $this->_view('owned'); break;
-				case 'updates': $arr['html'] = $this->_updates();     break;
-				default:        $arr['html'] = $this->_view('all');   break;
+				case 'all':
+					$arr['html'] = $this->_view('all');
+					break;
+				case 'owned':
+					$arr['html'] = $this->_view('owned');
+					break;
+				case 'updates':
+					$arr['html'] = $this->_updates();
+					break;
+				default:
+					$arr['html'] = $this->_view('all');
+					break;
 			}
 		}
 
@@ -235,7 +242,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	public function onAfterStoreGroup($group)
 	{
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
+		require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 		// Model
 		$this->model = new \Components\Projects\Models\Project();
@@ -253,6 +260,43 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			{
 				$this->model->table('Owner')->reconcileGroups($project->id, $project->owned_by_group, $project->sync_group);
 				$this->model->table('Owner')->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+			}
+		}
+	}
+
+	/**
+	 * On after group saved
+	 *
+	 * @param   object  $before  Group before changes
+	 * @param   object  $group   Group after changes
+	 * @return  void
+	 */
+	public function onGroupAfterSave($before, $after)
+	{
+		// Is this group now archived?
+		if ($before->published != 2 && $after->published == 2)
+		{
+			// Load classes
+			require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+
+			// Model
+			$model = new \Components\Projects\Models\Project();
+
+			// Get group projects
+			$projects = $model->table()->getGroupProjects(
+				$group->get('gidNumber'),
+				User::get('id')
+			);
+
+			if ($projects)
+			{
+				// Set projects to archived state
+				foreach ($projects as $project)
+				{
+					$model = new \Components\Projects\Models\Project($project->id);
+					$model->set('state', 3);
+					$model->store(false);
+				}
 			}
 		}
 	}
@@ -324,7 +368,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$view->filters = array('limit' => Request::getVar('limit', 25, 'request'));
 
 		// Get shared updates feed from blog plugin
-		$results = Event::trigger( 'projects.onShared', array(
+		$results = Event::trigger('projects.onShared', array(
 			'feed',
 			$this->model,
 			$this->_projects,

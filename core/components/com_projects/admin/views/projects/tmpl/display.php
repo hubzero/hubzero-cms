@@ -42,16 +42,21 @@ if (User::authorise('core.edit.state', $this->option))
 	Toolbar::custom('accesspublic', 'accesspublic', 'accesspublic_h', 'COM_PROJECTS_PUBLIC', true);
 	Toolbar::spacer();
 }
-// Only display if enabled
-if ($this->config->get('custom_profile') == 'custom' && User::authorise('core.manage', $this->option))
+if (User::authorise('core.edit.state', $this->option))
 {
-	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
+	Toolbar::archiveList();
+	Toolbar::spacer();
 }
 if (User::authorise('core.edit', $this->option))
 {
 	Toolbar::editList();
 }
 Toolbar::spacer();
+// Only display if enabled
+if ($this->config->get('custom_profile') == 'custom' && User::authorise('core.manage', $this->option))
+{
+	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
+}
 Toolbar::preferences('com_projects', '550');
 
 Html::behavior('tooltip');
@@ -71,11 +76,11 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -101,13 +106,13 @@ function submitbutton(pressbutton)
 	<table class="adminlist" id="projects-admin">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th class="priority-5" scope="col"> </th>
-				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th class="priority-3" scope="col" colspan="2"><?php echo Html::grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th class="priority-3" scope="col"><?php echo Html::grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
 			</tr>
 		</thead>
@@ -126,11 +131,11 @@ function submitbutton(pressbutton)
 		<tbody>
 			<?php
 			$k = 0;
-			$filterstring  = ($this->filters['sortby'])   ? '&amp;sort='.$this->filters['sortby']     : '';
+			$filterstring = ($this->filters['sortby']) ? '&amp;sort=' . $this->filters['sortby'] : '';
 
 			if ($this->rows)
 			{
-				for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+				for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				{
 					$row = $this->rows[$i];
 
@@ -139,7 +144,7 @@ function submitbutton(pressbutton)
 						$row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
 					}
 					$owner = ($row->owned_by_group) ? $row->groupname . ' <span class="block  prominent">' . $row->groupcn . '</span>' : $row->authorname;
-					$ownerclass = ($row->owned_by_group) ? '<span class="i_group">&nbsp;</span>' : '<span class="i_user">&nbsp;</span>';
+					$ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 
 					// Determine status
 					$status = '';
@@ -153,21 +158,25 @@ function submitbutton(pressbutton)
 					}
 					else if ($row->setup_stage < $setup_complete)
 					{
-						$status = '<span class="setup">' . Lang::txt('Setup') . '</span> ' . Lang::txt('in progress');
+						$status = '<span class="setup">' . Lang::txt('Setup in progress') . '</span>';
 					}
 					else if ($row->state == 0)
 					{
-						$status = '<span class="faded italic">' . Lang::txt('Inactive/Suspended') . '</span> ';
+						$status = '<span class="inactive">' . Lang::txt('Inactive/Suspended') . '</span> ';
+					}
+					else if ($row->state == 3)
+					{
+						$status = '<span class="archived">' . Lang::txt('Archived') . '</span> ';
 					}
 					else if ($row->state == 5)
 					{
-						$status = '<span class="inactive">' . Lang::txt('Pending approval') . '</span> ';
+						$status = '<span class="pending">' . Lang::txt('Pending approval') . '</span> ';
 					}
 
 					$cloud = new \Components\Projects\Models\Tags($row->id);
 					$tags  = $cloud->render('cloud');
 
-					$params = new \Hubzero\Config\Registry( $row->params );
+					$params = new \Hubzero\Config\Registry($row->params);
 					$quota  = $params->get('quota', $this->defaultQuota);
 					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 
@@ -178,37 +187,36 @@ function submitbutton(pressbutton)
 						$cls  = 'private';
 						$task = 'accesspublic';
 					}
-				?>
-				<tr class="<?php echo "row$k"; ?>">
-					<td><?php echo Html::grid('id', $i, $row->id, false, 'id' ); ?></td>
-					<td class="priority-5"><?php echo $row->id; ?></td>
-					<td class="priority-5"><?php echo '<img src="' . rtrim($base, '/') . '/projects/' . $row->alias . '/media/thumb" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
-					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
-						<strong><?php echo stripslashes($row->alias); ?></strong>
-						<?php if ($tags) { ?>
-							<span class="project-tags block">
-								<?php echo $tags; ?>
-							</span>
-						<?php } ?>
-					</td>
-					<td class="priority-3"><?php echo $ownerclass; ?></td>
-					<td class="priority-3"><?php echo $owner; ?></td>
-					<td><?php echo $status; ?></td>
-					<td class="priority-4">
-						<?php if (User::authorise('core.edit.state', $this->option)) { ?>
-							<a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
-								<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
-							</a>
-						<?php } else { ?>
-							<span class="privacy <?php echo $cls; ?>">
-								<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
-							</span>
-						<?php } ?>
-					</td>
-					<td class="priority-4"><?php echo $quota . 'GB'; ?></td>
-				</tr>
-				<?php
+					?>
+					<tr class="<?php echo "row$k"; ?>">
+						<td><?php echo Html::grid('id', $i, $row->id, false, 'id'); ?></td>
+						<td class="priority-5"><?php echo $row->id; ?></td>
+						<td class="priority-5"><?php echo '<img src="' . rtrim($base, '/') . '/projects/' . $row->alias . '/media/thumb" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
+						<td>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
+							<strong><?php echo stripslashes($row->alias); ?></strong>
+							<?php if ($tags) { ?>
+								<span class="project-tags block">
+									<?php echo $tags; ?>
+								</span>
+							<?php } ?>
+						</td>
+						<td class="priority-3"><span class="glyph <?php echo $ownerclass; ?>"><?php echo $owner; ?></span></td>
+						<td><?php echo $status; ?></td>
+						<td class="priority-4">
+							<?php if (User::authorise('core.edit.state', $this->option)) { ?>
+								<a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
+									<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
+								</a>
+							<?php } else { ?>
+								<span class="privacy <?php echo $cls; ?>">
+									<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
+								</span>
+							<?php } ?>
+						</td>
+						<td class="priority-4"><?php echo $quota . 'GB'; ?></td>
+					</tr>
+					<?php
 					$k = 1 - $k;
 				}
 			} else { ?>

@@ -84,7 +84,7 @@ class Projects extends AdminController
 		// Enable publication management
 		if ($this->_publishing)
 		{
-			require_once(\Component::path('com_publications') . DS . 'models' . DS . 'publication.php');
+			require_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 		}
 	}
 
@@ -645,15 +645,59 @@ class Projects extends AdminController
 	}
 
 	/**
-	 * Redirects
+	 * Archive one or more projects
 	 *
 	 * @return  void
 	 */
-	public function cancelTask()
+	public function archiveTask()
 	{
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option, false)
-		);
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$i = 0;
+
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			//foreach group id passed in
+			foreach ($ids as $id)
+			{
+				// Update record(s)
+				$model = new Models\Project($id);
+				$model->set('state', 3);
+
+				if (!$model->exists())
+				{
+					Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+					continue;
+				}
+
+				if (!$model->store())
+				{
+					Notify::error($model->getError());
+					continue;
+				}
+
+				$i++;
+			}
+
+			// Output messsage and redirect
+			if ($i)
+			{
+				Notify::success(Lang::txt('COM_PROJCTS_SUCCESS_ARCHIVED', $i));
+			}
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -720,7 +764,7 @@ class Projects extends AdminController
 		// Erase all notes
 		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php'))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+			include_once PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php';
 
 			// Get all notes
 			$this->database->setQuery(
@@ -824,7 +868,7 @@ class Projects extends AdminController
 		}
 
 		// Git helper
-		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php');
+		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php';
 		$gitHelper = new Helpers\Git($path);
 
 		$commitMsg = '';
@@ -850,7 +894,7 @@ class Projects extends AdminController
 		$id = Request::getVar('id', 0);
 
 		// Get repo model
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'repo.php');
+		require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'repo.php';
 
 		$project = new Models\Project($id);
 		if (!$project->exists())
