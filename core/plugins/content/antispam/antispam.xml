@@ -64,6 +64,13 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">JYES</option>
 				</field>
 			</fieldset>
+			<fieldset name="common" label="PLG_CONTENT_ANTISPAM_WHITELIST">
+				<field name="wl_groups" type="list" default="" label="PLG_CONTENT_ANTISPAM_WHITELIST_GROUPS" description="PLG_CONTENT_ANTISPAM_WHITELIST_GROUPS_DESC">
+					<option value="nobody">Disabled/Off</option>
+					<option value="admin">Administrators</option>
+				</field>
+				<field name="wl_usernames" type="textarea" default="" label="PLG_CONTENT_ANTISPAM_USERNAMES" description="PLG_CONTENT_ANTISPAM_USERNAMES_DESC" />
+			</fieldset>
 		</fields>
 	</config>
 </extension>
