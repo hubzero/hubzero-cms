@@ -199,7 +199,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->group    = $group;
 		$this->database = App::get('db');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
 		$this->model = new \Components\Collections\Models\Archive('group', $this->group->get('gidNumber'));
 
@@ -2103,7 +2103,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Everyone can view by default
 		$this->params->set('access-view', true);
 		$this->params->set('access-can-follow', false);
-		if (!User::isGuest())
+		if (!User::isGuest() && $this->group->published == 1)
 		{
 			$customParams = $this->_params($this->group->get('gidNumber'));
 			$this->params->merge($customParams);
