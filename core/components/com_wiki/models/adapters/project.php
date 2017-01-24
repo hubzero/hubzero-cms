@@ -68,7 +68,7 @@ class Project extends Base
 
 		$this->_scope_id = $scope_id;
 
-		$project = Request::getVar('project', NULL);
+		$project = Request::getVar('project', null);
 		if (is_object($project))
 		{
 			$project = $project->get('alias');
