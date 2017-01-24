@@ -86,7 +86,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name' => 'members',
 			'title' => Lang::txt('PLG_GROUPS_MEMBERS'),
-			'default_access' => $this->params->get('plugin_access','members'),
+			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => 'f007'
 		);
@@ -250,7 +250,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				{
 					$view->filter = '';
 				}
-				$view->role_filter = Request::getVar('role_filter','');
+				$view->role_filter = Request::getVar('role_filter', '');
 
 				if ($view->authorized != 'manager' && $view->authorized != 'admin')
 				{
@@ -743,7 +743,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Remove users from managers list
-		$this->group->remove('managers',$users);
+		$this->group->remove('managers', $users);
 
 		// Save changes
 		$this->group->update();
@@ -903,7 +903,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Remove users from members list
-		$this->group->remove('members',$users_mem);
+		$this->group->remove('members', $users_mem);
 
 		// Make sure there's always at least one manager left
 		if ($this->authorized != 'admin' && count($users_man) >= count($managers))
@@ -1407,7 +1407,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid = Request::getVar('uid','');
+		$uid = Request::getVar('uid', '');
 		if (!$uid)
 		{
 			return false;
