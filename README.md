@@ -29,3 +29,7 @@ HUBzero is an open source project, with code contributions from nuermous groups 
 
 Please report any bugs or issues at https://hubzero.org/support.
 
+## Roadmap
+
+Checkout what is on our development roadmap at https://hubzero.org/roadmap.
+
