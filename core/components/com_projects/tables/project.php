@@ -40,8 +40,8 @@ class Project extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +51,7 @@ class Project extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -73,12 +73,12 @@ class Project extends \JTable
 	/**
 	 * Build query
 	 *
-	 * @param      array $filters
-	 * @param      boolean $admin
-	 * @param      integer $uid
-	 * @param      boolean $showall
-	 * @param      integer $setup_complete
-	 * @return     string
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @param   integer  $uid
+	 * @param   boolean  $showall
+	 * @param   integer  $setup_complete
+	 * @return  string
 	 */
 	public function buildQuery($filters=array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
 	{
@@ -159,12 +159,19 @@ class Project extends \JTable
 			}
 			else
 			{
-				$query .= $uid
-						? " WHERE ((p.state = 1 AND p.private = 0)
-							OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND ((p.state = 1
-							AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . ")))) "
-						: " WHERE p.state = 1 AND p.private = 0 ";
+				if ($filterby == 'archived')
+				{
+					$query .= " WHERE p.state = 3 AND p.private = 0 ";
+				}
+				else
+				{
+					$query .= $uid
+							? " WHERE ((p.state = 1 AND p.private = 0)
+								OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND ((p.state = 1
+								AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state != 3)))) "
+							: " WHERE p.state = 1 AND p.private = 0 ";
+				}
 			}
 		}
 		if ($type)
@@ -217,15 +224,12 @@ class Project extends \JTable
 		// Include
 		if (!empty($filters['include']))
 		{
-			$query .= " AND p.id IN (";
-
-			$tquery = '';
+			$tquery = array();
 			foreach ($filters['include'] as $ex)
 			{
-				$tquery .= "'" . $ex . "',";
+				$tquery[] = $this->_db->quote($ex);
 			}
-			$tquery = substr($tquery, 0, strlen($tquery) - 1);
-			$query .= $tquery . ") ";
+			$query .= " AND p.id IN (" . implode(',', $tquery) . ") ";
 		}
 
 		if (isset($filters['created']))
@@ -274,8 +278,7 @@ class Project extends \JTable
 					}
 					else
 					{
-						$sort .= 'p.owned_by_group ' . $sortdir
-							. ', p.owned_by_user ' . $sortdir . ' ';
+						$sort .= 'p.owned_by_group ' . $sortdir . ', p.owned_by_user ' . $sortdir . ' ';
 					}
 					break;
 
@@ -314,12 +317,12 @@ class Project extends \JTable
 	/**
 	 * Get item count
 	 *
-	 * @param      array $filters
-	 * @param      boolean $admin
-	 * @param      integer $uid
-	 * @param      boolean $showall
-	 * @param      integer $setup_complete
-	 * @return     integer
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @param   integer  $uid
+	 * @param   boolean  $showall
+	 * @param   integer  $setup_complete
+	 * @return  integer
 	 */
 	public function getCount($filters = array(), $admin = false, $uid = 0 , $showall = 0, $setup_complete = 3)
 	{
@@ -336,20 +339,20 @@ class Project extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters
-	 * @param      boolean $admin
-	 * @param      integer $uid
-	 * @param      boolean $showall
-	 * @param      integer $setup_complete
-	 * @return     object
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @param   integer  $uid
+	 * @param   boolean  $showall
+	 * @param   integer  $setup_complete
+	 * @return  object
 	 */
 	public function getRecords($filters = array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
 	{
-		$filters['count'] 	= false;
-		$admin 				= $admin == 'admin' ? true : false;
-		$updates 			= isset($filters['updates']) && $filters['updates'] == 1 ? 1: 0;
-		$getowner 			= isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
-		$activity 			= isset($filters['activity']) && $filters['activity'] == 1 ? 1: 0;
+		$filters['count'] = false;
+		$admin    = $admin == 'admin' ? true : false;
+		$updates  = isset($filters['updates']) && $filters['updates'] == 1 ? 1: 0;
+		$getowner = isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
+		$activity = isset($filters['activity']) && $filters['activity'] == 1 ? 1: 0;
 
 		$query  = "SELECT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 
@@ -387,7 +390,10 @@ class Project extends \JTable
 	/**
 	 * Get project ids/aliased by tag
 	 *
-	 * @return     array
+	 * @param   string  $tag
+	 * @param   bool    $include
+	 * @param   string  $get
+	 * @return  array
 	 */
 	public function getProjectsByTag($tag = 'test', $include = true, $get = 'id')
 	{
@@ -397,8 +403,8 @@ class Project extends \JTable
 		$query  = "SELECT DISTINCT p.$get, ";
 		$query .= "(SELECT COUNT(*) FROM #__tags_object AS RTA
 					JOIN #__tags AS TA ON RTA.tagid = TA.id
-		  			AND RTA.tbl='projects'
-		  			WHERE TA.tag=" . $this->_db->quote($tag) . " AND RTA.objectid=p.id) as count";
+					AND RTA.tbl='projects'
+					WHERE TA.tag=" . $this->_db->quote($tag) . " AND RTA.objectid=p.id) as count";
 		$query .= " FROM $this->_tbl AS p ";
 
 		$this->_db->setQuery($query);
@@ -420,13 +426,13 @@ class Project extends \JTable
 	/**
 	 * Get group projects
 	 *
-	 * @param      integer $groupid
-	 * @param      integer $uid
-	 * @param      array $filters
-	 * @param      integer $setup_complete
-	 * @return     object
+	 * @param   integer  $groupid
+	 * @param   integer  $uid
+	 * @param   array    $filters
+	 * @param   integer  $setup_complete
+	 * @return  object
 	 */
-	public function getGroupProjects ($groupid = 0, $uid = 0, $filters = array(), $setup_complete = 3)
+	public function getGroupProjects($groupid = 0, $uid = 0, $filters = array(), $setup_complete = 3)
 	{
 		$query  = "SELECT DISTINCT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 		$query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
@@ -434,8 +440,7 @@ class Project extends \JTable
 					AND pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND o.id IS NOT NULL AND pa.state != 2) as newactivity ";
 		$query .= " FROM #__project_owners as po, $this->_tbl AS p";
-		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid="
-					. $this->_db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
+		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
 		$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.created_by_user ";
 		$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 		$query .=  " WHERE p.id=po.projectid AND p.state !=2 AND po.status=1 AND po.groupid=" . $groupid;
@@ -500,12 +505,12 @@ class Project extends \JTable
 	/**
 	 * Get user project ids
 	 *
-	 * @param      integer $uid
-	 * @param      integer $active
-	 * @param      integer $include_provisioned
-	 * @return     array
+	 * @param   integer  $uid
+	 * @param   integer  $active
+	 * @param   integer  $include_provisioned
+	 * @return  array
 	 */
-	public function getUserProjectIds ($uid = 0, $active = 1, $include_provisioned = 0)
+	public function getUserProjectIds($uid = 0, $active = 1, $include_provisioned = 0)
 	{
 		$ids = array();
 
@@ -528,20 +533,20 @@ class Project extends \JTable
 					$ids[] = $r->id;
 				}
 			}
-
 		}
+
 		return $ids;
 	}
 
 	/**
 	 * Get project ids for a group
 	 *
-	 * @param      integer $groupid
-	 * @param      integer $uid
-	 * @param      integer $active
-	 * @return     array
+	 * @param   integer  $groupid
+	 * @param   integer  $uid
+	 * @param   integer  $active
+	 * @return  array
 	 */
-	public function getGroupProjectIds ($groupid = 0, $uid = 0, $active = 1)
+	public function getGroupProjectIds($groupid = 0, $uid = 0, $active = 1)
 	{
 		$ids = array();
 
@@ -565,51 +570,50 @@ class Project extends \JTable
 					$ids[] = $r->id;
 				}
 			}
-
 		}
+
 		return $ids;
 	}
 
 	/**
 	 * Get count of new activity since user last visit (multiple projects)
 	 *
-	 * @param      array $projects
-	 * @param      integer $uid
-	 * @return     integer
+	 * @param   array    $projects
+	 * @param   integer  $uid
+	 * @return  integer
 	 */
-	public function getUpdateCount ($projects = array(), $uid = 0)
+	public function getUpdateCount($projects = array(), $uid = 0)
 	{
 		if (!empty($projects) && $uid != 0)
 		{
-			$query  = "SELECT COUNT(*) FROM #__project_activity AS pa ";
-			$query .= " JOIN #__project_owners as o ON o.projectid=pa.projectid AND o.userid=" . $this->_db->quote($uid);
+			$query  = "SELECT COUNT(*) FROM `#__project_activity` AS pa ";
+			$query .= " JOIN `#__project_owners` as o ON o.projectid=pa.projectid AND o.userid=" . $this->_db->quote($uid);
 			$query .= " WHERE pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
 						AND pa.state !=2 AND pa.recorded >= o.added";
 			$query .= " AND pa.projectid IN (";
 
-			$tquery = '';
+			$tquery = array();
 			foreach ($projects as $project)
 			{
-				$tquery .= "'".$project."',";
+				$tquery[] = $this->_db->quote($project);
 			}
-			$tquery = substr($tquery, 0, strlen($tquery) - 1);
-			$query .= $tquery.") ";
+
+			$query .= implode(',', $tquery) . ") ";
 			$this->_db->setQuery($query);
+
 			return $this->_db->loadResult();
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 
 	/**
 	 * Get project
 	 *
-	 * @param      string $identifier
-	 * @param      integer $uid
-	 * @param      integer $pubid
-	 * @return     mixed (array or false)
+	 * @param   string   $identifier
+	 * @param   integer  $uid
+	 * @param   integer  $pubid
+	 * @return  mixed    (array or false)
 	 */
 	public function getProject($identifier = null, $uid = 0, $pubid = 0)
 	{
@@ -621,7 +625,7 @@ class Project extends \JTable
 		$query  = "SELECT p.*, IFNULL(o.role, 0) as role, o.groupid as owner_group,
 				   o.id as owner, o.added as since, o.lastvisit, o.num_visits,
 				   o.params as owner_params, o.status as confirmed, ";
-		$query .= " x.name, x.username, x.name as fullname ";
+		$query .= " u.name, u.username, u.name as fullname ";
 		$query .= " ,(SELECT t.type FROM #__project_types as t WHERE t.id=p.type) as projecttype ";
 
 		if (intval($pubid) > 0)
@@ -634,12 +638,12 @@ class Project extends \JTable
 		}
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id ";
 		$query .= " AND o.userid=" . $this->_db->quote($uid) . " AND p.state!= 2 AND o.userid != 0 AND o.status !=2";
-		$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.owned_by_user ";
+		$query .=  " JOIN #__users as u ON u.id=p.owned_by_user ";
 		$query .= " WHERE ";
 
 		if (intval($pubid) > 0)
 		{
-			$query .= " pu.id=".$pubid;
+			$query .= " pu.id=" . $pubid;
 		}
 		else
 		{
@@ -657,10 +661,10 @@ class Project extends \JTable
 	/**
 	 * Select item
 	 *
-	 * @param      string $select
-	 * @param      string $where
-	 * @param      integer $limit
-	 * @return     mixed (string or object)
+	 * @param   string   $select
+	 * @param   string   $where
+	 * @param   integer  $limit
+	 * @return  mixed    (string or object)
 	 */
 	public function selectWhere($select, $where, $limit = 0)
 	{
@@ -674,8 +678,8 @@ class Project extends \JTable
 	/**
 	 * Get project alias from ID
 	 *
-	 * @param      integer $id
-	 * @return     string
+	 * @param   integer  $id
+	 * @return  string
 	 */
 	public function getAlias($id = 0)
 	{
@@ -691,12 +695,12 @@ class Project extends \JTable
 	/**
 	 * Save project parameter
 	 *
-	 * @param      integer $projectid
-	 * @param      string $param
-	 * @param      string $value
-	 * @return     void
+	 * @param   integer  $projectid
+	 * @param   string   $param
+	 * @param   string   $value
+	 * @return  void
 	 */
-	public function saveParam ($projectid = null, $param = '', $value = 0)
+	public function saveParam($projectid = null, $param = '', $value = 0)
 	{
 		if ($projectid === null)
 		{
@@ -728,7 +732,8 @@ class Project extends \JTable
 								$default = isset($extracted[1]) ? $extracted[1] : 0;
 								$in .= $extracted[0] == $param ? $value : $default;
 								$in	.= "\n";
-								if ($extracted[0] == $param) {
+								if ($extracted[0] == $param)
+								{
 									$found = 1;
 								}
 							}
@@ -752,10 +757,10 @@ class Project extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $identifier project id or alias name
-	 * @return     object or false
+	 * @param   string  $identifier   project id or alias name
+	 * @return  mixed   object or false
 	 */
-	public function loadProject ($identifier = null)
+	public function loadProject($identifier = null)
 	{
 		if ($identifier === null)
 		{
@@ -768,19 +773,17 @@ class Project extends \JTable
 		{
 			return $this->bind($result);
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $identifier project id or alias name
-	 * @return     object or false
+	 * @param   string  $identifier   project id or alias name
+	 * @return  mixed   object or false
 	 */
-	public function loadProvisionedProject ($pid = null)
+	public function loadProvisionedProject($pid = null)
 	{
 		if (!intval($pid))
 		{
@@ -792,20 +795,18 @@ class Project extends \JTable
 		{
 			return $this->bind($result);
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * Check if name is unique
 	 *
-	 * @param      string $name
-	 * @param      integer $pid
-	 * @return     boolean
+	 * @param   string   $name
+	 * @param   integer  $pid
+	 * @return  boolean
 	 */
-	public function checkUniqueName ($name, $pid = 0)
+	public function checkUniqueName($name, $pid = 0)
 	{
 		if ($name === null)
 		{
@@ -825,11 +826,11 @@ class Project extends \JTable
 	/**
 	 * Save setup stage
 	 *
-	 * @param      integer $projectid
-	 * @param      integer $stage
-	 * @return     boolean
+	 * @param   integer  $projectid
+	 * @param   integer  $stage
+	 * @return  boolean
 	 */
-	public function saveStage ($projectid = null, $stage = 0)
+	public function saveStage($projectid = null, $stage = 0)
 	{
 		if ($projectid === null)
 		{
@@ -849,5 +850,7 @@ class Project extends \JTable
 			}
 			return true;
 		}
+
+		return false;
 	}
 }

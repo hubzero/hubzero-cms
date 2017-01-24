@@ -34,7 +34,6 @@ defined('_HZEXEC_') or die();
 $privacyTxt = $this->row->isPublic()
 	? Lang::txt('COM_PROJECTS_PUBLIC')
 	: Lang::txt('COM_PROJECTS_PRIVATE');
-
 ?>
 <tr class="mline" id="tr_<?php echo $this->row->get('id'); ?>">
 	<td class="th_image">
@@ -63,110 +62,126 @@ $privacyTxt = $this->row->isPublic()
 		}
 		?>
 	</td>
-<?php
-// Reviewers extra info
-if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
-{
-	// Get project params
-	$params = new \Hubzero\Config\Registry( $this->row->get('params') );
+	<?php
+	// Reviewers extra info
+	if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
+	{
+		// Get project params
+		$params = new \Hubzero\Config\Registry($this->row->get('params'));
 
-	if ($this->filters['reviewer'] == 'sensitive')
-	{
-		$info = '';
-		if ($params->get('hipaa_data') == 'yes')
-		{
-			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA') . '</span>';
-		}
-		if ($params->get('ferpa_data') == 'yes')
-		{
-			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') . '</span>';
-		}
-		if ($params->get('export_data') == 'yes')
-		{
-			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . '</span>';
-		}
-		if ($params->get('irb_data') == 'yes')
-		{
-			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_IRB') . '</span>';
-		}
-		if ($params->get('restricted_data') == 'maybe' && $params->get('followup') == 'yes')
-		{
-			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY') . '</span>';
-		}
-	?>
-	<td class="mini"><?php echo $info; ?></td>
-	<td class="mini">
-	<?php if ($this->row->isActive()) {
-		echo '<span class="active green">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span>';
-	}
-	else if ($this->row->inSetup()) {
-		echo '<span class="setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ' . Lang::txt('COM_PROJECTS_IN_PROGRESS');
-	}
-	else if ($this->row->isInactive()) {
-		echo '<span class="faded italic">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
-	}
-	else if ($this->row->isPending()) {
-		echo '<span class="italic pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
-	}
-	$commentCount = 0;
-	if ($this->row->get('admin_notes')) {
-		$commentCount = \Components\Projects\Helpers\Html::getAdminNoteCount($this->row->get('admin_notes'), 'sensitive');
-		echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->get('admin_notes'), 'sensitive');
-	}
-	echo '<span class="block mini"><a href="' . Route::url('index.php?option=' . $this->option .  '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']) . '" class="showinbox">' . $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS') . '</a></span>';
-
-	?></td>
-	<td><?php if ($this->row->isPending()) {
-		echo '<span class="manage mini"><a href="' . Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer'] ) . '" class="showinbox">' . Lang::txt('COM_PROJECTS_APPROVE') . '</a></span>';
-	} ?>
-	</td>
-<?php } ?>
-<?php if ($this->filters['reviewer'] == 'sponsored') {
-		$info = '';
-		if ($params->get('grant_title'))
-		{
-			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_TITLE')
-			. ':</span> ' . $params->get('grant_title') . '</span>';
-		}
-		if ($params->get('grant_PI'))
-		{
-			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_PI')
-			. ':</span> ' . $params->get('grant_PI') . '</span>';
-		}
-		if ($params->get('grant_agency'))
-		{
-			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_AGENCY')
-			. ':</span> ' . $params->get('grant_agency') . '</span>';
-		}
-		if ($params->get('grant_budget'))
-		{
-			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_BUDGET')
-			. ':</span> ' . $params->get('grant_budget') . '</span>';
-		}
-	?>
-	<td class="mini"><?php echo $info; ?></td>
-	<td class="mini"><?php
-	if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0)
-	{
-		echo '<span class="italic pending">'
-		. Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
-	}
-	else if ($params->get('grant_approval') || $params->get('grant_status') == 1 )
-	{
-		echo '<span class="active green">'
-		. Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
-	}
-	else if ($params->get('grant_status') == '2')
-	{
-		echo '<span class="italic dark">'
-		. Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
-	}
-	if ($this->row->get('admin_notes'))
-	{
-		echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->get('admin_notes'), 'sponsored');
-	}
-	?></td>
-	<td class="faded actions"><?php echo '<span class="manage mini"><a href="' . Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') ) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby'] . '" class="showinbox">' . Lang::txt('COM_PROJECTS_MANAGE') . '</a></span>'; ?></td>
-<?php }
-} ?>
+		if ($this->filters['reviewer'] == 'sensitive') { ?>
+			<td class="mini">
+				<?php
+				$info = '';
+				if ($params->get('hipaa_data') == 'yes')
+				{
+					$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA') . '</span>';
+				}
+				if ($params->get('ferpa_data') == 'yes')
+				{
+					$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') . '</span>';
+				}
+				if ($params->get('export_data') == 'yes')
+				{
+					$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . '</span>';
+				}
+				if ($params->get('irb_data') == 'yes')
+				{
+					$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_IRB') . '</span>';
+				}
+				if ($params->get('restricted_data') == 'maybe' && $params->get('followup') == 'yes')
+				{
+					$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY') . '</span>';
+				}
+				echo $info;
+				?>
+			</td>
+			<td class="mini">
+				<?php
+				if ($this->row->isActive())
+				{
+					echo '<span class="active green">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span>';
+				}
+				else if ($this->row->inSetup())
+				{
+					echo '<span class="setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ' . Lang::txt('COM_PROJECTS_IN_PROGRESS');
+				}
+				else if ($this->row->isInactive())
+				{
+					echo '<span class="faded italic">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
+				}
+				else if ($this->row->isArchived())
+				{
+					echo '<span class="archived">' . Lang::txt('COM_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+				}
+				else if ($this->row->isPending())
+				{
+					echo '<span class="italic pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
+				}
+				$commentCount = 0;
+				if ($this->row->get('admin_notes'))
+				{
+					$commentCount = \Components\Projects\Helpers\Html::getAdminNoteCount($this->row->get('admin_notes'), 'sensitive');
+					echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->get('admin_notes'), 'sensitive');
+				}
+				echo '<span class="block mini"><a href="' . Route::url('index.php?option=' . $this->option .  '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']) . '" class="showinbox">' . $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS') . '</a></span>';
+				?>
+			</td>
+			<td>
+				<?php
+				if ($this->row->isPending())
+				{
+					echo '<span class="manage mini"><a href="' . Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer'] ) . '" class="showinbox">' . Lang::txt('COM_PROJECTS_APPROVE') . '</a></span>';
+				}
+				?>
+			</td>
+		<?php } ?>
+		<?php if ($this->filters['reviewer'] == 'sponsored') { ?>
+			<td class="mini">
+				<?php
+				$info = '';
+				if ($params->get('grant_title'))
+				{
+					$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_TITLE') . ':</span> ' . $params->get('grant_title') . '</span>';
+				}
+				if ($params->get('grant_PI'))
+				{
+					$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_PI') . ':</span> ' . $params->get('grant_PI') . '</span>';
+				}
+				if ($params->get('grant_agency'))
+				{
+					$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_AGENCY') . ':</span> ' . $params->get('grant_agency') . '</span>';
+				}
+				if ($params->get('grant_budget'))
+				{
+					$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_BUDGET') . ':</span> ' . $params->get('grant_budget') . '</span>';
+				}
+				echo $info;
+				?>
+			</td>
+			<td class="mini">
+				<?php
+				if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0)
+				{
+					echo '<span class="italic pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
+				}
+				else if ($params->get('grant_approval') || $params->get('grant_status') == 1 )
+				{
+					echo '<span class="active green">' . Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
+				}
+				else if ($params->get('grant_status') == '2')
+				{
+					echo '<span class="italic dark">' . Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
+				}
+				if ($this->row->get('admin_notes'))
+				{
+					echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->get('admin_notes'), 'sponsored');
+				}
+				?>
+			</td>
+			<td class="faded actions">
+				<?php echo '<span class="manage mini"><a href="' . Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') ) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby'] . '" class="showinbox">' . Lang::txt('COM_PROJECTS_MANAGE') . '</a></span>'; ?>
+			</td>
+		<?php } ?>
+	<?php } ?>
 </tr>
