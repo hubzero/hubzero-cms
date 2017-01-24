@@ -24,9 +24,16 @@ class Migration20170124191209ComCitations extends Base
 				$this->db->query();
 			}
 
-			if (!$this->db->tableHasKey('#__citations_authors', 'idx_authorid'))
+			if ($this->db->tableHasField('#__citations_authors', 'authorid') && !$this->db->tableHasKey('#__citations_authors', 'idx_authorid'))
 			{
 				$query = "ALTER IGNORE TABLE `#__citations_authors` ADD INDEX `idx_authorid` (`authorid`)";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+
+			if ($this->db->tableHasField('#__citations_authors', 'author_uid') && !$this->db->tableHasKey('#__citations_authors', 'idx_authorid'))
+			{
+				$query = "ALTER IGNORE TABLE `#__citations_authors` ADD INDEX `idx_authorid` (`author_uid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
