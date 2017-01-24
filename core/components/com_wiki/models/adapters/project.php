@@ -34,7 +34,7 @@ namespace Components\Wiki\Models\Adapters;
 use Request;
 use Route;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for a project note
@@ -68,7 +68,6 @@ class Project extends Base
 
 		$this->_scope_id = $scope_id;
 
-		//$project = Project::getInstance($this->_scope_id);
 		$project = Request::getVar('project', NULL);
 		if (is_object($project))
 		{
@@ -89,12 +88,7 @@ class Project extends Base
 	public function link($type='', $params=null)
 	{
 		$segments = $this->_segments;
-		//$project = Request::getVar('project', NULL);
-		/*$segments['scope'] = Request::getVar('scope', NULL);
-		if (!$segments['scope'])
-		{
-			$segments['scope'] = 'projects/' . $this->_segments['alias'] . '/notes';
-		}*/
+
 		$anchor = '';
 
 		// If it doesn't exist or isn't published
@@ -175,6 +169,25 @@ class Project extends Base
 	 */
 	public function authorise($page)
 	{
+		if ($page->config('access-check-done', false))
+		{
+			return true;
+		}
+
+		$page->config()->set('access-check-done', true);
+
+		require_once \Component::path('com_projects') . DS . 'models' . DS. 'project.php';
+
+		$project = new \Components\Projects\Models\Project($this->_scope_id);
+
+		if ($project->isArchived())
+		{
+			// Read-only
+			$page->config()->set('access-page-view', true);
+			$page->config()->set('access-comment-view', true);
+			return true;
+		}
+
 		// Allow access to all options
 		$page->config()->set('access-page-manage', true);
 		$page->config()->set('access-page-create', true);

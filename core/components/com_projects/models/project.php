@@ -550,13 +550,6 @@ class Project extends Model
 			}
 		}
 
-		if ($this->isArchived())
-		{
-			// Read-only
-			$this->params->set('access-readonly-project', true);
-			return;
-		}
-
 		// Is user project member?
 		$member = $this->member();
 		if (empty($member) || !$member->id)
@@ -571,6 +564,13 @@ class Project extends Model
 		{
 			$this->params->set('access-view-project', true);
 			$this->params->set('access-member-project', true); // internal project view
+
+			if ($this->isArchived())
+			{
+				// Read-only
+				$this->params->set('access-readonly-project', true);
+				return;
+			}
 
 			// Project roles
 			switch ($member->role)
