@@ -188,8 +188,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$this->js('calendar');
 
 			//get the request vars
-			$this->month    = Request::getInt('month', Date::format("m") ,'get');
-			$this->month    = (strlen($this->month) == 1) ? '0'.$this->month : $this->month;
+			$this->month    = Request::getInt('month', Date::format("m"), 'get');
+			$this->month    = (strlen($this->month) == 1) ? '0' . $this->month : $this->month;
 			$this->year     = Request::getInt('year', Date::format("Y"), 'get');
 			$this->calendar = Request::getInt('calendar', 0, 'get');
 
@@ -879,7 +879,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('details', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id', '', 'get');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
@@ -928,7 +928,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function export()
 	{
 		// get request varse
-		$eventId = Request::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id', '', 'get');
 
 		// load & export event
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
@@ -1033,7 +1033,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!is_object($user) || $user->id == '' || $user->id == 0)
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth','invalid');
+			apache_note('auth', 'invalid');
 
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="' . $realm . '"');
@@ -1044,7 +1044,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!\Hubzero\User\Password::comparePasswords($user->passhash, $httpBasicPassword))
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth','invalid');
+			apache_note('auth', 'invalid');
 
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="' . $realm . '"');
@@ -1117,7 +1117,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('register', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id','');
+		$eventId = Request::getVar('event_id', '');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
@@ -1211,14 +1211,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function doRegister()
 	{
 		//get request vars
-		$register   = Request::getVar('register', NULL, 'post');
-		$arrival    = Request::getVar('arrival', NULL, 'post');
-		$departure  = Request::getVar('departure', NULL, 'post');
-		$dietary    = Request::getVar('dietary', NULL, 'post');
-		$dinner     = Request::getVar('dinner', NULL, 'post');
-		$disability = Request::getVar('disability', NULL, 'post');
-		$race       = Request::getVar('race', NULL, 'post');
-		$event_id   = Request::getInt('event_id', NULL, 'post');
+		$register   = Request::getVar('register', null, 'post');
+		$arrival    = Request::getVar('arrival', null, 'post');
+		$departure  = Request::getVar('departure', null, 'post');
+		$dietary    = Request::getVar('dietary', null, 'post');
+		$dinner     = Request::getVar('dinner', null, 'post');
+		$disability = Request::getVar('disability', null, 'post');
+		$race       = Request::getVar('race', null, 'post');
+		$event_id   = Request::getInt('event_id', null, 'post');
 
 		//load event data
 		$event = new \Components\Events\Models\Event($event_id);

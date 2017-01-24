@@ -372,46 +372,106 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			switch ($this->action)
 			{
 				// Comments
-				case 'savecomment':   $arr['html'] = $this->_savecomment();   break;
-				case 'newcomment':    $arr['html'] = $this->_newcomment();    break;
-				case 'editcomment':   $arr['html'] = $this->_editcomment();   break;
-				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
+				case 'savecomment':
+					$arr['html'] = $this->_savecomment();
+					break;
+				case 'newcomment':
+					$arr['html'] = $this->_newcomment();
+					break;
+				case 'editcomment':
+					$arr['html'] = $this->_editcomment();
+					break;
+				case 'deletecomment':
+					$arr['html'] = $this->_deletecomment();
+					break;
 
-				case 'followers': $arr['html'] = $this->_followers(); break;
-				case 'following': $arr['html'] = $this->_following(); break;
-				case 'follow':    $arr['html'] = $this->_follow('group');    break;
-				case 'unfollow':  $arr['html'] = $this->_unfollow('group');  break;
+				case 'followers':
+					$arr['html'] = $this->_followers();
+					break;
+				case 'following':
+					$arr['html'] = $this->_following();
+					break;
+				case 'follow':
+					$arr['html'] = $this->_follow('group');
+					break;
+				case 'unfollow':
+					$arr['html'] = $this->_unfollow('group');
+					break;
 
 				// Entries
-				case 'savepost':   $arr['html'] = $this->_save();   break;
-				case 'newpost':    $arr['html'] = $this->_new();    break;
-				case 'editpost':   $arr['html'] = $this->_edit();   break;
-				case 'deletepost': $arr['html'] = $this->_delete(); break;
-				case 'posts':      $arr['html'] = $this->_posts();  break;
+				case 'savepost':
+					$arr['html'] = $this->_save();
+					break;
+				case 'newpost':
+					$arr['html'] = $this->_new();
+					break;
+				case 'editpost':
+					$arr['html'] = $this->_edit();
+					break;
+				case 'deletepost':
+					$arr['html'] = $this->_delete();
+					break;
+				case 'posts':
+					$arr['html'] = $this->_posts();
+					break;
 
 				case 'comment':
-				case 'post':   $arr['html'] = $this->_post();   break;
-				case 'vote':   $arr['html'] = $this->_vote();   break;
-				case 'collect': $arr['html'] = $this->_repost(); break;
-				case 'remove': $arr['html'] = $this->_remove(); break;
-				case 'move':   $arr['html'] = $this->_move();   break;
+				case 'post':
+					$arr['html'] = $this->_post();
+					break;
+				case 'vote':
+					$arr['html'] = $this->_vote();
+					break;
+				case 'collect':
+					$arr['html'] = $this->_repost();
+					break;
+				case 'remove':
+					$arr['html'] = $this->_remove();
+					break;
+				case 'move':
+					$arr['html'] = $this->_move();
+					break;
 
-				case 'followcollection': $arr['html'] = $this->_follow('collection'); break;
-				case 'unfollowcollection': $arr['html'] = $this->_unfollow('collection'); break;
-				case 'collectcollection': $arr['html'] = $this->_repost();      break;
-				case 'newcollection':    $arr['html'] = $this->_newcollection();    break;
-				case 'editcollection':   $arr['html'] = $this->_editcollection();   break;
-				case 'savecollection':   $arr['html'] = $this->_savecollection();   break;
-				case 'deletecollection': $arr['html'] = $this->_deletecollection(); break;
+				case 'followcollection':
+					$arr['html'] = $this->_follow('collection');
+					break;
+				case 'unfollowcollection':
+					$arr['html'] = $this->_unfollow('collection');
+					break;
+				case 'collectcollection':
+					$arr['html'] = $this->_repost();
+					break;
+				case 'newcollection':
+					$arr['html'] = $this->_newcollection();
+					break;
+				case 'editcollection':
+					$arr['html'] = $this->_editcollection();
+					break;
+				case 'savecollection':
+					$arr['html'] = $this->_savecollection();
+					break;
+				case 'deletecollection':
+					$arr['html'] = $this->_deletecollection();
+					break;
 				case 'all':
-				case 'collections':      $arr['html'] = $this->_collections();      break;
+				case 'collections':
+					$arr['html'] = $this->_collections();
+					break;
 
-				case 'settings': $arr['html'] = $this->_settings(); break;
-				case 'savesettings': $arr['html'] = $this->_savesettings(); break;
+				case 'settings':
+					$arr['html'] = $this->_settings();
+					break;
+				case 'savesettings':
+					$arr['html'] = $this->_savesettings();
+					break;
 
-				case 'collection': $arr['html'] = $this->_collection(); break;
+				case 'collection':
+					$arr['html'] = $this->_collection();
+					break;
 
-				default: $arr['html'] = $this->_collections(); break;
+				default:
+					$arr['html'] = $this->_collections();
+					break;
 			}
 		}
 

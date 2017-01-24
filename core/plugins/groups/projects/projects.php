@@ -95,7 +95,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name'             => $this->_name,
 			'title'            => Lang::txt('PLG_GROUPS_PROJECTS'),
-			'default_access'   => $this->params->get('plugin_access','members'),
+			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon'             => 'f03f'
 		);
@@ -376,7 +376,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			$view->filters
 		));
 
-		$view->content  = !empty($results) && isset($results[0]) ? $results[0] : NULL;
+		$view->content  = !empty($results) && isset($results[0]) ? $results[0] : null;
 		$view->newcount = $this->model->table()->getUpdateCount(
 			$this->_projects,
 			User::get('id')
