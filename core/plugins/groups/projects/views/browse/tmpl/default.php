@@ -42,7 +42,7 @@ $this->css();
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if (User::authorise('core.create', 'com_projects')) { ?>
+<?php if ($this->group->published == 1 && User::authorise('core.create', 'com_projects')) { ?>
 	<ul id="page_options" class="pluginOptions">
 		<li>
 			<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
@@ -54,30 +54,23 @@ $this->css();
 
 <?php 
 // Output the submenu view
-$view = new \Hubzero\Plugin\View(array(
-	'folder'  => 'groups',
-	'element' => 'projects',
-	'name'    => 'partials',
-	'layout'  => 'submenu'
-));
-
-// Pass Variables through to the view
-$view->group = $this->group;
-$view->projectcount = $this->projectcount;
-$view->newcount = $this->newcount;
-$view->tab = 'all';
-$view->display();
+$view = $this->view('submenu', 'partials')
+	->set('group', $this->group)
+	->set('projectcount', $this->projectcount)
+	->set('newcount', $this->newcount)
+	->set('tab', 'all')
+	->display();
 ?>
 
 <section class="main section" id="s-projects">
 	<div class="container">
 		<!-- Placeholder for Group Dashboard -->
 		<?php 
-			$dashboards = Event::trigger('groups.onGroupClassroomprojects', array($this->group));
-			foreach ($dashboards as $dashboard)
-			{
-				echo $dashboard;
-			}
+		$dashboards = Event::trigger('groups.onGroupClassroomprojects', array($this->group));
+		foreach ($dashboards as $dashboard)
+		{
+			echo $dashboard;
+		}
 		?>
 		<!-- End placeholder for Group Dashboard -->
 

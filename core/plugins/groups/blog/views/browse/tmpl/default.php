@@ -52,7 +52,7 @@ $this->css()
      ->js();
 ?>
 
-<?php if ($this->canpost || ($this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
+<?php if ($this->group->published == 1 && ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
 	<ul id="page_options">
 		<?php if ($this->canpost) { ?>
 			<li>
@@ -146,7 +146,7 @@ $this->css()
 				<?php
 				if ($rows->count() > 0) { ?>
 					<ol class="blog-entries entries">
-				<?php
+					<?php
 					$cls = 'even';
 					foreach ($rows as $row)
 					{
@@ -228,16 +228,18 @@ $this->css()
 											<?php echo $row->visibility('text'); ?>
 										</dd>
 									<?php } ?>
-									<dd class="entry-options">
-										<?php if (User::get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-											<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
-												<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>
-											</a>
-											<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
-												<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>
-											</a>
-										<?php } ?>
-									</dd>
+									<?php if ($this->group->published == 1) { ?>
+										<dd class="entry-options">
+											<?php if (User::get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+												<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
+													<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>
+												</a>
+												<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
+													<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>
+												</a>
+											<?php } ?>
+										</dd>
+									<?php } ?>
 								</dl>
 								<div class="entry-content">
 									<?php if ($this->config->get('cleanintro', 1)) { ?>
@@ -250,7 +252,9 @@ $this->css()
 								</div>
 							</article>
 						</li>
-			<?php } ?>
+						<?php
+					}
+					?>
 					</ol>
 					<?php
 						$pageNav = $rows->pagination;

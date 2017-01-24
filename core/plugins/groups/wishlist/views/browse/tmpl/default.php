@@ -50,11 +50,13 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 ?>
 
 <?php if ($this->admin != 0) { ?>
-	<p id="page_options">
-		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
-			<?php echo Lang::txt('COM_WISHLIST_ADD_NEW_WISH'); ?>
-		</a>
-	</p>
+	<?php if ($this->group->published == 1) { ?>
+		<p id="page_options">
+			<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
+				<?php echo Lang::txt('COM_WISHLIST_ADD_NEW_WISH'); ?>
+			</a>
+		</p>
+	<?php } ?>
 <?php } else { ?>
 	<?php if (User::isGuest()) { ?>
 		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_LOGIN', Route::url('index.php?option=com_users&view=login&return=' . $url, false)); ?></p>

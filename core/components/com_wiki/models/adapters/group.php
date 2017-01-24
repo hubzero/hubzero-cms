@@ -181,7 +181,7 @@ class Group extends Base
 		}
 
 		// Is this a group manager?
-		if ($group)
+		if ($group && $group->published == 1)
 		{
 			// Is this a group manager?
 			if ($group->is_member_of('managers', User::get('id')))
