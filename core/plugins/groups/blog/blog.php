@@ -384,7 +384,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search',''),
+			'search'     => Request::getVar('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -457,7 +457,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search',''),
+			'search'     => Request::getVar('search', ''),
 			'created_by' => Request::getInt('author', 0),
 			'state'      => 'public'
 		);

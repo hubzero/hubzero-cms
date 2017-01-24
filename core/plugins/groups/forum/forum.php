@@ -866,7 +866,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->rows();
 
 		// Output view
-		return  $this->view('display', 'categories')
+		return $this->view('display', 'categories')
 			->set('option', $this->option)
 			->set('group', $this->group)
 			->set('config', $this->params)
@@ -1281,7 +1281,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// If the access is protected,
 		// disable editing and posting capabilities
-		if ($thread->get('access') == 4 && !$this->params->get('access-view-thread'));
+		if ($thread->get('access') == 4 && !$this->params->get('access-view-thread'))
 		{
 			$this->params->get('access-create-thread', false);
 			$this->params->get('access-edit-thread', false);
