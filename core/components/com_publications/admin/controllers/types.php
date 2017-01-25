@@ -624,11 +624,15 @@ class Types extends AdminController
 		$manifest = new stdClass;
 		if ($neworder && !empty($order))
 		{
-			$oManifest  = $curation->_manifest;
+			$oManifest = $curation->_manifest;
 			foreach ($order as $o)
 			{
 				if (trim($o))
 				{
+					if (!isset($manifest->blocks))
+					{
+						$manifest->blocks = new stdClass;
+					}
 					$manifest->blocks->$o = $oManifest->blocks->$o;
 				}
 			}
