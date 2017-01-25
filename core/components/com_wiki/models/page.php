@@ -41,13 +41,13 @@ use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'attachment.php');
-require_once(__DIR__ . DS . 'version.php');
-require_once(__DIR__ . DS . 'comment.php');
-require_once(__DIR__ . DS . 'author.php');
-require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'link.php');
-require_once(__DIR__ . DS . 'log.php');
+require_once __DIR__ . DS . 'attachment.php';
+require_once __DIR__ . DS . 'version.php';
+require_once __DIR__ . DS . 'comment.php';
+require_once __DIR__ . DS . 'author.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'link.php';
+require_once __DIR__ . DS . 'log.php';
 
 /**
  * Wiki model for a page
@@ -810,6 +810,11 @@ class Page extends Relational
 			$this->config()->set('access-comment-create', false);
 			$this->config()->set('access-comment-delete', false);
 			$this->config()->set('access-comment-edit', false);
+
+			if (!in_array($this->get('access'), User::getAuthorisedViewLevels()))
+			{
+				$this->config()->set('access-page-view', false);
+			}
 
 			// Check if they are logged in
 			if (User::isGuest())
