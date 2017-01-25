@@ -1070,7 +1070,14 @@ class Page extends Relational
 
 		$keys = join('|', array_keys($classes));
 
-		return preg_replace_callback("/\[:($keys):]/", function($matches) use ($classes) { return $classes[$matches[1]]; }, $regexp);
+		return preg_replace_callback(
+			"/\[:($keys):]/",
+			function($matches) use ($classes)
+			{
+				return $classes[$matches[1]];
+			},
+			$regexp
+		);
 	}
 
 	/**
