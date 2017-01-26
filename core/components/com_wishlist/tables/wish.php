@@ -95,7 +95,7 @@ class Wish extends \JTable
 	 */
 	public function get_votes_sum($wishid, $what)
 	{
-		if ($wishid === NULL)
+		if ($wishid === null)
 		{
 			return false;
 		}
@@ -114,9 +114,9 @@ class Wish extends \JTable
 	 * @param   object   $user     current user
 	 * @return  mixed    False if error, integer on success
 	 */
-	public function get_count($listid, $filters, $admin, $user=NULL)
+	public function get_count($listid, $filters, $admin, $user=null)
 	{
-		if ($listid === NULL)
+		if ($listid === null)
 		{
 			return false;
 		}
@@ -143,46 +143,57 @@ class Wish extends \JTable
 		// list  filtering
 		switch ($filters['filterby'])
 		{
-				case 'all':    		$sql .= ' AND ws.status!=2';
-									break;
-				case 'granted':    	$sql .= ' AND ws.status=1';
-									break;
-				case 'open':    	$sql .= ' AND ws.status=0';
-									break;
-				case 'accepted':    $sql .= ' AND ws.accepted=1 AND (ws.status=0 OR ws.status=6)';
-									break;
-				case 'pending':     $sql .= ' AND ws.accepted=0 AND ws.status=0';
-									break;
-				case 'rejected':    $sql .= ' AND ws.status=3';
-									break;
-				case 'withdrawn':   $sql .= ' AND ws.status=4';
-									break;
-				case 'deleted':     $sql .= ' AND ws.status=2';
-									break;
-				case 'useraccepted':$sql .= ' AND ws.accepted=3 AND ws.status!=2';
-									break;
-				case 'private':    	$sql .= ' AND ws.status!=2 AND ws.private=1';
-									break;
-				case 'public':    	$sql .= ' AND ws.status!=2 AND ws.private=0';
-									break;
-				case 'mine':
-					if ($uid)
-					{
-						$sql .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
-					}
+			case 'all':
+				$sql .= ' AND ws.status!=2';
 				break;
-				case 'submitter':
-					if ($uid)
-					{
-						$sql .= ' AND ws.proposed_by=' . $uid . ' AND ws.status!=2';
-					}
-					break;
-				case 'assigned':
-					$sql .= ' AND ws.assigned NOT NULL AND ws.status!=2';
+			case 'granted':
+				$sql .= ' AND ws.status=1';
 				break;
-				default:
-					$sql .= ' AND ws.status!=2';
+			case 'open':
+				$sql .= ' AND ws.status=0';
 				break;
+			case 'accepted':
+				$sql .= ' AND ws.accepted=1 AND (ws.status=0 OR ws.status=6)';
+				break;
+			case 'pending':
+				$sql .= ' AND ws.accepted=0 AND ws.status=0';
+				break;
+			case 'rejected':
+				$sql .= ' AND ws.status=3';
+				break;
+			case 'withdrawn':
+				$sql .= ' AND ws.status=4';
+				break;
+			case 'deleted':
+				$sql .= ' AND ws.status=2';
+				break;
+			case 'useraccepted':
+				$sql .= ' AND ws.accepted=3 AND ws.status!=2';
+				break;
+			case 'private':
+				$sql .= ' AND ws.status!=2 AND ws.private=1';
+				break;
+			case 'public':
+				$sql .= ' AND ws.status!=2 AND ws.private=0';
+				break;
+			case 'mine':
+				if ($uid)
+				{
+					$sql .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
+				}
+			break;
+			case 'submitter':
+				if ($uid)
+				{
+					$sql .= ' AND ws.proposed_by=' . $uid . ' AND ws.status!=2';
+				}
+				break;
+			case 'assigned':
+				$sql .= ' AND ws.assigned NOT NULL AND ws.status!=2';
+			break;
+			default:
+				$sql .= ' AND ws.status!=2';
+			break;
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -198,7 +209,7 @@ class Wish extends \JTable
 
 		if (isset($filters['tag']) && $filters['tag'])
 		{
-			require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
+			require_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
 
 			$tagging = new Tags(1, 'wishlist');
 
@@ -233,9 +244,9 @@ class Wish extends \JTable
 	 * @param   integer  $fullinfo Return fullinfo or not?
 	 * @return  mixed    False if error, array on success
 	 */
-	public function get_wishes($listid, $filters, $admin, $user=NULL, $fullinfo = 1)
+	public function get_wishes($listid, $filters, $admin, $user=null, $fullinfo = 1)
 	{
-		if ($listid === NULL)
+		if ($listid === null)
 		{
 			return false;
 		}
@@ -250,7 +261,7 @@ class Wish extends \JTable
 
 		$filters['tag'] = isset($filters['tag']) ? $filters['tag'] : '';
 
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
+		require_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
 
 		$sort = 'ws.status ASC, ws.proposed DESC';
 		// list  sorting
@@ -258,27 +269,27 @@ class Wish extends \JTable
 		{
 			switch ($filters['sortby'])
 			{
-					case 'date':
-						$sort = 'ws.status ASC, ws.proposed DESC';
-					break;
-					case 'ranking':
-						$sort = 'ws.status ASC, ranked, ws.ranking DESC, positive DESC, ws.proposed DESC';
-					break;
-					case 'feedback':
-						$sort = 'positive DESC, ws.status ASC';
-					break;
-					case 'bonus':
-						$sort = 'ws.status ASC, bonus DESC, positive DESC, ws.ranking DESC, ws.proposed DESC';
-					break;
-					case 'latestcomment':
-						$sort = 'latestcomment DESC, ws.status ASC';
-					break;
-					case 'submitter':
-						$sort = 'xp.name ASC';
-					break;
-					default:
-						$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
-					break;
+				case 'date':
+					$sort = 'ws.status ASC, ws.proposed DESC';
+				break;
+				case 'ranking':
+					$sort = 'ws.status ASC, ranked, ws.ranking DESC, positive DESC, ws.proposed DESC';
+				break;
+				case 'feedback':
+					$sort = 'positive DESC, ws.status ASC';
+				break;
+				case 'bonus':
+					$sort = 'ws.status ASC, bonus DESC, positive DESC, ws.ranking DESC, ws.proposed DESC';
+				break;
+				case 'latestcomment':
+					$sort = 'latestcomment DESC, ws.status ASC';
+				break;
+				case 'submitter':
+					$sort = 'xp.name ASC';
+				break;
+				default:
+					$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
+				break;
 			}
 		}
 
@@ -307,8 +318,8 @@ class Wish extends \JTable
 			}
 
 			// Get xprofile info
-			$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by) as grantedby, ";
-			$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned) as assignedto, ";
+			$sql .= "\n (SELECT xp.name FROM #__users AS xp WHERE xp.id=ws.granted_by) as grantedby, ";
+			$sql .= "\n (SELECT xp.name FROM #__users AS xp WHERE xp.id=ws.assigned) as assignedto, ";
 
 			// Get comments count
 			//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS comments, ";
@@ -330,10 +341,10 @@ class Wish extends \JTable
 			$sql .= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";
 		}
 		$sql .= "\n FROM #__wishlist_item AS ws";
-		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
+		$sql .= "\n JOIN #__users AS xp ON xp.id=ws.proposed_by ";
 		if ($fullinfo)
 		{
-			//$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
+			//$sql .= "\n JOIN #__users AS xp ON xp.id=ws.proposed_by ";
 			$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='" . $uid . "' ";
 			$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='" . $uid . "' ";
 			if ($filters['tag'])
@@ -464,11 +475,11 @@ class Wish extends \JTable
 	 */
 	public function delete_wish($wishid, $withdraw=0)
 	{
-		if ($wishid === NULL)
+		if ($wishid === null)
 		{
 			$wishid == $this->id;
 		}
-		if ($wishid === NULL)
+		if ($wishid === null)
 		{
 			return false;
 		}
@@ -530,7 +541,7 @@ class Wish extends \JTable
 		}
 
 		// Remove all tags
-		include_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
+		include_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
 		$wt = new Tags($oid);
 		$wt->setTags('', User::get('id'), 1);
 
@@ -550,7 +561,7 @@ class Wish extends \JTable
 	 */
 	public function get_wish($wishid = 0, $uid = 0, $refid = 0, $cat = '', $deleted = 0)
 	{
-		if ($wishid === NULL)
+		if ($wishid === null)
 		{
 			return false;
 		}
@@ -564,8 +575,8 @@ class Wish extends \JTable
 		$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 
 		// Get xprofile info
-		$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by) as grantedby, ";
-		$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned) as assignedto, ";
+		$sql .= "\n (SELECT xp.name FROM #__users AS xp WHERE xp.id=ws.granted_by) as grantedby, ";
+		$sql .= "\n (SELECT xp.name FROM #__users AS xp WHERE xp.id=ws.assigned) as assignedto, ";
 
 		// Get comments count
 		//$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=0 AND CC.item_type='wish') AS comments, ";
@@ -590,7 +601,7 @@ class Wish extends \JTable
 		{
 			$sql .= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid=" . $this->_db->quote($refid) . " AND W.category=" . $this->_db->quote($cat) . " ";
 		}
-		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
+		$sql .= "\n JOIN #__users AS xp ON xp.id=ws.proposed_by ";
 		$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter=" . $this->_db->quote($uid) . " ";
 		$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid=" . $this->_db->quote($uid) . " ";
 		$sql .= "\n WHERE ws.id=" . $this->_db->quote($wishid) . " ";
@@ -615,7 +626,7 @@ class Wish extends \JTable
 	 */
 	public function check_wish($wishid, $listid)
 	{
-		if ($wishid === NULL or $listid === NULL)
+		if ($wishid === null or $listid === null)
 		{
 			return false;
 		}
@@ -641,7 +652,7 @@ class Wish extends \JTable
 	 */
 	public function getWishID($which, $id, $listid, $admin, $uid, $filters=array())
 	{
-		if ($which === NULL or $id === NULL or $listid === NULL)
+		if ($which === null or $id === null or $listid === null)
 		{
 			return false;
 		}
@@ -741,7 +752,7 @@ class Wish extends \JTable
 	 */
 	public function get_vote($refid, $category= 'wish', $uid)
 	{
-		if ($refid === NULL or $uid === NULL)
+		if ($refid === null or $uid === null)
 		{
 			return false;
 		}
@@ -754,4 +765,3 @@ class Wish extends \JTable
 		return $this->_db->loadResult();
 	}
 }
-
