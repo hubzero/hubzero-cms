@@ -53,7 +53,8 @@ class Mailinglist extends SiteController
 	/**
 	 * Override parent build title method
 	 *
-	 * @param 	object	$newsletter		Newsletter object for adding campaign name to title
+	 * @param   object  $newsletter  Newsletter object for adding campaign name pathway
+	 * @return  void
 	 */
 	public function _buildTitle($newsletter = null)
 	{
@@ -85,7 +86,8 @@ class Mailinglist extends SiteController
 	/**
 	 * Override parent build pathway method
 	 *
-	 * @param 	object	$campaign		Newsletter object for adding campaign name pathway
+	 * @param   object  $newsletter  Newsletter object for adding campaign name pathway
+	 * @return  void
 	 */
 	public function _buildPathway($newsletter = null)
 	{
@@ -303,7 +305,7 @@ class Mailinglist extends SiteController
 				Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false);
 
 				//delete all unsubscribes
-				$sql = "DELETE FROM #__newsletter_mailinglist_unsubscribes
+				$sql = "DELETE FROM `#__newsletter_mailinglist_unsubscribes`
 						WHERE mid=" . $this->database->quote($mylist->mailinglistid) . "
 						AND email=" . $this->database->quote($email);
 				$this->database->setQuery($sql);
@@ -384,9 +386,9 @@ class Mailinglist extends SiteController
 		if ($mailing->lid == '-1')
 		{
 			$sql = "SELECT *
-					FROM #__xprofiles as p
-					WHERE p.email=" . $this->database->quote($recipient->email) . "
-					AND p.mailPreferenceOption > " . $this->database->quote(0);
+					FROM `#__users` AS u
+					WHERE u.email=" . $this->database->quote($recipient->email) . "
+					AND u.sendEmail > " . $this->database->quote(0);
 			$this->database->setQuery($sql);
 			$profile = $this->database->loadObject();
 
@@ -399,7 +401,7 @@ class Mailinglist extends SiteController
 		{
 			//check to make sure email is on list
 			$sql = "SELECT *
-					FROM #__newsletter_mailinglist_emails as mle
+					FROM `#__newsletter_mailinglist_emails` AS mle
 					WHERE mle.mid=" . $this->database->quote($mailing->lid) . "
 					AND mle.email=" . $this->database->quote($recipient->email) . "
 					AND mle.status=" . $this->database->quote('active');
@@ -499,7 +501,7 @@ class Mailinglist extends SiteController
 		{
 			if (!User::isGuest())
 			{
-				$sql = "UPDATE #__xprofiles SET mailPreferenceOption=0 WHERE uidNumber=" . $this->database->quote(User::get('id'));
+				$sql = "UPDATE `#__users` SET `sendEmail`=0 WHERE `id`=" . $this->database->quote(User::get('id'));
 			}
 			else
 			{
@@ -518,7 +520,7 @@ class Mailinglist extends SiteController
 		else
 		{
 			//update the emails status on the mailing list
-			$sql = "UPDATE #__newsletter_mailinglist_emails
+			$sql = "UPDATE `#__newsletter_mailinglist_emails`
 					SET status=" . $this->database->quote('unsubscribed') . "
 					WHERE mid=" . $this->database->quote($mailing->lid) . "
 					AND email=" . $this->database->quote($recipient->email);
@@ -537,8 +539,8 @@ class Mailinglist extends SiteController
 		}
 
 		//insert unsubscribe reason
-		$sql = "INSERT INTO #__newsletter_mailinglist_unsubscribes(mid,email,reason)
-				VALUES(".$this->database->quote($mailing->lid).",".$this->database->quote($recipient->email).",".$this->database->quote($reason).")";
+		$sql = "INSERT INTO `#__newsletter_mailinglist_unsubscribes` (mid,email,reason)
+				VALUES (" . $this->database->quote($mailing->lid) . "," . $this->database->quote($recipient->email) . "," . $this->database->quote($reason) . ")";
 		$this->database->setQuery($sql);
 		$this->database->query();
 
@@ -615,7 +617,6 @@ class Mailinglist extends SiteController
 	/**
 	 * Remove From Mailing list
 	 *
-	 * @param 	$email
 	 * @return 	void
 	 */
 	public function removeTask()
@@ -660,7 +661,7 @@ class Mailinglist extends SiteController
 	/**
 	 * Resend Newsletter Confirmation
 	 * 
-	 * @return [type] [description]
+	 * @return  void
 	 */
 	public function resendConfirmationTask()
 	{
