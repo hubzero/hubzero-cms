@@ -87,4 +87,3 @@ class ComponentController extends \Hubzero\Component\SiteController
 	}
 
 }
-

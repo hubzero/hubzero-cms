@@ -50,7 +50,7 @@ use Date;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'importer.php');
+include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'importer.php');
 
 /**
  * Citations controller class for importing citation entries
@@ -140,7 +140,7 @@ class Import extends SiteController
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
 		//call the plugins
-		$this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+		$this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
 
 		//get any messages
 		$this->view->messages = Notify::messages('citations');
@@ -191,7 +191,7 @@ class Import extends SiteController
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file));
+		$citations = Event::trigger('citation.onImport', array($file));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
@@ -324,7 +324,7 @@ class Import extends SiteController
 
 		if (isset($group) && $group != '')
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
+			require_once (PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
 			$gob = new \Components\Groups\Tables\Group($this->database);
 			$cn = $gob->getName($group);
 

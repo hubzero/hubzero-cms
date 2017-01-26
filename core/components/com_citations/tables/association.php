@@ -180,4 +180,3 @@ class Association extends \JTable
 		return true;
 	}
 }
-

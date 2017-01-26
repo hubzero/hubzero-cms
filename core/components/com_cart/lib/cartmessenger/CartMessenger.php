@@ -303,7 +303,7 @@ class CartMessenger
 		$clientEmail = 'Thank you for your order at ' . Config::get('sitename') . "!\n\n";
 		$clientEmail .= $summary;
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
+		require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
 		$to = array(\Components\Cart\Models\Cart::getCartUser($transactionInfo->crtId));
 		Event::trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
 
@@ -380,7 +380,7 @@ class CartMessenger
 		}
 	}
 
-	private function emailError($error, $errorType = NULL)
+	private function emailError($error, $errorType = null)
 	{
 		$params = Component::params(Request::getVar('option'));
 

@@ -181,4 +181,3 @@ class Author extends \JTable
 		return true;
 	}
 }
-

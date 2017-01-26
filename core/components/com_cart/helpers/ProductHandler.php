@@ -80,10 +80,10 @@ class CartProductHandler
 		$modelHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptModel']))) . '_Model_Handler';
 		if (file_exists($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php')) {
 			// Include the parent class
-			include_once($handlersPath . DS . 'ModelHandler.php');
+			include_once ($handlersPath . DS . 'ModelHandler.php');
 
 			// Include the handler file
-			include_once($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php');
+			include_once ($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php');
 
 			$modelHandler = new $modelHandlerClass($this->item, $this->crtId, $this->tId);
 			$modelHandler->handle();
@@ -95,10 +95,10 @@ class CartProductHandler
 		//print_r($typeHandlerClass); die;
 		if (file_exists($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php')) {
 			// Include the parent class
-			include_once($handlersPath . DS . 'TypeHandler.php');
+			include_once ($handlersPath . DS . 'TypeHandler.php');
 
 			// Include the handler file
-			include_once($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php');
+			include_once ($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php');
 
 			$typeHandler = new $typeHandlerClass($this->item, $this->crtId);
 			$typeHandler->handle();
@@ -113,10 +113,10 @@ class CartProductHandler
 
 			if (file_exists($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php')) {
 				// Include the parent class
-				include_once($handlersPath . DS . 'CustomHandler.php');
+				include_once ($handlersPath . DS . 'CustomHandler.php');
 
 				// Include the handler file
-				include_once($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php');
+				include_once ($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php');
 
 				$customHandler = new $customHandlerClass($this->item, $this->crtId);
 				$customHandler->handle();

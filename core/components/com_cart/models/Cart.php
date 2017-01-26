@@ -35,8 +35,8 @@ use Components\Storefront\Models\Warehouse;
 use Components\Cart\Helpers\CartHelper;
 use Components\Cart\Helpers\Audit;
 
-require_once(dirname(__DIR__) . DS. 'helpers' . DS . 'Helper.php');
-require_once(dirname(__DIR__) . DS. 'helpers' . DS . 'Audit.php');
+require_once (dirname(__DIR__) . DS. 'helpers' . DS . 'Helper.php');
+require_once (dirname(__DIR__) . DS. 'helpers' . DS . 'Audit.php');
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
@@ -45,10 +45,10 @@ require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models
 abstract class Cart
 {
 	// Database instance
-	var $db = NULL;
+	var $db = null;
 
 	// Cart ID
-	var $crtId = NULL;
+	var $crtId = null;
 
 	// Debug mode
 	var $debug = false;
@@ -232,7 +232,7 @@ abstract class Cart
 
 		if (isset($filters['returnFormat']) && $filters['returnFormat'] == 'array')
 		{
-			return($db->loadAssocList());
+			return ($db->loadAssocList());
 		}
 		else
 		{
@@ -957,7 +957,7 @@ abstract class Cart
 
 		if (!empty($tItems))
 		{
-			require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+			require_once (PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
 
 			foreach ($tItems as $sId => $itemInfo)
 			{

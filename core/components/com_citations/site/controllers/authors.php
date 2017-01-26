@@ -261,4 +261,3 @@ class Authors extends SiteController
 		$this->citation->store();
 	}
 }
-

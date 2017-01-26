@@ -22,11 +22,11 @@
 /**#@+
  * ERROR constants
  */
-define('PEAR_ERROR_RETURN',     1);
-define('PEAR_ERROR_PRINT',      2);
-define('PEAR_ERROR_TRIGGER',    4);
-define('PEAR_ERROR_DIE',        8);
-define('PEAR_ERROR_CALLBACK',  16);
+define('PEAR_ERROR_RETURN', 1);
+define('PEAR_ERROR_PRINT', 2);
+define('PEAR_ERROR_TRIGGER', 4);
+define('PEAR_ERROR_DIE', 8);
+define('PEAR_ERROR_CALLBACK', 16);
 /**
  * WARNING: obsolete
  * @deprecated
@@ -37,12 +37,12 @@ define('PEAR_ZE2', (function_exists('version_compare') && version_compare(zend_v
 
 if (substr(PHP_OS, 0, 3) == 'WIN') {
 	define('OS_WINDOWS', true);
-	define('OS_UNIX',    false);
-	define('PEAR_OS',    'Windows');
+	define('OS_UNIX', false);
+	define('PEAR_OS', 'Windows');
 } else {
 	define('OS_WINDOWS', false);
-	define('OS_UNIX',    true);
-	define('PEAR_OS',    'Unix'); // blatant assumption
+	define('OS_UNIX', true);
+	define('PEAR_OS', 'Unix'); // blatant assumption
 }
 
 $GLOBALS['_PEAR_default_error_mode']     = PEAR_ERROR_RETURN;
@@ -201,17 +201,17 @@ class PEAR
 	// {{{ getStaticProperty()
 
 	/**
-	* If you have a class that's mostly/entirely static, and you need static
-	* properties, you can use this method to simulate them. Eg. in your method(s)
-	* do this: $myVar = &PEAR::getStaticProperty('myclass', 'myVar');
-	* You MUST use a reference, or they will not persist!
-	*
-	* @access public
-	* @param  string $class  The calling classname, to prevent clashes
-	* @param  string $var    The variable to retrieve.
-	* @return mixed   A reference to the variable. If not set it will be
-	*                 auto initialised to NULL.
-	*/
+	 * If you have a class that's mostly/entirely static, and you need static
+	 * properties, you can use this method to simulate them. Eg. in your method(s)
+	 * do this: $myVar = &PEAR::getStaticProperty('myclass', 'myVar');
+	 * You MUST use a reference, or they will not persist!
+	 *
+	 * @access public
+	 * @param  string $class  The calling classname, to prevent clashes
+	 * @param  string $var    The variable to retrieve.
+	 * @return mixed   A reference to the variable. If not set it will be
+	 *                 auto initialised to NULL.
+	 */
 	function &getStaticProperty($class, $var)
 	{
 		static $properties;
@@ -230,14 +230,14 @@ class PEAR
 	// {{{ registerShutdownFunc()
 
 	/**
-	* Use this function to register a shutdown method for static
-	* classes.
-	*
-	* @access public
-	* @param  mixed $func  The function name (or array of class/method) to call
-	* @param  mixed $args  The arguments to pass to the function
-	* @return void
-	*/
+	 * Use this function to register a shutdown method for static
+	 * classes.
+	 *
+	 * @access public
+	 * @param  mixed $func  The function name (or array of class/method) to call
+	 * @param  mixed $args  The arguments to pass to the function
+	 * @return void
+	 */
 	function registerShutdownFunc($func, $args = array())
 	{
 		// if we are called statically, there is a potential
@@ -414,7 +414,7 @@ class PEAR
 	{
 		$deleted = false;
 
-		foreach ($this->_expected_errors AS $key => $error_array) {
+		foreach ($this->_expected_errors as $key => $error_array) {
 			if (in_array($error_code, $error_array)) {
 				unset($this->_expected_errors[$key][array_search($error_code, $error_array)]);
 				$deleted = true;
@@ -454,18 +454,18 @@ class PEAR
 					$deleted = false;
 				}
 			}
-			return $deleted ? true : PEAR::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
+			return $deleted ? true : self::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
 		} elseif (!empty($error_code)) {
 			// $error_code comes alone, trying to unset it
 			if ($this->_checkDelExpect($error_code)) {
 				return true;
 			} else {
-				return PEAR::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
+				return self::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
 			}
 		}
 
 		// $error_code is empty
-		return PEAR::raiseError("The expected error you submitted is empty"); // IMPROVE ME
+		return self::raiseError("The expected error you submitted is empty"); // IMPROVE ME
 	}
 
 	// }}}
@@ -588,7 +588,7 @@ class PEAR
 			return $a;
 		}
 
-		$a = &PEAR::raiseError($message, $code, null, null, $userinfo);
+		$a = &self::raiseError($message, $code, null, null, $userinfo);
 		return $a;
 	}
 
@@ -693,7 +693,7 @@ class PEAR
 		if (isset($this) && is_a($this, 'PEAR')) {
 			$this->setErrorHandling($mode, $options);
 		} else {
-			PEAR::setErrorHandling($mode, $options);
+			self::setErrorHandling($mode, $options);
 		}
 		$stack[] = array($mode, $options);
 		return true;
@@ -703,12 +703,12 @@ class PEAR
 	// {{{ popErrorHandling()
 
 	/**
-	* Pop the last error handler used
-	*
-	* @return bool Always true
-	*
-	* @see PEAR::pushErrorHandling
-	*/
+	 * Pop the last error handler used
+	 *
+	 * @return bool Always true
+	 *
+	 * @see PEAR::pushErrorHandling
+	 */
 	function popErrorHandling()
 	{
 		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
@@ -718,7 +718,7 @@ class PEAR
 		if (isset($this) && is_a($this, 'PEAR')) {
 			$this->setErrorHandling($mode, $options);
 		} else {
-			PEAR::setErrorHandling($mode, $options);
+			self::setErrorHandling($mode, $options);
 		}
 		return true;
 	}
@@ -727,12 +727,12 @@ class PEAR
 	// {{{ loadExtension()
 
 	/**
-	* OS independant PHP extension load. Remember to take care
-	* on the correct extension name for case sensitive OSes.
-	*
-	* @param string $ext The extension name
-	* @return bool Success or not on the dl() call
-	*/
+	 * OS independant PHP extension load. Remember to take care
+	 * on the correct extension name for case sensitive OSes.
+	 *
+	 * @param string $ext The extension name
+	 * @return bool Success or not on the dl() call
+	 */
 	function loadExtension($ext)
 	{
 		if (!extension_loaded($ext)) {
@@ -803,7 +803,7 @@ function _PEAR_call_destructors()
 	}
 
 	// Now call the shutdown functions
-	if (is_array($GLOBALS['_PEAR_shutdown_funcs']) AND !empty($GLOBALS['_PEAR_shutdown_funcs'])) {
+	if (is_array($GLOBALS['_PEAR_shutdown_funcs']) and !empty($GLOBALS['_PEAR_shutdown_funcs'])) {
 		foreach ($GLOBALS['_PEAR_shutdown_funcs'] as $value) {
 			call_user_func_array($value[0], $value[1]);
 		}

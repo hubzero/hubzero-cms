@@ -75,7 +75,7 @@ class PaymentDispatcher
 				die('Wrong payment gateway provider.');
 		}
 
-		require_once('PaymentProvider.php');
+		require_once ('PaymentProvider.php');
 		$this->paymentHandler = new PaymentProvider();
 	}
 
@@ -99,14 +99,14 @@ class PaymentDispatcher
 		switch ($paymentGatewayProivder)
 		{
 			case "PAYPAL STANDARD":
-				return('cm');
+				return ('cm');
 			break;
 			case "UPAY":
-				return('tId');
+				return ('tId');
 			break;
 			case "DUMMY AUTO PAYMENT":
 			default:
-				return('custom');
+				return ('custom');
 			break;
 				die('Wrong payment gateway provider.');
 		}

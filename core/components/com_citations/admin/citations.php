@@ -37,17 +37,17 @@ if (!\User::authorise('core.manage', 'com_citations'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'citation.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'association.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'secondary.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tags.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'sponsor.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'format.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
-require_once(dirname(__DIR__) . DS . 'models'  . DS . 'format.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'citation.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'association.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'secondary.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'tags.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'sponsor.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'format.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
+require_once (dirname(__DIR__) . DS . 'models'  . DS . 'format.php');
 
 $controllerName = \Request::getCmd('controller', 'citations');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -81,11 +81,10 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'format'
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once (__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Initiate controller
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

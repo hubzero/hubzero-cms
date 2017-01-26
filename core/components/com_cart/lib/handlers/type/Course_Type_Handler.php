@@ -53,7 +53,7 @@ class Course_Type_Handler extends Type_Handler
 		$courseId = $this->item['meta']['courseId'];
 
 		// Get user ID for the cart
-		require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+		require_once (dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
 		$userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
 		// Load courses model and register

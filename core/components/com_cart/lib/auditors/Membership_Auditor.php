@@ -33,7 +33,7 @@ namespace Components\Cart\Lib\Auditors;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Memberships;
 
-require_once('BaseAuditor.php');
+require_once ('BaseAuditor.php');
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
 
@@ -103,6 +103,6 @@ class Membership_Auditor extends BaseAuditor
 			}
 		}
 
-		return($this->getResponse());
+		return ($this->getResponse());
 	}
 }

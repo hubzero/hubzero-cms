@@ -36,9 +36,9 @@ if (!\User::authorise('core.manage', 'com_answers'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once (dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 
 $controllerName = \Request::getCmd('controller', 'questions');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -57,7 +57,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	($controllerName == 'answers')
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once (__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // initiate controller

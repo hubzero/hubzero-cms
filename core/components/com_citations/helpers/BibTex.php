@@ -57,7 +57,7 @@ defined('_HZEXEC_') or die();
  * @link      http://pear.php.net/package/Structures_BibTex
  */
 
-require_once(__DIR__ . DS . 'PEAR.php');
+require_once (__DIR__ . DS . 'PEAR.php');
 
 /**
  * Structures_BibTex
@@ -376,7 +376,7 @@ class Structures_BibTex
 						$notuniques[] = $cites[$i];
 					}
 				}
-				$this->_generateWarning('WARNING_MULTIPLE_ENTRIES', implode(',',$notuniques));
+				$this->_generateWarning('WARNING_MULTIPLE_ENTRIES', implode(',', $notuniques));
 			}
 		}
 		if ($valid) {
@@ -428,7 +428,7 @@ class Structures_BibTex
 			}
 		} else {
 			//Parsing all fields
-			while (strrpos($entry,'=') !== false) {
+			while (strrpos($entry, '=') !== false) {
 				$position = strrpos($entry, '=');
 				//Checking that the equal sign is not quoted or is not inside a equation (For example in an abstract)
 				$proceed  = true;
@@ -440,7 +440,7 @@ class Structures_BibTex
 				}
 				while (!$proceed) {
 					$substring = substr($entry, 0, $position);
-					$position  = strrpos($substring,'=');
+					$position  = strrpos($substring, '=');
 					$proceed   = true;
 					if (substr($entry, $position-1, 1) == '\\') {
 						$proceed = false;
@@ -585,7 +585,7 @@ class Structures_BibTex
 		$opening = array_keys($this->_delimiters);
 		$closing = array_values($this->_delimiters);
 		//Getting the value (at is only allowd in values)
-		if (strrpos($entry,'=') !== false) {
+		if (strrpos($entry, '=') !== false) {
 			$position = strrpos($entry, '=');
 			$proceed  = true;
 			if (substr($entry, $position-1, 1) == '\\') {
@@ -593,7 +593,7 @@ class Structures_BibTex
 			}
 			while (!$proceed) {
 				$substring = substr($entry, 0, $position);
-				$position  = strrpos($substring,'=');
+				$position  = strrpos($substring, '=');
 				$proceed   = true;
 				if (substr($entry, $position-1, 1) == '\\') {
 					$proceed = false;
@@ -667,7 +667,7 @@ class Structures_BibTex
 	 */
 	function _wordwrap($entry)
 	{
-		if ( (''!=$entry) && (is_string($entry)) ) {
+		if ((''!=$entry) && (is_string($entry))) {
 			$entry = wordwrap($entry, $this->_options['wordWrapWidth'], $this->_options['wordWrapBreak'], $this->_options['wordWrapCut']);
 		}
 		return $entry;
@@ -839,7 +839,7 @@ class Structures_BibTex
 				if (($ord>=65) && ($ord<=90) && (0==$openbrace)) { //The first character is uppercase
 					$ret   = 1;
 					$found = true;
-				} elseif ( ($ord>=97) && ($ord<=122) && (0==$openbrace) ) { //The first character is lowercase
+				} elseif (($ord>=97) && ($ord<=122) && (0==$openbrace)) { //The first character is lowercase
 					$ret   = 0;
 					$found = true;
 				} else { //Not yet found
@@ -962,8 +962,11 @@ class Structures_BibTex
 	 */
 	function hasWarning()
 	{
-		if (sizeof($this->warnings)>0) return true;
-		else return false;
+		if (sizeof($this->warnings)>0){
+		return true;
+		} else {
+		return false;
+		}
 	}
 
 	/**
@@ -1031,7 +1034,7 @@ class Structures_BibTex
 			//Intro
 			$bibtex .= '@'.strtolower($entry['type']).' { '.$entry['cite'].",\n";
 			//Other fields except author
-			foreach ($entry as $key=>$val) {
+			foreach ($entry as $key => $val) {
 				if ($this->_options['wordWrapWidth']>0) {
 					$val = $this->_wordWrap($val);
 				}
@@ -1144,7 +1147,7 @@ class Structures_BibTex
 				$line .= "\n\\par\n";
 				$ret  .= $line;
 			} else {
-				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry,1));
+				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry, 1));
 			}
 		}
 		$ret .= '}';
@@ -1228,7 +1231,7 @@ class Structures_BibTex
 				}
 				$ret  .= $line;
 			} else {
-				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry,1));
+				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry, 1));
 			}
 		}
 		$ret  .= "</table>";

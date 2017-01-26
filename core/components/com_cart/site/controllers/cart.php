@@ -248,4 +248,3 @@ class Cart extends ComponentController
 		$this->view->display();
 	}
 }
-

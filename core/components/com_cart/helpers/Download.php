@@ -59,7 +59,7 @@ class CartDownload
 
 	public static function countUserSkuDownloads($sId, $uId)
 	{
-		return CartDownload::countSkuDownloads($sId, $uId);
+		return self::countSkuDownloads($sId, $uId);
 	}
 
 	/**
@@ -148,7 +148,7 @@ class CartDownload
 		$db->execute();
 		if ($rtrn == 'count')
 		{
-			return($db->getNumRows());
+			return ($db->getNumRows());
 		}
 
 		$res = $db->loadObjectList();
@@ -242,12 +242,12 @@ class CartDownload
 		$db->execute();
 		if ($rtrn == 'count')
 		{
-			return($db->getNumRows());
+			return ($db->getNumRows());
 		}
 
 		elseif ($rtrn == 'array')
 		{
-			return($db->loadAssocList());
+			return ($db->loadAssocList());
 		}
 
 		$res = $db->loadObjectList();

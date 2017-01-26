@@ -50,14 +50,14 @@ class JFormFieldCategoryEdit extends JFormFieldList
 		{
 			$oldCat = $jinput->get('id', 0);
 			$oldParent = $this->form->getValue($name, 0);
-			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('extension','com_content');
+			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('extension', 'com_content');
 		}
 		else
 		// For items the old category is the category they are in when opened or 0 if new.
 		{
-			$thisItem = $jinput->get('id',0);
+			$thisItem = $jinput->get('id', 0);
 			$oldCat = $this->form->getValue($name, 0);
-			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option','com_content');
+			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
 		}
 
 		$db		= App::get('db');
@@ -130,7 +130,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 			}
 			if ($options[$i]->published == 1)
 			{
-				$options[$i]->text = str_repeat('- ', $options[$i]->level). $options[$i]->text ;
+				$options[$i]->text = str_repeat('- ', $options[$i]->level). $options[$i]->text;
 			}
 			else
 			{
@@ -146,7 +146,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 				// To take save or create in a category you need to have create rights for that category
 				// unless the item is already in that category.
 				// Unset the option if the user isn't authorised for it. In this field assets are always categories.
-				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true )
+				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 				{
 					unset($options[$i]);
 				}

@@ -32,7 +32,7 @@ defined('_HZEXEC_') or die();
 class Model_Handler
 {
 	// Database instance
-	var $db = NULL;
+	var $db = null;
 
 	// Item info
 	var $item;

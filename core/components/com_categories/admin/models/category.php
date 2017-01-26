@@ -86,8 +86,7 @@ class CategoriesModelCategory extends JModelAdmin
 	 *
 	 * @return  JTable  A JTable object
 	 *
-	 * @since   1.6
-	*/
+	 * @since   1.6  */
 	public function getTable($type = 'Category', $prefix = 'CategoriesTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -501,8 +500,7 @@ class CategoriesModelCategory extends JModelAdmin
 	 *
 	 * @return  boolean  False on failure or error, True otherwise
 	 *
-	 * @since   1.6
-	*/
+	 * @since   1.6  */
 	public function saveorder($idArray = null, $lft_array = null)
 	{
 		// Get an instance of the table object.

@@ -51,7 +51,7 @@ class Economy extends Object
 	 *
 	 * @var  object
 	 */
-	protected $_db = NULL;
+	protected $_db = null;
 
 	/**
 	 * Constructor
@@ -90,16 +90,16 @@ class Economy extends Object
 	 */
 	public function calculate_marketvalue($id, $type='regular')
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			$id = $this->qid;
 		}
-		if ($id === NULL)
+		if ($id === null)
 		{
 			return false;
 		}
 
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
+		require_once (dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 
 		// Get point values for actions
 		$BC = Config::values();
@@ -167,13 +167,13 @@ class Economy extends Object
 	 */
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
-		if ($qid === NULL)
+		if ($qid === null)
 		{
 			$qid = $this->qid;
 		}
 		$cat = 'answers';
 
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
+		require_once (dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 
 		$points = $this->calculate_marketvalue($qid, $type);
 
@@ -264,7 +264,7 @@ class Economy extends Object
 						if (intval($A_owner_share) > 0)
 						{
 							$A_owner_share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answered question #%s that was recently closed', $qid);
-							$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
+							$BTL_A->deposit($A_owner_share, $A_owner_share_msg, $cat, $qid);
 						}
 					}
 					// is best answer eligible for extra points?
@@ -297,4 +297,3 @@ class Economy extends Object
 		}
 	}
 }
-

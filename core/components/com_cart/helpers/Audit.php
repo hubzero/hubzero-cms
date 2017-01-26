@@ -61,13 +61,13 @@ class Audit
 		if (file_exists($auditorsPath . DS . $auditorClass . '.php'))
 		{
 			// Include the auditor file
-			require_once($auditorsPath . DS . $auditorClass . '.php');
+			require_once ($auditorsPath . DS . $auditorClass . '.php');
 			$className = "\\Components\\Cart\\Lib\\Auditors\\" . $auditorClass;
 			return new $className($type, $pId, $crtId);
 		}
 		else
 		{
-			require_once($auditorsPath . DS . 'BaseAuditor.php');
+			require_once ($auditorsPath . DS . 'BaseAuditor.php');
 			return new \Components\Cart\Lib\Auditors\BaseAuditor($type);
 		}
 	}

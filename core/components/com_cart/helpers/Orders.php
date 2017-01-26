@@ -96,11 +96,11 @@ class CartOrders
 		$db->execute();
 		if ($rtrn == 'count')
 		{
-			return($db->getNumRows());
+			return ($db->getNumRows());
 		}
 		elseif ($rtrn == 'array')
 		{
-			return($db->loadAssocList());
+			return ($db->loadAssocList());
 		}
 
 		$res = $db->loadObjectList();

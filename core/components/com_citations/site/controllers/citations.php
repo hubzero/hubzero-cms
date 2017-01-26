@@ -693,8 +693,8 @@ class Citations extends SiteController
 			return false;
 		}
 
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		require_once (PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once (PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Get connections to publications
 		foreach ($assocs as $entry)
@@ -1053,12 +1053,12 @@ class Citations extends SiteController
 		{
 			if (array_key_exists($ignore, $b))
 			{
-				$b[$ignore] = NULL;
+				$b[$ignore] = null;
 			}
 		}
 		if (array_key_exists('id', $b))
 		{
-			$b['id'] = NULL;
+			$b['id'] = null;
 		}
 		$values = array_values($b);
 		$e = true;
@@ -1084,7 +1084,7 @@ class Citations extends SiteController
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean()):
 
 		$fsize = filesize($p . DS. $f);
 		$mod_date = date('r', filemtime($p . DS . $f));
@@ -1168,8 +1168,9 @@ class Citations extends SiteController
 		$image = Request::getVar('image', '');
 
 		// if we dont have an image were done
-		if ($image == '') return;
-
+		if ($image == ''){
+			return;
+		}
 		// file details
 		$image_details = pathinfo($image);
 

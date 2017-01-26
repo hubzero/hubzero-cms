@@ -44,7 +44,7 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
 class CurrentCart extends Cart
 {
 	// Session cart
-	var $cart = NULL;
+	var $cart = null;
 
 	// Syncing enabled?
 	var $sync = true;
@@ -736,7 +736,7 @@ class CurrentCart extends Cart
 	 * @param	int 	$tId transaction ID
 	 * @return 	void
 	 */
-	public function updateTransactionCustomerStatus($status, $tId = NULL)
+	public function updateTransactionCustomerStatus($status, $tId = null)
 	{
 		if (!$tId)
 		{
@@ -1855,7 +1855,7 @@ class CurrentCart extends Cart
 		else
 		{
 			// Get a static instance of the users' cart
-			require_once(__DIR__ . DS . 'UserCart.php');
+			require_once (__DIR__ . DS . 'UserCart.php');
 			$userCart = new UserCart($userCartId);
 			// Get items from the user's cart to see if it is empty or nor
 			$userCartItems = $userCart->getCartItems();
@@ -1923,7 +1923,7 @@ class CurrentCart extends Cart
 			$this->crtId = $userCartId;
 		}
 
-		require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
+		require_once (PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
 		$storefrontCoupons = new \Components\Storefront\Models\Coupons();
 
 		// Go through each coupon and apply all that are not applied
@@ -2042,7 +2042,7 @@ class CurrentCart extends Cart
 			}
 
 			// Reserve/lock items
-			require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+			require_once (PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
 			$sku = \Components\Storefront\Models\Sku::getInstance($sId);
 			//print_r($sku); die;
 			$sku->reserveInventory($skuInfo['cartInfo']->qty);
@@ -2127,7 +2127,7 @@ class CurrentCart extends Cart
 		// lock transaction items
 		$warehouse = $this->warehouse;
 
-		require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+		require_once (PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
 
 		foreach ($tItems as $sId => $item)
 		{
@@ -2167,6 +2167,6 @@ class CurrentCart extends Cart
 				parent::killTransaction($tId);
 			}
 		}
-		$this->cart->tId = NULL;
+		$this->cart->tId = null;
 	}
 }

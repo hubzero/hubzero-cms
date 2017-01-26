@@ -58,7 +58,7 @@ class Software_Model_Handler extends Model_Handler
 
 			$this->item['meta']['serials'] = $serialNumbers;
 			// Update the transaction items with serials
-			require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+			require_once (dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
 			\Components\Cart\Models\Cart::updateTransactionItem($this->tId, $this->item);
 		}
 	}

@@ -43,7 +43,7 @@ class Pro_Membership_Custom_Handler extends Custom_Handler
 	public function handle()
 	{
 		// Get user ID for the cart
-		require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+		require_once (dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
 		$userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
 		// Get number of points to add

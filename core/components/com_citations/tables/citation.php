@@ -185,7 +185,7 @@ class Citation extends \JTable
 			//if we have multiple tags we must explode them
 			if (strstr($filter['tag'], ","))
 			{
-				$tags = array_filter(array_map('trim',explode(',', $filter['tag'])));
+				$tags = array_filter(array_map('trim', explode(',', $filter['tag'])));
 			}
 			else
 			{
@@ -417,7 +417,7 @@ class Citation extends \JTable
 				if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
 				{
 					$countries = Geocode::getCountriesByContinent('na');
-					$c = implode("','",$countries);
+					$c = implode("','", $countries);
 					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
@@ -475,7 +475,7 @@ class Citation extends \JTable
 				$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
 			}
 		}
-		if (isset($filter['scope_id']) && $filter['scope_id'] != NULL)
+		if (isset($filter['scope_id']) && $filter['scope_id'] != null)
 		{
 			$query .= " AND r.scope_id=". $this->_db->quote($filter['scope_id']);
 		}
@@ -705,7 +705,7 @@ class Citation extends \JTable
 	 */
 	public function getLastCitationDate($tbl, $oid)
 	{
-		require_once(__DIR__ . DS . 'association.php');
+		require_once (__DIR__ . DS . 'association.php');
 
 		$ca = new Association($this->_db);
 
@@ -726,7 +726,7 @@ class Citation extends \JTable
 	 */
 	public function authors($id=null)
 	{
-		require_once(__DIR__ . DS . 'author.php');
+		require_once (__DIR__ . DS . 'author.php');
 
 		if (is_null($id))
 		{

@@ -36,8 +36,8 @@ use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
 use Hubzero\User\Profile;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**

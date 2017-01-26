@@ -196,7 +196,7 @@ class Download
 	{
 		$format = ($format) ? $format : $this->_format;
 
-		return (isset($this->_formatter[$format])) ? $this->_formatter[$format] : NULL;
+		return (isset($this->_formatter[$format])) ? $this->_formatter[$format] : null;
 	}
 
 	/**
@@ -227,7 +227,7 @@ class Download
 
 			if (is_file(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php'))
 			{
-				include_once(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php');
+				include_once (dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php');
 			}
 			if (!class_exists($cls))
 			{
@@ -254,4 +254,3 @@ class Download
 		return $formatter->format($reference);
 	}
 }
-

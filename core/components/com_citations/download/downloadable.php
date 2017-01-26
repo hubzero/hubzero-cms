@@ -103,4 +103,3 @@ abstract class Downloadable
 		return '';
 	}
 }
-
