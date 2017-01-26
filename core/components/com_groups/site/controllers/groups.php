@@ -603,13 +603,6 @@ class Groups extends Base
 
 		$g_discussion_email_autosubscribe = Request::getInt('discussion_email_autosubscribe', 0, 'post');
 
-		// Check authorization
-		// Published = 2 = archived. Archived is a read-only mode.
-		if ($group->published == 2 || ($this->_authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit')))
-		{
-			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
-		}
-
 		// Are we editing or creating?
 		if ($g_gidNumber)
 		{
@@ -622,6 +615,13 @@ class Groups extends Base
 			$this->_task = 'new';
 			$group  = new Group();
 			$before = new Group();
+		}
+
+		// Check authorization
+		// Published = 2 = archived. Archived is a read-only mode.
+		if ($group->published == 2 || ($this->_authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit')))
+		{
+			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
 
 		// Check for any missing info
