@@ -116,7 +116,7 @@ class Wishlist extends \JTable
 			. " WHERE referenceid=" . $this->_db->quote($rid) . " AND category=" . $this->_db->quote($cat) . " ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($sql);
-		return  $this->_db->loadResult();
+		return $this->_db->loadResult();
 	}
 
 	/**
@@ -486,4 +486,3 @@ class Wishlist extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-
