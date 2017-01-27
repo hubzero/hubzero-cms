@@ -35,8 +35,8 @@ use Components\Storefront\Models\Warehouse;
 use Components\Cart\Helpers\CartHelper;
 use Components\Cart\Helpers\Audit;
 
-require_once(dirname(__DIR__) . DS. 'helpers' . DS . 'Helper.php');
-require_once(dirname(__DIR__) . DS. 'helpers' . DS . 'Audit.php');
+require_once dirname(__DIR__) . DS. 'helpers' . DS . 'Helper.php';
+require_once dirname(__DIR__) . DS. 'helpers' . DS . 'Audit.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
@@ -44,22 +44,38 @@ require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models
  */
 abstract class Cart
 {
-	// Database instance
+	/**
+	 * Database instance
+	 *
+	 * @var  object
+	 */
 	var $db = NULL;
 
-	// Cart ID
+	/**
+	 * Cart ID
+	 *
+	 * @var  int
+	 */
 	var $crtId = NULL;
 
-	// Debug mode
+	/**
+	 * Debug mode
+	 *
+	 * @var  bool
+	 */
 	var $debug = false;
 
+	/**
+	 * Salt
+	 *
+	 * @var  string
+	 */
 	protected static $securitySalt = 'ERDCVcvk$sad!ccsso====++!w';
 
 	/**
 	 * Cart constructor
 	 *
-	 * @param void
-	 * @return void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -68,7 +84,6 @@ abstract class Cart
 
 		// Load language file
 		\App::get('language')->load('com_cart');
-		//JFactory::getLanguage()->load('com_cart');
 
 		$this->warehouse = new Warehouse();
 	}
@@ -76,9 +91,9 @@ abstract class Cart
 	/**
 	 * Add SKU to cart
 	 *
-	 * @param int   SKU ID
-	 * @param int   Quantity
-	 * @return void
+	 * @param   int   $sId  SKU ID
+	 * @param   int   $qty  Quantity
+	 * @return  void
 	 */
 	public function add($sId, $qty = 1)
 	{
@@ -88,10 +103,10 @@ abstract class Cart
 	/**
 	 * Update/set SKU in cart
 	 *
-	 * @param int   SKU ID
-	 * @param int   Quantity
-	 * @param bool  Retain old value
-	 * @return void
+	 * @param   int   $sId             SKU ID
+	 * @param   int   $qty             Quantity
+	 * @param   bool  $retainOldValue  Retain old value
+	 * @return  void
 	 */
 	public function update($sId, $qty = 1, $retainOldValue = false)
 	{
@@ -101,8 +116,8 @@ abstract class Cart
 	/**
 	 * Delete SKU from cart
 	 *
-	 * @param SKU ID
-	 * @return void
+	 * @param   int   $sId  SKU ID
+	 * @return  void
 	 */
 	public function delete($sId)
 	{
@@ -117,8 +132,8 @@ abstract class Cart
 	/**
 	 * Gets all saved shipping addresses for this user
 	 *
-	 * @param int       Currently logged in user ID
-	 * @return array
+	 * @param   int    $uId  Currently logged in user ID
+	 * @return  mixed
 	 */
 	public function getSavedShippingAddresses($uId)
 	{
@@ -143,8 +158,9 @@ abstract class Cart
 	/**
 	 * Gets transactions for a cart
 	 *
-	 * @param   int     Transaction ID
-	 * @return  object, false on no results
+	 * @param   array  $filters
+	 * @param   bool   $completedOnly
+	 * @return  mixed
 	 */
 	public function getTransactions($filters = array(), $completedOnly = true)
 	{
@@ -155,17 +171,17 @@ abstract class Cart
 	/**
 	 * Get all transactions
 	 *
-	 * @param   int     Transaction ID
-	 * @return  object, false on no results
+	 * @param   array  $filters
+	 * @param   bool   $completedOnly
+	 * @return  mixed
 	 */
 	public static function getAllTransactions($filters = array(), $completedOnly = true)
 	{
-		//print_r($filters); die;
 		// Get info
 		$sql = "SELECT ";
 		if (!empty($filters['userInfo']) && $filters['userInfo'])
 		{
-			$sql .= " x.`uidNumber`, x.`Name`, crt.`crtId`, ";
+			$sql .= " x.`id` AS uidNumber, x.`name`, crt.`crtId`, ";
 		}
 		if (!empty($filters['report-notes']) && $filters['report-notes'])
 		{
@@ -175,7 +191,7 @@ abstract class Cart
 		if (!empty($filters['userInfo']) && $filters['userInfo'])
 		{
 			$sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
-			$sql .= ' LEFT JOIN `#__xprofiles` x ON (crt.`uidNumber` = x.`uidNumber`)';
+			$sql .= ' LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.`id`)';
 		}
 		if (!empty($filters['report-notes']) && $filters['report-notes'])
 		{
@@ -215,10 +231,9 @@ abstract class Cart
 
 		$db = \App::get('db');
 		$db->setQuery($sql);
-		//print_r($db->toString()); die('*');
 		$db->query();
 
-		$totalRows= $db->getNumRows();
+		$totalRows = $db->getNumRows();
 
 		if (!empty($filters['count']) && $filters['count'])
 		{
@@ -232,7 +247,7 @@ abstract class Cart
 
 		if (isset($filters['returnFormat']) && $filters['returnFormat'] == 'array')
 		{
-			return($db->loadAssocList());
+			return $db->loadAssocList();
 		}
 		else
 		{
@@ -244,14 +259,13 @@ abstract class Cart
 	/**
 	 * Get cart items from the database
 	 *
-	 * @param void
-	 * @return Object with two elements: array of SKU info in the cart and array of SKU IDs in the cart
+	 * @return  object  Object with two elements: array of SKU info in the cart and array of SKU IDs in the cart
 	 */
 	protected function getCartItems()
 	{
 		if ($this->debug)
 		{
-			echo "<br>Getting items from DB";
+			echo '<br>Getting items from DB';
 		}
 
 		$sql = "SELECT `sId`, `crtiQty`, `crtiPrice`, `crtiOldPrice` FROM `#__cart_cart_items` crti WHERE crti.`crtId` = {$this->crtId}";
@@ -270,8 +284,8 @@ abstract class Cart
 	/**
 	 * Get a single item in the cart
 	 *
-	 * @param SKU ID
-	 * @return object SKU cart info
+	 * @param   int    $sId  SKU ID
+	 * @return  mixed  SKU cart info
 	 */
 	protected function getCartItem($sId)
 	{
@@ -280,7 +294,8 @@ abstract class Cart
 		$this->_db->setQuery($sql);
 		$skuCartInfo = $this->_db->loadObject();
 
-		if ($skuCartInfo) {
+		if ($skuCartInfo)
+		{
 			return $skuCartInfo;
 		}
 		return false;
@@ -289,8 +304,8 @@ abstract class Cart
 	/**
 	 * Check if cart is linked to any member's ID
 	 *
-	 * @param $crtId Cart ID
-	 * @return bool
+	 * @param   int   $crtId  Cart ID
+	 * @return  bool
 	 */
 	protected function cartIsLinked($crtId)
 	{
@@ -307,8 +322,8 @@ abstract class Cart
 
 	/**
 	 * Check if user's cart exists and return its ID
-	 * @param   int $uId User ID
-	 * @return  int Cart ID, false if no user cart exists
+	 * @param   int    $uId  User ID
+	 * @return  mixed  Cart ID, false if no user cart exists
 	 */
 	protected function getUserCartId($uId)
 	{
@@ -326,8 +341,7 @@ abstract class Cart
 	/**
 	 * Check if the cart exists.
 	 *
-	 * @param void
-	 * @return bool
+	 * @return  bool
 	 */
 	protected function exists()
 	{
@@ -345,8 +359,8 @@ abstract class Cart
 	/**
 	 * Update cart SKU, set as unavailable (if SKU or product get deleted or become unavailable)
 	 *
-	 * @param 	int		SKU ID
-	 * @return void
+	 * @param   int   $sId  SKU ID
+	 * @return  void
 	 */
 	protected function markItemUnavailable($sId)
 	{
@@ -359,14 +373,14 @@ abstract class Cart
 	/**
 	 * Update/add SKU/quantity to cart, update the price in the cart, save old price and inventory level (if requested)
 	 *
-	 * @param int       SKU ID
-	 * @param string    Update Method:  add - adds to the existing quantity,
+	 * @param   int       SKU ID
+	 * @param   string    Update Method:  add - adds to the existing quantity,
 	 *                                  set - ignores existing quantity and sets a new value,
 	 *                                  sync - simply checks/updates inventory and pricing
-	 * @param int       Quantity
-	 * @param bool      Flag determining whether the old qty should be saved (only when it goes down);
-	 *                  price get saved in either case
-	 * @return void
+	 * @param   int       Quantity
+	 * @param   bool      Flag determining whether the old qty should be saved (only when it goes down);
+	 *                    price get saved in either case
+	 * @return  void
 	 */
 	protected function doItem($sId, $mode = 'add', $qty = 1, $retainOldValue = false)
 	{
@@ -384,7 +398,8 @@ abstract class Cart
 				$this->deleteItem($sId);
 				return;
 			}
-			else {
+			else
+			{
 				//throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
 				throw new \Exception('Product quantity is incorrect');
 			}
@@ -436,7 +451,8 @@ abstract class Cart
 		if ($mode != 'sync')
 		{
 			// Don't allow purchasing multiple products (same & different SKUs) for those that are not allowed
-			if (!$skuInfo->pAllowMultiple) {
+			if (!$skuInfo->pAllowMultiple)
+			{
 				// Check this SKU qty to make sure no multiple SKUs are there
 				if ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))
 				{
@@ -465,7 +481,8 @@ abstract class Cart
 				}
 			}
 			// Don't allow purchasing multiple SKUs for those that are not allowed
-			if (!$skuInfo->sAllowMultiple && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))) {
+			if (!$skuInfo->sAllowMultiple && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1)))
+			{
 				//throw new \Exception($skuName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
 				throw new \Exception($skuName . " is already in the cart and cannot be added multiple times");
 			}
@@ -491,10 +508,9 @@ abstract class Cart
 		// Run the auditor
 		if ($mode != 'sync')
 		{
-			//require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
 			$auditor = Audit::getAuditor($skuInfo, $this->crtId);
 			$auditor->setSku($skuInfo->sId);
-			//print_r($auditor); die;
+
 			$auditorResponse = $auditor->audit();
 
 			if ($auditorResponse->status == 'error')
@@ -540,8 +556,8 @@ abstract class Cart
 	/**
 	 * Delete SKU from cart
 	 *
-	 * @param SKU ID
-	 * @return void
+	 * @param   int   $sId  SKU ID
+	 * @return  void
 	 */
 	private function deleteItem($sId)
 	{
@@ -557,9 +573,9 @@ abstract class Cart
 	/**
 	 * Verify security token
 	 *
-	 * @param 	string	string token
-	 * @param   int     Transaction ID
-	 * @return	bool
+	 * @param   string  $token  string token
+	 * @param   int     $tId    Transaction ID
+	 * @return  bool
 	 */
 	public static function verifySecurityToken($token, $tId)
 	{
@@ -572,8 +588,9 @@ abstract class Cart
 
 	/**
 	 * Get user ID associated with the provided cart ID
-	 * @param   int     $crtId cart ID
-	 * @return  int     user ID, false if no cart found
+	 *
+	 * @param   int  $crtId   cart ID
+	 * @return  int  user ID, false if no cart found
 	 */
 	public static function getCartUser($crtId)
 	{
@@ -593,9 +610,10 @@ abstract class Cart
 	/**
 	 * Remove given quantity of SKU from cart
 	 *
-	 * @param 	int SKU ID
-	 * @param 	int Qty
-	 * @return 	void
+	 * @param   int   $sId    SKU ID
+	 * @param   int   $qty    Qty
+	 * @param   int   $crtId  Cart ID
+	 * @return  void
 	 */
 	protected static function removeItem($sId, $qty, $crtId)
 	{
@@ -609,8 +627,8 @@ abstract class Cart
 	/**
 	 * Delete cart and all cart items
 	 *
-	 * @param int Cart ID
-	 * @return void
+	 * @param   int   $crtId  Cart ID
+	 * @return  void
 	 */
 	protected static function kill($crtId)
 	{
@@ -640,8 +658,8 @@ abstract class Cart
 	/**
 	 * Get main transaction facts (total, other verification info)
 	 *
-	 * @param void
-	 * @return array of items in the transaction or false on failed attempt
+	 * @param   int    $tId
+	 * @return  array  List of items in the transaction or false on failed attempt
 	 */
 	public static function getTransactionFacts($tId)
 	{
@@ -670,8 +688,8 @@ abstract class Cart
 	/**
 	 * Get all items in the transaction
 	 *
-	 * @param int transaction ID
-	 * @return array of items in the transaction, false if no items in transaction
+	 * @param   int    $tId  transaction ID
+	 * @return  mixed  List of items in the transaction, false if no items in transaction
 	 */
 	public static function getTransactionItems($tId)
 	{
@@ -715,8 +733,8 @@ abstract class Cart
 	/**
 	 * Gets all transaction related info
 	 *
-	 * @param   int     Transaction ID
-	 * @return  object, false on no results
+	 * @param   int    $tId  Transaction ID
+	 * @return  mixed  False on no results
 	 */
 	public static function getTransactionInfo($tId)
 	{
@@ -741,8 +759,8 @@ abstract class Cart
 	/**
 	 * Complete the transaction, mark it as completed, done, success...
 	 *
-	 * @param	object Transaction info
-	 * @return 	void
+	 * @param   object  $tInfo  Transaction info
+	 * @return  void
 	 */
 	public static function completeTransaction($tInfo)
 	{
@@ -752,7 +770,7 @@ abstract class Cart
 		// Extract transaction items
 		$transactionItems = unserialize($tInfo->info->tiItems);
 
-		require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'ProductHandler.php');
+		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'ProductHandler.php';
 
 		// Handle each item in the transaction
 		foreach ($transactionItems as $sId => $item)
@@ -779,6 +797,13 @@ abstract class Cart
 		$db->query();
 	}
 
+	/**
+	 * Complete the transaction, mark it as completed, done, success...
+	 *
+	 * @param   int    $tId   Transaction ID
+	 * @param   array  $item
+	 * @return  bool
+	 */
 	public static function updateTransactionItem($tId, $item)
 	{
 		$tInfo = self::getTransactionInfo($tId);
@@ -801,8 +826,8 @@ abstract class Cart
 	/**
 	 * Set transaction items
 	 *
-	 * @param   int     Transaction ID
-	 * @param   obj     Items
+	 * @param   int  $tId    Transaction ID
+	 * @param   obj  $items  Items
 	 * @return  bool
 	 */
 	private static function setTransactionItems($tId, $items)
@@ -826,8 +851,8 @@ abstract class Cart
 	/**
 	 * Update transaction status
 	 *
-	 * @param   string  status
-	 * @param   int     Transaction ID
+	 * @param   string  $status
+	 * @param   int     $tId     Transaction ID
 	 * @return  bool    Success or failure
 	 */
 	public static function updateTransactionStatus($status, $tId)
@@ -840,7 +865,8 @@ abstract class Cart
 
 		$affectedRows = $db->getAffectedRows();
 
-		if (!$affectedRows) {
+		if (!$affectedRows)
+		{
 			return false;
 		}
 		return true;
@@ -849,8 +875,8 @@ abstract class Cart
 	/**
 	 * Remove transaction items from the cart associated with it
 	 *
-	 * @param	object transaction info
-	 * @return 	void
+	 * @param   object  $tInfo  transaction info
+	 * @return  void
 	 */
 	private static function removeTransactionItemsFromCart($tInfo)
 	{
@@ -864,8 +890,8 @@ abstract class Cart
 	/**
 	 * Remove transaction coupons from the cart associated with it
 	 *
-	 * @param	object transaction info
-	 * @return 	void
+	 * @param   object  $tInfo  transaction info
+	 * @return  bool
 	 */
 	private static function removeTransactionCouponsFromCart($tInfo)
 	{
@@ -910,14 +936,16 @@ abstract class Cart
 				WHERE ({$sqlCoupons}) AND `crtId` = {$tInfo->info->crtId}";
 		$db->setQuery($sql);
 		$db->query();
+
+		return true;
 	}
 
 	/**
 	 * Handle the error processing the transaction
 	 *
-	 * @param	int transaction ID
-	 * @param 	object error
-	 * @return	void
+	 * @param   int     $tId    transaction ID
+	 * @param   object  $error
+	 * @return  void
 	 */
 	public static function handleTransactionError($tId, $error)
 	{
@@ -931,8 +959,8 @@ abstract class Cart
 	/**
 	 * Releases locked transaction items back to inventory and marks the transaction status as 'released'
 	 *
-	 * @param int Transaction ID
-	 * @return void
+	 * @param   int   $tId  Transaction ID
+	 * @return  void
 	 */
 	public static function releaseTransaction($tId)
 	{
@@ -952,12 +980,12 @@ abstract class Cart
 		// Get transaction items
 		$tItems = self::getTransactionItems($tId);
 
-		/* Go through each item and release the quantity back to inventory if needed */
+		// Go through each item and release the quantity back to inventory if needed
 		$warehouse = new Warehouse();
 
 		if (!empty($tItems))
 		{
-			require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
 
 			foreach ($tItems as $sId => $itemInfo)
 			{
@@ -973,8 +1001,8 @@ abstract class Cart
 	/**
 	 * Kill transaction
 	 *
-	 * @param int tId transaction ID to kill
-	 * @return void
+	 * @param   int   $tId  transaction ID to kill
+	 * @return  void
 	 */
 	protected static function killTransaction($tId)
 	{
@@ -1000,15 +1028,13 @@ abstract class Cart
 	/**
 	 * Kill all expired transactions
 	 *
-	 * @param void
-	 * @return void
+	 * @return  void
 	 */
 	public static function killExpiredTransactions()
 	{
 		$db = \App::get('db');
 		$params =  Component::params('com_cart');
 		$transactionTTL = ($params->get('transactionTTL', 120));
-
 
 		$sql = "SELECT t.tId
 				FROM `#__cart_transactions` t
