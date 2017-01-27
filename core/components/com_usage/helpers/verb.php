@@ -34,7 +34,9 @@ namespace Components\Usage\Helpers;
 
 use Exception;
 use App;
+use stdClass;
 
+require_once "Predis/Autoloader.php";
 
 /**
  * Usage verb class
@@ -48,7 +50,7 @@ class Verb
 	 * @return	int
 	 */
 
-	public static function celerySubmit()
+	public static function celerySubmit($params)
 	{
 		# this function does NO checking on inputs. Good luck!
 
@@ -57,14 +59,7 @@ class Verb
 		# execute, while the remaining arguments are assumed to be integer arguments
 		# to be passed to the metrics Celery function.
 
-		require "Predis/Autoloader.php";
-		Predis\Autoloader::register();
-
-		if (func_num_args() == 0) {
-			return -599; # incorrect number of arguements
-		} else {
-			$params = func_get_args();
-		}
+		\Predis\Autoloader::register();
 
 		$args2pass = array_slice($params, 1);
 		for ($i = 0; $i < count($args2pass); $i++) {
@@ -98,10 +93,10 @@ class Verb
 	# new Predis\Client
 
 		try {
-			$redis = new Predis\Client(array(
+			$redis = new \Predis\Client(array(
 				"host" => "127.0.0.1",
 				"port" => 6379,
-				"password" => "GXDG7qm378XqRNJezrh6",
+				"password" => \Config::get('redis_password'),
 				"database" => 9,
 			));
 		}
@@ -115,30 +110,24 @@ class Verb
 		$redis->lPush('celery', json_encode($bodyTask));
 	}
 
-	public static function metricsVerb()
+	public static function metricsVerb($params)
 	{
 		# grab the arguments. this function has variable arguments.
+		# params should be an array in the same form that calling the function from the command line should yield
+		# [verb, arg1, arg2, arg3, ...]
 
 		# the first argument is assumed to be the metrics "verb" being requested.
 		# the remaining argument are assumed to be the arguments to the "verb".
 
-		require "Predis/Autoloader.php";
-		Predis\Autoloader::register();
-
-		if (func_num_args() == 0) {
-			return -599; # incorrect number of arguements
-		} else {
-			$params = func_get_args();
-		}
+		\Predis\Autoloader::register();
 
 		$verbName = $params[0];
-
 		# ...and hookup with redis
 		try {
-			$redis = new Predis\Client(array(
+			$redis = new \Predis\Client(array(
 				"host" => "127.0.0.1",
 				"port" => 6379,
-				"password" => "GXDG7qm378XqRNJezrh6",
+				"password" => \Config::get('redis_password'),
 				"database" => 8,
 			));
 			}
@@ -146,13 +135,14 @@ class Verb
 			die($e->getMessage());
 		}
 
+		
 		# pull in verb information, checking that verb is available and correct in the process
 		$verb = $redis->hgetall($verbName);
 		if (!$verb)
 			return -500; # verb not found
 
 		# pull in the remaining arguments
-		if (func_num_args() != $verb['args']) {
+		if (count($params) != $verb['args']) {
 			return -599; # incorrect number of arguments
 		}
 
@@ -163,18 +153,18 @@ class Verb
 		}
 
 		# Validation test - parameters
-		$verbDate = new Datetime("{$params[1]}-{$params[2]}-01");
+		$verbDate = new \Datetime("{$params[1]}-{$params[2]}-01");
 
 		# Grab the list of databases needed by this verb and calculate the minimum date range
 		# over which a calculation can be performed.
 
-		$minDate = new Datetime("1970-1-1");
-		$maxDate = new Datetime("3000-1-1");
+		$minDate = new \Datetime("1970-1-1");
+		$maxDate = new \Datetime("3000-1-1");
 
 		foreach (explode(',', $verb['databases']) as $db) {
 			$dbInfo = $redis->hgetall($db);
-			$dbMin = new Datetime($dbInfo['minDate']);
-			$dbMax = new Datetime($dbInfo['maxDate']);
+			$dbMin = new \Datetime($dbInfo['minDate']);
+			$dbMax = new \Datetime($dbInfo['maxDate']);
 			if ($dbMin > $minDate)
 				$minDate = $dbMin;
 			if ($dbMax < $maxDate)
@@ -189,7 +179,7 @@ class Verb
 
 		$result = $redis->hgetall($query);
 		if (!$result) {
-			call_user_func_array("celerySubmit", $params);
+			self::celerySubmit($params);
 			return -401; # result unavailable, calculating result now, come back later
 		};
 
@@ -197,7 +187,7 @@ class Verb
 		# If the result's software version number does not match the verb's version number, re-compute
 
 		if ($result['software'] != $verb['version']) {
-			call_user_func_array("celerySubmit", $params);
+			self::celerySubmit($params);
 			return -402; # result out of date, calculating updated result now, come back later
 		};
 
@@ -207,7 +197,7 @@ class Verb
 		foreach (explode(',', $verb['databases']) as $db) {
 			$dbInfo = $redis->hgetall($db);
 			if ($dbInfo['version'] != $result[$db]) {
-				call_user_func_array("celerySubmit", $params);
+				self::celerySubmit($params);
 				return -402; # result out of date, calculating updated result now, come back later
 			};
 		};
@@ -216,6 +206,51 @@ class Verb
 
 		$redis->incr('pop_${query}');
 		return $result['value'];
+	}
+
+	public static function getDateRange($verbName)
+	{
+		\Predis\Autoloader::register();
+
+		# ...and hookup with redis
+		try
+		{
+			$redis = new \Predis\Client(array(
+				"host" => "127.0.0.1",
+				"port" => 6379,
+				"password" => \Config::get('redis_password'),
+				"database" => 8,
+			));
+		}
+		catch (Exception $e)
+		{
+			die($e->getMessage());
+		}
+
+		
+		# pull in verb information, checking that verb is available and correct in the process
+		$verb = $redis->hgetall($verbName);
+		if (!$verb)
+			return -500; # verb not found
+
+		# Grab the list of databases needed by this verb and calculate the minimum date range
+		# over which a calculation can be performed.
+
+		$minDate = new \Datetime("1970-1-1");
+		$maxDate = new \Datetime("3000-1-1");
+
+		foreach (explode(',', $verb['databases']) as $db)
+		{
+			$dbInfo = $redis->hgetall($db);
+			$dbMin = new \Datetime($dbInfo['minDate']);
+			$dbMax = new \Datetime($dbInfo['maxDate']);
+			if ($dbMin > $minDate)
+				$minDate = $dbMin;
+			if ($dbMax < $maxDate)
+				$maxDate = $dbMax;
+		
+		}
+		return [$minDate, $maxDate];
 	}
 
 }
