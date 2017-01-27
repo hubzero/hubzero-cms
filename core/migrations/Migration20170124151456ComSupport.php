@@ -3,7 +3,7 @@
 use Hubzero\Content\Migration\Base;
 
 /**
- * Migration script for ...
+ * Migration script for adding MP4 extension to params
  **/
 class Migration20170124151456ComSupport extends Base
 {
@@ -13,9 +13,15 @@ class Migration20170124151456ComSupport extends Base
 	public function up()
 	{
 		if($this->db->tableExists('#__extensions')){
-			$params = '{"feed_summary":"0","severities":"critical,major,normal,minor,trivial","webpath":"\/site\/tickets","maxAllowed":"40000000","file_ext":"mp4,jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz","group":"","emails":"{config.mailfrom}","0":"","blacklist":"","badwords":"viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting","email_processing":"1"}';
-			$query = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_support';";
+			$query = "SELECT params FROM #__extensions WHERE name = 'com_support';";
 			$this->db->setQuery($query);
+			$params = $this->db->query()->loadResult();
+
+			$params = json_decode($params);
+			$params->file_ext = 'mp4,jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz';
+            		$params = json_encode($params);
+			$query2 = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_support';";
+			$this->db->setQuery($query2);
 			$this->db->query();	
 		}
 	}
@@ -25,6 +31,15 @@ class Migration20170124151456ComSupport extends Base
 	 **/
 	public function down()
 	{
+			$query = "SELECT params FROM #__extensions WHERE name = 'com_support';";
+                        $this->db->setQuery($query);
+                        $params = $this->db->query()->loadResult();
 
+                        $params = json_decode($params);
+                        $params->file_ext = 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz';
+                        $params = json_encode($params);
+                        $query2 = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_support';";
+                        $this->db->setQuery($query2);
+                        $this->db->query();
 	}
 }
