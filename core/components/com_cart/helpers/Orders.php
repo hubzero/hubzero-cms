@@ -30,14 +30,17 @@
 
 namespace Components\Cart\Helpers;
 
+/**
+ * Cart orders helpers
+ */
 class CartOrders
 {
 	/**
 	 * Get a count or list of items ordered
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @return     mixed
+	 * @param   string  $rtrn     What data to return
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
 	 */
 	public static function getItemsOrdered($rtrn = 'list', $filters = array())
 	{
@@ -57,16 +60,14 @@ class CartOrders
 
 		$db = \App::get('db');
 
-		$sql  = 'SELECT ti.sId, ti.tiQty, ti.tiPrice, t.tId, t.crtId, t.`tLastUpdated`, x.uidNumber, x.Name ';
+		$sql  = 'SELECT ti.sId, ti.tiQty, ti.tiPrice, t.tId, t.crtId, t.`tLastUpdated`, x.id AS uidNumber, x.name ';
 		$sql .= 'FROM #__cart_transaction_items ti ';
 		$sql .= 'LEFT JOIN  #__cart_transactions t ON (t.tId = ti.tId) ';
 		$sql .= 'LEFT JOIN  #__cart_carts crt on (crt.crtId = t.crtId) ';
-		$sql .= 'LEFT JOIN `#__xprofiles` x ON (crt.`uidNumber` = x.uidNumber) ';
+		$sql .= 'LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.id) ';
 		$sql .= "WHERE t.tStatus = 'completed'";
 
 		// Filter by filters
-		//print_r($filters);
-
 		if ($filters['sort'] == 'title')
 		{
 			$filters['sort'] = 'uId';
@@ -90,8 +91,6 @@ class CartOrders
 			}
 		}
 
-		//echo $sql; die;
-
 		$db->setQuery($sql);
 		$db->execute();
 		if ($rtrn == 'count')
@@ -107,6 +106,12 @@ class CartOrders
 		return $res;
 	}
 
+	/**
+	 * Get items for an order
+	 *
+	 * @param   int    $tId
+	 * @return  mixed
+	 */
 	public static function getOrderItems($tId)
 	{
 		$db = \App::get('db');
@@ -122,7 +127,6 @@ class CartOrders
 
 		$allSkuInfo = $db->loadObjectList('sId');
 		$skus = $db->loadColumn();
-
 
 		$warehouse = new Warehouse();
 
