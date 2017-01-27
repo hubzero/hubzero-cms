@@ -89,9 +89,23 @@ jQuery(document).ready(function($){
 			});
 		},
 		afterShow: function() {
-			if ($('#hubForm-ajax')) {
+			if ($('#hubForm-ajax').length) {
 				$('#hubForm-ajax').on('submit', function(e) {
 					e.preventDefault();
+
+					members = $('#members').val();
+					message = $('#msg-message').val();
+
+					if (!members) {
+						alert("Must select a message recipient.");
+						return false;
+					}
+
+					if (!message) {
+						alert("You must enter a message.");
+						return false;
+					}
+
 					$.post($(this).attr('action'), $(this).serialize(), function(returndata) {
 						$.fancybox.close();
 					});
