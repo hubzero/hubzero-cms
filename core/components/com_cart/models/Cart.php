@@ -49,14 +49,14 @@ abstract class Cart
 	 *
 	 * @var  object
 	 */
-	var $db = NULL;
+	var $db = null;
 
 	/**
 	 * Cart ID
 	 *
 	 * @var  int
 	 */
-	var $crtId = NULL;
+	var $crtId = null;
 
 	/**
 	 * Debug mode
