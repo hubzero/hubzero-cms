@@ -653,7 +653,7 @@ class Groups extends Base
 		if (isset($customization['logo']))
 		{
 			$logo_path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber') . DS . 'uploads' . DS;
-			$logo_path = substr($logo_path, strlen(PATH_APP));
+			$logo_path = substr($logo_path, strlen(PATH_ROOT));
 			$logo = substr($customization['logo'], strlen($logo_path));
 		}
 

@@ -169,7 +169,7 @@ else
 										$remove = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
 										$sel = (str_replace($remove, '', $logo) == $this->group->get('logo')) ? 'selected' : '';
 									?>
-									<option <?php echo $sel; ?> value="<?php echo str_replace(PATH_APP, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
+									<option <?php echo $sel; ?> value="<?php echo str_replace(PATH_ROOT, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
 								<?php } ?>
 							</select>
 						</label>
