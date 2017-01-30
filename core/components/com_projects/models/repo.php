@@ -59,7 +59,7 @@ class Repo extends Object
 	 *
 	 * @var  object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Registry
@@ -81,7 +81,7 @@ class Repo extends Object
 	 *
 	 * @return  void
 	 */
-	public function __construct($project = NULL, $name = 'local')
+	public function __construct($project = null, $name = 'local')
 	{
 		$this->_db = \App::get('db');
 
@@ -205,9 +205,9 @@ class Repo extends Object
 	 * @param	array	$params Method params
 	 * @return  mixed
 	 */
-	public function call($call = NULL, $params = array())
+	public function call($call = null, $params = array())
 	{
-		if ($call == NULL)
+		if ($call == null)
 		{
 			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_EMPTY_REQUEST'));
 			return false;
@@ -287,7 +287,7 @@ class Repo extends Object
 	 * @param	string	$dirPath	Directory path
 	 * @return  boolean
 	 */
-	public function dirExists($dirPath = NULL)
+	public function dirExists($dirPath = null)
 	{
 		if (!$dirPath)
 		{
@@ -311,7 +311,7 @@ class Repo extends Object
 	 * @param	string	$filePath	File path
 	 * @return  boolean
 	 */
-	public function fileExists($filePath = NULL)
+	public function fileExists($filePath = null)
 	{
 		if (!$filePath)
 		{
@@ -334,15 +334,15 @@ class Repo extends Object
 	 *
 	 * @return  object
 	 */
-	public function getMetadata($item = NULL, $type = 'file', $params = array())
+	public function getMetadata($item = null, $type = 'file', $params = array())
 	{
-		if ($item === NULL)
+		if ($item === null)
 		{
 			return false;
 		}
 
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 		$remotes   = isset($params['remoteConnections']) ? $params['remoteConnections'] : array();
 
 		$localPath = $dirPath ? $dirPath . DS . $item : $item;
@@ -383,14 +383,14 @@ class Repo extends Object
 	public function deleteItem($params = array())
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 
 		// Name and type
-		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$item      = isset($params['item']) ? $params['item'] : null;
 		$type      = isset($params['type']) ? $params['type'] : 'file';
 
 		// OR -- file object itself
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		if (!($file instanceof Models\File))
 		{
@@ -422,11 +422,11 @@ class Repo extends Object
 	public function deleteDirectory($params = array())
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
+		$item      = isset($params['item']) ? $params['item'] : null;
 		$type      = 'folder';
 
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 		if (!($file instanceof Models\File))
 		{
 			// File object
@@ -462,10 +462,10 @@ class Repo extends Object
 	public function makeDirectory($params = array())
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
 
-		$newDir    = isset($params['newDir']) ? $params['newDir'] : NULL; // New directory name
+		$newDir    = isset($params['newDir']) ? $params['newDir'] : null; // New directory name
 		$newDir    = Filesystem::cleanPath($newDir);
 		$localDirPath = $dirPath ? $dirPath . DS . $newDir : $newDir;
 
@@ -516,14 +516,14 @@ class Repo extends Object
 	public function versions($params = array(), &$versions = array(), &$timestamps = array())
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 
 		// Name and type
-		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$item      = isset($params['item']) ? $params['item'] : null;
 		$type      = isset($params['type']) ? $params['type'] : 'file';
 
 		// OR -- file object itself
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		// Source item metadata
 		if (!($file instanceof Models\File))
@@ -565,15 +565,15 @@ class Repo extends Object
 	public function restore($params = array())
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$version   = isset($params['version']) ? $params['version'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
+		$version   = isset($params['version']) ? $params['version'] : null;
 
 		// Name and type
-		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$item      = isset($params['item']) ? $params['item'] : null;
 		$type      = isset($params['type']) ? $params['type'] : 'file';
 
 		// OR -- file object itself
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		// Source item metadata
 		if (!($file instanceof Models\File))
@@ -608,16 +608,16 @@ class Repo extends Object
 	public function diff($params = array())
 	{
 		$path        = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$rev1        = isset($params['rev1']) ? $params['rev1'] : NULL;
-		$rev2        = isset($params['rev2']) ? $params['rev2'] : NULL;
+		$dirPath     = isset($params['subdir']) ? $params['subdir'] : null;
+		$rev1        = isset($params['rev1']) ? $params['rev1'] : null;
+		$rev2        = isset($params['rev2']) ? $params['rev2'] : null;
 
 		// Name and type
-		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$item      = isset($params['item']) ? $params['item'] : null;
 		$type      = isset($params['type']) ? $params['type'] : 'file';
 
 		// OR -- file object itself
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		if (!$file)
 		{
@@ -663,16 +663,16 @@ class Repo extends Object
 	public function moveItem($params = array())
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$targetDir = isset($params['targetDir']) ? $params['targetDir'] : NULL;
-		$create    = isset($params['createTargetDir']) ? $params['createTargetDir'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
+		$targetDir = isset($params['targetDir']) ? $params['targetDir'] : null;
+		$create    = isset($params['createTargetDir']) ? $params['createTargetDir'] : null;
 
 		// Name and type
-		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$item      = isset($params['item']) ? $params['item'] : null;
 		$type      = isset($params['type']) ? $params['type'] : 'file';
 
 		// OR -- file object itself
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		// Source item metadata
 		if (!($file instanceof Models\File))
@@ -749,7 +749,7 @@ class Repo extends Object
 	 */
 	public function getLastRevision($params = array())
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 		if (!($file instanceof Models\File))
 		{
 			return false;
@@ -765,9 +765,9 @@ class Repo extends Object
 	public function rename($params = array())
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$from      = isset($params['from']) ? $params['from'] : NULL;
-		$to        = isset($params['to']) ? $params['to'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
+		$from      = isset($params['from']) ? $params['from'] : null;
+		$to        = isset($params['to']) ? $params['to'] : null;
 		$type      = isset($params['type']) ? $params['type'] : 'file';
 
 		if (!$to)
@@ -880,9 +880,9 @@ class Repo extends Object
 	public function insert($params = array())
 	{
 		$ajaxUpload  = isset($params['ajaxUpload']) ? $params['ajaxUpload'] : false;
-		$dataPath    = isset($params['dataPath']) ? $params['dataPath'] : NULL;
+		$dataPath    = isset($params['dataPath']) ? $params['dataPath'] : null;
 		$path        = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath     = isset($params['subdir']) ? $params['subdir'] : null;
 		$available   = $this->getAvailableDiskSpace();
 
 		// Collector
@@ -936,7 +936,7 @@ class Repo extends Object
 			{
 				$file = $_GET['qqfile'];
 				$size = (int) $_SERVER["CONTENT_LENGTH"];
-				$tmp_name = NULL;
+				$tmp_name = null;
 			}
 			else
 			{
@@ -1009,9 +1009,9 @@ class Repo extends Object
 	protected function _insert($dataPath, $target, &$available, $params)
 	{
 		$path         = isset($params['path']) ? $params['path'] : $this->get('path');
-		$dirPath      = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath      = isset($params['subdir']) ? $params['subdir'] : null;
 		$dirsize      = isset($params['dirsize']) ? $params['dirsize'] : 0;
-		$caller       = isset($params['caller']) ? $params['caller'] : NULL;
+		$caller       = isset($params['caller']) ? $params['caller'] : null;
 		$allowReplace = isset($params['allowReplace']) ? $params['allowReplace'] : true;
 		$update       = isset($params['update']) ? $params['update'] : true;
 
@@ -1081,7 +1081,7 @@ class Repo extends Object
 		}
 
 		// Run some checks
-		if (!$this->_check($dataPath, NULL, filesize($dataPath), $available))
+		if (!$this->_check($dataPath, null, filesize($dataPath), $available))
 		{
 			return false;
 		}
@@ -1130,7 +1130,7 @@ class Repo extends Object
 	 */
 	protected function _upload($file, $tmp_name, $target, $size, &$available, $params)
 	{
-		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath     = isset($params['subdir']) ? $params['subdir'] : null;
 		$expand      = isset($params['expand']) ? $params['expand'] : false;
 
 		$file        = Filesystem::clean(trim($file));
@@ -1190,7 +1190,7 @@ class Repo extends Object
 	protected function _expand($file, $tmp_name, $target, $size, &$available, $params)
 	{
 		$engine    = $this->_isTar($file) ? 'tar' : 'zip';
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 
 		$tempPath    = sys_get_temp_dir();
 		$archive     = $tempPath . DS . $file;
@@ -1236,7 +1236,7 @@ class Repo extends Object
 			If no directory is found, create a unique one for the project to contain the files.
 			***/
 			$topLevelDirectory = shell_exec("unzip -qql " .  $tmp_name . " | head -n1 | tr -s ' ' | cut -d' ' -f5-");
-			if (strpos($topLevelDirectory, '.') !== FALSE)
+			if (strpos($topLevelDirectory, '.') !== false)
 			{
 				$extractPath = $extractPath . DS . 'archive-' . time() . DS;
 				Filesystem::makeDirectory($extractPath);
@@ -1266,7 +1266,7 @@ class Repo extends Object
 	protected function _addFromExtracted($extractPath, $zipName, $target, $params, &$available)
 	{
 		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
-		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 
 		$extracted = Filesystem::files($extractPath, '.', true, true,
 			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));
@@ -1274,11 +1274,11 @@ class Repo extends Object
 		// check for viruses - scans the directory for efficency
 		$command = "clamscan -i --no-summary --block-encrypted -r " . $extractPath;
 		exec($command, $output, $virus_status);
-		$virusChecked = FALSE;
+		$virusChecked = false;
 
 		if ($virus_status == 0)
 		{
-		  $virusChecked = TRUE;
+		  $virusChecked = true;
 		}
 		else
 		{
@@ -1314,7 +1314,7 @@ class Repo extends Object
 			$safe_file = Filesystem::clean($file);
 
 			// Strips out temporary path
-			if (strpos($safe_dir, 'tmp/') !== FALSE)
+			if (strpos($safe_dir, 'tmp/') !== false)
 			{
 				$parts = explode('/', $safe_dir);
 				$safe_dir = str_replace($parts[0].'/', '', $safe_dir);
@@ -1351,7 +1351,7 @@ class Repo extends Object
 			}
 
 			// Strips out temporary path
-			if (strpos($safeName, 'tmp/') !== FALSE)
+			if (strpos($safeName, 'tmp/') !== false)
 			{
 				$parts = explode('/', $safeName);
 				$safeName = str_replace($parts[0].'/', '', $safeName);
@@ -1380,7 +1380,7 @@ class Repo extends Object
 	 *
 	 * @return  boolean
 	 */
-	protected function _check($file, $tmp_name, $size, &$available, $virusChecked = FALSE)
+	protected function _check($file, $tmp_name, $size, &$available, $virusChecked = false)
 	{
 		if (!isset($this->_sizeLimit))
 		{
@@ -1405,7 +1405,7 @@ class Repo extends Object
 		}
 
 		// One last check
-		if ($tmp_name && ($virusChecked !== TRUE || $virusChecked === FALSE))
+		if ($tmp_name && ($virusChecked !== true || $virusChecked === false))
 		{
 			if (Helpers\Html::virusCheck($tmp_name))
 			{
@@ -1580,8 +1580,8 @@ class Repo extends Object
 		for ($k = (count($versions) - 1); $k >= 0; $k--)
 		{
 			$current	= $versions[$k];
-			$previous		= ($k - 1) >= 0 ? $versions[$k - 1] : NULL;
-			$next			= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : NULL;
+			$previous		= ($k - 1) >= 0 ? $versions[$k - 1] : null;
+			$next			= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : null;
 
 			if (!$current['commitStatus'])
 			{
