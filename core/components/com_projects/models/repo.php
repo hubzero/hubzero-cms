@@ -127,7 +127,7 @@ class Repo extends Object
 			$helper = new Helpers\Git(Helpers\Html::getProjectRepoPath(
 				$this->get('project')->get('alias')));
 			$gitInitCheck = $helper->callGit('status');
-			if (in_array('# Changes to be committed:', $gitInitCheck))
+			if ($gitInitCheck && in_array('# Changes to be committed:', $gitInitCheck))
 			{
 				$helper->callGit('commit -am "Initial commit"');
 			}
