@@ -126,14 +126,15 @@ class Verb
 
 		$verbName = $params[0];
 		// ...and hookup with redis
-		try {
+		try
+		{
 			$redis = new \Predis\Client(array(
 				"host" => "127.0.0.1",
 				"port" => 6379,
 				"password" => \Config::get('redis_password'),
 				"database" => 8,
 			));
-			}
+		}
 		catch (Exception $e)
 		{
 			die($e->getMessage());
@@ -144,6 +145,7 @@ class Verb
 		if (!$verb)
 		{
 			return -500; // verb not found
+		}
 
 		// pull in the remaining arguments
 		if (count($params) != $verb['args'])
@@ -180,7 +182,7 @@ class Verb
 			{
 				$maxDate = $dbMax;
 			}
-		};
+		}
 
 		if (($verbDate < $minDate) or ($verbDate > $maxDate))
 		{
@@ -195,7 +197,7 @@ class Verb
 		{
 			self::celerySubmit($params);
 			return -401; // result unavailable, calculating result now, come back later
-		};
+		}
 
 		// Validation test - software version
 		// If the result's software version number does not match the verb's version number, re-compute
@@ -204,7 +206,7 @@ class Verb
 		{
 			self::celerySubmit($params);
 			return -402; // result out of date, calculating updated result now, come back later
-		};
+		}
 
 		// Validation test - database version
 		// if any of the results' database version number(s) do not match the database(s)'s version number(s), re-compute
@@ -216,8 +218,8 @@ class Verb
 			{
 				self::celerySubmit($params);
 				return -402; // result out of date, calculating updated result now, come back later
-			};
-		};
+			}
+		}
 
 		// It's all good. Increment the popularity counter and return the cached value.
 
