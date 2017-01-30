@@ -16,9 +16,12 @@ class Migration20170124151456ComSupport extends Base
 			$query = "SELECT params FROM #__extensions WHERE name = 'com_support';";
 			$this->db->setQuery($query);
 			$params = $this->db->query()->loadResult();
-
 			$params = json_decode($params);
-			$params->file_ext = 'mp4,jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz';
+			$fileExt = explode(",",$params->file_ext);
+			if(!in_array('mp4', $fileExt)){
+				array_push($fileExt, 'mp4');
+			}
+			$params->file_ext = implode(",", $fileExt);
             		$params = json_encode($params);
 			$query2 = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_support';";
 			$this->db->setQuery($query2);
@@ -34,9 +37,11 @@ class Migration20170124151456ComSupport extends Base
 			$query = "SELECT params FROM #__extensions WHERE name = 'com_support';";
                         $this->db->setQuery($query);
                         $params = $this->db->query()->loadResult();
-
                         $params = json_decode($params);
-                        $params->file_ext = 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz';
+			$fileExt = explode(",", $params->file_ext);
+			$index = array_search('mp4', $fileExt);
+			unset($fileExt[$index]);
+                        $params->file_ext = implode(",", $fileExt);
                         $params = json_encode($params);
                         $query2 = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_support';";
                         $this->db->setQuery($query2);
