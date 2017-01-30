@@ -1295,7 +1295,7 @@ class Repo extends Object
 			$a_dir	= str_replace($extractPath . DS, '', $a_dir);
 
 			// Skip certain system files
-			if (preg_match("/__MACOSX/", $e) OR preg_match("/.DS_Store/", $e))
+			if (preg_match("/__MACOSX/", $e) or preg_match("/.DS_Store/", $e))
 			{
 				continue;
 			}
