@@ -9,13 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [2.1.3] - 2016-02-01
 ### Added
+ - Add Travis CI badge
+ - Add ability to update the git respository from github webhook.
+ - Add all access values to the list to choose from when creating an account.
+ - Add whitelist for anti-spam plugins.
+ - [HUBZERO][#10237] Add autocomplete attribute to password fields to try and prevent browsers from auto-filling the fields.
+ - Allow password to be set when creating a new account via the admin interface.
  - Add ability to archive a group or project moving to a readonly state.
- - Adds Travis CI badge
- [COM_UPDATE] Fixes minor docblock issue.
-[COM_UPDATE] Allows webhooks to update the git repo. Meant for QA machines.
-[COM_UPDATE] Adds config values for QA git updater.
- - Adding all access values to the list to choose from
-- Whitelist for anti-spam plugins.
  
 ### Changed
  - [CORE] Bump version number.
@@ -26,7 +26,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Convert Joomla refs to Hubzero equivelants in all components. (bulk find and replace)
  - Make sure nothing uses old Joomla mailer
  - Updating docblock, XML manifest, converting remaining bits of Joomla
-- [PURR][#1283] Updates the projects component to reflect changes in Google API libraries
+ - [PURR][#1283] Updates the projects component to reflect changes in Google API libraries
+ - [PLG_CONTENT_*] Removing remaining bits of Joomla
 
 
 ### Fixed
@@ -43,36 +44,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [NANOHUB][#317179][COM_RESOURCES] Adding missing permissions values ???
 - [PCH][#194] Allows for a fixed length serial number to be designated in the storefront component.
 - [COM_PROJECTS] Fixes invisible files upon upload and alleviates 'ghost' files within the Projects component.
-- [QUBES][#784] Force group syncing off if a project doesn't have a group owner
-- [CDMHUB][#1211][PLG_PROJECTS_TEAM] Slight reworking to avoid potential conflicts with adding individuals while 'sync group' is checked
-- [HUBZERO][#10256] Fixes a variable name typo.
-- [PURR][#1198][COM_PROJECTS] Adds a check to see if the initial commit has not been made.
-- [PLG_SYSTEM_SUPERGROUPS] Reworkng to get super group component route building working in 2.x
-- [CORE] Updating file with 2.0 paths
-- [PLG_GROUPS_FORUM] Corrects language file typo.
-- [PLG_AUTHENTICATION_SCISTARTER] Fixing API endpoint path and adding more info to description
-- [COM_COLLECTIONS] Changing how namespace is used as it can potentially conflict with existing Following Group class
-- [PLG_MEMBERS_ACCOUNT] Make sure var is an object before using it as such
-- [HUBZERO][#10237][COM_MEMBERS] Adding autocomplete attribute to password fields to try and prevent browsers from auto-filling the fields
-- [QUBES][#772][COM_PROJECTS] Make sure HTML formatted content doesn't have line-breaks converted into break tags (to much breaking)
-- [PLG_CONTENT_EMAILCLOAK] Fixes misnamed method.
-- [CATALYZECARE][#565][COM_MEMBERS] Make sure 'save to new' button works
-- [HABRI][#738][COM_TAGS] Purge query cache before deleting record or it may accidentally remove records that should no longer be associated with it
-- [PLG_AUTHENTICATION_SCISTARTER] Minor tweaks to URL building and error handling
-- [COM_MEMBERS] Try to sanitize bad MS edncoded characters
-- [PLG_CONTENT_EMAILCLOAK] Fixing syntac error
-- [PLG_CONTENT_*] Removing remaining bits of Joomla
-- [PURR][#1279][PLG_SYSTEM_UNCONFIRMED] Prevents the use of stale User activation state.
-- [COM_MEMBERS] Allow password to be set when creating a new account via the admin interface.
-- [VHUB][#1330][COM_MEMBERS] Removing invalid initiate declaration and automatic method
-- [PLG_CONTENT_PAGEBREAK] Removing Joomla-specific code
-- [PURR][#1272][PLG_CRON_PUBLICATIONS] Reworking a few spots to be more efficient. Make sure only non-blocked, confirmed, activated accounts get emailed once.
-- [PURR][#1273][PLG_PROJECTS_FILES] Make sure text wrap has the correct class name or else javascript can't find a proper hook to latch onto
-- [MOD_MYSESSIONS] Fixes the screenshot display.
-- [QUBES][#777][PLG_COURSES_DISCUSSIONS] Make sure sections are created with a published state
-- [COM_GROUPS][PLG_GROUPS_FILES][TPL_HUBBASIC2013] Adjustments to styles so group files displays a little nicer across templates
-- [QUBES][#775][PLG_*_ACTIVITY] Make sure data selector is more specific or else child responses can end up in the top-level list
-- [QUBES][#779][MOD_LOGIN] Add required script
-- [HUBZERO][#10265][COM_MEMBERS] Make sure header properly matches action of editing ot creating an account
-- [HUBZERO][#10272][PLG_MEMBERS_CITATIONS] Adding missing language strings
-- [QUBES][#711][COM_GROUPS] Catching more places where 'trusted content' config needs to be inherited before saving
+- [QUBES][#784] Fixes project membership management issue, allows for the removal of a member.
+- [CDMHUB][#1211] Slight reworking to avoid potential conflicts with adding individuals while 'sync group' is checked 
+- [HUBZERO][#10256] Fixes name link in forum post.
+- [PURR][#1198][COM_PROJECTS] Enforces project initial repository setup.
+- Fixes super group component route building since 2.x upgrade
+- Fixes 'red' to 'read' in group forum area description.
+- Fixes SciStarter API endpoint path and adding more info to description
+- Fixes how namespace conflict in Collections
+- Fixes object access error in Member Accounts.
+- [QUBES][#772][COM_PROJECTS] Fixes HTML formatting issues concerning extraneous break tags being inserted.
+- Fixes misnamed method in the Content - EmailCloak plugin.
+- [CATALYZECARE][#565] Fixes sure 'save to new' button.
+- [HABRI][#738] Fixes caching issue with tag record upon deletion to prevent dangling objects.
+- Fixes poorly MS-encoded characters in the Members component.
+- [PURR][#1279] Fixes account confirmation loop due to cached User session data.
+- [VHUB][#1330] Fixes 'unknown column' error when adding a new Quota class.
+- [PURR][#1272] Make sure only non-blocked, confirmed, activated accounts get emailed once about publication statistics.
+- [PURR][#1273][PLG_PROJECTS_FILES] Fixes folder expansion in Project Files area.
+- Fixes the screenshot display on the member dashboard.
+- [QUBES][#777] Make sure course discussion sections are created with a published state
+- Fixes styles so group files displays a little nicer across templates
+- [QUBES][#775] Fixes nesting of actvity feed posts.
+- [QUBES][#779] Fixes missing javascript file for login within super groups.
+- [HUBZERO][#10265] Fixes administrative header properly to match action of editing of creating an account
+- [HUBZERO][#10272] Fixes missing language strings 'publish / unpublish' on member citations.
+- [QUBES][#711] Fixes inheritence 'trusted content' configuration on group pages.
