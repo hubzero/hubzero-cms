@@ -1,0 +1,190 @@
+[19-Sep-2016 17:24:24 UTC] PHP Warning:  require(/var/www/hub/core/vendor/autoload.php): failed to open stream: No such file or directory in /var/www/hub/core/bootstrap/autoload.php on line 21
+[19-Sep-2016 17:24:24 UTC] PHP Fatal error:  require(): Failed opening required '/var/www/hub/core/vendor/autoload.php' (include_path='.:/opt/rh/php54/root/usr/share/pear:/opt/rh/php54/root/usr/share/php') in /var/www/hub/core/bootstrap/autoload.php on line 21
+[19-Sep-2016 17:24:58 UTC] PHP Warning:  require(/var/www/hub/core/vendor/autoload.php): failed to open stream: No such file or directory in /var/www/hub/core/bootstrap/autoload.php on line 21
+[19-Sep-2016 17:24:58 UTC] PHP Fatal error:  require(): Failed opening required '/var/www/hub/core/vendor/autoload.php' (include_path='.:/opt/rh/php54/root/usr/share/pear:/opt/rh/php54/root/usr/share/php') in /var/www/hub/core/bootstrap/autoload.php on line 21
+[19-Sep-2016 17:27:03 UTC] PHP Warning:  require(/var/www/hub/core/vendor/autoload.php): failed to open stream: No such file or directory in /var/www/hub/core/bootstrap/autoload.php on line 21
+[19-Sep-2016 17:27:03 UTC] PHP Fatal error:  require(): Failed opening required '/var/www/hub/core/vendor/autoload.php' (include_path='.:/opt/rh/php54/root/usr/share/pear:/opt/rh/php54/root/usr/share/php') in /var/www/hub/core/bootstrap/autoload.php on line 21
+[26-Sep-2016 14:49:11 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Add' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[26-Sep-2016 16:40:10 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Add' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[28-Sep-2016 17:41:02 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Query' not found in /var/www/hub/app/components/com_drwho/site/controllers/add.php on line 192
+[28-Sep-2016 20:26:06 UTC] PHP Parse error:  syntax error, unexpected 'public' (T_PUBLIC) in /var/www/hub/app/components/com_drwho/site/controllers/add.php on line 209
+[28-Sep-2016 20:26:47 UTC] PHP Parse error:  syntax error, unexpected 'public' (T_PUBLIC) in /var/www/hub/app/components/com_drwho/site/controllers/add.php on line 209
+[28-Sep-2016 20:26:48 UTC] PHP Parse error:  syntax error, unexpected 'public' (T_PUBLIC) in /var/www/hub/app/components/com_drwho/site/controllers/add.php on line 209
+[28-Sep-2016 20:39:26 UTC] PHP Parse error:  syntax error, unexpected 'Success' (T_STRING), expecting ',' or ';' in /var/www/hub/app/components/com_drwho/site/controllers/add.php on line 198
+[28-Sep-2016 20:40:58 UTC] PHP Parse error:  syntax error, unexpected 'Success' (T_STRING), expecting ',' or ';' in /var/www/hub/app/components/com_drwho/site/controllers/add.php on line 198
+[28-Sep-2016 20:41:05 UTC] PHP Parse error:  syntax error, unexpected 'Success' (T_STRING), expecting ',' or ';' in /var/www/hub/app/components/com_drwho/site/controllers/add.php on line 198
+[28-Sep-2016 21:03:32 UTC] PHP Fatal error:  Call to undefined method stdClass::get() in /var/www/hub/app/components/com_drwho/site/views/task/tmpl/display.php on line 38
+[03-Oct-2016 13:27:11 UTC] PHP Fatal error:  Call to undefined method stdClass::get() in /var/www/hub/app/components/com_drwho/site/views/task/tmpl/display.php on line 38
+[03-Oct-2016 13:30:04 UTC] PHP Fatal error:  Call to undefined method stdClass::get() in /var/www/hub/app/components/com_drwho/site/views/task/tmpl/display.php on line 38
+[03-Oct-2016 13:40:13 UTC] PHP Fatal error:  Call to a member function loadColumn() on a non-object in /var/www/hub/app/components/com_drwho/site/views/task/tmpl/display.php on line 37
+[03-Oct-2016 14:18:15 UTC] PHP Fatal error:  Call to undefined method Components\Drwho\Site\Controllers\Task::all() in /var/www/hub/app/components/com_drwho/site/controllers/task.php on line 20
+[03-Oct-2016 14:19:31 UTC] PHP Fatal error:  Cannot declare class Components\Drwho\Site\Controllers\Task because the name is already in use in /var/www/hub/app/components/com_drwho/site/controllers/task.php on line 15
+[03-Oct-2016 14:22:16 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 20
+[03-Oct-2016 14:22:57 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 20
+[03-Oct-2016 14:27:53 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 20
+[03-Oct-2016 14:27:56 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 20
+[03-Oct-2016 14:27:57 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 20
+[03-Oct-2016 14:29:37 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 14:30:13 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 14:30:15 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 14:31:32 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 14:31:33 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 14:32:07 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 14:34:27 UTC] PHP Fatal error:  Call to undefined method Components\Drwho\Site\Controllers\Task::all() in /var/www/hub/app/components/com_drwho/site/controllers/task.php on line 20
+[03-Oct-2016 14:39:21 UTC] PHP Fatal error:  Cannot declare class Components\Drwho\Site\Controllers\Task because the name is already in use in /var/www/hub/app/components/com_drwho/site/controllers/task.php on line 16
+[03-Oct-2016 15:15:11 UTC] PHP Fatal error:  Cannot declare class Components\Drwho\Site\Controllers\Task because the name is already in use in /var/www/hub/app/components/com_drwho/site/controllers/task.php on line 16
+[03-Oct-2016 15:19:57 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 15:24:29 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/drwho.php on line 61
+[03-Oct-2016 15:34:05 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:35:16 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:35:28 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:39:11 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:39:54 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:40:04 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:42:10 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:45:25 UTC] PHP Fatal error:  Class 'Components\Todo\Models\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:45:59 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:46:08 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 24
+[03-Oct-2016 15:50:53 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Member' not found in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 25
+[03-Oct-2016 17:24:22 UTC] PHP Fatal error:  Call to undefined function print_f() in /var/www/hub/app/components/com_drwho/site/views/tasks/tmpl/display.php on line 28
+[03-Oct-2016 18:12:32 UTC] PHP Parse error:  syntax error, unexpected '$this' (T_VARIABLE), expecting function (T_FUNCTION) in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 19
+[03-Oct-2016 18:28:01 UTC] PHP Fatal error:  Call to undefined function Components\Drwho\Site\Controllers\STR_TO_DATE() in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 40
+[05-Oct-2016 18:17:09 UTC] PHP Fatal error:  Call to undefined method Hubzero\Database\Query::orderby() in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 55
+[05-Oct-2016 18:21:27 UTC] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 55
+[05-Oct-2016 18:24:10 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: model' in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php:59
+Stack trace:
+#0 /var/www/hub/app/components/com_drwho/site/controllers/tasks.php(59): Hubzero\Error\Handler->handleError(8, 'Undefined varia...', '/var/www/hub/ap...', 59, Array)
+#1 /var/www/hub/core/vendor/hubzero/framework/src/Component/SiteController.php(364): Components\Drwho\Site\Controllers\Tasks->saveTask()
+#2 /var/www/hub/app/components/com_drwho/site/drwho.php(66): Hubzero\Component\SiteController->execute()
+#3 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(296): require_once('/var/www/hub/ap...')
+#4 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(275): Hubzero\Component\Loader->executePath('/var/www/hub/ap...')
+#5 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(254): Hubzero\Component\Loader->execute('/var/www/hub/ap...')
+#6 /var/www/hub/core/bootstrap/Site/Providers/ComponentServiceProvider.ph in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 59
+[05-Oct-2016 18:24:10 UTC] PHP Fatal error:  Call to a member function save() on a non-object in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 59
+[05-Oct-2016 18:33:38 UTC] PHP Parse error:  syntax error, unexpected 'print_r' (T_STRING) in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 54
+[05-Oct-2016 18:33:43 UTC] PHP Parse error:  syntax error, unexpected 'print_r' (T_STRING) in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 54
+[05-Oct-2016 18:40:35 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ']' in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 63
+[05-Oct-2016 18:41:13 UTC] PHP Fatal error:  Call to a member function insert() on a non-object in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 62
+[05-Oct-2016 19:01:02 UTC] PHP Fatal error:  Call to undefined method Components\Drwho\Site\Controllers\viewtasks::displayTask() in /var/www/hub/core/vendor/hubzero/framework/src/Component/SiteController.php on line 364
+[05-Oct-2016 19:40:17 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php on line 59
+[05-Oct-2016 19:42:22 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php on line 59
+[05-Oct-2016 20:32:20 UTC] PHP Fatal error:  Call to a member function setAdditionalUrlParam() on a non-object in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php on line 64
+[05-Oct-2016 20:36:20 UTC] PHP Fatal error:  Call to a member function setAdditionalUrlParam() on a non-object in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php on line 64
+[12-Oct-2016 17:26:39 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: records' in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php:84
+Stack trace:
+#0 /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php(84): Hubzero\Error\Handler->handleError(8, 'Undefined varia...', '/var/www/hub/ap...', 84, Array)
+#1 /var/www/hub/core/vendor/hubzero/framework/src/View/View.php(545): include('/var/www/hub/ap...')
+#2 /var/www/hub/core/vendor/hubzero/framework/src/View/View.php(214): Hubzero\View\View->loadTemplate(NULL)
+#3 /var/www/hub/app/components/com_drwho/site/controllers/viewtasks.php(33): Hubzero\View\View->display()
+#4 /var/www/hub/core/vendor/hubzero/framework/src/Component/SiteController.php(364): Components\Drwho\Site\Controllers\viewtasks->displayTask()
+#5 /var/www/hub/app/components/com_drwho/site/drwho.php(66): Hubzero\Component\SiteController->execute()
+#6 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(296): require_once('/var/www/hub/ap in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php on line 84
+[12-Oct-2016 17:26:39 UTC] PHP Fatal error:  Call to a member function get() on a non-object in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/viewtasks.php on line 84
+[12-Oct-2016 17:31:36 UTC] PHP Warning:  Unterminated comment starting line 63 in /var/www/hub/app/components/com_drwho/models/taskModel.php on line 63
+[12-Oct-2016 17:31:36 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting function (T_FUNCTION) in /var/www/hub/app/components/com_drwho/models/taskModel.php on line 91
+[12-Oct-2016 17:55:10 UTC] PHP Parse error:  syntax error, unexpected '}' in /var/www/hub/app/components/com_drwho/site/views/viewmembers/tmpl/display.php on line 67
+[12-Oct-2016 17:55:53 UTC] PHP Parse error:  syntax error, unexpected '}' in /var/www/hub/app/components/com_drwho/site/views/viewmembers/tmpl/display.php on line 67
+[12-Oct-2016 17:55:57 UTC] PHP Parse error:  syntax error, unexpected '}' in /var/www/hub/app/components/com_drwho/site/views/viewmembers/tmpl/display.php on line 67
+[12-Oct-2016 18:00:37 UTC] PHP Parse error:  syntax error, unexpected ':' in /var/www/hub/app/components/com_drwho/models/show.php on line 83
+[12-Oct-2016 18:01:58 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: season' in /var/www/hub/app/components/com_drwho/site/views/viewmembers/tmpl/display.php:94
+Stack trace:
+#0 /var/www/hub/app/components/com_drwho/site/views/viewmembers/tmpl/display.php(94): Hubzero\Error\Handler->handleError(8, 'Undefined varia...', '/var/www/hub/ap...', 94, Array)
+#1 /var/www/hub/core/vendor/hubzero/framework/src/View/View.php(545): include('/var/www/hub/ap...')
+#2 /var/www/hub/core/vendor/hubzero/framework/src/View/View.php(214): Hubzero\View\View->loadTemplate(NULL)
+#3 /var/www/hub/app/components/com_drwho/site/controllers/viewmembers.php(63): Hubzero\View\View->display()
+#4 /var/www/hub/core/vendor/hubzero/framework/src/Component/SiteController.php(364): Components\Drwho\Site\Controllers\viewmembers->displayTask()
+#5 /var/www/hub/app/components/com_drwho/site/drwho.php(66): Hubzero\Component\SiteController->execute()
+#6 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(296): require_once('/var/www/hub in /var/www/hub/app/components/com_drwho/site/views/viewmembers/tmpl/display.php on line 94
+[12-Oct-2016 18:01:58 UTC] PHP Fatal error:  Call to a member function get() on a non-object in /var/www/hub/app/components/com_drwho/site/views/viewmembers/tmpl/display.php on line 94
+[12-Oct-2016 18:06:30 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/viewmembers.php on line 50
+[12-Oct-2016 18:07:33 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/viewmembers.php on line 50
+[12-Oct-2016 18:52:39 UTC] PHP Fatal error:  Class 'Components\Drwho\Site\Controllers\Task' not found in /var/www/hub/app/components/com_drwho/site/controllers/characters.php on line 321
+[12-Oct-2016 20:36:53 UTC] PHP Parse error:  syntax error, unexpected ':', expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' in /var/www/hub/app/components/com_drwho/site/controllers/tasks.php on line 43
+[24-Oct-2016 14:41:08 UTC] PHP Parse error:  syntax error, unexpected '}' in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 47
+[24-Oct-2016 14:43:08 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 61
+[24-Oct-2016 14:43:31 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 61
+[24-Oct-2016 14:43:45 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 61
+[24-Oct-2016 14:44:30 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 61
+[24-Oct-2016 14:45:27 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 59
+[24-Oct-2016 14:45:29 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 59
+[24-Oct-2016 14:45:30 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 59
+[24-Oct-2016 14:46:47 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 59
+[24-Oct-2016 14:47:33 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 58
+[24-Oct-2016 14:47:42 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 58
+[24-Oct-2016 14:57:36 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 56
+[24-Oct-2016 14:59:23 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 58
+[24-Oct-2016 14:59:25 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 58
+[24-Oct-2016 15:00:03 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 56
+[24-Oct-2016 15:00:04 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 56
+[24-Oct-2016 15:00:23 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 56
+[24-Oct-2016 15:00:29 UTC] PHP Parse error:  syntax error, unexpected end of file in /var/www/hub/app/components/com_drwho/site/views/viewtasks/tmpl/description.php on line 56
+[24-Oct-2016 16:18:08 UTC] PHP Fatal error:  Class 'Components\Todo\Models\Show' not found in /var/www/hub/app/components/com_todo/site/controllers/show.php on line 53
+[24-Oct-2016 16:25:14 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/var/www/hub/app/components/com_todo/models/doctor.php): failed to open stream: No such file or directory' in /var/www/hub/app/components/com_todo/models/show.php:9
+Stack trace:
+#0 /var/www/hub/app/components/com_todo/models/show.php(9): Hubzero\Error\Handler->handleError(2, 'require_once(/v...', '/var/www/hub/ap...', 9, Array)
+#1 /var/www/hub/app/components/com_todo/models/show.php(9): require_once()
+#2 /var/www/hub/app/components/com_todo/site/todo.php(14): include_once('/var/www/hub/ap...')
+#3 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(296): require_once('/var/www/hub/ap...')
+#4 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(275): Hubzero\Component\Loader->executePath('/var/www/hub/ap...')
+#5 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(254): Hubzero\Component\Loader->execute('/var/www/hub/ap...')
+#6 /var/www/hub/core/bootstrap/Site/Providers/ComponentServiceProvider.php(74):  in /var/www/hub/app/components/com_todo/models/show.php on line 9
+[24-Oct-2016 16:25:14 UTC] PHP Fatal error:  main(): Failed opening required '/var/www/hub/app/components/com_todo/models/doctor.php' (include_path='.:/opt/rh/php54/root/usr/share/pear:/opt/rh/php54/root/usr/share/php') in /var/www/hub/app/components/com_todo/models/show.php on line 9
+[24-Oct-2016 16:26:10 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/var/www/hub/app/components/com_todo/models/character.php): failed to open stream: No such file or directory' in /var/www/hub/app/components/com_todo/models/tardis.php:7
+Stack trace:
+#0 /var/www/hub/app/components/com_todo/models/tardis.php(7): Hubzero\Error\Handler->handleError(2, 'require_once(/v...', '/var/www/hub/ap...', 7, Array)
+#1 /var/www/hub/app/components/com_todo/models/tardis.php(7): require_once()
+#2 /var/www/hub/app/components/com_todo/models/show.php(9): require_once('/var/www/hub/ap...')
+#3 /var/www/hub/app/components/com_todo/site/todo.php(14): include_once('/var/www/hub/ap...')
+#4 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(296): require_once('/var/www/hub/ap...')
+#5 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(275): Hubzero\Component\Loader->executePath('/var/www/hub/ap...')
+#6 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(254): Hubzero\Component\Loader->execut in /var/www/hub/app/components/com_todo/models/tardis.php on line 7
+[24-Oct-2016 16:26:10 UTC] PHP Fatal error:  main(): Failed opening required '/var/www/hub/app/components/com_todo/models/character.php' (include_path='.:/opt/rh/php54/root/usr/share/pear:/opt/rh/php54/root/usr/share/php') in /var/www/hub/app/components/com_todo/models/tardis.php on line 7
+[24-Oct-2016 16:27:54 UTC] PHP Fatal error:  Call to undefined method Components\Todo\Models\Show::tardis() in /var/www/hub/app/components/com_todo/site/views/show/tmpl/display.php on line 54
+[24-Oct-2016 16:29:02 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_todo/site/views/viewmembers/tmpl/display.php on line 86
+[24-Oct-2016 16:31:34 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Member' not found in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/viewtasks.php on line 74
+[24-Oct-2016 16:31:36 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_todo/site/views/viewmembers/tmpl/display.php on line 86
+[24-Oct-2016 16:31:43 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Task' not found in /var/www/hub/app/components/com_todo/site/views/viewmembers/tmpl/display.php on line 86
+[24-Oct-2016 16:34:24 UTC] PHP Fatal error:  Class 'Components\Drwho\Models\Member' not found in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/viewtasks.php on line 74
+[24-Oct-2016 17:33:42 UTC] PHP Parse error:  syntax error, unexpected ';' in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 104
+[24-Oct-2016 17:34:36 UTC] PHP Fatal error:  Call to undefined function Components\Todo\Site\Controllers\redirect() in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 103
+[24-Oct-2016 18:07:55 UTC] PHP Fatal error:  Call to undefined method Components\Members\Site\Controllers\Credentials::displayTask() in /var/www/hub/core/vendor/hubzero/framework/src/Component/SiteController.php on line 364
+[24-Oct-2016 18:51:47 UTC] PHP Fatal error:  Call to a member function start() on a non-object in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 94
+[24-Oct-2016 18:55:42 UTC] PHP Fatal error:  Call to a member function start() on a non-object in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 95
+[24-Oct-2016 19:05:28 UTC] PHP Parse error:  syntax error, unexpected '$redirect' (T_VARIABLE) in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 93
+[26-Oct-2016 17:09:24 UTC] PHP Parse error:  syntax error, unexpected '$redirect' (T_VARIABLE) in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 93
+[26-Oct-2016 17:09:46 UTC] PHP Parse error:  syntax error, unexpected '$redirect' (T_VARIABLE) in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 93
+[26-Oct-2016 17:13:08 UTC] PHP Parse error:  syntax error, unexpected '$redirect' (T_VARIABLE) in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 93
+[26-Oct-2016 17:20:47 UTC] PHP Parse error:  syntax error, unexpected ';' in /var/www/hub/app/components/com_todo/site/controllers/add.php on line 95
+[07-Nov-2016 17:34:11 UTC] PHP Parse error:  syntax error, unexpected ';' in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 61
+[07-Nov-2016 19:23:24 UTC] PHP Parse error:  syntax error, unexpected '$members' (T_VARIABLE), expecting '(' in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/description.php on line 46
+[14-Nov-2016 15:46:32 UTC] PHP Parse error:  syntax error, unexpected '(', expecting variable (T_VARIABLE) or '$' in /var/www/hub/core/templates/kimera/index.php on line 36
+[14-Nov-2016 16:53:52 UTC] PHP Parse error:  syntax error, unexpected '&' in /var/www/hub/app/components/com_todo/site/controllers/tasks.php on line 65
+[14-Nov-2016 17:20:30 UTC] PHP Parse error:  syntax error, unexpected ';' in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/description.php on line 48
+[14-Nov-2016 17:22:40 UTC] PHP Parse error:  syntax error, unexpected 'Task' (T_STRING), expecting ',' or ';' in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 57
+[14-Nov-2016 17:22:57 UTC] PHP Parse error:  syntax error, unexpected 'Task' (T_STRING), expecting ',' or ';' in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 57
+[14-Nov-2016 17:23:00 UTC] PHP Parse error:  syntax error, unexpected 'Task' (T_STRING), expecting ',' or ';' in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 57
+[14-Nov-2016 17:23:12 UTC] PHP Parse error:  syntax error, unexpected 'Task' (T_STRING), expecting ',' or ';' in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 57
+[14-Nov-2016 17:36:55 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: task' in /var/www/hub/app/components/com_todo/site/controllers/description.php:20
+Stack trace:
+#0 /var/www/hub/app/components/com_todo/site/controllers/description.php(20): Hubzero\Error\Handler->handleError(8, 'Undefined varia...', '/var/www/hub/ap...', 20, Array)
+#1 /var/www/hub/core/vendor/hubzero/framework/src/Component/SiteController.php(364): Components\Todo\Site\Controllers\description->finishTask()
+#2 /var/www/hub/app/components/com_todo/site/todo.php(66): Hubzero\Component\SiteController->execute()
+#3 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(296): require_once('/var/www/hub/ap...')
+#4 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(275): Hubzero\Component\Loader->executePath('/var/www/hub/ap...')
+#5 /var/www/hub/core/vendor/hubzero/framework/src/Component/Loader.php(254): Hubzero\Component\Loader->execute('/var/www/hub/ap...')
+#6 /var/www/hub/core/bootstrap/Site/Providers/ComponentServ in /var/www/hub/app/components/com_todo/site/controllers/description.php on line 20
+[14-Nov-2016 17:36:55 UTC] PHP Fatal error:  Call to a member function set() on a non-object in /var/www/hub/app/components/com_todo/site/controllers/description.php on line 20
+[14-Nov-2016 17:52:13 UTC] PHP Parse error:  syntax error, unexpected '.' in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/description.php on line 54
+[14-Nov-2016 17:53:29 UTC] PHP Parse error:  syntax error, unexpected ';' in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/description.php on line 54
+[14-Nov-2016 17:54:10 UTC] PHP Parse error:  syntax error, unexpected ';' in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/description.php on line 54
+[14-Nov-2016 18:10:50 UTC] PHP Fatal error:  Call to a member function id() on a non-object in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 69
+[16-Nov-2016 17:31:00 UTC] PHP Fatal error:  Call to a member function id() on a non-object in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 69
+[16-Nov-2016 18:20:49 UTC] PHP Parse error:  syntax error, unexpected '$flag' (T_VARIABLE), expecting function (T_FUNCTION) in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 35
+[16-Nov-2016 18:21:17 UTC] PHP Parse error:  syntax error, unexpected '$flag' (T_VARIABLE), expecting function (T_FUNCTION) in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 35
+[16-Nov-2016 20:57:51 UTC] PHP Parse error:  syntax error, unexpected '}' in /var/www/hub/app/components/com_todo/site/controllers/viewtasks.php on line 84
+[16-Nov-2016 21:54:09 UTC] PHP Parse error:  syntax error, unexpected ',' in /var/www/hub/app/components/com_todo/site/views/viewtasks/tmpl/description.php on line 37
+[09-Jan-2017 14:28:28 UTC] PHP Fatal error:  Call to undefined method Hubzero\Utility\String::strpos() in /var/www/hub/core/plugins/content/emailcloak/emailcloak.php on line 123
+[09-Jan-2017 14:33:47 UTC] PHP Fatal error:  Call to undefined method Hubzero\Utility\String::strpos() in /var/www/hub/core/plugins/content/emailcloak/emailcloak.php on line 123
+[09-Jan-2017 14:34:58 UTC] PHP Fatal error:  Call to undefined method Hubzero\Utility\String::strpos() in /var/www/hub/core/plugins/content/emailcloak/emailcloak.php on line 123
+[09-Jan-2017 14:49:39 UTC] PHP Fatal error:  Class 'String' not found in /var/www/hub/core/plugins/content/emailcloak/emailcloak.php on line 123
+[09-Jan-2017 15:21:34 UTC] PHP Parse error:  syntax error, unexpected 'hello' (T_STRING) in /var/www/hub/core/components/com_forum/site/views/categories/tmpl/search.php on line 88
