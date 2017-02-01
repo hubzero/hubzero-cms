@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.1.3] - 2016-02-01
+## [2.1.3] - 2017-02-01
 ### Added
  - Add Travis CI badge
  - Add ability to update the git respository from github webhook.
