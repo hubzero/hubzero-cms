@@ -41,15 +41,15 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
@@ -76,11 +76,11 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @param   string  $option    Name of the component
+	 * @param   array   $areas     Active area(s)
+	 * @param   string  $rtrn      Data to be returned
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -109,7 +109,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$this->option   = $option;
 
 		// Get a needed library
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php';
 
 		// Get all the questions for this tool
 		$this->filters = array(
@@ -271,32 +271,31 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$view = $this->view('new', 'question');
-		$view->option   = $this->option;
-		$view->resource = $this->model->resource;
 		if (!is_object($row))
 		{
 			$row  = new \Components\Answers\Models\Question();
 		}
-		$view->row  = $row;
-		$view->tag      = $this->filters['tag'];
 
 		// Are we banking?
 		$upconfig = Component::params('com_members');
-		$view->banking = $upconfig->get('bankAccounts');
+		$banking = $upconfig->get('bankAccounts');
 
-		$view->funds = 0;
-		if ($view->banking)
+		if ($banking)
 		{
 			$BTL = new \Hubzero\Bank\Teller(User::get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
-			$view->funds = ($funds > 0) ? $funds : 0;
+
+			$funds = $funds > 0 ?: 0;
 		}
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view = $this->view('new', 'question')
+			->set('option', $this->option)
+			->set('resource', $this->model->resource)
+			->set('row', $row)
+			->set('tag', $this->filters['tag'])
+			->set('banking', $banking)
+			->set('funds', $funds)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -331,13 +330,11 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			if (!is_numeric($reward))
 			{
 				App::abort(500, Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
-				return;
 			}
 			// Are they offering more than they can afford?
 			if ($reward > $funds)
 			{
 				App::abort(500, Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
-				return;
 			}
 		}
 
@@ -372,54 +369,51 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$tag = ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id);
 		$row->addTag($tag, User::get('id'), ($this->model->isTool() ? 0 : 1));
 
+		// Build list of recipients
+		$receivers = array();
+
+		// Get tool contributors (if question is about a tool)
+		if ($this->model->isTool())
+		{
+			require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
+			require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
+
+			$TA = new \Components\Tools\Tables\Author($this->database);
+			$objV = new \Components\Tools\Tables\Version($this->database);
+
+			$toolname = $this->model->resource->alias;
+
+			$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
+			$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
+
+			if (count($authors) > 0)
+			{
+				foreach ($authors as $author)
+				{
+					$receivers[] = $author->uidNumber;
+				}
+			}
+		}
+
 		// Get users who need to be notified on every question
 		$config = Component::params('com_answers');
 		$apu = $config->get('notify_users', '');
 		$apu = explode(',', $apu);
 		$apu = array_map('trim', $apu);
 
-		$receivers = array();
-
-		// Get tool contributors if question is about a tool
-		if ($tags)
-		{
-			$tags = explode(',', $tags);
-			if (count($tags) > 0)
-			{
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-
-				$TA = new \Components\Tools\Tables\Author($this->database);
-				$objV = new \Components\Tools\Tables\Version($this->database);
-
-				if ($this->model->isTool())
-				{
-					$toolname = $this->model->resource->alias;
-
-					$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
-					$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
-					if (count($authors) > 0)
-					{
-						foreach ($authors as $author)
-						{
-							$receivers[] = $author->uidNumber;
-						}
-					}
-				}
-			}
-		}
-
 		if (!empty($apu))
 		{
 			foreach ($apu as $u)
 			{
 				$user = User::getInstance($u);
-				if ($user)
+
+				if ($user->get('id'))
 				{
 					$receivers[] = $user->get('id');
 				}
 			}
 		}
+
 		$receivers = array_unique($receivers);
 
 		// Send the message
@@ -462,10 +456,24 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => (isset($fields['id']) && $fields['id'] ? 'updated' : 'created'),
+				'scope'       => 'question',
+				'scope_id'    => $row->get('id'),
+				'anonymous'   => $row->get('anonymous', 0),
+				'description' => Lang::txt('PLG_RESOURCES_QUESTIONS_ACTIVITY_QUESTION_' . (isset($fields['id']) && $fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('subject') . '</a>'),
+				'details'     => array(
+					'title' => $row->get('title'),
+					'url'   => $row->link()
+				)
+			],
+			'recipients' => $receivers
+		]);
+
 		// Redirect to the question
 		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name)
 		);
 	}
 }
-
