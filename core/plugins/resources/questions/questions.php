@@ -225,10 +225,16 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	{
 		switch ($this->filters['sortby'])
 		{
-			case 'rewards': $order = 'points'; break;
-			case 'votes':   $order = 'helpful'; break;
+			case 'rewards':
+				$order = 'points';
+				break;
+			case 'votes':
+				$order = 'helpful';
+				break;
 			case 'date':
-			default:        $order = 'created'; break;
+			default:
+				$order = 'created';
+				break;
 		}
 
 		// Get results
