@@ -37,8 +37,7 @@ use Components\Projects\Models;
 use Components\Projects\Helpers;
 
 // Get git helper
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'githelper.php');
+require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'githelper.php';
 
 /**
  * Projects Git adapter class
@@ -48,23 +47,25 @@ class Git extends Models\Adapter
 	/**
 	 * Adapter name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_name = 'git';
 
 	/**
 	 * Full path to repository
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	private $_path = NULL;
+	private $_path = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @param   string  $path
+	 * @param   bool    $remote
+	 * @return  void
 	 */
-	public function __construct($path = NULL, $remote = false)
+	public function __construct($path = null, $remote = false)
 	{
 		// Get component configs
 		$configs = Component::params('com_projects');
@@ -90,7 +91,7 @@ class Git extends Models\Adapter
 	public function count($params = array())
 	{
 		$cmd  = 'cd ' . escapeshellarg($this->_path) . ' && ';
-		$cmd .='find . \( -path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
+		$cmd .='find . \(-path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
 
 		return shell_exec($cmd);
 	}
@@ -104,8 +105,8 @@ class Git extends Models\Adapter
 	public function filelist($params = [])
 	{
 		// Parse incoming params and establish defaults
-		$filter        = isset($params['filter']) ? $params['filter'] : NULL;
-		$dirPath       = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$filter        = isset($params['filter']) ? $params['filter'] : null;
+		$dirPath       = isset($params['subdir']) ? $params['subdir'] : null;
 		$showUntracked = isset($params['showUntracked']) ? $params['showUntracked'] : false;
 		$remotes       = isset($params['remoteConnections']) ? $params['remoteConnections'] : [];
 		$sortdir       = isset($params['sortdir']) && $params['sortdir'] == 'DESC' ? SORT_DESC : SORT_ASC;
@@ -157,7 +158,7 @@ class Git extends Models\Adapter
 		// Apply the filter early, reduces iterations through foreach()
 		if (isset($filter) && $filter != '')
 		{
-			$files = preg_grep("(".$filter.")", $files);
+			$files = preg_grep("(" . $filter . ")", $files);
 		}
 
 		// Go through items and get what we need
@@ -185,7 +186,7 @@ class Git extends Models\Adapter
 			}
 
 			// Check for remote connections
-			$syncRecord = NULL;
+			$syncRecord = null;
 			if (isset($remotes[$file->get('localPath')]))
 			{
 				// Pick up data from sync record
@@ -237,15 +238,14 @@ class Git extends Models\Adapter
 	/**
 	 * Get file content and write to specified location
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  array
 	 */
 	public function content($params = array())
 	{
-		$fileName      = isset($params['fileName']) ? $params['fileName'] : NULL;
-		$hash          = isset($params['hash']) ? $params['hash'] : NULL;
-		$target        = isset($params['target']) ? $params['target'] : NULL;
+		$fileName = isset($params['fileName']) ? $params['fileName'] : null;
+		$hash     = isset($params['hash']) ? $params['hash'] : null;
+		$target   = isset($params['target']) ? $params['target'] : null;
 
 		return $this->_git->getContent($fileName, $hash, $target);
 	}
@@ -253,19 +253,19 @@ class Git extends Models\Adapter
 	/**
 	 * Get final list
 	 *
-	 * @param      object	$file		Models\File
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $items
+	 * @param   array  $params
+	 * @param   array  $folders
+	 * @return  array
 	 */
 	protected function _list($items, $params, $folders = array())
 	{
-		$dirPath       = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$limit         = isset($params['limit']) ? $params['limit'] : 0;
-		$start         = isset($params['start']) ? $params['start'] : 0;
-		$pubLinks      = isset($params['getPubConnections']) ? $params['getPubConnections'] : false;
-		$extended      = isset($params['showFullMetadata']) ? $params['showFullMetadata'] : true;
-		$folders       = count($folders) > 0 ? $folders : false;
+		$dirPath  = isset($params['subdir']) ? $params['subdir'] : null;
+		$limit    = isset($params['limit']) ? $params['limit'] : 0;
+		$start    = isset($params['start']) ? $params['start'] : 0;
+		$pubLinks = isset($params['getPubConnections']) ? $params['getPubConnections'] : false;
+		$extended = isset($params['showFullMetadata']) ? $params['showFullMetadata'] : true;
+		$folders  = count($folders) > 0 ? $folders : false;
 
 		// Skip forward?
 		if ($start)
@@ -320,7 +320,6 @@ class Git extends Models\Adapter
 		}
 		else
 		{
-			//ddie('there');
 			return array($results, $folders);
 		}
 	}
@@ -328,13 +327,14 @@ class Git extends Models\Adapter
 	/**
 	 * Get file history
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @param   array  $versions
+	 * @param   array  $timestamps
+	 * @return  bool
 	 */
 	public function history($params = array(), &$versions, &$timestamps)
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		if (!($file instanceof Models\File))
 		{
@@ -367,15 +367,16 @@ class Git extends Models\Adapter
 	/**
 	 * Get changes for sync
 	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  array
 	 */
 	public function getChanges($params = array())
 	{
-		$localPath    = isset($params['localPath']) ? $params['localPath'] : NULL;
-		$fromLocal    = isset($params['fromLocal']) ? $params['fromLocal'] : NULL;
-		$localDir     = isset($params['localDir']) ? $params['localDir'] : NULL;
-		$localRenames = isset($params['localRenames']) ? $params['localRenames'] : NULL;
-		$connections  = isset($params['connections']) ? $params['connections'] : NULL;
+		$localPath    = isset($params['localPath']) ? $params['localPath'] : null;
+		$fromLocal    = isset($params['fromLocal']) ? $params['fromLocal'] : null;
+		$localDir     = isset($params['localDir']) ? $params['localDir'] : null;
+		$localRenames = isset($params['localRenames']) ? $params['localRenames'] : null;
+		$connections  = isset($params['connections']) ? $params['connections'] : null;
 
 		return $this->_git->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections);
 	}
@@ -383,11 +384,13 @@ class Git extends Models\Adapter
 	/**
 	 * Get last file revision
 	 *
+	 * @param   array   $params
 	 * @return  boolean
 	 */
 	public function getLastRevision($params = array())
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
+
 		if (!($file instanceof Models\File))
 		{
 			return false;
@@ -399,17 +402,16 @@ class Git extends Models\Adapter
 	/**
 	 * Move item
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  bool
 	 */
 	public function move($params = array())
 	{
-		$fromFile = isset($params['fromFile']) ? $params['fromFile'] : NULL;
-		$toFile   = isset($params['toFile']) ? $params['toFile'] : NULL;
+		$fromFile = isset($params['fromFile']) ? $params['fromFile'] : null;
+		$toFile   = isset($params['toFile']) ? $params['toFile'] : null;
 		$type     = isset($params['type']) ? $params['type'] : 'file';
-		$author   = isset($params['author']) ? $params['author'] : NULL;
-		$date     = isset($params['date']) ? $params['date'] : NULL;
+		$author   = isset($params['author']) ? $params['author'] : null;
+		$date     = isset($params['date']) ? $params['date'] : null;
 
 		if (!($fromFile instanceof Models\File) || !($toFile instanceof Models\File))
 		{
@@ -425,13 +427,12 @@ class Git extends Models\Adapter
 	/**
 	 * Make dir
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  bool
 	 */
-	public function makeDirectory ($params = array())
+	public function makeDirectory($params = array())
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		if (!($file instanceof Models\File) || $file->get('type') != 'folder')
 		{
@@ -453,15 +454,14 @@ class Git extends Models\Adapter
 	/**
 	 * Delete dir
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  bool
 	 */
-	public function deleteDirectory ($params = array())
+	public function deleteDirectory($params = array())
 	{
-		$file     = isset($params['file']) ? $params['file'] : NULL;
-		$author   = isset($params['author']) ? $params['author'] : NULL;
-		$date     = isset($params['date']) ? $params['date'] : NULL;
+		$file   = isset($params['file']) ? $params['file'] : null;
+		$author = isset($params['author']) ? $params['author'] : null;
+		$date   = isset($params['date']) ? $params['date'] : null;
 
 		if (!($file instanceof Models\File) || $file->get('type') != 'folder')
 		{
@@ -487,15 +487,14 @@ class Git extends Models\Adapter
 	/**
 	 * Delete file
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  bool
 	 */
-	public function deleteFile ($params = array())
+	public function deleteFile($params = array())
 	{
-		$file     = isset($params['file']) ? $params['file'] : NULL;
-		$author   = isset($params['author']) ? $params['author'] : NULL;
-		$date     = isset($params['date']) ? $params['date'] : NULL;
+		$file     = isset($params['file']) ? $params['file'] : null;
+		$author   = isset($params['author']) ? $params['author'] : null;
+		$date     = isset($params['date']) ? $params['date'] : null;
 
 		if (!($file instanceof Models\File) || $file->get('type') != 'file' || !$file->exists())
 		{
@@ -522,18 +521,16 @@ class Git extends Models\Adapter
 	/**
 	 * Checkin file change
 	 *
-	 * @param      object	$file		Models\File
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  bool
 	 */
-	public function checkin ($params = array())
+	public function checkin($params = array())
 	{
-		$file      = isset($params['file']) ? $params['file'] : NULL;
+		$file      = isset($params['file']) ? $params['file'] : null;
 		$new       = isset($params['replace']) && !$params['replace'] ? true : false;
-		$commitMsg = isset($params['message']) ? $params['message'] : NULL;
-		$author    = isset($params['author']) ? $params['author'] : NULL;
-		$date      = isset($params['date']) ? $params['date'] : NULL;
+		$commitMsg = isset($params['message']) ? $params['message'] : null;
+		$author    = isset($params['author']) ? $params['author'] : null;
+		$date      = isset($params['date']) ? $params['date'] : null;
 
 		if (!$this->isGit())
 		{
@@ -562,14 +559,12 @@ class Git extends Models\Adapter
 	/**
 	 * Discard file change
 	 *
-	 * @param      object	$file		Models\File
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  bool
 	 */
-	public function discard ($params = array())
+	public function discard($params = array())
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : null;
 
 		if (!$this->isGit())
 		{
@@ -582,22 +577,22 @@ class Git extends Models\Adapter
 
 		// Checkout
 		$this->_git->gitCheckout($file->get('localPath'));
+
+		return true;
 	}
 
 	/**
 	 * Restore file revision
 	 *
-	 * @param      object	$file		Models\File
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  array
 	 */
-	public function restore ($params = array())
+	public function restore($params = array())
 	{
-		$file     = isset($params['file']) ? $params['file'] : NULL;
-		$hash     = isset($params['version']) ? $params['version'] : NULL;
-		$author   = isset($params['author']) ? $params['author'] : NULL;
-		$date     = isset($params['date']) ? $params['date'] : NULL;
+		$file   = isset($params['file']) ? $params['file'] : null;
+		$hash   = isset($params['version']) ? $params['version'] : null;
+		$author = isset($params['author']) ? $params['author'] : null;
+		$date   = isset($params['date']) ? $params['date'] : null;
 
 		if (!$this->isGit())
 		{
@@ -609,10 +604,10 @@ class Git extends Models\Adapter
 		}
 
 		// Checkout pre-delete revision
-		$this->_git->gitCheckout( $file->get('localPath'), $hash . '^ ' );
+		$this->_git->gitCheckout($file->get('localPath'), $hash . '^ ');
 
 		// If restored
-		if (is_file( $file->get('fullPath')))
+		if (is_file($file->get('fullPath')))
 		{
 			// Git add & commit
 			$this->_git->gitAdd($file->get('localPath'), $commitMsg, $new = false);
@@ -625,18 +620,16 @@ class Git extends Models\Adapter
 	/**
 	 * Diff revisions
 	 *
-	 * @param      object	$file		Models\File
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  array
 	 */
-	public function diff ($params = array())
+	public function diff($params = array())
 	{
-		$file   = isset($params['file']) ? $params['file'] : NULL;
-		$rev1   = isset($params['rev1']) ? $params['rev1'] : NULL;
-		$rev2   = isset($params['rev2']) ? $params['rev2'] : NULL;
-		$full   = isset($params['fullDiff']) ? $params['fullDiff'] : NULL;
-		$mode   = isset($params['mode']) ? $params['mode'] : 'side-by-side';
+		$file = isset($params['file']) ? $params['file'] : null;
+		$rev1 = isset($params['rev1']) ? $params['rev1'] : null;
+		$rev2 = isset($params['rev2']) ? $params['rev2'] : null;
+		$full = isset($params['fullDiff']) ? $params['fullDiff'] : null;
+		$mode = isset($params['mode']) ? $params['mode'] : 'side-by-side';
 
 		if (!$this->isGit())
 		{
@@ -676,19 +669,17 @@ class Git extends Models\Adapter
 		$rev2['text'] = $this->_git->gitLog($rev2['fpath'], $rev2['hash'], 'blob');
 
 		// Diff class
-		include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS
-			. 'files' . DS . 'helpers' . DS . 'Diff.php' );
+		include_once(PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'helpers' . DS . 'Diff.php');
 
 		$context = ($rev1['text'] == $rev2['text'] || $full) ? count($rev1['text']) : 10;
 		$options = array('context' => $context);
 
 		// Run diff
-		$objDiff = new \Diff($rev1['text'], $rev2['text'], $options );
+		$objDiff = new \Diff($rev1['text'], $rev2['text'], $options);
 
 		if ($mode == 'side-by-side')
 		{
-			include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
-				. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php' );
+			include_once(PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php');
 
 			// Generate a side by side diff
 			$renderer = new \Diff_Renderer_Html_SideBySide;
@@ -696,8 +687,7 @@ class Git extends Models\Adapter
 		}
 		elseif ($mode == 'inline')
 		{
-			include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
-				. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php' );
+			include_once(PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php');
 
 			// Generate inline diff
 			$renderer = new \Diff_Renderer_Html_Inline;
@@ -720,11 +710,12 @@ class Git extends Models\Adapter
 	/**
 	 * Get file data from Git and map to file object
 	 *
-	 * @param      object	$file	Models\File
-	 *
-	 * @return     array
+	 * @param   object  $file     Models\File
+	 * @param   string  $dirPath
+	 * @param   string  $property
+	 * @return  array
 	 */
-	protected function _file ($file, $dirPath, $property = NULL)
+	protected function _file($file, $dirPath, $property = null)
 	{
 		if (isset($this->_files[$file->get('localPath')]))
 		{
@@ -797,15 +788,14 @@ class Git extends Models\Adapter
 	/**
 	 * Get used disk space in repo
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     integer
+	 * @param   array    $params
+	 * @return  integer
 	 */
 	public function getDiskUsage($params = array())
 	{
-		$working     = isset($params['working']) ? $params['working'] : true;
-		$git         = isset($params['history']) ? $params['history'] : true;
-		$path        = isset($params['path']) ? $params['path'] : $this->_path;
+		$working = isset($params['working']) ? $params['working'] : true;
+		$git     = isset($params['history']) ? $params['history'] : true;
+		$path    = isset($params['path']) ? $params['path'] : $this->_path;
 
 		$used = 0;
 		if ($path && is_dir($path))
@@ -841,11 +831,11 @@ class Git extends Models\Adapter
 	/**
 	 * Check if this is a git repo
 	 *
-	 * @return    boolean
+	 * @return  boolean
 	 */
 	public function isGit()
 	{
-		if (!$this->_path || !is_dir($this->_path) || !is_dir( $this->_path . DS . '.git' ))
+		if (!$this->_path || !is_dir($this->_path) || !is_dir($this->_path . DS . '.git'))
 		{
 			return false;
 		}
@@ -856,14 +846,14 @@ class Git extends Models\Adapter
 	/**
 	 * Erase repository
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     integer
+	 * @param   array  $params
+	 * @return  bool
 	 */
 	public function erase($params = array())
 	{
 		$path = isset($params['path']) ? $params['path'] : $this->_path;
-		if ($path && is_dir( $path . DS . '.git' ))
+
+		if ($path && is_dir($path . DS . '.git'))
 		{
 			// cd
 			chdir($path);
@@ -880,15 +870,15 @@ class Git extends Models\Adapter
 	/**
 	 * Optimize repository
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     integer
+	 * @param   array  $params
+	 * @return  bool
 	 */
 	public function optimize($params = array())
 	{
-		$path      = isset($params['path']) ? $params['path'] : $this->_path;
+		$path = isset($params['path']) ? $params['path'] : $this->_path;
 		$aggressive = isset($params['adv']) ? $params['adv'] : false;
-		if ($path && is_dir( $path . DS . '.git' ))
+
+		if ($path && is_dir($path . DS . '.git'))
 		{
 			$command = $aggressive ? 'gc --aggressive' : 'gc';
 			$this->_git->callGit($command);
@@ -901,9 +891,7 @@ class Git extends Models\Adapter
 	/**
 	 * Initialize repository
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     integer
+	 * @return  void
 	 */
 	public function ini()
 	{
