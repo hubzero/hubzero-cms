@@ -401,6 +401,11 @@ function submitbutton(pressbutton)
 					<?php if (!$this->model->isDeleted()) { ?>
 						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_DELETE'); ?>" class="btn" id="do-delete" onclick="javascript: submitbutton('delete')" />
 					<?php } ?>
+					<?php if ($this->model->isArchived()) { ?>
+						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_UNARCHIVE'); ?>" class="btn" id="do-unarchive" onclick="javascript: submitbutton('unarchive')" />
+					<?php } else { ?>
+						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_ARCHIVE'); ?>" class="btn" id="do-unarchive" onclick="javascript: submitbutton('archive')" />
+					<?php } ?>
 				</div>
 			</fieldset>
 

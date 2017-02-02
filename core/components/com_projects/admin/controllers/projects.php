@@ -701,6 +701,62 @@ class Projects extends AdminController
 	}
 
 	/**
+	 * Unarchive one or more projects
+	 *
+	 * @return  void
+	 */
+	public function unarchiveTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$i = 0;
+
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			//foreach group id passed in
+			foreach ($ids as $id)
+			{
+				// Update record(s)
+				$model = new Models\Project($id);
+				$model->set('state', 1);
+
+				if (!$model->exists())
+				{
+					Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+					continue;
+				}
+
+				if (!$model->store())
+				{
+					Notify::error($model->getError());
+					continue;
+				}
+
+				$i++;
+			}
+
+			// Output messsage and redirect
+			if ($i)
+			{
+				Notify::success(Lang::txt('COM_PROJCTS_SUCCESS_UNARCHIVED', $i));
+			}
+		}
+
+		$this->cancelTask();
+	}
+
+	/**
 	 * Erases all project information (to be used for test projects only)
 	 *
 	 * @return  void
