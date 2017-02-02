@@ -37,8 +37,8 @@ use Component;
 use Request;
 
 /**
-* Default file asset handler class
-*/
+ * Default file asset handler class
+ */
 class File extends Handler
 {
 	/**
@@ -47,14 +47,14 @@ class File extends Handler
 	 * Action message - what the user will see if presented with multiple handlers for this extension
 	 * Responds to    - what extensions this handler responds to
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected static $info = array(
 		'action_message' => 'Post notes or slides (i.e. a downloadable file)',
 		'responds_to'    => array(
 			'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'png', 'ppt',
 			'pptx', 'pps', 'ppsx', 'doc', 'docx', 'xls', 'xlsx',
-			'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'r',
+			'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'r', 'rmd',
 			'wm2d', 'slx', 'srt'
 		),
 	);
@@ -62,14 +62,14 @@ class File extends Handler
 	/**
 	 * Create method for this handler
 	 *
-	 * @return array of assets created
+	 * @return  array  of assets created
 	 **/
 	public function create()
 	{
 		// Include needed files
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
-		require_once(dirname(__DIR__) . DS . 'asset.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php';
+		require_once dirname(__DIR__) . DS . 'asset.php';
 
 		// Get the file
 		if (isset($_FILES['files']))
