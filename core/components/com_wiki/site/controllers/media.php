@@ -135,7 +135,15 @@ class Media extends SiteController
 		// Ensure we have a path
 		if (!$attachment->get('filename'))
 		{
-			App::abort(404, Lang::txt('COM_WIKI_FILE_NOT_FOUND'));
+			$attachment->set('filename', $filename);
+
+			if (!$attachment->get('id'))
+			{
+				$attachment->set('page_id', $this->page->get('id'));
+				$attachment->set('created', Date::toSql());
+				$attachment->set('created_by', User::get('id'));
+				$attachment->save();
+			}
 		}
 
 		// Add root
