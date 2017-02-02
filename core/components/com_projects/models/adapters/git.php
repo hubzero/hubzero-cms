@@ -163,7 +163,7 @@ class Git extends Models\Adapter
 		// Go through items and get what we need
 		foreach ($files as $item)
 		{
-			$item = urldecode($item);
+			$item = rawurldecode($item);
 			if (trim($item) == '')
 			{
 				continue;
