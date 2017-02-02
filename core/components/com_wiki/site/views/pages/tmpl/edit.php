@@ -368,7 +368,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
 
 		<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access', 0)); ?>" />
+		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access', 1)); ?>" />
 		<input type="hidden" name="page[state]" value="<?php echo $this->escape($this->page->get('state', 1)); ?>" />
 		<input type="hidden" name="page[scope]" value="<?php echo $this->escape($this->page->get('scope', 'site')); ?>" />
 		<input type="hidden" name="page[scope_id]" value="<?php echo $this->escape($this->page->get('scope_id', 0)); ?>" />
