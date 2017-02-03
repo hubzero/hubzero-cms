@@ -96,13 +96,30 @@ $this->css()
 									{
 										$cls[] = 'sticky';
 									}
+
+									$category = $row->get('category_id');
+									$catalias = $row->get('category_id');
+									$section  = Lang::txt('COM_FORUM_UNKNOWN');
+									$secalias = '';
+									if (isset($this->categories[$row->get('category_id')]))
+									{
+										$category = $this->categories[$row->get('category_id')];
+										$secalias = $category->get('section_id');
+										if (isset($this->sections[$category->get('section_id')]))
+										{
+											$section  = $this->sections[$category->get('section_id')]->get('title');
+											$secalias = $this->sections[$category->get('section_id')]->get('alias');
+										}
+										$catalias = $category->get('alias');
+										$category = $category->get('title');
+									}
 									?>
 									<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
 										<th class="priority-5" scope="row">
 											<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 										</th>
 										<td>
-											<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '&category=' . $this->categories[$row->get('category_id')]->get('alias') . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']); ?>">
+											<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $secalias . '&category=' . $catalias . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']); ?>">
 												<span><?php echo $title; ?></span>
 											</a>
 											<span class="entry-details">
@@ -115,13 +132,13 @@ $this->css()
 										<td class="priority-4">
 											<span><?php echo Lang::txt('COM_FORUM_SECTION'); ?></span>
 											<span class="entry-details section-name">
-												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
+												<?php echo $this->escape(\Hubzero\Utility\String::truncate($section, 100, array('exact' => true))); ?>
 											</span>
 										</td>
 										<td class="priority-3">
 											<span><?php echo Lang::txt('COM_FORUM_CATEGORY'); ?></span>
 											<span class="entry-details category-name">
-												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
+												<?php echo $this->escape(\Hubzero\Utility\String::truncate($category, 100, array('exact' => true))); ?>
 											</span>
 										</td>
 									</tr>
