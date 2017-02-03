@@ -10,8 +10,7 @@ install:
 - composer require squizlabs/php_codesniffer
 - mkdir -p ~/build
 - git clone --branch hubzero-cms-2.1 https://github.com/hubzero/standards ~/build/standards
-- cd ../ && FILES=$(git log --pretty=format\:'' --name-only --since="yesterday" |
-  sort | uniq | tr '\r\n' ' ')
+- cd ../ && FILES=$((git log --pretty=format\:'' --name-only --since="yesterday"; git log --diff-filter=D --pretty=format\:'' --name-only --since="yesterday") | sort | uniq -u | tr '\r\n' ' ')
 script:
 - core/vendor/bin/phpcs -np --standard=~/build/standards/Php/ruleset.xml --ignore=*/test/*,*/assets/*,*/views/*,*/tmpl/*
   $FILES
