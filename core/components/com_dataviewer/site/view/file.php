@@ -35,12 +35,17 @@ function view()
 	global $html_path, $com_name, $dv_conf;
 
 	$hash = Request::getVar('hash');
+	$hash_list = Request::getVar('hash_list');
 
 	if ($hash != '')
 	{
 		$file = $_SESSION['dv']['file_download']['list'][$hash];
 		$file_name = basename($file);
 		$full_path = $file;
+	}
+	elseif ($hash_list != '')
+	{
+		zip_files($hash_list);
 	}
 	else
 	{
