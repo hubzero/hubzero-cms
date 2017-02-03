@@ -16,7 +16,7 @@
 |
 */
 define('_HZEXEC_', 1);
-define('DS', DIRECTORY_SEPARATOR);
+define('DS',DIRECTORY_SEPARATOR);
 
 /*
 |--------------------------------------------------------------------------
