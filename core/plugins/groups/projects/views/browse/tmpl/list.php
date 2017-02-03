@@ -72,7 +72,7 @@ switch ($this->which)
 					? ($row->access('manager') ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR'))
 					: Lang::txt('PLG_GROUPS_PROJECTS_STATUS_NOTMEMBER');
 
-				$role = $row->access('readonly')
+				$role = $row->access('readonly') && !$row->isArchived()
 					? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_REVIEWER')
 					: $role;
 
