@@ -360,11 +360,20 @@ class Query extends \JTable
 			$expr = $condition->expressions[$i];
 			switch ($expr->opval)
 			{
-				case 'lt': $expr->opval = '<'; break;
-				case 'lt=': $expr->opval = '<='; break;
-				case 'gt': $expr->opval = '>'; break;
-				case 'gt=': $expr->opval = '>='; break;
-				default: break;
+				case 'lt':
+					$expr->opval = '<';
+					break;
+				case 'lt=':
+					$expr->opval = '<=';
+					break;
+				case 'gt':
+					$expr->opval = '>';
+					break;
+				case 'gt=':
+					$expr->opval = '>=';
+					break;
+				default:
+				break;
 			}
 
 			if ($expr->val == 'trivial')
