@@ -80,7 +80,7 @@ class Oauth
 	 *
 	 * @var  string
 	 **/
-	private $scope = 'login';
+	private $scope = 'login%20extensive';
 
 	/**
 	 * The oauth request state
