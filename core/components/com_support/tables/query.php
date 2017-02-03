@@ -516,7 +516,7 @@ class Query extends \JTable
 			$q[] = implode($op, $n);
 		}
 
-		return '(' . implode($op, $q) . ')' . $having;
+		return (count($q) ? '(' . implode($op, $q) . ')' : '') . $having;
 	}
 
 	/**
