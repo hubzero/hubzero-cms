@@ -35,11 +35,19 @@ defined('_HZEXEC_') or die();
 
 switch ($this->which)
 {
-	case 'group': $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_GROUP'); break;
-	case 'owned': $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_OWNED'); break;
-	case 'other': $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_OTHER'); break;
+	case 'group':
+		$title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_GROUP');
+		break;
+	case 'owned':
+		$title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_OWNED');
+		break;
+	case 'other':
+		$title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_OTHER');
+		break;
 	default:
-	case 'all':   $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_ALL');   break;
+	case 'all':
+		$title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_ALL');
+		break;
 }
 ?>
 
@@ -120,6 +128,10 @@ switch ($this->which)
 							else if ($row->isPending())
 							{
 								$html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
+							}
+							else if ($row->isArchived())
+							{
+								$html .= '<span class="archived">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
 							}
 						}
 						echo $html;
