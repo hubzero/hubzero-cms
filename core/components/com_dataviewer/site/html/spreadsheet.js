@@ -533,7 +533,7 @@ jQuery(document).ready(function($) {
 		}
 
 		$(dv_table.fnGetNodes()).find('.' + id + ':checkbox:checked').each(function() {
-			url += 'file:' + $(this).val() + '%0A%0B';
+			url += 'file:' + $(this).val() + '%0A%0D';
 		});
 
 		url = url.slice(0, (url.length-6));
@@ -546,6 +546,22 @@ jQuery(document).ready(function($) {
 		e.stopPropagation();
 	});
 
+	// Action when a select all checkbox is clicked
+	$('.dv_header_select_all').click(function(e) {
+		// Get the class name of the checkboxes to be checked/unchecked
+		var class_name = $(this).val();
+
+		// Get the state of the main checkbox
+		var state = $(this).prop('checked');
+
+		// Select all the elements with the given class and set the state of the main checkbox
+		$('.' + class_name).each(function() {
+			$(this).prop('checked', state);
+		});
+
+		// Stop the event propagation, otherwise the table will be sorted
+		e.stopPropagation();
+	});
 
 	// dv-custom-field-link
 	var dv_cfl_list = {};
