@@ -37,11 +37,19 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
 switch ($this->which)
 {
-	case 'group': $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_GROUP'); break;
-	case 'owned': $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OWNED'); break;
-	case 'other': $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OTHER'); break;
+	case 'group':
+		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_GROUP');
+		break;
+	case 'owned':
+		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OWNED');
+		break;
+	case 'other':
+		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OTHER');
+		break;
 	default:
-	case 'all':   $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_ALL');   break;
+	case 'all':
+		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_ALL');
+		break;
 }
 ?>
 
@@ -99,18 +107,27 @@ switch ($this->which)
 						<td class="th_status">
 							<?php
 							$html = '';
-							if ($row->access('owner')) {
-								if ($row->isActive()) {
+							if ($row->access('owner'))
+							{
+								if ($row->isActive())
+								{
 									$html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
 								}
-								else if ($row->inSetup()) {
+								else if ($row->inSetup())
+								{
 										$html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP') . '</a></span> ';
 								}
-								else if ($row->isInactive()) {
+								else if ($row->isInactive())
+								{
 									$html .= '<span class="suspended">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
 								}
-								else if ($row->isPending()) {
+								else if ($row->isPending())
+								{
 									$html .= '<span class="pending">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_PENDING') . '</span> ';
+								}
+								else if ($row->isArchived())
+								{
+									$html .= '<span class="archived">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
 								}
 							}
 							echo $html;
