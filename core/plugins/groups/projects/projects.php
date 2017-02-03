@@ -284,7 +284,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 			// Get group projects
 			$projects = $model->table()->getGroupProjects(
-				$group->get('gidNumber'),
+				$after->get('gidNumber'),
 				User::get('id')
 			);
 
