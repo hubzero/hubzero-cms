@@ -164,15 +164,27 @@ class Restrictions extends AdminController
 		$users = Request::getVar('users', '');
 
 		$users = explode(',', $users);
+		$noHubUserMatch = array();
+		$matched = 0;
 		foreach ($users as $user)
 		{
-			$usr = new \Hubzero\User\Profile(trim($user));
+			$user = trim($user);
+			$usr = new \Hubzero\User\Profile($user);
 			$uId = $usr->get('uidNumber');
 			if ($uId)
 			{
-				print_r(RestrictionsHelper::addSkuUser($uId, $sId));
+				RestrictionsHelper::addSkuUser($uId, $sId);
+				$matched++;
+			}
+			else
+			{
+				$noHubUserMatch[] = $user;
 			}
 		}
+
+		$this->view->matched = $matched;
+		$this->view->noUserMatch = $noHubUserMatch;
+		$this->view->display();
 	}
 
 	public function uploadTask()
