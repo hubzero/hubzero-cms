@@ -1360,6 +1360,17 @@ class Profiles extends SiteController
 			$member->set('usageAgreement', 0);
 		}
 
+		$access  = Request::getVar('access', array(), 'post');
+
+		if (is_array($access))
+		{
+			foreach ($access as $k => $v)
+			{
+				$member->setParam('access_' . $k, intval($v));
+			}
+			$member->set('params', $member->params->toString());
+		}
+
 		// Save the changes
 		if (!$member->save())
 		{
@@ -1374,7 +1385,6 @@ class Profiles extends SiteController
 
 		// Incoming profile edits
 		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
-		$access  = Request::getVar('access', array(), 'post');
 		$field_to_check = Request::getVar('field_to_check', array());
 
 		$old = Profile::collect($member->profiles);

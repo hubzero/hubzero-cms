@@ -82,7 +82,7 @@ $incrOpts = new ModIncrementalRegistrationOptions;
 
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 */
-//$profiles = $this->profile->profiles()->ordered()->rows();
+
 $entries = $this->profile->profiles();
 
 $p = $entries->getTableName();
@@ -160,6 +160,13 @@ function renderIfJson($v)
 	}
 	return $v;
 }
+
+// Legacy access values for profile fields
+$legacy = array(
+	0 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
+	1 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
+	2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
+);
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -209,37 +216,38 @@ function renderIfJson($v)
 	<?php endif; ?>
 
 	<?php
-		/*
-		if ($isUser && $isIncrementalEnabled)
+	/*
+	if ($isUser && $isIncrementalEnabled)
+	{
+		$awards = new Components\Members\Models\Incremental\Awards($this->profile);
+		$awards = $awards->award();
+
+		$increm  = '<div id="award-info">';
+		$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', Route::url('index.php?option=com_store')) . '</p>';
+
+		if ($awards['prior'])
 		{
-			$awards = new Components\Members\Models\Incremental\Awards($this->profile);
-			$awards = $awards->award();
+			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_AWARDED_POINTS', $awards['prior']) . '</p>';
+		}
 
-			$increm  = '<div id="award-info">';
-			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', Route::url('index.php?option=com_store')) . '</p>';
+		if ($awards['new'])
+		{
+			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
+		}
 
-			if ($awards['prior'])
-			{
-				$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_AWARDED_POINTS', $awards['prior']) . '</p>';
-			}
+		$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) .'</p>';
 
-			if ($awards['new'])
-			{
-				$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
-			}
+		$increm .= '</div>';
+		$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']) . '</span></div>';
+		$increm .= '<script type="text/javascript">
+						window.bonus_eligible_fields = '.json_encode($awards['eligible']).';
+						window.bonus_amount = '.$incrOpts->getAwardPerField().';
+					</script>';
+		echo $increm;
 
-			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) .'</p>';
-
-			$increm .= '</div>';
-			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']) . '</span></div>';
-			$increm .= '<script type="text/javascript">
-							window.bonus_eligible_fields = '.json_encode($awards['eligible']).';
-							window.bonus_amount = '.$incrOpts->getAwardPerField().';
-						</script>';
-			echo $increm;
-
-			$this->js('incremental', 'com_members');
-		}*/
+		$this->js('incremental', 'com_members');
+	}
+	*/
 	?>
 
 	<?php if (isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
@@ -336,10 +344,10 @@ function renderIfJson($v)
 						<div class="value">***************</div>
 						<br class="clear" />
 						<div class="section-edit-container">
-							<!--
+							<?php /*
 							<div class="edit-profile-title"><h2>Change Password</h2></div>
 							<a href="#" class="edit-profile-close">&times;</a>
-							-->
+							*/ ?>
 							<div class="section-edit-content">
 								<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registation="password" data-section-profile="password">
 									<span class="section-edit-errors"></span>
@@ -388,10 +396,20 @@ function renderIfJson($v)
 						{
 							$cls .= 'private';
 						}
-						if ($this->profile->get("email") == "" || is_null($this->profile->get("email")))
+						if ($this->profile->get("email") == '' || is_null($this->profile->get("email")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
+
+						$select  = '<select name="access[email]" class="input-select">' . "\n";
+						foreach ($legacy as $k => $v)
+						{
+							$selected = ($k == $this->params->get('access_email'))
+									  ? ' selected="selected"'
+									  : '';
+							$select .= ' <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
+						}
+						$select .= '</select>' . "\n";
 					?>
 				<li class="profile-email section <?php echo $cls; ?>">
 					<div class="section-content">
@@ -401,22 +419,24 @@ function renderIfJson($v)
 								<?php echo \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')); ?>
 							</a>
 						</div>
-						<br class="clear" />
-						<input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
-						<?php
-							$this->view('default', 'edit')
-							     ->set('registration_field', 'email')
-							     ->set('profile_field', 'email')
-							     ->set('registration', 1)
-							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'))
-							     ->set('profile', $this->profile)
-							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
-												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
-												. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[email]', $this->params->get('access_email'),'input-select') . '</label>')
-							     ->display();
-						?>
+						<?php if ($isUser) : ?>
+							<br class="clear" />
+							<input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+							<?php
+								$this->view('default', 'edit')
+								     ->set('registration_field', 'email')
+								     ->set('profile_field', 'email')
+								     ->set('registration', 1)
+								     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'))
+								     ->set('profile', $this->profile)
+								     ->set('isUser', $isUser)
+								     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
+													. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
+													. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
+								     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>')
+								     ->display();
+							?>
+						<?php endif; ?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
@@ -665,49 +685,64 @@ function renderIfJson($v)
 
 		if (!empty($scripts))
 		{
-			//$this->js("jQuery(document).ready(function($){\n" . implode("\n", $scripts) . "\n});");
 			$this->js("function profileDependencies(){\n" . implode("\n", $scripts) . "\n};");
 			$this->js("jQuery(document).ready(function($){\nprofileDependencies();\n});");
 			$this->js("jQuery(document).on('ajaxLoad', function($){\nprofileDependencies();\n});");
 		}
 		?>
 
-		<?php //if ($this->registration->OptIn != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_optin') == 0
-					|| ($this->params->get('access_optin') == 1 && $loggedin)
-					|| ($this->params->get('access_optin') == 2 && $isUser)
-				) : ?>
-				<?php
-					$cls = '';
-					if ($this->params->get('access_optin') == 2)
-					{
-						$cls .= 'private';
-					}
-					if ($this->profile->get("sendEmail") == "" || is_null($this->profile->get("sendEmail")))
-					{
-						$cls .= ($isUser) ? " hidden" : " hide";
-					}
-					if (isset($update_missing) && in_array("optin",array_keys($update_missing)))
-					{
-						$cls = str_replace(' hide', '', $cls);
-						$cls .= ' missing';
-					}
-					//dont show meant for stats only
-					$cls .= (!$isUser) ? ' hide' : '' ;
+		<?php if ($this->params->get('access_optin') == 0
+				|| ($this->params->get('access_optin') == 1 && $loggedin)
+				|| ($this->params->get('access_optin') == 2 && $isUser)
+			) : ?>
+			<?php
+				$cls = '';
+				if ($this->params->get('access_optin') == 2)
+				{
+					$cls .= 'private';
+				}
+				if ($this->profile->get("sendEmail") == "" || is_null($this->profile->get("sendEmail")))
+				{
+					$cls .= ($isUser) ? " hidden" : " hide";
+				}
+				if (isset($update_missing) && in_array("optin",array_keys($update_missing)))
+				{
+					$cls = str_replace(' hide', '', $cls);
+					$cls .= ' missing';
+				}
+				// dont show meant for stats only
+				$cls .= (!$isUser) ? ' hide' : '' ;
 
-					//get value of mail preference option
-					switch ($this->profile->get('sendEmail'))
-					{
-						case '1':  $mailPreferenceValue = 'Yes, send me emails';       break;
-						case '0':  $mailPreferenceValue = 'No, don\'t send me emails'; break;
-						case '-1':
-						default:   $mailPreferenceValue = 'Unanswered';                break;
-					}
-				?>
-				<li class="profile-optin section <?php echo $cls; ?>">
-					<div class="section-content">
-						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES'); ?></div>
-						<div class="value"><?php echo $mailPreferenceValue; ?></div>
+				// get value of mail preference option
+				switch ($this->profile->get('sendEmail'))
+				{
+					case '1':
+						$mailPreferenceValue = 'Yes, send me emails';
+						break;
+					case '0':
+						$mailPreferenceValue = 'No, don\'t send me emails';
+						break;
+					case '-1':
+					default:
+						$mailPreferenceValue = 'Unanswered';
+						break;
+				}
+
+				$select  = '<select name="access[optin]" class="input-select">' . "\n";
+				foreach ($legacy as $k => $v)
+				{
+					$selected = ($k == $this->params->get('access_optin'))
+							  ? ' selected="selected"'
+							  : '';
+					$select .= ' <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
+				}
+				$select .= '</select>' . "\n";
+			?>
+			<li class="profile-optin section <?php echo $cls; ?>">
+				<div class="section-content">
+					<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES'); ?></div>
+					<div class="value"><?php echo $mailPreferenceValue; ?></div>
+					<?php if ($isUser) : ?>
 						<br class="clear" />
 						<?php
 							//define mail preference options
@@ -737,19 +772,19 @@ function renderIfJson($v)
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', $optin_html)
-							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . Components\Members\Helpers\Html::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label></div>')
+							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label></div>')
 							     ->display();
 						?>
-					</div>
-					<?php if ($isUser) : ?>
-						<div class="section-edit">
-							<a class="edit-profile-section" href="#">
-							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
-						</a>
-						</div>
 					<?php endif; ?>
-				</li>
-			<?php endif; ?>
-		<?php //endif; ?>
+				</div>
+				<?php if ($isUser) : ?>
+					<div class="section-edit">
+						<a class="edit-profile-section" href="#">
+						<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
+					</a>
+					</div>
+				<?php endif; ?>
+			</li>
+		<?php endif; ?>
 	</ul>
 </div><!-- /#profile-page-content -->
