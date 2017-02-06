@@ -980,7 +980,7 @@ class Manage extends AdminController
 			->setLayout('merged')
 			->set('success', $success)
 			->set('failed', $failed)
-			->set('config', $config)
+			->set('config', $this->config)
 			->display();
 	}
 
