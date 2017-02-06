@@ -71,6 +71,7 @@ if ($this->config->get('access-manage-section')) {
 				->categories()
 				->whereEquals('state', $this->filters['state'])
 				->whereIn('access', $this->filters['access'])
+				->order('title', 'asc')
 				->rows();
 			?>
 			<div class="container">
