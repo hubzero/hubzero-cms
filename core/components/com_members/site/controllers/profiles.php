@@ -125,7 +125,7 @@ class Profiles extends SiteController
 
 		$restrict = '';
 
-		$referrer = Request::getVar('HTTP_REFERER', NULL, 'server');
+		$referrer = Request::getVar('HTTP_REFERER', null, 'server');
 		if ($referrer && preg_match('/members\/\d+\/messages/i', $referrer))
 		{
 			if (!User::authorise('core.admin', $this->_option)
@@ -898,17 +898,17 @@ class Profiles extends SiteController
 		}
 
 		// Redirect user back to main account page
-		$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
+		$return = base64_decode(Request::getVar('return', '', 'method', 'base64'));
 		$this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
 		$session = App::get('session');
 
 		// Redirect user back to main account page
 		if (Request::getInt('no_html', 0))
 		{
-			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			if ($session->get('badpassword', '0') || $session->get('expiredpassword', '0'))
 			{
-				$session->set('badpassword','0');
-				$session->set('expiredpassword','0');
+				$session->set('badpassword', '0');
+				$session->set('expiredpassword', '0');
 			}
 
 			echo json_encode(array("success" => true));
@@ -916,10 +916,10 @@ class Profiles extends SiteController
 		}
 		else
 		{
-			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			if ($session->get('badpassword', '0') || $session->get('expiredpassword', '0'))
 			{
-				$session->set('badpassword','0');
-				$session->set('expiredpassword','0');
+				$session->set('badpassword', '0');
+				$session->set('expiredpassword', '0');
 			}
 		}
 	}
@@ -1092,7 +1092,7 @@ class Profiles extends SiteController
 		if ($request !== null && !empty($resourcemessage))
 		{
 			$sitename =  Config::get('sitename');
-			$live_site = rtrim(Request::base(),'/');
+			$live_site = rtrim(Request::base(), '/');
 
 			// Email subject
 			$subject = $hubName . " Account Resource Request";
