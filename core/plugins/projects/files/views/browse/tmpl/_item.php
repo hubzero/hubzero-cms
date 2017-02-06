@@ -36,6 +36,8 @@ $me = ($this->item->get('email') == User::get('email')
 $when = $this->item->get('date') ? \Components\Projects\Helpers\Html::formatTime($this->item->get('date')) : 'N/A';
 $subdirPath = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
+$link = Route::url($this->model->link('files') . '&action=' . (($this->item->get('converted')) ? 'open' : 'download') . $subdirPath . '&asset=' . urlencode($this->item->get('name')));
+
 // Do not display Google native extension
 $name = $this->item->get('name');
 if ($this->item->get('remote'))
@@ -44,10 +46,36 @@ if ($this->item->get('remote'))
 	if (in_array($this->item->get('ext'), $native))
 	{
 		$name = preg_replace("/." . $this->item->get('ext') . "\z/", "", $this->item->get('name'));
+
+		// Attempt to build external URLs to Google services
+		if (isset($this->params['remoteConnections']))
+		{
+			if (isset($this->params['remoteConnections'][$this->item->get('localPath')]))
+			{
+				$remote = $this->params['remoteConnections'][$this->item->get('localPath')];
+
+				if ($remote->service == 'google')
+				{
+					switch ($this->item->get('ext'))
+					{
+						case 'gdoc':
+							$link = 'https://docs.google.com/document/d/' . $remote->remote_id;
+							break;
+						case 'gslides':
+							$link = 'https://docs.google.com/presentation/d/' . $remote->remote_id;
+							break;
+						case 'gsheet':
+							$link = 'https://docs.google.com/spreadsheets/d/' . $remote->remote_id;
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
 	}
 }
 $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
-
 ?>
 <tr class="mini faded mline">
 	<?php if ($this->model->access('content')) { ?>
@@ -58,11 +86,9 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 	<td class="top_valign nobsp">
 		<?php echo $this->item->drawIcon($ext); ?>
 		<?php if ($this->item->get('type') == 'file') { ?>
-		<a href="<?php echo Route::url($this->model->link('files')
-		. '&action=' . (($this->item->get('converted')) ? 'open' : 'download') . $subdirPath
-		. '&asset=' . urlencode($this->item->get('name'))); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
-			<?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
-		</a>
+			<a href="<?php echo $link; ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
+				<?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
+			</a>
 		<?php } else { ?>
 			<a href="<?php echo Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
 		<?php } ?>
