@@ -1058,7 +1058,7 @@ HUB.ProjectFiles = {
 			{
 				e.preventDefault();
 				var coord = $(item).offset();
-				if (substract) {
+				if (subtract) {
 					coord.top -= subtract.top;
 					coord.left -= subtract.left;
 				}
