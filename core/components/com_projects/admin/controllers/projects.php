@@ -457,6 +457,9 @@ class Projects extends AdminController
 		// Change ownership
 		$this->_changeOwnership();
 
+		// Allow plugins to respond to changes
+		Event::trigger('projects.onProjectAfterSave', array($this->model));
+
 		// Send message
 		if ($this->config->get('messaging', 0) && $sendmail && count($managers) > 0)
 		{
@@ -619,7 +622,6 @@ class Projects extends AdminController
 		{
 			// Update record(s)
 			$model = new Models\Project($id);
-			$model->set('private', $private);
 
 			if (!$model->exists())
 			{
@@ -627,11 +629,16 @@ class Projects extends AdminController
 				continue;
 			}
 
+			$model->set('private', $private);
+
 			if (!$model->store())
 			{
 				Notify::error($model->getError());
 				continue;
 			}
+
+			// Allow plugins to respond to changes
+			Event::trigger('projects.onProjectAfterSave', array($model));
 
 			$i++;
 		}
@@ -673,7 +680,6 @@ class Projects extends AdminController
 			{
 				// Update record(s)
 				$model = new Models\Project($id);
-				$model->set('state', 3);
 
 				if (!$model->exists())
 				{
@@ -681,11 +687,16 @@ class Projects extends AdminController
 					continue;
 				}
 
+				$model->set('state', 3);
+
 				if (!$model->store())
 				{
 					Notify::error($model->getError());
 					continue;
 				}
+
+				// Allow plugins to respond to changes
+				Event::trigger('projects.onProjectAfterSave', array($model));
 
 				$i++;
 			}
@@ -729,7 +740,6 @@ class Projects extends AdminController
 			{
 				// Update record(s)
 				$model = new Models\Project($id);
-				$model->set('state', 1);
 
 				if (!$model->exists())
 				{
@@ -737,11 +747,16 @@ class Projects extends AdminController
 					continue;
 				}
 
+				$model->set('state', 1);
+
 				if (!$model->store())
 				{
 					Notify::error($model->getError());
 					continue;
 				}
+
+				// Allow plugins to respond to changes
+				Event::trigger('projects.onProjectAfterSave', array($model));
 
 				$i++;
 			}

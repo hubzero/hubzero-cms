@@ -293,9 +293,16 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				// Set projects to archived state
 				foreach ($projects as $project)
 				{
+					if ($project->state == 3)
+					{
+						continue;
+					}
+
 					$model = new \Components\Projects\Models\Project($project->id);
 					$model->set('state', 3);
 					$model->store(false);
+
+					Event::trigger('projects.onProjectAfterSave', array($model));
 				}
 			}
 		}
