@@ -285,7 +285,7 @@
 		margin-left: 0;
 	}
 }
-@media (min-width: 50em) {
+@media (min-width: 60em) {
 	.groups-container .group,
 	.groups-container .group:nth-child(2n+1) {
 		width: 31.18279569892473%;
@@ -295,7 +295,7 @@
 		margin-left: 0;
 	}
 }
-@media (min-width: 70em) {
+@media (min-width: 80em) {
 	.groups-container .group,
 	.groups-container .group:nth-child(2n+1),
 	.groups-container .group:nth-child(3n+1) {

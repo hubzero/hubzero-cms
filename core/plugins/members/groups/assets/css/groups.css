@@ -267,7 +267,7 @@
 		margin-left: 0;
 	}
 }
-@media (min-width: 50em) {
+@media (min-width: 60em) {
 	.group,
 	.group:nth-child(2n+1) {
 		width: 31.18279569892473%;
@@ -277,7 +277,7 @@
 		margin-left: 0;
 	}
 }
-@media (min-width: 70em) {
+@media (min-width: 80em) {
 	.group,
 	.group:nth-child(2n+1),
 	.group:nth-child(3n+1) {
