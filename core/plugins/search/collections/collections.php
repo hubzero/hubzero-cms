@@ -224,4 +224,3 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-
