@@ -33,8 +33,8 @@
 namespace Modules\MyProjects;
 
 use Hubzero\Module\Module;
+use Components\Projects\Tables\Project;
 use Component;
-use Project;
 use User;
 
 /**
@@ -60,8 +60,8 @@ class Helper extends Module
 		$config = Component::params('com_projects');
 
 		// Load classes
-		require_once(Component::path('com_projects') . DS . 'tables' . DS . 'project.php');
-		require_once(Component::path('com_projects') . DS . 'helpers' . DS . 'html.php');
+		require_once Component::path('com_projects') . DS . 'tables' . DS . 'project.php';
+		require_once Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
 		// Set filters
 		$filters = array(
@@ -73,12 +73,17 @@ class Helper extends Module
 			'getowner' => 1
 		);
 
+		if (!$this->params->get('include_archived', 1))
+		{
+			$filters['filterby'] = 'active';
+		}
+
 		$setup_complete = $config->get('confirm_step', 0) ? 3 : 2;
 		$this->filters  = $filters;
 		$this->pconfig  = $config;
 
 		// Get a record count
-		$obj = new \Components\Projects\Tables\Project($db);
+		$obj = new Project($db);
 		$this->total = $obj->getCount($filters, false, User::get('id'), 0, $setup_complete);
 
 		// Get records
@@ -90,4 +95,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-

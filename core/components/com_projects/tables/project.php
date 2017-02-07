@@ -110,7 +110,7 @@ class Project extends \JTable
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
-			$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.owned_by_user ";
+			$query .=  " JOIN #__users as x ON x.id=p.owned_by_user ";
 			$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 		}
 
@@ -139,11 +139,28 @@ class Project extends \JTable
 		{
 			if ($mine)
 			{
-				$query .= $uid
-						? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
-							AND ((p.state != 2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
-						: " WHERE 1=2";
+				if ($filterby == 'archived')
+				{
+					$query .= $uid
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 3) "
+							: " WHERE 1=2";
+				}
+				elseif ($filterby == 'active')
+				{
+					$query .= $uid
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state NOT IN (2, 3)
+								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+							: " WHERE 1=2";
+				}
+				else
+				{
+					$query .= $uid
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
+								AND ((p.state!=2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+							: " WHERE 1=2";
+				}
 				if (!empty($filters['editor']))
 				{
 					$query .= " AND o.role != 5 ";
@@ -441,9 +458,24 @@ class Project extends \JTable
 					AND o.id IS NOT NULL AND pa.state != 2) as newactivity ";
 		$query .= " FROM #__project_owners as po, $this->_tbl AS p";
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
-		$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.created_by_user ";
+		$query .=  " JOIN #__users as x ON x.id=p.created_by_user ";
 		$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
-		$query .=  " WHERE p.id=po.projectid AND p.state !=2 AND po.status=1 AND po.groupid=" . $groupid;
+
+		if (isset($filters['filterby']) && in_array($filters['filterby'], array('active', 'archived')))
+		{
+			if ($filters['filterby'] == 'archived')
+			{
+				$query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . $groupid;
+			}
+			else if ($filters['filterby'] == 'active')
+			{
+				$query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . $groupid;
+			}
+		}
+		else
+		{
+			$query .=  " WHERE p.id=po.projectid AND p.state !=2 AND po.status=1 AND po.groupid=" . $groupid;
+		}
 
 		$filters['which'] = isset($filters['which']) ? $filters['which'] : '';
 		if ($filters['which'] == 'owned')
@@ -456,7 +488,7 @@ class Project extends \JTable
 		}
 
 		$query .= $uid
-				? " AND (p.state = 1 OR  (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
+				? " AND (p.state = 1 OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
 					AND ((p.state = 1 AND p.setup_stage = " . $setup_complete . ")
 					OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . ")))) "
 				: " AND p.state = 1 ";
