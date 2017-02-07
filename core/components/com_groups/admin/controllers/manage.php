@@ -952,7 +952,6 @@ class Manage extends AdminController
 				// Error message - refusing to run migrations due to failed update
 			}
 
-
 			// did we succeed
 			if (preg_match("/Updating the repository.../uis", $output))
 			{
@@ -1266,6 +1265,8 @@ class Manage extends AdminController
 					continue;
 				}
 
+				$before = clone $group;
+
 				// Set the group to be archived
 				$group->set('published', 2);
 				$group->update();
@@ -1276,6 +1277,9 @@ class Manage extends AdminController
 					'action'    => 'group_archived',
 					'comments'  => 'archived by administrator'
 				));
+
+				// Get plugins
+				Event::trigger('groups.onGroupAfterSave', array($before, $group));
 
 				$i++;
 			}
