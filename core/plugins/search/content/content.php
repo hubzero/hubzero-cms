@@ -141,13 +141,14 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 				// Build the path
 				$sql1 = "SELECT path FROM #__categories WHERE id={$row->catid};";
 				$path = $db->setQuery($sql1)->query()->loadResult();
+
 				if ($path != 'uncategorised')
 				{
 					$path = '/' . $path . '/' . $row->alias;
 				}
 				else
 				{
-					$path = $row->alias;
+					$path = '/' . $row->alias;
 				}
 
 				if ($row->state == 1 && $row->access == 1)
@@ -183,8 +184,6 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
-				//$record->author = array($author);
-				//$record->tags = $tags;
 				$record->path = $path;
 				$record->access_level = $access_level;
 				$record->owner = $owner;
