@@ -226,14 +226,14 @@ class Restrictions extends AdminController
 		$csvFile = Request::getVar('csvFile', false, 'files', 'array');
 
 		$sId = Request::getVar('sId', '');
+		$inserted = 0;
+		$skipped = array();
+		$ignored = array();
 
-		if (isset($csvFile['name']) && $csvFile['name'] && $csvFile['type'] == 'text/csv')
+		if (isset($csvFile['name']) && $csvFile['name'])
 		{
 			if (($handle = fopen($csvFile['tmp_name'], "r")) !== false)
 			{
-				$inserted = 0;
-				$skipped = array();
-				$ignored = array();
 				while (($line = fgetcsv($handle, 1000, ',')) !== false)
 				{
 					if (!empty($line[0]))
@@ -259,6 +259,8 @@ class Restrictions extends AdminController
 					}
 				}
 				fclose($handle);
+
+
 			}
 			else
 			{
