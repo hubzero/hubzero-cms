@@ -148,7 +148,7 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				}
 				elseif ($row->object_type == 'group')
 				{
-					$group = Group::getInstance($row->object_id);
+					$group = \Hubzero\User\Group::getInstance($row->object_id);
 
 					// Make sure group is valid.
 					if (is_object($group))
@@ -186,7 +186,7 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$owner_type = 'group';
-					$owner = $row->scope_id;
+					$owner = $row->object_id;
 				}
 
 				// Get the title
