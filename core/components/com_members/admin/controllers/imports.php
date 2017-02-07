@@ -441,8 +441,8 @@ class Imports extends AdminController
 		// Run process task on importer
 		// passed the import model, array or callbacks, and test mode flag
 		$resourceData = $importImporter->process($import, array(
-			'postparse'   => $this->_hooks('postparse',   $import),
-			'postmap'     => $this->_hooks('postmap',     $import),
+			'postparse'   => $this->_hooks('postparse', $import),
+			'postmap'     => $this->_hooks('postmap', $import),
 			'postconvert' => $this->_hooks('postconvert', $import)
 		), $dryRun);
 
