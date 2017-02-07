@@ -63,6 +63,21 @@ $this->css();
 
 <div id="s-projects">
 	<div class="container">
+		<nav class="entries-filters">
+			<ul class="entries-menu filter-options">
+				<li>
+					<a<?php echo (!$this->filters['filterby'] || $this->filters['filterby'] == 'active') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_FILTER_STATUS_ACTIVE'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filters['filterby'] == 'archived') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&filterby=archived'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_FILTER_STATUS_ARCHIVED'); ?>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
 		<?php
 		if ($this->which == 'all')
 		{

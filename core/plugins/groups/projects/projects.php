@@ -154,13 +154,18 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		{
 			// Set filters
 			$this->_filters = array(
-				'mine'    => 1,
-				'updates' => 1,
-				'getowner'=> 1,
-				'group'   => $group->get('gidNumber'),
-				'sortby'  => Request::getVar('sortby', 'title'),
-				'sortdir' => Request::getVar('sortdir', 'ASC')
+				'mine'     => 1,
+				'updates'  => 1,
+				'getowner' => 1,
+				'group'    => $group->get('gidNumber'),
+				'sortby'   => Request::getVar('sortby', 'title'),
+				'sortdir'  => Request::getVar('sortdir', 'ASC'),
+				'filterby' => Request::getVar('filterby', 'active')
 			);
+			if (!in_array($this->_filters['filterby'], array('active', 'archived')))
+			{
+				$this->_filters['filterby'] = 'active';
+			}
 
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
