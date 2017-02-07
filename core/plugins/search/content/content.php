@@ -202,4 +202,3 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-
