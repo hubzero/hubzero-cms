@@ -33,12 +33,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Components\Collections\Models\Orm\Collection;
-use Components\Collections\Models\Orm\Post;
-
-require_once Component::path('com_collections') . DS . 'models' . DS . 'orm' . DS . 'collection.php';
-require_once Component::path('com_collections') . DS . 'models' . DS . 'orm' . DS . 'post.php';
-
 /**
  * Search Collections
  */
@@ -154,7 +148,7 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				}
 				elseif ($row->object_type == 'group')
 				{
-					$group = Group::getInstance($row->object_id);
+					$group = \Hubzero\User\Group::getInstance($row->object_id);
 
 					// Make sure group is valid.
 					if (is_object($group))
@@ -192,7 +186,7 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$owner_type = 'group';
-					$owner = $row->scope_id;
+					$owner = $row->object_id;
 				}
 
 				// Get the title
@@ -230,3 +224,4 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
+
