@@ -163,6 +163,37 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		{
 			$total  = count($groups);
 			$filter = strtolower(Request::getWord('filter', '', 'get'));
+			$state  = strtolower(Request::getWord('state', 'active', 'get'));
+
+			if (in_array($state, array('active', 'archived')))
+			{
+				switch ($state)
+				{
+					case 'archived':
+						foreach ($groups as $key => $group)
+						{
+							if ($group->published == 2)
+							{
+								$g[$key] = $group;
+							}
+						}
+					break;
+
+					case 'active':
+					default:
+						foreach ($groups as $key => $group)
+						{
+							if ($group->published != 2)
+							{
+								$g[$key] = $group;
+							}
+						}
+					break;
+				}
+
+				$groups = $g;
+				$total = count($groups);
+			}
 
 			if (in_array($filter, array('invitees', 'applicants', 'members', 'managers')))
 			{
@@ -210,12 +241,14 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 						}
 					break;
 				}
+
 				$groups = $g;
 			}
 
 			$view = $this->view('default', 'summary')
 				->set('total', $total)
 				->set('filter', $filter)
+				->set('state', $state)
 				->set('groups', $groups)
 				->set('member', $member)
 				->set('option', 'com_groups')
@@ -259,7 +292,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		$g = '';
 		if ($cat == 1)
 		{
-			$g .= "(g.type='".$cat."' OR g.type='3') AND";
+			$g .= "(g.type=" . $db->quote($cat) . " OR g.type='3') AND";
 		}
 		elseif ($cat !== null)
 		{
@@ -267,28 +300,29 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get all groups the user is a member of
-		$query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query2 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query3 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query4 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM `#__xgroups` AS g, `#__xgroups_applicants` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+		$query2 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM `#__xgroups` AS g, `#__xgroups_members` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+		$query3 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM `#__xgroups` AS g, `#__xgroups_managers` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+		$query4 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM `#__xgroups` AS g, `#__xgroups_invitees` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		switch ($type)
 		{
-			case 'all':
-				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
-			break;
 			case 'applicants':
-				$query = $query1." ORDER BY description, cn";
-			break;
+				$query = $query1 . " ORDER BY description, cn";
+				break;
 			case 'members':
-				$query = $query2." ORDER BY description, cn";
-			break;
+				$query = $query2 . " ORDER BY description, cn";
+				break;
 			case 'managers':
-				$query = $query3." ORDER BY description, cn";
-			break;
+				$query = $query3 . " ORDER BY description, cn";
+				break;
 			case 'invitees':
-				$query = $query4." ORDER BY description, cn";
-			break;
+				$query = $query4 . " ORDER BY description, cn";
+				break;
+			case 'all':
+			default:
+				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
+				break;
 		}
 
 		$db->setQuery($query);
