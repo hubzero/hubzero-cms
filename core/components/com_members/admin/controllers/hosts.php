@@ -35,6 +35,7 @@ use Hubzero\Component\AdminController;
 use Components\Members\Models\Member;
 use Components\Members\Models\Host;
 use Request;
+use Event;
 use Lang;
 
 /**
@@ -79,6 +80,8 @@ class Hosts extends AdminController
 			$this->setError(Lang::txt('Failed to add host "%s"', $host));
 		}
 
+		Event::trigger('user.onAfterStoreProfile', array($profile));
+
 		// Push through to the hosts view
 		$this->displayTask($profile);
 	}
@@ -119,6 +122,8 @@ class Hosts extends AdminController
 			$this->setError(Lang::txt('MEMBERS_NO_HOST'));
 		}
 
+		Event::trigger('user.onAfterStoreProfile', array($profile));
+
 		// Push through to the hosts view
 		$this->displayTask($profile);
 	}
@@ -148,4 +153,3 @@ class Hosts extends AdminController
 			->display();
 	}
 }
-
