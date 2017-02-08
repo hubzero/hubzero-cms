@@ -401,8 +401,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 					: Lang::txt('COM_PROJECTS_NOTE_ADDED');
 				$what .= $exists ? ' "' . $controller->page->get('title') . '" ' : '';
 				$what .= ' '.Lang::txt('COM_PROJECTS_NOTE_IN_NOTES');
-				$aid = $this->model->recordActivity($what,
-					$controller->page->get('id'), 'notes', Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=notes') , 'notes', 0);
+				$aid = $this->model->recordActivity($what, $controller->page->get('id'), 'notes', Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=notes'), 'notes', 0);
 
 				// Record page order for new pages
 				$lastorder = $this->note->getLastNoteOrder($scope);
