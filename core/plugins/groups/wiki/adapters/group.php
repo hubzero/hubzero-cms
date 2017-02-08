@@ -33,7 +33,7 @@ namespace Components\Wiki\Models\Adapters;
 
 use User;
 
-require_once __DIR__ . DS . 'base.php';
+require_once Component::path('com_wiki') . '/models/adapters/base.php';
 
 /**
  * Adapter class for a group wiki

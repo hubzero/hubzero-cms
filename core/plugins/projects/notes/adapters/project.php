@@ -34,7 +34,7 @@ namespace Components\Wiki\Models\Adapters;
 use Request;
 use Route;
 
-require_once __DIR__ . DS . 'base.php';
+require_once Component::path('com_wiki') . '/models/adapters/base.php';
 
 /**
  * Adapter class for a project note
