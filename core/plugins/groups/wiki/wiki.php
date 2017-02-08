@@ -92,15 +92,15 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -124,9 +124,17 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+		if (!is_dir(Component::path('com_wiki')))
+		{
+			$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+			return $arr;
+		}
+
+		include_once Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
+		include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
+		include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
+
+		Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/group.php');
 
 		$book = new Components\Wiki\Models\Book('group', $group->get('gidNumber'));
 		$arr['metadata']['count'] = $book->pages()
@@ -168,7 +176,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				$url = $_SERVER['REQUEST_URI'];
 				if (!Hubzero\Utility\Uri::isInternal($url))
 				{
-					$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 				}
 
 				App::redirect(
@@ -250,12 +258,12 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			{
 				$controllerName = 'pages';
 			}
-			require_once(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php');
+			require_once Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php';
 			$controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);
 
 			// Instantiate controller
 			$controller = new $controllerName(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site',
+				'base_path' => Component::path('com_wiki') . DS . 'site',
 				'scope'     => 'group',
 				'scope_id'  => $group->get('gidNumber')
 			));
@@ -296,7 +304,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			// Loop through all the IDs for pages associated with this group
 			foreach ($pages as $page)
 			{
-				$page->set('state', \Components\Wiki\Models\Page::STATE_DELETED);
+				$page->set('state', Components\Wiki\Models\Page::STATE_DELETED);
 				$page->save();
 
 				// Add the page ID to the log
@@ -329,15 +337,12 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	 * @param   integer  $gid
 	 * @return  array
 	 */
-	public function getPages($gid=NULL)
+	public function getPages($gid=null)
 	{
 		// Import needed libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+		include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
-		// Start the log text
-		$log = Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ';
-
-		$pages = \Components\Wiki\Models\Page::all()
+		$pages = Components\Wiki\Models\Page::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $gid)
 			->rows();

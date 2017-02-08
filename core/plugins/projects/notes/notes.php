@@ -34,8 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Include note model
-include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'models' . DS . 'note.php');
+include_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'note.php';
 
 /**
  * Projects Notes (wiki) plugin
@@ -54,42 +53,42 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  array
 	 */
-	protected $_group = NULL;
+	protected $_group = null;
 
 	/**
 	 * Name of master scope
 	 *
 	 * @var  array
 	 */
-	protected $_masterScope = NULL;
+	protected $_masterScope = null;
 
 	/**
 	 * Name of page
 	 *
 	 * @var  array
 	 */
-	protected $_pagename = NULL;
+	protected $_pagename = null;
 
 	/**
 	 * Tool record (tool wiki)
 	 *
 	 * @var  array
 	 */
-	protected $_tool = NULL;
+	protected $_tool = null;
 
 	/**
 	 * Controller name
 	 *
 	 * @var  array
 	 */
-	protected $_controllerName = NULL;
+	protected $_controllerName = null;
 
 	/**
 	 * Store internal message
 	 *
 	 * @var  array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Component name
@@ -104,12 +103,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 * @param   string  $alias
 	 * @return  array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array(
 			'name'    => 'notes',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_NOTES'),
-			'submenu' => NULL,
+			'submenu' => null,
 			'show'    => true,
 			'icon'    => 'f0c1'
 		);
@@ -146,7 +145,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 * @param   string  $tool    Name of tool wiki belongs to
 	 * @return  array   Return array of html
 	 */
-	public function onProject($model, $action = '', $areas = null, $tool = NULL)
+	public function onProject($model, $action = '', $areas = null, $tool = null)
 	{
 		$returnhtml = true;
 
@@ -185,7 +184,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Load wiki language file
-			Lang::load('com_wiki') || Lang::load('com_wiki', PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site');
+			Lang::load('com_wiki') || Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
 
 			// Set vars
 			$this->_database = App::get('db');
@@ -272,14 +271,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				$this->_task = 'download';
 			}
 
-			if (!file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS
-				. 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php'))
+			if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php'))
 			{
 				$this->_controllerName = 'pages';
 			}
 			// Include controller
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS
-				. 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php');
+			require_once Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php';
+
+			Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/project.php');
 
 			// Listing/unlisting?
 			if ($this->_task == 'publist' || $this->_task == 'unlist')
@@ -341,7 +340,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		// Get page
 		$view->page    = $this->note->page($this->_pagename);
-		$view->content = NULL;
+		$view->content = null;
 		$exists = $view->page->get('id') ? true : false;
 
 		Request::setVar('pagename', ($scope ? $scope . '/' : '') . $this->_pagename);
@@ -370,10 +369,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			$view->content  = $nview->loadTemplate();
 		}
 
-		$basePath = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site';
+		$basePath = Component::path('com_wiki') . DS . 'site';
 		if ($this->_task == 'edit' || $this->_task == 'new' || $this->_task == 'save')
 		{
-			$basePath = PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'notes';
+			$basePath = __DIR__;
 			if (!$this->model->access('content'))
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
@@ -429,24 +428,24 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$this->fixupPathway();
 
 		// Get messages	and errors
-		$view->msg = isset($this->_msg) ? $this->_msg : NULL;
+		$view->msg = isset($this->_msg) ? $this->_msg : null;
 		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}
 
-		$view->title 		= $this->_area['title'];
-		$view->note 		= $this->note;
-		$view->task 		= $this->_task;
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->project 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->pagename 	= $this->_pagename;
-		$view->scope 		= $scope;
-		$view->preview 		= $preview;
-		$view->group 		= $this->_group;
-		$view->params		= $this->params;
+		$view->title    = $this->_area['title'];
+		$view->note     = $this->note;
+		$view->task     = $this->_task;
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->project  = $this->model;
+		$view->uid      = $this->_uid;
+		$view->pagename = $this->_pagename;
+		$view->scope    = $scope;
+		$view->preview  = $preview;
+		$view->group    = $this->_group;
+		$view->params   = $this->params;
 
 		return $view->loadTemplate();
 	}
@@ -454,7 +453,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * List/unlist on public project page
 	 *
-	 * @return  string
+	 * @return  void
 	 */
 	protected function _list()
 	{
@@ -486,7 +485,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get public link and list/unlist
-	 *
 	 *
 	 * @return  string
 	 */
@@ -550,9 +548,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Fix pathway
 	 *
-	 * @param      object  	$page
-	 *
-	 * @return     string
+	 * @return  void
 	 */
 	public function fixupPathway()
 	{
@@ -594,28 +590,24 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		{
 			Pathway::append(
 				ucfirst(Lang::txt('COM_PROJECTS_PANEL_TOOLS')),
-				Route::url('index.php?option=' . $this->_option . '&alias='
-				. $this->model->get('alias') . '&active=tools')
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools')
 			);
 
 			Pathway::append(
 				\Hubzero\Utility\String::truncate($this->_tool->title, 50),
-				Route::url('index.php?option=' . $this->_option . '&alias='
-				. $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id)
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id)
 			);
 
 			Pathway::append(
 				ucfirst(Lang::txt('COM_PROJECTS_TOOLS_TAB_WIKI')),
-				Route::url('index.php?option=' . $this->_option . '&alias='
-				. $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id . '&action=wiki')
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id . '&action=wiki')
 			);
 		}
 		else
 		{
 			Pathway::append(
 				ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
-				Route::url('index.php?option=' . $this->_option . '&alias='
-				. $this->model->get('alias') . '&active=notes')
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=notes')
 			);
 		}
 	}
@@ -721,8 +713,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$scope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 		// Include note model
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'note.php');
+		include_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'note.php';
 
 		// Get our model
 		$this->note = new \Components\Projects\Models\Note($scope, $groupname, $projectid);
@@ -827,7 +818,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
+		require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php';
 
 		$database = App::get('db');
 		$objSt    = new \Components\Projects\Tables\Stamp($database);

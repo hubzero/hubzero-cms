@@ -126,6 +126,13 @@ class Page extends Relational
 	);
 
 	/**
+	 * List of adapter paths
+	 *
+	 * @var  array
+	 */
+	protected static $paths = array();
+
+	/**
 	 * Sets up additional custom rules
 	 *
 	 * @return  void
@@ -541,14 +548,21 @@ class Page extends Relational
 
 			if (!class_exists($cls))
 			{
-				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
+				static::$paths[] = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
 
-				if (!is_file($path))
+				foreach (static::$paths as $path)
+				{
+					if (is_file($path))
+					{
+						include_once $path;
+						break;
+					}
+				}
+
+				if (!class_exists($cls))
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid adapter type of "%s"', $scope));
 				}
-
-				include_once($path);
 			}
 
 			$this->adapter = new $cls(
@@ -559,6 +573,30 @@ class Page extends Relational
 		}
 
 		return $this->adapter;
+	}
+
+	/**
+	 * Add a directory where a scope adapter class can be found
+	 *
+	 * @param   string  $path
+	 * @return  array   An array with directory elements
+	 */
+	public static function addAdapterPath($path)
+	{
+		if (!isset(static::$paths))
+		{
+			static::$paths = array();
+		}
+
+		if (!empty($path))
+		{
+			if (!in_array($path, static::$paths))
+			{
+				static::$paths[] = $path;
+			}
+		}
+
+		return static::$paths;
 	}
 
 	/**
