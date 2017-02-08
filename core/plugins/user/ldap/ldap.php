@@ -91,7 +91,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	{
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
 
-		return true
+		return true;
 	}
 
 	/**
