@@ -1632,7 +1632,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				$subject = Lang::txt('PLG_GROUPS_FORUM') . ': ' . $this->group->get('cn') . ' - ' . $thread->get('title');
 
-				if (!Event::trigger('xmessage.onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
+				if (!Event::trigger('xmessage.onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'), false, $post->get('anonymous', 0))))
 				{
 					$this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 				}
