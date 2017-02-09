@@ -998,7 +998,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			{
 				$body = preg_replace("/\n/", '<br />', trim($body));
 			}
-			$ebody .= '<div class="fullbody hidden">' . $body . '</div>' ;
+			$ebody .= '<div class="fullbody hidden">' . $body . '</div>';
 		}
 
 		return $ebody;
