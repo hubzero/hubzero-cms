@@ -107,12 +107,12 @@ class Ticketsv1_0 extends ApiController
 
 		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
-		if ($month <= "9"&preg_match("#(^[1-9]{1})#",$month))
+		if ($month <= "9"&preg_match("#(^[1-9]{1})#", $month))
 		{
 			$month = "0$month";
 		}
 		$day   = strftime("%d", time()+($this->offset*60*60));
-		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day))
+		if ($day <= "9"&preg_match("#(^[1-9]{1})#", $day))
 		{
 			$day = "0$day";
 		}
@@ -465,7 +465,7 @@ class Ticketsv1_0 extends ApiController
 		$ticket->set('status', 0);
 
 		$ticket->set('ip', Request::ip());
-		$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR','','server')));
+		$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
 
 		// Save the data
 		if (!$ticket->store())

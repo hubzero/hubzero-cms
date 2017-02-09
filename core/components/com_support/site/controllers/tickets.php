@@ -173,7 +173,7 @@ class Tickets extends SiteController
 			return;
 		}
 
-		if (!$this->acl->check('read','tickets'))
+		if (!$this->acl->check('read', 'tickets'))
 		{
 			$this->_return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets');
 		}
@@ -1023,7 +1023,7 @@ class Tickets extends SiteController
 
 		// Get the user's IP
 		$ip = Request::ip();
-		$hostname = gethostbyaddr(Request::getVar('REMOTE_ADDR','','server'));
+		$hostname = gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server'));
 
 		if (!$verified)
 		{
@@ -1140,7 +1140,7 @@ class Tickets extends SiteController
 
 		// check if previous ticket submitted is the same as this one.
 		$ticket = new Tables\Ticket($this->database);
-		$filters = array('status' => 'new', 'sort' => 'id' ,'sortdir' => 'DESC', 'limit' => '1', 'start' => 0);
+		$filters = array('status' => 'new', 'sort' => 'id', 'sortdir' => 'DESC', 'limit' => '1', 'start' => 0);
 		$prevSubmission = $ticket->getTickets($filters , false);
 
 		// for the first ticket ever
@@ -2317,8 +2317,8 @@ class Tickets extends SiteController
 		$summary = $row->get('summary');
 		if (strstr($summary, '"') || strstr($summary, "'"))
 		{
-			$summary = str_replace("\'","\\\\\\\\\'", $summary);
-			$summary = str_replace('\"','\\\\\\\\\"', $summary);
+			$summary = str_replace("\'", "\\\\\\\\\'", $summary);
+			$summary = str_replace('\"', '\\\\\\\\\"', $summary);
 			$query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE " . $this->database->quote('%' . strtolower($summary) . '%') . " AND type=1 LIMIT 1";
 		}
 		$query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE " . $this->database->quote('%' . strtolower($summary) . '%') . " AND type=1 LIMIT 1";
@@ -2691,7 +2691,7 @@ class Tickets extends SiteController
 		// Loop through each chunk (filter:option)
 		foreach ($chunks as $chunk)
 		{
-			if (!strstr($chunk,':'))
+			if (!strstr($chunk, ':'))
 			{
 				if ((substr($chunk, 0, 1) == '"'
 				 || substr($chunk, 0, 1) == "'")
@@ -2727,14 +2727,14 @@ class Tickets extends SiteController
 				break;
 				case 'status':
 					$allowed = array('open', 'closed', 'all', 'new', 'waiting');
-					if (!in_array($pieces[1],$allowed))
+					if (!in_array($pieces[1], $allowed))
 					{
 						$pieces[1] = $filters[$pieces[0]];
 					}
 				break;
 				case 'type':
 					$allowed = array('submitted'=>0, 'automatic'=>1, 'none'=>2, 'tool'=>3);
-					if (in_array($pieces[1],$allowed))
+					if (in_array($pieces[1], $allowed))
 					{
 						$pieces[1] = $allowed[$pieces[1]];
 					}
@@ -2757,7 +2757,7 @@ class Tickets extends SiteController
 				break;
 				case 'severity':
 					$allowed = array('critical', 'major', 'normal', 'minor', 'trivial');
-					if (!in_array($pieces[1],$allowed))
+					if (!in_array($pieces[1], $allowed))
 					{
 						$pieces[1] = $filters[$pieces[0]];
 					}

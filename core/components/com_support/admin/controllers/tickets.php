@@ -323,10 +323,10 @@ class Tickets extends AdminController
 			$row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
 			$row->set('browser', $browser->name() . ' ' . $browser->version());
 
-			$row->set('uas', Request::getVar('HTTP_USER_AGENT','','server'));
+			$row->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
 
 			$row->set('ip', Request::ip());
-			$row->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR','','server')));
+			$row->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
 			$row->set('section', 1);
 		}
 
@@ -609,7 +609,7 @@ class Tickets extends AdminController
 				$msg->addPart($html, 'text/html');
 
 				// Loop through the addresses
-				foreach ($defs As $def)
+				foreach ($defs as $def)
 				{
 					$def = trim($def);
 
@@ -891,7 +891,7 @@ class Tickets extends AdminController
 		if ($redirect)
 		{
 			$filters = Request::getVar('filters', '');
-			$filters = str_replace('&amp;','&', $filters);
+			$filters = str_replace('&amp;', '&', $filters);
 
 			// Redirect
 			App::redirect(
