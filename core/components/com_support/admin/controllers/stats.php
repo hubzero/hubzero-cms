@@ -270,7 +270,7 @@ class Stats extends AdminController
 						$user->closed[$k] = array();
 					}
 
-					if ($i <= "9"&preg_match("#(^[1-9]{1})#",$i))
+					if ($i <= "9"&preg_match("#(^[1-9]{1})#", $i))
 					{
 						$month = "0$i";
 					}

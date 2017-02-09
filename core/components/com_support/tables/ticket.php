@@ -778,7 +778,7 @@ class Ticket extends \JTable
 		$year = ($year) ? $year : Date::format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
-		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d", intval($month)+1);
 
 		$sql = "SELECT COUNT(DISTINCT k.ticket)
 				FROM #__support_comments AS k, $this->_tbl AS f
@@ -826,7 +826,7 @@ class Ticket extends \JTable
 		$year = ($year) ? $year : Date::format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
-		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d", intval($month)+1);
 
 		$sql = "SELECT count(*)
 				FROM $this->_tbl

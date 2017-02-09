@@ -392,4 +392,3 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-
