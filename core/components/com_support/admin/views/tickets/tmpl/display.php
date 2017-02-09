@@ -261,6 +261,11 @@ $this->css();
 											<time datetime="<?php echo $lastcomment; ?>"><?php echo Date::of($lastcomment)->relative(); ?></time>
 										</span>
 									<?php } ?>
+									<?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
+										<span class="ticket-target_date hasTip" title="<?php echo Lang::txt('Target date: %s', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
+											<time datetime="<?php echo Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+										</span>
+									<?php } ?>
 								</p>
 								<p>
 									<span class="ticket-author">
@@ -275,16 +280,23 @@ $this->css();
 										<?php echo $this->escape($row->get('summary', Lang::txt('COM_SUPPORT_TICKET_NO_CONTENT'))); ?>
 									</a>
 								</p>
-								<?php if ($tags || $row->isOwned()) { ?>
+								<?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>
 									<p class="ticket-details">
 										<?php if ($tags) { ?>
 											<span class="ticket-tags">
 												<?php echo $tags; ?>
 											</span>
 										<?php } ?>
-										<?php if ($row->get('group')) { ?>
+										<?php if ($row->get('group_id')) { ?>
 											<span class="ticket-group">
-												<?php echo $this->escape(stripslashes($row->get('group'))); ?>
+												<?php
+												$gname = Lang::txt('COM_SUPPORT_UNKNOWN');
+												if ($group = \Hubzero\User\Group::getInstance($row->get('group_id')))
+												{
+													$gname = $group->get('cn');
+												}
+												echo $this->escape($gname);
+												?>
 											</span>
 										<?php } ?>
 										<?php if ($row->isOwned()) { ?>
