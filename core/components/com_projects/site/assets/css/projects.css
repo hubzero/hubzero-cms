@@ -527,21 +527,10 @@
 	.suggestions div {
 		display: inline-block;
 		font-size: 1.2em;
-		max-width: 31%;
-		min-width: 25%;
 		vertical-align: top;
 		margin: 0.5em 0.5em 0.5em 0;
-	}
-	.suggestions a:before {
-		content: "";
-		width: 32px;
-		height: 32px;
-		font-size: 32px;
-		font-family: 'Fontcons';
-		color: #CCC;
-		position: absolute;
-		margin-left: -1.2em;
-		margin-top: 0.2em;
+		min-width: 100%;
+		max-width: 100%;
 	}
 	.welcome .suggestions {
 		margin-top: 1em;
@@ -552,6 +541,7 @@
 		padding: 1.5em 1.3em;
 		padding-left: 60px !important;
 		border: 2px solid #d4eeed;
+		-webkit-border-radius: 15px;
 		-moz-border-radius: 15px;
 		border-radius: 15px;
 		font-size: 90%;
@@ -567,7 +557,30 @@
 		margin: 0.3em 0.5em;
 		border: none;
 		background: #f8ffff;
+		padding-left: 60px;
 	}
+@media (min-width: 40em) {
+	.suggestions div {
+		max-width: 31%;
+		min-width: 25%;
+	}
+	.suggestions a:before {
+		content: "";
+		width: 32px;
+		height: 32px;
+		font-size: 32px;
+		font-family: 'Fontcons';
+		color: #CCC;
+		display: block;
+		position: absolute;
+		margin-left: -1.2em;
+		margin-top: 0.2em;
+	}
+	.suggestions p,
+	.content-feed .sidebox .suggestions p {
+		padding-left: 60px;
+	}
+}
 
 /* Prev/next paging
 --------------------------------------------- */
