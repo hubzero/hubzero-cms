@@ -450,11 +450,20 @@ $cc = array();
 							<label>
 								<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
 								<?php
-								$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '', $this->row->get('group'), '', 'ticketowner')));
+								$group = '';
+								if ($this->row->get('group_id'))
+								{
+									if ($g = \Hubzero\User\Group::getInstance($this->row->get('group_id')))
+									{
+										$group = $g->get('cn');
+									}
+								}
+
+								$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner')));
 								if (count($gc) > 0) {
 									echo $gc[0];
 								} else { ?>
-									<input type="text" name="ticket[group]" value="<?php echo $this->row->get('group'); ?>" id="acgroup" value="" autocomplete="off" />
+									<input type="text" name="ticket[group_id]" value="<?php echo $this->row->get('group_id'); ?>" id="acgroup" value="" autocomplete="off" />
 								<?php } ?>
 							</label>
 						</div>

@@ -157,7 +157,15 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 
 			if ($group = $params->get('support_ticketpending_group'))
 			{
-				$where[] = "t.`group`=" . $database->quote($group);
+				if (!is_numeric($group))
+				{
+					$g = \Hubzero\User\Group::getInstance($group);
+					if ($g)
+					{
+						$group = $g->get('gidNumber');
+					}
+				}
+				$where[] = "t.`group_id`=" . $database->quote((int)$group);
 			}
 
 			if ($owners = $params->get('support_ticketpending_owners'))
@@ -669,7 +677,15 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 
 			if ($group = $params->get('support_ticketlist_group'))
 			{
-				$where[] = "t.`group`=" . $database->quote($group);
+				if (!is_numeric($group))
+				{
+					$g = \Hubzero\User\Group::getInstance($group);
+					if ($g)
+					{
+						$group = $g->get('gidNumber');
+					}
+				}
+				$where[] = "t.`group_id`=" . $database->quote((int)$group);
 			}
 
 			if ($owners = $params->get('support_ticketlist_owners'))
@@ -1025,4 +1041,3 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-

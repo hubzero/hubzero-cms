@@ -271,6 +271,11 @@ $this->css()
 										<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status('class'); ?> status">
 											<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 										</span>
+										<?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
+											<span class="ticket-target_date tooltips" title="<?php echo Lang::txt('Target date: %s', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
+												<time datetime="<?php echo Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+											</span>
+										<?php } ?>
 									</span>
 								</td>
 								<td colspan="6">
@@ -283,7 +288,7 @@ $this->css()
 										</span>
 										<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 											<span class="ticket-activity">
-												<time datetime="<?php echo $lastcomment; ?>"><?php echo Date::of($lastcomment)->relative(); ?></time>
+												<time datetime="<?php echo Date::of($lastcomment)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($lastcomment)->relative(); ?></time>
 											</span>
 										<?php } ?>
 									</p>
@@ -292,25 +297,22 @@ $this->css()
 											<?php echo ($row->content('clean') ? $row->content('clean', 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
 										</a>
 									</p>
-									<?php if ($tags || $row->isOwned() || $row->get('group')) { ?>
+									<?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>
 										<p class="ticket-details">
 										<?php if ($this->acl->check('update', 'tickets') && $tags) { ?>
 											<span class="ticket-tags">
 												<?php echo $tags; ?>
 											</span>
 										<?php } ?>
-										<?php if ($row->get('group')) { ?>
+										<?php if ($row->get('group_id')) { ?>
 											<span class="ticket-group">
 												<?php
-												/*if ($this->acl->check('read', 'tickets'))
+												$gname = Lang::txt('COM_SUPPORT_UNKNOWN');
+												if ($group = \Hubzero\User\Group::getInstance($row->get('group_id')))
 												{
-													$queryid = $this->queries['common'][0]->id;
+													$gname = $group->get('cn');
 												}
-												else
-												{
-													$queryid = $this->queries['mine'][0]->id;
-												}*/
-												echo $this->escape(stripslashes($row->get('group'))); //'<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $queryid . '&find=' . urlencode('group:' . $this->escape(stripslashes($row->get('group'))))) . '">' . $this->escape(stripslashes($row->get('group'))) . '</a>';
+												echo $this->escape($gname);
 												?>
 											</span>
 										<?php } ?>

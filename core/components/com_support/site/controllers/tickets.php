@@ -203,11 +203,11 @@ class Tickets extends SiteController
 
 		$st = new Tables\Ticket($this->database);
 
-		$sql = "SELECT DISTINCT(s.`group`), g.description
+		$sql = "SELECT DISTINCT(g.`cn`), g.description
 				FROM `#__support_tickets` AS s
-				LEFT JOIN `#__xgroups` AS g ON g.cn=s.`group`
-				WHERE s.`group` !='' AND s.`group` IS NOT NULL
-				AND s.type=" . $this->view->type . "
+				LEFT JOIN `#__xgroups` AS g ON g.gidNumber=s.`group_id`
+				WHERE s.`group_id` > 0
+				AND s.type=" . $this->database->quote($this->view->type) . "
 				ORDER BY g.description ASC";
 		$this->database->setQuery($sql);
 		$this->view->groups = $this->database->loadObjectList();
@@ -217,26 +217,28 @@ class Tickets extends SiteController
 
 		if ($this->view->group == '_none_')
 		{
-			$query = "SELECT DISTINCT a.username, a.name, a.id"
-				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.id"
-				. "\n WHERE a.block = '0' AND s.type=" . $this->view->type . " AND (s.group IS NULL OR s.group='')"
-				. "\n ORDER BY a.name";
+			$query = "SELECT DISTINCT a.username, a.name, a.id
+					FROM `#__users` AS a
+					INNER JOIN `#__support_tickets` AS s ON s.owner = a.id
+					WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type) . " AND s.group_id=0
+					ORDER BY a.name";
 		}
 		else if ($this->view->group)
 		{
-			$query = "SELECT a.username, a.name, a.id"
-				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
-				. "\n WHERE g.cn='".$this->view->group."' AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
-				. "\n ORDER BY a.name";
+			$query = "SELECT a.username, a.name, a.id
+					FROM `#__users` AS a
+					INNER JOIN `#__xgroups_members` AS gm ON gm.uidNumber=a.id
+					INNER JOIN `#__xgroups` AS g ON g.gidNumber=gm.gidNumber
+					WHERE g.cn=" . $this->database->quote($this->view->group) ."
+					ORDER BY a.name";
 		}
 		else
 		{
-			$query = "SELECT DISTINCT a.username, a.name, a.id"
-				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.id"
-				. "\n WHERE a.block = '0' AND s.type=" . $this->view->type . ""
-				. "\n ORDER BY a.name";
+			$query = "SELECT DISTINCT a.username, a.name, a.id
+					FROM `#__users` AS a
+					INNER JOIN `#__support_tickets` AS s ON s.owner = a.id
+					WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type) . "
+					ORDER BY a.name";
 		}
 
 		$this->database->setQuery($query);
@@ -333,15 +335,20 @@ class Tickets extends SiteController
 				AND type=" . $this->view->type; // . " AND open=1";
 		if ($this->view->group == '_none_')
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND `group_id`=0";
 		}
 		else if ($this->view->group)
 		{
-			$sql .= " AND `group`='{$this->view->group}'";
+			$gidNumber = 0;
+			if ($group = \Hubzero\User\Group::getInstance($this->view->group))
+			{
+				$gidNumber = $group->get('gidNumber');
+			}
+			$sql .= " AND `group_id`=" . $this->database->quote($gidNumber);
 		}
 		if ($this->view->start && $end)
 		{
-			$sql .= " AND created>='" . $this->view->start . "-01 00:00:00' AND created<'" . $end . "-01 00:00:00'";
+			$sql .= " AND created >= " . $this->database->quote($this->view->start . '-01 00:00:00') . " AND created < " . $this->database->quote($end . '-01 00:00:00');
 		}
 		$sql .= " ORDER BY created ASC";
 		$this->database->setQuery($sql);
@@ -392,18 +399,23 @@ class Tickets extends SiteController
 		$sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
-				AND t.type=" . $this->view->type . " AND t.open=0";
+				AND t.type=" . $this->database->quote($this->view->type) . " AND t.open=0";
 		if ($this->view->group == '_none_')
 		{
-			$sql .= " AND (t.`group`='' OR t.`group` IS NULL)";
+			$sql .= " AND t.`group_id`=0";
 		}
 		else if ($this->view->group)
 		{
-			$sql .= " AND t.`group`='{$this->view->group}'";
+			$gidNumber = 0;
+			if ($group = \Hubzero\User\Group::getInstance($this->view->group))
+			{
+				$gidNumber = $group->get('gidNumber');
+			}
+			$sql .= " AND t.`group_id`=" . $this->database->quote($gidNumber);
 		}
 		if ($this->view->start && $end)
 		{
-			$sql .= " AND t.closed>='" . $this->view->start . "-01 00:00:00' AND t.closed<'" . $end . "-01 00:00:00'";
+			$sql .= " AND t.closed >= " . $this->database->quote($this->view->start . '-01 00:00:00') . " AND t.closed < " . $this->database->quote($end . '-01 00:00:00');
 		}
 		$sql .= " ORDER BY t.closed ASC";
 
@@ -819,7 +831,7 @@ class Tickets extends SiteController
 				->set('status', 0)
 				->set('ip', Request::ip())
 				->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'))
-				->set('referrer', base64_encode(Request::getVar('HTTP_REFERER', NULL, 'server')))
+				->set('referrer', base64_encode(Request::getVar('HTTP_REFERER', null, 'server')))
 				->set('cookies', (Request::getVar('sessioncookie', '', 'cookie') ? 1 : 0))
 				->set('instances', 1)
 				->set('section', 1)
@@ -1078,6 +1090,13 @@ class Tickets extends SiteController
 		}
 
 		$group = isset($problem['group']) ? $problem['group'] : '';
+		if (!is_numeric($group))
+		{
+			if ($g = \Hubzero\User\Group::getInstance($group))
+			{
+				$group = $g->get('gidNumber');
+			}
+		}
 
 		// Initiate class and bind data to database fields
 		$row = new Ticket();
@@ -1102,7 +1121,7 @@ class Tickets extends SiteController
 		$row->set('cookies', (Request::getVar('sessioncookie', '', 'cookie') ? 1 : 0));
 		$row->set('instances', 1);
 		$row->set('section', 1);
-		$row->set('group', $group);
+		$row->set('group_id', (int)$group);
 
 		if (isset($incoming['target_date']))
 		{
@@ -1280,9 +1299,9 @@ class Tickets extends SiteController
 						'id'    => $row->owner('id')
 					));
 				}
-				elseif ($row->get('group'))
+				elseif ($row->get('group_id'))
 				{
-					$group = \Hubzero\User\Group::getInstance($row->get('group'));
+					$group = \Hubzero\User\Group::getInstance($row->get('group_id'));
 
 					if ($group)
 					{
@@ -1665,14 +1684,14 @@ class Tickets extends SiteController
 		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
 		// Populate the list of assignees based on if the ticket belongs to a group or not
-		if (trim($this->view->row->get('group')))
+		if (trim($this->view->row->get('group_id')))
 		{
 			$this->view->lists['owner'] = $this->_userSelectGroup(
 				'ticket[owner]',
 				$this->view->row->get('owner'),
 				1,
 				'',
-				trim($this->view->row->get('group'))
+				trim($this->view->row->get('group_id'))
 			);
 		}
 		elseif (trim($this->config->get('group')))
@@ -1881,7 +1900,7 @@ class Tickets extends SiteController
 		// otherwise, we're only recording a changelog
 		if ($rowc->get('comment')
 		 || $row->get('owner') != $old->get('owner')
-		 || $row->get('group') != $old->get('group')
+		 || $row->get('group_id') != $old->get('group_id')
 		 || $rowc->attachments()->total() > 0)
 		{
 			// Send e-mail to ticket submitter?
@@ -1921,9 +1940,9 @@ class Tickets extends SiteController
 						'id'    => $row->owner('id')
 					));
 				}
-				elseif ($row->get('group'))
+				elseif ($row->get('group_id'))
 				{
-					$group = \Hubzero\User\Group::getInstance($row->get('group'));
+					$group = \Hubzero\User\Group::getInstance($row->get('group_id'));
 
 					if ($group)
 					{
@@ -2429,7 +2448,7 @@ class Tickets extends SiteController
 				$this->acl->setAccess('read', 'tickets', 1);
 			}
 		}
-		if ($this->acl->authorize($row->group))
+		if ($this->acl->authorize($row->group_id))
 		{
 			$this->acl->setAccess('read', 'tickets', 1);
 		}
@@ -2755,7 +2774,7 @@ class Tickets extends SiteController
 	 * @param  $order       The sort order for items in the list
 	 * @return string       HTML select list
 	 */
-	private function _userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	private function _userSelect($name, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
 		$query = "SELECT a.id AS value, a.name AS text"
 			. " FROM #__users AS a"
@@ -2817,7 +2836,7 @@ class Tickets extends SiteController
 	 * @param  $group       The group to pull member names from
 	 * @return string       HTML select list
 	 */
-	private function _userSelectGroup($name, $active, $nouser=0, $javascript=NULL, $group='')
+	private function _userSelectGroup($name, $active, $nouser=0, $javascript=null, $group='')
 	{
 		$users = array();
 

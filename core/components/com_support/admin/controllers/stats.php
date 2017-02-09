@@ -73,10 +73,10 @@ class Stats extends AdminController
 
 		$st = new Tables\Ticket($this->database);
 
-		$sql = "SELECT DISTINCT(s.`group`), g.description
+		$sql = "SELECT DISTINCT(g.`cn`), g.description
 				FROM #__support_tickets AS s
-				LEFT JOIN #__xgroups AS g ON g.cn=s.`group`
-				WHERE s.`group` !='' AND s.`group` IS NOT NULL
+				LEFT JOIN #__xgroups AS g ON g.gidNumber=s.`group_id`
+				WHERE s.`group_id` > 0
 				AND s.type=" . $this->database->quote($this->view->type) . "
 				ORDER BY g.description ASC";
 		$this->database->setQuery($sql);
@@ -114,16 +114,21 @@ class Stats extends AdminController
 
 		// Opened tickets
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
-				FROM #__support_tickets
+				FROM `#__support_tickets`
 				WHERE report!=''
 				AND type=" . $this->database->quote($this->view->type);
 		if (!$this->view->group)
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND `group_id`=0";
 		}
 		else
 		{
-			$sql .= " AND `group`=" . $this->database->quote($this->view->group);
+			$gidNumber = 0;
+			if ($group = \Hubzero\User\Group::getInstance($this->view->group))
+			{
+				$gidNumber = $group->get('gidNumber');
+			}
+			$sql .= " AND `group_id`=" . $this->database->quote($gidNumber);
 		}
 		$sql .= " ORDER BY created ASC";
 		$this->database->setQuery($sql);
@@ -174,11 +179,16 @@ class Stats extends AdminController
 				AND t.type=" . $this->database->Quote($this->view->type) . " AND t.open=0";
 		if (!$this->view->group || $this->view->group == '_none_')
 		{
-			$sql .= " AND (t.`group`='' OR t.`group` IS NULL)";
+			$sql .= " AND t.`group_id`=0";
 		}
 		else if ($this->view->group)
 		{
-			$sql .= " AND t.`group`=" . $this->database->Quote($this->view->group);
+			$gidNumber = 0;
+			if ($group = \Hubzero\User\Group::getInstance($this->view->group))
+			{
+				$gidNumber = $group->get('gidNumber');
+			}
+			$sql .= " AND t.`group_id`=" . $this->database->quote($gidNumber);
 		}
 		$sql .= " ORDER BY t.closed ASC";
 

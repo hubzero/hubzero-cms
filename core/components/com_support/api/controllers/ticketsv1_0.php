@@ -134,11 +134,19 @@ class Ticketsv1_0 extends ApiController
 				AND type=" . $type . " AND open=1";
 		if (!$group)
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND `group_id`=0";
 		}
 		else
 		{
-			$sql .= " AND `group`='{$group}'";
+			if (!is_numeric($group))
+			{
+				$g = \Hubzero\User\Group::getInstance($group);
+				if ($g)
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND `group_id`=" . $this->database->quote((int)$group);
 		}
 		$sql .= " ORDER BY created ASC";
 		$this->database->setQuery($sql);
