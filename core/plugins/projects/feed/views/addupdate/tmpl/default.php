@@ -40,7 +40,6 @@ if (!$this->model->access('content'))
 <div id="blab" class="miniblog">
 	<form id="blogForm" method="post" class="focused" action="<?php echo Route::url($this->model->link()); ?>">
 		<fieldset>
-			<!-- <textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="<?php echo Lang::txt('Got an update?'); ?>"></textarea> -->
 			<?php echo $this->editor('blogentry', '', 5, 3, 'blogentry', array('class' => 'minimal no-footer')); ?>
 			<p id="blog-submitarea">
 				<span id="counter_number_blog" class="leftfloat mini"></span>
@@ -49,6 +48,7 @@ if (!$this->model->access('content'))
 				<input type="hidden" name="action" value="save" />
 				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="managers_only" value="0" />
+				<?php echo Html::input('token'); ?>
 				<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SHARE_WITH_TEAM'); ?>" id="blog-submit" class="btn" />
 			</p>
 		</fieldset>
