@@ -65,42 +65,121 @@ if ($comments)
 		}
 	}
 }
+
+$online = false;
+if (isset($this->online) && in_array($a->userid, $this->online))
+{
+	$online = true;
+}
 ?>
-		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>" data-recorded="<?php echo $recorded; ?>">
-			<div id="tr_<?php echo $a->id; ?>" class="item-control">
-				<?php if ($deletable) { ?>
-					<span class="m_options">
-						<span id="mo_<?php echo $a->id; ?>">
-							<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('Permanently delete this entry?'); ?>" href="<?php echo Route::url($this->model->link('feed') .  '&action=delete&tbl=' . $etbl . '&eid=' . $eid);  ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
-						</span>
-					</span>
-				<?php } ?>
-				<div class="blog-item">
-					<?php if ($showProject) { ?>
+		<div id="li_<?php echo $a->id; ?>" class="activity <?php echo $new ? ' newitem' : ''; ?>" data-recorded="<?php echo $recorded; ?>">
+
+			<div class="activity-actor-picture<?php if ($online) { echo ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE'); } ?>">
+				<?php if ($showProject) { ?>
+					<span class="user-img-wrap">
 						<img class="project-image" src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" />
-					<?php } else { ?>
+						<?php if ($online) { ?>
+							<span class="online"><?php echo Lang::txt('PLG_PROJECTS_FEED_ONLINE'); ?></span>
+						<?php } ?>
+					</span>
+				<?php } else { ?>
+					<a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>">
 						<img class="blog-author" src="<?php echo $creator->picture($a->admin); ?>" alt="" />
-					<?php } ?>
-					<div class="blog-content">
+						<?php if ($online) { ?>
+							<span class="online"><?php echo Lang::txt('PLG_PROJECTS_FEED_ONLINE'); ?></span>
+						<?php } ?>
+					</a>
+				<?php } ?>
+			</div><!-- / .activity-actor-picture -->
+
+			<div class="activity-content">
+				<div class="activity-body">
+					<div class="activity-details">
 						<?php if ($showProject) { ?>
 							<span class="project-name">
 								<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\String::truncate($this->model->get('title'), 65); ?></a>
 							</span>
 						<?php } ?>
-						<span class="actor"><?php echo $a->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $a->name; ?></span>
-						<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></span>
-						<?php  if ($edit && $a->commentable) { ?>
-							<?php if ($this->model->access('content')) { ?>
-								<span class="item-comment">&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" data-inactive="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>" class="showc"><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?></a></span>
-							<?php } ?>
-						<?php } ?>
-						<div class="<?php echo $class; ?> activity <?php if ($a->admin) { echo ' admin-action'; } ?>">
-							 <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>
+						<span class="activity-actor"><?php echo $a->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $a->name; ?></span>
+						<span class="activity-time"><time datetime="<?php echo Date::of($a->recorded)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></time></span>
+					</div><!-- / .activity-details -->
+
+					<div class="activity-event">
+						<div class="activity-event-content <?php echo $class; if ($a->admin) { echo ' admin-action'; } ?>">
+							<?php echo $a->activity; ?>
+							<div id="activity-content<?php echo $a->id; ?>">
+								<?php echo stripslashes($ebody); ?>
+							</div>
 						</div>
 						<?php echo stripslashes($preview); ?>
-					</div>
-				</div>
-			</div>
+					</div><!-- / .activity-event -->
+
+					<?php if ($a->commentable || $deletable || $edit) { ?>
+						<div class="activity-options">
+							<ul>
+								<?php if ($edit && $a->commentable) { ?>
+									<?php if ($this->model->access('content')) { ?>
+										<li>
+											<a class="icon-reply reply tooltips" href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" title="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-inactive="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>"><!--
+												--><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?><!--
+											--></a>
+										</li>
+									<?php } ?>
+								<?php } ?>
+								<?php if ($edit && in_array($class, array('blog', 'quote')) && $this->model->access('manager')) { ?>
+									<li id="mo_<?php echo $a->id; ?>">
+										<a class="icon-edit edit tooltips" data-form="activity-form<?php echo $a->id; ?>" data-content="activity-content<?php echo $a->id; ?>" href="<?php echo Route::url($this->model->link('feed') .  '&action=edit&tbl=' . $etbl . '&eid=' . $eid);  ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-inactive="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>"><!--
+											--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
+										--></a>
+									</li>
+								<?php } ?>
+								<?php if ($deletable) { ?>
+									<li id="mo_<?php echo $a->id; ?>">
+										<a class="icon-delete delete tooltips" data-confirm="<?php echo Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION'); ?>" href="<?php echo Route::url($this->model->link('feed') .  '&action=delete&tbl=' . $etbl . '&eid=' . $eid);  ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><!--
+											--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
+										--></a>
+									</li>
+								<?php } ?>
+							</ul>
+						</div><!-- / .activity-options -->
+						<?php if ($edit && in_array($class, array('blog', 'quote')) && $this->model->access('manager')) { ?>
+							<div class="commentform editcomment hidden" id="activity-form<?php echo $a->id; ?>">
+								<form method="post" action="<?php echo Route::url($this->model->link()); ?>">
+									<fieldset>
+										<input type="hidden" name="task" value="view" />
+										<input type="hidden" name="active" value="feed" />
+										<input type="hidden" name="action" value="save" />
+										<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
+										<input type="hidden" name="eid" value="<?php echo $eid; ?>" />
+										<?php echo Html::input('token'); ?>
+
+										<?php echo $this->editor('blogentry', $activity['raw'], 5, 5, 'blogentry' . $a->id, array('class' => 'minimal no-footer')); ?>
+
+										<p class="blog-submit">
+											<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE'); ?>" class="btn c-submit" />
+										</p>
+									</fieldset>
+								</form>
+							</div>
+						<?php } ?>
+					<?php } ?>
+				</div><!-- / .activity-body -->
+
+				<?php
+				// Add comment
+				if ($edit && $this->model->access('content'))
+				{
+					$this->view('_addcomment')
+						->set('comments', $comments)
+						->set('model', $this->model)
+						->set('activity', $a)
+						->set('uid', $this->uid)
+						->set('etbl', $etbl)
+						->set('eid', $eid)
+						->display();
+				}
+				?>
+			</div><!-- / .activity-content -->
 
 			<?php
 			// Show comments
@@ -110,19 +189,8 @@ if ($comments)
 				->set('activity', $a)
 				->set('uid', $this->uid)
 				->set('edit', $edit)
+				->set('online', $this->online)
 				->display();
-
-			// Add comment
-			if ($edit && $this->model->access('content'))
-			{
-				$this->view('_addcomment')
-					->set('comments', $comments)
-					->set('model', $this->model)
-					->set('activity', $a)
-					->set('uid', $this->uid)
-					->set('etbl', $etbl)
-					->set('eid', $eid)
-					->display();
-			}
 			?>
-		</div>
+
+		</div><!-- / .activity -->
