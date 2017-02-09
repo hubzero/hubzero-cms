@@ -167,6 +167,8 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 
 			if (in_array($state, array('active', 'archived')))
 			{
+				$g = array();
+
 				switch ($state)
 				{
 					case 'archived':
