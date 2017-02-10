@@ -280,15 +280,13 @@ class Curation extends Object
 	public function getBlockId($name = NULL)
 	{
 		$blockId = NULL;
-		$i = 1;
-		foreach ($this->_blocks as $block)
+		foreach ($this->_blocks as $index => $block)
 		{
 			if ($block->name == $name)
 			{
-				$blockId = $i;
+				$blockId = $index;
 				break;
 			}
-			$i++;
 		}
 
 		return $blockId;
