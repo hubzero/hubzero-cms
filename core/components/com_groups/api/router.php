@@ -78,7 +78,8 @@ class Router extends Base
 
 		if (isset($segments[0]))
 		{
-			if (is_numeric($segments[0]))
+			// /groups/{id|cn}
+			if (is_numeric($segments[0]) || !in_array($segments[0], array('list', 'create')))
 			{
 				$vars['id'] = $segments[0];
 				if (\App::get('request')->method() == 'GET')
@@ -86,6 +87,8 @@ class Router extends Base
 					$vars['task'] = 'read';
 				}
 			}
+			// /groups/list
+			// /groups/create
 			else
 			{
 				$vars['task'] = $segments[0];
@@ -93,19 +96,53 @@ class Router extends Base
 
 			if (isset($segments[1]))
 			{
-				if ($segments[1] == 'members')
-				{
-					$vars['controller'] = $segments[1];
-					$vars['task'] = 'index';
-
-					if (isset($segments[2]))
-					{
-						$vars['task'] = $segments[2];
-					}
-				}
-				else
+				// /groups/{id|cn}/read
+				// /groups/{id|cn}/update
+				// /groups/{id|cn}/delete
+				if (in_array($segments[1], array('read', 'update', 'delete')))
 				{
 					$vars['task'] = $segments[1];
+				}
+				// /groups/{id|cn}/{plugin}
+				else
+				{
+					$vars['controller'] = 'plugins';
+					$vars['task']       = 'index';
+					$vars['active']     = $segments[1];
+
+					if ($segments[1] == 'members')
+					{
+						$vars['controller'] = $segments[1];
+					}
+
+					// /groups/{id|cn}/{plugin}/list
+					// /groups/{id|cn}/{plugin}/create
+					// /groups/{id|cn}/{plugin}/{record}
+					if (isset($segments[2]))
+					{
+						// /groups/{id|cn}/{plugin}/{record}
+						if (is_numeric($segments[2]))
+						{
+							$vars['record_id'] = $segments[2];
+							if (\App::get('request')->method() == 'GET')
+							{
+								$vars['task'] = 'read';
+							}
+							if (isset($segments[3]))
+							{
+								if (in_array($segments[3], array('read', 'update', 'delete')))
+								{
+									$vars['task'] = $segments[3];
+								}
+							}
+						}
+						// /groups/{id|cn}/{plugin}/list
+						// /groups/{id|cn}/{plugin}/create
+						else
+						{
+							$vars['task'] = $segments[2];
+						}
+					}
 				}
 			}
 		}
