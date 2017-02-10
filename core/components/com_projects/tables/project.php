@@ -105,8 +105,7 @@ class Project extends \JTable
 			$query .= "AND pa.recorded >= " . $this->_db->quote($filters['timed']);
 		}
 
-		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid="
-				. $this->_db->quote($uid);
+		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid);
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
@@ -132,8 +131,19 @@ class Project extends \JTable
 		}
 		elseif ($admin)
 		{
-			$query .= " WHERE p.provisioned = 0 ";
-			$query .= $showall ? "" : " AND p.state != 2 ";
+			$query .= " WHERE 1=1 "; //p.provisioned = 0 ";
+			if ($filterby == 'archived')
+			{
+				$query .= " AND p.state=3";
+			}
+			elseif ($filterby == 'active')
+			{
+				$query .= " AND p.state NOT IN (2, 3) ";
+			}
+			else
+			{
+				$query .= $showall ? "" : " AND p.state != 2 ";
+			}
 		}
 		else
 		{
@@ -219,7 +229,7 @@ class Project extends \JTable
 			$query .= " AND (p.title LIKE " . $this->_db->quote('%' . $search . '%') . " OR p.alias LIKE " . $this->_db->quote('%' . $search . '%') . ") ";
 		}
 
-		if (isset($filters['private']))
+		if (isset($filters['private']) && $filters['private'] >= 0)
 		{
 			$query .= " AND p.private = " . $filters['private'];
 		}
