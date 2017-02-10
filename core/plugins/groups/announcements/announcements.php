@@ -650,4 +650,255 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// All good
 		return true;
 	}
+
+	/**
+	 * Display a list of all announcements
+	 *
+	 * @param   object   $group
+	 * @param   string   $active
+	 * @param   integer  $start
+	 * @param   integer  $limit
+	 * @return  mixed
+	 */
+	public function onGroupsApiList($group, $active, $start, $limit)
+	{
+		if ($active != $this->_name)
+		{
+			return;
+		}
+
+		// Build array of filters
+		$filters = array(
+			'search'   => strtolower(Request::getVar('q', '')),
+			'scope'    => 'group',
+			'scope_id' => $group->get('gidNumber'),
+			'state'    => Hubzero\Item\Announcement::STATE_PUBLISHED
+		);
+
+		// Find announcements
+		$model = Hubzero\Item\Announcement::all()
+			->whereEquals('scope', $filters['scope'])
+			->whereEquals('scope_id', $filters['scope_id'])
+			->whereEquals('state', $filters['state']);
+
+		if ($filters['search'])
+		{
+			$model->whereLike('content', $filters['search']);
+		}
+
+		// Only get published announcements for members
+		if (!in_array(User::get('id'), $group->get('managers')))
+		{
+			$model->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+				->orWhere('publish_up', '<=', Date::toSql(), 1)
+				->resetDepth()
+				->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+				->orWhere('publish_down', '>=', Date::toSql(), 1);
+		}
+
+		$rows = $model->ordered()
+			->limit($limit)
+			->start($start)
+			->rows();
+
+		return $rows->toObject();
+	}
+
+	/**
+	 * Create a new record
+	 *
+	 * @param   object   $group
+	 * @param   string   $active
+	 * @param   integer  $id
+	 * @return  object
+	 */
+	public function onGroupsApiCreate($group, $active)
+	{
+		if ($active != $this->_name)
+		{
+			return;
+		}
+
+		// Only admins and group managers
+		if (!User::getauthorise('core.admin') || !in_array(User::get('id'), $group->get('managers')))
+		{
+			throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+		}
+
+		// Incoming data
+		$fields = array(
+			'id'           => 0,
+			'scope'        => 'group',
+			'scope_id'     => $group->get('gidNumber'),
+			'sticky'       => Request::getInt('sticky', 0, 'post'),
+			'priority'     => Request::getInt('priority', 0, 'post'),
+			'publish_up'   => Request::getVar('publish_up', '', 'post'),
+			'publish_down' => Request::getVar('publish_down', '', 'post'),
+		);
+
+		// Format publish up
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00')
+		{
+			$fields['publish_up'] = Date::of(str_replace('@', '', $fields['publish_up']), Config::get('offset'))->toSql();
+		}
+
+		// Format publish down
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00')
+		{
+			$fields['publish_down'] = Date::of(str_replace('@', '', $fields['publish_down']), Config::get('offset'))->toSql();
+		}
+
+		// Bind data
+		$model = Hubzero\Item\Announcement::blank()->set($fields);
+
+		// Validate
+		if ($model->get('publish_down') != '0000-00-00 00:00:00'
+		 && $model->get('publish_up') > $model->get('publish_down'))
+		{
+			throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
+		}
+
+		// Save
+		if (!$model->save())
+		{
+			throw new Exception($model->getError(), 500);
+		}
+
+		return $model->toObject();
+	}
+
+	/**
+	 * Read a single record
+	 *
+	 * @param   object   $group
+	 * @param   string   $active
+	 * @param   integer  $id
+	 * @return  object
+	 */
+	public function onGroupsApiRead($group, $active, $id)
+	{
+		if ($active != $this->_name)
+		{
+			return;
+		}
+
+		// Load the record
+		$model = Hubzero\Item\Announcement::oneOrFail($id);
+
+		// Was it actually found?
+		if (!$model->get('id'))
+		{
+			throw new Exception(Lang::txt('Announcement not found.'), 404);
+		}
+
+		return $model->toObject();
+	}
+
+	/**
+	 * Update a record
+	 *
+	 * @param   object   $group
+	 * @param   string   $active
+	 * @param   integer  $id
+	 * @return  object
+	 */
+	public function onGroupsApiUpdate($group, $active, $id)
+	{
+		if ($active != $this->_name)
+		{
+			return;
+		}
+
+		// Only admins and group managers
+		if (!User::getauthorise('core.admin') || !in_array(User::get('id'), $group->get('managers')))
+		{
+			throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+		}
+
+		$model = Hubzero\Item\Announcement::oneOrFail($id);
+
+		// Incoming data
+		$fields = array(
+			'id'           => $id,
+			'scope'        => 'group',
+			'scope_id'     => $group->get('gidNumber'),
+			'sticky'       => Request::getInt('sticky', $model->get('sticky', 0), 'post'),
+			'priority'     => Request::getInt('priority', $model->get('priority', 0), 'post'),
+			'publish_up'   => Request::getVar('publish_up', $model->get('publish_up'), 'post'),
+			'publish_down' => Request::getVar('publish_down', $model->get('publish_down'), 'post'),
+			'created'      => Request::getVar('created', $model->get('created'), 'post'),
+			'created_by'   => Request::getInt('created_by', $model->get('created_by'), 'post'),
+		);
+
+		// Format publish up
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00')
+		{
+			$fields['publish_up'] = Date::of(str_replace('@', '', $fields['publish_up']), Config::get('offset'))->toSql();
+		}
+
+		// Format publish down
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00')
+		{
+			$fields['publish_down'] = Date::of(str_replace('@', '', $fields['publish_down']), Config::get('offset'))->toSql();
+		}
+
+		// Bind data
+		$model->set($fields);
+
+		// Validate
+		if ($model->get('publish_down') != '0000-00-00 00:00:00'
+		 && $model->get('publish_up') > $model->get('publish_down'))
+		{
+			throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
+		}
+
+		// Save
+		if (!$model->save())
+		{
+			throw new Exception($model->getError(), 500);
+		}
+
+		return $model->toObject();
+	}
+
+	/**
+	 * Delete a single record
+	 *
+	 * @param   object   $group
+	 * @param   string   $active
+	 * @param   integer  $id
+	 * @return  object
+	 */
+	public function onGroupsApiDelete($group, $active, $id)
+	{
+		if ($active != $this->_name)
+		{
+			return;
+		}
+
+		// Only admins and group managers
+		if (!User::getauthorise('core.admin') || !in_array(User::get('id'), $group->get('managers')))
+		{
+			throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+		}
+
+		// Load the record
+		$model = Hubzero\Item\Announcement::oneOrFail($id);
+
+		// Was it actually found?
+		if (!$model->get('id'))
+		{
+			throw new Exception(Lang::txt('Announcement not found.'), 404);
+		}
+
+		// Mark as deleted and save the change
+		$model->set('state', Hubzero\Item\Announcement::STATE_DELETED);
+
+		if (!$model->save())
+		{
+			throw new Exception($model->getError(), 500);
+		}
+
+		return true;
+	}
 }
