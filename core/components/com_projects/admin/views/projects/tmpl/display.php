@@ -34,30 +34,18 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title(Lang::txt('Projects'), 'projects');
+Toolbar::title(Lang::txt('Projects'), 'user.png');
 
-if (User::authorise('core.edit.state', $this->option))
-{
-	Toolbar::custom('accessprivate', 'accessprivate', 'accessprivate_h', 'COM_PROJECTS_PRIVATE', true);
-	Toolbar::custom('accesspublic', 'accesspublic', 'accesspublic_h', 'COM_PROJECTS_PUBLIC', true);
-	Toolbar::spacer();
-}
-if (User::authorise('core.edit.state', $this->option))
-{
-	Toolbar::archiveList();
-	Toolbar::spacer();
-}
-if (User::authorise('core.edit', $this->option))
-{
-	Toolbar::editList();
-}
-Toolbar::spacer();
 // Only display if enabled
-if ($this->config->get('custom_profile') == 'custom' && User::authorise('core.manage', $this->option))
+if ($this->config->get('custom_profile') == 'custom')
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
 }
+
+Toolbar::spacer();
 Toolbar::preferences('com_projects', '550');
+Toolbar::editList();
+
 
 Html::behavior('tooltip');
 
@@ -76,11 +64,11 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
+		submitform( pressbutton );
 		return;
 	}
 	// do field validation
-	submitform(pressbutton);
+	submitform( pressbutton );
 }
 </script>
 
@@ -90,35 +78,55 @@ function submitbutton(pressbutton)
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>
 
-		<label for="filter_search"><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
 
-		<label for="quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
-		<select name="quota" id="quota">
-			<option value="all"<?php echo ($this->filters['quota'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_ALL'); ?></option>
-			<option value="regular"<?php echo ($this->filters['quota'] == 'regular') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_REGULAR'); ?></option>
-			<option value="premium"<?php echo ($this->filters['quota'] == 'premium') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_PREMIUM'); ?></option>
-		</select>
+				<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PROJECTS_GO'); ?>" />
+			</div>
+			<div class="col span6">
+				<label for="filter-filterby"><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS'); ?>:</label>
+				<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
+					<option value=""<?php echo ($this->filters['filterby'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL'); ?></option>
+					<option value="active"<?php echo ($this->filters['filterby'] == 'active') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE'); ?></option>
+					<option value="archived"<?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED'); ?></option>
+				</select>
 
-		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PROJECTS_GO'); ?>" />
+				<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
+				<select name="private" id="filter-private" onchange="document.adminForm.submit();">
+					<option value="-1"<?php echo ($this->filters['private'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_ALL'); ?></option>
+					<option value="1"<?php echo ($this->filters['private'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PRIVATE'); ?></option>
+					<option value="0"<?php echo ($this->filters['private'] == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PUBLIC'); ?></option>
+				</select>
+
+				<label for="filter-quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
+				<select name="quota" id="filter-quota" onchange="document.adminForm.submit();">
+					<option value="all"<?php echo ($this->filters['quota'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_ALL'); ?></option>
+					<option value="regular"<?php echo ($this->filters['quota'] == 'regular') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_REGULAR'); ?></option>
+					<option value="premium"<?php echo ($this->filters['quota'] == 'premium') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_PREMIUM'); ?></option>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<table class="adminlist" id="projects-admin">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-5" scope="col"> </th>
-				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th class="priority-3" scope="col"><?php echo Html::grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-3" scope="col"><?php echo Html::grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th scope="col"><?php echo Lang::txt('Team'); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php 
+				<td colspan="9"><?php 
 				// Initiate paging
 				echo $this->pagination(
 					$this->total,
@@ -131,11 +139,11 @@ function submitbutton(pressbutton)
 		<tbody>
 			<?php
 			$k = 0;
-			$filterstring = ($this->filters['sortby']) ? '&amp;sort=' . $this->filters['sortby'] : '';
+			$filterstring  = ($this->filters['sortby']) ? '&amp;sort=' . $this->filters['sortby'] : '';
 
 			if ($this->rows)
 			{
-				for ($i=0, $n=count($this->rows); $i < $n; $i++)
+				for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				{
 					$row = $this->rows[$i];
 
@@ -143,7 +151,7 @@ function submitbutton(pressbutton)
 					{
 						$row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
 					}
-					$owner = ($row->owned_by_group) ? $row->groupname . ' <span class="block  prominent">' . $row->groupcn . '</span>' : $row->authorname;
+					$owner = ($row->owned_by_group) ? $row->groupname . '<br /><span class="block prominent">' . $row->groupcn . '</span>' : $row->authorname;
 					$ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 
 					// Determine status
@@ -176,7 +184,7 @@ function submitbutton(pressbutton)
 					$cloud = new \Components\Projects\Models\Tags($row->id);
 					$tags  = $cloud->render('cloud');
 
-					$params = new \Hubzero\Config\Registry($row->params);
+					$params = new \Hubzero\Config\Registry( $row->params );
 					$quota  = $params->get('quota', $this->defaultQuota);
 					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 
@@ -189,9 +197,15 @@ function submitbutton(pressbutton)
 					}
 					?>
 					<tr class="<?php echo "row$k"; ?>">
-						<td><?php echo Html::grid('id', $i, $row->id, false, 'id'); ?></td>
-						<td class="priority-5"><?php echo $row->id; ?></td>
-						<td class="priority-5"><?php echo '<img src="' . rtrim($base, '/') . '/projects/' . $row->alias . '/media/thumb" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
+						<td>
+							<?php echo Html::grid('id', $i, $row->id, false, 'id' ); ?>
+						</td>
+						<td class="priority-5">
+							<?php echo $row->id; ?>
+						</td>
+						<td class="priority-5">
+							<img src="<?php echo rtrim($base, '/') . '/projects/' . $row->alias . '/media'; ?>" width="30" height="30" alt="<?php echo $this->escape($row->alias); ?>" />
+						</td>
 						<td>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
 							<strong><?php echo stripslashes($row->alias); ?></strong>
@@ -201,8 +215,17 @@ function submitbutton(pressbutton)
 								</span>
 							<?php } ?>
 						</td>
-						<td class="priority-3"><span class="glyph <?php echo $ownerclass; ?>"><?php echo $owner; ?></span></td>
-						<td><?php echo $status; ?></td>
+						<td class="priority-3">
+							<span class="glyph <?php echo $ownerclass; ?>"><?php echo $owner; ?></span>
+						</td>
+						<td class="priority-3">
+							<a class="state <?php echo ($row->owned_by_group && $row->sync_group) ? 'synced' : 'not-synced'; ?> team hasTip" title="<?php echo ($row->owned_by_group && $row->sync_group) ? Lang::txt('This team is synced with a group.') : Lang::txt('This team is comprised of selected individuals.'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=team&project=' . $row->id); ?>">
+								<span><?php echo Lang::txt('team'); ?></span>
+							</a>
+						</td>
+						<td>
+							<?php echo $status; ?>
+						</td>
 						<td class="priority-4">
 							<?php if (User::authorise('core.edit.state', $this->option)) { ?>
 								<a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
@@ -214,7 +237,9 @@ function submitbutton(pressbutton)
 								</span>
 							<?php } ?>
 						</td>
-						<td class="priority-4"><?php echo $quota . 'GB'; ?></td>
+						<td class="priority-4">
+							<?php echo $quota . 'GB'; ?>
+						</td>
 					</tr>
 					<?php
 					$k = 1 - $k;

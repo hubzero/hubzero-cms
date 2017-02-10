@@ -60,3 +60,23 @@
 	.setup {
 		color: orange;
 	}
+
+	a.state.not-synced,
+	a.state.not-synced:link,
+	a.state.not-synced:active,
+	a.state.not-synced:visited,
+	.state.not-synced {
+		width: 2.4em;
+	}
+	.state.not-synced:before {
+		content: "\f0f1\f0f1";
+		color: #bbb;
+	}
+	.state.synced:before {
+		content: "\f021";
+		color: #bbb;
+	}
+	.state.not-synced:hover:before,
+	.state.synced:hover:before {
+		color: #333;
+	}

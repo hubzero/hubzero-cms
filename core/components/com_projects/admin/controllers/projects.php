@@ -120,6 +120,17 @@ class Projects extends AdminController
 				'search',
 				''
 			)),
+			'filterby' => Request::getState(
+				$this->_option . '.projects.filterby',
+				'filterby',
+				''
+			),
+			'private' => Request::getState(
+				$this->_option . '.projects.private',
+				'private',
+				-1,
+				'int'
+			),
 			'sortby' => Request::getState(
 				$this->_option . '.projects.sort',
 				'filter_order',
@@ -136,6 +147,11 @@ class Projects extends AdminController
 			'quota'      => Request::getVar('quota', 'all', 'post')
 		);
 
+		if (!in_array($this->view->filters['filterby'], array('active', 'archived')))
+		{
+			$this->view->filters['filterby'] = '';
+		}
+
 		$this->view->limit = $this->view->filters['limit'];
 		$this->view->start = $this->view->filters['start'];
 
@@ -149,10 +165,10 @@ class Projects extends AdminController
 		$obj = new Tables\Project($this->database);
 
 		// Get records
-		$this->view->rows = $obj->getRecords($this->view->filters, true, 0, 1);
+		$this->view->rows = $obj->getRecords($this->view->filters, 'admin', 0, 1);
 
 		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters, true, 0, 1);
+		$this->view->total = $obj->getCount($this->view->filters, 'admin', 0, 1);
 
 		// Filtering by quota
 		if ($this->view->filters['quota'] != 'all' && $this->view->rows)
