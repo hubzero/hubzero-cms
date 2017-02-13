@@ -73,13 +73,13 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			$extension = 'plg_' . $this->_type . '_' . $this->_name;
 		}
 
-		$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+		$group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
 		if ($group && $group->isSuperGroup())
 		{
 			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
 		}
 
-		$lang = \App::get('language');
+		$lang = App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
@@ -126,7 +126,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		//get this area details
+		// Get this area details
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
@@ -142,14 +142,14 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 		// Model
-		$this->model = new \Components\Projects\Models\Project();
+		$this->model = new Components\Projects\Models\Project();
 
 		$this->_projects = $this->model->table()->getGroupProjectIds(
 			$group->get('gidNumber'),
 			User::get('id')
 		);
 
-		//if we want to return content
+		// If we want to return content
 		if ($return == 'html')
 		{
 			// Set filters
@@ -167,10 +167,10 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				$this->_filters['filterby'] = 'active';
 			}
 
-			//set group members plugin access level
+			// Set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//get the group members
+			// Get the group members
 			$members = $group->get('members');
 
 			// Set some variables so other functions have access
@@ -222,6 +222,9 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				case 'updates':
 					$arr['html'] = $this->_updates();
 					break;
+				case 'update':
+					$arr['html'] = $this->_update();
+					break;
 				default:
 					$arr['html'] = $this->_view('all');
 					break;
@@ -250,7 +253,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 		// Model
-		$this->model = new \Components\Projects\Models\Project();
+		$this->model = new Components\Projects\Models\Project();
 
 		// Get group projects
 		$projects = $this->model->table()->getGroupProjects(
@@ -285,7 +288,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 			// Model
-			$model = new \Components\Projects\Models\Project();
+			$model = new Components\Projects\Models\Project();
 
 			// Get group projects
 			$projects = $model->table()->getGroupProjects(
@@ -303,7 +306,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 						continue;
 					}
 
-					$model = new \Components\Projects\Models\Project($project->id);
+					$model = new Components\Projects\Models\Project($project->id);
 					$model->set('state', 3);
 					$model->store(false);
 
@@ -321,42 +324,42 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view($which = 'owned')
 	{
-		// Build the final HTML
-		$view = $this->view('default', 'browse');
+		$which = strtolower($which);
 
+		if (!in_array($which, array('all', 'owned', 'other')))
+		{
+			$which = 'owned';
+		}
+
+		// Get records
 		if ($which == 'all')
 		{
 			$this->_filters['which'] = 'owned';
-			$view->owned = $this->model->entries('group', $this->_filters);
+			$owned = $this->model->entries('group', $this->_filters);
 
 			$this->_filters['which'] = 'other';
-			$view->rows = $this->model->entries('group', $this->_filters);
+			$rows = $this->model->entries('group', $this->_filters);
 		}
 		else
 		{
-			// Get records
-			$options = array('all', 'owned', 'other');
-			if (!in_array($which, $options))
-			{
-				$which = 'owned';
-			}
 			$this->_filters['which'] = $which;
-			$view->rows = $this->model->entries('group', $this->_filters);
+
+			$rows = $this->model->entries('group', $this->_filters);
+			$owned = null;
 		}
 
-		// Get counts
-		$view->projectcount = count($this->_projects);
-		$view->newcount = $this->model->table()->getUpdateCount($this->_projects, User::get('id'));
-
-		$view->which   = $which;
-		$view->filters = $this->_filters;
-		$view->config  = $this->_config;
-		$view->option  = 'com_projects';
-		$view->group   = $this->group;
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		// Build view
+		$view = $this->view('default', 'browse')
+			->set('rows', $rows)
+			->set('owned', $owned)
+			->set('projectcount', count($this->_projects))
+			->set('newcount', $this->model->table()->getUpdateCount($this->_projects, User::get('id')))
+			->set('which', $which)
+			->set('filters', $this->_filters)
+			->set('config', $this->_config)
+			->set('option', 'com_projects')
+			->set('group', $this->group)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -368,37 +371,88 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _updates()
 	{
-		// Build the final HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'projects',
-				'name'    => 'updates'
-			)
+		$filters = array(
+			'limit' => Request::getVar('limit', 25, 'request')
 		);
 
-		$view->filters = array('limit' => Request::getVar('limit', 25, 'request'));
-
-		// Get shared updates feed from blog plugin
+		// Get shared updates feed from feed plugin
 		$results = Event::trigger('projects.onShared', array(
 			'feed',
 			$this->model,
 			$this->_projects,
 			User::get('id'),
-			$view->filters
+			$filters/*,
+			in_array(User::get('id'), $this->group->get('managers')),
+			array(
+				'option' => 'com_groups',
+				'task' => 'view',
+				'cn' => $this->group->get('cn'),
+				'active' => $this->_name,
+				'action'=> 'update'
+			)*/
 		));
 
-		$view->content  = !empty($results) && isset($results[0]) ? $results[0] : null;
-		$view->newcount = $this->model->table()->getUpdateCount(
-			$this->_projects,
-			User::get('id')
-		);
-		$view->projectcount = count($this->_projects);
-		$view->uid      = User::get('id');
-		$view->config   = $this->_config;
-		$view->group    = $this->group;
-		$view->setErrors($this->getErrors());
+		$content = !empty($results) && isset($results[0]) ? $results[0] : null;
+
+		// Build the final HTML
+		$view = $this->view('default', 'updates')
+			->set('filters', $filters)
+			->set('content', $content)
+			->set('newcount', $this->model->table()->getUpdateCount(
+				$this->_projects,
+				User::get('id')
+			))
+			->set('projectcount', count($this->_projects))
+			->set('projects', $this->_projects)
+			->set('config', $this->_config)
+			->set('group', $this->group)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Update one or all projects
+	 *
+	 * @return  void
+	 */
+	protected function _update()
+	{
+		// Check for request forgeries
+		Request::checkToken(['post']);
+
+		$managers  = Request::getInt('managers_only', 0, 'post');
+		$entry     = trim(Request::getVar('blogentry', '', 'post'));
+		$posted    = Date::toSql();
+		$posted_by = User::get('id');
+		$projectid = Request::getInt('projectid', 0, 'post');
+
+		if (!$projectid)
+		{
+			$projects = $this->_projects;
+		}
+		else
+		{
+			$projects = array($projectid);
+		}
+
+		// Add the post to each project
+		foreach ($projects as $id)
+		{
+			$project = new Components\Projects\Models\Project($id);
+
+			Event::trigger('projects.onSharedUpdate', array(
+				$project,
+				$entry,
+				$managers,
+				$posted_by,
+				$posted
+			));
+		}
+
+		// Redirect
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates')
+		);
 	}
 }

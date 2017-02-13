@@ -144,7 +144,16 @@
 	.urgency {
 		color: red !important;
 	}
-
+	.miniblog {
+		margin: 0 0 2em 0;
+	}
+	.miniblog label {
+		display: block;
+		margin: 1em 0 0 0;
+	}
+	.miniblog select {
+		width: 100%;
+	}
 
 /* Prev/next paging
 --------------------------------------------- */

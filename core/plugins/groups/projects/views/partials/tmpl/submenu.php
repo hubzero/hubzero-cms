@@ -48,11 +48,11 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', array($this->gro
 		</a>
 	</li>
 	<?php foreach ($groupProjectPlugins as $plugin) { ?>
-	<li <?php if ($this->tab == $plugin->name) { echo 'class="active"'; } ?> >
-		<a href="<?php echo $plugin->pathRoute ?>">
-			<?php echo $plugin->title ?> <?php if ($plugin->newcount) { echo '<span class="s-new">' . $plugin->newcount . '</span>'; } ?>
-		</a>
-	</li>
+		<li <?php if ($this->tab == $plugin->name) { echo 'class="active"'; } ?> >
+			<a href="<?php echo $plugin->pathRoute ?>">
+				<?php echo $plugin->title ?> <?php if ($plugin->newcount) { echo '<span class="s-new">' . $plugin->newcount . '</span>'; } ?>
+			</a>
+		</li>
 	<?php } //endforeach ?>
 </ul>
 
