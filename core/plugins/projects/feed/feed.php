@@ -795,6 +795,78 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Event call to post an activity
+	 *
+	 * @param   object   $model      Project to post to
+	 * @param   string   $entry      Content to post
+	 * @param   integer  $managers   Manager sonly?
+	 * @param   integer  $posted_by  Who's posting? If not set, uses current user ID
+	 * @param   string   $posted     Timestamp. If not set, uses Date("now")
+	 * @return  void
+	 */
+	public function onSharedUpdate($model, $entry, $managers = 0, $posted_by = 0, $posted = null)
+	{
+		if (!$model || !$model->get('id'))
+		{
+			return;
+		}
+
+		if (!$entry)
+		{
+			return;
+		}
+
+		$entry = Hubzero\Utility\Sanitize::stripScripts((string) $entry);
+		$entry = Hubzero\Utility\Sanitize::stripImages($entry);
+
+		$posted    = $posted ?: Date::toSql();
+		$posted_by = $posted_by ?: User::get('id');
+
+		$database = App::get('db');
+
+		// Instantiate project microblog entry
+		$objM = new Components\Projects\Tables\Blog($database);
+		$objM->projectid     = (int) $model->get('id');
+		$objM->blogentry     = $entry;
+		$objM->managers_only = (int) $managers;
+		$objM->posted        = (string) $posted;
+		$objM->posted_by     = (int) $posted_by;
+
+		// Save new blog entry
+		if (!$objM->store())
+		{
+			Notify::error($objM->getError());
+			return;
+		}
+
+		// Get new entry ID
+		if (!$objM->id)
+		{
+			$objM->checkin();
+		}
+
+		// Record activity
+		if ($objM->id)
+		{
+			$aid = $model->recordActivity(
+				Lang::txt('COM_PROJECTS_SAID'),
+				$objM->id,
+				'',
+				'',
+				'blog',
+				1
+			);
+
+			// Store activity ID
+			if ($aid)
+			{
+				$objM->activityid = $aid;
+				$objM->store();
+			}
+		}
+	}
+
+	/**
 	 * Collect activity data
 	 *
 	 * @param   array    $activities
