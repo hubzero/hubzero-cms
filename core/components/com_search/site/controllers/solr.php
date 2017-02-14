@@ -50,7 +50,7 @@ class Solr extends SiteController
 	 *
 	 * @return  void
 	 */
-	public function displayTask($response = NULL)
+	public function displayTask($response = null)
 	{
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
@@ -294,5 +294,3 @@ class Solr extends SiteController
 		} // End foreach results
 			return $results;
 	}
-}
-
