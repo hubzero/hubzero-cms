@@ -52,6 +52,19 @@ $this->css('solr');
 	'index.php?option='.$this->option.'&task=manageBlacklist'
 );
 ?>
+
+<?php if (isset($this->processing)) { ?>
+<div class="info">
+	<span><?php echo Lang::txt('COM_SEARCH_BUILDING_INDEX'); ?></span>
+</div>
+<?php } ?>
+
+<?php if (isset($this->stalled)) { ?>
+<div class="warning">
+	<span><?php echo Lang::txt('COM_SEARCH_INDEX_STALLED'); ?></span>
+</div>
+<?php } ?>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
@@ -71,7 +84,6 @@ $this->css('solr');
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php //echo $this->rows->count(); ?>);" /></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_DOCUMENT_COUNT', 'document_count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_LAST_INDEXED', 'document_count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -93,15 +105,6 @@ $this->css('solr');
 				</td>
 				<td><?php echo $count; ?></td>
 				<td>
-				<?php
-					foreach ($this->queue as $qItem)
-					{
-						if ($qItem->hubtype == $type)
-						{
-							echo Date::of($qItem->modified)->toLocal();
-						}
-					}
-				?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
