@@ -197,9 +197,23 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 		<span class="leftfloat">
 		<?php
 		// Used disk space and remaining quota
-		$dirsize = $this->repo->call('getDiskUsage',
-			$params = array( 'git' => $this->fileparams->get('disk_usage'))
-		);
+		
+		
+		if ($this->fileparams->get('project_quota'))
+		{
+			// Report usage only with current files and not with history
+			$dirsize = $this->repo->call('getDiskUsage',
+				$params = array('working' => true, 'history' => false, 'git' => $this->fileparams->get('disk_usage'))
+				);
+		}
+		else
+		{
+			// Original Code
+			$dirsize = $this->repo->call('getDiskUsage',
+				$params = array( 'git' => $this->fileparams->get('disk_usage'))
+				);
+		}
+
 		$quota = $this->model->params->get('quota')
 			? $this->model->params->get('quota')
 			: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
