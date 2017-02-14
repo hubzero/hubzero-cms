@@ -69,7 +69,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  string
 	 */
-	protected $_path = NULL;
+	protected $_path = null;
 
 	/**
 	 * Component name
@@ -83,14 +83,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return  array  Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array(
 			'name'    => $this->_name,
@@ -535,7 +535,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->publication = new \Components\Publications\Models\Publication($pid, NULL, $vid);
+		$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		// On error
 		if (!$view->publication->exists())
@@ -564,7 +564,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->publication->_curationModel->setBlock($block, $step);
 
 		// Get file list
-		$view->items = NULL;
+		$view->items = null;
 		if ($this->model->get('id'))
 		{
 			// Set params
@@ -592,7 +592,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Get directories
 			$params = array(
-				'subdir'           => NULL,
+				'subdir'           => null,
 				'sortby'           => 'localpath',
 				'showFullMetadata' => false,
 				'dirsOnly'         => true,
@@ -687,7 +687,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($view == 'pub')
 		{
-			$url = Request::getVar('HTTP_REFERER', NULL, 'server');
+			$url = Request::getVar('HTTP_REFERER', null, 'server');
 		}
 		else
 		{
@@ -1165,7 +1165,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			);
 
 			$listParams = array(
-				'subdir'           => NULL,
+				'subdir'           => null,
 				'sortby'           => 'localpath', // important for selector!
 				'showFullMetadata' => false,
 				'dirsOnly'         => true,
@@ -1404,7 +1404,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$revision->set('modified', gmdate('Y-m-d H:i:s', strtotime($v['date'])));
 			}
 
-			$hash = $v['remote'] ? NULL : $v['hash'];
+			$hash = $v['remote'] ? null : $v['hash'];
 
 			$versions[$i]['preview'] = $revision->getPreview($this->model, $hash, 'url');
 			$i++;
@@ -1713,7 +1713,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->file = isset($collector[0]) ? $collector[0] : NULL;
+			$view->file = isset($collector[0]) ? $collector[0] : null;
 
 			// Get last revision
 			if (!$view->file->get('converted') && !$hash)
@@ -1735,7 +1735,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Other rendering?
 		if ($render == 'thumb' || $render == 'inline' || $render == 'medium')
 		{
-			$file = isset($collector[0]) ? $collector[0] : NULL;
+			$file = isset($collector[0]) ? $collector[0] : null;
 			if (!($file instanceof \Components\Projects\Models\File))
 			{
 				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
@@ -1776,7 +1776,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$file = isset($collector[0]) ? $collector[0] : NULL;
+			$file = isset($collector[0]) ? $collector[0] : null;
 			if (!($file instanceof \Components\Projects\Models\File))
 			{
 				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
@@ -1838,7 +1838,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				);
 
 				// Clean up data from Windows characters - important!
-				$data = $tex ? preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data) : $data;
+				$data = $tex ? preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $data) : $data;
 
 				$ftname = \Components\Projects\Helpers\Google::getImportFilename($file->get('remoteTitle'), $cExt);
 				$serveas = $ftname;
@@ -1849,7 +1849,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Download local revision
 			elseif ($hash)
 			{
-				$tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0) . $serveas;
+				$tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4, 4, 0, 1, 0) . $serveas;
 				$downloadPath = sys_get_temp_dir() . DS . $tempPath;
 
 				// Get file content
@@ -2059,7 +2059,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		elseif ($file->exists())
 		{
-			$view->data = $file->isImage() ? NULL : $file->contents();
+			$view->data = $file->isImage() ? null : $file->contents();
 		}
 		else
 		{
@@ -2070,7 +2070,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($tex && !empty($view->data))
 		{
 			// Clean up data from Windows characters - important!
-			$view->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $view->data);
+			$view->data = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $view->data);
 
 			// Compile and get path to PDF
 			$contentFile = $compiler->compileTex(
@@ -2238,7 +2238,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->cType     = $cType;
 		$view->subdir    = $this->subdir;
 		$view->option    = $this->_option;
-		$view->image     = !empty($image) ? $image : NULL;
+		$view->image     = !empty($image) ? $image : null;
 		$view->model     = $this->model;
 		$view->repo      = $this->repo;
 
@@ -2343,7 +2343,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$view->file    = !empty($file) ? $file : NULL;
+				$view->file    = !empty($file) ? $file : null;
 				$view->connect = $this->_connect;
 				$view->service = $this->_remoteService;
 			}
@@ -2427,7 +2427,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						);
 
 						// Create remote file for imported file
-						$created = NULL;
+						$created = null;
 						if (!$exists)
 						{
 							$created = $this->_connect->addRemoteFile(
@@ -2634,15 +2634,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if ($this->params->get('project_quota'))
 			{
 				// Report usage only with current files and not with history
-				$view->totalspace = $this->repo->call('getDiskUsage',
-				$params = array('working' => true, 'history' => false)   
+				$view->totalspace = $this->repo->call('getDiskUsage', $params = array('working' => true, 'history' => false)   
 			);
 			}
 			else
 			{
 				// Original Code
-				$view->totalspace = $this->repo->call('getDiskUsage',
-				$params = array('working' => false, 'history' => true)   
+				$view->totalspace = $this->repo->call('getDiskUsage', $params = array('working' => false, 'history' => true)   
 			);				
 			}
 
@@ -3009,7 +3007,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$zip = new ZipArchive;
 
-		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === TRUE)
+		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === true)
 		{
 			$i = 0;
 
@@ -3186,7 +3184,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * @param   array   $changes
 	 * @return  void
 	 */
-	public function onAfterUpdate($model = NULL, $changes = array())
+	public function onAfterUpdate($model = null, $changes = array())
 	{
 		$activity = '';
 		$message  = '';
@@ -3218,12 +3216,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$updated  = !empty($changes['updated'])  ? $changes['updated']  : NULL;
-			$uploaded = !empty($changes['uploaded']) ? $changes['uploaded'] : NULL;
-			$failed   = !empty($changes['failed'])   ? $changes['failed']   : NULL;
-			$deleted  = !empty($changes['deleted'])  ? $changes['deleted']  : NULL;
-			$restored = !empty($changes['restored']) ? $changes['restored'] : NULL;
-			$expanded = !empty($changes['expanded']) ? $changes['expanded'] : NULL;
+			$updated  = !empty($changes['updated'])  ? $changes['updated']  : null;
+			$uploaded = !empty($changes['uploaded']) ? $changes['uploaded'] : null;
+			$failed   = !empty($changes['failed'])   ? $changes['failed']   : null;
+			$deleted  = !empty($changes['deleted'])  ? $changes['deleted']  : null;
+			$restored = !empty($changes['restored']) ? $changes['restored'] : null;
+			$expanded = !empty($changes['expanded']) ? $changes['expanded'] : null;
 		}
 
 		// Provisioned project?
@@ -3247,7 +3245,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				if (count($uploadParts) > 2)
 				{
-					$message = 'uploaded ' . basename($uploadParts[0]) . ' and ' . (count($uploadParts) - 1) . ' more files ' ;
+					$message = 'uploaded ' . basename($uploadParts[0]) . ' and ' . (count($uploadParts) - 1) . ' more files ';
 				}
 				else
 				{
@@ -3269,7 +3267,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$message .= $uploaded ? '. Updated ' : 'updated ';
 				if (count($updateParts) > 2)
 				{
-					$message .= basename($updateParts[0]) . ' and ' . (count($updateParts) - 1) . ' more files ' ;
+					$message .= basename($updateParts[0]) . ' and ' . (count($updateParts) - 1) . ' more files ';
 				}
 				else
 				{
@@ -3283,7 +3281,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$activity  = $message . ' ' . strtolower(Lang::txt('PLG_PROJECTS_FILES_IN_PROJECT_FILES')) ;
+			$activity  = $message . ' ' . strtolower(Lang::txt('PLG_PROJECTS_FILES_IN_PROJECT_FILES'));
 
 			$message = 'Successfully ' . $message;
 			$message.= $failed ? ' There was a problem uploading ' . $failed : '';
