@@ -101,6 +101,33 @@ class Solr extends AdminController
 	 */
 	public function searchIndexTask()
 	{
+		// @TODO modify for RabbitMQ
+		// Check to see if the queue is still being processed
+		$processing = QueueDB::all()->where('status', '=', 0)->count();
+
+		if ($processing > 0)
+		{
+			// See if the CRON is still processing
+			$this->view->processing = true;
+
+			// Check to see if the CRON task has stalled
+			$db = App::get('db');
+			$db->setQuery("SELECT MAX(modified) AS lastUpdated FROM `#__search_queue` WHERE status = 1");
+			$db->query();
+			$max = $db->loadResult();
+
+			if ($max > 0)
+			{
+				$ago = Date::of($max);
+				$ago = $ago->relative('hour');
+				$ago = explode(" ", $ago)[0];
+				if ($ago > 1)
+				{
+					$this->view->stalled = true;
+				}
+			}
+		}
+
 		// Display CMS errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -109,8 +136,6 @@ class Solr extends AdminController
 
 		$config = Component::params('com_search');
 		$hubtypes = Event::trigger('search.onGetTypes');
-
-		$queue = QueueDB::all()->rows();
 
 		$stats = array();
 		try
@@ -136,7 +161,6 @@ class Solr extends AdminController
 		// Display the view
 		$this->view->types = $hubtypes;
 		$this->view->stats = $stats;
-		$this->view->queue = $queue;
 		$this->view->display();
 	}
 
@@ -148,6 +172,15 @@ class Solr extends AdminController
 	 */
 	public function fullindexTask()
 	{
+		$processing = QueueDB::all()->where('status', '=', 0)->count();
+		if ($processing > 0)
+		{
+			App::redirect(
+				Route::url('index.php?option=com_search&task=searchindex', false),
+				Lang::txt('The index is still building. Please wait until it is finished.'), 'info'
+			);
+		}
+
 		// Get the enabled types and associated content
 		$enabledTypes = Event::trigger('search.onGetTypes');
 		foreach ($enabledTypes as $type)
