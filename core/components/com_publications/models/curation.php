@@ -119,12 +119,13 @@ class Curation extends Object
 	var $_message 		= null;
 
 	/**
-	* Constructor
-	*
-	* @param      string  $manifest         Publication manifest
-	* @param      string  $masterManifest   Master type manifest
-	* @return     void
-	*/
+	 * __construct 
+	 * 
+	 * @param string $manifest 				Publication manifest
+	 * @param string $masterManifest  Master type manifest
+	 * @access public
+	 * @return void
+	 */
 	public function __construct( $manifest = null, $masterManifest = null )
 	{
 		$this->_db = \App::get('db');
@@ -1020,7 +1021,7 @@ class Curation extends Object
 			{
 				continue;
 			}
-			if ($id == $activeId )
+			if ($id == $activeId)
 			{
 				$start = 1;
 			}
@@ -1535,9 +1536,9 @@ class Curation extends Object
 		<?php if ($viewer == 'curator') { ?>
 		<span class="edit-notice">[<a href="#">edit</a>]</span>
 		<?php } ?>
-		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3)) ) { return; } ?>
+		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3))) { return; } ?>
 		<div class="status-notice">
-			<span class="update-notice"><?php if ($viewer == 'curator') { echo  $curatorStatus->updatenotice; }
+			<span class="update-notice"><?php if ($viewer == 'curator') { echo $curatorStatus->updatenotice; }
 			elseif ($curatorStatus->status != 3) {
 				if ($curatorStatus->authornotice && $curatorStatus->updated)
 				{
@@ -1550,7 +1551,7 @@ class Curation extends Object
 				<?php }
 				else
 				{
-					echo  Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED');
+					echo Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED');
 				}
 			} ?></span>
 			<?php if ($viewer == 'author' && $curatorStatus->curatornotice && !$curatorStatus->updated) {  ?>
