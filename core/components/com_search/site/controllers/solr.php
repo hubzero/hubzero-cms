@@ -294,3 +294,4 @@ class Solr extends SiteController
 		} // End foreach results
 			return $results;
 	}
+}
