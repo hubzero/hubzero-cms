@@ -206,7 +206,7 @@ class Solr extends SiteController
 
 	private function formatResults($results, $terms)
 	{
-		$highlightOptions = array('format' =>'<b>\1</b>',
+		$highlightOptions = array('format' =>'<strong>\1</strong>',
 															'html' => false,
 															'regex'  => "|%s|iu"
 														);
@@ -249,12 +249,6 @@ class Solr extends SiteController
 						$r = strip_tags($r);
 					}
 
-					// Highlight everything except the URL
-					if ($field != 'url' && $field != 'tags')
-					{
-						$r = \Hubzero\Utility\String::highlight($r, $terms, $highlightOptions);
-					}
-
 					/** 
 					 * Generate the snippet
 					 * A snippet is the search result text which is displayed
@@ -271,6 +265,7 @@ class Solr extends SiteController
 				$snippet = str_replace("<br/>", '', $snippet);
 				$snippet = str_replace("<br>", '', $snippet);
 				$snippet  = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+				$snippet = \Hubzero\Utility\String::highlight($snippet, $terms, $highlightOptions);
 				$result['snippet'] = $snippet;
 
 				if (isset($result['author']))
