@@ -59,16 +59,20 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 
 		// Get the active site template
 		$db = App::get('db');
-		$query = $db->getQuery(true);
-		$query->select('s.id, s.home, s.template, s.params, e.protected');
-		$query->from('#__template_styles as s');
-		$query->where('s.client_id = 0');
-		$query->where('e.enabled = 1');
-		$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type='.$db->quote('template').' AND e.client_id=s.client_id');
+		$query = $db->getQuery()
+			->select('s.id')
+			->select('s.home')
+			->select('s.template')
+			->select('s.params')
+			->select('e.protected')
+			->from('#__template_styles', 's')
+			->whereEquals('s.client_id', '0')
+			->whereEquals('e.enabled', '1')
+			->joinRaw('#__extensions as e', 'e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id', 'left');
 
 		$path = PATH_APP;
 
-		$db->setQuery($query);
+		$db->setQuery($query->toString());
 		$templates = $db->loadObjectList('id');
 		foreach ($templates as $template)
 		{

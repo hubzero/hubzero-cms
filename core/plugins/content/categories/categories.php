@@ -126,12 +126,12 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 	private function _countItemsInCategory($table, $catid)
 	{
 		$db = App::get('db');
-		$query = $db->getQuery(true);
 
 		// Count the items in this category
-		$query->select('COUNT(id)');
-		$query->from($table);
-		$query->where('catid = ' . $catid);
+		$query = $db->getQuery()
+			->select('COUNT(id)')
+			->from($table)
+			->whereEquals('catid', $catid);
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
@@ -171,11 +171,11 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 		if (count($childCategoryIds))
 		{
 			// Count the items in this category
-			$query = $db->getQuery(true);
-			$query->select('COUNT(id)');
-			$query->from($table);
-			$query->where('catid IN (' . implode(',', $childCategoryIds) . ')');
-			$db->setQuery($query);
+			$query = $db->getQuery()
+				->select('COUNT(id)')
+				->from($table)
+				->whereIn('catid', $childCategoryIds);
+			$db->setQuery($query->toString());
 			$count = $db->loadResult();
 
 			// Check for DB error.
