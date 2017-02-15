@@ -84,7 +84,7 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Show error if items are found in the category
-				if ($count > 0 )
+				if ($count > 0)
 				{
 					$msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) . Lang::txts('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
 
