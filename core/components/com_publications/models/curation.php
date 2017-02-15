@@ -942,7 +942,10 @@ class Curation extends Object
 	{
 		foreach ($this->_blocks as $id => $block)
 		{
-			return $id;
+			if ($block->active > 0)
+			{
+				return $id;
+			}
 		}
 	}
 
