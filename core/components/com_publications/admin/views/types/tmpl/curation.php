@@ -181,7 +181,10 @@ function submitbutton(pressbutton)
 							<label class="block"><input type="radio" name="curation[blocks][<?php echo $blockId; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0 && !in_array($block->name, $blockSelection['active'])) { echo ' disabled="disabled"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
 						</div>
 						<div class="input-wrap tweakblock">
-							<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editblockorder&id=' . $this->row->id ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_EDIT'); ?>]</a></label>
+							<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editblockorder&id=' . $this->row->id ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_EDIT'); ?>]</a>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeblock&id=' . $this->row->id . '&blockid=' . $blockId ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_DELETE'); ?>]</a>
+							</label>
 						</div>
 					</div>
 					<div class="col span5 blockprop">
