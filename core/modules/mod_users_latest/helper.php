@@ -71,24 +71,31 @@ class Helper extends Module
 	{
 		$db = App::get('db');
 
-		$query = $db->getQuery(true);
-		$query->select('a.id, a.name, a.username, a.registerDate');
-		$query->order('a.registerDate DESC');
-		$query->from('#__users AS a');
+		$query = $db->getQuery()
+			->select('a.id')
+			->select('a.name')
+			->select('a.username')
+			->select('a.registerDate')
+			->order('a.registerDate', 'desc')
+			->from('#__users', 'a');
 
 		if (!User::authorise('core.admin') && $params->get('filter_groups', 0) == 1)
 		{
-			$groups = $user->getAuthorisedGroups();
+			$groups = User::getAuthorisedGroups();
 			if (empty($groups))
 			{
 				return array();
 			}
-			$query->leftJoin('#__user_usergroup_map AS m ON m.user_id = a.id');
-			$query->leftJoin('#__usergroups AS ug ON ug.id = m.group_id');
-			$query->where('ug.id in (' . implode(',', $groups) . ')');
-			$query->where('ug.id <> 1');
+			$query
+				->join('#__user_usergroup_map AS m', 'm.user_id', 'a.id', 'left')
+				->join('#__usergroups AS ug', 'ug.id', 'm.group_id', 'left')
+				->whereIn('ug.id', $groups)
+				->where('ug.id', '<>', '1');
 		}
-		$db->setQuery($query, 0, $params->get('shownumber'));
+		$query
+			->limit($params->get('shownumber'))
+			->start(0);
+		$db->setQuery($query->toString());
 		$result = $db->loadObjectList();
 
 		return (array) $result;
