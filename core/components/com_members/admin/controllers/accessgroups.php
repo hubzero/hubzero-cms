@@ -33,6 +33,7 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Access\Group as Accessgroup;
+use Hubzero\Access\Access;
 use Request;
 use Notify;
 use Event;
@@ -180,10 +181,10 @@ class Accessgroups extends AdminController
 		// Check the super admin permissions for group
 		// We get the parent group permissions and then check the group permissions manually
 		// We have to calculate the group permissions manually because we haven't saved the group yet
-		$parentSuperAdmin = \JAccess::checkGroup($fields['parent_id'], 'core.admin');
+		$parentSuperAdmin = Access::checkGroup($fields['parent_id'], 'core.admin');
 
 		// Get core.admin rules from the root asset
-		$rules = \JAccess::getAssetRules('root.1')->getData('core.admin');
+		$rules = Access::getAssetRules('root.1')->getData('core.admin');
 
 		// Get the value for the current group (will be true (allowed), false (denied), or null (inherit)
 		$groupSuperAdmin = $rules['core.admin']->allow($row->get('id'));
@@ -214,7 +215,7 @@ class Accessgroups extends AdminController
 		if ($iAmSuperAdmin)
 		{
 			// Next, are we a member of the current group?
-			$myGroups = \JAccess::getGroupsByUser(User::get('id'), false);
+			$myGroups = Access::getGroupsByUser(User::get('id'), false);
 
 			if (in_array($fields['id'], $myGroups))
 			{
@@ -223,7 +224,7 @@ class Accessgroups extends AdminController
 				$otherSuperAdmin = false;
 				foreach ($otherGroups as $otherGroup)
 				{
-					$otherSuperAdmin = ($otherSuperAdmin) ? $otherSuperAdmin : \JAccess::checkGroup($otherGroup, 'core.admin');
+					$otherSuperAdmin = ($otherSuperAdmin) ? $otherSuperAdmin : Access::checkGroup($otherGroup, 'core.admin');
 				}
 
 				// If we would not otherwise have super admin permissions
@@ -284,7 +285,7 @@ class Accessgroups extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$groups = \JAccess::getGroupsByUser(User::get('id'));
+			$groups = Access::getGroupsByUser(User::get('id'));
 
 			// Check if I am a Super Admin
 			$iAmSuperAdmin = User::authorise('core.admin');
@@ -305,7 +306,7 @@ class Accessgroups extends AdminController
 				$allow = User::authorise('core.edit.state', 'com_users');
 
 				// Don't allow non-super-admin to delete a super admin
-				$allow = (!$iAmSuperAdmin && \JAccess::checkGroup($id, 'core.admin')) ? false : $allow;
+				$allow = (!$iAmSuperAdmin && Access::checkGroup($id, 'core.admin')) ? false : $allow;
 
 				if (!$allow)
 				{
@@ -452,7 +453,7 @@ class Accessgroups extends AdminController
 				if ($action[1] === null || $action[1] >= $asset->get('level'))
 				{
 					// We need to test this action.
-					$checks[$name] = \JAccess::checkGroup($id, $action[0], $asset->get('name'));
+					$checks[$name] = Access::checkGroup($id, $action[0], $asset->get('name'));
 				}
 				else
 				{

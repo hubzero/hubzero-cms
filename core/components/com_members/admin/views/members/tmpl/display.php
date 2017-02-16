@@ -182,7 +182,7 @@ function submitbutton(pressbutton)
 			$canChange = User::authorise('core.edit.state', $this->option);
 
 			// If this group is super admin and this user is not super admin, $canEdit is false
-			if ((!User::authorise('core.admin')) && JAccess::check($row->get('id'), 'core.admin'))
+			if ((!User::authorise('core.admin')) && Hubzero\Access\Access::check($row->get('id'), 'core.admin'))
 			{
 				$canEdit   = false;
 				$canChange = false;
