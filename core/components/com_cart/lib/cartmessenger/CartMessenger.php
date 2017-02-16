@@ -131,7 +131,7 @@ class CartMessenger
 
 	public function emailOrderComplete($transactionInfo)
 	{
-		$params =  Component::params(Request::getVar('option'));
+		$params = Component::params(Request::getVar('option'));
 
 		$items = unserialize($transactionInfo->tiItems);
 		//print_r($items); die;
@@ -303,9 +303,34 @@ class CartMessenger
 		$clientEmail = 'Thank you for your order at ' . Config::get('sitename') . "!\n\n";
 		$clientEmail .= $summary;
 
+		// Plain text email
+		$plain = $clientEmail;
+
+		$message = new \Hubzero\Mail\Message();
+		$message->setSubject('Your order at ' . $from['name']);
+		// Find out where to send it from
+		if ($params->get('sendOrderInfoFromEmail') && \Hubzero\Utility\Validate::email($params->get('sendOrderInfoFromEmail')))
+		{
+			$sendFromEmail = $params->get('sendOrderInfoFromEmail');
+		}
+		else
+		{
+			$sendFromEmail = Config::get('mailfrom');
+		}
+		$message->addFrom(
+			$sendFromEmail,
+			Config::get('sitename')
+		);
+		$message->setSender(Config::get('mailfrom'));
+		$message->addPart($plain, 'text/plain');
+
+		// Get user's email address
 		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
-		$to = array(\Components\Cart\Models\Cart::getCartUser($transactionInfo->crtId));
-		Event::trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
+		$uId = \Components\Cart\Models\Cart::getCartUser($transactionInfo->crtId);
+		$usr = \Hubzero\User\Profile::getInstance($uId);
+		$message->addTo($usr->get('email'));
+		$message->setBody($plain);
+		$message->send();
 
 		// Email notifications
 		$notifyTo = $params->get('sendNotificationTo');
@@ -315,18 +340,8 @@ class CartMessenger
 
 			$notifyEmail = 'There is a new online store order at ' . Config::get('sitename') . "\n\n";
 			$notifyEmail .= $summary;
-			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
-				'name' => 'emails',
-				'layout' => 'order_notify'
-			));
-			//$eview->option     = $this->_option;
-			//$eview->controller = $this->_controller;
-			$eview->message = $notifyEmail;
 
-			$plain = $eview->loadTemplate();
-			$plain = str_replace("\n", "\r\n", $plain);
-
+			$plain = $notifyEmail;
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject('ORDER NOTIFICATION: New order at ' . $from['name']);
 			$message->addFrom(
@@ -357,8 +372,7 @@ class CartMessenger
 				));
 				$eview->message = $lowInventoryNotifySummary;
 
-				$plain = $eview->loadTemplate();
-				$plain = str_replace("\n", "\r\n", $plain);
+				$plain = $lowInventoryNotifySummary;
 
 				$message = new \Hubzero\Mail\Message();
 				$message->setSubject('LOW INVENTORY NOTIFICATION: low inventory levels at ' . $from['name']);
