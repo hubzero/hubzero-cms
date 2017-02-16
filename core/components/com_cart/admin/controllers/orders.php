@@ -255,7 +255,7 @@ class Orders extends AdminController
 
 		foreach ($rowsRaw as $row)
 		{
-			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['Name'], $row['uidNumber']);
+			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber']);
 		}
 
 		header("Content-Type: text/csv");

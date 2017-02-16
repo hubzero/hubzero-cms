@@ -137,7 +137,7 @@ foreach ($this->rows as $row)
 			<span><?php echo $this->escape(stripslashes($row->tLastUpdated)); ?></span>
 		</td>
 		<td>
-			<span><?php echo $this->escape(stripslashes($row->Name)); ?></span>
+			<span><?php echo $this->escape(stripslashes($row->name)); ?></span>
 		</td>
 	</tr>
 <?php
