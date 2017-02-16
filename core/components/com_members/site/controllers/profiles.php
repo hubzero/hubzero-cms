@@ -582,6 +582,12 @@ class Profiles extends SiteController
 			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
 
+		// Make sure member is approved
+		if (!$profile->get('approved') || $profile->get('block'))
+		{
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+		}
+
 		// Check subscription to Employer Services
 		//   NOTE: This must occur after the initial plugins import and
 		//   do not specifically call Plugin::import('members', 'resume');
