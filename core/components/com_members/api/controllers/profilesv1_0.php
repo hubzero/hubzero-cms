@@ -198,11 +198,11 @@ class Profilesv1_0 extends ApiController
 		if (!$newUsertype)
 		{
 			$db = App::get('db');
-			$query = $db->getQuery(true)
+			$query = $db->getQuery()
 				->select('id')
 				->from('#__usergroups')
-				->where('title = "Registered"');
-			$db->setQuery($query);
+				->whereEquals('title', 'Registered');
+			$db->setQuery($query->toString());
 			$newUsertype = $db->loadResult();
 		}
 
