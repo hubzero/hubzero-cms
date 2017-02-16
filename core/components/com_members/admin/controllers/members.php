@@ -37,6 +37,7 @@ use Components\Members\Models\Profile;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Models\Profile\Option;
 use Hubzero\Access\Group as Accessgroup;
+use Hubzero\Access\Access;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Validate;
 use Filesystem;
@@ -500,7 +501,7 @@ class Members extends AdminController
 
 			foreach ($fields['accessgroups'] as $group)
 			{
-				$stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : \JAccess::checkGroup($group, 'core.admin'));
+				$stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : Access::checkGroup($group, 'core.admin'));
 			}
 
 			if (!$stillSuperAdmin)
@@ -689,7 +690,7 @@ class Members extends AdminController
 				$allow = User::authorise('core.delete', 'com_members');
 
 				// Don't allow non-super-admin to delete a super admin
-				$allow = (!$iAmSuperAdmin && \JAccess::check($user->get('id'), 'core.admin')) ? false : $allow;
+				$allow = (!$iAmSuperAdmin && Access::check($user->get('id'), 'core.admin')) ? false : $allow;
 
 				if (!$allow)
 				{
@@ -1201,7 +1202,7 @@ class Members extends AdminController
 				if ($action[1] === null || $action[1] >= $asset->get('level'))
 				{
 					// We need to test this action.
-					$checks[$name] = \JAccess::check($id, $action[0], $asset->get('name'));
+					$checks[$name] = Access::check($id, $action[0], $asset->get('name'));
 				}
 				else
 				{

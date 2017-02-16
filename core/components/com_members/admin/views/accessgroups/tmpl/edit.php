@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 					<label for="field-parent_id"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<select name="fields[parent_id]" id="field-parent_id">
 						<?php foreach ($this->options as $option):
-							if (User::authorise('core.admin') || (!\JAccess::checkGroup($option->get('id'), 'core.admin')))
+							if (User::authorise('core.admin') || (!Hubzero\Access\Access::checkGroup($option->get('id'), 'core.admin')))
 							{
 								$level = Hubzero\Access\Group::all()
 									->where('lft', '<', $option->get('lft'))

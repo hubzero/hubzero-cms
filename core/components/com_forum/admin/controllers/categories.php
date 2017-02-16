@@ -313,7 +313,7 @@ class Categories extends AdminController
 			$form      = $model->getForm($data, false);
 			$validData = $model->validate($form, $data);
 
-			$category->assetRules = new \JAccessRules($validData['rules']);
+			$category->assetRules = new \Hubzero\Access\Rules($validData['rules']);
 		}
 
 		if (!$category->get('scope'))
