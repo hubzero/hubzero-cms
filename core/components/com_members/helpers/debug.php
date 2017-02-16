@@ -53,7 +53,7 @@ class Debug
 			->select('name', 'text')
 			->select('element', 'value')
 			->from('#__extensions')
-			->where('enabled',  '>=', '1')
+			->where('enabled', '>=', '1')
 			->whereEquals('type', 'component');
 
 		$items = $db->setQuery($query->toString())->loadObjectList();

@@ -90,7 +90,7 @@ class Register extends SiteController
 		$xprofile = User::getInstance();
 
 		// Get the return URL
-		$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
+		$return = base64_decode(Request::getVar('return', '', 'method', 'base64'));
 		if (!$return)
 		{
 			$return = Session::get('session.return');
@@ -101,7 +101,7 @@ class Register extends SiteController
 			}
 		}
 
-		$username = Request::getVar('username',$xprofile->get('username'),'get');
+		$username = Request::getVar('username', $xprofile->get('username'), 'get');
 
 		$admin = User::authorise('core.manage', $this->_option);
 		$self  = ($xprofile->get('username') == $username);
@@ -157,14 +157,14 @@ class Register extends SiteController
 
 		if ($xprofile->get('regIP') == '')
 		{
-			$xprofile->set('regIP', Request::getVar('REMOTE_ADDR','','server'));
+			$xprofile->set('regIP', Request::getVar('REMOTE_ADDR', '', 'server'));
 		}
 
 		if ($xprofile->get('regHost') == '')
 		{
 			if (isset($_SERVER['REMOTE_HOST']))
 			{
-				$xprofile->set('regHost', Request::getVar('REMOTE_HOST','','server'));
+				$xprofile->set('regHost', Request::getVar('REMOTE_HOST', '', 'server'));
 			}
 		}
 
@@ -245,7 +245,7 @@ class Register extends SiteController
 				// Redirect
 				Session::clear('session.return');
 
-				App::redirect($return,'','message',true);
+				App::redirect($return, '', 'message', true);
 			}
 		}
 		else
@@ -303,7 +303,7 @@ class Register extends SiteController
 				// Redirect
 				Session::clear('session.return');
 
-				App::redirect($return,'','message',true);
+				App::redirect($return, '', 'message', true);
 			}
 		}
 
@@ -433,7 +433,7 @@ class Register extends SiteController
 
 			if ($xprofile->get('registerIP') == '')
 			{
-				$xprofile->set('registerIP', Request::getVar('REMOTE_ADDR','','server'));
+				$xprofile->set('registerIP', Request::getVar('REMOTE_ADDR', '', 'server'));
 			}
 
 			if ($xprofile->get('registerDate') == '')
@@ -689,13 +689,13 @@ class Register extends SiteController
 				}
 
 				// Set home directory
-				$hubHomeDir = rtrim($this->config->get('homedir'),'/');
+				$hubHomeDir = rtrim($this->config->get('homedir'), '/');
 				if (!$hubHomeDir)
 				{
 					// try to deduce a viable home directory based on sitename or live_site
 					$sitename = strtolower(Config::get('sitename'));
-					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-					$sitename = trim($sitename,'/ ');
+					$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+					$sitename = trim($sitename, '/ ');
 					$sitename_e = explode('.', $sitename, 2);
 					if (isset($sitename_e[1]))
 					{
@@ -708,8 +708,8 @@ class Register extends SiteController
 					if (empty($sitename))
 					{
 						$sitename = strtolower(Request::base());
-						$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-						$sitename = trim($sitename,'/ ');
+						$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+						$sitename = trim($sitename, '/ ');
 						$sitename_e = explode('.', $sitename, 2);
 						if (isset($sitename_e[1]))
 						{
@@ -843,8 +843,8 @@ class Register extends SiteController
 						}
 					}
 
-					User::set('auth_link_id',null);
-					User::set('tmp_user',null);
+					User::set('auth_link_id', null);
+					User::set('tmp_user', null);
 					User::set('username', $xregistration->get('login'));
 					User::set('email', $xregistration->get('email'));
 					User::set('id', $user->get('id'));
@@ -913,15 +913,15 @@ class Register extends SiteController
 			}
 		}
 
-		$this->view->registrationUsername = Field::state('registrationUsername','RROO',$task);
-		$this->view->registrationPassword = Field::state('registrationPassword','RRHH',$task);
-		$this->view->registrationConfirmPassword = Field::state('registrationConfirmPassword','RRHH',$task);
-		$this->view->registrationFullname     = Field::state('registrationFullname','RRRR',$task);
-		$this->view->registrationEmail        = Field::state('registrationEmail','RRRR',$task);
-		$this->view->registrationConfirmEmail = Field::state('registrationConfirmEmail','RRRR',$task);
-		$this->view->registrationOptIn = Field::state('registrationOptIn','HHHH',$task);
-		$this->view->registrationCAPTCHA = Field::state('registrationCAPTCHA','HHHH',$task);
-		$this->view->registrationTOU = Field::state('registrationTOU','HHHH',$task);
+		$this->view->registrationUsername = Field::state('registrationUsername', 'RROO', $task);
+		$this->view->registrationPassword = Field::state('registrationPassword', 'RRHH', $task);
+		$this->view->registrationConfirmPassword = Field::state('registrationConfirmPassword', 'RRHH', $task);
+		$this->view->registrationFullname = Field::state('registrationFullname', 'RRRR', $task);
+		$this->view->registrationEmail = Field::state('registrationEmail', 'RRRR', $task);
+		$this->view->registrationConfirmEmail = Field::state('registrationConfirmEmail', 'RRRR', $task);
+		$this->view->registrationOptIn = Field::state('registrationOptIn', 'HHHH', $task);
+		$this->view->registrationCAPTCHA = Field::state('registrationCAPTCHA', 'HHHH', $task);
+		$this->view->registrationTOU = Field::state('registrationTOU', 'HHHH', $task);
 
 		if ($task == 'update')
 		{
@@ -1187,7 +1187,7 @@ class Register extends SiteController
 				if ($pemail == $email)
 				{
 					// Addresses are the same! Redirect
-					App::redirect($return,'','message',true);
+					App::redirect($return, '', 'message', true);
 				}
 				else
 				{
@@ -1367,7 +1367,7 @@ class Register extends SiteController
 			if ($pReturn)
 			{
 				$return = $pReturn;
-				$xprofile->setParam('return','');
+				$xprofile->setParam('return', '');
 			}
 
 			// make as confirmed
@@ -1403,7 +1403,7 @@ class Register extends SiteController
 				}
 			}
 
-			App::redirect($return,'','message',true);
+			App::redirect($return, '', 'message', true);
 		}
 		else
 		{

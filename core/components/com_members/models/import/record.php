@@ -381,8 +381,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		if (!$this->record->entry->get('givenName') && !$this->record->entry->get('surame') && $this->record->entry->get('name'))
 		{
 			$name = explode(' ', $this->record->entry->get('name'));
-			$this->record->entry->set('givenName',  array_shift($name));
-			$this->record->entry->set('surname',    array_pop($name));
+			$this->record->entry->set('givenName', array_shift($name));
+			$this->record->entry->set('surname', array_pop($name));
 			$this->record->entry->set('middleName', implode(' ', $name));
 		}
 
