@@ -36,8 +36,8 @@ use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
 use Hubzero\User\Profile;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
@@ -86,8 +86,6 @@ class Orders extends AdminController
 			)
 		);
 
-		//print_r($this->view->filters); die;
-
 		// Get record count
 		$this->view->filters['count'] = true;
 		$this->view->total = Cart::getAllTransactions($this->view->filters);
@@ -112,7 +110,6 @@ class Orders extends AdminController
 		}
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 
@@ -141,7 +138,8 @@ class Orders extends AdminController
 				// product no longer available
 				$item['info']->available = false;
 			}
-			else {
+			else
+			{
 				$item['info']->available = true;
 			}
 		}
@@ -151,7 +149,6 @@ class Orders extends AdminController
 		// Get user info
 		$userId = Cart::getCartUser($tInfo->crtId);
 		$user = Profile::getInstance($userId);
-		//print_r($user); die;
 
 		$this->view->user = $user;
 		$this->view->tInfo = $tInfo;
@@ -197,8 +194,6 @@ class Orders extends AdminController
 			)
 		);
 
-		//print_r($this->view->filters); die;
-
 		// Get orders count
 		$this->view->total = CartOrders::getItemsOrdered('count', $this->view->filters);
 
@@ -220,7 +215,7 @@ class Orders extends AdminController
 	/**
 	 * Download CSV report (default)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
@@ -278,7 +273,7 @@ class Orders extends AdminController
 	/**
 	 * Download CSV report (default)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadOrdersTask()
 	{
@@ -296,8 +291,6 @@ class Orders extends AdminController
 				'ASC'
 			)
 		);
-
-		//print_r($filters); die;
 
 		// Get orders, request array to be returned
 		$orders = CartOrders::getItemsOrdered('list', $filters);
@@ -328,7 +321,8 @@ class Orders extends AdminController
 		$output = fopen("php://output", "w");
 		$row = array('SKU ID', 'Product', 'QTY', 'Price', 'Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)');
 		fputcsv($output, $row);
-		foreach ($rows as $row) {
+		foreach ($rows as $row)
+		{
 			fputcsv($output, $row);
 		}
 		fclose($output);
