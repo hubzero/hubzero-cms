@@ -30,11 +30,11 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		}
 
 		$db = App::get('db');
-		$db->setQuery(
-			'DELETE FROM ' . $db->quoteName('#__session') .
-			' WHERE ' . $db->quoteName('userid') . ' = ' . (int) $user['id']
-		);
-		$db->Query();
+		$query = $db->getQuery()
+			->delete('#__session')
+			->whereEquals('userid', (int) $user['id']);
+		$db->setQuery($query->toString());
+		$db->query();
 
 		return true;
 	}
@@ -228,12 +228,14 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 			{
 				$db = App::get('db');
 
-				$query = $db->getQuery(true);
-				$query->select($query->qn('session_id'))
-					->from($query->qn('#__session'))
-					->where($query->qn('session_id') . ' = ' . $query->q($session->getId()));
+				$query = $db->getQuery()
+					->select('session_id')
+					->from('#__session')
+					->whereEquals('session_id', $session->getId())
+					->limit(1)
+					->start(0);
 
-				$db->setQuery($query, 0, 1);
+				$db->setQuery($query->toString());
 				$exists = $db->loadResult();
 
 				// If the session record doesn't exist initialise it.
@@ -245,24 +247,32 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 
 					if ($session->isNew())
 					{
-						$query->insert($query->qn('#__session'))
-							->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
-							->values($query->q($session->getId()) . ', ' . (int) App::get('client')->id . ', ' . $query->q((int) time()) . ', ' . $query->q($ip));
-						$db->setQuery($query);
+						$query = $db->getQuery()
+							->insert('#__session')
+							->values(array(
+								'session_id' => $session->getId(),
+								'client_id'  => (int) App::get('client')->id,
+								'time'       => (int) time(),
+								'ip'         => $ip
+							));
+
+						$db->setQuery($query->toString());
 					}
 					else
 					{
-						$query->insert($query->qn('#__session'))
-							->columns(
-								$query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('guest') . ', ' .
-								$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') .  ', ' . $query->q('ip')
-							)
-							->values(
-								$query->q($session->getId()) . ', ' . (int) App::get('client')->id . ', ' . (int) $instance->get('guest') . ', ' .
-								$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $instance->get('id') . ', ' . $query->q($instance->get('username')) .  ', ' . $query->q($ip)
-							);
+						$query = $db->getQuery()
+							->insert('#__session')
+							->values(array(
+								'session_id' => $session->getId(),
+								'client_id'  => (int) App::get('client')->id,
+								'guest'      => (int) $instance->get('guest'),
+								'time'       => (int) $session->get('session.timer.start'),
+								'userid'     => (int) $instance->get('id'),
+								'username'   => $instance->get('username'),
+								'ip'         => $ip
+							));
 
-						$db->setQuery($query);
+						$db->setQuery($query->toString());
 					}
 
 					// If the insert failed, exit the application.
@@ -285,13 +295,15 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		{
 			// Update the user related fields for the Joomla sessions table.
 			$db = App::get('db');
-			$db->setQuery(
-				'UPDATE '.$db->quoteName('#__session') .
-				' SET '.$db->quoteName('guest').' = '.$db->quote($instance->get('guest')).',' .
-				'	'.$db->quoteName('username').' = '.$db->quote($instance->get('username')).',' .
-				'	'.$db->quoteName('userid').' = '.(int) $instance->get('id') .
-				' WHERE '.$db->quoteName('session_id').' = '.$db->quote($session->getId())
-			);
+			$query = $db->getQuery()
+				->update('#__session')
+				->set(array(
+					'guest'    => $instance->get('guest'),
+					'username' => $instance->get('username'),
+					'userid'   => (int) $instance->get('id')
+				))
+				->whereEquals('session_id', $session->getId());
+			$db->setQuery($query->toString());
 			$db->query();
 		}
 
@@ -331,11 +343,11 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 
 		// Force logout all users with that userid
 		$db = App::get('db');
-		$db->setQuery(
-			'DELETE FROM ' . $db->quoteName('#__session') .
-			' WHERE ' . $db->quoteName('userid') . ' = ' . (int) $user['id'] .
-			' AND ' . $db->quoteName('client_id') . ' = ' . (int) $options['clientid']
-		);
+		$query = $db->getQuery()
+			->delete('#__session')
+			->whereEquals('userid', (int) $user['id'])
+			->whereEquals('client_id', (int) $options['clientid']);
+		$db->setQuery($query->toString());
 		$db->query();
 
 		return true;

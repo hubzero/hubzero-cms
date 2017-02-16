@@ -514,11 +514,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				else
 				{
 					$db = \App::get('db');
-					$query = $db->getQuery(true)
+					$query = $db->getQuery()
 						->select('id')
 						->from('#__usergroups')
-						->where('title=' . $db->quote($this->raw->usertype));
-					$db->setQuery($query);
+						->whereEquals('title', $this->raw->usertype);
+					$db->setQuery($query->toString());
 					$newUsertype = (int)$db->loadResult();
 				}
 			}
@@ -530,11 +530,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				if (!$newUsertype)
 				{
 					$db = \App::get('db');
-					$query = $db->getQuery(true)
+					$query = $db->getQuery()
 						->select('id')
 						->from('#__usergroups')
-						->where('title = "Registered"');
-					$db->setQuery($query);
+						->whereEquals('title', 'Registered');
+					$db->setQuery($query->toString());
 					$newUsertype = $db->loadResult();
 				}
 			}
