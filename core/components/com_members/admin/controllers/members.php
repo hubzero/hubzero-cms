@@ -413,13 +413,13 @@ class Members extends AdminController
 			}
 
 			// Set home directory
-			$hubHomeDir = rtrim($this->config->get('homedir'),'/');
+			$hubHomeDir = rtrim($this->config->get('homedir'), '/');
 			if (!$hubHomeDir)
 			{
 				// try to deduce a viable home directory based on sitename or live_site
 				$sitename = strtolower(Config::get('sitename'));
-				$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-				$sitename = trim($sitename,'/ ');
+				$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+				$sitename = trim($sitename, '/ ');
 				$sitename_e = explode('.', $sitename, 2);
 				if (isset($sitename_e[1]))
 				{
@@ -432,8 +432,8 @@ class Members extends AdminController
 				if (empty($sitename))
 				{
 					$sitename = strtolower(Request::base());
-					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-					$sitename = trim($sitename,'/ ');
+					$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+					$sitename = trim($sitename, '/ ');
 					$sitename_e = explode('.', $sitename, 2);
 					if (isset($sitename_e[1]))
 					{
@@ -603,7 +603,7 @@ class Members extends AdminController
 					}
 					elseif (empty($shadowExpire))
 					{
-						$passinfo->set('shadowExpire', NULL);
+						$passinfo->set('shadowExpire', null);
 					}
 				}
 				if ($shadowWarning)
