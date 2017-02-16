@@ -144,7 +144,7 @@ class Categories extends AdminController
 		if ($filters['scope_id'] >= 0)
 		{
 			$sections = Section::all()
-				->whereEquals('scope' , $filters['scope'])
+				->whereEquals('scope', $filters['scope'])
 				->whereEquals('scope_id', $filters['scope_id'])
 				->ordered('title', 'ASC')
 				->rows();
