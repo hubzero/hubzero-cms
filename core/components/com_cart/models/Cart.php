@@ -224,7 +224,7 @@ abstract class Cart
 			$sql .= " ORDER BY `tLastUpdated` DESC";
 		}
 
-		if (isset($filters['limit']) && isset($filters['start']))
+		if (isset($filters['limit']) && isset($filters['start']) && (empty($filters['count']) || !$filters['count']))
 		{
 			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
