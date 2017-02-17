@@ -41,10 +41,10 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -121,7 +121,11 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 			 ORDER BY $weight DESC"
 		);
 
-		include_once(Component::path('com_wiki') . DS . 'models' . DS . 'page.php');
+		include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
+
+		// @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
+		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/project.php');
+		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
 
 		foreach ($rows->to_associative() as $row)
 		{
@@ -146,9 +150,9 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
+	 * @param   mixed   $type 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onGetTypes($type = null)
 	{
@@ -168,11 +172,11 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * onIndex 
 	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * @param   string   $type
+	 * @param   integer  $id 
+	 * @param   boolean  $run 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -187,23 +191,23 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__wiki_pages
-					JOIN #__wiki_versions
-					ON #__wiki_pages.version_id = #__wiki_versions.id
-					WHERE #__wiki_pages.id = {$id} AND #__wiki_pages.state = 1;";
+				$sql = "SELECT * FROM `#__wiki_pages`
+					INNER JOIN `#__wiki_versions`
+					ON `#__wiki_pages`.version_id = `#__wiki_versions`.id
+					WHERE `#__wiki_pages`.id = {$id} AND `#__wiki_pages`.state = 1;";
 
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Get the name of the author
-				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+				$sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
 				$author = $db->setQuery($sql1)->query()->loadResult();
 
 				// Get any tags
-				$sql2 = "SELECT tag 
-					FROM #__tags
-					LEFT JOIN #__tags_object
-					ON #__tags.id=#__tags_object.tagid
-					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'wiki';";
+				$sql2 = "SELECT tag
+					FROM `#__tags`
+					LEFT JOIN `#__tags_object`
+					ON `#__tags`.id=`#__tags_object`.tagid
+					WHERE `#__tags_object`.objectid = {$id} AND `#__tags_object`.tbl = 'wiki';";
 				$tags = $db->setQuery($sql2)->query()->loadColumn();
 
 				// Determine the path
@@ -284,10 +288,11 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT #__wiki_pages.id FROM #__wiki_pages
-					JOIN #__wiki_versions
-					ON #__wiki_pages.version_id = #__wiki_versions.id
-					WHERE #__wiki_pages.state = 1;";
+				$sql = "SELECT `#__wiki_pages`.id
+					FROM `#__wiki_pages`
+					INNER JOIN `#__wiki_versions`
+					ON `#__wiki_pages`.version_id = `#__wiki_versions`.id
+					WHERE `#__wiki_pages`.state = 1;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
