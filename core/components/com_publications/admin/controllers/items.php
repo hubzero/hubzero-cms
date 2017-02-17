@@ -1593,11 +1593,7 @@ class Items extends AdminController
 	 */
 	private function buildRedirectURL()
 	{
-		$id  = Request::getInt('id', 0);
-
 		$url  = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
-		$url .= $id ? '&task=edit&id[]=' . $id : '';
-
 		return $url;
 	}
 
