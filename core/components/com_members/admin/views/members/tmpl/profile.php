@@ -61,9 +61,9 @@ foreach ($this->fields as $field)
 	{
 		$element->field_type = 'paragraph';
 	}
-	/*$element->required = (bool)$field->get('required');
-	$element->readonly = (bool)$field->get('readonly');
-	$element->disabled = (bool)$field->get('disabled');*/
+	//$element->required = (bool)$field->get('required');
+	//$element->readonly = (bool)$field->get('readonly');
+	//$element->disabled = (bool)$field->get('disabled');
 	$element->create   = (int)$field->get('action_create');
 	$element->update   = (int)$field->get('action_update');
 	$element->edit     = (int)$field->get('action_edit');
@@ -75,6 +75,8 @@ foreach ($this->fields as $field)
 	$element->field_options->description          = (string)$field->get('description');
 	$element->field_options->include_other_option = (bool)$field->get('option_other');
 	$element->field_options->include_blank_option = (bool)$field->get('option_blank');
+	$element->field_options->min = (int)$field->get('min');
+	$element->field_options->max = (int)$field->get('max');
 
 	$options = $field->options;
 

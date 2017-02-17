@@ -365,6 +365,8 @@ class Field extends Relational
 			$f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
 			$f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
 			$f .= ($field->get('option_other') ? ' option_other="1"' : '');
+			$f .= (!is_null($field->get('min')) ? ' min="' . (int) $field->get('min') . '"' : '');
+			$f .= (!is_null($field->get('max')) ? ' max="' . (int) $field->get('max') . '"' : '');
 			if (in_array($action, array('create', 'update', 'edit')))
 			{
 				$f .= ($field->get('action_' . $action) == self::STATE_REQUIRED ? ' required="true"' : '');
