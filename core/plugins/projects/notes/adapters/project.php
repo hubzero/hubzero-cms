@@ -73,6 +73,13 @@ class Project extends Base
 		{
 			$project = $project->get('alias');
 		}
+		if (!$project)
+		{
+			require_once \Component::path('com_projects') . DS . 'models' . DS. 'project.php';
+
+			$p = new \Components\Projects\Models\Project($this->_scope_id);
+			$project = $p->get('alias');
+		}
 
 		$this->_segments['alias'] = $project;
 	}
