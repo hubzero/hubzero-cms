@@ -280,7 +280,7 @@ class Curation extends Object
 	 */
 	public function getBlockId($name = null)
 	{
-		$blockId = null;
+		$blockId = NULL;
 		foreach ($this->_blocks as $index => $block)
 		{
 			if ($block->name == $name)
@@ -943,7 +943,10 @@ class Curation extends Object
 	{
 		foreach ($this->_blocks as $id => $block)
 		{
-			return $id;
+			if (!isset($block->active) || $block->active > 0)
+			{
+				return $id;
+			}
 		}
 	}
 
