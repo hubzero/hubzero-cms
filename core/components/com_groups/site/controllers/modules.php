@@ -95,7 +95,7 @@ class Modules extends Base
 	/**
 	 * Display Page Modules
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -105,7 +105,7 @@ class Modules extends Base
 	/**
 	 * Add Module
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -115,7 +115,7 @@ class Modules extends Base
 	/**
 	 * Edit Module
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -171,7 +171,7 @@ class Modules extends Base
 	/**
 	 * Save Module
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -261,7 +261,7 @@ class Modules extends Base
 		// set modified
 		$this->module->set('modified', Date::toSql());
 		$this->module->set('modified_by', User::get('id'));
-
+		$this->module->set('page_trusted', $this->group->params->get('page_trusted', 0));
 
 		// check module again (because were not on store() method)
 		if (!$this->module->check())
@@ -334,6 +334,7 @@ class Modules extends Base
 
 		// Push success message and redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
+
 		App::redirect($url);
 		if ($return = Request::getVar('return', '', 'post'))
 		{
