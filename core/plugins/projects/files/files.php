@@ -2631,9 +2631,21 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->totalspace = $this->repo->call('getDiskUsage',
-				$params = array('working' => false, 'history' => true)
+			if ($this->params->get('project_quota'))
+			{
+				// Report usage only with current files and not with history
+				$view->totalspace = $this->repo->call('getDiskUsage',
+				$params = array('working' => true, 'history' => false)   
 			);
+			}
+			else
+			{
+				// Original Code
+				$view->totalspace = $this->repo->call('getDiskUsage',
+				$params = array('working' => false, 'history' => true)   
+			);				
+			}
+
 			$view->dirsize = $view->totalspace;
 		}
 
