@@ -248,8 +248,8 @@ class Pages extends AdminController
 			strpos($this->version->get('content'), '<script') !== false)
 		{
 			$this->version->set('approved', 0);
-			$this->version->set('approved_on', NULL);
-			$this->version->set('approved_by', NULL);
+			$this->version->set('approved_on', null);
+			$this->version->set('approved_by', null);
 		}
 
 		if (!is_object($this->group->params))
