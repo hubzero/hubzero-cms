@@ -109,6 +109,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						echo $sparkline;
 					?></div>
 				</div>
+				<p><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_VIEWS_EXPLANATION'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -139,6 +140,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						echo $sparkline;
 					?></div>
 				</div>
+				<p><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_DOWNLOADS_EXPLANATION'); ?></p>
 			</div>
 		</div>
 	</div>
