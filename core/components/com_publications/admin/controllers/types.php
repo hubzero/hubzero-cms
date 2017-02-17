@@ -172,6 +172,138 @@ class Types extends AdminController
 	}
 
 	/**
+	 * Removes a block
+	 *
+	 * @return  void
+	 */
+	public function removeblockTask()
+	{
+		// Going to the confirmation page
+		if (!(Request::getMethod() === 'POST'))
+		{
+			Request::setVar('hidemainmenu', 1);
+
+			// Incoming
+			$id = Request::getInt('id', 0);
+			$this->view->blockid = Request::getInt('blockid', 0);
+			$database = App::get('db');
+
+			$this->view->row = new \Components\Publications\Tables\MasterType($database);
+
+			// Load object
+			if (!$id || !$this->view->row->load($id))
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+					'notice'
+				);
+				return;
+			}
+
+			// Load curation
+			$this->view->curation = new \Components\Publications\Models\Curation(
+				$this->view->row->curation
+			);
+
+			// Set any errors
+			if ($this->getError())
+			{
+				$this->view->setError($this->getError());
+			}
+
+			$this->view->config = $this->config;
+
+			// Output the HTML
+			$this->view->display();
+		}
+		//Actual deletion page
+		else
+		{
+			// Check for request forgeries
+			Request::checkToken();
+
+			// Incoming
+			$id       = Request::getInt('id', 0);
+			$confirm  = Request::getBool('confirmdel', false);
+			$blockid = Request::getInt('blockid', 0);
+			$this->view->blockid = $blockid;
+			$database = App::get('db');
+
+			$this->view->row = new \Components\Publications\Tables\MasterType($database);
+			$row = $this->view->row;
+
+			// Load object
+			if (!$id || !$this->view->row->load($id))
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+					'notice'
+				);
+				return;
+			}
+
+			// Load curation
+			$this->view->curation = new \Components\Publications\Models\Curation(
+				$this->view->row->curation
+			);
+			$curation = $this->view->curation;
+
+			// Go back to the confirmation page
+			if (!$confirm)
+			{
+				$this->setError(Lang::txt('COM_PUBLICATIONS_BLOCK_ERROR_CONFIRM_REMOVAL'));
+
+				foreach ($this->getErrors() as $error)
+				{
+					$this->view->setError($error);
+				}
+				$this->view->config = $this->config;
+
+				$this->view->display();
+
+				return;
+			}
+			// Delete and redirect to the main type page
+			else
+			{
+				$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
+
+				$manifest   = new stdClass;
+				$manifest->blocks = new stdClass;
+				$oManifest  = $curation->_manifest;
+
+				if ($blockid)
+				{
+					// Get blocks model
+					$blocksModel = new \Components\Publications\Models\Blocks($database);
+
+					// Insert new block
+					foreach ($oManifest->blocks as $oId => $oBlock)
+					{
+						if ($oId != $blockid) {
+							$manifest->blocks->$oId = $oBlock;
+						}
+					}
+					$manifest->params = $oManifest->params;
+					if (isset($oManifest->maxid))
+					{
+						$manifest->maxid = $oManifest->maxid;
+					}
+					$row->curation = json_encode($manifest);
+					$row->store();
+				}
+
+				App::redirect(
+					$url,
+					Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_REMOVED')
+				);
+			}
+		}
+	}
+
+	/**
 	 * Save new block
 	 *
 	 * @param   boolean  $redirect
@@ -219,7 +351,7 @@ class Types extends AdminController
 			$blocksModel = new \Components\Publications\Models\Blocks($database);
 
 			// Get max used block and element IDs
-			$maxBlockId   = 0;
+			$maxBlockId   = isset($oManifest->maxid) ? $oManifest->maxid : 0;
 			$maxElementId = 0;
 			foreach ($oManifest->blocks as $oId => $oBlock)
 			{
@@ -273,6 +405,7 @@ class Types extends AdminController
 				$manifest->blocks->$oId = $oBlock;
 			}
 			$manifest->params = $oManifest->params;
+			$manifest->maxid = $nextBlockId;
 			$row->curation = json_encode($manifest);
 			$row->store();
 		}
@@ -638,6 +771,10 @@ class Types extends AdminController
 			}
 
 			$manifest->params = $oManifest->params;
+			if (isset($oManifest->maxid))
+			{
+				$manifest->maxid = $oManifest->maxid;
+			}
 			$row->curation = json_encode($manifest);
 			$row->store();
 		}
@@ -701,8 +838,8 @@ class Types extends AdminController
 
 		// Output the HTML
 		$this->view
-			->setLayout('curation')
-			->display();
+		     ->setLayout('curation')
+		     ->display();
 	}
 
 	/**
