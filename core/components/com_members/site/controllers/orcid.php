@@ -147,7 +147,7 @@ class Orcid extends SiteController
 		}
 
 		$url .= implode('+AND+', $bits);
-
+		
 		$header = array('Accept: application/vnd.orcid+xml');		
 		if ($srv != 'public')
 		{
