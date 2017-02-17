@@ -1317,9 +1317,9 @@ class Members extends AdminController
 				'label'         => (string) $element->label,
 				'name'          => (string) $element->name,
 				'description'   => (isset($element->field_options->description) ? (string) $element->field_options->description : ''),
-				/*'required'     => (isset($element->required) ? (int) $element->required : 0),
-				'readonly'     => (isset($element->readonly) ? (int) $element->readonly : 0),
-				'disabled'     => (isset($element->disabled) ? (int) $element->disabled : 0),*/
+				//'required'     => (isset($element->required) ? (int) $element->required : 0),
+				//'readonly'     => (isset($element->readonly) ? (int) $element->readonly : 0),
+				//'disabled'     => (isset($element->disabled) ? (int) $element->disabled : 0),
 				'ordering'      => ($i + 1),
 				'access'        => (isset($element->access) ? (int) $element->access : 0),
 				'option_other'  => (isset($element->field_options->include_other_option) ? (int) $element->field_options->include_other_option : ''),
@@ -1327,7 +1327,9 @@ class Members extends AdminController
 				'action_create' => (isset($element->create) ? (int) $element->create : 1),
 				'action_update' => (isset($element->update) ? (int) $element->update : 1),
 				'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1),
-				'action_browse' => (isset($element->browse) ? (int) $element->browse : 0)
+				'action_browse' => (isset($element->browse) ? (int) $element->browse : 0),
+				'min'           => (isset($element->min) ? (int) $element->min : 0),
+				'max'           => (isset($element->max) ? (int) $element->max : 0)
 			));
 
 			if ($field->get('type') == 'dropdown')
