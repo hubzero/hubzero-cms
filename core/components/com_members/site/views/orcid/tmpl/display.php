@@ -118,7 +118,7 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 				<h4><?php echo Lang::txt('Search for an existing ORCID'); ?></h4>
 				<div class="grid nobreak">
 					<div class="col span8">
-						<p><?php echo Lang::txt('If you have created an ORCID or your institution has generated one for you, fill in the fields above and search for your ID from the list.'); ?></p>
+						<p><?php echo Lang::txt('If you have created an ORCID, fill in the fields above and search for your ID from the list.'); ?></p>
 						<p><?php echo Lang::txt('Note that most ORCID records have the email address marked as private and private information will not be returned in the search results.'); ?></p>
 					</div>
 					<div class="col span4 omega">
@@ -143,10 +143,10 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 					<h4><?php echo Lang::txt('Create a new ORCID'); ?></h4>
 					<div class="grid nobreak">
 						<div class="col span8">
-							<p><?php echo Lang::txt('If you can\'t find your ID or would like to create one, click the "Create new ORCID" button to generate a new ID based on the info above. You will receive an email from ORCID to claim the new ID.'); ?></p>
+							<p><?php echo Lang::txt('If you can\'t find your ID or would like to create one, click the "Create new ORCID" button.'); ?></p>
 						</div>
 						<div class="col span4 omega">
-							<p><a id="create-orcid" class="btn" onclick="<?php echo "HUB.Orcid.createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo Lang::txt('Create new ORCID'); ?></a></p>
+							<p><a id="create-orcid" class="btn" href="https://orcid.org/register" target="_blank"><?php echo Lang::txt('Create new ORCID'); ?></a></p>
 						</div>
 					</div>
 				</div>
