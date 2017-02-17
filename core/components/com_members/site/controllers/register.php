@@ -146,7 +146,7 @@ class Register extends SiteController
 
 		$params = Component::params('com_members');
 
-		$hubHomeDir = rtrim($params->get('homedir'),'/');
+		$hubHomeDir = rtrim($params->get('homedir'), '/');
 
 		$updateEmail     = false;
 
@@ -889,7 +889,7 @@ class Register extends SiteController
 	 */
 	private function _show_registration_form(&$xregistration=null, $task='create')
 	{
-		$username = Request::getVar('username', User::get('username'),'get');
+		$username = Request::getVar('username', User::get('username'), 'get');
 		$isSelf = (User::get('username') == $username);
 
 		// Get the registration object

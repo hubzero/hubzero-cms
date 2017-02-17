@@ -199,7 +199,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 	{
 		if ($time < 60)
 		{
-			$data = round($time,2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_SECONDS');
+			$data = round($time, 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_SECONDS');
 		}
 		else if ($time > 60 && $time < 3600)
 		{
@@ -211,7 +211,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		}
 		else if ($time >= 86400)
 		{
-			$data = round(($time/86400),2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_DAYS');
+			$data = round(($time/86400), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_DAYS');
 		}
 
 		return $data;
