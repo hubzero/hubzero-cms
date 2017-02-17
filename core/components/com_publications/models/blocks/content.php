@@ -39,31 +39,31 @@ use stdClass;
 class Content extends Base
 {
 	/**
-  * Block name
-  *
-  * @var		string
-  */
-	protected	$_name 			= 'content';
+	  * Block name
+	  *
+	  * @var		string
+	  */
+	protected	$_name 		= 'content';
 
 	/**
-  * Parent block name
-  *
-  * @var		string
-  */
+	  * Parent block name
+	  *
+	  * @var		string
+	  */
 	protected	$_parentname 	= 'content';
 
 	/**
-  * Default manifest
-  *
-  * @var		string
-  */
-	protected	$_manifest 		= null;
+	  * Default manifest
+	  *
+	  * @var		string
+	  */
+	protected	$_manifest 	= null;
 
 	/**
-  * Numeric block ID
-  *
-  * @var		integer
-  */
+	  * Numeric block ID
+	  *
+	  * @var		integer
+	  */
 	protected	$_blockId = 0;
 
 	/**
