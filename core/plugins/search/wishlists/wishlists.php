@@ -142,6 +142,11 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT * FROM `#__wishlist` WHERE id={$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
+				if (!is_object($row) || $row->id <= 0)
+				{
+					return;
+				}
+
 				// Get the name of the author
 				$sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
 				$author = $db->setQuery($sql1)->query()->loadResult();
