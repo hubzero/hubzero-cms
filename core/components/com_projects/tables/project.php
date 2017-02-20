@@ -592,9 +592,11 @@ class Project extends \JTable
 	{
 		$ids = array();
 
-		if ($uid)
+		if ($groupid)
 		{
-			$query  = "SELECT DISTINCT p.id ";
+			// Reworked to only pull IDs of projects a user has access to.
+			// Original query left, for now, as reference.
+			/*$query  = "SELECT DISTINCT p.id ";
 			$query .= " FROM #__project_owners as po, $this->_tbl AS p";
 			$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id
 						AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0  ";
@@ -602,7 +604,21 @@ class Project extends \JTable
 			$query .= $active == 1
 					? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state !=2))  "
 					: " AND p.state !=2 ";
-			$query .= " AND p.provisioned=0";
+			$query .= " AND p.provisioned=0";*/
+			$query  = "SELECT DISTINCT p.id
+					FROM `#__project_owners` AS po
+					INNER JOIN $this->_tbl AS p ON p.id=po.projectid
+					WHERE p.provisioned=0
+					AND po.status=1
+					AND po.groupid=" . $this->_db->quote($groupid);
+			if ($uid)
+			{
+				$query .= " AND po.userid=" . $this->_db->quote($uid);
+			}
+			$query .= $active == 1
+					? " AND p.state != 2 "
+					: " AND p.state = 2 ";
+
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
 			if ($result)
