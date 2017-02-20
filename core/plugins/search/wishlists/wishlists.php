@@ -216,4 +216,3 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-
