@@ -32,24 +32,33 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('Solr Search: Indexed HubTypes'));
-Toolbar::custom('fullindex', 'refresh', 'refresh', 'COM_SEARCH_SOLR_FULLINDEX', false);
+if (isset($this->parent))
+{
+	Toolbar::title(Lang::txt('Solr Search Facets : ') . $this->parent->name);
+	Toolbar::back();
+}
+else
+{
+	Toolbar::title(Lang::txt('Solr Search Facets'));
+}
+Toolbar::custom('addfacet', 'new', 'add', 'COM_SEARCH_ADD_FACET', false);
+Toolbar::custom('deletefacet', 'delete', 'delete', 'COM_SEARCH_DELETE_FACET', true);
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
-
 $this->css('solr');
+$option = $this->option;
 
 \Submenu::addEntry(
 	Lang::txt('Overview'),
-	'index.php?option='.$this->option.'&task=configure'
+	'index.php?option='.$option.'&task=configure'
 );
 \Submenu::addEntry(
 	Lang::txt('Search Index'),
-	'index.php?option='.$this->option.'&task=searchindex'
+	'index.php?option='.$option.'&task=searchindex'
 );
 \Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
-	'index.php?option='.$this->option.'&task=manageBlacklist'
+	'index.php?option='.$option.'&task=manageBlacklist'
 );
 ?>
 
@@ -65,58 +74,104 @@ $this->css('solr');
 </div>
 <?php } ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filter-bar">
-		<div class="grid">
-			<div class="col span12">
-				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php //echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+<section id="main" class="com_search">
+<!-- Content begins -->
+<script type="text/javascript">
+function submitbutton(pressbutton)
+{
+	console.log(pressbutton);
+	var form = document.adminForm;
+	if (pressbutton == 'cancel') {
+		submitform( pressbutton );
+		return;
+	}
+	// do field validation
+	submitform( pressbutton );
+}
+</script>
 
-				<input type="submit" value="<?php echo Lang::txt('COM_SEARCH_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-			</div>
-		</div>
-	</fieldset>
-
+<form action="/administrator/index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php //echo $this->rows->count(); ?>);" /></th>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_SEARCH_COL_DOCUMENT_COUNT', 'document_count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(1);" /></th>
+				<th scope="col" class="priority-5"><a href="#" onclick="Joomla.tableOrdering('id','asc','');return false;" title="Click to sort by this column" class="active desc sort">ID</a></th>
+				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('title','asc','');return false;" title="Click to sort by this column" class="sort">Title</a></th>
+				<th scope="col" class="priority-2"><a href="#" onclick="Joomla.tableOrdering('state','asc','');return false;" title="Click to sort by this column" class="sort">State</a></th>
+				<th scope="col" class="priority-4"><a href="#" onclick="Joomla.tableOrdering('access','asc','');return false;" title="Click to sort by this column" class="sort"><?php echo Lang::txt('COM_SEARCH_COUNT'); ?></a></th>
+
+				<?php if (!isset($this->parent)): ?>
+				<th scope="col"><?php echo Lang::txt('COM_SEARCH_FACETS'); ?></th>
+				<?php endif; ?>
+
 			</tr>
 		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="7"><?php
-				// Initiate paging
-				//echo $this->rows->pagination;
-				?></td>
-			</tr>
-		</tfoot>
 		<tbody>
-		<?php foreach ($this->stats as $type => $count): ?>
-			<tr>
-				<td><input type="checkbox" class="typebox" value="<?php echo $type; ?>" /></td>
+			<?php foreach ($this->facets as $facet): ?>
+			<tr class="row0">
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=documentByType&type=' . $type);?>">
-						<?php echo $type; ?>
+					<input type="checkbox" name="id[]" id="cb0" value="<?php echo $facet->id; ?>" onclick="isChecked(this.checked, this);" />
+				</td>
+				<td class="priority-5">
+					<?php echo $facet->id; ?>
+				</td>
+				<td>
+					<a href="<?php echo Route::url('index.php?option=com_search&controller=solr&task=editFacet&id=' . $facet->id); ?>">
+						<?php echo $facet->name; ?>
+						<?php $protected = $facet->get('protected'); ?>
+						<?php if ($protected == 1)
+						{
+							dlog($facet);
+							echo '(' . Lang::txt('COM_SEARCH_PROTECTED') . ')';
+						}
+						?>
 					</a>
 				</td>
-				<td><?php echo $count; ?></td>
-				<td>
+				<td class="priority-2">
+					<?php
+						if ($facet->state == 0)
+						{
+							$class = 'unpublish';
+						}
+						else
+						{
+							$class = 'publish';
+						}
+					?>
+
+					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=com_search&task=saveFacet&action=togglestate&id=' 
+						. $facet->id . '&' . Session::getFormToken() . '=1'
+						. '&return' . Request::current()
+						) ?>" title="Set this to unpublish">
+						<span>Published</span>
+					</a>
 				</td>
+				<td class="priority-4">
+					<span>
+					<a href="<?php echo Route::url('index.php?option=com_search&task=documentListing&facet=' . $facet->facet); ?>">
+						<?php echo $facet->count; ?>
+					</a>
+					</span>
+				</td>
+				<?php if (!isset($this->parent)): ?>
+				<td>
+					<a class="glyph category" href="<?php echo Route::url('index.php?option=com_search&task=searchIndex&parent_id=' . $facet->id .  '&' . Session::getFormToken() . '=1');?>">
+						<?php echo $facet->children()->count(); ?></span>
+					</a>
+				</td>
+				<?php endif; ?>
 			</tr>
-		<?php endforeach; ?>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="" autocomplete="off" />
+	<input type="hidden" name="option" value="com_search" />
+	<input type="hidden" name="controller" value="solr" />
+	<input type="hidden" name="task" value="searchIndex" autocomplete="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php //echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php //echo $this->filters['sort_Dir']; ?>" />
-
-	<?php echo Html::input('token'); ?>
+	<input type="hidden" name="filter_order" value="id" />
+	<input type="hidden" name="filter_order_Dir" value="DESC" />
+	<?php //echo Html::input('token'); ?>
 </form>
+</section><!-- / #main -->
+</section><!-- / #component-content -->

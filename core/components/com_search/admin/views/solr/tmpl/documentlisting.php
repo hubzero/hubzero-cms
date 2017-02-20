@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('Solr Search: '. $this->type . ' Documents' ));
+Toolbar::title(Lang::txt('Solr Search Indexed Documents' ));
 Toolbar::back();
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
@@ -57,7 +57,6 @@ $this->css('solr');
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
 				<input type="text" name="filter" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 				<input type="submit" value="<?php echo Lang::txt('COM_SEARCH_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 		</div>
 	</fieldset>
@@ -65,7 +64,7 @@ $this->css('solr');
 	<?php 
 	$this->view('_recordtable')
 		->set('documents', $this->documents)
-		->set('type', $this->type)
+		//->set('type', $this->type)
 		->set('blacklist', $this->blacklist)
 		->set('pagination', $this->pagination->render())
 		->display();
@@ -76,7 +75,7 @@ $this->css('solr');
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
+	<input type="hidden" name="facet" value"<?php echo $this->facet; ?>" /> 
 	<input type="hidden" name="filter_order" value="<?php //echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php //echo $this->filters['sort_Dir']; ?>" />
 

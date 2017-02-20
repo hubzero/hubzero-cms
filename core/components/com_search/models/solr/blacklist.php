@@ -30,7 +30,7 @@
  * @since     2.1.1
  */
 
-namespace Components\Search\Models;
+namespace Components\Search\Models\Solr;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
