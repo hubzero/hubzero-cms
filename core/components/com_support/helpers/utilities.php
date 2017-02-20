@@ -58,7 +58,7 @@ class Utilities
 		}
 
 		$message = new Message();
-		$message->setSubject($subject)
+		$message->setSubject(Config::get('sitename') . ' ' . $subject)
 		        ->addFrom($from['email'], $from['name'])
 		        ->addTo($email);
 
