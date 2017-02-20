@@ -62,60 +62,60 @@ require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 class Curation extends Object
 {
 	/**
-	* JDatabase
-	*
-	* @var object
-	*/
+	 * JDatabase
+	 *
+	 * @var object
+	 */
 	var $_db      		= null;
 
 	/**
-	* @var    object  Publication
-	*/
+	 * @var    object  Publication
+	 */
 	var $_pub 			= null;
 
 	/**
-	* @var    object  Publication model
-	*/
+	 * @var    object  Publication model
+	 */
 	var $_model 		= null;
 
 	/**
-	* @var    string Curation manifest
-	*/
+	 * @var    string Curation manifest
+	 */
 	var $_manifest 		= null;
 
 	/**
-	* @var    object Blocks
-	*/
+	 * @var    object Blocks
+	 */
 	var $_blocks 		= array();
 
 	/**
-	* @var    int total blocks
-	*/
+	 * @var    int total blocks
+	 */
 	var $_blockcount 	= 0;
 
 	/**
-	* @var    object Current block
-	*/
+	 * @var    object Current block
+	 */
 	var $_block 		= array();
 
 	/**
-	* @var    string Current block name
-	*/
+	 * @var    string Current block name
+	 */
 	var $_blockname 	= null;
 
 	/**
-	* @var    string Current block blockId
-	*/
+	 * @var    string Current block blockId
+	 */
 	var $_blockorder 	= null;
 
 	/**
-	* @var    object
-	*/
+	 * @var    object
+	 */
 	var $_progress 		= null;
 
 	/**
-	* @var    string  Message
-	*/
+	 * @var    string  Message
+	 */
 	var $_message 		= null;
 
 	/**
@@ -280,7 +280,7 @@ class Curation extends Object
 	 */
 	public function getBlockId($name = null)
 	{
-		$blockId = NULL;
+		$blockId = null;
 		foreach ($this->_blocks as $index => $block)
 		{
 			if ($block->name == $name)
