@@ -196,7 +196,21 @@ class Profiles extends SiteController
 
 			// match member names on all three name parts
 			//$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
-			$match = "LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%');
+			if (strstr($filters['search'], ' '))
+			{
+				$parts = explode(' ', $filters['search']);
+
+				// Someone typed a name with a space so it could be "first middle last", "first last", or "first middle"
+				$match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR (LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($parts[0]) . '%') . "
+					AND (LOWER(u.middleName) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . " OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . ")))";
+			}
+			else
+			{
+				$match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . ")";
+			}
 			$query = "SELECT u.id, u.name, u.username, u.access, $match as rel
 					FROM `#__users` AS u
 					WHERE $match AND u.block=0 AND u.activation>0 AND u.email NOT LIKE '%@invalid' $restrict
