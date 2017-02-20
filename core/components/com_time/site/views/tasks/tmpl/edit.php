@@ -80,10 +80,21 @@ $this->css()
 					<input type="text" name="name" id="name" value="<?php echo $this->escape($this->row->name); ?>" size="50" />
 				</div>
 
-				<div class="grouping" id="active-group">
-					<label><?php echo Lang::txt('COM_TIME_TASKS_ACTIVE'); ?>:</label>
-					<input type="radio" name="active" id="active_yes" value="1" <?php if ($this->row->active == 1 || $this->row->active === NULL) { echo "checked"; } ?> />Yes
-					<input type="radio" name="active" id="active_no" value="0" <?php if ($this->row->active !== NULL && $this->row->active == 0) { echo "checked"; } ?> />No
+				<div class="grid">
+					<div class="col span6">
+						<fieldset class="grouping" id="active-group">
+							<legend><?php echo Lang::txt('COM_TIME_TASKS_ACTIVE'); ?>:</legend>
+							<input type="radio" name="active" id="active_yes" value="1" <?php if ($this->row->active == 1 || $this->row->active === null) { echo "checked"; } ?> /> <label for="active_yes">Yes</label>
+							<input type="radio" name="active" id="active_no" value="0" <?php if ($this->row->active !== null && $this->row->active == 0) { echo "checked"; } ?> /> <label for="active_no">No</label>
+						</fieldset>
+					</div>
+					<div class="col span6 omega">
+						<fieldset class="grouping" id="billable-group">
+							<legend><?php echo Lang::txt('Billable'); ?>:</legend>
+							<input type="radio" name="billable" id="billable_yes" value="1" <?php if ($this->row->billable) { echo "checked"; } ?> /> <label for="billable_yes">Yes</label>
+							<input type="radio" name="billable" id="billable_no" value="0" <?php if (!$this->row->billable) { echo "checked"; } ?> /> <label for="billable_no">No</label>
+						</fieldset>
+					</div>
 				</div>
 
 				<div class="grouping" id="hub-group">
@@ -98,14 +109,19 @@ $this->css()
 					</select>
 				</div>
 
-				<div class="grouping" id="startdate-group">
-					<label for="startdate"><?php echo Lang::txt('COM_TIME_TASKS_START_DATE'); ?>:</label>
-					<input type="text" name="start_date" id="startdate" class="hadDatepicker" value="<?php echo $this->escape($this->row->start_date); ?>" size="10" />
-				</div>
-
-				<div class="grouping" id="enddate-group">
-					<label for="enddate"><?php echo Lang::txt('COM_TIME_TASKS_END_DATE'); ?>:</label>
-					<input type="text" name="end_date" id="enddate" class="hadDatepicker" value="<?php echo $this->escape($this->row->end_date); ?>" size="10" />
+				<div class="grid">
+					<div class="col span6">
+						<div class="grouping" id="startdate-group">
+							<label for="startdate"><?php echo Lang::txt('COM_TIME_TASKS_START_DATE'); ?>:</label>
+							<input type="text" name="start_date" id="startdate" class="hadDatepicker" value="<?php echo $this->escape($this->row->start_date); ?>" size="10" />
+						</div>
+					</div>
+					<div class="col span6 omega">
+						<div class="grouping" id="enddate-group">
+							<label for="enddate"><?php echo Lang::txt('COM_TIME_TASKS_END_DATE'); ?>:</label>
+							<input type="text" name="end_date" id="enddate" class="hadDatepicker" value="<?php echo $this->escape($this->row->end_date); ?>" size="10" />
+						</div>
+					</div>
 				</div>
 
 				<div class="grouping" id="priority-group">
@@ -120,30 +136,35 @@ $this->css()
 					</select>
 				</div>
 
-				<div class="grouping" id="assignee-group">
-					<label for="assignee_id"><?php echo Lang::txt('COM_TIME_TASKS_ASSIGNEE'); ?>:</label>
-					<select name="assignee_id" id="assignee_id">
-						<option value="0"><?php echo Lang::txt('COM_TIME_NO_ASSIGNEE'); ?></option>
-						<?php if ($group = \Hubzero\User\Group::getInstance($this->config->get('accessgroup', 'time'))) : ?>
-							<?php foreach ($group->get('members') as $member) : ?>
-								<option value="<?php echo $member; ?>" <?php echo ($this->row->assignee_id == $member) ? 'selected="selected"': '';?>>
-									<?php echo User::getInstance($member)->get('name'); ?>
-								</option>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</select>
-				</div>
-
-				<div class="grouping" id="liaison-group">
-					<label for="liaison_id"><?php echo Lang::txt('COM_TIME_TASKS_LIAISON'); ?>:</label>
-					<select name="liaison_id" id="liaison_id">
-						<option value="0"><?php echo Lang::txt('COM_TIME_NO_LIAISON'); ?></option>
-						<?php foreach (Liaison::all() as $liaison) : ?>
-							<option value="<?php echo $liaison->user_id; ?>" <?php echo ($this->row->liaison_id == $liaison->user_id) ? 'selected="selected"': '';?>>
-								<?php echo $liaison->name; ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
+				<div class="grid">
+					<div class="col span6">
+						<div class="grouping" id="assignee-group">
+							<label for="assignee_id"><?php echo Lang::txt('COM_TIME_TASKS_ASSIGNEE'); ?>:</label>
+							<select name="assignee_id" id="assignee_id">
+								<option value="0"><?php echo Lang::txt('COM_TIME_NO_ASSIGNEE'); ?></option>
+								<?php if ($group = \Hubzero\User\Group::getInstance($this->config->get('accessgroup', 'time'))) : ?>
+									<?php foreach ($group->get('members') as $member) : ?>
+										<option value="<?php echo $member; ?>" <?php echo ($this->row->assignee_id == $member) ? 'selected="selected"': '';?>>
+											<?php echo User::getInstance($member)->get('name'); ?>
+										</option>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</select>
+						</div>
+					</div>
+					<div class="col span6 omega">
+						<div class="grouping" id="liaison-group">
+							<label for="liaison_id"><?php echo Lang::txt('COM_TIME_TASKS_LIAISON'); ?>:</label>
+							<select name="liaison_id" id="liaison_id">
+								<option value="0"><?php echo Lang::txt('COM_TIME_NO_LIAISON'); ?></option>
+								<?php foreach (Liaison::all() as $liaison) : ?>
+									<option value="<?php echo $liaison->user_id; ?>" <?php echo ($this->row->liaison_id == $liaison->user_id) ? 'selected="selected"': '';?>>
+										<?php echo $liaison->name; ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+					</div>
 				</div>
 
 				<div class="grouping" id="description-group">

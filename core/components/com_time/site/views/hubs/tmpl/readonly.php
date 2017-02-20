@@ -143,6 +143,21 @@ $this->css()
 					<?php endif; ?>
 				</div>
 			</div><!-- / .grid -->
+
+			<div class="time-allotments">
+				<h3 class="headings"><?php echo Lang::txt('COM_TIME_HUBS_ALLOTMENTS'); ?></h3>
+
+				<?php foreach ($this->row->allotments as $allotment) : ?>
+					<div class="allotment-entry">
+						<div class="allotment-start_date"><?php  echo $this->escape($allotment->start_date);  ?></div>
+						<div class="allotment-end_date"><?php echo $this->escape($allotment->end_date); ?></div>
+						<div class="allotment-hours"><?php echo $this->escape($allotment->hours); ?></div>
+					</div>
+				<?php endforeach; ?>
+				<?php if (!$this->row->allotments->count()) : ?>
+					<p><?php echo Lang::txt('COM_TIME_HUBS_NO_ALLOTMENTS'); ?></p>
+				<?php endif; ?>
+			</div>
 		</div><!-- / .container -->
 	</section>
 </div>

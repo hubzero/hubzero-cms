@@ -60,4 +60,14 @@ class Contact extends Relational
 		'email' => 'email',
 		'role'  => 'alpha'
 	);
+
+	/**
+	 * Defines the inverse relationship between a task and a hub
+	 *
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 **/
+	public function hub()
+	{
+		return $this->belongsToOne('Hub');
+	}
 }
