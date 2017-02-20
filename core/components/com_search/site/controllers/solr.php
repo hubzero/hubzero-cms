@@ -32,6 +32,7 @@
 namespace Components\Search\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Search\Models\Solr\Facet;
 use Document;
 use Pathway;
 use Request;
@@ -39,6 +40,8 @@ use Plugin;
 use Config;
 use Lang;
 use stdClass;
+
+require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS .'facet.php';
 
 /**
  * Search controller class
@@ -60,7 +63,7 @@ class Solr extends SiteController
 		$start = Request::getInt('start', 0);
 		$sortBy = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
-		$type = Request::getVar('type', '');
+		$type = Request::getInt('type', null);
 		$section = Request::getVar('section', 'content');
 
 		// Map coordinates
@@ -88,9 +91,10 @@ class Solr extends SiteController
 			$query = $query->sortBy($sortBy, $sortDir);
 		}
 
-		if ($type != '')
+		if ($type != null)
 		{
-			$query->addFilter('Type', array('hubtype', '=', $type));
+			$facet = Facet::all()->whereEquals('id', $type)->limit(1)->row();
+			$query->addFilter('Type', $facet->facet);
 
 			// Add a type
 			$urlQuery .= '&type='.$type;
@@ -141,9 +145,13 @@ class Solr extends SiteController
 		{
 			$this->view->query = $terms;
 			$this->view->results = $results;
-			$categories = $this->getCategories($type, $terms, $limit, $start);
-			$this->view->categories = $categories['facets'];
-			$this->view->catTotal = $categories['total'];
+			$this->view->facets = $this->getCategories($type, $terms, $limit, $start);
+
+			$this->view->total = 0;
+			foreach ($this->view->facets as $facet)
+			{
+				$this->view->total = $this->view->total + $facet->count;
+			}
 		}
 		else
 		{
@@ -165,43 +173,33 @@ class Solr extends SiteController
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
 
-		$types = Event::trigger('search.onGetTypes');
-		foreach ($types as $type)
-		{
-			$query->addFacet($type, array('hubtype', '=', $type));
-		}
+		$facets = Facet::all()->whereEquals('state', 1)->rows()->toObject();
 
-		// Administrators can see all records
-		$isAdmin = User::authorise('core.admin', 'com_users');
-		if ($isAdmin)
+		foreach ($facets as &$facet)
 		{
-			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
-		}
-		else
-		{
-			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
-		}
-
-		$query = $query->run();
-		$facets = array();
-		$total = 0;
-		foreach ($types as $type)
-		{
-			$name = $type;
-			if (strpos($type, "-") !== false)
+			// Instantitate and get all results for a particular document type
+			try
 			{
-				$name = substr($type, 0, strpos($type, "-"));
+				$config = Component::params('com_search');
+				$query = new \Hubzero\Search\Query($config);
+				$results = $query
+					->query($facet->facet . ' AND ' . $terms)
+					->limit($limit)
+					->start($start)
+					->restrictAccess()
+					->run()->getResults();
+
+				// Get the total number of records
+				$total = $query->getNumFound();
+				$facet->count = $total;
 			}
-
-			$count = $query->getFacetCount($type);
-			$total += $count;
-
-
-			$name = ucfirst(\Hubzero\Utility\Inflector::pluralize($name));
-			array_push($facets, array('type'=> $type, 'name' => $name,'count' => $count));
+			catch (\Solarium\Exception\HttpException $e)
+			{
+				$query->query('')->limit($limit)->start($start)->run();
+				\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
+			}
 		}
-
-		return array('facets' => $facets, 'total' => $total);
+		return $facets;
 	}
 
 	private function formatResults($results, $terms)
