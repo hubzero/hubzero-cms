@@ -253,7 +253,7 @@ class Utilities
 						'none'      => 2,
 						'tool'      => 3
 					);
-					if (in_array($pieces[1],$allowed))
+					if (in_array($pieces[1], $allowed))
 					{
 						$pieces[1] = $allowed[$pieces[1]];
 					}
@@ -347,4 +347,3 @@ class Utilities
 		}
 	}
 }
-
