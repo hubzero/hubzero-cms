@@ -28,29 +28,44 @@
  * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
+ * @since     Class available since release 1.3.2
  */
 
-namespace Components\Time\Site;
+namespace Components\Time\Models;
 
-require_once          __DIR__ . DS . 'controllers' . DS . 'base.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'hub.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'allotment.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'task.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'record.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'contact.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'permissions.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'proxy.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'liaison.php';
-require_once dirname(__DIR__) . DS . 'helpers'     . DS . 'filters.php';
+use Hubzero\Database\Relational;
 
-$controllerName = Request::getCmd('controller', Request::getCmd('view', 'overview'));
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+/**
+ * Allotments database model
+ *
+ * @uses \Hubzero\Database\Relational
+ */
+class Allotment extends Relational
 {
-	$controllerName = 'overview';
-}
-require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 **/
+	protected $namespace = 'time_hub';
 
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 **/
+	protected $rules = array(
+		'hours'  => 'positive|nonzero',
+		'hub_id' => 'notempty'
+	);
+
+	/**
+	 * Defines the inverse relationship between a task and a hub
+	 *
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 **/
+	public function hub()
+	{
+		return $this->belongsToOne('Hub');
+	}
+}

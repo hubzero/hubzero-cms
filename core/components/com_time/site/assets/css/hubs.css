@@ -26,23 +26,33 @@
 .com_time_hubs .new_contact {
 	color: #888;
 }
+.com_time_hubs fieldset legend {
+	font-weight: bold;
+}
 .com_time_hubs .contact-grouping,
+.com_time_hubs #new-allotment-group,
 .com_time_hubs #new-contact-group {
 	overflow: hidden;
 	margin-bottom: 3px !important;
 }
+.com_time_hubs #new-allotment-group input,
+.com_time_hubs .allotment-grouping input,
 .com_time_hubs #new-contact-group input,
 .com_time_hubs .contact-grouping input {
 	margin-bottom: 5px;
 }
+.com_time_hubs #new-allotment-group input,
 .com_time_hubs #new-contact-group input {
 	opacity: .4;
 	margin-bottom: 20px;
 }
+.com_time_hubs #new-allotment-group input:hover,
+.com_time_hubs #new-allotment-group input:focus,
 .com_time_hubs #new-contact-group input:hover,
 .com_time_hubs #new-contact-group input:focus {
 	opacity: 1;
 }
+.com_time_hubs .save_allotment,
 .com_time_hubs .save_contact {
 	visibility: hidden;
 }
@@ -70,6 +80,9 @@
 	height: 19px;
 	position: relative;
 }
+.com_time_hubs .readonly .allotment-start_date:before,
+.com_time_hubs .readonly .allotment-end_date:before,
+.com_time_hubs .readonly .allotment-hours:before,
 .com_time_hubs .readonly .grouping:before,
 .com_time_hubs .readonly .contact-entry:before,
 .com_time_hubs .readonly .contact-phone:before,
@@ -106,6 +119,13 @@
 .com_time_hubs .readonly .hours-grouping:before {
 	content: "\f017";
 }
+.com_time_hubs .readonly .allotment-start_date:before,
+.com_time_hubs .readonly .allotment-end_date:before {
+	content: "\f0d0";
+}
+.com_time_hubs .readonly .allotment-hours:before {
+	content: "\f017";
+}
 .com_time_hubs .readonly label {
 	font-size: 13px;
 	font-weight: bold;
@@ -126,6 +146,19 @@
 .com_time_hubs .readonly .contact-name {
 	font-size: 1.5em;
 	margin: 5px;
+}
+.com_time_hubs .readonly .allotment-entry {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 0.2em;
+	margin: 0 0 10px 0;
+}
+.com_time_hubs .readonly .allotment-start_date,
+.com_time_hubs .readonly .allotment-end_date,
+.com_time_hubs .readonly .allotment-hours {
+	display: inline-block;
+	width: 33%;
+	position: relative;
+	padding-left: 25px;
 }
 .com_time_hubs .readonly .contact-phone,
 .com_time_hubs .readonly .contact-email,

@@ -46,6 +46,24 @@ HUB.Plugins.TimeHubs = {
 		});
 
 		// --------------------
+		// Allotment fields
+		// --------------------
+
+		// When focus leaves the field, do...
+		$(".new_allotment").focusout(function() {
+			// Darken the text color and decrease the opacity when a value is entered
+			if ($(this).val()) {
+				$(this).css('color', 'initial');
+				$(this).css('opacity', 1);
+			}
+
+			// If all fields have been filled in, add a button for saving the current contact and providing a new row
+			if ($("#new_start_date").val() && $("#new_end_date").val() && $("#new_hours").val()) {
+				$('#save_new_allotment').css('visibility', 'visible');
+			}
+		});
+
+		// --------------------
 		// Delete confirmation
 		// --------------------
 
@@ -98,7 +116,7 @@ HUB.Plugins.TimeHubs = {
 		var sc = $(".save_contact");
 
 		// Add click event to save contact button
-		sc.click(function(event) {
+		sc.on('click', function(event) {
 
 			// Prevent delete action
 			event.preventDefault();
@@ -165,13 +183,82 @@ HUB.Plugins.TimeHubs = {
 		});
 
 		// --------------------
+		// Save allotment
+		// --------------------
+
+		var sa = $(".save_allotment");
+
+		// Add click event to save contact button
+		sa.on('click', function(event) {
+
+			// Prevent delete action
+			event.preventDefault();
+
+			// @FIXME: maybe add some checks here
+
+			// Grab the variables
+			var startd = $("#new_start_date");
+			var endd   = $("#new_end_date");
+			var hours  = $("#new_hours");
+			var hid    = $("#hub_id").val();
+
+			// Create a ajax call to save the contact
+			$.ajax({
+				url: "/api/time/saveallotment",
+				data: "hid="+hid+"&start_date="+startd.val()+"&end_date="+endd.val()+"&hours="+hours.val(),
+				dataType: "json",
+				cache: false,
+				success: function(json){
+					// If success, add another row for a new contact
+
+					// Get the new contact id
+					var cid = json;
+
+					// Create the new row
+					var new_row  = '<div class="grouping allotment-grouping grid" id="brand_new">';
+						new_row += '<div class="col span4">';
+						new_row += '<input type="text" name="allotments['+cid+'][start_date]" placeholder="'+startd.val()+'" />';
+						new_row += '</div>';
+						new_row += '<div class="col span4">';
+						new_row += '<input type="text" name="allotments['+cid+'][end_date]" placeholder="'+endd.val()+'" />';
+						new_row += '</div>';
+						new_row += '<div class="col span2">';
+						new_row += '<input type="text" name="allotments['+cid+'][hours]" placeholder="'+hours.val()+'" />';
+						new_row += '</div>';
+						new_row += '<input type="hidden" name="allotments['+cid+'][id]" value="'+cid+'" />';
+						new_row += '<div class="col span2 omega">';
+						new_row += '<a href="/time/hubs/deleteallotment/'+cid+'" class="btn btn-danger icon-delete delete_contact" title="Delete allotment">Delete</a>';
+						new_row += '</div>';
+						new_row += '</div>';
+
+					// Clear the values from the new contact fields and reset styles, now that we saved
+					startd.val('');
+					endd.val('');
+					hours.val('');
+
+					$(".new_allotment").removeAttr('style');
+					$(".new_allotment_row input").removeAttr('style');
+					$(".save_allotment").removeAttr('style');
+
+					// Add the new row and fade it in
+					$('#new-allotment-group').before(new_row);
+					$('#brand_new').slideDown('slow', 'linear', function() {
+						// Animation complete
+						var new_id = 'allotment-' + cid + '-group';
+						$('#brand_new').attr('id', new_id);
+					});
+				}
+			});
+		});
+
+		// --------------------
 		// Permissions dialog
 		// --------------------
 
 		var perms = $(".permissions-button");
 
 		// Add click event to permissions button
-		perms.click(function ( e ) {
+		perms.on('click', function (e) {
 			// Prevent delete action
 			e.preventDefault();
 

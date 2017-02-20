@@ -134,4 +134,48 @@ class Task extends Relational
 	{
 		return $this->whereEquals('active', 1);
 	}
+
+	/**
+	 * Display a text value for priority
+	 *
+	 * @return  string
+	 **/
+	public function transformPriority()
+	{
+		switch ($this->get('priority'))
+		{
+			case 5:
+				$priority = 'Critical';
+				break;
+			case 4:
+				$priority = 'Major';
+				break;
+			case 3:
+				$priority = 'Normal';
+				break;
+			case 2:
+				$priority = 'Minor';
+				break;
+			case 1:
+				$priority = 'Trivial';
+				break;
+			case 0:
+			default:
+				$priority = 'Unknown';
+		}
+		return $priority;
+	}
+
+	/**
+	 * Get total number of hours logged for this task
+	 *
+	 * @return  float
+	 **/
+	public function helperTotalHours()
+	{
+		$time = $this->records()->select('SUM(time)', 'time')->rows()->first()->time;
+		$time = $time ?: 0;
+
+		return $time; //number_format($time, 2);
+	}
 }

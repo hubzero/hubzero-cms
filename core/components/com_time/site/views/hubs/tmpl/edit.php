@@ -162,6 +162,42 @@ HTML::behavior('core');
 					<?php echo $this->editor('notes', $this->escape($this->row->notes('raw')), 35, 6, 'notes', array('class' => 'minimal no-footer')); ?>
 				</div>
 
+				<fieldset>
+					<legend><?php echo Lang::txt('COM_TIME_HUBS_ALLOTMENTS'); ?>:</legend>
+					<?php foreach ($this->row->allotments as $allotment) : ?>
+						<div class="grouping allotment-grouping grid" id="allotment-<?php echo $allotment->id; ?>-group">
+							<div class="col span4">
+								<input type="text" name="allotments[<?php echo $allotment->id; ?>][start_date]" id="" value="<?php echo $this->escape($allotment->start_date); ?>" class="hadDatepicker" />
+							</div>
+							<div class="col span4">
+								<input type="text" name="allotments[<?php echo $allotment->id; ?>][end_date]" id="" value="<?php echo $this->escape($allotment->end_date); ?>" class="hadDatepicker" />
+							</div>
+							<div class="col span2">
+								<input type="text" name="allotments[<?php echo $allotment->id; ?>][hours]" id="" value="<?php echo $this->escape($allotment->hours); ?>" />
+							</div>
+							<div class="col span2 omega">
+								<input type="hidden" name="allotments[<?php echo $allotment->id; ?>][id]" value="<?php echo $allotment->id; ?>" />
+								<a href="<?php echo Route::url($this->base . '&task=deleteallotment&id=' . $allotment->id); ?>" class="btn btn-danger icon-delete delete_contact" title="Delete allotment">Delete</a>
+							</div>
+						</div>
+					<?php endforeach; ?>
+
+					<div class="grouping grid" id="new-allotment-group">
+						<div class="col span4">
+							<input type="text" name="allotments[new][start_date]" id="new_start_date" placeholder="YYYY-MM-DD" class="hadDatepicker new_allotment" />
+						</div>
+						<div class="col span4">
+							<input type="text" name="allotments[new][end_date]" id="new_end_date" placeholder="YYYY-MM-DD" class="hadDatepicker new_allotment" />
+						</div>
+						<div class="col span2">
+							<input type="text" name="allotments[new][hours]" id="new_hours" placeholder="hours" class="new_allotment" />
+						</div>
+						<div class="col span2 omega">
+							<a href="#" id="save_new_allotment" class="btn btn-success icon-save save_allotment" title="Save allotment">Save</a>
+						</div>
+					</div>
+				</fieldset>
+
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" id="hub_id" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="active" value="hubs" />

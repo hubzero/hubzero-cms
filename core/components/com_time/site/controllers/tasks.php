@@ -124,7 +124,8 @@ class Tasks extends Base
 			'description' => Request::getVar('description'),
 			'priority'    => Request::getInt('priority'),
 			'assignee_id' => Request::getInt('assignee_id'),
-			'liaison_id'  => Request::getInt('liaison_id')
+			'liaison_id'  => Request::getInt('liaison_id'),
+			'billable'    => Request::getInt('billable')
 		));
 
 		// Save the posted array

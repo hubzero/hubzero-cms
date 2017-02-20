@@ -131,6 +131,17 @@ class Hub extends Relational
 	}
 
 	/**
+	 * Defines a one to many relationship with time allotments
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function allotments()
+	{
+		return $this->oneToMany('Allotment');
+	}
+
+	/**
 	 * Returns sum of hours for the hub
 	 *
 	 * @return float
