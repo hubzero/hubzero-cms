@@ -56,7 +56,7 @@ class Items extends AdminController
 	 */
 	public function execute()
 	{
-		$this->_task = strtolower(Request::getVar('task', '','request'));
+		$this->_task = strtolower(Request::getVar('task', '', 'request'));
 		parent::execute();
 	}
 
@@ -508,7 +508,7 @@ class Items extends AdminController
 		$blocksModel = new Models\Blocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
 
-		$block->reorder(NULL, 0, $model, User::get('id'));
+		$block->reorder(null, 0, $model, User::get('id'));
 		if ($block->getError())
 		{
 			App::redirect(
@@ -595,11 +595,11 @@ class Items extends AdminController
 
 		if ($author)
 		{
-			$block->saveItem(NULL, 0, $model, User::get('id'), 0 , $author);
+			$block->saveItem(null, 0, $model, User::get('id'), 0, $author);
 		}
 		else
 		{
-			$block->addItem(NULL, 0, $model, User::get('id'));
+			$block->addItem(null, 0, $model, User::get('id'));
 		}
 
 		if ($block->getError())
@@ -1003,7 +1003,7 @@ class Items extends AdminController
 					// Append comment to activity
 					if ($message && $aid)
 					{
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+						require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
 						$objC = new \Components\Projects\Tables\Comment($this->database);
 
 						$comment = \Hubzero\Utility\String::truncate($message, 250);
@@ -1265,7 +1265,7 @@ class Items extends AdminController
 
 		$version = count($ids) == 1 ? Request::getVar('version', 'all') : 'all';
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
+		require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
 
 		foreach ($ids as $id)
 		{
