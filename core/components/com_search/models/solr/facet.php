@@ -27,60 +27,61 @@
  * @package   hubzero-cms
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since     2.1.1
+ * @since     2.1.4
  */
 
-namespace Components\Search\Models;
+namespace Components\Search\Models\Solr;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Base\Object;
 
 /**
- * Database model for search queue
+ * Database model for search blacklist
  *
  * @uses  \Hubzero\Database\Relational
  */
-class QueueDB extends Relational
+class Facet extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 **/
-	protected $namespace = 'search';
+	protected $table = '#__solr_search_facets';
 
 	/**
-	 * The table name 
-	 *
-	 * @var  string
-	 **/
-	protected $table = '#__search_queue';
+	 * children 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function children()
+	{
+		$children = $this->all()
+			->whereEquals('parent_id', $this->id)
+			->rows();
+
+		return $children;
+	}
 
 	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 **/
-	public $orderBy = 'id';
+	 * toplevel 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function toplevel()
+	{
+		if (!$this->isNew())
+		{
+			$tops = $this->all()
+				->whereEquals('parent_id', 0)
+				->where('id', '!=', $this->id)
+				->rows();
+		}
+		else
+		{
+			$tops = $this->all()
+				->whereEquals('parent_id', 0)
+				->rows();
+		}
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 **/
-	protected $rules = array(
-		//'type'  => 'notempty',
-		//'title' => 'notempty'
-	);
-
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 **/
-	public $initiate = array(
-		'created_by',
-		'created'
-	);
+		return $tops;
+	}
 }

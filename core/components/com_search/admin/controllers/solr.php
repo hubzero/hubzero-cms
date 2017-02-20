@@ -32,15 +32,17 @@
 namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Search\Models\Blacklist;
-use Components\Search\Models\QueueDB;
+use Components\Search\Models\Solr\Blacklist;
+use Components\Search\Models\Solr\QueueDB;
+use Components\Search\Models\Solr\Facet;
 use \Hubzero\Search\Query;
 use Components\Search\Helpers\SolrHelper;
 use stdClass;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'indexqueue.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'blacklist.php';
+require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'indexqueue.php';
+require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
+require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'facet.php';
 
 /**
  * Search AdminController Class
@@ -90,77 +92,6 @@ class Solr extends AdminController
 		$this->view->setLayout('overview');
 
 		// Display the view
-		$this->view->display();
-	}
-
-	/**
-	 * searchIndexTask - displays all indexed hubtypes and the number of records
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	public function searchIndexTask()
-	{
-		// @TODO modify for RabbitMQ
-		// Check to see if the queue is still being processed
-		$processing = QueueDB::all()->where('status', '=', 0)->count();
-
-		if ($processing > 0)
-		{
-			// See if the CRON is still processing
-			$this->view->processing = true;
-
-			// Check to see if the CRON task has stalled
-			$db = App::get('db');
-			$db->setQuery("SELECT MAX(modified) AS lastUpdated FROM `#__search_queue` WHERE status = 1");
-			$db->query();
-			$max = $db->loadResult();
-
-			if ($max > 0)
-			{
-				$ago = Date::of($max);
-				$ago = $ago->relative('hour');
-				$ago = explode(" ", $ago)[0];
-				if ($ago > 1)
-				{
-					$this->view->stalled = true;
-				}
-			}
-		}
-
-		// Display CMS errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$config = Component::params('com_search');
-		$hubtypes = Event::trigger('search.onGetTypes');
-
-		$stats = array();
-		try
-		{
-			foreach ($hubtypes as $type)
-			{
-				$query = new \Hubzero\Search\Query($config);
-				$result = $query->query('*:*')
-					->addFilter('hubtype', array('hubtype', '=', $type))
-					->run()
-					->getNumFound();
-
-				$stats[$type] = $result;
-			}
-		}
-		catch (\Solarium\Exception\HttpException $e)
-		{
-			App::redirect(
-				Route::url('index.php?option=com_search&task=display', false)
-			);
-		}
-
-		// Display the view
-		$this->view->types = $hubtypes;
-		$this->view->stats = $stats;
 		$this->view->display();
 	}
 
@@ -256,9 +187,9 @@ class Solr extends AdminController
 	 * @access public
 	 * @return void
 	 */
-	public function documentByTypeTask()
+	public function documentListingTask()
 	{
-		$type = Request::getVar('type', '');
+		$facet = Request::getVar('facet', '');
 		$filter = Request::getVar('filter', '');
 		$limitstart = Request::getInt('limitstart', 0);
 		$limit = Request::getInt('limit', 10);
@@ -272,7 +203,6 @@ class Solr extends AdminController
 		// Get the blacklist to indidicate marked for removal
 		$blacklistEntries = Blacklist::all()
 			->select('doc_id')
-			->where('doc_id', 'LIKE', $type.'%')
 			->rows()
 			->toObject();
 
@@ -294,7 +224,8 @@ class Solr extends AdminController
 		{
 			$config = Component::params('com_search');
 			$query = new \Hubzero\Search\Query($config);
-			$results = $query->query($filter)->addFilter('hubtype', array('hubtype', '=', $type))
+			$results = $query->query($filter)
+				->addFilter('facet', $facet)
 				->limit($limit)->start($limitstart)->run()->getResults();
 
 			// Get the total number of records
@@ -308,7 +239,7 @@ class Solr extends AdminController
 		}
 
 		// Pass the type the view
-		$this->view->type = $type;
+		//$this->view->type = $type;
 
 		// Create the pagination
 		$pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
@@ -316,7 +247,8 @@ class Solr extends AdminController
 		$this->view->pagination = $pagination;
 
 		// Pass the filters and documents to the display
-		$this->view->filter = !isset($filter) || $filter = '*:*' ? '' : $filter;
+		$this->view->filter = ($filter == '') || $filter = '*:*' ? '' : $filter;
+		$this->view->facet = !isset($facet) ? '' : $facet;
 		$this->view->documents = isset($results) ? $results : array();
 		$this->view->blacklist = $blacklist;
 
@@ -392,4 +324,209 @@ class Solr extends AdminController
 				'Successfully removed entry #' . $entryID, 'success'
 		);
 	}
+
+	/**
+	 * manageFacetsTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function searchIndexTask()
+	{
+		// @TODO modify for RabbitMQ
+		// Check to see if the queue is still being processed
+		$processing = QueueDB::all()->where('status', '=', 0)->count();
+
+		if ($processing > 0)
+		{
+			// See if the CRON is still processing
+			$this->view->processing = true;
+
+			// Check to see if the CRON task has stalled
+			$db = App::get('db');
+			$db->setQuery("SELECT MAX(modified) AS lastUpdated FROM `#__search_queue` WHERE status = 1");
+			$db->query();
+			$max = $db->loadResult();
+
+			if ($max > 0)
+			{
+				$ago = Date::of($max);
+				$ago = $ago->relative('hour');
+				$ago = explode(" ", $ago)[0];
+				if ($ago > 1)
+				{
+					$this->view->stalled = true;
+				}
+			}
+		}
+
+		if (in_array('parent_id', array_keys($_GET)))
+		{
+			Request::checkToken(["post", "get"]);
+		}
+
+		// Check if we are adding a parent
+		$parentID = Request::getInt('parent_id', 0);
+		if ($parentID != 0)
+		{
+			$parentFacet = Facet::one($parentID)->row();
+			$this->view->parent = $parentFacet;
+		}
+
+		// Load the subfacets, if applicable
+		$this->view->facets = Facet::all()
+			->whereEquals('parent_id', $parentID)
+			->rows();
+
+		foreach ($this->view->facets as $facet)
+		{
+			// Instantitate and get all results for a particular document type
+			try
+			{
+				$config = Component::params('com_search');
+				$query = new \Hubzero\Search\Query($config);
+				$results = $query->query($facet->facet)->run()->getResults();
+
+				// Get the total number of records
+				$total = $query->getNumFound();
+				$facet->count = $total;
+			}
+			catch (\Solarium\Exception\HttpException $e)
+			{
+				App::redirect(
+					Route::url('index.php?option=com_search&task=searchIndex', false),
+					Lang::txt($e->getMessage()), 'error'
+				);
+			}
+		}
+		$this->view->display();
+	}
+
+	/**
+	 * saveFacetTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function saveFacetTask()
+	{
+		Request::checkToken(["post", "get"]);
+		$fields = Request::getVar('fields', array());
+		$action = Request::getCmd('action', '');
+		$id 		= Request::getInt('id', 0);
+
+		$facet = Facet::oneOrNew($id);
+
+		switch ($action)
+		{
+			case 'togglestate':
+				$facet->set('state', !$facet->state);
+				if (!$facet->save())
+				{
+					Notify::error(Lang::txt('COM_SEARCH_FAILURE_TO_SAVE'));
+				}
+			break;
+			case 'editfacet':
+				$new = $facet->isNew();
+				$facet->set($fields);
+
+				if (!$facet->save())
+				{
+					Notify::error(Lang::txt('COM_SEARCH_FAILURE_TO_SAVE'));
+				}
+				else
+				{
+					if ($new)
+					{
+						Notify::success(Lang::txt('COM_SEARCH_FACET_CREATED', $facet->name));
+					}
+					else
+					{
+						Notify::success(Lang::txt('COM_SEARCH_FACET_UPDATED', $facet->name));
+					}
+				}
+		}
+
+		//@FIXME: Redirect back to the child if selected
+		$return = Route::url('index.php?option=com_search&task=searchIndex', false);
+
+		App::redirect(
+				Route::url($return, false)
+				//Lang::txt($message['text']), $message['status']
+		);
+	}
+
+	/**
+	 * addFacetTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function addFacetTask()
+	{
+		$parentID = Request::getInt('parent_id', 0);
+		$this->view->setLayout('editfacet');
+		$this->view->facet = new Facet;
+		$this->view->display();
+	}
+
+	/**
+	 * editFacetTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function editFacetTask($parentID = 0)
+	{
+		$id = Request::getInt('id', 0);
+		$this->view->facet = Facet::oneOrNew($id);
+		$this->view->display();
+	}
+
+	public function deleteFacetTask()
+	{
+		$ids = Request::getArray('id', 0);
+		$message = '';
+
+		foreach ($ids as $id)
+		{
+			$facet = Facet::one($id);
+			$protected = $facet->get('protected');
+			$name = $facet->get('name');
+
+			if ($protected != 1)
+			{
+				if ($facet->children()->count() == 0)
+				{
+					if ($facet->destroy())
+					{
+						$message .= Lang::txt('COM_SEARCH_FACET_DELETE', $name);
+						$success = 'success';
+					}
+					else
+					{
+						$message .= Lang::txt('COM_SEARCH_FACET_DELETE_FAILED', $name);
+						$success = 'error';
+					}
+				}
+				else
+				{
+					$message .= Lang::txt('COM_SEARCH_FACET_HAS_CHILDREN', $name);
+					$success = 'warning';
+				}
+			}
+			else
+			{
+				$message .= Lang::txt('COM_SEARCH_FACET_DELETE_PROTECTED', $name);
+				$success = 'warning';
+			}
+		}
+
+		$return = Route::url('index.php?option=com_search&task=searchIndex', false);
+		App::redirect(
+				Route::url($return, false),
+				$message, $success
+		);
+	}
+
 }
