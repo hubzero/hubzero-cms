@@ -198,6 +198,11 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 
 				$row = $db->setQuery($sql)->query()->loadObject();
 
+				if (!is_object($row) || empty($row))
+				{
+					return;
+				}
+
 				// Get the name of the author
 				$sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
 				$author = $db->setQuery($sql1)->query()->loadResult();
