@@ -1142,7 +1142,7 @@ class Tickets extends SiteController
 		// check if previous ticket submitted is the same as this one.
 		$ticket = new Tables\Ticket($this->database);
 		$filters = array('status' => 'new', 'sort' => 'id', 'sortdir' => 'DESC', 'limit' => '1', 'start' => 0);
-		$prevSubmission = $ticket->getTickets($filters , false);
+		$prevSubmission = $ticket->getTickets($filters, false);
 
 		// for the first ticket ever
 		if (isset($prevSubmission[0]) && $prevSubmission[0]->report == $row->get('report') && (time() - strtotime($prevSubmission[0]->created) <= 15))
