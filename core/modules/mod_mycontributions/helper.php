@@ -80,8 +80,8 @@ class Helper extends Module
 		$filters['sortby'] = 'f.published DESC';
 		$filters['filterby'] = 'all';
 
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'tool.php');
-		require_once(Component::path('com_tools') . DS . 'models' . DS . 'tool.php');
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
+		require_once Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
 		// Create a Tool object
 		$rows = \Components\Tools\Models\Tool::getTools($filters, false);
@@ -179,7 +179,7 @@ class Helper extends Module
 						// Get open tickets
 						$group = $rows[$i]->devgroup;
 						$g = \Hubzer\User\Group::getInstance($group);
-						$group = $g->get('cn');
+						$group = $g->get('gidNumber');
 
 						// Find support tickets on the user's contributions
 						$database->setQuery(
