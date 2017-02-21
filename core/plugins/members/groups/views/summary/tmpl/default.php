@@ -224,6 +224,10 @@ $this->css()
 													->whereEquals('state', 1)
 													->ordered()
 													->row();
+												if (!$activity->get('id'))
+												{
+													$activity->set('created', $group->created);
+												}
 												$dt = Date::of($activity->get('created'));
 												$ct = Date::of('now');
 
