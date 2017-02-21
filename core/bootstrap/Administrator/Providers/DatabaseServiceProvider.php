@@ -60,7 +60,14 @@ class DatabaseServiceProvider extends ServiceProvider
 				'prefix'   => $app['config']->get('dbprefix')
 			];
 
-			return Driver::getInstance($options);
+			$driver = Driver::getInstance($options);
+
+			if ($app['config']->get('debug'))
+			{
+				$driver->enableDebugging();
+			}
+
+			return $driver;
 		};
 	}
 }
