@@ -154,6 +154,10 @@ $published = ($group->get('published')) ? true : false;
 										->whereEquals('state', 1)
 										->ordered()
 										->row();
+									if (!$activity->get('id'))
+									{
+										$activity->set('created', $group->get('created'));
+									}
 									$dt = Date::of($activity->get('created'));
 									$ct = Date::of('now');
 
