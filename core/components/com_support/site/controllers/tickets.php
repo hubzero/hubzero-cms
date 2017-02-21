@@ -740,6 +740,7 @@ class Tickets extends SiteController
 					$query->count = 0;
 				}
 			}
+			$query->query = $sq->getQuery($query->conditions);
 			//$folder = reset($this->view->folders);
 			//$query = $folder->queries[0];
 			// Search
