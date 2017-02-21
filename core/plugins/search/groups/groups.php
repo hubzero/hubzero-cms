@@ -155,6 +155,11 @@ class plgSearchGroups extends \Hubzero\Plugin\Plugin
 
 				// Members 'own' the group
 				$group = \Hubzero\User\Group::getInstance($id);
+				if (!is_object($group) || !empty($group))
+				{
+					return;
+				}
+
 				$members = $group->get('members');
 				$owner_type = 'user';
 				$owner = $members;
