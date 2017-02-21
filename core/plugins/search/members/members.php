@@ -90,6 +90,11 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT * FROM `#__users` WHERE id={$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
+				if (!is_object($row) || empty($row))
+				{
+					return;
+				}
+
 				// Determine the path
 				$path = '/members/' . $id;
 
