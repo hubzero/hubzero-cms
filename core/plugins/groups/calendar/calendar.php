@@ -434,7 +434,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'calendar_id'  => $calendarId,
 			'state'        => array(1),
 			'publish_up'   => $start->format('Y-m-d H:i:s'),
-			'publish_down' => $end->format('Y-m-d H:i:s')
+			'publish_down' => $end->format('Y-m-d H:i:s'),
+			'non_repeating'    => true
 		));
 
 		// get repeating events
@@ -1841,14 +1842,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				// create date object in local timezone
 				$until = (isset($reccurance['ends']['until'])) ? $reccurance['ends']['until'] : 1;
+				$endTime = Request::getVar('event[publish_down_time]', '11:59 pm', 'post');
 
 				// create date time object where timezoen is configured value
 				// let php convert to UTC when formatting
 				$timezone = new DateTimezone(Config::get('offset'));
-				$date = Date::of($until, $timezone);
-
-				// subtract by 1 second (iCal standard)
-				$date->modify('-1 second');
+				$date = Date::of($until . ' '. $endTime, $timezone);
 
 				//set the rule
 				$rule[] = 'UNTIL=' . $date->format('Ymd\THis\Z');
