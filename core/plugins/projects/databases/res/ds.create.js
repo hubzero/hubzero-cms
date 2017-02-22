@@ -151,8 +151,7 @@
 
 					var that = this;
 
-
-					$('div.col-edit').bind('click', function(e) {
+					$('div.col-edit').on('click', function(e) {
 						var col = ds.dd[$('div.col-edit').index(this)];
 
 						//$('#col-prop-dialog').html(function(i, h) { return h.supplant(col); });
@@ -195,7 +194,7 @@
 
 						});
 
-						$('#col-prop-dialog').find('.tabs').tabs().tabs('select', 0).end()
+						$('#col-prop-dialog').find('.tabs').tabs().tabs('option', 'active', 0).end()
 						.dialog({
 							title: 'Column Properties : ' + col.label,
 							width: 650,
