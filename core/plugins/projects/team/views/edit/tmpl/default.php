@@ -53,6 +53,50 @@ if ($group)
 }
 ?>
 
+<?php if ($this->model->groupOwner()) { ?>
+	<?php
+	$team = $this->model->table('Owner')->getIds($this->model->get('id'), 'all', 1);
+
+	// See who's in members but not in the team
+	$notteam = array_diff($members, $team);
+	?>
+	<fieldset class="group-options">
+		<legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS'); ?>:</legend>
+
+		<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_PROJECT_EDITING'); ?></p>
+
+		<div class="input-wrap <?php if ($this->model->get('sync_group') != 0) { echo 'active'; } ?>">
+			<label for="membership_sync">
+				<input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio" value="1" <?php if ($this->model->get('sync_group') != 0) { echo ' checked="checked"'; } ?> />
+				<span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?></span>
+			</label>
+
+			<div class="group-action group-action-syncall">
+				<?php if (count($notteam)) { ?>
+					<p><input type="submit" class="btn option" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_SYNC'); ?>" /></p>
+				<?php } else { ?>
+					<p class="icon-success"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
+				<?php } ?>
+			</div>
+		</div>
+
+		<div class="input-wrap <?php if ($this->model->get('sync_group') == 0) { echo 'active'; } ?>">
+			<label for="membership_custom">
+				<input class="option" data-action="selective" name="sync_group" id="membership_custom" type="radio" value="0" <?php if ($this->model->get('sync_group') == 0) { echo ' checked="checked"'; } ?> />
+				<span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SELECT'); ?></span>
+			</label>
+
+			<div class="group-action group-action-selective">
+				<?php if (count($notteam)) { ?>
+					<p><a class="btn icon-group" id="choosemember" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&action=choose'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_SELECT'); ?></a></p>
+				<?php } else { ?>
+					<p class="icon-info"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
+				<?php } ?>
+			</div>
+		</div>
+	</fieldset>
+<?php } ?>
+
 <fieldset>
 	<?php if (!$this->setup) { ?>
 		<legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_NEW_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AS') . ':'; ?></legend>
@@ -105,51 +149,6 @@ if ($group)
 		<input type="submit" id="team-save" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD'); ?>" class="btn yesbtn" />
 	</div>
 </fieldset>
-
-<?php if ($this->model->groupOwner()) { ?>
-	<?php
-	$team = $this->model->table('Owner')->getIds($this->model->get('id'), 'all', 1);
-
-	// See who's in members but not in the team
-	$notteam = array_diff($members, $team);
-	?>
-	<fieldset class="group-options">
-		<legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS'); ?>:</legend>
-
-		<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_PROJECT_EDITING'); ?></p>
-
-		<div class="input-wrap <?php if ($this->model->get('sync_group') != 0) { echo 'active'; } ?>">
-			<label for="membership_sync">
-				<input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio" value="1" <?php if ($this->model->get('sync_group') != 0) { echo ' checked="checked"'; } ?> />
-				<span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?></span>
-			</label>
-
-			<div class="group-action group-action-syncall">
-				<?php if (count($notteam)) { ?>
-					<p><input type="submit" class="btn option" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_SYNC'); ?>" /></p>
-				<?php } else { ?>
-					<p class="icon-success"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
-				<?php } ?>
-			</div>
-		</div>
-
-		<div class="input-wrap <?php if ($this->model->get('sync_group') == 0) { echo 'active'; } ?>">
-			<label for="membership_custom">
-				<input class="option" data-action="selective" name="sync_group" id="membership_custom" type="radio" value="0" <?php if ($this->model->get('sync_group') == 0) { echo ' checked="checked"'; } ?> />
-				<span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SELECT'); ?></span>
-			</label>
-
-			<div class="group-action group-action-selective">
-				<?php if (count($notteam)) { ?>
-					<p><a class="btn icon-group" id="choosemember" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&action=choose'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_SELECT'); ?></a></p>
-				<?php } else { ?>
-					<p class="icon-info"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
-				<?php } ?>
-			</div>
-		</div>
-	</fieldset>
-<?php } ?>
-
 
 <div id="team-spacer">
 	<div class="list-editing">
