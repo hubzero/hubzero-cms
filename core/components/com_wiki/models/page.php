@@ -555,7 +555,6 @@ class Page extends Relational
 					if (is_file($path))
 					{
 						include_once $path;
-						break;
 					}
 				}
 
