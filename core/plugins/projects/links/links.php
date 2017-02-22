@@ -666,7 +666,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Add css?
 		if (!$ajax)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 		}
 
 		if ($this->_task == 'newcite')
@@ -839,7 +839,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			$view->setError($this->getError());
 		}
 
-		return  $view->loadTemplate();
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -972,7 +972,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				// Create DOM from URL or file
 				$html = file_get_html($finalUrl);
 
-				$title = $html->find('title',0)->innertext; //Title Of Page
+				$title = $html->find('title', 0)->innertext; //Title Of Page
 
 				$out .= $title ? stripslashes('<h5>' . addslashes($title) . '</h5>') : '<h5>' . \Components\Projects\Helpers\Html::shortenText($finalUrl, 100) . '</h5>';
 
@@ -1039,13 +1039,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				if (!$description)
 				{
 					// Set description if desc meta tag found else grab a little plain text of the page
-					if ($html->find('meta[name="description"]',0))
+					if ($html->find('meta[name="description"]', 0))
 					{
-						$description = $html->find('meta[name="description"]',0)->content;
+						$description = $html->find('meta[name="description"]', 0)->content;
 					}
 					else
 					{
-						$description = $html->find('body',0)->plaintext;
+						$description = $html->find('body', 0)->plaintext;
 					}
 				}
 
