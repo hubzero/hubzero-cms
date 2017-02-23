@@ -128,7 +128,7 @@ class Archive extends Model
 	public function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)
 	{
 		// get request varse
-		$calendarIds = Request::getVar('calendar_id','','get');
+		$calendarIds = Request::getVar('calendar_id', '', 'get');
 		$calendarIds = array_map("intval", explode(',', $calendarIds));
 
 		// array to hold events
@@ -176,26 +176,6 @@ class Archive extends Model
 		$daylightStart = Date::of($transitions[1]['ts']);
 		$daylightEnd = Date::of($transitions[2]['ts']);
 
-		// output timezone block
-		$output .= "BEGIN:VTIMEZONE\r\n";
-		$output .= "TZID:America/New_York\r\n";
-		$output .= "X-LIC-LOCATION:America/New_York\r\n";
-		$output .= "BEGIN:DAYLIGHT\r\n";
-		$output .= "TZNAME:Daylight\r\n";
-		$output .= "RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=2SU;BYMONTH=3\r\n";
-		$output .= "TZOFFSETFROM:-0500\r\n";
-		$output .= "TZOFFSETTO:-0400\r\n";
-		$output .= "DTSTART:" . $daylightStart->format('Ymd\THis') . "\r\n";
-		$output .= "END:DAYLIGHT\r\n";
-		$output .= "BEGIN:STANDARD\r\n";
-		$output .= "TZNAME:Standard\r\n";
-		$output .= "RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=1SU;BYMONTH=11\r\n";
-		$output .= "TZOFFSETFROM:-0400\r\n";
-		$output .= "TZOFFSETTO:-0500\r\n";
-		$output .= "DTSTART:" . $daylightEnd->format('Ymd\THis') . "\r\n";
-		$output .= "END:STANDARD\r\n";
-		$output .= "END:VTIMEZONE\r\n";
-
 		// loop through events
 		foreach ($events as $event)
 		{
@@ -212,8 +192,8 @@ class Archive extends Model
 			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 
 			// get publish up/down dates in UTC
-			$publishUp   = new DateTime($event->get('publish_up'), new DateTimezone('UTC'));
-			$publishDown = new DateTime($event->get('publish_down'), new DateTimezone('UTC'));
+			$publishUp = Date::of($event->get('publish_up'));
+			$publishDown = Date::of($event->get('publish_down'));
 
 			// Set eastern timezone as publish up/down date timezones
 			// since all event date/times are stores relative to eastern
