@@ -238,9 +238,6 @@ class Solr extends AdminController
 			);
 		}
 
-		// Pass the type the view
-		//$this->view->type = $type;
-
 		// Create the pagination
 		$pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
 		$pagination->setLimits(array('5','10','15','20','50','100','200'));
@@ -278,6 +275,10 @@ class Solr extends AdminController
 	public function addToBlacklistTask()
 	{
 		$id = Request::getVar('id', '');
+		$facet = Request::getVar('facet', '');
+		$filter = Request::getVar('filter', '');
+		$limitstart = Request::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', 10);
 
 		// Make entry on blacklist
 		$entry = Blacklist::oneOrNew(0);
@@ -293,7 +294,7 @@ class Solr extends AdminController
 		{
 			// Redirect back to the search page.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$item['type'], false),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentlisting&facet='.$facet.'&limitstart='.$limitstart.'&limit='.$limit.'&filter='.$filter, false),
 					'Submitted ' . $id . ' for removal.', 'success'
 			);
 		}
