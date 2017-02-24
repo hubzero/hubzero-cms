@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 use Components\Resources\Models\Orm\Resource;
 
 require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'orm' . DS . 'resource.php';
-include_once children.php;
+include_once 'children.php';
 
 /**
  * Search plugin for resources
