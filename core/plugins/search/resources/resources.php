@@ -223,7 +223,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 		*/
 		$sorter = new ResourceChildSorter($placed);
 		$rows = array();
-		foreach ($id_assoc as $id=>$row)
+		foreach ($id_assoc as $id => $row)
 		{
 			if (!array_key_exists((int)$id, $placed))
 			{
@@ -414,6 +414,4 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 			}
 		}
 	}
-
 }
-
