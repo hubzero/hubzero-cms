@@ -44,10 +44,9 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="credentials">
 				<field name="app_key" type="text" default="" label="PLG_FILESYSTEM_GITHUB_APP_KEY_LABEL" description="PLG_FILESYSTEM_GITHUB_APP_KEY_DESC" />
 				<field name="app_secret" type="text" default="" label="PLG_FILESYSTEM_GITHUB_APP_SECRET_LABEL" description="PLG_FILESYSTEM_GITHUB_APP_SECRET_DESC" />
+			</fieldset>
+			<fieldset name="user_credentials">
 				<field name="repository" type="text" default="" label="PLG_FILESYSTEM_GITHUB_REPOSITORY_LABEL" description="PLG_FILESYSTEM_GITHUB_REPOSITORY_DESC" />
-				<field name="repository" type="text" default="" label="PLG_FILESYSTEM_GITHUB_REPOSITORY_LABEL" description="PLG_FILESYSTEM_GITHUB_REPOSITORY_DESC" />                                                        
-				<field name="username" type="text" default="" label="PLG_FILESYSTEM_GITHUB_USERNAME_LABEL" description="PLG_FILESYSTEM_GITHUB_USERNAME_DESC" />                                                              
-				<field name="password" type="password" default="" label="PLG_FILESYSTEM_GITHUB_PASSWORD_LABEL" description="PLG_FILESYSTEM_GITHUB_PASSWORD_DESC" />  
 			</fieldset>
 		</fields>
 	</config>
