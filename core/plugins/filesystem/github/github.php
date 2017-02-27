@@ -52,40 +52,33 @@ class plgFilesystemGithub extends \Hubzero\Plugin\Plugin
 		// Get the params
 		$pparams = Plugin::params('filesystem', 'github');
 
-		$app_key = isset($params['app_key']) ? $params['app_key'] : $pparams['app_key'];
-		$app_secret = isset($params['app_secret']) ? $params['app_secret'] : $pparams['app_secret'];
-		\Session::set('github.app_key', $app_key);
-		\Session::set('github.app_secret', $app_secret);
-
-		$repository = isset($params['repository']) ? $params['repository'] : $pparams['repository'];
+		$app_key = $pparams['app_key'];
+		$app_secret = $pparams['app_secret'];
+		$repository = $params['repository'];
 
 		$credentials = [];
 
-		if (isset($params['username']) && isset($params['password']))
+		if (isset($params['access_token']))
 		{
-			$credentials = [Settings::AUTHENTICATE_USING_PASSWORD, $params['username'], $params['password']];
+			$accessToken = $params['access_token'];
 		}
 		else
 		{
-			$accessToken = Session::get('github.token', false);
+			$base   = 'https://github.com/login/oauth/authorize';
+			$params = '?client_id=' . $app_key;
+			$scope  = '&scope=user,repo';
 
-			if (!$accessToken)
-			{
-				$base   = 'https://github.com/login/oauth/authorize';
-				$params = '?client_id=' . $app_key;
-				$scope  = '&scope=user,repo';
+			$return = (Request::getVar('return')) ? Request::getVar('return') : Request::current(true);
+			$return = base64_encode($return);
+			$state  = '&state=' . $return;
 
-				$return = (Request::getVar('return')) ? Request::getVar('return') : Request::current(true);
-				$return = base64_encode($return);
-				$state  = '&state=' . $return;
+			Session::set('github.state', $return);
+			Session::set('github.connection_to_set_up', Request::getVar('connection', 0));
+			Session::set('github.repo', $repository);
 
-				Session::set('github.state', $return);
-
-				App::redirect($base . $params . $scope . $state);
-			}
-
-			$credentials = [Settings::AUTHENTICATE_USING_TOKEN, $accessToken];
+			App::redirect($base . $params . $scope . $state);
 		}
+		$credentials = [Settings::AUTHENTICATE_USING_TOKEN, $accessToken];
 
 		$settings = new Settings($params['repository'], $credentials);
 		$api      = new Api(new \Github\Client(), $settings);
