@@ -178,7 +178,7 @@ class Helper extends Module
 					{
 						// Get open tickets
 						$group = $rows[$i]->devgroup;
-						$g = \Hubzer\User\Group::getInstance($group);
+						$g = \Hubzero\User\Group::getInstance($group);
 						$group = $g->get('gidNumber');
 
 						// Find support tickets on the user's contributions
