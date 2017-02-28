@@ -55,7 +55,8 @@
         "hubzero/flysystem-github": "dev-develop",
         "nao-pon/flysystem-google-drive": "~1.1",
 				"php-amqplib/php-amqplib": "2.5.*",
-        "facebook/graph-sdk": "^5.4"
+        "facebook/graph-sdk": "^5.4",
+        "league/flysystem-aws-s3-v2": "^1.0"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"
