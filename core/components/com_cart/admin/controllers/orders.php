@@ -124,7 +124,10 @@ class Orders extends AdminController
 		$id = Request::getVar('id', array(0));
 
 		// Get transaction info
-		$tInfo = Cart::getTransactionInfo($id);
+		$t = Cart::getTransactionFacts($id);
+
+		$transactionItems = $t->items;
+		$tInfo = $t->info;
 
 		$tItems = unserialize($tInfo->tiItems);
 
@@ -152,6 +155,7 @@ class Orders extends AdminController
 
 		$this->view->user = $user;
 		$this->view->tInfo = $tInfo;
+		$this->view->items = $transactionItems;
 		$this->view->tId = $id;
 
 		$this->view

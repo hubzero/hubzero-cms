@@ -170,8 +170,10 @@ class CartMessenger
 	 * @param   object  $transactionInfo
 	 * @return  void
 	 */
-	public function emailOrderComplete($transactionInfo)
+	public function emailOrderComplete($transaction)
 	{
+		$transactionInfo = $transaction->info;
+		$transactionItems = $transaction->items;
 		$params = Component::params(Request::getVar('option'));
 
 		$items = unserialize($transactionInfo->tiItems);
@@ -218,6 +220,47 @@ class CartMessenger
 		{
 			$summary .= "\n" . 'Notes/Comments: ' . "\n" . $transactionInfo->tiNotes . "\n";
 		}
+
+
+		// Check the notes, both SKU-specific and other
+		$notes = array();
+		foreach ($transactionItems as $item)
+		{
+			$meta = $item['transactionInfo']->tiMeta;
+			if ($meta->checkoutNotes)
+			{
+				$notes[] = array(
+					'label' => $item['info']->pName . ', ' . $item['info']->sSku,
+					'notes' => $meta->checkoutNotes);
+			}
+		}
+
+		$genericNotesLabel = '';
+		if (!empty($notes))
+		{
+			$genericNotesLabel = 'Other notes/comments';
+		}
+
+		if ($transactionInfo->tiNotes)
+		{
+			$notes[] = array(
+				'label' => $genericNotesLabel,
+				'notes' => $transactionInfo->tiNotes);
+		}
+
+		if (!empty($notes))
+		{
+			$summary .= "\n" . 'Notes/Comments: ' . "\n";
+			foreach ($notes as $note)
+			{
+				$summary .= $note['label'];
+				if ($note['label'])
+				{
+					$summary .= ': ';
+				}
+				$summary .= $note['notes'] . "\n";
+			}
+		};
 
 		$summary .= "\n\nItems ordered:";
 		$summary .= "\n--------------------\n";

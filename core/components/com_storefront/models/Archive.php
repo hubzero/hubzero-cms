@@ -185,6 +185,14 @@ class Archive extends \Hubzero\Base\Object
 		{
 			$sku->setAllowMultiple($fields['sAllowMultiple']);
 		}
+		if (isset($fields['checkoutNotes']))
+		{
+			$sku->setCheckoutNotes($fields['checkoutNotes']);
+		}
+		if (isset($fields['checkoutNotesRequired']))
+		{
+			$sku->setCheckoutNotesRequired($fields['checkoutNotesRequired']);
+		}
 		if (isset($fields['sTrackInventory']))
 		{
 			$sku->setTrackInventory($fields['sTrackInventory']);

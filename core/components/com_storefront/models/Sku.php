@@ -85,6 +85,8 @@ class Sku
 			$this->setActiveStatus($skuInfo['info']->sActive);
 			$this->setRestricted($skuInfo['info']->sRestricted);
 			$this->setPublishTime($skuInfo['info']->publish_up, $skuInfo['info']->publish_down);
+			$this->setCheckoutNotes($skuInfo['info']->sCheckoutNotes);
+			$this->setCheckoutNotesRequired($skuInfo['info']->sCheckoutNotesRequired);
 
 			// Set meta
 			if (!empty($skuInfo['meta']))
@@ -201,6 +203,45 @@ class Sku
 		}
 		return $this->data->publishTime;
 	}
+
+	public function setCheckoutNotes($checkoutNotes)
+	{
+		$this->data->checkoutNotes = $checkoutNotes;
+		return true;
+	}
+
+	public function getCheckoutNotes()
+	{
+		if (empty($this->data->checkoutNotes))
+		{
+			return NULL;
+		}
+		return $this->data->checkoutNotes;
+	}
+
+	public function setCheckoutNotesRequired($checkoutNotesRequired)
+	{
+		if (!$checkoutNotesRequired)
+		{
+			$checkoutNotesRequired = 0;
+		}
+		else
+		{
+			$checkoutNotesRequired = 1;
+		}
+		$this->data->checkoutNotesRequired = $checkoutNotesRequired;
+	}
+
+	public function getCheckoutNotesRequired()
+	{
+		if (!isset($this->data->checkoutNotesRequired))
+		{
+			return 'DEFAULT';
+		}
+
+		return $this->data->checkoutNotesRequired;
+	}
+
 
 
 	/**
@@ -412,6 +453,8 @@ class Sku
 					`publish_up` = " . $db->quote($this->getPublishTime()->publish_up) . ",
 					`publish_down` = " . $db->quote($this->getPublishTime()->publish_down) . ",
 					`sRestricted` = " . $this->getRestricted() . ",
+					`sCheckoutNotes` = " . $db->quote($this->getCheckoutNotes()) . ",
+					`sCheckoutNotesRequired` = " . $this->getCheckoutNotesRequired() . ",
 					`sActive` = " . $this->getActiveStatus();
 
 		if (!empty($sId))

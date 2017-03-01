@@ -129,13 +129,47 @@ if (!empty($this->notifications))
 		</div>
 		<?php
 
+		// Check the notes, both SKU-specific and other
+		$notes = array();
+		foreach ($this->transactionItems as $item)
+		{
+			$meta = $item['transactionInfo']->tiMeta;
+			if ($meta->checkoutNotes)
+			{
+				$notes[] = array(
+					'label' => $item['info']->pName . ', ' . $item['info']->sSku,
+					'notes' => $meta->checkoutNotes);
+			}
+		}
+
+		$genericNotesLabel = '';
+		if (!empty($notes))
+		{
+			$genericNotesLabel = 'Other notes/comments';
+		}
+
 		if ($this->transactionInfo->tiNotes)
+		{
+			$notes[] = array(
+				'label' => $genericNotesLabel,
+				'notes' => $this->transactionInfo->tiNotes);
+		}
+
+		if (!empty($notes))
 		{
 			echo '<div class="section">';
 			echo '<h2>Notes/Comments</h2>';
-			echo '<p>';
-			echo $this->transactionInfo->tiNotes;
-			echo '</p>';
+			foreach ($notes as $note)
+			{
+				echo '<p>';
+				echo $note['label'];
+				if ($note['label'])
+				{
+					echo ': ';
+				}
+				echo $note['notes'];
+				echo '</p>';
+			}
 			echo '<a href="';
 			echo Route::url('index.php?option=com_cart') . 'checkout/notes';
 			echo '">Change</a>';
