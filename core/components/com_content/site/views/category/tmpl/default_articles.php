@@ -30,30 +30,31 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <form action="<?php echo htmlspecialchars(Request::current()); ?>" method="post" name="adminForm" id="adminForm">
 	<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
-	<fieldset class="filters">
-		<?php if ($this->params->get('filter_field') != 'hide') :?>
-		<legend class="hidelabeltxt">
-			<?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?>
-		</legend>
+		<fieldset>
+			<?php if ($this->params->get('filter_field') != 'hide') :?>
+				<div class="container data-entry">
+					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?>" />
+					<fieldset class="entry-search">
+						<legend><?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?></legend>
 
-		<div class="filter-search">
-			<label class="filter-search-lbl" for="filter-search"><?php echo Lang::txt('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
-			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
-		</div>
-		<?php endif; ?>
+						<label class="filter-search-lbl" for="filter-search"><?php echo Lang::txt('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?>></label>
+						<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+					</fieldset>
+				</div><!-- / .container -->
+			<?php endif; ?>
 
-		<?php if ($this->params->get('show_pagination_limit')) : ?>
-		<div class="display-limit">
-			<?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
-		<?php endif; ?>
+			<?php if ($this->params->get('show_pagination_limit')) : ?>
+				<div class="display-limit">
+					<?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+					<?php echo $this->pagination->getLimitBox(); ?>
+				</div>
+			<?php endif; ?>
 
-	<!-- @TODO add hidden inputs -->
-		<input type="hidden" name="filter_order" value="" />
-		<input type="hidden" name="filter_order_Dir" value="" />
-		<input type="hidden" name="limitstart" value="" />
-	</fieldset>
+			<!-- @TODO add hidden inputs -->
+			<input type="hidden" name="filter_order" value="" />
+			<input type="hidden" name="filter_order_Dir" value="" />
+			<input type="hidden" name="limitstart" value="" />
+		</fieldset>
 	<?php endif; ?>
 
 	<table class="category">
@@ -61,7 +62,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th class="list-title" id="tableOrdering">
-					<?php  echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
 				</th>
 
 				<?php if ($date = $this->params->get('list_show_date')) : ?>
@@ -144,17 +145,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<?php else : // Show unauth links. ?>
 					<td>
 						<?php
-							echo $this->escape($article->title).' : ';
-							$menu		= \App::get('menu');
-							$active		= $menu->getActive();
-							$itemId		= $active->id;
+							echo $this->escape($article->title) . ' : ';
+							$menu   = App::get('menu');
+							$active = $menu->getActive();
+							$itemId = $active->id;
 							$link = Route::url('index.php?option=com_users&view=login&Itemid='.$itemId);
 							$returnURL = Route::url(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language));
-							$fullURL = new JURI($link);
+							$fullURL = new Hubzero\Utility\Uri($link);
 							$fullURL->setVar('return', base64_encode(urlencode($returnURL)));
 						?>
 						<a href="<?php echo $fullURL; ?>" class="register">
-							<?php echo Lang::txt( 'COM_CONTENT_REGISTER_TO_READ_MORE' ); ?></a>
+							<?php echo Lang::txt('COM_CONTENT_REGISTER_TO_READ_MORE'); ?>
+						</a>
 					</td>
 				<?php endif; ?>
 				</tr>
@@ -166,21 +168,20 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 <?php // Code to add a link to submit an article. ?>
 <?php if ($this->category->getParams()->get('access-create')) : ?>
 	<?php echo Html::icon('create', $this->category, $this->category->params); ?>
-<?php  endif; ?>
+<?php endif; ?>
 
 <?php // Add pagination links ?>
 <?php if (!empty($this->items)) : ?>
 	<?php if (($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
-	<div class="pagination">
+		<div class="pagination">
+			<?php if ($this->params->def('show_pagination_results', 1)) : ?>
+				<p class="counter">
+					<?php echo $this->pagination->getPagesCounter(); ?>
+				</p>
+			<?php endif; ?>
 
-		<?php if ($this->params->def('show_pagination_results', 1)) : ?>
-		 	<p class="counter">
-				<?php echo $this->pagination->getPagesCounter(); ?>
-			</p>
-		<?php endif; ?>
-
-		<?php echo $this->pagination->getPagesLinks(); ?>
-	</div>
+			<?php echo $this->pagination->getPagesLinks(); ?>
+		</div>
 	<?php endif; ?>
 </form>
-<?php  endif; ?>
+<?php endif; ?>

@@ -32,7 +32,11 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 <?php endif; ?>
 
 <section class="main section">
-	<div class="category-list<?php echo $this->pageclass_sfx;?>">
+	<div class="section-inner category-list<?php echo $this->pageclass_sfx;?>">
+
+		<?php if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0) : ?>
+			<div class="subject">
+		<?php endif; ?>
 
 		<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
 			<div class="category-desc">
@@ -50,15 +54,18 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 			<?php echo $this->loadTemplate('articles'); ?>
 		</div>
 
-		<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
-			<div class="cat-children">
-				<?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
-					<h3>
-						<?php echo Lang::txt('JGLOBAL_SUBCATEGORIES'); ?>
-					</h3>
-				<?php endif; ?>
-				<?php echo $this->loadTemplate('children'); ?>
+		<?php if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0) : ?>
 			</div>
+			<aside class="aside">
+				<div class="cat-children">
+					<?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
+						<h3>
+							<?php echo Lang::txt('JGLOBAL_SUBCATEGORIES'); ?>
+						</h3>
+					<?php endif; ?>
+					<?php echo $this->loadTemplate('children'); ?>
+				</div>
+			</aside>
 		<?php endif; ?>
 	</div>
 </section>
