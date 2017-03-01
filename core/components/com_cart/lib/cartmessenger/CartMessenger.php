@@ -164,6 +164,12 @@ class CartMessenger
 		}
 	}
 
+	/**
+	 * Email completeed order
+	 *
+	 * @param   object  $transactionInfo
+	 * @return  void
+	 */
 	public function emailOrderComplete($transaction)
 	{
 		$transactionInfo = $transaction->info;
@@ -416,8 +422,8 @@ class CartMessenger
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject('ORDER NOTIFICATION: New order at ' . $from['name']);
 			$message->addFrom(
-				Config::get('mailfrom'),
-				Config::get('sitename')
+					Config::get('mailfrom'),
+					Config::get('sitename')
 			);
 			$message->addPart($plain, 'text/plain');
 			foreach ($notifyTo as $email)
@@ -489,3 +495,32 @@ class CartMessenger
 
 		if ($errorType == 'POSTBACK')
 		{
+			$mailSubject = ': Error processing postback payment.';
+			$mailMessage = 'There was an error processing payment postback:' . "\n\n";
+		}
+		elseif ($errorType == 'LOG')
+		{
+			$mailSubject = ': Error logging payment postback information.';
+			$mailMessage = 'Log file is not writable.' . "\n\n";
+		}
+		elseif ($errorType == 'NO_LOG')
+		{
+			$mailSubject = ': Error logging payment postback information.';
+			$mailMessage = 'Log file does not exist' . "\n\n";
+		}
+		else
+		{
+			$mailSubject = 'Cart error';
+		}
+
+		$mailMessage .= $error;
+
+		if ($errorType != 'LOG')
+		{
+			$mailMessage .= "\n\n" . 'Please see log for details';
+		}
+
+		// Send emails
+		Event::trigger('xmessage.onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
+	}
+}
