@@ -123,7 +123,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
 			return false;
 		}
-		
+
 		// Check to see if there are many blocked accounts
 		if ($this->hasExceededBlockLimit($result))
 		{
@@ -157,7 +157,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 				$password_rules = \Hubzero\Password\Rule::all()
 					->whereEquals('enabled', 1)
 					->rows();
-				$msg = \Hubzero\Password\Rule::verify($credentials['password'], $password_rules, $result->username);
+				$msg = \Hubzero\Password\Rule::verify($credentials['password'], $password_rules, $result->username, null, false);
 				if (is_array($msg) && !empty($msg[0]))
 				{
 					App::get('session')->set('badpassword', '1');
@@ -235,9 +235,8 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 	/**
 	 * hasExceededLoginLimit 
 	 * 
-	 * @param $result 
-
-	 * @return bool
+	 * @param   object  $response
+	 * @return  bool
 	 */
 	private function hasExceededBlockLimit($response)
 	{
