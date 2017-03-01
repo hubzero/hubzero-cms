@@ -134,11 +134,12 @@ if (!empty($this->notifications))
 		foreach ($this->transactionItems as $item)
 		{
 			$meta = $item['transactionInfo']->tiMeta;
-			if ($meta->checkoutNotes)
+			if (isset($meta->checkoutNotes) && $meta->checkoutNotes)
 			{
 				$notes[] = array(
 					'label' => $item['info']->pName . ', ' . $item['info']->sSku,
-					'notes' => $meta->checkoutNotes);
+					'notes' => $meta->checkoutNotes
+				);
 			}
 		}
 
