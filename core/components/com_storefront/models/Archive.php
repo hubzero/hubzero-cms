@@ -5,16 +5,12 @@ namespace Components\Storefront\Models;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Sku;
 
-require_once(__DIR__ . DS . 'Warehouse.php');
-require_once(__DIR__ . DS . 'Sku.php');
+require_once __DIR__ . DS . 'Warehouse.php';
+require_once __DIR__ . DS . 'Sku.php';
 
 /**
-* Archive model. Interface between admin and Warehouse
-*
-* @package		Joomla.Administrator
-* @subpackage	com_storefront
-* @since		1.6
-*/
+ * Archive model. Interface between admin and Warehouse
+ */
 class Archive extends \Hubzero\Base\Object
 {
 	/**
@@ -31,6 +27,11 @@ class Archive extends \Hubzero\Base\Object
 	 */
 	private $_products_count = null;
 
+	/**
+	 * Get a count or list of products
+	 *
+	 * @return  void
+	 */
 	public function __construct()
 	{
 		$this->_db = \App::get('db');
@@ -39,10 +40,10 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get a count or list of products
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function products($rtrn = 'list', $filters = array(), $clear = false)
 	{
@@ -90,8 +91,8 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get product info
 	 *
-	 * @param      int $pId Product ID
-	 * @return     mixed product info
+	 * @param   int    $pId  Product ID
+	 * @return  mixed  product info
 	 */
 	public function product($pId)
 	{
@@ -102,8 +103,7 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get product types
 	 *
-	 * @param      void
-	 * @return     types
+	 * @return  types
 	 */
 	public function getProductTypes()
 	{
@@ -113,13 +113,14 @@ class Archive extends \Hubzero\Base\Object
 	}
 
 	/* SKUs */
+
 	/**
 	 * Get a count or list of skus
 	 *
-	 * @param      string  	$rtrn    What data to return
-	 * @param      int   	$pId products
-	 * @param      array   	$filters Filters to apply to data retrieval
-	 * @return     mixed
+	 * @param   string  $rtrn     What data to return
+	 * @param   int     $pId      products
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
 	 */
 	public function skus($rtrn='list', $pId, $filters = array())
 	{
@@ -171,9 +172,9 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Update SKU info
 	 *
-	 * @param      int 		$sku SKU
-	 * @param      array 	$fields New info
-	 * @return     throws exception
+	 * @param   int    $sku     SKU
+	 * @param   array  $fields  New info
+	 * @return  throws exception
 	 */
 	public function updateSku($sku, $fields)
 	{
@@ -247,10 +248,10 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get a count or list of options
 	 *
-	 * @param      string  	$rtrn	What data to return
-	 * @param      int   	$ogId 	Option group Id
-	 * @param      array   	$filters Filters to apply to data retrieval
-	 * @return     mixed
+	 * @param   string  $rtrn     What data to return
+	 * @param   int     $ogId     Option group Id
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
 	 */
 	public function options($rtrn = 'rows', $ogId, $filters = array())
 	{
@@ -284,21 +285,26 @@ class Archive extends \Hubzero\Base\Object
 		}
 	}
 
+	/**
+	 * Get a count or list of products
+	 *
+	 * @param   int     $oId
+	 * @return  object
+	 */
 	public function option($oId)
 	{
-		require_once(__DIR__ . DS . 'Option.php');
+		require_once __DIR__ . DS . 'Option.php';
 		$option = new Option($oId);
 
-		//print_r(($option)); die;
 		return $option;
 	}
 
 	/**
 	 * Update option info
 	 *
-	 * @param      int 		Option ID
-	 * @param      array 	$fields New info
-	 * @return     throws exception
+	 * @param   int    $oId     Option ID
+	 * @param   array  $fields  New info
+	 * @return  throws exception
 	 */
 	public function updateOption($oId, $fields)
 	{
@@ -327,10 +333,9 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get a count or list of categories
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn     What data to return
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
 	 */
 	public function categories($rtrn='list', $filters=array())
 	{
@@ -366,6 +371,13 @@ class Archive extends \Hubzero\Base\Object
 		}
 	}
 
+	/**
+	 * Get a count or list of collections
+	 *
+	 * @param   string  $rtrn     What data to return
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
+	 */
 	public function collections($rtrn='list', $filters=array())
 	{
 		if (!isset($filters['sort']))
@@ -400,15 +412,27 @@ class Archive extends \Hubzero\Base\Object
 		}
 	}
 
+	/**
+	 * Get a count or list of categories
+	 *
+	 * @param   int    $ogId
+	 * @return  object
+	 */
 	public function optionGroup($ogId)
 	{
 		require_once(__DIR__ . DS . 'OptionGroup.php');
 		$optionGroup = new OptionGroup($ogId);
 
-		//print_r(($optionGroup)); die;
 		return $optionGroup;
 	}
 
+	/**
+	 * Get a count or list of option groups
+	 *
+	 * @param   string  $rtrn     What data to return
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
+	 */
 	public function optionGroups($rtrn='list', $filters=array())
 	{
 		if (isset($filters['sort']))
@@ -453,16 +477,14 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Update option group info
 	 *
-	 * @param      int 		$ogId Option Group ID
-	 * @param      array 	$fields New info
-	 * @return     throws exception
+	 * @param   int    $ogId    Option Group ID
+	 * @param   array  $fields  New info
+	 * @return  throws exception
 	 */
 	public function updateOptionGroup($ogId, $fields)
 	{
-		require_once(__DIR__ . DS . 'OptionGroup.php');
+		require_once __DIR__ . DS . 'OptionGroup.php';
 		$optionGroup = new OptionGroup($ogId);
-
-		//print_r($fields);die;
 
 		if (isset($fields['ogName']))
 		{
@@ -477,6 +499,12 @@ class Archive extends \Hubzero\Base\Object
 		return $optionGroup;
 	}
 
+	/**
+	 * Update option group info
+	 *
+	 * @param   int    $pId  Option Group ID
+	 * @return  array
+	 */
 	public function getProductOptions($pId)
 	{
 		$sql = "SELECT og.*, o.oId, o.oName, o.oActive FROM
@@ -487,9 +515,7 @@ class Archive extends \Hubzero\Base\Object
 				-- AND (ogActive IS NULL OR ogActive = 1)
 				ORDER BY og.ogName, o.oName";
 
-
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix( (string) $sql )); die;
 		$this->_db->execute();
 		$res = $this->_db->loadObjectList();
 
@@ -499,8 +525,8 @@ class Archive extends \Hubzero\Base\Object
 
 		foreach ($res as $option)
 		{
-			//print_r($option); die;
-			if ($og != $option->ogId) {
+			if ($og != $option->ogId)
+			{
 				$og = $option->ogId;
 				$optionGroups[$og] = new \stdClass();
 				$optionGroups[$og]->ogId = $option->ogId;
@@ -517,11 +543,10 @@ class Archive extends \Hubzero\Base\Object
 
 				$optionGroups[$og]->options[] = $opt;
 			}
-			else {
+			else
+			{
 				$optionGroups[$og]->options = array();
 			}
-
-
 		}
 		return $optionGroups;
 	}
@@ -529,8 +554,8 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get category info
 	 *
-	 * @param      int $cId Category ID
-	 * @return     mixed category info
+	 * @param   int    $cId  Category ID
+	 * @return  mixed  category info
 	 */
 	public function category($cId)
 	{
@@ -538,5 +563,4 @@ class Archive extends \Hubzero\Base\Object
 		$cInfo = $warehouse->getCollectionInfo($cId, true);
 		return $cInfo;
 	}
-
 }
