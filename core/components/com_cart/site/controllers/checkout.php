@@ -34,6 +34,12 @@ use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
@@ -46,7 +52,7 @@ class Checkout extends ComponentController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -71,19 +77,21 @@ class Checkout extends ComponentController
 		parent::execute();
 	}
 
+	/**
+	 * Default task
+	 *
+	 * @return  void
+	 */
 	public function displayTask()
 	{
-
 		App::abort(404, Lang::txt('COM_CART_NO_CHECKOUT_STEP_FOUND'));
 		return;
-
 	}
 
 	/**
 	 * Checkout entry point. Begin checkout -- check, create, or update transaction and redirect to the next step
 	 *
-	 * @param	void
-	 * @return	void
+	 * @return  void
 	 */
 	public function checkoutTask()
 	{
@@ -103,7 +111,7 @@ class Checkout extends ComponentController
 			// redirect back to cart to display all messages
 			//$redirect_url = Route::url('index.php?option=' . 'com_cart');
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 
@@ -125,8 +133,7 @@ class Checkout extends ComponentController
 	/**
 	 * Continue checkout -- decides where to take the checkout process next
 	 *
-	 * @param	void
-	 * @return	void
+	 * @return  void
 	 */
 	public function continueTask()
 	{
@@ -150,7 +157,7 @@ class Checkout extends ComponentController
 	/**
 	 * User agreement acceptance
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function eulaTask()
 	{
@@ -210,7 +217,8 @@ class Checkout extends ComponentController
 			{
 				$errors[] = array(Lang::txt('COM_CART_MUST_ACCEPT_EULA'), 'error');
 			}
-			else {
+			else
+			{
 				// Save item's meta
 				$itemMeta = new \stdClass();
 				$itemMeta->eulaAccepted = true;
@@ -251,14 +259,12 @@ class Checkout extends ComponentController
 	/**
 	 * Notes comments
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function notesTask()
 	{
 		$cart = new CurrentCart();
 		$transaction = $cart->liftTransaction();
-
-		//print_r($transaction); die;
 
 		if (!$transaction)
 		{
@@ -317,7 +323,8 @@ class Checkout extends ComponentController
 			{
 				$this->view->notifications = $errors;
 			}
-			else {
+			else
+			{
 				$notes = Request::getVar('notes', false, 'post');
 
 				// Save order's notes
@@ -352,7 +359,7 @@ class Checkout extends ComponentController
 	/**
 	 * Shipping step of the checkout
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function shippingTask()
 	{
@@ -437,14 +444,14 @@ class Checkout extends ComponentController
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-					Lang::txt(strtoupper($this->_option)),
-					'index.php?option=' . $this->_option
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
 			Pathway::append(
-					Lang::txt('Shipping')
+				Lang::txt('Shipping')
 			);
 		}
 
@@ -456,7 +463,9 @@ class Checkout extends ComponentController
 	/**
 	 * Select saved shipping address
 	 *
-	 * @return     void
+	 * @param   int     $saId
+	 * @param   object  $cart
+	 * @return  void
 	 */
 	private function selectSavedShippingAddress($saId, $cart)
 	{
@@ -467,7 +476,7 @@ class Checkout extends ComponentController
 	/**
 	 * Summary step of the checkout
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function summaryTask()
 	{
@@ -516,7 +525,7 @@ class Checkout extends ComponentController
 	/**
 	 * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers, requires a form submission to the payment gateway
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function confirmTask()
 	{
@@ -574,15 +583,16 @@ class Checkout extends ComponentController
 	/**
 	 * Redirect to login page
 	 *
-	 * @return void
+	 * @param   string  $message
+	 * @return  void
 	 */
 	private function login($message = '')
 	{
 		$return = base64_encode($_SERVER['REQUEST_URI']);
 		App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return),
-				$message,
-				'warning'
+			Route::url('index.php?option=com_users&view=login&return=' . $return),
+			$message,
+			'warning'
 		);
 		return;
 	}
@@ -590,7 +600,8 @@ class Checkout extends ComponentController
 	/**
 	 * Print transacttion info
 	 *
-	 * @return     void
+	 * @param   array  $t
+	 * @return  void
 	 */
 	private function printTransaction($t)
 	{
@@ -610,4 +621,3 @@ class Checkout extends ComponentController
 		echo '</div>';
 	}
 }
-

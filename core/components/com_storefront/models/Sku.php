@@ -48,8 +48,8 @@ class Sku
 	/**
 	 * Contructor
 	 *
-	 * @param  void
-	 * @return void
+	 * @param   int   $sId
+	 * @return  void
 	 */
 	public function __construct($sId = false)
 	{
@@ -125,7 +125,7 @@ class Sku
 	{
 		if (empty($this->data->price))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->price;
 	}
@@ -140,7 +140,7 @@ class Sku
 	{
 		if (empty($this->data->name))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->name;
 	}
@@ -160,7 +160,7 @@ class Sku
 	{
 		if (empty($this->data->weight))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->weight;
 	}
@@ -214,7 +214,7 @@ class Sku
 	{
 		if (empty($this->data->checkoutNotes))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->checkoutNotes;
 	}
@@ -260,7 +260,7 @@ class Sku
 	{
 		if (empty($this->data->id))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->id;
 	}
@@ -279,7 +279,7 @@ class Sku
 	{
 		if (empty($this->data->pId))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->pId;
 	}
@@ -312,7 +312,8 @@ class Sku
 			{
 				$optionGroupOptionsSet[] = $optionGroupId;
 			}
-			else {
+			else
+			{
 				// There are some options set that are from option groups not applied to this product
 				// (most likely due to the removal of the option group from the product.) This should never happen.
 				$extraOptionsSet = true;
@@ -756,7 +757,7 @@ class Sku
 	{
 		if (!isset($this->data->meta))
 		{
-			return NULL;
+			return null;
 		}
 		if (!empty($key))
 		{
@@ -810,7 +811,6 @@ class Sku
 	{
 		$this->data->options = $options;
 	}
-
 
 	// Static ----------------------------
 
@@ -901,6 +901,4 @@ class Sku
 		$db->setQuery($sql);
 		$db->query();
 	}
-
-
 }
