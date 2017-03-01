@@ -674,7 +674,7 @@ class CurrentCart extends Cart
 	 * @param mixed		meta	Meta info
 	 * @return void
 	 */
-	public function setTransactionItemMeta($sId, $meta)
+	private function setTransactionItemMeta($sId, $meta)
 	{
 		$sql = "UPDATE `#__cart_transaction_items` SET
 				`tiMeta` = " . $this->_db->quote($meta) . "
@@ -683,6 +683,44 @@ class CurrentCart extends Cart
 
 		$this->_db->setQuery($sql);
 		$this->_db->query();
+	}
+
+	/**
+	 * Add the meta information for a given transaction item
+	 *
+	 * @param int 		sId		SKU id of the item that needs to e updated
+	 * @param mixed		meta	Meta info
+	 * @return void
+	 */
+	public function addTransactionItemMeta($sId, $meta)
+	{
+		$currentMeta = json_decode($this->getTransactionItemMeta($sId));
+		if (!$currentMeta)
+		{
+			$this->setTransactionItemMeta($sId, json_encode($meta));
+		}
+		else {
+			// Merge the current meta and the new meta
+			$allMeta = (object) array_merge((array) $currentMeta, (array) $meta);
+			$this->setTransactionItemMeta($sId, json_encode($allMeta));
+		}
+	}
+
+	/**
+	 * Get the meta information for a given transaction item
+	 *
+	 * @param int 		sId		SKU id of the item that needs to e updated
+	 * @return mixed	meta	Meta info
+	 */
+	private function getTransactionItemMeta($sId)
+	{
+		$sql = "SELECT `tiMeta` FROM `#__cart_transaction_items`
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId) . "
+				AND `sId` = " . $this->_db->quote($sId);
+
+		$this->_db->setQuery($sql);
+		$itemMeta = $this->_db->loadResult();
+		return $itemMeta;
 	}
 
 	/**

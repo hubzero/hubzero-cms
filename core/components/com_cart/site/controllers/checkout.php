@@ -215,7 +215,7 @@ class Checkout extends ComponentController
 				$itemMeta = new \stdClass();
 				$itemMeta->eulaAccepted = true;
 				//$itemMeta->machinesInstalled = 'n/a';
-				$cart->setTransactionItemMeta($sId, json_encode($itemMeta));
+				$cart->addTransactionItemMeta($sId, $itemMeta);
 
 				// Mark this step as completed
 				$cart->setStepStatus('eula', $sId);
@@ -258,6 +258,8 @@ class Checkout extends ComponentController
 		$cart = new CurrentCart();
 		$transaction = $cart->liftTransaction();
 
+		//print_r($transaction); die;
+
 		if (!$transaction)
 		{
 			// Redirect to cart if transaction cannot be lifted
@@ -273,21 +275,61 @@ class Checkout extends ComponentController
 			$cart->redirect($nextStep->step);
 		}
 
+		// Add the fields for the SKUs that require special notes
+		$items = $transaction->items;
+		$noteFields = array();
+		foreach ($items as $item)
+		{
+			$info = $item['info'];
+			if ($info->sCheckoutNotes)
+			{
+				$noteFields[$info->sId] = array('pName' => $info->pName, 'sSku' => $info->sSku, 'sCheckoutNotes' => $info->sCheckoutNotes, 'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired);
+			}
+		}
+		$this->view->noteFields = $noteFields;
+
 		$notesSubmitted = Request::getVar('submitNotes', false, 'post');
 
 		if ($notesSubmitted)
 		{
-			$notes = Request::getVar('notes', false, 'post');
+			// Check all required notes
+			foreach ($noteFields as $sId => $fieldInfo)
+			{
+				$itemNotes = Request::getVar('notes-' . $sId, false, 'post');
+				if ($fieldInfo['sCheckoutNotesRequired'])
+				{
+					if (!$itemNotes)
+					{
+						$errors[] = array(Lang::txt('Please add Notes/Comments for ' . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku']), 'error');
+					}
+				}
 
-			// Save order's notes
-			$cart->setTransactionNotes($notes);
+				// Save item's meta
+				if ($itemNotes)
+				{
+					$itemMeta = new \stdClass();
+					$itemMeta->checkoutNotes = $itemNotes;
+					$cart->addTransactionItemMeta($sId, $itemMeta);
+				}
+			}
 
-			// Mark this step as completed
-			$cart->setStepStatus('notes');
+			if (!empty($errors))
+			{
+				$this->view->notifications = $errors;
+			}
+			else {
+				$notes = Request::getVar('notes', false, 'post');
 
-			// All good, continue
-			$nextStep = $cart->getNextCheckoutStep()->step;
-			$cart->redirect($nextStep);
+				// Save order's notes
+				$cart->setTransactionNotes($notes);
+
+				// Mark this step as completed
+				$cart->setStepStatus('notes');
+
+				// All good, continue
+				$nextStep = $cart->getNextCheckoutStep()->step;
+				$cart->redirect($nextStep);
+			}
 		}
 
 		if (Pathway::count() <= 0)

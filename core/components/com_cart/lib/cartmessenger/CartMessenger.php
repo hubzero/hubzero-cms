@@ -164,14 +164,10 @@ class CartMessenger
 		}
 	}
 
-	/**
-	 * Email completeed order
-	 *
-	 * @param   object  $transactionInfo
-	 * @return  void
-	 */
-	public function emailOrderComplete($transactionInfo)
+	public function emailOrderComplete($transaction)
 	{
+		$transactionInfo = $transaction->info;
+		$transactionItems = $transaction->items;
 		$params = Component::params(Request::getVar('option'));
 
 		$items = unserialize($transactionInfo->tiItems);
@@ -218,6 +214,47 @@ class CartMessenger
 		{
 			$summary .= "\n" . 'Notes/Comments: ' . "\n" . $transactionInfo->tiNotes . "\n";
 		}
+
+
+		// Check the notes, both SKU-specific and other
+		$notes = array();
+		foreach ($transactionItems as $item)
+		{
+			$meta = $item['transactionInfo']->tiMeta;
+			if ($meta->checkoutNotes)
+			{
+				$notes[] = array(
+					'label' => $item['info']->pName . ', ' . $item['info']->sSku,
+					'notes' => $meta->checkoutNotes);
+			}
+		}
+
+		$genericNotesLabel = '';
+		if (!empty($notes))
+		{
+			$genericNotesLabel = 'Other notes/comments';
+		}
+
+		if ($transactionInfo->tiNotes)
+		{
+			$notes[] = array(
+				'label' => $genericNotesLabel,
+				'notes' => $transactionInfo->tiNotes);
+		}
+
+		if (!empty($notes))
+		{
+			$summary .= "\n" . 'Notes/Comments: ' . "\n";
+			foreach ($notes as $note)
+			{
+				$summary .= $note['label'];
+				if ($note['label'])
+				{
+					$summary .= ': ';
+				}
+				$summary .= $note['notes'] . "\n";
+			}
+		};
 
 		$summary .= "\n\nItems ordered:";
 		$summary .= "\n--------------------\n";
@@ -379,8 +416,8 @@ class CartMessenger
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject('ORDER NOTIFICATION: New order at ' . $from['name']);
 			$message->addFrom(
-					Config::get('mailfrom'),
-					Config::get('sitename')
+				Config::get('mailfrom'),
+				Config::get('sitename')
 			);
 			$message->addPart($plain, 'text/plain');
 			foreach ($notifyTo as $email)
@@ -452,32 +489,3 @@ class CartMessenger
 
 		if ($errorType == 'POSTBACK')
 		{
-			$mailSubject = ': Error processing postback payment.';
-			$mailMessage = 'There was an error processing payment postback:' . "\n\n";
-		}
-		elseif ($errorType == 'LOG')
-		{
-			$mailSubject = ': Error logging payment postback information.';
-			$mailMessage = 'Log file is not writable.' . "\n\n";
-		}
-		elseif ($errorType == 'NO_LOG')
-		{
-			$mailSubject = ': Error logging payment postback information.';
-			$mailMessage = 'Log file does not exist' . "\n\n";
-		}
-		else
-		{
-			$mailSubject = 'Cart error';
-		}
-
-		$mailMessage .= $error;
-
-		if ($errorType != 'LOG')
-		{
-			$mailMessage .= "\n\n" . 'Please see log for details';
-		}
-
-		// Send emails
-		Event::trigger('xmessage.onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
-	}
-}

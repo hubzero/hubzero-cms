@@ -183,16 +183,53 @@ function submitbutton(pressbutton)
 		</fieldset>
 
 		<?php
+
+		// Check the notes, both SKU-specific and other
+		$notes = array();
+		foreach ($this->items as $item)
+		{
+			$meta = $item['transactionInfo']->tiMeta;
+			if (!empty($meta->checkoutNotes))
+			{
+				$notes[] = array(
+					'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
+					'notes' => $meta->checkoutNotes);
+			}
+		}
+
+		$genericNotesLabel = '';
+		if (!empty($notes))
+		{
+			$genericNotesLabel = 'Other notes/comments';
+		}
+
 		if ($this->tInfo->tiNotes)
 		{
-		?>
-		<fieldset class="adminform">
-			<legend><span>Notes</span></legend>
-			<p><?php echo $this->tInfo->tiNotes; ?></p>
-		</fieldset>
-		<?php
+			$notes[] = array(
+				'label' => '<strong>' . $genericNotesLabel . '</strong>',
+				'notes' => $this->tInfo->tiNotes);
 		}
+
+		if (!empty($notes))
+		{
+			echo '<fieldset class="adminform">';
+			echo '<legend><span>Notes/Comments</span></legend>';
+			foreach ($notes as $note)
+			{
+				echo '<p>';
+				echo $note['label'];
+				if ($note['label'])
+				{
+					echo ': ';
+				}
+				echo $note['notes'];
+				echo '</p>';
+			}
+			echo '</fieldset>';
+		};
+
 		?>
+
 	</div>
 	<div class="clr"></div>
 

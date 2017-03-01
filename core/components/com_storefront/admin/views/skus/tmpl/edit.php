@@ -113,6 +113,24 @@ function submitbutton(pressbutton)
 			?>
 		</fieldset>
 
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('Checkout options'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-checkoutNotes"><?php echo Lang::txt('Checkout notes/comments message'); ?>:</label><br />
+				<input type="text" name="fields[checkoutNotes]" id="field-checkoutNotes" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getCheckoutNotes())); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-checkoutNotesRequired"><?php echo Lang::txt('Checkout notes/comments required'); ?>:</label>
+				<select name="fields[checkoutNotesRequired]" id="field-checkoutNotesRequired">
+					<option value="0"<?php if ($this->row->getCheckoutNotesRequired() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
+					<option value="1"<?php if ($this->row->getCheckoutNotesRequired() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+				</select>
+			</div>
+
+		</fieldset>
+
 		<?php
 		if (!empty($this->allOptions))
 		{
