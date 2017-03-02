@@ -711,13 +711,13 @@ class Git extends Object
 	 * @param   string  $subdir  Local directory path
 	 * @return  array
 	 */
-	public function getFiles($subdir = '')
+	public function getFiles($subdir = '', $showAll = false)
 	{
 		// Make sure subdir has a trailing slash
 		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
-
+		$showArg = $showAll ? '-r' : '';
 		// Get Git status
-		$out = $this->callGit('ls-tree --name-only master ' . escapeshellarg($subdir));
+		$out = $this->callGit("ls-tree $showArg --name-only master " . escapeshellarg($subdir));
 
 		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
 	}
