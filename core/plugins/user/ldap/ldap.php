@@ -102,7 +102,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStoreProfile($user)
 	{
-		\Hubzero\Utility\Ldap::syncUser($user->get('id'));
+		\Hubzero\Utility\Ldap::syncUser($user->get('uidNumber'));
 	}
 
 	/**
@@ -113,7 +113,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDeleteProfile($user)
 	{
-		\Hubzero\Utility\Ldap::syncUser($user->get('id'));
+		\Hubzero\Utility\Ldap::syncUser($user->get('uidNumber'));
 	}
 
 	/**
