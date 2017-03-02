@@ -84,8 +84,7 @@ $this->css()
 										$name = $this->escape(stripslashes($row->creator->get('name')));
 										if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
 										{
-											$lname = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
-
+											$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 										}
 									}
 									$cls = array();
