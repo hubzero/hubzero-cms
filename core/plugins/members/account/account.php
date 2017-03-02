@@ -700,7 +700,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 
 		// Check to see if password expiration is even enforced
-		if (empty($hzup->passhash) || $hzup->shadowMax === NULL)
+		if (empty($hzup->passhash) || $hzup->shadowMax === null)
 		{
 			return false;
 		}
@@ -755,7 +755,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!Filesystem::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+			require_once PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
 
 			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
 			{
@@ -938,7 +938,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	private function sendEmail($token)
 	{
 		// Create the email with the new token
-		$url      = rtrim(Request::base(),'/');
+		$url      = rtrim(Request::base(), '/');
 		$return   = $url . Route::url($this->member->link() . '&acitve=account&task=confirmtoken');
 		$subject  = 'Set local password, confirmation token for ' . $url;
 		$message  = 'You have requested to set your local password at ' . $url . "\n\n";
