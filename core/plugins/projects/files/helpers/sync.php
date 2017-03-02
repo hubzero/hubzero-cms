@@ -892,9 +892,10 @@ class Sync extends \Hubzero\Base\Object
 
 		// Unlock sync
 		$this->lockSync($service, true);
-
+		
 		// Clean up status
 		$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE'));
+		$this->cleanUnusedRemotes();
 
 		$this->set('status', 'success');
 		return true;
@@ -1034,4 +1035,41 @@ class Sync extends \Hubzero\Base\Object
 
 		return NULL;
 	}
+	public function cleanUnusedRemotes($showAll = true, $service = 'google')
+      	{
+		// Get records listed on remote directory related to this project's directory
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+		$projectId = $this->model->get('id');
+                $remotes = $objRFile->getRemoteConnections($projectId, $service);
+
+		// Get local directory repo information
+		$params = array('showAll'=> $showAll,'subdir' =>"");
+            	$locals = $this->model->repo()->filelist($params);
+            	$localIds = array_map(function($file){
+			$path = $file->get('localPath');
+                        return $path;
+                }, $locals);
+
+
+		if (! empty($localIds))
+		{
+			foreach ($remotes['paths'] as $remote)
+			{
+				if (!in_array($remote['path'], $localIds))
+				{
+					$objRFile->deleteRecord(
+						$projectId,
+						$service,
+						$remote['remote_id']
+					);
+					$errorMessage = "Forcefully removed remote entry {$remote['path']}. \n";
+					$errorMessage .= "This is a sign that the sync did not properly work, ";
+					$errorMessage .= "therefore the cleanup step was required to remove the entry.";
+					
+					error_log($errorMessage, 0);
+				}
+			}	
+		}
+     	}
+
 }

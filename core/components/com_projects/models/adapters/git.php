@@ -113,11 +113,12 @@ class Git extends Models\Adapter
 		$sortby        = isset($params['sortby']) ? $params['sortby'] : 'name';
 		$files         = isset($params['files']) && is_array($params['files']) ? $params['files'] : [];
 		$dirsOnly      = isset($params['dirsOnly']) ? $params['dirsOnly'] : false;
+		$showAll       = isset($params['showAll']) ? $params['showAll'] : false;
 
 		if (!$dirsOnly)
 		{
 			// Get a list of files from the git repository
-			$files = empty($files) ? $this->_git->getFiles($dirPath) : $files;
+			$files = empty($files) ? $this->_git->getFiles($dirPath,$showAll) : $files;
 
 			// Add untracked?
 			$untracked = $showUntracked ? $this->_git->getUntrackedFiles($dirPath) : [];
@@ -192,6 +193,7 @@ class Git extends Models\Adapter
 				// Pick up data from sync record
 				$syncRecord = $remotes[$file->get('localPath')];
 				$file->set('remote', $syncRecord->service);
+				$file->set('remoteid', $syncRecord->remote_id);
 				$file->set('author', $syncRecord->remote_author);
 				$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
 				$file->set('mimeType', $syncRecord->remote_format);
