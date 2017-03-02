@@ -1065,6 +1065,7 @@ class Sync extends \Hubzero\Base\Object
 				$errorMessage .= "therefore the cleanup step was required to remove the entry.";
 				error_log($errorMessage, 0);
 			}
+<<<<<<< HEAD
 		}
 	}
 
