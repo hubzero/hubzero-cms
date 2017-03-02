@@ -1031,12 +1031,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "402cc7b5d68775ada6c4c123066f2f01591e9472"
+                "reference": "38a197bac82a61d08adee6ee3196f323b33e00b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/402cc7b5d68775ada6c4c123066f2f01591e9472",
-                "reference": "402cc7b5d68775ada6c4c123066f2f01591e9472",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/38a197bac82a61d08adee6ee3196f323b33e00b8",
+                "reference": "38a197bac82a61d08adee6ee3196f323b33e00b8",
                 "shasum": ""
             },
             "require": {
