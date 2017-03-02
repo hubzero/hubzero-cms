@@ -593,7 +593,7 @@ class Citation extends \JTable
 		$year = intval($this->_db->loadResult());
 		$year = $year ? $year : gmdate("Y");
 
-		for ($i=date("Y"), $n=$year; $i > $n; $i--)
+		for ($i=date("Y"), $n=$year; $i >= $n; $i--)
 		{
 			$stats[$i] = array();
 
