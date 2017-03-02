@@ -1049,10 +1049,10 @@ class Sync extends \Hubzero\Base\Object
 
 		// Get local directory repo information
 		$params = array('showAll'=> $showAll,'subdir' =>"");
-            	$locals = $this->model->repo()->filelist($params);
-            	$localIds = array_map(function($file){
-			$path = $file->get('localPath');
-                        return $path;
+		$locals = $this->model->repo()->filelist($params);
+		$localIds = array_map(function($file){
+				$path = $file->get('localPath');
+			return $path;
 		}, $locals);
 
 		foreach ($remotes['paths'] as $remote)
@@ -1065,7 +1065,6 @@ class Sync extends \Hubzero\Base\Object
 				$errorMessage .= "therefore the cleanup step was required to remove the entry.";
 				error_log($errorMessage, 0);
 			}
-		}	
-     	}
-
+		}
+	}
 }
