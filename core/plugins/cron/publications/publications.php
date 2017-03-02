@@ -299,8 +299,8 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$aipBasePath = trim($config->get('aip_path', NULL), DS);
-		$aipBasePath = $aipBasePath && is_dir(DS . $aipBasePath) ? DS . $aipBasePath : NULL;
+		$aipBasePath = trim($config->get('aip_path', null), DS);
+		$aipBasePath = $aipBasePath && is_dir(DS . $aipBasePath) ? DS . $aipBasePath : null;
 
 		// Check for base path
 		if (!$aipBasePath)
