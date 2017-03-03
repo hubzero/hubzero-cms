@@ -102,7 +102,7 @@ $i = 0;
 					? \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AGO')
 					: Lang::txt('PLG_PROJECTS_TEAM_NEVER');
 		$lastvisit = $owner->userid == User::get('id') || (!empty($owner->online) && $owner->lastvisit > $timecheck)
-					? '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW') . '</span>'
+					? '<span class="now-online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW') . '</span>'
 					: $lastvisit;
 		$i++;
 	?>
