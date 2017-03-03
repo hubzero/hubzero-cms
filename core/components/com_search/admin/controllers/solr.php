@@ -336,7 +336,11 @@ class Solr extends AdminController
 	{
 		// @TODO modify for RabbitMQ
 		// Check to see if the queue is still being processed
-		$processing = QueueDB::all()->where('status', '=', 0)->count();
+		$db = App::get('db');
+		$countQuery = "SELECT COUNT(*) FROM #__search_queue WHERE status = 0";
+		$db->setQuery($countQuery);
+		$db->query();
+		$processing = $db->loadResult();
 
 		if ($processing > 0)
 		{
@@ -344,7 +348,6 @@ class Solr extends AdminController
 			$this->view->processing = true;
 
 			// Check to see if the CRON task has stalled
-			$db = App::get('db');
 			$db->setQuery("SELECT MAX(modified) AS lastUpdated FROM `#__search_queue` WHERE status = 1");
 			$db->query();
 			$max = $db->loadResult();
