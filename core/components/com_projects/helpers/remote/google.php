@@ -893,14 +893,48 @@ class Google extends Object
 		$q .= " and mimeType = 'application/vnd.google-apps.folder' ";
 
 		$parameters = array(
-			'q' => $q,
-			'fields' => 'items(id,title,labels/trashed,parents/id)'
+			'q' => $q//,
+			//'fields' => 'items(id,title,labels/trashed,parents/id)'
 		);
 
 		// Get a list of files in remote folder
 		try
 		{
 			$data = $apiService->files->listFiles($parameters);
+
+			$items = $items = $data->getFiles();
+			if (!empty($items))
+			{
+				$lpath = $path ? $path : '';
+				foreach ($items as $item)
+				{
+					// Skip deleted items
+					if ($item->getTrashed())
+					{
+						continue;
+					}
+
+					$title  = Filesystem::cleanPath($item->getName());
+					$fpath  = $lpath ? $lpath . DS . $title : $title;
+					$status = $item->getTrashed() ? 'D' : 'A';
+
+					$remoteFolders[$fpath] = array(
+						'remoteid' => $item->getId(),
+						'status'   => $status,
+						'rParent'  => self::getParentID($item->getParents())
+					);
+
+					// Recurse
+					self::getFolders($apiService, $item->getId(), $remoteFolders, $fpath);
+				}
+			}
+
+			/*
+			$data = $apiService->files->listFiles($parameters);
+			if (\User::get('username') == 'zooley')
+			{
+				var_dump($data->getFiles()); die();
+			}
 			if (!empty($data['items']))
 			{
 				$lpath = $path ? $path : '';
@@ -926,6 +960,7 @@ class Google extends Object
 					self::getFolders($apiService, $item['id'], $remoteFolders, $fpath);
 				}
 			}
+			*/
 		}
 		catch (Exception $e)
 		{
@@ -943,10 +978,20 @@ class Google extends Object
 	 */
 	public static function getParentID($parents = array())
 	{
+		if (\User::get('username') == 'zooley')
+		{
+			if (!empty($parents))
+			{
+				return $parents[0]->getId();
+			}
+		}
+		else
+		{
 		if (!empty($parents))
 		{
 			return $parents[0]['id'];
 		}
+	}
 		return null;
 	}
 
@@ -976,14 +1021,140 @@ class Google extends Object
 		$q = "'" . $folderID . "' in parents";
 
 		$parameters = array(
-			'q' => $q,
-			'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
+			'q' => $q//,
+			//'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
 		);
 
 		// Get a list of files in remote folder
 		try
 		{
 			$data = $apiService->files->listFiles($parameters);
+			$items = $data->getFiles();
+			if (!empty($items))
+			{
+				$lpath = $path ? $path : '';
+				foreach ($items as $item)
+				{
+					$time   = strtotime($item->getModifiedTime());
+					$status = $item->getTrashed() ? 'D' : 'A';
+					$skip   = 0;
+
+					// Check against modified date
+					$changed = (strtotime(date("c", strtotime($item->getModifiedTime()))) - strtotime($since));
+					if ($since && $changed <= 0 && $item->getTrashed() != 1)
+					{
+						$skip = 1;
+					}
+
+					$converted = preg_match("/google-apps/", $item->getMimeType()) && !preg_match("/.folder/", $item->getMimeType()) ? 1 : 0;
+					$url       = $item->getWebContentLink() ? $item->getWebContentLink() : $item->getWebViewLink();
+					//$url = $url ?: 'https://www.googleapis.com/drive/v3/files/' . $item->getId() . '?alt=media';
+					$original  = $item->getOriginalFilename();
+					$thumb     = $item->getThumbnailLink();
+
+					$author    = null; /*isset($item['lastModifyingUserName'])
+											? utf8_encode($item['lastModifyingUserName'])
+											: utf8_encode($item['ownerNames'][0]);*/
+
+					if (!preg_match("/.folder/", $item->getMimeType()))
+					{
+						$title = Filesystem::clean($item->getName());
+
+						if ($converted)
+						{
+							$ext = self::getGoogleConversionFormat($item->getMimeType(), false, true);
+							if ($ext)
+							{
+								$title = $title . '.' . $ext;
+							}
+						}
+
+						$type = 'file';
+					}
+					else
+					{
+						$title = Filesystem::cleanPath($item->getName());
+						$type = 'folder';
+					}
+
+					$fpath = $lpath ? $lpath . DS . $title : $title;
+
+					$synced      = isset($conIds[$item->getId()]) ? $conIds[$item->getId()]['synced'] : null;
+					$md5Checksum = $item->getMd5Checksum();
+					$fileSize    = $item->getSize();
+
+					/// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
+					$fpath = self::buildDuplicatePath($item->getId(), $fpath, $item->getMimeType(), $connections, $remotes, $duplicates);
+
+					// Detect a rename or move
+					$rename = '';
+					if (isset($conIds[$item->getId()]))
+					{
+						$oFilePath = $conIds[$item->getId()]['path'];
+						$oDirPath  = $conIds[$item->getId()]['dirpath'];
+						$nDirPath  = dirname($fpath) == '.' ? '' : dirname($fpath);
+						$nFilePath = $fpath;
+
+						if ($oDirPath != $nDirPath && $oFilePath != $nFilePath)
+						{
+							$status = 'W';
+							$rename = $oFilePath;
+						}
+						elseif ($oFilePath != $nFilePath)
+						{
+							$status = 'R';
+							$rename = $oFilePath;
+						}
+					}
+
+					// Check that file was last synced after modified date
+					// (important to pick up failed updates)
+					if (isset($conIds[$item->getId()]))
+					{
+						if ($conIds[$item->getId()]['modified'] < gmdate('Y-m-d H:i:s', $time))
+						{
+							$skip = 0;
+						}
+					}
+					elseif ($status == 'A')
+					{
+						// Never skip new files
+						$skip = 0;
+					}
+
+					if (!$skip)
+					{
+						$remotes[$fpath] = array(
+							'status'     => $status,
+							'time'       => $time,
+							'modified'   => gmdate('Y-m-d H:i:s', $time),
+							'type'       => $type,
+							'local_path' => $fpath,
+							'remoteid'   => $item->getId(),
+							'title'      => $item->getName(),
+							'converted'  => $converted,
+							'rParent'    => self::getParentID($item->getParents()),
+							'url'        => $url,
+							'original'   => $original,
+							'author'     => $author,
+							'synced'     => $synced,
+							'md5'        => $md5Checksum,
+							'mimeType'   => $item->getMimeType(),
+							'thumb'      => $thumb,
+							'rename'     => $rename,
+							'fileSize'   => $fileSize
+						);
+					}
+
+					if (preg_match("/.folder/", $item->getMimeType()))
+					{
+						// Recurse
+						$remotes = self::getFolderContent($apiService, $item->getId(), $remotes, $fpath, $since, $connections, $duplicates);
+					}
+				}
+			}
+
+			/*$data = $apiService->files->listFiles($parameters);
 
 			if (!empty($data['items']))
 			{
@@ -1106,7 +1277,7 @@ class Google extends Object
 						$remotes = self::getFolderContent($apiService, $item['id'], $remotes, $fpath, $since, $connections, $duplicates);
 					}
 				}
-			}
+			}*/
 		}
 		catch (Exception $e)
 		{

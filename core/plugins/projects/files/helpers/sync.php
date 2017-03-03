@@ -41,8 +41,8 @@ class Sync extends \Hubzero\Base\Object
 	/**
 	 * Constructor
 	 *
-	 * @param	   object	$connect
-	 * @return	   void
+	 * @param   object  $connect
+	 * @return  void
 	 */
 	public function __construct($connect = null)
 	{
@@ -67,7 +67,7 @@ class Sync extends \Hubzero\Base\Object
 	/**
 	 * Get status srray
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function getStatus()
 	{
@@ -85,11 +85,12 @@ class Sync extends \Hubzero\Base\Object
 	/**
 	 * Sync local and remote changes since last sync
 	 *
-	 * @param    string		$service	Remote service name
-	 * @param    boolean	$queue	    Remote service name
-	 * @return   void
+	 * @param   string   $service  Remote service name
+	 * @param   boolean  $queue
+	 * @param   boolean  $auto
+	 * @return  void
 	 */
-	public function sync ($service = 'google', $queue = false, $auto = false)
+	public function sync($service = 'google', $queue = false, $auto = false)
 	{
 		// Lock sync
 		if (!$this->lockSync($service, false, $queue))
@@ -136,14 +137,14 @@ class Sync extends \Hubzero\Base\Object
 		$this->_connect->getAPI($service, $projectOwner);
 
 		// Collectors
-		$locals 		= array();
-		$remotes 		= array();
-		$localRenames   = array();
-		$localFolders 	= array();
-		$remoteFolders 	= array();
-		$deletes		= array();
-		$timedRemotes	= array();
-		$newRemotes     = array();
+		$locals        = array();
+		$remotes       = array();
+		$localRenames  = array();
+		$localFolders  = array();
+		$remoteFolders = array();
+		$deletes       = array();
+		$timedRemotes  = array();
+		$newRemotes    = array();
 
 		// Sync start time
 		$startTime =  date('c');
@@ -244,8 +245,7 @@ class Sync extends \Hubzero\Base\Object
 			$output .= 'Timed remote changes since ' . $from . ' (' . count($timedRemotes) . '):' . "\n";
 			foreach ($timedRemotes as $tr => $trinfo)
 			{
-				$output .= $tr . ' changed ' . date("c", $trinfo['time'])
-						. ' status ' . $trinfo['status'] . ' ' . $trinfo['fileSize'] . "\n";
+				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . ' status ' . $trinfo['status'] . ' ' . $trinfo['fileSize'] . "\n";
 			}
 
 			// Pick up missed changes
@@ -282,8 +282,7 @@ class Sync extends \Hubzero\Base\Object
 			$lChange = null;
 			foreach ($locals as $filename => $local)
 			{
-				$output .= ' * Local change ' . $filename . ' - ' . $local['status']
-						. ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
+				$output .= ' * Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
 
 				// Get latest change
 				$lChange = $local['time'] > $lChange ? $local['time'] : $lChange;
@@ -304,14 +303,12 @@ class Sync extends \Hubzero\Base\Object
 				// Check against individual item sync time (to avoid repeat sync)
 				if ($local['synced'] && ($local['synced']  > $local['modified']))
 				{
-					$output .= '## item in sync: ' . $filename . ' local: '
-						. $local['modified'] . ' synced: ' . $local['synced'] . "\n";
+					$output .= '## item in sync: ' . $filename . ' local: ' . $local['modified'] . ' synced: ' . $local['synced'] . "\n";
 					continue;
 				}
 
 				// Record sync status
-				$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' '
-					. \Components\Projects\Helpers\Html::shortenFileName($filename, 30));
+				$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30));
 
 				// Item renamed
 				if ($local['status'] == 'R')
@@ -350,8 +347,7 @@ class Sync extends \Hubzero\Base\Object
 								$local['remoteid'], $local, $parentId
 							);
 
-							$output .= '>> moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id '
-								. $parentId . ')' . "\n";
+							$output .= '>> moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id ' . $parentId . ')' . "\n";
 
 							if ($local['type'] == 'folder')
 							{
@@ -512,8 +508,7 @@ class Sync extends \Hubzero\Base\Object
 				// Generate local thumbnail
 				if ($nR['thumb'])
 				{
-					$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB')
-						. ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15));
+					$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15));
 
 					$this->_connect->generateThumbnail(
 						$service,
@@ -546,8 +541,7 @@ class Sync extends \Hubzero\Base\Object
 			// Examine each change
 			foreach ($remotes as $filename => $remote)
 			{
-				$output .= ' * Remote change ' . $filename . ' - '
-					. $remote['status'] . ' - ' . $remote['modified'];
+				$output .= ' * Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'];
 				$output .= $remote['fileSize'] ? ' - ' . $remote['fileSize'] . ' bytes' : '';
 				$output .= "\n";
 
@@ -594,8 +588,7 @@ class Sync extends \Hubzero\Base\Object
 				$cDate = date('c', $remote['time']); // Important! Needs to be local time, NOT UTC
 
 				// Record sync status
-				$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING')
-					. ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30));
+				$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30));
 
 				// Item in directory? Make sure we have correct local dir structure
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
@@ -603,7 +596,7 @@ class Sync extends \Hubzero\Base\Object
 				{
 					// Set params
 					$params = array(
-						'newDir' => $this->_path . DS . $local_dir,
+						'newDir' => $local_dir, //$this->_path . DS . $local_dir
 						'author' => $author
 					);
 					$created = $this->model->repo()->makeDirectory($params);
@@ -717,8 +710,7 @@ class Sync extends \Hubzero\Base\Object
 							if ($remote['md5'] == $md5Checksum)
 							{
 								// Skip update
-								$output .= '## update skipped: local and remote versions identical: '
-										. $filename . "\n";
+								$output .= '## update skipped: local and remote versions identical: ' . $filename . "\n";
 								$updated = 1;
 							}
 							else
@@ -787,8 +779,7 @@ class Sync extends \Hubzero\Base\Object
 							if ($checkAvail <= 0)
 							{
 								// Error
-								$output .= '[error] not enough space for ' . $filename . ' (' . $remote['fileSize']
-										. ' bytes) avail space:' . $checkAvail . "\n";
+								$output .= '[error] not enough space for ' . $filename . ' (' . $remote['fileSize'] . ' bytes) avail space:' . $checkAvail . "\n";
 								continue;
 							}
 							else
@@ -801,7 +792,7 @@ class Sync extends \Hubzero\Base\Object
 							if ($this->_connect->downloadFileCurl(
 								$service,
 								$projectOwner,
-								$remote['url'],
+								($remote['url'] ? $remote['url'] : $remote['remoteid']),
 								$this->_path . DS . $remote['local_path'])
 							)
 							{
@@ -841,10 +832,11 @@ class Sync extends \Hubzero\Base\Object
 					// Generate local thumbnail
 					if ($remote['thumb'] && $remote['status'] != 'D')
 					{
-						$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' '
-						. \Components\Projects\Helpers\Html::shortenFileName($filename, 15));
-						$this->_connect->generateThumbnail($service, $projectOwner, $remote,
-							$this->model->config(), $this->model->get('alias'));
+						$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15));
+						$this->_connect->generateThumbnail(
+							$service, $projectOwner, $remote,
+							$this->model->config(), $this->model->get('alias')
+						);
 					}
 				}
 			}
@@ -903,15 +895,17 @@ class Sync extends \Hubzero\Base\Object
 	/**
 	 * Lock/unlock sync operation
 	 *
-	 * @param    string		$service	Remote service name
+	 * @param    string   $service  Remote service name
+	 * @param    bool     $unlock
+	 * @param    integer  $queue
 	 * @return   void
 	 */
-	public function lockSync ($service = 'google', $unlock = false, $queue = 0)
+	public function lockSync($service = 'google', $unlock = false, $queue = 0)
 	{
-		$pparams 	= $this->model->params;
-		$synced 	= $pparams->get($service . '_sync');
-		$syncLock 	= $pparams->get($service . '_sync_lock');
-		$syncQueue 	= $pparams->get($service . '_sync_queue', 0);
+		$pparams   = $this->model->params;
+		$synced    = $pparams->get($service . '_sync');
+		$syncLock  = $pparams->get($service . '_sync_lock');
+		$syncQueue = $pparams->get($service . '_sync_queue', 0);
 
 		// Request to unlock sync
 		if ($unlock == true)
@@ -973,7 +967,10 @@ class Sync extends \Hubzero\Base\Object
 	/**
 	 * Write sync status to file
 	 *
-	 * @return   void
+	 * @param   string  $content
+	 * @param   string  $filename
+	 * @param   bool    $append
+	 * @return  mixed
 	 */
 	public function writeToFile($content = '', $filename = '', $append = false)
 	{
@@ -1002,7 +999,9 @@ class Sync extends \Hubzero\Base\Object
 	/**
 	 * Read sync status from file (last line)
 	 *
-	 * @return   void
+	 * @param   string  $filename
+	 * @param   bool    $readAll
+	 * @return  mixed
 	 */
 	public function readFile($filename = '', $readAll = false)
 	{
@@ -1038,12 +1037,15 @@ class Sync extends \Hubzero\Base\Object
 	/**
 	 * Check list of local files against remote files listed in the the #__project_remote_files table,
 	 * and remove any records found in the table but not found locally.
-	 * @return   void
+	 *
+	 * @param   bool    $showAll
+	 * @param   string  $service
+	 * @return  void
 	 */
 	public function cleanUnusedRemotes($showAll = true, $service = 'google')
 	{
 		// Get records listed on remote directory related to this project's directory
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 		$projectId = $this->model->get('id');
 		$remotes = $objRFile->getRemoteConnections($projectId, $service);
 
