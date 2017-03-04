@@ -186,13 +186,14 @@ function submitbutton(pressbutton)
 
 		// Check the notes, both SKU-specific and other
 		$notes = array();
-		foreach ($this->items as $item)
+		foreach ($this->items as $sId => $item)
 		{
 			$meta = $item['transactionInfo']->tiMeta;
 			if (!empty($meta->checkoutNotes))
 			{
 				$notes[] = array(
-					'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
+					//'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
+					'label' => $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku,
 					'notes' => $meta->checkoutNotes);
 			}
 		}

@@ -231,6 +231,7 @@ abstract class Cart
 
 		$db = \App::get('db');
 		$db->setQuery($sql);
+		//echo $db->toString(); die;
 		$db->query();
 
 		$totalRows = $db->getNumRows();
@@ -689,9 +690,10 @@ abstract class Cart
 	 * Get all items in the transaction
 	 *
 	 * @param   int    $tId  transaction ID
+	 * @param   bool   $verifySkuInfo  a flag wheretr the sku info should be verified for availability
 	 * @return  mixed  List of items in the transaction, false if no items in transaction
 	 */
-	public static function getTransactionItems($tId)
+	public static function getTransactionItems($tId, $verifySkuInfo = true)
 	{
 		$db = \App::get('db');
 
@@ -710,6 +712,27 @@ abstract class Cart
 		$warehouse = new Warehouse();
 
 		$skuInfo = $warehouse->getSkusInfo($skus);
+		if (empty($skuInfo))
+		{
+			if (!$verifySkuInfo)
+			{
+				foreach ($allSkuInfo as $sId => $skuInfo)
+				{
+					$info = array();
+					$info['info'] = false;
+					$info['meta'] = false;
+
+					$transactionInfo = new \stdClass();
+					$transactionInfo->qty = $skuInfo->tiQty;
+					$transactionInfo->tiPrice = $skuInfo->tiPrice;
+					$transactionInfo->tiMeta = json_decode($skuInfo->tiMeta);
+					$info['transactionInfo'] = $transactionInfo;
+					$allSkuInfo[$sId] = $info;
+				}
+				return($allSkuInfo);
+			}
+			return false;
+		}
 
 		// Update skuInfo with transaction info
 		foreach ($skuInfo as $sId => $sku)
@@ -720,11 +743,6 @@ abstract class Cart
 			$transactionInfo->tiMeta = json_decode($allSkuInfo[$sId]->tiMeta);
 			$skuInfo[$sId]['transactionInfo'] = $transactionInfo;
 			unset($transactionInfo);
-		}
-
-		if (empty($skuInfo))
-		{
-			return false;
 		}
 
 		return $skuInfo;
