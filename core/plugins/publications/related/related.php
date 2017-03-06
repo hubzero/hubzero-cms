@@ -41,17 +41,17 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @return     array
+	 * @param   object  $publication  Current publication
+	 * @return  array
 	 */
-	public function &onPublicationSubAreas( $publication )
+	public function &onPublicationSubAreas($publication)
 	{
 		$areas = array();
 		if ($publication->category()->_params->get('plg_related', 1) == 1)
@@ -66,22 +66,22 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a publication sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $publication 	Current publication
-	 * @param      string  $option    		Name of the component
-	 * @param      integer $miniview  		View style
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   integer  $miniview     View style
+	 * @return  array
 	 */
-	public function onPublicationSub( $publication, $option, $miniview=0 )
+	public function onPublicationSub($publication, $option, $miniview=0)
 	{
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
 		$areas = array('related');
-		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
-		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
+		if (!array_intersect($areas, $this->onPublicationSubAreas($publication))
+		&& !array_intersect($areas, array_keys($this->onPublicationSubAreas($publication))))
 		{
 			return false;
 		}
@@ -92,8 +92,8 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql1 = "SELECT v.id, v.page_id AS pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS abstract,
 					NULL AS category, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'wiki' AS class, 'Topic' AS section
 				FROM `#__wiki_pages` AS w
-				JOIN `#__wiki_versions` AS v ON w.id=v.page_id
-				JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
+				INNER JOIN `#__wiki_versions` AS v ON w.id=v.page_id
+				INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
 				WHERE v.approved=1 AND wl.scope='publication' AND wl.scope_id=" . $database->quote($publication->id);
 
 		if (!User::isGuest())
@@ -119,7 +119,14 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				$g = implode(",", $groups);
 				$c = implode(",", $cns);
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
+				if (!empty($groups))
+				{
+					$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
+				}
+				else
+				{
+					$sql1 .= "AND (w.access!=1 OR (w.access=1 AND w.created_by=" . $database->quote(User::get('id')) . ")) ";
+				}
 			}
 		}
 		else
@@ -129,7 +136,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql1 .= "GROUP BY pageid ORDER BY ranking DESC, title LIMIT 10";
 
 		// Initiate a helper class
-		$model = new \Components\Publications\Models\Publication( $publication );
+		$model = new \Components\Publications\Models\Publication($publication);
 		$tags = $model->getTags();
 
 		// Get version authors
@@ -139,11 +146,11 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql2 = "SELECT DISTINCT r.publication_id as id, NULL AS pageid, r.id AS version,
 				r.title, C.alias, r.abstract, C.category, r.state as published,
 				r.published_up, NULL AS scope, C.rating, C.times_rated, C.ranking,
-				rt.alias AS class, rt.name AS section"
-			 . "\n FROM #__publications as C, #__publication_categories AS rt, #__publication_versions AS r "
-			 . "\n JOIN #__tags_object AS a ON r.publication_id=a.objectid AND a.tbl='publications'"
-			 . "\n JOIN #__publication_authors AS PA ON PA.publication_version_id=r.id "
-			 . "\n WHERE C.id=r.publication_id ";
+				rt.alias AS class, rt.name AS section
+				FROM `#__publications` as C, `#__publication_categories` AS rt, `#__publication_versions` AS r
+				INNER JOIN `#__tags_object` AS a ON r.publication_id=a.objectid AND a.tbl='publications'
+				INNER JOIN `#__publication_authors` AS PA ON PA.publication_version_id=r.id
+				WHERE C.id=r.publication_id ";
 		if ($tags)
 		{
 			$tquery = array(0);
@@ -152,7 +159,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				$tquery[] = $database->quote($tagg->get('id'));
 			}
 
-			$sql2 .= " AND ( a.tagid IN (".implode(',', $tquery).")";
+			$sql2 .= " AND (a.tagid IN (".implode(',', $tquery).")";
 			$sql2 .= (count($authors) > 0) ? " OR " : "";
 		}
 		if (count($authors) > 0)
@@ -163,13 +170,13 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				$aquery .= "'".$author->user_id."',";
 			}
 			$aquery = substr($aquery,0,strlen($aquery) - 1);
-			$sql2 .= ($tags) ? "" : " AND ( ";
+			$sql2 .= ($tags) ? "" : " AND (";
 			$sql2 .= " PA.user_id IN (".$aquery.")";
 		}
-		$sql2 .= ($tags || count($authors) > 0 ) ? ")" : "";
+		$sql2 .= ($tags || count($authors) > 0) ? ")" : "";
 
 		$sql2 .= " AND r.publication_id !=" . $publication->id;
-		$sql2.= " AND C.category = rt.id AND C.category!=8 ";
+		$sql2 .= " AND C.category = rt.id AND C.category!=8 ";
 		$sql2 .= "AND r.access=0 ";
 		$sql2 .= "AND r.state=1 ";
 		$sql2 .= "GROUP BY r.publication_id ORDER BY r.ranking LIMIT 10";
@@ -178,7 +185,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$query = "SELECT k.* FROM (($sql1) UNION ($sql2)) AS k ORDER BY ranking DESC LIMIT 10";
 
 		// Execute the query
-		$database->setQuery( $query );
+		$database->setQuery($query);
 		$related = $database->loadObjectList();
 
 		// Instantiate a view
@@ -186,10 +193,10 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'publications',
-					'element'=>'related',
-					'name'=>'browse',
-					'layout' => 'mini'
+					'folder'  => 'publications',
+					'element' => 'related',
+					'name'    => 'browse',
+					'layout'  => 'mini'
 				)
 			);
 		}
@@ -197,20 +204,20 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'publications',
-					'element'=>'related',
-					'name'=>'browse'
+					'folder'  => 'publications',
+					'element' => 'related',
+					'name'    => 'browse'
 				)
 			);
 		}
 
 		// Pass the view some info
-		$view->option 		= $option;
-		$view->publication 	= $publication;
-		$view->related 		= $related;
+		$view->option      = $option;
+		$view->publication = $publication;
+		$view->related     = $related;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		// Return the output
