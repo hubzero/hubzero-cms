@@ -1992,7 +1992,7 @@ class Connect extends Object
 		// Clean up data from Windows characters - important!
 		if ($ext == 'tex')
 		{
-			$fc = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $fc);
+			$fc = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $fc);
 		}
 
 		if ($this->fetchFile($fc, $fpath, $path))
