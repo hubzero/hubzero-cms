@@ -169,7 +169,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 			{
 				$aquery .= "'".$author->user_id."',";
 			}
-			$aquery = substr($aquery,0,strlen($aquery) - 1);
+			$aquery = substr($aquery, 0, strlen($aquery) - 1);
 			$sql2 .= ($tags) ? "" : " AND (";
 			$sql2 .= " PA.user_id IN (".$aquery.")";
 		}
