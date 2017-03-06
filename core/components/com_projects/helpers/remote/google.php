@@ -226,7 +226,8 @@ class Google extends Object
 		// Are we converting to Google format?
 		if ($convert == true)
 		{
-			$fparams['convert'] = true;
+			//$fparams['convert'] = true;
+			$file->setMimeType(self::mimetypeToGoogle($mimeType));
 
 			// OCR conversion
 			if ($mimeType == 'application/pdf' || $mimeType == 'image/png' || $mimeType == 'image/jpeg' || $mimeType == 'image/gif')
@@ -1511,6 +1512,44 @@ class Google extends Object
 
 			case 'application/vnd.google-apps.drawing':
 				$ext = 'jpeg';
+				break;
+		}
+
+		return $ext;
+	}
+
+	/**
+	 * Mimetype to Google mimetype conversion
+	 *
+	 * @param   string  $mimeType
+	 * @return  string
+	 */
+	public static function mimetypeToGoogle($mimeType = '')
+	{
+		$ext = $mimeType;
+
+		switch ($mimeType)
+		{
+			case 'text/plain':
+			case 'application/rtf':
+			case 'application/msword':
+			case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+				$ext = 'application/vnd.google-apps.document';
+				break;
+
+			case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+				$ext = 'application/vnd.google-apps.presentation';
+				break;
+
+			case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+			case 'application/x-vnd.oasis.opendocument.spreadsheet':
+				$ext = 'application/vnd.google-apps.spreadsheet';
+				break;
+
+			case 'image/png':
+			case 'image/jpeg':
+			case 'image/svg+xml':
+				$ext = 'application/vnd.google-apps.drawing';
 				break;
 		}
 
