@@ -167,13 +167,19 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 
 		$params = new Hubzero\Config\Registry($watch->get('params', ''));
 
+		$dflt = 0;
+		if ($this->params->get('autosubscribe'))
+		{
+			$dflt = 1;
+		}
+
 		$cats = array(
-			'blog'         => $params->get('blog', 0),
-			'team'         => $params->get('team', 0),
-			'files'        => $params->get('files', 0),
-			'publications' => $params->get('publications', 0),
-			'todo'         => $params->get('todo', 0),
-			'notes'        => $params->get('notes', 0)
+			'blog'         => $params->get('blog', $dflt),
+			'team'         => $params->get('team', $dflt),
+			'files'        => $params->get('files', $dflt),
+			'publications' => $params->get('publications', $dflt),
+			'todo'         => $params->get('todo', $dflt),
+			'notes'        => $params->get('notes', $dflt)
 		);
 
 		// Instantiate a view
@@ -298,12 +304,12 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		// Get subscribers
 		$watchers = Hubzero\Item\Watch::all()
 			->whereEquals('item_type', 'project')
-			->whereEquals('item_id', $project->get('id'))
-			->whereEquals('state', 1);
+			->whereEquals('item_id', $project->get('id'));
 
 		if (!$this->params->get('autosubscribe'))
 		{
 			$watchers
+				->whereEquals('state', 1)
 				->whereLike('params', '"' . $area . '":1')
 				->whereLike('params', '"frequency":"immediate"');
 		}
