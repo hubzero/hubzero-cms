@@ -365,6 +365,8 @@ class Setup extends Base
 			}
 		}
 
+		Event::trigger('projects.onProjectAfterSave', array($this->model));
+
 		// Don't go next in case of error
 		if ($this->getError())
 		{
