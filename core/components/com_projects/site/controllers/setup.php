@@ -65,7 +65,7 @@ class Setup extends Base
 		// Incoming
 		$defaultSection = $this->_task == 'edit' ? 'info' : '';
 		$this->section  = Request::getVar('active', $defaultSection);
-		$this->group    = NULL;
+		$this->group    = null;
 
 		// Login required
 		if (User::isGuest())
@@ -177,8 +177,8 @@ class Setup extends Base
 		}
 
 		// Send to requested page
-		$step = $this->section ? array_search($this->section, $setupSteps) : NULL;
-		$step = $step !== NULL && $step <= $this->model->get('setup_stage') ? $step : $this->model->get('setup_stage');
+		$step = $this->section ? array_search($this->section, $setupSteps) : null;
+		$step = $step !== null && $step <= $this->model->get('setup_stage') ? $step : $this->model->get('setup_stage');
 
 		if ($step < $this->_setupComplete)
 		{
@@ -510,10 +510,10 @@ class Setup extends Base
 			// Collect grant information
 			if ($this->config->get('grantinfo', 0))
 			{
-				$grant_agency    = Request::getVar('grant_agency', '');
-				$grant_title     = Request::getVar('grant_title', '');
-				$grant_PI        = Request::getVar('grant_PI', '');
-				$grant_budget    = Request::getVar('grant_budget', '');
+				$grant_agency = Request::getVar('grant_agency', '');
+				$grant_title  = Request::getVar('grant_title', '');
+				$grant_PI     = Request::getVar('grant_PI', '');
+				$grant_budget = Request::getVar('grant_budget', '');
 				$this->model->saveParam('grant_budget', $grant_budget);
 				$this->model->saveParam('grant_agency', $grant_agency);
 				$this->model->saveParam('grant_title', $grant_title);
@@ -726,7 +726,7 @@ class Setup extends Base
 							->limit(1)
 							->row();
 
-						if ($existingField->id != NULL)
+						if ($existingField->id != null)
 						{
 							$existingField->set('description_value', $formFields[$kField->name]);
 							$existingField->set('ordering', $kField->ordering);
@@ -784,11 +784,9 @@ class Setup extends Base
 
 				// Record activity
 				$this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_INFO_UPDATED'));
-
 			break;
 
 			case 'team':
-
 				if ($new)
 				{
 					return false;
@@ -827,11 +825,9 @@ class Setup extends Base
 						$this->_setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
 					}
 				}
-
 			break;
 
 			case 'settings':
-
 				if ($new)
 				{
 					return false;
@@ -863,13 +859,10 @@ class Setup extends Base
 						if ($key == 'grant_status')
 						{
 							// Meta data for comment
-							$meta = '<meta>' . Date::of('now')->toLocal('M d, Y')
-							. ' - ' . User::get('name') . '</meta>';
+							$meta = '<meta>' . Date::of('now')->toLocal('M d, Y') . ' - ' . User::get('name') . '</meta>';
 
 							$cbase   = $this->model->get('admin_notes');
-							$cbase  .= '<nb:sponsored>'
-							. Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE')
-							. $meta . '</nb:sponsored>';
+							$cbase  .= '<nb:sponsored>' . Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE') . $meta . '</nb:sponsored>';
 							$this->model->set('admin_notes', $cbase);
 
 							// Save admin notes
@@ -1036,7 +1029,7 @@ class Setup extends Base
 		if ($ajax)
 		{
 			echo json_encode(array(
-				'error' => $this->model->getError(),
+				'error'   => $this->model->getError(),
 				'message' => Lang::txt('COM_PROJECTS_VERIFY_PASSED')
 			));
 			return;
@@ -1057,8 +1050,8 @@ class Setup extends Base
 	public function suggestaliasTask()
 	{
 		// Incoming
-		$title   = isset($this->_text) ? $this->_text : trim(Request::getVar('text', ''));
-		$title   = urldecode($title);
+		$title = isset($this->_text) ? $this->_text : trim(Request::getVar('text', ''));
+		$title = urldecode($title);
 
 		$suggested = Helpers\Html::suggestAlias($title);
 		$maxLength = $this->config->get('max_name_length', 30);
@@ -1083,10 +1076,10 @@ class Setup extends Base
 	private function _txtClean(&$text)
 	{
 		// Handle special characters copied from MS Word
-		$text = str_replace('“','"', $text);
-		$text = str_replace('”','"', $text);
-		$text = str_replace("’","'", $text);
-		$text = str_replace("‘","'", $text);
+		$text = str_replace('“', '"', $text);
+		$text = str_replace('”', '"', $text);
+		$text = str_replace("’", "'", $text);
+		$text = str_replace("‘", "'", $text);
 
 		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
 		$text = preg_replace('/{.+?}/', '', $text);
