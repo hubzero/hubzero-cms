@@ -549,7 +549,7 @@ class Helper extends Module
 			while (false !== ($entry = $d->read()))
 			{
 				if (is_file(PATH_ROOT . $path . DS . $entry)
-				 && substr($entry,0,1) != '.'
+				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
 					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry))
@@ -605,7 +605,7 @@ class Helper extends Module
 			while (false !== ($entry = $d->read()))
 			{
 				if (is_file(PATH_ROOT . $path . DS . $entry)
-				 && substr($entry,0,1) != '.'
+				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
 					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry))
