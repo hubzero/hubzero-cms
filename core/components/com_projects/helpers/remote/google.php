@@ -1530,18 +1530,31 @@ class Google extends Object
 
 		switch ($mimeType)
 		{
+			// Documents
 			case 'text/plain':
 			case 'application/rtf':
 			case 'application/msword':
+			case 'application/x-rtf':
+			case 'text/rtf':
+			case 'text/richtext':
+			case 'application/doc':
+			case 'application/x-soffice':
 			case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
 				$ext = 'application/vnd.google-apps.document';
 				break;
 
+			// Slides
+			case 'application/vnd.ms-powerpoint':
 			case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+			case 'application/vnd.oasis.opendocument.presentation':
 				$ext = 'application/vnd.google-apps.presentation';
 				break;
 
+			// Spreadsheets
+			case 'text/x-comma-separated-values':
+			case 'application/vnd.ms-excel':
 			case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+			case 'application/vnd.oasis.opendocument.spreadsheet':
 			case 'application/x-vnd.oasis.opendocument.spreadsheet':
 				$ext = 'application/vnd.google-apps.spreadsheet';
 				break;
