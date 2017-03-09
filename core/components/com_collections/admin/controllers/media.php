@@ -336,7 +336,7 @@ class Media extends AdminController
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -377,7 +377,7 @@ class Media extends AdminController
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(PATH_APP, '', $path),
 			'id'        => $listdir,
-			'html'      => str_replace('>', '&gt;',  $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
+			'html'      => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
 		));
 	}
 
