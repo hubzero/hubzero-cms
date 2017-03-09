@@ -32,37 +32,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$tmpl = Request::getCmd('tmpl');
+
 $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
-
-Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS'), 'collection.png');
-if ($canDo->get('core.create'))
-{
-	Toolbar::addNew();
-}
-if ($canDo->get('core.edit'))
-{
-	Toolbar::editList();
-}
-if ($canDo->get('core.delete'))
-{
-	Toolbar::deleteList();
-}
-
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="postsForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
@@ -71,30 +46,30 @@ function submitbutton(pressbutton)
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 
 		<input type="hidden" name="collection_id" value="<?php echo $this->filters['collection_id']; ?>" />
+		<input type="hidden" name="item_id" value="<?php echo $this->escape($this->filters['item_id']); ?>" />
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 			<?php if ($this->filters['collection_id']) { ?>
 				<tr>
-					<th colspan="7">
-						<?php $collection = \Components\Collections\Models\Orm\Collection::oneOrFail($this->filters['collection_id']); ?>
+					<th colspan="6">
+						<?php $collection = \Components\Collections\Models\Collection::oneOrFail($this->filters['collection_id']); ?>
 						(<?php echo $this->escape(stripslashes($collection->get('alias'))); ?>)
 						<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
 					</th>
 				</tr>
 			<?php } ?>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_POSTED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_POSTEDBY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ITEM_ID', 'item_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<?php if (!$this->filters['collection_id']) { ?>
 					<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_COLLECTION_ID', 'collection_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<?php } ?>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ORIGINAL', 'original', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COLLECTIONS_COL_ACTION'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -133,9 +108,6 @@ function submitbutton(pressbutton)
 			//}
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
-				</td>
 				<td class="priority-5">
 					<?php echo $row->get('id'); ?>
 				</td>
@@ -158,28 +130,9 @@ function submitbutton(pressbutton)
 						<?php echo $this->escape($row->creator->get('name', Lang::txt('COM_COLLECTIONS_UNKNOWN'))); ?>
 					</span>
 				</td>
-				<td class="priority-2">
-					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=items&task=edit&id=' . $row->get('item_id')); ?>">
-							<span><?php echo $this->escape($row->get('item_id')); ?></span>
-						</a>
-					<?php } else { ?>
-						<span>
-							<span><?php echo $this->escape($row->get('item_id')); ?></span>
-						</span>
-					<?php } ?>
-				</td>
 				<?php if (!$this->filters['collection_id']) { ?>
 					<td class="priority-2">
-						<?php if ($canDo->get('core.edit')) { ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=collections&task=edit&id=' . $row->get('collection_id')); ?>">
-								<span><?php echo $this->escape($row->get('collection_id')); ?></span>
-							</a>
-						<?php } else { ?>
-							<span>
-								<span><?php echo $this->escape($row->get('collection_id')); ?></span>
-							</span>
-						<?php } ?>
+						<?php echo $this->escape($row->collection->get('title')); ?></span>
 					</td>
 				<?php } ?>
 				<td class="priority-4">
@@ -187,6 +140,13 @@ function submitbutton(pressbutton)
 						<span><?php echo $alt; ?></span>
 					</span>
 				</td>
+				<?php if ($canDo->get('core.delete')) { ?>
+					<td>
+						<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller. '&task=remove&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1' . ($tmpl ? '&tmpl=' . $tmpl : '')); ?>">
+							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
+						</a>
+					</td>
+				<?php } ?>
 			</tr>
 			<?php
 			$i++;
@@ -202,6 +162,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+	<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

@@ -32,9 +32,9 @@
 
 namespace Components\Collections\Admin\Controllers;
 
-use Components\Collections\Models\Item;
-use Components\Collections\Models\Asset;
-use Components\Collections\Models\Post;
+use Components\Collections\Models\Orm\Item;
+use Components\Collections\Models\Orm\Asset;
+use Components\Collections\Models\Orm\Post;
 use Hubzero\Component\AdminController;
 use Hubzero\Content\Server;
 use Filesystem;
@@ -58,22 +58,10 @@ class Media extends AdminController
 		$file = Request::getVar('file', '');
 		$item = Request::getInt('post', 0);
 
-		$post = Post::getInstance($item);
+		$post = Post::oneOrFail($item);
 
 		// Instantiate an attachment object
 		$asset = Asset::getInstance($file, $post->get('item_id'));
-
-		// Ensure record exist
-		if (!$asset->get('id') || $post->item()->get('state') == 2)
-		{
-			throw new Exception(Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND'), 404);
-		}
-
-		// Check authorization
-		if ($post->item()->get('access') == 4 && User::isGuest())
-		{
-			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'), 403);
-		}
 
 		// Ensure we have a path
 		if (!$asset->get('filename'))
@@ -90,13 +78,11 @@ class Media extends AdminController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND') . ' ' . $filename, 404);
 		}
 
-		$ext = strtolower(Filesystem::extension($filename));
-
 		// Initiate a new content server and serve up the file
 		$server = new Server();
 		$server->filename($filename);
 		$server->disposition('attachment');
-		if (in_array($ext, array('jpg','jpeg','jpe','png','gif')))
+		if ($asset->isImage())
 		{
 			$server->disposition('inline');
 		}
@@ -107,10 +93,8 @@ class Media extends AdminController
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_COLLECTIONS_SERVER_ERROR'), 500);
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 
 	/**
@@ -120,16 +104,15 @@ class Media extends AdminController
 	 */
 	public function createTask()
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
-		}
-
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			$this->displayTask();
-			return;
 		}
 
 		// Ensure we have an ID to work with
@@ -143,12 +126,12 @@ class Media extends AdminController
 
 		if (substr($listdir, 0, 3) == 'tmp')
 		{
-			$item = new Item($listdir);
-			if (!$item->exists())
+			$item = Item::oneOrNew($listdir);
+			if ($item->isNew())
 			{
-				$item->set('state', 0);
+				$item->set('state', $item::STATE_UNPUBLISHED);
 				$item->set('title', $listdir);
-				if (!$item->store())
+				if (!$item->save())
 				{
 					$this->setError($item->getError());
 				}
@@ -157,14 +140,14 @@ class Media extends AdminController
 		}
 
 		// Create database entry
-		$asset = new Asset();
+		$asset = Asset::blank();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
 		$asset->set('description', Request::getVar('description', '', 'post'));
-		$asset->set('state', 1);
+		$asset->set('state', $asset::STATE_PUBLISHED);
 		$asset->set('type', 'link');
 
-		if (!$asset->store())
+		if (!$asset->save())
 		{
 			$this->setError($asset->getError());
 		}
@@ -179,13 +162,6 @@ class Media extends AdminController
 	 */
 	public function ajaxCreateTask()
 	{
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
-			return;
-		}
-
 		// Ensure we have an ID to work with
 		$listdir = strtolower(Request::getVar('dir', ''));
 		if (!$listdir)
@@ -196,13 +172,13 @@ class Media extends AdminController
 
 		if (substr($listdir, 0, 3) == 'tmp')
 		{
-			$item = new Item($listdir);
-			if (!$item->exists())
+			$item = Item::oneOrNew($listdir);
+			if ($item->isNew())
 			{
 				$item->set('id', 0);
-				$item->set('state', 0);
+				$item->set('state', $item::STATE_UNPUBLISHED);
 				$item->set('title', $listdir);
-				if (!$item->store())
+				if (!$item->save())
 				{
 					echo json_encode(array(
 						'success'   => false,
@@ -218,14 +194,14 @@ class Media extends AdminController
 		}
 
 		// Create database entry
-		$asset = new Asset();
+		$asset = Asset::blank();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
 		$asset->set('description', Request::getVar('description', '', 'post'));
-		$asset->set('state', 1);
+		$asset->set('state', $asset::STATE_PUBLISHED);
 		$asset->set('type', 'link');
 
-		if (!$asset->store())
+		if (!$asset->save())
 		{
 			echo json_encode(array(
 				'success'   => false,
@@ -253,29 +229,23 @@ class Media extends AdminController
 	 */
 	public function ajaxUploadTask()
 	{
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
-			return;
-		}
-
 		// Ensure we have an ID to work with
-		$listdir = strtolower(Request::getVar('dir', ''));
+		$listdir = Request::getInt('dir', 0);
+
 		if (!$listdir)
 		{
-			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
+			echo json_encode(array('error' => $listdir . ' ' . Lang::txt('COM_COLLECTIONS_NO_ID')));
 			return;
 		}
 
 		if (substr($listdir, 0, 3) == 'tmp')
 		{
-			$item = new Item($listdir);
-			if (!$item->exists())
+			$item = Item::oneOrNew($listdir);
+			if ($item->isNew())
 			{
-				$item->set('state', 0);
+				$item->set('state', $item::STATE_UNPUBLISHED);
 				$item->set('title', $listdir);
-				if (!$item->store())
+				if (!$item->save())
 				{
 					echo json_encode(array(
 						'error' => $item->getError()
@@ -308,7 +278,7 @@ class Media extends AdminController
 			return;
 		}
 
-		$asset = new Asset();
+		$asset = Asset::blank();
 
 		//define upload directory and make sure its writable
 		$path = $asset->filespace() . DS . $listdir;
@@ -380,13 +350,13 @@ class Media extends AdminController
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', $filename . '.' . $ext);
 		$asset->set('description', Request::getVar('description', '', 'post'));
-		$asset->set('state', 1);
+		$asset->set('state', $asset::STATE_PUBLISHED);
 		$asset->set('type', 'file');
 
-		if (!$asset->store())
+		if (!$asset->save())
 		{
 			echo json_encode(array(
-				'error' => $asset->getError()
+				'error' => intval($listdir) . ' ' . $asset->getError()
 			));
 			return;
 		}
@@ -418,11 +388,10 @@ class Media extends AdminController
 	 */
 	public function uploadTask()
 	{
-		// Check if they're logged in
-		if (User::isGuest())
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			$this->displayTask();
-			return;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		if (Request::getVar('no_html', 0))
@@ -448,7 +417,7 @@ class Media extends AdminController
 			return;
 		}
 
-		$asset = new Asset();
+		$asset = Asset::blank();
 
 		// Build the upload path if it doesn't exist
 		$path = $asset->filespace() . DS . $listdir;
@@ -480,10 +449,10 @@ class Media extends AdminController
 			$asset->set('item_id', intval($listdir));
 			$asset->set('filename', $file['name']);
 			$asset->set('description', Request::getVar('description', '', 'post'));
-			$asset->set('state', 1);
+			$asset->set('state', $asset::STATE_PUBLISHED);
 			$asset->set('type', 'file');
 
-			if (!$asset->store())
+			if (!$asset->save())
 			{
 				$this->setError($asset->getError());
 			}
@@ -500,30 +469,24 @@ class Media extends AdminController
 	 */
 	public function deleteTask()
 	{
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}
 
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			$this->displayTask();
-			return;
-		}
-
 		// Incoming asset
 		$id = Request::getInt('asset', 0, 'get');
 
-		$model = new Asset($id);
+		$model = Asset::oneOrFail($id);
 
-		if ($model->exists())
+		if (!$model->destroy())
 		{
-			$model->set('state', 2);
-			if (!$model->store())
-			{
-				$this->setError($model->getError());
-			}
+			$this->setError($model->getError());
 		}
 
 		// Push through to the media view
@@ -542,19 +505,15 @@ class Media extends AdminController
 
 		if ($id)
 		{
-			$model = new Asset($id);
+			$model = Asset::oneOrFail($id);
 
-			if ($model->exists())
+			if (!$model->destroy())
 			{
-				$model->set('state', 2);
-				if (!$model->store())
-				{
-					echo json_encode(array(
-						'success' => false,
-						'error'   => $model->getError()
-					));
-					return;
-				}
+				echo json_encode(array(
+					'success' => false,
+					'error'   => $model->getError()
+				));
+				return;
 			}
 		}
 
@@ -573,18 +532,13 @@ class Media extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->listdir = Request::getInt('dir', 0, 'request');
-
-		// Output HTML
-		$this->view->config = $this->config;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$listdir = Request::getInt('dir', 0, 'request');
 
 		$this->view
+			->set('config', $this->config)
+			->set('listdir', $listdir)
 			->setLayout('display')
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -602,22 +556,20 @@ class Media extends AdminController
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
 		}
-
-		$this->view->item = Item::getInstance($listdir);
-		if (!$this->view->item->exists())
+		else
 		{
-			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
+			$item = Item::getInstance($listdir);
+
+			if (!$item->get('id'))
+			{
+				$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
+			}
 		}
 
-		$this->view->config  = $this->config;
-		$this->view->listdir = $listdir;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->set('listdir', $listdir)
+			->setErrors($this->getErrors())
+			->display();
 	}
 }
-

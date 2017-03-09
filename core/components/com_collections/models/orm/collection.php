@@ -32,32 +32,17 @@
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Component;
 use Lang;
 use Date;
+
+require_once __DIR__ . DS . 'post.php';
 
 /**
  * Collection model
  */
 class Collection extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 */
-	protected $namespace = 'collections';
-
-	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__collections';
-
 	/**
 	 * Default order by for model
 	 *
@@ -84,6 +69,15 @@ class Collection extends Relational
 	);
 
 	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias'
+	);
+
+	/**
 	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
@@ -92,6 +86,51 @@ class Collection extends Relational
 		'created',
 		'created_by'
 	);
+
+	/**
+	 * Sets up additional custom rules
+	 *
+	 * @return  void
+	 */
+	public function setup()
+	{
+		$this->addRule('alias', function($data)
+		{
+			$exists = self::all()
+				->whereEquals('alias', $data['alias'])
+				->whereEquals('object_id', $data['object_id'])
+				->whereEquals('object_type', $data['object_type'])
+				->where('state', '!=', self::STATE_DELETED)
+				->total();
+
+			if ($exists)
+			{
+				return Lang::txt('a collection with this alias already exists.');
+			}
+			return false;
+		});
+	}
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = strip_tags($alias);
+		$alias = trim($alias);
+		if (strlen($alias) > 250)
+		{
+			$alias = substr($alias . ' ', 0, 250);
+			$alias = substr($alias, 0, strrpos($alias, ' '));
+		}
+		$alias = str_replace(' ', '-', $alias);
+
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+	}
 
 	/**
 	 * Return a formatted timestamp for created date
@@ -133,7 +172,7 @@ class Collection extends Relational
 	 */
 	public function posts()
 	{
-		return $this->oneToMany('Post');
+		return $this->oneToMany(__NAMESPACE__ . '\\Post', 'collection_id');
 	}
 
 	/**
@@ -143,7 +182,7 @@ class Collection extends Relational
 	 */
 	public function votes()
 	{
-		return $this->item()->votes();
+		return $this->item->votes();
 	}
 
 	/**
@@ -153,7 +192,65 @@ class Collection extends Relational
 	 */
 	public function item()
 	{
-		return $this->oneShiftsToMany('Item', 'object_id', 'type', 'id');
+		return Item::all()
+			->whereEquals('type', 'collection')
+			->whereEquals('object_id', $this->get('id'))
+			->row();
+	}
+
+	/**
+	 * Store the record
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function save()
+	{
+		// Make sure state cascades to children
+		if ($this->item->get('id'))
+		{
+			$this->item->set('state', $this->get('state'));
+
+			if (!$this->item->save())
+			{
+				$this->addError($this->item->getError());
+				return false;
+			}
+		}
+
+		return parent::save();
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Can't delete what doesn't exist
+		if ($this->isNew())
+		{
+			return true;
+		}
+
+		// Remove posts
+		foreach ($this->posts()->rows() as $post)
+		{
+			if (!$post->destroy())
+			{
+				$this->addError($post->getError());
+				return false;
+			}
+		}
+
+		if (!$this->item()->destroy())
+		{
+			$this->addError($this->item->getError());
+			return false;
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 
 	/**
@@ -163,7 +260,6 @@ class Collection extends Relational
 	 */
 	public function link()
 	{
-		return '';
+		return 'index.php?option=com_collections&controller=collections&task=view&id=' . $this->get('id');
 	}
 }
-
