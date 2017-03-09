@@ -80,6 +80,10 @@ jQuery(function($) {
 	});
 
 	sa.find('input').attr('placeholder', 'Search');
+	
+	// Check to see if having placeholder triggers the input event on focus. If it does, remove placeholders to fix the bug found in IE10/IE11
+	// See https://connect.microsoft.com/IE/feedback/details/810538/ie-11-fires-input-event-on-focus for more information about this bug.
+	PlaceholderTest(sa);
 
 	// the select control handles submission, the no-js fallback button can go away
 	sa
@@ -87,3 +91,16 @@ jQuery(function($) {
 		.children('button.submit')
 			.remove();
 });
+
+var PlaceholderTest = function(parent){
+	var input = $('<input type="input" value="" placeholder="placeholder"/>');
+	input.css('opacity','0')
+	     .css('position','absolute')
+	     .css('left', '-1000px');
+	$('body').append(input);
+	input.on('input',function(e){
+		parent.find("input[placeholder]").removeAttr("placeholder");
+		this.remove();
+	});
+	input.focus();
+};
