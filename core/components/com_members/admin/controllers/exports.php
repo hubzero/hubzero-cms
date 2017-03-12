@@ -41,11 +41,8 @@ use Date;
 use Lang;
 use App;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
-include_once (dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php');
-include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php');
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 /**
  * Member exporter
@@ -108,7 +105,6 @@ class Exports extends AdminController
 			}
 
 			$keys[$key] = $key;
-			//array_push($keys, $key);
 		}
 
 		$attribs = Field::all()
@@ -143,7 +139,10 @@ class Exports extends AdminController
 		// Get request vars
 		$delimiter = Request::getVar('delimiter', ',');
 
-		$csv = array();
+		//$csv = array();
+		$path = Config::get('tmp_path') . DS . 'members.csv';
+		$file = fopen($path, 'w');
+		fputcsv($file, $keys);
 
 		$rows = $members
 			->ordered()
@@ -219,10 +218,14 @@ class Exports extends AdminController
 
 			unset($member);
 
-			array_push($csv, $tmp);
+			//array_push($csv, $tmp);
+
+			fputcsv($file, $tmp);
 		}
 
-		//output csv directly as a download
+		fclose($file);
+
+		// output csv directly as a download
 		@ob_end_clean();
 
 		header("Pragma: public");
@@ -233,12 +236,14 @@ class Exports extends AdminController
 		header('Content-type: text/comma-separated-values');
 		header('Content-disposition: attachment; filename="members.csv"');
 
-		$out = fopen('php://output', 'w');
+		readfile($path);
+
+		/*$out = fopen('php://output', 'w');
 		fputcsv($out, $keys);
 		foreach ($csv as $row)
 		{
 			fputcsv($out, $row, $delimiter);
-		}
+		}*/
 
 		exit;
 	}

@@ -121,20 +121,36 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			switch ($action)
 			{
 				// Views
-				case 'view':         $arr['html'] = $this->_view();         break;
+				case 'view':
+					$arr['html'] = $this->_view();
+					break;
 
 				// Actions
-				case 'unlink':                      $this->_unlink();       break;
-				case 'uploadkey':                   $this->_uploadKey();    break;
+				case 'unlink':
+					$this->_unlink();
+					break;
+				case 'uploadkey':
+					$this->_uploadKey();
+					break;
 
 				// Set local password
-				case 'sendtoken':                   $this->sendtoken();     break;
-				case 'confirmtoken': $arr['html'] = $this->confirmtoken();  break;
-				case 'setlocalpass': $arr['html'] = $this->setlocalpass();  break;
-				case 'checkPass':                   $this->checkPass();     break;
+				case 'sendtoken':
+					$this->sendtoken();
+					break;
+				case 'confirmtoken':
+					$arr['html'] = $this->confirmtoken();
+					break;
+				case 'setlocalpass':
+					$arr['html'] = $this->setlocalpass();
+					break;
+				case 'checkPass':
+					$this->checkPass();
+					break;
 
 				// Default
-				default:             $arr['html'] = $this->_view();         break;
+				default:
+					$arr['html'] = $this->_view();
+					break;
 			}
 		}
 
@@ -176,7 +192,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Primary/default view function
 	 *
-	 * @return object Return
+	 * @return  object  Return
 	 */
 	private function _view()
 	{
@@ -267,8 +283,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Get the password rules
 		$password_rules = \Hubzero\Password\Rule::all()
-					->whereEquals('enabled', 1)
-					->rows();
+			->whereEquals('enabled', 1)
+			->rows();
 
 		// Get the password rule descriptions
 		$view->password_rules = array();
@@ -302,7 +318,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send out local password set confirmation token
 	 *
-	 * @return void - redirect to confirm token view
+	 * @return  void  redirect to confirm token view
 	 */
 	private function sendtoken()
 	{
@@ -314,9 +330,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' .
-					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken'))),
-				Lang::txt('You must be a logged in to access this area.'),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken'))),
+				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
 			return;
@@ -355,7 +370,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Confirm the password set token
 	 *
-	 * @return void - redirect to set local password view
+	 * @return  void  redirect to set local password view
 	 */
 	private function confirmtoken()
 	{
@@ -367,7 +382,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' .
 					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken'))),
-				Lang::txt('You must be a logged in to access this area.'),
+				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
 			return;
@@ -460,7 +475,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set local password
 	 *
-	 * @return void - redirect to members account page
+	 * @return  void  redirect to members account page
 	 */
 	private function setlocalpass()
 	{
@@ -470,7 +485,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' .
 					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass'))),
-				Lang::txt('You must be a logged in to access this area.'),
+				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
 			return;
@@ -512,8 +527,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Get the password rules
 		$password_rules = \Hubzero\Password\Rule::all()
-					->whereEquals('enabled', 1)
-					->rows();
+			->whereEquals('enabled', 1)
+			->rows();
 
 		// Get the password rule descriptions
 		$view->password_rules = array();
@@ -612,8 +627,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			echo json_encode(
 				array(
 					"success" => true,
-					"redirect" => Route::url($this->member->link() . '&active=account'))
-				);
+					"redirect" => Route::url($this->member->link() . '&active=account')
+				)
+			);
 			exit();
 		}
 		else
@@ -636,7 +652,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Remove linked account
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _unlink()
 	{
@@ -677,14 +693,14 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get information about the password expiration
 	 *
-	 * @return array - password expiration information
+	 * @return  array  password expiration information
 	 */
 	private function getPassInfo()
 	{
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 
 		// Check to see if password expiration is even enforced
-		if (empty($hzup->passhash) || $hzup->shadowMax === NULL)
+		if (empty($hzup->passhash) || $hzup->shadowMax === null)
 		{
 			return false;
 		}
@@ -717,7 +733,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Upload SSH key
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _uploadKey()
 	{
@@ -739,7 +755,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!Filesystem::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+			require_once PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
 
 			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
 			{
@@ -781,7 +797,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Read SSH key
 	 *
-	 * @return string - .ssh/authorized_keys file content
+	 * @return  string  .ssh/authorized_keys file content
 	 */
 	private function readKey()
 	{
@@ -805,7 +821,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!Filesystem::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+			require_once PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
 
 			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
 			{
@@ -847,7 +863,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set redirect
 	 *
-	 * @return void
+	 * @param   string  $url
+	 * @param   string  $msg
+	 * @param   string  $type
+	 * @return  void
 	 */
 	private function setRedirect($url, $msg=null, $type='message')
 	{
@@ -861,7 +880,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save password change token to the database
 	 *
-	 * @return bool - true if token save successful
+	 * @param   string  $token
+	 * @return  bool    true if token save successful
 	 */
 	private function setToken($token)
 	{
@@ -898,7 +918,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieve activation token from the database
 	 *
-	 * @return object - id and activation token for user
+	 * @return  object  id and activation token for user
 	 */
 	private function getToken()
 	{
@@ -912,12 +932,13 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send token email
 	 *
-	 * @return bool - true if email send successfully
+	 * @param   string  $token
+	 * @return  bool    true if email send successfully
 	 */
 	private function sendEmail($token)
 	{
 		// Create the email with the new token
-		$url      = rtrim(Request::base(),'/');
+		$url      = rtrim(Request::base(), '/');
 		$return   = $url . Route::url($this->member->link() . '&acitve=account&task=confirmtoken');
 		$subject  = 'Set local password, confirmation token for ' . $url;
 		$message  = 'You have requested to set your local password at ' . $url . "\n\n";
@@ -942,14 +963,14 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check password fuction for ajax password rules validation
 	 *
-	 * @return string - html rules section with classes for passed/error on each rule
+	 * @return  string  html rules section with classes for passed/error on each rule
 	 */
 	public function checkPass()
 	{
 		// Get the password rules
 		$password_rules = \Hubzero\Password\Rule::all()
-					->whereEquals('enabled', 1)
-					->rows();
+			->whereEquals('enabled', 1)
+			->rows();
 
 		$pw_rules = array();
 

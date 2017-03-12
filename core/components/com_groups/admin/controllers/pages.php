@@ -91,7 +91,7 @@ class Pages extends AdminController
 		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
-			'state'     => array(0,1,2),
+			'state'     => array(0, 1, 2),
 			'orderby'   => 'lft ASC'
 		));
 
@@ -107,7 +107,7 @@ class Pages extends AdminController
 			$pageArchive = Page\Archive::getInstance();
 			$this->view->needsAttention = $pageArchive->pages('unapproved', array(
 				'gidNumber' => $this->group->get('gidNumber'),
-				'state'     => array(0,1),
+				'state'     => array(0, 1),
 				'orderby'   => 'lft ASC'
 			));
 		}
@@ -155,7 +155,7 @@ class Pages extends AdminController
 		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
-			'state'     => array(0,1),
+			'state'     => array(0, 1),
 			'orderby'   => 'lft ASC'
 		));
 
@@ -222,9 +222,35 @@ class Pages extends AdminController
 			App::abort(403, 'You are not authorized to modify this page.');
 		}
 
+		// update our depth
+		$parent = $this->page->getParent();
+		$depth  = ($parent->get('id')) ? $parent->get('depth') + 1 : 0;
+		$this->page->set('depth', $depth);
+
 		// set page vars
 		$this->page->set('gidNumber', $this->group->get('gidNumber'));
 		$this->page->set('alias', $this->page->uniqueAlias());
+
+		// our start should be our left (order) or the parents right - 1
+		$start = $this->page->get('left');
+		if (!$start)
+		{
+			$start = $parent->get('rgt') - 1;
+		}
+
+		// update current rights
+		$sql = "UPDATE `#__xgroups_pages` SET rgt=rgt+2 WHERE rgt>" . ($start-1) . " AND gidNumber=" . $this->group->get('gidNumber');
+		$this->database->setQuery($sql);
+		$this->database->query();
+
+		// update current lefts
+		$sql2 = "UPDATE `#__xgroups_pages` SET lft=lft+2 WHERE lft>" . ($start-1) . " AND gidNumber=" . $this->group->get('gidNumber');
+		$this->database->setQuery($sql2);
+		$this->database->query();
+
+		// set this pages left & right
+		$this->page->set('lft', $start);
+		$this->page->set('rgt', $start+1);
 
 		// save page settings
 		if (!$this->page->store(true))

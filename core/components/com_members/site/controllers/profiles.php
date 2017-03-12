@@ -559,7 +559,7 @@ class Profiles extends SiteController
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
-				Lang::txt('You must be a logged in to access this area.'),
+				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
 		}

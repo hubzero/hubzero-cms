@@ -114,7 +114,7 @@ class Router extends Base
 		$vars = array();
 
 		// Valid tasks not requiring id
-		$tasks = array(	'browse', 'start', 'submit', 'edit', 'publication');
+		$tasks = array('browse', 'start', 'submit', 'edit', 'publication');
 
 		if (empty($segments[0]))
 		{
@@ -178,11 +178,11 @@ class Router extends Base
 		}
 		else
 		{
-			include_once( dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
+			include_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
 
 			$database = \App::get('db');
 
-			$t = new \Components\Publications\Tables\Category( $database );
+			$t = new \Components\Publications\Tables\Category($database);
 			$cats = $t->getCategories();
 
 			foreach ($cats as $cat)
@@ -227,6 +227,7 @@ class Router extends Base
 				case 'play':
 				case 'serve':
 				case 'video':
+				case 'citation':
 					$vars['task'] = $segments[1];
 
 					if (!empty($segments[2]))
@@ -240,11 +241,18 @@ class Router extends Base
 
 					break;
 
-				case 'citation': $vars['task'] = 'citation'; break;
-				case 'feed.rss': $vars['task'] = 'feed';     break;
-				case 'feed':     $vars['task'] = 'feed';     break;
-				case 'license':  $vars['task'] = 'license';  break;
-				case 'main':     $vars['task'] = 'main';     break;
+				case 'feed.rss':
+					$vars['task'] = 'feed';
+					break;
+				case 'feed':
+					$vars['task'] = 'feed';
+					break;
+				case 'license':
+					$vars['task'] = 'license';
+					break;
+				case 'main':
+					$vars['task'] = 'main';
+					break;
 
 				default:
 					if ($segments[0] == 'browse')

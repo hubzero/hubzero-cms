@@ -44,67 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="access_org" type="list" default="0" label="Organization" description="Show/Hide the user organization">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_orgtype" type="list" default="0" label="Organization type" description="Show/Hide the user organization type">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
 				<field name="access_email" type="list" default="2" label="Email" description="Show/Hide the user email">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_url" type="list" default="0" label="Website" description="Show/Hide the user website">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_phone" type="list" default="2" label="Phone" description="Show/Hide the user phone">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_tags" type="list" default="0" label="Tags" description="Show/Hide the user tags">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_bio" type="list" default="0" label="Bio" description="Show/Hide the user bio">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_countryorigin" type="list" default="0" label="Country of Citizenship" description="Show/Hide the user country of citizenship">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_countryresident" type="list" default="0" label="Country of Residence" description="Show/Hide the user country of residence">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_gender" type="list" default="0" label="Gender" description="Show/Hide the user gender">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_race" type="list" default="2" label="Race" description="Show/Hide the user race">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_hispanic" type="list" default="2" label="Hispanic" description="Show/Hide the user hispanic heritage">
-					<option value="0">Public</option>
-					<option value="1">Registered users</option>
-					<option value="2">Private</option>
-				</field>
-				<field name="access_disability" type="list" default="2" label="Disability" description="Show/Hide the user disability">
 					<option value="0">Public</option>
 					<option value="1">Registered users</option>
 					<option value="2">Private</option>

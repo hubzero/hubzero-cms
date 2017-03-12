@@ -36,7 +36,7 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('collection');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . $text, 'collection.png');
+Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . $text, 'collection');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -114,7 +114,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
-					<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')), 35, 10, 'field-description', array('class' => 'minimal no-footer')); ?>
+					<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 35, 10, 'field-description', array('class' => 'minimal no-footer')); ?>
 				</div>
 
 				<div class="grid">
@@ -169,13 +169,13 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_POSTS'); ?>:</th>
 						<td>
-							<?php echo $this->row->count('post'); ?>
+							<?php echo $this->row->posts()->total(); ?>
 						</td>
 					</tr>
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_FOLLOWERS'); ?>:</th>
 						<td>
-							<?php echo $this->row->count('followers'); ?>
+							<?php //echo $this->row->count('followers'); ?>
 						</td>
 					</tr>
 				</tbody>

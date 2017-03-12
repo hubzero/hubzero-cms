@@ -64,9 +64,9 @@ $this->css('solr');
 	<?php 
 	$this->view('_recordtable')
 		->set('documents', $this->documents)
-		//->set('type', $this->type)
 		->set('blacklist', $this->blacklist)
-		->set('pagination', $this->pagination->render())
+		->set('pagination', $this->pagination)
+		->set('facet', $this->facet)
 		->display();
 	?>
 
@@ -75,9 +75,7 @@ $this->css('solr');
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="facet" value"<?php echo $this->facet; ?>" /> 
-	<input type="hidden" name="filter_order" value="<?php //echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php //echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="facet" value="<?php echo $this->facet; ?>" /> 
 
 	<?php echo Html::input('token'); ?>
 </form>

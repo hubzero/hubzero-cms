@@ -228,22 +228,29 @@ $this->css()
 												{
 													$activity->set('created', $group->created);
 												}
-												$dt = Date::of($activity->get('created'));
-												$ct = Date::of('now');
-
-												$lapsed = $ct->toUnix() - $dt->toUnix();
-
-												if ($lapsed < 30)
+												if (!$activity->get('created') || $activity->get('created') == '0000-00-00 00:00:00')
 												{
-													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
-												}
-												elseif ($lapsed > 30 && $lapsed < 60)
-												{
-													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
+													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_UNKNOWN');
 												}
 												else
 												{
-													echo $dt->relative('week');
+													$dt = Date::of($activity->get('created'));
+													$ct = Date::of('now');
+
+													$lapsed = $ct->toUnix() - $dt->toUnix();
+
+													if ($lapsed < 30)
+													{
+														echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
+													}
+													elseif ($lapsed > 30 && $lapsed < 60)
+													{
+														echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
+													}
+													else
+													{
+														echo $dt->relative('week');
+													}
 												}
 												?></span>
 												<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_LAST'); ?>

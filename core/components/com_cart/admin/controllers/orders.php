@@ -124,11 +124,13 @@ class Orders extends AdminController
 		$id = Request::getVar('id', array(0));
 
 		// Get transaction info
-		$tInfo = Cart::getTransactionInfo($id);
+		$transactionItems = Cart::getTransactionItems($id, false);
+		$transactionInfo = Cart::getTransactionInfo($id);
+		$transactionInfoItems = unserialize($transactionInfo->tiItems);
 
-		$tItems = unserialize($tInfo->tiItems);
+		$tInfo = $transactionInfo;
 
-		foreach ($tItems as $item)
+		foreach ($transactionInfoItems as $item)
 		{
 			// Check if the product is still available
 			$warehouse = new Warehouse();
@@ -144,7 +146,7 @@ class Orders extends AdminController
 			}
 		}
 
-		$tInfo->tiItems = $tItems;
+		$tInfo->tiItems = $transactionInfoItems;
 
 		// Get user info
 		$userId = Cart::getCartUser($tInfo->crtId);
@@ -152,6 +154,7 @@ class Orders extends AdminController
 
 		$this->view->user = $user;
 		$this->view->tInfo = $tInfo;
+		$this->view->items = $transactionItems;
 		$this->view->tId = $id;
 
 		$this->view
@@ -250,7 +253,61 @@ class Orders extends AdminController
 
 		foreach ($rowsRaw as $row)
 		{
-			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber']);
+			// Get the notes, both SKU-specific and other
+			$transactionItems = Cart::getTransactionItems($row['tId'], false);
+
+			//continue;
+
+			$transactionInfo = Cart::getTransactionInfo($row['tId']);
+			$transactionInfoItems = unserialize($transactionInfo->tiItems);
+
+			$notes = array();
+			foreach ($transactionItems as $sId => $item)
+			{
+				$meta = $item['transactionInfo']->tiMeta;
+				if (!empty($meta->checkoutNotes))
+				{
+					$notes[] = array(
+						//'label' => $item['info']->pName . ', ' . $item['info']->sSku,
+						'label' => $transactionInfoItems[$sId]['info']->pName . ', ' . $transactionInfoItems[$sId]['info']->sSku,
+						'notes' => $meta->checkoutNotes);
+				}
+			}
+
+			$genericNotesLabel = '';
+			if (!empty($notes))
+			{
+				$genericNotesLabel = 'Other notes/comments';
+			}
+
+			if ($transactionInfo->tiNotes)
+			{
+				$notes[] = array(
+					'label' => $genericNotesLabel,
+					'notes' => $transactionInfo->tiNotes);
+			}
+
+			$notesValue = '';
+			if (!empty($notes))
+			{
+				$notesCount = 0;
+				foreach ($notes as $note)
+				{
+					if ($notesCount)
+					{
+						$notesValue .= ' *** ';
+					}
+					$notesValue .= $note['label'];
+					if ($note['label'])
+					{
+						$notesValue .= ': ';
+					}
+					$notesValue .= $note['notes'];
+					$notesCount++;
+				}
+			};
+
+			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber'], $notesValue);
 		}
 
 		header("Content-Type: text/csv");
@@ -261,7 +318,7 @@ class Orders extends AdminController
 		header("Expires: 0"); // Proxies
 
 		$output = fopen("php://output", "w");
-		$row = array('Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)');
+		$row = array('Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)', 'Order Notes');
 		fputcsv($output, $row);
 		foreach ($rows as $row) {
 			fputcsv($output, $row);
@@ -308,7 +365,7 @@ class Orders extends AdminController
 		foreach ($rowsRaw as $row)
 		{
 			$itemInfo = $row->itemInfo['info'];
-			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->Name, $row->uidNumber);
+			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber);
 		}
 
 		header("Content-Type: text/csv");

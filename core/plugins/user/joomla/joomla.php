@@ -73,10 +73,13 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 				$emailAddress = $config->get('mailfrom');
 
 				$eview = new Hubzero\Mail\View(array(
-					'base_path' => __DIR__,
-					'name'      => 'emails',
-					'layout'    => 'admincreate_plain'
+					'base_path'     => __DIR__,
+					'name'          => 'emails',
+					'layout'        => 'admincreate_plain',
+					'override_path' => ''
 				));
+				$eview->addTemplatePath(App::get('template')->path . '/html/plg_' . $this->_type . '_' . $this->_name);
+
 				$eview->set('user', $user);
 				$eview->set('sitename', $config->get('sitename'));
 

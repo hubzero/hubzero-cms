@@ -83,22 +83,22 @@ $this->css()
 			<nav class="entries-filters">
 				<ul class="entries-menu order-options">
 					<li>
-						<a class="<?php echo ($this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created')); ?>" href="<?php echo Route::url($base . '&sortby=created&sortdir=' . sortDir($this->filters, 'created')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED'); ?>">
+						<a class="<?php echo $this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created'); ?>" href="<?php echo Route::url($base . '&sortby=created&sortdir=' . sortDir($this->filters, 'created')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED'); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_CREATED'); ?>
 						</a>
 					</li>
 					<li>
-						<a class="<?php echo ($this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity')); ?>" href="<?php echo Route::url($base . '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY'); ?>">
+						<a class="<?php echo $this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity'); ?>" href="<?php echo Route::url($base . '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY'); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_ACTIVITY'); ?>
 						</a>
 					</li>
 					<li>
-						<a class="<?php echo ($this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies')); ?>" href="<?php echo Route::url($base . '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS'); ?>">
+						<a class="<?php echo $this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies'); ?>" href="<?php echo Route::url($base . '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS'); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_NUM_POSTS'); ?>
 						</a>
 					</li>
 					<li>
-						<a class="<?php echo ($this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC')); ?>" href="<?php echo Route::url($base . '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE'); ?>">
+						<a class="<?php echo $this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC'); ?>" href="<?php echo Route::url($base . '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE'); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_TITLE'); ?>
 						</a>
 					</li>
@@ -126,6 +126,16 @@ $this->css()
 					?>
 				</caption>
 				<?php if (!$this->category->get('closed') && $this->config->get('access-create-thread')) { ?>
+					<thead>
+						<tr>
+							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+								<a class="icon-add add btn" href="<?php echo Route::url($base . '/new'); ?>">
+									<?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
+								</a>
+							</td>
+						</tr>
+					</thead>
+					<?php if (count($this->threads) > 10) {?>
 					<tfoot>
 						<tr>
 							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
@@ -135,7 +145,8 @@ $this->css()
 							</td>
 						</tr>
 					</tfoot>
-				<?php } ?>
+					<?php }
+				} ?>
 				<tbody>
 					<?php
 					if ($this->threads->count() > 0)

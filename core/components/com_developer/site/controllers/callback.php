@@ -32,6 +32,7 @@
 namespace Components\Developer\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 
 /**
  * Handles hub callbacks from external applications
@@ -51,13 +52,11 @@ class Callback extends SiteController
 	{
 		$pparams = \Plugin::params('filesystem', 'dropbox');
 
-		$app_key = \Session::get('dropbox.app_key', false);
-		$app_secret = \Session::get('dropbox.app_secret', false);
 		$new_connection = Session::get('dropbox.connection_to_set_up', false);
 
 		$info = [
-			'key'    => isset($app_key) ? $app_key : $pparams->get('app_key'),
-			'secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
+			'key'    => $pparams->get('app_key'),
+			'secret' => $pparams->get('app_secret'),
 		];
 
 		$appInfo          = \Dropbox\AppInfo::loadFromJson($info);
@@ -66,17 +65,13 @@ class Callback extends SiteController
 		$csrfTokenStore   = new \Dropbox\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
 		$oauth            = new \Dropbox\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore);
 
-		\Session::set('dropbox.app_key', false);
-		\Session::set('dropbox.app_secret', false);
-
 		list($accessToken, $userId, $urlState) = $oauth->finish($_GET);
 
 		//if this is a new connection, we can save the token on the server to ensure that it is used next time
 		if ($new_connection)
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
-			$connection_params = json_decode($connection->get('params'));
+			$connection_params = json_decode($pparams);
 			$connection_params->app_token = $accessToken;
 			$connection->set('params', json_encode($connection_params));
 			$connection->save();
@@ -93,7 +88,8 @@ class Callback extends SiteController
 	 **/
 	public function githubAuthorizeTask()
 	{
-		$params = \Plugin::params('filesystem', 'github');
+		$pparams = \Plugin::params('filesystem', 'github');
+		$new_connection = Session::get('github.connection_to_set_up', false);
 
 		if (!$code = Request::getVar('code'))
 		{
@@ -107,21 +103,18 @@ class Callback extends SiteController
 		{
 			throw new \Exception("State mismatch", 500);
 		}
+		if (!$repo = Session::get('github.repo'))
+		{
+			throw new \Exception("No repository", 500);
+		}
 
 		$url = 'https://github.com/login/oauth/access_token';
-		$app_key = \Session::get('github.app_key', false);
-		$app_secret = \Session::get('github.app_secret', false);
-
-		\Session::set('github.app_key', false);
-		\Session::set('github.app_secret', false);
-
 		$fields = array(
-			'client_id'     => isset($app_key) ? $app_key : $params->get('app_key'),
-			'client_secret' => isset($app_secret) ? $app_secret : $params->get('app_secret'),
+			'client_id'     => isset($app_key) ? $app_key : $pparams->get('app_key'),
+			'client_secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
 			'code'          => $code,
 			'state'         => $state
 		);
-
 		$ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -136,7 +129,17 @@ class Callback extends SiteController
 
 		$data = json_decode($result);
 
-		\Session::set('github.token', $data->access_token);
+		if ($new_connection && $data)
+		{
+			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
+			$connection_params = json_decode($pparams);
+			$connection_params->access_token = $data->access_token;
+			$connection_params->repository = $repo;
+			$connection->set('params', json_encode($connection_params));
+			$connection->save();
+		}
+
+		// Redirect to the local endpoint
 
 		// Redirect to the local endpoint
 		App::redirect(base64_decode($state));
@@ -190,20 +193,13 @@ class Callback extends SiteController
 	 **/
 	public function googledriveAuthorizeTask()
 	{
-		$pparams = \Plugin::params('filesystem', 'google');
+		$pparams = \Plugin::params('filesystem', 'googledrive');
 
-		$app_id = \Session::get('googledrive.app_id', false);
-		$app_secret = \Session::get('googledrive.app_secret', false);
 		$new_connection = Session::get('googledrive.connection_to_set_up', false);
 
-		$info = [
-			'key'    => isset($app_key) ? $app_key : $pparams->get('app_key'),
-			'secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
-		];
-
 		$client = new \Google_Client();
-		$client->setClientId($app_id);
-		$client->setClientSecret($app_secret);
+		$client->setClientId($pparams->get('app_id'));
+		$client->setClientSecret($pparams->get('app_secret'));
 		$client->addScope(\Google_Service_Drive::DRIVE);
 		$client->setAccessType('offline');
 		$client->setApprovalPrompt('force');
@@ -225,9 +221,8 @@ class Callback extends SiteController
 		//if this is a new connection, we can save the token on the server to ensure that it is used next time
 		if ($new_connection)
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
-			$connection_params = json_decode($connection->get('params'));
+			$connection_params = json_decode($pparams);
 			$connection_params->app_token = $accessToken;
 			$connection->set('params', json_encode($connection_params));
 			$connection->save();

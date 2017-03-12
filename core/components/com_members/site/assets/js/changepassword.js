@@ -35,7 +35,7 @@ HUB.MembersChangePassword = {
 			$.ajax({
 				url: "/api/members/checkpass",
 				type: "POST",
-				data: "password1="+password.val(),
+				data: {"password1": password.val()},
 				dataType: "json",
 				cache: false,
 				success: function(json){
