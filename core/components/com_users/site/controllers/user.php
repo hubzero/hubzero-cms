@@ -44,7 +44,7 @@ class UsersControllerUser extends UsersController
 
 			foreach ($plugins as $plugin)
 			{
-				$className = 'plg'.$plugin->type.$plugin->name;
+				$className = 'plg' . $plugin->type . $plugin->name;
 
 				if ($plugin->name != $authenticator)
 				{
@@ -53,9 +53,9 @@ class UsersControllerUser extends UsersController
 
 				if (class_exists($className))
 				{
-					if (method_exists($className,'login'))
+					if (method_exists($className, 'login'))
 					{
-						$myplugin = new $className($this,(array)$plugin);
+						$myplugin = new $className($this, (array)$plugin);
 
 						$myplugin->login($credentials, $options);
 
@@ -113,6 +113,17 @@ class UsersControllerUser extends UsersController
 			$credentials['password'] = $data['password'];
 		}
 
+		// Make sure return values are internal to the hub
+		// Guards against querystring tampering
+		if ($data['return'])
+		{
+			$return = $data['return'];
+			if (!JURI::isInternal($return))
+			{
+				$data['return'] = '';
+			}
+		}
+
 		// Set the return URL if empty.
 		if (empty($data['return']))
 		{
@@ -137,10 +148,12 @@ class UsersControllerUser extends UsersController
 			// Success
 			User::setState('users.login.form.data', array());
 
+			$return = User::getState('users.login.form.return');
+
 			// If no_html is set, return json response
 			if (Request::getInt('no_html', 0))
 			{
-				echo json_encode( array("success" => true, "redirect" => Route::url(User::getState('users.login.form.return'), false)) );
+				echo json_encode(array("success" => true, "redirect" => Route::url($return, false)));
 				exit;
 			}
 			else
@@ -170,7 +183,7 @@ class UsersControllerUser extends UsersController
 			// If no_html is set, return json response
 			if (Request::getInt('no_html', 0))
 			{
-				echo json_encode( array("error" => $error, "freturn" => Route::url($return, false)) );
+				echo json_encode(array("error" => $error, "freturn" => Route::url($return, false)));
 				exit;
 			}
 			else
@@ -217,7 +230,7 @@ class UsersControllerUser extends UsersController
 
 			foreach ($plugins as $plugin)
 			{
-				$className = 'plg'.$plugin->type.$plugin->name;
+				$className = 'plg' . $plugin->type . $plugin->name;
 
 				if ($plugin->name != $authenticator)
 				{
@@ -226,9 +239,9 @@ class UsersControllerUser extends UsersController
 
 				if (class_exists($className))
 				{
-					if (method_exists($className,'logout'))
+					if (method_exists($className, 'logout'))
 					{
-						$myplugin = new $className($this,(array)$plugin);
+						$myplugin = new $className($this, (array)$plugin);
 
 						// Redirect to user third party signout view
 						// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
@@ -419,7 +432,7 @@ class UsersControllerUser extends UsersController
 
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getRemindRoute();
-			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
+			$itemid = $itemid !== null ? '&Itemid=' . $itemid : '';
 			$route  = 'index.php?option=com_users&view=remind' . $itemid;
 
 			// Go back to the complete form.
@@ -431,8 +444,8 @@ class UsersControllerUser extends UsersController
 			// Complete failed.
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getRemindRoute();
-			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$route  = 'index.php?option=com_users&view=remind'.$itemid;
+			$itemid = $itemid !== null ? '&Itemid=' . $itemid : '';
+			$route  = 'index.php?option=com_users&view=remind' . $itemid;
 
 			// Go back to the complete form.
 			$message = Lang::txt('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
@@ -445,7 +458,7 @@ class UsersControllerUser extends UsersController
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getLoginRoute();
 			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$route  = 'index.php?option=com_users&view=login'.$itemid;
+			$route  = 'index.php?option=com_users&view=login' . $itemid;
 
 			// Proceed to the login form.
 			$message = Lang::txt('COM_USERS_REMIND_REQUEST_SUCCESS');
@@ -472,7 +485,7 @@ class UsersControllerUser extends UsersController
 		// First, they should already be logged in, so check for that
 		if ($user->get('guest'))
 		{
-			App::abort( 403, Lang::txt( 'You must be logged in to perform this function' ));
+			App::abort(403, Lang::txt('You must be logged in to perform this function'));
 			return;
 		}
 
@@ -501,13 +514,13 @@ class UsersControllerUser extends UsersController
 
 			$plugin = Plugin::byType('authentication', $authenticator);
 
-			$className = 'plg'.$plugin->type.$plugin->name;
+			$className = 'plg' . $plugin->type . $plugin->name;
 
 			if (class_exists($className))
 			{
-				if (method_exists($className,'link'))
+				if (method_exists($className, 'link'))
 				{
-					$myplugin = new $className($this,(array)$plugin);
+					$myplugin = new $className($this, (array)$plugin);
 					$myplugin->link($options);
 				}
 				else
@@ -524,7 +537,7 @@ class UsersControllerUser extends UsersController
 		else
 		{
 			// No authenticator provided...
-			App::abort( 400, Lang::txt( 'Missing authenticator' ));
+			App::abort(400, Lang::txt('Missing authenticator'));
 			return;
 		}
 
