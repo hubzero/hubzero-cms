@@ -170,7 +170,7 @@ class Helper extends Module
 						'access' => array('core.manage', 'com_templates')
 					),
 					array(
-						'link'   => Route::url('index.php?option=com_admin&task=profile.edit&id=' . User::get('id')),
+						'link'   => Route::url('index.php?option=com_members&task=edit&id=' . User::get('id')),
 						//'image'  => 'header/icon-48-user-profile.png',
 						'id'     => 'icon-user-profile',
 						'text'   => Lang::txt('MOD_QUICKICON_PROFILE'),

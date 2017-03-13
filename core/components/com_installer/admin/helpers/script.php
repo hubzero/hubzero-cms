@@ -113,7 +113,7 @@ class joomlaInstallerScript
 		// TODO Remove this for 2.5
 		$table = JTable::getInstance('Extension');
 		if ($table->load(array('element'=> 'mod_online', 'type'=>'module', 'client_id'=>1))) {
-			if (!file_exists(JPATH_ADMINISTRATOR . '/modules/mod_online')) {
+			if (!file_exists(PATH_CORE . '/modules/mod_online')) {
 				// Delete this extension
 				if (!$table->delete()) {
 					echo $table->getError().'<br />';
@@ -133,7 +133,7 @@ class joomlaInstallerScript
 		// TODO Remove this for 2.5
 		$table = JTable::getInstance('Extension');
 		if ($table->load(array('element'=> 'mod_unread', 'type'=>'module', 'client_id'=>1))) {
-			if (!file_exists(JPATH_ADMINISTRATOR . '/modules/mod_unread')) {
+			if (!file_exists(PATH_CORE . '/modules/mod_unread')) {
 				// Delete this extension
 				if (!$table->delete()) {
 					echo $table->getError().'<br />';
