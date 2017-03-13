@@ -487,7 +487,7 @@ class Members extends AdminController
 		// Can't block yourself
 		if ($user->get('block') && $user->get('id') == User::get('id') && !User::get('block'))
 		{
-			Notify::error(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
+			Notify::error(Lang::txt('COM_MEMBERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
 			return $this->editTask($user);
 		}
 
@@ -506,7 +506,7 @@ class Members extends AdminController
 
 			if (!$stillSuperAdmin)
 			{
-				Notify::error(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
+				Notify::error(Lang::txt('COM_MEMBERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
 				return $this->editTask($user);
 			}
 		}
