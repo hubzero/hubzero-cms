@@ -46,7 +46,7 @@ use App;
  */
 class Templates extends AdminController
 {
-		/**
+	/**
 	 * Override execute method
 	 *
 	 * @return 	void

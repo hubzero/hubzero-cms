@@ -442,7 +442,7 @@ class Newsletter extends Relational
 		$campaignParsed = str_replace("{{ISSUE}}", $campaign->issue, $campaignParsed);
 
 		// Handle the AUTOGEN sections
-		if (preg_match_all("(\\{.*?\\}\\})", $campaignPrimaryStories, $matches) !== FALSE)
+		if (preg_match_all("(\\{.*?\\}\\})", $campaignPrimaryStories, $matches) !== false)
 		{
 			foreach ($matches[0] as &$match)
 			{

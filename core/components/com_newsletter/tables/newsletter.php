@@ -212,7 +212,7 @@ class Newsletter extends \JTable
 	public function buildNewsletter($campaign, $stripHtmlAndBodyTags = false)
 	{
 		//are we overriding content with template vs using stories?
-		if ($campaign->template == '-1')
+		if ($campaign->template_id == '-1')
 		{
 			$campaignTemplate = $campaign->html_content;
 			$campaignPrimaryStories = '';
@@ -226,7 +226,7 @@ class Newsletter extends \JTable
 			$newsletterSecondaryStory = new SecondaryStory($this->_db);
 
 			//get the campaign template
-			$newsletterTemplate->load($campaign->template);
+			$newsletterTemplate->load($campaign->template_id);
 			$campaignTemplate = $newsletterTemplate->template;
 
 			//get primary & secondary colors

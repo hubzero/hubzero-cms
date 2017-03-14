@@ -62,7 +62,7 @@ $menuItems = array(
 
 foreach ($menuItems as $k => $v)
 {
-	$active = (\Request::getCmd('controller', 'newsletters') == $k) ? true : false ;
+	$active = (\Request::getCmd('controller', 'newsletters') == $k) ? true : false;
 	\Submenu::addEntry($v, \Route::url('index.php?option=com_newsletter&controller=' . $k), $active);
 }
 

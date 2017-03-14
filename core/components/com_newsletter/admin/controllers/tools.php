@@ -72,8 +72,8 @@ class Tools extends AdminController
 	public function mozifyTask()
 	{
 		//get request vars
-		$imageFile  = Request::getVar('image-file','', 'files');
-		$imageUrl   = Request::getVar('image-url','', 'post');
+		$imageFile  = Request::getVar('image-file', '', 'files');
+		$imageUrl   = Request::getVar('image-url', '', 'post');
 		$mosaicSize = Request::getInt('mosaic-size', 5, 'post');
 
 		//temp upload path
