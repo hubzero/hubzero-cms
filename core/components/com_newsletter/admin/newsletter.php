@@ -37,40 +37,35 @@ if (!\User::authorise('core.manage', 'com_newsletter'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-//include models
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'newsletter.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'template.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'primary.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'secondary.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailinglist.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailinglist.email.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.recipient.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.recipient.action.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
+// Include models
+require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
 
-//instantiate controller
-$controllerName = \Request::getCmd('controller', 'newsletter');
+// Include helpers
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+
+// Instantiate controller
+$controllerName = \Request::getCmd('controller', 'newsletters');
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-//menu items
+// Menu items
 $menuItems = array(
-	'newsletter'  => \Lang::txt('COM_NEWSLETTER_NEWSLETTERS'),
-	'mailing'     => \Lang::txt('COM_NEWSLETTER_MAILINGS'),
-	'mailinglist' => \Lang::txt('COM_NEWSLETTER_LISTS'),
-	'template'    => \Lang::txt('COM_NEWSLETTER_TEMPLATES'),
-	'tools'       => \Lang::txt('COM_NEWSLETTER_TOOLS')
+	'newsletters'  => \Lang::txt('COM_NEWSLETTER_NEWSLETTERS'),
+	'mailings'     => \Lang::txt('COM_NEWSLETTER_MAILINGS'),
+	'mailinglists' => \Lang::txt('COM_NEWSLETTER_LISTS'),
+	'templates'    => \Lang::txt('COM_NEWSLETTER_TEMPLATES'),
+	'tools'        => \Lang::txt('COM_NEWSLETTER_TOOLS')
 );
 
-//add menu items
 foreach ($menuItems as $k => $v)
 {
-	$active = (\Request::getCmd('controller', 'newsletter') == $k) ? true : false ;
+	$active = (\Request::getCmd('controller', 'newsletters') == $k) ? true : false ;
 	\Submenu::addEntry($v, \Route::url('index.php?option=com_newsletter&controller=' . $k), $active);
 }
 
-//execute controller
+// Execute controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

@@ -32,7 +32,7 @@
 
 namespace Components\Newsletter\Api\Controllers;
 
-use Components\Newsletter\Tables\Newsletter;
+use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\ApiController;
 use Exception;
 use stdClass;
@@ -40,12 +40,7 @@ use Request;
 use Route;
 use Lang;
 
-$base = dirname(dirname(__DIR__)) . DS . 'tables' . DS;
-
-require_once($base . 'newsletter.php');
-require_once($base . 'template.php');
-require_once($base . 'primary.php');
-require_once($base . 'secondary.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'newsletter.php';
 
 /**
  * API controller class for newsletters
@@ -61,18 +56,14 @@ class Newslettersv1_0 extends ApiController
 	 */
 	public function currentTask()
 	{
-		$result = array();
-
-		$database = \App::get('db');
-		$newsletterNewsletter = new Newsletter($database);
-
 		// get the current newsletter
-		$newsletter = $newsletterNewsletter->getCurrentNewsletter();
+		$newsletter = Newsletter::current();
 
 		// build the newsletter based on campaign
+		$result = array();
 		$result['id']      = $newsletter->issue;
 		$result['title']   = $newsletter->name;
-		$result['content'] = $newsletterNewsletter->buildNewsletter($newsletter);
+		$result['content'] = $newsletter->buildNewsletter($newsletter);
 
 		$obj = new stdClass();
 		$obj->newsletter = $result;
@@ -106,10 +97,12 @@ class Newslettersv1_0 extends ApiController
 		$limit = Request::getInt('limit', 5);
 		$start = Request::getInt('start', 0);
 
-		$database = \App::get('db');
-		$newsletterNewsletter = new Newsletter($database);
-
-		$newsletters = $newsletterNewsletter->getNewsletters(null, true);
+		$newsletters = Newsletter::all()
+			->ordered()
+			->limit($limit)
+			->start($start)
+			->rows()
+			->toArray();
 
 		$obj = new stdClass();
 		$obj->newsletters = $newsletters;
@@ -143,20 +136,24 @@ class Newslettersv1_0 extends ApiController
 		$limit = Request::getInt('limit', 5);
 		$start = Request::getInt('start', 0);
 
+		// get newsletters
+		$newsletters = Newsletter::all()
+			->ordered()
+			->limit($limit)
+			->start($start)
+			->rows();
+
 		$result = array();
 
-		$database = \App::get('db');
-		$newsletterNewsletter = new Newsletter($database);
-
-		// get newsletters
-		$newsletters = $newsletterNewsletter->getNewsletters();
-
 		// add newsletter details to return array
-		foreach ($newsletters as $k => $newsletter)
+		$k = 0;
+		foreach ($newsletters as $newsletter)
 		{
 			$result[$k]['id']      = $newsletter->issue;
 			$result[$k]['title']   = $newsletter->name;
-			$result[$k]['content'] = $newsletterNewsletter->buildNewsletter($newsletter);
+			$result[$k]['content'] = $newsletter->buildNewsletter($newsletter);
+
+			$k++;
 		}
 
 		$obj = new stdClass();

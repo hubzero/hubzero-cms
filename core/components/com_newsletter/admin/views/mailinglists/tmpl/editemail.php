@@ -34,61 +34,59 @@
 defined('_HZEXEC_') or die();
 
 //set title
-Toolbar::title(Lang::txt('COM_NEWSLETTER_TEST_SENDING') . ': ' . $this->newsletter->name, 'newsletter.png');
+$text = ($this->task == 'editEmail' ? Lang::txt('Edit') : Lang::txt('New'));
 
-//add buttons to toolbar
-Toolbar::custom('dosendtest', 'send','', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST', false);
-Toolbar::cancel();
+Toolbar::title(Lang::txt('Newsletter Mailing List Email') . ': ' . $text, 'list');
+Toolbar::save('saveemail');
+Toolbar::cancel('cancelemail');
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
-
-<?php
-	if ($this->getError())
-	{
-		echo '<p class="error">' . $this->getError() . '</p>';
-	}
-?>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
-	<div class="col width-100">
-		<?php if ($this->newsletter->id != null) : ?>
-			<a name="distribution"></a>
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+	<div class="grid">
+		<div class="col span6">
 			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_NEWSLETTER_TEST_SENDING'); ?></legend>
+				<legend><?php echo Lang::txt('%s Mailing List Email', $text); ?></legend>
 				<table class="admintable">
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
-							<td>
-								<?php echo $this->escape($this->newsletter->name); ?>
-							</td>
+							<td class="key" width="200px"><?php echo Lang::txt('Mailing List'); ?>:</td>
+							<td><strong><?php echo $this->escape($this->list->name); ?></strong></td>
 						</tr>
 						<tr>
-							<th>
-								<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS'); ?>:<br />
-								<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS_HINT'); ?></span>
-							</th>
-							<td>
-								<input type="text" name="emails" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS_PLACEHOLDER'); ?>" autocomplete="off" />
-							</td>
+							<td class="key"><?php echo Lang::txt('Email'); ?>:</td>
+							<td><input type="text" name="fields[email]" value="<?php echo $this->escape($this->email->email); ?>" /></td>
 						</tr>
 					</tbody>
 				</table>
 			</fieldset>
-		<?php endif; ?>
+		</div>
+		<div class="col span6">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('Date Added'); ?>:</th>
+						<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_added)); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('Confirmed?'); ?></th>
+						<td><?php echo ($this->email->confirmed) ? Lang::txt('JYes') : Lang::txt('JNo'); ?></td>
+					</tr>
+					<?php if ($this->email->confirmed) : ?>
+						<tr>
+							<th><?php echo Lang::txt('Date Confirmed'); ?>:</th>
+							<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_confirmed)); ?></td>
+						</tr>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="dosendtest" />
-	<input type="hidden" name="nid" value="<?php echo $this->newsletter->id; ?>" />
+	<input type="hidden" name="fields[mid]" value="<?php echo $this->list->id; ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->email->id; ?>" />
+	<input type="hidden" name="task" value="saveemail" />
 
 	<?php echo Html::input('token'); ?>
 </form>

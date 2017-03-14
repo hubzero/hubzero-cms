@@ -33,15 +33,29 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list.png');
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
-Toolbar::spacer();
+$canDo = Components\Newsletter\Helpers\Permissions::getActions('mailinglist');
+
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list');
+if ($canDo->get('core.create'))
+{
+	Toolbar::addNew();
+}
+if ($canDo->get('core.edit'))
+{
+	Toolbar::editList();
+}
+if ($canDo->get('core.delete'))
+{
+	Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
+	Toolbar::spacer();
+}
 Toolbar::custom('manage', 'user', '', 'COM_NEWSLETTER_TOOLBAR_MANAGE');
 Toolbar::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT');
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
+if ($canDo->get('core.admin'))
+{
+	Toolbar::spacer();
+	Toolbar::preferences($this->option, '550');
+}
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
@@ -59,7 +73,7 @@ Toolbar::preferences($this->option, '550');
 				<?php foreach ($this->lists as $k => $list) : ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $list->id; ?>" onclick="isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $list->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $list->id); ?>">
@@ -72,10 +86,10 @@ Toolbar::preferences($this->option, '550');
 							</span>
 						</td>
 						<td class="priority-2">
-							<?php echo $list->active_count; ?>
+							<?php echo $list->emails()->whereEquals('status', 'active')->total(); ?>
 						</td>
 						<td class="priority-2">
-							<?php echo $list->total_count; ?>
+							<?php echo $list->emails()->total(); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -89,8 +103,8 @@ Toolbar::preferences($this->option, '550');
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="com_newsletter" />
-	<input type="hidden" name="controller" value="mailinglist" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="add" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 

@@ -33,26 +33,41 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-//include modal
-Html::behavior('modal');
+$canDo = Components\Newsletter\Helpers\Permissions::getActions('newsletter');
 
 //set title
-Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter');
 
-//add buttons to toolbar
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
-Toolbar::deleteList('COM_NEWSLETTER_DELETE_CHECK', 'delete');
-Toolbar::spacer();
-Toolbar::publishList();
-Toolbar::unpublishList();
-Toolbar::spacer();
+if ($canDo->get('core.create'))
+{
+	Toolbar::addNew();
+	Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
+}
+if ($canDo->get('core.edit'))
+{
+	Toolbar::editList();
+}
+if ($canDo->get('core.delete'))
+{
+	Toolbar::deleteList('COM_NEWSLETTER_DELETE_CHECK', 'delete');
+	Toolbar::spacer();
+}
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
+}
 Toolbar::custom('preview', 'preview', '', 'COM_NEWSLETTER_TOOLBAR_PREVIEW');
 Toolbar::custom('sendtest', 'sendtest', '', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST');
 Toolbar::custom('sendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND');
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
+if ($canDo->get('core.admin'))
+{
+	Toolbar::spacer();
+	Toolbar::preferences($this->option, '550');
+}
+
+Html::behavior('modal');
 
 // add js
 $this->js();
@@ -92,7 +107,7 @@ Joomla.submitbutton = function(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->newsletters); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_NAME'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?></th>
@@ -102,8 +117,8 @@ Joomla.submitbutton = function(pressbutton)
 			</tr>
 		</thead>
 		<tbody>
-			<?php if (count($this->newsletters) > 0) : ?>
-				<?php foreach ($this->newsletters as $k => $newsletter) : ?>
+			<?php if ($this->rows->count() > 0) : ?>
+				<?php foreach ($this->rows as $k => $newsletter) : ?>
 					<tr>
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" onclick="isChecked(this.checked);" />
@@ -125,13 +140,7 @@ Joomla.submitbutton = function(pressbutton)
 								}
 								else
 								{
-									foreach ($this->templates as $template)
-									{
-										if ($template->id == $newsletter->template)
-										{
-											$activeTemplate  = $template->name;
-										}
-									}
+									$activeTemplate = $newsletter->template->name;
 								}
 
 								echo ($activeTemplate) ? $activeTemplate : Lang::txt('COM_NEWSLETTER_NO_TEMPLATE_FOUND');

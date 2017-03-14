@@ -33,20 +33,18 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list.png');
-Toolbar::addNew('addemail', 'COM_NEWSLETTER_TOOLBAR_ADDEMAILS');
-Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAILS_CHECK', 'deleteemail', 'COM_NEWSLETTER_TOOLBAR_REMOVE');
-Toolbar::spacer();
+$canDo = Components\Newsletter\Helpers\Permissions::getActions('mailinglist');
+
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list');
+if ($canDo->get('core.edit'))
+{
+	Toolbar::addNew('addemail', 'COM_NEWSLETTER_TOOLBAR_ADDEMAILS');
+	Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAILS_CHECK', 'deleteemail', 'COM_NEWSLETTER_TOOLBAR_REMOVE');
+	Toolbar::spacer();
+}
 Toolbar::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT', false);
 Toolbar::spacer();
 Toolbar::cancel();
-?>
-
-<?php
-	if ($this->getError())
-	{
-		echo '<p class="error">' . $this->getError() . '</p>';
-	}
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
@@ -67,42 +65,15 @@ Toolbar::cancel();
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->list_emails); ?>);" /></th>
 				<th>
-					<?php if ($this->filters['sort'] == 'email ASC') : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=email DESC'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL') . ' &uarr;'; ?>
-						</a>
-					<?php else : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=email ASC'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL'); ?>
-							<?php echo ($this->filters['sort'] == 'email DESC') ? ' &darr;' : ''; ?>
-						</a>
-					<?php endif; ?>
+					<?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
 				<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
 				<th>
-					<?php if ($this->filters['sort'] == 'date_added ASC') : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_added DESC'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED') . ' &uarr;'; ?>
-						</a>
-					<?php else : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_added ASC'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED'); ?>
-							<?php echo ($this->filters['sort'] == 'date_added DESC') ? ' &darr;' : ''; ?>
-						</a>
-					<?php endif; ?>
+					<?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED', 'date_added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th>
-					<?php if ($this->filters['sort'] == 'date_confirmed ASC') : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_confirmed DESC'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED') . ' &uarr;'; ?>
-						</a>
-					<?php else : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_confirmed ASC'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED'); ?>
-							<?php echo ($this->filters['sort'] == 'date_confirmed DESC') ? ' &darr;' : ''; ?>
-						</a>
-					<?php endif; ?>
+					<?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED', 'date_confirmed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 			</tr>
 		</thead>
@@ -114,11 +85,11 @@ Toolbar::cancel();
 							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
-							<a href="mailto:<?php echo $le->email; ?>"><?php echo $le->email; ?></a>
+							<a href="mailto:<?php echo $le->email; ?>"><?php echo $this->escape($le->email); ?></a>
 							<?php
-								if ($le->unsubscribe_reason)
+								if ($le->unsubscribe->reason)
 								{
-									echo '<p><strong>' . Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON') . '</strong> ' . $le->unsubscribe_reason . '</p>';
+									echo '<p><strong>' . Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON') . '</strong> ' . $le->unsubscribe->reason . '</p>';
 								}
 							?>
 						</td>
@@ -133,7 +104,7 @@ Toolbar::cancel();
 								}
 								else
 								{
-									$resendLink = Route::url('index.php?option=com_newsletter&controller=mailinglist&task=sendconfirmation&id='.$le->id.'&mid='.$this->list->id);
+									$resendLink = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=sendconfirmation&id='.$le->id.'&mid='.$this->list->id);
 									echo Lang::txt('JNO') . '(<a href="'.$resendLink.'">' . Lang::txt('Send Confirmation') . '</a>)';
 								}
 							?>
@@ -165,11 +136,14 @@ Toolbar::cancel();
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="com_newsletter" />
-	<input type="hidden" name="controller" value="mailinglist" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="manage" />
 	<input type="hidden" name="id[]" value="<?php echo $this->list->id; ?>" />
+	<input type="hidden" name="mid" value="<?php echo $this->list->id; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

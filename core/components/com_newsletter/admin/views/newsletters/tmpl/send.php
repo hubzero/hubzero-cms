@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 												$color  = 'DodgerBlue';
 											}
 											// is mailing fully sent?
-											else if ($mailing->queueCount == 0)
+											else if ($mailing->recipients == 0)
 											{
 												$status = 'Sent';
 												$color  = 'ForestGreen';

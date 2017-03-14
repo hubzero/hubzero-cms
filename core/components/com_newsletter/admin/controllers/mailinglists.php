@@ -33,8 +33,8 @@
 namespace Components\Newsletter\Admin\Controllers;
 
 use Components\Newsletter\Helpers\Helper;
-use Components\Newsletter\Tables\MailinglistEmail;
-use Components\Newsletter\Tables\Mailinglist as MailList;
+use Components\Newsletter\Models\Mailinglist\Email;
+use Components\Newsletter\Models\Mailinglist;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
@@ -47,7 +47,7 @@ use App;
 /**
  * Newsletter Mailing List Controller
  */
-class Mailinglist extends AdminController
+class Mailinglists extends AdminController
 {
 	/**
 	 * Override execute method
@@ -56,8 +56,10 @@ class Mailinglist extends AdminController
 	 */
 	public function execute()
 	{
-		$this->disableDefaultTask();
-		$this->registerTask('', 'display');
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		//$this->disableDefaultTask();
+		//$this->registerTask('', 'display');
 
 		parent::execute();
 	}
@@ -65,173 +67,206 @@ class Mailinglist extends AdminController
 	/**
 	 * Display Mailing Lists Task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// instantiate mailing list object
-		$newsletterMailinglist = new MailList($this->database);
-		$this->view->lists = $newsletterMailinglist->getLists();
+		$lists = Mailinglist::all()
+			->ordered()
+			->rows();
 
 		// diplay list of mailing lists
-		$this->view->setLayout('display')->display();
-	}
-
-	/**
-	 * Add Mailing List Task
-	 *
-	 * @return 	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		$this->view
+			->setLayout('display')
+			->set('lists', $lists)
+			->display();
 	}
 
 	/**
 	 * Edit Mailing List Task
 	 *
-	 * @return 	void
+	 * @param   object  $row
+	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($row = null)
 	{
-		Request::setVar('hidemainmenu', 1);
-
-		// default object
-		$this->view->list = new stdClass;
-		$this->view->list->id          = null;
-		$this->view->list->name        = null;
-		$this->view->list->description = null;
-		$this->view->list->private     = null;
-		$this->view->list->deleted     = null;
-		$this->view->list->email_count = null;
-
-		// get request vars
-		$ids = Request::getVar('id', array());
-		$id = (isset($ids[0])) ? $ids[0] : null;
-
-		// are we editing or adding a new list
-		if ($id)
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			$newsletterMailinglist = new MailList($this->database);
-			$this->view->list = $newsletterMailinglist->getLists($id);
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// set errors if we have any
-		if ($this->getError())
+		Request::setVar('hidemainmenu', 1);
+
+		// Load object
+		if (!is_object($row))
 		{
-			$this->view->setError($this->getError());
+			// Incoming
+			$id = Request::getVar('id', array(0));
+			$id = is_array($id) ? $id[0] : $id;
+
+			$row = Mailinglist::oneOrNew($id);
 		}
 
 		// ouput
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->set('row', $row)
+			->display();
 	}
 
 	/**
 	 * Save Mailing List Task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
-		// get request vars
-		$list = Request::getVar('list', array(), 'post');
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
-		// instantiate mailing list object
-		$newsletterMailinglist = new MailList($this->database);
+		// Incoming data
+		$fields = Request::getVar('newsletter', array(), 'post', 'array', 2);
+
+		// Initiate model
+		$row = Mailinglist::oneOrNew($fields['id'])->set($fields);
 
 		// save mailing list
-		if ($newsletterMailinglist->save($list))
+		if (!$row->save())
 		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&controller=mailinglist', false),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_SUCCESS')
-			);
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
-		else
+
+		// Set success message
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_SUCCESS'));
+
+		if ($this->getTask() == 'apply')
 		{
-			$this->setError($newsletterMailinglist->getError());
-			$this->editTask();
-			return;
+			return $this->editTask($row);
 		}
+
+		// Redirect back to list
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete Mailing List Task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get the request vars
-		$ids = Request::getVar("id", array());
+		$ids = Request::getVar('id', array());
 
 		// make sure we have ids
+		$success = 0;
+
 		if (isset($ids) && count($ids) > 0)
 		{
 			// delete each newsletter
 			foreach ($ids as $id)
 			{
 				// instantiate mailing list object
-				$newsletterMailinglist = new MailList($this->database);
-				$newsletterMailinglist->load($id);
+				$row = Mailinglist::oneOrFail($id);
 
 				// mark as deleted
-				$newsletterMailinglist->deleted = 1;
+				$row->set('deleted', 1);
 
 				// save campaign marking as deleted
-				if (!$newsletterMailinglist->save($newsletterMailinglist))
+				if (!$row->save())
 				{
-					$this->setError(Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_FAILED'));
-					$this->displayTask();
-					return;
+					Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_FAILED'));
+					continue;
 				}
+
+				$success++;
 			}
 		}
 
-		// redirect back to campaigns list
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&controller=mailinglist', false),
-			Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_SUCCESS')
-		);
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_SUCCESS'));
+		}
+
+		// Redirect back to campaigns list
+		$this->cancelTask();
 	}
 
 	/**
 	 * Manage Mailing List Task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function manageTask()
 	{
-		//get request vars
-		$ids = Request::getVar('id', array());
-		$id = (isset($ids[0])) ? $ids[0] : null;
-
-		//get request vars
-		$this->view->id = $id;
-		$this->view->filters['status'] = Request::getWord('status', 'active');
-		$this->view->filters['sort']   = Request::getVar('sort', 'email ASC');
-
-		//instantiate mailing list object
-		$newsletterMailinglist      = new MailList($this->database);
-		$newsletterMailinglistEmail = new MailingListEmail($this->database);
-
-		//load mailing list
-		$this->view->list = $newsletterMailinglist->getLists($this->view->id);
-
-		//load mailing list emails
-		$this->view->list_emails = $newsletterMailinglist->getListEmails($this->view->id, null, $this->view->filters);
-
-		//set errors if we have any
-		if ($this->getError())
+		if (!User::authorise('core.edit', $this->_option))
 		{
-			$this->view->setError($this->getError());
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		//get request vars
+		$ids = Request::getVar('id', array());
+		$id = (isset($ids[0])) ? $ids[0] : 0;
+
+		if (!$id)
+		{
+			return $this->cancelTask();
+		}
+
+		//get request vars
+		$filters = array(
+			'status' => Request::getWord('status', 'active'),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			)
+		);
+
+		// Load mailing list
+		$list = Mailinglist::oneOrFail($id);
+
+		//load mailing list emails
+		$model = $list->emails();
+
+		if ($filters['status'] && $filters['status'] != 'all')
+		{
+			$model->whereEquals('status', $filters['status']);
+		}
+
+		$list_emails = $model
+			->order($filters['sort'], $filters['sort_Dir'])
+			->rows();
+
 		//diplay list of mailing lists
-		$this->view->setLayout('manage')->display();
+		$this->view
+			->setLayout('manage')
+			->set('filters', $filters)
+			->set('list', $list)
+			->set('list_emails', $list_emails)
+			->display();
 	}
 
 	/**
@@ -241,37 +276,34 @@ class Mailinglist extends AdminController
 	 */
 	public function addEmailTask()
 	{
-		// get request vars
-		$mailinglistId = Request::getVar('id', 0);
-		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : null;
-
-		if (!$mailinglistId)
+		if (!User::authorise('core.edit', $this->_option))
 		{
-			$mailinglistId = $this->mid;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		Request::setVar('hidemainmenu', 1);
+
+		// get request vars
+		$mailinglistId = Request::getVar('id', 0);
+		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : 0;
+
 		// load mailing list
-		$this->view->list = new MailList($this->database);
-		$this->view->list->load($mailinglistId);
+		$list = Mailinglist::oneOrFail($mailinglistId);
 
 		// get list of groups
 		$filters = array(
 			'fields' => array('gidNumber', 'description'),
 			'type'   => array('hub', 'project', 'super', 'course')
 		);
-		$this->view->groups = \Hubzero\User\Group::find($filters);
-
-		// getting vars from do import
-		$this->view->emailBox = $this->emailBox;
-
-		// set errors if we have any
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
+		$groups = \Hubzero\User\Group::find($filters);
 
 		// output
-		$this->view->setLayout('addemail')->display();
+		$this->view
+			->setLayout('addemail')
+			->set('groups', $groups)
+			->set('list', $list)
+			->set('emailBox', (isset($this->emailBox) ? $this->emailBox : ''))
+			->display();
 	}
 
 	/**
@@ -299,24 +331,25 @@ class Mailinglist extends AdminController
 		// make sure we have selected whether or not to send confirmation emails
 		if ($this->emailConfirmation == '-1')
 		{
-			$this->setError(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_SPECIFY_CONFIRMATION'));
-			$this->addEmailTask();
-			return;
+			Notify::warning(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_SPECIFY_CONFIRMATION'));
+			return $this->addEmailTask();
 		}
 
 		// instantiate newletter mailing email object
-		$newsletterMailinglist = new MailList($this->database);
-		$newsletterMailinglist->load($this->mid);
+		$newsletterMailinglist = Mailinglist::oneOrFail($this->mid);
 
 		// get current emails on list
-		$filters = array('status' => 'all');
-		$currentEmails = array_keys($newsletterMailinglist->getListEmails($this->mid, $key ='email', $filters));
+		$currentEmails = array();
+		foreach ($newsletterMailinglist->emails as $email)
+		{
+			$currentEmails[] = $email->email;
+		}
 
 		// get com_media params
 		$config = Component::params('com_media');
 
 		// array of allowed extensions
-		$allowedExtensions = array('txt','csv','xls','xlsx');
+		$allowedExtensions = array('txt', 'csv', 'xls', 'xlsx');
 
 		// max file size
 		$maxFileSize = (int) $config->get('upload_maxsize');
@@ -327,19 +360,18 @@ class Mailinglist extends AdminController
 		{
 			// make sure its an allowed file
 			$pathInfo = pathinfo($this->emailFile['name']);
+
 			if (!in_array(strtolower($pathInfo['extension']), $allowedExtensions))
 			{
-				$this->setError(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TYPE_NOT_ALLOWED'));
-				$this->addEmailTask();
-				return;
+				Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TYPE_NOT_ALLOWED'));
+				return $this->addEmailTask();
 			}
 
 			// make sure were within file limits
 			if ($this->emailFile['size'] > $maxFileSize)
 			{
-				$this->setError(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TOO_BIG'));
-				$this->addEmailTask();
-				return;
+				Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TOO_BIG'));
+				return $this->addEmailTask();
 			}
 
 			// get contents of file
@@ -361,10 +393,10 @@ class Mailinglist extends AdminController
 		{
 			// parse emails
 			$emailBoxEmails = $this->_parseEmails($this->emailBox);
+
 			if ($emailBoxEmails === false)
 			{
-				$this->addEmailTask();
-				return;
+				return $this->addEmailTask();
 			}
 		}
 
@@ -375,7 +407,7 @@ class Mailinglist extends AdminController
 		$emails = array_unique($emails);
 
 		// check that they are valid emails
-		$inserts = array();
+		$inserts = 0;
 		foreach ($emails as $k => $email)
 		{
 			if (!filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -390,19 +422,24 @@ class Mailinglist extends AdminController
 			}
 			else
 			{
-				$inserts[] = "(" . $this->mid . ", '" . $email . "', 'active', 0, '" . \Date::toSql() . "')";
+				$insert = Email::blank();
+				$insert->set(array(
+					'mid'        => $this->mid,
+					'email'      => $email,
+					'status'     => 'active',
+					'confirmed'  => 0,
+					'date_added' => \Date::toSql()
+				));
+				if ($insert->save())
+				{
+					$inserts++;
+				}
 			}
 		}
 
 		// do we have something to add
-		if (count($inserts) > 0)
+		if ($inserts > 0)
 		{
-			// add emails to mailing list
-			$sql  = "INSERT INTO `#__newsletter_mailinglist_emails` (`mid`,`email`,`status`,`confirmed`,`date_added`) VALUES";
-			$sql .= implode(", ", $inserts);
-			$this->database->setQuery($sql);
-			$this->database->query();
-
 			// inform user of successfully addes
 			Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_SUCCESS', count($emails), implode('<br />&mdash; ', $emails)));
 		}
@@ -431,44 +468,36 @@ class Mailinglist extends AdminController
 		}
 
 		// redirect back to mailing list manage page
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $this->mid, false)
-		);
+		$this->cancelemailTask();
 	}
 
 	/**
 	 * Edit Email On Mailing List Task
 	 *
+	 * @param   object  $row
 	 * @return 	void
 	 */
-	public function editEmailTask()
+	public function editemailTask($row = null)
 	{
 		// get request vars
-		$id  = Request::getInt('id', 0);
 		$mid = Request::getInt('mid', 0);
 
 		// load mailing list
-		$this->view->list = new MailList($this->database);
-		$this->view->list->load($mid);
+		$list = Mailinglist::oneOrFail($mid);
 
 		// load email
-		$this->view->email = new MailingListEmail($this->database);
-		$this->view->email->load($id);
-
-		// are we passing back an email
-		if ($this->email)
+		if (!is_object($row))
 		{
-			$this->view->email->email = $this->email;
-		}
-
-		//set errors if we have any
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$id  = Request::getInt('id', 0);
+			$row = Email::oneOrFail($id);
 		}
 
 		// output
-		$this->view->setLayout('editemail')->display();
+		$this->view
+			->setLayout('editemail')
+			->set('list', $list)
+			->set('email', $row)
+			->display();
 	}
 
 	/**
@@ -476,31 +505,34 @@ class Mailinglist extends AdminController
 	 *
 	 * @return 	void
 	 */
-	public function saveEmailTask()
+	public function saveemailTask()
 	{
-		// get request vars
-		$email = Request::getVar('email', array(), 'post');
+		// Check for request forgeries
+		Request::checkToken();
 
-		// instantiate mailing list object
-		$newsletterMailinglistEmail = new MailingListEmail($this->database);
+		// Incoming data
+		$fields = Request::getVar('fields', array(), 'post', 'array', 2);
 
-		// save email
-		if ($newsletterMailinglistEmail->save($email))
+		// Initiate model
+		$row = Email::oneOrNew($fields['id'])->set($fields);
+
+		// save mailing list
+		if (!$row->save())
 		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $email['mid'], false),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_SUCCESS')
-			);
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
-		else
+
+		// Set success message
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_SUCCESS'));
+
+		if ($this->getTask() == 'apply')
 		{
-			Request::setVar('id', $email['id']);
-			Request::setVar('mid', $email['mid']);
-			$this->email = $email['email'];
-			$this->setError(Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_FAILED'));
-			$this->editEmailTask();
-			return;
+			return $this->editemailTask($row);
 		}
+
+		// Redirect back to list
+		$this->cancelemailTask();
 	}
 
 	/**
@@ -508,41 +540,48 @@ class Mailinglist extends AdminController
 	 *
 	 * @return 	void
 	 */
-	public function deleteEmailTask()
+	public function deleteemailTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$ids = Request::getVar('email_id', array());
 		$mailinglistId = Request::getVar('id', array());
-		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : null;
+		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : 0;
 
 		// make sure we have ids
+		$success = 0;
+
 		if (isset($ids) && count($ids) > 0)
 		{
 			// delete each newsletter
 			foreach ($ids as $id)
 			{
 				// instantiate mailing list object
-				$newsletterMailinglistEmail = new MailingListEmail($this->database);
-				$newsletterMailinglistEmail->load($id);
+				$email = Email::oneOrFail($id);
 
 				// mark as removed
-				$newsletterMailinglistEmail->status = 'removed';
+				$email->set('status', 'removed');
 
 				// delete mailing list email
-				if (!$newsletterMailinglistEmail->save($newsletterMailinglistEmail))
+				if (!$email->save())
 				{
-					$this->setError($newsletterMailinglistEmail->getError());
-					$this->editEmailTask();
-					return;
+					Notify::error($email->getError());
+					continue;
 				}
+
+				$success++;
 			}
 		}
 
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAIL_SUCCESS'));
+		}
+
 		// inform and redirect
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mailinglistId, false),
-			Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAIL_SUCCESS')
-		);
+		$this->cancelemailTask();
 	}
 
 	/**
@@ -569,7 +608,7 @@ class Mailinglist extends AdminController
 		if ($newsletterMailinglistEmail->save($newsletterMailinglistEmail))
 		{
 			App::redirect(
-				Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid, false),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false),
 				Lang::txt('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS')
 			);
 		}
@@ -584,30 +623,27 @@ class Mailinglist extends AdminController
 	/**
 	 * Send confirmation email task
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function sendConfirmationTask()
 	{
 		// get request vars
-		$id = Request::getInt('id', 0);
+		$id  = Request::getInt('id', 0);
 		$mid = Request::getInt('mid', 0);
 
 		// instantiate mailing list object
-		$newsletterMailinglist = new MailList($this->database);
-		$newsletterMailinglist->load($mid);
+		$mailinglist = Mailinglist::oneOrFail($mid);
 
 		// instantiate mailing list email object
-		$newsletterMailinglistEmail = new MailingListEmail($this->database);
-		$newsletterMailinglistEmail->load($id);
+		$email = Email::oneOrFail($id);
 
 		// send confirmation email
-		Helper::sendMailinglistConfirmationEmail($newsletterMailinglistEmail->email, $newsletterMailinglist, false);
+		Helper::sendMailinglistConfirmationEmail($email->email, $mailinglist, false);
+
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_SENT', $email->email));
 
 		// inform user and redirect
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid, false),
-			Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_SENT', $newsletterMailinglistEmail->email)
-		);
+		$this->cancelemailTask();
 	}
 
 	/**
@@ -622,14 +658,16 @@ class Mailinglist extends AdminController
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		// instantiate mailing list object
-		$newsletterMailinglist = new MailList($this->database);
-		$newsletterMailinglist->load($id);
+		$mailinglist = Mailinglist::oneOrFail($id);
 
 		// get list of emails
-		$emails = $newsletterMailinglist->getListEmails($id, null, array('status' => 'all'));
+		$emails = $mailinglist
+			->emails()
+			->whereEquals('status', 'active')
+			->rows();
 
 		// file name
-		$filename  = Lang::txt('COM_NEWSLETTER_MAILINGLIST_EXPORT_FILENAME', $newsletterMailinglist->name, Date::of('now')->format('m-d-Y'));
+		$filename  = Lang::txt('COM_NEWSLETTER_MAILINGLIST_EXPORT_FILENAME', $mailinglist->name, Date::of('now')->format('m-d-Y'));
 		$filename .= '.csv';
 
 		// file contents
@@ -653,11 +691,11 @@ class Mailinglist extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function cancelEmailTask()
+	public function cancelemailTask()
 	{
-		$email = Request::getVar('email', array(), 'post');
+		$email = Request::getVar('fields', array(), 'post');
 
-		$mid = ($email['mid']) ? $email['mid'] : Request::getInt('mid');
+		$mid = (isset($email['mid']) ? $email['mid'] : Request::getInt('mid', 0));
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false)
@@ -672,22 +710,32 @@ class Mailinglist extends AdminController
 	public function emailCountTask()
 	{
 		// get the mailing list
-		$mailinglistId = Request::getInt('mailinglistid', '-1');
+		$id = Request::getInt('mailinglistid', '-1');
+
+		// instantiate mailing list object
+		$mailinglist = Mailinglist::oneOrFail($id);
 
 		// get list of emails
-		$newsletterMailinglist = new MailList($this->database);
-		$filters = array('status' => 'active');
-		$emails = array_keys($newsletterMailinglist->getListEmails($mailinglistId, 'email', $filters));
+		$emails = $mailinglist
+			->emails()
+			->whereEquals('status', 'active')
+			->rows();
+
+		$items = array();
+		foreach ($emails as $email)
+		{
+			$items[] = $email->email;
+		}
 
 		// echo count of emails
-		echo json_encode($emails);
+		echo json_encode($items);
 	}
 
 	/**
 	 * Parse Email Content
 	 *
-	 * @param   $emails    Email Content
-	 * @param   $separator Email Address Separator
+	 * @param   $emails     Email Content
+	 * @param   $separator  Email Address Separator
 	 * @return  void
 	 */
 	private function _parseEmails($emails)

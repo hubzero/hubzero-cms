@@ -29,21 +29,21 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Newsletter\Models\Mailing;
+namespace Components\Newsletter\Models\Mailinglist;
 
 use Hubzero\Database\Relational;
 
 /**
- * Newsletter model for a mailing recipient
+ * Newsletter model for a mailinglist unsubscribe
  */
-class Recipient extends Relational
+class Unsubscribe extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'newsletter_mailing';
+	protected $namespace = 'newsletter_mailinglist';
 
 	/**
 	 * Default order by for model
@@ -65,16 +65,27 @@ class Recipient extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'email' => 'notempty'
+		'email' => 'notempty',
+		'mid'   => 'positive|nonzero'
 	);
 
 	/**
-	 * Defines a belongs to one relationship between mailing and recipient
+	 * Defines a belongs to one relationship between mailinglist and mailing
 	 *
 	 * @return  object
 	 */
-	public function mailing()
+	public function mailinglist()
 	{
-		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mid');
+		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailinglist', 'mid');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between email and unsubscribe
+	 *
+	 * @return  object
+	 */
+	public function unsubscribe()
+	{
+		return $this->oneToOne(__NAMESPACE__ . '\\Email', 'email', 'email');
 	}
 }

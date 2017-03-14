@@ -79,13 +79,13 @@ Joomla.submitbutton = function(pressbutton)
 				<?php foreach ($this->mailings as $k => $mailing) : ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->mailing_id; ?>" onclick="isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
-							<?php echo $mailing->newsletter_name; ?>
+							<?php echo $mailing->newsletter->get('name', Lang::txt('COM_NEWSLETTER_UNKNOWN')); ?>
 						</td>
 						<td class="priority-3">
-							<?php echo Date::of($mailing->mailing_date)->toLocal("F d, Y @ g:ia"); ?>
+							<?php echo Date::of($mailing->date)->toLocal("F d, Y @ g:ia"); ?>
 						</td>
 						<td class="priority-2">
 							<?php
@@ -102,7 +102,7 @@ Joomla.submitbutton = function(pressbutton)
 						</td>
 						<td class="priority-4">
 							<?php
-								switch ($mailing->autogen)
+								switch ($mailing->newsletter->get('autogen'))
 								{
 									case 0:
 										echo Lang::txt("N/A");

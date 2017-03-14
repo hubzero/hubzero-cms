@@ -97,6 +97,27 @@ class Primary extends Relational
 	 */
 	public function newsletter()
 	{
-		return $this->belongsToOne('Newsletter', 'nid');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Newsletter', 'nid');
+	}
+
+	/**
+	 * Generates automatic order field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOrder($data)
+	{
+		if (!isset($data['order']))
+		{
+			$last = self::all()
+				->whereEquals('nid', (isset($data['nid']) ? $data['nid'] : 0))
+				->order('order', 'desc')
+				->row();
+
+			$data['order'] = $last->order + 1;
+		}
+
+		return $data['order'];
 	}
 }

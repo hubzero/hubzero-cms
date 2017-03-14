@@ -33,12 +33,16 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Request::setVar('hidemainmenu', 1);
+$canDo = Components\Newsletter\Helpers\Permissions::getActions('story');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
 
-Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)) . ': ' . $text, 'addedit.png');
-Toolbar::save();
+Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)) . ': ' . $text, 'addedit');
+if ($canDo->get('core.edit'))
+{
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 ?>
 
@@ -50,6 +54,7 @@ Toolbar::cancel();
 			<label for="field-nid"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</label>
 			<strong class="pseudo-input"><?php echo $this->escape($this->newsletter->name); ?></strong>
 			<input type="hidden" name="story[nid]" id="field-nid" value="<?php echo $this->newsletter->id; ?>" />
+			<input type="hidden" name="nid" id="nid" value="<?php echo $this->newsletter->id; ?>" />
 		</div>
 		<div class="input-wrap">
 			<label for="field-type"><?php echo Lang::txt('COM_NEWSLETTER_STORY_TYPE'); ?>:</label>

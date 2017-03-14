@@ -29,52 +29,56 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Newsletter\Models\Mailing;
+namespace Components\Newsletter\Helpers;
 
-use Hubzero\Database\Relational;
+use Hubzero\Base\Object;
+use User;
 
 /**
- * Newsletter model for a mailing recipient
+ * Permissions helper
  */
-class Recipient extends Relational
+class Permissions
 {
 	/**
-	 * The table namespace
+	 * Name of the component
 	 *
-	 * @var  string
+	 * @var string
 	 */
-	protected $namespace = 'newsletter_mailing';
+	public static $extension = 'com_newsletter';
 
 	/**
-	 * Default order by for model
+	 * Gets a list of the actions that can be performed.
 	 *
-	 * @var  string
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The asset ID.
+	 * @return  object   Object
 	 */
-	public $orderBy = 'id';
-
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
-
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'email' => 'notempty'
-	);
-
-	/**
-	 * Defines a belongs to one relationship between mailing and recipient
-	 *
-	 * @return  object
-	 */
-	public function mailing()
+	public static function getActions($assetType='component', $assetId = 0)
 	{
-		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mid');
+		$assetName  = self::$extension;
+		$assetName .= '.' . $assetType;
+		if ($assetId)
+		{
+			$assetName .= '.' . (int) $assetId;
+		}
+
+		$result = new Object;
+
+		$actions = array(
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
+		);
+
+		foreach ($actions as $action)
+		{
+			$result->set($action, User::authorise($action, $assetName));
+		}
+
+		return $result;
 	}
 }
+

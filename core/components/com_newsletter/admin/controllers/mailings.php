@@ -32,13 +32,14 @@
 
 namespace Components\Newsletter\Admin\Controllers;
 
-use Components\Newsletter\Tables\Mailing as NewsletterMailing;
-use Components\Newsletter\Tables\MailingRecipient;
-use Components\Newsletter\Tables\MailingRecipientAction;
-use Components\Newsletter\Tables\Newsletter;
+use Components\Newsletter\Models\Mailing;
+use Components\Newsletter\Models\Mailing\Recipient;
+use Components\Newsletter\Models\Mailing\Recipient\Action;
+use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -46,7 +47,7 @@ use App;
 /**
  * Newsletter Mailings Controller
  */
-class Mailing extends AdminController
+class Mailings extends AdminController
 {
 	/**
 	 * Display Newsletter Mailings
@@ -55,110 +56,135 @@ class Mailing extends AdminController
 	 */
 	public function displayTask()
 	{
-		//instantiate newsletter mailing object
-		$newsletterMailing = new NewsletterMailing($this->database);
-		$this->view->mailings = $newsletterMailing->getMailingNewsletters();
+		$mailings = Mailing::all()
+			->including(['newsletter', function ($newsletter){
+				$newsletter->select('*');
+			}])
+			->ordered()
+			->rows();
 
-		//add the number sent
-		foreach ($this->view->mailings as $mailing)
-		{
-			$newsletterMailingRecipient = new MailingRecipient($this->database);
-			$mailing->emails_sent = count($newsletterMailingRecipient->getRecipients($mailing->mailing_id, 'sent'));
-			$mailing->emails_total = count($newsletterMailingRecipient->getRecipients($mailing->mailing_id));
-		}
+		// Add the number sent
+		$rows = array();
 
-		// Set any errors
-		if ($this->getError())
+		foreach ($mailings as $mailing)
 		{
-			$this->view->setError($this->getError());
+			$emails_sent = $mailing
+				->recipients()
+				->whereEquals('status', 'sent')
+				->total();
+
+			$emails_total = $mailing
+				->recipients()
+				->total();
+
+			$mailing->set('emails_sent', $emails_sent);
+			$mailing->set('emails_total', $emails_total);
+
+			$rows[] = $mailing;
 		}
 
 		// Output the HTML
-		$this->view->setLayout('display')->display();
+		$this->view
+			->setLayout('display')
+			->set('mailings', $rows)
+			->display();
 	}
 
 	/**
 	 * View Tracking Information task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function trackingTask()
 	{
-		//get request vars
+		// Get request vars
 		$ids = Request::getVar('id', array());
-		$id = (isset($ids)) ? $ids[0] : null;
+		$id = (isset($ids)) ? $ids[0] : 0;
 
-		//instantiate newsletter mailing object
-		$newsletterMailing = new NewsletterMailing($this->database);
-		$mailing = $newsletterMailing->getMailings($id);
+		// Instantiate newsletter mailing object
+		$mailing = Mailing::oneOrFail($id);
 
-		//get mailing recipients
-		$newsletterMailingRecipient = new MailingRecipient($this->database);
-		$this->view->recipients = $newsletterMailingRecipient->countRecipients($id, 'sent');
+		// Instantiate newsletter object
+		$newsletter = $mailing->newsletter;
 
-		//instantiate newsletter object
-		$newsletterNewsletter = new Newsletter($this->database);
-		$newsletterNewsletter->load($mailing->nid);
-
-		//make sure we are supposed to be tracking
-		if (!$newsletterNewsletter->tracking)
+		// Make sure we are supposed to be tracking
+		if (!$newsletter->tracking)
 		{
-			$this->setError(Lang::txt('COM_NEWSLETTER_MAILING_NOT_TRACKING'));
-			$this->displayTask();
-			return;
+			Notify::warning(Lang::txt('COM_NEWSLETTER_MAILING_NOT_TRACKING'));
+			return $this->cancelTask();
 		}
 
-		//get bounces
+		// Get mailing recipients
+		$recipients = $mailing->recipients()->total();
+
+		// Get bounces
+		$db = App::get('db');
 		$sql = "SELECT COUNT(*) FROM `#__email_bounces`
 				WHERE component='com_newsletter'
-				AND object=" . $this->database->quote('Campaign Mailing') . "
-				AND object_id=" . $this->database->quote($id);
-		$this->database->setQuery($sql);
-		$this->view->bounces = $this->database->loadResult();
+				AND object=" . $db->quote('Campaign Mailing') . "
+				AND object_id=" . $db->quote($id);
+		$db->setQuery($sql);
+		$bounces = $db->loadResult();
 
-		//new mailing recipient action object
-		$newsletterMailingRecipientAction = new MailingRecipientAction($this->database);
+		// Get opens, clicks, forwards, and prints
+		$opens = Action::all()
+			->whereEquals('mailingid', $id)
+			->whereEquals('action', 'open')
+			->total();
 
-		//get opens, clicks, forwards, and prints
-		$this->view->opens    = $newsletterMailingRecipientAction->countMailingActions($id, 'open');
-		$this->view->forwards = $newsletterMailingRecipientAction->countMailingActions($id, 'forward');
-		$this->view->prints   = $newsletterMailingRecipientAction->countMailingActions($id, 'print');
+		$forwards = Action::all()
+			->whereEquals('mailingid', $id)
+			->whereEquals('action', 'forward')
+			->total();
 
-		//get opens geo
-		$this->view->opensGeo = $this->getOpensGeoTask($id);
+		$prints = Action::all()
+			->whereEquals('mailingid', $id)
+			->whereEquals('action', 'print')
+			->total();
 
-		//get clicks and process
-		$clicks = $newsletterMailingRecipientAction->getMailingActions($id, 'click');
-		$this->view->clicks = array();
-		foreach ($clicks as $click)
+		// Get opens geo
+		$opensGeo = $this->getOpensGeoTask($id);
+
+		// Get clicks and process
+		$clcks = Action::all()
+			->whereEquals('mailingid', $id)
+			->whereEquals('action', 'clicks')
+			->rows();
+
+		$clicks = array();
+		foreach ($clcks as $click)
 		{
-			//get click action
+			// Get click action
 			$clickAction = json_decode($click->action_vars);
-			$this->view->clicks[$clickAction->url] = (isset($this->view->clicks[$clickAction->url])) ? $this->view->clicks[$clickAction->url] + 1 : 1;
-		}
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$clicks[$clickAction->url] = (isset($clicks[$clickAction->url])) ? $clicks[$clickAction->url] + 1 : 1;
 		}
 
 		// Output the HTML
-		$this->view->setLayout('tracking')->display();
+		$this->view
+			->setLayout('tracking')
+			->set('mailing', $mailing)
+			->set('recipients', $recipients)
+			->set('bounces', $bounces)
+			->set('opens', $opens)
+			->set('forwards', $forwards)
+			->set('prints', $prints)
+			->set('opensGeo', $opensGeo)
+			->set('clicks', $clicks)
+			->display();
 	}
 
 	/**
 	 * Get Opens and Return as JSON
 	 * 
-	 * @param  [type] $mailingId [description]
-	 * @return [type]            [description]
+	 * @param   integer  $mailingId
+	 * @return  string
 	 */
 	public function getOpensGeoTask($mailingId = null)
 	{
-		//are we getting through ajax
+		// Are we getting through ajax
 		$no_html = Request::getInt('no_html', 0);
 
-		//get the mailing id
+		// Get the mailing id
 		if (is_null($mailingId))
 		{
 			$mailingId = Request::getVar('mailingid', 0);
@@ -217,15 +243,15 @@ class Mailing extends AdminController
 			"wyoming" => 'wy'
 		);
 
-		//new mailing recipient action object
-		$newsletterMailingRecipientAction = new MailingRecipientAction($this->database);
+		// Get opens
+		$opens = Action::all()
+			->whereEquals('mailingid', $mailingId)
+			->whereEquals('action', 'open')
+			->rows();
 
-		//get opens
-		$opens = $newsletterMailingRecipientAction->getMailingActions($mailingId, 'open');
-
-		//get country and state data
+		// Get country and state data
 		$countryGeo = array();
-		$statesGeo = array();
+		$statesGeo  = array();
 		foreach ($opens as $open)
 		{
 			$country = ($open->countrySHORT) ? strtolower($open->countrySHORT) : 'undetermined';
@@ -235,13 +261,12 @@ class Mailing extends AdminController
 			$statesGeo[$state] = (isset($statesGeo[$state])) ? $statesGeo[$state] + 1 : 1;
 		}
 
-		//build return object
+		// Build return data
 		$geo = array(
 			'country' => $countryGeo,
-			'state' => $statesGeo
+			'state'   => $statesGeo
 		);
 
-		//return
 		if ($no_html)
 		{
 			echo json_encode($geo);
@@ -260,29 +285,25 @@ class Mailing extends AdminController
 	 */
 	public function stopTask()
 	{
-		//get request vars
+		// Get request vars
 		$ids = Request::getVar('id', array());
 		$id = (isset($ids)) ? $ids[0] : null;
 
-		//instantiate newsletter mailing object
-		$newsletterMailing = new NewsletterMailing($this->database);
-		$newsletterMailing->load($id);
+		// Instantiate newsletter mailing object
+		$mailing = Mailing::oneOrFail($id);
 
-		//mark as deleted
-		$newsletterMailing->deleted = 1;
+		// Mark as deleted
+		$mailing->set('deleted', 1);
 
-		//save
-		if (!$newsletterMailing->save($newsletterMailing))
+		// Save
+		if (!$mailing->save())
 		{
-			$this->setError($newsletterMailing->getError());
-			$this->displayTask();
-			return;
+			Notify::error($mailing->getError());
+			return $this->cancelTask();
 		}
 
-		//inform and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_NEWSLETTER_MAILING_STOPPED')
-		);
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILING_STOPPED'));
+
+		$this->cancelTask();
 	}
 }

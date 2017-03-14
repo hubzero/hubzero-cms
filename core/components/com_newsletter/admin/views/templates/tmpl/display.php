@@ -33,17 +33,31 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$canDo = Components\Newsletter\Helpers\Permissions::getActions('template');
+
 //set the title
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES'), 'template.png');
 
 //add toolbar buttons
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
-Toolbar::spacer();
-Toolbar::deleteList('COM_NEWSLETTER_TEMPLATE_DELETE_CHECK', 'delete');
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
+if ($canDo->get('core.create'))
+{
+	Toolbar::addNew();
+	Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
+}
+if ($canDo->get('core.edit'))
+{
+	Toolbar::editList();
+}
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	Toolbar::deleteList('COM_NEWSLETTER_TEMPLATE_DELETE_CHECK', 'delete');
+}
+if ($canDo->get('core.admin'))
+{
+	Toolbar::spacer();
+	Toolbar::preferences($this->option, '550');
+}
 ?>
 <?php
 	if ($this->getError())

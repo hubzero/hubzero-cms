@@ -29,21 +29,21 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Newsletter\Models\Mailing;
+namespace Components\Newsletter\Models\Mailing\Recipient;
 
 use Hubzero\Database\Relational;
 
 /**
- * Newsletter model for a mailing recipient
+ * Newsletter model for a mailing recipient action
  */
-class Recipient extends Relational
+class Action extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'newsletter_mailing';
+	protected $namespace = 'newsletter_mailing_recipient';
 
 	/**
 	 * Default order by for model
@@ -65,7 +65,8 @@ class Recipient extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'email' => 'notempty'
+		'action'    => 'notempty',
+		'mailingid' => 'positive|nonzero'
 	);
 
 	/**
@@ -75,6 +76,6 @@ class Recipient extends Relational
 	 */
 	public function mailing()
 	{
-		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mid');
+		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mailingid');
 	}
 }
