@@ -165,7 +165,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 					case 'Importance':
 					case 'X-Priority':
 					case 'X-MSMail-Priority':
-						$priority = (isset($parts[1]) && in_array($parts[1], array(1,2,3,4,5))) ? $parts[1] : 3;
+						$priority = (isset($parts[1]) && in_array($parts[1], array(1, 2, 3, 4, 5))) ? $parts[1] : 3;
 						$message->setPriority($priority);
 						break;
 					default:
@@ -324,4 +324,3 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-
