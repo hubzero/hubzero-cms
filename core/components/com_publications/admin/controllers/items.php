@@ -718,10 +718,11 @@ class Items extends AdminController
 		$this->model->publication->alias    = trim(Request::getVar('alias', '', 'post'));
 		$this->model->publication->category = trim(Request::getInt('category', 0, 'post'));
 		$this->model->publication->access   = Request::getInt('access', 0, 'post');
-		if (!$project->get('owned_by_group'))
+		$this->model->publication->group_owner = $group_owner;
+		/*if (!$project->get('owned_by_group'))
 		{
 			$this->model->publication->group_owner = $group_owner;
-		}
+		}*/
 		$this->model->publication->store();
 
 		// Get metadata
