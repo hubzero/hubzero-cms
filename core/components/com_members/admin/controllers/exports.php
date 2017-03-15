@@ -36,6 +36,7 @@ use Components\Members\Models\Member;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Helpers\Permissions;
 use Hubzero\Component\AdminController;
+use Event;
 use User;
 use Date;
 use Lang;
@@ -135,6 +136,19 @@ class Exports extends AdminController
 			//array_push($keys, $attrib->get('name'));
 		}
 
+		$results = Event::trigger('members.onExportMemberKeys', array($keys));
+		foreach ($results as $result)
+		{
+			if (!is_array($result))
+			{
+				continue;
+			}
+
+			foreach ($result as $k => $v)
+			{
+				$keys[$k] = $v;
+			}
+		}
 
 		// Get request vars
 		$delimiter = Request::getVar('delimiter', ',');
@@ -214,6 +228,20 @@ class Exports extends AdminController
 				}
 
 				$tmp[$key] = $val;
+			}
+
+			$results = Event::trigger('members.onExportMemberData', array($member, $tmp));
+			foreach ($results as $result)
+			{
+				if (!is_array($result))
+				{
+					continue;
+				}
+
+				foreach ($result as $k => $v)
+				{
+					$tmp[$k] = $v;
+				}
 			}
 
 			unset($member);
