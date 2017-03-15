@@ -33,9 +33,9 @@
 namespace Components\Newsletter\Site\Controllers;
 
 use Components\Newsletter\Helpers\Helper;
-use Components\Newsletter\Tables\MailinglistEmail;
-use Components\Newsletter\Tables\Mailinglist as MailList;
-use Components\Newsletter\Tables\Mailing;
+use Components\Newsletter\Models\Mailinglist\Email;
+use Components\Newsletter\Models\Mailinglist;
+use Components\Newsletter\Models\Mailing;
 use Hubzero\Component\SiteController;
 use stdClass;
 use Pathway;
@@ -48,7 +48,7 @@ use App;
 /**
  * Newsletter Mailing List Controller
  */
-class Mailinglist extends SiteController
+class Mailinglists extends SiteController
 {
 	/**
 	 * Override parent build title method
@@ -136,11 +136,23 @@ class Mailinglist extends SiteController
 		}
 
 		//get mailing lists user belongs to
-		$newsletterMailinglist = new MailList($this->database);
-		$this->view->mylists = $newsletterMailinglist->getListsForEmail(User::get('email'));
+		$e = Email::blank()->getTableName();
+		$m = Mailinglist::blank()->getTableName();
+
+		$mylists = Mailinglist::all()
+			->select($m . '.*')
+			->select($e . '.status')
+			->select($e . '.confirmed')
+			->select($e . '.id', 'emailid')
+			->join($e, $e . '.mid', $m . '.id', 'inner')
+			->whereEquals($e . '.email', User::get('email'))
+			->whereEquals('deleted', 0)
+			->rows();
 
 		//get all lists
-		$this->view->alllists = $newsletterMailinglist->getLists(null, 'public');
+		$alllists = Mailinglist::all()
+			->whereEquals('private', 0)
+			->rows();
 
 		//build title
 		$this->_buildTitle();
@@ -148,11 +160,11 @@ class Mailinglist extends SiteController
 		//build pathway
 		$this->_buildPathway();
 
-		//set vars for view
-		$this->view->title = $this->_title;
-
 		//output
 		$this->view
+			->set('title', $this->_title)
+			->set('mylists', $mylists)
+			->set('alllists', $alllists)
 			->setLayout('subscribe')
 			->display();
 	}
@@ -205,31 +217,31 @@ class Mailinglist extends SiteController
 		}
 
 		//load mailing list object
-		$newsletterMailinglist = new MailList($this->database);
-		$newsletterMailinglist->load($list);
+		$mailinglist = Mailinglist::oneOrFail($list);
 
 		//make sure its not private or already deleted
-		if (is_object($newsletterMailinglist) && !$newsletterMailinglist->private && !$newsletterMailinglist->deleted)
+		if (!$mailinglist->private && !$mailinglist->deleted)
 		{
-			$subscription             = new stdClass;
-			$subscription->id         = $sid;
-			$subscription->mid        = $list;
-			$subscription->email      = $email;
-			$subscription->status     = 'inactive';
-			$subscription->date_added = \Date::toSql();
+			$subscription = Email::blank()
+				->set(array(
+					'id'         => $sid,
+					'mid'        => $list,
+					'email'      => $email,
+					'status'     => 'inactive',
+					'date_added' => \Date::toSql()
+				));
 
 			//mail confirmation email and save subscription
-			if (Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false))
+			if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false))
 			{
-				$newsletterMailinglistEmail = new MailinglistEmail($this->database);
-				$newsletterMailinglistEmail->save($subscription);
+				$subscription->save();
 			}
 		}
 
 		//inform user and redirect
 		App::redirect(
 			Route::url($return),
-			Lang::txt('COM_NEWSLETTER_SUBSCRIBE_SUCCESS', $newsletterMailinglist->name)
+			Lang::txt('COM_NEWSLETTER_SUBSCRIBE_SUCCESS', $mailinglist->name)
 		);
 	}
 
@@ -244,34 +256,50 @@ class Mailinglist extends SiteController
 		$lists = Request::getVar('lists', array(), 'post');
 		$email = User::get('email');
 
-		//get my lists
-		$newsletterMailinglist = new MailList($this->database);
-		$mylists = $newsletterMailinglist->getListsForEmail($email, 'mailinglistid');
+		//get mailing lists user belongs to
+		$e = Email::blank()->getTableName();
+		$m = Mailinglist::blank()->getTableName();
+
+		$mylists = Mailinglist::all()
+			->select($m . '.*')
+			->select($e . '.status')
+			->select($e . '.confirmed')
+			->select($e . '.id', 'emailid')
+			->join($e, $e . '.mid', $m . '.id', 'inner')
+			->whereEquals($e . '.email', $email)
+			->whereEquals('deleted', 0)
+			->rows();
+
+		$keys = array();
+		foreach ($mylists as $mylist)
+		{
+			$keys[] = $mylist->id;
+		}
 
 		// subscribe user to checked lists
 		foreach ($lists as $list)
 		{
 			//only subscribe if not previously
-			if (!in_array($list, array_keys($mylists)))
+			if (!in_array($list, $keys))
 			{
 				//load mailing list object
-				$newsletterMailinglist = new MailList($this->database);
-				$newsletterMailinglist->load($list);
+				$mailinglist = Mailinglist::oneOrFail($list);
 
 				//make sure its not private or already deleted
-				if (is_object($newsletterMailinglist) && !$newsletterMailinglist->private && !$newsletterMailinglist->deleted)
+				if (!$mailinglist->private && !$mailinglist->deleted)
 				{
-					$subscription             = new stdClass;
-					$subscription->mid        = $list;
-					$subscription->email      = $email;
-					$subscription->status     = 'inactive';
-					$subscription->date_added = Date::toSql();
+					$subscription = Email::blank()
+						->set(array(
+							'mid'        => $list,
+							'email'      => $email,
+							'status'     => 'inactive',
+							'date_added' => Date::toSql()
+						));
 
 					//mail confirmation email and save subscription
-					if (Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false))
+					if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false))
 					{
-						$newsletterMailinglistEmail = new MailinglistEmail($this->database);
-						$newsletterMailinglistEmail->save($subscription);
+						$subscription->save();
 					}
 				}
 			}
@@ -281,39 +309,37 @@ class Mailinglist extends SiteController
 		foreach ($mylists as $mylist)
 		{
 			//instantiate newsletter mailing email
-			$newsletterMailinglistEmail = new MailinglistEmail($this->database);
-			$newsletterMailinglistEmail->load($mylist->id);
+			$memail = Email::oneOrFail($mylist->emailid);
 
 			//do we want to mark as active or mark as unsubscribed
-			if (!in_array($mylist->mailinglistid, $lists))
+			if (!in_array($mylist->id, $lists))
 			{
 				//set as unsubscribed
-				$newsletterMailinglistEmail->status         = 'unsubscribed';
-				$newsletterMailinglistEmail->confirmed      = 0;
-				$newsletterMailinglistEmail->date_confirmed = null;
+				$memail->set('status', 'unsubscribed');
+				$memail->set('confirmed', 0);
+				$memail->set('date_confirmed', null);
 			}
 			else if ($mylist->status != 'active')
 			{
 				//set as active
-				$newsletterMailinglistEmail->status = 'inactive';
+				$memail->set('status', 'inactive');
 
 				//load mailing list object
-				$newsletterMailinglist = new MailList($this->database);
-				$newsletterMailinglist->load($mylist->mailinglistid);
+				$mailinglist = Mailinglist::oneOrFail($mylist->id);
 
 				//send a new confirmation
-				Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false);
+				Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false);
 
 				//delete all unsubscribes
 				$sql = "DELETE FROM `#__newsletter_mailinglist_unsubscribes`
-						WHERE mid=" . $this->database->quote($mylist->mailinglistid) . "
+						WHERE mid=" . $this->database->quote($mylist->id) . "
 						AND email=" . $this->database->quote($email);
 				$this->database->setQuery($sql);
 				$this->database->query();
 			}
 
 			//save
-			$newsletterMailinglistEmail->save($newsletterMailinglistEmail);
+			$memail->save();
 		}
 
 		//inform user and redirect
@@ -330,9 +356,6 @@ class Mailinglist extends SiteController
 	 */
 	public function unsubscribeTask()
 	{
-		//set layout
-		$this->view->setLayout('unsubscribe');
-
 		//get request vars
 		$email = urldecode(Request::getVar('e', ''));
 		$token = Request::getVar('t', '');
@@ -352,8 +375,7 @@ class Mailinglist extends SiteController
 		}
 
 		//get newsletter mailing to get mailing list id mailing was sent to
-		$newsletterMailing = new Mailing($this->database);
-		$mailing = $newsletterMailing->getMailings($recipient->mid);
+		$mailing = Mailing::oneOrFail($recipient->mid);
 
 		//make sure we have a mailing object
 		if (!is_object($mailing))
@@ -369,16 +391,17 @@ class Mailinglist extends SiteController
 		//is the mailing list to the default hub mailing list?
 		if ($mailing->lid == '-1')
 		{
-			$mailinglist              = new stdClass;
-			$mailinglist->id          = '-1';
-			$mailinglist->name        = 'HUB Members';
-			$mailinglist->description = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_DEFAULTLIST');
+			$mailinglist = Mailinglist::blank()
+				->set(array(
+					'id' => -1,
+					'name' => 'HUB Members',
+					'description' => Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_DEFAULTLIST')
+				));
 		}
 		else
 		{
 			//load mailing list
-			$newsletterMailinglist = new MailList($this->database);
-			$mailinglist = $newsletterMailinglist->getLists($mailing->lid);
+			$mailinglist = Mailinglist::oneOrFail($mailing->lid);
 		}
 
 		//check to make sure were not already unsubscribed
@@ -392,7 +415,7 @@ class Mailinglist extends SiteController
 			$this->database->setQuery($sql);
 			$profile = $this->database->loadObject();
 
-			if (!is_object($profile) || $profile->uidNumber == '')
+			if (!is_object($profile) || $profile->id == '')
 			{
 				$unsubscribedAlready = true;
 			}
@@ -439,12 +462,12 @@ class Mailinglist extends SiteController
 		//build pathway
 		$this->_buildPathway();
 
-		//set vars for view
-		$this->view->title       = $this->_title;
-		$this->view->mailinglist = $mailinglist;
-
 		//output
-		$this->view->display();
+		$this->view
+			->set('title', $this->_title)
+			->set('mailinglist', $mailinglist)
+			->setLayout('unsubscribe')
+			->display();
 	}
 
 	/**
@@ -481,11 +504,10 @@ class Mailinglist extends SiteController
 		}
 
 		//get newsletter mailing to get mailing list id mailing was sent to
-		$newsletterMailing = new Mailing($this->database);
-		$mailing = $newsletterMailing->getMailings($recipient->mid);
+		$mailing = Mailing::oneOrNew($recipient->mid);
 
 		//make sure we have a mailing object
-		if (!is_object($mailing))
+		if (!$mailing->get('id'))
 		{
 			App::redirect(
 				Route::url('index.php?option=com_newsletter&task=subscribe'),
@@ -586,16 +608,15 @@ class Mailinglist extends SiteController
 		}
 
 		//instantiate mailing list email object and load based on id
-		$newsletterMailinglistEmail = new MailinglistEmail($this->database);
-		$newsletterMailinglistEmail->load($mailinglistEmail->id);
+		$model = Email::oneOrFail($mailinglistEmail->id);
 
 		//set that we are now confirmed
-		$newsletterMailinglistEmail->status         = 'active';
-		$newsletterMailinglistEmail->confirmed      = 1;
-		$newsletterMailinglistEmail->date_confirmed = Date::toSql();
+		$model->set('status', 'active');
+		$model->set('confirmed', 1);
+		$model->set('date_confirmed', Date::toSql());
 
 		//save
-		$newsletterMailinglistEmail->save($newsletterMailinglistEmail);
+		$model->save();
 
 		//inform user
 		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS'));
@@ -640,15 +661,14 @@ class Mailinglist extends SiteController
 		}
 
 		//instantiate mailing list email object and load based on id
-		$newsletterMailinglistEmail = new MailinglistEmail($this->database);
-		$newsletterMailinglistEmail->load($mailinglistEmail->id);
+		$model = Email::oneOrFail($mailinglistEmail->id);
 
 		//unsubscribe & unconfirm email
-		$newsletterMailinglistEmail->status    = "unsubscribed";
-		$newsletterMailinglistEmail->confirmed = 0;
+		$model->set('status', 'unsubscribed');
+		$model->set('confirmed', 0);
 
 		//save
-		$newsletterMailinglistEmail->save($newsletterMailinglistEmail);
+		$model->save();
 
 		//inform user
 		App::redirect(
@@ -669,17 +689,15 @@ class Mailinglist extends SiteController
 		$mid = Request::getInt('mid', 0);
 
 		//instantiate mailing list object
-		$newsletterMailinglist = new MailList($this->database);
-		$newsletterMailinglist->load($mid);
+		$mailinglist = Mailinglist::oneOrFail($mid);
 
 		//send confirmation email
-		Helper::sendMailinglistConfirmationEmail(User::get('email'), $newsletterMailinglist, false);
+		Helper::sendMailinglistConfirmationEmail(User::get('email'), $mailinglist, false);
 
 		//inform user and redirect
 		App::redirect(
 			Route::url('index.php?option=com_newsletter&task=subscribe'),
 			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', User::get('email'))
 		);
-		return;
 	}
 }

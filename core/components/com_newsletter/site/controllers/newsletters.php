@@ -32,7 +32,7 @@
 
 namespace Components\Newsletter\Site\Controllers;
 
-use Components\Newsletter\Tables\Newsletter as Letter;
+use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\SiteController;
 use Pathway;
 use Request;
@@ -43,31 +43,28 @@ use App;
 /**
  * Newsletter Controller
  */
-class Newsletter extends SiteController
+class Newsletters extends SiteController
 {
 	/**
 	 * Override parent execute method
 	 *
+	 * @return  void
 	 */
 	public function execute()
 	{
 		//get request vars
 		$this->id = Request::getInt('id', 0);
 
-		//disable default task
-		$this->disableDefaultTask();
+		$this->registerDefaultTask('view');
 
-		//register task when no newsletter is passed in
-		$this->registerTask('', 'view');
-
-		//call parent
 		parent::execute();
 	}
 
 	/**
 	 * Override parent build title method
 	 *
-	 * @param 	object	$newsletter		Newsletter object for adding campaign name to title
+	 * @param   object  $newsletter  Newsletter object for adding campaign name to title
+	 * @return  void
 	 */
 	public function _buildTitle($newsletter = null)
 	{
@@ -88,7 +85,8 @@ class Newsletter extends SiteController
 	/**
 	 * Override parent build pathway method
 	 *
-	 * @param 	object	$campaign		Newsletter object for adding campaign name pathway
+	 * @param   object  $newsletter  Newsletter object for adding campaign name pathway
+	 * @return  void
 	 */
 	public function _buildPathway($newsletter = null)
 	{
@@ -105,91 +103,81 @@ class Newsletter extends SiteController
 		}
 	}
 
-
 	/**
 	 * View Campaign Task
 	 *
+	 * @return  void
 	 */
 	public function viewTask()
 	{
-		//set layout
-		$this->view->setLayout('view');
+		// get the newsletter id
+		$id = $this->id;
 
-		//get the newsletter id
-		$this->view->id = $this->id;
-
-		//do we want to stip tags
+		// do we want to stip tags
 		$stripTags = true;
 		if (Request::getCmd('tmpl', '') == 'component')
 		{
 			$stripTags = false;
 		}
 
-		//instantiate campaign object
-		$newsletterNewsletter = new Letter($this->database);
+		$newsletter = '';
+		$current = null;
 
-		//get the current campaign
-		$currentNewsletter = $newsletterNewsletter->getCurrentNewsletter();
-
-		if (is_object($currentNewsletter))
+		// get the current campaign
+		if ($id)
 		{
-			//do we have a newsletter id
-			if ($this->view->id)
-			{
-				$newsletter = $newsletterNewsletter->getNewsletters($this->view->id);
-				if (is_object($newsletter) && $newsletter->published)
-				{
-					$currentNewsletter = $newsletter;
-				}
-			}
-			else
-			{
-				$this->view->id = $currentNewsletter->id;
-			}
+			$current = Newsletter::oneOrNew($id);
 
-			//build newsletter
-			$this->view->newsletter = $newsletterNewsletter->buildnewsletter($currentNewsletter, $stripTags);
-			$this->view->newsletter = str_replace("{{UNSUBSCRIBE_LINK}}", '', $this->view->newsletter);
+			if (!$current->published)
+			{
+				$current = null;
+			}
 		}
-		else
+
+		if (!$current)
 		{
-			$this->view->newsletter = '';
+			$current = Newsletter::current();
+			$id = $current->get('id');
+		}
+
+		if (is_object($current))
+		{
+			//build newsletter
+			$newsletter = $current->buildnewsletter($current, $stripTags);
+			$newsletter = str_replace("{{UNSUBSCRIBE_LINK}}", '', $newsletter);
 		}
 
 		//are we trying to output the newsletter by itself?
 		if (Request::getInt('no_html', 0))
 		{
-			echo $this->view->newsletter;
+			echo $newsletter;
 			return;
 		}
 
 		//get list of campaigns
-		$this->view->newsletters = $newsletterNewsletter->getNewsletters();
+		$newsletters = Newsletter::all()
+			->whereEquals('published', 1)
+			->whereEquals('deleted', 0)
+			->ordered()
+			->rows();
 
 		//build title
-		$this->_buildTitle($currentNewsletter);
+		$this->_buildTitle($current);
 
 		//build pathway
-		$this->_buildPathway($currentNewsletter);
+		$this->_buildPathway($current);
 
 		//set vars for view
-		if (is_object($currentNewsletter))
-		{
-			$this->view->title = $currentNewsletter->name;
-		}
-		else
-		{
-			$this->view->title = "No Newsletters";
-		}
-
-		//get errors if any
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
+		$title = $current->get('name', "No Newsletters");
 
 		//display
-		$this->view->display();
+		$this->view
+			->set('id', $id)
+			->set('newsletter', $newsletter)
+			->set('newsletters', $newsletters)
+			->set('title', $title)
+			->setLayout('view')
+			->display();
 	}
 
 	/**
@@ -201,11 +189,8 @@ class Newsletter extends SiteController
 		//get the newsletter id
 		$id = $this->id;
 
-		//instantiate campaign object
-		$newsletterNewsletter = new Letter($this->database);
-
 		//get newsletter
-		$newsletter = $newsletterNewsletter->getNewsletters($id);
+		$newsletter = Newsletter::oneOrFail($id);
 
 		//build url to newsletter with no html
 		$newsletterUrl = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'newsletter' . DS . $newsletter->alias . '?no_html=1';

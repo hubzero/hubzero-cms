@@ -61,7 +61,7 @@ class Router extends Base
 
 		if (!empty($query['task']))
 		{
-			if (in_array($query['task'], array('subscribe','unsubscribe','resendconfirmation')))
+			if (in_array($query['task'], array('subscribe', 'unsubscribe', 'resendconfirmation')))
 			{
 				$segments[] = $query['task'];
 				unset($query['task']);
@@ -104,7 +104,7 @@ class Router extends Base
 					case 'track':
 						$vars['task'] = 'track';
 						$vars['type'] = $segments[1];
-						$vars['controller'] = 'mailing';
+						$vars['controller'] = 'mailings';
 						break;
 					case 'confirm':
 					case 'remove':
@@ -114,7 +114,7 @@ class Router extends Base
 					case 'dounsubscribe':
 					case 'resendconfirmation':
 						$vars['task'] = $segments[0];
-						$vars['controller'] = 'mailinglist';
+						$vars['controller'] = 'mailinglists';
 						break;
 					default:
 						$vars['task'] = $segments[0];

@@ -33,15 +33,17 @@
 namespace Components\Newsletter\Site\Controllers;
 
 use Components\Newsletter\Helpers\Helper;
-use Components\Newsletter\Tables\MailingRecipientAction;
+use Components\Newsletter\Models\Mailing\Recipient\Action;
 use Hubzero\Component\SiteController;
 use stdClass;
 use Request;
+use Date;
+use App;
 
 /**
  * Newsletter Mailing Controller
  */
-class Mailing extends SiteController
+class Mailings extends SiteController
 {
 	/**
 	 * General Tracking Task - Routes to open and click tracking based on type
@@ -51,12 +53,21 @@ class Mailing extends SiteController
 	public function trackTask()
 	{
 		$type = Request::getVar('type');
+
 		switch ($type)
 		{
-			case 'open':    $this->openTrackingTask();    break;
-			case 'click':   $this->clickTrackingTask();   break;
-			case 'print':   $this->printTrackingTask();   break;
-			case 'forward': $this->forwardTrackingTask(); break;
+			case 'open':
+				$this->openTrackingTask();
+				break;
+			case 'click':
+				$this->clickTrackingTask();
+				break;
+			case 'print':
+				$this->printTrackingTask();
+				break;
+			case 'forward':
+				$this->forwardTrackingTask();
+				break;
 		}
 	}
 
@@ -76,29 +87,29 @@ class Mailing extends SiteController
 		//if we found an object lets track it
 		if (is_object($recipient) && $recipient->id)
 		{
-			//new mailing recipient action objec
-			$newsletterMailingRecipientAction = new MailingRecipientAction($this->database);
+			$action = Action::oneForMailingAndEmail($recipient->mid, $recipient->email, 'open');
 
 			//check to see if we already opened
-			if (!$newsletterMailingRecipientAction->actionExistsForMailingAndEmail($recipient->mid, $recipient->email, 'open'))
+			if (!$action->get('id'))
 			{
 				//create object holding our vars to store action
-				$action              = new stdClass;
-				$action->mailingid   = $recipient->mid;
-				$action->action      = 'open';
-				$action->action_vars = null;
-				$action->email       = $recipient->email;
-				$action->ip          = $_SERVER['REMOTE_ADDR'];
-				$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-				$action->date        = \Date::toSql();
+				$action = Action::blank()
+					->set(array(
+						'mailingid'   => $recipient->mid,
+						'action'      => 'open',
+						'email'       => $recipient->email,
+						'ip'          => Request::ip(),
+						'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
+						'date'        => Date::toSql()
+					));
 
 				//save action
-				$newsletterMailingRecipientAction->save($action);
+				$action->save();
 			}
 		}
 
 		//create image to ouput
-		Helper::mailingOpenTrackerGif ();
+		Helper::mailingOpenTrackerGif();
 		exit();
 	}
 
@@ -123,31 +134,30 @@ class Mailing extends SiteController
 		//if we found an object lets track it
 		if (is_object($recipient) && $recipient->id)
 		{
-			//new mailing recipient action objec
-			$newsletterMailingRecipientAction = new MailingRecipientAction($this->database);
-
 			//array of action vars, json encoded for saving to db
 			$actionVars = json_encode(array('url' => $link));
 
 			//create object holding our vars to store action
-			$action              = new stdClass;
-			$action->mailingid   = $recipient->mid;
-			$action->action      = 'click';
-			$action->action_vars = $actionVars;
-			$action->email       = $recipient->email;
-			$action->ip          = $_SERVER['REMOTE_ADDR'];
-			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = \Date::toSql();
+			$action = Action::blank()
+				->set(array(
+					'mailingid'   => $recipient->mid,
+					'action'      => 'click',
+					'action_vars' => $actionVars,
+					'email'       => $recipient->email,
+					'ip'          => Request::ip(),
+					'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
+					'date'        => Date::toSql()
+				));
 
 			//save action
-			$newsletterMailingRecipientAction->save($action);
+			$action->save();
 		}
 
 		//make sure we have a valid link
 		//if we do redirect
 		if (filter_var($link, FILTER_VALIDATE_URL))
 		{
-			\App::redirect($link);
+			App::redirect($link);
 		}
 	}
 
@@ -167,21 +177,19 @@ class Mailing extends SiteController
 		//if we found an object lets track it
 		if (is_object($recipient) && $recipient->id)
 		{
-			//new mailing recipient action objec
-			$newsletterMailingRecipientAction = new MailingRecipientAction($this->database);
-
 			//create object holding our vars to store action
-			$action              = new stdClass;
-			$action->mailingid   = $recipient->mid;
-			$action->action      = 'print';
-			$action->action_vars = null;
-			$action->email       = $recipient->email;
-			$action->ip          = $_SERVER['REMOTE_ADDR'];
-			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = \Date::toSql();
+			$action = Action::blank()
+				->set(array(
+					'mailingid'   => $recipient->mid,
+					'action'      => 'print',
+					'email'       => $recipient->email,
+					'ip'          => Request::ip(),
+					'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
+					'date'        => Date::toSql()
+				));
 
 			//save action
-			$newsletterMailingRecipientAction->save($action);
+			$action->save();
 		}
 	}
 
@@ -201,21 +209,19 @@ class Mailing extends SiteController
 		//if we found an object lets track it
 		if (is_object($recipient) && $recipient->id)
 		{
-			//new mailing recipient action objec
-			$newsletterMailingRecipientAction = new MailingRecipientAction($this->database);
+			// create object holding our vars to store action
+			$action = Action::blank()
+				->set(array(
+					'mailingid'   => $recipient->mid,
+					'action'      => 'forward',
+					'email'       => $recipient->email,
+					'ip'          => Request::ip(),
+					'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
+					'date'        => Date::toSql()
+				));
 
-			//create object holding our vars to store action
-			$action              = new stdClass;
-			$action->mailingid   = $recipient->mid;
-			$action->action      = 'forward';
-			$action->action_vars = null;
-			$action->email       = $recipient->email;
-			$action->ip          = $_SERVER['REMOTE_ADDR'];
-			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = \Date::toSql();
-
-			//save action
-			$newsletterMailingRecipientAction->save($action);
+			// save action
+			$action->save();
 		}
 	}
 }

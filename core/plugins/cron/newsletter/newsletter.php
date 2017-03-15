@@ -74,10 +74,10 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 	public function processMailings(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
-		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailinglist.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'helpers' . DS . 'helper.php';
+		require_once Component::path('com_newsletter') . DS . 'models' . DS . 'newsletter.php';
+		require_once Component::path('com_newsletter') . DS . 'models' . DS . 'mailinglist.php';
+		require_once Component::path('com_newsletter') . DS . 'models' . DS . 'mailing.php';
+		require_once Component::path('com_newsletter') . DS . 'helpers' . DS . 'helper.php';
 
 		// needed vars
 		$limit     = 25;
@@ -192,17 +192,16 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 				if ($queuedEmail->autogen == 0 || $queuedEmail->autogen == null)
 				{
 					// load recipient object
-					$newsletterMailingRecipient = new \Components\Newsletter\Tables\MailingRecipient($database);
-					$newsletterMailingRecipient->load($queuedEmail->mailing_recipientid);
+					$newsletterMailingRecipient = \Components\Newsletter\Models\Mailing\Recipient::one($queuedEmail->mailing_recipientid);
 
 					// mark as sent and save
-					$newsletterMailingRecipient->status    = 'sent';
-					$newsletterMailingRecipient->date_sent = Date::toSql();
-					$newsletterMailingRecipient->save($newsletterMailingRecipient);
+					$newsletterMailingRecipient->set('status', 'sent');
+					$newsletterMailingRecipient->set('date_sent', Date::toSql());
+					$newsletterMailingRecipient->save();
 				}
 				else
 				{
-					$sql = "SELECT *, max(date) AS maxDate FROM #__newsletter_mailings WHERE nid = {$queuedEmail->newsletterid} AND deleted=0;";
+					$sql = "SELECT *, max(date) AS maxDate FROM `#__newsletter_mailings` WHERE nid = {$queuedEmail->newsletterid} AND deleted=0;";
 					$database->setQuery($sql);
 					$latestMailing = $database->loadObject();
 
@@ -228,15 +227,18 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 					if ($windowMax - $windowMin == 0)
 					{
 						// Create mailing
-						$newMailing = new Components\Newsletter\Tables\Mailing($database);
-						$newMailing->bind($latestMailing);
-						$newMailing->id = null;
-						$newMailing->date = $nextDate;
-						$newMailing->save($newMailing);
+						$newMailing = Components\Newsletter\Models\Mailing::blank();
+						foreach (get_object_vars($latestMailing) as $k => $v)
+						{
+							$newMailing->set($k, $v);
+						}
+						$newMailing->set('id', null);
+						$newMailing->set('date', $nextDate);
+						$newMailing->save();
 
 						// Add recipients
-						$mailingList = new Components\Newsletter\Tables\MailingList($database);
-						$emails = $mailingList->getListEmails($newMailing->lid);
+						$mailingList = Components\Newsletter\Models\MailingList::oneOrNew($newMailing->lid);
+						$emails = $mailingList->emails()->rows();
 
 						// @TODO Verify there is no helper method to determine whether or not to send email
 						foreach ($emails as $email)
@@ -258,13 +260,12 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 					} // End interval creation
 
 					// load recipient object
-					$newsletterMailingRecipient = new \Components\Newsletter\Tables\MailingRecipient($database);
-					$newsletterMailingRecipient->load($queuedEmail->mailing_recipientid);
+					$newsletterMailingRecipient = \Components\Newsletter\Models\Mailing\Recipient::oneOrNew($queuedEmail->mailing_recipientid);
 
 					// mark as sent and save
-					$newsletterMailingRecipient->status    = 'sent';
-					$newsletterMailingRecipient->date_sent = Date::toSql();
-					$newsletterMailingRecipient->save($newsletterMailingRecipient);
+					$newsletterMailingRecipient->set('status', 'sent');
+					$newsletterMailingRecipient->set('date_sent', Date::toSql());
+					$newsletterMailingRecipient->save();
 				} // end autogen logic
 			}
 		}
@@ -281,14 +282,15 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 	public function processIps(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
-		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
+		require_once Component::path('com_newsletter') . DS . 'models' . DS . 'mailing' . DS . 'recipient' . DS . 'action.php';
 
 		// get db
 		$database = App::get('db');
 
 		// get actions
-		$newsletterMailingRecipientAction = new \Components\Newsletter\Tables\MailingRecipientAction($database);
-		$unconvertedActions = $newsletterMailingRecipientAction->getUnconvertedActions();
+		$unconvertedActions = \Components\Newsletter\Models\Mailing\Recipient\Action::all()
+			->whereRaw("(ipLATITUDE = '' OR ipLATITUDE IS NULL OR ipLONGITUDE = '' OR ipLONGITUDE IS NULL)")
+			->rows();
 
 		// convert all unconverted actions
 		foreach ($unconvertedActions as $action)

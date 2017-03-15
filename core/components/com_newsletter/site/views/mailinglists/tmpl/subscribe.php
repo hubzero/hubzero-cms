@@ -66,17 +66,17 @@ $this->css()
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_MYLISTS'); ?></legend>
 					<?php foreach ($this->mylists as $mylist) : ?>
-						<?php $mylistIds[] = $mylist->mailinglistid; ?>
+						<?php $mylistIds[] = $mylist->id; ?>
 						<?php if ($mylist->status != 'removed') : ?>
 							<label>
-								<input type="checkbox" name="lists[]" value="<?php echo $mylist->mailinglistid; ?>" <?php echo ($mylist->status == 'active' || $mylist->status == 'inactive') ? 'checked="checked"' : ''; ?> />
+								<input type="checkbox" name="lists[]" value="<?php echo $mylist->id; ?>" <?php echo ($mylist->status == 'active' || $mylist->status == 'inactive') ? 'checked="checked"' : ''; ?> />
 								<strong><?php echo $mylist->name; ?></strong>
 								<?php
 									if ($mylist->status == 'active' || $mylist->status == 'inactive')
 									{
 										if (!$mylist->confirmed)
 										{
-											echo ' - <span title="' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED_TOOLTIP') . '" class="unconfirmed tooltips">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED') . '</span> <span class="unconfirmed-link">(<a href="'.Route::url('index.php?option=com_newsletter&task=resendconfirmation&mid='.$mylist->mailinglistid).'" class="">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRMLINK_TEXT') . '</a>)</span>';
+											echo ' - <span title="' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED_TOOLTIP') . '" class="unconfirmed tooltips">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED') . '</span> <span class="unconfirmed-link">(<a href="'.Route::url('index.php?option=com_newsletter&task=resendconfirmation&mid='.$mylist->id).'" class="">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRMLINK_TEXT') . '</a>)</span>';
 										}
 									}
 									else if ($mylist->status == 'unsubscribed')
@@ -92,20 +92,17 @@ $this->css()
 					<?php endforeach; ?>
 				</fieldset>
 			<?php endif; ?>
-			<?php
-				//remove any lists that i already belong to
-				foreach ($this->alllists as $k => $list)
-				{
-					if (in_array($list->id, $mylistIds))
-					{
-						unset($this->alllists[$k]);
-					}
-				}
-			?>
+
 			<?php if (count($this->alllists) > 0) : ?>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_PUBLICLISTS'); ?></legend>
 					<?php foreach ($this->alllists as $list) : ?>
+						<?php
+						if (in_array($list->id, $mylistIds))
+						{
+							continue;
+						}
+						?>
 						<label>
 							<input type="checkbox" name="lists[]" value="<?php echo $list->id; ?>" />
 							<strong><?php echo $list->name; ?></strong>
