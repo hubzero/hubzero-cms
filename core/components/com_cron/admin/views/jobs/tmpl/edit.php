@@ -262,11 +262,16 @@ jQuery(document).ready(function($){
 						$out = null;
 						if ($event['params'])
 						{
+							$path = PATH_APP . DS . 'plugins' . DS . 'cron' . DS . $plugin->plugin;
+							if (!is_dir($path))
+							{
+								$path = PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->plugin;
+							}
 							$param = new \Hubzero\Html\Parameter(
 								(is_object($data) ? $data->toString() : $data),
-								PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->plugin . DS . $plugin->plugin . '.xml'
+								$path . DS . $plugin->plugin . '.xml'
 							);
-							$param->addElementPath(PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->plugin);
+							$param->addElementPath($path);
 							//$out = $param->render('params', $event['params']);
 							$html = array();
 							if ($prm = $param->getParams('params', $event['params']))
