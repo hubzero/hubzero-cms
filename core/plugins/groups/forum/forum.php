@@ -447,7 +447,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	{
 		$this->params->set('access-view', true);
 
-		if (!User::isGuest() && $this->group->published == 1)
+		if (!User::isGuest() && $this->group->published != 0)
 		{
 			$this->params->set('access-view-' . $assetType, false);
 			$this->params->set('access-create-' . $assetType, false);
