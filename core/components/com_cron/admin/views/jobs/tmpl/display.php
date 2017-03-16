@@ -46,6 +46,7 @@ if ($canDo->get('core.edit.state'))
 {
 	Toolbar::publishList();
 	Toolbar::unpublishList();
+	Toolbar::custom('deactivate', 'deactivate', '', 'COM_CRON_DEACTIVATE', false);
 	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
@@ -58,6 +59,10 @@ if ($canDo->get('core.delete'))
 }
 Toolbar::spacer();
 Toolbar::help('jobs');
+
+$this->css('.toolbar-box li a span.icon-32-deactivate:before {
+	content: "\f057";
+}');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
