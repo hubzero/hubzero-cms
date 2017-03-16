@@ -68,10 +68,13 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
 				concat('index.php?option=com_collections&controller=posts&post=', p.id) AS `link`,
 				$weight AS `weight`,
 				p.created AS `date`,
-				'Collections' AS `section`
+				'Collections' AS `section`,
+				u.name AS contributors,
+				p.created_by AS contributor_ids
 			FROM `#__collections_posts` AS p
 			INNER JOIN `#__collections` AS c ON c.id=p.collection_id
 			INNER JOIN `#__collections_items` AS i ON p.item_id=i.id
+			INNER JOIN `#__users` u ON u.id = p.created_by
 			WHERE
 				i.state=1 AND i.access=0 AND c.state=1 AND c.access=0 AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
