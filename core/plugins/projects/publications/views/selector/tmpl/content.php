@@ -37,7 +37,7 @@ $pubParams = $this->publication->params;
 $filters = array(
 	'category'    => Request::getVar('category', ''),
 	'sortby'      => Request::getCmd('sortby', 'date'),
-	'limit'       => Request::getInt('limit', 10000), //Config::get('list_limit')),
+	'limit'       => Request::getInt('limit', 25), //Config::get('list_limit')),
 	'start'       => Request::getInt('limitstart', 0),
 	'search'      => Request::getVar('search', ''),
 	'tag'         => trim(Request::getVar('tag', '', 'request', 'none', 2)),
@@ -58,6 +58,11 @@ $pageNav = new \Hubzero\Pagination\Paginator(
 	$filters['start'],
 	$filters['limit']
 );
+$pageNav->setAdditionalUrlParam('task', '');
+$pageNav->setAdditionalUrlParam('active', 'publications');
+$pageNav->setAdditionalUrlParam('action', 'select');
+$pageNav->setAdditionalUrlParam('pid', $this->publication->id);
+$pageNav->setAdditionalUrlParam('vid', $this->publication->version_id);
 
 $database = \App::get('db');
 $pa = new \Components\Publications\Tables\Author($database);
@@ -124,3 +129,4 @@ $pa = new \Components\Publications\Tables\Author($database);
 		</li>
 	<?php } ?>
 </ul>
+<?php echo $pageNav->render(); ?>
