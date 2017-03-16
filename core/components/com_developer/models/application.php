@@ -36,10 +36,10 @@ use Hubzero\Utility\Validate;
 use Session;
 use Lang;
 
-include_once(__DIR__ . DS . 'accesstoken.php');
-include_once(__DIR__ . DS . 'refreshtoken.php');
-include_once(__DIR__ . DS . 'authorizationcode.php');
-include_once(__DIR__ . DS . 'application' . DS . 'member.php');
+include_once __DIR__ . DS . 'accesstoken.php';
+include_once __DIR__ . DS . 'refreshtoken.php';
+include_once __DIR__ . DS . 'authorizationcode.php';
+include_once __DIR__ . DS . 'application' . DS . 'member.php';
 
 /**
  * Develper mdoel for an application
@@ -207,7 +207,7 @@ class Application extends Relational
 	 */
 	public function automaticGrantTypes($data)
 	{
-		if (!isset($data['hub_account']) || $data['hub_account'])
+		if (!isset($data['hub_account']) || !$data['hub_account'])
 		{
 			// Allow the 3 main grantypes
 			// 
