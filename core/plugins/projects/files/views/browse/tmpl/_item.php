@@ -96,8 +96,13 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 	<td class="shrinked"></td>
 	<td class="shrinked"><?php echo $this->item->getSize(true); ?></td>
 	<td class="shrinked">
-	<?php if (!$this->item->get('untracked') && $this->item->get('type') == 'file') { ?>
-		<a href="<?php echo Route::url($this->model->link('files') . '&action=history' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+	<?php if (!$this->item->get('untracked')) { ?>
+		<?php if ($this->item->get('type') == 'file') { ?>
+			<a href="<?php echo Route::url($this->model->link('files') . '&action=history' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+		<?php } else { ?>
+			<?php echo $when; ?>
+		<?php } ?>
+			
 	<?php } elseif ($this->item->get('untracked')) { echo Lang::txt('PLG_PROJECTS_FILES_UNTRACKED'); } ?>
 	</td>
 	<td class="shrinked"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $this->item->get('author'); ?></td>
