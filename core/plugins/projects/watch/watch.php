@@ -355,6 +355,8 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		// Do we have subscribers?
 		if ($subscribers->count() > 0)
 		{
+			$processed = array();
+
 			foreach ($subscribers as $subscriber)
 			{
 				if ($actor && $subscriber->created_by == $actor)
@@ -363,8 +365,16 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
+				// No duplicates
+				if (in_array($subscriber->created_by, $processed))
+				{
+					continue;
+				}
+
 				// Send message
 				$this->_sendEmail($project, $subscriber, $activities, $subject);
+
+				$processed[] = $subscriber->created_by;
 			}
 		}
 
