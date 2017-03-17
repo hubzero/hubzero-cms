@@ -44,23 +44,23 @@ class Tags extends Cloud
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_scope = 'resources';
 
 	/**
 	 * Get all tags with a resource association
 	 *
-	 * @param      integer $id   Resource ID
-	 * @param      integer $type Resource type (optional)
-	 * @param      string  $tag  Parameter description (if any) ...
-	 * @return     array
+	 * @param   integer  $id    Resource ID
+	 * @param   integer  $type  Resource type (optional)
+	 * @param   string   $tag
+	 * @return  array
 	 */
 	public function get_tags_with_objects($id=0, $type=0, $tag='')
 	{
 		$now = \Date::toSql();
 
-		$this->_db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_scope'");
+		$this->_db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag=" . $this->_db->quote($tag) . " AND o.tbl=" . $this->_db->quote($this->_scope));
 		$objs = $this->_db->loadObjectList();
 
 		$ids = '';
@@ -76,17 +76,17 @@ class Tags extends Cloud
 
 		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids
 				FROM `#__tags` AS t, `#__tags_object` AS o, `#__resources` AS r
-				WHERE o.tbl='$this->_scope'
+				WHERE o.tbl=" . $this->_db->quote($this->_scope) . "
 				AND o.tagid=t.id
 				AND t.admin=0
 				AND o.objectid=r.id
 				AND r.published=1
 				AND r.standalone=1
-				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '$now')
-				AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '$now') ";
+				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->_db->quote($now) . ")
+				AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->_db->quote($now) . ") ";
 		if ($type)
 		{
-			$sql .= "AND r.type=" . $type . " ";
+			$sql .= "AND r.type=" . $this->_db->quote($type) . " ";
 		}
 
 		if (!\User::isGuest())
@@ -106,7 +106,7 @@ class Tags extends Cloud
 				$sql .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('" . $groups . "') ";
 				foreach ($usersgroups as $group)
 				{
-					$sql .= " OR r.group_access LIKE '%;" . $group . ";%'";
+					$sql .= " OR r.group_access LIKE " . $this->_db->quote('%;' . $group . ';%');
 				}
 				$sql .= "))) ";
 			}
@@ -179,13 +179,13 @@ class Tags extends Cloud
 	/**
 	 * Get all resources associated with a tag
 	 *
-	 * @param      string  $tag      Tag to find data for
-	 * @param      integer $id       Resource ID
-	 * @param      integer $type     Resource type
-	 * @param      string  $sortby   Sort data by
-	 * @param      string  $tag2     Secondary tag
-	 * @param      array   $filterby Extra, optional filters
-	 * @return     array
+	 * @param   string   $tag       Tag to find data for
+	 * @param   integer  $id        Resource ID
+	 * @param   integer  $type      Resource type
+	 * @param   string   $sortby    Sort data by
+	 * @param   string   $tag2      Secondary tag
+	 * @param   array    $filterby  Extra, optional filters
+	 * @return  array
 	 */
 	public function get_objects_on_tag($tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array())
 	{
@@ -264,7 +264,7 @@ class Tags extends Cloud
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
 		if ($type)
 		{
-			$query .= "AND C.type=" . $type . " ";
+			$query .= "AND C.type=" . $this->_db->quote($type) . " ";
 		}
 		if ($type == 7)
 		{
@@ -287,8 +287,8 @@ class Tags extends Cloud
 			$fquery .= "))";
 			$query .= $fquery;
 		}
-		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '" . $now . "') ";
-		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '" . $now . "') AND ";
+		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->quote($now) . ") ";
+		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
 
 		if (!\User::isGuest())
 		{
@@ -307,7 +307,7 @@ class Tags extends Cloud
 				$query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('" . $groups . "') ";
 				foreach ($usersgroups as $group)
 				{
-					$query .= " OR C.group_access LIKE '%;" . $group . ";%'";
+					$query .= " OR C.group_access LIKE " . $this->_db->quote('%;' . $group . ';%');
 				}
 				$query .= "))) ";
 			} else {
@@ -322,17 +322,17 @@ class Tags extends Cloud
 		{
 			if ($tag && !$tag2)
 			{
-				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN ('" . $tag . "'))";
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag) . "))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
 			}
 			else if ($tag2 && !$tag)
 			{
-				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN ('" . $tag2 . "'))";
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag2) . "))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
 			}
 			else if ($tag && $tag2)
 			{
-				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN ('" . $tag . "','" . $tag2 . "'))";
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag) . "," . $this->_db->quote($tag2) . "))";
 				$query .= " GROUP BY C.id HAVING uniques=2";
 			}
 		}
@@ -364,10 +364,10 @@ class Tags extends Cloud
 	/**
 	 * Check if a tag is being used
 	 *
-	 * @param      string  $tag   Tag
-	 * @param      integer $id    Resource ID
-	 * @param      string  $alias Resource alias
-	 * @return     mixed Return description (if any) ...
+	 * @param   string   $tag    Tag
+	 * @param   integer  $id     Resource ID
+	 * @param   string   $alias  Resource alias
+	 * @return  integer
 	 */
 	public function checkTagUsage($tag, $id=0, $alias='')
 	{
@@ -375,24 +375,26 @@ class Tags extends Cloud
 		{
 			return false;
 		}
+
 		if ($id)
 		{
 			$query = "SELECT COUNT(*)
 						FROM `#__tags_object` AS ta, `#__tags` AS t
 						WHERE ta.tagid=t.id
-						AND t.tag='" . $tag . "'
+						AND t.tag=" . $this->_db->quote($tag) . "
 						AND ta.tbl='resources'
 						AND ta.objectid=" . $id;
 		}
+
 		if (!$id && $alias)
 		{
 			$query = "SELECT COUNT(*)
 						FROM `#__tags_object` AS ta, `#__tags` AS t, `#__resources` AS r
 						WHERE ta.tagid=t.id
-						AND t.tag='" . $tag . "'
+						AND t.tag=" . $this->_db->quote($tag) . "
 						AND ta.tbl='resources'
 						AND ta.objectid=r.id
-						AND r.alias='" . $alias . "'";
+						AND r.alias=" . $this->_db->quote($alias);
 		}
 
 		$this->_db->setQuery($query);
@@ -402,9 +404,9 @@ class Tags extends Cloud
 	/**
 	 * Get a singular field, such as ID, for all items with a specific tag
 	 *
-	 * @param      string $tag  Tag to get data for
-	 * @param      string $rtrn Field to return
-	 * @return     array
+	 * @param   string  $tag   Tag to get data for
+	 * @param   string  $rtrn  Field to return
+	 * @return  array
 	 */
 	public function getTagUsage($tag, $rtrn='id')
 	{
@@ -416,7 +418,7 @@ class Tags extends Cloud
 		$query = "SELECT r.$rtrn
 					FROM `#__tags_object` AS ta, `#__tags` AS t, `#__resources` AS r
 					WHERE ta.tagid=t.id
-					AND t.tag='".$tag."'
+					AND t.tag=" . $this->_db->quote($tag) . "
 					AND ta.tbl='resources'
 					AND ta.objectid=r.id";
 
@@ -427,10 +429,9 @@ class Tags extends Cloud
 	/**
 	 * Get a tag cloud for an object
 	 *
-	 * @param      integer $showsizes Show tag size based on use?
-	 * @param      integer $admin     Show admin tags?
-	 * @param      integer $objectid  Object ID
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $limit
+	 * @param   string   $tagstring
+	 * @return  string
 	 */
 	public function getTopTagCloud($limit, $tagstring='')
 	{
@@ -442,10 +443,8 @@ class Tags extends Cloud
 	/**
 	 * Get a tag cloud for an object
 	 *
-	 * @param      integer $showsizes Show tag size based on use?
-	 * @param      integer $admin     Show admin tags?
-	 * @param      integer $objectid  Object ID
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $limit
+	 * @return  string
 	 */
 	public function getTopTags($limit)
 	{
@@ -455,10 +454,10 @@ class Tags extends Cloud
 	/**
 	 * Get a tag cloud for an object
 	 *
-	 * @param      integer $showsizes Show tag size based on use?
-	 * @param      integer $admin     Show admin tags?
-	 * @param      integer $objectid  Object ID
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $showsizes  Show tag size based on use?
+	 * @param   integer  $admin      Show admin tags?
+	 * @param   integer  $objectid   Object ID
+	 * @return  string
 	 */
 	public function getTopTagString($limit)
 	{
@@ -483,9 +482,9 @@ class Tags extends Cloud
 	/**
 	 * Turn a comma-separated string of tags into an array of normalized tags
 	 *
-	 * @param      string  $tag_string Comma-separated string of tags
-	 * @param      integer $keep       Use normalized tag as array key
-	 * @return     array
+	 * @param   string  $tag_string  Comma-separated string of tags
+	 * @param   integer  $keep        Use normalized tag as array key
+	 * @return  array
 	 */
 	public function parseTags($tag_string, $keep=0)
 	{
@@ -495,8 +494,9 @@ class Tags extends Cloud
 	/**
 	 * Turn a string of tags to an array
 	 *
-	 * @param      string $tag Tag string
-	 * @return     mixed
+	 * @param   string  $tag  Tag string
+	 * @param   string  $remove
+	 * @return  mixed
 	 */
 	public function parseTopTags($tag, $remove='')
 	{
@@ -525,10 +525,10 @@ class Tags extends Cloud
 	/**
 	 * Build a tag cloud
 	 *
-	 * @param      array   $tags      List of tags
-	 * @param      string  $sort      How to sort tags?
-	 * @param      integer $showsizes Show tag size based on use?
-	 * @return     string HTML
+	 * @param   array    $tags       List of tags
+	 * @param   string   $sort       How to sort tags?
+	 * @param   integer  $showsizes  Show tag size based on use?
+	 * @return  string   HTML
 	 */
 	public function buildTopCloud($tags, $sort='alpha', $showsizes=0, $tagstring='')
 	{
@@ -564,7 +564,8 @@ class Tags extends Cloud
 				// For ever additional tagged object from min to max, we add $step to the font size.
 				$spread = $max_qty - $min_qty;
 				if (0 == $spread)
-				{ // Divide by zero
+				{
+					// Divide by zero
 					$spread = 1;
 				}
 				$step = ($max_font_size - $min_font_size)/($spread);
@@ -624,4 +625,3 @@ class Tags extends Cloud
 		return $html;
 	}
 }
-

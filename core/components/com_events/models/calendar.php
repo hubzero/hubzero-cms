@@ -183,12 +183,9 @@ class Calendar extends Model
 							// get the repeating & pass start date
 							$rule = new \Recurr\Rule($result->repeating_rule, $start);
 
-							// define constraint that date must be between event publish_up & end
-							$constraint  = new \Recurr\Transformer\Constraint\BetweenConstraint($start, $end);
-
 							// create transformmer & generate occurances
 							$transformer = new \Recurr\Transformer\ArrayTransformer();
-							$occurrences = $transformer->transform($rule, null, $constraint);
+							$occurrences = $transformer->transform($rule, null);
 
 							// calculate diff so we can create down
 							$diff = new DateInterval('P0Y0DT0H0M');
@@ -302,7 +299,7 @@ class Calendar extends Model
 		//make sure the calendar url is valid
 		if (!strstr($statusCode, '200 OK'))
 		{
-			$this->set('failed_attempts', $this->failed_attempts + 1);
+			$this->set('failed_attempts', (int)$this->get('failed_attempts', 0) + 1);
 			$this->set('last_fetched_attempt', Date::toSql());
 			$this->store(true);
 			$this->setError($this->get('title'));

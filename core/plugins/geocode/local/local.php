@@ -58,6 +58,10 @@ class plgGeocodeLocal extends \Hubzero\Plugin\Plugin
 				$provider = 'country';
 			break;
 
+			case 'geocode.continent':
+				$provider = 'continent';
+			break;
+
 			default:
 				return;
 			break;
@@ -71,4 +75,3 @@ class plgGeocodeLocal extends \Hubzero\Plugin\Plugin
 		);
 	}
 }
-

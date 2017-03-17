@@ -50,7 +50,7 @@ if ($canDo->get('core.edit'))
 if ($canDo->get('core.delete'))
 {
 	Toolbar::spacer();
-	Toolbar::deleteList();
+	Toolbar::deleteList(Lang::txt('COM_PUBLICATIONS_CONFIRM_DELETE_ITEM'));
 }
 
 Html::behavior('tooltip');

@@ -52,9 +52,9 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'queryfolder.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'queryfolder.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 
 /**
  * Support controller class for tickets
@@ -64,7 +64,7 @@ class Tickets extends AdminController
 	/**
 	 * Displays a list of tickets
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -279,7 +279,7 @@ class Tickets extends AdminController
 	/**
 	 * Show a form for creating a ticket
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -323,10 +323,10 @@ class Tickets extends AdminController
 			$row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
 			$row->set('browser', $browser->name() . ' ' . $browser->version());
 
-			$row->set('uas', Request::getVar('HTTP_USER_AGENT','','server'));
+			$row->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
 
 			$row->set('ip', Request::ip());
-			$row->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR','','server')));
+			$row->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
 			$row->set('section', 1);
 		}
 
@@ -344,9 +344,9 @@ class Tickets extends AdminController
 		// Get severities
 		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-		if (trim($row->get('group')))
+		if (trim($row->get('group_id')))
 		{
-			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->get('owner'), 1, '', trim($row->get('group')));
+			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->get('owner'), 1, '', trim($row->get('group_id')));
 		}
 		elseif (trim($this->config->get('group')))
 		{
@@ -409,7 +409,7 @@ class Tickets extends AdminController
 	/**
 	 * Save an entry and return t the edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -420,7 +420,8 @@ class Tickets extends AdminController
 	 * Saves changes to a ticket, adds a new comment/changelog,
 	 * notifies any relevant parties
 	 *
-	 * @return void
+	 * @param   integer  $redirect
+	 * @return  void
 	 */
 	public function saveTask($redirect=1)
 	{
@@ -600,7 +601,7 @@ class Tickets extends AdminController
 				$msg->addPart($html, 'text/html');
 
 				// Loop through the addresses
-				foreach ($defs As $def)
+				foreach ($defs as $def)
 				{
 					$def = trim($def);
 
@@ -668,7 +669,7 @@ class Tickets extends AdminController
 		// otherwise, we're only recording a changelog
 		if ($rowc->get('comment')
 		 || $row->get('owner') != $old->get('owner')
-		 || $row->get('group') != $old->get('group')
+		 || $row->get('group_id') != $old->get('group_id')
 		 || $rowc->attachments()->total() > 0)
 		{
 			// Send e-mail to ticket submitter?
@@ -708,9 +709,9 @@ class Tickets extends AdminController
 						'id'    => $row->owner('id')
 					));
 				}
-				elseif ($row->get('group'))
+				elseif ($row->get('group_id'))
 				{
-					$group = \Hubzero\User\Group::getInstance($row->get('group'));
+					$group = \Hubzero\User\Group::getInstance($row->get('group_id'));
 
 					if ($group)
 					{
@@ -882,7 +883,7 @@ class Tickets extends AdminController
 		if ($redirect)
 		{
 			$filters = Request::getVar('filters', '');
-			$filters = str_replace('&amp;','&', $filters);
+			$filters = str_replace('&amp;', '&', $filters);
 
 			// Redirect
 			App::redirect(
@@ -1194,7 +1195,7 @@ class Tickets extends AdminController
 	/**
 	 * Removes a ticket and all associated records (tags, comments, etc.)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -1246,14 +1247,14 @@ class Tickets extends AdminController
 	/**
 	 * Generates a select list of Super Administrator names
 	 *
-	 * @param  $name        Select element 'name' attribute
-	 * @param  $active      Selected option
-	 * @param  $nouser      Flag to set first option to 'No user'
-	 * @param  $javascript  Any inline JS to attach to the element
-	 * @param  $order       The sort order for items in the list
-	 * @return string       HTML select list
+	 * @param   string   $name        Select element 'name' attribute
+	 * @param   string   $active      Selected option
+	 * @param   integer  $nouser      Flag to set first option to 'No user'
+	 * @param   string   $javascript  Any inline JS to attach to the element
+	 * @param   string   $order       The sort order for items in the list
+	 * @return  string   HTML select list
 	 */
-	private function _userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	private function _userSelect($name, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
 		$query = "SELECT a.id AS value, a.name AS text"
 			. " FROM #__users AS a"
@@ -1306,14 +1307,14 @@ class Tickets extends AdminController
 	/**
 	 * Generates a select list of names based off group membership
 	 *
-	 * @param  $name        Select element 'name' attribute
-	 * @param  $active      Selected option
-	 * @param  $nouser      Flag to set first option to 'No user'
-	 * @param  $javascript  Any inline JS to attach to the element
-	 * @param  $group       The group to pull member names from
-	 * @return string       HTML select list
+	 * @param   string   $name        Select element 'name' attribute
+	 * @param   string   $active      Selected option
+	 * @param   integer  $nouser      Flag to set first option to 'No user'
+	 * @param   string   $javascript  Any inline JS to attach to the element
+	 * @param   string   $group       The group to pull member names from
+	 * @return  string   HTML select list
 	 */
-	private function _userSelectGroup($name, $active, $nouser=0, $javascript=NULL, $group='')
+	private function _userSelectGroup($name, $active, $nouser=0, $javascript=null, $group='')
 	{
 		$users = array();
 		if ($nouser)
@@ -1396,7 +1397,7 @@ class Tickets extends AdminController
 	/**
 	 * Serves up files only after passing access checks
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
@@ -1464,8 +1465,9 @@ class Tickets extends AdminController
 	/**
 	 * Uploads a file and generates a database entry for that item
 	 *
-	 * @param  $listdir Sub-directory to upload files to
-	 * @return string   Key to use in comment bodies (parsed into links or img tags)
+	 * @param   string   $listdir  Sub-directory to upload files to
+	 * @param   integer  $comment  
+	 * @return  string   Key to use in comment bodies (parsed into links or img tags)
 	 */
 	public function uploadTask($listdir, $comment = 0)
 	{

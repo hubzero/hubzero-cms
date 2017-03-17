@@ -268,6 +268,10 @@ class Router extends Base
 				{
 					$vars['active'] = $segments[2];
 				}
+				if (isset($segments[3]))
+				{
+					$vars['action'] = $segments[3];
+				}
 
 				return $vars;
 			}

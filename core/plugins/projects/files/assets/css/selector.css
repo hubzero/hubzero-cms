@@ -38,14 +38,16 @@
 	li.type-folder {
 		padding-left: 2em;
 	}
-	.collapsor {
+	.collapsor-indicator {
 		position: relative;
 		margin-left: -1.5em;
 		margin-right: -1.5em;
-		cursor: pointer;
 		padding: 0.5em;
 	}
-	li.type-folder .collapsor:before {
+	li.type-folder {
+		cursor: pointer;
+	}
+	li.type-folder .collapsor-indicator:before {
 		width: 16px;
 		height: 16px;
 		font-size: 16px;
@@ -54,13 +56,13 @@
 		margin-right: 0.3em;
 		content: "\f0d7";
 	}
-	li.type-folder .collapsor:hover:before {
+	li.type-folder .collapsor:hover .collapsor-indicator:before {
 		color: #9aa8ac;
 	}
-	li.collapsed .collapsor:before {
+	li.collapsed .collapsor-indicator:before {
 		content: "\f0da";
 	}
-	.flatlist .collapsor {
+	.flatlist .collapsor-indicator {
 		display: none;
 	}
 	.file-selector li {
@@ -68,7 +70,7 @@
 		padding: 0.2em 0;
 	}
 	.file-selector li.even {
-		background: #f7f7fa;			
+		background: #f7f7fa;
 	}
 	ul.file-selector {
 		max-height: 300px;
@@ -186,13 +188,14 @@
 		width: 180px;
 		margin: 0;
 	}
-	.search-filter label {		
+	.search-filter label {
 		margin: 0.5em;
 		position: absolute;
 	}
 	.search-filter label input {
-		border-radius: 8px;
+		-webkit-border-radius: 8px;
 		-moz-border-radius: 8px;
+		border-radius: 8px;
 		padding: 0.2em 0.5em;
 		font-size: 90%;
 		color: #666;
@@ -221,12 +224,13 @@
 /* Selectable
 ---------------------------- */
 	#file-selector .selectedfilter,
-	.file-selector .selectedfilter, .file-selector .selectedfilter:hover {
+	.file-selector .selectedfilter,
+	.file-selector .selectedfilter:hover {
 		background: #ddf4fd;
 		cursor: pointer;
 	}
 	.file-selector .item-info:after,
-	.file-selector .selectedfilter .item-info:after, 
+	.file-selector .selectedfilter .item-info:after,
 	.file-selector .selectedfilter:hover .item-info:after {
 		width: 16px;
 		height: 16px;
@@ -256,7 +260,7 @@
 	}
 	.file-selector li.allowed:hover {
 		background: #bbe3f3;
-	}	
+	}
 	.content-loader {
 		text-align: center;
 		padding: 3em 0;
@@ -267,7 +271,7 @@
 	}
 	#file-selector li.preselected {
 		background: #ebfcec;
-	}	
+	}
 
 /* Connections
 ---------------------------- */

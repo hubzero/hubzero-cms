@@ -36,10 +36,16 @@ $canDo = Components\Members\Helpers\Admin::getActions('component');
 
 // Menu
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST'), 'user');
-if ($canDo->get('core.edit'))
+if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
+}
+if ($canDo->get('core.edit'))
+{
 	Toolbar::editList();
+}
+if ($canDo->get('core.delete'))
+{
 	Toolbar::spacer();
 	Toolbar::deleteList();
 }
@@ -84,15 +90,21 @@ if ($canDo->get('core.edit'))
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<?php if ($canDo->get('core.edit')) : ?>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<?php endif; ?>
 				</td>
 				<td>
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+					<?php if ($canDo->get('core.edit')) : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape($row->get('word')); ?>
+						</a>
+					<?php else : ?>
 						<?php echo $this->escape($row->get('word')); ?>
-					</a>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<?php

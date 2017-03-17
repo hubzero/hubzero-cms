@@ -795,16 +795,16 @@
   });
 }).call(this);
 
-/*
+
 (function() {
   Formbuilder.registerField('number', {
     order: 30,
     view: "<input type='text' />\n<% if (units = rf.get(Formbuilder.options.mappings.UNITS)) { %>\n  <%= units %>\n<% } %>",
-    edit: "<%= Formbuilder.templates['edit/min_max']() %>\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
+    edit: "<%= Formbuilder.templates['edit/min_max']() %>", //\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-number\">123</span></span> Number"
   });
 }).call(this);
-*/
+
 
 (function() {
   Formbuilder.registerField('paragraph', {
@@ -867,7 +867,7 @@
   Formbuilder.registerField('text', {
     order: 0,
     view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
-    edit: "", //<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
+    edit: '', //<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class='symbol'><span class='fa fa-font'></span></span> Text",
     defaultAttributes: function(attrs) {
       attrs.field_options.size = 'small';
@@ -876,12 +876,25 @@
   });
 }).call(this);
 
+/*(function() {
+  Formbuilder.registerField('range', {
+    order: 0,
+    view: "<input type='range' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
+    edit: "<%= Formbuilder.templates['edit/min_max']() %>",
+    addButton: '<span class="symbol"><span class="fa fa-range"></span></span> Range',
+    defaultAttributes: function(attrs) {
+      attrs.field_options.size = 'small';
+      return attrs;
+    }
+  });
+}).call(this);*/
+
 (function() {
   Formbuilder.registerField('url', {
     order: 35,
-    view: "<input type='text' placeholder='http://' />",
-    edit: "",
-    addButton: "<span class=\"symbol\"><span class=\"fa fa-link\"></span></span> Website"
+    view: '<input type="text" placeholder="http://" />',
+    edit: '',
+    addButton: '<span class="symbol"><span class="fa fa-link"></span></span> Website'
   });
 }).call(this);
 
@@ -925,50 +938,71 @@ this["Formbuilder"]["templates"]["edit/base_non_input"] = function(obj) {
 };
 
 this["Formbuilder"]["templates"]["edit/checkboxes"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<label>Viewing level\n  <select data-rv-value=\'model.' +
-((__t = ( Formbuilder.options.mappings.ACCESS )) == null ? '' : __t) +
-'\'><option value="1">Public</option><option value="2">Registered</option><option value="5">Private</option></select>\n  </label>\n<div class="grid"><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.REQUIRED )) == null ? '' : __t) +
-'\' />\n  Required\n</label>\n</div><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.READONLY )) == null ? '' : __t) +
-'\' />\n  Read only\n</label>\n</div><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.DISABLED )) == null ? '' : __t) +
-'\' />\n  Disabled\n</label></div></div>\n<!-- label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
-((__t = ( Formbuilder.options.mappings.ADMIN_ONLY )) == null ? '' : __t) +
-'\' />\n  Admin only\n</label -->';
-
-}
-return __p
+  obj || (obj = {});
+  var __t, __p = '', __e = _.escape;
+  with (obj) {
+    __p += '<label>Viewing level\n <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.ACCESS )) == null ? '' : __t) + '\'>';
+    if (typeof(accesses) !== 'undefined') {
+      for (i = 0; i < accesses.length; i++) {
+        __p += '<option value="' + accesses[i].value + '">' + accesses[i].text + '</option>';
+      }
+    } else {
+      __p += '<option value="1">Public</option><option value="2">Registered</option><option value="5">Private</option>';
+    }
+    __p += '</select>\n  </label>\n<div class="grid"><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.REQUIRED )) == null ? '' : __t) +
+    '\' />\n  Required\n</label>\n</div><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.READONLY )) == null ? '' : __t) +
+    '\' />\n  Read only\n</label>\n</div><div class="col span4"><label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.DISABLED )) == null ? '' : __t) +
+    '\' />\n  Disabled\n</label></div></div>\n<!-- label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.ADMIN_ONLY )) == null ? '' : __t) +
+    '\' />\n  Admin only\n</label -->';
+  }
+  return __p
 };
 
 this["Formbuilder"]["templates"]["edit/states"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<label>Viewing level\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.ACCESS )) == null ? '' : __t) + '\'><option value="1">Public</option><option value="2">Registered</option><option value="5">Private</option></select>\n  </label>\n' +
-'<label>Browse accounts\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.BROWSE )) == null ? '' : __t) + '\'><option value="1">Public</option><option value="2">Registered</option><option value="0">Hide</option></select>\n  </label>\n' +
-'<label>Create account\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.CREATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
-//'<label>Update on next login\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.UPDATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
-'<label>Edit profile\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.EDIT )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n';
-}
-return __p
+  obj || (obj = {});
+  var __t, __p = '', __e = _.escape;
+  with (obj) {
+    __p += '<label>Viewing profile\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.ACCESS )) == null ? '' : __t) + '\'>';
+    if (typeof(accesses) !== 'undefined') {
+      for (i = 0; i < accesses.length; i++) {
+        __p += '<option value="' + accesses[i].value + '">' + accesses[i].text + '</option>';
+      }
+    } else {
+      __p += '<option value="1">Public</option><option value="2">Registered</option><option value="5">Private</option>';
+    }
+    __p += '</select>\n  </label>\n' +
+    '<label>Browse accounts\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.BROWSE )) == null ? '' : __t) + '\'><option value="0">Hide</option>';
+    if (typeof(accesses) !== 'undefined') {
+      for (i = 0; i < accesses.length; i++) {
+        __p += '<option value="' + accesses[i].value + '">' + accesses[i].text + '</option>';
+      }
+    } else {
+      __p += '<option value="1">Public</option><option value="2">Registered</option>';
+    }
+    __p += '</select>\n  </label>\n' +
+    //'\n  </div>\n  <div class=\'fb-edit-section-header\'>Required</div>\n\n<div class=\'fb-common-checkboxes\'>\n    ' +
+    '<label>Create account\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.CREATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
+    //'<label>Update on next login\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.UPDATE )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n' +
+    '<label>Edit profile\n  <select data-rv-value=\'model.' + ((__t = ( Formbuilder.options.mappings.EDIT )) == null ? '' : __t) + '\'><option value="1">Optional</option><option value="2">Required</option><option value="0">Hide</option><option value="4">Read only</option></select>\n  </label>\n';
+  }
+  return __p
 };
 
 this["Formbuilder"]["templates"]["edit/common"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Label</div>\n\n<div class=\'fb-common-wrapper\'>\n  <div class=\'fb-label-description\'>\n    ' +
-((__t = ( Formbuilder.templates['edit/label_description']() )) == null ? '' : __t) +
-'\n  </div>\n  <div class=\'fb-edit-section-header\'>Access</div>\n\n<div class=\'fb-common-checkboxes\'>\n    ' +
-((__t = ( Formbuilder.templates['edit/states']() )) == null ? '' : __t) +
-'\n  </div>\n  <div class=\'fb-clear\'></div>\n</div>\n';
-
-}
-return __p
+  obj || (obj = {});
+  var __t, __p = '', __e = _.escape;
+  with (obj) {
+    __p += '<div class=\'fb-edit-section-header\'>Label</div>\n\n<div class=\'fb-common-wrapper\'>\n  <div class=\'fb-label-description\'>\n    ' +
+    ((__t = ( Formbuilder.templates['edit/label_description']() )) == null ? '' : __t) +
+    '\n  </div>\n  <div class=\'fb-edit-section-header\'>Access</div>\n\n<div class=\'fb-common-checkboxes\'>\n    ' +
+    ((__t = ( Formbuilder.templates['edit/states']() )) == null ? '' : __t) +
+    '\n  </div>\n  <div class=\'fb-clear\'></div>\n</div>\n';
+  }
+  return __p
 };
 
 this["Formbuilder"]["templates"]["edit/integer_only"] = function(obj) {
@@ -1003,9 +1037,9 @@ this["Formbuilder"]["templates"]["edit/min_max"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Minimum / Maximum</div>\n\nAbove\n<input type="text" data-rv-input="model.' +
+__p += '<div class=\'fb-edit-section-header\'>Minimum / Maximum</div>\n\nMin\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MIN )) == null ? '' : __t) +
-'" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nBelow\n<input type="text" data-rv-input="model.' +
+'" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nMax\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MAX )) == null ? '' : __t) +
 '" style="width: 30px" />\n';
 

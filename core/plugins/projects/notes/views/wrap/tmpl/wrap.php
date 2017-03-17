@@ -50,20 +50,24 @@ $showSidePanel = ($this->task == 'view' or $this->task == 'page' or $this->task 
 $notes = $this->note->getNotes();
 
 // Get page parent notes (for breadcrumbs)
-$parentNotes = $this->note->getParentNotes($this->scope);
+$parentNotes = array(); //$this->note->getParentNotes($this->scope);
+if (trim($page->path))
+{
+	$parentNotes = explode('/', trim($page->path));
+}
 
 // Get parent scope (to add subpages)
 $parentScope = $this->scope . DS . $page->get('pagename');
 
 // Build breadcrumbs
 $bcrumb = '';
-if ($parentNotes && count($parentNotes) > 0)
+/*if ($parentNotes && count($parentNotes) > 0)
 {
 	foreach ($parentNotes as $parent)
 	{
 		$bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($url . '&scope=' . $parent->scope . '&pagename=' . $parent->pagename) . '">' . $parent->title . '</a></span>';
 	}
-}
+}*/
 if ($this->task == 'new')
 {
 	$bcrumb .= ' &raquo; <span class="subheader">'.Lang::txt('COM_PROJECTS_NOTES_TASK_NEW').'</span>';
@@ -90,28 +94,29 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 <div id="plg-header">
 	<h3 class="notes"><?php if ($bcrumb) { ?><a href="<?php echo Route::url($url); ?>"><?php } ?><?php echo $this->title; ?><?php if ($bcrumb) { ?></a><?php } ?> <?php  echo $bcrumb; ?></h3>
 </div>
+
 <?php if ($showSidePanel && $this->project->access('content')) { ?>
-<ul id="page_options" class="pluginOptions">
-	<li>
-		<a class="icon-add add btn"  href="<?php echo Route::url($url . '&action=new'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
-			<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
-		</a>
-		<?php if (count($parentNotes) < 2) { ?>
-			<?php
-			$base = $page->link();
-			$chr  = strstr($base, '?') ? '&' : '?';
-			?>
-			<a href="<?php echo Route::url($base . $chr . 'action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
-		<?php } ?>
-	</li>
-</ul>
+	<ul id="page_options" class="pluginOptions">
+		<li>
+			<a class="icon-add add btn"  href="<?php echo Route::url($url . '&action=new'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
+				<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
+			</a>
+			<?php if (count($parentNotes) < 2) { ?>
+				<?php
+				$base = $page->link();
+				$chr  = strstr($base, '?') ? '&' : '?';
+				?>
+				<a href="<?php echo Route::url($base . $chr . 'action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
+			<?php } ?>
+		</li>
+	</ul>
 <?php } ?>
 
 <div id="notes-wrap" class="grid">
 	<div class="col <?php echo $showSidePanel ? 'span9' : 'span12 omega'; ?>">
 		<div id="notes-content" class="notes-content <?php echo $listed ? 'listed-note' : 'unlisted-note'; ?>">
-		<?php echo $this->content; ?>
-		<div id="scope" class="hidden"><?php echo $this->scope; ?></div>
+			<?php echo $this->content; ?>
+			<div id="scope" class="hidden"><?php echo $this->scope; ?></div>
 		</div>
 		<?php if ($this->params->get('enable_publinks') && $this->page->get('id') && $this->project->access('content')) {
 			$this->view('sharelink')

@@ -1,42 +1,116 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
 defined('_HZEXEC_') or die;
 
-JLoader::register('MenusHelper', PATH_CORE . '/components/com_menus/admin/helpers/menus.php');
-JLoader::register('MultilangstatusHelper', PATH_CORE . '/components/com_languages/admin/helpers/multilangstatus.php');
+require_once PATH_CORE . '/components/com_menus/admin/helpers/menus.php';
+require_once PATH_CORE . '/components/com_languages/admin/helpers/multilangstatus.php';
 
 /**
- * Joomla! Language Filter Plugin
- *
- * @package		Joomla.Plugin
- * @subpackage	System.languagefilter
- * @since		1.6
+ * Language Filter Plugin
  */
 class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * SEF mode
+	 *
+	 * @var  bool
+	 */
 	protected static $mode_sef;
 
+	/**
+	 * Language tag
+	 *
+	 * @var  string
+	 */
 	protected static $tag;
 
+	/**
+	 * SEFs
+	 *
+	 * @var  array
+	 */
 	protected static $sefs;
 
+	/**
+	 * Language codes
+	 *
+	 * @var  array
+	 */
 	protected static $lang_codes;
 
+	/**
+	 * Homes
+	 *
+	 * @var  array
+	 */
 	protected static $homes;
 
+	/**
+	 * Default language
+	 *
+	 * @var  string
+	 */
 	protected static $default_lang;
 
+	/**
+	 * Default SEF
+	 *
+	 * @var  string
+	 */
 	protected static $default_sef;
 
+	/**
+	 * Cookie
+	 *
+	 * @var  string
+	 */
 	protected static $cookie;
 
+	/**
+	 * User language code
+	 *
+	 * @var  string
+	 */
 	private static $_user_lang_code;
 
+	/**
+	 * Constructor
+	 *
+	 * @param   object  $subject
+	 * @param   array   $config
+	 * @return  void
+	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -46,15 +120,14 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 		if (!self::$default_lang)
 		{
-			$app = JFactory::getApplication();
-			$router = $app->getRouter();
+			$router = App::get('router');
 
 			if (App::isSite())
 			{
 				// setup language data
-				self::$mode_sef     = ($router->getMode() == JROUTER_MODE_SEF) ? true : false;
-				self::$sefs         = JLanguageHelper::getLanguages('sef');
-				self::$lang_codes   = JLanguageHelper::getLanguages('lang_code');
+				self::$mode_sef     = true;
+				self::$sefs         = Lang::available('sef');
+				self::$lang_codes   = Lang::available('lang_code');
 				self::$default_lang = Component::params('com_languages')->get('site', 'en-GB');
 				self::$default_sef  = self::$lang_codes[self::$default_lang]->sef;
 				self::$homes        = MultilangstatusHelper::getHomepages();
@@ -70,18 +143,18 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 				App::forget('language.filter');
 				App::set('language.filter', true);
-				$uri = JFactory::getURI();
+				$uri = Hubzero\Utility\Uri::getInstance();
 
 				if (self::$mode_sef)
 				{
 					// Get the route path from the request.
-					$path = JString::substr($uri->toString(), JString::strlen($uri->base()));
+					$path = substr($uri->toString(), strlen($uri->base()));
 
 					// Apache mod_rewrite is Off
-					$path = Config::get('sef_rewrite') ? $path : JString::substr($path, 10);
+					$path = Config::get('sef_rewrite') ? $path : substr($path, 10);
 
 					// Trim any spaces or slashes from the ends of the path and explode into segments.
-					$path  = JString::trim($path, '/ ');
+					$path  = trim($path, '/ ');
 					$parts = explode('/', $path);
 
 					// The language segment is always at the beginning of the route path if it exists.
@@ -113,21 +186,25 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			// 	Detect browser feature
 			if (App::isSite())
 			{
-				$app->setDetectBrowser($this->params->get('detect_browser', '1')=='1');
+				//$app->setDetectBrowser($this->params->get('detect_browser', '1')=='1');
 			}
 		}
 	}
 
+	/**
+	 * Event hook after system has been initialized
+	 *
+	 * @return  void
+	 */
 	public function onAfterInitialise()
 	{
-		$app = JFactory::getApplication();
-		$app->menu_associations = $this->params->get('menu_associations', 0);
+		App::set('menu_associations', $this->params->get('menu_associations', 0));
 
 		if (App::isSite())
 		{
 			self::$tag = Lang::getTag();
 
-			$router = $app->getRouter();
+			$router = App::get('router');
 			// attach build rules for language SEF
 			$router->attachBuildRule(array($this, 'buildRule'));
 
@@ -135,7 +212,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			$router->attachParseRule(array($this, 'parseRule'));
 
 			// Adding custom site name
-			$languages = JLanguageHelper::getLanguages('lang_code');
+			$languages = Lang::available('lang_code');
 			if (isset($languages[self::$tag]) && $languages[self::$tag]->sitename)
 			{
 				Config::set('sitename', $languages[self::$tag]->sitename);
@@ -143,6 +220,13 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		}
 	}
 
+	/**
+	 * Build rule
+	 *
+	 * @param   object  $router
+	 * @param   object  $uri
+	 * @return  void
+	 */
 	public function buildRule(&$router, &$uri)
 	{
 		$sef = $uri->getVar('lang');
@@ -158,12 +242,12 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		$Itemid = $uri->getVar('Itemid');
 		if (!is_null($Itemid))
 		{
-			if ($item = \App::get('menu')->getItem($Itemid))
+			if ($item = App::get('menu')->getItem($Itemid))
 			{
 				if ($item->home && $uri->getVar('option')!='com_search')
 				{
-					$link = $item->link;
-					$parts = JString::parse_url($link);
+					$link  = $item->link;
+					$parts = parse_url($link);
 					if (isset ($parts['query']) && strpos($parts['query'], '&amp;'))
 					{
 						$parts['query'] = str_replace('&amp;', '&', $parts['query']);
@@ -203,10 +287,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				$this->params->get('remove_default_prefix', 0) == 0 ||
 				$sef != self::$default_sef ||
 				$sef != self::$lang_codes[self::$tag]->sef ||
-				$this->params->get('detect_browser', 1) && JLanguageHelper::detectLanguage() != self::$tag && !self::$cookie
+				$this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie
 			)
 			{
-				$uri->setPath($uri->getPath().'/'.$sef.'/');
+				$uri->setPath($uri->getPath() . '/' . $sef . '/');
 			}
 			else
 			{
@@ -219,16 +303,24 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		}
 	}
 
+	/**
+	 * Parse rule
+	 *
+	 * @param   object  $router
+	 * @param   object  $uri
+	 * @return  void
+	 */
 	public function parseRule(&$router, &$uri)
 	{
 		$array = array();
 		$lang_code = Request::getString(App::hash('language'), null , 'cookie');
+
 		// No cookie - let's try to detect browser language or use site default
 		if (!$lang_code)
 		{
 			if ($this->params->get('detect_browser', 1))
 			{
-				$lang_code = JLanguageHelper::detectLanguage();
+				$lang_code = Lang::detect();
 			}
 			else
 			{
@@ -244,7 +336,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 			// Redirect only if not in post
 			$post = Request::get('POST');
-			if (!empty($lang_code) && (Request::method() != "POST" || count($post) == 0))
+			if (!empty($lang_code) && (Request::method() != 'POST' || count($post) == 0))
 			{
 				if ($this->params->get('remove_default_prefix', 0) == 0)
 				{
@@ -255,12 +347,14 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 						$sef = isset(self::$lang_codes[$lang_code]) ? self::$lang_codes[$lang_code]->sef : self::$default_sef;
 						$uri->setPath($sef . '/' . $path);
 
-						if (Config::get('sef_rewrite')) {
-							App::redirect($uri->base().$uri->toString(array('path', 'query', 'fragment')));
+						if (Config::get('sef_rewrite'))
+						{
+							App::redirect($uri->base() . $uri->toString(array('path', 'query', 'fragment')));
 						}
-						else {
+						else
+						{
 							$path = $uri->toString(array('path', 'query', 'fragment'));
-							App::redirect($uri->base().'index.php'.($path ? ('/' . $path) : ''));
+							App::redirect($uri->base() . 'index.php' . ($path ? ('/' . $path) : ''));
 						}
 					}
 				}
@@ -274,18 +368,18 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 						if (Config::get('sef_rewrite'))
 						{
-							App::redirect($uri->base().$uri->toString(array('path', 'query', 'fragment')));
+							App::redirect($uri->base() . $uri->toString(array('path', 'query', 'fragment')));
 						}
 						else
 						{
 							$path = $uri->toString(array('path', 'query', 'fragment'));
-							App::redirect($uri->base().'index.php'.($path ? ('/' . $path) : ''));
+							App::redirect($uri->base() . 'index.php' . ($path ? ('/' . $path) : ''));
 						}
 					}
 					// redirect if sef is the default one
 					elseif (isset(self::$sefs[$sef]) &&
 						self::$default_lang == self::$sefs[$sef]->lang_code &&
-						(!$this->params->get('detect_browser', 1) || JLanguageHelper::detectLanguage() == self::$tag || self::$cookie)
+						(!$this->params->get('detect_browser', 1) || Lang::detect() == self::$tag || self::$cookie)
 					)
 					{
 						array_shift($parts);
@@ -293,12 +387,12 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 						if (Config::get('sef_rewrite'))
 						{
-							App::redirect($uri->base().$uri->toString(array('path', 'query', 'fragment')));
+							App::redirect($uri->base() . $uri->toString(array('path', 'query', 'fragment')));
 						}
 						else
 						{
 							$path = $uri->toString(array('path', 'query', 'fragment'));
-							App::redirect($uri->base().'index.php'.($path ? ('/' . $path) : ''));
+							App::redirect($uri->base() . 'index.php' . ($path ? ('/' . $path) : ''));
 						}
 					}
 				}
@@ -321,7 +415,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				$post = Request::get('POST');
 				if (Request::method() != "POST" || count($post) == 0)
 				{
-					App::redirect(Request::base(true).'/index.php?'.$uri->getQuery());
+					App::redirect(Request::base(true) . '/index.php?' . $uri->getQuery());
 				}
 			}
 		}
@@ -335,18 +429,16 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 *
 	 * Method is called before user data is stored in the database
 	 *
-	 * @param	array		$user	Holds the old user data.
-	 * @param	boolean		$isnew	True if a new user is stored.
-	 * @param	array		$new	Holds the new user data.
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   array    $user   Holds the old user data.
+	 * @param   boolean  $isnew  True if a new user is stored.
+	 * @param   array    $new    Holds the new user data.
+	 * @return  void
 	 */
 	public function onUserBeforeSave($user, $isnew, $new)
 	{
-		if ($this->params->get('automatic_change', '1')=='1' && array_key_exists('params', $user))
+		if ($this->params->get('automatic_change', '1') =='1' && array_key_exists('params', $user))
 		{
-			$registry = new \Hubzero\Config\Registry($user['params']);
+			$registry = new Hubzero\Config\Registry($user['params']);
 
 			self::$_user_lang_code = $registry->get('language');
 
@@ -362,19 +454,17 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 *
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param	array		$user		Holds the new user data.
-	 * @param	boolean		$isnew		True if a new user is stored.
-	 * @param	boolean		$success	True if user was succesfully stored in the database.
-	 * @param	string		$msg		Message.
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   array    $user     Holds the new user data.
+	 * @param   boolean  $isnew    True if a new user is stored.
+	 * @param   boolean  $success  True if user was succesfully stored in the database.
+	 * @param   string   $msg      Message.
+	 * @return  void
 	 */
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
 		if ($this->params->get('automatic_change', '1')=='1' && key_exists('params', $user) && $success)
 		{
-			$registry = new \Hubzero\Config\Registry($user['params']);
+			$registry = new Hubzero\Config\Registry($user['params']);
 
 			$lang_code = $registry->get('language');
 			if (empty($lang_code))
@@ -393,7 +483,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			{
 				if (App::isSite())
 				{
-					User::setState('com_users.edit.profile.redirect', 'index.php?Itemid='.App::get('menu')->getDefault($lang_code)->id.'&lang='.self::$lang_codes[$lang_code]->sef);
+					User::setState('com_users.edit.profile.redirect', 'index.php?Itemid=' . App::get('menu')->getDefault($lang_code)->id . '&lang=' . self::$lang_codes[$lang_code]->sef);
 					self::$tag = $lang_code;
 					// Create a cookie
 					$cookie_domain = Config::get('cookie_domain', '');
@@ -407,21 +497,18 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	/**
 	 * This method should handle any login logic and report back to the subject
 	 *
-	 * @param	array	$user		Holds the user data
-	 * @param	array	$options	Array holding options (remember, autoregister, group)
-	 *
-	 * @return	boolean	True on success
-	 * @since	1.5
+	 * @param   array    $user     Holds the user data
+	 * @param   array    $options  Array holding options (remember, autoregister, group)
+	 * @return  boolean  True on success
 	 */
 	public function onUserLogin($user, $options = array())
 	{
-		$app  = JFactory::getApplication();
 		$menu = App::get('menu');
 
 		if (App::isSite() && $this->params->get('automatic_change', 1))
 		{
 			// Load associations
-			$assoc = isset($app->menu_associations) ? $app->menu_associations : 0;
+			$assoc = App::has('menu_associations') ? App::get('menu_associations') : 0;
 
 			if ($assoc)
 			{
@@ -454,12 +541,12 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				if (isset($associations[$lang_code]) && $menu->getItem($associations[$lang_code]))
 				{
 					$itemid = $associations[$lang_code];
-					User::setState('users.login.form.return', 'index.php?&Itemid='.$itemid);
+					User::setState('users.login.form.return', 'index.php?&Itemid=' . $itemid);
 				}
 				else
 				{
 					$itemid = isset(self::$homes[$lang_code]) ? self::$homes[$lang_code]->id : self::$homes['*']->id;
-					User::setState('users.login.form.return', 'index.php?&Itemid='.$itemid);
+					User::setState('users.login.form.return', 'index.php?&Itemid=' . $itemid);
 				}
 			}
 		}
@@ -468,8 +555,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	/**
 	 * This method adds alternate meta tags for associated menu items
 	 *
-	 * @return	nothing
-	 * @since	1.7
+	 * @return  nothing
 	 */
 	public function onAfterDispatch()
 	{
@@ -485,20 +571,20 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			// Get menu item link
 			if (Config::get('sef'))
 			{
-				$active_link = Route::url('index.php?Itemid='.$active->id, false);
+				$active_link = Route::url('index.php?Itemid=' . $active->id, false);
 			}
 			else
 			{
-				$active_link = Route::url($active->link.'&Itemid='.$active->id, false);
+				$active_link = Route::url($active->link . '&Itemid=' . $active->id, false);
 			}
-			if ($active_link == JUri::base(true).'/')
+			if ($active_link == Request::base(true) . '/')
 			{
 				$active_link .= 'index.php';
 			}
 
 			// Get current link
 			$current_link = Request::getUri();
-			if ($current_link == Request::base(true).'/')
+			if ($current_link == Request::base(true) . '/')
 			{
 				$current_link .= 'index.php';
 			}
@@ -507,7 +593,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			if ($active_link == $current_link)
 			{
 				// Get menu item associations
-				JLoader::register('MenusHelper', PATH_CORE . '/components/com_menus/admin/helpers/menus.php');
+				require_once PATH_CORE . '/components/com_menus/admin/helpers/menus.php';
 				$associations = MenusHelper::getAssociations($active->id);
 
 				// Remove current menu item
@@ -517,9 +603,9 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				if ($associations && $this->params->get('menu_associations'))
 				{
 					$menu   = App::get('menu');
-					$server = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
+					$server = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
 
-					foreach (JLanguageHelper::getLanguages() as $language)
+					foreach (Lang::available() as $language)
 					{
 						if (isset($associations[$language->lang_code]))
 						{
@@ -553,9 +639,9 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				elseif ($active->home)
 				{
 					$menu   = App::get('menu');
-					$server = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
+					$server = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
 
-					foreach (JLanguageHelper::getLanguages() as $language)
+					foreach (Lang::available() as $language)
 					{
 						$item = $menu->getDefault($language->lang_code);
 						if ($item && $item->language != $active->language && $item->language != '*' && JLanguage::exists($language->lang_code))
@@ -590,18 +676,14 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 * Getting the Language Cookie settings
 	 *
 	 * @return  string  The cookie time.
-	 *
-	 * @since   3.0.4
 	 */
 	private function getLangCookieTime()
 	{
+		$lang_cookie = 0;
+
 		if ($this->params->get('lang_cookie', 1) == 1)
 		{
 			$lang_cookie = time() + 365 * 86400;
-		}
-		else
-		{
-			$lang_cookie = 0;
 		}
 
 		return $lang_cookie;

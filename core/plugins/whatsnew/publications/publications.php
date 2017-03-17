@@ -194,7 +194,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 			// Execute count query
 			$results = $rr->getCount($filters);
 
-			return ($results && is_array($results)) ? count($results) : 0;
+			return ($results && is_array($results)) ? count($results) : $results;
 		}
 	}
 

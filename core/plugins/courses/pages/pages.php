@@ -58,7 +58,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-			->set('description', JText::_('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f05a');
@@ -816,11 +816,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			$filename = substr($filename, strlen('file:'));
 		}
 		$filename = urldecode($filename);
+		$filename = Filesystem::clean($filename);
+		$filename = str_replace(' ', '_', $filename);
 
 		// Ensure we have a path
 		if (empty($filename))
 		{
-			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
+			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . $filename);
 		}
 
 		$page = $this->view->offering->page(Request::getVar('unit', ''));
@@ -859,7 +861,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 			if (!$found)
 			{
-				return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filepath);
+				return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . $filename);
 			}
 		}
 
@@ -872,7 +874,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			return App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR') . '[x]' . $filepath);
+			return App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
 		else
 		{

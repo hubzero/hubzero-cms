@@ -88,112 +88,114 @@ class plgSearchGroups extends \Hubzero\Plugin\Plugin
 		));
 	}
 
-	public $hubtype = 'group';
-
 	/**
 	 * onGetTypes - Announces the available hubtype
-	 *
-	 * @param mixed $type
+	 * 
+	 * @param mixed $type 
 	 * @access public
 	 * @return void
 	 */
 	public function onGetTypes($type = null)
 	{
-		if (isset($type) && $type == $this->hubtype)
+		// The name of the hubtype
+		$hubtype = 'group';
+
+		if (isset($type) && $type == $hubtype)
 		{
-			return $this->hubtype;
+			return $hubtype;
 		}
 		elseif (!isset($type))
 		{
-			return $this->hubtype;
+			return $hubtype;
 		}
 	}
 
 	/**
-	 * onGetModel 
+	 * onIndex 
 	 * 
-	 * @param string $type 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onGetModel($type = '')
+	public function onIndex($type, $id, $run = false)
 	{
-		if ($type == $this->hubtype)
+		if ($type == 'group')
 		{
-			return new Group;
-		}
-	}
-
-	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
-	 * @access public
-	 * @return void
-	 */
-	public function onProcessFields($type, $row, &$db)
-	{
-		if ($type == $this->hubtype)
-		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
-
-			// Non-standard ID number
-			$fields->id = 'group-' . $row->get('gidNumber');
-
-			// Format the date for SOLR
-			$date = Date::of($row->get('created'))->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->get('created'))->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			// Title is required
-			if ($row->get('description') == '')
+			if ($run === true)
 			{
-				$fields->title = $row->get('cn');
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__xgroups WHERE gidNumber={$id} AND type = 1 OR type = 3;";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'groups';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Public condition
+				if ($row->discoverability == 0)
+				{
+					$access_level = 'public';
+				}
+				else
+				{
+					$access_level = 'private';
+				}
+
+				// Members 'own' the group
+				$group = \Hubzero\User\Group::getInstance($id);
+				if (!is_object($group) || empty($group))
+				{
+					return;
+				}
+
+				$members = $group->get('members');
+				$owner_type = 'user';
+				$owner = $members;
+
+				$path = '/groups/' . $row->cn;
+
+				// Get the title
+				$title = $row->description;
+
+				// Build the description, clean up text
+				$content = preg_replace('/<[^>]*>/', ' ', $row->public_desc);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
 			else
 			{
-				$fields->title = $row->get('description');
+				$db = App::get('db');
+				$sql = "SELECT gidNumber FROM #__xgroups WHERE type=1 OR type=3;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
 			}
-
-			$fields->description = strip_tags(htmlspecialchars_decode($row->public_desc));
-
-
-			/**
-			 * Each entity should have an owner. 
-			 * Owner type can be a user or a group,
-			 * where the owner is the ID of the user or group
-			 **/
-			$fields->owner_type = 'group';
-			$fields->owner = $row->gidNumber;
-
-			/**
-			 * A document should have an access level.
-			 * This value can be:
-			 *  public - all users can view
-			 *  registered - only registered users can view
-			 *  private - only owners (set above) can view
-			 **/
-			if ($row->discoverability == 0 && $row->published == 1 && $row->approved == 1)
-			{
-				$fields->access_level = 'public';
-			}
-			else
-			{
-				$fields->access_level = 'private';
-			}
-
-			// The URL this document is accessible through
-			// No need for systems group URL
-			if ($row->type != 0)
-			{
-				$fields->url = '/groups/' . $row->cn;
-			}
-
-			return $fields;
 		}
-	}
 }
-
+}

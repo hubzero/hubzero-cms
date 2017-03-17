@@ -128,7 +128,22 @@ class Hubs extends Base
 			$contacts[] = Contact::oneOrNew(isset($contact['id']) ? $contact['id'] : 0)->set($contact);
 		}
 
-		$hub->attach('contacts', $contacts);
+		$allotments = array();
+		// Set the allotment info on the hub
+		foreach (Request::getVar('allotments', array(), 'post') as $allotment)
+		{
+			// First check and make sure we don't save a completely empty allotment
+			if (empty($allotment['start_date'])
+			 && empty($allotment['end_date'])
+			 && empty($allotment['hours']))
+			{
+				break;
+			}
+
+			$allotments[] = Allotment::oneOrNew(isset($allotment['id']) ? $allotment['id'] : 0)->set($allotment);
+		}
+
+		$hub->attach('allotments', $allotments);
 
 		// Save the hub info
 		if (!$hub->saveAndPropagate())
@@ -223,6 +238,29 @@ class Hubs extends Base
 		App::redirect(
 			Route::url($this->base . '&task=edit&id=' . $hid),
 			Lang::txt('COM_TIME_HUBS_CONTACT_DELETE_SUCCESSFUL'),
+			'passed'
+		);
+	}
+
+	/**
+	 * Delete an allotment
+	 *
+	 * @return void
+	 */
+	public function deleteallotmentTask()
+	{
+		$allotment = Allotment::oneOrFail(Request::getInt('id'));
+
+		// Get the hub id for the return
+		$hid = $allotment->hub_id;
+
+		// Delete the contact
+		$allotment->destroy();
+
+		// Set the redirect
+		App::redirect(
+			Route::url($this->base . '&task=edit&id=' . $hid),
+			Lang::txt('COM_TIME_HUBS_ALLOTMENT_DELETE_SUCCESSFUL'),
 			'passed'
 		);
 	}

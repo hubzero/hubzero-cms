@@ -137,10 +137,9 @@ class Download extends \Hubzero\Component\SiteController
 		// Check if there is a limit on how many times the product can be downloaded
 
 		// Get the number of downloads allowed
-		$allowedDownloads = $sku;
 		if (isset($sku['meta']['downloadLimit']) && $sku['meta']['downloadLimit'] && is_numeric($sku['meta']['downloadLimit']))
 		{
-			$sql = "SELECT COUNT(`dId`) FROM `#__cart_downloads` WHERE `uId` = {$currentUser} AND `sId` = {$sId}";
+			$sql = "SELECT COUNT(`dId`) FROM `#__cart_downloads` WHERE `uId` = {$currentUser} AND `sId` = {$sId} AND `dStatus` > 0";
 			$db->setQuery($sql);
 			$downloadsCount = $db->loadResult();
 

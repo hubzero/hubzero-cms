@@ -80,8 +80,8 @@ class Helper extends Module
 		$filters['sortby'] = 'f.published DESC';
 		$filters['filterby'] = 'all';
 
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'tool.php');
-		require_once(Component::path('com_tools') . DS . 'models' . DS . 'tool.php');
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
+		require_once Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
 		// Create a Tool object
 		$rows = \Components\Tools\Models\Tool::getTools($filters, false);
@@ -101,7 +101,7 @@ class Helper extends Module
 					if ($show_questions)
 					{
 						// Get open questions
-						require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
+						require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
 						$results = \Components\Answers\Models\Question::all()
 							->including(['responses', function ($response)
@@ -141,9 +141,9 @@ class Helper extends Module
 					if ($show_wishes)
 					{
 						// Get open wishes
-						require_once(Component::path('com_wishlist') . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
-						require_once(Component::path('com_wishlist') . DS . 'tables' . DS . 'wish.php');
-						require_once(Component::path('com_wishlist') . DS . 'tables' . DS . 'wishlist.php');
+						require_once Component::path('com_wishlist') . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php';
+						require_once Component::path('com_wishlist') . DS . 'tables' . DS . 'wish.php';
+						require_once Component::path('com_wishlist') . DS . 'tables' . DS . 'wishlist.php';
 
 						$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
 						$objWish = new \Components\Wishlist\Tables\Wish($database);
@@ -178,14 +178,16 @@ class Helper extends Module
 					{
 						// Get open tickets
 						$group = $rows[$i]->devgroup;
+						$g = \Hubzero\User\Group::getInstance($group);
+						$group = $g->get('gidNumber');
 
 						// Find support tickets on the user's contributions
 						$database->setQuery(
 							"SELECT id, summary, category, status, severity, owner, created, login, name,
-							 (SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-							 FROM `#__support_tickets` as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group='$group'
-							 ORDER BY created DESC
-							 LIMIT $limit"
+							(SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
+							FROM `#__support_tickets` as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group_id='$group'
+							ORDER BY created DESC
+							LIMIT $limit"
 						);
 						$tickets = $database->loadObjectList();
 						if ($database->getErrorNum())
@@ -225,15 +227,33 @@ class Helper extends Module
 	{
 		switch ($int)
 		{
-			case 1: $state = 'registered'; break;
-			case 2: $state = 'created';    break;
-			case 3: $state = 'uploaded';   break;
-			case 4: $state = 'installed';  break;
-			case 5: $state = 'updated';    break;
-			case 6: $state = 'approved';   break;
-			case 7: $state = 'published';  break;
-			case 8: $state = 'retired';    break;
-			case 9: $state = 'abandoned';  break;
+			case 1:
+				$state = 'registered';
+				break;
+			case 2:
+				$state = 'created';
+				break;
+			case 3:
+				$state = 'uploaded';
+				break;
+			case 4:
+				$state = 'installed';
+				break;
+			case 5:
+				$state = 'updated';
+				break;
+			case 6:
+				$state = 'approved';
+				break;
+			case 7:
+				$state = 'published';
+				break;
+			case 8:
+				$state = 'retired';
+				break;
+			case 9:
+				$state = 'abandoned';
+				break;
 		}
 		return $state;
 	}
@@ -248,12 +268,24 @@ class Helper extends Module
 	{
 		switch ($int)
 		{
-			case 1:  $type = 'Online Presentation'; break;  // online presentations
-			case 3:  $type = 'Publication';         break;  // publications
-			case 5:  $type = 'Animation';           break;  // animations
-			case 9:  $type = 'Download';            break;  // downloads
-			case 39: $type = 'Teaching Material';   break;  // teaching materials
-			default: $type = 'Other';               break;
+			case 1:
+				$type = 'Online Presentation';
+				break;  // online presentations
+			case 3:
+				$type = 'Publication';
+				break;  // publications
+			case 5:
+				$type = 'Animation';
+				break;  // animations
+			case 9:
+				$type = 'Download';
+				break;  // downloads
+			case 39:
+				$type = 'Teaching Material';
+				break;  // teaching materials
+			default:
+				$type = 'Other';
+				break;
 		}
 		return $type;
 	}
@@ -292,4 +324,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-

@@ -378,7 +378,7 @@ class Jobs extends AdminController
 
 		if ($i)
 		{
-			Notify::success(Lang::txt('COM_CRON_ITEMS_DELETED'));
+			Notify::success(Lang::txt('COM_CRON_ITEMS_DELETED', $i));
 		}
 
 		// Redirect
@@ -445,6 +445,58 @@ class Jobs extends AdminController
 			}
 		}
 
+		$this->cancelTask();
+	}
+
+	/**
+	 * Deactivate one or more records and redirects to listing
+	 *
+	 * @return  void
+	 */
+	public function deactivateTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Ensure we have an ID to work with
+		if (empty($ids))
+		{
+			Notify::warning(Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'));
+			return $this->cancelTask();
+		}
+
+		// Loop through each ID
+		$i = 0;
+		foreach ($ids as $id)
+		{
+			$row = Job::oneOrFail(intval($id));
+			$row->set('active', 0);
+
+			// Attempt to delete
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$i++;
+		}
+
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_CRON_ITEMS_DEACTIVATED', $i));
+		}
+
+		// Redirect
 		$this->cancelTask();
 	}
 }

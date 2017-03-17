@@ -78,7 +78,7 @@
 
 	<div class="input-wrap" data-hint="When 'Single Number' is selected from the 'Serial Number Management'">
 		<label for="field-serial"><?php echo 'Single Serial Number'; ?>:</label><br />
-		<input type="text" name="fields[meta][serial]" id="field-serial" size="30" maxlength="100" value="<?php echo $serial; ?>" />
+		<input type="text" name="fields[meta][serial]" id="field-serial" size="30" maxlength="255" value="<?php echo $serial; ?>" />
 	</div>
 
 	<?php

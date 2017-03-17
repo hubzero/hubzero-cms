@@ -90,5 +90,114 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 		$sql = new \Components\Search\Models\Basic\Result\Sql($query);
 		$results->add($sql);
 	}
-}
 
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'content';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	/**
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
+	 * @access public
+	 * @return void
+	 */
+	public function onIndex($type, $id, $run = false)
+	{
+		if ($type == 'content')
+		{
+			if ($run === true)
+			{
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__content WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Build the path
+				$sql1 = "SELECT path FROM #__categories WHERE id={$row->catid};";
+				$path = $db->setQuery($sql1)->query()->loadResult();
+				if ($path != 'uncategorised')
+				{
+					$path = '/' . $path . '/' . $row->alias;
+				}
+				else
+				{
+					$path = '/' . $row->alias;
+				}
+
+				if ($row->state == 1 && $row->access == 1)
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->state == 1 && $row->access == 2)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				$owner_type = 'user';
+				$owner = $row->created_by;
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = $row->fulltext . ' ' . $row->introtext;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
+			}
+			else
+			{
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__content;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
+			}
+		}
+	}
+}

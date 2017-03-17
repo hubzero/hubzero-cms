@@ -33,21 +33,23 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->css('icons', 'com_projects')
-	 ->css('emocons', 'com_projects');
+	->css('icons', 'com_projects')
+	->css('emocons', 'com_projects');
 
 $this->js();
 $li = '';
 
-if (count($this->activities) > 0 )
+if (count($this->activities) > 0)
 {
 	$projects = array();
 	$i = 1;
-
 	?>
 	<div id="latest_activity" class="infofeed">
 		<div class="activity-items" id="activity-feed">
 			<?php
+			// get all sessions
+			$online = array();
+
 			// Loop through activities
 			foreach ($this->activities as $activity)
 			{
@@ -59,15 +61,14 @@ if (count($this->activities) > 0 )
 
 				// Show activity
 				$this->view('_activity')
-			     ->set('model', $projects[$a->projectid])
-				 ->set('activity', $activity)
-				 ->set('uid', $this->uid)
-				 ->set('edit', false)
-				 ->set('showProject', true)
-			     ->display();
+					->set('model', $projects[$a->projectid])
+					->set('activity', $activity)
+					->set('uid', $this->uid)
+					->set('edit', false)
+					->set('showProject', true)
+					->set('online', $online)
+					->display();
 
-				?>
-			<?php
 				$li = 'li_' . $a->id;
 				$i++;
 			} // end foreach
@@ -80,10 +81,15 @@ if (count($this->activities) > 0 )
 
 <div class="nav_pager more-updates">
 	<?php
-	if ($this->total > $this->filters['limit']) {
-		$limit = $this->filters['limit'] + $this->limit; ?>
-		<p><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects') . '?action=updates&amp;limit=' . $limit . '&amp;prev=' . $this->filters['limit'] . '#' . $li;  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
+	if ($this->total > $this->filters['limit'])
+	{
+		$limit = $this->filters['limit'] + $this->limit;
+		$option = Request::getCmd('option', 'com_members');
+		?>
+		<p><a href="<?php echo Route::url('index.php?option=' . $option . '&' . ($option == 'com_groups' ? 'cn=' . Request::getCmd('cn') : 'id=' . $this->uid) . '&active=projects') . '?action=updates&amp;limit=' . $limit . '&amp;prev=' . $this->filters['limit'] . '#' . $li;  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
 	<?php } else if ($this->filters['limit'] != $this->limit) { ?>
 		<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
-	<?php } ?>
+		<?php
+	}
+	?>
 </div><!-- / #more-updates -->

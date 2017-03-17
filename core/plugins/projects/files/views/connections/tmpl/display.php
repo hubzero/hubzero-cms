@@ -72,6 +72,7 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 				<div class="name"><?php echo $connection->name; ?></div>
 			</a>
 			<div class="connection-actions">
+				<a class="connection-refresh icon-refresh" title="<?php echo Lang::txt('Refresh Connection Credentials'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id); ?>">
 				<a class="connection-edit icon-edit" title="<?php echo Lang::txt('Edit Connection'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id); ?>">
 					<?php echo Lang::txt('Edit'); ?>
 				</a>

@@ -36,6 +36,7 @@ use Components\Members\Models\Import\Record;
 use Components\Members\Models\Profile\Field;
 use Hubzero\Content\Import\Model\Import as Base;
 use Hubzero\Content\Importer;
+use Hubzero\Utility\Sanitize;
 use stdClass;
 
 include_once(__DIR__ . DS . 'import' . DS . 'record.php');
@@ -105,6 +106,14 @@ class Import extends Base
 			'access',
 			'visibility',
 		),
+		'block' => array(
+			'block',
+			'blocked',
+		),
+		'approved' => array(
+			'approve',
+			'approved',
+		),
 		'interests' => array(
 			'tags',
 			'interests',
@@ -146,6 +155,12 @@ class Import extends Base
 			'homefolder',
 			'homedir',
 		),
+		'loginShell' => array(
+			'loginshell'
+		),
+		'ftpShell' => array(
+			'ftpshell'
+		),
 		'usageAgreement' => array(
 			'usageagreement',
 			'termsofservice',
@@ -178,6 +193,11 @@ class Import extends Base
 			'validemail',
 			'emailconfirm',
 			'activation',
+		),
+		'access' => array(
+			'access',
+			'permissions',
+			'public',
 		),
 		/* @deprecated
 		'countryresident' => array(
@@ -333,6 +353,17 @@ class Import extends Base
 			'group_cn',
 			'group_membership',
 		),
+		'projects' => array(
+			'project',
+			'projects',
+			'pid',
+			'pids',
+			'pidNumber',
+			'pidNumbers',
+			'project_alias',
+			'project_aliases',
+			'project_membership',
+		),
 	);
 
 	/**
@@ -365,6 +396,7 @@ class Import extends Base
 			foreach ($raw as $key => $val)
 			{
 				$val = trim($val);
+				$val = Sanitize::cleanMsChar($val);
 
 				if (!$field = $this->fields($key))
 				{
@@ -380,6 +412,7 @@ class Import extends Base
 			foreach (get_object_vars($raw) as $key => $val)
 			{
 				$val = trim($val);
+				$val = Sanitize::cleanMsChar($val);
 
 				if (!$field = $this->fields($key))
 				{

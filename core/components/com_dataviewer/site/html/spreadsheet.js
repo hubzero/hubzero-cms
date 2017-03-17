@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
 			if (dv_settings.serverside) {
 				$('.dv_header_select_all').each(function() {
 					var id = $(this).val();
-					if(dv.selected_cells[id]) {
+					if(dv.selected_cells && dv.selected_cells[id]) {
 						for (i=0; i<dv.selected_cells[id].length; i++) {
 							$('.' + id + ':checkbox[value="' + dv.selected_cells[id][i] + '"]').prop('checked', true);
 						}
@@ -533,10 +533,10 @@ jQuery(document).ready(function($) {
 		}
 
 		$(dv_table.fnGetNodes()).find('.' + id + ':checkbox:checked').each(function() {
-			url += $(this).val() + ',';
+			url += 'file:' + $(this).val() + '%0A%0D';
 		});
 
-		url = url.slice(0, (url.length-1));
+		url = url.slice(0, (url.length-6));
 
 		if (typeof pageTracker != 'undefined') {
 			pageTracker._trackEvent('Data viewer', 'Tools launch (multiple)', url);
@@ -546,6 +546,22 @@ jQuery(document).ready(function($) {
 		e.stopPropagation();
 	});
 
+	// Action when a select all checkbox is clicked
+	$('.dv_header_select_all').click(function(e) {
+		// Get the class name of the checkboxes to be checked/unchecked
+		var class_name = $(this).val();
+
+		// Get the state of the main checkbox
+		var state = $(this).prop('checked');
+
+		// Select all the elements with the given class and set the state of the main checkbox
+		$('.' + class_name).each(function() {
+			$(this).prop('checked', state);
+		});
+
+		// Stop the event propagation, otherwise the table will be sorted
+		e.stopPropagation();
+	});
 
 	// dv-custom-field-link
 	var dv_cfl_list = {};

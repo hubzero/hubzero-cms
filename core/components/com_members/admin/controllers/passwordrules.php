@@ -116,6 +116,14 @@ class PasswordRules extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!$row)
@@ -153,6 +161,14 @@ class PasswordRules extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming password rule edits
 		$fields = Request::getVar('fields', array(), 'post');
 
@@ -183,10 +199,17 @@ class PasswordRules extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function orderTask($up)
+	public function orderTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$cid = Request::getVar('id', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($cid, array(0));
@@ -212,6 +235,13 @@ class PasswordRules extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Get the id's
 		$cid = Request::getVar('id', array(0), 'post', 'array');
@@ -251,6 +281,16 @@ class PasswordRules extends AdminController
 	 */
 	public function toggle_enabledTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming (we're expecting an array)
 		$ids = Request::getVar('id', array());
 		if (!is_array($ids))
@@ -288,6 +328,12 @@ class PasswordRules extends AdminController
 	 */
 	public function restore_default_contentTask()
 	{
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Get the object
 		Rule::defaultContent(true);
 
@@ -307,6 +353,13 @@ class PasswordRules extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -354,6 +407,7 @@ class PasswordRules extends AdminController
 	/**
 	 * Build rules select list
 	 *
+	 * @param   string  $current_rule
 	 * @return  void
 	 */
 	public function rulesList($current_rule='')

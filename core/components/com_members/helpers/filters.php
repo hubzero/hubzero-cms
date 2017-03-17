@@ -172,6 +172,8 @@ class Filters
 					continue;
 				}
 
+				$val['field'] = preg_replace('/[^0-9a-zA-z\-_\.]/i', '', $val['field']);
+
 				$val['human_field']    = ucwords(str_replace('_', ' ', $val['field']));
 				$val['o']              = self::translateOperator($val['operator']);
 				$val['human_operator'] = self::mapOperator($val['o']);
@@ -245,33 +247,32 @@ class Filters
 	 */
 	private static function translateOperator($o)
 	{
-		if ($o == 'e')
+		$o = preg_replace('/[^a-z]/', '', strtolower($o));
+
+		switch ($o)
 		{
-			return '=';
-		}
-		elseif ($o == 'de')
-		{
-			return '!=';
-		}
-		elseif ($o == 'gt')
-		{
-			return '>';
-		}
-		elseif ($o == 'gte')
-		{
-			return '>=';
-		}
-		elseif ($o == 'lt')
-		{
-			return '<';
-		}
-		elseif ($o == 'lte')
-		{
-			return '<=';
-		}
-		elseif ($o == 'like')
-		{
-			return 'LIKE';
+			case 'de':
+				$o = '!=';
+				break;
+			case 'gt':
+				$o = '>';
+				break;
+			case 'gte':
+				$o = '>=';
+				break;
+			case 'lt':
+				$o = '<';
+				break;
+			case 'lte':
+				$o = '<=';
+				break;
+			case 'like':
+				$o = 'LIKE';
+				break;
+			case 'e':
+			default:
+				$o = '=';
+				break;
 		}
 		return $o;
 	}

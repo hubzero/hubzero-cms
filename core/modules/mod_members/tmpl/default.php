@@ -43,7 +43,7 @@ $total = $this->confirmed + $this->unconfirmed;
 				<td colspan="3">
 					<div>
 						<div class="graph">
-							<strong class="bar" style="width: <?php echo round(($this->confirmed / $total) * 100, 2); ?>%"><span><?php echo round(($this->confirmed / $total) * 100, 2); ?>%</span></strong>
+							<strong class="bar" style="width: <?php echo ($total ? round(($this->confirmed / $total) * 100, 2) : 0); ?>%"><span><?php echo ($total ? round(($this->confirmed / $total) * 100, 2) : 0); ?>%</span></strong>
 						</div>
 					</div>
 				</td>

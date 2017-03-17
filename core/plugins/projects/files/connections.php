@@ -203,6 +203,22 @@ class connections
 		return $view->loadTemplate();
 	}
 
+	public function refreshaccess()
+	{
+		$connection = Connection::oneOrNew(Request::getInt('connection'));
+
+		if ($this->connection)
+		{
+			$connection_params = json_decode($connection->get('params'));
+			unset($connection_params->app_token);
+			$connection->set('params', json_encode($connection_params));
+			$connection->save();
+		}
+
+		Notify::message(Lang::txt("Connection " . $connection->get('name') . " reset."));
+		App::redirect(Route::url($this->model->link('files')));
+	}
+
 	/**
 	 * Creates a new connection
 	 *
@@ -295,6 +311,7 @@ class connections
 		$view->sortby     = $sortby;
 		$view->sortdir    = $sortasc;
 		$view->subdir     = $this->subdir;
+		$view->dir        = $dir;
 		$view->model      = $this->model;
 		$view->fileparams = $this->params;
 		$view->connection = $this->connection;
@@ -947,13 +964,17 @@ class connections
 			'layout'  => 'move'
 		]);
 
-		$view->list   = Entity::fromPath('', $this->connection->adapter())->listContents(true);
-		$view->items  = $this->getCollection();
-		$view->option = $this->_option;
-		$view->model  = $this->model;
-		$view->ajax   = Request::getInt('ajax', 0);
-		$view->subdir = $this->subdir;
-		$view->url    = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$root = Entity::fromPath('', $this->connection->adapter());
+		$dirs = $root->getSubDirs();
+
+		$view->list       = $dirs;
+		$view->items      = $this->getCollection();
+		$view->option     = $this->_option;
+		$view->model      = $this->model;
+		$view->ajax       = Request::getInt('ajax', 0);
+		$view->subdir     = $this->subdir;
+		$view->url        = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->connection = $this->connection;
 
 		if (count($view->items) == 0)
 		{
@@ -1059,12 +1080,13 @@ class connections
 			$view->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 		}
 
-		$view->item   = $items->first();
-		$view->option = $this->_option;
-		$view->model  = $this->model;
-		$view->ajax   = 1;
-		$view->subdir = $this->subdir;
-		$view->url    = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->item        = $items->first();
+		$view->option      = $this->_option;
+		$view->model       = $this->model;
+		$view->ajax        = 1;
+		$view->connection  = $this->connection;
+		$view->subdir      = $this->subdir;
+		$view->url         = $this->model->link('files') . '&connection=' . $this->connection->id;
 
 		return $view->loadTemplate();
 	}
@@ -1125,11 +1147,12 @@ class connections
 			'layout'  => 'newfolder'
 		]);
 
-		$view->option = $this->_option;
-		$view->model  = $this->model;
-		$view->ajax   = 1;
-		$view->subdir = $this->subdir;
-		$view->url    = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->option     = $this->_option;
+		$view->model      = $this->model;
+		$view->ajax       = 1;
+		$view->subdir     = $this->subdir;
+		$view->connection = $this->connection;
+		$view->url        = $this->model->link('files') . '&connection=' . $this->connection->id;
 
 		if ($this->getError())
 		{
@@ -1358,7 +1381,20 @@ class connections
 		{
 			foreach ($entities as $entity)
 			{
-				$path = trim($this->subdir, '/') . '/' . urldecode($entity);
+				if (count(explode('/', $entity)) > 1)
+				{
+					$path = urldecode($entity);
+				}
+				else
+				{
+					$path = trim($this->subdir, '/') . '/' . urldecode($entity);
+				}
+				$file = Entity::fromPath($path, $this->connection->adapter());
+				if (!$file->exists())
+				{
+					$view->setError(Lang::txt('Failed to find the file at ' . $path));
+					return $collection;
+				}
 				$collection->add(Entity::fromPath($path, $this->connection->adapter()));
 			}
 		}

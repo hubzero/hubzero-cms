@@ -125,7 +125,7 @@ class Profiles extends SiteController
 
 		$restrict = '';
 
-		$referrer = Request::getVar('HTTP_REFERER', NULL, 'server');
+		$referrer = Request::getVar('HTTP_REFERER', null, 'server');
 		if ($referrer && preg_match('/members\/\d+\/messages/i', $referrer))
 		{
 			if (!User::authorise('core.admin', $this->_option)
@@ -196,10 +196,24 @@ class Profiles extends SiteController
 
 			// match member names on all three name parts
 			//$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
-			$match = "LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%');
+			if (strstr($filters['search'], ' '))
+			{
+				$parts = explode(' ', $filters['search']);
+
+				// Someone typed a name with a space so it could be "first middle last", "first last", or "first middle"
+				$match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR (LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($parts[0]) . '%') . "
+					AND (LOWER(u.middleName) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . " OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . ")))";
+			}
+			else
+			{
+				$match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . ")";
+			}
 			$query = "SELECT u.id, u.name, u.username, u.access, $match as rel
 					FROM `#__users` AS u
-					WHERE $match AND u.block = 0 AND u.activation>0 $restrict
+					WHERE $match AND u.block=0 AND u.activation>0 AND u.email NOT LIKE '%@invalid' $restrict
 					ORDER BY rel DESC, u.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
@@ -297,7 +311,7 @@ class Profiles extends SiteController
 					->whereIn('access', User::getAuthorisedViewLevels());
 			}])
 			->whereEquals($a . '.block', 0)
-			->whereEquals($a . '.activation', 1)
+			->where($a . '.activation', '>', 0)
 			->where($a . '.approved', '>', 0);
 
 		// Take filters and apply them to the tasks
@@ -510,7 +524,7 @@ class Profiles extends SiteController
 		// Get record count of all members
 		$stats->total_members = Member::all()
 			->whereEquals('block', 0)
-			->whereEquals('activation', 1)
+			->where('activation', '>', 0)
 			->where('approved', '>', 0)
 			->total();
 
@@ -545,7 +559,7 @@ class Profiles extends SiteController
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
-				Lang::txt('You must be a logged in to access this area.'),
+				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
 		}
@@ -578,6 +592,12 @@ class Profiles extends SiteController
 
 		// Ensure we have a member
 		if (!$profile->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+		}
+
+		// Make sure member is approved
+		if (!$profile->get('approved') || $profile->get('block'))
 		{
 			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
@@ -898,17 +918,17 @@ class Profiles extends SiteController
 		}
 
 		// Redirect user back to main account page
-		$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
+		$return = base64_decode(Request::getVar('return', '', 'method', 'base64'));
 		$this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
 		$session = App::get('session');
 
 		// Redirect user back to main account page
 		if (Request::getInt('no_html', 0))
 		{
-			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			if ($session->get('badpassword', '0') || $session->get('expiredpassword', '0'))
 			{
-				$session->set('badpassword','0');
-				$session->set('expiredpassword','0');
+				$session->set('badpassword', '0');
+				$session->set('expiredpassword', '0');
 			}
 
 			echo json_encode(array("success" => true));
@@ -916,10 +936,10 @@ class Profiles extends SiteController
 		}
 		else
 		{
-			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			if ($session->get('badpassword', '0') || $session->get('expiredpassword', '0'))
 			{
-				$session->set('badpassword','0');
-				$session->set('expiredpassword','0');
+				$session->set('badpassword', '0');
+				$session->set('expiredpassword', '0');
 			}
 		}
 	}
@@ -1092,7 +1112,7 @@ class Profiles extends SiteController
 		if ($request !== null && !empty($resourcemessage))
 		{
 			$sitename =  Config::get('sitename');
-			$live_site = rtrim(Request::base(),'/');
+			$live_site = rtrim(Request::base(), '/');
 
 			// Email subject
 			$subject = $hubName . " Account Resource Request";
@@ -1360,6 +1380,17 @@ class Profiles extends SiteController
 			$member->set('usageAgreement', 0);
 		}
 
+		$access  = Request::getVar('access', array(), 'post');
+
+		if (is_array($access))
+		{
+			foreach ($access as $k => $v)
+			{
+				$member->setParam('access_' . $k, intval($v));
+			}
+			$member->set('params', $member->params->toString());
+		}
+
 		// Save the changes
 		if (!$member->save())
 		{
@@ -1374,7 +1405,6 @@ class Profiles extends SiteController
 
 		// Incoming profile edits
 		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
-		$access  = Request::getVar('access', array(), 'post');
 		$field_to_check = Request::getVar('field_to_check', array());
 
 		$old = Profile::collect($member->profiles);

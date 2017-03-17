@@ -1,15 +1,36 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2017 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2017 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die;
-
-jimport('joomla.html.html.sliders');
-jimport('joomla.html.html.tabs');
-jimport('joomla.utilities.utility');
 
 /**
  * Page break plugin
@@ -23,42 +44,22 @@ jimport('joomla.utilities.utility');
  * <code><hr class="system-pagebreak" title="The page title" alt="The first page" /></code>
  * or
  * <code><hr class="system-pagebreak" alt="The first page" title="The page title" /></code>
- *
- * @package		Joomla.Plugin
- * @subpackage	Content.pagebreak
- * @since		1.6
  */
 class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 *
-	 * @access      protected
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
-	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
-
-	/**
-	 * @param	string	The context of the content being passed to the plugin.
-	 * @param	object	The article object.  Note $article->text is also available
-	 * @param	object	The article params
-	 * @param	int		The 'page' number
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   string   $context  The context of the content being passed to the plugin.
+	 * @param   object   $row      The article object.  Note $article->text is also available
+	 * @param   object   $params   The article params
+	 * @param   integer  $page     The 'page' number
+	 * @return  void
 	 */
 	public function onContentPrepare($context, &$row, &$params, $page = 0)
 	{
 		$canProceed = $context == 'com_content.article';
 		if (!$canProceed)
 		{
-			return;
+			return true;
 		}
 
 		$style = $this->params->get('style', 'pages');
@@ -81,7 +82,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		}
 
 		// Simple performance check to determine whether bot should process further.
-		if (JString::strpos($row->text, 'class="system-pagebreak') === false)
+		if (Hubzero\Utility\String::contains($row->text, 'class="system-pagebreak') === false)
 		{
 			return true;
 		}
@@ -98,7 +99,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		if ($params->get('intro_only') || $params->get('popup') || $full || $view != 'article')
 		{
 			$row->text = preg_replace($regex, '', $row->text);
-			return;
+			return true;
 		}
 
 		// Find all instances of plugin and put in $matches.
@@ -132,6 +133,8 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		// We have found at least one plugin, therefore at least 2 pages.
 		if ($n > 1)
 		{
+			$this->loadLanguage();
+
 			$title  = $this->params->get('title', 1);
 			$hasToc = $this->params->get('multipage_toc', 1);
 
@@ -144,7 +147,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
 					if ($page && @$matches[$page-1][2])
 					{
-						$attrs = JUtility::parseAttributes($matches[$page-1][1]);
+						$attrs = self::parseAttributes($matches[$page-1][1]);
 
 						if (@$attrs['title'])
 						{
@@ -169,11 +172,11 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 				}
 
 				// traditional mos page navigation
-				$pageNav = new \Hubzero\Pagination\Paginator($n, $page, 1);
+				$pageNav = new Hubzero\Pagination\Paginator($n, $page, 1);
 
 				// Page counter.
 				$row->text .= '<div class="pagenavcounter">';
-				$row->text .= $pageNav->getPagesCounter();
+				$row->text .= $pageNav->get('pages.total');
 				$row->text .= '</div>';
 
 				// Page text.
@@ -191,7 +194,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 				// Page links shown at bottom of page if TOC disabled.
 				if (!$hasToc)
 				{
-					$row->text .= $pageNav->getPagesLinks();
+					$row->text .= $pageNav->render();
 				}
 				$row->text .= '</div>';
 
@@ -202,12 +205,21 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
 				$t[] = (string) Html::$style('start');
 
+				if ($style == 'tabs')
+				{
+					$this->css('jquery.tabs.css', 'system');
+				}
+				if ($style == 'sliders')
+				{
+					$this->css('jquery.ui.css', 'system');
+				}
+
 				foreach ($text as $key => $subtext)
 				{
 					if ($key >= 1)
 					{
-						$match= $matches[$key-1];
-						$match = (array) JUtility::parseAttributes($match[0]);
+						$match = $matches[$key-1];
+						$match = (array) self::parseAttributes($match[0]);
 						if (isset($match['alt']))
 						{
 							$title = stripslashes($match["alt"]);
@@ -220,9 +232,10 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 						{
 							$title = Lang::txt('PLG_CONTENT_PAGEBREAK_PAGE_NUM', $key + 1);
 						}
-						$t[] = (string) Html::$style('panel', $title, 'basic-details');
+						$t[] = (string) Html::$style('panel', $title, 'basic-details' . $key);
+
+						$t[] = (string) $subtext;
 					}
-					$t[] = (string) $subtext;
 				}
 
 				$t[] = (string) Html::$style('end');
@@ -234,50 +247,50 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * @return	void
-	 * @return	1.6
+	 * Create Table Of Contents
+	 *
+	 * @param   object   $row
+	 * @param   array    $matches
+	 * @param   integer  $page
+	 * @return  void
 	 */
 	protected function _createTOC(&$row, &$matches, &$page)
 	{
-		$heading = isset($row->title) ? $row->title : Lang::txt('PLG_CONTENT_PAGEBREAK_NO_TITLE');
+		$heading    = isset($row->title) ? $row->title : Lang::txt('PLG_CONTENT_PAGEBREAK_NO_TITLE');
 		$limitstart = Request::getUInt('limitstart', 0);
-		$showall = Request::getInt('showall', 0);
+		$showall    = Request::getInt('showall', 0);
+
 		// TOC header.
 		$row->toc = '<div id="article-index">';
 
-		if ($this->params->get('article_index')==1)
+		if ($this->params->get('article_index') == 1)
 		{
-			$headingtext= Lang::txt('PLG_CONTENT_PAGEBREAK_ARTICLE_INDEX');
+			$headingtext = Lang::txt('PLG_CONTENT_PAGEBREAK_ARTICLE_INDEX');
 
 			if ($this->params->get('article_index_text'))
 			{
-				htmlspecialchars($headingtext=$this->params->get('article_index_text'));
+				htmlspecialchars($headingtext = $this->params->get('article_index_text'));
 			}
-			$row->toc .='<h3>'.$headingtext.'</h3>';
-
+			$row->toc .='<h3>' . $headingtext . '</h3>';
 		}
 
 		// TOC first Page link.
 		$class = ($limitstart === 0 && $showall === 0) ? 'toclink active' : 'toclink';
 		$row->toc .= '<ul>
-		<li>
-
-			<a href="'. Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language).'&showall=&limitstart=') .'" class="'.$class.'">'
-			. $heading .
-			'</a>
-
-		</li>
-		';
+			<li>
+				<a href="'. Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart=') . '" class="' . $class . '">' . $heading . '</a>
+			</li>
+			';
 
 		$i = 2;
 
 		foreach ($matches as $bot)
 		{
-			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language).'&showall=&limitstart='. ($i-1));
+			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart='. ($i - 1));
 
 			if (@$bot[0])
 			{
-				$attrs2 = JUtility::parseAttributes($bot[0]);
+				$attrs2 = self::parseAttributes($bot[0]);
 
 				if (@$attrs2['alt'])
 				{
@@ -299,11 +312,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 			$class = ($limitstart == $i-1) ? 'toclink active' : 'toclink';
 			$row->toc .= '
 				<li>
-
-					<a href="'. $link .'" class="'.$class.'">'
-					. $title .
-					'</a>
-
+					<a href="'. $link .'" class="' . $class . '">' . $title . '</a>
 				</li>
 				';
 			$i++;
@@ -311,15 +320,11 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
 		if ($this->params->get('showall'))
 		{
-			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language).'&showall=1&limitstart=');
+			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=1&limitstart=');
 			$class = ($showall == 1) ? 'toclink active' : 'toclink';
 			$row->toc .= '
 			<li>
-
-					<a href="'. $link .'" class="'.$class.'">'
-					. Lang::txt('PLG_CONTENT_PAGEBREAK_ALL_PAGES') .
-					'</a>
-
+				<a href="'. $link .'" class="' . $class . '">' . Lang::txt('PLG_CONTENT_PAGEBREAK_ALL_PAGES') . '</a>
 			</li>
 			';
 		}
@@ -327,8 +332,12 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * @return	void
-	 * @since	1.6
+	 * Create navigation elements
+	 *
+	 * @param   object   $row
+	 * @param   integer  $page
+	 * @param   integer  $n
+	 * @return  void
 	 */
 	protected function _createNavigation(&$row, $page, $n)
 	{
@@ -367,4 +376,30 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		$row->text .= '<ul><li>' . $prev . ' </li><li>' . $next .'</li></ul>';
 	}
 
+	/**
+	 * Method to extract key/value pairs out of a string with XML style attributes
+	 *
+	 * @param   string  $string  String containing XML style attributes
+	 * @return  array   Key/Value pairs for the attributes
+	 */
+	protected static function parseAttributes($string)
+	{
+		// Initialise variables.
+		$attr = array();
+		$retarray = array();
+
+		// Let's grab all the key/value pairs using a regular expression
+		preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);
+
+		if (is_array($attr))
+		{
+			$numPairs = count($attr[1]);
+			for ($i = 0; $i < $numPairs; $i++)
+			{
+				$retarray[$attr[1][$i]] = $attr[2][$i];
+			}
+		}
+
+		return $retarray;
+	}
 }

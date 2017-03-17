@@ -360,11 +360,20 @@ class Query extends \JTable
 			$expr = $condition->expressions[$i];
 			switch ($expr->opval)
 			{
-				case 'lt': $expr->opval = '<'; break;
-				case 'lt=': $expr->opval = '<='; break;
-				case 'gt': $expr->opval = '>'; break;
-				case 'gt=': $expr->opval = '>='; break;
-				default: break;
+				case 'lt':
+					$expr->opval = '<';
+					break;
+				case 'lt=':
+					$expr->opval = '<=';
+					break;
+				case 'gt':
+					$expr->opval = '>';
+					break;
+				case 'gt=':
+					$expr->opval = '>=';
+					break;
+				default:
+				break;
 			}
 
 			if ($expr->val == 'trivial')
@@ -386,6 +395,23 @@ class Query extends \JTable
 				}
 			}
 
+			if ($expr->fldval == 'group')
+			{
+				$expr->fldval = 'group_id';
+
+				if (!is_numeric($expr->val))
+				{
+					if ($group = \Hubzero\User\Group::getInstance($expr->val))
+					{
+						$expr->val = $group->get('gidNumber');
+					}
+					else
+					{
+						$expr->val = 0;
+					}
+				}
+			}
+
 			if (strtoupper($expr->val) == 'NULL' || strtoupper($expr->val) == 'NULL')
 			{
 				$expr->opval = ($expr->opval == '=') ? 'IS $1' : 'IS NOT $1';
@@ -394,7 +420,7 @@ class Query extends \JTable
 			{
 				$expr->opval = 'IN ($1)';
 
-				if ($expr->fldval == 'group')
+				if ($expr->fldval == 'group_id')
 				{
 					$xgroups = \Hubzero\User\Helper::getGroups($user->get('id'), 'members');
 					$expr->val = '';
@@ -403,7 +429,7 @@ class Query extends \JTable
 						$g = array();
 						foreach ($xgroups as $xgroup)
 						{
-							$g[] = $xgroup->cn;
+							$g[] = $xgroup->gidNumber;
 						}
 						$expr->val = "'" . implode("','", $g) . "'";
 					}
@@ -516,7 +542,7 @@ class Query extends \JTable
 			$q[] = implode($op, $n);
 		}
 
-		return '(' . implode($op, $q) . ')' . $having;
+		return (count($q) ? '(' . implode($op, $q) . ')' : '') . $having;
 	}
 
 	/**

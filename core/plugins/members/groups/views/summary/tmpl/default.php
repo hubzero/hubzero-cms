@@ -55,29 +55,42 @@ $this->css()
 <?php if ($this->total) { ?>
 	<div class="container">
 		<nav class="entries-filters">
-			<ul class="entries-menu filter-options">
+			<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_STATE'); ?>">
+				<li>
+					<a class="sort-title<?php echo ($this->state == 'active') ? ' active' : ''; ?>" href="<?php echo Route::url($base . '&filter=' . $this->filter); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ACTIVE'); ?>
+					</a>
+				</li>
+				<li>
+					<a class="sort-alias<?php echo ($this->state == 'archived') ? ' active' : ''; ?>" href="<?php echo Route::url($base . '&filter=' . $this->filter . '&state=archived'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED'); ?>
+					</a>
+				</li>
+			</ul>
+
+			<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_MEMBERSHIP'); ?>">
 				<li>
 					<a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url($base); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_ALL', $this->total); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url($base . '&filter=managers'); ?>">
+					<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=managers'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> data-status="member" href="<?php echo Route::url($base . '&filter=members'); ?>">
+					<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> data-status="member" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=members'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> data-status="applicant" href="<?php echo Route::url($base . '&filter=applicants'); ?>">
+					<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> data-status="applicant" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=applicants'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_APPLICANT'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> data-status="invitee" href="<?php echo Route::url($base . '&filter=invitees'); ?>">
+					<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> data-status="invitee" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=invitees'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITEES'); ?>
 					</a>
 				</li>
@@ -120,7 +133,7 @@ $this->css()
 					$status = 'invitee';
 
 					//$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
-					$options .= ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+					$options .= ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE').'</a>';
 				}
 
 				// do we have a new unpublished group
@@ -129,7 +142,7 @@ $this->css()
 				// are we published
 				$published = ($group->published) ? true : false;
 				?>
-				<div class="group <?php echo (!$published) ? 'notpublished' : '' ?>" id="group<?php echo $group->gidNumber; ?>"
+				<div class="group <?php echo (!$published) ? 'notpublished' : ($group->published == 2 ? 'archived' : 'published'); ?>" id="group<?php echo $group->gidNumber; ?>"
 					data-id="<?php echo $group->gidNumber; ?>"
 					data-status="<?php echo $this->escape($status); ?>"
 					data-title="<?php echo $this->escape(stripslashes($group->description) . ' ' . $group->cn); ?>">
@@ -199,33 +212,49 @@ $this->css()
 								<?php else : ?>
 									<div class="grid">
 										<div class="col span6">
-											<span><?php
-											$activity = \Hubzero\Activity\Recipient::all()
-												->including('log')
-												->whereEquals('scope', 'group')
-												->whereEquals('scope_id', $group->gidNumber)
-												->whereEquals('state', 1)
-												->ordered()
-												->row();
-											$dt = Date::of($activity->get('created'));
-											$ct = Date::of('now');
+											<?php if ($group->published == 2) : ?>
+												<span><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED_HINT'); ?></span>
+												<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED'); ?>
+											<?php else : ?>
+												<span><?php
+												$activity = \Hubzero\Activity\Recipient::all()
+													->including('log')
+													->whereEquals('scope', 'group')
+													->whereEquals('scope_id', $group->gidNumber)
+													->whereEquals('state', 1)
+													->ordered()
+													->row();
+												if (!$activity->get('id'))
+												{
+													$activity->set('created', $group->created);
+												}
+												if (!$activity->get('created') || $activity->get('created') == '0000-00-00 00:00:00')
+												{
+													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_UNKNOWN');
+												}
+												else
+												{
+													$dt = Date::of($activity->get('created'));
+													$ct = Date::of('now');
 
-											$lapsed = $ct->toUnix() - $dt->toUnix();
+													$lapsed = $ct->toUnix() - $dt->toUnix();
 
-											if ($lapsed < 30)
-											{
-												echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
-											}
-											elseif ($lapsed > 30 && $lapsed < 60)
-											{
-												echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
-											}
-											else
-											{
-												echo $dt->relative('week');
-											}
-											?></span>
-											<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_LAST'); ?>
+													if ($lapsed < 30)
+													{
+														echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
+													}
+													elseif ($lapsed > 30 && $lapsed < 60)
+													{
+														echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
+													}
+													else
+													{
+														echo $dt->relative('week');
+													}
+												}
+												?></span>
+												<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_LAST'); ?>
+											<?php endif; ?>
 										</div>
 										<div class="col span6 omega">
 											<span><?php
@@ -238,9 +267,11 @@ $this->css()
 									</div>
 								<?php endif; ?>
 							</div>
-							<div class="user-actions">
-								<?php echo $options; ?>
-							</div>
+							<?php if ($group->published != 2) : ?>
+								<div class="user-actions">
+									<?php echo $options; ?>
+								</div>
+							<?php endif; ?>
 						<?php endif; ?>
 					</div>
 				</div><!-- / .group -->

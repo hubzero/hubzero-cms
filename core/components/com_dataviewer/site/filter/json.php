@@ -138,7 +138,7 @@ function filter($res, $dd)
 				$name = isset($dd['cols'][$key]['name'])? $dd['cols'][$key]['name']: 'Tool';
 				$link_format = explode('{p}', $dd['cols'][$key]['link_format']);
 				$param = explode(',', $dd['cols'][$key]['param']);
-				$link_zip = $com_name . '/?task=zip&hash_list=';
+				$link_zip = $com_name . '/file/' . $db_id . '/?hash_list=';// . '/?task=zip&hash_list=';
 
 				if (!isset($dd['cols'][$key]['multi_launch']) || $dd['cols'][$key]['multi_launch'] != false) {
 					$tool_bar .= '<a style="text-decoration: none; margin-left: 2px;" class="dv_tools_launch_multi" title="Launch ' . $name . ' with selected files" target="_blank" href="' . $link_format[0] . '"><img src="' . $html_path . '/run-m.png' . '" />&nbsp;</a>';
@@ -203,11 +203,11 @@ function filter($res, $dd)
 			$null_val = false;
 			if (!isset($dd['cols'][$key]['hide'])) {
 
-				if ($val != NULL && isset($dd['cols'][$key]['fmt'])) {
+				if ($val != null && isset($dd['cols'][$key]['fmt'])) {
 					$val = sprintf($dd['cols'][$key]['fmt'], $val);
 				}
 
-				if ($val == NULL) {
+				if ($val == null) {
 					$val = '-';
 
 					if (isset($dd['replace_null'])) {
@@ -445,7 +445,7 @@ function filter($res, $dd)
 							$dl .= '<a title="Download File" data-data-file="' . $path . '" class="dv_tools_dl_link" target="_blank" href="/' . $link . '"><img src="' . $html_path . '/download.png' . '" /></a>';
 						}
 
-						if (isset($dd['cols'][$key]['tool_name']) && $rec[$dd['cols'][$key]['tool_name']] == NULL) {
+						if (isset($dd['cols'][$key]['tool_name']) && $rec[$dd['cols'][$key]['tool_name']] == null) {
 							$tool_link = '';
 						}
 
@@ -505,7 +505,7 @@ function filter($res, $dd)
 					$fv_data = array_key_exists($fv['data'], $rec)? $rec[$fv['data']]: $fv['data'];
 
 					$url = '/' . $com_name . '/' . $fv['task'] . '/' . $fv['db'] . '/' . $fv_data . '/' . $filter . $append_to_url . '#dv_top';
-					if ($fv_data != NULL) {
+					if ($fv_data != null) {
 						$val = '<a class="filtered_view" href="' . $url . '" title="Pre-filtered view">' . $val . '</a>';
 					}
 					$val .= '<a class="filtered_view dv-link" href="' . $url . '" title="Open in a new window" target="_blank"><i class="icon-external-link"></i></a>';
@@ -550,7 +550,7 @@ function filter($res, $dd)
 
 				if (isset($dd['cols'][$key]['opmod'])) {	// Only doing text style now, More to come....
 					$switch = $rec[$dd['cols'][$key]['opmod']['switch']];
-					foreach ($dd['cols'][$key]['opmod']['case'] as $is_val=>$func) {
+					foreach ($dd['cols'][$key]['opmod']['case'] as $is_val => $func) {
 						if ($switch == $is_val) {
 							$func = explode('|', $func);
 							$param = $func[1];
@@ -687,8 +687,6 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 		$title = $link;
 	}
 
-	$link = str_replace('#', '%23', $link);
-
 	$popup_class = '';
 	$popup_data = '';
 	if (isset($dd['cols'][$key]['popup'])) {
@@ -725,5 +723,3 @@ function dv_opmod_set_color($param)
 {
 	return "color: $param;";
 }
-
-?>

@@ -808,7 +808,7 @@ class Attachments extends SiteController
 		// Initiate a resource
 		$resource = Resource::oneOrFail($id);
 
-		$children = $resource->children()->ordered()->rows();
+		$children = $resource->children()->order('ordering', 'ASC')->rows();
 
 		// Output HTML
 		$this->view

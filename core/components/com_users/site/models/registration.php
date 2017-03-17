@@ -105,7 +105,13 @@ class UsersModelRegistration extends JModelForm
 				$usercreator = User::getInstance($id = $row->id);
 				if ($usercreator->authorise('core.create', 'com_users'))
 				{
-					$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBody);
+					$mailer = new Hubzero\Mail\Message();
+					$return = $mailer
+						->addFrom($data['mailfrom'], $data['fromname'])
+						->addTo($row->email)
+						->setSubject($emailSubject)
+						->setBody($emailBody)
+						->send();
 
 					// Check for an error.
 					if ($return !== true)
@@ -145,7 +151,13 @@ class UsersModelRegistration extends JModelForm
 				$data['username']
 			);
 
-			$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
+			$mailer = new Hubzero\Mail\Message();
+			$return = $mailer
+				->addFrom($data['mailfrom'], $data['fromname'])
+				->addTo($data['email'])
+				->setSubject($emailSubject)
+				->setBody($emailBody)
+				->send();
 
 			// Check for an error.
 			if ($return !== true)
@@ -443,7 +455,13 @@ class UsersModelRegistration extends JModelForm
 		}
 
 		// Send the registration email.
-		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
+		$mailer = new Hubzero\Mail\Message();
+		$return = $mailer
+			->addFrom($data['mailfrom'], $data['fromname'])
+			->addTo($data['email'])
+			->setSubject($emailSubject)
+			->setBody($emailBody)
+			->send();
 
 		//Send Notification mail to administrators
 		if (($params->get('useractivation') < 2) && ($params->get('mail_to_admin') == 1))
@@ -472,7 +490,13 @@ class UsersModelRegistration extends JModelForm
 			// Send mail to all superadministrators id
 			foreach ($rows as $row)
 			{
-				$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBodyAdmin);
+				$mailer = new Hubzero\Mail\Message();
+				$return = $mailer
+					->addFrom($data['mailfrom'], $data['fromname'])
+					->addTo($row->email)
+					->setSubject($emailSubject)
+					->setBody($emailBodyAdmin)
+					->send();
 
 				// Check for an error.
 				if ($return !== true)

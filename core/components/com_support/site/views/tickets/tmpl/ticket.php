@@ -178,7 +178,15 @@ $cc = array();
 								}
 								else
 								{
-									echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+									?>
+									<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $attachment->get('description'); ?>">
+										<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
+										<p class="attachment-meta">
+											<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
+											<span class="attachment-action"><?php echo Lang::txt('Click to download'); ?></span>
+										</p>
+									</a>
+									<?php
 								}
 							}
 							?>
@@ -344,7 +352,15 @@ $cc = array();
 							}
 							else
 							{
-								echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+								?>
+								<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $attachment->get('description'); ?>">
+									<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
+									<p class="attachment-meta">
+										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
+										<span class="attachment-action"><?php echo Lang::txt('Click to download'); ?></span>
+									</p>
+								</a>
+								<?php
 							}
 						}
 						?>
@@ -434,11 +450,20 @@ $cc = array();
 							<label>
 								<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
 								<?php
-								$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '', $this->row->get('group'), '', 'ticketowner')));
+								$group = '';
+								if ($this->row->get('group_id'))
+								{
+									if ($g = \Hubzero\User\Group::getInstance($this->row->get('group_id')))
+									{
+										$group = $g->get('cn');
+									}
+								}
+
+								$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner')));
 								if (count($gc) > 0) {
 									echo $gc[0];
 								} else { ?>
-									<input type="text" name="ticket[group]" value="<?php echo $this->row->get('group'); ?>" id="acgroup" value="" autocomplete="off" />
+									<input type="text" name="ticket[group_id]" value="<?php echo $this->row->get('group_id'); ?>" id="acgroup" value="" autocomplete="off" />
 								<?php } ?>
 							</label>
 						</div>

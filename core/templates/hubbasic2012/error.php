@@ -82,8 +82,8 @@ $cls = array(
 		<!--[if IE 7]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" /><![endif]-->
 	</head>
 	<body>
-		<?php echo Module::postion('notices'); ?>
-		<?php echo Module::postion('helppane'); ?>
+		<?php echo Module::position('notices'); ?>
+		<?php echo Module::position('helppane'); ?>
 		<div id="top">
 			<div class="inner-wrap">
 				<div class="inner">
@@ -92,7 +92,7 @@ $cls = array(
 							<li><a href="#content"><?php echo Lang::txt('TPL_HUBBASIC_SKIP'); ?></a></li>
 							<li><a href="<?php echo $this->baseurl; ?>/about/contact"><?php echo Lang::txt('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
-						<?php echo Module::postion('search'); ?>
+						<?php echo Module::position('search'); ?>
 					<?php if (Module::count('helppane')) : ?>
 						<p id="tab">
 							<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('TPL_HUBBASIC_NEED_HELP'); ?>">
@@ -143,14 +143,14 @@ $cls = array(
 							<?php } ?>
 							</ul><!-- / #account -->
 							<nav id="nav" role="menu">
-								<?php echo Module::postion('user3'); ?>
+								<?php echo Module::position('user3'); ?>
 							</nav><!-- / #nav -->
 						</div><!-- / .inner -->
 					</header><!-- / #masthead -->
 
 					<div id="sub-masthead">
 						<div id="trail">
-							<?php /* echo Module::postion('breadcrumbs'); */ ?>
+							<?php /* echo Module::position('breadcrumbs'); */ ?>
 						</div>
 					</div><!-- / #sub-masthead -->
 				</div><!-- / .inner -->
@@ -218,9 +218,9 @@ $cls = array(
 		</div><!-- / #wrap -->
 
 		<footer id="footer">
-			<?php echo Module::postion('footer'); ?>
+			<?php echo Module::position('footer'); ?>
 		</footer><!-- / #footer -->
 
-		<?php echo Module::postion('endpage'); ?>
+		<?php echo Module::position('endpage'); ?>
 	</body>
 </html>

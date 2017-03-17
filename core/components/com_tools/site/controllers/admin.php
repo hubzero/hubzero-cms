@@ -240,11 +240,25 @@ class Admin extends SiteController
 			return;
 		}
 
+		// Github connection?
+		if ($status['github'])
+		{
+			$command = '/usr/bin/sudo -u apps '
+				. PATH_CORE . '/components/com_tools/scripts/git2svn.sh -g ' . $status['github']
+				. ' -s ' . $status['toolname']
+				. ' -c ' . PATH_CORE . '/..';
+
+			if (!$this->_invokeScript($command, Lang::txt('Github repository connection successful')))
+			{
+				$this->setError(Lang::txt('Github connection error'));
+			}
+		}
+
 		// Build the exec command
 		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . PATH_CORE . '/../ ' . $status['toolname'];
 		error_log($command);
 		// Invoke the script
-		if ($this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED')))
+		if (!$this->getError() && $this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED')))
 		{
 			// Extract revision number
 			$rev = explode('installed revision: ', $this->getMessage());
@@ -591,6 +605,7 @@ class Admin extends SiteController
 			$new_hztv->member        = $hztv_dev->member;
 			$new_hztv->vnc_timeout   = $hztv_dev->vnc_timeout;
 			$new_hztv->hostreq       = $hztv_dev->hostreq;
+			$new_hztv->params        = $status['params'];
 
 			if (!$new_hztv->update())
 			{

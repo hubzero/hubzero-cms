@@ -69,7 +69,12 @@ if ($this->import->get('id')) { ?>
 								<option value="homeDirectory" <?php if ($mapping['field'] == 'homeDirectory') { echo 'selected="selected"'; } ?>>homeDirectory</option>
 								<option value="modifiedDate" <?php if ($mapping['field'] == 'modifiedDate') { echo 'selected="selected"'; } ?>>modifiedDate</option>
 								<option value="block" <?php if ($mapping['field'] == 'block') { echo 'selected="selected"'; } ?>>block</option>
+								<option value="approved" <?php if ($mapping['field'] == 'approved') { echo 'selected="selected"'; } ?>>approved</option>
+								<option value="loginShell" <?php if ($mapping['field'] == 'loginShell') { echo 'selected="selected"'; } ?>>loginShell</option>
+								<option value="ftpShell" <?php if ($mapping['field'] == 'ftpShell') { echo 'selected="selected"'; } ?>>ftpShell</option>
 								<option value="groups" <?php if ($mapping['field'] == 'groups') { echo 'selected="selected"'; } ?>>groups</option>
+								<option value="projects" <?php if ($mapping['field'] == 'projects') { echo 'selected="selected"'; } ?>>projects</option>
+								<option value="access" <?php if ($mapping['field'] == 'access') { echo 'selected="selected"'; } ?>>access</option>
 							</optgroup>
 							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_REGISTER'); ?>">
 								<option value="registerIP" <?php if ($mapping['field'] == 'registerIP') { echo 'selected="selected"'; } ?>>registerIP</option>

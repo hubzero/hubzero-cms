@@ -235,22 +235,37 @@ class Projects extends Base
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit'] = Request::getVar(
+		$this->view->filters['limit'] = Request::getInt(
 			'limit',
 			intval($this->config->get('limit', 25)),
 			'request'
 		);
 		$this->view->filters['start']    = Request::getInt('limitstart', 0, 'get');
-		$this->view->filters['sortby']   = Request::getVar('sortby', 'title');
+		$this->view->filters['sortby']   = strtolower(Request::getWord('sortby', 'title'));
 		$this->view->filters['search']   = Request::getVar('search', '');
-		$this->view->filters['sortdir']  = Request::getVar('sortdir', 'ASC');
+		$this->view->filters['sortdir']  = strtoupper(Request::getWord('sortdir', 'ASC'));
 		$this->view->filters['reviewer'] = $reviewer;
-		$this->view->filters['filterby'] = 'all';
+		$this->view->filters['filterby'] = Request::getWord('filterby', 'all');
 
-		if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
+		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status')))
 		{
-			$this->view->filters['filterby'] = Request::getVar('filterby', 'pending');
+			$this->view->filters['sortby'] = 'title';
 		}
+
+		if (!in_array($this->view->filters['sortdir'], array('DESC', 'ASC')))
+		{
+			$this->view->filters['sortdir'] = 'ASC';
+		}
+
+		if (!in_array($this->view->filters['filterby'], array('all', 'public', 'archived', 'pending')))
+		{
+			$this->view->filters['sortdir'] = 'all';
+		}
+
+		/*if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
+		{
+			$this->view->filters['filterby'] = Request::getWord('filterby', 'pending');
+		}*/
 
 		// Login for private projects
 		if (User::isGuest() && $action == 'login')
@@ -348,7 +363,8 @@ class Projects extends Base
 		{
 			if ($this->model->_tblOwner->reconcileGroups(
 				$this->model->get('id'),
-				$this->model->get('owned_by_group')
+				$this->model->get('owned_by_group'),
+				$this->model->get('sync_group')
 			))
 			{
 				$sync = true;
@@ -793,7 +809,6 @@ class Projects extends Base
 
 		// Send to continue setup
 		App::redirect(Route::url($this->model->link('setup')));
-		return;
 	}
 
 	/**
@@ -922,7 +937,6 @@ class Projects extends Base
 
 		$this->_task = 'view';
 		$this->viewTask();
-		return;
 	}
 
 	/**
@@ -933,12 +947,12 @@ class Projects extends Base
 	public function authTask()
 	{
 		// Incoming
-		$error  = Request::getVar('error', '', 'get');
-		$code   = Request::getVar('code', '', 'get');
+		$error = Request::getVar('error', '', 'get');
+		$code  = Request::getVar('code', '', 'get');
 
-		$state  = Request::getVar('state', '', 'get');
-		$json	=  base64_decode($state);
-		$json 	=  json_decode($json);
+		$state = Request::getVar('state', '', 'get');
+		$json  = base64_decode($state);
+		$json  = json_decode($json);
 
 		$this->_identifier = $json->alias;
 		$this->model = new Models\Project($this->_identifier);
@@ -972,7 +986,6 @@ class Projects extends Base
 		}
 
 		App::redirect($return);
-		return;
 	}
 
 	/**
@@ -1089,8 +1102,7 @@ class Projects extends Base
 				{
 					if ($approve == 1)
 					{
-						$cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS') . ' '
-						. ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE')) . ': ' . $grant_approval;
+						$cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE')) . ': ' . $grant_approval;
 						$cbase  .= (trim($comment) != '') ? '. ' . $comment : '';
 						$cbase  .= $meta . '</nb:' . $reviewer . '>';
 					}

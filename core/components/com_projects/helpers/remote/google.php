@@ -45,12 +45,11 @@ class Google extends Object
 	/**
 	 * Load file metadata
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 *
-	 * @return	 array or false
+	 * @param   object  $apiService  Drive API service instance
+	 * @param   string  $id          Remote id
+	 * @return  mixed   array or false
 	 */
-	public static function loadFile ($apiService, $id = '')
+	public static function loadFile($apiService, $id = '')
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -73,13 +72,12 @@ class Google extends Object
 	/**
 	 * Insert permission
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 * @param	 string					$title			File title
-	 * @param	 string					$parentId		Parent id
-	 * @param	 array					&$metadata		Collector array
-	 *
-	 * @return	 string (id) or false
+	 * @param   object  $apiService  Drive API service instance
+	 * @param   string  $id          Remote id
+	 * @param   string  $title       File title
+	 * @param   string  $parentId    Parent id
+	 * @param   array   &$metadata   Collector array
+	 * @return  mixed   string (id) or false
 	 */
 	public static function insertPermission($apiService, $fileId, $value, $type, $role)
 	{
@@ -94,17 +92,20 @@ class Google extends Object
 		}
 		catch (Exception $e)
 		{
-			print "An error occurred: " . $e->getMessage();
+			echo 'An error occurred: ' . $e->getMessage();
 		}
-		return NULL;
+		return null;
 	}
 
 	/**
 	 * Clear permission for user
 	 *
-	 * @return	  boolean
+	 * @param   object   $apiService  Drive API service instance
+	 * @param   array    $shared
+	 * @param   string   $itemId
+	 * @return  boolean
 	 */
-	public static function clearPermissions ($apiService, $shared = array(), $itemId )
+	public static function clearPermissions($apiService, $shared = array(), $itemId)
 	{
 		if (!$itemId || empty($shared))
 		{
@@ -115,15 +116,15 @@ class Google extends Object
 		$permlist = $apiService->permissions->listPermissions($itemId);
 
 		// Collect permission names
-		foreach ($permlist['items'] as $p)
+		foreach ($permlist as $p)
 		{
-			$pName = isset($p['name']) ? $p['name'] : NULL;
-			if (!$pName )
+			$pName = $p->getDisplayName();
+			if (!$pName)
 			{
 				continue;
 			}
 
-			$permissionId = $p['id'];
+			$permissionId = $p->getId();
 
 			// Go through array of connected users
 			foreach ($shared as $name => $email)
@@ -148,15 +149,14 @@ class Google extends Object
 	/**
 	 * Patch file metadata (SYNC)
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 * @param	 string					$title			File title
-	 * @param	 string					$parentId		Parent id
-	 * @param	 array					&$metadata		Collector array
-	 *
-	 * @return	 string (id) or false
+	 * @param   object  $apiService  Drive API service instance
+	 * @param   string  $id          Remote id
+	 * @param   string  $title       File title
+	 * @param   string  $parentId    Parent id
+	 * @param   array   &$metadata   Collector array
+	 * @return  mixed   (id) or false
 	 */
-	public static function patchFile ($apiService, $id = '', $title = '', $parentId = '', &$metadata)
+	public static function patchFile($apiService, $id = '', $title = '', $parentId = '', &$metadata)
 	{
 		// Check for what we need
 		if (!$apiService || !$id || (!$title && !$parentId && !$convert))
@@ -169,20 +169,18 @@ class Google extends Object
 
 		if ($title)
 		{
-			$file->setTitle($title);
+			$file->setName($title);
 		}
 
 		if ($parentId)
 		{
-			$parent = new Google_Service_Drive_ParentReference;
-			$parent->setId($parentId);
-			$file->setParents(array($parent));
+			$file->setParents(array($parentId));
 		}
 
 		try
 		{
 			// Patch remote file
-			$updatedFile = $apiService->files->patch($id, $file);
+			$updatedFile = $apiService->files->update($id, $file);
 			$metadata = $updatedFile;
 			return $updatedFile['id'];
 		}
@@ -195,17 +193,16 @@ class Google extends Object
 	/**
 	 * Insert new file in remote (SYNC)
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$title			File title
-	 * @param	 string					$data			File content
-	 * @param	 string					$mimeType		MIME type
-	 * @param	 string					$parentId		Parent id
-	 * @param	 array					&$metadata		Collector array
-	 * @param	 boolean				$convert		Convert for remote editing?
-	 *
-	 * @return	 string (id) or false
+	 * @param   object   $apiService  Drive API service instance
+	 * @param   string   $title       File title
+	 * @param   string   $data        File content
+	 * @param   string   $mimeType    MIME type
+	 * @param   string   $parentId    Parent id
+	 * @param   array    &$metadata   Collector array
+	 * @param   boolean  $convert     Convert for remote editing?
+	 * @return  string   (id) or false
 	 */
-	public static function insertFile ($apiService, $client, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
+	public static function insertFile($apiService, $client, $title = '', $localPath = null, $mimeType = null, $parentId = 0, &$metadata, $convert = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$title || !$parentId || !file_exists($localPath) || !$mimeType)
@@ -216,11 +213,8 @@ class Google extends Object
 		// Create file instance
 		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType($mimeType);
-		$file->setTitle($title);
-
-		$parent = new Google_Service_Drive_ParentReference;
-		$parent->setId($parentId);
-		$file->setParents(array($parent));
+		$file->setName($title);
+		$file->setParents(array($parentId));
 
 		// Determine file size
 		$size = filesize($localPath);
@@ -232,11 +226,11 @@ class Google extends Object
 		// Are we converting to Google format?
 		if ($convert == true)
 		{
-			$fparams['convert'] = true;
+			//$fparams['convert'] = true;
+			$file->setMimeType(self::mimetypeToGoogle($mimeType));
 
 			// OCR conversion
-			if ($mimeType == 'application/pdf' || $mimeType == 'image/png'
-				|| $mimeType == 'image/jpeg' || $mimeType == 'image/gif' )
+			if ($mimeType == 'application/pdf' || $mimeType == 'image/png' || $mimeType == 'image/jpeg' || $mimeType == 'image/gif')
 			{
 				$fparams['ocr'] = true;
 			}
@@ -255,7 +249,7 @@ class Google extends Object
 			try
 			{
 				// Create remote file
-				$createdFile = $apiService->files->insert($file, $fparams);
+				$createdFile = $apiService->files->create($file, $fparams);
 				$metadata = $createdFile;
 				return $createdFile['id'];
 			}
@@ -272,7 +266,7 @@ class Google extends Object
 
 			// Call the API with the media upload, defer so it doesn't immediately return.
 			$client->setDefer(true);
-			$request = $apiService->files->insert($file);
+			$request = $apiService->files->create($file);
 
 			$media = new Google_Http_MediaFileUpload(
 				$client,
@@ -289,7 +283,7 @@ class Google extends Object
 			$handle = fopen($localPath, "rb");
 			while (!$status && !feof($handle))
 			{
-				$chunk = fread($handle, $chunkSizeBytes);
+				$chunk  = fread($handle, $chunkSizeBytes);
 				$status = $media->nextChunk($chunk);
 			}
 
@@ -305,7 +299,7 @@ class Google extends Object
 			$client->setDefer(false);
 
 			$metadata = $result;
-			return isset($result['id']) ? $result['id'] : NULL;
+			return isset($result['id']) ? $result['id'] : null;
 		}
 		catch (Exception $e)
 		{
@@ -316,18 +310,17 @@ class Google extends Object
 	/**
 	 * Update remote file with local change (SYNC)
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 * @param	 string					$title			File title
-	 * @param	 string					$data			File content
-	 * @param	 string					$mimeType		MIME type
-	 * @param	 string					$parentId		Parent id
-	 * @param	 array					&$metadata		Collector array
-	 * @param	 boolean				$convert		Convert for remote editing?
-	 *
-	 * @return	 string (id) or false
+	 * @param   object   $apiService  Drive API service instance
+	 * @param   string   $id          Remote id
+	 * @param   string   $title       File title
+	 * @param   string   $data        File content
+	 * @param   string   $mimeType    MIME type
+	 * @param   string   $parentId    Parent id
+	 * @param   array    &$metadata   Collector array
+	 * @param   boolean  $convert     Convert for remote editing?
+	 * @return  mixed  string (id) or false
 	 */
-	public static function updateFile ($apiService, $client, $id = 0, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
+	public static function updateFile($apiService, $client, $id = 0, $title = '', $localPath = null, $mimeType = null, $parentId = 0, &$metadata, $convert = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -338,13 +331,11 @@ class Google extends Object
 		// Create file instance
 		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType($mimeType);
-		$file->setTitle($title);
+		$file->setName($title);
 
 		if ($parentId)
 		{
-			$parent = new Google_Service_Drive_ParentReference;
-			$parent->setId($parentId);
-			$file->setParents(array($parent));
+			$file->setParents(array($parentId));
 		}
 
 		// Determine file size
@@ -405,7 +396,7 @@ class Google extends Object
 			$handle = fopen($localPath, "rb");
 			while (!$status && !feof($handle))
 			{
-				$chunk = fread($handle, $chunkSizeBytes);
+				$chunk  = fread($handle, $chunkSizeBytes);
 				$status = $media->nextChunk($chunk);
 			}
 
@@ -421,7 +412,7 @@ class Google extends Object
 			$client->setDefer(false);
 
 			$metadata = $result;
-			return isset($result['id']) ? $result['id'] : NULL;
+			return isset($result['id']) ? $result['id'] : null;
 		}
 		catch (Exception $e)
 		{
@@ -432,11 +423,11 @@ class Google extends Object
 	/**
 	 * Untrash remote item
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 * @return	 boolean
+	 * @param   object   $apiService  Drive API service instance
+	 * @param   string   $id          Remote id
+	 * @return  boolean
 	 */
-	public static function untrashItem ($apiService, $id = 0)
+	public static function untrashItem($apiService, $id = 0)
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -446,7 +437,8 @@ class Google extends Object
 
 		try
 		{
-			$success = $apiService->files->untrash($id);
+			$file = $apiService->files->get($id);
+			$success = $apiService->files->update($id, $file, array('trash' => false));
 			return true;
 		}
 		catch (Exception $e)
@@ -458,11 +450,11 @@ class Google extends Object
 	/**
 	 * Delete parent
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 * @return	 boolean
+	 * @param   object   $apiService  Drive API service instance
+	 * @param   string   $id          Remote id
+	 * @return  boolean
 	 */
-	public static function deleteParent ($apiService, $id = 0, $folderId = 0)
+	public static function deleteParent($apiService, $id = 0, $folderId = 0)
 	{
 		// Check for what we need
 		if (!$apiService || !$id || !$folderId)
@@ -485,11 +477,11 @@ class Google extends Object
 	/**
 	 * Delete all parents
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 * @return	 boolean
+	 * @param   object   $apiService  Drive API service instance
+	 * @param   string   $id          Remote id
+	 * @return  boolean
 	 */
-	public static function deleteAllParents ($apiService, $id = 0)
+	public static function deleteAllParents($apiService, $id = 0)
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -528,13 +520,12 @@ class Google extends Object
 	/**
 	 * Delete remote item
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$id				Remote id
-	 * @param	 boolean				$permanent		Delete permanently? (or trash)
-	 *
-	 * @return	 void
+	 * @param   object   $apiService  Drive API service instance
+	 * @param   string   $id          Remote id
+	 * @param   boolean  $permanent   Delete permanently? (or trash)
+	 * @return  boolean
 	 */
-	public static function deleteItem ($apiService, $id = 0, $permanent = false)
+	public static function deleteItem($apiService, $id = 0, $permanent = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -550,7 +541,8 @@ class Google extends Object
 			}
 			else
 			{
-				$success = $apiService->files->trash($id);
+				$file = $apiService->files->get($id);
+				$success = $apiService->files->update($id, $file, array('trashed' => true));
 			}
 			return true;
 		}
@@ -563,14 +555,13 @@ class Google extends Object
 	/**
 	 * Create remote folder
 	 *
-	 * @param	 Google_DriveService	$apiService		Drive API service instance
-	 * @param	 string					$title			Folder name
-	 * @param	 string					$parentId		Parent id
-	 * @param	 array					&$metadata		Collector array
-	 *
-	 * @return	 string (new folder id) or false
+	 * @param   object  $apiService  Drive API service instance
+	 * @param   string  $title       Folder name
+	 * @param   string  $parentId    Parent id
+	 * @param   array   &$metadata   Collector array
+	 * @return  mixed   string (new folder id) or false
 	 */
-	public static function createFolder ($apiService, $title = '', $parentId = 0, &$metadata)
+	public static function createFolder($apiService, $title = '', $parentId = 0, &$metadata)
 	{
 		// Check for what we need
 		if (!$apiService || !$title || !$parentId)
@@ -580,19 +571,17 @@ class Google extends Object
 
 		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType('application/vnd.google-apps.folder');
-		$file->setTitle($title);
+		$file->setName($title);
 
 		if ($parentId != null)
 		{
-			$parent = new Google_Service_Drive_ParentReference;
-			$parent->setId($parentId);
-			$file->setParents(array($parent));
+			$file->setParents(array($parentId));
 		}
 
 		try
 		{
-			$createdFolder = $apiService->files->insert($file, array(
-				  'mimeType' => 'application/vnd.google-apps.folder'
+			$createdFolder = $apiService->files->create($file, array(
+				'mimeType' => 'application/vnd.google-apps.folder'
 			));
 
 			$metadata = $createdFolder;
@@ -608,17 +597,16 @@ class Google extends Object
 	/**
 	 * Get and sort through remote changes since last sync
 	 *
-	 * @param	   Google_DriveService	$apiService		Drive API service instance
-	 * @param	   string				$folderID		Folder ID
-	 * @param	   array				&$remotes		Collector array for active items
-	 * @param	   array				&$deletes		Collector array for deleted items
-	 * @param	   string				$path			Path
-	 * @param	   string				$startChangeId	Last Change ID
-	 * @param	   array				$connections	Array of local-remote connections
-	 *
-	 * @return	 int (new change ID) or false
+	 * @param   object  $apiService     Drive API service instance
+	 * @param   string  $folderID       Folder ID
+	 * @param   array   &$remotes       Collector array for active items
+	 * @param   array   &$deletes       Collector array for deleted items
+	 * @param   string  $path           Path
+	 * @param   string  $startChangeId  Last Change ID
+	 * @param   array   $connections    Array of local-remote connections
+	 * @return  mixed   int (new change ID) or false
 	 */
-	public static function collectChanges ($apiService, $folderID = 0, &$remotes, &$deletes, $path = '', $startChangeId = NULL, $connections = array())
+	public static function collectChanges($apiService, $folderID = 0, &$remotes, &$deletes, $path = '', $startChangeId = null, $connections = array())
 	{
 		// Check for what we need
 		if (!$apiService || !$folderID)
@@ -637,7 +625,7 @@ class Google extends Object
 			$parameters['startChangeId'] = $startChangeId;
 		}
 
-		$newChangeID = NULL;
+		$newChangeID = null;
 
 		// Get a list of files in remote folder
 		try
@@ -652,7 +640,7 @@ class Google extends Object
 		}
 		catch (Exception $e)
 		{
-			return NULL;
+			return null;
 		}
 
 		return $newChangeID;
@@ -661,21 +649,20 @@ class Google extends Object
 	/**
 	 * Get remote folder changes
 	 *
-	 * @param	   array		$items			Remote items
-	 * @param	   string		$folderID		Folder ID
-	 * @param	   array		&$remotes		Collector array for active items
-	 * @param	   array		&$deletes		Collector array for deleted items
-	 * @param	   string		$path			Path
-	 * @param	   array		$connections	Array of local-remote connections
-	 * @param	   array		&$duplicates	Collector array for duplicates
-	 *
-	 * @return	 void
+	 * @param   array   $items        Remote items
+	 * @param   string  $folderID     Folder ID
+	 * @param   array   &$remotes     Collector array for active items
+	 * @param   array   &$deletes     Collector array for deleted items
+	 * @param   string  $path         Path
+	 * @param   array   $connections  Array of local-remote connections
+	 * @param   array   &$duplicates  Collector array for duplicates
+	 * @return  void
 	 */
-	public static function getFolderChange ($items, $folderID = 0, &$remotes, &$deletes, $path = '', $connections, &$duplicates)
+	public static function getFolderChange($items, $folderID = 0, &$remotes, &$deletes, $path = '', $connections, &$duplicates)
 	{
 		$lpath = $path ? $path : '';
 
-		$conIds	  = $connections['ids'];
+		$conIds   = $connections['ids'];
 		$conPaths = $connections['paths'];
 
 		// Get all changes in a folder
@@ -693,6 +680,7 @@ class Google extends Object
 				{
 					continue;
 				}
+
 				if (empty($doc['parents']))
 				{
 					continue;
@@ -705,16 +693,16 @@ class Google extends Object
 						continue;
 					}
 
-					$status		= $doc['labels']['trashed'] ? 'D' : 'A';
-					$converted	= preg_match("/google-apps/", $doc['mimeType']) && !preg_match("/.folder/", $doc['mimeType']) ? 1 : 0;
-					$url		= isset($doc['downloadUrl']) ? $doc['downloadUrl'] : '';
-					$original	= isset($doc['originalFilename']) ? $doc['originalFilename'] : '';
-					$time		= strtotime($doc['modifiedDate']);
-					$thumb		= isset($doc['thumbnailLink']) ? $doc['thumbnailLink'] : NULL;
+					$status    = $doc['labels']['trashed'] ? 'D' : 'A';
+					$converted = preg_match("/google-apps/", $doc['mimeType']) && !preg_match("/.folder/", $doc['mimeType']) ? 1 : 0;
+					$url       = isset($doc['downloadUrl']) ? $doc['downloadUrl'] : '';
+					$original  = isset($doc['originalFilename']) ? $doc['originalFilename'] : '';
+					$time      = strtotime($doc['modifiedDate']);
+					$thumb     = isset($doc['thumbnailLink']) ? $doc['thumbnailLink'] : null;
 
-					$author		= isset($doc['lastModifyingUserName'])
-											? utf8_encode($doc['lastModifyingUserName'])
-											: utf8_encode($doc['ownerNames'][0]);
+					$author    = isset($doc['lastModifyingUserName'])
+								? utf8_encode($doc['lastModifyingUserName'])
+								: utf8_encode($doc['ownerNames'][0]);
 
 					if (!preg_match("/.folder/", $doc['mimeType']))
 					{
@@ -742,13 +730,12 @@ class Google extends Object
 
 					$fpath = $lpath ? $lpath . DS . $title : $title;
 
-					$synced			= isset($conIds[$doc['id']]) ? $conIds[$doc['id']]['synced'] : NULL;
-					$md5Checksum	= isset($doc['md5Checksum']) ? $doc['md5Checksum'] : NULL;
-					$fileSize		= isset($doc['fileSize']) ? $doc['fileSize'] : NULL;
+					$synced      = isset($conIds[$doc['id']]) ? $conIds[$doc['id']]['synced'] : null;
+					$md5Checksum = isset($doc['md5Checksum']) ? $doc['md5Checksum'] : null;
+					$fileSize    = isset($doc['fileSize']) ? $doc['fileSize'] : null;
 
 					// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = self::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'],
-						$connections, $remotes, $duplicates);
+					$fpath = self::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'], $connections, $remotes, $duplicates);
 
 					// Detect a rename or move
 					$rename = '';
@@ -764,7 +751,7 @@ class Google extends Object
 							$status = 'W';
 							$rename = $oFilePath;
 						}
-						elseif ( $oFilePath != $nFilePath )
+						elseif ($oFilePath != $nFilePath)
 						{
 							$status = 'R';
 							$rename = $oFilePath;
@@ -772,24 +759,24 @@ class Google extends Object
 					}
 
 					$remotes[$fpath] = array(
-						'status'		=> $status,
-						'time'			=> $time,
-						'modified'		=> gmdate('Y-m-d H:i:s', $time),
-						'type'			=> $type,
-						'local_path'	=> $fpath,
-						'remoteid'		=> $doc['id'],
-						'title'			=> $doc['title'],
-						'converted'		=> $converted,
-						'rParent'		=> self::getParentID($doc['parents']),
-						'url'			=> $url,
-						'original'		=> $original,
-						'author'		=> $author,
-						'synced'		=> $synced,
-						'md5'			=> $md5Checksum,
-						'mimeType'		=> $doc['mimeType'],
-						'thumb'			=> $thumb,
-						'rename'		=> $rename,
-						'fileSize'		=> $fileSize
+						'status'     => $status,
+						'time'       => $time,
+						'modified'   => gmdate('Y-m-d H:i:s', $time),
+						'type'       => $type,
+						'local_path' => $fpath,
+						'remoteid'   => $doc['id'],
+						'title'      => $doc['title'],
+						'converted'  => $converted,
+						'rParent'    => self::getParentID($doc['parents']),
+						'url'        => $url,
+						'original'   => $original,
+						'author'     => $author,
+						'synced'     => $synced,
+						'md5'        => $md5Checksum,
+						'mimeType'   => $doc['mimeType'],
+						'thumb'      => $thumb,
+						'rename'     => $rename,
+						'fileSize'   => $fileSize
 					);
 
 					if (preg_match("/.folder/", $doc['mimeType']))
@@ -805,9 +792,9 @@ class Google extends Object
 	/**
 	 * Get download URL
 	 *
-	 * @param	   array		$resource	Remote resource
-	 * @param	   string		$ext		Export ext
-	 * @return	   url string
+	 * @param   array   $resource  Remote resource
+	 * @param   string  $ext       Export ext
+	 * @return  string
 	 */
 	public static function getDownloadUrl($resource = array(), $ext = 'pdf')
 	{
@@ -833,22 +820,20 @@ class Google extends Object
 		}
 
 		return $url;
-
 	}
 
 	/**
 	 * Build local path for remote items with the same name
 	 *
-	 * @param	   string		$id				Remote ID
-	 * @param	   string		$fpath			File path
-	 * @param	   string		$format			mime type
-	 * @param	   array		$connections	Array of local-remote connections
-	 * @param	   array		&$remotes		Collector array for active items
-	 * @param	   array		&$duplicates	Collector array for duplicates
-	 *
-	 * @return	 void
+	 * @param   string  $id           Remote ID
+	 * @param   string  $fpath        File path
+	 * @param   string  $format       mime type
+	 * @param   array   $connections  Array of local-remote connections
+	 * @param   array   &$remotes     Collector array for active items
+	 * @param   array   &$duplicates  Collector array for duplicates
+	 * @return  string
 	 */
-	public static function buildDuplicatePath ($id = 0, $fpath, $format = '', $connections, &$remotes, &$duplicates)
+	public static function buildDuplicatePath($id = 0, $fpath, $format = '', $connections, &$remotes, &$duplicates)
 	{
 		// Do we have a record with another ID linked to the same path?
 		$pathTaken = isset($connections['paths'][$fpath])
@@ -883,23 +868,20 @@ class Google extends Object
 			// Check that new path isn't used either
 			return self::buildDuplicatePath($id, $fpath, $format, $connections, $remotes, $duplicates);
 		}
-		else
-		{
-			return $fpath;
-		}
+
+		return $fpath;
 	}
 
 	/**
 	 * Get folders
 	 *
-	 * @param	   Google_DriveService	$apiService		Drive API service instance
-	 * @param	   string				$folderID		Folder ID
-	 * @param	   array				&$remoteFolders Collector array for remote folders
-	 * @param	   string				$path			Path
-	 *
-	 * @return	 void
+	 * @param   object  $apiService      Drive API service instance
+	 * @param   string  $folderID        Folder ID
+	 * @param   array   &$remoteFolders  Collector array for remote folders
+	 * @param   string  $path            Path
+	 * @return  mixed
 	 */
-	public static function getFolders ($apiService, $folderID = 0, &$remoteFolders, $path = '')
+	public static function getFolders($apiService, $folderID = 0, &$remoteFolders, $path = '')
 	{
 		// Check for what we need
 		if (!$apiService || !$folderID)
@@ -912,14 +894,48 @@ class Google extends Object
 		$q .= " and mimeType = 'application/vnd.google-apps.folder' ";
 
 		$parameters = array(
-			'q' => $q,
-			'fields' => 'items(id,title,labels/trashed,parents/id)'
+			'q' => $q//,
+			//'fields' => 'items(id,title,labels/trashed,parents/id)'
 		);
 
 		// Get a list of files in remote folder
 		try
 		{
 			$data = $apiService->files->listFiles($parameters);
+
+			$items = $items = $data->getFiles();
+			if (!empty($items))
+			{
+				$lpath = $path ? $path : '';
+				foreach ($items as $item)
+				{
+					// Skip deleted items
+					if ($item->getTrashed())
+					{
+						continue;
+					}
+
+					$title  = Filesystem::cleanPath($item->getName());
+					$fpath  = $lpath ? $lpath . DS . $title : $title;
+					$status = $item->getTrashed() ? 'D' : 'A';
+
+					$remoteFolders[$fpath] = array(
+						'remoteid' => $item->getId(),
+						'status'   => $status,
+						'rParent'  => self::getParentID($item->getParents())
+					);
+
+					// Recurse
+					self::getFolders($apiService, $item->getId(), $remoteFolders, $fpath);
+				}
+			}
+
+			/*
+			$data = $apiService->files->listFiles($parameters);
+			if (\User::get('username') == 'zooley')
+			{
+				var_dump($data->getFiles()); die();
+			}
 			if (!empty($data['items']))
 			{
 				$lpath = $path ? $path : '';
@@ -931,20 +947,21 @@ class Google extends Object
 						continue;
 					}
 
-					$title = Filesystem::cleanPath($item['title']);
-					$fpath = $lpath ? $lpath . DS . $title : $title;
+					$title  = Filesystem::cleanPath($item['title']);
+					$fpath  = $lpath ? $lpath . DS . $title : $title;
 					$status = $item['labels']['trashed'] ? 'D' : 'A';
 
 					$remoteFolders[$fpath] = array(
 						'remoteid' => $item['id'],
-						'status' => $status,
-						'rParent'=> self::getParentID($item['parents'])
+						'status'   => $status,
+						'rParent'  => self::getParentID($item['parents'])
 					);
 
 					// Recurse
 					self::getFolders($apiService, $item['id'], $remoteFolders, $fpath);
 				}
 			}
+			*/
 		}
 		catch (Exception $e)
 		{
@@ -957,32 +974,40 @@ class Google extends Object
 	/**
 	 * Get remote folder content
 	 *
-	 * @param	   array $parents
-	 *
-	 * @return	 string or false
+	 * @param   array  $parents
+	 * @return  mixed  string or false
 	 */
-	public static function getParentID ($parents = array())
+	public static function getParentID($parents = array())
 	{
+		if (\User::get('username') == 'zooley')
+		{
+			if (!empty($parents))
+			{
+				return $parents[0]->getId();
+			}
+		}
+		else
+		{
 		if (!empty($parents))
 		{
 			return $parents[0]['id'];
 		}
-		return NULL;
+	}
+		return null;
 	}
 
 	/**
 	 * Get remote folder content
 	 *
-	 * @param	   Google_DriveService	$apiService		Drive API service instance
-	 * @param	   string				$folderID		Folder ID
-	 * @param	   array				$remotes		Array of remote items
-	 * @param	   string				$path			Path
-	 * @param	   array				$connections	Array of local-remote connections
-	 * @param	   array				&$duplicates	Collector array for duplicates
-	 *
-	 * @return	 void
+	 * @param   object  $apiService   Drive API service instance
+	 * @param   string  $folderID     Folder ID
+	 * @param   array   $remotes      Array of remote items
+	 * @param   string  $path         Path
+	 * @param   array   $connections  Array of local-remote connections
+	 * @param   array   &$duplicates  Collector array for duplicates
+	 * @return  mixed
 	 */
-	public static function getFolderContent ($apiService, $folderID = 0, $remotes, $path = '', $since, $connections, &$duplicates)
+	public static function getFolderContent($apiService, $folderID = 0, $remotes, $path = '', $since, $connections, &$duplicates)
 	{
 		// Check for what we need
 		if (!$apiService || !$folderID)
@@ -990,30 +1015,156 @@ class Google extends Object
 			return false;
 		}
 
-		$conIds	  = $connections['ids'];
+		$conIds   = $connections['ids'];
 		$conPaths = $connections['paths'];
 
 		// Search param
 		$q = "'" . $folderID . "' in parents";
 
 		$parameters = array(
-			'q' => $q,
-			'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
+			'q' => $q//,
+			//'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
 		);
 
 		// Get a list of files in remote folder
 		try
 		{
 			$data = $apiService->files->listFiles($parameters);
+			$items = $data->getFiles();
+			if (!empty($items))
+			{
+				$lpath = $path ? $path : '';
+				foreach ($items as $item)
+				{
+					$time   = strtotime($item->getModifiedTime());
+					$status = $item->getTrashed() ? 'D' : 'A';
+					$skip   = 0;
+
+					// Check against modified date
+					$changed = (strtotime(date("c", strtotime($item->getModifiedTime()))) - strtotime($since));
+					if ($since && $changed <= 0 && $item->getTrashed() != 1)
+					{
+						$skip = 1;
+					}
+
+					$converted = preg_match("/google-apps/", $item->getMimeType()) && !preg_match("/.folder/", $item->getMimeType()) ? 1 : 0;
+					$url       = $item->getWebContentLink() ? $item->getWebContentLink() : $item->getWebViewLink();
+					//$url = $url ?: 'https://www.googleapis.com/drive/v3/files/' . $item->getId() . '?alt=media';
+					$original  = $item->getOriginalFilename();
+					$thumb     = $item->getThumbnailLink();
+
+					$author    = null; /*isset($item['lastModifyingUserName'])
+											? utf8_encode($item['lastModifyingUserName'])
+											: utf8_encode($item['ownerNames'][0]);*/
+
+					if (!preg_match("/.folder/", $item->getMimeType()))
+					{
+						$title = Filesystem::clean($item->getName());
+
+						if ($converted)
+						{
+							$ext = self::getGoogleConversionFormat($item->getMimeType(), false, true);
+							if ($ext)
+							{
+								$title = $title . '.' . $ext;
+							}
+						}
+
+						$type = 'file';
+					}
+					else
+					{
+						$title = Filesystem::cleanPath($item->getName());
+						$type = 'folder';
+					}
+
+					$fpath = $lpath ? $lpath . DS . $title : $title;
+
+					$synced      = isset($conIds[$item->getId()]) ? $conIds[$item->getId()]['synced'] : null;
+					$md5Checksum = $item->getMd5Checksum();
+					$fileSize    = $item->getSize();
+
+					/// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
+					$fpath = self::buildDuplicatePath($item->getId(), $fpath, $item->getMimeType(), $connections, $remotes, $duplicates);
+
+					// Detect a rename or move
+					$rename = '';
+					if (isset($conIds[$item->getId()]))
+					{
+						$oFilePath = $conIds[$item->getId()]['path'];
+						$oDirPath  = $conIds[$item->getId()]['dirpath'];
+						$nDirPath  = dirname($fpath) == '.' ? '' : dirname($fpath);
+						$nFilePath = $fpath;
+
+						if ($oDirPath != $nDirPath && $oFilePath != $nFilePath)
+						{
+							$status = 'W';
+							$rename = $oFilePath;
+						}
+						elseif ($oFilePath != $nFilePath)
+						{
+							$status = 'R';
+							$rename = $oFilePath;
+						}
+					}
+
+					// Check that file was last synced after modified date
+					// (important to pick up failed updates)
+					if (isset($conIds[$item->getId()]))
+					{
+						if ($conIds[$item->getId()]['modified'] < gmdate('Y-m-d H:i:s', $time))
+						{
+							$skip = 0;
+						}
+					}
+					elseif ($status == 'A')
+					{
+						// Never skip new files
+						$skip = 0;
+					}
+
+					if (!$skip)
+					{
+						$remotes[$fpath] = array(
+							'status'     => $status,
+							'time'       => $time,
+							'modified'   => gmdate('Y-m-d H:i:s', $time),
+							'type'       => $type,
+							'local_path' => $fpath,
+							'remoteid'   => $item->getId(),
+							'title'      => $item->getName(),
+							'converted'  => $converted,
+							'rParent'    => self::getParentID($item->getParents()),
+							'url'        => $url,
+							'original'   => $original,
+							'author'     => $author,
+							'synced'     => $synced,
+							'md5'        => $md5Checksum,
+							'mimeType'   => $item->getMimeType(),
+							'thumb'      => $thumb,
+							'rename'     => $rename,
+							'fileSize'   => $fileSize
+						);
+					}
+
+					if (preg_match("/.folder/", $item->getMimeType()))
+					{
+						// Recurse
+						$remotes = self::getFolderContent($apiService, $item->getId(), $remotes, $fpath, $since, $connections, $duplicates);
+					}
+				}
+			}
+
+			/*$data = $apiService->files->listFiles($parameters);
 
 			if (!empty($data['items']))
 			{
 				$lpath = $path ? $path : '';
 				foreach ($data['items'] as $item)
 				{
-					$time		= strtotime($item['modifiedDate']);
-					$status		= $item['labels']['trashed'] ? 'D' : 'A';
-					$skip		= 0;
+					$time   = strtotime($item['modifiedDate']);
+					$status = $item['labels']['trashed'] ? 'D' : 'A';
+					$skip   = 0;
 
 					// Check against modified date
 					$changed = (strtotime(date("c", strtotime($item['modifiedDate'])))	- strtotime($since));
@@ -1022,12 +1173,12 @@ class Google extends Object
 						$skip = 1;
 					}
 
-					$converted	= preg_match("/google-apps/", $item['mimeType']) && !preg_match("/.folder/", $item['mimeType']) ? 1 : 0;
-					$url		= isset($item['downloadUrl']) ? $item['downloadUrl'] : '';
-					$original	= isset($item['originalFilename']) ? $item['originalFilename'] : '';
-					$thumb		= isset($item['thumbnailLink']) ? $item['thumbnailLink'] : NULL;
+					$converted = preg_match("/google-apps/", $item['mimeType']) && !preg_match("/.folder/", $item['mimeType']) ? 1 : 0;
+					$url       = isset($item['downloadUrl']) ? $item['downloadUrl'] : '';
+					$original  = isset($item['originalFilename']) ? $item['originalFilename'] : '';
+					$thumb     = isset($item['thumbnailLink']) ? $item['thumbnailLink'] : null;
 
-					$author		= isset($item['lastModifyingUserName'])
+					$author    = isset($item['lastModifyingUserName'])
 											? utf8_encode($item['lastModifyingUserName'])
 											: utf8_encode($item['ownerNames'][0]);
 
@@ -1054,13 +1205,12 @@ class Google extends Object
 
 					$fpath = $lpath ? $lpath . DS . $title : $title;
 
-					$synced		 = isset($conIds[$item['id']]) ? $conIds[$item['id']]['synced'] : NULL;
-					$md5Checksum = isset($item['md5Checksum']) ? $item['md5Checksum'] : NULL;
-					$fileSize	 = isset($item['fileSize']) ? $item['fileSize'] : NULL;
+					$synced      = isset($conIds[$item['id']]) ? $conIds[$item['id']]['synced'] : null;
+					$md5Checksum = isset($item['md5Checksum']) ? $item['md5Checksum'] : null;
+					$fileSize    = isset($item['fileSize']) ? $item['fileSize'] : null;
 
 					/// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = self::buildDuplicatePath($item['id'], $fpath, $item['mimeType'],
-						$connections, $remotes, $duplicates);
+					$fpath = self::buildDuplicatePath($item['id'], $fpath, $item['mimeType'], $connections, $remotes, $duplicates);
 
 					// Detect a rename or move
 					$rename = '';
@@ -1076,7 +1226,7 @@ class Google extends Object
 							$status = 'W';
 							$rename = $oFilePath;
 						}
-						elseif ( $oFilePath != $nFilePath )
+						elseif ($oFilePath != $nFilePath)
 						{
 							$status = 'R';
 							$rename = $oFilePath;
@@ -1101,35 +1251,34 @@ class Google extends Object
 					if (!$skip)
 					{
 						$remotes[$fpath] = array(
-							'status'		=> $status,
-							'time'			=> $time,
-							'modified'		=> gmdate('Y-m-d H:i:s', $time),
-							'type'			=> $type,
-							'local_path'	=> $fpath,
-							'remoteid'		=> $item['id'],
-							'title'			=> $item['title'],
-							'converted'		=> $converted,
-							'rParent'		=> self::getParentID($item['parents']),
-							'url'			=> $url,
-							'original'		=> $original,
-							'author'		=> $author,
-							'synced'		=> $synced,
-							'md5'			=> $md5Checksum,
-							'mimeType'		=> $item['mimeType'],
-							'thumb'			=> $thumb,
-							'rename'		=> $rename,
-							'fileSize'		=> $fileSize
+							'status'     => $status,
+							'time'       => $time,
+							'modified'   => gmdate('Y-m-d H:i:s', $time),
+							'type'       => $type,
+							'local_path' => $fpath,
+							'remoteid'   => $item['id'],
+							'title'      => $item['title'],
+							'converted'  => $converted,
+							'rParent'    => self::getParentID($item['parents']),
+							'url'        => $url,
+							'original'   => $original,
+							'author'     => $author,
+							'synced'     => $synced,
+							'md5'        => $md5Checksum,
+							'mimeType'   => $item['mimeType'],
+							'thumb'      => $thumb,
+							'rename'     => $rename,
+							'fileSize'   => $fileSize
 						);
 					}
 
 					if (preg_match("/.folder/", $item['mimeType']))
 					{
 						// Recurse
-						$remotes = self::getFolderContent($apiService, $item['id'],
-							$remotes, $fpath, $since, $connections, $duplicates);
+						$remotes = self::getFolderContent($apiService, $item['id'], $remotes, $fpath, $since, $connections, $duplicates);
 					}
 				}
-			}
+			}*/
 		}
 		catch (Exception $e)
 		{
@@ -1142,39 +1291,20 @@ class Google extends Object
 	/**
 	 * Get Google export format(s)
 	 *
-	 * @param	   string	$mimeType
-	 * @param	   boolean	$getAll
-	 * @param	   boolean	$getExt
-	 * @param	   boolean	$getPaired
-	 * @param	   string	$original_ext
-	 *
-	 * @return	   mixed, string or array
+	 * @param   string   $mimeType
+	 * @param   boolean  $getAll
+	 * @param   boolean  $getExt
+	 * @param   boolean  $getPaired
+	 * @param   string   $original_ext
+	 * @return  mixed    string or array
 	 */
-	public static function getGoogleConversionFormat ($mimeType = '', $getAll = false, $getExt = false, $getPaired = 0, $original_ext = '')
+	public static function getGoogleConversionFormat($mimeType = '', $getAll = false, $getExt = false, $getPaired = 0, $original_ext = '')
 	{
 		$formats = array();
 		$ext = '';
 
-		switch ( $mimeType )
+		switch ($mimeType)
 		{
-			case 'application/vnd.google-apps.document':
-			default:
-				$formats = array('MS Word document', 'PDF', 'HTML', 'Plain text', 'Rich text', 'Open Office doc', 'LaTeX');
-
-				// LaTeX files get special treatment, hey!
-				if ($original_ext == 'tex' && $getPaired)
-				{
-					return array('tex' => 'LaTeX', 'pdf' => 'PDF');
-				}
-
-				if ($getPaired)
-				{
-					$exts	= array('docx', 'pdf', 'html', 'txt', 'rtf', 'otd', 'tex');
-					return array_combine($exts, $formats);
-				}
-				$ext = 'gdoc';
-				break;
-
 			case 'application/vnd.google-apps.presentation':
 				$formats = array('MS PowerPoint', 'PDF');
 
@@ -1211,6 +1341,24 @@ class Google extends Object
 
 				$ext = 'gdraw';
 				break;
+
+			case 'application/vnd.google-apps.document':
+			default:
+				$formats = array('MS Word document', 'PDF', 'HTML', 'Plain text', 'Rich text', 'Open Office doc', 'LaTeX');
+
+				// LaTeX files get special treatment, hey!
+				if ($original_ext == 'tex' && $getPaired)
+				{
+					return array('tex' => 'LaTeX', 'pdf' => 'PDF');
+				}
+
+				if ($getPaired)
+				{
+					$exts = array('docx', 'pdf', 'html', 'txt', 'rtf', 'otd', 'tex');
+					return array_combine($exts, $formats);
+				}
+				$ext = 'gdoc';
+				break;
 		}
 
 		if ($getExt == true)
@@ -1229,12 +1377,11 @@ class Google extends Object
 	/**
 	 * Get file name for import
 	 *
-	 * @param	   array	$remote
-	 * @param	   string	$importExt
-	 *
-	 * @return	   string
+	 * @param   array   $remote
+	 * @param   string  $importExt
+	 * @return  string
 	 */
-	public static function getImportFilename ($name = '', $importExt = '')
+	public static function getImportFilename($name = '', $importExt = '')
 	{
 		// Get file extention
 		$parts = explode('.', $name);
@@ -1252,11 +1399,10 @@ class Google extends Object
 	/**
 	 * Get file ext for import
 	 *
-	 * @param	   string	$file
-	 *
-	 * @return	   string
+	 * @param   string  $file
+	 * @return  string
 	 */
-	public static function getImportExt ($file = '')
+	public static function getImportExt($file = '')
 	{
 		$ext = '';
 
@@ -1265,7 +1411,7 @@ class Google extends Object
 		$ext   = count($parts) > 1 ? array_pop($parts) : '';
 
 		// Latest MS Office formats
-		switch ( strtolower($ext) )
+		switch (strtolower($ext))
 		{
 			case 'doc':
 				$ext = 'docx';
@@ -1287,13 +1433,31 @@ class Google extends Object
 	/**
 	 * Get all formats that Google can work with and convert
 	 *
-	 * @return	   array
+	 * @return  array
 	 */
 	public static function getGoogleConversionExts()
 	{
-		$formats = array('doc', 'docx', 'html', 'txt', 'rtf',
-			'xls', 'xlsx', 'ods', 'csv', 'tsv', 'tab',
-			'ppt', 'pps', 'pptx', 'wmf', 'jpg', 'gif', 'png', 'pdf', 'tex'
+		$formats = array(
+			'doc',
+			'docx',
+			'html',
+			'txt',
+			'rtf',
+			'xls',
+			'xlsx',
+			'ods',
+			'csv',
+			'tsv',
+			'tab',
+			'ppt',
+			'pps',
+			'pptx',
+			'wmf',
+			'jpg',
+			'gif',
+			'png',
+			'pdf',
+			'tex'
 		);
 
 		return $formats;
@@ -1302,12 +1466,20 @@ class Google extends Object
 	/**
 	 * Get Google native formats
 	 *
-	 * @return	   array
+	 * @return  array
 	 */
 	public static function getGoogleNativeExts()
 	{
-		$formats = array('gdoc', 'gsheet', 'gslides',
-			'gdraw', 'gform', 'gtable', 'gvi', 'glink', 'gvp'
+		$formats = array(
+			'gdoc',
+			'gsheet',
+			'gslides',
+			'gdraw',
+			'gform',
+			'gtable',
+			'gvi',
+			'glink',
+			'gvp'
 		);
 
 		return $formats;
@@ -1316,15 +1488,14 @@ class Google extends Object
 	/**
 	 * Get Google import extension
 	 *
-	 * @param	   string	$mimeType
-	 *
-	 * @return	   string
+	 * @param   string  $mimeType
+	 * @return  string
 	 */
-	public static function getGoogleImportExt ($mimeType = '')
+	public static function getGoogleImportExt($mimeType = '')
 	{
 		$ext = 'pdf';
 
-		switch ( $mimeType )
+		switch ($mimeType)
 		{
 			case 'application/vnd.google-apps.document':
 				$ext = 'docx';
@@ -1348,69 +1519,119 @@ class Google extends Object
 	}
 
 	/**
-	 * Get default Google export format
+	 * Mimetype to Google mimetype conversion
 	 *
-	 * @param	   string	$ext
-	 * @param	   string	$type
-	 *
-	 * @return	   string
+	 * @param   string  $mimeType
+	 * @return  string
 	 */
-	public static function getGoogleExportType ($ext = 'pdf', $type = '')
+	public static function mimetypeToGoogle($mimeType = '')
 	{
-		switch ( strtolower($ext) )
+		$ext = $mimeType;
+
+		switch ($mimeType)
 		{
-			case 'pdf':
-			default:
-				$type	= 'application/pdf';
+			// Documents
+			case 'text/plain':
+			case 'application/rtf':
+			case 'application/msword':
+			case 'application/x-rtf':
+			case 'text/rtf':
+			case 'text/richtext':
+			case 'application/doc':
+			case 'application/x-soffice':
+			case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+				$ext = 'application/vnd.google-apps.document';
 				break;
 
+			// Slides
+			case 'application/vnd.ms-powerpoint':
+			case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+			case 'application/vnd.oasis.opendocument.presentation':
+				$ext = 'application/vnd.google-apps.presentation';
+				break;
+
+			// Spreadsheets
+			case 'text/x-comma-separated-values':
+			case 'application/vnd.ms-excel':
+			case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+			case 'application/vnd.oasis.opendocument.spreadsheet':
+			case 'application/x-vnd.oasis.opendocument.spreadsheet':
+				$ext = 'application/vnd.google-apps.spreadsheet';
+				break;
+
+			case 'image/png':
+			case 'image/jpeg':
+			case 'image/svg+xml':
+				$ext = 'application/vnd.google-apps.drawing';
+				break;
+		}
+
+		return $ext;
+	}
+
+	/**
+	 * Get default Google export format
+	 *
+	 * @param   string  $ext
+	 * @param   string  $type
+	 * @return  string
+	 */
+	public static function getGoogleExportType($ext = 'pdf', $type = '')
+	{
+		switch (strtolower($ext))
+		{
 			case 'html':
-				$type	= 'text/html';
+				$type = 'text/html';
 				break;
 
 			case 'txt':
 			case 'tex':
-				$type	= 'text/plain';
+				$type = 'text/plain';
 				break;
 
 			case 'rtf':
-				$type	= 'application/rtf';
+				$type = 'application/rtf';
 				break;
 
 			case 'doc':
-				$type	= 'application/msword';
+				$type = 'application/msword';
 				break;
 
 			case 'xlsx':
-				$type	= 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+				$type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 				break;
 
 			case 'docx':
-				$type	= 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+				$type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 				break;
 
 			case 'otd':
-				$type	= 'application/vnd.oasis.opendocument.text';
+				$type = 'application/vnd.oasis.opendocument.text';
 				break;
 
 			case 'ods':
-				$type	= 'application/x-vnd.oasis.opendocument.spreadsheet';
+				$type = 'application/x-vnd.oasis.opendocument.spreadsheet';
 				break;
 
 			case 'jpeg':
-				$type	= 'image/jpeg';
+				$type = 'image/jpeg';
 				break;
 
 			case 'png':
-				$type	= 'image/png';
+				$type = 'image/png';
 				break;
 
 			case 'svg':
-				$type	= 'image/svg+xml';
+				$type = 'image/svg+xml';
 				break;
 
 			case 'pptx':
-				$type	= 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+				$type = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+				break;
+
+			case 'pdf':
+			default:
+				$type = 'application/pdf';
 				break;
 		}
 

@@ -30,8 +30,17 @@
 
 namespace Components\Cart\Helpers;
 
+/**
+ * Cart download helpers
+ */
 class CartDownload
 {
+	/**
+	 * Cound product downloads
+	 *
+	 * @param   int  $pId
+	 * @return  int
+	 */
 	public static function countProductDownloads($pId)
 	{
 		$db = \App::get('db');
@@ -43,6 +52,13 @@ class CartDownload
 		return $downloadsCount;
 	}
 
+	/**
+	 * Cound downloads for a SKU
+	 *
+	 * @param   int  $sId
+	 * @param   int  $uId
+	 * @return  int
+	 */
 	public static function countSkuDownloads($sId, $uId = false)
 	{
 		$db = \App::get('db');
@@ -57,17 +73,24 @@ class CartDownload
 		return $downloadsCount;
 	}
 
+	/**
+	 * Cound downloads for a user and SKU
+	 *
+	 * @param   int  $sId
+	 * @param   int  $uId
+	 * @return  int
+	 */
 	public static function countUserSkuDownloads($sId, $uId)
 	{
-		return CartDownload::countSkuDownloads($sId, $uId);
+		return self::countSkuDownloads($sId, $uId);
 	}
 
 	/**
 	 * Get a count or list of downloads
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @return     mixed
+	 * @param   string  $rtrn     What data to return
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
 	 */
 	public static function getDownloads($rtrn = 'list', $filters = array())
 	{
@@ -89,14 +112,13 @@ class CartDownload
 		$db = \App::get('db');
 
 		$sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
-		$sql .= ' LEFT JOIN `#__xprofiles` x ON (d.uId = x.uidNumber)';
+		$sql .= ' LEFT JOIN `#__users` x ON (d.uId = x.id)';
 		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
 		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
 		//$sql .= ' LEFT JOIN `#__cart_meta` mt ON (d.dId = mt.scope_id AND mt.scope = \'download\')';
 		$sql .= ' WHERE 1';
 
 		// Filter by filters
-		//print_r($filters);
 		if (isset($filters['active']) && $filters['active'] == 1)
 		{
 			$sql .= " AND dActive = 1";
@@ -130,7 +152,8 @@ class CartDownload
 				$sql .= ', sSku';
 			}
 		}
-		else {
+		else
+		{
 			$sql .= " ORDER BY dDownloaded DESC";
 		}
 
@@ -164,7 +187,6 @@ class CartDownload
 
 			$meta = $db->loadAssocList('mtKey');
 			$download->meta = $meta;
-
 		}
 
 		return $res;
@@ -173,9 +195,9 @@ class CartDownload
 	/**
 	 * Get a count or list of downloads by SKU
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @return     mixed
+	 * @param   string  $rtrn     What data to return
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @return  mixed
 	 */
 	public static function getDownloadsSku($rtrn = 'list', $filters = array())
 	{
@@ -201,7 +223,6 @@ class CartDownload
 		$sql .= ' GROUP BY d.sId';
 
 		// Filter by filters
-		//print_r($filters); die;
 		if (isset($filters['active']) && $filters['active'] == 1)
 		{
 			$sql .= " AND dActive = 1";
@@ -257,9 +278,9 @@ class CartDownload
 	/**
 	 * Set downloads status
 	 *
-	 * @param      array  	download ids
-	 * @param      int   	status (0 - deactivate, 1 - activate)
-	 * @return     mixed
+	 * @param   array  $dIds    download ids
+	 * @param   int    $status  0 - deactivate, 1 - activate
+	 * @return  mixed
 	 */
 	public static function setStatus($dIds, $status = 1)
 	{

@@ -40,16 +40,9 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
-
-	/**
-	 * Custom params
-	 *
-	 * @var    object
-	 */
-	protected $_params = null;
 
 	/**
 	 * Component name
@@ -61,16 +54,16 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	/**
 	 * Store internal message
 	 *
-	 * @var	   array
+	 * @var	 array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Repository path
 	 *
-	 * @var	   array
+	 * @var	 array
 	 */
-	protected $_path = NULL;
+	protected $_path = null;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -78,7 +71,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	 * @param   string  $alias
 	 * @return  array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array(
 			'name'    => 'feed',
@@ -113,7 +106,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	 * @param   string  $areas   Plugins to return data
 	 * @return  array   Return array of html
 	 */
-	public function onProject($model, $action = '', $areas = NULL)
+	public function onProject($model, $action = '', $areas = null)
 	{
 		$returnhtml = true;
 
@@ -243,10 +236,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			// Show subscription to feed (new)
 			$subscribe = Event::trigger('projects.onProjectMember', array($model));
 
-			$html .= !empty($subscribe[0]) ? $subscribe[0] : NULL;
+			$html .= !empty($subscribe[0]) ? $subscribe[0] : null;
 			foreach ($sections as $section)
 			{
-				$html .= !empty($section) ? $section : NULL;
+				$html .= !empty($section) ? $section : null;
 			}
 		}
 
@@ -278,8 +271,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		}
 
 		// Show welcome screen?
-		$showWelcome = $member && is_object($member->params)
-			&& $member->params->get('hide_welcome') == 0  ? 1 : 0;
+		$showWelcome = $member && is_object($member->params) && $member->params->get('hide_welcome') == 0  ? 1 : 0;
 
 		// Show welcome banner with suggestions
 		if ($showWelcome)
@@ -323,7 +315,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			$this->_uid
 		);
 
-		// get activities
+		// Get activities
 		$activities = $objAC->getActivities(
 			$this->model->get('id'),
 			$filters,
@@ -365,9 +357,16 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 		}
 
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
-		$managers = Request::getInt('managers_only', 0);
-		$entry = trim(Request::getVar('blogentry', ''));
+		$managers  = Request::getInt('managers_only', 0);
+		$entry     = trim(Request::getVar('blogentry', ''));
+		$eid       = Request::getInt('eid', 0);
+		$posted    = Date::toSql();
+		$posted_by = $this->_uid;
+		$isNew     = true;
 
 		// Text clean-up
 		$entry = \Hubzero\Utility\Sanitize::stripScripts($entry);
@@ -375,13 +374,24 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		// Instantiate project microblog entry
 		$objM = new \Components\Projects\Tables\Blog($this->_database);
+
+		if ($eid)
+		{
+			$objM->load($eid);
+
+			$managers  = $objM->managers_only;
+			$posted    = $objM->posted;
+			$posted_by = $objM->posted_by;
+			$isNew     = false;
+		}
+
 		if ($entry)
 		{
-			$objM->projectid      = $this->model->get('id');
-			$objM->blogentry      = $entry;
-			$objM->managers_only  = $managers;
-			$objM->posted         = Date::toSql();
-			$objM->posted_by      = $this->_uid;
+			$objM->projectid     = $this->model->get('id');
+			$objM->blogentry     = $entry;
+			$objM->managers_only = $managers;
+			$objM->posted        = $posted;
+			$objM->posted_by     = $posted_by;
 
 			// Save new blog entry
 			if (!$objM->store())
@@ -390,7 +400,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED');
+				$this->_msg = ($isNew ? Lang::txt('PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED') : Lang::txt('PLG_PROJECTS_BLOG_BLOG_ENTRY_SAVED'));
 			}
 
 			// Get new entry ID
@@ -400,20 +410,20 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			if ($objM->id)
+			if ($objM->id && $isNew)
 			{
 				$aid = $this->model->recordActivity(
 					Lang::txt('COM_PROJECTS_SAID'),
 					$objM->id,
 					'', '', 'blog', 1
 				);
-			}
 
-			// Store activity ID
-			if ($aid)
-			{
-				$objM->activityid = $aid;
-				$objM->store();
+				// Store activity ID
+				if ($aid)
+				{
+					$objM->activityid = $aid;
+					$objM->store();
+				}
 			}
 		}
 
@@ -478,6 +488,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
+
 		// Are we deleting activity?
 		if ($tbl == 'activity')
 		{
@@ -508,7 +519,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				// unauthorized
+				// Unauthorized
 				$this->setError(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'));
 			}
 		}
@@ -602,6 +613,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					$deletable = 0;
 					$parent    = 0;
 					$comments  = null;
+					$content   = '';
 
 					// Get blog entry
 					if ($class == 'blog')
@@ -616,7 +628,8 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 							continue;
 						}
 
-						$ebody = $this->drawBodyText($blog[0]->blogentry);
+						$content   = $blog[0]->blogentry;
+						$ebody     = $this->drawBodyText($blog[0]->blogentry);
 						$eid       = $a->referenceid;
 						$etbl      = 'blog';
 						$deletable = 1;
@@ -640,7 +653,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					}
 					else if ($a->class == 'quote')
 					{
-						$comment = $objC->getComments(NULL, 'blog', $a->id);
+						$comment = $objC->getComments(null, 'blog', $a->id);
 						if (!$comment)
 						{
 							continue;
@@ -665,11 +678,14 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 						&& ($a->userid == $this->_uid or $this->model->access('manager'))
 						? 1 : 0;
 
+					$deletable = $this->model->access('manager') ? 1 :$deletable;
+
 					$prep = array(
 						'activity'   => $a,
 						'eid'        => $eid,
 						'etbl'       => $etbl,
 						'body'       => $ebody,
+						'raw'        => $content,
 						'deletable'  => $deletable,
 						'comments'   => $comments,
 						'class'      => $class,
@@ -779,6 +795,78 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Event call to post an activity
+	 *
+	 * @param   object   $model      Project to post to
+	 * @param   string   $entry      Content to post
+	 * @param   integer  $managers   Manager sonly?
+	 * @param   integer  $posted_by  Who's posting? If not set, uses current user ID
+	 * @param   string   $posted     Timestamp. If not set, uses Date("now")
+	 * @return  void
+	 */
+	public function onSharedUpdate($model, $entry, $managers = 0, $posted_by = 0, $posted = null)
+	{
+		if (!$model || !$model->get('id'))
+		{
+			return;
+		}
+
+		if (!$entry)
+		{
+			return;
+		}
+
+		$entry = Hubzero\Utility\Sanitize::stripScripts((string) $entry);
+		$entry = Hubzero\Utility\Sanitize::stripImages($entry);
+
+		$posted    = $posted ?: Date::toSql();
+		$posted_by = $posted_by ?: User::get('id');
+
+		$database = App::get('db');
+
+		// Instantiate project microblog entry
+		$objM = new Components\Projects\Tables\Blog($database);
+		$objM->projectid     = (int) $model->get('id');
+		$objM->blogentry     = $entry;
+		$objM->managers_only = (int) $managers;
+		$objM->posted        = (string) $posted;
+		$objM->posted_by     = (int) $posted_by;
+
+		// Save new blog entry
+		if (!$objM->store())
+		{
+			Notify::error($objM->getError());
+			return;
+		}
+
+		// Get new entry ID
+		if (!$objM->id)
+		{
+			$objM->checkin();
+		}
+
+		// Record activity
+		if ($objM->id)
+		{
+			$aid = $model->recordActivity(
+				Lang::txt('COM_PROJECTS_SAID'),
+				$objM->id,
+				'',
+				'',
+				'blog',
+				1
+			);
+
+			// Store activity ID
+			if ($aid)
+			{
+				$objM->activityid = $aid;
+				$objM->store();
+			}
+		}
+	}
+
+	/**
 	 * Collect activity data
 	 *
 	 * @param   array    $activities
@@ -796,10 +884,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$objTD = new \Components\Projects\Tables\Todo($this->_database);
 
 		// Collectors
-		$shown = array();
-		$newc = array();
+		$shown   = array();
+		$newc    = array();
 		$skipped = array();
-		$prep = array();
+		$prep    = array();
 
 		// Loop through activities
 		if (is_array($activities) && count($activities) > 0)
@@ -810,7 +898,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 				if ($a->class == 'quote')
 				{
 					// Get comment
-					$c = $objC->getComments(NULL, NULL, $a->id);
+					$c = $objC->getComments(null, null, $a->id);
 					if (!$c)
 					{
 						continue;
@@ -849,10 +937,11 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					}
 
 					// Set vars
-					$ebody       = '';
-					$eid         = $a->id;
-					$etbl        = 'activity';
-					$deletable   = 0;
+					$ebody     = '';
+					$eid       = $a->id;
+					$etbl      = 'activity';
+					$deletable = 0;
+					$content   = '';
 
 					// Get blog entry
 					if ($class == 'blog')
@@ -867,7 +956,8 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 							continue;
 						}
 
-						$ebody = $this->drawBodyText($blog[0]->blogentry);
+						$content   = $blog[0]->blogentry;
+						$ebody     = $this->drawBodyText($blog[0]->blogentry);
 						$eid       = $a->referenceid;
 						$etbl      = 'blog';
 						$deletable = 1;
@@ -910,15 +1000,18 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 						&& ($a->userid == $this->_uid or $this->model->access('manager'))
 						? 1 : 0;
 
+					$deletable = $this->model->access('manager') ? 1 :$deletable;
+
 					$prep[] = array(
-						'activity'   => $a,
-						'eid'        => $eid,
-						'etbl'       => $etbl,
-						'body'       => $ebody,
-						'deletable'  => $deletable,
-						'comments'   => $comments,
-						'class'      => $class,
-						'preview'    => $preview
+						'activity'  => $a,
+						'eid'       => $eid,
+						'etbl'      => $etbl,
+						'body'      => $ebody,
+						'raw'       => $content,
+						'deletable' => $deletable,
+						'comments'  => $comments,
+						'class'     => $class,
+						'preview'   => $preview
 					);
 				}
 			}
@@ -930,10 +1023,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display 'more' link if text is too long
 	 *
-	 * @param   string  $body      Text body to shorten
+	 * @param   string  $body  Text body to shorten
 	 * @return  mixed
 	 */
-	public function drawBodyText($body = NULL)
+	public function drawBodyText($body = null)
 	{
 		if (!$body)
 		{
@@ -946,7 +1039,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			$isHtml = true;
 		}
 
-		$shorten = ($body && strlen($body) > 250) ? 1 : 0;
+		$shorten = ($body && strlen(strip_tags($body)) > 250) ? 1 : 0;
 		$shortBody = $shorten ? \Hubzero\Utility\String::truncate($body, 250, array('html' => true)) : $body;
 
 		// Embed links
@@ -958,9 +1051,13 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$shortBody = \Components\Projects\Helpers\Html::replaceEmoIcons($shortBody);
 
 		// Style body text
+		if (!$isHtml)
+		{
+			$shortBody = preg_replace("/\n/", '<br />', trim($shortBody));
+		}
 		$ebody  = '<div class="body';
 		$ebody .= strlen($shortBody) > 50 || $isHtml ? ' newline' : ' sameline';
-		$ebody .= '">' . preg_replace("/\n/", '<br />', trim($shortBody));
+		$ebody .= '">' . $shortBody;
 		if ($shorten)
 		{
 			$ebody .= ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
@@ -969,7 +1066,11 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		if ($shorten)
 		{
-			$ebody .= '<div class="fullbody hidden">' . preg_replace("/\n/", '<br />', trim($body)) . '</div>' ;
+			if (!$isHtml)
+			{
+				$body = preg_replace("/\n/", '<br />', trim($body));
+			}
+			$ebody .= '<div class="fullbody hidden">' . $body . '</div>';
 		}
 
 		return $ebody;
@@ -984,7 +1085,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	 * @param   bool    $reload
 	 * @return  string
 	 */
-	public function getItemPreview($type = NULL, $activity = NULL, $body = NULL, $reload = false)
+	public function getItemPreview($type = null, $activity = null, $body = null, $reload = false)
 	{
 		$ref = $activity->referenceid;
 
@@ -1004,7 +1105,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$previewBody = NULL;
+		$previewBody = null;
 
 		switch ($type)
 		{
@@ -1078,7 +1179,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		{
 			$parts = explode(':', $item);
 			$file  = count($parts) > 1 ? $parts[1] : $parts[0];
-			$hash  = count($parts) > 1 ? $parts[0] : NULL;
+			$hash  = count($parts) > 1 ? $parts[0] : null;
 
 			if ($hash)
 			{
@@ -1088,7 +1189,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 				if (is_file(PATH_APP. $to_path . DS . $hashed))
 				{
 					$preview['image'] = $hashed;
-					$preview['url']   = NULL;
+					$preview['url']   = null;
 					$preview['title'] = basename($file);
 
 					// Get image properties
@@ -1097,6 +1198,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					$preview['width'] = $width;
 					$preview['height'] = $height;
 					$preview['orientation'] = $width > $height ? 'horizontal' : 'vertical';
+
 					// Record min and max width and height to build image grid
 					if ($height >= $maxHeight)
 					{
@@ -1157,11 +1259,18 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$itemid          = Request::getInt('itemid', 0, 'post');
 		$tbl             = trim(Request::getVar('tbl', 'activity', 'post'));
 		$comment         = trim(Request::getVar('comment', '', 'post'));
 		$parent_activity = Request::getInt('parent_activity', 0, 'post');
+		$cid             = Request::getInt('cid', 0, 'post');
+		$created         = Date::toSql();
+		$created_by      = $this->_uid;
+		$isNew           = true;
 
 		// Clean-up
 		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
@@ -1169,22 +1278,37 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		// Instantiate comment
 		$objC = new \Components\Projects\Tables\Comment($this->_database);
+
+		if ($cid)
+		{
+			$objC->load($cid);
+
+			$itemid     = $objC->itemid;
+			$tbl        = $objC->tbl;
+			$created    = $objC->created;
+			$created_by = $objC->created_by;
+			$parent_activity = $objC->parent_activity;
+			$isNew      = false;
+		}
+
 		if ($comment)
 		{
 			$objC->itemid          = $itemid;
 			$objC->tbl             = $tbl;
 			$objC->parent_activity = $parent_activity;
 			$objC->comment         = $comment;
-			$objC->created         = Date::toSql();
-			$objC->created_by      = $this->_uid;
+			$objC->created         = $created;
+			$objC->created_by      = $created_by;
+
 			if (!$objC->store())
 			{
 				$this->setError($objC->getError());
 			}
 			else
 			{
-				$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_COMMENT_POSTED');
+				$this->_msg = ($isNew ? Lang::txt('PLG_PROJECTS_BLOG_COMMENT_POSTED') : Lang::txt('PLG_PROJECTS_BLOG_COMMENT_UPDATED'));
 			}
+
 			// Get new entry ID
 			if (!$objC->id)
 			{
@@ -1192,24 +1316,27 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			if ($objC->id)
+			if ($isNew)
 			{
-				$what = $tbl == 'blog'
-					? Lang::txt('COM_PROJECTS_BLOG_POST')
-					: Lang::txt('COM_PROJECTS_AN_ACTIVITY');
+				$what = $tbl == 'blog' ? Lang::txt('COM_PROJECTS_BLOG_POST') : Lang::txt('COM_PROJECTS_AN_ACTIVITY');
 				$what = $tbl == 'todo' ? Lang::txt('COM_PROJECTS_TODO_ITEM') : $what;
 				$url  = $tbl == 'todo' ? Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid) : Route::url($this->model->link('feed')) . '#tr_' . $parent_activity; // same-page link
+
 				$aid  = $this->model->recordActivity(
 					Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON') . ' ' . $what,
-					$objC->id, $what, $url, 'quote', 0
+					$objC->id,
+					$what,
+					$url,
+					'quote',
+					0
 				);
-			}
 
-			// Store activity ID
-			if ($aid)
-			{
-				$objC->activityid = $aid;
-				$objC->store();
+				// Store activity ID
+				if ($aid)
+				{
+					$objC->activityid = $aid;
+					$objC->store();
+				}
 			}
 		}
 
@@ -1241,7 +1368,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$cid  = Request::getInt('cid', 0);
+		$cid = Request::getInt('cid', 0);
 
 		// Instantiate comment
 		$objC = new \Components\Projects\Tables\Comment($this->_database);

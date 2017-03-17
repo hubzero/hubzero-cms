@@ -1,40 +1,56 @@
 /*===========================================
  	Group Media Browser
 ===========================================*/
-
-	.group_files .files-wrap {
+	#page_main {
 		position: relative;
-		min-height: 60em;
 	}
-	/*.group_files .files-container {
+	#page_content.group_files {
+		height: 100%;
+		min-height: 100%;
 		position: absolute;
 		top: 0;
 		left: 0;
-		height: 100%;
+		right: 0;
+		/*width: 100%;*/
+	}
+	.group_files * {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	.group_files .files-wrap {
+		position: relative;
+		min-height: 50em;
 		width: 100%;
-	}*/
-
+		height: 100%;
+		display: table;
+		vertical-align: top;
+	}
+	@-moz-document url-prefix() {
+		.group_files .files-wrap {
+			height: 50em;
+		}
+	}
 /* Within File Browser */
 	.upload-browser {
+		display: table-row;
 	}
 	.upload-browser-col {
-		position: absolute;
-		/*top: 30px;
-		left: 30px;
-		bottom: 30px;
-		right: 30px;*/
-		top: 0px;
-		left: 0px;
-		bottom: 0px;
-		right: 0px;
+		position: relative;
+		display: table-cell;
+		vertical-align: top;
 		border: 1px solid #CCC;
 		background: #FFF;
 	}
 	.upload-browser-col.left {
 		width: 250px;
+		padding-top: 7em;
+		border-right: 2px solid #eee;
+		overflow-y: auto;
 	}
 	.upload-browser-col.right {
-		margin-left: 280px;
+		/*padding-left: 30px;*/
+		border-left: 2px solid #eee;
 	}
 	.upload-browser-col .toolbar {
 		margin: 10px;
@@ -47,19 +63,30 @@
 		margin: 0;
 		padding: 0;
 		font-weight: 200;
-		font-size: 14px;
-		float:left;
+		font-size: 1.2em;
+		float: left;
 	}
 	.upload-browser-col .toolbar .buttons {
 		float: right;
 	}
 	.upload-browser-filelist-iframe {
+		/*
+		top: 0;
+		right: 0;
+		background: #FFF;
+		border: 1px solid #CCC;*/
 		width: 100%;
 		height: 100%;
+		min-height: 100%;
+	}
+	@-moz-document url-prefix() {
+		.upload-browser-filelist-iframe {
+			position: absolute;
+		}
 	}
 	.upload-browser-uploader {
 		position: absolute;
-		bottom: 10px;
+		top: 10px;
 		left: 10px;
 		right: 10px;
 		display: block;
@@ -82,10 +109,10 @@
 	.foldertree {
 		overflow-y: scroll;
 		position: absolute;
-		top: 50px;
+		top: 11em;
 		left: 10px;
 		right: 10px;
-		bottom: 130px;
+		bottom: 10px;
 	}
 	.foldertree-list {
 		display: none;
@@ -607,35 +634,26 @@
 	}
 
 @media screen and (max-width: 1000px) {
-	.upload-browser {
-	}
 	.foldertree {
 		display: none;
 	}
+	.upload-browser,
 	.foldertree-list {
 		display: block;
 	}
+	.upload-browser-col {
+		display: block;
+	}
 	.upload-browser-col.left {
+		min-height: 13em;
 		width: auto;
 	}
 	.upload-browser-col.right {
-		top: 100px;
-		margin-left: 0;
-		bottom: 150px;
-		left: 30px;
-		right: 30px;
+		padding-left: 0;
 	}
 }
 
 @media screen and (max-width: 690px), (max-height: 233px) {
-	/*#page_content.group_files {
-		position: relative;
-		top: auto;
-		left: auto;
-		height: auto;
-		width: auto;
-		min-height: 500px;
-	}*/
 	.group_files .files-wrap {
 		min-height: 40em;
 	}
@@ -657,8 +675,6 @@
 }
 
 @media all and (max-width: 450px) {
-	.file-details {
-	}
 	.file-details .left,
 	.file-details .right {
 		float: none;

@@ -126,7 +126,7 @@ class Orcid extends SiteController
 	{
 		$srv = $this->config->get('orcid_service', 'members');
 
-		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v1.2/search/orcid-bio?q=';
+		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/search/?q=';
 		$tkn = $this->config->get('orcid_' . $srv . '_token');
 
 		$bits = array();
@@ -147,8 +147,8 @@ class Orcid extends SiteController
 		}
 
 		$url .= implode('+AND+', $bits);
-
-		$header = array('Accept: application/orcid+xml');
+		
+		$header = array('Accept: application/vnd.orcid+xml');		
 		if ($srv != 'public')
 		{
 			$header[] = 'Authorization: Bearer ' . $tkn;
@@ -285,7 +285,7 @@ class Orcid extends SiteController
 		{
 			$filled++;
 
-			$root = $this->_fetchXml($first_name, NULL, NULL);
+			$root = $this->_fetchXml($first_name, null, null);
 
 			if (!empty($root))
 			{
@@ -298,7 +298,7 @@ class Orcid extends SiteController
 		{
 			$filled++;
 
-			$root = $this->_fetchXml(NULL, $last_name, NULL);
+			$root = $this->_fetchXml(null, $last_name, null);
 
 			if (!empty($root))
 			{
@@ -311,7 +311,7 @@ class Orcid extends SiteController
 		{
 			$filled++;
 
-			$root = $this->_fetchXml(NULL, NULL, $email);
+			$root = $this->_fetchXml(null, null, $email);
 
 			if (!empty($root))
 			{
@@ -325,7 +325,6 @@ class Orcid extends SiteController
 		if ($filled > 1)
 		{
 			$root = $this->_fetchXml($first_name, $last_name, $email);
-
 			if (!empty($root))
 			{
 				$multi = $this->_parseTree($root);

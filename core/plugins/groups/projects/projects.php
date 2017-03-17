@@ -41,23 +41,22 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
 		$this->_config = Component::params('com_projects');
-		$this->_database = App::get('db');
 	}
 
 	/**
@@ -74,15 +73,14 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			$extension = 'plg_' . $this->_type . '_' . $this->_name;
 		}
 
-		$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+		$group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
 		if ($group && $group->isSuperGroup())
 		{
 			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
 		}
 
-		$lang = \App::get('language');
+		$lang = App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
 	}
@@ -90,14 +88,14 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
 			'name'             => $this->_name,
 			'title'            => Lang::txt('PLG_GROUPS_PROJECTS'),
-			'default_access'   => $this->params->get('plugin_access','members'),
+			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon'             => 'f03f'
 		);
@@ -107,15 +105,15 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -128,7 +126,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		//get this area details
+		// Get this area details
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
@@ -141,34 +139,38 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'project.php');
+		require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 		// Model
-		$this->model = new \Components\Projects\Models\Project();
+		$this->model = new Components\Projects\Models\Project();
 
 		$this->_projects = $this->model->table()->getGroupProjectIds(
 			$group->get('gidNumber'),
 			User::get('id')
 		);
 
-		// Set filters
-		$this->_filters = array(
-			'mine'    => 1,
-			'updates' => 1,
-			'getowner'=> 1,
-			'group'   => $group->get('gidNumber'),
-			'sortby'  => Request::getVar('sortby', 'title'),
-			'sortdir' => Request::getVar('sortdir', 'ASC')
-		);
-
-		//if we want to return content
+		// If we want to return content
 		if ($return == 'html')
 		{
-			//set group members plugin access level
+			// Set filters
+			$this->_filters = array(
+				'mine'     => 1,
+				'updates'  => 1,
+				'getowner' => 1,
+				'group'    => $group->get('gidNumber'),
+				'sortby'   => Request::getVar('sortby', 'title'),
+				'sortdir'  => Request::getVar('sortdir', 'ASC'),
+				'filterby' => Request::getVar('filterby', 'active')
+			);
+			if (!in_array($this->_filters['filterby'], array('active', 'archived')))
+			{
+				$this->_filters['filterby'] = 'active';
+			}
+
+			// Set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//get the group members
+			// Get the group members
 			$members = $group->get('members');
 
 			// Set some variables so other functions have access
@@ -211,17 +213,28 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 			switch ($task)
 			{
-				case 'all':     $arr['html'] = $this->_view('all');   break;
-				case 'owned':   $arr['html'] = $this->_view('owned'); break;
-				case 'updates': $arr['html'] = $this->_updates();     break;
-				default:        $arr['html'] = $this->_view('all');   break;
+				case 'all':
+					$arr['html'] = $this->_view('all');
+					break;
+				case 'owned':
+					$arr['html'] = $this->_view('owned');
+					break;
+				case 'updates':
+					$arr['html'] = $this->_updates();
+					break;
+				case 'update':
+					$arr['html'] = $this->_update();
+					break;
+				default:
+					$arr['html'] = $this->_view('all');
+					break;
 			}
 		}
 
-		//get meta
+		// get meta
 		$arr['metadata'] = array();
 
-		//return total message count
+		// return total record count
 		$arr['metadata']['count'] = count($this->_projects);
 
 		// Return the output
@@ -231,17 +244,16 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * On after group membership changes - re-sync with projects
 	 *
-	 * @param      object  $group      Current group
-	 * @return     array
+	 * @param   object  $group  Current group
+	 * @return  void
 	 */
 	public function onAfterStoreGroup($group)
 	{
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'project.php');
+		require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 		// Model
-		$this->model = new \Components\Projects\Models\Project();
+		$this->model = new Components\Projects\Models\Project();
 
 		// Get group projects
 		$projects = $this->model->table()->getGroupProjects(
@@ -254,8 +266,52 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($projects as $project)
 			{
-				$this->model->table('Owner')->reconcileGroups($project->id, $project->owned_by_group);
+				$this->model->table('Owner')->reconcileGroups($project->id, $project->owned_by_group, $project->sync_group);
 				$this->model->table('Owner')->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+			}
+		}
+	}
+
+	/**
+	 * On after group saved
+	 *
+	 * @param   object  $before  Group before changes
+	 * @param   object  $group   Group after changes
+	 * @return  void
+	 */
+	public function onGroupAfterSave($before, $after)
+	{
+		// Is this group now archived?
+		if ($before->published != 2 && $after->published == 2)
+		{
+			// Load classes
+			require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+
+			// Model
+			$model = new Components\Projects\Models\Project();
+
+			// Get group projects
+			$projects = $model->table()->getGroupProjects(
+				$after->get('gidNumber'),
+				User::get('id')
+			);
+
+			if ($projects)
+			{
+				// Set projects to archived state
+				foreach ($projects as $project)
+				{
+					if ($project->state == 3)
+					{
+						continue;
+					}
+
+					$model = new Components\Projects\Models\Project($project->id);
+					$model->set('state', 3);
+					$model->store(false);
+
+					Event::trigger('projects.onProjectAfterSave', array($model));
+				}
 			}
 		}
 	}
@@ -263,47 +319,47 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * View entries
 	 *
-	 * @param      string $which The type of entries to display
-	 * @return     string
+	 * @param   string  $which  The type of entries to display
+	 * @return  string
 	 */
 	protected function _view($which = 'owned')
 	{
-		// Build the final HTML
-		$view = $this->view('default', 'browse');
+		$which = strtolower($which);
 
+		if (!in_array($which, array('all', 'owned', 'other')))
+		{
+			$which = 'owned';
+		}
+
+		// Get records
 		if ($which == 'all')
 		{
 			$this->_filters['which'] = 'owned';
-			$view->owned = $this->model->entries('group', $this->_filters);
+			$owned = $this->model->entries('group', $this->_filters);
 
 			$this->_filters['which'] = 'other';
-			$view->rows = $this->model->entries('group', $this->_filters);
+			$rows = $this->model->entries('group', $this->_filters);
 		}
 		else
 		{
-			// Get records
-			$options = array('all', 'owned', 'other');
-			if (!in_array($which, $options))
-			{
-				$which = 'owned';
-			}
 			$this->_filters['which'] = $which;
-			$view->rows = $this->model->entries('group', $this->_filters);
+
+			$rows = $this->model->entries('group', $this->_filters);
+			$owned = null;
 		}
 
-		// Get counts
-		$view->projectcount = count($this->_projects);
-		$view->newcount = $this->model->table()->getUpdateCount($this->_projects, User::get('id'));
-
-		$view->which   = $which;
-		$view->filters = $this->_filters;
-		$view->config  = $this->_config;
-		$view->option  = 'com_projects';
-		$view->group   = $this->group;
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		// Build view
+		$view = $this->view('default', 'browse')
+			->set('rows', $rows)
+			->set('owned', $owned)
+			->set('projectcount', count($this->_projects))
+			->set('newcount', $this->model->table()->getUpdateCount($this->_projects, User::get('id')))
+			->set('which', $which)
+			->set('filters', $this->_filters)
+			->set('config', $this->_config)
+			->set('option', 'com_projects')
+			->set('group', $this->group)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -311,45 +367,92 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display updates
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	protected function _updates()
 	{
-		// Build the final HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'projects',
-				'name'    => 'updates'
-			)
+		$filters = array(
+			'limit' => Request::getVar('limit', 25, 'request')
 		);
 
-		$view->filters = array('limit' => Request::getVar('limit', 25, 'request'));
-
-		// Get shared updates feed from blog plugin
-		$results = Event::trigger( 'projects.onShared', array(
+		// Get shared updates feed from feed plugin
+		$results = Event::trigger('projects.onShared', array(
 			'feed',
 			$this->model,
 			$this->_projects,
 			User::get('id'),
-			$view->filters
+			$filters/*,
+			in_array(User::get('id'), $this->group->get('managers')),
+			array(
+				'option' => 'com_groups',
+				'task' => 'view',
+				'cn' => $this->group->get('cn'),
+				'active' => $this->_name,
+				'action'=> 'update'
+			)*/
 		));
 
-		$view->content      = !empty($results) && isset($results[0]) ? $results[0] : NULL;
-		$view->newcount     = $this->model->table()->getUpdateCount(
-			$this->_projects,
-			User::get('id')
-		);
-		$view->projectcount = count($this->_projects);
-		$view->uid      = User::get('id');
-		$view->config   = $this->_config;
-		$view->group    = $this->group;
+		$content = !empty($results) && isset($results[0]) ? $results[0] : null;
 
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		// Build the final HTML
+		$view = $this->view('default', 'updates')
+			->set('filters', $filters)
+			->set('content', $content)
+			->set('newcount', $this->model->table()->getUpdateCount(
+				$this->_projects,
+				User::get('id')
+			))
+			->set('projectcount', count($this->_projects))
+			->set('projects', $this->_projects)
+			->set('config', $this->_config)
+			->set('group', $this->group)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Update one or all projects
+	 *
+	 * @return  void
+	 */
+	protected function _update()
+	{
+		// Check for request forgeries
+		Request::checkToken(['post']);
+
+		$managers  = Request::getInt('managers_only', 0, 'post');
+		$entry     = trim(Request::getVar('blogentry', '', 'post'));
+		$posted    = Date::toSql();
+		$posted_by = User::get('id');
+		$projectid = Request::getInt('projectid', 0, 'post');
+
+		if (!$projectid)
+		{
+			$projects = $this->_projects;
+		}
+		else
+		{
+			$projects = array($projectid);
+		}
+
+		// Add the post to each project
+		foreach ($projects as $id)
+		{
+			$project = new Components\Projects\Models\Project($id);
+
+			Event::trigger('projects.onSharedUpdate', array(
+				$project,
+				$entry,
+				$managers,
+				$posted_by,
+				$posted
+			));
+		}
+
+		// Redirect
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates')
+		);
 	}
 }

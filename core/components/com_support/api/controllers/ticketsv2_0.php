@@ -43,10 +43,12 @@ use Route;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm/ticket.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm/status.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php');
+require_once(dirname(dirname(__DIR__)) . '/models/ticket.php');
+require_once(dirname(dirname(__DIR__)) . '/models/orm/ticket.php');
+require_once(dirname(dirname(__DIR__)) . '/models/orm/status.php');
+require_once(dirname(dirname(__DIR__)) . '/models/orm/attachment.php');
+require_once(dirname(dirname(__DIR__)) . '/helpers/acl.php');
+require_once(dirname(dirname(__DIR__)) . '/helpers/utilities.php');
 require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'group.php';
 
 /**
@@ -326,6 +328,9 @@ class Ticketsv2_0 extends ApiController
 		{
 			throw new Exception($ticket->getErrors(), 500);
 		}
+
+		// Now we have a ticket ID, lets check for attachments
+		\Components\Support\Helpers\Utilities::addAttachments($ticket->get('id'));
 
 		// Set the response
 		$msg = new stdClass;

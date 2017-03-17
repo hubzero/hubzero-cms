@@ -39,18 +39,9 @@ defined('_HZEXEC_') or die();
 class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Hook for after app routing
-	 *
-	 * @return   void
-	 */
-	public function onAfterRoute()
-	{
-	}
-
-	/**
 	 * Hook for after app initialization
 	 *
-	 * @return   void
+	 * @return  void
 	 */
 	public function onAfterInitialise()
 	{
@@ -62,15 +53,12 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			$tracker = array();
 
 			// Transfer tracking cookie data to session
-			jimport('joomla.utilities.utility');
-			jimport('joomla.user.helper');
-
 			$hash = App::hash(App::get('client')->name . ':tracker');
 
 			$key = App::hash('');
-			$crypt = new \Hubzero\Encryption\Encrypter(
-				new \Hubzero\Encryption\Cipher\Simple,
-				new \Hubzero\Encryption\Key('simple', $key, $key)
+			$crypt = new Hubzero\Encryption\Encrypter(
+				new Hubzero\Encryption\Cipher\Simple,
+				new Hubzero\Encryption\Key('simple', $key, $key)
 			);
 
 			if ($str = Request::getString($hash, '', 'cookie', 1 | 2))
@@ -82,9 +70,9 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 				{
 					//Create the encryption key, apply extra hardening using the user agent string
 					$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
-					$crypt = new \Hubzero\Encryption\Encrypter(
-						new \Hubzero\Encryption\Cipher\Simple,
-						new \Hubzero\Encryption\Key('simple', $key, $key)
+					$crypt = new Hubzero\Encryption\Encrypter(
+						new Hubzero\Encryption\Cipher\Simple,
+						new Hubzero\Encryption\Key('simple', $key, $key)
 					);
 					$sstr = $crypt->decrypt($str);
 					$tracker = @unserialize($sstr);
@@ -143,33 +131,34 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 				$session->set('tracker.rsid', $tracker['rsid']);
 			}
 
-			// log tracking cookie detection to auth log
-
+			// Log tracking cookie detection to auth log
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
 			$user_id  = (empty($tracker['user_id']))  ? 0   : $tracker['user_id'];
 
-			App::get('log')->logger('auth')->info($username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' detect');
+			App::get('log')
+				->logger('auth')
+				->info($username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' detect');
 
 			// set new tracking cookie with current data
 			$tracker = array();
-			$tracker['user_id'] = $session->get('tracker.user_id');
+			$tracker['user_id']  = $session->get('tracker.user_id');
 			$tracker['username'] = $session->get('tracker.username');
-			$tracker['sid']  = $session->get('tracker.sid');
-			$tracker['rsid'] = $session->get('tracker.rsid');
-			$tracker['ssid'] = $session->get('tracker.ssid');
+			$tracker['sid']      = $session->get('tracker.sid');
+			$tracker['rsid']     = $session->get('tracker.rsid');
+			$tracker['ssid']     = $session->get('tracker.ssid');
 
 			$cookie = $crypt->encrypt(serialize($tracker));
 			$lifetime = time() + 365*24*60*60*10;
 
 			// Determine whether cookie should be 'secure' or not
 			$secure   = false;
-			$forceSsl = \Config::get('force_ssl', false);
+			$forceSsl = Config::get('force_ssl', false);
 
-			if (\App::isAdmin() && $forceSsl >= 1)
+			if (App::isAdmin() && $forceSsl >= 1)
 			{
 				$secure = true;
 			}
-			else if (\App::isSite() && $forceSsl == 2)
+			else if (App::isSite() && $forceSsl == 2)
 			{
 				$secure = true;
 			}
@@ -177,10 +166,10 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
 		}
 
-		// all page loads set apache log data
+		// All page loads set apache log data
 		if (strpos(php_sapi_name(),'apache') !== false)
 		{
-			apache_note('jsession', $session->getId());
+			apache_note('session', $session->getId());
 
 			if (User::get('id') != 0)
 			{
@@ -199,15 +188,18 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	/**
 	 * Hook for login failure
 	 *
-	 * @param   unknown  $response
-	 * @return  boolean
+	 * @param   array  $response
+	 * @return  void
 	 */
 	public function onUserLoginFailure($response)
 	{
-		App::get('log')->logger('auth')->info((isset($_POST['username']) ? $_POST['username'] : '[unknown]') . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
+		App::get('log')
+			->logger('auth')
+			->info((isset($_POST['username']) ? $_POST['username'] : '[unknown]') . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
 
-		apache_note('auth','invalid');
-
-		return true;
+		if (strpos(php_sapi_name(),'apache') !== false)
+		{
+			apache_note('auth','invalid');
+		}
 	}
 }

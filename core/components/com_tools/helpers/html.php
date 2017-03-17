@@ -258,12 +258,10 @@ class Html
 	}
 
 	/**
-	 * Short description for 'toolActive'
+	 * Is tool status 'active'?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $stateNum Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $stateNum
+	 * @return  boolean
 	 */
 	public static function toolActive($stateNum)
 	{
@@ -275,12 +273,10 @@ class Html
 	}
 
 	/**
-	 * Short description for 'toolWIP'
+	 * Is tool status 'WIP'?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $stateNum Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $stateNum
+	 * @return  boolean
 	 */
 	public static function toolWIP($stateNum)
 	{
@@ -292,12 +288,10 @@ class Html
 	}
 
 	/**
-	 * Short description for 'toolEstablished'
+	 * Is tool status 'established'?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $stateNum Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $stateNum
+	 * @return  boolean
 	 */
 	public static function toolEstablished($stateNum)
 	{
@@ -309,13 +303,11 @@ class Html
 	}
 
 	/**
-	 * Short description for 'getStatusClass'
+	 * Get the CSS class name for a status
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $statusNum Parameter description (if any) ...
-	 * @param      string &$statusClass Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   integer  $statusNum
+	 * @param   string   &$statusName
+	 * @return  string
 	 */
 	public static function getStatusClass($statusNum, &$statusClass)
 	{
@@ -331,13 +323,11 @@ class Html
 	}
 
 	/**
-	 * Short description for 'getStatusName'
+	 * Get the label text for a status
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $statusNum Parameter description (if any) ...
-	 * @param      unknown &$statusName Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   integer  $statusNum
+	 * @param   string   &$statusName
+	 * @return  string
 	 */
 	public static function getStatusName($statusNum, &$statusName)
 	{
@@ -352,19 +342,18 @@ class Html
 			case 7: $statusName = Lang::txt('COM_TOOLS_PUBLISHED');  break;
 			case 8: $statusName = Lang::txt('COM_TOOLS_RETIRED');    break;
 			case 9: $statusName = Lang::txt('COM_TOOLS_ABANDONED');  break;
+			default: $statusName = Lang::txt('COM_TOOLS_UNPUBLISHED'); break;
 		}
 
 		return $statusName;
 	}
 
 	/**
-	 * Short description for 'getStatusNum'
+	 * Get the numerical representation of a text status
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $statusName Parameter description (if any) ...
-	 * @param      integer $statusNum Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   string   $statusName
+	 * @param   integer  $statusNum
+	 * @return  integer
 	 */
 	public static function getStatusNum($statusName, $statusNum=1)
 	{
@@ -378,19 +367,17 @@ class Html
 			case 'approved':   $statusNum = 6; break;
 			case 'published':  $statusNum = 7; break;
 			case 'retired':    $statusNum = 8; break;
-			case 'abandoned': $statusNum = 9; break;
+			case 'abandoned':  $statusNum = 9; break;
 		}
 		return $statusNum;
 	}
 
 	/**
-	 * Short description for 'getPriority'
+	 * Get text representation for priority level
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $int Parameter description (if any) ...
-	 * @param      string $priority Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   integer  $int
+	 * @param   string   $priority
+	 * @return  string
 	 */
 	public static function getPriority($int, $priority='')
 	{

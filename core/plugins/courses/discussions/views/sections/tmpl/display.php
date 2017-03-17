@@ -198,6 +198,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<input type="hidden" name="fields[id]" value="" />
 						<input type="hidden" name="fields[scope]" value="course" />
 						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->course->offering()->get('id'); ?>" />
+						<input type="hidden" name="fields[state]" value="1" />
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="unit" value="manage" />
 						<input type="hidden" name="action" value="savesection" />
@@ -273,7 +274,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
 					</span>
 				<?php } else { ?>
-					<?php echo Lang::txt('PLG_GROUPS_FORUM_NONE'); ?>
+					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?>
 				<?php } ?>
 			</p>
 		</div>

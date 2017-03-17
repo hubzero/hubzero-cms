@@ -62,7 +62,10 @@ class Admin
 		{
 			self::$actions = new Object;
 
-			$actions = \JAccess::getActions('com_members');
+			$path = dirname(__DIR__) . '/config/access.xml';
+
+			$actions = \Hubzero\Access\Access::getActionsFromFile($path);
+			$actions ?: array();
 
 			foreach ($actions as $action)
 			{
@@ -133,8 +136,11 @@ class Admin
 			->select('a.title', 'text')
 			->select('b.id', 'level', true)
 			->from($ug->getTableName(), 'a')
-			->joinRaw($ug->getTableName(), 'a.lft > b.lft AND a.rgt < b.rgt', 'left')
-			->group('a.id, a.title, a.lft, a.rgt')
+			->joinRaw($ug->getTableName() . ' AS b', 'a.lft > b.lft AND a.rgt < b.rgt', 'left')
+			->group('a.id')
+			->group('a.title')
+			->group('a.lft')
+			->group('a.rgt')
 			->order('a.lft', 'asc')
 			->rows();
 		*/

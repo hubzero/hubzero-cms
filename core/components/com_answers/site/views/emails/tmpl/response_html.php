@@ -84,7 +84,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-					A response has been posted to Question #<?php echo $this->question->get('id'); ?> by <?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator()->get('name'))); ?>.
+					A response has been posted to Question #<?php echo $this->question->get('id'); ?> by <?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator->get('name'))); ?>.
 				</td>
 			</tr>
 		</tbody>
@@ -149,7 +149,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator()->get('name'))); ?></td>
+								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator->get('name'))); ?></td>
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
@@ -174,7 +174,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 		<tbody>
 			<tr>
 				<td class="mobilehide" rowspan="2" style="font-size: 2.5em; font-weight: bold; text-align: center; vertical-align: top; padding: 0 30px 8px 0;" align="center" valign="top"><p style="display: block; border: 1px solid #c2e1e3; margin:0; padding: 1em; background-color: #e6fafb;">!</p></td>
-				<th style="text-align: left;" align="left"><?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator()->get('name'))); ?></th>
+				<th style="text-align: left;" align="left"><?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator->get('name'))); ?></th>
 				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide">@ <?php echo $this->row->created('time'); ?> on <?php echo $this->row->created('date'); ?></span></th>
 			</tr>
 			<tr>

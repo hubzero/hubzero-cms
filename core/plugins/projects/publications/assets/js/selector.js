@@ -28,6 +28,38 @@ HUB.ProjectPublicationsSelector = {
 
 		var isMSIE = /*@cc_on!@*/0;
 
+		var container = $('#pub-selector');
+
+		if (container.length) {
+			// Infinite scroll
+			container.infinitescroll({
+					navSelector  : '.list-footer',    // selector for the paged navigation
+					nextSelector : '.list-footer .next a',  // selector for the NEXT link (to page 2)
+					itemSelector : '#pub-selector li',     // selector for all items you'll retrieve
+					binder: container,
+					behavior: 'local',
+					loading: {
+						finishedMsg: 'No more records to load.'
+					},
+					path: function(index) {
+						var path = $('.list-footer .next a').attr('href'),
+							limit = $('#limit').val(),
+							start = 0;
+						if (path.match(/limit[-=]([0-9]*)/)) {
+							limit = path.match(/limit[-=]([0-9]*)/).slice(1);
+						}
+						limit = limit ? limit : 25;
+						start = path.match(/start[-=]([0-9]*)/).slice(1);
+						return path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
+					},
+					debug: true
+				},
+				function(newElements) {
+					HUB.ProjectPublicationsSelector.showOddEven();
+				}
+			);
+		}
+
 		// Enable selection
 		HUB.ProjectPublicationsSelector.selector();
 
@@ -141,9 +173,10 @@ HUB.ProjectPublicationsSelector = {
 		var success = false;
 
 		checker = $('.selectedfilter').length;
+		optional = $('.el-optional').length;
 
 		// Check that we satisfy minimum/maximum requirements
-		if (checker >= 1)
+		if (checker >= 1 || optional >= 1)
 		{
 			success = true;
 		}

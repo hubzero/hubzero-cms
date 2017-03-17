@@ -36,61 +36,7 @@ defined('_HZEXEC_') or die();
 use Components\Resources\Models\Orm\Resource;
 
 require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'orm' . DS . 'resource.php';
-
-/**
- * Short description for 'ResourceChildSorter'
- *
- * Long description (if any) ...
- */
-class ResourceChildSorter
-{
-	/**
-	 * Description for 'order'
-	 *
-	 * @var array
-	 */
-	private $order;
-
-	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $order Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($order)
-	{
-		$this->order = $order;
-	}
-
-	/**
-	 * Short description for 'sort'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function sort($a, $b)
-	{
-		$a_id = $a->get('id');
-		$b_id = $b->get('id');
-		$sec_diff = strcmp($a->get_section(), $b->get_section());
-		if ($sec_diff < 0)
-		{
-			return -1;
-		}
-		if ($sec_diff > 0)
-		{
-			return 1;
-		}
-		$a_ord = $this->order[$a_id];
-		$b_ord = $this->order[$b_id];
-		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
-	}
-}
+include_once 'children.php';
 
 /**
  * Search plugin for resources
@@ -277,7 +223,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 		*/
 		$sorter = new ResourceChildSorter($placed);
 		$rows = array();
-		foreach ($id_assoc as $id=>$row)
+		foreach ($id_assoc as $id => $row)
 		{
 			if (!array_key_exists((int)$id, $placed))
 			{
@@ -292,17 +238,6 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 			$results->add($row);
 		}
 	}
-
-/************************************************
- *
- * HubSearch Required Methods
- * @author Kevin Wojkovich <kevinw@purdue.edu>
- *
- ***********************************************/
-
-	/****************************
-	Query-time / General Methods
-	****************************/
 
 	/**
 	 * onGetTypes - Announces the available hubtype
@@ -326,122 +261,157 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 		}
 	}
 
-	public function onGetModel($type = '')
-	{
-		if ($type == 'resource')
-		{
-			return new Resource;
-		}
-	}
-	/*********************
-		Index-time methods
-	*********************/
 	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onProcessFields($type, $row)
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'resource')
 		{
-			/*
-			// Determine the author of the Entry
-			$owner = User::getInstance($row->created_by);
-			$authorArr = array();
-			array_push($authorArr, $user->name);
-			*/
-
-			// Instantiate new $fields object
-			$fields = new stdClass;
-
-			// Calculate Permissions
-
-			/** @FIXME legacy access values
-			/*  0 - Public
-			/*	1 - Registered
-			/*  2 - Special
-			/*  3 - Protected
-			/*  4 - Private
-			****************************************/
-
-			// Public condition
-			if ($row->state == 1 && $row->access == 0 && $row->standalone == 1)
+			if ($run === true)
 			{
-				$fields->access_level = 'public';
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT #__resources.*, #__resource_types.type as typeName FROM #__resources
+					LEFT JOIN #__resource_types
+					ON #__resource_types.id = #__resources.type
+					WHERE #__resources.id = {$id};";
+
+				$sql = "SELECT * FROM #__resources WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Get the name of the author
+				$sql1 = "SELECT name, authorid  FROM #__author_assoc WHERE subid={$id} AND subtable='resources';";
+				$authorList = $db->setQuery($sql1)->query()->loadAssocList();
+
+				$owners = array();
+				$authors = array();
+				foreach ($authorList as $author)
+				{
+					if ($author['authorid'] > 0)
+					{
+						array_push($owners, $author['authorid']);
+					}
+					array_push($authors, $author['name']);
+				}
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'resources';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				if (!is_object($row) || empty($row))
+				{
+					return;
+				}
+				// Determine the path
+				if ($row->alias != '' && strtolower($row->type) != 'tool')
+				{
+					$path = '/resources/' . $row->alias;
+				}
+				elseif ($row->alias != '' && strtolower($row->type) == 'tool')
+				{
+					$path = '/tool/' . $row->alias;
+				}
+				else
+				{
+					$path = '/resources/' . $row->id;
+				}
+
+				// Public condition
+				if ($row->published == 1 && $row->access == 0 && $row->standalone == 1)
+				{
+					$access_level = 'public';
+				}
+				// Registered condition
+				elseif ($row->published == 1 && $row->access == 1 && $row->standalone == 1)
+				{
+					$access_level = 'registered';
+				}
+				// Default private
+				else
+				{
+					$access_level = 'private';
+				}
+
+				// Who is the owner
+				if (isset($row->group_owner) && $row->group_owner != '')
+				{
+					$owner_type = 'group';
+					$owner = $row->group_owner;
+				}
+				else
+				{
+					$owner_type = 'user';
+					$owner = $owners;
+				}
+
+				// Get children
+				$sql3 = "SELECT title AS childTitle, path FROM jos_resources
+				JOIN jos_resource_assoc
+				ON jos_resource_assoc.child_id = jos_resources.id
+				WHERE jos_resource_assoc.parent_id = {$id} AND standalone = 0 AND published = 1;";
+				$children = $db->setQuery($sql3)->query()->loadAssocList();
+
+				$fileData = '';
+				$content = '';
+				foreach ($children as $child)
+				{
+					if (isset($fileScan) && $fileScan == true)
+					{
+						// Call the helper to read the file
+						//$fileData .= /Helper/FileScan::scan($child['path']) . ' ';
+					}
+
+					$content .= $child['childTitle'] . ' ';
+				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content .= $row->introtext . ' ' . $row->fulltxt . ' ' . $fileData;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = $authors;
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
-			// Registered condition
-			elseif ($row->state == 1 && $row->access == 1 && $row->standalone == 1)
-			{
-				$fields->access_level = 'registered';
-			}
-			// Default private
 			else
 			{
-				$fields->access_level = 'private';
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__resources WHERE standalone=1;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
 			}
-
-			// Who is the owner
-			if (isset($row->group_owner) && $row->scope != 'group')
-			{
-				$fields->owner_type = 'group';
-				$fields->owner = $row->group_owner;
-			}
-			else
-			{
-				$fields->owner_type = 'user';
-				$fields->owner = $row->created_by;
-			}
-
-			// Build out path
-			$path = '/resources/';
-			if (isset($row->alias) && $row->alias != '')
-			{
-				$path .= $row->alias;
-			}
-			else
-			{
-				$path .= $row->id;
-			}
-
-			$fields->url = $path;
-
-			// Extract author names
-			$authors  = array();
-			foreach ($row->authors() as $author)
-			{
-				array_push($authors, $author->name);
-			}
-			$fields->author = $authors;
-
-			$fields->tags = $row->tags('list');
-
-			$fields->title = $row->title;
-			$fields->alias = $row->alias;
-
-			$abstract = $row->introtext;
-			$abstract = html_entity_decode($abstract);
-			$abstract = strip_tags($abstract);
-			$fields->abstract = $abstract;
-
-			$fulltext = $row->fulltxt;
-			$fulltext = html_entity_decode($fulltext);
-			$fields->fulltext = $fulltext;
-
-			// Format the date for SOLR
-			$date = Date::of($row->publish_up)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			$fields->description = $abstract;
-			$fields->doi = $row->master_doi;
-
-			return $fields;
 		}
 	}
 }
-

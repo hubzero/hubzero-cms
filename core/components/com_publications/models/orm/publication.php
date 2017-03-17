@@ -36,9 +36,24 @@ use Hubzero\Database\Relational;
 
 require_once __DIR__ . DS . 'version.php';
 require_once __DIR__ . DS . 'author.php';
+require_once __DIR__ . DS . 'rating.php';
+require_once __DIR__ . DS . 'type.php';
+require_once __DIR__ . DS . 'category.php';
 
+/**
+ * Model class for publication
+ */
 class Publication extends Relational
 {
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'title' => 'notempty'
+	);
+
 	/**
 	 * Automatic fields to populate every time a row is created
 	 *
@@ -49,9 +64,74 @@ class Publication extends Relational
 		'created_by'
 	);
 
+	/**
+	 * Establish relationship to type
+	 *
+	 * @return  object
+	 */
+	public function type()
+	{
+		return $this->oneToOne('Type', 'id', 'master_type');
+	}
+
+	/**
+	 * Establish relationship to category
+	 *
+	 * @return  object
+	 */
+	public function category()
+	{
+		return $this->oneToOne('Category', 'id', 'category');
+	}
+
+	/**
+	 * Establish relationship to versions
+	 *
+	 * @return  object
+	 */
 	public function versions()
 	{
 		return $this->oneToMany('Version', 'publication_id');
 	}
 
+	/**
+	 * Establish relationship to ratings
+	 *
+	 * @return  object
+	 */
+	public function ratings()
+	{
+		return $this->oneToMany('Rating', 'publication_id');
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove ratings
+		foreach ($this->ratings as $rating)
+		{
+			if (!$rating->destroy())
+			{
+				$this->addError($rating->getError());
+				return false;
+			}
+		}
+
+		// Remove versions
+		foreach ($this->versions as $version)
+		{
+			if (!$version->destroy())
+			{
+				$this->addError($version->getError());
+				return false;
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
 }

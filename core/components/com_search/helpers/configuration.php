@@ -25,17 +25,19 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author		Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
-namespace Components\Search\Helpers;
 
-defined('_HZEXEC_') or die();
+namespace Components\Search\Helpers;
 
 use Hubzero\Utility\Date;
 use Hubzero\User\Group;
 
+/**
+ * Search config helper
+ */
 class ConfigHelper
 {
 	/**
@@ -84,9 +86,9 @@ class ConfigHelper
 	/**
 	 * getFilePath 
 	 * 
-	 * @param string $name 
-	 * @access public
-	 * @return void
+	 * @param   string  $name 
+	 * @access  public
+	 * @return  mixed   String on success, FALSE on failure
 	 */
 	public function getFilePath($name = '')
 	{
@@ -96,46 +98,42 @@ class ConfigHelper
 			$filename = $baseDir . DS . $name . '.php';
 			if (Filesystem::exists($filename))
 			{
-				$config  = include($filename);
+				$config = include_once $filename;
 				$classpath = $config['filepath'];
 				return $classpath;
 			}
 			return false;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * instantiate 
 	 * 
-	 * @param string $name 
-	 * @access public
-	 * @return void
+	 * @param   string  $name 
+	 * @access  public
+	 * @return  mixed   Object on success, FALSE on failure
 	 */
 	public function instantiate($name = '')
 	{
 		if ($name != '')
 		{
-			require_once(PATH_ROOT . DS . $this->getFilePath($name));
+			require_once PATH_ROOT . DS . $this->getFilePath($name);
 			$class = $this->getClassPath($name);
 
 			return new $class;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * getClassPath 
 	 * 
-	 * @param string $name 
-	 * @access public
-	 * @return void
+	 * @param   string  $name 
+	 * @access  public
+	 * @return  mixed   Object on success, FALSE on failure
 	 */
 	public function getClassPath($name = '')
 	{
@@ -145,16 +143,14 @@ class ConfigHelper
 			$filename = $baseDir . DS . $name . '.php';
 			if (Filesystem::exists($filename))
 			{
-				$config  = include($filename);
+				$config = include_once $filename;
 				$classpath = $config['classpath'];
 				return $classpath;
 			}
 			return false;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
@@ -162,10 +158,10 @@ class ConfigHelper
 	 * Borrowed from Plugin\Content\Formathtml\Parser
 	 * Used to do some processing on config file 'macros'
 	 * 
-	 * @param mixed $text 
-	 * @param mixed $row 
-	 * @access public
-	 * @return void
+	 * @param   mixed   $text 
+	 * @param   mixed   $row 
+	 * @access  public
+	 * @return  string
 	 */
 	public function parse($text, $row)
 	{
@@ -182,7 +178,7 @@ class ConfigHelper
 		$text = preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
 		$text = preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
 		$matches = array();
-		preg_match_all('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U',$text, $matches);
+		preg_match_all('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', $text, $matches);
 
 		// Copy the original string
 		$path = $text;
@@ -201,10 +197,10 @@ class ConfigHelper
 	/**
 	 * processPaths 
 	 * 
-	 * @param string $type 
-	 * @param mixed $row 
-	 * @access public
-	 * @return void
+	 * @param   string  $type 
+	 * @param   mixed   $row 
+	 * @access  public
+	 * @return  string
 	 */
 	public function processPaths($type = '', $row)
 	{
@@ -217,45 +213,44 @@ class ConfigHelper
 				return $parsed;
 			}
 		}
+		return '';
 	}
 
 	/**
-	 * Year 
+	 * Year
 	 * 
-	 * @param string $date 
-	 * @param mixed $row 
-	 * @access private
-	 * @return void
+	 * @param   string   $date 
+	 * @param   mixed    $row 
+	 * @access  private
+	 * @return  string
 	 */
 	private function Year($date = '', $row)
 	{
 		$date = $row->$date;
-		$year = Date::of(strtotime($date))->toLocal('Y');
-		return $year;
+		return Date::of(strtotime($date))->toLocal('Y');
 	}
 
 	/**
-	 * Month 
+	 * Month
 	 * 
-	 * @param string $date 
-	 * @param mixed $row 
-	 * @access private
-	 * @return void
+	 * @param   string   $date 
+	 * @param   mixed    $row 
+	 * @access  private
+	 * @return  string
 	 */
 	private function Month($date = '', $row)
 	{
 		$date = $row->$date;
-		$month = Date::of(strtotime($date))->toLocal('m');
-		return $month;
+		return Date::of(strtotime($date))->toLocal('m');
 	}
 
 	/**
-	 * Field 
+	 * Field
 	 * 
-	 * @param string $argument 
-	 * @param mixed $row 
-	 * @access private
-	 * @return void
+	 * @param   string   $argument 
+	 * @param   mixed    $row 
+	 * @access  private
+	 * @return  string
 	 */
 	private function Field($argument = '', $row)
 	{
@@ -264,27 +259,26 @@ class ConfigHelper
 	}
 
 	/**
-	 * Group_cn 
+	 * Group_cn
 	 * 
-	 * @param mixed $id 
-	 * @param mixed $row 
-	 * @access private
-	 * @return void
+	 * @param   mixed    $id 
+	 * @param   mixed    $row 
+	 * @access  private
+	 * @return  string
 	 */
 	private function Group_cn($id, $row)
 	{
-			$group = Group::getInstance($id);
-			$cn = $group->get('cn');
-			return $cn;
+		$group = Group::getInstance($id);
+		return $group->get('cn');
 	}
 
 	/**
-	 * Member_id 
+	 * Member_id
 	 * 
-	 * @param mixed $id 
-	 * @param mixed $row 
-	 * @access private
-	 * @return void
+	 * @param   mixed    $id 
+	 * @param   mixed    $row 
+	 * @access  private
+	 * @return  int
 	 */
 	private function Member_id($id, $row)
 	{

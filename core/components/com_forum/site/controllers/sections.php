@@ -101,6 +101,8 @@ class Sections extends SiteController
 			$sections = $forum->sections($filters);
 		}
 
+		$sections->order('title', 'asc');
+
 		// Set the page title
 		App::get('document')->setTitle(Lang::txt(strtoupper($this->_option)));
 

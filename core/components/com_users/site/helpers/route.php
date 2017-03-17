@@ -32,9 +32,8 @@ class UsersHelperRoute
 			// Include the site app in case we are loading this from the admin.
 			require_once JPATH_SITE.'/core/bootstrap/site/application.php';
 
-			$app   = JFactory::getApplication();
 			$menu  = \App::get('menu');
-			$com   = JComponentHelper::getComponent('com_users');
+			$com   = \Component::params('com_users');
 			$items = $menu->getItems('component_id', $com->id);
 
 			// If no items found, set to empty array.

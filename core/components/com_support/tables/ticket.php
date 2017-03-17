@@ -44,8 +44,8 @@ class Ticket extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -55,7 +55,7 @@ class Ticket extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -122,6 +122,14 @@ class Ticket extends \JTable
 			}
 		}
 
+		if ($this->group_id && !is_numeric($this->group_id))
+		{
+			if ($group = \Hubzero\User\Group::getInstance($this->group_id))
+			{
+				$this->group_id = (int) $group->get('gidNumber');
+			}
+		}
+
 		// All new tickets default to "new"
 		if (!$this->id)
 		{
@@ -147,9 +155,9 @@ class Ticket extends \JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @param      boolean $admin   Admin access?
-	 * @return     string SQL
+	 * @param   array    $filters  Filters to build query from
+	 * @param   boolean  $admin    Admin access?
+	 * @return  string   SQL
 	 */
 	public function buildQuery($filters, $admin)
 	{
@@ -157,11 +165,21 @@ class Ticket extends \JTable
 
 		switch ($filters['status'])
 		{
-			case 'open':    $filter .= " AND open=1"; break;
-			case 'closed':  $filter .= " AND open=0";               break;
-			case 'all':     $filter .= "";                            break;
-			case 'new':     $filter .= " AND open=1 AND status=0 AND owner=0 AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0)"; break;
-			case 'waiting': $filter .= " AND open=1 AND status=2";               break;
+			case 'open':
+				$filter .= " AND open=1";
+				break;
+			case 'closed':
+				$filter .= " AND open=0";
+				break;
+			case 'all':
+				$filter .= "";
+				break;
+			case 'new':
+				$filter .= " AND open=1 AND status=0 AND owner=0 AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0)";
+				break;
+			case 'waiting':
+				$filter .= " AND open=1 AND status=2";
+				break;
 		}
 		if (isset($filters['severity']) && $filters['severity'] != '')
 		{
@@ -171,11 +189,19 @@ class Ticket extends \JTable
 		{
 			switch ($filters['type'])
 			{
-				case '3': $filter .= " AND type=3"; break;
-				case '2': $filter .= ""; break;
-				case '1': $filter .= " AND type=1"; break;
+				case '3':
+					$filter .= " AND type=3";
+					break;
+				case '2':
+					$filter .= "";
+					break;
+				case '1':
+					$filter .= " AND type=1";
+					break;
 				case '0':
-				default:  $filter .= " AND type=0"; break;
+				default:
+					$filter .= " AND type=0";
+					break;
 			}
 		}
 		else
@@ -250,7 +276,14 @@ class Ticket extends \JTable
 
 		if (isset($filters['group']) && $filters['group'] != '')
 		{
-			$filter .= " AND `group`=" . $this->_db->quote($filters['group']);
+			if (!is_numeric($filters['group']))
+			{
+				if ($group = \Hubzero\User\Group::getInstance($filters['group']))
+				{
+					$filters['group'] = $group->get('gidNumber');
+				}
+			}
+			$filter .= " AND `group_id`=" . $this->_db->quote((int)$filters['group']);
 		}
 		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != ''))
 		{
@@ -263,18 +296,18 @@ class Ticket extends \JTable
 					$g = array();
 					foreach ($xgroups as $xgroup)
 					{
-						$g[] = $this->_db->quote($xgroup->cn);
+						$g[] = $this->_db->quote($xgroup->gidNumber);
 					}
 					$groups = implode(",", $g);
 				}
-				$filter .= ($groups) ? " OR `group` IN ($groups)" : "";
+				$filter .= ($groups) ? " OR `group_id` IN ($groups)" : "";
 			}
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$from = "(
-						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.closed, f.login, f.name, f.email, f.type, f.section, f.group, f.open, u.name AS owner_name, u.id AS owner_id, u.username AS username
+						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.closed, f.login, f.name, f.email, f.type, f.section, f.group_id, f.open, u.name AS owner_name, u.id AS owner_id, u.username AS username
 							FROM $this->_tbl AS f LEFT JOIN #__users AS u ON u.id=f.owner ";
 			if (isset($filters['tag']) && $filters['tag'] != '')
 			{
@@ -309,7 +342,7 @@ class Ticket extends \JTable
 				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag=" . $this->_db->quote($filters['tag']);
 			}
 			$from .= ") UNION (
-				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.closed, g.login, g.name, g.email, g.type, g.section, g.group, g.open, ug.name AS owner_name, ug.id AS owner_id, ug.username AS username
+				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.closed, g.login, g.name, g.email, g.type, g.section, g.group_id, g.open, ug.name AS owner_name, ug.id AS owner_id, ug.username AS username
 				FROM #__support_comments AS w, $this->_tbl AS g LEFT JOIN #__users AS ug ON ug.id=g.owner
 				WHERE w.ticket=g.id";
 			if (isset($filters['search']) && $filters['search'] != '')
@@ -340,8 +373,9 @@ class Ticket extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      string  $query Filters to build query from
-	 * @return     integer
+	 * @param   string   $query    Filters to build query from
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function getCount($query, $filters=array())
 	{
@@ -405,8 +439,9 @@ class Ticket extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      string  $query Filters to build query from
-	 * @return     integer
+	 * @param   string   $query    Filters to build query from
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function getRecords($query, $filters=array())
 	{
@@ -422,7 +457,7 @@ class Ticket extends \JTable
 			$query = str_replace($matches[0], '', $query);
 		}
 
-		$sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, f.`resolved`, f.`group`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email` ";
+		$sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, f.`resolved`, f.`group_id`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email`, f.`target_date` ";
 		if ($having)
 		{
 			$sql .= ", COUNT(DISTINCT t.tag) AS uniques ";
@@ -454,6 +489,11 @@ class Ticket extends \JTable
 		}
 		$sql .= $having;
 
+		if ($filters['sort'] == 'group')
+		{
+			$filters['sort'] = 'group_id';
+		}
+
 		if ($filters['sort'] == 'severity')
 		{
 			$sql .= " ORDER BY CASE severity ";
@@ -479,8 +519,8 @@ class Ticket extends \JTable
 	 * Add tag and group filters previously supported in ticket system
 	 * (ex: when clicking a tag within the ticket system)
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function parseFind($filters)
 	{
@@ -488,7 +528,14 @@ class Ticket extends \JTable
 
 		if (isset($filters['group']) && $filters['group'] != '')
 		{
-			$filter .= " AND `group`=" . $this->_db->quote($filters['group']);
+			if (!is_numeric($filters['group']))
+			{
+				if ($group = \Hubzero\User\Group::getInstance($filters['group']))
+				{
+					$filters['group'] = $group->get('gidNumber');
+				}
+			}
+			$filter .= " AND `group_id`=" . $this->_db->quote($filters['group']);
 		}
 
 		if (isset($filters['tag']) && $filters['tag'] != '')
@@ -502,9 +549,9 @@ class Ticket extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @param      boolean $admin   Admin access?
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @param   boolean  $admin    Admin access?
+	 * @return  integer
 	 */
 	public function getTicketsCount($filters=array(), $admin=false)
 	{
@@ -526,9 +573,9 @@ class Ticket extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @param      boolean $admin   Admin access?
-	 * @return     array
+	 * @param   array    $filters  Filters to build query from
+	 * @param   boolean  $admin    Admin access?
+	 * @return  array
 	 */
 	public function getTickets($filters=array(), $admin=false)
 	{
@@ -536,11 +583,11 @@ class Ticket extends \JTable
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `open`, `status`, `severity`, `resolved`, `owner`, `created`, `closed`, `login`, `name`, `email`, `group`, owner_name, owner_id, username";
+			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `open`, `status`, `severity`, `resolved`, `owner`, `created`, `closed`, `login`, `name`, `email`, `group_id`, owner_name, owner_id, username";
 		}
 		else
 		{
-			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.open, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.closed, f.login, f.name, f.email, u.name AS owner_name, u.id AS owner_id, u.username";
+			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.open, f.status, f.severity, f.resolved, f.group_id, f.owner, f.created, f.closed, f.login, f.name, f.email, u.name AS owner_name, u.id AS owner_id, u.username";
 		}
 		$sql .= " FROM $filter";
 		$sql .= " ORDER BY ".$filters['sort'] . ' ' . $filters['sortdir'];
@@ -553,10 +600,10 @@ class Ticket extends \JTable
 	/**
 	 * Get the next or previous ticket ID for a set of filters
 	 *
-	 * @param      string  $which   prev or next
-	 * @param      array   $filters Filters to build query from
-	 * @param      boolean $authorized Admin access?
-	 * @return     integer
+	 * @param   string   $which       prev or next
+	 * @param   array    $filters     Filters to build query from
+	 * @param   boolean  $authorized  Admin access?
+	 * @return  integer
 	 */
 	public function getTicketId($which, $filters, $authorized=false)
 	{
@@ -580,12 +627,12 @@ class Ticket extends \JTable
 	/**
 	 * Get a count of tickets opened for a given time period
 	 *
-	 * @param      integer $type     Ticket type
-	 * @param      string  $year     Year to calculate for
-	 * @param      string  $month    Month to calculate for
-	 * @param      string  $day      Day to calculate for
-	 * @param      string  $group    Group to calculate data for
-	 * @return     integer
+	 * @param   integer  $type   Ticket type
+	 * @param   string   $year   Year to calculate for
+	 * @param   string   $month  Month to calculate for
+	 * @param   string   $day    Day to calculate for
+	 * @param   string   $group  Group to calculate data for
+	 * @return  integer
 	 */
 	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null)
 	{
@@ -598,11 +645,18 @@ class Ticket extends \JTable
 				AND type=" . $this->_db->quote($type);
 		if (!$group)
 		{
-			//$sql .= " AND (`group`='' OR `group` IS NULL)";
+			//$sql .= " AND (`group_id`='' OR `group_id` IS NULL)";
 		}
 		else
 		{
-			$sql .= " AND `group`=" . $this->_db->quote($group);
+			if (!is_numeric($group))
+			{
+				if ($g = \Hubzero\User\Group::getInstance($group))
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND `group_id`=" . $this->_db->quote((int)$group);
 		}
 		$sql .= " AND created BETWEEN " . $this->_db->quote($year . "-" . $month . "-" . $day . " 00:00:00") . " AND " . $this->_db->quote($endyear . "-" . $month . "-" . $day . " 00:00:00");
 
@@ -613,13 +667,13 @@ class Ticket extends \JTable
 	/**
 	 * Get a count of tickets closed for a given time period
 	 *
-	 * @param      integer $type     Ticket type
-	 * @param      string  $year     Year to calculate for
-	 * @param      string  $month    Month to calculate for
-	 * @param      string  $day      Day to calculate for
-	 * @param      string  $username User to get count for
-	 * @param      string  $group    Group to calculate data for
-	 * @return     integer
+	 * @param   integer  $type      Ticket type
+	 * @param   string   $year      Year to calculate for
+	 * @param   string   $month     Month to calculate for
+	 * @param   string   $day       Day to calculate for
+	 * @param   string   $username  User to get count for
+	 * @param   string   $group     Group to calculate data for
+	 * @return  integer
 	 */
 	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null)
 	{
@@ -635,11 +689,18 @@ class Ticket extends \JTable
 				AND k.created BETWEEN " . $this->_db->quote($year . "-" . $month . "-" . $day . " 00:00:00") . " AND " . $this->_db->quote($endyear . "-" . $month . "-" . $day . " 00:00:00");
 		if (!$group)
 		{
-			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+			//$sql .= " AND (f.`group_id`='' OR f.`group_id` IS NULL)";
 		}
 		else
 		{
-			$sql .= " AND f.`group`=" . $this->_db->quote($group);
+			if (!is_numeric($group))
+			{
+				if ($g = \Hubzero\User\Group::getInstance($group))
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND f.`group_id`=" . $this->_db->quote($group);
 		}
 		if ($username)
 		{
@@ -667,10 +728,10 @@ class Ticket extends \JTable
 	/**
 	 * Get a count of open tickets
 	 *
-	 * @param      integer $type       Ticket type
-	 * @param      boolean $unassigned Include unassigned tickets?
-	 * @param      string  $group      Group to calculate data for
-	 * @return     integer
+	 * @param   integer  $type        Ticket type
+	 * @param   boolean  $unassigned  Include unassigned tickets?
+	 * @param   string   $group       Group to calculate data for
+	 * @return  integer
 	 */
 	public function getCountOfOpenTickets($type=0, $unassigned=false, $group=null)
 	{
@@ -681,11 +742,18 @@ class Ticket extends \JTable
 				AND open=1";
 		if (!$group)
 		{
-			//$sql .= " AND (`group`='' OR `group` IS NULL)";
+			//$sql .= " AND (`group_id`='' OR `group_id` IS NULL)";
 		}
 		else
 		{
-			$sql .= " AND `group`=" . $this->_db->quote($group);
+			if (!is_numeric($group))
+			{
+				if ($g = \Hubzero\User\Group::getInstance($group))
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND `group_id`=" . $this->_db->quote($group);
 		}
 		if ($unassigned)
 		{
@@ -699,18 +767,18 @@ class Ticket extends \JTable
 	/**
 	 * Count the number of tickets closed in a given month
 	 *
-	 * @param      integer $type  Ticket type
-	 * @param      string  $year  Year to calculate for
-	 * @param      string  $month Month to calculate for
-	 * @param      string  $group Group to calculate data for
-	 * @return     integer
+	 * @param   integer  $type   Ticket type
+	 * @param   string   $year   Year to calculate for
+	 * @param   string   $month  Month to calculate for
+	 * @param   string   $group  Group to calculate data for
+	 * @return  integer
 	 */
 	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null, $username=null)
 	{
 		$year = ($year) ? $year : Date::format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
-		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d", intval($month)+1);
 
 		$sql = "SELECT COUNT(DISTINCT k.ticket)
 				FROM #__support_comments AS k, $this->_tbl AS f
@@ -722,11 +790,18 @@ class Ticket extends \JTable
 				AND k.created<" . $this->_db->quote($nextyear . "-" . $nextmonth . "-01 00:00:00");
 		if (!$group)
 		{
-			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+			//$sql .= " AND (f.`group_id`='' OR f.`group_id` IS NULL)";
 		}
 		else
 		{
-			$sql .= " AND f.`group`=" . $this->_db->quote($group);
+			if (!is_numeric($group))
+			{
+				if ($g = \Hubzero\User\Group::getInstance($group))
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND f.`group_id`=" . $this->_db->quote($group);
 		}
 		if ($username)
 		{
@@ -740,18 +815,18 @@ class Ticket extends \JTable
 	/**
 	 * Count the number of tickets opened in a given month
 	 *
-	 * @param      integer $type  Ticket type
-	 * @param      string  $year  Year to calculate for
-	 * @param      string  $month Month to calculate for
-	 * @param      string  $group Group to calculate data for
-	 * @return     integer
+	 * @param   integer  $type   Ticket type
+	 * @param   string   $year   Year to calculate for
+	 * @param   string   $month  Month to calculate for
+	 * @param   string   $group  Group to calculate data for
+	 * @return  integer
 	 */
 	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null)
 	{
 		$year = ($year) ? $year : Date::format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
-		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d", intval($month)+1);
 
 		$sql = "SELECT count(*)
 				FROM $this->_tbl
@@ -761,11 +836,18 @@ class Ticket extends \JTable
 				AND created<" . $this->_db->quote($nextyear . "-" . $nextmonth . "-01 00:00:00");
 		if (!$group)
 		{
-			//$sql .= " AND (`group`='' OR `group` IS NULL)";
+			//$sql .= " AND (`group_id`='' OR `group_id` IS NULL)";
 		}
 		else
 		{
-			$sql .= " AND `group`='$group'";
+			if (!is_numeric($group))
+			{
+				if ($g = \Hubzero\User\Group::getInstance($group))
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND `group_id`='$group'";
 		}
 
 		$this->_db->setQuery($sql);
@@ -775,10 +857,10 @@ class Ticket extends \JTable
 	/**
 	 * Get the average lifetime of a ticket
 	 *
-	 * @param      integer $type  Ticket type
-	 * @param      string  $year  Year to calculate for
-	 * @param      string  $group Group to calculate data for
-	 * @return     array
+	 * @param   integer  $type   Ticket type
+	 * @param   string   $year   Year to calculate for
+	 * @param   string   $group  Group to calculate data for
+	 * @return  array
 	 */
 	public function getAverageLifeOfTicket($type=0, $year='', $group=null)
 	{
@@ -793,11 +875,18 @@ class Ticket extends \JTable
 				AND f.created>=" . $this->_db->quote($year . "-01-01 00:00:00");
 		if (!$group)
 		{
-			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+			//$sql .= " AND (f.`group_id`='' OR f.`group_id` IS NULL)";
 		}
 		else
 		{
-			$sql .= " AND f.`group`=" . $this->_db->quote($group);
+			if (!is_numeric($group))
+			{
+				if ($g = \Hubzero\User\Group::getInstance($group))
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND f.`group_id`=" . $this->_db->quote($group);
 		}
 		$sql .= " GROUP BY k.ticket";
 		$this->_db->setQuery($sql);
@@ -830,4 +919,3 @@ class Ticket extends \JTable
 		return $lifetime;
 	}
 }
-

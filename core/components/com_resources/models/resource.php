@@ -350,6 +350,84 @@ class Resource extends Object
 					}
 				}
 			}
+
+			if (!$this->params->get('access-admin-resource')
+			 && !$this->params->get('access-manage-resource'))
+			{
+				// If logged in and resource is published and public or registered
+				if ($this->published() && ($this->resource->access == 0 || $this->resource->access == 1))
+				{
+					// Allow view access
+					$this->params->set('access-view-resource', true);
+					$this->params->set('access-view-all-resource', true);
+				}
+
+				if ($this->resource->group_owner)
+				{
+					// For protected resources, make sure users can see abstract
+					if ($this->resource->access < 3)
+					{
+						$this->params->set('access-view-resource', true);
+						$this->params->set('access-view-all-resource', true);
+					}
+					else if ($this->resource->access == 3)
+					{
+						$this->params->set('access-view-resource', true);
+					}
+
+					// Get the groups the user has access to
+					$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+					$usersgroups = array();
+					if (!empty($xgroups))
+					{
+						foreach ($xgroups as $group)
+						{
+							if ($group->regconfirmed)
+							{
+								$usersgroups[] = $group->cn;
+							}
+						}
+					}
+
+					// Get the groups that can access this resource
+					$allowedgroups = $this->resource->getGroups();
+
+					// Find what groups the user has in common with the resource, if any
+					$common = array_intersect($usersgroups, $allowedgroups);
+
+					// Check if the user is apart of the group that owns the resource
+					// or if they have any groups in common
+					if (in_array($this->resource->group_owner, $usersgroups) || count($common) > 0)
+					{
+						$this->params->set('access-view-resource', true);
+						$this->params->set('access-view-all-resource', true);
+					}
+				}
+
+				$obj = new \Components\Tools\Tables\Tool($this->_db);
+				$obj->loadFromName($this->resource->alias);
+
+				// check if user in tool dev team
+				if ($developers = $obj->getToolDevelopers($obj->id))
+				{
+					foreach ($developers as $dv)
+					{
+						if ($dv->uidNumber == User::get('id'))
+						{
+							$this->params->set('access-view-resource', true);
+							$this->params->set('access-view-all-resource', true);
+							$this->params->set('access-create-resource', true);
+							$this->params->set('access-delete-resource', true);
+							$this->params->set('access-edit-resource', true);
+							$this->params->set('access-edit-state-resource', true);
+							$this->params->set('access-edit-own-resource', true);
+						}
+					}
+				}
+			}
+
+			$this->_authorized = true;
+			return;
 		}
 		else
 		{
@@ -367,13 +445,13 @@ class Resource extends Object
 				$this->params->set('access-edit-resource', true);
 				$this->params->set('access-edit-state-resource', true);
 				$this->params->set('access-edit-own-resource', true);
-			}
-		}
 
-		// If they're not an admin
-		if (!$this->params->get('access-admin-resource')
-		 && !$this->params->get('access-manage-resource'))
-		{
+				$this->_authorized = true;
+				return;
+			}
+
+			// If they're not an admin
+
 			// If logged in and resource is published and public or registered
 			if ($this->published() && ($this->resource->access == 0 || $this->resource->access == 1))
 			{

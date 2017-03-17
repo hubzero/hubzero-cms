@@ -125,8 +125,8 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
-		require_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
-		require_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php');
+		require_once PATH_CORE . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php';
+		require_once PATH_CORE . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php';
 
 		$stats = new \Components\Publications\Tables\Stats($database);
 		$stats->loadStats($publication->id, $period, $dthis);
@@ -148,9 +148,10 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		if ($rtrn == 'metadata')
+		/*if ($rtrn == 'metadata')
 		{
 			$stats->loadStats($publication->id, $period);
+
 			if ($stats->users)
 			{
 				$action = $publication->base == 'files' ? '%s download(s)' : '%s view(s)';
@@ -158,14 +159,32 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 				$arr['metadata']  = '<p class="usage">' . Lang::txt('%s user(s)',$stats->users);
 				$arr['metadata'] .= $stats->downloads ? ' | ' . Lang::txt($action, $stats->downloads) : '';
 				$arr['metadata'] .= '</p>';
-			}
-		}
+			}*/
+			$db = App::get('db');
+			$db->setQuery(
+				"SELECT SUM(page_views)
+				FROM `#__publication_logs`
+				WHERE `publication_id`=" . $db->quote($publication->id) . " AND `publication_version_id`=" . $db->quote($publication->version->id) . "
+				ORDER BY `year` ASC, `month` ASC"
+			);
+			$views = (int) $db->loadResult();
+
+			$db->setQuery(
+				"SELECT SUM(primary_accesses)
+				FROM `#__publication_logs`
+				WHERE `publication_id`=" . $db->quote($publication->id) . " AND `publication_version_id`=" . $db->quote($publication->version->id) . "
+				ORDER BY `year` ASC, `month` ASC"
+			);
+			$downloads = (int) $db->loadResult();
+
+			$arr['metadata'] = '<p class="usage">' . Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $views, $downloads) . '</p>';
+		/*}
 
 		if ($stats->users)
 		{
 			$arr['name']  = 'usage';
 			$arr['count'] = $stats->users;
-		}
+		}*/
 
 		return $arr;
 	}
@@ -180,7 +199,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 	{
 		if ($time < 60)
 		{
-			$data = round($time,2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_SECONDS');
+			$data = round($time, 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_SECONDS');
 		}
 		else if ($time > 60 && $time < 3600)
 		{
@@ -192,7 +211,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		}
 		else if ($time >= 86400)
 		{
-			$data = round(($time/86400),2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_DAYS');
+			$data = round(($time/86400), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_DAYS');
 		}
 
 		return $data;

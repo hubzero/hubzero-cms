@@ -107,12 +107,12 @@ class Ticketsv1_0 extends ApiController
 
 		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
-		if ($month <= "9"&preg_match("#(^[1-9]{1})#",$month))
+		if ($month <= "9"&preg_match("#(^[1-9]{1})#", $month))
 		{
 			$month = "0$month";
 		}
 		$day   = strftime("%d", time()+($this->offset*60*60));
-		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day))
+		if ($day <= "9"&preg_match("#(^[1-9]{1})#", $day))
 		{
 			$day = "0$day";
 		}
@@ -134,11 +134,19 @@ class Ticketsv1_0 extends ApiController
 				AND type=" . $type . " AND open=1";
 		if (!$group)
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND `group_id`=0";
 		}
 		else
 		{
-			$sql .= " AND `group`='{$group}'";
+			if (!is_numeric($group))
+			{
+				$g = \Hubzero\User\Group::getInstance($group);
+				if ($g)
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$sql .= " AND `group_id`=" . $this->database->quote((int)$group);
 		}
 		$sql .= " ORDER BY created ASC";
 		$this->database->setQuery($sql);
@@ -457,7 +465,7 @@ class Ticketsv1_0 extends ApiController
 		$ticket->set('status', 0);
 
 		$ticket->set('ip', Request::ip());
-		$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR','','server')));
+		$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
 
 		// Save the data
 		if (!$ticket->store())

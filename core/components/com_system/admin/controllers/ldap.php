@@ -62,14 +62,8 @@ class Ldap extends AdminController
 	{
 		if (file_exists(PATH_APP . DS . 'hubconfiguration.php'))
 		{
-			include_once(PATH_APP . DS . 'hubconfiguration.php');
+			include_once PATH_APP . DS . 'hubconfiguration.php';
 		}
-
-		$table = new \JTableExtension($this->database);
-		$table->load($table->find(array(
-			'element' => $this->_option,
-			'type'    => 'component'
-		)));
 
 		if (class_exists('HubConfig'))
 		{
@@ -85,20 +79,28 @@ class Ldap extends AdminController
 			$this->config->set('ldap_managerpw', $hub_config->hubLDAPAcctMgrPW);
 		}
 
-		$table->params = $this->config->toString();
+		$db = App::get('db');
 
-		$table->store();
+		$query = $db->getQuery()
+			->update('#__extensions')
+			->set(array(
+				'params' => $this->config->toString()
+			))
+			->whereEquals('element', $this->_option)
+			->whereEquals('type', 'component');
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SYSTEM_LDAP_IMPORT_COMPLETE')
-		);
+		$db->setQuery($query->toString());
+		$db->query();
+
+		Notify::success(Lang::txt('COM_SYSTEM_LDAP_IMPORT_COMPLETE'));
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete LDAP group entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteGroupsTask()
 	{
@@ -148,9 +150,7 @@ class Ldap extends AdminController
 			Notify::info(Lang::txt('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -177,9 +177,7 @@ class Ldap extends AdminController
 			Notify::info(Lang::txt('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -206,8 +204,6 @@ class Ldap extends AdminController
 			Notify::info(Lang::txt('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 }

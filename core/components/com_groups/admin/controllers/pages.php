@@ -55,7 +55,7 @@ class Pages extends AdminController
 	/**
 	 * Overload exec method to load group object
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -83,7 +83,7 @@ class Pages extends AdminController
 	/**
 	 * Manage group pages
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -91,7 +91,7 @@ class Pages extends AdminController
 		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
-			'state'     => array(0,1,2),
+			'state'     => array(0, 1, 2),
 			'orderby'   => 'lft ASC'
 		));
 
@@ -107,7 +107,7 @@ class Pages extends AdminController
 			$pageArchive = Page\Archive::getInstance();
 			$this->view->needsAttention = $pageArchive->pages('unapproved', array(
 				'gidNumber' => $this->group->get('gidNumber'),
-				'state'     => array(0,1),
+				'state'     => array(0, 1),
 				'orderby'   => 'lft ASC'
 			));
 		}
@@ -128,7 +128,7 @@ class Pages extends AdminController
 	/**
 	 * Create a group page
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -138,7 +138,7 @@ class Pages extends AdminController
 	/**
 	 * Edit a group page
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -155,7 +155,7 @@ class Pages extends AdminController
 		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
-			'state'     => array(0,1),
+			'state'     => array(0, 1),
 			'orderby'   => 'lft ASC'
 		));
 
@@ -187,7 +187,7 @@ class Pages extends AdminController
 	/**
 	 * Save a group page
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -222,9 +222,35 @@ class Pages extends AdminController
 			App::abort(403, 'You are not authorized to modify this page.');
 		}
 
+		// update our depth
+		$parent = $this->page->getParent();
+		$depth  = ($parent->get('id')) ? $parent->get('depth') + 1 : 0;
+		$this->page->set('depth', $depth);
+
 		// set page vars
 		$this->page->set('gidNumber', $this->group->get('gidNumber'));
 		$this->page->set('alias', $this->page->uniqueAlias());
+
+		// our start should be our left (order) or the parents right - 1
+		$start = $this->page->get('left');
+		if (!$start)
+		{
+			$start = $parent->get('rgt') - 1;
+		}
+
+		// update current rights
+		$sql = "UPDATE `#__xgroups_pages` SET rgt=rgt+2 WHERE rgt>" . ($start-1) . " AND gidNumber=" . $this->group->get('gidNumber');
+		$this->database->setQuery($sql);
+		$this->database->query();
+
+		// update current lefts
+		$sql2 = "UPDATE `#__xgroups_pages` SET lft=lft+2 WHERE lft>" . ($start-1) . " AND gidNumber=" . $this->group->get('gidNumber');
+		$this->database->setQuery($sql2);
+		$this->database->query();
+
+		// set this pages left & right
+		$this->page->set('lft', $start);
+		$this->page->set('rgt', $start+1);
 
 		// save page settings
 		if (!$this->page->store(true))
@@ -248,8 +274,8 @@ class Pages extends AdminController
 			strpos($this->version->get('content'), '<script') !== false)
 		{
 			$this->version->set('approved', 0);
-			$this->version->set('approved_on', NULL);
-			$this->version->set('approved_by', NULL);
+			$this->version->set('approved_on', null);
+			$this->version->set('approved_by', null);
 		}
 
 		if (!is_object($this->group->params))
@@ -320,7 +346,7 @@ class Pages extends AdminController
 	/**
 	 * Delete Page
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -380,7 +406,7 @@ class Pages extends AdminController
 	/**
 	 * Scan group page for possible issues
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function scanTask()
 	{
@@ -462,6 +488,12 @@ class Pages extends AdminController
 		$currentVersion->set('scanned', 1);
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$currentVersion->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		$currentVersion->store(false, 1);
 
 		// were all set
@@ -540,6 +572,12 @@ class Pages extends AdminController
 		$currentVersion->set('checked_errors', 1);
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$currentVersion->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		$currentVersion->store(false, 1);
 
 		// delete temp file
@@ -558,7 +596,7 @@ class Pages extends AdminController
 	/**
 	 * Mark Page Scanned
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function markScannedTask()
 	{
@@ -587,6 +625,13 @@ class Pages extends AdminController
 		$currentVersion->set('scanned', 1);
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
+		$currentVersion->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		$currentVersion->store(false, $this->group->isSuperGroup());
 
 		// inform user and redirect
@@ -600,7 +645,7 @@ class Pages extends AdminController
 	/**
 	 * Save content added in textarea & send off to scanner
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function scanAgainTask()
 	{
@@ -640,7 +685,7 @@ class Pages extends AdminController
 	/**
 	 * Check for Errors again
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function errorsCheckAgainTask()
 	{
@@ -679,7 +724,7 @@ class Pages extends AdminController
 	/**
 	 * Approve a group page
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function approveTask()
 	{
@@ -758,8 +803,8 @@ class Pages extends AdminController
 	/**
 	 * Output raw content
 	 *
-	 * @param     $escape    Escape outputted content
-	 * @return    string     HTML content
+	 * @param   boolean  $escape  Escape outputted content
+	 * @return  void
 	 */
 	public function rawTask($escape = true)
 	{
@@ -812,7 +857,7 @@ class Pages extends AdminController
 	/**
 	 * Preview Group Page
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function previewTask()
 	{
@@ -848,7 +893,7 @@ class Pages extends AdminController
 	/**
 	 * Cancel a group page task
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -860,7 +905,7 @@ class Pages extends AdminController
 	/**
 	 * Manage group
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function manageTask()
 	{

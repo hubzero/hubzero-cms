@@ -84,11 +84,12 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Show error if items are found in the category
-				if ($count > 0 )
+				if ($count > 0)
 				{
-					$msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) .
-					Lang::txts('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
-					Notify::warning(403, $msg);
+					$msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) . Lang::txts('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
+
+					App::abort(403, $msg);
+
 					$result = false;
 				}
 				// Check for items in any child categories (if it is a leaf, there are no child categories)
@@ -102,10 +103,9 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 					}
 					elseif ($count > 0)
 					{
-						$msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) .
-						Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
+						$msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) . Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
 
-						Notify::warning(403, $msg);
+						App::abort(403, $msg);
 
 						$result = false;
 					}
@@ -121,17 +121,17 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   string  $table  table name of component table (column is catid)
 	 * @param   int     $catid  id of the category to check
-	 * @return  mixed   count of items found or false if db error
+	 * @return  mixed   Count of items found or false if db error
 	 */
 	private function _countItemsInCategory($table, $catid)
 	{
 		$db = App::get('db');
-		$query = $db->getQuery(true);
 
 		// Count the items in this category
-		$query->select('COUNT(id)');
-		$query->from($table);
-		$query->where('catid = ' . $catid);
+		$query = $db->getQuery()
+			->select('COUNT(id)')
+			->from($table)
+			->whereEquals('catid', $catid);
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
@@ -150,7 +150,7 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 	 * @param   string  $table  table name of component table (column is catid)
 	 * @param   int     $catid  id of the category to check
 	 * @param   object  $data
-	 * @return  mixed   count of items found or false if db error
+	 * @return  mixed   Count of items found or false if db error
 	 */
 	private function _countItemsInChildren($table, $catid, $data)
 	{
@@ -171,11 +171,11 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 		if (count($childCategoryIds))
 		{
 			// Count the items in this category
-			$query = $db->getQuery(true);
-			$query->select('COUNT(id)');
-			$query->from($table);
-			$query->where('catid IN (' . implode(',', $childCategoryIds) . ')');
-			$db->setQuery($query);
+			$query = $db->getQuery()
+				->select('COUNT(id)')
+				->from($table)
+				->whereIn('catid', $childCategoryIds);
+			$db->setQuery($query->toString());
 			$count = $db->loadResult();
 
 			// Check for DB error.
@@ -186,10 +186,8 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 
 			return $count;
 		}
-		else
+
 		// If we didn't have any categories to check, return 0
-		{
-			return 0;
-		}
+		return 0;
 	}
 }

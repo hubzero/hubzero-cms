@@ -216,6 +216,25 @@ class Offering extends SiteController
 		// Build pathway
 		$this->_buildPathway();
 
+		// If an active area was specified
+		// check that it's a valid plugin
+		if ($active = Request::getCmd('active'))
+		{
+			$plugins = Event::trigger('courses.onCourse', array(
+				$this->course,
+				$this->course->offering(),
+				true
+			));
+			foreach ($plugins as $plugin)
+			{
+				$available[] = $plugin->get('name');
+			}
+			if (!in_array($active, $available))
+			{
+				App::abort(404, Lang::txt('COM_COURSES_ERROR_PAGE_NOT_FOUND'));
+			}
+		}
+
 		// Trigger the functions that return the areas we'll be using
 		$plugins = Event::trigger('courses.onCourse', array(
 			$this->course,

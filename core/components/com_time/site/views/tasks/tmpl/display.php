@@ -165,23 +165,26 @@ HTML::behavior('core');
 									<?php echo Lang::txt('COM_TIME_TASKS_ASSIGNEE_SHORT'); ?>
 							</a>
 						</div>
-						<div class="th">
+						<div class="th priority-4">
 							<a <?php if ($sortcol == 'liaison.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=liaison.name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_LIAISON_SHORT'); ?>
 							</a>
 						</div>
-						<div class="th">
+						<div class="th priority-3">
 							<a <?php if ($sortcol == 'start_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=start_date&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_START_DATE'); ?>
 							</a>
 						</div>
-						<div class="th">
+						<div class="th priority-3">
 							<a <?php if ($sortcol == 'end_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=end_date&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_END_DATE'); ?>
 							</a>
+						</div>
+						<div class="th">
+							<?php echo Lang::txt('COM_TIME_HUBS_TOTAL_HOURS'); ?>
 						</div>
 					</div>
 				</div>
@@ -217,22 +220,28 @@ HTML::behavior('core');
 									<?php echo $task->assignee->name; ?>
 								</div>
 							</div>
-							<div class="td">
+							<div class="td priority-4">
 								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_LIAISON_SHORT'); ?>:</div>
 								<div class="small-content">
 									<?php echo $task->liaison->name; ?>
 								</div>
 							</div>
-							<div class="td">
+							<div class="td priority-3">
 								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_START_DATE'); ?>:</div>
 								<div class="small-content">
 									<?php echo ($task->start_date != '0000-00-00') ? Date::of($task->start_date)->toLocal('m/d/y') : ''; ?>
 								</div>
 							</div>
-							<div class="td">
+							<div class="td priority-3">
 								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_END_DATE'); ?>:</div>
 								<div class="small-content">
 									<?php echo ($task->end_date != '0000-00-00') ? Date::of($task->end_date)->toLocal('m/d/y') : ''; ?>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_HUBS_TOTAL_HOURS'); ?>:</div>
+								<div class="small-content">
+									<?php echo $task->totalHours(); ?>
 								</div>
 							</div>
 						</div>

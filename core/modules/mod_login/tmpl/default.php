@@ -37,13 +37,13 @@ $hash  = App::hash(App::get('client')->name . ':authenticator');
 
 if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false))
 {
-	$primary  = $cookie->authenticator;
+	$primary = $cookie->authenticator;
 	$user     = User::getInstance($cookie->user_id);
 	$user_img = $cookie->user_img;
 	Request::setVar('primary', $primary);
 }
 
-$usersConfig = Component::params('com_users');
+$usersConfig = Component::params('com_members');
 $primary     = Request::getWord('primary', false);
 
 // use some reflections to inspect plugins for special behavior (added for shibboleth)
@@ -51,6 +51,9 @@ $refl = array();
 foreach ($authenticators as $a):
 	$refl[$a['name']] = new \ReflectionClass("plgAuthentication{$a['name']}");
 endforeach;
+
+$current  = Hubzero\Utility\Uri::getInstance()->toString();
+$current .= (strstr($current, '?') ? '&' : '?');
 ?>
 <div class="hz_user">
 
@@ -94,7 +97,7 @@ endforeach;
 			</div>
 			<div class="or"></div>
 			<div class="local">
-				<a href="<?php echo Route::url(JURI::current() . '?primary=hubzero&reset=1' . $returnQueryString); ?>">
+				<a href="<?php echo $current . 'primary=hubzero&reset=1';// . $returnQueryString; ?>">
 					<?php echo Lang::txt('Sign in with your %s account', ((isset($site_display)) ? $site_display : Config::get('sitename'))); ?>
 				</a>
 			</div>
@@ -138,8 +141,8 @@ endforeach;
 				<input type="hidden" name="option" value="com_users" />
 				<input type="hidden" name="authenticator" value="hubzero" />
 				<input type="hidden" name="task" value="user.login" />
-				<input type="hidden" name="return" value="<?php echo $return; ?>" />
-				<input type="hidden" name="freturn" value="<?php echo $freturn; ?>" />
+				<input type="hidden" name="return" value="<?php echo $this->escape($return); ?>" />
+				<input type="hidden" name="freturn" value="<?php echo $this->escape($freturn); ?>" />
 				<?php echo Html::input('token'); ?>
 			</form>
 		</div>
@@ -147,7 +150,7 @@ endforeach;
 <?php endif; ?>
 <?php if (isset($user) && is_object($user)) : ?>
 	<div class="others">
-		<a href="<?php echo Route::url(Request::current() . '?reset=1' . $returnQueryString); ?>">
+		<a href="<?php echo Route::url($current . 'reset=1'); // . $returnQueryString); ?>">
 			<?php echo Lang::txt('Sign in with a different account'); ?>
 		</a>
 	</div>

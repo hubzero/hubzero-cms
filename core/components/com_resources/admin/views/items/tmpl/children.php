@@ -245,11 +245,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// See if it's checked out or not
-	if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != User::get('id'))
+	if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')) // && $row->checked_out != User::get('id'))
 	{
-		//$checked = Html::grid('checkedOut', $row, $i);
-		//$checked = Html::asset('image', 'admin/checked_out.png', null, null, true);
-		$checked = '<span class="checkedout"></span>';
+		$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
+		$time = Date::of($row->checked_out_time)->toLocal('H:i');
+
+		$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
+		$checked .= '<span class="checkedout"></span>' . '</span>';
+
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
 				 : '';
@@ -260,7 +263,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	else
 	{
-		$checked = $this->grid('id', $i, $row->child_id, false, 'id');
+		$checked = Html::grid('id', $i, $row->child_id, false, 'id');
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -297,7 +300,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
 						<span class="access <?php echo $color_access; ?>">
-							<span><?php echo $row->groupname; ?></span>
+							<span><?php echo Lang::txt($row->groupname); ?></span>
 						</span>
 					<?php } else { ?>
 						<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->child_id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">

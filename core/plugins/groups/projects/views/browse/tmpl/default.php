@@ -42,40 +42,50 @@ $this->css();
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<ul id="page_options" class="pluginOptions">
-	<li>
-		<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
-			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
-		</a>
-	</li>
-</ul>
+<?php if ($this->group->published == 1 && User::authorise('core.create', 'com_projects')) { ?>
+	<ul id="page_options" class="pluginOptions">
+		<li>
+			<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
+			</a>
+		</li>
+	</ul>
+<?php } ?>
 
 <?php 
 // Output the submenu view
-$view = new \Hubzero\Plugin\View(array(
-	'folder' => 'groups',
-	'element' => 'projects',
-	'name'   => 'partials',
-	'layout' => 'submenu'
-));
-
-// Pass Variables through to the view
-$view->group = $this->group;
-$view->projectcount = $this->projectcount;
-$view->newcount = $this->newcount;
-$view->tab = 'all';
-$view->display();
+$view = $this->view('submenu', 'partials')
+	->set('group', $this->group)
+	->set('projectcount', $this->projectcount)
+	->set('newcount', $this->newcount)
+	->set('tab', 'all')
+	->display();
 ?>
 
 <section class="main section" id="s-projects">
 	<div class="container">
+		<nav class="entries-filters">
+			<ul class="entries-menu filter-options">
+				<li>
+					<a<?php echo (!$this->filters['filterby'] || $this->filters['filterby'] == 'active') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_FILTER_STATUS_ACTIVE'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filters['filterby'] == 'archived') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all&filterby=archived'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_FILTER_STATUS_ARCHIVED'); ?>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
 		<!-- Placeholder for Group Dashboard -->
 		<?php 
-			$dashboards = Event::trigger('groups.onGroupClassroomprojects', array($this->group));
-			foreach ($dashboards as $dashboard)
-			{
-				echo $dashboard;
-			}
+		$dashboards = Event::trigger('groups.onGroupClassroomprojects', array($this->group));
+		foreach ($dashboards as $dashboard)
+		{
+			echo $dashboard;
+		}
 		?>
 		<!-- End placeholder for Group Dashboard -->
 

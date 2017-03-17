@@ -665,7 +665,7 @@ class Utils
 		{
 			// Uh-oh. Something went wrong...
 			$retval = false;
-			$this->setError($results[0]);
+			//throw new \Exception($results[0]);
 		}
 
 		if (is_array($results))

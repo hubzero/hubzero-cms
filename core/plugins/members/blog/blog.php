@@ -320,8 +320,6 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Filters for returning results
 		$filters = array(
 			'limit'      => Request::getInt('limit', Config::get('list_limit')),
@@ -436,7 +434,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		if (!$row->get('id'))
+		if (!$row->get('id') || $row->isDeleted())
 		{
 			App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
 		}
@@ -694,7 +692,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				'action'      => 'deleted',
 				'scope'       => 'blog.entry',
 				'scope_id'    => $id,
-				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_DELETED', $entry->get('title')),
 				'details'     => array(
 					'title' => $entry->get('title'),
 					'url'   => Route::url($entry->link())

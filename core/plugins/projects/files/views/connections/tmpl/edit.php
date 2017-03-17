@@ -65,16 +65,12 @@ $this->css()
 			if ($data = $this->connection->get('params'))
 			{
 				$data = json_decode($data, true);
-				//$data = new Hubzero\Config\Registry($data);
-				//$form->bind($data);
 			}
 			$data = new Hubzero\Config\Registry($data);
 
-			$fieldSet = $form->getFieldset('credentials');
+			$fieldSet = $form->getFieldset('user_credentials');
 
-			if (!count($fieldSet)) :
-				?><div class="input-wrap"><p class="warning"><?php echo Lang::txt('COM_PLUGINS_OPTIONS_NOT_FOUND'); ?></p></div><?php
-			else :
+			if (count($fieldSet)) :
 				?>
 				<fieldset class="panelform">
 					<legend><?php echo Lang::txt('Credentials'); ?></legend>
@@ -99,7 +95,7 @@ $this->css()
 
 			<div class="input-wrap">
 				<label for="param-share" class="option">
-					<input type="checkbox" class="option" name="shareconnection" id="param-share" value="1" <?php echo ($this->connection->isShared() ? ' checked="checked"' : ''); ?> />
+					<input type="checkbox" class="option" name="shareconnection" id="param-share" value="1" <?php echo $this->connection->isShared() ? ' checked="checked"' : ''; ?> />
 					<?php echo Lang::txt('Share connection with everyone in the project?'); ?>
 				</label>
 			</div>

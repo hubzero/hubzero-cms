@@ -440,12 +440,15 @@ class Changelog extends Object
 	 */
 	public function diff($before, $after)
 	{
-		if ($after->get('group') != $before->get('group'))
+		if ($after->get('group_id') != $before->get('group_id'))
 		{
+			$bg = \Hubzero\User\Group::getInstance($before->get('group_id'));
+			$ag = \Hubzero\User\Group::getInstance($after->get('group_id'));
+
 			$this->changed(
 				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP'),
-				$before->get('group'),
-				$after->get('group')
+				($bg ? $bg->get('cn') : Lang::txt('COM_SUPPORT_NONE')),
+				($ag ? $ag->get('cn') : Lang::txt('COM_SUPPORT_NONE'))
 			);
 		}
 		if ($after->get('severity') != $before->get('severity'))
@@ -529,4 +532,3 @@ class Changelog extends Object
 		return json_encode($this->_log);
 	}
 }
-

@@ -30,11 +30,11 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		}
 
 		$db = App::get('db');
-		$db->setQuery(
-			'DELETE FROM '.$db->quoteName('#__session') .
-			' WHERE '.$db->quoteName('userid').' = '.(int) $user['id']
-		);
-		$db->Query();
+		$query = $db->getQuery()
+			->delete('#__session')
+			->whereEquals('userid', (int) $user['id']);
+		$db->setQuery($query->toString());
+		$db->query();
 
 		return true;
 	}
@@ -52,92 +52,138 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
+		// Existing user - nothing to do...yet.
+		if (!$isnew)
+		{
+			return;
+		}
+
 		// Initialise variables.
 		$config = App::get('config');
-		$mail_to_user = $this->params->get('mail_to_user', 0); // [!] HUBzero - changed default value
 
-		if ($isnew)
+		if (App::isSite())
 		{
-			// TODO: Suck in the frontend registration emails here as well. Job for a rainy day.
-
-			if (App::isAdmin())
+			if ($this->params->get('mail_to_admin', 1))
 			{
-				if ($mail_to_user)
+				$lang = App::get('language');
+				$lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'site') ||
+				$lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'administrator') ||
+				$lang->load('plg_user_' . $this->_name, __DIR__);
+
+				$emailAddress = $config->get('mailfrom');
+
+				$eview = new Hubzero\Mail\View(array(
+					'base_path'     => __DIR__,
+					'name'          => 'emails',
+					'layout'        => 'admincreate_plain',
+					'override_path' => ''
+				));
+				$eview->addTemplatePath(App::get('template')->path . '/html/plg_' . $this->_type . '_' . $this->_name);
+
+				$eview->set('user', $user);
+				$eview->set('sitename', $config->get('sitename'));
+
+				$plain = $eview->loadTemplate(false);
+				$plain = str_replace("\n", "\r\n", $plain);
+
+				$eview->setLayout('admincreate_html');
+				$html = $eview->loadTemplate();
+				$html = str_replace("\n", "\r\n", $html);
+
+				// Assemble the email data
+				$mail = new Hubzero\Mail\Message();
+				$mail
+					->addFrom(
+						$emailAddress,
+						Lang::txt('PLG_USER_JOOMLA_EMAIL_ADMIN', $config->get('sitename'))
+					)
+					->addTo($emailAddress)
+					->addHeader('X-Component', Request::getCmd('option', 'com_members'))
+					->addHeader('X-Component-Object', 'user_creation_admin_notification')
+					->setSubject(Lang::txt('PLG_USER_JOOMLA_EMAIL_ACCOUNT_CREATION', $config->get('sitename')))
+					->addPart($plain, 'text/plain')
+					->addPart($html, 'text/html');
+
+				if (!$mail->send())
 				{
-					$lang = App::get('language');
-					$defaultLocale = $lang->getTag();
-
-					// Look for user language. Priority:
-					//  1. User frontend language
-					//  2. User backend language
-					$userParams = new Hubzero\Config\Registry($user['params']);
-					$userLocale = $userParams->get('language', $userParams->get('admin_language', $defaultLocale));
-
-					if ($userLocale != $defaultLocale)
-					{
-						$lang->setLanguage($userLocale);
-					}
-
-					$lang->load('plg_user_joomla', PATH_APP . DS . 'bootstrap' . DS . 'site') ||
-					$lang->load('plg_user_joomla', PATH_APP . DS . 'bootstrap' . DS . 'administrator') ||
-					$lang->load('plg_user_joomla', __DIR__);
-
-					// Compute the mail subject.
-					$emailSubject = Lang::txt(
-						'PLG_USER_JOOMLA_NEW_USER_EMAIL_SUBJECT',
-						$user['name'],
-						$config->get('sitename')
-					);
-
-					// Compute the mail body.
-					$emailBody = Lang::txt(
-						'PLG_USER_JOOMLA_NEW_USER_EMAIL_BODY',
-						$user['name'],
-						$config->get('sitename'),
-						Request::root(),
-						$user['username'],
-						$user['password_clear']
-					);
-
-					// Assemble the email data...the sexy way!
-					$mail = new \Hubzero\Mail\Message();
-					$mail
-						->addFrom(
-							$config->get('mailfrom'),
-							$config->get('fromname')
-						)
-						->addTo($user['email'])
-						->setSubject($emailSubject)
-						->setBody($emailBody);
-
-					// Set application language back to default if we changed it
-					if ($userLocale != $defaultLocale)
-					{
-						$lang->setLanguage($defaultLocale);
-					}
-
-					if (!$mail->send())
-					{
-						// TODO: Probably should raise a plugin error but this event is not error checked.
-						throw new Exception(Lang::txt('ERROR_SENDING_EMAIL'), 500);
-					}
+					// TODO: Probably should raise a plugin error but this event is not error checked.
+					Log::error(Lang::txt('PLG_USER_JOOMLA_EMAIL_ERROR', $emailAddress));
 				}
 			}
 		}
-		else
+
+		// TODO: Suck in the frontend registration emails here as well. Job for a rainy day.
+		if (App::isAdmin())
 		{
-			// Existing user - nothing to do...yet.
+			if ($this->params->get('mail_to_user', 0))
+			{
+				$lang = App::get('language');
+				$defaultLocale = $lang->getTag();
+
+				// Look for user language. Priority:
+				//  1. User frontend language
+				//  2. User backend language
+				$userParams = new Hubzero\Config\Registry($user['params']);
+				$userLocale = $userParams->get('language', $userParams->get('admin_language', $defaultLocale));
+
+				if ($userLocale != $defaultLocale)
+				{
+					$lang->setLanguage($userLocale);
+				}
+
+				$lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'site') ||
+				$lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'administrator') ||
+				$lang->load('plg_user_' . $this->_name, __DIR__);
+
+				// Compute the mail subject.
+				$emailSubject = Lang::txt(
+					'PLG_USER_JOOMLA_NEW_USER_EMAIL_SUBJECT',
+					$user['name'],
+					$config->get('sitename')
+				);
+
+				// Compute the mail body.
+				$emailBody = Lang::txt(
+					'PLG_USER_JOOMLA_NEW_USER_EMAIL_BODY',
+					$user['name'],
+					$config->get('sitename'),
+					Request::root(),
+					$user['username'],
+					$user['password_clear']
+				);
+
+				// Assemble the email data...the sexy way!
+				$mail = new Hubzero\Mail\Message();
+				$mail
+					->addFrom(
+						$config->get('mailfrom'),
+						$config->get('fromname')
+					)
+					->addTo($user['email'])
+					->setSubject($emailSubject)
+					->setBody($emailBody);
+
+				// Set application language back to default if we changed it
+				if ($userLocale != $defaultLocale)
+				{
+					$lang->setLanguage($defaultLocale);
+				}
+
+				if (!$mail->send())
+				{
+					// TODO: Probably should raise a plugin error but this event is not error checked.
+					throw new Exception(Lang::txt('PLG_USER_JOOMLA_EMAIL_ERROR'), 500);
+				}
+			}
 		}
 	}
 
 	/**
 	 * This method should handle any login logic and report back to the subject
 	 *
-	 * @param	array	$user		Holds the user data
-	 * @param	array	$options	Array holding options (remember, autoregister, group)
-	 *
-	 * @return	boolean	True on success
-	 * @since	1.5
+	 * @param   array    $user     Holds the user data
+	 * @param   array    $options  Array holding options (remember, autoregister, group)
+	 * @return  boolean  True on success
 	 */
 	public function onUserLogin($user, $options = array())
 	{
@@ -178,22 +224,21 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		$session->set('user', $instance);
 
 		// Check to see the the session already exists.
-		//$app = JFactory::getApplication();
-		//$app->checkSession();
 		if ((App::get('config')->get('session_handler') != 'database' && (time() % 2 || $session->isNew()))
 		 || (App::get('config')->get('session_handler') == 'database' && $session->isNew()))
 		{
 			if (App::get('config')->get('session_handler') == 'database' && App::has('db'))
 			{
-				$db   = App::get('db');
-				//$user = User::getInstance();
+				$db = App::get('db');
 
-				$query = $db->getQuery(true);
-				$query->select($query->qn('session_id'))
-					->from($query->qn('#__session'))
-					->where($query->qn('session_id') . ' = ' . $query->q($session->getId()));
+				$query = $db->getQuery()
+					->select('session_id')
+					->from('#__session')
+					->whereEquals('session_id', $session->getId())
+					->limit(1)
+					->start(0);
 
-				$db->setQuery($query, 0, 1);
+				$db->setQuery($query->toString());
 				$exists = $db->loadResult();
 
 				// If the session record doesn't exist initialise it.
@@ -205,24 +250,32 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 
 					if ($session->isNew())
 					{
-						$query->insert($query->qn('#__session'))
-							->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
-							->values($query->q($session->getId()) . ', ' . (int) App::get('client')->id . ', ' . $query->q((int) time()) . ', ' . $query->q($ip));
-						$db->setQuery($query);
+						$query = $db->getQuery()
+							->insert('#__session')
+							->values(array(
+								'session_id' => $session->getId(),
+								'client_id'  => (int) App::get('client')->id,
+								'time'       => (int) time(),
+								'ip'         => $ip
+							));
+
+						$db->setQuery($query->toString());
 					}
 					else
 					{
-						$query->insert($query->qn('#__session'))
-							->columns(
-								$query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('guest') . ', ' .
-								$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') .  ', ' . $query->q('ip')
-							)
-							->values(
-								$query->q($session->getId()) . ', ' . (int) App::get('client')->id . ', ' . (int) $instance->get('guest') . ', ' .
-								$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $instance->get('id') . ', ' . $query->q($instance->get('username')) .  ', ' . $query->q($ip)
-							);
+						$query = $db->getQuery()
+							->insert('#__session')
+							->values(array(
+								'session_id' => $session->getId(),
+								'client_id'  => (int) App::get('client')->id,
+								'guest'      => (int) $instance->get('guest'),
+								'time'       => (int) $session->get('session.timer.start'),
+								'userid'     => (int) $instance->get('id'),
+								'username'   => $instance->get('username'),
+								'ip'         => $ip
+							));
 
-						$db->setQuery($query);
+						$db->setQuery($query->toString());
 					}
 
 					// If the insert failed, exit the application.
@@ -245,13 +298,15 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		{
 			// Update the user related fields for the Joomla sessions table.
 			$db = App::get('db');
-			$db->setQuery(
-				'UPDATE '.$db->quoteName('#__session') .
-				' SET '.$db->quoteName('guest').' = '.$db->quote($instance->get('guest')).',' .
-				'	'.$db->quoteName('username').' = '.$db->quote($instance->get('username')).',' .
-				'	'.$db->quoteName('userid').' = '.(int) $instance->get('id') .
-				' WHERE '.$db->quoteName('session_id').' = '.$db->quote($session->getId())
-			);
+			$query = $db->getQuery()
+				->update('#__session')
+				->set(array(
+					'guest'    => $instance->get('guest'),
+					'username' => $instance->get('username'),
+					'userid'   => (int) $instance->get('id')
+				))
+				->whereEquals('session_id', $session->getId());
+			$db->setQuery($query->toString());
 			$db->query();
 		}
 
@@ -264,11 +319,9 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	/**
 	 * This method should handle any logout logic and report back to the subject
 	 *
-	 * @param	array	$user		Holds the user data.
-	 * @param	array	$options	Array holding options (client, ...).
-	 *
-	 * @return	object	True on success
-	 * @since	1.5
+	 * @param   array    $user     Holds the user data.
+	 * @param   array    $options  Array holding options (client, ...).
+	 * @return  boolean  True on success
 	 */
 	public function onUserLogout($user, $options = array())
 	{
@@ -293,11 +346,11 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 
 		// Force logout all users with that userid
 		$db = App::get('db');
-		$db->setQuery(
-			'DELETE FROM '.$db->quoteName('#__session') .
-			' WHERE '.$db->quoteName('userid').' = '.(int) $user['id'] .
-			' AND '.$db->quoteName('client_id').' = '.(int) $options['clientid']
-		);
+		$query = $db->getQuery()
+			->delete('#__session')
+			->whereEquals('userid', (int) $user['id'])
+			->whereEquals('client_id', (int) $options['clientid']);
+		$db->setQuery($query->toString());
 		$db->query();
 
 		return true;
@@ -322,21 +375,21 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		}
 
 		//TODO : move this out of the plugin
-		$config	= Component::params('com_users');
+		$config = Component::params('com_members');
 
 		// Default to Registered.
 		$defaultUserGroup = $config->get('new_usertype', 2);
 
-		//$acl = JFactory::getACL();
-
-		$instance->set('id',             0);
-		$instance->set('name',           $user['fullname']);
-		$instance->set('username',       $user['username']);
+		$instance->set('id', 0);
+		$instance->set('name', $user['fullname']);
+		$instance->set('username', $user['username']);
 		//$instance->set('password_clear', ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
-		$instance->set('email',          $user['email']);  // Result should contain an email (check)
-		$instance->set('usertype',       'deprecated');
-		$instance->set('accessgroups',   array($defaultUserGroup));
-		$instance->set('activation',     1);
+		$instance->set('email', $user['email']);  // Result should contain an email (check)
+		$instance->set('usertype', 'deprecated');
+		$instance->set('accessgroups', array($defaultUserGroup));
+		$instance->set('activation', 1);
+		$instance->set('loginShell', '/bin/bash');
+		$instance->set('ftpShell', '/usr/lib/sftp-server');
 
 		// Check joomla user activation setting
 		// 0 = automatically confirmed

@@ -29,20 +29,27 @@ THE SOFTWARE.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install version="1.5" type="plugin" group="system">
+<extension version="1.5" type="plugin" group="system">
 	<name>System - Incomplete</name>
 	<author>HUBzero</author>
+	<creationDate>June 2012</creationDate>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Routing plugin to check user registration status for missing/required fields</description>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<description>PLG_SYSTEM_INCOMPLETE_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="incomplete">incomplete.php</filename>
 	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_incomplete.ini</language>
+		<language tag="en-GB">en-GB.plg_system_incomplete.sys.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="exceptions" type="textarea" rows="15" cols="40" default="" label="Routing Exceptions" description="A list of routes to be allowed even when the user's profile is incomplete. One rule per line, composed of dot notation: component.controller.task" />
+				<field name="exceptions" type="textarea" rows="15" cols="40" default="" label="PLG_SYSTEM_INCOMPLETE_EXCEPTIONS_LABEL" description="PLG_SYSTEM_INCOMPLETE_EXCEPTIONS_DESC" />
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

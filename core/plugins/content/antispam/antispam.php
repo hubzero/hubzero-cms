@@ -51,9 +51,35 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentBeforeSave($context, $article, $isNew)
 	{
+		// Only run for site
 		if (!App::isSite())
 		{
 			return;
+		}
+
+		// Don't bother with super admins
+		if (User::authorise('core.admin'))
+		{
+			return;
+		}
+
+		// Check if administrators are whitelisted
+		if ($this->params->get('wl_groups') == 'admin' && User::authorise('core.manage'))
+		{
+			return;
+		}
+		// Check the users whitelist
+		$wl_usernames = ($this->params->get('wl_usernames'));
+
+		if ($wl_usernames)
+		{
+			$usernames = array_map('trim', explode(',', $wl_usernames));
+
+			if (in_array(User::get('username'), $usernames))
+			{
+				// user whitelisted, do not check for spam
+				return;
+			}
 		}
 
 		if ($article instanceof \Hubzero\Base\Object || $article instanceof \Hubzero\Database\Relational)

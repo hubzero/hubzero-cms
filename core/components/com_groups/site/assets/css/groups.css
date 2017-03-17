@@ -4,7 +4,9 @@
 #introduction:after {
 	content: "\f042";
 }
-
+.filter-options select {
+	margin-right: 1em;
+}
 .group-list {
 	overflow: hidden;
 	margin: 10px 0 0 0;
@@ -130,8 +132,12 @@
 	}
 	.groups-container .group-details {
 		padding: 1em;
-		min-height: 6.5em;
+		height: 6.7em;
 		text-align: center;
+		overflow: hidden;
+	}
+	.firefox .groups-container .group-details {
+		height: 6.9em;
 	}
 	.groups-container img {
 		height: 100%;
@@ -175,6 +181,16 @@
 		display: block;
 		font-size: 85%;
 	}
+
+	.groups-container .group-title {
+		display: block;
+		font-size: 0.9rem;
+		line-height: 1.2rem;
+		height: 3.6rem;
+		overflow: hidden;
+		border: none;
+	}
+	
 /* Group member status */
 	.group-membership-status {
 		border: 1px solid #ddd;
@@ -213,6 +229,7 @@
 		color: #aaa;
 		text-align: center;
 		font-size: 85%;
+		min-height: 6em;
 	}
 	.group-meta span {
 		color: #666;
@@ -821,10 +838,11 @@
 		position: relative;
 	}
 	#group_options > li {
-		margin: 0;
+		text-align: center;
+		margin: 1em 0 0 0;
 		padding: 0;
 	}
-	#group_options .invited,
+	/*#group_options .invited,
 	#group_options .join,
 	#group_options .request,
 	#group_options .login {
@@ -851,14 +869,14 @@
 	}
 	#page_options .pending {
 		color: #A30;
-	}
+	}*/
 	#group_options .btn-group {
 		display: block;
+		text-align: left;
 	}
 	#group_options .btn-group > a {
 		width: 83%;
 	}
-
 	#group_options .btn-group > .btn {
 		border-color: #000;
 		background: #444;
@@ -2322,7 +2340,7 @@ fieldset.assignment label {
 		display: table-cell;
 		vertical-align: top;
 		width: 100%;
-		position: static;
+		/*position: static;*/
 	}
 	#page_menu {
 		margin: 25px 0;

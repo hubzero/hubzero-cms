@@ -32,15 +32,16 @@
 
 namespace Components\Time\Site;
 
-require_once         __DIR__  . DS . 'controllers' . DS . 'base.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'hub.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'task.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'record.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'contact.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'permissions.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'proxy.php';
-require_once dirname(__DIR__) . DS . 'models'      . DS . 'liaison.php';
-require_once dirname(__DIR__) . DS . 'helpers'     . DS . 'filters.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'base.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'hub.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'allotment.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'task.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'record.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'contact.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'proxy.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'liaison.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'filters.php';
 
 $controllerName = Request::getCmd('controller', Request::getCmd('view', 'overview'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -53,4 +54,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

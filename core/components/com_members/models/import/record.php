@@ -61,6 +61,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	private $_profile = array();
 
 	/**
+	 * Handlers instances container
+	 *
+	 * @var  array
+	 */
+	protected static $handlers = array();
+
+	/**
 	 *  Constructor
 	 *
 	 * @param   mixes   $raw      Raw data
@@ -76,7 +83,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		$this->_mode    = strtoupper($mode);
 
 		// Core objects
-		$this->_user    = User::getInstance();
+		//$this->_user    = User::getInstance();
 		$this->_profile = array();
 
 		// Create objects
@@ -105,11 +112,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			// Map profile data
 			$this->_mapEntryData();
 
-			// Map tags
-			$this->_mapTagsData();
-
-			// Map groups
-			$this->_mapGroupsData();
+			// Map extras
+			$this->_mapExtraData();
 		}
 		catch (Exception $e)
 		{
@@ -168,13 +172,39 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			}
 		}
 
+		$keys = array();
+		if ($this->_mode == 'PATCH')
+		{
+			foreach ($this->_profile as $k => $p)
+			{
+				if (!$p)
+				{
+					continue;
+				}
+
+				if (is_array($p) && empty($p))
+				{
+					continue;
+				}
+
+				$keys[] = $k;
+			}
+		}
+
 		// Validate profile data
-		$fields = \Components\Members\Models\Profile\Field::all()
+		$f = \Components\Members\Models\Profile\Field::all()
 			->including(['options', function ($option){
 				$option
 					->select('*');
 			}])
-			->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN);
+
+		if (!empty($keys))
+		{
+			$f->whereIn('name', $keys);
+		}
+
+		$fields = $f
 			->ordered()
 			->rows();
 
@@ -204,7 +234,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// Are we running in dry run mode?
 		if ($dryRun || count($this->record->errors) > 0)
 		{
-			$this->record->entry = $this->record->entry->toObject();
+			$entry = $this->record->entry->toArray();
+
+			$this->record->entry = new stdClass;
+
+			foreach ($entry as $field => $value)
+			{
+				$this->record->entry->$field = $value;
+			}
 			foreach ($this->_profile as $field => $value)
 			{
 				$this->record->entry->$field = $value;
@@ -220,18 +257,24 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			// Save profile
 			$this->_saveEntryData();
 
-			// Save tags
-			$this->_saveTagsData();
-
-			// Save groups
-			$this->_saveGroupsData();
+			// Save extras
+			$this->_saveExtraData();
 		}
 		catch (Exception $e)
 		{
 			array_push($this->record->errors, $e->getMessage());
 		}
 
-		$this->record->entry = $this->record->entry->toObject();
+		$entry = $this->record->entry->toArray();
+
+		$this->record->entry = new stdClass;
+
+		foreach ($entry as $field => $value)
+		{
+			$this->record->entry->$field = $value;
+		}
+
+		//$this->record->entry = $this->record->entry->toObject();
 		foreach ($this->_profile as $field => $value)
 		{
 			$this->record->entry->$field = $value;
@@ -290,9 +333,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
 			// These two need some extra loving and care, so we skip them for now...
-			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber' || $key == 'groups')
+			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber' || $this->hasHandler($key))
 			{
 				continue;
+			}
+
+			if (function_exists('mb_convert_encoding'))
+			{
+				$val = mb_convert_encoding($val, 'UTF-8');
 			}
 
 			// In PATCH mode, skip fields with no values
@@ -333,8 +381,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		if (!$this->record->entry->get('givenName') && !$this->record->entry->get('surame') && $this->record->entry->get('name'))
 		{
 			$name = explode(' ', $this->record->entry->get('name'));
-			$this->record->entry->set('givenName',  array_shift($name));
-			$this->record->entry->set('surname',    array_pop($name));
+			$this->record->entry->set('givenName', array_shift($name));
+			$this->record->entry->set('surname', array_pop($name));
 			$this->record->entry->set('middleName', implode(' ', $name));
 		}
 
@@ -466,11 +514,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				else
 				{
 					$db = \App::get('db');
-					$query = $db->getQuery(true)
+					$query = $db->getQuery()
 						->select('id')
 						->from('#__usergroups')
-						->where('title=' . $db->quote($this->raw->usertype));
-					$db->setQuery($query);
+						->whereEquals('title', $this->raw->usertype);
+					$db->setQuery($query->toString());
 					$newUsertype = (int)$db->loadResult();
 				}
 			}
@@ -482,11 +530,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				if (!$newUsertype)
 				{
 					$db = \App::get('db');
-					$query = $db->getQuery(true)
+					$query = $db->getQuery()
 						->select('id')
 						->from('#__usergroups')
-						->where('title = "Registered"');
-					$db->setQuery($query);
+						->whereEquals('title', 'Registered');
+					$db->setQuery($query->toString());
 					$newUsertype = $db->loadResult();
 				}
 			}
@@ -508,6 +556,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->record->entry->set('accessgroups', array($newUsertype));
 			$this->record->entry->set('registerDate', $d->toSql());
 			$this->record->entry->set('password', $this->raw->password);
+			if (!$this->record->entry->get('loginShell'))
+			{
+				$this->record->entry->set('loginShell', '/bin/bash');
+			}
+			if (!$this->record->entry->get('ftpShell'))
+			{
+				$this->record->entry->set('ftpShell', '/usr/lib/sftp-server');
+			}
 
 			if (!$this->record->entry->get('activation', null))
 			{
@@ -585,137 +641,77 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	}
 
 	/**
-	 * Map Tags
+	 * Map extra data
 	 *
 	 * @return  void
 	 */
-	private function _mapTagsData()
+	private function _mapExtraData()
 	{
-		if (isset($this->raw->interests))
+		foreach ($this->handlers() as $handler)
 		{
-			$this->record->tags = $this->_multiValueField($this->raw->interests);
-		}
-	}
+			$this->record = $handler->bind($this->raw, $this->record, $this->_mode);
 
-	/**
-	 * Save tags
-	 *
-	 * @return  void
-	 */
-	private function _saveTagsData()
-	{
-		if ($this->_mode == 'PATCH' && !$this->record->tags)
-		{
-			return;
-		}
-
-		// save tags
-		$tags = new \Components\Members\Models\Tags($this->record->entry->get('id'));
-		$tags->setTags($this->record->tags, $this->_user->get('id'));
-	}
-
-	/**
-	 * Map groups
-	 *
-	 * @return  void
-	 */
-	private function _mapGroupsData()
-	{
-		if (isset($this->raw->groups) && $this->raw->groups != '')
-		{
-			$this->record->groups = (array)$this->_multiValueField($this->raw->groups);
-
-			foreach ($this->record->groups as $i => $gid)
+			foreach ($handler->getErrors() as $error)
 			{
-				$gid = trim($gid, '"');
-				$gid = trim($gid, "'");
+				array_push($this->record->notices, $error);
+			}
+		}
+	}
 
-				$this->record->groups[$i] = $gid;
+	/**
+	 * Save extra data
+	 *
+	 * @return  void
+	 */
+	private function _saveExtraData()
+	{
+		foreach ($this->handlers() as $handler)
+		{
+			$this->record = $handler->store($this->raw, $this->record, $this->_mode);
 
-				$group = \Hubzero\User\Group::getInstance($gid);
-				if (!$group || !$group->get('gidNumber'))
+			foreach ($handler->getErrors() as $error)
+			{
+				array_push($this->record->notices, $error);
+			}
+		}
+	}
+
+	/**
+	 * Return a list of all available processors.
+	 *
+	 * @return  array
+	 */
+	public function handlers()
+	{
+		foreach (glob(__DIR__ . DIRECTORY_SEPARATOR . 'handler' . DIRECTORY_SEPARATOR . '*.php') as $path)
+		{
+			$type = basename($path, '.php');
+
+			if (!isset(self::$handlers[$type]))
+			{
+				$class = __NAMESPACE__ . '\\Handler\\' . ucfirst($type);
+
+				if (!class_exists($class))
 				{
-					array_push($this->record->notices, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
-					continue;
+					include_once $path;
 				}
+
+				self::$handlers[$type] = new $class;
 			}
 		}
+
+		return self::$handlers;
 	}
 
 	/**
-	 * Save groups
+	 * Is there a handler for this type?
 	 *
-	 * @return  void
+	 * @param   string  $type
+	 * @return  bool
 	 */
-	private function _saveGroupsData()
+	public function hasHandler($type)
 	{
-		if (!isset($this->record->groups))
-		{
-			return;
-		}
-
-		if ($this->_mode == 'PATCH' && !$this->record->groups)
-		{
-			return;
-		}
-
-		$id = $this->record->entry->get('id');
-
-		// Get all the user's current groups
-		$existing = \Hubzero\User\Helper::getGroups($id);
-		$gids = array();
-		if ($existing)
-		{
-			foreach ($existing as $e)
-			{
-				$gids[] = $e->gidNumber;
-			}
-		}
-
-		// Add user to specified groups
-		$added = array();
-		foreach ($this->record->groups as $gid)
-		{
-			$group = \Hubzero\User\Group::getInstance($gid);
-			if (!$group || !$group->get('gidNumber'))
-			{
-				array_push($this->record->notices, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
-				continue;
-			}
-
-			// Track groups added to
-			$added[] = $group->get('gidNumber');
-
-			// No need to add if already in the group
-			if (in_array($group->get('gidNumber'), $gids))
-			{
-				continue;
-			}
-
-			$group->add('members', array($id));
-			$group->update();
-		}
-
-		// Remove user from all old groups that weren't in the new list
-		foreach ($gids as $gid)
-		{
-			if (in_array($gid, $added))
-			{
-				continue;
-			}
-
-			$group = \Hubzero\User\Group::getInstance($gid);
-			if (!$group || !$group->get('gidNumber'))
-			{
-				continue;
-			}
-
-			$group->remove('members', array($id));
-			$group->remove('managers', array($id));
-			$group->remove('invitees', array($id));
-			$group->remove('applicants', array($id));
-			$group->update();
-		}
+		return isset(self::$handlers[$type]);
 	}
 
 	/**
@@ -725,7 +721,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 *
 	 * @return  string
 	 */
-	public function toString()
+	/*public function toString()
 	{
 		// Reflect on class to get private or protected props
 		$privateProperties = with(new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PROTECTED);
@@ -737,13 +733,23 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			unset($this->$name);
 		}
 
-		$this->record->entry = $this->record->entry->toObject();
+		if ($this->record->entry instanceof \Hubzero\User\User)
+		{
+			$entry = $this->record->entry->toArray();
+
+			$this->record->entry = new stdClass;
+
+			foreach ($entry as $field => $value)
+			{
+				$this->record->entry->$field = $value;
+			}
+		}
 		foreach ($this->_profile as $field => $value)
 		{
 			$this->record->entry->$field = $value;
 		}
 
 		// Output as json
-		return json_encode($this);
-	}
+		return $this;
+	}*/
 }

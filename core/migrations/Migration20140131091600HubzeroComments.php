@@ -45,28 +45,57 @@ class Migration20140131091600HubzeroComments extends Base
 				foreach ($results as $r)
 				{
 					$record = new $cls($this->db);
-					if (substr($r->category, -7) == 'comment')
+
+					if ($record instanceof \Hubzero\Database\Relational)
 					{
-						if (isset($parents[$r->referenceid]))
+						$data = array(
+							'content'    => $r->comment,
+							'created'    => $r->added,
+							'created_by' => $r->added_by,
+							'state'      => $r->state,
+							'anonymous'  => $r->anonymous,
+							'notify'     => $r->email,
+							'item_id'    => $r->referenceid,
+							'item_type'  => $r->category
+						);
+
+						if (substr($r->category, -7) == 'comment')
 						{
-							$record->parent    = $parents[$r->referenceid]['id'];
-							$record->item_id   = $parents[$r->referenceid]['referenceid'];
-							$record->item_type = $parents[$r->referenceid]['category'];
+							if (isset($parents[$r->referenceid]))
+							{
+								$data['parent']    = $parents[$r->referenceid]['id'];
+								$data['item_id']   = $parents[$r->referenceid]['referenceid'];
+								$data['item_type'] = $parents[$r->referenceid]['category'];
+							}
 						}
+
+						$record
+							->set($data)
+							->save();
 					}
 					else
 					{
-						$record->item_id = $r->referenceid;
-						$record->item_type = $r->category;
-					}
+						$record->item_id    = $r->referenceid;
+						$record->item_type  = $r->category;
+						$record->content    = $r->comment;
+						$record->created    = $r->added;
+						$record->created_by = $r->added_by;
+						$record->state      = $r->state;
+						$record->anonymous  = $r->anonymous;
+						$record->notify     = $r->email;
 
-					$record->content    = $r->comment;
-					$record->created    = $r->added;
-					$record->created_by = $r->added_by;
-					$record->state      = $r->state;
-					$record->anonymous  = $r->anonymous;
-					$record->notify     = $r->email;
-					$record->store();
+						if (substr($r->category, -7) == 'comment')
+						{
+							if (isset($parents[$r->referenceid]))
+							{
+								$record->parent    = $parents[$r->referenceid]['id'];
+								$record->item_id   = $parents[$r->referenceid]['referenceid'];
+								$record->item_type = $parents[$r->referenceid]['category'];
+							}
+						}
+
+						$record->store();
+					}
 
 					if (substr($r->category, -7) != 'comment' && isset($parents[$r->id]))
 					{

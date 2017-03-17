@@ -41,7 +41,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -75,7 +75,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -92,15 +92,15 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -125,27 +125,27 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
-		$this->model = new \Components\Blog\Models\Archive('group', $group->get('gidNumber'));
+		$this->model = new Components\Blog\Models\Archive('group', $group->get('gidNumber'));
 
-		//are we returning html
+		// are we returning html
 		if ($return == 'html')
 		{
-			//set group members plugin access level
+			// set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//get the group members
+			// get the group members
 			$members = $group->get('members');
 
-			//if set to nobody make sure cant access
+			// if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
 				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
-			//check if guest and force login if plugin access is registered or members
+			// check if guest and force login if plugin access is registered or members
 			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
@@ -159,7 +159,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
-			//check to see if user is member and plugin access requires members
+			// check to see if user is member and plugin access requires members
 			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
@@ -168,10 +168,10 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
-			//user vars
+			// user vars
 			$this->authorized = $authorized;
 
-			//group vars
+			// group vars
 			$this->group      = $group;
 			$this->members    = $members;
 
@@ -181,7 +181,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$this->database   = App::get('db');
 
 			//get the plugins params
-			$this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
+			$this->params = Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
 
 			if ($authorized == 'manager' || $authorized == 'admin')
 			{
@@ -195,31 +195,53 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			switch ($this->action)
 			{
 				// Feeds
-				case 'feed.rss': $this->_feed();   break;
-				case 'feed':     $this->_feed();   break;
-				//case 'comments.rss': $this->_commentsFeed();   break;
-				//case 'comments':     $this->_commentsFeed();   break;
-
+				case 'feed.rss':
+					$this->_feed();
+					break;
+				case 'feed':
+					$this->_feed();
+					break;
 				// Settings
-				case 'savesettings': $arr['html'] = $this->_savesettings(); break;
-				case 'settings':     $arr['html'] = $this->_settings();     break;
-
+				case 'savesettings':
+					$arr['html'] = $this->_savesettings();
+					break;
+				case 'settings':
+					$arr['html'] = $this->_settings();
+					break;
 				// Comments
-				case 'savecomment':   $arr['html'] = $this->_savecomment();   break;
-				case 'newcomment':    $arr['html'] = $this->_newcomment();    break;
-				case 'editcomment':   $arr['html'] = $this->_entry();         break;
-				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
-
+				case 'savecomment':
+					$arr['html'] = $this->_savecomment();
+					break;
+				case 'newcomment':
+					$arr['html'] = $this->_newcomment();
+					break;
+				case 'editcomment':
+					$arr['html'] = $this->_entry();
+					break;
+				case 'deletecomment':
+					$arr['html'] = $this->_deletecomment();
+					break;
 				// Entries
-				case 'save':   $arr['html'] = $this->_save();   break;
-				case 'new':    $arr['html'] = $this->_new();    break;
-				case 'edit':   $arr['html'] = $this->_edit();   break;
-				case 'delete': $arr['html'] = $this->_delete(); break;
-				case 'entry':  $arr['html'] = $this->_entry();  break;
-
+				case 'save':
+					$arr['html'] = $this->_save();
+					break;
+				case 'new':
+					$arr['html'] = $this->_new();
+					break;
+				case 'edit':
+					$arr['html'] = $this->_edit();
+					break;
+				case 'delete':
+					$arr['html'] = $this->_delete();
+					break;
+				case 'entry':
+					$arr['html'] = $this->_entry();
+					break;
 				case 'archive':
 				case 'browse':
-				default: $arr['html'] = $this->_browse(); break;
+				default:
+					$arr['html'] = $this->_browse();
+					break;
 			}
 		}
 
@@ -231,7 +253,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		// Build the HTML meant for the "profile" tab's metadata overview
-		$arr['metadata']['count'] = $this->model->entries($filters)->count();
+		$arr['metadata']['count'] = $this->model->entries($filters)->total();
 
 		return $arr;
 	}
@@ -245,9 +267,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	public function onGroupDelete($group)
 	{
 		// Import needed libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
-		$entries = \Components\Blog\Models\Entry::all()
+		$entries = Components\Blog\Models\Entry::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $group->get('gidNumber'))
 			->rows();
@@ -284,7 +306,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
 		$entries = \Components\Blog\Models\Entry::all()
 			->whereEquals('scope', 'group')
@@ -324,10 +346,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$path = explode('/', $path);
 			$path = array_map('urldecode', $path);
 
-			/*while ($path[0] != 'members' && !empty($path));
-			{
-				array_shift($path);
-			}*/
 			$paths = array();
 			$start = false;
 			foreach ($path as $bit)
@@ -344,8 +362,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 			if (count($paths) >= 2)
 			{
-				array_shift($paths);  // Remove group cn
-				array_shift($paths);  // Remove 'blog'
+				array_shift($paths); // Remove group cn
+				array_shift($paths); // Remove 'blog'
 			}
 			$path = $paths;
 		}
@@ -366,7 +384,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search',''),
+			'search'     => Request::getVar('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -431,8 +449,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Filters for returning results
 		$filters = array(
 			'limit'      => Request::getInt('limit', Config::get('list_limit')),
@@ -441,7 +457,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search',''),
+			'search'     => Request::getVar('search', ''),
 			'created_by' => Request::getInt('author', 0),
 			'state'      => 'public'
 		);
@@ -486,14 +502,14 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($rows as $row)
 			{
-				$item = new \Hubzero\Document\Type\Feed\Item();
+				$item = new Hubzero\Document\Type\Feed\Item();
 
 				// Strip html from feed item description text
 				$item->description = $row->content;
-				$item->description = \Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
+				$item->description = Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
 				if ($this->params->get('feed_entries') == 'partial')
 				{
-					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
+					$item->description = Hubzero\Utility\String::truncate($item->description, 300);
 				}
 				$item->description = '<![CDATA[' . $item->description . ']]>';
 
@@ -517,10 +533,15 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Determine permissions to post an entry
 	 *
-	 * @return     boolean True if user cna post, false if not
+	 * @return  boolean  True if user cna post, false if not
 	 */
 	private function _getPostingPermissions()
 	{
+		if ($this->group->published != 1)
+		{
+			return false;
+		}
+
 		switch ($this->params->get('posting'))
 		{
 			case 1:
@@ -574,7 +595,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		if (!$row->get('id'))
+		if (!$row->get('id') || $row->isDeleted())
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_BLOG_NO_ENTRY_FOUND'));
 			return; // $this->_browse(); Can cause infinite loop
@@ -661,7 +682,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (!$this->authorized || !$this->_getPostingPermissions())
+		if ($this->group->published != 1 || !$this->authorized || !$this->_getPostingPermissions())
 		{
 			App::redirect(
 				$blog,
@@ -717,13 +738,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (!$this->authorized)
-		{
-			$this->setError(Lang::txt('PLG_GROUPS_BLOG_NOT_AUTHORIZED'));
-			return $this->_browse();
-		}
-
-		if (!$this->_getPostingPermissions())
+		if ($this->group->published != 1 || !$this->authorized || !$this->_getPostingPermissions())
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
 			return $this->_browse();
@@ -748,7 +763,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
 		// Instantiate model
-		$row = \Components\Blog\Models\Entry::oneOrNew($entry['id'])->set($entry);
+		$row = Components\Blog\Models\Entry::oneOrNew($entry['id'])->set($entry);
 		if ($row->get('alias') == '')
 		{
 			$alias = $row->automaticAlias($row);
@@ -756,7 +771,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if ($row->isNew())
 		{
-			$item = \Components\Blog\Models\Entry::oneByScope(
+			$item = Components\Blog\Models\Entry::oneByScope(
 				$alias,
 				$this->model->get('scope'),
 				$this->model->get('scope_id')
@@ -828,13 +843,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (!$this->authorized)
-		{
-			$this->setError(Lang::txt('PLG_GROUPS_BLOG_NOT_AUTHORIZED'));
-			return $this->_browse();
-		}
-
-		if (!$this->_getPostingPermissions())
+		if ($this->group->published != 1 || !$this->authorized || !$this->_getPostingPermissions())
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
 			return $this->_browse();
@@ -851,7 +860,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$confirmdel = Request::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = \Components\Blog\Models\Entry::oneOrFail($id);
+		$entry = Components\Blog\Models\Entry::oneOrFail($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
@@ -903,7 +912,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				'action'      => 'deleted',
 				'scope'       => 'blog.entry',
 				'scope_id'    => $id,
-				'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_ENTRY_DELETED', $entry->get('title')),
 				'details'     => array(
 					'title' => $entry->get('title'),
 					'url'   => Route::url($entry->link())
@@ -919,7 +928,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _savecomment()
 	{
@@ -936,6 +945,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		if ($this->group->published != 1)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
+			return $this->_browse();
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -943,7 +958,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$data = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$comment = \Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
+		$comment = Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
 
 		// Store new content
 		if (!$comment->save())
@@ -953,7 +968,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Record the activity
-		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+		$entry = Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
 		$recipients = array(['group', $this->group->get('gidNumber')]);
 
@@ -997,7 +1012,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _deletecomment()
 	{
@@ -1008,6 +1023,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		if ($this->group->published != 1)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
+			return $this->_browse();
+		}
+
 		// Incoming
 		$id = Request::getInt('comment', 0);
 		if (!$id)
@@ -1016,7 +1037,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = \Components\Blog\Models\Comment::oneOrFail($id);
+		$comment = Components\Blog\Models\Comment::oneOrFail($id);
 
 		// Delete all comments on an entry
 		$comment->set('state', $comment::STATE_DELETED);
@@ -1040,7 +1061,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$recipients[] = ['user', $recipient];
 		}
 
-		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+		$entry = Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
@@ -1074,13 +1095,13 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		if ($this->group->published != 1 || ($this->authorized != 'manager' && $this->authorized != 'admin'))
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
 		}
 
-		$settings = \Hubzero\Plugin\Params::oneByPlugin(
+		$settings = Hubzero\Plugin\Params::oneByPlugin(
 			$this->group->gidNumber,
 			$this->_type,
 			$this->_name
@@ -1103,7 +1124,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save blog settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _savesettings()
 	{
@@ -1113,7 +1134,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		if ($this->group->published != 1 || ($this->authorized != 'manager' && $this->authorized != 'admin'))
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -1124,10 +1145,10 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		$settings = Request::getVar('settings', array(), 'post');
 
-		$row = \Hubzero\Plugin\Params::blank()->set($settings);
+		$row = Hubzero\Plugin\Params::blank()->set($settings);
 
 		// Get parameters
-		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
+		$p = new Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
 
 		$row->set('params', $p->toString());
 

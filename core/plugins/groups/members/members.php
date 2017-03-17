@@ -79,14 +79,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
 			'name' => 'members',
 			'title' => Lang::txt('PLG_GROUPS_MEMBERS'),
-			'default_access' => $this->params->get('plugin_access','members'),
+			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => 'f007'
 		);
@@ -96,15 +96,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -117,7 +117,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'metadata'=>''
 		);
 
-		//get this area details
+		// Get this area details
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
@@ -139,24 +139,24 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Only perform the following if this is the active tab/plugin
 		if ($returnhtml)
 		{
-			//set group members plugin access level
+			// Set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//get the group members
+			// Get the group members
 			$members = $group->get('members');
 
-			//if set to nobody make sure cant access
+			// If set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
 				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
-			//check if guest and force login if plugin access is registered or members
+			// Check if guest and force login if plugin access is registered or members
 			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
+				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -166,7 +166,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
-			//check to see if user is member and plugin access requires members
+			// Check to see if user is member and plugin access requires members
 			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
@@ -181,8 +181,13 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			$this->css('members.css')
 			     ->js('members.js');
 
-			$gparams = new \Hubzero\Config\Registry($group->get('params'));
+			$gparams = new Hubzero\Config\Registry($group->get('params'));
 			$this->membership_control = $gparams->get('membership_control', 1);
+
+			if ($group->published != 1)
+			{
+				$this->membership_control = 0;
+			}
 
 			$oparams = Component::params($this->_option);
 			$this->display_system_users = $oparams->get('display_system_users', 'no');
@@ -245,14 +250,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				{
 					$view->filter = '';
 				}
-				$view->role_filter = Request::getVar('role_filter','');
+				$view->role_filter = Request::getVar('role_filter', '');
 
 				if ($view->authorized != 'manager' && $view->authorized != 'admin')
 				{
 					$view->filter = ($view->filter == 'managers') ? $view->filter : 'members';
 				}
 
-				try {
+				try
+				{
 					// Get messages plugin access level
 					$view->messages_acl = \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages');
 				}
@@ -264,7 +270,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 				//get all member roles
 				$db = App::get('db');
-				$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($group->get('gidNumber'));
+				$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=" . $db->quote($group->get('gidNumber'));
 				$db->setQuery($sql);
 				$view->member_roles = $db->loadAssocList();
 
@@ -324,15 +330,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//return metadata
+		// Return metadata
 		$arr['metadata']['count'] = count($group->get('members'));
 
-		//do we have any pending requests
+		// Do we have any pending requests
 		$pending = $group->get("applicants");
 		if (count($pending) > 0 && in_array(User::get('id'), $group->get("managers")))
 		{
 			$title = Lang::txt('PLG_GROUPS_MEMBERS_GROUP_HAS_REQUESTS', $group->get('description'), count($pending));
-			$link  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=members&filter=pending');
+			$link  = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=pending');
 			$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . Lang::txt('PLG_GROUPS_MEMBERS_ALERT') . '</h5>' . $title . '</span></a>';
 		}
 
@@ -341,13 +347,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * [sortAlphabetically description]
-	 * @param  [type] $userIds [description]
-	 * @return [type]          [description]
+	 * Sort member names alphabetically
+	 *
+	 * @param   array  $userIds
+	 * @return  array
 	 */
 	private function sortAlphabetically($userIds)
 	{
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+		require_once Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
 
 		// get each users name
 		$users = array();
@@ -375,10 +382,10 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Is user sustem user?
 	 *
-	 * @param  [type]  $userid [description]
-	 * @return boolean         [description]
+	 * @param   mixed  $userid
+	 * @return  mixed
 	 */
-	private function isSystemUser( $userid )
+	private function isSystemUser($userid)
 	{
 		return (is_numeric($userid) && $userid < 1000) ? null : $userid;
 	}
@@ -386,8 +393,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Make a thumbnail name out of a picture name
 	 *
-	 * @param      string $thumb Picture name
-	 * @return     string
+	 * @param   string  $thumb  Picture name
+	 * @return  string
 	 */
 	public function thumbit($thumb)
 	{
@@ -404,8 +411,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Prepend 0's to an ID
 	 *
-	 * @param      integer $someid ID to prepend 0's to
-	 * @return     integer
+	 * @param   integer  $someid  ID to prepend 0's to
+	 * @return  integer
 	 */
 	public function niceidformat($someid)
 	{
@@ -419,7 +426,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Approve membership for one or more users
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function approve()
 	{
@@ -539,7 +546,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Promote one or more users
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function promote()
 	{
@@ -580,8 +587,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
-				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
-				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
+				$admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
 				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 
 				// They user is not already a manager, so we can go ahead and add them
@@ -617,7 +624,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERRORS_USER_NOTFOUND').' '.$mbr);
+				$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERRORS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -639,7 +646,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$filter = Request::getVar('filter', 'members');
 
 		App::redirect(
-			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start)
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start)
 		);
 	}
 
@@ -688,8 +695,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			// Ensure we found an account
 			if (is_object($targetuser))
 			{
-				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
-				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
+				$admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
 				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 
 				$users[] = $targetuser->get('id');
@@ -711,7 +718,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 						'scope_id'    => $this->group->get('gidNumber'),
 						'description' => Lang::txt(
 							'PLG_GROUPS_MEMBERS_ACTIVITY_DEMOTED',
-							'<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id'))  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
 							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
 						),
 						'details'     => array(
@@ -724,7 +731,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERRORS_USER_NOTFOUND').' '.$mbr);
+				$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERRORS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -736,7 +743,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Remove users from managers list
-		$this->group->remove('managers',$users);
+		$this->group->remove('managers', $users);
 
 		// Save changes
 		$this->group->update();
@@ -753,7 +760,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$filter = Request::getVar("filter", "members");
 
 		App::redirect(
-			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start)
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start)
 		);
 	}
 
@@ -775,7 +782,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
 		$view = $this->view('default', 'remove');
@@ -841,8 +848,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			// Ensure we found an account
 			if (is_object($targetuser))
 			{
-				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
-				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
+				$admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
 				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 
 				$uid = $targetuser->get('id');
@@ -876,7 +883,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 						'scope_id'    => $this->group->get('gidNumber'),
 						'description' => Lang::txt(
 							'PLG_GROUPS_MEMBERS_ACTIVITY_REMOVED',
-							'<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $uid) . '">' . $targetuser->get('name') . '</a>',
 							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
 						),
 						'details'     => array(
@@ -891,12 +898,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_USER_NOTFOUND').' '.$mbr);
+				$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
 		// Remove users from members list
-		$this->group->remove('members',$users_mem);
+		$this->group->remove('members', $users_mem);
 
 		// Make sure there's always at least one manager left
 		if ($this->authorized != 'admin' && count($users_man) >= count($managers))
@@ -934,7 +941,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'),'','message',true);
+		App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'), '', 'message', true);
 	}
 
 	/**
@@ -958,7 +965,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$msg = $this->group->get('restrict_msg');
 
 		// Set the page title
-		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
 		$view = $this->view('default', 'deny');
@@ -978,7 +985,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Deny one or more users membership
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function confirmdeny()
 	{
@@ -1010,8 +1017,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			// Ensure we found an account
 			if (is_object($targetuser))
 			{
-				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
-				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
+				$admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
 				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 
 				// Remove record of reason wanting to join group
@@ -1038,7 +1045,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 						'scope_id'    => $this->group->get('gidNumber'),
 						'description' => Lang::txt(
 							'PLG_GROUPS_MEMBERS_ACTIVITY_DENIED',
-							'<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id'))  . '">' . $targetuser->get('name') . '</a>',
+							'<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
 							'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
 						),
 						'details'     => array(
@@ -1059,7 +1066,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Remove users from managers list
-		$this->group->remove('applicants',$users);
+		$this->group->remove('applicants', $users);
 
 		// Save changes
 		$this->group->update();
@@ -1090,7 +1097,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
 		$view = $this->view('default', 'cancel');
@@ -1153,8 +1160,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				// Ensure we found an account
 				if (is_object($targetuser) && $targetuser->get('id'))
 				{
-					$admchange .= "\t\t".$targetuser->get('name')."\r\n";
-					$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+					$admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
+					$admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
 					$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 
 					// Add them to the array of users to cancel invitations
@@ -1177,7 +1184,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 							'scope_id'    => $this->group->get('gidNumber'),
 							'description' => Lang::txt(
 								'PLG_GROUPS_MEMBERS_ACTIVITY_CANCELLED',
-								'<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id'))  . '">' . $targetuser->get('name') . '</a>',
+								'<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
 								'<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
 							),
 							'details'     => array(
@@ -1193,7 +1200,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_USER_NOTFOUND').' '.$mbr);
+					$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
 				}
 			}
 		}
@@ -1220,7 +1227,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'comments'  => array_merge($users, $user_emails)
 		));
 
-		App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'),'','',true);
+		App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'), '', '', true);
 	}
 
 	/**
@@ -1236,6 +1243,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Edit a member role
 	 *
+	 * @param   object  $role
 	 * @return  void
 	 */
 	public function editRole($role = null)
@@ -1313,7 +1321,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		]);
 
 		App::redirect(
-			Route::url('index.php?option=com_groups&cn='. $this->group->get('cn').'&active=members'),
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
 			Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SUCCESS'),
 			'passed'
 		);
@@ -1385,7 +1393,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show a form for assigning a role to a member
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function assignrole()
 	{
@@ -1399,14 +1407,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid = Request::getVar('uid','');
+		$uid = Request::getVar('uid', '');
 		if (!$uid)
 		{
 			return false;
 		}
 
 		// Set the page title
-		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
 		$view = $this->view('assign', 'role');
@@ -1433,7 +1441,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Assign a role to a member
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function submitrole()
 	{
@@ -1442,9 +1450,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid     = Request::getVar('uid', '','post');
-		$role    = Request::getVar('role','','post');
-		$no_html = Request::getInt('no_html', 0,'post');
+		$uid     = Request::getVar('uid', '', 'post');
+		$role    = Request::getVar('role', '', 'post');
+		$no_html = Request::getInt('no_html', 0, 'post');
 
 		if (!$uid || !$role)
 		{
@@ -1470,7 +1478,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a role
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function deleterole()
 	{
@@ -1479,8 +1487,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid  = Request::getVar('uid','');
-		$role = Request::getVar('role','');
+		$uid  = Request::getVar('uid', '');
+		$role = Request::getVar('role', '');
 
 		if (!$uid || !$role)
 		{
@@ -1504,8 +1512,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Notify user of changes
 	 *
-	 * @param      object $targetuser User to message
-	 * @return     void
+	 * @param   object  $targetuser  User to message
+	 * @return  void
 	 */
 	private function notifyUser($targetuser)
 	{
@@ -1594,7 +1602,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		);
 
 		// create message object
-		$message = new \Hubzero\Mail\Message();
+		$message = new Hubzero\Mail\Message();
 
 		// set message details and send
 		$message->setSubject($subject)
@@ -1607,8 +1615,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send an email to an invited user
 	 *
-	 * @param      string $email Email address to message
-	 * @return     boolean True if message sent
+	 * @param   string   $email  Email address to message
+	 * @return  boolean  True if message sent
 	 */
 	private function notifyEmailInvitedUser($email)
 	{
@@ -1616,7 +1624,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$group = $this->group;
 
 		// Build the SEF referenced in the message
-		$sef = Route::url('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
+		$sef = Route::url('index.php?option=' . $this->_option . '&cn=' . $group->get('cn'));
 		$sef = ltrim($sef, '/');
 
 		//get the reason
@@ -1644,7 +1652,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		if ($email)
 		{
 			// create message object
-			$message = new \Hubzero\Mail\Message();
+			$message = new Hubzero\Mail\Message();
 
 			// set message details and send
 			$message->setSubject($subject)
@@ -1670,7 +1678,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'member.php');
+		include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 		$id = Request::getInt('member', 0);
 		$profile = Components\Members\Models\Member::oneOrFail($id);
@@ -1680,7 +1688,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			App::abort(404, Lang::txt('PLG_GROUPS_MEMBERS_PROFILE_NOT_FOUND'));
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'profile' . DS . 'field.php');
+		include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 		$fields = Components\Members\Models\Profile\Field::all()
 			->including(['options', function ($option){
@@ -1696,7 +1704,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($profile->get('name'))));
 
 		$params = Plugin::params('members', 'profile');
-		$params->merge(new \Hubzero\Config\Registry($profile->get('params')));
+		$params->merge(new Hubzero\Config\Registry($profile->get('params')));
 
 		// Display form asking for a reason to deny membership
 		$view = $this->view('default', 'profile')

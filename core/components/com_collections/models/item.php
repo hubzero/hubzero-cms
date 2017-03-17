@@ -887,10 +887,18 @@ class Item extends Base
 
 		$id = ($id ?: Request::getInt('post', 0));
 
-		if (!$this->_tbl->loadType($id, $this->_type))
+		if ($id)
 		{
-			$this->setError($this->_tbl->getError());
-			return false;
+			require_once(dirname(__DIR__) . DS . 'tables' . DS . 'post.php');
+
+			$post = new Tables\Post($this->_db);
+			$post->load($id);
+
+			if (!$this->_tbl->load($post->item_id))
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
 		}
 
 		if ($this->exists())
@@ -898,7 +906,7 @@ class Item extends Base
 			return true;
 		}
 
-		$this->set('type', $this->_type)
+		$this->set('type', 'file')
 		     ->set('object_id', 0);
 
 		if (!$this->store())

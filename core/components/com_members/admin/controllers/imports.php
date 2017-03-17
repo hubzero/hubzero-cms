@@ -126,7 +126,7 @@ class Imports extends AdminController
 		}
 
 		$imports = $model->ordered()
-			->paginated()
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// Output the HTML
@@ -441,8 +441,8 @@ class Imports extends AdminController
 		// Run process task on importer
 		// passed the import model, array or callbacks, and test mode flag
 		$resourceData = $importImporter->process($import, array(
-			'postparse'   => $this->_hooks('postparse',   $import),
-			'postmap'     => $this->_hooks('postmap',     $import),
+			'postparse'   => $this->_hooks('postparse', $import),
+			'postmap'     => $this->_hooks('postmap', $import),
 			'postconvert' => $this->_hooks('postconvert', $import)
 		), $dryRun);
 
@@ -661,13 +661,25 @@ class Imports extends AdminController
 			}
 
 			$example = 'Example';
-			if ($field->options->count() || in_array($field->get('type'), array('select', 'dropdown', 'list', 'radio', 'radios', 'checkbox', 'checkboxes')))
+			if ($field->options->count() || in_array($field->get('type'), array('tags', 'select', 'dropdown', 'list', 'radio', 'radios', 'checkbox', 'checkboxes')))
 			{
 				$example = 'example;example;example';
 			}
 
 			array_push($row, $example);
 			array_push($fields, $key);
+		}
+
+		$record = new \Components\Members\Models\Import\Record(new \stdClass);
+		foreach ($record->handlers() as $handler)
+		{
+			$sample = $handler->sample();
+
+			if (is_array($sample) && !empty($sample))
+			{
+				array_push($row, $sample['content']);
+				array_push($fields, $sample['header']);
+			}
 		}
 
 		// Output header

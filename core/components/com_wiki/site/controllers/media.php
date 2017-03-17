@@ -135,7 +135,15 @@ class Media extends SiteController
 		// Ensure we have a path
 		if (!$attachment->get('filename'))
 		{
-			App::abort(404, Lang::txt('COM_WIKI_FILE_NOT_FOUND'));
+			$attachment->set('filename', $filename);
+
+			if (!$attachment->get('id'))
+			{
+				$attachment->set('page_id', $this->page->get('id'));
+				$attachment->set('created', Date::toSql());
+				$attachment->set('created_by', User::get('id'));
+				$attachment->save();
+			}
 		}
 
 		// Add root
@@ -265,7 +273,7 @@ class Media extends SiteController
 			fclose($input);
 
 			// move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -465,16 +473,17 @@ class Media extends SiteController
 		// Delete the file
 		if (!$attachment || !$attachment->get('id'))
 		{
-			$this->setError(Lang::txt('COM_WIKI_ERROR_NO_FILE'));
+			// No database record for some reason
+			// Set some data so the model can still remove the file
+			$attachment->set('page_id', $listdir);
+			$attachment->set('filename', $file);
 		}
-		else
+
+		// Attempt to delete the file
+		// Delete the database entry for the file
+		if (!$attachment->destroy())
 		{
-			// Attempt to delete the file
-			// Delete the database entry for the file
-			if (!$attachment->destroy())
-			{
-				$this->setError($attachment->getError());
-			}
+			$this->setError($attachment->getError());
 		}
 
 		// Push through to the media view

@@ -904,6 +904,8 @@ class Course extends SiteController
 			$filename = substr($filename, strlen('file:'));
 		}
 		$filename = urldecode($filename);
+		$filename = \Filesystem::clean($filename);
+		$filename = str_replace(' ', '_', $filename);
 
 		// Get the configured upload path
 		$base_path = DS . trim($this->config->get('filepath', '/site/courses'), DS) . DS . $this->course->get('id') . DS . 'pagefiles';
@@ -923,17 +925,17 @@ class Course extends SiteController
 		}
 
 		// Add PATH_CORE
-		$filename = PATH_APP . $filename;
+		$filepath = PATH_APP . $filename;
 
 		// Ensure the file exist
-		if (!file_exists($filename))
+		if (!file_exists($filepath))
 		{
 			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
 		}
 
 		// Initiate a new content server and serve up the file
 		$xserver = new Server();
-		$xserver->filename($filename);
+		$xserver->filename($filepath);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 

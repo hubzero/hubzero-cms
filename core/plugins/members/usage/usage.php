@@ -130,12 +130,12 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->tool_total_12 = $this->get_total_stats($member->get('id'), 'tool_users', 12);
 			$view->tool_total_14 = $this->get_total_stats($member->get('id'), 'tool_users', 14);
 
-			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
+			$sql = "SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, '%d %b %Y') AS publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
-					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
-					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.intval($member->get('id')).'") AND (r.access=0 OR r.access=3)
-					ORDER BY r.publish_up DESC';
+					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable='resources'
+					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND aa.authorid=" . $database->quote(intval($member->get('id'))) . " AND aa.role!='submitter' AND (r.access=0 OR r.access=3)
+					ORDER BY r.publish_up DESC";
 
 			$database->setQuery($sql);
 			$view->andmore_stats    = $database->loadObjectList();
@@ -180,7 +180,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 		$sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), '%d %b %Y') AS first_contrib, DATE_FORMAT(MAX(res.publish_up), '%d %b %Y') AS last_contrib
 				FROM `#__resources` AS res, `#__author_assoc` AS aa, `#__resource_types` AS restypes
-				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = " . $database->quote($authorid) . "
+				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = " . $database->quote($authorid) . " AND aa.role!='submitter'
 				AND res.standalone = 1
 				AND res.published = 1
 				AND (res.access=0 OR res.access=3)

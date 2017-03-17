@@ -212,7 +212,7 @@ class Accesslevels extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getVar('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -224,8 +224,6 @@ class Accesslevels extends AdminController
 			$levelsInUse = array();
 
 			$db = App::get('db');
-			$query = $db->getQuery(true)
-				->select('DISTINCT access');
 
 			// Get all the tables and the prefix
 			$tables = $db->getTableList();
@@ -242,9 +240,11 @@ class Accesslevels extends AdminController
 				if ((strpos($table, $prefix) === 0) && (isset($fields['access'])))
 				{
 					// Lookup the distinct values of the field.
-					$query->clear('from')
-						->from($db->quoteName($table));
-					$db->setQuery($query);
+					$query = $db->getQuery()
+						->select('DISTINCT access')
+						->from($table);
+
+					$db->setQuery($query->toString());
 
 					$values = $db->loadColumn();
 					$error  = $db->getErrorMsg();

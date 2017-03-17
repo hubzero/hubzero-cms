@@ -351,7 +351,7 @@ $more = count($this->pubstats) - $this->limit;
 												<td width="620">
 													<div style="font-size: 12px; line-height: 24px; color: #666666; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; background-color: <?php echo $boxBgColor; ?>; padding: 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; -webkit-border-radius:6px 6px 6px 6px; -webkit-font-smoothing: antialiased; text-align: center;">
 														<p style="margin: 0;">Publishing your data on <?php echo Config::get('sitename'); ?> increases access to and impact of your research!</p>
-														<div style=""><a href="<?php echo $base . DS . 'publications' . DS . 'submit' . $append; ?>" style="color: #ffffff; background-color: #000000; padding: 5px 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; text-decoration: none;">View all publications and publish more data</a></div>
+														<div style=""><a href="<?php echo (Plugin::isEnabled('members', 'impact') ? $profileLink . '/impact' . $append : $base . '/publications/submit' . $append); ?>" style="color: #ffffff; background-color: #000000; padding: 5px 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; text-decoration: none;">View all publications and publish more data</a></div>
 													</div>
 												</td>
 												<td width="25"></td>

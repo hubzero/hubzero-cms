@@ -140,7 +140,7 @@ class Entries extends AdminController
 
 		// Get records
 		$rows = $entries
-			->ordered('filter_order', 'filter_order_Dir')
+			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 

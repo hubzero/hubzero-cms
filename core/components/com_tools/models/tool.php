@@ -1582,6 +1582,15 @@ class Tool
 			$err['vncGeometry'] = Lang::txt('COM_TOOLS_ERR_VNCGEOMETRY');
 		}
 
+		// NEW (check for valid github repo)
+		if (!empty($tool['github']))
+		{
+			if (!filter_var($tool['github'], FILTER_VALIDATE_URL))
+			{
+			      $err['github'] = Lang::txt('invalid Github URL');
+			}
+		}
+
 		if (count($err) > 0)
 		{
 			return false;
@@ -1900,4 +1909,3 @@ class Tool
 		return $db->loadObjectList();
 	}
 }
-

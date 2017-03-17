@@ -141,4 +141,49 @@ class plgProjectsInfo extends \Hubzero\Plugin\Plugin
 		// Return data
 		return $arr;
 	}
+
+	/**
+	 * Event call to get content for public project page
+	 *
+	 * @param   object  $model
+	 * @return  string
+	 */
+	public function onProjectPublicList($model)
+	{
+		if (!$model->exists() || !$model->isPublic())
+		{
+			return;
+		}
+
+		$fields = Components\Projects\Models\Orm\Description\Field::all()
+				->order('ordering', 'ASC')
+				->rows();
+
+		$projectDescription = Components\Projects\Models\Orm\Description::all()
+			->where('project_id', '=', $model->get('id'))
+			->rows();
+
+		$info = array();
+		foreach ($fields as $field)
+		{
+			foreach ($projectDescription as $description)
+			{
+				if ($description->description_key == $field->name)
+				{
+					$f = new stdClass;
+					$f->label = $field->label;
+					$f->value = $description->description_value;
+					array_push($info, $f);
+				}
+			}
+		}
+
+		// Set vars
+		$view = $this->view('public', 'view')
+			->set('option', 'com_projects')
+			->set('info', $info)
+			->set('model', $model);
+
+		return $view->loadTemplate();
+	}
 }

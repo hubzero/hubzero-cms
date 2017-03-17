@@ -39,7 +39,7 @@ use Google_Service_Oauth2;
 use Google_Http_Request;
 use Hubzero\Base\Object;
 
-require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
+require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php';
 
 /**
  * Projects Connect helper class
@@ -51,21 +51,21 @@ class Connect extends Object
 	 *
 	 * @var object
 	 */
-	public $model		   = NULL;
+	public $model		   = null;
 
 	/**
 	 * JDatabase
 	 *
 	 * @var object
 	 */
-	private $_db			= NULL;
+	private $_db			= null;
 
 	/**
 	 * User ID
 	 *
 	 * @var integer
 	 */
-	private $_uid			= NULL;
+	private $_uid			= null;
 
 	/**
 	 * Connection configuration
@@ -120,16 +120,16 @@ class Connect extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param	   object	$model	Project
-	 * @param	   integer	$userid		User ID
-	 * @param	   string	$zone		Default time zone
-	 * @return	   void
+	 * @param   object   $model   Project
+	 * @param   integer  $userid  User ID
+	 * @param   string   $zone    Default time zone
+	 * @return  void
 	 */
-	public function __construct( $model = NULL, $userid = 0, $zone = 'UTC' )
+	public function __construct($model = null, $userid = 0, $zone = 'UTC')
 	{
-		$this->_db		= \App::get('db');
-		$this->model 	= $model;
-		$this->_uid 	= $userid ? $userid : User::get('id');
+		$this->_db   = \App::get('db');
+		$this->model = $model;
+		$this->_uid  = $userid ? $userid : User::get('id');
 
 		// Set configurations
 		$this->setConfigs();
@@ -143,11 +143,10 @@ class Connect extends Object
 	/**
 	 * Set user
 	 *
-	 * @param	   integer	$uid				User ID
-	 *
-	 * @return	   void
+	 * @param   integer  $uid  User ID
+	 * @return  void
 	 */
-	public function setUser ($uid = 0)
+	public function setUser($uid = 0)
 	{
 		$this->_uid = $uid;
 	}
@@ -155,12 +154,12 @@ class Connect extends Object
 	/**
 	 * Is any service active?
 	 *
-	 *
-	 * @return	   false or array with configs
+	 * @return  bool  false or array with configs
 	 */
 	public function isActive()
 	{
 		$active = false;
+
 		foreach ($this->_services as $servicename)
 		{
 			$configs = $this->getConfigs($servicename, true);
@@ -177,8 +176,7 @@ class Connect extends Object
 	/**
 	 * Get active services
 	 *
-	 *
-	 * @return	   array
+	 * @return  array
 	 */
 	public function getActive()
 	{
@@ -186,7 +184,9 @@ class Connect extends Object
 		{
 			return $this->_active;
 		}
+
 		$this->_active = array();
+
 		foreach ($this->_services as $servicename)
 		{
 			$configs = $this->getConfigs($servicename, true);
@@ -203,8 +203,7 @@ class Connect extends Object
 	/**
 	 * Get services
 	 *
-	 *
-	 * @return	   array
+	 * @return  array
 	 */
 	public function getServices()
 	{
@@ -214,16 +213,15 @@ class Connect extends Object
 	/**
 	 * Get service config param
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   string	$param		Param name
-	 *
-	 * @return	   string or NULL
+	 * @param   string  $service  Service name (google or dropbox)
+	 * @param   string  $param    Param name
+	 * @return  mixed   string or null
 	 */
-	public function getConfigParam ($service = 'google', $param = '')
+	public function getConfigParam($service = 'google', $param = '')
 	{
 		if (!$param || !isset($this->_connect[$service][$param]))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->_connect[$service][$param];
 	}
@@ -231,9 +229,8 @@ class Connect extends Object
 	/**
 	 * Get connections
 	 *
-	 * @param	   integer	$uid	User ID
-	 *
-	 * @return	   array
+	 * @param   integer  $uid  User ID
+	 * @return  array
 	 */
 	public function getConnections($uid = 0)
 	{
@@ -251,7 +248,7 @@ class Connect extends Object
 	/**
 	 * Set configuration to connect with outside services
 	 *
-	 * @return	   void
+	 * @return  void
 	 */
 	public function setConfigs()
 	{
@@ -273,44 +270,43 @@ class Connect extends Object
 
 		$connect = array(
 			'google' => array(
-				'servicename'	=> 'Google Drive',
-				'on'			=> $filesParams->get('enable_google', 0),
-				'clientId'		=> $filesParams->get('google_clientId', 0),
-				'clientSecret'	=> $filesParams->get('google_clientSecret', 0),
-				'appKey'		=> $filesParams->get('google_appKey', 0),
-				'redirectUri'	=> $redirectUri,
-				'scope'			=> $scope,
-				'approvalPrompt'=> 'force',
-				'accessType'	=> 'offline',
-				'local_dir'		=> $pparams->get('google_local_dir', '#home'),
-				'remote_dir'	=> $pparams->get('google_dir', 'Project :: ' . $this->model->get('alias')),
-				'remote_dir_id' => $pparams->get('google_dir_id', 1),
-				'active'		=> $pparams->get('google_token', 0)
+				'servicename'    => 'Google Drive',
+				'on'             => $filesParams->get('enable_google', 0),
+				'clientId'       => $filesParams->get('google_clientId', 0),
+				'clientSecret'   => $filesParams->get('google_clientSecret', 0),
+				'appKey'         => $filesParams->get('google_appKey', 0),
+				'redirectUri'    => $redirectUri,
+				'scope'          => $scope,
+				'approvalPrompt' => 'force',
+				'accessType'     => 'offline',
+				'local_dir'      => $pparams->get('google_local_dir', '#home'),
+				'remote_dir'     => $pparams->get('google_dir', 'Project :: ' . $this->model->get('alias')),
+				'remote_dir_id'  => $pparams->get('google_dir_id', 1),
+				'active'         => $pparams->get('google_token', 0)
 			),
 			'dropbox' => array(
-				'servicename'	=> 'Dropbox',
-				'on'			=> $filesParams->get('enable_dropbox', 0),
-				'key'			=> $filesParams->get('dropbox_key', 0),
-				'secret'		=> $filesParams->get('dropbox_secret', 0),
-				'local_dir'		=> $pparams->get('dropbox_local_dir', '#home'),
-				'remote_dir'	=> $pparams->get('dropbox_dir', 'project_' . $this->model->get('alias')),
+				'servicename'   => 'Dropbox',
+				'on'            => $filesParams->get('enable_dropbox', 0),
+				'key'           => $filesParams->get('dropbox_key', 0),
+				'secret'        => $filesParams->get('dropbox_secret', 0),
+				'local_dir'     => $pparams->get('dropbox_local_dir', '#home'),
+				'remote_dir'    => $pparams->get('dropbox_dir', 'project_' . $this->model->get('alias')),
 				'remote_dir_id' => $pparams->get('dropbox_dir_id', 1),
-				'active'		=> $pparams->get('dropbox_service', 0)
+				'active'        => $pparams->get('dropbox_service', 0)
 			)
 		);
 
-		$this->_connect		=  $connect;
+		$this->_connect = $connect;
 	}
 
 	/**
 	 * Get configuration to connect with outside services
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   boolean	$active		Only get active service
-	 *
-	 * @return	   false or array with configs
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   boolean  $active   Only get active service
+	 * @return  boolean  false or array with configs
 	 */
-	public function getConfigs ($service = 'google', $active = true)
+	public function getConfigs($service = 'google', $active = true)
 	{
 		if (!isset($this->_connect[$service]))
 		{
@@ -340,13 +336,12 @@ class Connect extends Object
 	/**
 	 * Establish connection
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   boolean	$reauth		Re-authenticate user?
-	 * @param	   string	$return		URL to return to after authorization
-	 *
-	 * @return	   false or array with configs
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   boolean  $reauth   Re-authenticate user?
+	 * @param   string   $return   URL to return to after authorization
+	 * @return  false or array with configs
 	 */
-	public function makeConnection ($service = 'google', $reauth = false, $return = '')
+	public function makeConnection($service = 'google', $reauth = false, $return = '')
 	{
 		if (!in_array($service, $this->_services))
 		{
@@ -367,18 +362,18 @@ class Connect extends Object
 		// Connect to google (OAUTH2)
 		if ($service == 'google')
 		{
-			$code  = Request::getVar( 'code', '', 'get' );
+			$code  = Request::getVar('code', '', 'get');
 			$refresh_token = '';
 
 			// We got here from the redirect from a successful authorization grant, fetch the access token
 			if ($code)
 			{
 				$postvals = array(
-					'grant_type' 		=> 'authorization_code',
-					'client_id' 		=> $config['clientId'],
-					'client_secret' 	=> $config['clientSecret'],
-					'code' 				=> $code,
-					'redirect_uri' 		=> $config['redirectUri']
+					'grant_type'    => 'authorization_code',
+					'client_id'     => $config['clientId'],
+					'client_secret' => $config['clientSecret'],
+					'code'          => $code,
+					'redirect_uri'  => $config['redirectUri']
 				);
 
 				// get JSON access token object (with refresh_token parameter)
@@ -450,12 +445,12 @@ class Connect extends Object
 	/**
 	 * Start service client
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 *
-	 * @return	   object
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @param   boolean  $force
+	 * @return  object
 	 */
-	public function startClient ($service = 'google', $uid = 0, $force = false)
+	public function startClient($service = 'google', $uid = 0, $force = false)
 	{
 		$config = $this->_connect[$service];
 		$uid = $uid ? $uid : $this->_uid;
@@ -531,10 +526,9 @@ class Connect extends Object
 	/**
 	 * Get service API
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 *
-	 * @return	   object
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @return  object
 	 */
 	public function getAPI ($service = 'google', $uid = 0)
 	{
@@ -579,7 +573,7 @@ class Connect extends Object
 		}
 		else
 		{
-			$this->_api[$service] = NULL;
+			$this->_api[$service] = null;
 		}
 
 		return $this->_api[$service];
@@ -589,11 +583,11 @@ class Connect extends Object
 	/**
 	 * Prepare service for use or confirm it's ready
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 *
-	 * @return	   void
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @return  void
 	 */
-	public function afterConnect ($service = 'google', $uid = 0)
+	public function afterConnect($service = 'google', $uid = 0)
 	{
 		if (!in_array($service, $this->_services))
 		{
@@ -627,13 +621,12 @@ class Connect extends Object
 	/**
 	 * Get ID of remote directory and store it
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 * @param	   array	$shared		Array of emails with whom master remote folder is shared
-	 *
-	 * @return	   String
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @param   array    $shared   Array of emails with whom master remote folder is shared
+	 * @return  String
 	 */
-	public function getRemoteDirectory ($service = 'google', $uid = 0, $shared = array())
+	public function getRemoteDirectory($service = 'google', $uid = 0, $shared = array())
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -673,16 +666,16 @@ class Connect extends Object
 			{
 				$file = new Google_Service_Drive_DriveFile;
 				$file->setMimeType('application/vnd.google-apps.folder');
-				$file->setTitle($config['remote_dir']);
+				$file->setName($config['remote_dir']);
 
-				$createdFolder = $apiService->files->insert($file, array(
-					  'mimeType' => 'application/vnd.google-apps.folder'
+				$createdFolder = $apiService->files->create($file, array(
+					'mimeType' => 'application/vnd.google-apps.folder'
 				));
 
 				$folderID = $createdFolder['id'];
 				if ($folderID)
 				{
-					$obj	= new \Components\Projects\Tables\Project( $this->_db );
+					$obj = new \Components\Projects\Tables\Project($this->_db);
 					$obj->saveParam($this->model->get('id'), $service . '_dir_id', $folderID);
 				}
 			}
@@ -695,11 +688,11 @@ class Connect extends Object
 				$permEmails = array();
 
 				// Collect permission names
-				foreach ($permlist['items'] as $p)
+				foreach ($permlist as $p)
 				{
-					if (isset($p['emailAddress']))
+					if ($email = $p->getEmailAddress())
 					{
-						$permEmails[] = $p['emailAddress'];
+						$permEmails[] = $email;
 					}
 				}
 
@@ -712,12 +705,12 @@ class Connect extends Object
 						$permission = new Google_Service_Drive_Permission;
 						$permission->setRole('writer');
 						$permission->setType('user');
-						$permission->setValue($email);
+						$permission->setEmailAddress($email);
 						$params = array('sendNotificationEmails' => 'false');
 
 						try
 						{
-							$perm = $apiService->permissions->insert($folderID, $permission, $params);
+							$perm = $apiService->permissions->create($folderID, $permission, $params);
 						}
 						catch (Exception $e)
 						{
@@ -736,12 +729,11 @@ class Connect extends Object
 	/**
 	 * Get and store access profile information
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 *
-	 * @return	  boolean
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @return  boolean
 	 */
-	public function getAccessProfile ($service = 'google', $uid = 0)
+	public function getAccessProfile($service = 'google', $uid = 0)
 	{
 		$config = $this->_connect[$service];
 		$uid = $uid ? $uid : $this->_uid;
@@ -757,6 +749,7 @@ class Connect extends Object
 			}
 
 			$oauth2 = new Google_Service_Oauth2($client);
+
 			try
 			{
 				$user = $oauth2->userinfo->get();
@@ -781,20 +774,19 @@ class Connect extends Object
 	/**
 	 * Load remote file metadata
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 * @param	   string	$id			Remote ID
-	 *
-	 * @return	   string
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @param   string   $id       Remote ID
+	 * @return  string
 	 */
-	public function loadRemoteResource ($service = 'google', $uid = 0, $id = 0)
+	public function loadRemoteResource($service = 'google', $uid = 0, $id = 0)
 	{
 		if (!$id)
 		{
 			return false;
 		}
 
-		$resource = NULL;
+		$resource = null;
 
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -807,7 +799,7 @@ class Connect extends Object
 
 		if ($service == 'google')
 		{
-			$resource = Google::loadFile ($apiService, $id);
+			$resource = Google::loadFile($apiService, $id);
 		}
 
 		return $resource;
@@ -816,17 +808,14 @@ class Connect extends Object
 	/**
 	 * Add remote file
 	 *
-	 * @param	   integer	$projectid	Project ID
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 * @param	   object	$file		Models\File
-	 * @param	   boolean	$convert	Convert for remote editing? (Google only)
-	 *
-	 * @return	   array
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $service    Service name (google or dropbox)
+	 * @param   integer  $uid        User ID
+	 * @param   object   $file       Models\File
+	 * @param   boolean  $convert    Convert for remote editing? (Google only)
+	 * @return  array
 	 */
-	public function addRemoteFile (
-		$projectid = NULL, $service = 'google', $uid = 0,
-		$file = NULL, $parentId = 0, $convert = false)
+	public function addRemoteFile($projectid = null, $service = 'google', $uid = 0, $file = null, $parentId = 0, $convert = false)
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -842,20 +831,20 @@ class Connect extends Object
 		// Parse incoming
 		if ($file instanceof \Components\Projects\Models\File)
 		{
-			$title		= $file->get('name');
-			$localPath	= $file->get('fullPath');
-			$fpath		= $file->get('localPath');
-			$mimeType	= $file->getMimeType();
-			$md5	    = $file->getMd5Hash();
-			$parentId   = $parentId ? $parentId : $file->get('remoteParent');
+			$title     = $file->get('name');
+			$localPath = $file->get('fullPath');
+			$fpath     = $file->get('localPath');
+			$mimeType  = $file->getMimeType();
+			$md5       = $file->getMd5Hash();
+			$parentId  = $parentId ? $parentId : $file->get('remoteParent');
 		}
 		else
 		{
-			$title		= $file['title'];
-			$localPath	= $file['fullPath'];
-			$fpath		= $file['local_path'];
-			$mimeType	= $file['mimeType'];
-			$md5	    = $file['md5'];
+			$title     = $file['title'];
+			$localPath = $file['fullPath'];
+			$fpath     = $file['local_path'];
+			$mimeType  = $file['mimeType'];
+			$md5       = $file['md5'];
 		}
 		if (!$parentId)
 		{
@@ -868,27 +857,27 @@ class Connect extends Object
 		// Perform request
 		if ($service == 'google')
 		{
-			$newItemId = Google::insertFile ($apiService, $this->_client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+			$newItemId = Google::insertFile($apiService, $this->_client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
 		}
 
 		// Error!
 		if (!$newItemId)
 		{
-			return NULL;
+			return null;
 		}
 
-		$remote_md5			= isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : NULL;
-		$remote_modified	= isset($metadata) && isset($metadata['modifiedDate'])
-							? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : NULL;
-		$remote_format		= isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : NULL;
-		$converted			= isset($metadata)
-								&& preg_match("/google-apps/", $remote_format)
-								&& !preg_match("/.folder/", $remote_format) ? 1 : 0;
+		$remote_md5      = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
+		$remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+							? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : null;
+		$remote_format   = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
+		$converted       = isset($metadata)
+						&& preg_match("/google-apps/", $remote_format)
+						&& !preg_match("/.folder/", $remote_format) ? 1 : 0;
 
 		if ($convert == true && !$converted)
 		{
 			// Retreat
-			Google::deleteItem ($apiService, $newItemId, true);
+			Google::deleteItem($apiService, $newItemId, true);
 			return false;
 		}
 
@@ -905,15 +894,16 @@ class Connect extends Object
 
 			if ($g_ext && $ext != $g_ext)
 			{
-				$fpath = $dir ? $dir . DS : '';
-				$fpath.= $name . '.' . $g_ext;
+				$fpath  = $dir ? $dir . DS : '';
+				$fpath .= $name . '.' . $g_ext;
 			}
 		}
 
 		// Update connection record
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 
-		$update = $objRFile->updateRecord( $projectid, $service, $newItemId,
+		$update = $objRFile->updateRecord(
+			$projectid, $service, $newItemId,
 			$fpath, 'file', $this->_uid, $parentId, $title, $remote_md5,
 			$md5, $converted, $remote_format, $mimeType, $remote_modified
 		);
@@ -924,19 +914,16 @@ class Connect extends Object
 	/**
 	 * Update remote file
 	 *
-	 * @param	   integer	$projectid	Project ID
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 * @param	   string	$remoteid	Remote resource ID
-	 * @param	   array	$local		Array of local file info
-	 * @param	   string	$parentId	Parent folder ID
-	 * @param	   boolean	$convert	Convert for remote editing? (Google only)
-	 *
-	 * @return	   array
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $service    Service name (google or dropbox)
+	 * @param   integer  $uid        User ID
+	 * @param   string   $remoteid   Remote resource ID
+	 * @param   array    $local      Array of local file info
+	 * @param   string   $parentId   Parent folder ID
+	 * @param   boolean  $convert    Convert for remote editing? (Google only)
+	 * @return  array
 	 */
-	public function updateRemoteFile (
-		$projectid = NULL, $service = 'google', $uid = 0,
-		$remoteid = 0, $local = array(),  $parentId = 0, $convert = false)
+	public function updateRemoteFile($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $local = array(),  $parentId = 0, $convert = false)
 	{
 		if (!$projectid || !$remoteid || empty($local) || !$parentId)
 		{
@@ -953,9 +940,9 @@ class Connect extends Object
 		}
 
 		// Parse incoming
-		$title		= basename($local['local_path']);
-		$localPath	= $local['fullPath'];
-		$mimeType	= $local['mimeType'];
+		$title     = basename($local['local_path']);
+		$localPath = $local['fullPath'];
+		$mimeType  = $local['mimeType'];
 
 		// Collector for created item metadata
 		$metadata = array();
@@ -986,7 +973,7 @@ class Connect extends Object
 			// There was a change in content, update
 			if (!$success)
 			{
-				$success = Google::updateFile ($apiService, $this->_client[$service], $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+				$success = Google::updateFile($apiService, $this->_client[$service], $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
 			}
 		}
 
@@ -995,18 +982,19 @@ class Connect extends Object
 			return false;
 		}
 
-		$remote_md5			= isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : NULL;
-		$remote_modified	= isset($metadata) && isset($metadata['modifiedDate'])
-				? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : NULL;
-		$remote_format		= isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : NULL;
-		$converted			= isset($metadata)
+		$remote_md5 = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
+		$remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+				? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : null;
+		$remote_format = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
+		$converted = isset($metadata)
 							&& preg_match("/google-apps/", $remote_format)
 							&& !preg_match("/.folder/", $remote_format) ? 1 : 0;
 
 		// Update connection record
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 
-		$update = $objRFile->updateRecord( $projectid, $service, $remoteid,
+		$update = $objRFile->updateRecord(
+			$projectid, $service, $remoteid,
 			$local['local_path'], 'file', $uid, $parentId, $title, $remote_md5,
 			$local['md5'], $converted, $remote_format, $local['mimeType'], $remote_modified
 		);
@@ -1017,18 +1005,15 @@ class Connect extends Object
 	/**
 	 * Rename remote file
 	 *
-	 * @param	   integer	$projectid	Project ID
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 * @param	   string	$remoteid	Remote resource ID
-	 * @param	   array	$local		Array of local file info
-	 * @param	   string	$parentId	Parent folder ID
-	 *
-	 * @return	   array
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $service    Service name (google or dropbox)
+	 * @param   integer  $uid        User ID
+	 * @param   string   $remoteid   Remote resource ID
+	 * @param   array    $local      Array of local file info
+	 * @param   string   $parentId   Parent folder ID
+	 * @return  array
 	 */
-	public function renameRemoteItem (
-		$projectid = NULL, $service = 'google', $uid = 0,
-		$remoteid = 0, $local = array(),  $parentId = 0)
+	public function renameRemoteItem($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $local = array(),  $parentId = 0)
 	{
 		if (!$projectid || !$remoteid || empty($local))
 		{
@@ -1045,9 +1030,9 @@ class Connect extends Object
 		}
 
 		// Collector for created folder metadata
-		$metadata	= array();
-		$success	= 0;
-		$newTitle	= basename($local['local_path']);
+		$metadata = array();
+		$success  = 0;
+		$newTitle = basename($local['local_path']);
 
 		// Perform request
 		if ($service == 'google')
@@ -1066,15 +1051,15 @@ class Connect extends Object
 			return false;
 		}
 
-		$remote_md5			= isset($metadata) && isset($metadata['md5Checksum'])
-							? $metadata['md5Checksum']
-							: NULL;
-		$remote_modified	= isset($metadata) && isset($metadata['modifiedDate'])
-							? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
-							: NULL;
-		$remote_format		= isset($metadata) && isset($metadata['mimeType'])
-							? $metadata['mimeType']
-							: NULL;
+		$remote_md5 = isset($metadata) && isset($metadata['md5Checksum'])
+					? $metadata['md5Checksum']
+					: null;
+		$remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+						? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
+						: null;
+		$remote_format = isset($metadata) && isset($metadata['mimeType'])
+						? $metadata['mimeType']
+						: null;
 
 		// Update connection record
 		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
@@ -1102,18 +1087,15 @@ class Connect extends Object
 	/**
 	 * Move remote file to another parent
 	 *
-	 * @param	   integer	$projectid	Project ID
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   integer	$uid		User ID
-	 * @param	   string	$remoteid	Remote resource ID
-	 * @param	   array	$local		Array of local file info
-	 * @param	   string	$parentId	Parent folder ID
-	 *
-	 * @return	   array
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $service    Service name (google or dropbox)
+	 * @param   integer  $uid        User ID
+	 * @param   string   $remoteid   Remote resource ID
+	 * @param   array    $local      Array of local file info
+	 * @param   string   $parentId   Parent folder ID
+	 * @return  array
 	 */
-	public function moveRemoteItem (
-		$projectid = NULL, $service = 'google', $uid = 0,
-		$remoteid = 0, $local = array(),  $parentId = 0)
+	public function moveRemoteItem($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $local = array(),  $parentId = 0)
 	{
 		if (!$projectid || !$remoteid || empty($local) || !$parentId)
 		{
@@ -1130,13 +1112,13 @@ class Connect extends Object
 		}
 
 		// Collector for created folder metadata
-		$metadata	= array();
-		$success	= 0;
+		$metadata = array();
+		$success  = 0;
 
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = Google::patchFile ($apiService, $remoteid, '', $parentId, $metadata);
+			$success = Google::patchFile($apiService, $remoteid, '', $parentId, $metadata);
 		}
 
 		if (!$success)
@@ -1144,13 +1126,13 @@ class Connect extends Object
 			return false;
 		}
 
-		$remote_md5			= isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : NULL;
-		$remote_modified	= isset($metadata) && isset($metadata['modifiedDate'])
-				? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : NULL;
-		$remote_format		= isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : NULL;
+		$remote_md5 = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
+		$remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+				? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : null;
+		$remote_format = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
 
 		// Update connection record
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 
 		$update = $objRFile->updateRecord(
 			$projectid,
@@ -1183,9 +1165,7 @@ class Connect extends Object
 	 *
 	 * @return	   array
 	 */
-	public function deleteRemoteItem ($projectid = NULL, $service = 'google',
-		$uid = 0, $remoteid = 0, $permanent = false
-	)
+	public function deleteRemoteItem($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $permanent = false)
 	{
 		if (!$projectid || !$remoteid)
 		{
@@ -1206,13 +1186,14 @@ class Connect extends Object
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = Google::deleteItem ($apiService, $remoteid, $permanent);
-			$success = Google::deleteAllParents ($apiService, $remoteid);
+			$success = Google::deleteItem($apiService, $remoteid, $permanent);
+			$success = Google::deleteAllParents($apiService, $remoteid);
 		}
 
 		// Delete connection record
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
-		if ($objRFile->loadItem( $projectid, $remoteid, $service))
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+
+		if ($objRFile->loadItem($projectid, $remoteid, $service))
 		{
 			$objRFile->delete();
 		}
@@ -1223,22 +1204,17 @@ class Connect extends Object
 	/**
 	 * Create remote folder
 	 *
-	 * @param	   integer	$projectid		Project ID
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   string	$title			Folder name
-	 * @param	   string	$path			Path to folder
-	 * @param	   string	$parentId		Parent folder ID
-	 * @param	   array	&$remoteFolders Collector array
-	 *
-	 * @return	   integer (folder ID)
+	 * @param   integer  $projectid       Project ID
+	 * @param   string   $service         Service name (google or dropbox)
+	 * @param   integer  $uid             User ID
+	 * @param   string   $title           Folder name
+	 * @param   string   $path            Path to folder
+	 * @param   string   $parentId        Parent folder ID
+	 * @param   array    &$remoteFolders  Collector array
+	 * @return  integer (folder ID)
 	 */
-	public function createRemoteFolder (
-		$projectid = NULL, $service = 'google', $uid = 0,
-		$title = '', $path = '',  $parentId = 0,
-		&$remoteFolders = array())
+	public function createRemoteFolder($projectid = null, $service = 'google', $uid = 0, $title = '', $path = '',  $parentId = 0, &$remoteFolders = array())
 	{
-
 		if (!$projectid)
 		{
 			$projectid = $this->model->get('id');
@@ -1283,13 +1259,13 @@ class Connect extends Object
 			// Perform request
 			if ($service == 'google')
 			{
-				$newParentId = Google::createFolder ($apiService, $title, $parentId, $metadata);
+				$newParentId = Google::createFolder($apiService, $title, $parentId, $metadata);
 			}
 
 			// Error!
 			if (!$newParentId)
 			{
-				return NULL;
+				return null;
 			}
 
 			// Add newly create folder to remoteFolders array
@@ -1300,7 +1276,7 @@ class Connect extends Object
 			);
 
 			// Update connection record
-			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+			$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 
 			$update = $objRFile->updateRecord(
 				$projectid,
@@ -1322,17 +1298,14 @@ class Connect extends Object
 	/**
 	 * Prep remote directory structure for syncing file
 	 *
-	 * @param	   integer	$projectid		Project ID
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   array	$local			Array of local file info
-	 * @param	   array	&$remoteFolders Collector array
-	 *
-	 * @return	   integer
+	 * @param   integer  $projectid       Project ID
+	 * @param   string   $service         Service name (google or dropbox)
+	 * @param   integer  $uid             User ID
+	 * @param   array    $local           Array of local file info
+	 * @param   array    &$remoteFolders  Collector array
+	 * @return  integer
 	 */
-	public function prepRemoteParent ($projectid = NULL, $service = 'google',
-		$uid = 0, $local = array(), &$remoteFolders = array()
-	)
+	public function prepRemoteParent($projectid = null, $service = 'google', $uid = 0, $local = array(), &$remoteFolders = array())
 	{
 		if (!$projectid)
 		{
@@ -1380,13 +1353,12 @@ class Connect extends Object
 	/**
 	 * Get remote file history
 	 *
-	 * @param	   string	$id			Remote ID
-	 * @param	   integer	$uid		User ID
-	 * @param	   string	$service	Service name (google)
-	 *
-	 * @return	   array
+	 * @param   string   $id       Remote ID
+	 * @param   integer  $uid      User ID
+	 * @param   string   $service  Service name (google)
+	 * @return  array
 	 */
-	public function getFileHistory ($id = 0, $uid = 0, $service = 'google')
+	public function getFileHistory($id = 0, $uid = 0, $service = 'google')
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -1434,14 +1406,13 @@ class Connect extends Object
 	/**
 	 * Get remote file revision
 	 *
-	 * @param	   string	$id			Remote ID
-	 * @param	   integer	$revision	remote revision ID
-	 * @param	   integer	$uid		User ID
-	 * @param	   string	$service	Service name (google)
-	 *
-	 * @return	   array
+	 * @param   string   $id        Remote ID
+	 * @param   integer  $revision  remote revision ID
+	 * @param   integer  $uid       User ID
+	 * @param   string   $service   Service name (google)
+	 * @return  array
 	 */
-	public function getFileRevision ($id = 0, $revision = 0, $uid = 0, $service = 'google')
+	public function getFileRevision($id = 0, $revision = 0, $uid = 0, $service = 'google')
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -1486,25 +1457,21 @@ class Connect extends Object
 	/**
 	 * Sort remote revisions
 	 *
-	 * @param	   integer	$id					Remote resource ID
-	 * @param	   integer	$converted			Converted for remote editing?
-	 * @param	   string	$lastModifiedBy		Last modified by (name)
-	 * @param	   integer	$uid				User ID
-	 * @param	   string	$service			Service name (google or dropbox)
-	 * @param	   string	$file				File path
-	 * @param	   array	&$versions			Versions collector array
-	 * @param	   array	&$timestamps		Collector array
-	 * @param	   integer	$original			Source file?
-	 *
-	 * @return	   array
+	 * @param   integer  $id              Remote resource ID
+	 * @param   integer  $converted       Converted for remote editing?
+	 * @param   string   $lastModifiedBy  Last modified by (name)
+	 * @param   integer  $uid             User ID
+	 * @param   string   $service         Service name (google or dropbox)
+	 * @param   string   $file            File path
+	 * @param   array    &$versions       Versions collector array
+	 * @param   array    &$timestamps     Collector array
+	 * @param   integer  $original        Source file?
+	 * @return  array
 	 */
-	public function sortRemoteRevisions(
-		$id, $converted = 0, $lastModifiedBy = '', $uid , $service, $file,
-		&$versions = array(), &$timestamps = array(), $original = 0
-	)
+	public function sortRemoteRevisions($id, $converted = 0, $lastModifiedBy = '', $uid , $service, $file, &$versions = array(), &$timestamps = array(), $original = 0)
 	{
 		// Get remote revisions
-		$revisions = $this->getFileHistory($id, $uid, $service );
+		$revisions = $this->getFileHistory($id, $uid, $service);
 
 		// Go through remote revisions
 		if (!empty($revisions))
@@ -1512,32 +1479,32 @@ class Connect extends Object
 			$timestampsG = array();
 			foreach ($revisions as $rev)
 			{
-				$timestampsG[]	= strtotime($rev['modifiedDate']);
+				$timestampsG[] = strtotime($rev['modifiedDate']);
 			}
 			array_multisort($timestampsG, SORT_DESC, $revisions);
 
 			$r = 1;
 			foreach ($revisions as $rev)
 			{
-				$order			= $r == count($revisions) ? 'first' : '';
-				$order			= $r == 1 ? 'last' : $order;
+				$order = $r == count($revisions) ? 'first' : '';
+				$order = $r == 1 ? 'last' : $order;
 
 				// If remote, make sure current version is remote
 				if ($converted == 1 && $order == 'last')
 				{
-					$timestamps[]	= Date::toUnix();
+					$timestamps[] = Date::toUnix();
 				}
 				else
 				{
-					$timestamps[]	= strtotime($rev['modifiedDate']);
+					$timestamps[] = strtotime($rev['modifiedDate']);
 				}
 
 				$author = isset($rev['lastModifyingUser']['displayName'])
 					? strtolower($rev['lastModifyingUser']['displayName'])
-					: NULL;
+					: null;
 				$author = !$author && isset($rev['lastModifyingUserName'])
 					? strtolower($rev['lastModifyingUserName'])
-					: NULL;
+					: null;
 
 				if (!$author && $order == 'last')
 				{
@@ -1545,27 +1512,27 @@ class Connect extends Object
 				}
 
 				$revision = array(
-					'date'			=> $rev['modifiedDate'],
-					'author'		=> $author,
-					'email'			=> NULL,
-					'hash'			=> $rev['id'],
-					'file'			=> $file,
-					'base'			=> '',
-					'remote'		=> $id,
-					'local'			=> false,
-					'content'		=> NULL,
-					'preview'		=> NULL,
-					'original'		=> $original,
-					'hide'			=> 0,
-					'message'		=> '',
-					'rename'		=> '',
-					'change'		=> '',
-					'movedTo'		=> '',
-					'size'			=> '',
-					'name'			=> Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE_' . strtoupper($service)),
-					'order'			=> $order,
-					'count'			=> count($revisions),
-					'commitStatus'	=> $r == count($revisions) ? 'A' : 'M'
+					'date'         => $rev['modifiedDate'],
+					'author'       => $author,
+					'email'        => null,
+					'hash'         => $rev['id'],
+					'file'         => $file,
+					'base'         => '',
+					'remote'       => $id,
+					'local'        => false,
+					'content'      => null,
+					'preview'      => null,
+					'original'     => $original,
+					'hide'         => 0,
+					'message'      => '',
+					'rename'       => '',
+					'change'       => '',
+					'movedTo'      => '',
+					'size'         => '',
+					'name'         => Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE_' . strtoupper($service)),
+					'order'        => $order,
+					'count'        => count($revisions),
+					'commitStatus' => $r == count($revisions) ? 'A' : 'M'
 				);
 
 				$versions[] = $revision;
@@ -1577,35 +1544,31 @@ class Connect extends Object
 	/**
 	 * Save connection of local file after being exported
 	 *
-	 * @param	   integer	$projectid			Project ID
-	 * @param	   string	$service			Service name (google)
-	 * @param	   string	$id					Remote ID
-	 * @param	   string	$path				File path
-	 * @param	   integer	$paired				Paired record ID
-	 * @param	   string	$original_path		Original path
-	 * @param	   string	$original_format	Original MIME type
-	 * @param	   string	$original_id		Original ID
-	 *
-	 * @return	   mixed False if error, Object on success
+	 * @param   integer  $projectid        Project ID
+	 * @param   string   $service          Service name (google)
+	 * @param   string   $id               Remote ID
+	 * @param   string   $path             File path
+	 * @param   integer  $paired           Paired record ID
+	 * @param   string   $original_path	   Original path
+	 * @param   string   $original_format  Original MIME type
+	 * @param   string   $original_id      Original ID
+	 * @return  mixed False if error, Object on success
 	 */
-	public function savePairing (
-		$projectid = NULL, $service = '', $id = NULL, $path = '',
-		$paired = 0, $original_path = '', $original_format = '',
-		$original_id = ''
-	)
+	public function savePairing($projectid = null, $service = '', $id = null, $path = '', $paired = 0, $original_path = '', $original_format = '', $original_id = '')
 	{
 		if (!$projectid || !$id)
 		{
 			return false;
 		}
 
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
-		if ($objRFile->loadItem( $projectid, $id, $service, $path))
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+
+		if ($objRFile->loadItem($projectid, $id, $service, $path))
 		{
-			$objRFile->paired			= $paired;
-			$objRFile->original_path	= $original_path;
-			$objRFile->original_format	= $original_format;
-			$objRFile->original_id		= $original_id;
+			$objRFile->paired          = $paired;
+			$objRFile->original_path   = $original_path;
+			$objRFile->original_format = $original_format;
+			$objRFile->original_id     = $original_id;
 			$objRFile->store();
 		}
 
@@ -1615,23 +1578,22 @@ class Connect extends Object
 	/**
 	 * Fix connection record(s) after local change to parent folder
 	 *
-	 * @param	   string	$service	Service name (google)
-	 * @param	   integer	$uid		User ID
-	 * @param	   string	$dir		Directory path
-	 * @param	   string	$action		Action
-	 * @param	   string	$newdir		New directory path
-	 * @param	   string	$parentId	Parent ID
-	 *
-	 * @return	   array
+	 * @param   string   $service   Service name (google)
+	 * @param   integer  $uid       User ID
+	 * @param   string   $dir       Directory path
+	 * @param   string   $action    Action
+	 * @param   string   $newdir    New directory path
+	 * @param   string   $parentId  Parent ID
+	 * @return  array
 	 */
-	public function fixConvertedItems ($service = 'google', $uid = 0, $dir = '', $action = '', $newdir = '', $parentId = '')
+	public function fixConvertedItems($service = 'google', $uid = 0, $dir = '', $action = '', $newdir = '', $parentId = '')
 	{
 		if (!$dir || !$action)
 		{
 			return false;
 		}
 
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 		$converted = $objRFile->getRemoteConnections($this->model->get('id'), $service, $dir, 1);
 
 		if (!empty($converted['paths']))
@@ -1669,18 +1631,16 @@ class Connect extends Object
 	/**
 	 * Get remote changes
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   string	$startChangeId	Last Change ID
-	 * @param	   array	$remotes		Collector array for active items
-	 * @param	   array	$deletes		Collector array for deleted items
-	 * @param	   array	$connections	Array of local-remote connections
-	 * @param	   string	$path			Path
-	 *
-	 * @return	   integer - change ID
+	 * @param   string   $service        Service name (google or dropbox)
+	 * @param   integer  $uid            User ID
+	 * @param   string   $startChangeId  Last Change ID
+	 * @param   array    $remotes        Collector array for active items
+	 * @param   array    $deletes        Collector array for deleted items
+	 * @param   array    $connections    Array of local-remote connections
+	 * @param   string   $path           Path
+	 * @return  integer  change ID
 	 */
-	public function getChangedItems ($service = 'google', $uid = 0, $startChangeId = NULL, &$remotes,
-		&$deletes, $connections = array(), $path = '' )
+	public function getChangedItems($service = 'google', $uid = 0, $startChangeId = null, &$remotes, &$deletes, $connections = array(), $path = '')
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -1694,14 +1654,14 @@ class Connect extends Object
 			return false;
 		}
 
-		$changeID = NULL;
+		$changeID = null;
 
 		if ($service == 'google')
 		{
 			// Get remote folder ID
 			$folderID = $this->getConfigParam($service, 'remote_dir_id');
 
-			$changeID = Google::collectChanges ($apiService, $folderID, $remotes, $deletes, $path, $startChangeId, $connections);
+			$changeID = Google::collectChanges($apiService, $folderID, $remotes, $deletes, $path, $startChangeId, $connections);
 		}
 
 		return $changeID;
@@ -1710,14 +1670,13 @@ class Connect extends Object
 	/**
 	 * Get all remote files
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   string	$since			last sync date
-	 * @param	   array	$connections	Array of local-remote connections
-	 *
-	 * @return	   array
+	 * @param   string   $service      Service name (google or dropbox)
+	 * @param   integer  $uid          User ID
+	 * @param   string   $since        last sync date
+	 * @param   array    $connections  Array of local-remote connections
+	 * @return  array
 	 */
-	public function getRemoteItems ($service = 'google', $uid = 0, $since = '', $connections = array() )
+	public function getRemoteItems($service = 'google', $uid = 0, $since = '', $connections = array())
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -1782,14 +1741,13 @@ class Connect extends Object
 	/**
 	 * Get remote folder structure
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   array	&$remoteFolders Collector array
-	 * @param	   string	$path
-	 *
-	 * @return	   NULL
+	 * @param   string   $service         Service name (google or dropbox)
+	 * @param   integer  $uid             User ID
+	 * @param   array    &$remoteFolders  Collector array
+	 * @param   string   $path
+	 * @return  bool
 	 */
-	public function getFolderStructure ($service = 'google', $uid = 0, &$remoteFolders, $path = '' )
+	public function getFolderStructure($service = 'google', $uid = 0, &$remoteFolders, $path = '')
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -1806,7 +1764,7 @@ class Connect extends Object
 		if ($service == 'google')
 		{
 			// Get remote folder ID
-			$folderID	= $this->getConfigParam($service, 'remote_dir_id');
+			$folderID   = $this->getConfigParam($service, 'remote_dir_id');
 			$folderName = $this->getConfigParam($service, 'remote_dir');
 
 			// Check that master folder is there
@@ -1821,7 +1779,7 @@ class Connect extends Object
 				if ($folder && $folder['title'] != $folderName)
 				{
 					// Save renamed reference
-					$obj	= new \Components\Projects\Tables\Project( $this->_db );
+					$obj = new \Components\Projects\Tables\Project($this->_db);
 					$obj->saveParam($this->model->get('id'), $service . '_dir', $folder['title']);
 				}
 			}
@@ -1831,7 +1789,7 @@ class Connect extends Object
 				return false;
 			}
 
-			Google::getFolders ($apiService, $folderID, $remoteFolders, $path);
+			Google::getFolders($apiService, $folderID, $remoteFolders, $path);
 		}
 
 		return true;
@@ -1840,15 +1798,14 @@ class Connect extends Object
 	/**
 	 * Send httpRequest
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   string	$url			Request URL
-	 *
-	 * @return	   string
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @param   string   $url      Request URL
+	 * @return  string
 	 */
-	public function sendHttpRequest ($service = 'google', $uid = 0, $url = '')
+	public function sendHttpRequest($service = 'google', $uid = 0, $url = '')
 	{
-		$content = NULL;
+		$content = null;
 
 		if (!$url)
 		{
@@ -1857,6 +1814,7 @@ class Connect extends Object
 
 		// Need service client
 		$client = $this->startClient($service, $uid, true);
+
 		if (!$client)
 		{
 			return false;
@@ -1877,8 +1835,8 @@ class Connect extends Object
 			}
 			else
 			{
-				  // An error occurred.
-				  return null;
+				// An error occurred.
+				return null;
 			}
 		}
 
@@ -1888,16 +1846,25 @@ class Connect extends Object
 	/**
 	 * Download remote content via cURL
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   string	$remote			Remote resource array
-	 * @param	   string	$path			Project repo path
-	 * @return	   string or boolean
+	 * @param   string  $service  Service name (google or dropbox)
+	 * @param   string  $remote   Remote resource array
+	 * @param   string  $path     Project repo path
+	 * @return  string or boolean
 	 */
-	public function downloadFileCurl ($service = 'google', $uid = 0, $url = '', $path = '')
+	public function downloadFileCurl($service = 'google', $uid = 0, $url = '', $path = '')
 	{
 		if (!$url || !$path)
 		{
 			return false;
+		}
+
+		if ($service =='google' || $service instanceof Google_Service_Drive)
+		{
+			$apiService = $this->getAPI($service, $uid);
+			$response = $apiService->files->get($url, array('alt' => 'media'));
+			$content = $response->getBody()->getContents();
+			file_put_contents($path, $content);
+			return true;
 		}
 
 		// Need service client
@@ -1948,12 +1915,12 @@ class Connect extends Object
 	/**
 	 * Download remote content
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   array	$remote			Remote resource array
-	 * @param	   string	$path			Project repo path
-	 * @param	   boolean	$getContent		Output file content? Or write to file
-	 * @return	   string or boolean
+	 * @param   string   $service     Service name (google or dropbox)
+	 * @param   integer  $uid         User ID
+	 * @param   array    $remote      Remote resource array
+	 * @param   string   $path        Project repo path
+	 * @param   boolean  $getContent  Output file content? Or write to file
+	 * @return  string or boolean
 	 */
 	public function downloadFile($service = 'google', $uid = 0, $remote = array(), $path = '', $getContent = false)
 	{
@@ -1961,8 +1928,8 @@ class Connect extends Object
 		{
 			return false;
 		}
-		$fpath	= $remote['local_path'];
-		$url	= $remote['url'];
+		$fpath = $remote['local_path'];
+		$url   = $remote['url'];
 
 		// Get content
 		$fc = $this->sendHttpRequest($service, $uid, $url);
@@ -1983,15 +1950,14 @@ class Connect extends Object
 	/**
 	 * Import remote file
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   array	$remote			Remote resource array
-	 * @param	   string	$fpath			File path relative to repo path
-	 * @param	   string	$path			Project repo path
-	 * @param	   string	$ext			Extension
-	 * @param	   boolean	$getContent		Output file content? Or write to file
-	 *
-	 * @return	   string or boolean
+	 * @param   string   $service     Service name (google or dropbox)
+	 * @param   integer  $uid         User ID
+	 * @param   array    $remote      Remote resource array
+	 * @param   string   $fpath       File path relative to repo path
+	 * @param   string   $path        Project repo path
+	 * @param   string   $ext         Extension
+	 * @param   boolean  $getContent  Output file content? Or write to file
+	 * @return  string or boolean
 	 */
 	public function importFile($service = 'google', $uid = 0, $remote = array(), $fpath = '', $path = '', $ext = '', $getContent = false)
 	{
@@ -2026,7 +1992,7 @@ class Connect extends Object
 		// Clean up data from Windows characters - important!
 		if ($ext == 'tex')
 		{
-			$fc = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $fc);
+			$fc = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $fc);
 		}
 
 		if ($this->fetchFile($fc, $fpath, $path))
@@ -2040,11 +2006,10 @@ class Connect extends Object
 	/**
 	 * Fetch file
 	 *
-	 * @param	   string	$fc				File content
-	 * @param	   string	$fpath			File path relative to repo path
-	 * @param	   string	$path			Project repo path
-	 *
-	 * @return	  void
+	 * @param   string  $fc     File content
+	 * @param   string  $fpath  File path relative to repo path
+	 * @param   string  $path   Project repo path
+	 * @return  void
 	 */
 	public function fetchFile($fc = '', $fpath = '', $path = '')
 	{
@@ -2069,15 +2034,14 @@ class Connect extends Object
 	/**
 	 * Generate local thumbnail from remote
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   integer	$uid			User ID
-	 * @param	   array	$remote			Remote resource array
-	 * @param	   array	$config			Configuration array
-	 * @param	   string	$alias			Project alias name
-	 *
-	 * @return	   void
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid      User ID
+	 * @param   array    $remote   Remote resource array
+	 * @param   array    $config   Configuration array
+	 * @param   string   $alias    Project alias name
+	 * @return  bool
 	 */
-	public function generateThumbnail($service = 'google', $uid = 0, $remote = array(), $config = array(), $alias = NULL)
+	public function generateThumbnail($service = 'google', $uid = 0, $remote = array(), $config = array(), $alias = null)
 	{
 		if (empty($remote) || !$remote['thumb'] || empty($config) || !$alias)
 		{
@@ -2117,35 +2081,35 @@ class Connect extends Object
 				}
 			}
 		}
+
+		return true;
 	}
 
 	/**
 	 * Get stored auth token for service
 	 *
-	 * @param	   string	$param	Param name
-	 * @param	   integer	$uid	User ID
-	 *
-	 * @return	   string
+	 * @param   string   $param  Param name
+	 * @param   integer  $uid    User ID
+	 * @return  string
 	 */
-	public function getStoredParam ($param, $uid = 0)
+	public function getStoredParam($param, $uid = 0)
 	{
 		$uid = $uid ? $uid : $this->_uid;
 		$objO = $this->model->table('Owner');
 		$objO->loadOwner($this->model->get('id'), $uid);
-		$params = new \Hubzero\Config\Registry( $objO->params );
+		$params = new \Hubzero\Config\Registry($objO->params);
 		return $params->get($param);
 	}
 
 	/**
 	 * Store auth token for service
 	 *
-	 * @param	   string	$param		Param name
-	 * @param	   string	$value		Param value
-	 * @param	   integer	$uid		User ID
-	 *
-	 * @return	   void
+	 * @param   string   $param  Param name
+	 * @param   string   $value  Param value
+	 * @param   integer  $uid    User ID
+	 * @return  void
 	 */
-	public function storeParam ($param = '', $value = '', $uid = 0)
+	public function storeParam($param = '', $value = '', $uid = 0)
 	{
 		$uid = $uid ? $uid : $this->_uid;
 
@@ -2161,11 +2125,10 @@ class Connect extends Object
 	/**
 	 * Run cURL
 	 *
-	 * @param	   string	$url
-	 * @param	   string	$method
-	 * @param	   array	$postvals
-	 *
-	 * @return	   response string
+	 * @param   string  $url
+	 * @param   string  $method
+	 * @param   array   $postvals
+	 * @return  response string
 	 */
 	public function runCurl($url, $method = 'GET', $postvals = null)
 	{
@@ -2200,10 +2163,9 @@ class Connect extends Object
 	/**
 	 * Create authentication URL
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   string	$return		URL to return to after authorization
-	 *
-	 * @return	  URL string
+	 * @param   string  $service  Service name (google or dropbox)
+	 * @param   string  $return   URL to return to after authorization
+	 * @return  string  URL
 	 */
 	public function createAuthUrl($service, $return = '')
 	{
@@ -2255,10 +2217,9 @@ class Connect extends Object
 	/**
 	 * Refresh service token
 	 *
-	 * @param	   string	$service		Service name (google or dropbox)
-	 * @param	   string	$refreshToken	Stored refresh token
-	 *
-	 * @return	   JSON string or false
+	 * @param   string  $service       Service name (google or dropbox)
+	 * @param   string  $refreshToken  Stored refresh token
+	 * @return  mixed   JSON string or false
 	 */
 	public function refreshToken($service, $refreshToken = '')
 	{
@@ -2286,10 +2247,12 @@ class Connect extends Object
 		if ($service == 'google')
 		{
 			// construct POST object required for refresh token fetch
-			$postvals = array('grant_type'		=> 'refresh_token',
-							  'client_id'		=> $config['clientId'],
-							  'client_secret'	=> $config['clientSecret'],
-							  'refresh_token'	=> $refreshToken);
+			$postvals = array(
+				'grant_type'    => 'refresh_token',
+				'client_id'     => $config['clientId'],
+				'client_secret' => $config['clientSecret'],
+				'refresh_token' => $refreshToken
+			);
 
 			// return JSON refreshed access token object
 			try
@@ -2309,9 +2272,10 @@ class Connect extends Object
 	/**
 	 * Disconnect user from service
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 *
-	 * @return	   JSON string or false
+	 * @param   string   $service  Service name (google or dropbox)
+	 * @param   integer  $uid
+	 * @param   itneger  $remoteid
+	 * @return  mixed    JSON string or false
 	 */
 	public function disconnectMember($service, $uid = 0, $remoteid = 0)
 	{
@@ -2321,16 +2285,16 @@ class Connect extends Object
 		}
 
 		$objO = $this->model->table('Owner');
-		$objO->loadOwner ($this->model->get('id'), $uid);
+		$objO->loadOwner($this->model->get('id'), $uid);
 
-		$creator = $uid == $this->model->get('owned_by_user')  ? 1 : 0;
+		$creator = $uid == $this->model->get('owned_by_user') ? 1 : 0;
 
 		// Get connection email & name
 		$email = $this->getStoredParam($service . '_email', $uid);
 		$name  = $this->getStoredParam($service . '_name', $uid);
 
 		// Remove token
-		$objO->saveParam (
+		$objO->saveParam(
 			$this->model->get('id'),
 			$uid,
 			$param = $service . '_token',
@@ -2338,7 +2302,7 @@ class Connect extends Object
 		);
 
 		// Remove time
-		$objO->saveParam (
+		$objO->saveParam(
 			$this->model->get('id'),
 			$uid,
 			$param = $service . '_token_created',
@@ -2346,7 +2310,7 @@ class Connect extends Object
 		);
 
 		// Remove email
-		$objO->saveParam (
+		$objO->saveParam(
 			$this->model->get('id'),
 			$uid,
 			$param = $service . '_email',
@@ -2354,7 +2318,7 @@ class Connect extends Object
 		);
 
 		// Remove name
-		$objO->saveParam (
+		$objO->saveParam(
 			$this->model->get('id'),
 			$uid,
 			$param = $service . '_name',
@@ -2362,7 +2326,7 @@ class Connect extends Object
 		);
 
 		// Remove user id
-		$objO->saveParam (
+		$objO->saveParam(
 			$this->model->get('id'),
 			$uid,
 			$param = $service . '_userid',
@@ -2393,10 +2357,9 @@ class Connect extends Object
 	/**
 	 * Disconnect user from service
 	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 * @param	   boolean	$removeData Remove remote data (when project creator)
-	 *
-	 * @return	   JSON string or false
+	 * @param   string   $service     Service name (google or dropbox)
+	 * @param   boolean  $removeData  Remove remote data (when project creator)
+	 * @return  mixed    JSON string or false
 	 */
 	public function disconnect($service, $removeData = false)
 	{
@@ -2416,10 +2379,10 @@ class Connect extends Object
 		}
 
 		// Load project
-		$obj = new \Components\Projects\Tables\Project( $this->_db );
+		$obj = new \Components\Projects\Tables\Project($this->_db);
 		if (!$obj->loadProject($this->model->get('id')))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_SYNC_PROBLEM_LOADING_DATA') );
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_PROBLEM_LOADING_DATA'));
 			return false;
 		}
 

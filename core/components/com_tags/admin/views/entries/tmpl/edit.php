@@ -178,9 +178,9 @@ function submitbutton(pressbutton)
 					<h4><?php echo Lang::txt('COM_TAGS_LOG'); ?></h4>
 					<ul class="entry-log">
 						<?php
-						foreach ($this->tag->logs()->rows() as $log)
+						foreach ($this->tag->logs()->ordered()->rows() as $log)
 						{
-							$actor = $this->escape(stripslashes($log->actor()->get('name')));
+							$actor = $this->escape(stripslashes($log->actor->get('name')));
 
 							$s = null;
 							$c = '';

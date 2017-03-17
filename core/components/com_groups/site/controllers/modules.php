@@ -83,7 +83,7 @@ class Modules extends Base
 		}
 
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))
+		if ($this->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages')))
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
@@ -95,7 +95,7 @@ class Modules extends Base
 	/**
 	 * Display Page Modules
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -105,7 +105,7 @@ class Modules extends Base
 	/**
 	 * Add Module
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -115,7 +115,7 @@ class Modules extends Base
 	/**
 	 * Edit Module
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -171,7 +171,7 @@ class Modules extends Base
 	/**
 	 * Save Module
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -244,8 +244,8 @@ class Modules extends Base
 			if ($contentChanged)
 			{
 				$this->module->set('approved', 0);
-				$this->module->set('approved_on', NULL);
-				$this->module->set('approved_by', NULL);
+				$this->module->set('approved_on', null);
+				$this->module->set('approved_by', null);
 				$this->module->set('checked_errors', 0);
 				$this->module->set('scanned', 0);
 			}
@@ -261,7 +261,7 @@ class Modules extends Base
 		// set modified
 		$this->module->set('modified', Date::toSql());
 		$this->module->set('modified_by', User::get('id'));
-
+		$this->module->set('page_trusted', $this->group->params->get('page_trusted', 0));
 
 		// check module again (because were not on store() method)
 		if (!$this->module->check())
@@ -334,8 +334,9 @@ class Modules extends Base
 
 		// Push success message and redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
+
 		App::redirect($url);
-		if ($return = Request::getVar('return', '','post'))
+		if ($return = Request::getVar('return', '', 'post'))
 		{
 			App::redirect(base64_decode($return));
 		}
@@ -412,7 +413,7 @@ class Modules extends Base
 		//inform user & redirect
 		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=modules');
 
-		if ($return = Request::getVar('return', '','get'))
+		if ($return = Request::getVar('return', '', 'get'))
 		{
 			$url = base64_decode($return);
 		}

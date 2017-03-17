@@ -369,7 +369,7 @@ class Post extends Relational
 			}
 		}
 
-		$cloud = new Tags($this->get('id'));
+		$cloud = new Tags($this->get('thread'));
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
@@ -384,7 +384,7 @@ class Post extends Relational
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new Tags($this->get('id'));
+		$cloud = new Tags($this->get('thread'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -576,7 +576,9 @@ class Post extends Relational
 			$this->set('access', (int) \Config::get('access'));
 		}
 
-		if ($this->isNew() && !$this->get('parent'))
+		$isNew = $this->isNew();
+
+		if ($isNew && !$this->get('parent'))
 		{
 			$this->set('lft', 0);
 			$this->set('rgt', 1);
@@ -643,23 +645,35 @@ class Post extends Relational
 				$result = parent::save();
 			}
 
-			// Make sure state and category changes carry through to replies
-			foreach ($this->replies()->rows() as $reply)
+			if (!$isNew)
 			{
+				// Make sure state and category changes carry through to replies
 				// If it's marked as deleted, skip it
-				if ($reply->get('state') != self::STATE_DELETED)
+				$query = $this->getQuery()
+					->update($this->getTableName())
+					->set([
+						'state'       => $this->get('state'),
+						'category_id' => $this->get('category_id')
+					])
+					->whereEquals('parent', $this->get('id'))
+					->where('state', '!=', self::STATE_DELETED);
+				if (!$query->execute())
 				{
-					$reply->set('state', $this->get('state'));
+					$this->addError($query->getError());
+					return false;
 				}
-				$reply->set('category_id', $this->get('category_id'));
-				$reply->save();
-			}
 
-			// Make sure state changes carry through to attachments
-			foreach ($this->attachments()->rows() as $attachment)
-			{
-				$attachment->set('state', $this->get('state'));
-				$attachment->save();
+				// Make sure state changes carry through to attachments
+				$query = $this->getQuery()
+					->update(Attachment::blank()->getTableName())
+					->set(['state' => $this->get('state')])
+					->whereEquals('post_id', $this->get('id'))
+					->where('state', '!=', self::STATE_DELETED);
+				if (!$query->execute())
+				{
+					$this->addError($query->getError());
+					return false;
+				}
 			}
 		}
 

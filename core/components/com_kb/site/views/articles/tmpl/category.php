@@ -215,7 +215,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 							<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($row->link()); ?>">
 								<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
 							</a>
-							<?php if ($this->catid == $row->get('id') && count($row->children($filters)) > 0) { ?>
+							<?php if ($this->catid == $row->get('id') && $row->children($filters)->total() > 0) { ?>
 								<ul class="categories">
 								<?php foreach ($row->children() as $cat) { ?>
 									<li>

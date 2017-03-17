@@ -51,8 +51,12 @@ Html::behavior('switcher', 'submenu');
 // are we using the email gateway for group forum
 $params =  Component::params('com_groups');
 $allowEmailResponses = $params->get('email_comment_processing', 0);
-$autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup', 0);
 
+$autoEmailResponses  = $this->group->get('discussion_email_autosubscribe');
+if (is_null($autoEmailResponses))
+{
+	$autoEmailResponses = $params->get('email_member_groupsidcussionemail_autosignup', 0);
+}
 if ($this->group->get('discussion_email_autosubscribe', null) == 1
 	|| ($this->group->get('discussion_email_autosubscribe', null) == null && $autoEmailResponses))
 {
@@ -143,6 +147,7 @@ function submitbutton(pressbutton)
 										<select name="group[published]" id="field-published">
 											<option <?php if ($this->group->published == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></option>
 											<option <?php if ($this->group->published == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></option>
+											<option <?php if ($this->group->published == 2) { echo 'selected="selected"'; } ?> value="2"><?php echo Lang::txt('COM_GROUPS_ARCHIVED'); ?></option>
 										</select>
 									</div>
 								</div>

@@ -45,20 +45,13 @@ class plgSystemJquery extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		if (!App::isAdmin() && !App::isSite())
+		if (!App::isSite())
 		{
 			return;
 		}
 
-		$client = 'Site';
-		if (App::isAdmin())
-		{
-			$client = 'Admin';
-			return;
-		}
-
-		// Check if active for this client (Site|Admin)
-		if (!$this->params->get('activate' . $client) || Request::getVar('format') == 'pdf')
+		// Check if active for this client
+		if (!$this->params->get('activateSite') || Request::getVar('format') == 'pdf')
 		{
 			return;
 		}
@@ -75,7 +68,7 @@ class plgSystemJquery extends \Hubzero\Plugin\Plugin
 			Html::behavior('modal');
 		}
 
-		if ($this->params->get('noconflict' . $client))
+		if ($this->params->get('noconflictSite'))
 		{
 			Document::addScript(Request::root(true) . '/core/assets/js/jquery.noconflict.js');
 		}

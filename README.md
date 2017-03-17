@@ -1,4 +1,5 @@
 # The HUBzero® Platform for Scientific Collaboration
+[![Build Status](https://travis-ci.org/hubzero/hubzero-cms.svg?branch=master)](https://travis-ci.org/hubzero/hubzero-cms)
 
 ## What is HUBzero?
 
@@ -22,8 +23,12 @@ Both user and developer documentation for the CMS can be found at https://hubzer
 
 ## Contributing
 
-HUBzero is an open source project, with code contributions from nuermous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://hubzero.org/about/contributions.
+HUBzero is an open source project, with code contributions from nuermous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://github.com/hubzero/hubzero-cms/wiki/Contribution-Guide.
 
 ## Issues
 
 Please report any bugs or issues at https://hubzero.org/support.
+
+## Roadmap
+
+Checkout what is on our development roadmap at https://hubzero.org/roadmap.

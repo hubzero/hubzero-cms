@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
  * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
@@ -26,12 +23,17 @@
  * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Groups\Helpers;
 
 use Hubzero\Base\Object;
 use User;
+use App;
 
 /**
  * Permissions helper
@@ -90,7 +92,7 @@ class Permissions
 	 */
 	public static function getGroupMemberRoles($uid, $gid)
 	{
-		$db = \App::get('db');
+		$db = App::get('db');
 		$sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
 		$db->setQuery($sql);
 
@@ -100,7 +102,7 @@ class Permissions
 	/**
 	 * Check to see if user has permission to perform task
 	 *
-	 * @param   object   $group   \Hubzero\User\Group
+	 * @param   object   $group   Hubzero\User\Group
 	 * @param   string   $action  Group Action to perform
 	 * @return  boolean
 	 */

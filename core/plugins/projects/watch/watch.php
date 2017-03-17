@@ -48,14 +48,15 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return  array  Plugin name and title
+	 * @param   string  $alias
+	 * @return  array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array(
 			'name'    => 'watch',
 			'title'   => 'Watch',
-			'submenu' => NULL,
+			'submenu' => null,
 			'show'    => false
 		);
 
@@ -70,7 +71,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	 * @param   string  $areas   Plugins to return data
 	 * @return  array   Return array of html
 	 */
-	public function onProject($model, $action = '', $areas = NULL)
+	public function onProject($model, $action = '', $areas = null)
 	{
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
@@ -91,7 +92,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	 * Return data on a project team member
 	 *
 	 * @param   object  $project  Current publication
-	 * @return  array
+	 * @return  mixed
 	 */
 	public function onProjectMember($project)
 	{
@@ -111,8 +112,8 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		$this->project  = $project;
 
 		// Item watch class
-		$this->watch   = new \Hubzero\Item\Watch($this->database);
-		$this->action  = strtolower(Request::getWord('action', ''));
+		$this->watch    = new Hubzero\Item\Watch($this->database);
+		$this->action   = strtolower(Request::getWord('action', ''));
 
 		switch ($this->action)
 		{
@@ -140,7 +141,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		// Instantiate a view
 		$view = $this->view('default', 'index')
 			->set('project', $this->project)
-			->set('watched', \Hubzero\Item\Watch::isWatching(
+			->set('watched', Hubzero\Item\Watch::isWatching(
 				$this->project->get('id'),
 				'project',
 				User::get('id')
@@ -158,21 +159,27 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	private function _manage()
 	{
 		// Is user watching item?
-		$watch = \Hubzero\Item\Watch::oneByScope(
+		$watch = Hubzero\Item\Watch::oneByScope(
 			$this->project->get('id'),
 			'project',
 			User::get('id')
 		);
 
-		$params = new \Hubzero\Config\Registry($watch->get('params', ''));
+		$params = new Hubzero\Config\Registry($watch->get('params', ''));
+
+		$dflt = 0;
+		if ($this->params->get('autosubscribe'))
+		{
+			$dflt = 1;
+		}
 
 		$cats = array(
-			'blog'         => $params->get('blog', 0),
-			'team'         => $params->get('team', 0),
-			'files'        => $params->get('files', 0),
-			'publications' => $params->get('publications', 0),
-			'todo'         => $params->get('todo', 0),
-			'notes'        => $params->get('notes', 0)
+			'blog'         => $params->get('blog', $dflt),
+			'team'         => $params->get('team', $dflt),
+			'files'        => $params->get('files', $dflt),
+			'publications' => $params->get('publications', $dflt),
+			'todo'         => $params->get('todo', $dflt),
+			'notes'        => $params->get('notes', $dflt)
 		);
 
 		// Instantiate a view
@@ -209,7 +216,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		$frequency  = Request::getWord('frequency', 'immediate');
 
 		// Save subscription
-		$watch = \Hubzero\Item\Watch::oneByScope(
+		$watch = Hubzero\Item\Watch::oneByScope(
 			$this->project->get('id'),
 			'project',
 			User::get('id'),
@@ -231,7 +238,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 			'notes'        => 0
 		);
 
-		$params = new \Hubzero\Config\Registry($watch->get('params', ''));
+		$params = new Hubzero\Config\Registry($watch->get('params', ''));
 
 		$params->set('frequency', $frequency);
 
@@ -279,15 +286,6 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	{
 		$this->project = $project;
 
-		// Get subscribers
-		$subscribers = \Hubzero\Item\Watch::all()
-			->whereEquals('item_type', 'project')
-			->whereEquals('item_id', $project->get('id'))
-			->whereEquals('state', 1)
-			->whereLike('params', '"' . $area . '":1')
-			->whereLike('params', '"frequency":"immediate"')
-			->rows();
-
 		// Get full activity info from IDs
 		if ($activities)
 		{
@@ -303,6 +301,55 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		// Get subscribers
+		$watchers = Hubzero\Item\Watch::all()
+			->whereEquals('item_type', 'project')
+			->whereEquals('item_id', $project->get('id'));
+
+		if (!$this->params->get('autosubscribe'))
+		{
+			$watchers
+				->whereEquals('state', 1)
+				->whereLike('params', '"' . $area . '":1')
+				->whereLike('params', '"frequency":"immediate"');
+		}
+
+		$subscribers = $watchers->rows();
+
+		// Is auto-subscribed turned on?
+		if ($this->params->get('autosubscribe'))
+		{
+			// Get the entire team
+			$team = $project->table('Owner')->getIds($project->get('id'), 'all', 1);
+
+			// Filter out people who have opted-out
+			foreach ($subscribers as $subscriber)
+			{
+				if (in_array($subscriber->get('created_by'), $team))
+				{
+					$params = new Hubzero\Config\Registry($subscriber->get('params'));
+
+					// Do they meet the requirements for being messaged?
+					if ($params->get('frequency') != 'immediate' || !$params->get($area))
+					{
+						// Unset the user from the team list
+						$key = array_search($subscriber->get('created_by'), $team);
+						unset($team[$key]);
+					}
+				}
+			}
+
+			// Rebuild the subscriber list from the team
+			$subscribers = new Hubzero\Database\Rows();
+			foreach ($team as $t)
+			{
+				$subscriber = new Hubzero\Item\Watch();
+				$subscriber->set('created_by', $t);
+
+				$subscribers->push($subscriber);
+			}
+		}
+
 		$subject = Lang::txt('PLG_PROJECTS_WATCH_EMAIL_SUBJECT');
 
 		// Do we have subscribers?
@@ -315,11 +362,9 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 					// Skip
 					continue;
 				}
+
 				// Send message
-				if ($subscriber->email)
-				{
-					$this->_sendEmail($project, $subscriber, $activities, $subject);
-				}
+				$this->_sendEmail($project, $subscriber, $activities, $subject);
 			}
 		}
 
@@ -337,25 +382,33 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	private function _sendEmail($project, $subscriber, $activities = array(), $subject)
 	{
-		$eview = new \Hubzero\Mail\View(array(
+		$name  = Config::get('sitename') . ' ' . Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBER');
+		$email = $subscriber->get('email');
+
+		// Get profile information
+		if ($subscriber->get('created_by'))
+		{
+			$user = User::getInstance($subscriber->get('created_by'));
+			if ($user->get('id'))
+			{
+				$name  = $user->get('name');
+				$email = $user->get('email');
+			}
+		}
+
+		if (empty($email))
+		{
+			return false;
+		}
+
+		$eview = new Hubzero\Mail\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
-			'name'   => 'emails',
-			'layout' => 'watch_plain'
+			'name'      => 'emails',
+			'layout'    => 'watch_plain'
 		));
 		$eview->activities = $activities;
 		$eview->subject    = $subject;
 		$eview->project    = $project;
-
-		$name = Config::get('sitename') . ' ' . Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBER');
-		$email = $subscriber->email;
-
-		// Get profile information
-		if ($subscriber->created_by)
-		{
-			$user  = User::getInstance($subscriber->created_by);
-			$name  = $user ? $user->get('name')  : $name;
-			$email = $user ? $user->get('email') : $email;
-		}
 
 		$plain = $eview->loadTemplate(false);
 		$plain = str_replace("\n", "\r\n", $plain);
@@ -366,27 +419,20 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
-		if (empty($email))
-		{
-			return false;
-		}
-
 		// Build message
-		$message = new \Hubzero\Mail\Message();
+		$message = new Hubzero\Mail\Message();
 		$message->setSubject($subject)
 				->addFrom(Config::get('mailfrom'), Config::get('sitename'))
 				->addTo($email, $name)
 				->addHeader('X-Component', 'com_projects')
-				->addHeader('X-Component-Object', 'projects_watch_email');
-
-		$message->addPart($plain, 'text/plain');
-		$message->addPart($html, 'text/html');
+				->addHeader('X-Component-Object', 'projects_watch_email')
+				->addPart($plain, 'text/plain')
+				->addPart($html, 'text/html');
 
 		// Send mail
 		if (!$message->send())
 		{
 			$this->setError('Failed to mail %s', $email);
-
 			return false;
 		}
 

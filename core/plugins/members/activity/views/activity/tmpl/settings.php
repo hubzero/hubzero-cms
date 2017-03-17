@@ -36,13 +36,6 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 ?>
-<ul id="page_options">
-	<li>
-		<a class="icon-archive btn" href="<?php echo Route::url($this->member->link() . '&active=activity'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY'); ?>
-		</a>
-	</li>
-</ul>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>

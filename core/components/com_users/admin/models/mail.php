@@ -144,28 +144,28 @@ class UsersModelMail extends JModelAdmin
 		}
 
 		// Get the Mailer
-		$mailer = JFactory::getMailer();
+		$mailer = new Hubzero\Mail\Message();
 		$params = Component::params('com_users');
 
 		// Build email message format.
-		$mailer->setSender(array($app->getCfg('mailfrom'), $app->getCfg('fromname')));
+		$mailer->setFrom($app->getCfg('mailfrom'), $app->getCfg('fromname'));
 		$mailer->setSubject($params->get('mailSubjectPrefix') . stripslashes($subject));
 		$mailer->setBody($message_body . $params->get('mailBodySuffix'));
-		$mailer->IsHTML($mode);
+		//$mailer->IsHTML($mode);
 
 		// Add recipients
 		if ($bcc)
 		{
-			$mailer->addBCC($rows);
-			$mailer->addRecipient($app->getCfg('mailfrom'));
+			$mailer->addBcc($rows);
+			$mailer->addTo($app->getCfg('mailfrom'));
 		}
 		else
 		{
-			$mailer->addRecipient($rows);
+			$mailer->addTo($rows);
 		}
 
 		// Send the Mail
-		$rs	= $mailer->Send();
+		$rs = $mailer->send();
 
 		// Check for an error
 		if ($rs instanceof Exception)

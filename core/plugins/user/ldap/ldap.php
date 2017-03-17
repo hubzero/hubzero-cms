@@ -39,95 +39,124 @@ defined('_HZEXEC_') or die();
 class plgUserLdap extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * This method is an alias for onAfterStoreUser
+	 *
+	 * @param   array    $user     holds the new user data
+	 * @param   boolean  $isnew    true if a new user is stored
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  void
+	 */
+	public function onUserAfterSave($user, $isnew, $success, $msg)
+	{
+		return $this->onAfterStoreUser($user, $isnew, $success, $msg);
+	}
+
+	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param array holds the new user data
-	 * @param boolean true if a new user is stored
-	 * @param boolean true if user was succesfully stored in the database
-	 * @param string message
+	 * @param   array    $user     holds the new user data
+	 * @param   boolean  $isnew    true if a new user is stored
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  void
 	 */
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
-		//Log::debug("plgUserLdap::onAfterStoreUser(" . $user['id'] . ")");
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
+	}
+
+	/**
+	 * This method is an alias for onAfterDeleteUser
+	 *
+	 * @param   array    $user     holds the user data
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  boolean  True on success
+	 */
+	public function onUserAfterDelete($user, $success, $msg)
+	{
+		return $this->onAfterDeleteUser($user, $success, $msg);
 	}
 
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param array holds the user data
-	 * @param boolean true if user was succesfully stored in the database
-	 * @param string message
+	 * @param   array    $user     holds the user data
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  boolean  True on success
 	 */
 	public function onAfterDeleteUser($user, $succes, $msg)
 	{
-		//Log::debug("plgUserLdap::onAfterDeleteUser(" . $user['id'] . ")");
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
+
+		return true;
 	}
 
 	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param object holds the new profile data (\Hubzero\User\User)
+	 * @param   object  $user  holds the new profile data (\Hubzero\User\User)
+	 * @return  void
 	 */
 	public function onAfterStoreProfile($user)
 	{
-		//Log::debug("plgUserLdap::onAfterStoreProfile(" . $user->get('uidNumber') . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->get('uidNumber'));
 	}
 
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param object holds the new profile data (\Hubzero\User\User)
+	 * @param   object  $user  holds the new profile data (\Hubzero\User\User)
+	 * @return  void
 	 */
 	public function onAfterDeleteProfile($user)
 	{
-		//Log::debug("plgUserLdap::onAfterDeleteProfile(" . $user->get('uidNumber') . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->get('uidNumber'));
 	}
 
 	/**
 	 * Method is called after password data is stored in the database
 	 *
-	 * @param object holds the new password data (\Hubzero\User\Password)
+	 * @param   object  $user  holds the new password data (\Hubzero\User\Password)
+	 * @return  void
 	 */
 	public function onAfterStorePassword($user)
 	{
-		//Log::debug("plgUserLdap::onAfterStoreUser(" . $user->user_id . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->user_id);
 	}
 
 	/**
 	 * Method is called after password data is deleted from the database
 	 *
-	 * @param object holds the new password data (\Hubzero\User\Password)
+	 * @param   object  $user  holds the new password data (\Hubzero\User\Password)
+	 * @return  void
 	 */
 	public function onAfterDeletePassword($user)
 	{
-		//Log::debug("plgUserLdap::onAfterDeleteUser(" . $user->user_id . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->user_id);
 	}
 
 	/**
 	 * Method is called after group data is stored in the database
 	 *
-	 * @param object holds the new group data (\Hubzero\User\Group)
+	 * @param   object  $user  holds the new group data (\Hubzero\User\Group)
+	 * @return  void
 	 */
 	public function onAfterStoreGroup($group)
 	{
-		//Log::debug("plgUserLdap::onAfterStoreGroup(" . $group->cn . ")");
 		\Hubzero\Utility\Ldap::syncGroup($group->cn);
 	}
 
 	/**
 	 * Method is called after group data is deleted from the database
 	 *
-	 * @param object holds the new group data (\Hubzero\User\Group)
+	 * @param   object  $user  holds the new group data (\Hubzero\User\Group)
+	 * @return  void
 	 */
 	public function onAfterDeleteGroup($group)
 	{
-		//Log::debug("onAfterDeleteGroup($group)");
 		\Hubzero\Utility\Ldap::syncGroup($group->cn);
 	}
 }

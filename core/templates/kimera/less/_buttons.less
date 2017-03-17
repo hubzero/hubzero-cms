@@ -57,7 +57,8 @@
 	// Disabled state
 	&.disabled,
 	&[disabled] {
-		cursor: default;
+		cursor: not-allowed;
+		pointer-events: none;
 		background-image: none;
 		.opacity(65);
 		.box-shadow(none);
@@ -90,7 +91,7 @@
 	&.opposite[class*=" icon-"]:before {
 		left: auto;
 		right: 0;
-		margin: 0 0 0 0.2em;
+		margin: 0 0 0 .2em;
 		padding: 0 0.7em 0 0.3em;
 	}
 }

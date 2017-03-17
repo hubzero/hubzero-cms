@@ -430,7 +430,10 @@ class Tag extends Relational
 			return false;
 		}
 
-		$this->set('objects', $this->objects()->total());
+		if ($this->hasAttribute('objects'))
+		{
+			$this->set('objects', $this->objects()->total());
+		}
 		$this->save();
 
 		return true;
@@ -478,7 +481,10 @@ class Tag extends Relational
 			return false;
 		}
 
-		$this->set('objects', $this->objects()->total());
+		if ($this->hasAttribute('objects'))
+		{
+			$this->set('objects', $this->objects()->total());
+		}
 		$this->save();
 
 		return true;
@@ -502,7 +508,7 @@ class Tag extends Relational
 		// Loop through the associations and link them to a different tag
 		if (!Object::moveTo($this->get('id'), $tag_id))
 		{
-			$this->addError($to->getError());
+			$this->addError(Lang::txt('Failed to move objects attached to tag.'));
 			return false;
 		}
 
@@ -510,7 +516,7 @@ class Tag extends Relational
 		// Loop through the records and link them to a different tag
 		if (!Substitute::moveTo($this->get('id'), $tag_id))
 		{
-			$this->addError($ts->getError());
+			$this->addError(Lang::txt('Failed to move substitutes attached to tag.'));
 			return false;
 		}
 
@@ -525,10 +531,19 @@ class Tag extends Relational
 		}
 
 		// Update new tag's counts
-		$tag = self::one($tag_id);
-		$tag->set('objects', $tag->objects()->total())
-			->set('substitutes', $tag->substitutes()->total())
-			->save();
+		if ($this->hasAttribute('objects') || $this->hasAttribute('substitutes'))
+		{
+			$tag = self::one($tag_id);
+			if ($this->hasAttribute('objects'))
+			{
+				$tag->set('objects', $tag->objects()->total());
+			}
+			if ($this->hasAttribute('substitutes'))
+			{
+				$tag->set('substitutes', $tag->substitutes()->total());
+			}
+			$tag->save();
+		}
 
 		// Destroy the old tag
 		if (!$this->destroy())
@@ -644,12 +659,18 @@ class Tag extends Relational
 				Substitute::moveTo($tag->get('id'), $this->get('id'));
 
 				// Delete the tag
-				$tag->destroy();
+				$tag->purgeCache()->destroy();
 			}
 		}
 
-		$this->set('objects', $this->objects()->total());
-		$this->set('substitutes', $this->substitutes()->total());
+		if ($this->hasAttribute('objects'))
+		{
+			$this->set('objects', $this->objects()->total());
+		}
+		if ($this->hasAttribute('substitutes'))
+		{
+			$this->set('substitutes', $this->substitutes()->total());
+		}
 		$this->save();
 
 		return true;

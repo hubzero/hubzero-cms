@@ -45,6 +45,6 @@ class Owner extends Relational
 
 	public function project()
 	{
-		$this->belongsToOne('Project');
+		return $this->belongsToOne('Project', 'projectid');
 	}
 }

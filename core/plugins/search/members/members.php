@@ -36,89 +36,19 @@ defined('_HZEXEC_') or die();
 use Components\Members\Models\Member;
 
 require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
-/**
- * Short description for 'ContributionSorter'
- *
- * Long description (if any) ...
- */
-class ContributionSorter
-{
-	/**
-	 * Short description for 'sort'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public static function sort($a, $b)
-	{
-		$sec_diff = strcmp($a->get_section(), $b->get_section());
-		if ($sec_diff < 0)
-		{
-			return -1;
-		}
-		if ($sec_diff > 0)
-		{
-			return 1;
-		}
-		$a_ord = $a->get('ordering');
-		$b_ord = $b->get('ordering');
-		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
-	}
-
-	/**
-	 * Short description for 'sort_weight'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public static function sort_weight($a, $b)
-	{
-		$aw = $a->get_weight();
-		$bw = $b->get_weight();
-		if ($aw == $bw)
-		{
-			return 0;
-		}
-		return $aw > $bw ? -1 : 1;
-	}
-
-	/**
-	 * Short description for 'sort_title'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
-	 */
-	public static function sort_title($a, $b)
-	{
-		return strcmp($a->get_title(), $b->get_title());
-	}
-}
+require_once __DIR__ . DS . 'contributionsorter.php';
 
 /**
  * Search members
  */
 class plgSearchMembers extends \Hubzero\Plugin\Plugin
 {
-	/****************************
-	Query-time / General Methods
-	****************************/
-
 	/**
 	 * onGetTypes - Announces the available hubtype
-	 *
-	 * @param mixed $type
-	 * @access public
-	 * @return void
+	 * 
+	 * @param   mixed   $type 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onGetTypes($type = null)
 	{
@@ -136,104 +66,144 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onGetModel 
+	 * onIndex 
 	 * 
-	 * @param string $type 
-	 * @access public
-	 * @return void
+	 * @param   string   $type
+	 * @param   integer  $id 
+	 * @param   boolean  $run 
+	 * @access  public
+	 * @return  void
 	 */
-	public function onGetModel($type = '')
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'member')
 		{
-			return new Member;
-		}
-	}
-
-	/*********************
-		Index-time methods
-	*********************/
-	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
-	 * @access public
-	 * @return void
-	 */
-	public function onProcessFields($type, $row, &$db)
-	{
-		if ($type == 'member')
-		{
-			// Instantiate new $fields object
-			$fields = new stdClass;
-
-			// Format the date for SOLR
-			$date = Date::of($row->registerDate)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->registerDate)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			$fields->title = $row->name;
-			$fields->alias = $row->username;
-			$fields->address = $row->email;
-
-			$fields->owner_type = 'user';
-			$fields->owner = $row->id;
-			$fields->type = $row->usertype;
-
-			if ($row->access == 1 && $row->block == 0 && $row->approved == 2)
+			if ($run === true)
 			{
-				$fields->access_level = 'public';
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM `#__users` WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				if (!is_object($row) || empty($row))
+				{
+					return;
+				}
+
+				// Determine the path
+				$path = '/members/' . $id;
+
+				// Public condition
+				if ($row->block != 0 && $row->approved != 0 && $row->access == 1)
+				{
+					$access_level = 'public';
+				}
+				else
+				{
+					$access_level = 'private';
+				}
+
+				// Owner is self
+				$owner_type = 'user';
+				$owner = $row->id;
+
+				// Get the title
+				$title = $row->name;
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'xprofiles';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Get any profile fields that are public
+				$sql3 = "SELECT profile_key, profile_value FROM #__user_profiles WHERE user_id={$id} AND access=1;";
+				$profileFields = $db->setQuery($sql3)->query()->loadAssocList();
+
+				$profile = '';
+				foreach ($profileFields as $field)
+				{
+					$profile .= $field['profile_value'] . ' ';
+				}
+
+				// Build the description, clean up text
+				$content = $row->email .  ' ' . $profile;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
 			else
 			{
-				$fields->access_level = 'private';
+				$db = App::get('db');
+				$sql = "SELECT id FROM `#__users`;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
 			}
-
-			$fields->url = '/members/' . $row->id;
-
-			return $fields;
 		}
 	}
+
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
-		$weight = '(match(p.name) against (\'' . join(' ', $terms['stemmed']) . '\') + match(b.bio) against(\'' . join(' ', $terms['stemmed']) . '\'))';
+		//$weight = '(match(u.name) against (\'' . join(' ', $terms['stemmed']) . '\') + match(p.profile_key) against(\'' . join(' ', $terms['stemmed']) . '\'))';
+		$weight = '(u.name LIKE \'' . join(' ', $terms['stemmed']) . '\' OR p.profile_value LIKE \'' . join(' ', $terms['stemmed']) . '\')';
 
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 		{
-			$addtl_where[] = "(p.name LIKE '%$mand%' OR b.bio LIKE '%$mand%')";
+			$addtl_where[] = "(u.name LIKE '%$mand%' OR p.profile_value LIKE '%$mand%')";
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(p.name NOT LIKE '%$forb%' AND b.bio NOT LIKE '%$forb%')";
+			$addtl_where[] = "(u.name NOT LIKE '%$forb%' AND p.profile_value NOT LIKE '%$forb%')";
 		}
 
 		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
-				p.uidNumber AS id,
-				p.name AS title,
-				coalesce(b.bio, '') AS description,
-				concat('index.php?option=com_members&id=', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
+				u.id,
+				u.name AS title,
+				coalesce(p.profile_key, '') AS description,
+				concat('index.php?option=com_members&id=', CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END) AS link,
 				$weight AS weight,
 				NULL AS date,
 				'Members' AS section,
-				CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
-			FROM #__xprofiles p
-			LEFT JOIN #__xprofiles_bio b
-				ON b.uidNumber = p.uidNumber
+				NULL AS img_href
+			FROM `#__users` AS u
+			LEFT JOIN `#__user_profiles` AS p
+				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
-				public AND $weight > 0" .
+				u.block=0 AND u.approved>0 AND
+				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));
@@ -242,9 +212,9 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  YSearchModelRequest
-	 * @param      object &$results YSearchModelResultSet
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @return  void
 	 */
 	public static function onSearchCustom($request, &$results)
 	{
@@ -259,28 +229,29 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($pos as $term)
 			{
-				$addtl_where[] = "(p.name LIKE '%$term%')";
+				$addtl_where[] = "(u.name LIKE '%$term%')";
 			}
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(p.name NOT LIKE '%$forb%')";
+			$addtl_where[] = "(u.name NOT LIKE '%$forb%')";
 		}
 
 		$sql = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
-				p.uidNumber AS id,
-				p.name AS title,
-				coalesce(b.bio, '') AS description,
-				concat('index.php?option=com_members&id=', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
+				u.id,
+				u.name AS title,
+				coalesce(p.profile_key, '') AS description,
+				concat('index.php?option=com_members&id=', CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END) AS link,
 				NULL AS date,
 				'Members' AS section,
-				CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
-			FROM #__xprofiles p
-			LEFT JOIN #__xprofiles_bio b
-				ON b.uidNumber = p.uidNumber
+				NULL AS img_href
+			FROM `#__users` AS u
+			LEFT JOIN `#__user_profiles` AS p
+				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
-				public AND " . join(' AND ', $addtl_where)
+				u.block=0 AND u.approved>0 AND
+				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND " . join(' AND ', $addtl_where)
 		);
 		$assoc = $sql->to_associative();
 		if (!count($assoc))
@@ -411,8 +382,8 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	 * Generate an <img> tag with the user's picture, if set
 	 * Otherwise, use default image
 	 *
-	 * @param      object $res YSearchResult
-	 * @return     string
+	 * @param   object  $res  \Components\Search\Models\Basic\Result
+	 * @return  string
 	 */
 	public static function onBeforeSearchRenderMembers($res)
 	{
@@ -424,4 +395,3 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 		return '<img src="' . $href . '" alt="' . htmlentities($res->get_title()) . '" title="' . htmlentities($res->get_title()) . '" />';
 	}
 }
-

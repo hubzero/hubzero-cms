@@ -49,14 +49,14 @@ class Debug
 	{
 		// Initialise variable.
 		$db    = App::get('db');
-		$query = $db->getQuery(true);
-
-		$query->select('name AS text, element AS value')
+		$query = $db->getQuery()
+			->select('name', 'text')
+			->select('element', 'value')
 			->from('#__extensions')
-			->where('enabled >= 1')
-			->where('type ='.$db->Quote('component'));
+			->where('enabled', '>=', '1')
+			->whereEquals('type', 'component');
 
-		$items = $db->setQuery($query)->loadObjectList();
+		$items = $db->setQuery($query->toString())->loadObjectList();
 
 		if (count($items))
 		{
@@ -94,7 +94,14 @@ class Debug
 		// Try to get actions for the component
 		if (!empty($component))
 		{
-			$component_actions = \JAccess::getActions($component);
+			$path = PATH_APP . '/components/' . $component . '/config/access.xml';
+			if (!file_exists($path))
+			{
+				$path = PATH_CORE . '/components/' . $component . '/config/access.xml';
+			}
+
+			$component_actions = \Hubzero\Access\Access::getActionsFromFile($path);
+			$component_actions ?: array();
 
 			if (!empty($component_actions))
 			{

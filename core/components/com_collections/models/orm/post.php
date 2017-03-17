@@ -35,7 +35,7 @@ use Hubzero\Database\Relational;
 use Lang;
 use Date;
 
-require_once(__DIR__ . DS . 'item.php');
+require_once __DIR__ . DS . 'item.php';
 
 /**
  * Collection post model
@@ -81,7 +81,8 @@ class Post extends Relational
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
+		'created_by',
+		'ordering'
 	);
 
 	/**
@@ -92,6 +93,28 @@ class Post extends Relational
 	protected $parsed = array(
 		'description'
 	);
+
+	/**
+	 * Generates automatic ordering field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  integer
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->whereEquals('collection_id', $data['collection_id'])
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
 
 	/**
 	 * Return a formatted timestamp for created date
@@ -133,7 +156,7 @@ class Post extends Relational
 	 */
 	public function collection()
 	{
-		return $this->belongsToOne('Collection');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Collection');
 	}
 
 	/**
@@ -143,6 +166,53 @@ class Post extends Relational
 	 */
 	public function item()
 	{
-		return $this->oneToOne('Item', 'id', 'item_id');
+		return $this->oneToOne('Item');
+	}
+
+	/**
+	 * Is this the orignal (first) posting?
+	 *
+	 * @return  bool
+	 */
+	public function isOriginal()
+	{
+		return ($this->get('original') == 1);
+	}
+
+	/**
+	 * Remove a post
+	 *
+	 * @return  boolean  True on success, false on error
+	 */
+	public function remove()
+	{
+		if ($this->isOriginal())
+		{
+			$this->addError(Lang::txt('Original posts must be deleted or moved.'));
+			return false;
+		}
+
+		return $this->destroy();
+	}
+
+	/**
+	 * Move a post
+	 *
+	 * @param   integer  $collection_id
+	 * @return  boolean  True on success, false on error
+	 */
+	public function move($collection_id)
+	{
+		$collection_id = intval($collection_id);
+
+		if (!$collection_id)
+		{
+			$this->addError(Lang::txt('Empty collection ID.'));
+			return false;
+		}
+
+		$this->set('collection_id', $collection_id);
+
+		return $this->save();
 	}
 }

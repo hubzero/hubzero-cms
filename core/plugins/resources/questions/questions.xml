@@ -34,7 +34,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display questions related to a resource (by tag)</description>
+	<description>PLG_RESOURCES_QUESTIONS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="questions">questions.php</filename>
 	</files>

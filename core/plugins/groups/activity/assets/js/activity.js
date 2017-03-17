@@ -10,23 +10,23 @@ if (!jq) {
 }
 
 String.prototype.nohtml = function () {
-	if (this.indexOf('?') == -1) {
-		return this + '?no_html=1';
-	} else {
-		return this + '&no_html=1';
-	}
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
 };
+
+var _DEBUG = false;
 
 jQuery(document).ready(function(jq){
 	var $ = jq,
 		container = $('.activity-feed');
+
+	_DEBUG = document.getElementById('system-debug') ? true : false;
 
 	// Infinite scroll
 	if (container.length) {
 		container.infinitescroll({
 				navSelector  : '.list-footer',    // selector for the paged navigation
 				nextSelector : '.list-footer .next a',  // selector for the NEXT link (to page 2)
-				itemSelector : '.activity-feed li.activity',     // selector for all items you'll retrieve
+				itemSelector : '.activity-feed>li.activity',     // selector for all items you'll retrieve
 				loading: {
 					finishedMsg: 'No more pages to load.'
 				},
@@ -34,7 +34,9 @@ jQuery(document).ready(function(jq){
 					var path = $('.list-footer .next a').attr('href');
 					limit = path.match(/limit[-=]([0-9]*)/).slice(1);
 					start = path.match(/start[-=]([0-9]*)/).slice(1);
-					console.log(path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit)));
+					if (_DEBUG) {
+						console.log(path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit)));
+					}
 					return path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
 				},
 				debug: true
@@ -49,4 +51,119 @@ jQuery(document).ready(function(jq){
 			}
 		);
 	}
+
+	container
+		// Bookmark button
+		.on('click', '.icon-starred', function (e){
+			e.preventDefault();
+
+			var bt = $(this),
+				el = $('#' + bt.attr('data-id'));
+
+			if (_DEBUG) {
+				console.log('Calling: ' + bt.attr('href').nohtml());
+			}
+
+			$.getJSON(bt.attr('href').nohtml(), function (response){
+				if (response.success) {
+					el.toggleClass('starred');
+
+					if (response.starred) {
+						bt
+							.attr('href', bt.attr('data-hrf-active'))
+							.attr('title', bt.attr('data-txt-active'))
+							.text(bt.attr('data-txt-active'));
+					} else {
+						bt
+							.attr('href', bt.attr('data-hrf-inactive'))
+							.attr('title', bt.attr('data-txt-inactive'))
+							.text(bt.attr('data-txt-inactive'));
+					}
+				}
+			});
+		})
+		// Delete button
+		.on('click', '.icon-delete', function (e){
+			e.preventDefault();
+
+			var bt = $(this),
+				res = confirm(bt.attr('data-txt-confirm'));
+
+			if (!res) {
+				return;
+			}
+
+			var el = $('#' + bt.attr('data-id'));
+
+			el.addClass('processing'); //.fadeIn()
+
+			if (_DEBUG) {
+				console.log('Calling: ' + bt.attr('href').nohtml());
+			}
+
+			$.getJSON(bt.attr('href').nohtml(), function (response){
+				if (response.success) {
+					el.slideUp(250, function(){
+						$(this).remove();
+					});
+				} else {
+					el.removeClass('processing');
+				}
+			});
+		})
+		// Reply button
+		.on('click', '.icon-reply', function (e) {
+			e.preventDefault();
+
+			var bt = $(this),
+				frm = $('#' + bt.attr('rel'));
+
+			if (frm.hasClass('hide')) {
+				frm.removeClass('hide');
+				bt
+					.addClass('active')
+					.attr('title', bt.attr('data-txt-active'))
+					.text(bt.attr('data-txt-active'));
+			} else {
+				frm.addClass('hide');
+				bt
+					.removeClass('active')
+					.attr('title', bt.attr('data-txt-inactive'))
+					.text(bt.attr('data-txt-inactive'));
+			}
+		})
+		// Show more
+		.on('click', '.more-content', function(e) {
+			e.preventDefault();
+
+			$(this).closest('.activity-event-preview').addClass('hide');
+			$($(this).attr('href')).removeClass('hide');
+		});
+
+	$('.inputfile').each(function() {
+		var input    = $(this),
+			label    = input.prev('.label-text'),
+			labelVal = label.html();
+
+		input.on('change', function (e) {
+			var fileName = '';
+
+			if (this.files && this.files.length > 1) {
+				fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+			} else if (e.target.value) {
+				fileName = e.target.value.split('\\').pop();
+			}
+
+			if (fileName) {
+				label.html(fileName);
+			} else {
+				label.html(labelVal);
+			}
+		});
+
+		// Firefox bug fix
+		input
+			.on('focus', function(){ input.addClass('has-focus'); })
+			.on('blur', function(){ input.removeClass('has-focus'); });
+	});
 });

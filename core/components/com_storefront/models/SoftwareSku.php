@@ -31,6 +31,8 @@
 namespace Components\Storefront\Models;
 
 use Components\Storefront\Helpers\Serials;
+use Component;
+use Lang;
 
 require_once(__DIR__ . DS . 'Sku.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Serials.php');
@@ -45,14 +47,20 @@ class SoftwareSku extends Sku
 	/**
 	 * Contructor
 	 *
-	 * @param  void
-	 * @return void
+	 * @param   int   $sId
+	 * @return  void
 	 */
 	public function __construct($sId)
 	{
 		parent::__construct($sId);
 	}
 
+	/**
+	 * Reserve inventory
+	 *
+	 * @param   int   $qty
+	 * @return  void
+	 */
 	public function reserveInventory($qty)
 	{
 		parent::reserveInventory($qty);
@@ -61,6 +69,12 @@ class SoftwareSku extends Sku
 		Serials::reserveSerials($this->getId(), $qty);
 	}
 
+	/**
+	 * Release inventory
+	 *
+	 * @param   int   $qty
+	 * @return  void
+	 */
 	public function releaseInventory($qty)
 	{
 		parent::releaseInventory($qty);
@@ -69,6 +83,11 @@ class SoftwareSku extends Sku
 		Serials::releaseSerials($this->getId(), $qty);
 	}
 
+	/**
+	 * Verify
+	 *
+	 * @return  void
+	 */
 	public function verify()
 	{
 		parent::verify();
@@ -90,6 +109,11 @@ class SoftwareSku extends Sku
 		}
 	}
 
+	/**
+	 * Save
+	 *
+	 * @return  void
+	 */
 	public function save()
 	{
 		// Update the inventory level for those SKUs that have multiple managed Serial Numbers.
@@ -106,5 +130,4 @@ class SoftwareSku extends Sku
 
 		parent::save();
 	}
-
 }

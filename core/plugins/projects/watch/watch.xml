@@ -34,7 +34,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Let project members/public subscribe to project activity notifications</description>
+	<description>PLG_PROJECTS_WATCH_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="watch">watch.php</filename>
 	</files>
@@ -44,6 +44,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="autosubscribe" type="radio" default="0" label="PLG_PROJECTS_WATCH_AUTOSUBSCRIBE_LABEL" description="PLG_PROJECTS_WATCH_AUTOSUBSCRIBE_DESC">
+					<option value="0">PLG_PROJECTS_WATCH_AUTOSUBSCRIBE_OPTIN</option>
+					<option value="1">PLG_PROJECTS_WATCH_AUTOSUBSCRIBE_OPTOUT</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

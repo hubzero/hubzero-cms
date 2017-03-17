@@ -38,16 +38,26 @@ if (!\User::authorise('core.manage', 'com_search'))
 }
 
 // Get the preferred search mechanism
-$controllerName = \Component::params('com_search')->get('engine', 'basic');
+$controller = Request::get('controller', null);
+$engine = Request::getWord('controller', null);
 
 // Prevent HUBgraph from being configured
-if (strtolower($controllerName) == 'hubgraph')
+if (strtolower($engine) == 'hubgraph')
 {
-	$controllerName = 'basic';
+	$engine = 'basic';
 }
-elseif (strtolower($controllerName) != 'basic')
+
+if ($engine != 'basic' && $engine != 'hubgraph')
 {
-	$controllerName = 'search';
+	if ($controller == null)
+	{
+		$controllerName = \Component::params('com_search')->get('engine', 'basic');
+		$controllerName = ($controllerName == 'hubgraph' ? 'basic' : $controllerName);
+	}
+	else
+	{
+		$controllerName = $controller;
+	}
 }
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -56,11 +66,6 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'blacklist.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
 
 // Instantiate controller
 $controller = new $controllerName();

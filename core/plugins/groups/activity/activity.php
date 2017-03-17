@@ -136,13 +136,43 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
+			include_once __DIR__ . '/models/attachment.php';
+
 			$this->group = $group;
+			$this->base  = 'index.php?option=com_groups&cn=' . $group->get('cn');
+
+			$action = Request::getCmd('action', 'feed');
+
+			if ($this->group->published != 1)
+			{
+				$action = 'feed';
+			}
+
+			switch ($action)
+			{
+				case 'post':
+					$arr['html'] = $this->postAction();
+					break;
+				case 'remove':
+					$arr['html'] = $this->removeAction();
+					break;
+				case 'unstar':
+					$arr['html'] = $this->starAction();
+					break;
+				case 'star':
+					$arr['html'] = $this->starAction();
+					break;
+				case 'feed':
+				default:
+					$arr['html'] = $this->feedAction();
+					break;
+			}
 
 			$arr['html'] = $this->feedAction();
 		}
 
 		// Get the number of unread messages
-		$unread = \Hubzero\Activity\Recipient::all()
+		$unread = Hubzero\Activity\Recipient::all()
 			->whereEquals('scope', 'group')
 			->whereEquals('scope_id', $group->get('gidNumber'))
 			->whereEquals('state', 1)
@@ -163,29 +193,265 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function feedAction()
 	{
-		$entries = \Hubzero\Activity\Recipient::all()
-			->including('log')
-			->whereEquals('scope', 'group')
-			->whereEquals('scope_id', $this->group->get('gidNumber'))
-			->whereEquals('state', 1)
-			->ordered()
-			->paginated()
-			->rows();
+		$filters = array();
+		$filters['filter'] = Request::getWord('filter');
+		$filters['search'] = Request::getVar('q');
+		$filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
+		$filters['start']  = Request::getInt('start', 0);
 
-		/* @TODO  Add lists of scopes and actions to filter by
-		$categories = \Hubzero\Activity\Log::all()
-			->select('action')
-			->whereIn('id', $ids)
+		if (!in_array($filters['filter'], ['starred']))
+		{
+			$filters['filter'] = '';
+		}
+
+		$recipient = Hubzero\Activity\Recipient::all();
+
+		$r = $recipient->getTableName();
+		$l = Hubzero\Activity\Log::blank()->getTableName();
+
+		$recipient
+			->select($r . '.*')
+			->including('log')
+			->join($l, $l . '.id', $r . '.log_id')
+			->whereEquals($r . '.scope', 'group')
+			->whereEquals($r . '.scope_id', $this->group->get('gidNumber'))
+			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+
+		if ($filters['filter'] == 'starred')
+		{
+			$recipient->whereEquals($r . '.starred', 1);
+		}
+
+		if ($filters['search'])
+		{
+			$recipient->whereLike($l . '.description', $filters['search']);
+		}
+
+		if (!$filters['filter'] && !$filters['search'])
+		{
+			$recipient->whereEquals($l . '.parent', 0);
+		}
+
+		$total = $recipient->copy()->total();
+
+		$entries = $recipient
 			->ordered()
-			->paginated();
-		*/
+			//->paginated()
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->rows();
 
 		$view = $this->view('default', 'activity')
 			->set('name', $this->_name)
 			->set('group', $this->group)
 			->set('categories', null)
+			->set('filters', $filters)
+			->set('total', $total)
 			->set('rows', $entries);
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Unpublish an entry
+	 *
+	 * @return  string
+	 */
+	protected function removeAction()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$id      = Request::getInt('activity', 0);
+		$no_html = Request::getInt('no_html', 0);
+
+		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
+
+		if (!$entry->markAsUnpublished())
+		{
+			$this->setError($entry->getError());
+		}
+
+		$success = Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_REMOVED');
+
+		if ($no_html)
+		{
+			$response = new stdClass;
+			$response->success = true;
+			$response->message = $success;
+			if ($err = $this->getError())
+			{
+				$response->success = false;
+				$response->message = $err;
+			}
+
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode($response);
+			exit();
+		}
+
+		if ($err = $this->getError())
+		{
+			Notify::error($err);
+		}
+		else
+		{
+			Notify::success($success);
+		}
+
+		// Redirect
+		App::redirect(
+			Route::url($this->base . '&active=' . $this->_name, false)
+		);
+	}
+
+	/**
+	 * Star/unstar an entry
+	 *
+	 * @return  string
+	 */
+	protected function starAction()
+	{
+		$id      = Request::getInt('activity', 0);
+		$no_html = Request::getInt('no_html', 0);
+		$action  = Request::getVar('action', 'star');
+
+		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
+		$entry->set('starred', ($action == 'star' ? 1 : 0));
+
+		if (!$entry->save())
+		{
+			$this->setError($entry->getError());
+		}
+
+		$success = $action == 'star'
+			? Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_STARRED')
+			: Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_UNSTARRED');
+
+		if ($no_html)
+		{
+			$response = new stdClass;
+			$response->success = true;
+			$response->message = $success;
+			if ($err = $this->getError())
+			{
+				$response->success = false;
+				$response->message = $err;
+			}
+
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode($response);
+			exit();
+		}
+
+		if ($err = $this->getError())
+		{
+			Notify::error($err);
+		}
+		else
+		{
+			Notify::success($success);
+		}
+
+		// Redirect
+		App::redirect(
+			Route::url($this->base . '&active=' . $this->_name, false)
+		);
+	}
+
+	/**
+	 * Save a comment
+	 *
+	 * @return  void
+	 */
+	protected function postAction()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Incoming
+		$comment = Request::getVar('activity', array(), 'post', 'none', 2);
+
+		// Instantiate a new object and bind data
+		$row = Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
+
+		// Process attachment
+		$upload = Request::getVar('activity_file', '', 'files', 'array');
+
+		if (!empty($upload) && $upload['name'])
+		{
+			if ($upload['error'])
+			{
+				$this->setError(\Lang::txt('PLG_GROUPS_ACTIVITY_ERROR_UPLOADING_FILE'));
+			}
+
+			$file = new Plugins\Groups\Activity\Models\Attachment();
+			$file->setUploadDir('/site/groups/' . $this->group->get('gidNumber') . '/uploads');
+
+			if (!$file->upload($upload['name'], $upload['tmp_name'], $upload['size']))
+			{
+				App::redirect(
+					Route::url($this->base . '&active=' . $this->_name),
+					$file->getError(),
+					'error'
+				);
+			}
+			else
+			{
+				$row->details->set('attachments', array(
+					$file->toArray()
+				));
+				$row->set('details', $row->details->toString());
+			}
+		}
+
+		// Store new content
+		if (!$row->save())
+		{
+			User::setState(
+				'failed_comment',
+				$row->get('description')
+			);
+
+			App::redirect(
+				Route::url($this->base . '&active=' . $this->_name),
+				$row->getError(),
+				'error'
+			);
+		}
+
+		// Record the activity
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', $row->get('created_by')]
+		);
+		if ($row->get('parent'))
+		{
+			$recipients[] = ['user', $row->parent()->get('created_by')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'id'          => $row->get('id'),
+				'action'      => ($comment['id'] ? 'updated' : 'created'),
+				'scope'       => $row->get('scope'),
+				'scope_id'    => $row->get('scope_id'),
+				'anonymous'   => $row->get('anonymous', 0),
+				'description' => $row->get('description'),
+				'details'     => array(
+					'url'         => Route::url($this->base . '&active=' . $this->_name . '#activity' . $row->get('id')),
+					'attachments' => $row->details->get('attachments')
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Redirect
+		App::redirect(
+			Route::url($this->base . '&active=' . $this->_name),
+			Lang::txt('PLG_GROUPS_ACTIVITY_COMMENTS_SAVED')
+		);
 	}
 }

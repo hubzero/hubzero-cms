@@ -151,7 +151,7 @@ class Response extends Relational
 	 */
 	public function replies()
 	{
-		return $this->oneShiftsToMany('Comment', 'item_id', 'item_type');
+		return $this->oneShiftsToMany('Comment', 'item_id', 'item_type')->whereEquals('parent', 0);
 	}
 
 	/**
@@ -443,7 +443,7 @@ class Response extends Relational
 	public function destroy()
 	{
 		// Remove comments
-		foreach ($this->comments()->rows() as $comment)
+		foreach ($this->replies()->rows() as $comment)
 		{
 			if (!$comment->destroy())
 			{

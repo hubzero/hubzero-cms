@@ -57,7 +57,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			$params = Plugin::params('authentication', 'shibboleth');
 		}
 
-		if ($params->get('debug_enabled', false))
+		if ($params->get('debug_enabled', true))
 		{
 			if (!\Log::has('shib'))
 			{
@@ -293,21 +293,10 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function logout()
 	{
-		list($service) = self::getLoginParams();
-		$return = '/';
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
-		{
-			$return = base64_decode($return);
-
-			if (!\Hubzero\Utility\Uri::isInternal($return))
-			{
-				$return = '';
-			}
-
-			$return = '/' . ltrim($return, '/');
-		}
-
-		App::redirect($return);
+		/**
+		 * Placeholder if Shibboleth needs to perform any cleanup.
+		 * CMS handles redirection.
+		 **/
 	}
 
 	/**
@@ -500,7 +489,8 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		//
 		// either way, the rewrite directs us back here to our login() method
 		// where we can extract info about the authn from mod_shib
-		self::log('passing throuugh to shibd');
+		self::log('passing through to shibd');
+		self::log('session', $_SESSION);
 		App::redirect($service.'/login/shibboleth');
 	}
 

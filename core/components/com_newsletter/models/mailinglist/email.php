@@ -65,7 +65,8 @@ class Email extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'email' => 'notempty'
+		'email' => 'notempty',
+		'mid'   => 'positive|nonzero'
 	);
 
 	/**
@@ -75,6 +76,16 @@ class Email extends Relational
 	 */
 	public function mailinglist()
 	{
-		return $this->belongsToOne('Mailinglist', 'mid');
+		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailinglist', 'mid');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between email and unsubscribe
+	 *
+	 * @return  object
+	 */
+	public function unsubscribe()
+	{
+		return $this->oneToOne(__NAMESPACE__ . '\\Unsubscribe', 'email', 'email');
 	}
 }

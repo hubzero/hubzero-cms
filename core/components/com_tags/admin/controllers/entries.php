@@ -34,6 +34,7 @@ namespace Components\Tags\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
+use Components\Tags\Models\Substitute;
 use Request;
 use Notify;
 use Cache;
@@ -74,11 +75,11 @@ class Entries extends AdminController
 				'search',
 				''
 			)),
-			'by' => Request::getState(
+			'by' => strtolower(Request::getState(
 				$this->_option . '.' . $this->_controller . '.by',
 				'filterby',
 				'all'
-			),
+			)),
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
@@ -93,18 +94,36 @@ class Entries extends AdminController
 
 		$model = Tag::all();
 
+		$t = $model->getTableName();
+		$s = Substitute::blank()->getTableName();
+
+		$model
+			->select('DISTINCT ' . $t . '.*')
+			->join($s, $s . '.tag_id', $t . '.id', 'left');
+
 		if ($filters['search'])
 		{
 			$filters['search'] = strtolower((string)$filters['search']);
 
-			$model->whereLike('raw_tag', $filters['search'], 1)
-				->orWhereLike('tag', $filters['search'], 1)
+			$model->whereLike($t . '.raw_tag', $filters['search'], 1)
+				->orWhereLike($t . '.tag', $filters['search'], 1)
+				->orWhereLike($s . '.raw_tag', $filters['search'], 1)
+				->orWhereLike($s . '.tag', $filters['search'], 1)
 				->resetDepth();
+		}
+
+		if ($filters['by'] == 'admin')
+		{
+			$model->whereEquals($t . '.admin', 1);
+		}
+		else if ($filters['by'] == 'user')
+		{
+			$model->whereEquals($t . '.admin', 0);
 		}
 
 		// Get records
 		$rows = $model
-			->ordered('filter_order', 'filter_order_Dir')
+			->order($t . '.' . $filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 
@@ -359,12 +378,20 @@ class Entries extends AdminController
 				else
 				{
 					// No, we're merging into an existing tag
-					$mtag = $tag_exist;
+					$existtag = Tag::oneOrFail($tag_exist);
+					$mtag = $existtag->get('id');
 				}
 
 				if ($this->getError())
 				{
-					App::abort(500, $this->getError());
+					Notyf::error($this->getError());
+					return $this->cancelTask();
+				}
+
+				if (!$mtag)
+				{
+					Notify::error(Lang::txt('Failed to find destination tag.'));
+					return $this->cancelTask();
 				}
 
 				foreach ($ids as $id)

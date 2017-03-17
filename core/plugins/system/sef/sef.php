@@ -1,31 +1,55 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
 defined('_HZEXEC_') or die;
 
 /**
- * Joomla! SEF Plugin
- *
- * @package		Joomla.Plugin
- * @subpackage	System.sef
+ * SEF Plugin
  */
 class plgSystemSef extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Converting the site URL to fit to the HTTP request
+	 *
+	 * @return  bool
 	 */
 	public function onAfterRender()
 	{
-		if (!App::isSite() || Config::get('sef')=='0')
+		if (!App::isSite() || !Config::get('sef'))
 		{
 			return true;
 		}
 
-		//Replace src links
+		// Replace src links
 		$base   = Request::base(true) . '/';
 		$buffer = App::get('response')->getContent();
 
@@ -37,6 +61,8 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
 		$regex  = '#(src|href|poster)="(?!/|' . $protocols . '|\#|\')([^"]*)"#m';
 		$buffer = preg_replace($regex, "$1=\"$base\$2\"", $buffer);
 		$this->checkBuffer($buffer);
+
+		// Onclick
 		$regex  = '#(onclick="window.open\(\')(?!/|' . $protocols . '|\#)([^/]+[^\']*?\')#m';
 		$buffer = preg_replace($regex, '$1' . $base . '$2', $buffer);
 		$this->checkBuffer($buffer);
@@ -67,9 +93,16 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
 		$this->checkBuffer($buffer);
 
 		App::get('response')->setContent($buffer);
+
 		return true;
 	}
 
+	/**
+	 * Check buffer
+	 *
+	 * @param   mixed  $buffer
+	 * @return  void
+	 */
 	private function checkBuffer($buffer)
 	{
 		if ($buffer === null)
@@ -77,17 +110,18 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
 			switch (preg_last_error())
 			{
 				case PREG_BACKTRACK_LIMIT_ERROR:
-					$message = "PHP regular expression limit reached (pcre.backtrack_limit)";
+					$message = 'PHP regular expression limit reached (pcre.backtrack_limit)';
 					break;
 				case PREG_RECURSION_LIMIT_ERROR:
-					$message = "PHP regular expression limit reached (pcre.recursion_limit)";
+					$message = 'PHP regular expression limit reached (pcre.recursion_limit)';
 					break;
 				case PREG_BAD_UTF8_ERROR:
-					$message = "Bad UTF8 passed to PCRE function";
+					$message = 'Bad UTF8 passed to PCRE function';
 					break;
 				default:
-					$message = "Unknown PCRE error calling PCRE function";
+					$message = 'Unknown PCRE error calling PCRE function';
 			}
+
 			App::abort(500, $message);
 		}
 	}
@@ -95,16 +129,14 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
 	/**
 	 * Replaces the matched tags
 	 *
-	 * @param	array	An array of matches (see preg_match_all)
-	 * @return	string
+	 * @param   array   $matches  An array of matches (see preg_match_all)
+	 * @return  string
 	 */
 	protected static function route(&$matches)
 	{
-		$original = $matches[0];
-		$url      = $matches[1];
-		$url      = str_replace('&amp;', '&', $url);
-		$route    = Route::url('index.php?' . $url);
+		$url = $matches[1];
+		$url = str_replace('&amp;', '&', $url);
 
-		return 'href="' . $route;
+		return 'href="' . Route::url('index.php?' . $url);
 	}
 }

@@ -157,9 +157,9 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 		if (!isset(self::$modules[$position]))
 		{
 			self::$modules[$position] = '';
-			$document   = \Document::instance();
+			$document   = Document::instance();
 			$renderer   = $document->loadRenderer('module');
-			$modules    = \Module::byPosition($position);
+			$modules    = Module::byPosition($position);
 			$params     = array('style' => $style);
 
 			ob_start();
@@ -170,6 +170,7 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 
 			self::$modules[$position] = ob_get_clean();
 		}
+
 		return self::$modules[$position];
 	}
 
@@ -184,21 +185,22 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 	 */
 	protected function byName($module, $title, $style = 'none')
 	{
-		$moduleinstance = $module . JStringNormalise::toCamelCase($title);
+		$moduleinstance = $module . Hubzero\Utility\String::camel($title);
+
 		if (!isset(self::$mods[$moduleinstance]))
 		{
 			self::$mods[$moduleinstance] = '';
-			$document = \Document::instance();
+			$document = Document::instance();
 			$renderer = $document->loadRenderer('module');
 			$params   = array('style' => $style);
-			$mod      = \Module::byName($module, $title);
+			$mod      = Module::byName($module, $title);
 
 			// If the module without the mod_ isn't found, try it with mod_.
 			// This allows people to enter it either way in the content
 			if (!isset($mod))
 			{
 				$name = 'mod_' . $module;
-				$mod  = \Module::byName($name, $title);
+				$mod  = Module::byName($name, $title);
 			}
 
 			ob_start();
@@ -206,6 +208,7 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 
 			self::$mods[$moduleinstance] = ob_get_clean();
 		}
+
 		return self::$mods[$moduleinstance];
 	}
 }

@@ -181,7 +181,7 @@ jQuery(document).ready(function($){
 	});
 
 	// Apply Uniform to make buttons, selects, etc. look consistent
-	$("select, input[type=file]").uniform();
+	$('select, input[type=file]').not('.noUniform').uniform();
 
 	/* // Display the hints and required badge when field is focused
 	if ($('#item-form').length) {

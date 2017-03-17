@@ -72,7 +72,7 @@ class Project extends Model
 	 *
 	 * @var object
 	 */
-	protected $_config = NULL;
+	protected $_config = null;
 
 	/**
 	 * Authorized
@@ -88,7 +88,7 @@ class Project extends Model
 	 *
 	 * @return  void
 	 */
-	public function __construct($oid = NULL)
+	public function __construct($oid = null)
 	{
 		$this->_db = \App::get('db');
 
@@ -162,7 +162,7 @@ class Project extends Model
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
-	public function project( $reload = false )
+	public function project($reload = false)
 	{
 		if (!isset($this->_project) || $reload == true)
 		{
@@ -222,7 +222,7 @@ class Project extends Model
 	{
 		if ($this->get($key) == $this->_db->getNullDate())
 		{
-			return NULL;
+			return null;
 		}
 		switch (strtolower($as))
 		{
@@ -331,6 +331,20 @@ class Project extends Model
 	}
 
 	/**
+	 * Is project archived?
+	 *
+	 * @return  boolean
+	 */
+	public function isArchived()
+	{
+		if ($this->get('state') == 3)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Is project deleted?
 	 *
 	 * @return     boolean
@@ -382,7 +396,7 @@ class Project extends Model
 	 *
 	 * @return     boolean
 	 */
-	public function loadProvisioned($pid = NULL)
+	public function loadProvisioned($pid = null)
 	{
 		if (!intval($pid))
 		{
@@ -551,6 +565,13 @@ class Project extends Model
 			$this->params->set('access-view-project', true);
 			$this->params->set('access-member-project', true); // internal project view
 
+			if ($this->isArchived())
+			{
+				// Read-only
+				$this->params->set('access-readonly-project', true);
+				return;
+			}
+
 			// Project roles
 			switch ($member->role)
 			{
@@ -679,7 +700,7 @@ class Project extends Model
 		if ($property)
 		{
 			$property = ($property == 'id' ? 'gidNumber' : $property);
-			return $this->_groupOwner ? $this->_groupOwner->get($property) : NULL;
+			return $this->_groupOwner ? $this->_groupOwner->get($property) : null;
 		}
 		return $this->_groupOwner;
 	}
@@ -849,9 +870,9 @@ class Project extends Model
 		else
 		{
 			// Verify name uniqueness
-			if (!$this->_tbl->checkUniqueName( $name, $pid )
-				|| in_array( $name, $reserved ) ||
-				in_array( $name, $tasks ))
+			if (!$this->_tbl->checkUniqueName($name, $pid)
+				|| in_array($name, $reserved) ||
+				in_array($name, $tasks))
 			{
 				$this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE'));
 			}
@@ -922,11 +943,11 @@ class Project extends Model
 	{
 		if (!isset($this->_tblActivity))
 		{
-			$this->_tblActivity = new Tables\Activity( $this->_db );
+			$this->_tblActivity = new Tables\Activity($this->_db);
 		}
 		if (!isset($this->_newCount) || $refresh == true)
 		{
-			$this->_newCount = $this->_tblActivity->getNewActivityCount( $this->get('id'), User::get('id'));
+			$this->_newCount = $this->_tblActivity->getNewActivityCount($this->get('id'), User::get('id'));
 		}
 
 		return $this->_newCount;
@@ -954,15 +975,16 @@ class Project extends Model
 	/**
 	 * Get project table
 	 *
+	 * @param   string  $name
 	 * @return  object
 	 */
-	public function table($name = NULL)
+	public function table($name = null)
 	{
 		if ($name == 'Activity')
 		{
 			if (!isset($this->_tblActivity))
 			{
-				$this->_tblActivity = new Tables\Activity( $this->_db );
+				$this->_tblActivity = new Tables\Activity($this->_db);
 			}
 			return $this->_tblActivity;
 		}
@@ -1030,7 +1052,7 @@ class Project extends Model
 			break;
 
 			case 'group':
-				$group = isset($filters['group']) ? $filters['group'] : NULL;
+				$group = isset($filters['group']) ? $filters['group'] : null;
 				$results = $this->_tbl->getGroupProjects(
 					$group,
 					User::get('id'),
@@ -1060,15 +1082,11 @@ class Project extends Model
 	 *
 	 * @return  integer
 	 */
-	public function recordActivity(
-		$activity = '', $refid = '', $underline = '',
-		$url = '', $class = 'project',
-		$commentable = 0, $admin = 0, $managers_only = 0
-	)
+	public function recordActivity($activity = '', $refid = '', $underline = '', $url = '', $class = 'project', $commentable = 0, $admin = 0, $managers_only = 0)
 	{
 		if (!isset($this->_tblActivity))
 		{
-			$this->_tblActivity = new Tables\Activity( $this->_db );
+			$this->_tblActivity = new Tables\Activity($this->_db);
 		}
 		if ($activity)
 		{
@@ -1090,7 +1108,7 @@ class Project extends Model
 			// Notify subscribers
 			if ($aid && !User::isGuest() && !$this->isProvisioned())
 			{
-				Event::trigger('projects.onWatch', array( $this, $class, array($aid), User::get('id')));
+				Event::trigger('projects.onWatch', array($this, $class, array($aid), User::get('id')));
 			}
 			return $aid;
 		}
@@ -1125,11 +1143,11 @@ class Project extends Model
 	 *
 	 * @return  void
 	 */
-	public function checkActivity($activity = NULL)
+	public function checkActivity($activity = null)
 	{
 		if (!isset($this->_tblActivity))
 		{
-			$this->_tblActivity = new Tables\Activity( $this->_db );
+			$this->_tblActivity = new Tables\Activity($this->_db);
 		}
 		if ($activity)
 		{
@@ -1147,7 +1165,7 @@ class Project extends Model
 	{
 		if (!isset($this->_tblActivity))
 		{
-			$this->_tblActivity = new Tables\Activity( $this->_db );
+			$this->_tblActivity = new Tables\Activity($this->_db);
 		}
 
 		if ($this->isMemberConfirmed() && !$this->isProvisioned() && $this->isActive())
@@ -1169,7 +1187,7 @@ class Project extends Model
 				$timecheck = Date::of(time() - (10 * 60)); // last second
 				if ($this->access('owner') && $timecheck <= $this->get('created'))
 				{
-				    $this->_tblActivity->deleteActivity($aid);
+					$this->_tblActivity->deleteActivity($aid);
 				}
 			}
 		}

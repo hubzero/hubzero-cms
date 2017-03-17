@@ -48,7 +48,7 @@ foreach ($this->shares as $share)
 	}
 }
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php';
 
 $database = App::get('db');
 $preferences = new \Components\Tools\Tables\Preferences($database);
@@ -129,7 +129,11 @@ if (!$this->app->sess) {
 				<form method="get" action="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
 					<fieldset>
 						<?php
-						$viewer = ($declared ? $declared : $this->output->rendered); //Session::get('tool_viewer'));
+						$viewer = ($declared ? $declared : null); //Session::get('tool_viewer'));
+						if (isset($this->output->rendered))
+						{
+							$viewer = $this->output->rendered;
+						}
 						?>
 						<?php echo $viewer ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE')) : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER'); ?>
 
@@ -301,10 +305,11 @@ if (!$this->app->sess) {
 							<?php endforeach; } ?>
 						</select>
 					</label>
+					<?php /* https://hubzero.org/support/ticket/9826
 					<label for="field-readonly" id="readonly-label">
 						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
 						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
-					</label>
+					</label> */ ?><div>&nbsp;</div>
 
 					<p class="submit">
 						<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_SHARE'); ?>" id="share-btn" />

@@ -109,6 +109,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						echo $sparkline;
 					?></div>
 				</div>
+				<p><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_VIEWS_EXPLANATION'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -139,6 +140,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						echo $sparkline;
 					?></div>
 				</div>
+				<p><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_DOWNLOADS_EXPLANATION'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -234,7 +236,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						tickDecimals: 0,
 						tickFormatter: function (val, axis) {
 							var d = new Date(val);
-							return (d.getUTCMonth() + 1) + "/" + d.getFullYear().toString().substr(2,2);
+							return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
 						}
 					},
 					yaxis: {
@@ -288,7 +290,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						tickDecimals: 0,
 						tickFormatter: function (val, axis) {
 							var d = new Date(val);
-							return (d.getUTCMonth() + 1) + "/" + d.getFullYear().toString().substr(2,2);
+							return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
 						}
 					},
 					yaxis: {

@@ -41,7 +41,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -75,7 +75,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -92,15 +92,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -181,15 +181,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 			// load events lang file
 			Lang::load('com_events') ||
-			Lang::load('com_events', PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'site');
+			Lang::load('com_events', Component::path('com_events') . DS . 'site');
 
 			//push styles to the view
 			$this->css('calendar');
 			$this->js('calendar');
 
 			//get the request vars
-			$this->month    = Request::getInt('month', Date::format("m") ,'get');
-			$this->month    = (strlen($this->month) == 1) ? '0'.$this->month : $this->month;
+			$this->month    = Request::getInt('month', Date::format("m"), 'get');
+			$this->month    = (strlen($this->month) == 1) ? '0' . $this->month : $this->month;
 			$this->year     = Request::getInt('year', Date::format("Y"), 'get');
 			$this->calendar = Request::getInt('calendar', 0, 'get');
 
@@ -203,42 +203,86 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$this->database = App::get('db');
 
 			//include needed event libs
-			require __DIR__ . '/helper.php';
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'event.php');
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'calendar' . DS . 'archive.php');
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'respondent.php');
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
+			require_once __DIR__ . '/helper.php';
+			require_once Component::path('com_events') . DS . 'models' . DS . 'event.php';
+			require_once Component::path('com_events') . DS . 'models' . DS . 'calendar' . DS . 'archive.php';
+			require_once Component::path('com_events') . DS . 'tables' . DS . 'respondent.php';
+			require_once Component::path('com_events') . DS . 'helpers' . DS . 'html.php';
 
 			//run task based on action
 			switch ($this->action)
 			{
 				//managing events
-				case 'add':              $arr['html'] = $this->add();                break;
-				case 'edit':             $arr['html'] = $this->edit();               break;
-				case 'save':             $arr['html'] = $this->save();               break;
-				case 'delete':           $arr['html'] = $this->delete();             break;
-				case 'details':          $arr['html'] = $this->details();            break;
-				case 'export':           $arr['html'] = $this->export();             break;
-				case 'subscribe':        $arr['html'] = $this->subscribe();          break;
-				case 'import':           $arr['html'] = $this->import();             break;
+				case 'add':
+					$arr['html'] = $this->add();
+					break;
+				case 'edit':
+					$arr['html'] = $this->edit();
+					break;
+				case 'save':
+					$arr['html'] = $this->save();
+					break;
+				case 'delete':
+					$arr['html'] = $this->delete();
+					break;
+				case 'details':
+					$arr['html'] = $this->details();
+					break;
+				case 'export':
+					$arr['html'] = $this->export();
+					break;
+				case 'subscribe':
+					$arr['html'] = $this->subscribe();
+					break;
+				case 'import':
+					$arr['html'] = $this->import();
+					break;
 
 				//event registration
-				case 'register':         $arr['html'] = $this->register();           break;
-				case 'doregister':       $arr['html'] = $this->doRegister();         break;
-				case 'registrants':      $arr['html'] = $this->registrants();        break;
-				case 'download':         $arr['html'] = $this->download();           break;
+				case 'register':
+					$arr['html'] = $this->register();
+					break;
+				case 'doregister':
+					$arr['html'] = $this->doRegister();
+					break;
+				case 'registrants':
+					$arr['html'] = $this->registrants();
+					break;
+				case 'download':
+					$arr['html'] = $this->download();
+					break;
 
 				//event calendars
-				case 'calendars':        $arr['html'] = $this->calendars();          break;
-				case 'addcalendar':      $arr['html'] = $this->addCalendar();        break;
-				case 'editcalendar':     $arr['html'] = $this->editCalendar();       break;
-				case 'savecalendar':     $arr['html'] = $this->saveCalendar();       break;
-				case 'deletecalendar':   $arr['html'] = $this->deleteCalendar();     break;
-				case 'refreshcalendar':  $arr['html'] = $this->refreshCalendar();    break;
-				case 'refreshcalendars': $this->refreshCalendars();                  break;
-				case 'eventsources':     $this->eventSources();                      break;
-				case 'events':           $this->events();                            break;
-				default:                 $arr['html'] = $this->display();            break;
+				case 'calendars':
+					$arr['html'] = $this->calendars();
+					break;
+				case 'addcalendar':
+					$arr['html'] = $this->addCalendar();
+					break;
+				case 'editcalendar':
+					$arr['html'] = $this->editCalendar();
+					break;
+				case 'savecalendar':
+					$arr['html'] = $this->saveCalendar();
+					break;
+				case 'deletecalendar':
+					$arr['html'] = $this->deleteCalendar();
+					break;
+				case 'refreshcalendar':
+					$arr['html'] = $this->refreshCalendar();
+					break;
+				case 'refreshcalendars':
+					$this->refreshCalendars();
+					break;
+				case 'eventsources':
+					$this->eventSources();
+					break;
+				case 'events':
+					$this->events();
+					break;
+				default:
+					$arr['html'] = $this->display();
+					break;
 			}
 		}
 
@@ -250,7 +294,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($upcoming_events > 0)
 		{
 			$title = $this->group->get('description')." has {$upcoming_events} events this month.";
-			$link = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar');
+			$link = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Calendar Alert</h5>{$title}</span></a>";
 		}
 
@@ -262,7 +306,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a calendar
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function display()
 	{
@@ -272,7 +316,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->month        = $this->month;
 		$view->year         = $this->year;
 		$view->calendar     = $this->calendar;
-		$view->user        = $this->user;
+		$view->user         = $this->user;
 		$view->authorized   = $this->authorized;
 		$view->members      = $this->members;
 		$view->option       = $this->option;
@@ -325,7 +369,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Output event sources. For caledar
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	private function eventSources()
 	{
@@ -344,7 +388,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$source            = new stdClass;
 			$source->title     = $calendar->get('title');
-			$source->url       = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=' . $calendar->get('id'));
+			$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calender_id=' . $calendar->get('id'));
 			$source->className = ($calendar->get('color')) ? 'fc-event-' . $calendar->get('color') : 'fc-event-default';
 			array_push($sources, $source);
 		}
@@ -352,7 +396,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// add uncategorized source
 		$source            = new stdClass;
 		$source->title     = 'Uncategorized';
-		$source->url       = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=0');
+		$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calender_id=0');
 		$source->className = 'fc-event-default';
 		array_push($sources, $source);
 
@@ -365,7 +409,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 * Returns events for a source.
 	 * Ajax only and returns json.
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function events()
 	{
@@ -390,7 +434,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'calendar_id'  => $calendarId,
 			'state'        => array(1),
 			'publish_up'   => $start->format('Y-m-d H:i:s'),
-			'publish_down' => $end->format('Y-m-d H:i:s')
+			'publish_down' => $end->format('Y-m-d H:i:s'),
+			'non_repeating'    => true
 		));
 
 		// get repeating events
@@ -418,7 +463,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
 			$event->start     = Date::of($rawEvent->get('publish_up'))->toLocal('Y-m-d\TH:i:sO');
-			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-'.$rawEvent->get('calendar_id') : 'calendar-0';
+			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
 				$event->end = Date::of($rawEvent->get('publish_down'))->toLocal('Y-m-d\TH:i:sO');
@@ -459,22 +504,20 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		exit();
 	}
 
-
 	/**
 	 * Show a form for adding an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function add()
 	{
 		return $this->edit();
 	}
 
-
 	/**
 	 * Show a form for editing en entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function edit()
 	{
@@ -576,11 +619,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-
 	/**
 	 * Save an entry
 	 *
-	 * @return    string
+	 * @return  string
 	 */
 	private function save()
 	{
@@ -637,7 +679,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event['publish_up'] = Date::of($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
 			unset($event['publish_up_time']);
 		}
-
 
 		//parse publish down date/time
 		if (isset($event['publish_down']) && $event['publish_down'] != '' && !$allday)
@@ -772,7 +813,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function delete()
 	{
 		//get the passed in event id
-		$eventId = Request::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id', '', 'get');
 
 		//load event data
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
@@ -831,7 +872,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Details View for Event
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function details()
 	{
@@ -839,7 +880,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('details', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id', '', 'get');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
@@ -883,12 +924,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Export Event Details
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function export()
 	{
 		// get request varse
-		$eventId = Request::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id', '', 'get');
 
 		// load & export event
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
@@ -898,7 +939,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Subscribe to a calendar
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function subscribe()
 	{
@@ -956,7 +997,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Authenticate Subscription Requests
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function authenticateSubscriptionRequest()
 	{
@@ -977,13 +1018,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!isset($httpBasicUsername) || !isset($httpBasicPassword) || $httpBasicUsername == '' || $httpBasicPassword == '')
 		{
 			header('HTTP/1.1 401 Unauthorized');
-			header('WWW-Authenticate: Basic realm="'.$realm.'"');
+			header('WWW-Authenticate: Basic realm="' . $realm . '"');
 			die(Lang::txt('You must enter a valid username and password.'));
 		}
 
 		//get the user based on username
 		$sql = "SELECT u.id, u.username, up.passhash
-		        FROM #__users AS u, #__users_password AS up
+		        FROM `#__users` AS u, `#__users_password` AS up
 		        WHERE u.id=up.user_id
 		        AND u.username=". $this->database->quote($httpBasicUsername);
 		$this->database->setQuery($sql);
@@ -993,10 +1034,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!is_object($user) || $user->id == '' || $user->id == 0)
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth','invalid');
+			apache_note('auth', 'invalid');
 
 			header('HTTP/1.1 401 Unauthorized');
-			header('WWW-Authenticate: Basic realm="'.$realm.'"');
+			header('WWW-Authenticate: Basic realm="' . $realm . '"');
 			die(Lang::txt('You must enter a valid username and password.'));
 		}
 
@@ -1004,10 +1045,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!\Hubzero\User\Password::comparePasswords($user->passhash, $httpBasicPassword))
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth','invalid');
+			apache_note('auth', 'invalid');
 
 			header('HTTP/1.1 401 Unauthorized');
-			header('WWW-Authenticate: Basic realm="'.$realm.'"');
+			header('WWW-Authenticate: Basic realm="' . $realm . '"');
 			die(Lang::txt('You must enter a valid username and password.'));
 		}
 
@@ -1017,7 +1058,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Import iCal File
 	 *
-	 * @return mixed
+	 * @return  mixed
 	 */
 	private function import()
 	{
@@ -1053,8 +1094,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event             = new stdClass;
 		$event->title      = $title;
 		$event->content    = stripslashes(str_replace('\n', "\n", $description));
-		$event->start      = $start->format("m/d/Y @ g:i a");
-		$event->end        = $end->format("m/d/Y @ g:i a");
+		$event->start      = $start->format("m/d/Y");
+		$event->start_time = $start->format("g:i a");
+		$event->end        = $end->format("m/d/Y");
+		$event->end_time   = $end->format("g:i a");
 		$event->location   = $location;
 		$event->website    = $website;
 		$event->recurrence = $recurrence;
@@ -1067,7 +1110,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Register View for Event
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function register()
 	{
@@ -1075,7 +1118,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('register', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id','');
+		$eventId = Request::getVar('event_id', '');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
@@ -1126,7 +1169,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->authorized = $this->authorized;
-		$view->user      = $this->user;
+		$view->user       = $this->user;
 
 		$view->register   = (isset($this->register)) ? $this->register : null;
 		$view->arrival    = (isset($this->arrival)) ? $this->arrival : null;
@@ -1161,23 +1204,22 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-
 	/**
 	 * Process Registration
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function doRegister()
 	{
 		//get request vars
-		$register   = Request::getVar('register', NULL, 'post');
-		$arrival    = Request::getVar('arrival', NULL, 'post');
-		$departure  = Request::getVar('departure', NULL, 'post');
-		$dietary    = Request::getVar('dietary', NULL, 'post');
-		$dinner     = Request::getVar('dinner', NULL, 'post');
-		$disability = Request::getVar('disability', NULL, 'post');
-		$race       = Request::getVar('race', NULL, 'post');
-		$event_id   = Request::getInt('event_id', NULL, 'post');
+		$register   = Request::getVar('register', null, 'post');
+		$arrival    = Request::getVar('arrival', null, 'post');
+		$departure  = Request::getVar('departure', null, 'post');
+		$dietary    = Request::getVar('dietary', null, 'post');
+		$dinner     = Request::getVar('dinner', null, 'post');
+		$disability = Request::getVar('disability', null, 'post');
+		$race       = Request::getVar('race', null, 'post');
+		$event_id   = Request::getInt('event_id', null, 'post');
 
 		//load event data
 		$event = new \Components\Events\Models\Event($event_id);
@@ -1236,11 +1278,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//set data for saving
-		$eventsRespondent                       = new \Components\Events\Tables\Respondent(array());
-		$eventsRespondent->event_id             = $event_id;
-		$eventsRespondent->registered           = Date::toSql();
-		$eventsRespondent->arrival              = $arrival['day'] . ' ' . $arrival['time'];
-		$eventsRespondent->departure            = $departure['day'] . ' ' . $departure['time'];
+		$eventsRespondent = new \Components\Events\Tables\Respondent(array());
+		$eventsRespondent->event_id   = $event_id;
+		$eventsRespondent->registered = Date::toSql();
+		$eventsRespondent->arrival    = $arrival['day'] . ' ' . $arrival['time'];
+		$eventsRespondent->departure  = $departure['day'] . ' ' . $departure['time'];
 
 		$eventsRespondent->position_description = '';
 		if (isset($register['position_other']) && $register['position_other'] != '')
@@ -1252,11 +1294,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$eventsRespondent->position_description = $register['position'];
 		}
 
-		$eventsRespondent->highest_degree       = (isset($register['degree'])) ? $register['degree'] : '';
-		$eventsRespondent->gender               = (isset($register['sex'])) ? $register['sex'] : '';
-		$eventsRespondent->disability_needs     = (isset($disability) && strtolower($disability) == 'yes') ? 1 : null;
-		$eventsRespondent->dietary_needs        = (isset($dietary['needs']) && strtolower($dietary['needs']) == 'yes') ? $dietary['specific'] : null;
-		$eventsRespondent->attending_dinner     = (isset($dinner) && $dinner == 'yes') ? 1 : 0;
+		$eventsRespondent->highest_degree   = (isset($register['degree'])) ? $register['degree'] : '';
+		$eventsRespondent->gender           = (isset($register['sex'])) ? $register['sex'] : '';
+		$eventsRespondent->disability_needs = (isset($disability) && strtolower($disability) == 'yes') ? 1 : null;
+		$eventsRespondent->dietary_needs    = (isset($dietary['needs']) && strtolower($dietary['needs']) == 'yes') ? $dietary['specific'] : null;
+		$eventsRespondent->attending_dinner = (isset($dinner) && $dinner == 'yes') ? 1 : 0;
 		$eventsRespondent->bind($register);
 
 		//did we save properly
@@ -1270,7 +1312,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		unset($r['nativetribe']);
 		$r = (empty($r)) ? array() : $r;
 		$sql = "INSERT INTO `#__events_respondent_race_rel` (respondent_id, race, tribal_affiliation)
-		        VALUES (".$this->database->quote($eventsRespondent->id).", ".$this->database->quote(implode(',', $r)).", ".$this->database->quote($race['nativetribe']).")";
+		        VALUES (" . $this->database->quote($eventsRespondent->id) . ", " . $this->database->quote(implode(',', $r)) . ", " . $this->database->quote($race['nativetribe']) . ")";
 		$this->database->setQuery($sql);
 		$this->database->query();
 
@@ -1360,11 +1402,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 	}
 
-
 	/**
 	 * View Event Registrants
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function registrants()
 	{
@@ -1372,7 +1413,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('registrants', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id', '', 'get');
 
 		//load event data
 		$view->event = new \Components\Events\Tables\Event($this->database);
@@ -1400,16 +1441,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-
 	/**
 	 * Download Registrants CSV
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function download()
 	{
 		//get request varse
-		$eventId = Request::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id', '', 'get');
 
 		//get registrants count
 		$eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
@@ -1485,11 +1525,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		exit();
 	}
 
-
 	/**
 	 * Escape string for csv output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function escapeCsv($value)
 	{
@@ -1500,7 +1539,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (preg_match('/,/', $value) || preg_match("/\n/", $value) || preg_match('/"/', $value))
 		{
 			// If I have new lines or commas escape them
-			return '"'.$value.'"';
+			return '"' . $value . '"';
 		}
 		else
 		{
@@ -1509,11 +1548,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 	}
 
-
 	/**
 	 * View Group Calendars
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function calendars()
 	{
@@ -1533,7 +1571,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->authorized = $this->authorized;
-		$view->user      = $this->user;
+		$view->user       = $this->user;
 		$view->calendars  = $calendars;
 
 		//get any errors if there are any
@@ -1546,33 +1584,31 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-
 	/**
 	 * Add Group Calendar
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function addCalendar()
 	{
 		return $this->editCalendar();
 	}
 
-
 	/**
 	 * Edit Group Calendar
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function editCalendar()
 	{
 		//get request vars
-		$calendarId = Request::getVar('calendar_id','');
+		$calendarId = Request::getVar('calendar_id', '');
 
 		//create the view
 		$view = $this->view('edit', 'calendars');
 
 		// get the calendar
-		$view->calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
+		$view->calendar = Components\Events\Models\Calendar::getInstance($calendarId);
 
 		//push some vars to the view
 		$view->month      = $this->month;
@@ -1592,18 +1628,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-
 	/**
 	 * Save Group Calendar
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function saveCalendar()
 	{
 		Request::checkToken();
 
 		//get request vars
-		$calendarInput = Request::getVar('calendar',array());
+		$calendarInput = Request::getVar('calendar', array());
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarInput['id']);
@@ -1613,7 +1648,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$calendarInput['scope_id'] = $this->group->get('gidNumber');
 		$calendarInput['url']      = trim($calendarInput['url']);
 
-		$colors = array('red','orange','yellow','green','blue','purple','brown');
+		$colors = array('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'brown');
 		if (!in_array($calendarInput['color'], $colors))
 		{
 			$calendarInput['color'] = '';
@@ -1654,7 +1689,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform and redirect
 		App::redirect(
-			Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
 			Lang::txt('You have successfully added a new calendar.'),
 			'passed'
 		);
@@ -1664,13 +1699,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete Group Calendar
 	 *
-	 * @return     string
+	 * @return  void
 	 */
 	private function deleteCalendar()
 	{
 		//get the passed in event id
-		$calendarId   = Request::getVar('calendar_id','');
-		$events       = Request::getVar('events','delete');
+		$calendarId   = Request::getVar('calendar_id', '');
+		$events       = Request::getVar('events', 'delete');
 		$deleteEvents = ($events == 'delete') ? true : false;
 
 		// get the calendar
@@ -1681,7 +1716,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform and redirect
 		App::redirect(
-			Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
 			Lang::txt('You have successfully deleted the calendar.'),
 			'passed'
 		);
@@ -1689,11 +1724,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Method to refresh Group Calendar
+	 *
+	 * @return  void
 	 */
 	private function refreshCalendar()
 	{
 		//get the passed in event id
-		$calendarId = Request::getVar('calendar_id','');
+		$calendarId = Request::getVar('calendar_id', '');
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
@@ -1707,7 +1744,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform and redirect
 		App::redirect(
-			Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
 			Lang::txt('You have successfully refreshed the calendar.'),
 			'passed'
 		);
@@ -1718,15 +1755,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 *
 	 * Should only be called via ajax
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	private function refreshCalendars()
 	{
 		//get calendars
 		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
-			'scope'     => 'group',
-			'scope_id'  => $this->group->get('gidNumber')
+			'scope'    => 'group',
+			'scope_id' => $this->group->get('gidNumber')
 		));
 
 		// array to hold refreshed cals
@@ -1734,7 +1771,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// refresh each calendar
 		// dont force refresh if we havent made it to the next refresh interval
-		$calendars->map(function($calendar) use (&$refreshed) {
+		$calendars->map(function($calendar) use (&$refreshed)
+		{
 			// if we refreshed lets add it
 			// to our array of refreshed
 			if ($calendar->refresh(false))
@@ -1751,7 +1789,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build Repeating rule from input
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	private function _buildRepeatingRule()
 	{
@@ -1761,7 +1799,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$reccurance = Request::getVar('reccurance', array(), 'post');
 
 		// valid frequencies
-		$validFreq = array('daily','weekly','monthly','yearly');
+		$validFreq = array('daily', 'weekly', 'monthly', 'yearly');
 
 		// make sure we have a frequency and its a valid type
 		if (!isset($reccurance['freq']) || !in_array($reccurance['freq'], $validFreq))
@@ -1803,15 +1841,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			elseif ($end == 'until')
 			{
 				// create date object in local timezone
-				$until    = (isset($reccurance['ends']['until'])) ? $reccurance['ends']['until'] : 1;
+				$until = (isset($reccurance['ends']['until'])) ? $reccurance['ends']['until'] : 1;
+				$endTime = Request::getVar('event[publish_down_time]', '11:59 pm', 'post');
 
 				// create date time object where timezoen is configured value
 				// let php convert to UTC when formatting
 				$timezone = new DateTimezone(Config::get('offset'));
-				$date = Date::of($until, $timezone);
-
-				// subtract by 1 second (iCal standard)
-				$date->modify('-1 second');
+				$date = Date::of($until . ' '. $endTime, $timezone);
 
 				//set the rule
 				$rule[] = 'UNTIL=' . $date->format('Ymd\THis\Z');
@@ -1831,15 +1867,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	{
 		$db = App::get('db');
 		$sql = "SELECT COUNT(*)
-				FROM #__events
+				FROM `#__events`
 				WHERE scope=" . $db->quote('group') . "
-				AND scope_id=".$this->group->get('gidNumber')."
+				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >='".Date::toSql()."' OR publish_down >='".Date::toSql()."')";
+				AND (publish_up >=" . $db->quote(Date::toSql()) . " OR publish_down >= " . $db->quote(Date::toSql()) . ")";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
-
 
 	/**
 	 * Get all future events that start or finish this month
@@ -1850,15 +1885,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	{
 		$db = App::get('db');
 		$sql = "SELECT COUNT(*)
-				FROM #__events
+				FROM `#__events`
 				WHERE scope=" . $db->quote('group') . "
-				AND scope_id=".$this->group->get('gidNumber')."
+				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >= '".Date::toSql()."' OR publish_down >='".Date::toSql()."') AND publish_up <= '".Date::format("Y-m-t 23:59:59")."'";
+				AND (publish_up >= " . $db->quote(Date::toSql()) . " OR publish_down >= " . $db->quote(Date::toSql()) . ") AND publish_up <= " . $db->quote(Date::format("Y-m-t 23:59:59"));
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
-
 
 	/**
 	 * Send an email

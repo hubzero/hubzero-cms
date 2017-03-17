@@ -33,6 +33,9 @@ namespace Components\Newsletter\Models;
 
 use Hubzero\Database\Relational;
 
+require_once __DIR__ . DS . 'mailinglist' . DS . 'email.php';
+require_once __DIR__ . DS . 'mailinglist' . DS . 'unsubscribe.php';
+
 /**
  * Newsletter model for a mailinglist
  */
@@ -67,4 +70,14 @@ class Mailinglist extends Relational
 	protected $rules = array(
 		'name' => 'notempty'
 	);
+
+	/**
+	 * Get a list of emails
+	 *
+	 * @return  object
+	 */
+	public function emails()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Mailinglist\\Email', 'mid');
+	}
 }

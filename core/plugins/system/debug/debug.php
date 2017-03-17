@@ -248,6 +248,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			{
 				$html .= '<a href="javascript:" class="debug-tab debug-tab-database" onclick="Debugger.toggleContainer(this, \'debug-queries\');"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . App::get('db')->getCount() . '</span></a>';
 			}
+			$html .= '<a href="javascript:" class="debug-tab debug-tab-events" onclick="Debugger.toggleContainer(this, \'debug-events\');"><span class="text">' . Lang::txt('PLG_DEBUG_EVENTS') . '</span><span class="badge">' . count(Event::getCalledListeners()) . '</span></a>';
 		}
 
 		if (Config::get('debug_lang'))
@@ -305,6 +306,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			{
 				$html .= $this->display('queries');
 			}
+
+			$html .= $this->display('events');
 		}
 
 		if (Config::get('debug_lang'))
@@ -916,6 +919,46 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			}
 			$html .= '</ol>';
 		}
+
+		return $html;
+	}
+
+	/**
+	 * Displays events
+	 *
+	 * @return  string
+	 */
+	protected function displayEvents()
+	{
+		$called = Event::getCalledListeners();
+
+		if (!count($called))
+		{
+			return '<p>' . Lang::txt('JNONE') . '</p>';
+		}
+
+		$html  = '<ul>';
+
+		foreach ($called as $info)
+		{
+			$html .= '<li><code>';
+			$html .= '<span class="tm">' . $info['event'] . '</span> ';
+			$html .= '<span class="op">&mdash;</span> ';
+			$html .= '<span class="msg">' . $info['type'] . '</span> ';
+			$html .= '<span class="op">&mdash;</span> ';
+			if ($info['type'] == 'Function')
+			{
+				$html .= '<span class="vl">' . $info['function'] . '</span>';
+			}
+			elseif ($info['type'] == 'Method')
+			{
+				$html .= '<span class="ky">' . $info['class'] . '</span><span class="op">::</span><span class="vl">' . $info['method'] . '</span>';
+			}
+			$html .= ' <span class="op">&rarr;</span> <span class="op">' . substr($info['file'], strlen(PATH_ROOT)) . ':<span class="tm">' . $info['line'] . '</span></span>';
+			$html .= '</code></li>';
+		}
+
+		$html .= '</ul>';
 
 		return $html;
 	}

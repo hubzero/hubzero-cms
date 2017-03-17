@@ -154,8 +154,8 @@ class Plugins extends AdminController
 		{
 			// Check-out failed, display a notice but allow the user to see the record.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false),
-				Lang::txt('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED'),
+				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false), //$this->getRedirectToItemAppend($recordId, $key), false),
+				Lang::txt('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()),
 				'error'
 			);
 		}

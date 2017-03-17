@@ -115,6 +115,8 @@ class Author extends Relational
 			$ids[] = $ex->get('user_id');
 		}
 
+		$err = null;
+
 		$auths = array();
 
 		// Turn the comma-separated string of authors into an array and loop through it

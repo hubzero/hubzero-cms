@@ -302,7 +302,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-			->set('description', JText::_('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f086');
@@ -426,30 +426,63 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'sections':       $response->set('html', $this->sections());       break;
-				case 'newsection':     $response->set('html', $this->sections());       break;
-				case 'editsection':    $response->set('html', $this->sections());       break;
-				case 'savesection':    $response->set('html', $this->savesection());    break;
-				case 'deletesection':  $response->set('html', $this->deletesection());  break;
-
-				case 'categories':     $response->set('html', $this->categories());     break;
-				case 'savecategory':   $response->set('html', $this->savecategory());   break;
-				case 'newcategory':    $response->set('html', $this->editcategory());   break;
-				case 'editcategory':   $response->set('html', $this->editcategory());   break;
-				case 'deletecategory': $response->set('html', $this->deletecategory()); break;
-
-				case 'threads':        $response->set('html', $this->threads());        break;
-				case 'savethread':     $response->set('html', $this->savethread());     break;
-				case 'editthread':     $response->set('html', $this->editthread());     break;
-				case 'deletethread':   $response->set('html', $this->deletethread());   break;
-
-				case 'orderup':        $response->set('html', $this->orderup());        break;
-				case 'orderdown':      $response->set('html', $this->orderdown());      break;
-
-				case 'download':       $response->set('html', $this->download());       break;
-				case 'search':         $response->set('html', $this->panel());          break;
-
-				default: $response->set('html', $this->panel()); break;
+				case 'sections':
+					$response->set('html', $this->sections());
+					break;
+				case 'newsection':
+					$response->set('html', $this->sections());
+					break;
+				case 'editsection':
+					$response->set('html', $this->sections());
+					break;
+				case 'savesection':
+					$response->set('html', $this->savesection());
+					break;
+				case 'deletesection':
+					$response->set('html', $this->deletesection());
+					break;
+				case 'categories':
+					$response->set('html', $this->categories());
+					break;
+				case 'savecategory':
+					$response->set('html', $this->savecategory());
+					break;
+				case 'newcategory':
+					$response->set('html', $this->editcategory());
+					break;
+				case 'editcategory':
+					$response->set('html', $this->editcategory());
+					break;
+				case 'deletecategory':
+					$response->set('html', $this->deletecategory());
+					break;
+				case 'threads':
+					$response->set('html', $this->threads());
+					break;
+				case 'savethread':
+					$response->set('html', $this->savethread());
+					break;
+				case 'editthread':
+					$response->set('html', $this->editthread());
+					break;
+				case 'deletethread':
+					$response->set('html', $this->deletethread());
+					break;
+				case 'orderup':
+					$response->set('html', $this->orderup());
+					break;
+				case 'orderdown':
+					$response->set('html', $this->orderdown());
+					break;
+				case 'download':
+					$response->set('html', $this->download());
+					break;
+				case 'search':
+					$response->set('html', $this->panel());
+					break;
+				default:
+					$response->set('html', $this->panel());
+					break;
 			}
 		}
 
@@ -1601,7 +1634,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
 					'url'   => Route::url($this->base)
@@ -1682,7 +1715,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				'action'      => 'deleted',
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
 					'url'   => Route::url($this->base)
@@ -1913,7 +1946,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$category->set('section_id', (int) $category->get('section_id'));
 			Request::setVar('section_id', $category->get('section_id'));
 
-			Notify::error(Lang::txt('PLG_COURSES_FORUM_ERROR_CATEGORY_ALREADY_EXISTS'), 'courses_forum');
+			Notify::error(Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_CATEGORY_ALREADY_EXISTS'), 'courses_forum');
 			return $this->editcategory($category);
 		}
 
@@ -1930,7 +1963,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.category',
 				'scope_id'    => $category->get('id'),
-				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $category->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . $category->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $category->get('title'),
 					'url'   => Route::url($this->base)
@@ -2572,7 +2605,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		if (!$attach->get('filename'))
 		{
-			App::abort(404, Lang::txt('PLG_COURSES_FORUM_FILE_NOT_FOUND'));
+			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
 		}
 
 		// Get the parent ticket the file is attached to
@@ -2580,7 +2613,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		if (!$post->get('id') || $post->get('state') == $post::STATE_DELETED)
 		{
-			App::abort(404, Lang::txt('PLG_COURSES_FORUM_POST_NOT_FOUND'));
+			App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_POST_NOT_FOUND'));
 		}
 
 		// Load ACL
@@ -2668,7 +2701,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				'action'      => 'reordered',
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_COURSES_FORUM_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . $section->get('title') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
 					'url'   => Route::url($this->base)

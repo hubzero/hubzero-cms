@@ -88,16 +88,6 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 			" ORDER BY $weight DESC"
 		));
 	}
-/************************************************
- *
- * HubSearch Required Methods
- * @author Kevin Wojkovich <kevinw@purdue.edu>
- *
- ***********************************************/
-
-	/****************************
-	Query-time / General Methods
-	****************************/
 
 	/**
 	 * onGetTypes - Announces the available hubtype
@@ -121,70 +111,84 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 		}
 	}
 
-	public function onGetModel($type = '')
-	{
-		if ($type == 'project')
-		{
-			return new Project;
-		}
-	}
-	/*********************
-		Index-time methods
-	*********************/
 	/**
-	 * onProcessFields - Set SearchDocument fields which have conditional processing
-	 *
-	 * @param mixed $type 
-	 * @param mixed $row
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
 	 * @access public
 	 * @return void
 	 */
-	public function onProcessFields($type, $row)
+	public function onIndex($type, $id, $run = false)
 	{
 		if ($type == 'project')
 		{
-			// Object for mapped fields
-			$fields = new stdClass;
-
-			// Public condition
-			if ($row->state == 1 && $row->private == 0)
+			if ($run === true)
 			{
-				$fields->access_level = 'public';
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__projects WHERE id={$id} AND type=1;";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Determine the path
+				$path = '/projects/' . $row->alias;
+
+				// Public condition
+				if ($row->state == 1 && $row->private == 0)
+				{
+					$access_level = 'public';
+				}
+				else
+				{
+					$access_level = 'private';
+				}
+
+				if ($row->owned_by_group == 0)
+				{
+					$owner_type = 'user';
+					$owner = $row->owned_by_user;
+				}
+				else
+				{
+					$owner_type = 'group';
+					$owner = $row->owned_by_group;
+				}
+
+				// Get the title
+				$title = $row->title;
+
+				// Build the description, clean up text
+				$content = preg_replace('/<[^>]*>/', ' ', $row->about);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
 			}
-			// Default private
 			else
 			{
-				$fields->access_level = 'private';
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__projects WHERE type=1;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
 			}
-
-			$group = Group::getInstance('pr-'.$row->alias);
-
-			// Ensure valid group
-			if (is_object($group))
-			{
-				$fields->owner_type = 'group';
-				$fields->owner = $group->get('gidNumber');
-			}
-
-			// Build out path
-			$path = '/projects/';
-			$path .= $row->alias;
-
-			$fields->url = $path;
-
-			$fields->title = $row->title;
-			$fields->alias = $row->alias;
-
-			// Format the date for SOLR
-			$date = Date::of($row->created)->format('Y-m-d');
-			$date .= 'T';
-			$date .= Date::of($row->publish_up)->format('h:m:s') . 'Z';
-			$fields->date = $date;
-
-			$fields->description = $row->about;
-
-			return $fields;
 		}
 	}
 }
-

@@ -184,6 +184,16 @@
 		display: none;
 	}
 
+	.ticket-wrap .ticket-target_date {
+		color: #b9b9b9;
+		margin-left: 2em;
+	}
+	.ticket-wrap .ticket-target_date:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+		content: "\f0d0";
+	}
+
 	.ticket fieldset {
 		margin: 0;
 		padding: 0;
@@ -1769,6 +1779,11 @@
 	.sort-options li:hover ul,
 	.sort-options li:focus ul {
 		visibility: visible;
+	}
+
+	.attachment:before {
+		font-family: "Fontcons";
+		margin-right: 0.2em;
 	}
 
 /* File upload */

@@ -36,6 +36,7 @@ use Hubzero\Component\AdminController;
 use Components\Wishlist\Tables\Wishlist;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use User;
@@ -122,12 +123,19 @@ class Lists extends AdminController
 	}
 
 	/**
-	 * Edit a category
+	 * Edit an entry
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -145,21 +153,14 @@ class Lists extends AdminController
 			$row->load($id);
 		}
 
-		$this->view->row = $row;
-
 		/*
 		$m = new Model\Adminlist();
 		$this->view->form = $m->getForm();
 		*/
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -174,6 +175,12 @@ class Lists extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
@@ -182,9 +189,8 @@ class Lists extends AdminController
 		$row = new Wishlist($this->database);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 		$row->state  = (isset($fields['state']))  ? 1 : 0;
 		$row->public = (isset($fields['public'])) ? 1 : 0;
@@ -192,18 +198,18 @@ class Lists extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
+
+		Notify::success(Lang::txt('COM_WISHLIST_LIST_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -211,14 +217,11 @@ class Lists extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_WISHLIST_LIST_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
-	 * Remove an entry
+	 * Remove one or more entries
 	 *
 	 * @return  void
 	 */
@@ -227,6 +230,11 @@ class Lists extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -234,12 +242,8 @@ class Lists extends AdminController
 		// Make sure we have an ID to work with
 		if (!count($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_WISHLIST_NO_ID'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_WISHLIST_NO_ID'));
+			return $this->cancelTask();
 		}
 
 		// Create a Wishlist object
@@ -251,23 +255,20 @@ class Lists extends AdminController
 			// Delete the list
 			if (!$wishlist->delete($id))
 			{
-				$this->setError($wishlist->getError());
+				Notify::error($wishlist->getError());
+				continue;
 			}
-			else
-			{
-				$i++;
-			}
+
+			$i++;
 		}
 
 		if ($i)
 		{
-			$this->setMessage(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $i));
+			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $i));
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -280,18 +281,19 @@ class Lists extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_WISHLIST_NO_ID'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_WISHLIST_NO_ID'));
+			return $this->cancelTask();
 		}
 
 		switch ($this->getTask())
@@ -309,28 +311,17 @@ class Lists extends AdminController
 		// Check and store the changes
 		if (!$row->check())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
+			Notify::error($row->getError());
+			return $this->cancelTask();
 		}
 
 		if (!$row->store())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
+			Notify::error($row->getError());
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -340,6 +331,11 @@ class Lists extends AdminController
 	 */
 	public function stateTask()
 	{
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Incoming
@@ -350,42 +346,47 @@ class Lists extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH')),
-				'error'
-			);
-			return;
+			Notify::error($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+			return $this->cancelTask();
 		}
 
 		// Update record(s)
+		$i = 0;
 		foreach ($ids as $id)
 		{
 			// Updating a category
 			$row = new Wishlist($this->database);
 			$row->load($id);
 			$row->state = $state;
-			$row->store();
+			if (!$row->store())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
 		// Set message
-		switch ($state)
+		if ($i)
 		{
-			case '-1':
-				$message = Lang::txt('COM_WISHLIST_ARCHIVED', count($ids));
-			break;
-			case '1':
-				$message = Lang::txt('COM_WISHLIST_PUBLISHED', count($ids));
-			break;
-			case '0':
-				$message = Lang::txt('COM_WISHLIST_UNPUBLISHED', count($ids));
-			break;
+			switch ($state)
+			{
+				case '-1':
+					Notify::success(Lang::txt('COM_WISHLIST_ARCHIVED', $i));
+				break;
+				case '1':
+					Notify::success(Lang::txt('COM_WISHLIST_PUBLISHED', $i));
+				break;
+				case '0':
+					Notify::success(Lang::txt('COM_WISHLIST_UNPUBLISHED', $i));
+				break;
+			}
 		}
 
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''), false),
-			$message
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''), false)
 		);
 	}
 }

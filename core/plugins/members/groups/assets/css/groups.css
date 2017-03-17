@@ -81,8 +81,12 @@
 	}
 	.group .group-details {
 		padding: 1em;
-		min-height: 6.5em;
+		height: 6.7em;
 		text-align: center;
+		overflow: hidden;
+	}
+	.firefox .groups-container .group-details {
+		height: 6.9em;
 	}
 	.group img {
 		height: 100%;
@@ -126,6 +130,16 @@
 		display: block;
 		font-size: 85%;
 	}
+
+	.group-title {
+		display: block;
+		font-size: 0.8rem;
+		line-height: 1.2rem;
+		height: 3.6rem;
+		overflow: hidden;
+		border: none;
+	}
+
 /* Group member status */
 	.group-membership-status {
 		border: 1px solid #ddd;
@@ -164,6 +178,7 @@
 		color: #aaa;
 		text-align: center;
 		font-size: 85%;
+		min-height: 6em;
 	}
 	.group-meta span {
 		color: #666;

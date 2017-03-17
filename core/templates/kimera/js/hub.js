@@ -277,5 +277,10 @@ jQuery(document).ready(function($){
 			});
 		});
 	}
-});
 
+	$('.disabled,:disabled').on('click', function(e){
+		if ($(this).hasClass('disabled') || $(this).prop('disabled')) {
+			e.preventDefault();
+		}
+	});
+});

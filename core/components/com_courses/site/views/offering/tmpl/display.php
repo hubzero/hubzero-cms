@@ -114,7 +114,7 @@ if (!$no_html && $tmpl != 'component') :
 
 				<ul id="page_menu">
 					<?php
-					$active = Request::getVar('active');
+					$active = Request::getCmd('active');
 
 					// Loop through each plugin and build menu item
 					foreach ($this->plugins as $plugin)
@@ -174,7 +174,7 @@ if (!$no_html && $tmpl != 'component') :
 					?>
 				</div><!-- /#page_notifications -->
 
-				<div id="page_content" class="course_<?php echo $active; ?>">
+				<div id="page_content" class="course_<?php echo $this->escape($active); ?>">
 <?php endif; ?>
 
 					<?php

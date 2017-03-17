@@ -33,12 +33,15 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Displays the groups projects</description>
+	<description>PLG_GROUPS_PROJECTS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="projects">projects.php</filename>
-		<filename>projects/projects.css</filename>
-		<filename>projects/projects.js</filename>
-		<filename>projects/views/browse/tmpl/default.php</filename>
+		<filename>assets/css//projects.css</filename>
+		<filename>assets/js/projects.js</filename>
+		<filename>views/browse/tmpl/default.php</filename>
+		<filename>views/browse/tmpl/list.php</filename>
+		<filename>views/partials/tmpl/submenu.php</filename>
+		<filename>views/updates/tmpl/default.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_groups_projects.ini</language>
@@ -46,15 +49,15 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the plugin.">
-					<option value="anyone">Any HUB Visitor</option>
-					<option value="registered">Only Registered HUB Users</option>
-					<option value="members">Only Group Members</option>
-					<option value="nobody">Disabled/Off</option>
+				<field name="plugin_access" type="list" default="members" label="PLG_GROUPS_PROJECTS_PARAM_PLUGINACCESS_LABEL" description="PLG_GROUPS_PROJECTS_PARAM_PLUGINACCESS_DESC">
+					<option value="anyone">PLG_GROUPS_PROJECTS_PARAM_PLUGINACCESS_ANYONE</option>
+					<option value="registered">PLG_GROUPS_PROJECTS_PARAM_PLUGINACCESS_REGISTERED</option>
+					<option value="members">PLG_GROUPS_PROJECTS_PARAM_PLUGINACCESS_MEMBERS</option>
+					<option value="nobody">PLG_GROUPS_PROJECTS_PARAM_PLUGINACCESS_NOBODY</option>
 				</field>
-				<field name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Projects' in group menu.">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="display_tab" type="list" default="1" label="PLG_GROUPS_PROJECTS_PARAM_DISPLAYTAB_LABEL" description="PLG_GROUPS_PROJECTS_PARAM_DISPLAYTAB_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>

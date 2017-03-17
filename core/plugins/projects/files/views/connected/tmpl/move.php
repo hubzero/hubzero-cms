@@ -33,24 +33,13 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Hubzero\Filesystem\Entity;
+
 $f          = 1;
 $i          = 1;
 $skipped    = 0;
 $maxlevel   = 100;
 $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-
-// Get all parents
-$dirs = [];
-if ($this->list)
-{
-	foreach ($this->list as $item)
-	{
-		if ($item->isDir())
-		{
-			$dirs[] = $item->path;
-		}
-	}
-}
 ?>
 
 <div id="abox-content">
@@ -59,7 +48,7 @@ if ($this->list)
 	</h3>
 
 	<?php if ($this->getError()) : ?>
-		echo ('<p class="witherror">' . $this->getError() . '</p>');
+		<?php echo ('<p class="witherror">' . $this->getError() . '</p>'); ?>
 	<?php else : ?>
 		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->url); ?>">
 			<fieldset >
@@ -75,11 +64,12 @@ if ($this->list)
 				<ul class="sample">
 					<?php foreach ($this->items as $file) : ?>
 						<li>
-							<?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
+						<li>
+							<?php echo \Components\Projects\Models\File::drawIcon($file->getExtension()); ?>
 							<?php echo $file->getName(); ?>
 							<?php echo $file->isDir()
-								? '<input type="hidden" name="folder[]" value="' . urlencode($file->getName()) . '" />'
-								: '<input type="hidden" name="asset[]"  value="' . urlencode($file->getName()) . '" />'; ?>
+								? '<input type="hidden" name="folder[]" value="' . urlencode($file->getPath()) . '" />'
+								: '<input type="hidden" name="asset[]"  value="' . urlencode($file->getPath()) . '" />'; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>
@@ -88,37 +78,26 @@ if ($this->list)
 					<h4>
 						<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_WHERE'); ?>
 					</h4>
-					<?php if (count($dirs) > 0) : ?>
+					<?php if (count($this->list) > 0) : ?>
 						<ul class="dirtree">
 							<li>
 								<input type="radio" name="newpath" value="" <?php if (!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
 							</li>
 							<?php
-							for ($i = 0; $i < count($dirs); $i++)
-							{
-								$dir = $dirs[$i];
+								foreach ($this->list as $dir)
+								{
+									echo \Components\Projects\Helpers\Html::listDirHtml($dir, $this->subdir);
+								}
+								?>
 
-								// Remove full path
-								$dir         = trim($dir, DS);
-								$desect_path = explode(DS, $dir);
-								$level       = count($desect_path);
-								$dirname     = end($desect_path);
-								$maxlevel    = $level > $maxlevel ? $level : $maxlevel;
-
-								$leftMargin = ($level * 15) . 'px';
-							?>
-							<li style="margin-left:<?php echo $leftMargin; ?>">
-								<input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if ($this->subdir == $dir) { echo 'disabled="disabled" '; } ?> /> <span><span class="folder <?php if ($this->subdir == $dir) { echo 'prominent '; } ?>"><?php echo $dirname; ?></span></span>
-							</li>
-							<?php } ?>
 						</ul>
 					<?php endif; ?>
 					<?php if ($maxlevel <= 100) : ?>
-						<?php if (count($dirs) > 0) : ?>
+						<?php if (count($this->list) > 0) : ?>
 							<div class="or"><?php echo Lang::txt('COM_PROJECTS_OR'); ?></div>
 						<?php endif; ?>
 						<label><span class="block"><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?></span>
-							<span class="mini prominent"><?php echo $this->subdir ? $this->subdir . DS : ''; ?></span>
+							<span class="mini prominent"><?php echo $this->subdir ? \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->model->link('files') . '&action=browse&connection=' . $this->connection->id, $parent, false, $this->connection->adapter(), '/') : ''; ?></span>
 							<input type="text" name="newdir" maxlength="50" value="" />
 						</label>
 					<?php endif; ?>

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/system/hubzero.xml
+@file           plugins/system/hubzero/hubzero.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -41,6 +41,10 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename plugin="hubzero">hubzero.php</filename>
 	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_hubzero.ini</language>
+		<language tag="en-GB">en-GB.plg_system_hubzero.sys.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">

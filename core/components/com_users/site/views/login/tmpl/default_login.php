@@ -53,13 +53,16 @@ if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getIn
 	if (array_key_exists($primary, $this->authenticators)
 	|| (isset($this->local) && $this->local && $primary == 'hubzero'))
 	{
-		$user     = User::getInstance($cookie->user_id);
-		$user_img = $cookie->user_img;
-		Request::setVar('primary', $primary);
+		if (isset($cookie->user_id))
+		{
+			$user     = User::getInstance($cookie->user_id);
+			$user_img = $cookie->user_img;
+			Request::setVar('primary', $primary);
+		}
 	}
 }
 
-$usersConfig = Component::params('com_users');
+$usersConfig = Component::params('com_members');
 $primary     = Request::getWord('primary', false);
 
 // use some reflections to inspect plugins for special behavior (added for shibboleth)
@@ -133,7 +136,7 @@ endforeach;
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
-						<?php if (isset($user) && is_object($user) && !$user->get('block')) : ?>
+						<?php if (isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != '') : ?>
 							<input type="hidden" name="username" value="<?php echo $user->get('username'); ?>" />
 							<div class="existing-name"><?php echo $user->get('name'); ?></div>
 							<div class="existing-email"><?php echo $user->get('email'); ?></div>

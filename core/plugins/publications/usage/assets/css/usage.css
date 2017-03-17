@@ -75,7 +75,7 @@
 		margin: 0;
 		padding: 0.5em 0.7em;
 		position: absolute;
-		bottom: 95px;
+		top: -1em;
 		left: 50%;
 		margin-left: -2em;
 		display: none;

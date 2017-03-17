@@ -47,6 +47,7 @@ $autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignu
 
 //default logo
 $default_logo = DS.'core'.DS.'components'.DS.$this->option.DS.'site'.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
+$this->group->set('logo', ltrim($this->group->get('logo'), DS));
 
 //access levels
 $levels = array(
@@ -96,9 +97,10 @@ else
 
 <section class="main section">
 	<?php
-		foreach ($this->notifications as $notification) {
-			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-		}
+	foreach ($this->notifications as $notification)
+	{
+		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+	}
 	?>
 
 	<?php if ($this->task != 'new' && !$this->group->get('published')) : ?>
@@ -165,9 +167,9 @@ else
 								<?php foreach ($this->logos as $logo) { ?>
 									<?php
 										$remove = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
-										$sel = (str_replace($remove,"",$logo) == $this->group->get('logo')) ? 'selected' : '';
+										$sel = (str_replace($remove, '', $logo) == $this->group->get('logo')) ? 'selected' : '';
 									?>
-									<option <?php echo $sel; ?> value="<?php echo str_replace(JPATH_SITE,"",$logo); ?>"><?php echo str_replace($remove,"",$logo); ?></option>
+									<option <?php echo $sel; ?> value="<?php echo str_replace(PATH_ROOT, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
 								<?php } ?>
 							</select>
 						</label>

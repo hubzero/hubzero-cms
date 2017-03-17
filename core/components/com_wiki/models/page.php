@@ -41,13 +41,13 @@ use Lang;
 use Date;
 use User;
 
-require_once(__DIR__ . DS . 'attachment.php');
-require_once(__DIR__ . DS . 'version.php');
-require_once(__DIR__ . DS . 'comment.php');
-require_once(__DIR__ . DS . 'author.php');
-require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'link.php');
-require_once(__DIR__ . DS . 'log.php');
+require_once __DIR__ . DS . 'attachment.php';
+require_once __DIR__ . DS . 'version.php';
+require_once __DIR__ . DS . 'comment.php';
+require_once __DIR__ . DS . 'author.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'link.php';
+require_once __DIR__ . DS . 'log.php';
 
 /**
  * Wiki model for a page
@@ -124,6 +124,13 @@ class Page extends Relational
 		'pagename',
 		'namespace'
 	);
+
+	/**
+	 * List of adapter paths
+	 *
+	 * @var  array
+	 */
+	protected static $paths = array();
 
 	/**
 	 * Sets up additional custom rules
@@ -541,14 +548,20 @@ class Page extends Relational
 
 			if (!class_exists($cls))
 			{
-				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
+				static::$paths[] = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
 
-				if (!is_file($path))
+				foreach (static::$paths as $path)
+				{
+					if (is_file($path))
+					{
+						include_once $path;
+					}
+				}
+
+				if (!class_exists($cls))
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid adapter type of "%s"', $scope));
 				}
-
-				include_once($path);
 			}
 
 			$this->adapter = new $cls(
@@ -559,6 +572,30 @@ class Page extends Relational
 		}
 
 		return $this->adapter;
+	}
+
+	/**
+	 * Add a directory where a scope adapter class can be found
+	 *
+	 * @param   string  $path
+	 * @return  array   An array with directory elements
+	 */
+	public static function addAdapterPath($path)
+	{
+		if (!isset(static::$paths))
+		{
+			static::$paths = array();
+		}
+
+		if (!empty($path))
+		{
+			if (!in_array($path, static::$paths))
+			{
+				static::$paths[] = $path;
+			}
+		}
+
+		return static::$paths;
 	}
 
 	/**
@@ -810,6 +847,11 @@ class Page extends Relational
 			$this->config()->set('access-comment-create', false);
 			$this->config()->set('access-comment-delete', false);
 			$this->config()->set('access-comment-edit', false);
+
+			if ($this->get('scope') == 'site' && $this->get('access') && !in_array($this->get('access'), User::getAuthorisedViewLevels()))
+			{
+				$this->config()->set('access-page-view', false);
+			}
 
 			// Check if they are logged in
 			if (User::isGuest())
@@ -1065,7 +1107,14 @@ class Page extends Relational
 
 		$keys = join('|', array_keys($classes));
 
-		return preg_replace_callback("/\[:($keys):]/", function($matches) use ($classes) { return $classes[$matches[1]]; }, $regexp);
+		return preg_replace_callback(
+			"/\[:($keys):]/",
+			function($matches) use ($classes)
+			{
+				return $classes[$matches[1]];
+			},
+			$regexp
+		);
 	}
 
 	/**

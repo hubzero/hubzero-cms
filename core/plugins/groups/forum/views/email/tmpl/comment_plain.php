@@ -59,6 +59,19 @@ $output = preg_replace_callback(
 );
 
 $message .= $output;
+
+$attachments = $this->post->attachments()
+	->whereIn('state', array(Components\Forum\Models\Post::STATE_PUBLISHED))
+	->rows();
+if ($attachments->count() > 0)
+{
+	$message .= "\n\n";
+	foreach ($attachments as $attachment)
+	{
+		$message .= $base . '/' . trim(Route::url($this->thread->link()), '/') . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename') . "\n";
+	}
+}
+
 if ($this->unsubscribe)
 {
 	$message .= "\n\n" . Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE') . ":\n" . $this->get('unsubscribe');

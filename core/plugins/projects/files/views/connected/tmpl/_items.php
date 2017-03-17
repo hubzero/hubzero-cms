@@ -41,10 +41,12 @@ $handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'pr
 ?>
 
 <?php foreach ($this->items as $item) : ?>
+<?php //Skip the file if we can verify that it's got a mimetype that we can't handle properly at this point in time ?> 
+<?php if ($item->isFile() && strpos($item->getMimeType(), "application/vnd.google") === 0) :  continue; endif;?>
 	<tr class="mini faded mline connections">
 		<?php if ($this->model->access('content')) : ?>
 			<td class="middle_valign">
-				<input type="checkbox" value="<?php echo urlencode($item->getName()); ?>" name="<?php echo $item->isFile() ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $item->isDir() ? ' dirr' : ''; ?>" />
+				<input type="checkbox" value="<?php echo urlencode($item->getPath()); ?>" name="<?php echo $item->isFile() ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $item->isDir() ? ' dirr' : ''; ?>" />
 			</td>
 		<?php endif; ?>
 		<?php $subdirPath = $this->subdir ? '&subdir=' . urlencode($this->subdir) : ''; ?>
@@ -53,7 +55,7 @@ $handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'pr
 			<?php if ($item->isFile()) : ?>
 				<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase . $this->model->get('alias') . DS . $item->getPath())) ? ' hasMultiple' : ''; ?>">
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
-						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getName(), 60); ?>
+						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getFileName(), 60); ?>
 					</a>
 					<?php if ($handlers && count($handlers) > 0) : ?>
 						<?php foreach ($handlers as $handler) : ?>
@@ -65,7 +67,7 @@ $handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'pr
 				</div>
 			<?php else : ?>
 				<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id . '&subdir=' . urlencode($item->getPath())); ?>" class="dir:<?php echo urlencode($item->getName()); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->getName(); ?>">
-					<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getName(), 60); ?>
+					<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getDisplayName(), 60); ?>
 				</a>
 			<?php endif; ?>
 		</td>

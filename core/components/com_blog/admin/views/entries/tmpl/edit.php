@@ -80,7 +80,7 @@ Joomla.submitbutton = function(pressbutton) {
 					<div class="col span6">
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_HINT'); ?>">
 							<label for="field-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label><br />
-							<?php if ($this->row->isNew()) { ?>
+							<?php if ($this->row->isNew() || User::authorise('core.admin', $this->option)) { ?>
 								<?php echo Components\Blog\Admin\Helpers\Html::scopes($this->row->get('scope'), 'fields[scope]', 'field-scope'); ?>
 							<?php } else { ?>
 								<input type="text" name="fields[scope]" id="field-scope" disabled="disabled" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
@@ -90,7 +90,7 @@ Joomla.submitbutton = function(pressbutton) {
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="field-scope_id"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_ID'); ?>:</label><br />
-							<?php if ($this->row->isNew()) { ?>
+							<?php if ($this->row->isNew() || User::authorise('core.admin', $this->option)) { ?>
 								<input type="text" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
 							<?php } else { ?>
 								<input type="text" name="fields[scope_id]" id="field-scope_id" disabled="disabled" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
@@ -98,6 +98,11 @@ Joomla.submitbutton = function(pressbutton) {
 						</div>
 					</div>
 				</div>
+				<?php if (!$this->row->isNew() && User::authorise('core.admin', $this->option)) { ?>
+					<div class="input-wrap">
+						<p class="warning"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_WARNING'); ?></p>
+					</div>
+				<?php } ?>
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />

@@ -134,6 +134,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 				?>
 				<div class="explaination">
 					<p class="info">You can choose to log in via one of these services, and we'll help you fill in the info below!</p>
+					<p>Already have an account? <a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>">Log in here.</a></p>
 				</div>
 				<fieldset>
 					<legend>Connect With</legend>
@@ -235,7 +236,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 											? ' class="fieldWithErrors"'
 											: ''); ?>>
 								<?php echo Lang::txt('COM_MEMBERS_REGISTER_PASSWORD'); ?>: <?php if ($this->registrationPassword == Field::STATE_REQUIRED) { echo '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'; } ?>
-								<input name="password" id="password" type="password" value="<?php echo $this->escape($this->registration['password']); ?>" />
+								<input name="password" id="password" type="password" value="<?php echo $this->escape($this->registration['password']); ?>" autocomplete="off" />
 								<?php echo (!empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
 											? '<span class="error">' . $this->xregistration->_invalid['password'] . '</span>'
 											: ''); ?>
@@ -245,7 +246,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							<div class="col span6 omega">
 								<label<?php echo (!empty($this->xregistration->_invalid['confirmPassword']) ? ' class="fieldWithErrors"' : ''); ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD'); ?>: <?php if ($this->registrationConfirmPassword == Field::STATE_REQUIRED) { echo '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>'; } ?>
-									<input name="password2" id="password2" type="password" value="<?php echo $this->escape($this->registration['confirmPassword']); ?>" />
+									<input name="password2" id="password2" type="password" value="<?php echo $this->escape($this->registration['confirmPassword']); ?>" autocomplete="off" />
 									<?php echo (!empty($this->xregistration->_invalid['confirmPassword']) ? '<span class="error">' . $this->xregistration->_invalid['confirmPassword'] . '</span>' : ''); ?>
 								</label>
 							</div>

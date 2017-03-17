@@ -8,9 +8,6 @@
 @import url("../../../../../core/components/com_projects/site/assets/css/emocons.css");
 @import url("../../../../../core/components/com_projects/site/assets/css/icons.css");
 
-	/*#project-wrap .main {
-		padding: 1.5em;
-	}*/
 	#project-innerwrap .subject {
 		border: none;
 		background: none;
@@ -89,24 +86,6 @@
 	}
 /* Listings
 --------------------------------------------- */
-	/*table.listing {
-		margin: 0;
-		padding: 0;
-	}
-	table.listing th {
-		font-weight: normal;
-		font-size: 85%;
-		border-bottom: 4px solid #f0f3e5;
-		background: #fdfff6;
-	}
-	table.listing tbody tr {
-		border-left: 1px solid #FFF;
-		border-right: 1px solid #FFF;
-	}
-	table.listing td {
-		border-top: 1px solid #FFF;
-		border-bottom: 1px solid #f9f9f9;
-	}*/
 	.listing span.setup a,
 	#projects-admin span.setup {
 		color: #e4942d;
@@ -145,6 +124,7 @@
 		height: 20px;
 		min-width: 20px;
 		text-align: center;
+		-webkit-border-radius: 10px;
 		-moz-border-radius: 10px;
 		border-radius: 10px;
 	}
@@ -242,7 +222,6 @@
 	}
 	ul.flow li.s-inactive a img {
 		opacity: 0.4;
-		/*filter:alpha(opacity=40); */
 	}
 	ul.flow li.s-pending a {
 		background: #faf4e8;
@@ -425,10 +404,11 @@
 	.info_blurb .pinfo {
 		margin-left: 60px;
 	}
-	.info_blurb .pinfo .third, .info_blurb .pinfo .second {
+	.info_blurb .pinfo .third,
+	.info_blurb .pinfo .second {
 		border-left: 1px solid #bbcbe1;
 	}
-	.info_blurb .pinfo .second  {
+	.info_blurb .pinfo .second {
 		width: 35%;
 		padding-top: 0.5em;
 		padding-left: 1em;
@@ -474,14 +454,14 @@
 --------------------------------------------- */
 	.welcome {
 		background: #f8ffff;
-		border-top: 2px solid #d4eeed;
-		border-bottom: 2px solid #d4eeed;
+		border: 2px solid #d4eeed;
 		margin-top: 1.5em;
 		margin-bottom: 3em;
 		padding: 1em;
 		font-size: 90%;
 	}
-	#plg-content .welcome h3, .welcome h3 {
+	#plg-content .welcome h3,
+	.welcome h3 {
 		color: #448985;
 		margin: 0 0 0.2em 0;
 		padding: 0 !important;
@@ -511,21 +491,10 @@
 	.suggestions div {
 		display: inline-block;
 		font-size: 1.2em;
-		max-width: 31%;
-		min-width: 25%;
 		vertical-align: top;
 		margin: 0.5em 0.5em 0.5em 0;
-	}
-	.suggestions a:before {
-		content: "";
-		width: 32px;
-		height: 32px;
-		font-size: 32px;
-		font-family: 'Fontcons';
-		color: #CCC;
-		position: absolute;
-		margin-left: -1.2em;
-		margin-top: 0.2em;
+		min-width: 100%;
+		max-width: 100%;
 	}
 	.welcome .suggestions {
 		margin-top: 1em;
@@ -534,10 +503,10 @@
 		display: block;
 		background: #FFFFFF;
 		padding: 1.5em 1.3em;
-		padding-left: 60px !important;
 		border: 2px solid #d4eeed;
-		-moz-border-radius: 15px;
-		border-radius: 15px;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
 		font-size: 90%;
 		min-height: 40px;
 	}
@@ -551,7 +520,30 @@
 		margin: 0.3em 0.5em;
 		border: none;
 		background: #f8ffff;
+		padding-left: 60px;
 	}
+@media (min-width: 40em) {
+	.suggestions div {
+		max-width: 31%;
+		min-width: 25%;
+	}
+	.suggestions a:before {
+		content: "";
+		width: 32px;
+		height: 32px;
+		font-size: 32px;
+		font-family: 'Fontcons';
+		color: #CCC;
+		display: block;
+		position: absolute;
+		margin-left: -1.2em;
+		margin-top: 0.2em;
+	}
+	.suggestions p,
+	.content-feed .sidebox .suggestions p {
+		padding-left: 60px;
+	}
+}
 
 /* Prev/next paging
 --------------------------------------------- */
@@ -646,10 +638,12 @@
 		color: #CCC;
 		margin-right: 0.5em;
 	}
-	.ptitle .privacy a, .h-privacy a {
+	.ptitle .privacy a,
+	.h-privacy a {
 		color: #76a173;
 	}
-	.ptitle .privacy a:hover, .h-privacy a:hover  {
+	.ptitle .privacy a:hover,
+	.h-privacy a:hover {
 		color: #666;
 		border: none;
 	}
@@ -674,8 +668,6 @@
 		border: none !important;
 	}
 	.groupowner {
-		/*background: #f8f6f2;
-		color: #999;*/
 		font-size: 85%;
 		margin: 0;
 		padding: 0.2em 0;
@@ -1642,12 +1634,11 @@
 		overflow: visible;
 	}
 	.notice {
-		padding: 0.3em 1em;
 		border: 1px solid #f6bc56;
 		background: #ffefd3;
 		color: #7f3e0f;
-		margin: 0;
-		padding: 0.61803399em 0.61803399em 0.61803399em 2.31803399em;
+		margin: 1em 0;
+		padding: 0.61803399em 0.61803399em 0.61803399em 0.61803399em;
 		position: relative;
 		overflow: hidden;
 		zoom: 1;

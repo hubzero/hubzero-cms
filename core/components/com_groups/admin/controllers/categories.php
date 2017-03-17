@@ -34,15 +34,18 @@ namespace Components\Groups\Admin\Controllers;
 
 use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
-use Components\Groups\Models\Page;
+use Components\Groups\Models\Orm\Page\Category;
 use Components\Groups\Models\Log;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use App;
 
+require_once(dirname(dirname(__DIR__)) . '/models/orm/page/category.php');
+
 /**
- * Groups controller class
+ * Groups controller class for page categories
  */
 class Categories extends AdminController
 {
@@ -54,20 +57,22 @@ class Categories extends AdminController
 	public function execute()
 	{
 		// Incoming
-		$this->gid = Request::getVar('gid', '');
+		$gid = Request::getVar('gid', '');
 
 		// Ensure we have a group ID
-		if (!$this->gid)
+		if (!$gid)
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
 				Lang::txt('COM_GROUPS_MISSING_ID'),
 				'error'
 			);
-			return;
 		}
 
-		$this->group = Group::getInstance($this->gid);
+		$this->group = Group::getInstance($gid);
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
 
 		parent::execute();
 	}
@@ -75,71 +80,85 @@ class Categories extends AdminController
 	/**
 	 * Display Page Categories
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// get page categories
-		$categoryArchive = new Page\Category\Archive();
-		$this->view->categories = $categoryArchive->categories('list', array(
-			'gidNumber' => $this->group->get('gidNumber'),
-			'orderby'   => 'title'
-		));
+		$filters = array(
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
 
-		// pass group to view
-		$this->view->group = $this->group;
+		// Get records
+		$entries = Category::all()
+			->whereEquals('gidNumber', $this->group->get('gidNumber'));
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Add Page Category
-	 *
-	 * @return void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('group', $this->group)
+			->display();
 	}
 
 	/**
 	 * Edit Page Category
 	 *
-	 * @return void
+	 * @param   object  $row
+	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($row = null)
 	{
-		// get request vars
-		$ids = Request::getVar('id', array());
-		$id  = (isset($ids[0])) ? $ids[0] : null;
-
-		// get the category object
-		$this->view->category = new Page\Category($id);
-
-		// are we passing a category object
-		if ($this->category)
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			$this->view->category = $this->category;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// pass group to view
-		$this->view->group = $this->group;
+		Request::setVar('hidemainmenu', 1);
+
+		if (!is_object($row))
+		{
+			// Incoming
+			$id = Request::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
+			// Load the entry
+			$row = Category::oneOrNew($id);
+		}
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			\Notify::error($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('category', $row)
+			->set('group', $this->group)
 			->setLayout('edit')
 			->display();
 	}
@@ -147,50 +166,57 @@ class Categories extends AdminController
 	/**
 	 * Save Page Category
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
-		// get request vars
-		$category = Request::getVar('category', array(), 'post');
+		// Check for request forgeries
+		Request::checkToken();
 
-		// add group id to category
-		$category['gidNumber'] = $this->group->get('gidNumber');
-
-		// load category object
-		$this->category = new Page\Category($category['id']);
-
-		// bind to our new results
-		if (!$this->category->bind($category))
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			$this->setError($this->category->getError());
-			return $this->editTask();
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
+
+		// Get request vars
+		$fields = Request::getVar('category', array(), 'post');
+
+		// Add group id to category
+		$fields['gidNumber'] = $this->group->get('gidNumber');
+
+		// Load category object
+		$row = Category::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$this->category->store(true))
+		if (!$row->save())
 		{
-			$this->setError($this->category->getError());
-			return $this->editTask();
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		// log change
+		// Log change
 		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
-			'action'    => (isset($category['id']) && $category['id'] != '') ? 'group_pagecategory_updated' : 'group_pagecategory_created',
+			'action'    => (isset($fields['id']) && $fields['id']) ? 'group_pagecategory_updated' : 'group_pagecategory_created',
 			'comments'  => array(
-				'id'    => $this->category->get('id'),
-				'title' => $this->category->get('title'),
-				'color' => $this->category->get('color')
+				'id'    => $row->get('id'),
+				'title' => $row->get('title'),
+				'color' => $row->get('color')
 			)
 		));
 
-		//inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
-			Lang::txt('COM_GROUPS_PAGES_CATEGORY_SAVED'),
-			'passed'
-		);
+		// Notify user
+		Notify::success(Lang::txt('COM_GROUPS_PAGES_CATEGORY_SAVED'));
+
+		// Fall back to the edit form?
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($row);
+		}
+
+		// Set the redirect
+		$this->cancelTask();
 	}
 
 	/**
@@ -200,59 +226,60 @@ class Categories extends AdminController
 	 */
 	public function deleteTask()
 	{
-		// get request vars
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Get request vars
 		$ids = Request::getVar('id', array());
 		$deleted = array();
 
-		// delete each category
+		// Delete each category
 		foreach ($ids as $categoryid)
 		{
-			// load category object
-			$category = new Page\Category($categoryid);
+			// Load category object
+			$category = Category::oneOrFail($categoryid);
 
-			// make sure this is our groups cat
+			// Make sure this is our groups cat
 			if ($category->get('gidNumber') != $this->group->get('gidNumber'))
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
-					Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_FAILED'),
-					'error'
-				);
-				return;
+				Notify::error(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_FAILED'));
+				continue;
 			}
 
-			// delete row
-			if (!$category->delete())
+			// Delete row
+			if (!$category->destroy())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
-					$category->getError(),
-					'error'
-				);
-				return;
+				Notify::error($category->getError());
+				continue;
 			}
+
 			$deleted[] = $category->get('id');
 		}
 
-		// log change
-		Log::log(array(
-			'gidNumber' => $this->group->get('gidNumber'),
-			'action'    => 'group_pagecategory_deleted',
-			'comments'  => $deleted
-		));
+		if (count($deleted))
+		{
+			Notify::success(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_SUCCESS'));
 
-		//inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
-			Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_SUCCESS'),
-			'passed'
-		);
+			// Log change
+			Log::log(array(
+				'gidNumber' => $this->group->get('gidNumber'),
+				'action'    => 'group_pagecategory_deleted',
+				'comments'  => $deleted
+			));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Cancel a group page task
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -264,7 +291,7 @@ class Categories extends AdminController
 	/**
 	 * Manage group
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function manageTask()
 	{

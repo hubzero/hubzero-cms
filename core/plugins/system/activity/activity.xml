@@ -41,4 +41,8 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename plugin="activity">activity.php</filename>
 	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_activity.ini</language>
+		<language tag="en-GB">en-GB.plg_system_activity.sys.ini</language>
+	</languages>
 </extension>

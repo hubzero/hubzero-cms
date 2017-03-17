@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
-Toolbar::title($this->group->get('description') . ': ' . Lang::txt('COM_GROUPS_PAGES_CATEGORIES'), 'groups.png');
+Toolbar::title($this->group->get('description') . ': ' . Lang::txt('COM_GROUPS_PAGES_CATEGORIES'), 'groups');
 
 if ($canDo->get('core.create'))
 {
@@ -65,18 +65,30 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->categories->count();?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count();?>);" /></th>
 				<th><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?></th>
-				<th><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?></th>
+				<th class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php if ($this->categories->count() > 0) : ?>
-				<?php foreach ($this->categories as $k => $category) : ?>
+			<?php if ($this->rows->count() > 0) : ?>
+				<?php foreach ($this->rows as $k => $category) : ?>
 					<tr>
-						<td><input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" onclick="isChecked(this.checked);" /></td>
-						<td><?php echo $this->escape($category->get('title')); ?></td>
-						<td><?php echo '#' . $this->escape($category->get('color')); ?></td>
+						<td>
+							<?php if ($canDo->get('core.edit')) : ?>
+								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" onclick="isChecked(this.checked);" />
+							<?php endif; ?>
+						</td>
+						<td>
+							<?php if ($canDo->get('core.edit')) : ?>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn . '&task=edit&id=' . $category->get('id')); ?>">
+									<?php echo $this->escape($category->get('title')); ?>
+								</a>
+							<?php else : ?>
+								<?php echo $this->escape($category->get('title')); ?>
+							<?php endif; ?>
+						</td>
+						<td class="priority-3"><?php echo '#' . $this->escape($category->get('color')); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>
@@ -89,6 +101,7 @@ function submitbutton(pressbutton)
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+	<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>">
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 

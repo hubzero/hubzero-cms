@@ -42,8 +42,8 @@ if ($canDo->get('core.edit'))
 	Toolbar::apply();
 	Toolbar::save();
 	Toolbar::spacer();
-	Toolbar::cancel();
 }
+Toolbar::cancel();
 ?>
 
 <script type="text/javascript">

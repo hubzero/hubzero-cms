@@ -96,9 +96,9 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		Lang::load('com_publications', PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site');
 
 		// Is logging enabled?
-		if (is_file(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php'))
+		if (is_file(Component::path('com_publications') . DS . 'tables' . DS . 'logs.php'))
 		{
-			require_once(PATH_CORE . DS. 'components' . DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
+			require_once Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
 		}
 		else
 		{
@@ -107,36 +107,37 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Helpers
-		require_once(PATH_CORE . DS . 'components'. DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
+		//require_once Component::path('com_members') . DS . 'helpers' . DS . 'imghandler.php';
+		require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
 
 		// Get all registered authors who subscribed to email
-		$query  = "SELECT A.user_id, P.picture ";
-		$query .= " FROM #__publication_authors as A ";
-		$query .= " JOIN #__xprofiles as P ON A.user_id = P.uidNumber ";
-		$query .= " WHERE P.mailPreferenceOption != 0 "; // either 1 (set to YES) or -1 (never set)
+		$query  = "SELECT A.user_id ";
+		$query .= " FROM `#__publication_authors` as A ";
+		$query .= " JOIN `#__users` as P ON A.user_id = P.id ";
+		$query .= " WHERE P.block=0 AND P.activation > 0 AND P.sendEmail=1"; // either 1 (set to YES), 0 = NO, or -1 (never set)
 		$query .= " AND A.user_id > 0 AND A.status=1 ";
 
 		// If we need to restrict to selected authors
 		$params = $job->params;
 		if (is_object($params) && $params->get('userids'))
 		{
-			$apu    = explode(',', $params->get('userids'));
-			$apu    = array_map('trim',$apu);
-			$query .= " AND A.user_id IN (";
+			$apu = explode(',', $params->get('userids'));
+			$apu = array_map('trim', $apu);
 
-			$tquery = '';
-			foreach ($apu as $a)
+			if (count($apu) > 0)
 			{
-				$tquery .= "'".$a."',";
+				foreach ($apu as $i => $a)
+				{
+					$apu[$i] = $database->quote($a);
+				}
+
+				$query .= " AND A.user_id IN (" . implode(',', $apu) . ") ";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery . ") ";
 		}
 
 		$query .= " GROUP BY A.user_id ";
 
-		$database->setQuery( $query );
+		$database->setQuery($query);
 		if (!($authors = $database->loadObjectList()))
 		{
 			return true;
@@ -152,6 +153,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$subject = Lang::txt('Monthly Publication Usage Report');
 
 		$i = 0;
+		$mailed = array();
 		foreach ($authors as $author)
 		{
 			// Get the user's account
@@ -159,6 +161,12 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			if (!$user->get('id'))
 			{
 				// Skip if not registered
+				continue;
+			}
+
+			if (in_array($user->get('email'), $mailed))
+			{
+				// Already did this one
 				continue;
 			}
 
@@ -215,6 +223,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			{
 				$this->setError(Lang::txt('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $user->get('email')));
 			}
+
 			$mailed[] = $user->get('email');
 		}
 
@@ -235,9 +244,9 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$numMonths = 1;
 		$includeCurrent = false;
 
-		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'models' . DS . 'log.php');
+		require_once Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
+		require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
+		require_once Component::path('com_publications') . DS . 'models' . DS . 'log.php';
 
 		// Get log model
 		$modelLog = new \Components\Publications\Models\Log();
@@ -273,9 +282,9 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$database = \App::get('db');
 		$config = Component::params('com_publications');
 
-		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
-		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once(PATH_CORE . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once Component::path('com_publications') . DS . 'helpers' . DS . 'utilities.php';
+		require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
+		require_once Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
 		// Check that mkAIP script exists
 		if (!\Components\Publications\Helpers\Utilities::archiveOn())
@@ -290,8 +299,8 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$aipBasePath = trim($config->get('aip_path', NULL), DS);
-		$aipBasePath = $aipBasePath && is_dir(DS . $aipBasePath) ? DS . $aipBasePath : NULL;
+		$aipBasePath = trim($config->get('aip_path', null), DS);
+		$aipBasePath = $aipBasePath && is_dir(DS . $aipBasePath) ? DS . $aipBasePath : null;
 
 		// Check for base path
 		if (!$aipBasePath)
@@ -302,7 +311,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 
 		// Get all unarchived publication versions
 		$query  = "SELECT V.*, C.id as id, V.id as version_id ";
-		$query .= " FROM #__publication_versions as V, #__publications as C ";
+		$query .= " FROM `#__publication_versions` as V, `#__publications` as C ";
 		$query .= " WHERE C.id=V.publication_id AND V.state=1 ";
 		$query .= " AND V.doi IS NOT NULL ";
 		$query .= " AND V.accepted IS NOT NULL AND V.accepted !='0000-00-00 00:00:00' ";
@@ -403,7 +412,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Issue master DOI for publications if does not exist
 	 *
-	 * @param   $job  \Components\Cron\Models\Job
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
 	public function issueMasterDoi(\Components\Cron\Models\Job $job)
@@ -418,7 +427,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get all publications without master DOI
-		$sql  = "SELECT V.* FROM #__publication_versions as V, #__publications as C";
+		$sql  = "SELECT V.* FROM `#__publication_versions` as V, `#__publications` as C";
 		$sql .= " WHERE C.id=V.publication_id AND (C.master_doi IS NULL OR master_doi=0)";
 		$sql .= " AND V.state=1 GROUP BY C.id ORDER BY V.version_number ASC";
 
@@ -429,7 +438,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+		include_once Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi();

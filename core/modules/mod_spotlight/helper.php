@@ -173,7 +173,7 @@ class Helper extends Module
 					// No - so we need to randomly choose one
 					$topics_tag = trim($this->params->get('topics_tag'));
 					$query  = "SELECT DISTINCT w.id, w.pagename, w.title ";
-					$query .= " FROM #__wiki_page AS w ";
+					$query .= " FROM #__wiki_pages AS w ";
 					if ($topics_tag)
 					{
 						$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=w.id AND RTA.tbl='wiki' ";
@@ -181,7 +181,7 @@ class Helper extends Module
 					}
 					else
 					{
-						$query .= ", #__wiki_version AS v ";
+						$query .= ", #__wiki_versions AS v ";
 					}
 					$query .= " WHERE w.access!=1 AND w.scope = ''  ";
 					if ($topics_tag)
@@ -190,7 +190,7 @@ class Helper extends Module
 					}
 					else
 					{
-						$query .= " AND v.pageid=w.id AND v.approved = 1 AND v.pagetext != '' ";
+						$query .= " AND v.page_id=w.id AND v.approved = 1 AND v.pagetext != '' ";
 					}
 					$query .= " ORDER BY RAND() ";
 					$this->database->setQuery($query);
@@ -277,11 +277,11 @@ class Helper extends Module
 	/**
 	 * Format an entry
 	 *
-	 * @param      object  $row       Database row
-	 * @param      string  $tbl       Format type
-	 * @param      number  $txtLength Max text length to display
-	 * @param      integer $getid     Just return the ID or not
-	 * @return     string HTML
+	 * @param   object   $row        Database row
+	 * @param   string   $tbl        Format type
+	 * @param   number   $txtLength  Max text length to display
+	 * @param   integer  $getid      Just return the ID or not
+	 * @return  string   HTML
 	 */
 	private function _composeEntry($row, $tbl, $txtLength=100, $getid=0)
 	{
@@ -493,12 +493,12 @@ class Helper extends Module
 	/**
 	 * Get a user's average ranking
 	 *
-	 * @param      integer $uid User ID
-	 * @return     integer
+	 * @param   integer  $uid  User ID
+	 * @return  integer
 	 */
 	private function _getAverageRanking($uid)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			 return 0;
 		}
@@ -518,12 +518,12 @@ class Helper extends Module
 	/**
 	 * Get a count of a user's contributions
 	 *
-	 * @param      integer $uid User ID
-	 * @return     integer
+	 * @param   integer  $uid  User ID
+	 * @return  integer
 	 */
 	private function _countContributions($uid)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			 return 0;
 		}
@@ -535,8 +535,8 @@ class Helper extends Module
 	/**
 	 * Get a resource image
 	 *
-	 * @param      string $path Path to get resource image from
-	 * @return     string
+	 * @param   string  $path  Path to get resource image from
+	 * @return  string
 	 */
 	private function _getImage($path)
 	{
@@ -549,7 +549,7 @@ class Helper extends Module
 			while (false !== ($entry = $d->read()))
 			{
 				if (is_file(PATH_ROOT . $path . DS . $entry)
-				 && substr($entry,0,1) != '.'
+				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
 					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry))
@@ -580,9 +580,9 @@ class Helper extends Module
 	/**
 	 * Get a screenshot of a tool
 	 *
-	 * @param      string  $path      Path to look for screenshots in
-	 * @param      integer $versionid Tool version
-	 * @return     string
+	 * @param   string   $path       Path to look for screenshots in
+	 * @param   integer  $versionid  Tool version
+	 * @return  string
 	 */
 	private function _getToolImage($path, $versionid=0)
 	{
@@ -605,7 +605,7 @@ class Helper extends Module
 			while (false !== ($entry = $d->read()))
 			{
 				if (is_file(PATH_ROOT . $path . DS . $entry)
-				 && substr($entry,0,1) != '.'
+				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
 					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry))
@@ -636,8 +636,8 @@ class Helper extends Module
 	/**
 	 * Generate a thumbnail name from a picture name
 	 *
-	 * @param      string $pic Picture name
-	 * @return     string
+	 * @param   string  $pic  Picture name
+	 * @return  string
 	 */
 	private function _thumbnail($pic)
 	{
@@ -647,10 +647,10 @@ class Helper extends Module
 	/**
 	 * Build a path to a resource's files
 	 *
-	 * @param      string  $date Resource date
-	 * @param      integer $id   Resource ID
-	 * @param      string  $base Base path to prepend
-	 * @return     string
+	 * @param    string   $date  Resource date
+	 * @param   integer  $id    Resource ID
+	 * @param   string   $base  Base path to prepend
+	 * @return  string
 	 */
 	private function _buildPath($date, $id, $base='')
 	{
@@ -677,9 +677,9 @@ class Helper extends Module
 	/**
 	 * Encode some HTML entities
 	 *
-	 * @param      string  $str    String to encode
-	 * @param      integer $quotes Encode quote marks?
-	 * @return     string
+	 * @param   string   $str     String to encode
+	 * @param   integer  $quotes  Encode quote marks?
+	 * @return  string
 	 */
 	private function _encodeHtml($str, $quotes=1)
 	{
@@ -705,16 +705,16 @@ class Helper extends Module
 	/**
 	 * Convert ampersands
 	 *
-	 * @param      string  $str    String to encode
-	 * @return     string
+	 * @param   string  $str  String to encode
+	 * @return  string
 	 */
 	private function _ampersands($str)
 	{
 		$str = stripslashes($str);
-		$str = str_replace('&#','*-*', $str);
-		$str = str_replace('&amp;','&',$str);
-		$str = str_replace('&','&amp;',$str);
-		$str = str_replace('*-*','&#', $str);
+		$str = str_replace('&#', '*-*', $str);
+		$str = str_replace('&amp;', '&', $str);
+		$str = str_replace('&', '&amp;', $str);
+		$str = str_replace('*-*', '&#', $str);
 		return $str;
 	}
 }

@@ -237,6 +237,10 @@
 		font-size: 85%;
 		padding: 1em;
 	}
+	.pagination {
+		height: 0;
+		overflow: hidden;
+	}
 
 /* Link selector
 ---------------------------- */

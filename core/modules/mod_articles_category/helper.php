@@ -42,9 +42,6 @@ use Route;
 use Date;
 use User;
 use JModelLegacy;
-use JFactory;
-use JAccess;
-use JString;
 
 /**
  * Module class for displaying articles in a category
@@ -152,8 +149,7 @@ class Helper extends Module
 		$articles = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
 		// Set application parameters in model
-		$app = JFactory::getApplication();
-		$appParams = $app->getParams();
+		$appParams = App::has('params') ? App::get('params') : new \Hubzero\Config\Registry('');
 		$articles->setState('params', $appParams);
 
 		// Set the filters based on the module params
@@ -163,7 +159,7 @@ class Helper extends Module
 
 		// Access filter
 		$access = !Component::params('com_content')->get('show_noauth');
-		$authorised = JAccess::getAuthorisedViewLevels(User::get('id'));
+		$authorised = User::getAuthorisedViewLevels();
 		$articles->setState('filter.access', $access);
 
 		// Prep for Normal or Dynamic Modes
@@ -410,15 +406,15 @@ class Helper extends Module
 	}
 
 	/**
-	* Method to truncate introtext
-	*
-	* The goal is to get the proper length plain text string with as much of
-	* the html intact as possible with all tags properly closed.
-	*
-	* @param   string   $html       The content of the introtext to be truncated
-	* @param   integer  $maxLength  The maximum number of charactes to render
-	* @return  string   The truncated string
-	*/
+	 * Method to truncate introtext
+	 *
+	 * The goal is to get the proper length plain text string with as much of
+	 * the html intact as possible with all tags properly closed.
+	 *
+	 * @param   string   $html       The content of the introtext to be truncated
+	 * @param   integer  $maxLength  The maximum number of charactes to render
+	 * @return  string   The truncated string
+	 */
 	public static function truncate($html, $maxLength = 0)
 	{
 		$baseLength = strlen($html);
@@ -528,7 +524,7 @@ class Helper extends Module
 			switch ($type)
 			{
 				case 'month_year':
-					$month_year = JString::substr($item->created, 0, 7);
+					$month_year = substr($item->created, 0, 7);
 
 					if (!isset($grouped[$month_year]))
 					{
@@ -540,7 +536,7 @@ class Helper extends Module
 
 				case 'year':
 				default:
-					$year = JString::substr($item->created, 0, 4);
+					$year = substr($item->created, 0, 4);
 
 					if (!isset($grouped[$year]))
 					{

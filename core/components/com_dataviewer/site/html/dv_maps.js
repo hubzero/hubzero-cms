@@ -7,6 +7,34 @@
  * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
  */
 
+function dms2dc(cood)
+{
+	// get the degrees
+	values = cood.split('°');
+	degrees = parseInt(values[0]);
+	remain = values[1].trim();
+
+	// get the minutes
+	values = remain.split('\'');
+	minutes = parseInt(values[0]);
+	remain = values[1].trim();
+
+	// get the seconds and the direction
+	values = remain.split('"');
+	seconds = parseInt(values[0]);
+	dir = values[1].trim();
+	
+	// mix values into a single value
+	dc = degrees + (minutes / 60) + (seconds / (60 * 60));
+
+	// if direction is south or west then invert the value
+	if (dir == "S" || dir == "W") {
+		dc = dc * -1;
+	}
+
+	// return value
+	return dc;
+}
 
 jQuery(document).ready(function($) {
 	var map;

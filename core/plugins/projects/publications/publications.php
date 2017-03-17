@@ -33,8 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-	. DS . 'models' . DS . 'publication.php');
+include_once PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php';
 
 /**
  * Project publications
@@ -44,7 +43,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -58,16 +57,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Store internal message
 	 *
-	 * @var	   array
+	 * @var	 array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return     array   Plugin name and title
+	 * @param   string  $alias
+	 * @return  array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array();
 
@@ -85,7 +85,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name'    => 'publications',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
-			'submenu' => NULL,
+			'submenu' => null,
 			'show'    => true,
 			'icon'    => 'f058'
 		);
@@ -96,10 +96,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $model 		Project
-	 * @return     array   integer
+	 * @param   object  $model   Project
+	 * @return  array   integer
 	 */
-	public function &onProjectCount( $model )
+	public function &onProjectCount($model)
 	{
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
@@ -113,12 +113,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$database = App::get('db');
 
 			// Instantiate project publication
-			$objP = new \Components\Publications\Tables\Publication( $database );
+			$objP = new \Components\Publications\Tables\Publication($database);
 
 			$filters = array();
-			$filters['project']  		= $model->get('id');
-			$filters['ignore_access']   = 1;
-			$filters['dev']   	 		= 1;
+			$filters['project']       = $model->get('id');
+			$filters['ignore_access'] = 1;
+			$filters['dev']           = 1;
 
 			$counts['publications'] = $objP->getCount($filters);
 			return $counts;
@@ -128,27 +128,27 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $model           Project model
-	 * @param      string  $action			Plugin task
-	 * @param      string  $areas  			Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $model   Project model
+	 * @param   string  $action  Plugin task
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
-	public function onProject( $model, $action = '', $areas = null )
+	public function onProject($model, $action = '', $areas = null)
 	{
 		$returnhtml = true;
 
 		$arr = array(
-			'html'      =>'',
-			'metadata'  =>'',
-			'message'   =>'',
-			'error'     =>''
+			'html'     => '',
+			'metadata' => '',
+			'message'  => '',
+			'error'    => ''
 		);
 
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
 			{
@@ -176,13 +176,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->_uid       = User::get('id');
 		$this->_database  = App::get('db');
 		$this->_config    = $this->model->config();
-		$this->_pubconfig = Component::params( 'com_publications' );
+		$this->_pubconfig = Component::params('com_publications');
 
 		// Common extensions (for gallery)
-		$this->_image_ext = \Components\Projects\Helpers\Html::getParamArray(
-			$this->params->get('image_types', 'bmp, jpeg, jpg, png' ));
-		$this->_video_ext = \Components\Projects\Helpers\Html::getParamArray(
-			$this->params->get('video_types', 'avi, mpeg, mov, wmv' ));
+		$this->_image_ext = \Components\Projects\Helpers\Html::getParamArray($this->params->get('image_types', 'bmp, jpeg, jpg, png'));
+		$this->_video_ext = \Components\Projects\Helpers\Html::getParamArray($this->params->get('video_types', 'avi, mpeg, mov, wmv'));
 
 		// Check if exists or new
 		if (!$this->model->exists())
@@ -208,7 +206,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','curation');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'publications', 'curation');
 
 		// Actions
@@ -325,7 +323,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get side content for main project page
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @return  mixed
 	 */
 	public function onProjectMiniList($model)
 	{
@@ -347,15 +346,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'project'	 => $model->get('id'),
-			'limit'      => $model->config()->get('sidebox_limit', 5),
-			'start'		 => 0,
-			'dev'        => 1,
-			'sortby'	 => 'date_created',
-			'sortdir'	 => 'DESC'
+			'project' => $model->get('id'),
+			'limit'   => $model->config()->get('sidebox_limit', 5),
+			'start'   => 0,
+			'dev'     => 1,
+			'sortby'  => 'date_created',
+			'sortdir' => 'DESC'
 		);
 
-		$view->items = $pub->entries( 'list', $view->filters );
+		$view->items = $pub->entries('list', $view->filters);
 		$view->model = $model;
 		return $view->loadTemplate();
 	}
@@ -363,7 +362,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get content for public project page
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @return  mixed
 	 */
 	public function onProjectPublicList($model)
 	{
@@ -389,12 +389,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'project'	 => $model->get('id'),
-			'sortby'	 => 'date_published',
-			'sortdir'	 => 'DESC'
+			'project' => $model->get('id'),
+			'sortby'  => 'date_published',
+			'sortdir' => 'DESC'
 		);
 
-		$view->items = $pub->entries( 'list', $view->filters );
+		$view->items = $pub->entries('list', $view->filters);
 		$view->model = $model;
 		return $view->loadTemplate();
 	}
@@ -408,20 +408,20 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= Request::getInt('limit', Config::get('list_limit'));
-		$filters['start'] 	 		= Request::getInt('limitstart', 0);
-		$filters['sortby']   		= Request::getVar('sortby', 'title');
-		$filters['sortdir']  		= Request::getVar('sortdir', 'ASC');
-		$filters['project']  		= $this->model->get('id');
-		$filters['ignore_access']   = 1;
-		$filters['dev']   	 		= 1; // get dev versions
+		$filters['limit']         = Request::getInt('limit', Config::get('list_limit'));
+		$filters['start']         = Request::getInt('limitstart', 0);
+		$filters['sortby']        = Request::getVar('sortby', 'title');
+		$filters['sortdir']       = Request::getVar('sortdir', 'ASC');
+		$filters['project']       = $this->model->get('id');
+		$filters['ignore_access'] = 1;
+		$filters['dev']           = 1; // get dev versions
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder' =>'projects',
-				'element'=>'publications',
-				'name'   =>'browse'
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'browse'
 			)
 		);
 
@@ -429,10 +429,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->pub = new \Components\Publications\Models\Publication();
 
 		// Get all publications
-		$view->rows = $view->pub->entries( 'list', $filters );
+		$view->rows = $view->pub->entries('list', $filters);
 
 		// Get total count
-		$view->total = $view->pub->entries( 'count', $filters );
+		$view->total = $view->pub->entries('count', $filters);
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
@@ -448,17 +448,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
 
 		// Output HTML
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->project 		= $this->model;
-		$view->filters 		= $filters;
-		$view->title		= $this->_area['title'];
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->project  = $this->model;
+		$view->filters  = $filters;
+		$view->title    = $this->_area['title'];
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -466,17 +466,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Handler manager
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function handler()
 	{
 		// Incoming
-		$props  = Request::getVar( 'p', '' );
-		$ajax   = Request::getInt( 'ajax', 0 );
-		$pid    = Request::getInt( 'pid', 0 );
-		$vid    = Request::getInt( 'vid', 0 );
-		$handler= trim(Request::getVar( 'h', '' ));
-		$action = trim(Request::getVar( 'do', '' ));
+		$props  = Request::getVar('p', '');
+		$ajax   = Request::getInt('ajax', 0);
+		$pid    = Request::getInt('pid', 0);
+		$vid    = Request::getInt('vid', 0);
+		$handler= trim(Request::getVar('h', ''));
+		$action = trim(Request::getVar('do', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -487,11 +487,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Component\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-			'name'   => 'handlers',
-			'layout' => 'editor',
+			'name'      => 'handlers',
+			'layout'    => 'editor',
 		));
 
-		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		if (!$view->publication->exists())
 		{
@@ -499,15 +499,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=>'projects',
-					'element'	=>'files',
-					'name'		=>'error'
+					'folder'  => 'projects',
+					'element' => 'files',
+					'name'    => 'error'
 				)
 			);
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 			return $view->loadTemplate();
 		}
 
@@ -515,9 +515,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->publication->setCuration();
 
 		// Set block
-		if (!$view->publication->_curationModel->setBlock( $block, $blockId ))
+		if (!$view->publication->_curationModel->setBlock($block, $blockId))
 		{
-			$view->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
+			$view->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT'));
 		}
 
 		// Load handler
@@ -525,7 +525,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->handler = $modelHandler->ini($handler);
 		if (!$view->handler)
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER'));
 		}
 		else
 		{
@@ -539,22 +539,22 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->editor = $modelHandler->loadEditor($view->handler, $view->publication, $element);
 		}
 
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->uid 			= $this->_uid;
-		$view->ajax			= $ajax;
-		$view->task			= $this->_task;
-		$view->element		= $element;
-		$view->block		= $block;
-		$view->blockId 		= $blockId;
-		$view->props		= $props;
-		$view->config		= $this->_pubconfig;
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->uid      = $this->_uid;
+		$view->ajax     = $ajax;
+		$view->task     = $this->_task;
+		$view->element  = $element;
+		$view->block    = $block;
+		$view->blockId  = $blockId;
+		$view->props    = $props;
+		$view->config   = $this->_pubconfig;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -567,11 +567,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = Request::getVar( 'p', '' );
-		$ajax   = Request::getInt( 'ajax', 0 );
-		$pid    = Request::getInt( 'pid', 0 );
-		$vid    = Request::getInt( 'vid', 0 );
-		$filter = urldecode(Request::getVar( 'filter', '' ));
+		$props  = Request::getVar('p', '');
+		$ajax   = Request::getInt('ajax', 0);
+		$pid    = Request::getInt('pid', 0);
+		$vid    = Request::getInt('vid', 0);
+		$filter = urldecode(Request::getVar('filter', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -582,13 +582,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'selector'
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'selector'
 			)
 		);
 
-		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		if (!$view->publication->exists())
 		{
@@ -596,58 +596,58 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=>'projects',
-					'element'	=>'files',
-					'name'		=>'error'
+					'folder'  => 'projects',
+					'element' => 'files',
+					'name'    => 'error'
 				)
 			);
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 			return $view->loadTemplate();
 		}
 
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
 		// Set curation
 		$view->publication->setCuration();
 
 		// Set block
-		if (!$view->publication->_curationModel->setBlock( $block, $blockId ))
+		if (!$view->publication->_curationModel->setBlock($block, $blockId))
 		{
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=>'projects',
-					'element'	=>'files',
-					'name'		=>'error'
+					'folder'  => 'projects',
+					'element' => 'files',
+					'name'    => 'error'
 				)
 			);
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
+			$view->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT'));
 			return $view->loadTemplate();
 		}
 
-		$view->option 		= $this->model->isProvisioned() ? 'com_publications' : $this->_option;
-		$view->database 	= $this->_database;
-		$view->project 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->ajax			= $ajax;
-		$view->task			= $this->_task;
-		$view->element		= $element;
-		$view->block		= $block;
-		$view->blockId 		= $blockId;
-		$view->props		= $props;
-		$view->filter		= $filter;
+		$view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->_option;
+		$view->database = $this->_database;
+		$view->project  = $this->model;
+		$view->uid      = $this->_uid;
+		$view->ajax     = $ajax;
+		$view->task     = $this->_task;
+		$view->element  = $element;
+		$view->block    = $block;
+		$view->blockId  = $blockId;
+		$view->props    = $props;
+		$view->filter   = $filter;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 
@@ -656,15 +656,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save param in version table (AJAX)
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function saveParam()
 	{
 		// Incoming
-		$pid  	= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$vid  	= Request::getInt('vid', 0);
-		$param  = Request::getVar('param', '');
-		$value  = urldecode(Request::getVar('value', ''));
+		$pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$vid   = Request::getInt('vid', 0);
+		$param = Request::getVar('param', '');
+		$value = urldecode(Request::getVar('value', ''));
 
 		// Check permission
 		if (!$this->model->access('content'))
@@ -674,7 +674,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication
-		$publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		// Make sure the publication belongs to the project
 		if (!$publication->exists() || !$publication->belongsToProject($this->model->get('id')))
@@ -702,25 +702,25 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function checkStatus()
 	{
 		// Incoming
-		$pid  		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version 	= Request::getVar( 'version', 'default' );
-		$ajax 		= Request::getInt('ajax', 0);
-		$block  	= Request::getVar( 'section', '' );
-		$blockId  	= Request::getInt( 'step', 0 );
-		$element  	= Request::getInt( 'element', 0 );
-		$props  	= Request::getVar( 'p', '' );
-		$parts   	= explode('-', $props);
+		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version = Request::getVar('version', 'default');
+		$ajax    = Request::getInt('ajax', 0);
+		$block   = Request::getVar('section', '');
+		$blockId = Request::getInt('step', 0);
+		$element = Request::getInt('element', 0);
+		$props   = Request::getVar('p', '');
+		$parts   = explode('-', $props);
 
 		// Parse props for curation
 		if (!$block || !$blockId)
 		{
-			$block   	 = (isset($parts[0])) ? $parts[0] : 'content';
-			$blockId    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
-			$element 	 = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
+			$block   = (isset($parts[0])) ? $parts[0] : 'content';
+			$blockId = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+			$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 		}
 
 		// Load publication
-		$pub = new \Components\Publications\Models\Publication( $pid, $version );
+		$pub = new \Components\Publications\Models\Publication($pid, $version);
 
 		$status = new \Components\Publications\Models\Status();
 
@@ -755,17 +755,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function saveDraft()
 	{
 		// Incoming
-		$pid      = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version = Request::getVar( 'version', 'dev' );
-		$block   = Request::getVar( 'section', '' );
-		$blockId = Request::getInt( 'step', 0 );
-		$element = Request::getInt( 'element', 0 );
-		$next    = Request::getInt( 'next', 0 );
-		$json    = Request::getInt( 'json', 0 );
-		$move    = Request::getVar( 'move', '' ); // draft flow?
-		$back    = Request::getVar( 'backUrl', Request::getVar('HTTP_REFERER', NULL, 'server') );
-		$new	 = false;
-		$props   = Request::getVar( 'p', '' );
+		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$vid     = Request::getInt('vid', 0);
+		$version = Request::getVar('version', 'dev');
+		$block   = Request::getVar('section', '');
+		$blockId = Request::getInt('step', 0);
+		$element = Request::getInt('element', 0);
+		$next    = Request::getInt('next', 0);
+		$json    = Request::getInt('json', 0);
+		$move    = Request::getVar('move', ''); // draft flow?
+		$back    = Request::getVar('backUrl', Request::getVar('HTTP_REFERER', null, 'server'));
+		$new     = false;
+		$props   = Request::getVar('p', '');
 		$parts   = explode('-', $props);
 
 		// Check permission
@@ -780,13 +781,21 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			|| $this->_task == 'deleteitem'
 			|| (!$block || !$blockId))
 		{
-			$block   	 = (isset($parts[0])) ? $parts[0] : 'content';
-			$blockId    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
-			$element 	 = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
+			$block   = (isset($parts[0])) ? $parts[0] : 'content';
+			$blockId = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+			$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 		}
 
 		// Load publication
-		$pub = new \Components\Publications\Models\Publication( $pid, $version );
+		if ($vid)
+		{
+			$pub = new \Components\Publications\Models\Publication($pid, null, $vid);
+			$version = $pub->versionAlias();
+		}
+		else
+		{
+			$pub = new \Components\Publications\Models\Publication($pid, $version);
+		}
 
 		// Error loading publication record
 		if (!$pub->exists() && $new == false)
@@ -810,7 +819,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		Event::trigger('publications.onBeforeSave', $pub);
 
 		// Make sure block exists, else redirect to status
-		if (!$pub->_curationModel->setBlock( $block, $blockId ))
+		if (!$pub->_curationModel->setBlock($block, $blockId))
 		{
 			$block = 'status';
 		}
@@ -875,7 +884,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		Event::trigger('publications.onAfterSave', $pub);
 
 		// Record action, notify team
-		$this->onAfterSave( $pub );
+		$this->onAfterSave($pub);
 
 		// Report only status action
 		if ($json)
@@ -907,12 +916,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// What's next?
-		$nextnum 	 = $pub->_curationModel->getNextBlock($block, $blockId);
+		$nextnum     = $pub->_curationModel->getNextBlock($block, $blockId);
 		$nextsection = isset($pub->_curationModel->_blocks->$nextnum)
 					 ? $pub->_curationModel->_blocks->$nextnum->name : 'status';
 
 		// Get previous section
-		$prevnum 	 = $pub->_curationModel->getPreviousBlock($block, $blockId);
+		$prevnum     = $pub->_curationModel->getPreviousBlock($block, $blockId);
 		$prevsection = isset($pub->_curationModel->_blocks->$prevnum)
 					 ? $pub->_curationModel->_blocks->$prevnum->name : 'status';
 
@@ -974,6 +983,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Move an item up in the list
 	 *
+	 * @param   string  $dir
 	 * @return  void
 	 */
 	public function reorder($dir = 'down')
@@ -1022,9 +1032,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions after publication draft is saved
 	 *
-	 * @return     string
+	 * @param   object  $pub
+	 * @return  string
 	 */
-	public function onAfterSave( $pub )
+	public function onAfterSave($pub)
 	{
 		// No afterSave actions when backing one step
 		if ($this->_task == 'rewind')
@@ -1047,39 +1058,47 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$pubTitle = \Hubzero\Utility\String::truncate($pub->title, 100);
 			$aid = $this->model->recordActivity(
-				   $this->get('_activity'), $pub->id, $pubTitle,
-				   Route::url('index.php?option=' . $this->_option .
-				   '&alias=' . $this->model->get('alias') . '&active=publications' .
-				   '&pid=' . $pub->id . '&version=' . $pub->get('version_number')), 'publication', 1 );
+				$this->get('_activity'),
+				$pub->id,
+				$pubTitle,
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $pub->id . '&version=' . $pub->get('version_number')),
+				'publication',
+				1
+			);
 		}
 	}
 
 	/**
 	 * Actions after publication draft is started
 	 *
-	 * @return     string
+	 * @param   object  $pub
+	 * @return  string
 	 */
 	public function onAfterCreate($pub)
 	{
 		// Record activity
 		if (!$this->model->isProvisioned() && $pub->exists() && !$this->getError())
 		{
-			$aid   = $this->model->recordActivity(
-				   Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
-					.' (id ' . $pub->get('id') . ')', $pub->get('id'), 'publication',
-				   Route::url($pub->link('edit')), 'publication', 1 );
+			$aid = $this->model->recordActivity(
+				Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB') .' (id ' . $pub->get('id') . ')',
+				$pub->get('id'),
+				'publication',
+				Route::url($pub->link('edit')),
+				'publication',
+				1
+			);
 		}
 	}
 
 	/**
 	 * Start a new publication draft
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function startDraft()
 	{
 		// Get contributable types
-		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType($this->_database);
 		$choices = $mt->getTypes('*', 1, 0, 'ordering', $this->model->config());
 
 		// Contribute process outside of projects
@@ -1098,10 +1117,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'draft',
-				'layout'	=>'start'
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'draft',
+				'layout'  => 'start'
 			)
 		);
 
@@ -1111,7 +1130,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					: $this->model->link('publications');
 
 		// Do we have a choice?
-		if (count($choices) <= 1 )
+		if (count($choices) <= 1)
 		{
 			App::redirect(Route::url($view->route . '&action=edit'));
 			return;
@@ -1124,19 +1143,19 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Output HTML
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->project 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->config 		= $this->model->config();
-		$view->choices 		= $choices;
-		$view->title		= $this->_area['title'];
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->project  = $this->model;
+		$view->uid      = $this->_uid;
+		$view->config   = $this->model->config();
+		$view->choices  = $choices;
+		$view->title    = $this->_area['title'];
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -1149,7 +1168,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function createDraft()
 	{
 		// Incoming
-		$base = Request::getVar( 'base', 'files' );
+		$base = Request::getVar('base', 'files');
 
 		// Check permission
 		if ($this->model->exists() && !$this->model->access('content'))
@@ -1159,9 +1178,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication & version classes
-		$objP = new \Components\Publications\Tables\Publication( $this->_database );
-		$objC = new \Components\Publications\Tables\Category( $this->_database );
-		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication($this->_database);
+		$objC = new \Components\Publications\Tables\Category($this->_database);
+		$mt   = new \Components\Publications\Tables\MasterType($this->_database);
 
 		// Determine publication master type
 		$choices  = $mt->getTypes('alias', 1);
@@ -1222,15 +1241,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				? $curationModel->_manifest->params->default_title : Lang::txt('Untitled Draft');
 
 		// Make a new publication entry
-		$objP->master_type 		= $mType->id;
-		$objP->category 		= $cat;
-		$objP->project_id 		= $this->model->get('id');
-		$objP->created_by 		= $this->_uid;
-		$objP->created 			= Date::toSql();
-		$objP->access 			= 0;
+		$objP->master_type = $mType->id;
+		$objP->category    = $cat;
+		$objP->project_id  = $this->model->get('id');
+		$objP->created_by  = $this->_uid;
+		$objP->created     = Date::toSql();
+		$objP->access      = 0;
 		if (!$objP->store())
 		{
-			throw new Exception( $objP->getError() );
+			throw new Exception($objP->getError());
 			return false;
 		}
 		if (!$objP->id)
@@ -1248,42 +1267,42 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->model->delete();
 				$objP->delete();
 
-				throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
+				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO'));
 				return false;
 			}
 			else
 			{
 				// Add creator as project owner
 				$objO = $this->model->table('Owner');
-				if (!$objO->saveOwners ( $this->model->get('id'),
+				if (!$objO->saveOwners ($this->model->get('id'),
 					$this->_uid, $this->_uid,
-					0, 1, 1, 1 ))
+					0, 1, 1, 1))
 				{
-					throw new Exception( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError() );
+					throw new Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
 					return false;
 				}
 			}
 		}
 
 		// Make a new dev version entry
-		$row 					= new \Components\Publications\Tables\Version( $this->_database );
-		$row->publication_id 	= $this->_pid;
-		$row->title 			= $row->getDefaultTitle($this->model->get('id'), $title);
-		$row->state 			= 3; // dev
-		$row->main 				= 1;
-		$row->created_by 		= $this->_uid;
-		$row->created 			= Date::toSql();
-		$row->version_number 	= 1;
-		$row->license_type 		= 0;
-		$row->access 			= 0;
-		$row->secret 			= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
+		$row = new \Components\Publications\Tables\Version($this->_database);
+		$row->publication_id = $this->_pid;
+		$row->title          = $row->getDefaultTitle($this->model->get('id'), $title);
+		$row->state          = 3; // dev
+		$row->main           = 1;
+		$row->created_by     = $this->_uid;
+		$row->created        = Date::toSql();
+		$row->version_number = 1;
+		$row->license_type   = 0;
+		$row->access         = 0;
+		$row->secret         = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 
 		if (!$row->store())
 		{
 			// Roll back
 			$objP->delete();
 
-			throw new Exception( $row->getError(), 500 );
+			throw new Exception($row->getError(), 500);
 			return false;
 		}
 		if (!$row->id)
@@ -1292,7 +1311,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Models\Publication
-		$pub = new \Components\Publications\Models\Publication( $this->_pid, 'dev' );
+		$pub = new \Components\Publications\Models\Publication($this->_pid, 'dev');
 
 		// Record action, notify team
 		$this->onAfterCreate($pub);
@@ -1304,15 +1323,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * View/Edit publication draft
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function editDraft()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version 	= Request::getVar( 'version', 'default' );
-		$block  	= Request::getVar( 'section', 'status' );
-		$blockId  	= Request::getInt( 'step', 0 );
+		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$vid     = Request::getInt('vid', 0);
+		$version = Request::getVar('version', 'default');
+		$block   = Request::getVar('section', 'status');
+		$blockId = Request::getInt('step', 0);
 
 		// Provision draft
 		if (!$pid)
@@ -1326,17 +1346,21 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			// Get curation model
 			$pub->setCuration();
-			$blockId 	   = $pub->_curationModel->getFirstBlock();
-			$firstBlock    = $pub->_curationModel->_blocks->$blockId->name;
+			$blockId    = $pub->_curationModel->getFirstBlock();
+			$firstBlock = $pub->_curationModel->_blocks->$blockId->name;
 
 			// Redirect to first block
-			App::redirect(htmlspecialchars_decode(Route::url($pub->link('editversion')
-				. '&move=continue&step=' . $blockId . '&section=' . $firstBlock)));
+			App::redirect(htmlspecialchars_decode(Route::url($pub->link('editversion') . '&move=continue&step=' . $blockId . '&section=' . $firstBlock)));
 			return;
+		}
+
+		if ($vid)
+		{
+			$pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 		}
 		else
 		{
-			$pub = new \Components\Publications\Models\Publication( $pid, $version );
+			$pub = new \Components\Publications\Models\Publication($pid, $version);
 		}
 
 		// If publication not found, raise error
@@ -1364,9 +1388,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Go to last incomplete section
 		if ($this->_task == 'continue')
 		{
-			$blocks 	= $pub->curation('blocks');
-			$blockId	= $pub->curation('firstBlock');
-			$block		= $blockId ? $blocks->$blockId->name : 'status';
+			$blocks  = $pub->curation('blocks');
+			$blockId = $pub->curation('firstBlock');
+			$block   = $blockId ? $blocks->$blockId->name : 'status';
 		}
 
 		// Go to review screen
@@ -1374,8 +1398,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			|| ($this->_task == 'continue' && $pub->curation('complete') == 1)
 		)
 		{
-			$blockId	= $pub->curation('lastBlock');
-			$block		= 'review';
+			$blockId = $pub->curation('lastBlock');
+			$block   = 'review';
 		}
 
 		// Certain publications go to status page
@@ -1386,7 +1410,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make sure block exists, else redirect to status
-		if (!$pub->_curationModel->setBlock( $block, $blockId ) || !$this->model->access('content'))
+		if (!$pub->_curationModel->setBlock($block, $blockId) || !$this->model->access('content'))
 		{
 			$block = 'status';
 		}
@@ -1397,32 +1421,32 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=> $name,
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => $name,
 			)
 		);
 
 		// Output HTML
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->project		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->config 		= $this->model->config();
-		$view->title		= $this->_area['title'];
-		$view->active		= $block;
-		$view->pub 			= $pub;
-		$view->pubconfig 	= $this->_pubconfig;
-		$view->task			= $this->_task;
+		$view->option    = $this->_option;
+		$view->database  = $this->_database;
+		$view->project   = $this->model;
+		$view->uid       = $this->_uid;
+		$view->config    = $this->model->config();
+		$view->title     = $this->_area['title'];
+		$view->active    = $block;
+		$view->pub       = $pub;
+		$view->pubconfig = $this->_pubconfig;
+		$view->task      = $this->_task;
 
 		// Append breadcrumbs
-		$this->_appendBreadcrumbs( $pub->get('title'), $pub->link('edit'), $version);
+		$this->_appendBreadcrumbs($pub->get('title'), $pub->link('edit'), $version);
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -1435,8 +1459,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function editItem()
 	{
 		// Incoming
-		$id 	= Request::getInt( 'aid', 0 );
-		$props  = Request::getVar( 'p', '' );
+		$id 	= Request::getInt('aid', 0);
+		$props  = Request::getVar('p', '');
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -1447,15 +1471,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'editauthor')
 		{
 			// Get author information
-			$row 	= new \Components\Publications\Tables\Author( $this->_database );
-			$error 	= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR');
+			$row = new \Components\Publications\Tables\Author($this->_database);
+			$error = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR');
 			$layout = 'author';
 		}
 		else
 		{
 			// Load attachment
-			$row 	= new \Components\Publications\Tables\Attachment( $this->_database );
-			$error 	= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT');
+			$row = new \Components\Publications\Tables\Attachment($this->_database);
+			$error = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT');
 			$layout = 'attachment';
 		}
 
@@ -1466,7 +1490,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication
-		$pub = new \Components\Publications\Models\Publication(NULL, NULL, $row->publication_version_id);
+		$pub = new \Components\Publications\Models\Publication(null, null, $row->publication_version_id);
 		if (!$pub->exists())
 		{
 			$this->setError($error);
@@ -1483,15 +1507,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=>'projects',
-					'element'	=>'publications',
-					'name'		=>'error'
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => 'error'
 				)
 			);
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 			return $view->loadTemplate();
 		}
 
@@ -1501,10 +1525,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// On success
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=> 'projects',
-				'element'	=> 'publications',
-				'name'		=> 'edititem',
-				'layout'	=> $layout
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'edititem',
+				'layout'  => $layout
 			)
 		);
 
@@ -1514,17 +1538,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->path = $pub->project()->repo()->get('path');
 		}
 
-		$view->step 	= $step;
-		$view->block	= $block;
+		$view->step     = $step;
+		$view->block    = $block;
 		$view->element  = $element;
 		$view->database = $this->_database;
-		$view->option 	= $this->_option;
-		$view->project 	= $this->model;
-		$view->pub		= $pub;
-		$view->row		= $row;
-		$view->backUrl	= Request::getVar('HTTP_REFERER', NULL, 'server');
-		$view->ajax		= Request::getInt( 'ajax', 0 );
-		$view->props	= $props;
+		$view->option   = $this->_option;
+		$view->project  = $this->model;
+		$view->pub      = $pub;
+		$view->row      = $row;
+		$view->backUrl  = Request::getVar('HTTP_REFERER', null, 'server');
+		$view->ajax     = Request::getInt('ajax', 0);
+		$view->props    = $props;
 
 		return $view->loadTemplate();
 	}
@@ -1534,7 +1558,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return   void
 	 */
-	protected function _appendBreadcrumbs( $title, $url, $version = 'default')
+	protected function _appendBreadcrumbs($title, $url, $version = 'default')
 	{
 		// Append breadcrumbs
 		$url = $version != 'default' ? $url . '&version=' . $version : $url;
@@ -1552,11 +1576,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _stats()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version 	= Request::getVar( 'version', 'default' );
+		$pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version = Request::getVar('version', 'default');
 
-		require_once( PATH_CORE . DS . 'components'. DS
-				.'com_publications' . DS . 'tables' . DS . 'logs.php');
+		require_once PATH_CORE . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php';
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -1577,23 +1600,23 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->totals = $pubLog->getTotals($this->model->get('id'), 'project');
 
 		// Output HTML
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->project 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->pid 			= $pid;
-		$view->pub			= new \Components\Publications\Models\Publication( $pid, $version );
-		$view->task 		= $this->_task;
-		$view->config 		= $this->model->config();
-		$view->pubconfig 	= $this->_pubconfig;
-		$view->version 		= $version;
-		$view->title		= $this->_area['title'];
+		$view->option    = $this->_option;
+		$view->database  = $this->_database;
+		$view->project   = $this->model;
+		$view->uid       = $this->_uid;
+		$view->pid       = $pid;
+		$view->pub       = new \Components\Publications\Models\Publication($pid, $version);
+		$view->task      = $this->_task;
+		$view->config    = $this->model->config();
+		$view->pubconfig = $this->_pubconfig;
+		$view->version   = $version;
+		$view->title     = $this->_area['title'];
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -1606,9 +1629,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _suggestLicense()
 	{
 		// Incoming
-		$pid  		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version 	= Request::getVar( 'version', 'default' );
-		$ajax 		= Request::getInt('ajax', 0);
+		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version = Request::getVar('version', 'default');
+		$ajax    = Request::getInt('ajax', 0);
 
 		// Load publication
 		$pub = new \Components\Publications\Models\Publication($pid, $version);
@@ -1622,9 +1645,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// File a support ticket
 		if ($this->_task == 'save_license')
 		{
-			$l_title 	= htmlentities(Request::getVar('license_title', '', 'post'));
-			$l_url 		= htmlentities(Request::getVar('license_url', '', 'post'));
-			$l_text 	= htmlentities(Request::getVar('details', '', 'post'));
+			$l_title = htmlentities(Request::getVar('license_title', '', 'post'));
+			$l_url   = htmlentities(Request::getVar('license_url', '', 'post'));
+			$l_text  = htmlentities(Request::getVar('details', '', 'post'));
 
 			if (!$l_title && !$l_url && !$l_text)
 			{
@@ -1633,28 +1656,26 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Include support scripts
-				include_once( PATH_CORE . DS . 'components'
-					. DS . 'com_support' . DS . 'tables' . DS . 'ticket.php' );
-				include_once( PATH_CORE . DS . 'components'
-					. DS . 'com_support' . DS . 'tables' . DS . 'comment.php' );
+				include_once PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php';
+				include_once PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php';
 
 				// Load the support config
 				$sparams = Component::params('com_support');
 
-				$row = new \Components\Support\Tables\Ticket( $this->_database );
+				$row = new \Components\Support\Tables\Ticket($this->_database);
 				$row->created = Date::toSql();
 				$row->login   = User::get('username');
 				$row->email   = User::get('email');
 				$row->name    = User::get('name');
 				$row->summary = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW');
 
-				$report 	  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE') . ': ' . $l_title ."\r\n";
-				$report 	 .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL') . ': ' . $l_url . "\r\n";
-				$report 	 .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_COMMENTS') . ': ' . $l_text ."\r\n";
-				$row->report 	= $report;
-				$row->referrer 	= Request::getVar('HTTP_REFERER', NULL, 'server');
-				$row->type	 	= 0;
-				$row->severity	= 'normal';
+				$report  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE') . ': ' . $l_title ."\r\n";
+				$report .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL') . ': ' . $l_url . "\r\n";
+				$report .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_COMMENTS') . ': ' . $l_text ."\r\n";
+				$row->report   = $report;
+				$row->referrer = Request::getVar('HTTP_REFERER', null, 'server');
+				$row->type     = 0;
+				$row->severity = 'normal';
 
 				$admingroup = $this->model->config()->get('admingroup', '');
 				$group = \Hubzero\User\Group::getInstance($admingroup);
@@ -1682,10 +1703,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					if ($group)
 					{
-						$members 	= $group->get('members');
-						$managers 	= $group->get('managers');
-						$admins 	= array_merge($members, $managers);
-						$admins 	= array_unique($admins);
+						$members  = $group->get('members');
+						$managers = $group->get('managers');
+						$admins   = array_merge($members, $managers);
+						$admins   = array_unique($admins);
 
 						// Send out email to admins
 						if (!empty($admins))
@@ -1710,31 +1731,31 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			 $view = new \Hubzero\Plugin\View(
 				array(
-					'folder' =>'projects',
-					'element'=>'publications',
-					'name'   =>'suggestlicense'
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => 'suggestlicense'
 				)
 			);
 
 			// Output HTML
-			$view->option 		= $this->_option;
-			$view->database 	= $this->_database;
-			$view->project 		= $this->model;
-			$view->uid 			= $this->_uid;
-			$view->pid 			= $pid;
-			$view->pub 			= $pub;
-			$view->task 		= $this->_task;
-			$view->config 		= $this->model->config();
-			$view->pubconfig 	= $this->_pubconfig;
-			$view->ajax 		= $ajax;
-			$view->version 		= $version;
-			$view->title		= $this->_area['title'];
+			$view->option    = $this->_option;
+			$view->database  = $this->_database;
+			$view->project   = $this->model;
+			$view->uid       = $this->_uid;
+			$view->pid       = $pid;
+			$view->pub       = $pub;
+			$view->task      = $this->_task;
+			$view->config    = $this->model->config();
+			$view->pubconfig = $this->_pubconfig;
+			$view->ajax      = $ajax;
+			$view->version   = $version;
+			$view->title     = $this->_area['title'];
 
 			// Get messages	and errors
 			$view->msg = $this->_msg;
 			if ($this->getError())
 			{
-				$view->setError( $this->getError() );
+				$view->setError($this->getError());
 			}
 			return $view->loadTemplate();
 		}
@@ -1764,7 +1785,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$ajax  = Request::getInt('ajax', 0);
-		$label = trim(Request::getVar( 'version_label', '', 'post' ));
+		$label = trim(Request::getVar('version_label', '', 'post'));
 
 		// Check permission
 		if (!$this->model->access('content'))
@@ -1774,7 +1795,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load default version
-		$pub = new \Components\Publications\Models\Publication( $pid, 'default' );
+		$pub = new \Components\Publications\Models\Publication($pid, 'default');
 		if (!$pub->exists())
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
@@ -1815,19 +1836,19 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Saving new version
 		if ($this->_task == 'savenew')
 		{
-			$used_labels = $pub->version->getUsedLabels( $pid, 'dev');
+			$used_labels = $pub->version->getUsedLabels($pid, 'dev');
 			if (!$label)
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_NONE') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_NONE'));
 			}
 			elseif ($label && in_array($label, $used_labels))
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
 			}
 			else
 			{
 				// Create new version
-				$new 				=  new \Components\Publications\Tables\Version( $this->_database );
+				$new =  new \Components\Publications\Tables\Version($this->_database);
 				// Copy from previous version
 				$new->publication_id = $pub->get('publication_id');
 				$new->title          = $pub->get('title');
@@ -1839,15 +1860,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$new->license_text   = $pub->get('license_text');
 				$new->access         = $pub->get('access');
 
-				$new->created 		 = Date::toSql();
-				$new->created_by 	 = $this->_uid;
-				$new->modified 		 = Date::toSql();
-				$new->modified_by 	 = $this->_uid;
-				$new->state 		 = 3;
-				$new->main 			 = 0;
+				$new->created        = Date::toSql();
+				$new->created_by     = $this->_uid;
+				$new->modified       = Date::toSql();
+				$new->modified_by    = $this->_uid;
+				$new->state          = 3;
+				$new->main           = 0;
 				$new->version_label  = $label;
 				$new->version_number = $pub->versionCount() + 1;
-				$new->secret 		 = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
+				$new->secret         = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 
 				if ($new->store())
 				{
@@ -1859,15 +1880,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					// Set activity message
 					$pubTitle = \Hubzero\Utility\String::truncate($new->title, 100);
-					$action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION')
-								. ' ' . $new->version_label . ' ';
+					$action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION') . ' ' . $new->version_label . ' ';
 					$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubTitle . '"';
 					$this->set('_activity', $action);
 
 					// Record action, notify team
 					$pub->set('version_number', $new->version_number);
 					$pub->set('version_label', $new->version_label);
-					$this->onAfterSave( $pub );
+					$this->onAfterSave($pub);
 				}
 				else
 				{
@@ -1880,30 +1900,30 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  =>'projects',
-					'element' =>'publications',
-					'name'    =>'newversion'
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => 'newversion'
 				)
 			);
 
 			// Output HTML
-			$view->option 		= $this->_option;
-			$view->database 	= $this->_database;
-			$view->project 		= $this->model;
-			$view->uid 			= $this->_uid;
-			$view->pid 			= $pid;
-			$view->pub 			= $pub;
-			$view->task 		= $this->_task;
-			$view->config 		= $this->model->config();
-			$view->pubconfig 	= $this->_pubconfig;
-			$view->ajax 		= $ajax;
-			$view->title		= $this->_area['title'];
+			$view->option    = $this->_option;
+			$view->database  = $this->_database;
+			$view->project   = $this->model;
+			$view->uid       = $this->_uid;
+			$view->pid       = $pid;
+			$view->pub       = $pub;
+			$view->task      = $this->_task;
+			$view->config    = $this->model->config();
+			$view->pubconfig = $this->_pubconfig;
+			$view->ajax      = $ajax;
+			$view->title     = $this->_area['title'];
 
 			// Get messages	and errors
 			$view->msg = $this->_msg;
 			if ($this->getError())
 			{
-				$view->setError( $this->getError() );
+				$view->setError($this->getError());
 			}
 			return $view->loadTemplate();
 		}
@@ -1931,7 +1951,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _overQuota()
 	{
 		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication($this->_database);
 
 		// Get all publications
 		$rows = $objP->getRecords(array('project' => $this->model->get('id'), 'dev' => 1, 'ignore_access' => 1));
@@ -1940,7 +1960,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows, false);
 		$quota   = $this->model->params->get('pubQuota')
 				? $this->model->params->get('pubQuota')
-						: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
+				: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
 
 		if (($quota - $dirsize) <= 0)
 		{
@@ -1958,17 +1978,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function publishDraft()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$confirm 	= Request::getInt('confirm', 0);
-		$version 	= Request::getVar('version', 'dev');
-		$agree   	= Request::getInt('agree', 0);
-		$pubdate 	= Request::getVar('publish_date', '', 'post');
-		$submitter 	= Request::getInt('submitter', $this->_uid, 'post');
-		$notify 	= 1;
+		$pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$confirm   = Request::getInt('confirm', 0);
+		$version   = Request::getVar('version', 'dev');
+		$agree     = Request::getInt('agree', 0);
+		$pubdate   = Request::getVar('publish_date', '', 'post');
+		$submitter = Request::getInt('submitter', $this->_uid, 'post');
+		$notify    = 1;
 
-		$block  	= Request::getVar( 'section', '' );
-		$blockId  	= Request::getInt( 'step', 0 );
-		$element  	= Request::getInt( 'element', 0 );
+		$block     = Request::getVar('section', '');
+		$blockId   = Request::getInt('step', 0);
+		$element   = Request::getInt('element', 0);
 
 		// Check permission
 		if (!$this->model->access('content'))
@@ -2027,16 +2047,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check that version label was not published before
-		$used_labels = $pub->version->getUsedLabels( $pid, $version );
+		$used_labels = $pub->version->getUsedLabels($pid, $version);
 		if (!$pub->version->version_label || in_array($pub->version->version_label, $used_labels))
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
 		}
 
 		// Is draft complete?
 		if (!$pub->curation('complete') && $this->_task != 'revert')
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED'));
 		}
 
 		// Is revert allowed?
@@ -2061,12 +2081,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Stop if more than 10 years from now
 			if ($pubdate > $tenYearsFromNow)
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_EMBARGO') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_EMBARGO'));
 			}
 		}
 
 		// Contact info is required for repositories
-		if ($pub->config()->get('repository'))
+		if ($pub->config()->get('repository') && $this->_task != 'revert')
 		{
 			$contact = Request::getVar('contact', array(), 'post');
 
@@ -2106,12 +2126,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'republish' && $pub->version->state != 0)
 		{
 			// Can only re-publish unpublished version
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH'));
 		}
 		elseif ($this->_task == 'revert' && $pub->version->state != 5 && !$revertAllowed)
 		{
 			// Can only revert a pending resource
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT'));
 		}
 
 		// On error
@@ -2137,10 +2157,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pub->version->set('submitted', Date::toSql());
 
 			// Save submitter
-			$pa = new \Components\Publications\Tables\Author( $this->_database );
+			$pa = new \Components\Publications\Tables\Author($this->_database);
 			$pa->saveSubmitter($pub->version->id, $submitter, $this->model->get('id'));
 
-			if ($this->_pubconfig->get('autoapprove') == 1 )
+			if ($this->_pubconfig->get('autoapprove') == 1)
 			{
 				$state = 1;
 			}
@@ -2148,9 +2168,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$apu = $this->_pubconfig->get('autoapproved_users');
 				$apu = explode(',', $apu);
-				$apu = array_map('trim',$apu);
+				$apu = array_map('trim', $apu);
 
-				if (in_array(User::get('username'),$apu))
+				if (in_array(User::get('username'), $apu))
 				{
 					// Set status to published
 					$state = 1;
@@ -2198,6 +2218,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if (!$doi || $doiService->getError())
 			{
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
 			}
 		}
 
@@ -2227,11 +2248,22 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// OnAfterPublish
-		$this->onAfterChangeState( $pub, $originalStatus );
+		$this->onAfterChangeState($pub, $originalStatus);
 
 		// Redirect
-		App::redirect(Route::url($pub->link('editversion')));
-		return;
+		$link = $pub->link('editversion');
+
+		/** Make message persist when plugin is abused.
+		* [QUBES][#732]
+		* @FIXME Better error handling across Event
+		* Does not bubble up to component
+		**/
+		if (isset($doiErr) && $doiErr === true)
+		{
+			$link .= '&doierr=1';
+		}
+
+		App::redirect(Route::url($link, false));
 	}
 
 	/**
@@ -2239,14 +2271,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function onAfterChangeState( $pub, $originalStatus = 3 )
+	public function onAfterChangeState($pub, $originalStatus = 3)
 	{
 		$notify = 1; // Notify administrators/curators?
 
 		// Log activity in curation history
 		if (isset($pub->_curationModel))
 		{
-			$pub->_curationModel->saveHistory($this->_uid, $originalStatus, $pub->version->get('state'), 0 );
+			$pub->_curationModel->saveHistory($this->_uid, $originalStatus, $pub->version->get('state'), 0);
 		}
 
 		// Display status message
@@ -2255,7 +2287,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			case 1:
 			default:
 				$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PUBLISHED');
-				$action 	= $this->_task == 'republish'
+				$action = $this->_task == 'republish'
 							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REPUBLISHED')
 							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_PUBLISHED');
 				break;
@@ -2263,8 +2295,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			case 4:
 				$this->_msg = $this->_task == 'revert'
 							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_REVERTED')
-							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED') ;
-				$action 	= $this->_task == 'revert'
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED');
+				$action = $this->_task == 'revert'
 							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REVERTED')
 							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SAVED');
 				$notify = 0;
@@ -2274,7 +2306,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->_msg = $originalStatus == 7
 							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING_RESUBMITTED')
 							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING');
-				$action 	= $originalStatus == 7
+				$action = $originalStatus == 7
 							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_RESUBMITTED')
 							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
 				break;
@@ -2283,16 +2315,20 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		$pubtitle = \Hubzero\Utility\String::truncate($pub->version->get('title'), 100);
 		$action  .= ' ' . $pub->version->get('version_label') . ' ';
-		$action  .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION')
-					. ' "' . html_entity_decode($pubtitle).'"';
+		$action  .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . html_entity_decode($pubtitle) . '"';
 		$action   = htmlentities($action, ENT_QUOTES, "UTF-8");
 
 		// Record activity
 		if (!$this->model->isProvisioned() && !$this->getError())
 		{
 			$aid = $this->model->recordActivity(
-					$action, $pub->id, $pubtitle,
-					Route::url($pub->link('editversion')), 'publication', 1 );
+				$action,
+				$pub->id,
+				$pubtitle,
+				Route::url($pub->link('editversion')),
+				'publication',
+				1
+			);
 		}
 
 		// Send out notifications
@@ -2301,7 +2337,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				? $profile->get('name')
 				: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
 		$sef	 = Route::url($pub->link('version'));
-		$link 	 = rtrim(Request::base(), DS) . DS . trim($sef, DS);
+		$link    = rtrim(Request::base(), DS) . DS . trim($sef, DS);
 		$message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;
 
 		// Notify admin group
@@ -2313,10 +2349,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			if ($admingroup && $group)
 			{
-				$members 	= $group->get('members');
-				$managers 	= $group->get('managers');
-				$admins 	= array_merge($members, $managers);
-				$admins 	= array_unique($admins);
+				$members  = $group->get('members');
+				$managers = $group->get('managers');
+				$admins   = array_merge($members, $managers);
+				$admins   = array_unique($admins);
 
 				\Components\Projects\Helpers\Html::sendHUBMessage(
 					'com_projects',
@@ -2342,10 +2378,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				if (trim($curatorgroup) && $group = \Hubzero\User\Group::getInstance($curatorgroup))
 				{
-					$members 	= $group->get('members');
-					$managers 	= $group->get('managers');
-					$admins 	= array_merge($members, $managers, $admins);
-					$admins 	= array_unique($admins);
+					$members  = $group->get('members');
+					$managers = $group->get('managers');
+					$admins   = array_merge($members, $managers, $admins);
+					$admins   = array_unique($admins);
 				}
 			}
 			\Components\Publications\Helpers\Html::notify(
@@ -2394,16 +2430,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Parse embargo date
 	 *
-	 * @return     string
+	 * @return  string
 	 */
-	private function _parseDate( $pubdate )
+	private function _parseDate($pubdate)
 	{
 		$date = explode('-', $pubdate);
 		if (count($date) == 3)
 		{
-			$year 	= $date[0];
-			$month 	= $date[1];
-			$day 	= $date[2];
+			$year  = $date[0];
+			$month = $date[1];
+			$day   = $date[2];
 			if (intval($month) && intval($day) && intval($year))
 			{
 				if (strlen($day) == 1)
@@ -2438,10 +2474,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function cancelDraft()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$confirm 	= Request::getInt('confirm', 0);
-		$version 	= Request::getVar('version', 'default');
-		$ajax 		= Request::getInt('ajax', 0);
+		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$confirm = Request::getInt('confirm', 0);
+		$version = Request::getVar('version', 'default');
+		$ajax    = Request::getInt('ajax', 0);
 
 		// Check permission
 		if (!$this->model->access('content'))
@@ -2451,7 +2487,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication model
-		$pub  = new \Components\Publications\Models\Publication( $pid, $version);
+		$pub  = new \Components\Publications\Models\Publication($pid, $version);
 
 		if (!$pub->exists() || !$pub->belongsToProject($this->model->get('id')))
 		{
@@ -2500,7 +2536,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					if (!$pub->version->store())
 					{
-						throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
+						throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
 						return;
 					}
 					else
@@ -2509,15 +2545,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 						// Add activity
 						$action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
-						$action .= ' '.strtolower(Lang::txt('version'))
-								. ' ' . $pub->version->get('version_label') . ' '
-								. Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF')
-								. ' ' . strtolower(Lang::txt('publication')) . ' "'
-								. $pubtitle . '" ';
+						$action .= ' ' . strtolower(Lang::txt('version')) . ' ' . $pub->version->get('version_label') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF') . ' ' . strtolower(Lang::txt('publication')) . ' "' . $pubtitle . '" ';
 
 						$aid = $this->model->recordActivity(
-							   $action, $pid, $pubtitle,
-							   Route::url($pub->link('editversion')), 'publication', 0 );
+							$action,
+							$pid,
+							$pubtitle,
+							Route::url($pub->link('editversion')),
+							'publication',
+							0
+						);
 					}
 				}
 				elseif ($pub->version->get('state') == 3 || $pub->version->get('state') == 4)
@@ -2527,28 +2564,27 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Delete draft version
 					if (!$pub->version->delete())
 					{
-						throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
+						throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
 						return;
 					}
 
 					// Delete authors
-					$pa = new \Components\Publications\Tables\Author( $this->_database );
+					$pa = new \Components\Publications\Tables\Author($this->_database);
 					$authors = $pa->deleteAssociations($vid);
 
 					// Delete attachments
-					$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
+					$pContent = new \Components\Publications\Tables\Attachment($this->_database);
 					$pContent->deleteAttachments($vid);
 
 					// Delete screenshots
-					$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
+					$pScreenshot = new \Components\Publications\Tables\Screenshot($this->_database);
 					$pScreenshot->deleteScreenshots($vid);
 
 					// Build publication path
-					$path =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS)
-							. DS .  \Hubzero\Utility\String::pad( $pid );
+					$path =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS) . DS . \Hubzero\Utility\String::pad($pid);
 
 					// Build version path
-					$vPath = $path . DS . \Hubzero\Utility\String::pad( $vid );
+					$vPath = $path . DS . \Hubzero\Utility\String::pad($vid);
 
 					// Delete all version files
 					if (is_dir($vPath))
@@ -2557,11 +2593,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Delete access accosiations
-					$pAccess = new \Components\Publications\Tables\Access( $this->_database );
+					$pAccess = new \Components\Publications\Tables\Access($this->_database);
 					$pAccess->deleteGroups($vid);
 
 					// Delete audience
-					$pAudience = new \Components\Publications\Tables\Audience( $this->_database );
+					$pAudience = new \Components\Publications\Tables\Audience($this->_database);
 					$pAudience->deleteAudience($vid);
 
 					// Delete publication existence
@@ -2586,7 +2622,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$action .= ' ' . $vlabel . ' ';
 					$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubtitle . '"';
 
-					$aid = $this->model->recordActivity($action, $pid, '', '', 'publication', 0 );
+					$aid = $this->model->recordActivity($action, $pid, '', '', 'publication', 0);
 
 					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DRAFT_DELETED');
 				}
@@ -2596,31 +2632,31 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  =>'projects',
-					'element' =>'publications',
-					'name'    =>'cancel'
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => 'cancel'
 				)
 			);
 
 			// Output HTML
-			$view->option 			= $this->_option;
-			$view->database 		= $this->_database;
-			$view->project 			= $this->model;
-			$view->uid 				= $this->_uid;
-			$view->pid 				= $pid;
-			$view->pub 				= $pub;
-			$view->publishedCount 	= $pub->version->getPublishedCount($pid);
-			$view->task 			= $this->_task;
-			$view->config 			= $this->model->config();
-			$view->pubconfig 		= $this->_pubconfig;
-			$view->ajax 			= $ajax;
-			$view->title		  	= $this->_area['title'];
+			$view->option         = $this->_option;
+			$view->database       = $this->_database;
+			$view->project        = $this->model;
+			$view->uid            = $this->_uid;
+			$view->pid            = $pid;
+			$view->pub            = $pub;
+			$view->publishedCount = $pub->version->getPublishedCount($pid);
+			$view->task           = $this->_task;
+			$view->config         = $this->model->config();
+			$view->pubconfig      = $this->_pubconfig;
+			$view->ajax           = $ajax;
+			$view->title          = $this->_area['title'];
 
 			// Get messages	and errors
 			$view->msg = $this->_msg;
 			if ($this->getError())
 			{
-				$view->setError( $this->getError() );
+				$view->setError($this->getError());
 			}
 			return $view->loadTemplate();
 		}
@@ -2674,24 +2710,24 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get versions
-		$view->versions = $view->pub->version->getVersions( $pid, $filters = array('withdev' => 1));
+		$view->versions = $view->pub->version->getVersions($pid, $filters = array('withdev' => 1));
 
 		// Output HTML
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->project 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->pid 			= $pid;
-		$view->task 		= $this->_task;
-		$view->config 		= $this->model->config();
-		$view->pubconfig 	= $this->_pubconfig;
-		$view->title		= $this->_area['title'];
+		$view->option    = $this->_option;
+		$view->database  = $this->_database;
+		$view->project   = $this->model;
+		$view->uid       = $this->_uid;
+		$view->pid       = $pid;
+		$view->task      = $this->_task;
+		$view->config    = $this->model->config();
+		$view->pubconfig = $this->_pubconfig;
+		$view->title     = $this->_area['title'];
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -2699,16 +2735,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Contribute from outside projects
 	 *
-	 * @return     string (html)
+	 * @return  string  (html)
 	 */
 	public function contribute()
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  =>'projects',
-				'element' =>'publications',
-				'name'    =>'browse',
-				'layout'  =>'provisioned'
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'browse',
+				'layout'  => 'provisioned'
 			)
 		);
 		$view->option   = $this->_option;
@@ -2730,15 +2766,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _getMemberPath()
 	{
 		// Get members config
-		$mconfig = Component::params( 'com_members' );
+		$mconfig = Component::params('com_members');
 
 		// Build upload path
-		$dir  = \Hubzero\Utility\String::pad( $this->_uid );
+		$dir  = \Hubzero\Utility\String::pad($this->_uid);
 		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
-		if (!is_dir( PATH_APP . $path ))
+		if (!is_dir(PATH_APP . $path))
 		{
-			if (!Filesystem::makeDirectory( PATH_APP . $path ))
+			if (!Filesystem::makeDirectory(PATH_APP . $path))
 			{
 				$this->setError(\Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -2752,14 +2788,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * Prep file directory (provisioned project)
 	 *
 	 * @param      boolean		$force
-	 *
 	 * @return     boolean
 	 */
 	protected function _prepDir($force = true)
 	{
 		if (!$this->model->exists())
 		{
-			$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
+			$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 			return;
 		}
 
@@ -2769,14 +2804,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Create and initialize local repo
 		if (!$this->model->repo()->iniLocal())
 		{
-			$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
+			$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 			return;
 		}
 
 		// Copy files from member directory
 		if (!Filesystem::copyDirectory($memberPath, $this->model->repo()->get('path')))
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
+			$this->setError(Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES'));
 			return false;
 		}
 
@@ -2817,7 +2852,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * Get disk space
 	 *
 	 * @param      object  	$model
-	 *
 	 * @return     string
 	 */
 	public function pubDiskSpace($model)
@@ -2825,9 +2859,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  =>'projects',
-				'element' =>'publications',
-				'name'    =>'diskspace'
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'diskspace'
 			)
 		);
 
@@ -2839,16 +2873,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= Request::getInt('limit', 25);
-		$filters['start'] 	 		= Request::getInt('limitstart', 0);
-		$filters['sortby']   		= Request::getVar( 't_sortby', 'title');
-		$filters['sortdir']  		= Request::getVar( 't_sortdir', 'ASC');
-		$filters['project']  		= $model->get('id');
-		$filters['ignore_access']   = 1;
-		$filters['dev']   	 		= 1; // get dev versions
+		$filters['limit']         = Request::getInt('limit', 25);
+		$filters['start']         = Request::getInt('limitstart', 0);
+		$filters['sortby']        = Request::getVar('t_sortby', 'title');
+		$filters['sortdir']       = Request::getVar('t_sortdir', 'ASC');
+		$filters['project']       = $model->get('id');
+		$filters['ignore_access'] = 1;
+		$filters['dev']           = 1; // get dev versions
 
 		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $database );
+		$objP = new \Components\Publications\Tables\Publication($database);
 
 		// Get all publications
 		$view->rows = $objP->getRecords($filters);
@@ -2863,9 +2897,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get total count
 		$view->total = $objP->getCount($filters);
 
-		$view->project 	= $model;
-		$view->option 	= $this->_option;
-		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
+		$view->project = $model;
+		$view->option  = $this->_option;
+		$view->title   = isset($this->_area['title']) ? $this->_area['title'] : '';
 
 		return $view->loadTemplate();
 	}
@@ -2873,10 +2907,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Serve publication-related file (via public link)
 	 *
-	 * @param   int  	$projectid
+	 * @param   int   $projectid
 	 * @return  void
 	 */
-	public function serve( $type = '', $projectid = 0, $query = '')
+	public function serve($type = '', $projectid = 0, $query = '')
 	{
 		$this->_area = $this->onProjectAreas();
 		if ($type != $this->_area['name'])
@@ -2890,10 +2924,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$disp 	 = isset($data->disp) ? $data->disp : 'inline';
-		$type 	 = isset($data->type) ? $data->type : 'file';
+		$disp    = isset($data->disp) ? $data->disp : 'inline';
+		$type    = isset($data->type) ? $data->type : 'file';
 		$folder  = isset($data->folder) ? $data->folder : 'wikicontent';
-		$fpath	 = isset($data->path) ? $data->path : 'inline';
+		$fpath   = isset($data->path) ? $data->path : 'inline';
 		$limited = isset($data->limited) ? $data->limited : 0;
 
 		if ($type != 'file')
@@ -2914,7 +2948,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get referenced path
-		$pubconfig = Component::params( 'com_publications' );
+		$pubconfig = Component::params('com_publications');
 		$base_path = $pubconfig->get('webpath');
 		$pubPath = \Components\Publications\Helpers\Html::buildPubPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
 

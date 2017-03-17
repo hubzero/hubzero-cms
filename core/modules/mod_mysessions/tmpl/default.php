@@ -91,7 +91,7 @@ $base = rtrim(Request::base(true), '/');
 							<div class="session-details-left">
 								<div class="session-snapshot">
 									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="<?php echo $session->sessname; ?>">
-										<img class="snapshot snapshot-main" data-src="<?php echo $snapshot; ?>" />
+										<img class="snapshot snapshot-main" src="<?php echo $snapshot; ?>" data-src="<?php echo $snapshot; ?>" />
 									</a>
 								</div>
 							</div>

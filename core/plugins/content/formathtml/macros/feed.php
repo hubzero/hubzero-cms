@@ -72,6 +72,11 @@ class Feed extends Macro
 		// get feed url
 		$url = $this->_getFeedUrl($args);
 
+		if (!$url)
+		{
+			return '';
+		}
+
 		// get feed details
 		$limit = $this->_getFeedLimit($args, 5);
 		$class = $this->_getFeedClass($args);
@@ -114,10 +119,10 @@ class Feed extends Macro
 	/**
 	 * Render an individual item
 	 *
-	 * @param  object   $item    Feed Item
-	 * @return string
+	 * @param   object  $item  Feed Item
+	 * @return  string
 	 */
-	private function _renderItem( $item )
+	private function _renderItem($item)
 	{
 		$html  = '<div class="item">';
 		$html .= '<h4>' . $item->get_title() . '</h4>';
@@ -130,10 +135,10 @@ class Feed extends Macro
 	/**
 	 * Pull Feed url from args passed in
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array  $args  Macro Arguments
+	 * @return  mixed
 	 */
-	private function _getFeedUrl( &$args )
+	private function _getFeedUrl(&$args)
 	{
 		foreach ($args as $k => $arg)
 		{
@@ -144,15 +149,16 @@ class Feed extends Macro
 				return $url;
 			}
 		}
+		return null;
 	}
 
 	/**
 	 * Get feed item limit
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array  $args  Macro Arguments
+	 * @return  mixed
 	 */
-	private function _getFeedLimit( &$args, $default = 5 )
+	private function _getFeedLimit(&$args, $default = 5)
 	{
 		foreach ($args as $k => $arg)
 		{
@@ -171,10 +177,10 @@ class Feed extends Macro
 	/**
 	 * Get feed class
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array  $args  Macro Arguments
+	 * @return  mixed
 	 */
-	private function _getFeedClass( &$args )
+	private function _getFeedClass(&$args)
 	{
 		foreach ($args as $k => $arg)
 		{
@@ -185,5 +191,7 @@ class Feed extends Macro
 				return $class;
 			}
 		}
+
+		return null;
 	}
 }

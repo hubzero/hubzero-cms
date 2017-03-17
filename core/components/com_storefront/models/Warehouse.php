@@ -513,11 +513,11 @@ class Warehouse extends \Hubzero\Base\Object
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`
 				LEFT JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`
 				LEFT JOIN `#__storefront_images` i ON (p.`pId` = i.`imgObjectId` AND i.`imgObject` = 'product' AND i.`imgPrimary` = 1)";
-		if ($useAccessGroups)
+		/*if ($useAccessGroups)
 		{
 			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag1 ON p.`pId` = ag1.`pId` AND ag1.`exclude`=0";
 			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag2 ON p.`pId` = ag2.`pId` AND ag2.`exclude`=1";
-		}
+		}*/
 
 		$sql .= " WHERE 1";
 
@@ -543,9 +543,13 @@ class Warehouse extends \Hubzero\Base\Object
 		{
 			if ($this->accessGroupsScope)
 			{
-				$sql .= " AND (
+				/*$sql .= " AND (
 					(ag1.`agId` IN(" . implode(',', $this->accessGroupsScope) . ")) AND
 					(ag2.`agId` IS NULL OR ag2.`agId` NOT IN(" . implode(',', $this->accessGroupsScope) . "))
+				)";*/
+				$sql .= " AND (
+					p.`pId` IN (SELECT ag.pId FROM `#__storefront_product_access_groups` ag WHERE ag.`exclude`=0 and ag.agId IN(" . implode(',', $this->accessGroupsScope) . ")) AND
+					p.`pId` NOT IN (SELECT ag2.pId FROM `#__storefront_product_access_groups` ag2 WHERE ag2.`exclude`=1 and ag2.agId IN(" . implode(',', $this->accessGroupsScope) . "))
 				)";
 			}
 		}
@@ -1018,9 +1022,12 @@ class Warehouse extends \Hubzero\Base\Object
 			{
 				$filters['sort'] = 'sSku';
 			}
-			if ($filters['sort'] == 'state')
+			elseif ($filters['sort'] == 'state')
 			{
 				$filters['sort'] = 'sActive';
+			}
+			else {
+				$filters['sort'] = 'sSku';
 			}
 
 			$sql .= " ORDER BY " . $filters['sort'];
@@ -1029,20 +1036,12 @@ class Warehouse extends \Hubzero\Base\Object
 			{
 				$sql .= ' ' . $filters['sort_Dir'];
 			}
+
+			$sql .= ", `sId`";
 		}
 		else
 		{
 			$sql .= " ORDER BY s.`sId`";
-		}
-
-		if (isset($filters['limit']) && is_numeric($filters['limit']))
-		{
-			$sql .= ' LIMIT ' . $filters['limit'];
-
-			if (isset($filters['start']) && is_numeric($filters['start']))
-			{
-				$sql .= ' OFFSET ' . $filters['start'];
-			}
 		}
 
 		$this->_db->setQuery($sql);
@@ -1050,6 +1049,8 @@ class Warehouse extends \Hubzero\Base\Object
 		$this->_db->execute();
 
 		$rawSkusInfo = $this->_db->loadObjectList();
+
+		//print_r($rawSkusInfo); die(); //
 
 		/*
 			Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the number of options):
@@ -1152,7 +1153,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 * @param	int			product id
 	 * @return	array 		SKU IDs
 	 */
-	public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true)
+	public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true, $filters = false)
 	{
 		$sql = "SELECT";
 		if ($return == 'all')
@@ -1169,8 +1170,53 @@ class Warehouse extends \Hubzero\Base\Object
 			$sql .= " AND `sActive` = 1";
 		}
 		$sql .= " AND `pId` = " . $this->_db->quote($pId);
+
+		// Filter by filters
+		//print_r($filters); die;
+		if (isset($filters['sort']))
+		{
+			if ($filters['sort'] == 'title')
+			{
+				$filters['sort'] = 'sSku';
+			}
+			elseif ($filters['sort'] == 'state')
+			{
+				$filters['sort'] = 'sActive';
+			}
+			else {
+				$filters['sort'] = 'sSku';
+			}
+
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+
+			$sql .= ", `sId`";
+		}
+		else
+		{
+			$sql .= " ORDER BY `sId`";
+		}
+
+		if ($filters && isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
+
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+
+		if ($return != 'count')
+		{
+			//echo $this->_db->toString(); die;
+		}
 
 		$this->_db->execute();
 		if ($return == 'count')

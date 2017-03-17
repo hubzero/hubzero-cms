@@ -56,7 +56,7 @@ class Items extends AdminController
 	 */
 	public function execute()
 	{
-		$this->_task = strtolower(Request::getVar('task', '','request'));
+		$this->_task = strtolower(Request::getVar('task', '', 'request'));
 		parent::execute();
 	}
 
@@ -508,7 +508,7 @@ class Items extends AdminController
 		$blocksModel = new Models\Blocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
 
-		$block->reorder(NULL, 0, $model, User::get('id'));
+		$block->reorder(null, 0, $model, User::get('id'));
 		if ($block->getError())
 		{
 			App::redirect(
@@ -595,11 +595,11 @@ class Items extends AdminController
 
 		if ($author)
 		{
-			$block->saveItem(NULL, 0, $model, User::get('id'), 0 , $author);
+			$block->saveItem(null, 0, $model, User::get('id'), 0, $author);
 		}
 		else
 		{
-			$block->addItem(NULL, 0, $model, User::get('id'));
+			$block->addItem(null, 0, $model, User::get('id'));
 		}
 
 		if ($block->getError())
@@ -704,7 +704,7 @@ class Items extends AdminController
 		$title          = trim(Request::getVar('title', '', 'post'));
 		$title          = htmlspecialchars($title);
 		$abstract       = trim(Request::getVar('abstract', '', 'post'));
-		$abstract       = \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
+		$abstract       = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($abstract));
 		$description    = trim(Request::getVar('description', '', 'post', 'none', 2));
 		$release_notes  = stripslashes(trim(Request::getVar('release_notes', '', 'post', 'none', 2)));
 		$group_owner    = Request::getInt('group_owner', 0, 'post');
@@ -718,10 +718,11 @@ class Items extends AdminController
 		$this->model->publication->alias    = trim(Request::getVar('alias', '', 'post'));
 		$this->model->publication->category = trim(Request::getInt('category', 0, 'post'));
 		$this->model->publication->access   = Request::getInt('access', 0, 'post');
-		if (!$project->get('owned_by_group'))
+		$this->model->publication->group_owner = $group_owner;
+		/*if (!$project->get('owned_by_group'))
 		{
 			$this->model->publication->group_owner = $group_owner;
-		}
+		}*/
 		$this->model->publication->store();
 
 		// Get metadata
@@ -1003,7 +1004,7 @@ class Items extends AdminController
 					// Append comment to activity
 					if ($message && $aid)
 					{
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+						require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
 						$objC = new \Components\Projects\Tables\Comment($this->database);
 
 						$comment = \Hubzero\Utility\String::truncate($message, 250);
@@ -1265,7 +1266,7 @@ class Items extends AdminController
 
 		$version = count($ids) == 1 ? Request::getVar('version', 'all') : 'all';
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
+		require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
 
 		foreach ($ids as $id)
 		{
@@ -1593,11 +1594,7 @@ class Items extends AdminController
 	 */
 	private function buildRedirectURL()
 	{
-		$id  = Request::getInt('id', 0);
-
 		$url  = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
-		$url .= $id ? '&task=edit&id[]=' . $id : '';
-
 		return $url;
 	}
 

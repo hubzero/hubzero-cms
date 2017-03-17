@@ -279,6 +279,14 @@ class License extends Base
 		$selections = Request::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
 
+		// Allows to select nothing if optional
+		if ($selections == '')
+		{
+			$row->saveParam($pub->version_id, 'licenseagreement', 0);
+			$row->license_type = '';
+			$row->store();
+		}
+
 		$i = 0;
 		foreach ($toAttach as $license)
 		{
@@ -326,6 +334,18 @@ class License extends Base
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
 	{
+		$id = $pub->_curationModel->getBlockId('license');
+		$blocks = $pub->_curationModel->getBlockSchema();
+		$required = 1;
+
+		foreach ($blocks as $block)
+		{
+			if ($block->name == 'license')
+			{
+				$required = $block->params->required;
+			}
+		}
+
 		// Start status
 		$status 	 = new \Components\Publications\Models\Status();
 
@@ -334,12 +354,12 @@ class License extends Base
 		// Load license class
 		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
 
-		if ($pub->license_type && $objL->load($pub->license_type))
+		if ($pub->license_type && $objL->load($pub->license_type) && $required == 1)
 		{
 			$agreement = $pub->params->get('licenseagreement');
 
 			// Missing agreement?
-			if ($objL->agreement == 1 && !$agreement)
+			if ($objL->agreement == 1 && !$agreement && $required)
 			{
 				$status->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
 				$status->status = 0;
@@ -361,6 +381,10 @@ class License extends Base
 					$status->status = 0;
 				}
 			}
+		}
+		elseif ($required == 0)
+		{
+			$status->status = 1;
 		}
 		else
 		{

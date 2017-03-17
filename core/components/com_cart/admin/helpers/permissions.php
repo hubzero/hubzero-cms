@@ -60,20 +60,19 @@ class Permissions
 		$result = new Object;
 
 		$actions = array(
-				'admin',
-				'manage',
-				'create',
-				'edit',
-				'edit.state',
-				'delete'
+			'admin',
+			'manage',
+			'create',
+			'edit',
+			'edit.state',
+			'delete'
 		);
 
 		foreach ($actions as $action)
 		{
-			$result->set('core.' . $action, $user->authorise($action, $assetName));
+			$result->set('core.' . $action, $user->authorise('core.' . $action, $assetName));
 		}
 
 		return $result;
 	}
 }
-

@@ -1,0 +1,21 @@
+language: php
+php:
+- 5.4
+- 5.5
+- 5.6
+before_install: composer self-update
+install:
+- cd core
+- composer install --prefer-source --no-interaction
+- composer require squizlabs/php_codesniffer
+- mkdir -p ~/build
+- git clone --branch hubzero-cms-2.1 https://github.com/hubzero/standards ~/build/standards
+- cd ../ && FILES=$((git log --pretty=format\:'' --name-only --since="yesterday"; git log --diff-filter=D --pretty=format\:'' --name-only --since="yesterday") | sort | uniq -u | tr '\r\n' ' ')
+script:
+- core/vendor/bin/phpcs -np --standard=~/build/standards/Php/ruleset.xml --ignore=*/test/*,*/assets/*,*/views/*,*/tmpl/*,/core/components/com_dataviewer/*
+  $FILES
+notifications:
+  slack:
+    on_success: change
+    on_failure: always
+    secure: mxZ5KX3b+G5msZ4zqpec6Vr2Ga81pQ+1nmOZ0bBgBIAALagvPCxCNujXKtek0vUAsshpJ3jPiEbU/v9gAlt36aQp0LeP8Ieho3okIV/gZcEJ7UmQ+tgJL3nOE2peuUsSN7N/YH9Icblg2eVPcqVr7JSWWnDcZ3jphvrQerLGsPKu/wLiTcRzajQuQxnXcMtxig5XMOsgNa0kFoUd3HjE+Ar7tsLM/qVvyTA37k7iaTKyid9Zbdur359hnGZ7b7x52oF8r4MZq1EHG/odjbE8I8O3RRCflnSeIH8YwlEQU0uUKVFuBu9DYbfS18Qvg1tPtEzfvyC5P43930B4rTAR0dsvFiHXILD6a58wg9SXKsHub05KXUVRKmgtKFdj5xExJlkv+LUO1eakj8vGHohelptY2flAXevQ3y/QynVO3rBZqYKGU01Jbye7vboyuP6iZ8hqGCSb8jlgblaIxJ+UyvlvmQOPkqlj9tjfhjBF+a29Hn9kSP5B2O8hYNEx/zqIC6NIt4nvB61XXNhThODm2OoMZ0u066H4bE+Vgp7fHOoMDZdc2PAA1074hUST7vFQWh3rJyYOq2UtL/mmDlP97esBELvrUd9yWXW0z9+x72SHTRJpeM1oI4eYPVkA80Rty9ZR2VQURoVt5NIXgYmTIC0qFG5RGStarfNACsDFF+U=

@@ -195,5 +195,128 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 			$results->add($question);
 		}
 	}
+
+	/**
+	 * onGetTypes - Announces the available hubtype
+	 * 
+	 * @param mixed $type 
+	 * @access public
+	 * @return void
+	 */
+	public function onGetTypes($type = null)
+	{
+		// The name of the hubtype
+		$hubtype = 'question';
+
+		if (isset($type) && $type == $hubtype)
+		{
+			return $hubtype;
+		}
+		elseif (!isset($type))
+		{
+			return $hubtype;
+		}
+	}
+
+	/**
+	 * onIndex 
+	 * 
+	 * @param string $type
+	 * @param integer $id 
+	 * @param boolean $run 
+	 * @access public
+	 * @return void
+	 */
+	public function onIndex($type, $id, $run = false)
+	{
+		if ($type == 'question')
+		{
+			if ($run === true)
+			{
+				// Establish a db connection
+				$db = App::get('db');
+
+				// Sanitize the string
+				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+
+				// Get the record
+				$sql = "SELECT * FROM #__answers_questions WHERE id={$id};";
+				$row = $db->setQuery($sql)->query()->loadObject();
+
+				// Get the name of the author
+				if ($row->anonymous == 0)
+				{
+					$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+					$author = $db->setQuery($sql1)->query()->loadResult();
+				}
+				else
+				{
+					$author = 'anonymous';
+				}
+
+				// Get any tags
+				$sql2 = "SELECT tag 
+					FROM #__tags
+					LEFT JOIN #__tags_object
+					ON #__tags.id=#__tags_object.tagid
+					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'answers';";
+				$tags = $db->setQuery($sql2)->query()->loadColumn();
+
+				// Get the associated responses
+				$sql3 = "SELECT * FROM #__answers_responses WHERE question_id={$id};";
+				$responses = $db->setQuery($sql3)->query()->loadObjectList();
+
+				// Concatenate responses
+				$responseString = '';
+				foreach ($responses as  $response)
+				{
+					if ($response->state == 0)
+					{
+						$responseString .= $response->answer . ' ';
+					}
+				}
+
+				// Determine the path
+				$path = '/answers/qustion/' . $id;
+
+				// Always public condition
+				$access_level = 'public';
+				$owner_type = 'user';
+				$owner = $row->created_by;
+
+				// Get the title
+				$title = $row->subject;
+
+				// Build the description, clean up text
+				$content = $row->question . ' ' . $responseString;
+				$content = preg_replace('/<[^>]*>/', ' ', $content);
+				$content = preg_replace('/ {2,}/', ' ', $content);
+				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+
+				// Create a record object
+				$record = new \stdClass;
+				$record->id = $type . '-' . $id;
+				$record->hubtype = $type;
+				$record->title = $title;
+				$record->description = $description;
+				$record->author = array($author);
+				$record->tags = $tags;
+				$record->path = $path;
+				$record->access_level = $access_level;
+				$record->owner = $owner;
+				$record->owner_type = $owner_type;
+
+				// Return the formatted record
+				return $record;
+			}
+			else
+			{
+				$db = App::get('db');
+				$sql = "SELECT id FROM #__answers_questions;";
+				$ids = $db->setQuery($sql)->query()->loadColumn();
+				return $ids;
+			}
+		}
+	}
 }
 

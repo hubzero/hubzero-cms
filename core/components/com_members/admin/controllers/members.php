@@ -37,6 +37,7 @@ use Components\Members\Models\Profile;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Models\Profile\Option;
 use Hubzero\Access\Group as Accessgroup;
+use Hubzero\Access\Access;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Validate;
 use Filesystem;
@@ -69,6 +70,7 @@ class Members extends AdminController
 		$this->registerTask('modal', 'display');
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('save2new', 'save');
 		$this->registerTask('confirm', 'state');
 		$this->registerTask('unconfirm', 'state');
 		$this->registerTask('applyprofile', 'saveprofile');
@@ -305,6 +307,14 @@ class Members extends AdminController
 	 */
 	public function editTask($user=null)
 	{
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!$user)
@@ -361,7 +371,7 @@ class Members extends AdminController
 		 && !User::authorise('core.create', $this->_option)
 		 && !User::authorise('core.edit', $this->_option))
 		{
-			return $this->cancelTask();
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// Incoming profile edits
@@ -403,13 +413,13 @@ class Members extends AdminController
 			}
 
 			// Set home directory
-			$hubHomeDir = rtrim($this->config->get('homedir'),'/');
+			$hubHomeDir = rtrim($this->config->get('homedir'), '/');
 			if (!$hubHomeDir)
 			{
 				// try to deduce a viable home directory based on sitename or live_site
 				$sitename = strtolower(Config::get('sitename'));
-				$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-				$sitename = trim($sitename,'/ ');
+				$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+				$sitename = trim($sitename, '/ ');
 				$sitename_e = explode('.', $sitename, 2);
 				if (isset($sitename_e[1]))
 				{
@@ -422,8 +432,8 @@ class Members extends AdminController
 				if (empty($sitename))
 				{
 					$sitename = strtolower(Request::base());
-					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-					$sitename = trim($sitename,'/ ');
+					$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+					$sitename = trim($sitename, '/ ');
 					$sitename_e = explode('.', $sitename, 2);
 					if (isset($sitename_e[1]))
 					{
@@ -477,7 +487,7 @@ class Members extends AdminController
 		// Can't block yourself
 		if ($user->get('block') && $user->get('id') == User::get('id') && !User::get('block'))
 		{
-			Notify::error(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
+			Notify::error(Lang::txt('COM_MEMBERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
 			return $this->editTask($user);
 		}
 
@@ -491,12 +501,12 @@ class Members extends AdminController
 
 			foreach ($fields['accessgroups'] as $group)
 			{
-				$stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : \JAccess::checkGroup($group, 'core.admin'));
+				$stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : Access::checkGroup($group, 'core.admin'));
 			}
 
 			if (!$stillSuperAdmin)
 			{
-				Notify::error(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
+				Notify::error(Lang::txt('COM_MEMBERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
 				return $this->editTask($user);
 			}
 		}
@@ -510,6 +520,7 @@ class Members extends AdminController
 
 		// Save profile data
 		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+		$access  = Request::getVar('profileaccess', array(), 'post', 'none', 2);
 
 		foreach ($profile as $key => $data)
 		{
@@ -532,7 +543,7 @@ class Members extends AdminController
 			}
 		}
 
-		if (!$user->saveProfile($profile))
+		if (!$user->saveProfile($profile, $access))
 		{
 			Notify::error($user->getError());
 			return $this->editTask($user);
@@ -592,7 +603,7 @@ class Members extends AdminController
 					}
 					elseif (empty($shadowExpire))
 					{
-						$passinfo->set('shadowExpire', NULL);
+						$passinfo->set('shadowExpire', null);
 					}
 				}
 				if ($shadowWarning)
@@ -631,6 +642,11 @@ class Members extends AdminController
 			return $this->editTask($user);
 		}
 
+		if ($this->getTask() == 'save2new')
+		{
+			return $this->editTask();
+		}
+
 		// Redirect
 		$this->cancelTask();
 	}
@@ -644,6 +660,13 @@ class Members extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -667,7 +690,7 @@ class Members extends AdminController
 				$allow = User::authorise('core.delete', 'com_members');
 
 				// Don't allow non-super-admin to delete a super admin
-				$allow = (!$iAmSuperAdmin && \JAccess::check($user->get('id'), 'core.admin')) ? false : $allow;
+				$allow = (!$iAmSuperAdmin && Access::check($user->get('id'), 'core.admin')) ? false : $allow;
 
 				if (!$allow)
 				{
@@ -703,6 +726,13 @@ class Members extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$state = ($this->getTask() == 'confirm' ? 1 : 0);
 
@@ -759,6 +789,13 @@ class Members extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$state = ($this->getTask() == 'approve' ? 2 : 0);
 
@@ -926,6 +963,13 @@ class Members extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Update registration config value to require re-agreeing upon next login
 		$currentTOU = $this->config->get('registrationTOU', 'RHRH');
@@ -1158,7 +1202,7 @@ class Members extends AdminController
 				if ($action[1] === null || $action[1] >= $asset->get('level'))
 				{
 					// We need to test this action.
-					$checks[$name] = \JAccess::check($id, $action[0], $asset->get('name'));
+					$checks[$name] = Access::check($id, $action[0], $asset->get('name'));
 				}
 				else
 				{
@@ -1273,9 +1317,9 @@ class Members extends AdminController
 				'label'         => (string) $element->label,
 				'name'          => (string) $element->name,
 				'description'   => (isset($element->field_options->description) ? (string) $element->field_options->description : ''),
-				/*'required'     => (isset($element->required) ? (int) $element->required : 0),
-				'readonly'     => (isset($element->readonly) ? (int) $element->readonly : 0),
-				'disabled'     => (isset($element->disabled) ? (int) $element->disabled : 0),*/
+				//'required'     => (isset($element->required) ? (int) $element->required : 0),
+				//'readonly'     => (isset($element->readonly) ? (int) $element->readonly : 0),
+				//'disabled'     => (isset($element->disabled) ? (int) $element->disabled : 0),
 				'ordering'      => ($i + 1),
 				'access'        => (isset($element->access) ? (int) $element->access : 0),
 				'option_other'  => (isset($element->field_options->include_other_option) ? (int) $element->field_options->include_other_option : ''),
@@ -1283,7 +1327,9 @@ class Members extends AdminController
 				'action_create' => (isset($element->create) ? (int) $element->create : 1),
 				'action_update' => (isset($element->update) ? (int) $element->update : 1),
 				'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1),
-				'action_browse' => (isset($element->browse) ? (int) $element->browse : 0)
+				'action_browse' => (isset($element->browse) ? (int) $element->browse : 0),
+				'min'           => (isset($element->min) ? (int) $element->min : 0),
+				'max'           => (isset($element->max) ? (int) $element->max : 0)
 			));
 
 			if ($field->get('type') == 'dropdown')

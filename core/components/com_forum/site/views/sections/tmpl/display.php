@@ -69,6 +69,7 @@ $this->css()
 					->categories()
 					->whereEquals('state', $this->filters['state'])
 					->whereIn('access', $this->filters['access'])
+					->order('title', 'asc')
 					->rows();
 				?>
 				<div class="container" id="section-<?php echo $section->get('id'); ?>">

@@ -70,12 +70,12 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (Notify::any())
+		if (Notify::any() || !App::has('cache'))
 		{
 			return;
 		}
 
-		if (User::isGuest() && Request::method() == 'GET')
+		if (User::isGuest() && Request::method() == 'GET' && $this->params->get('pagecache', false))
 		{
 			$id = $this->getId();
 
@@ -117,13 +117,21 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (Notify::any())
+		if (Notify::any() || !App::has('cache'))
 		{
 			return;
 		}
 
-		if (User::isGuest())
+		if (User::isGuest() && $this->params->get('pagecache', false))
 		{
+			$path = trim(str_replace(Request::base(), '', Request::current()));
+			$path = trim($path, '/');
+
+			if ($this->isExempt($path) || $this->isExempt(Request::current()))
+			{
+				return;
+			}
+
 			// We need to check again here, because auto-login plugins
 			// have not been fired before the first aid check
 			App::get('cache')->put(
@@ -131,6 +139,61 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 				App::get('response')->getContent(),
 				App::get('config')->get('lifetime', 45)
 			);
+		}
+	}
+
+	/**
+	 * Check if the current URL is exempt from caching
+	 *
+	 * @param   string   $path
+	 * @return  boolean  True if the current page is a rule
+	 */
+	private function isExempt($path)
+	{
+		$defs = str_replace("\r", '', $this->params->def('cacheexempt', '/about/contact'));
+		$defs = explode("\n", $defs);
+
+		foreach ($defs As $def)
+		{
+			$result = trim($def);
+			$result = trim($result, '/');
+
+			if ($result == $path)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Clean out cached CSS files
+	 *
+	 * @param   string   $group
+	 * @param   integer  $client_id
+	 * @return  void
+	 */
+	public function onCleanCache($group = null, $client_id = 0)
+	{
+		$dir = PATH_APP . '/cache';
+
+		if (!is_dir($dir))
+		{
+			return;
+		}
+
+		$paths = array(
+			$dir . '/site/site.css',
+			$dir . '/site/site.less.cache'
+		);
+
+		foreach ($paths as $path)
+		{
+			if (file_exists($path))
+			{
+				Filesystem::delete($path);
+			}
 		}
 	}
 }

@@ -48,7 +48,9 @@ $this->css('theme' . $theme . '.css');
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>
-			<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
+			<?php if (User::authorise('core.create', $this->option)) { ?>
+				<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
+			<?php } ?>
 		</ul>
 	</div><!-- / #content-header-extra -->
 

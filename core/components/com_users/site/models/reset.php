@@ -400,7 +400,15 @@ class UsersModelReset extends JModelForm
 		);
 
 		// Send the password reset request email.
-		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $user->email, $subject, $body);
+		$mailer = new Hubzero\Mail\Message();
+
+		$return = $mailer
+			->addFrom($data['mailfrom'], $data['fromname'])
+			->addTo($user->email)
+			->setSubject($subject)
+			->setBody($body)
+			->send();
+
 		// Check for an error.
 		if ($return !== true)
 		{

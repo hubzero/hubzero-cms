@@ -100,6 +100,14 @@ class PasswordBlacklist extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!$row)
@@ -133,6 +141,14 @@ class PasswordBlacklist extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming password blacklist edits
 		$fields = Request::getVar('fields', array(), 'post');
@@ -168,6 +184,13 @@ class PasswordBlacklist extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());

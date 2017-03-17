@@ -402,6 +402,11 @@ class Publications extends SiteController
 			'tag_ignored' => array()
 		);
 
+		if (!in_array($this->view->filters['sortby'], array('date', 'title', 'id', 'rating', 'ranking', 'popularity')))
+		{
+			$this->view->filters['sortby'] = $default_sort;
+		}
+
 		// Get projects user has access to
 		if (!User::isGuest())
 		{
@@ -413,15 +418,24 @@ class Publications extends SiteController
 		$t = new Tables\Category($this->database);
 		$this->view->categories = $t->getCategories();
 
+		if (is_numeric($this->view->filters['category']))
+		{
+			$this->view->filters['category'] = (int)$this->view->filters['category'];
+		}
 		if (!is_int($this->view->filters['category']))
 		{
 			foreach ($this->view->categories as $cat)
 			{
 				if (trim($this->view->filters['category']) == $cat->url_alias)
 				{
-					$this->view->filters['category'] = $cat->id;
+					$this->view->filters['category'] = (int)$cat->id;
 					break;
 				}
+			}
+
+			if (!is_int($this->view->filters['category']))
+			{
+				$this->view->filters['category'] = null;
 			}
 		}
 
@@ -1156,6 +1170,7 @@ class Publications extends SiteController
 		$active  = Request::getVar('active', 'publications');
 		$action  = $this->_task == 'start' ? 'start' : $action;
 		$ajax    = Request::getInt('ajax', 0);
+		$doiErr  = Request::getInt('doierr', 0);
 
 		// Redirect if publishing is turned off
 		if (!$this->_contributable)
@@ -1211,7 +1226,7 @@ class Publications extends SiteController
 			}
 
 			// Block unauthorized access
-			if (!$project->access('owner'))
+			if (!$project->access('owner') && !$project->access('content'))
 			{
 				$this->_blockAccess();
 				return;
@@ -1275,6 +1290,12 @@ class Publications extends SiteController
 			// plugin disabled?
 			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
+		}
+
+		// @FIXME: Handle errors appropriately. [QUBES][#732]
+		if ($doiErr == 1)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 		}
 
 		// Output HTML

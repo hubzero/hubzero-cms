@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Members\Helpers\Admin::getActions('component');
 
-$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
+$text = ($this->profile->isNew() ? Lang::txt('JACTION_CREATE') : Lang::txt('JACTION_EDIT'));
 
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . $text, 'user');
 if ($canDo->get('core.edit') || $canDo->get('core.create'))
@@ -76,9 +76,7 @@ function submitbutton(pressbutton)
 					<ul id="submenu" class="member-nav">
 						<li><a href="#" onclick="return false;" id="account" class="active"><?php echo Lang::txt('COM_MEMBERS_SECTION_ACCOUNT'); ?></a></li>
 						<li><a href="#" onclick="return false;" id="profile"><?php echo Lang::txt('COM_MEMBERS_SECTION_PROFILE'); ?></a></li>
-						<?php if (is_object($this->password)) : ?>
-							<li><a href="#" onclick="return false;" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
-						<?php endif; ?>
+						<li><a href="#" onclick="return false;" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
 						<?php if (!$this->profile->isNew()): ?>
 							<li><a href="#" onclick="return false;" id="groups"><?php echo Lang::txt('COM_MEMBERS_SECTION_GROUPS'); ?></a></li>
 							<li><a href="#" onclick="return false;" id="hosts"><?php echo Lang::txt('COM_MEMBERS_SECTION_HOSTS'); ?></a></li>
@@ -101,11 +99,9 @@ function submitbutton(pressbutton)
 			<?php echo $this->loadTemplate('profile'); ?>
 		</div>
 
-		<?php if (is_object($this->password)) : ?>
-			<div id="page-password" class="tab">
-				<?php echo $this->loadTemplate('password'); ?>
-			</div>
-		<?php endif; ?>
+		<div id="page-password" class="tab">
+			<?php echo $this->loadTemplate('password'); ?>
+		</div>
 
 		<?php if (!$this->profile->isNew()): ?>
 			<div id="page-groups" class="tab">

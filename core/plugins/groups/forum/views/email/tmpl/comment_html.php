@@ -179,20 +179,25 @@ $bdcolor = '#e1e1e1';
 			<tr>
 				<td colspan="2" style="padding: 0 2em;">
 					<div style="line-height: 1.6em; margin: 0; padding: 0; text-align: left;"><?php echo $this->post->comment; ?></div>
-					<?php /*if ($this->post->attachments()->total()) { ?>
+					<?php
+					$attachments = $this->post->attachments()
+						->whereIn('state', array(Components\Forum\Models\Post::STATE_PUBLISHED))
+						->rows();
+
+					if ($attachments->count() > 0) { ?>
 						<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
 							<?php
-							foreach ($this->post->attachments() as $attachment)
+							foreach ($attachments as $attachment)
 							{
 								if (!trim($attachment->get('description')))
 								{
 									$attachment->set('description', $attachment->get('filename'));
 								}
-								echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a class="' . ($attachment->isImage() ? 'img' : 'file') . '" data-filename="' . $attachment->get('filename') . '" href="' . $base . '/' . ltrim(Route::url($attachment->link()), '/') . '">' . $attachment->get('description') . '</a></p>';
+								echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a class="' . ($attachment->isImage() ? 'img' : 'file') . '" data-filename="' . $attachment->get('filename') . '" href="' . $base . '/' . trim(Route::url($this->thread->link()), '/') . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename') . '">' . $attachment->get('description') . '</a></p>';
 							}
 							?>
 						</div><!-- / .comment-body -->
-					<?php }*/ ?>
+					<?php } ?>
 				</td>
 			</tr>
 			<?php if ($this->unsubscribe) { ?>

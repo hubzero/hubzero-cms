@@ -140,7 +140,7 @@ else
 				<?php } ?>
 			</div><!-- / .aside -->
 			<div id="edit-project" class="col span9 omega">
-				<form id="hubForm" method="post" action="<?php echo Route::url($this->model->link() . '&task=save'); ?>">
+				<form id="hubForm" class="full" method="post" action="<?php echo Route::url($this->model->link() . '&task=save'); ?>">
 					<div>
 						<input type="hidden" id="pid" name="id" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden"  name="task" value="save" />
@@ -294,57 +294,63 @@ else
 							break;
 							case 'info_custom': ?>
 								<fieldset>
-								<legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO')); ?></legend>
+									<legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO')); ?></legend>
 
-								<label for="field-name">
-									<?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?>
-									<input type="text" name="name" id="field-name" disabled="disabled" readonly="readonly" class="disabled readonly" value="<?php echo $this->model->get('alias'); ?>" />
-								</label>
+									<label for="field-name">
+										<?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?>
+										<input type="text" name="name" id="field-name" disabled="disabled" readonly="readonly" class="disabled readonly" value="<?php echo $this->model->get('alias'); ?>" />
+									</label>
 
-								<label for="field-title">
-									<?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>
-									<input name="title" id="field-title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" />
-								</label>
+									<label for="field-title">
+										<?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>
+										<input name="title" id="field-title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" />
+									</label>
+
+									<label for="field-title">
+										<?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></td>
+										<?php echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'about', array('class' => 'minimal no-footer')); ?>
+									</label>
 								</fieldset>
 
 								<fieldset>
-								<legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO_EXTENDED')); ?></legend>
-								<?php
-								// Convert to XML so we can use the Form processor
-								$xml = Components\Projects\Models\Orm\Description\Field::toXml($this->fields, 'edit');
-								// Create a new form
-								Hubzero\Form\Form::addFieldPath(Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS. 'fields');
+									<legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO_EXTENDED')); ?></legend>
+									<?php
+									// Convert to XML so we can use the Form processor
+									$xml = Components\Projects\Models\Orm\Description\Field::toXml($this->fields, 'edit');
+									// Create a new form
+									Hubzero\Form\Form::addFieldPath(Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS. 'fields');
 
-								$form = new Hubzero\Form\Form('description', array('control' => 'description'));
-								$form->load($xml);
+									$form = new Hubzero\Form\Form('description', array('control' => 'description'));
+									$form->load($xml);
 
-								$data = new stdClass;
-								$data->textbox = 'abd';
-								$data->projecttags = 'testing, tagging';
+									$data = new stdClass;
+									$data->textbox = 'abd';
+									$data->projecttags = 'testing, tagging';
 
-								$form->bind($this->data);
+									$form->bind($this->data);
 
-								foreach ($form->getFieldsets() as $fieldset)
-								{
-									foreach ($form->getFieldset($fieldset->name) as $field)
+									foreach ($form->getFieldsets() as $fieldset)
 									{
-										echo $field->label;
-										echo $field->input;
-										echo $field->description;
+										foreach ($form->getFieldset($fieldset->name) as $field)
+										{
+											echo $field->label;
+											echo $field->input;
+											echo $field->description;
+										}
 									}
-								}
-
-								echo '</fieldset>';
-								echo '<fieldset>';
-
-								// Display project image upload
-								$this->view('_picture')
-								     ->set('model', $this->model)
-								     ->set('option', $this->option)
-								     ->display();
-
-								echo '</fieldset>';
-								echo '<input type="submit" class="btn btn-success" value="' . Lang::txt('COM_PROJECTS_SAVE_CHANGES') . '"  />';
+									?>
+								</fieldset>
+								<fieldset>
+									<?php
+									// Display project image upload
+									$this->view('_picture')
+									     ->set('model', $this->model)
+									     ->set('option', $this->option)
+									     ->display();
+									?>
+								</fieldset>
+								<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
+								<?php
 							break;
 							}
 						?>

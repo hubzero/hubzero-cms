@@ -46,6 +46,8 @@ $sessions = Hubzero\Session\Helper::getAllSessions(array(
 // Determine if there is anything worth showing
 foreach ($this->team as $member)
 {
+	$member->online = 0;
+
 	// Member online?
 	if ($sessions)
 	{
@@ -62,9 +64,11 @@ foreach ($this->team as $member)
 	if (($member->lastvisit || !empty($member->online)))
 	{
 		// Recent visits?
-		$show[]    = $member;
-		$sorting[] = $member->lastvisit;
-		$online[]  = empty($member->online) ? 1 : 2;
+		if ($member->online)
+		{
+			$member->lastvisit = Date::of('now')->toSql();
+		}
+		$show[$member->lastvisit] = $member;
 	}
 }
 
@@ -74,8 +78,7 @@ if (count($show) < 2)
 	return;
 }
 
-array_multisort($online, SORT_DESC, $show);
-array_multisort($sorting, SORT_DESC, $show);
+krsort($show);
 
 $i = 0;
 ?>
@@ -99,7 +102,7 @@ $i = 0;
 					? \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AGO')
 					: Lang::txt('PLG_PROJECTS_TEAM_NEVER');
 		$lastvisit = $owner->userid == User::get('id') || (!empty($owner->online) && $owner->lastvisit > $timecheck)
-					? '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW') . '</span>'
+					? '<span class="now-online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW') . '</span>'
 					: $lastvisit;
 		$i++;
 	?>

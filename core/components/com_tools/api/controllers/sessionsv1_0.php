@@ -226,19 +226,24 @@ class Sessionsv1_0 extends ApiController
 		$result = User::getInstance($userid);
 
 		// make sure we have a user
-		if ($result === false)
+		if (!$result->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_TOOLS_ERROR_USER_NOT_FOUND'), 404);
 		}
 
-		// take new screenshots for user
-		$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $result->get('username') . " 2>&1 </dev/null";
-		exec($cmd, $results, $status);
-
 		// object to return
 		$object = new stdClass();
-		$object->screenshots_taken = true;
+		$object->screenshots_taken = false;
 
+		// Check for valid string
+		$username = $result->get('username');
+		if (isset($username) && $username != '')
+		{
+			// take new screenshots for user
+			$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $username . " 2>&1 </dev/null";
+			exec($cmd, $results, $status);
+			$object->screenshots_taken = true;
+		}
 		$this->send($object);
 	}
 

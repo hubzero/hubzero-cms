@@ -794,7 +794,7 @@ class Items extends AdminController
 		$row = new Resource($this->database);
 		if (!$row->bind($_POST))
 		{
-			throw new Exception($row->getError(), 400);
+			App::abort(500, $row->getError());
 		}
 
 		$isNew = 0;
@@ -802,6 +802,8 @@ class Items extends AdminController
 		{
 			$isNew = 1;
 		}
+
+		$old = new Resource($this->database);
 
 		if ($isNew)
 		{
@@ -812,7 +814,6 @@ class Items extends AdminController
 		}
 		else
 		{
-			$old = new Resource($this->database);
 			$old->load($row->id);
 
 			$created_by_id = Request::getInt('created_by_id', 0);
@@ -931,7 +932,7 @@ class Items extends AdminController
 
 				if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required)
 				{
-					throw new Exception(Lang::txt('RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label), 500);
+					$this->setError(Lang::txt('COM_RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 				}
 
 				$found[] = $tagname;
@@ -942,7 +943,7 @@ class Items extends AdminController
 				if (!in_array($field->name, $found) && $field->required)
 				{
 					$found[] = $field->name;
-					$this->setError(Lang::txt('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
+					$this->setError(Lang::txt('COM_RESOURCES_REQUIRED_FIELD_CHECK', $field->label));
 				}
 			}
 		}
@@ -957,13 +958,13 @@ class Items extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Store content
 		if (!$row->store())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Checkin resource
@@ -1088,9 +1089,20 @@ class Items extends AdminController
 					['resource', $row->get('id')],
 					['user', $row->get('created_by')]
 				);
-				foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+
+				$helper = new Helper($row->id, $this->database);
+				$helper->getContributorIDs();
+
+				$contributors = $helper->contributorIDs;
+
+				//foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+				foreach ($contributors as $author)
 				{
-					$recipients[] = ['user', $author->get('authorid')];
+					//$recipients[] = ['user', $author->get('authorid')];
+					if ($author > 0)
+					{
+						$recipients[] = ['user', $author];
+					}
 				}
 
 				Event::trigger('system.logActivity', [
@@ -1391,6 +1403,39 @@ class Items extends AdminController
 					if ($resource->published == 1 && $old == 3)
 					{
 						$this->_emailContributors($resource, $this->database);
+
+						// Log activity
+						$recipients = array(
+							['resource', $resource->id],
+							['user', $resource->created_by]
+						);
+
+						$helper = new Helper($resource->id, $this->database);
+						$helper->getContributorIDs();
+
+						$contributors = $helper->contributorIDs;
+
+						foreach ($contributors as $author)
+						{
+							if ($author > 0)
+							{
+								$recipients[] = ['user', $author];
+							}
+						}
+
+						Event::trigger('system.logActivity', [
+							'activity' => [
+								'action'      => 'published',
+								'scope'       => 'resource',
+								'scope_id'    => $resource->title,
+								'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED', '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->id) . '">' . $resource->title . '</a>'),
+								'details'     => array(
+									'title' => $resource->title,
+									'url'   => Route::url('index.php?option=com_resources&id=' . $resource->id)
+								)
+							],
+							'recipients' => $recipients
+						]);
 					}
 				}
 
@@ -1734,11 +1779,9 @@ class Items extends AdminController
 
 		if (!is_object($profile) || !$profile->get('id'))
 		{
-			$this->database->setQuery("SELECT id FROM `#__users` WHERE `name`=" . $this->database->Quote($this->view->id));
-			if ($id = $this->database->loadResult())
-			{
-				$profile->load($id);
-			}
+			$profile = User::all()
+				->whereEquals('name', $this->view->id)
+				->row();
 		}
 
 		if (is_object($profile) && $profile->get('id'))

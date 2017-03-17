@@ -39,19 +39,19 @@ use stdClass;
 use ZipArchive;
 
 // Include building blocks
-include_once(__DIR__ . DS . 'blocks.php');
-include_once(__DIR__ . DS . 'status.php');
-include_once(__DIR__ . DS . 'attachments.php');
-include_once(__DIR__ . DS . 'blockelements.php');
-include_once(__DIR__ . DS . 'handlers.php');
+include_once (__DIR__ . DS . 'blocks.php');
+include_once (__DIR__ . DS . 'status.php');
+include_once (__DIR__ . DS . 'attachments.php');
+include_once (__DIR__ . DS . 'blockelements.php');
+include_once (__DIR__ . DS . 'handlers.php');
 
 // Include tables
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.history.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.version.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'block.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'curation.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'curation.history.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'curation.version.php');
+require_once (dirname(__DIR__) . DS . 'tables' . DS . 'block.php');
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
+require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 
 /**
  * Publications curation class
@@ -62,70 +62,71 @@ require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 class Curation extends Object
 {
 	/**
-	* JDatabase
-	*
-	* @var object
-	*/
-	var $_db      		= NULL;
+	 * JDatabase
+	 *
+	 * @var object
+	 */
+	var $_db      		= null;
 
 	/**
-	* @var    object  Publication
-	*/
-	var $_pub 			= NULL;
+	 * @var    object  Publication
+	 */
+	var $_pub 			= null;
 
 	/**
-	* @var    object  Publication model
-	*/
-	var $_model 		= NULL;
+	 * @var    object  Publication model
+	 */
+	var $_model 		= null;
 
 	/**
-	* @var    string Curation manifest
-	*/
-	var $_manifest 		= NULL;
+	 * @var    string Curation manifest
+	 */
+	var $_manifest 		= null;
 
 	/**
-	* @var    object Blocks
-	*/
+	 * @var    object Blocks
+	 */
 	var $_blocks 		= array();
 
 	/**
-	* @var    int total blocks
-	*/
+	 * @var    int total blocks
+	 */
 	var $_blockcount 	= 0;
 
 	/**
-	* @var    object Current block
-	*/
+	 * @var    object Current block
+	 */
 	var $_block 		= array();
 
 	/**
-	* @var    string Current block name
-	*/
-	var $_blockname 	= NULL;
+	 * @var    string Current block name
+	 */
+	var $_blockname 	= null;
 
 	/**
-	* @var    string Current block blockId
-	*/
-	var $_blockorder 	= NULL;
+	 * @var    string Current block blockId
+	 */
+	var $_blockorder 	= null;
 
 	/**
-	* @var    object
-	*/
-	var $_progress 		= NULL;
+	 * @var    object
+	 */
+	var $_progress 		= null;
 
 	/**
-	* @var    string  Message
-	*/
-	var $_message 		= NULL;
+	 * @var    string  Message
+	 */
+	var $_message 		= null;
 
 	/**
-	* Constructor
-	*
-	* @param      string  $manifest         Publication manifest
-	* @param      string  $masterManifest   Master type manifest
-	* @return     void
-	*/
-	public function __construct( $manifest = NULL, $masterManifest = NULL )
+	 * __construct 
+	 * 
+	 * @param string $manifest 				Publication manifest
+	 * @param string $masterManifest  Master type manifest
+	 * @access public
+	 * @return void
+	 */
+	public function __construct( $manifest = null, $masterManifest = null )
 	{
 		$this->_db = \App::get('db');
 
@@ -140,7 +141,7 @@ class Curation extends Object
 	 * @param      string  $masterManifest  Master type manifest (current version)
 	 * @return  boolean
 	 */
-	private function _setBlocks($manifest = NULL, $masterManifest = NULL)
+	private function _setBlocks($manifest = null, $masterManifest = null)
 	{
 		$blocks   = array();
 
@@ -247,7 +248,7 @@ class Curation extends Object
 	 * @param   integer $blockId	Numeric block ID
 	 * @return  boolean
 	 */
-	public function setBlock($name = NULL, $blockId = 0)
+	public function setBlock($name = null, $blockId = 0)
 	{
 		if ($blockId && (!isset($this->_blocks->$blockId)
 			|| $this->_blocks->$blockId->name != $name))
@@ -277,21 +278,30 @@ class Curation extends Object
 	 * @param   string  $name	Block name
 	 * @return  integer
 	 */
-	public function getBlockId($name = NULL)
+	public function getBlockId($name = null)
 	{
-		$blockId = NULL;
-		$i = 1;
-		foreach ($this->_blocks as $block)
+		$blockId = null;
+		foreach ($this->_blocks as $index => $block)
 		{
 			if ($block->name == $name)
 			{
-				$blockId = $i;
+				$blockId = $index;
 				break;
 			}
-			$i++;
 		}
 
 		return $blockId;
+	}
+
+	/**
+	 * getBlockSchema - returns the Blocks of this curation flow 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function getBlockSchema()
+	{
+		return $this->_blocks;
 	}
 
 	/**
@@ -474,7 +484,7 @@ class Curation extends Object
 	 * @param   integer $blockId	Numeric block ID
 	 * @return  string HTML
 	 */
-	public function parseBlock( $viewer = 'edit', $name = NULL, $blockId = 0 )
+	public function parseBlock( $viewer = 'edit', $name = null, $blockId = 0 )
 	{
 		$blockId = $blockId ? $blockId : $this->_blockorder;
 
@@ -509,7 +519,7 @@ class Curation extends Object
 	 * @param   object  $pub	Models\Publication
 	 * @return  void
 	 */
-	public function setPubAssoc($pub = NULL, $setProgress = true)
+	public function setPubAssoc($pub = null, $setProgress = true)
 	{
 		// Set version alias (e.f. 'dev' or 'default')
 		if (empty($pub->versionAlias) && isset($pub->version) && !is_object($pub->version))
@@ -794,8 +804,8 @@ class Curation extends Object
 
 		// Delete message
 		$data 				= new stdClass;
-		$data->update		= NULL;
-		$data->updated 		= NULL;
+		$data->update		= null;
+		$data->updated 		= null;
 		$data->updated_by 	= 0;
 		$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 
@@ -905,9 +915,9 @@ class Curation extends Object
 	 * @param   string  $name	Block name
 	 * @return  boolean
 	 */
-	public function blockExists( $name = NULL )
+	public function blockExists( $name = null )
 	{
-		if (!$this->_blocks || $name === NULL)
+		if (!$this->_blocks || $name === null)
 		{
 			return false;
 		}
@@ -933,7 +943,10 @@ class Curation extends Object
 	{
 		foreach ($this->_blocks as $id => $block)
 		{
-			return $id;
+			if (!isset($block->active) || $block->active > 0)
+			{
+				return $id;
+			}
 		}
 	}
 
@@ -1011,7 +1024,7 @@ class Curation extends Object
 			{
 				continue;
 			}
-			if ($id == $activeId )
+			if ($id == $activeId)
 			{
 				$start = 1;
 			}
@@ -1284,7 +1297,7 @@ class Curation extends Object
 	 * @param   integer $blockId	Numeric block ID
 	 * @return  object
 	 */
-	public function getElementStatus( $name, $elementId = NULL, $pub, $blockId = 0)
+	public function getElementStatus( $name, $elementId = null, $pub, $blockId = 0)
 	{
 		$pub = $pub ? $pub : $this->_pub;
 
@@ -1383,7 +1396,7 @@ class Curation extends Object
 			$status->status 	= $failed > 0 ? 0 : $passed;
 			$status->status 	= ($incomplete  && !$failed) ? 2 : $status->status; // unreviewed
 			$status->status 	= ($skipped > 0 && ($skipped + $incomplete) == $i) ? 3 : $status->status; // skipped
-			$status->lastupdate = ($pending > 0 || $skipped > 0) && $passed == 1 ? true : NULL;
+			$status->lastupdate = ($pending > 0 || $skipped > 0) && $passed == 1 ? true : null;
 		}
 		else
 		{
@@ -1402,18 +1415,18 @@ class Curation extends Object
 	 * @param   array   $items		Status array
 	 * @return  object
 	 */
-	public function getReviewItemStatus( $props = NULL, $items = NULL )
+	public function getReviewItemStatus( $props = null, $items = null )
 	{
 		$status             = new Status();
 		$status->status     = 2; // unreviewed
 		$status->updated_by = 0;
 
-		if ($props === NULL || $items === NULL)
+		if ($props === null || $items === null)
 		{
 			return $status;
 		}
 
-		$record = isset($items[$props]) ? $items[$props] : NULL;
+		$record = isset($items[$props]) ? $items[$props] : null;
 
 		if (!$record)
 		{
@@ -1467,11 +1480,11 @@ class Curation extends Object
 	public function getCurationStatus( $pub, $step, $elId = 0, $viewer = 'author' )
 	{
 		$status 		 		= new stdClass;
-		$status->updated 		= NULL;
-		$status->curatornotice  = NULL;
+		$status->updated 		= null;
+		$status->curatornotice  = null;
 		$status->status  		= 2;
-		$status->updatenotice 	= NULL;
-		$status->authornotice 	= NULL;
+		$status->updatenotice 	= null;
+		$status->authornotice 	= null;
 		$status->updated_by		= 0;
 
 		if ($elId)
@@ -1490,7 +1503,7 @@ class Curation extends Object
 
 		$status->status        = $reviewStatus->status;
 		$status->curatornotice = $reviewStatus->getError();
-		$status->updated       = $pub->state != 1 ? $reviewStatus->lastupdate : NULL;
+		$status->updated       = $pub->state != 1 ? $reviewStatus->lastupdate : null;
 		$status->authornotice  = $reviewStatus->message;
 
 		if ($status->updated && isset($reviewStatus->updated_by) && $reviewStatus->updated_by)
@@ -1526,9 +1539,9 @@ class Curation extends Object
 		<?php if ($viewer == 'curator') { ?>
 		<span class="edit-notice">[<a href="#">edit</a>]</span>
 		<?php } ?>
-		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3)) ) { return; } ?>
+		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3))) { return; } ?>
 		<div class="status-notice">
-			<span class="update-notice"><?php if ($viewer == 'curator') { echo  $curatorStatus->updatenotice; }
+			<span class="update-notice"><?php if ($viewer == 'curator') { echo $curatorStatus->updatenotice; }
 			elseif ($curatorStatus->status != 3) {
 				if ($curatorStatus->authornotice && $curatorStatus->updated)
 				{
@@ -1541,7 +1554,7 @@ class Curation extends Object
 				<?php }
 				else
 				{
-					echo  Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED');
+					echo Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED');
 				}
 			} ?></span>
 			<?php if ($viewer == 'author' && $curatorStatus->curatornotice && !$curatorStatus->updated) {  ?>
@@ -1625,7 +1638,7 @@ class Curation extends Object
 	 * Get history logs
 	 *
 	 * @param   array $filters
-	 * @return  object or NULL
+	 * @return  object or null
 	 */
 	public function getHistory($filters = array())
 	{
@@ -1646,7 +1659,7 @@ class Curation extends Object
 	/**
 	 * Get last history log
 	 *
-	 * @return  object or NULL
+	 * @return  object or null
 	 */
 	public function getLastHistoryRecord()
 	{
@@ -1674,7 +1687,7 @@ class Curation extends Object
 	 */
 	public function getChangeLog( $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
-		$changelog  = NULL;
+		$changelog  = null;
 
 		switch ($newStatus)
 		{
@@ -1840,9 +1853,9 @@ class Curation extends Object
 	 * @param   integer  $blockId		Numeric block ID
 	 * @return boolean
 	 */
-	public function saveUpdate( $data = NULL, $elementId, $name, $pub, $blockId )
+	public function saveUpdate( $data = null, $elementId, $name, $pub, $blockId )
 	{
-		if ($data === NULL)
+		if ($data === null)
 		{
 			return false;
 		}
@@ -2122,7 +2135,7 @@ class Curation extends Object
 
 		// Create bundle
 		$zip = new ZipArchive;
-		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === TRUE)
+		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === true)
 		{
 			// Bundle file attachments
 			$attModel->bundleItems(
@@ -2179,7 +2192,7 @@ class Curation extends Object
 	 * @param   object $pub
 	 * @return  boolean
 	 */
-	public function convertToCuration( $pub = NULL )
+	public function convertToCuration( $pub = null )
 	{
 		$pub     = $pub ? $pub : $this->_pub;
 		$oldFlow = false;
@@ -2196,7 +2209,7 @@ class Curation extends Object
 
 		// Get supporting docs element manifest
 		$sElements = self::getElements(2);
-		$sElement  = $sElements ? $sElements[0] : NULL;
+		$sElement  = $sElements ? $sElements[0] : null;
 
 		// Loop through attachments
 		foreach ($pub->_attachments['elements'] as $elementId => $elementAttachments)
@@ -2230,7 +2243,7 @@ class Curation extends Object
 
 		// Get gallery element manifest
 		$elements = self::getElements(3);
-		$element = $elements ? $elements[0] : NULL;
+		$element = $elements ? $elements[0] : null;
 
 		// Retrieve screenshots
 		$pScreenshot = new Tables\Screenshot( $this->_db );

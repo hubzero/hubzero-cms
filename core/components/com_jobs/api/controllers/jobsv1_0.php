@@ -33,15 +33,13 @@
 namespace Components\Jobs\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-//use Components\Time\Models\Hub;
 
 use stdClass;
 use Date;
 use Request;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'models' . DS . 'job.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'job.php';
-
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'job.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php';
 
 /**
  * API controller for the time component
@@ -50,7 +48,7 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . D
  */
 class Jobsv1_0 extends ApiController
 {
-		/**
+	/**
 	 * Display a list of jobs
 	 *
 	 * @apiMethod GET
@@ -118,7 +116,6 @@ class Jobsv1_0 extends ApiController
 		$this->send($response);
 	}
 
-
 	/**
 	 * Display a list of jobs
 	 *
@@ -142,7 +139,7 @@ class Jobsv1_0 extends ApiController
 
 		$obj = new \Components\Jobs\Tables\Job($database);
 		$filters = array();
-		$job = $obj->get_opening($jid = NULL, $uid = NULL, $admin = NULL, $jobcode = $jobCode);
+		$job = $obj->get_opening($jid = null, $uid = null, $admin = null, $jobcode = $jobCode);
 
 		// Create object with records property
 		$response          = new stdClass();

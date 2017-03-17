@@ -82,7 +82,7 @@ class Wishlist extends \JTable
 	 * @param   string   $scope  Entry scope [site, group, member]
 	 * @return  boolean  True if data was retrieved and loaded
 	 */
-	public function loadByCategory($referenceid=NULL, $category=NULL)
+	public function loadByCategory($referenceid=null, $category=null)
 	{
 		$fields = array(
 			'referenceid' => (int) $referenceid,
@@ -101,11 +101,11 @@ class Wishlist extends \JTable
 	 */
 	public function get_wishlistID($rid=0, $cat='resource')
 	{
-		if ($rid === NULL)
+		if ($rid === null)
 		{
 			$rid = $this->referenceid;
 		}
-		if ($rid === NULL)
+		if ($rid === null)
 		{
 			return false;
 		}
@@ -116,7 +116,7 @@ class Wishlist extends \JTable
 			. " WHERE referenceid=" . $this->_db->quote($rid) . " AND category=" . $this->_db->quote($cat) . " ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($sql);
-		return  $this->_db->loadResult();
+		return $this->_db->loadResult();
 	}
 
 	/**
@@ -131,7 +131,7 @@ class Wishlist extends \JTable
 	 */
 	public function createlist($category='resource', $refid, $public=1, $title='', $description='')
 	{
-		if ($refid === NULL)
+		if ($refid === null)
 		{
 			return false;
 		}
@@ -234,7 +234,7 @@ class Wishlist extends \JTable
 	 */
 	public function getTitle($id)
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			return false;
 		}
@@ -252,7 +252,7 @@ class Wishlist extends \JTable
 	 */
 	public function is_primary($id)
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			return false;
 		}
@@ -276,9 +276,9 @@ class Wishlist extends \JTable
 	 * @param   integer  $getversions  Return reference versions?
 	 * @return  mixed    False if error, object on success
 	 */
-	public function get_wishlist($id='', $refid=0, $cat='', $primary = 0, $getversions=0)
+	public function get_wishlist($id='', $refid=0, $cat='', $primary=0, $getversions=0)
 	{
-		if ($id===NULL && $refid===0 && $cat===NULL)
+		if ($id===null && $refid===0 && $cat===null)
 		{
 			return false;
 		}
@@ -380,9 +380,9 @@ class Wishlist extends \JTable
 	 */
 	public function getCons($refid)
 	{
-		$sql = "SELECT n.uidNumber AS id
-			FROM `#__xprofiles` AS n
-			JOIN `#__author_assoc` AS a ON n.uidNumber=a.authorid
+		$sql = "SELECT n.id
+			FROM `#__users` AS n
+			JOIN `#__author_assoc` AS a ON n.id=a.authorid
 			WHERE a.subtable = 'resources'
 			AND a.subid=" . $this->_db->quote($refid);
 
@@ -486,4 +486,3 @@ class Wishlist extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

@@ -443,7 +443,9 @@ HUB.Plugins.GroupCalendar = {
 					$('#event_location').val( eventDetails.location );
 					$('#event_website').val( eventDetails.website );
 					$('#event_start_date').val( eventDetails.start );
+					$('#event_start_time').val( eventDetails.start_time);
 					$('#event_end_date').val( eventDetails.end );
+					$('#event_end_time').val( eventDetails.end_time);
 
 					var repeat   = eventDetails.recurrence.FREQ,
 						interval = eventDetails.recurrence.INTERVAL,

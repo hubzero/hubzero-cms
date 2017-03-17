@@ -62,7 +62,7 @@ class Groups extends Base
 	 */
 	public function execute()
 	{
-		//get the cname, active tab, and action for plugins
+		// Get the cname, active tab, and action for plugins
 		$this->cn     = Request::getVar('cn', '');
 		$this->active = Request::getVar('active', '');
 		$this->action = Request::getVar('action', '');
@@ -74,7 +74,7 @@ class Groups extends Base
 			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn='. $this->cn . '&controller=pages'));
 		}
 
-		//are we serving up a file
+		// Are we serving up a file
 		$uri = $_SERVER['REQUEST_URI'];
 		if (strstr($uri, 'Image:'))
 		{
@@ -85,16 +85,16 @@ class Groups extends Base
 			$file = strstr($uri, 'File:');
 		}
 
-		//if we have a file
+		// If we have a file
 		if (isset($file))
 		{
 			return $this->downloadTask($file);
 		}
 
-		// check in for user
+		// Check in for user
 		Helpers\Pages::checkinForUser();
 
-		//continue with parent execute method
+		// Continue with parent execute method
 		parent::execute();
 	}
 
@@ -105,13 +105,13 @@ class Groups extends Base
 	 */
 	public function displayTask()
 	{
-		// build the title
+		// Build the title
 		$this->_buildTitle();
 
-		// build pathway
+		// Build pathway
 		$this->_buildPathway();
 
-		//vars
+		// Vars
 		$mytags = '';
 		$this->view->mygroups = array(
 			'members'    => null,
@@ -121,41 +121,41 @@ class Groups extends Base
 		$this->view->populargroups = array();
 		$this->view->interestinggroups = array();
 
-		//if we have a users profile load their groups and groups matching their tags
+		// If we have a users profile load their groups and groups matching their tags
 		if (!User::isGuest())
 		{
-			//get users tags
+			// Get users tags
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 			$mt = new \Components\Members\Models\Tags(User::get('id'));
 			$mytags = $mt->render('string');
 
-			//get users groups
+			// Get users groups
 			$this->view->mygroups['members'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
 			$this->view->mygroups['invitees'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'invitees', 1);
 			$this->view->mygroups['applicants'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'applicants', 1);
 			$this->view->mygroups = array_filter($this->view->mygroups);
 
-			//get groups user may be interested in
+			// Get groups user may be interested in
 			$this->view->interestinggroups = Group\Helper::getGroupsMatchingTagString(
 				$mytags,
 				\Hubzero\User\Helper::getGroups(User::get('id'))
 			);
 		}
 
-		//get the popular groups
+		// Get the popular groups
 		$this->view->populargroups  = Group\Helper::getPopularGroups(3);
 
-		//get featured groups
+		// Get featured groups
 		$this->view->featuredgroups = Group\Helper::getFeaturedGroups($this->config->get('intro_featuredgroups_list', ''));
 
-		//set some vars for view
+		// Set some vars for view
 		$this->view->config = $this->config;
 		$this->view->title = $this->_title;
 
-		// get view notifications
+		// Get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		//display view
+		// Display view
 		$this->view
 			->setLayout('display')
 			->display();
@@ -168,16 +168,16 @@ class Groups extends Base
 	 */
 	public function browseTask()
 	{
-		// build the title
+		// Build the title
 		$this->_buildTitle();
 
-		// build pathway
+		// Build pathway
 		$this->_buildPathway();
 
-		//build list of filters
+		// Build list of filters
 		$filters = array(
 			'type'      => array(1, 3),
-			'published' => 1,
+			'published' => Request::getInt('published', 1),
 			'limit'     => 'all',
 			'fields'    => array('COUNT(*)'),
 			'search'    => Request::getVar('search', ''),
@@ -186,13 +186,18 @@ class Groups extends Base
 			'index'     => htmlentities(Request::getVar('index', ''))
 		);
 
-		//make sure we have a valid sort filter
+		if (!in_array($filters['published'], array(1, 2)))
+		{
+			$filters['published'] = 1;
+		}
+
+		// Make sure we have a valid sort filter
 		if (!in_array($filters['sortby'], array('alias', 'title')))
 		{
 			$filters['sortby'] = 'title';
 		}
 
-		//make sure we have a valid policy filter
+		// Make sure we have a valid policy filter
 		if (!in_array($filters['policy'], array('open', 'restricted', 'invite', 'closed')))
 		{
 			$filters['policy'] = '';
@@ -210,10 +215,10 @@ class Groups extends Base
 		// Get a list of all groups
 		$groups = Group::find($filters);
 
-		// get view notifications
+		// Get view notifications
 		$notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		//display view
+		// Display view
 		$this->view
 			->set('total', $total)
 			->set('groups', $groups)
@@ -232,10 +237,10 @@ class Groups extends Base
 	 */
 	public function viewTask()
 	{
-		// set the needed layout
+		// Set the needed layout
 		$this->view->setLayout('view');
 
-		// validate the incoming cname
+		// Validate the incoming cname
 		if (!$this->_validCn($this->cn, true))
 		{
 			$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
@@ -244,7 +249,7 @@ class Groups extends Base
 		// Load the group object
 		$this->view->group = Group::getInstance($this->cn);
 
-		// check to make sure we were able to load group
+		// Check to make sure we were able to load group
 		if (!is_object($this->view->group)|| !$this->view->group->get('gidNumber') || !$this->view->group->get('cn'))
 		{
 			$this->suggestNonExistingGroupTask();
@@ -252,41 +257,40 @@ class Groups extends Base
 		}
 
 		// Ensure it's an allowable group type to display
-		if (!in_array($this->view->group->get('type'), array(1,3)))
+		if (!in_array($this->view->group->get('type'), array(1, 3)))
 		{
 			$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
 		}
 
-		// ensure the group is published
-		if ($this->view->group->get('published') != 1)
+		// Ensure the group is published
+		if (!$this->view->group->get('published'))
 		{
 			$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
 		}
 
 		// Ensure the group has been published or has been approved
-		if ($this->view->group->get('approved') != 1)
+		if (!$this->view->group->get('approved'))
 		{
-			//get list of members & managers & invitees
+			// Get list of members & managers & invitees
 			$managers = $this->view->group->get('managers');
 			$members  = $this->view->group->get('members');
 			$invitees = $this->view->group->get('invitees');
 			$members_invitees = array_merge($members, $invitees);
 			$managers_members_invitees = array_merge($managers, $members, $invitees);
 
-			//if user is not member, manager, or invitee deny access
+			// If user is not member, manager, or invitee deny access
 			if (!in_array(User::get('id'), $managers_members_invitees))
 			{
 				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
 			}
 
-			//if user is NOT manager but member or invitee
+			// If user is NOT manager but member or invitee
 			if (!in_array(User::get('id'), $managers) && in_array(User::get('id'), $members_invitees))
 			{
-				$this->unapprovedGroupTask();
-				return;
+				return $this->unapprovedGroupTask();
 			}
 
-			//set notification and clear after
+			// Set notification and clear after
 			$this->setNotification(Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'), 'warning');
 		}
 
@@ -296,7 +300,7 @@ class Groups extends Base
 		// Check authorization
 		$this->view->authorized = Helpers\View::authorize($this->view->group);
 
-		// get active tab
+		// Get active tab
 		$this->view->tab     = Helpers\View::getTab($this->view->group);
 		$this->view->trueTab = strtolower(Request::getVar('active', 'overview'));
 		if ($this->view->group->get('approved') != 1 && $this->view->trueTab != 'overview')
@@ -312,7 +316,7 @@ class Groups extends Base
 			Recent::hit(User::get('id'), $this->view->group->get('gidNumber'));
 		}
 
-		// get group pages if any
+		// Get group pages if any
 		$pageArchive = Page\Archive::getInstance();
 		$pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->view->group->get('gidNumber'),
@@ -320,68 +324,68 @@ class Groups extends Base
 			'orderby'   => 'lft ASC'
 		));
 
-		// custom error handling for super groups
+		// Custom error handling for super groups
 		Helpers\View::attachCustomErrorHandler($this->view->group);
 
-		// add the overview content
+		// Add the overview content
 		$overviewContent = '';
 		$activePage      = null;
 		if ($this->view->tab == 'overview')
 		{
-			// add home page to pages list
+			// Add home page to pages list
 			$pages = Helpers\Pages::addHomePage($this->view->group, $pages);
 
-			// fetch the active page
+			// Fetch the active page
 			$activePage = Helpers\Pages::getActivePage($this->view->group, $pages);
 
-			// are we on the login
+			// Are we on the login?
 			if ($this->view->trueTab == 'login')
 			{
 				$overviewContent = Helpers\View::superGroupLogin($this->view->group);
 			}
 
-			// check to see if we have super group component or php page
+			// Check to see if we have super group component or PHP page
 			if ($overviewContent == null
 				&& $this->config->get('super_components', 0))
 			{
 				$overviewContent = Helpers\View::superGroupComponents($this->view->group, $this->view->trueTab);
 			}
 
-			// do we have group php pages
+			// Do we have group PHP pages?
 			if ($overviewContent == null)
 			{
 				$overviewContent = Helpers\View::superGroupPhpPages($this->view->group);
 			}
 
-			//set overview content
+			// Set overview content
 			if ($overviewContent == null)
 			{
 				$overviewContent = Helpers\Pages::displayPage($this->view->group, $activePage);
 			}
 		}
 
-		// build the title
+		// Build the title
 		$this->_buildTitle($pages);
 
-		// build pathway
+		// Build pathway
 		$this->_buildPathway($pages);
 
-		//set some vars for view
+		// Set some vars for view
 		$this->view->title         = $this->_title;
 		$this->view->content       = Helpers\View::displaySectionsContent($this->view->group, $overviewContent);
 		$this->view->activePage    = $activePage;
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		//is this a super group?
+		// Is this a super group?
 		if ($this->view->group->isSuperGroup())
 		{
-			//use group template file if we have it
+			// Use group template file if we have it
 			Request::setVar('tmpl', 'group');
 
-			// must call here cause otherwise doesnt load template
+			// Must call here cause otherwise doesnt load template
 			$this->view->css()->js();
 
-			// load super group template
+			// Load super group template
 			// parse & render
 			$superGroupTemplate = new Helpers\Template();
 			$superGroupTemplate->set('group', $this->view->group)
@@ -391,11 +395,11 @@ class Groups extends Base
 				               ->parse()
 				               ->render();
 
-			// echo content & stop execution
+			// Echo content & stop execution
 			return $superGroupTemplate->output(true);
 		}
 
-		//display view
+		// Display view
 		$this->view->display();
 	}
 
@@ -443,7 +447,7 @@ class Groups extends Base
 			);
 		}
 
-		//are we creating a new group?
+		// Are we creating a new group?
 		if ($this->_task == 'new')
 		{
 			// Instantiate an Group object
@@ -455,14 +459,14 @@ class Groups extends Base
 			$this->view->group->set('discoverability', $this->config->get('discoverability', 0));
 			$this->view->group->set('discussion_email_autosubscribe', null);
 
-			$this->view->tags = "";
+			$this->view->tags = '';
 
-			//set title
+			// Set title
 			$this->view->title = Lang::txt('COM_GROUPS_NEW_TITLE');
 		}
 		else
 		{
-			//check to make sure we have  cname
+			// Check to make sure we have  cname
 			if (!$this->cn)
 			{
 				$this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
@@ -478,7 +482,8 @@ class Groups extends Base
 			}
 
 			// Check authorization
-			if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.edit'))
+			// Published = 2 = archived. Archived is a read-only mode.
+			if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.edit')))
 			{
 				$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 			}
@@ -487,12 +492,12 @@ class Groups extends Base
 			$gt = new Tags($this->view->group->get('gidNumber'));
 			$this->view->tags = $gt->render('string');
 
-			//set title
+			// Set title
 			$this->view->title = Lang::txt('COM_GROUPS_EDIT_TITLE', $this->view->group->get('description'));
 		}
 
-		//create dir for uploads
-		$this->view->lid = time().rand(0,1000);
+		// Create dir for uploads
+		$this->view->lid = time() . rand(0, 1000);
 		if ($this->lid != '')
 		{
 			$this->view->lid = $this->lid;
@@ -502,7 +507,7 @@ class Groups extends Base
 			$this->view->lid = $this->view->group->get('gidNumber');
 		}
 
-		// are we passing a group from save method
+		// Are we passing a group from save method
 		if ($this->group)
 		{
 			$this->view->group = $this->group;
@@ -517,7 +522,7 @@ class Groups extends Base
 		if (is_dir($asset_path))
 		{
 			// Get all images that are in group asset folder and could be a possible group logo
-			$this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', false, true);
+			$this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.svg|.PNG|.JPG|.JPEG|.GIF|.SVG', true, true);
 		}
 
 		// Trigger the functions that return the areas we'll be using
@@ -533,19 +538,19 @@ class Groups extends Base
 		// Get plugin access
 		$this->view->group_plugin_access = Group\Helper::getPluginAccess($this->view->group);
 
-		// build the title
+		// Build the title
 		$this->_buildTitle();
 
-		// build pathway
+		// Build pathway
 		$this->_buildPathway();
 
 		$this->view->task = $this->_task;
 		$this->view->config = $this->config;
 
-		// get view notifications
+		// Get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		//display view
+		// Display view
 		$this->view->display();
 	}
 
@@ -584,9 +589,9 @@ class Groups extends Base
 		}
 
 		$g_cn              = trim(Request::getVar('cn', '', 'post'));
-		$g_description     = preg_replace('/\s+/', ' ',trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
+		$g_description     = preg_replace('/\s+/', ' ', trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
 		$g_discoverability = Request::getInt('discoverability', 0, 'post');
-		$g_public_desc     = Sanitize::clean(trim(Request::getVar('public_desc',  '', 'post', 'none', 2)));
+		$g_public_desc     = Sanitize::clean(trim(Request::getVar('public_desc', '', 'post', 'none', 2)));
 		$g_private_desc    = Sanitize::clean(trim(Request::getVar('private_desc', '', 'post', 'none', 2)));
 		$g_restrict_msg    = Sanitize::clean(trim(Request::getVar('restrict_msg', '', 'post', 'none', 2)));
 		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
@@ -598,13 +603,7 @@ class Groups extends Base
 
 		$g_discussion_email_autosubscribe = Request::getInt('discussion_email_autosubscribe', 0, 'post');
 
-		//Check authorization
-		if ($this->_authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit'))
-		{
-			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
-		}
-
-		//are we editing or creating
+		// Are we editing or creating?
 		if ($g_gidNumber)
 		{
 			$group = Group::getInstance($g_gidNumber);
@@ -616,6 +615,13 @@ class Groups extends Base
 			$this->_task = 'new';
 			$group  = new Group();
 			$before = new Group();
+		}
+
+		// Check authorization
+		// Published = 2 = archived. Archived is a read-only mode.
+		if ($group->published == 2 || ($this->_authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit')))
+		{
+			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
 
 		// Check for any missing info
@@ -646,8 +652,9 @@ class Groups extends Base
 		$logo = '';
 		if (isset($customization['logo']))
 		{
-			$logo_parts = explode("/",$customization['logo']);
-			$logo = array_pop($logo_parts);
+			$logo_path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber') . DS . 'uploads' . DS;
+			$logo_path = substr($logo_path, strlen(PATH_ROOT));
+			$logo = substr($customization['logo'], strlen($logo_path));
 		}
 
 		// Plugin settings
@@ -720,12 +727,12 @@ class Groups extends Base
 			$group->create();
 		}
 
-		// merge incoming settings with existing params
+		// Merge incoming settings with existing params
 		$params  = new Registry($params);
 		$gParams = new Registry($group->get('params'));
 		$gParams->merge($params);
 
-		//set group vars & Save group
+		// Set group vars & Save group
 		$group->set('description', $g_description);
 		$group->set('public_desc', $g_public_desc);
 		$group->set('private_desc', $g_private_desc);
@@ -807,7 +814,7 @@ class Groups extends Base
 			'email' => Config::get('mailfrom')
 		);
 
-		//only email managers if updating group
+		// Only email managers if updating group
 		if ($type == 'groups_changed')
 		{
 			// build array of managers
@@ -822,22 +829,22 @@ class Groups extends Base
 			}
 		}
 
-		//only inform site admin if the group wasn't auto-approved
+		// Only inform site admin if the group wasn't auto-approved
 		if (!$this->config->get('auto_approve', 1) && $group->get('approved') == 0)
 		{
-			// create approval subject
+			// Create approval subject
 			$subject = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL', Config::get('sitename'));
 
 			// build approval message
-			$link  = 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'groups' . DS . $group->get('cn');
-			$link2 = 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'administrator';
+			$link  = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $group->get('cn');
+			$link2 = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/administrator';
 			$html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
 			$plain = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
 
-			// create new message
+			// Create new message
 			$message = new \Hubzero\Mail\Message();
 
-			// build message object and send
+			// Build message object and send
 			$message->setSubject($subject)
 					->addFrom($from['email'], $from['name'])
 					->setTo($emailadmin)
@@ -850,10 +857,10 @@ class Groups extends Base
 					->send();
 		}
 
-		// create home page
+		// Create home page
 		if ($this->_task == 'new')
 		{
-			// create page
+			// Create page
 			$page = new Page(array(
 				'gidNumber' => $group->get('gidNumber'),
 				'parent'    => 0,
@@ -868,7 +875,7 @@ class Groups extends Base
 			));
 			$page->store(false);
 
-			// create page version
+			// Create page version
 			$version = new Page\Version(array(
 				'pageid'     => $page->get('id'),
 				'version'    => 1,
@@ -929,7 +936,7 @@ class Groups extends Base
 	 */
 	public function deleteTask()
 	{
-		// set the neeced layout
+		// Set the neeced layout
 		$this->view->setLayout('delete');
 
 		// Check if they're logged in
@@ -938,7 +945,7 @@ class Groups extends Base
 			return $this->loginTask(Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
 		}
 
-		//check to make sure we have  cname
+		// Check to make sure we have  cname
 		if (!$this->cn)
 		{
 			$this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
@@ -969,8 +976,8 @@ class Groups extends Base
 			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 		}
 
-		//start log
-		$this->view->log = Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG',count($this->view->group->get('members')));
+		// Start log
+		$this->view->log = Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG', count($this->view->group->get('members')));
 
 		// Trigger the functions that delete associated content
 		// Should return logs of what was deleted
@@ -980,20 +987,20 @@ class Groups extends Base
 			$this->view->log .= '<br />' . implode('<br />', $logs);
 		}
 
-		// build the title
+		// Build the title
 		$this->_buildTitle();
 
-		// build pathway
+		// Build pathway
 		$this->_buildPathway();
 
-		// get view notifications
+		// Get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		//set some vars for view
-		$this->view->title = Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');;
+		// Set some vars for view
+		$this->view->title = Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');
 		$this->view->msg = Request::getVar('msg', '');
 
-		//display view
+		// Display view
 		$this->view->display();
 	}
 
@@ -1010,7 +1017,7 @@ class Groups extends Base
 			return $this->loginTask(Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
 		}
 
-		//check to make sure we have  cname
+		// Check to make sure we have  cname
 		if (!$this->cn)
 		{
 			$this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
@@ -1031,11 +1038,11 @@ class Groups extends Base
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
 
-		//get request vars
+		// Get request vars
 		$confirm_delete = Request::getInt('confirmdel', '');
 		$message = trim(Request::getVar('msg', '', 'post'));
 
-		//check to make sure we have confirmed
+		// Check to make sure we have confirmed
 		if (!$confirm_delete)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_DELETE_MISSING_CONFIRM_MESSAGE'), 'error');
@@ -1082,7 +1089,7 @@ class Groups extends Base
 			}
 		}
 
-		//clone the deleted group
+		// Clone the deleted group
 		$deletedgroup = clone($group);
 
 		// Delete group
@@ -1111,7 +1118,7 @@ class Groups extends Base
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
-		// build array of email recipients
+		// Build array of email recipients
 		$groupMembers = array();
 		foreach ($members as $member)
 		{
@@ -1122,10 +1129,10 @@ class Groups extends Base
 			}
 		}
 
-		// create new message
+		// Create new message
 		$message = new \Hubzero\Mail\Message();
 
-		// build message object and send
+		// Build message object and send
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
 				->setTo($groupMembers)
@@ -1136,7 +1143,7 @@ class Groups extends Base
 				->addPart($html, 'text/plain')
 				->send();
 
-		// log deleted group
+		// Log deleted group
 		Log::log(array(
 			'gidNumber' => $deletedgroup->get('gidNumber'),
 			'action'    => 'group_deleted',
@@ -1181,19 +1188,19 @@ class Groups extends Base
 	 */
 	public function suggestNonExistingGroupTask()
 	{
-		// throw 404 error
+		// Throw 404 error
 		header("HTTP/1.0 404 Not Found");
 
-		//set notification
+		// Set notification
 		$this->setNotification(
 			Lang::txt('COM_GROUPS_CREATE_SUGGEST', Route::url('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn))),
 			'warning'
 		);
 
-		// get view notifications
+		// Get view notifications
 		$notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		//display view
+		// Display view
 		$this->view
 			->set('title', 'Groups')
 			->set('notifications', $notifications)
@@ -1208,10 +1215,10 @@ class Groups extends Base
 	 */
 	public function unapprovedGroupTask()
 	{
-		// get view notifications
+		// Get view notifications
 		$notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
-		//display view
+		// Display view
 		$this->view
 			->set('title', 'Group: Unapproved')
 			->set('notifications', $notifications)
@@ -1234,7 +1241,7 @@ class Groups extends Base
 
 		$query = "SELECT t.gidNumber, t.cn, t.description
 					FROM `#__xgroups` AS t
-					WHERE (t.type=1 OR t.type=3) AND (LOWER(t.cn) LIKE '%" . $filters['search'] . "%' OR LOWER(t.description) LIKE '%" . $filters['search'] . "%')
+					WHERE (t.type=1 OR t.type=3) AND (LOWER(t.cn) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . " OR LOWER(t.description) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . ")
 					ORDER BY t.description ASC";
 
 		$this->database->setQuery($query);
@@ -1274,19 +1281,16 @@ class Groups extends Base
 		if ($filters['cn'])
 		{
 			$query = "SELECT u.username, u.name
-						FROM #__users AS u, #__xgroups_members AS m, #__xgroups AS g
-						WHERE g.cn='" . $filters['cn'] . "' AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id
+						FROM `#__users` AS u, `#__xgroups_members` AS m, `#__xgroups` AS g
+						WHERE g.cn=" . $this->database->quote($filters['cn']) . " AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id AND u.block = '0'
 						ORDER BY u.name ASC";
 		}
 		else
 		{
-			$query = "SELECT a.username, a.name"
-				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-				. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
-				. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
-				. "\n WHERE a.block = '0' AND g.id=25"
-				. "\n ORDER BY a.name";
+			$query = "SELECT a.username, a.name
+						FROM `#__users` AS a
+						WHERE a.block = '0' AND g.id=25
+						ORDER BY a.name";
 		}
 
 		$this->database->setQuery($query);
@@ -1315,7 +1319,7 @@ class Groups extends Base
 	 * @param   object  $group  Group
 	 * @return  string
 	 */
-	public function groupavailabilityTask($group = NULL)
+	public function groupavailabilityTask($group = null)
 	{
 		//get the group
 		$group = (!is_null($group)) ? $group : Request::getVar('group', '');
@@ -1353,19 +1357,19 @@ class Groups extends Base
 	 */
 	public function downloadTask($filename = '')
 	{
-		//get the group
+		// Get the group
 		$group = Group::getInstance($this->cn);
 
-		// make sure we have a group
+		// Make sure we have a group
 		if (!is_object($group))
 		{
 			return;
 		}
 
-		//authorize
+		// Authorize
 		$authorized = $this->_authorize();
 
-		//get the file name
+		// Get the file name
 		if (substr(strtolower($filename), 0, 5) == 'image')
 		{
 			$file = urldecode(substr($filename, 6));
@@ -1379,28 +1383,29 @@ class Groups extends Base
 			return;
 		}
 
-		// clean up file, strip double "uploads" & trim directory sep
+		// Clean up file, strip double "uploads" & trim directory sep
 		$file = str_replace('uploads', '', $file);
 		$file = ltrim($file, DS);
 
-		// get extension
+		// Get extension
 		$extension = pathinfo($file, PATHINFO_EXTENSION);
 
-		//if were on the wiki we need to output files a specific way
+		// If were on the wiki we need to output files a specific way
+		// @TODO: Re-implement this! Should not have hard-coded refs to other components
 		if ($this->active == 'wiki')
 		{
-			//get access level for wiki
+			// Get access level for wiki
 			$access = Group\Helper::getPluginAccess($group, 'wiki');
 
-			//check to make sure user has access to wiki section
+			// Check to make sure user has access to wiki section
 			if (($access == 'members' && !in_array(User::get('id'), $group->get('members')))
 			 || ($access == 'registered' && User::isGuest()))
 			{
 				$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH') . ' ' . $file);
 			}
 
-			//load wiki page from db
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+			// Load wiki page from db
+			require_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 			$page = new \Components\Wiki\Models\Page();
 
 			$pagename = Request::getVar('pagename');
@@ -1422,33 +1427,33 @@ class Groups extends Base
 			}
 			$page = \Components\Wiki\Models\Page::oneByPath($scope . $pagename, 'group', $group->get('gidNumber'));
 
-			//check specific wiki page access
+			// Check specific wiki page access
 			if ($page->get('access') == 1 && !in_array(User::get('id'), $group->get('members')) && $authorized != 'admin')
 			{
 				$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH') . ' ' . $file);
 				return;
 			}
 
-			//get the config and build base path
+			// Get the config and build base path
 			$wiki_config = \Component::params('com_wiki');
 			$base_path = $wiki_config->get('filepath') . DS . $page->get('id');
 		}
 		elseif ($this->active == 'blog')
 		{
-			//get access setting of group blog
+			// Get access setting of group blog
 			$access = Group\Helper::getPluginAccess($group, 'blog');
 
-			//make sure user has access to blog
+			// Make sure user has access to blog
 			if (($access == 'members' && !in_array(User::get('id'), $group->get('members')))
 			 || ($access == 'registered' && User::isGuest()))
 			{
 				$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH') . ' ' . $file);
 			}
 
-			//make sure we have a group id of the proper length
+			// Make sure we have a group id of the proper length
 			$groupID = Group\Helper::niceidformat($group->get('gidNumber'));
 
-			//buld path to blog folder
+			// Build path to blog folder
 			$base_path = $this->config->get('uploadpath') . DS . $groupID . DS . 'blog';
 			if (!file_exists(PATH_APP . DS . $base_path . DS . $file))
 			{
@@ -1457,10 +1462,10 @@ class Groups extends Base
 		}
 		else
 		{
-			//get access level for overview or other group pages
+			// Get access level for overview or other group pages
 			$access = Group\Helper::getPluginAccess($group, 'overview');
 
-			//check to make sure we can access it
+			// Check to make sure we can access it
 			if (($access == 'members' && !in_array(User::get('id'), $group->get('members')))
 			 || ($access == 'registered' && User::isGuest()))
 			{
@@ -1472,22 +1477,22 @@ class Groups extends Base
 			$base_path .= DS . $group->get('gidNumber') . DS . 'uploads';
 		}
 
-		// trim base path
+		// Trim base path
 		$base_path = ltrim($base_path, DS);
 
-		// only can serve files from within /site/groups/{group_id}/uploads/
+		// Only can serve files from within /site/groups/{group_id}/uploads/
 		$pathCheck = PATH_APP . DS . $base_path;
 
 		// Final path of file
 		$file_path     = $base_path . DS . $file;
 		$alt_file_path = null;
 
-		// if super group offer alt path outside uploads
+		// If super group offer alt path outside uploads
 		if ($group->isSuperGroup())
 		{
 			$alt_file_path = str_replace('/uploads', '', $base_path) . DS . $file;
 
-			// if super group can serve files anywhere inside /site/groups/{group_id}
+			// If super group can serve files anywhere inside /site/groups/{group_id}
 			$altPathCheck  = PATH_APP . DS . ltrim($alt_file_path);
 		}
 
@@ -1506,10 +1511,10 @@ class Groups extends Base
 			}
 		}
 
-		// get full path, expanding ../
+		// Get full path, expanding ../
 		if ($realPath = realpath(PATH_APP . DS . $file_path))
 		{
-			// make sure requested file is within acceptable dir
+			// Make sure requested file is within acceptable dir
 			if (strpos($realPath, $pathCheck) === false)
 			{
 				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND') . ' ' . $file);
@@ -1517,13 +1522,13 @@ class Groups extends Base
 			}
 		}
 
-		// new content server
+		// New content server
 		$contentServer = new \Hubzero\Content\Server();
 		$contentServer->filename(PATH_APP . DS . $file_path);
 		$contentServer->disposition('attachment');
 		$contentServer->acceptranges(false);
 
-		// do we need to manually set mime type
+		// Do we need to manually set mime type?
 		if ($extension == 'css')
 		{
 			$contentServer->setContentType('text/css');

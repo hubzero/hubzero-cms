@@ -88,6 +88,11 @@ class Manage extends AdminController
 				'policy',
 				''
 			),
+			'state'     => Request::getState(
+				$this->_option . '.browse.state',
+				'state',
+				-1
+			),
 			'sort'       => Request::getState(
 				$this->_option . '.browse.sort',
 				'filter_order',
@@ -107,7 +112,7 @@ class Manage extends AdminController
 		$canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 		if (!$canDo->get('core.admin'))
 		{
-			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == "0" || $this->view->filters['type'][0] == NULL)
+			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == "0" || $this->view->filters['type'][0] == null)
 			{
 				$this->view->filters['type'] = array('all');
 			}
@@ -121,6 +126,11 @@ class Manage extends AdminController
 					3   // super
 				);
 			}
+		}
+
+		if ($this->view->filters['state'] >= 0)
+		{
+			$this->view->filters['published'] = $this->view->filters['state'];
 		}
 
 		// Get a record count
@@ -144,10 +154,13 @@ class Manage extends AdminController
 		$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
 
 		// Get a list of all groups
-		$this->view->rows = null;
+		$this->view->rows = array();
 		if ($this->view->total > 0)
 		{
-			$this->view->rows = Group::find($this->view->filters);
+			if ($rows = Group::find($this->view->filters))
+			{
+				$this->view->rows = $rows;
+			}
 		}
 
 		// Set any errors
@@ -182,8 +195,6 @@ class Manage extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		// Incoming
 		$id = Request::getVar('id', array());
 
@@ -194,25 +205,23 @@ class Manage extends AdminController
 		}
 
 		// determine task
-		$task = ($id == '') ? 'create' : 'edit';
+		$task = (!$id ? 'create' : 'edit');
 
-		$this->view->group = new Group();
-		$this->view->group->read($id);
+		$group = new Group();
+		$group->read($id);
 
-		// make sure we are organized
-		if (!$this->authorize($task, $this->view->group))
+		// Make sure we are authorized
+		if (!$this->authorize($task, $group))
 		{
-			return;
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->setLayout('edit')
+			->set('group', $group)
+			->display();
 	}
 
 	/**
@@ -272,9 +281,10 @@ class Manage extends AdminController
 		}
 
 		$task = ($this->_task == 'edit') ? 'edit' : 'create';
+
 		if (!$this->authorize($task, $group))
 		{
-			return;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// Check for any missing info
@@ -290,17 +300,12 @@ class Manage extends AdminController
 		// Push back into edit mode if any errors
 		if ($this->getError())
 		{
-			$this->view->setLayout('edit');
-			$this->view->group = $group;
-
-			// Set any errors
-			if ($this->getError())
-			{
-				$this->view->setError($this->getError());
-			}
-
 			// Output the HTML
-			$this->view->display();
+			$this->view
+				->setErrors($this->getErrors())
+				->setLayout('edit')
+				->set('group', $group)
+				->display();
 			return;
 		}
 
@@ -324,17 +329,12 @@ class Manage extends AdminController
 		// Push back into edit mode if any errors
 		if ($this->getError())
 		{
-			$this->view->setLayout('edit');
-			$this->view->group = $group;
-
-			// Set any errors
-			if ($this->getError())
-			{
-				$this->view->setError($this->getError());
-			}
-
 			// Output the HTML
-			$this->view->display();
+			$this->view
+				->setErrors($this->getErrors())
+				->setLayout('edit')
+				->set('group', $group)
+				->display();
 			return;
 		}
 
@@ -406,7 +406,6 @@ class Manage extends AdminController
 			$version->store(false);
 		}
 
-
 		// Get plugins
 		Event::trigger('groups.onGroupAfterSave', array($before, $group));
 
@@ -427,10 +426,9 @@ class Manage extends AdminController
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_GROUPS_SAVED')
-		);
+		Notify::success(Lang::txt('COM_GROUPS_SAVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -441,7 +439,7 @@ class Manage extends AdminController
 	 */
 	private function _handleSuperGroup($group)
 	{
-		//get the upload path for groups
+		// get the upload path for groups
 		$uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
 		// get the source path
@@ -533,14 +531,14 @@ class Manage extends AdminController
 		}
 		else
 		{
-			Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'));
+			Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'));
 		}
 
 		// check to see if we have a super group db config
 		$supergroupDbConfigFile = DS . 'etc' . DS . 'supergroup.conf';
 		if (!file_exists($supergroupDbConfigFile))
 		{
-			Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_LOAD_CONFIG'));
+			Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_LOAD_CONFIG'));
 		}
 		else
 		{
@@ -725,10 +723,7 @@ class Manage extends AdminController
 		// empty list?
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		// vars to hold results of pull
@@ -847,11 +842,12 @@ class Manage extends AdminController
 		}
 
 		// display view
-		$this->view->setLayout('fetched');
-		$this->view->success = $success;
-		$this->view->failed  = $failed;
-		$this->view->config  = $this->config;
-		$this->view->display();
+		$this->view
+			->set('success', $success)
+			->set('failed', $failed)
+			->set('config', $this->config)
+			->setLayout('fetched')
+			->display();
 	}
 
 	/**
@@ -876,12 +872,8 @@ class Manage extends AdminController
 		// empty list?
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('There are no eligible merge requests.'),
-				'warning'
-			);
-			return;
+			Notify::warning(Lang::txt('There are no eligible merge requests.'));
+			return $this->cancelTask();
 		}
 
 		// vars to hold results of pull
@@ -903,7 +895,10 @@ class Manage extends AdminController
 			// make sure its a super group
 			if (!$group->isSuperGroup())
 			{
-				$failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_SUPER_GROUP'));
+				$failed[] = array(
+					'group'   => $group->get('cn'),
+					'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_SUPER_GROUP')
+				);
 				continue;
 			}
 
@@ -915,11 +910,13 @@ class Manage extends AdminController
 			{
 				if (!Filesystem::makeDirectory($uploadPath))
 				{
-					$failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
+					$failed[] = array(
+						'group'   => $group->get('cn'),
+						'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST')
+					);
 					continue;
 				}
 			}
-
 
 			// build command to run via shell
 			$cmd = "cd {$uploadPath} && ";
@@ -942,7 +939,7 @@ class Manage extends AdminController
 			// this will run a "git pull --rebase origin master"
 			$output = shell_exec($cmd);
 
-			if (strpos($output, 'ineligble') === FALSE)
+			if (strpos($output, 'ineligble') === false)
 			{
 				$museCmd = 'migrate';
 				$cmd = "cd {$uploadPath} && ";
@@ -955,26 +952,32 @@ class Manage extends AdminController
 				// Error message - refusing to run migrations due to failed update
 			}
 
-
 			// did we succeed
 			if (preg_match("/Updating the repository.../uis", $output))
 			{
 				// add success message
-				$success[] = array('group' => $group->get('cn'), 'message' => $output);
+				$success[] = array(
+					'group'   => $group->get('cn'),
+					'message' => $output
+				);
 			}
 			else
 			{
 				// add failed message
-				$failed[] = array('group' => $group->get('cn'), 'message' => $output);
+				$failed[] = array(
+					'group'   => $group->get('cn'),
+					'message' => $output
+				);
 			}
 		}
 
 		// display view
-		$this->view->setLayout('merged');
-		$this->view->success = $success;
-		$this->view->failed  = $failed;
-		$this->view->config  = $this->config;
-		$this->view->display();
+		$this->view
+			->setLayout('merged')
+			->set('success', $success)
+			->set('failed', $failed)
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**
@@ -986,6 +989,11 @@ class Manage extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -1071,9 +1079,7 @@ class Manage extends AdminController
 		}
 
 		// Redirect back to the groups page
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -1084,7 +1090,15 @@ class Manage extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken();
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -1094,6 +1108,8 @@ class Manage extends AdminController
 		{
 			$ids = array($ids);
 		}
+
+		$i = 0;
 
 		// Do we have any IDs?
 		if (!empty($ids))
@@ -1121,15 +1137,18 @@ class Manage extends AdminController
 					'action'    => 'group_published',
 					'comments'  => 'published by administrator'
 				));
+
+				$i++;
 			}
 
 			// Output messsage and redirect
-			Notify::success(Lang::txt('COM_GROUPS_PUBLISHED'));
+			if ($i)
+			{
+				Notify::success(Lang::txt('COM_GROUPS_SUCCESS_PUBLISHED', $i));
+			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -1140,7 +1159,15 @@ class Manage extends AdminController
 	public function unpublishTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken();
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -1150,6 +1177,8 @@ class Manage extends AdminController
 		{
 			$ids = array($ids);
 		}
+
+		$i = 0;
 
 		// Do we have any IDs?
 		if (!empty($ids))
@@ -1177,15 +1206,92 @@ class Manage extends AdminController
 					'action'    => 'group_unpublished',
 					'comments'  => 'unpublished by administrator'
 				));
+
+				$i++;
 			}
 
 			// Output messsage
-			Notify::success(Lang::txt('COM_GROUPS_UNPUBLISHED'));
+			if ($i)
+			{
+				Notify::success(Lang::txt('COM_GROUPS_SUCCESS_UNPUBLISHED', $i));
+			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
+	}
+
+	/**
+	 * Archive a group
+	 *
+	 * @return  void
+	 */
+	public function archiveTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (!is_array($ids))
+		{
+			$ids = array($ids);
+		}
+
+		$i = 0;
+
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			//foreach group id passed in
+			foreach ($ids as $id)
+			{
+				// Load the group page
+				$group = new Group();
+				$group->read($id);
+
+				// Ensure we found the group info
+				if (!$group)
+				{
+					continue;
+				}
+
+				$before = clone $group;
+
+				// Set the group to be archived
+				$group->set('published', 2);
+				$group->update();
+
+				// log publishing
+				Log::log(array(
+					'gidNumber' => $group->get('gidNumber'),
+					'action'    => 'group_archived',
+					'comments'  => 'archived by administrator'
+				));
+
+				// Get plugins
+				Event::trigger('groups.onGroupAfterSave', array($before, $group));
+
+				$i++;
+			}
+
+			// Output messsage and redirect
+			if ($i)
+			{
+				Notify::success(Lang::txt('COM_GROUPS_SUCCESS_ARCHIVED', $i));
+			}
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -1195,6 +1301,17 @@ class Manage extends AdminController
 	 */
 	public function approveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 
@@ -1203,6 +1320,8 @@ class Manage extends AdminController
 		{
 			$ids = array($ids);
 		}
+
+		$i = 0;
 
 		// Do we have any IDs?
 		if (!empty($ids))
@@ -1230,15 +1349,18 @@ class Manage extends AdminController
 					'action'    => 'group_approved',
 					'comments'  => 'approved by administrator'
 				));
+
+				$i++;
 			}
 
-			Notify::success(Lang::txt('COM_GROUPS_APPROVED'));
+			if ($i)
+			{
+				Notify::success(Lang::txt('COM_GROUPS_APPROVED'));
+			}
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -1248,6 +1370,17 @@ class Manage extends AdminController
 	 */
 	public function unapproveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 
@@ -1256,6 +1389,8 @@ class Manage extends AdminController
 		{
 			$ids = array($ids);
 		}
+
+		$i = 0;
 
 		// Do we have any IDs?
 		if (!empty($ids))
@@ -1283,15 +1418,18 @@ class Manage extends AdminController
 					'action'    => 'group_unapproved',
 					'comments'  => 'unapproved by administrator'
 				));
+
+				$i++;
 			}
 
-			Notify::success(Lang::txt('COM_GROUPS_UNAPPROVED'));
+			if ($i)
+			{
+				Notify::success(Lang::txt('COM_GROUPS_UNAPPROVED'));
+			}
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -1347,12 +1485,7 @@ class Manage extends AdminController
 		// can user perform task
 		if (!$canDo->get($taskName) || (!$canDo->get('core.admin') && $task == 'edit' && $group->get('type') == 0))
 		{
-			// No access - redirect to main listing
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_GROUPS_NOT_AUTH'),
-				'error'
-			);
+			// No access
 			return false;
 		}
 

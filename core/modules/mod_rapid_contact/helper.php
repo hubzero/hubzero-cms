@@ -94,8 +94,7 @@ class Helper extends Module
 		$exact_url           = $this->params->get('exact_url', true);
 		if (!$exact_url)
 		{
-			//$this->url = $this->_cleanXss(filter_var(Request::current(), FILTER_SANITIZE_URL));
-			$this->url = Request::current();
+			$this->url = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITIZE_URL);
 		}
 		else
 		{

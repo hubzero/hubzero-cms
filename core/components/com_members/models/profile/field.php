@@ -225,11 +225,21 @@ class Field extends Relational
 		switch ($task)
 		{
 			case 'register':
-			case 'create': $index = 0; break;
-			case 'proxy':  $index = 1; break;
-			case 'update': $index = 2; break;
-			case 'edit':   $index = 3; break;
-			default:       $index = 0; break;
+			case 'create':
+				$index = 0;
+				break;
+			case 'proxy':
+				$index = 1;
+				break;
+			case 'update':
+				$index = 2;
+				break;
+			case 'edit':
+				$index = 3;
+				break;
+			default:
+				$index = 0;
+				break;
 		}
 
 		$configured = Component::params('com_members')->get($name);
@@ -252,12 +262,20 @@ class Field extends Relational
 
 		switch ($key)
 		{
-			case 'R': $val = self::STATE_REQUIRED; break;
-			case 'O': $val = self::STATE_OPTIONAL; break;
-			case 'U': $val = self::STATE_READONLY; break;
+			case 'R':
+				$val = self::STATE_REQUIRED;
+				break;
+			case 'O':
+				$val = self::STATE_OPTIONAL;
+				break;
+			case 'U':
+				$val = self::STATE_READONLY;
+				break;
 			case 'H':
 			case '-':
-			default : $val = self::STATE_HIDDEN; break;
+			default :
+				$val = self::STATE_HIDDEN;
+				break;
 		}
 
 		return $val;
@@ -365,6 +383,8 @@ class Field extends Relational
 			$f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
 			$f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
 			$f .= ($field->get('option_other') ? ' option_other="1"' : '');
+			$f .= (!is_null($field->get('min')) ? ' min="' . (int) $field->get('min') . '"' : '');
+			$f .= (!is_null($field->get('max')) ? ' max="' . (int) $field->get('max') . '"' : '');
 			if (in_array($action, array('create', 'update', 'edit')))
 			{
 				$f .= ($field->get('action_' . $action) == self::STATE_REQUIRED ? ' required="true"' : '');
