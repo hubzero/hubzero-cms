@@ -1412,6 +1412,12 @@ class Create extends SiteController
 			return;
 		}
 
+		// If the resource gets published (auto-publish or the user is in the auto-approved list), trigger the onAfterContentSubmission event
+		if ($resource->get('published'))
+		{
+			Event::trigger('content.onAfterContentSubmission', array('Resource'));
+		}
+
 		// Output HTML
 		$this->setView($this->_controller, 'thanks');
 

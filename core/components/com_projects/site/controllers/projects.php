@@ -661,6 +661,13 @@ class Projects extends Base
 			$this->view->setError($error);
 		}
 
+		// Check session if this is a newly submitted entry. Trigger a proper event if so.
+		if (Session::get('newsubmission.project')) {
+			// Unset the new submission session flag
+			Session::set('newsubmission.project');
+			Event::trigger('content.onAfterContentSubmission', array('Project'));
+		}
+
 		$this->view->display();
 		return;
 	}
