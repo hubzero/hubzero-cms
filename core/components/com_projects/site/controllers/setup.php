@@ -601,6 +601,10 @@ class Setup extends Base
 
 		// Trigger project create event
 		Event::trigger('projects.onProjectCreate', array($this->model));
+
+		// Set the session flag indicating the new submission
+		Session::set('newsubmission.project', true);
+
 	}
 
 	/**

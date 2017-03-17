@@ -55,6 +55,7 @@ use Lang;
 use User;
 use Date;
 use App;
+use Hubzero\Event as Evt;
 
 /**
  * Controller class for events
@@ -865,6 +866,13 @@ class Events extends SiteController
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
+		}
+
+		// Check session if this is a newly submitted entry. Trigger a proper event if so.
+		if (Session::get('newsubmission.event')) {
+			// Unset the new submission session flag
+			Session::set('newsubmission.event');
+			Evt::trigger('content.onAfterContentSubmission', array('Event'));
 		}
 
 		$this->view->display();
@@ -1710,7 +1718,6 @@ class Events extends SiteController
 			return;
 		}
 
-
 		// good ol' form validation
 		Request::checkToken();
 		Request::checkHoneypot() or die('Invalid Field Data Detected. Please try again.');
@@ -1949,6 +1956,9 @@ class Events extends SiteController
 
 		// Send the e-mail
 		$this->_sendMail(Config::get('sitename'), Config::get('mailfrom'), $subject, $message);
+
+		// Set the session flag indicating the new submission
+		Session::set('newsubmission.event', true);
 
 		// Redirect to the details page for the event we just created
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&task=details&id=' . $row->id));
