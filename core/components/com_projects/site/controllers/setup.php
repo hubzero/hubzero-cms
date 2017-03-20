@@ -777,7 +777,7 @@ class Setup extends Base
 						$objO->reassignRole(
 							$this->model->get('id'),
 							$users = array(User::get('id')),
-							0 ,
+							0,
 							1
 						);
 					}
