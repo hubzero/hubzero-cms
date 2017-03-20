@@ -90,7 +90,7 @@ class Results extends SiteController
 		$area = trim(Request::getWord('category', ''));
 
 		// Check the search string for a category prefix
-		if ($period != NULL)
+		if ($period != null)
 		{
 			$searchstring = strtolower($period);
 			foreach ($areas as $c => $t)
@@ -109,7 +109,7 @@ class Results extends SiteController
 				if (is_array($t) && !empty($t))
 				{
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc=>$st)
+					foreach ($t as $sc => $st)
 					{
 						$regexp = '/' . $sc . ':/';
 						if (strpos($searchstring, $sc . ':') !== false)
@@ -243,7 +243,7 @@ class Results extends SiteController
 		$periodlist[] = Html::select('option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
 		$periodlist[] = Html::select('option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
 
-		$thisyear = strftime("%Y",time());
+		$thisyear = strftime("%Y", time());
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('10/1/' . $y))
@@ -302,10 +302,10 @@ class Results extends SiteController
 		$area = trim(Request::getWord('category', ''));
 
 		// Check the search string for a category prefix
-		if ($period != NULL)
+		if ($period != null)
 		{
 			$searchstring = strtolower($period);
-			foreach ($areas as $c=>$t)
+			foreach ($areas as $c => $t)
 			{
 				$regexp = '/' . $c . ':/';
 				if (strpos($searchstring, $c . ':') !== false)
@@ -321,7 +321,7 @@ class Results extends SiteController
 				if (is_array($t) && !empty($t))
 				{
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc=>$st)
+					foreach ($t as $sc => $st)
 					{
 						$regexp = '/' . $sc . ':/';
 						if (strpos($searchstring, $sc . ':') !== false)
