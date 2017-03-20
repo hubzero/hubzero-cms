@@ -19,6 +19,14 @@ if (!jq) {
 	var jq = $;
 }
 
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+};
+
 HUB.ProjectPublicationsSelector = {
 	jQuery: jq,
 	selections: new Array(),
@@ -32,7 +40,7 @@ HUB.ProjectPublicationsSelector = {
 
 		if (container.length) {
 			// Infinite scroll
-			container.infinitescroll({
+			var opts = {
 					navSelector  : '.list-footer',    // selector for the paged navigation
 					nextSelector : '.list-footer .next a',  // selector for the NEXT link (to page 2)
 					itemSelector : '#pub-selector li',     // selector for all items you'll retrieve
@@ -53,11 +61,62 @@ HUB.ProjectPublicationsSelector = {
 						return path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
 					},
 					debug: true
-				},
+				};
+
+			container.infinitescroll(
+				opts,
 				function(newElements) {
 					HUB.ProjectPublicationsSelector.showOddEven();
 				}
 			);
+
+			var typedelay = (function(){
+				var timer = 0;
+				return function(callback, ms){
+					clearTimeout(timer);
+					timer = setTimeout(callback, ms);
+				};
+			})();
+
+			$('#pub-search')
+				.on('keyup', function (e) {
+					var input = $(this);
+
+					// Ad a slight delay so search only happens after
+					// typing appears to stop (or pause, at least)
+					typedelay(function(){
+						if (!input.length) {
+							return;
+						}
+
+						// Perform the search
+						$.get($('.item-add').attr('href') + '&search=' + input.val(), {}, function(data){
+							var results = $(data).find('#pub-selector-results').html();
+
+							if (results) {
+								// Disable infinite scroll
+								container.infinitescroll('destroy');
+								container.data('infinitescroll', null);
+
+								// Add the results to the page
+								$('#pub-selector-results').html(results);
+								// Re-enable infinite scroll
+								// This is ugly but done this way as the search results
+								// will have its own pagination list. So, we need to force
+								// infinite scrll to start over every time we get new results
+								container = $('#pub-selector');
+								opts.binder = container;
+								container.infinitescroll(
+									opts,
+									function(newElements) {
+										HUB.ProjectPublicationsSelector.showOddEven();
+									}
+								);
+								HUB.ProjectPublicationsSelector.selector();
+							}
+						});
+					}, 1000);
+				});
 		}
 
 		// Enable selection
@@ -197,12 +256,12 @@ HUB.ProjectPublicationsSelector = {
 		$('#pub-selector').selectable({
 			filter: ".allowed",
 			cancel: 'a',
-		    selected: function (event, ui)
+			selected: function (event, ui)
 			{
 				// Prevent going over maximum
 				numSelected = $('.selectedfilter').length;
 				if (max == numSelected
-					&& !$(ui.selected).hasClass('selectedfilter') )
+					&& !$(ui.selected).hasClass('selectedfilter'))
 				{
 					// Remove filter from previously selected item(s)
 					var popItem = $('.selectedfilter')[0];
@@ -213,23 +272,23 @@ HUB.ProjectPublicationsSelector = {
 					// Nothing happens
 					//$(ui.selected).removeClass('selectedfilter');
 				}
-		        else if ($(ui.selected).hasClass('selectedfilter'))
+				else if ($(ui.selected).hasClass('selectedfilter'))
 				{
-		            $(ui.selected).removeClass('selectedfilter');
-		            // do unselected stuff
-		        }
+					$(ui.selected).removeClass('selectedfilter');
+					// do unselected stuff
+				}
 				else
 				{
-		            $(ui.selected).addClass('selectedfilter');
-		        }
+					$(ui.selected).addClass('selectedfilter');
+				}
 
 				HUB.ProjectPublicationsSelector.enableButton();
-		    },
-		    unselected: function (event, ui)
+			},
+			unselected: function (event, ui)
 			{
-		        $(ui.selected).removeClass('selectedfilter');
+				$(ui.selected).removeClass('selectedfilter');
 				HUB.ProjectPublicationsSelector.enableButton();
-		    }
+			}
 		});
 
 	},
