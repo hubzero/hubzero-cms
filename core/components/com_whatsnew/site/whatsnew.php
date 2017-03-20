@@ -32,17 +32,10 @@
 
 namespace Components\Whatsnew\Site;
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'period.php');
-
-$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'results'));
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'results';
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+// Include files
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'period.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'results.php';
 
 // Instantiate controller
-$controller = new $controllerName();
+$controller = new Controllers\Results();
 $controller->execute();
-$controller->redirect();

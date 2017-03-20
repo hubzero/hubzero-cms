@@ -166,4 +166,3 @@ class Period
 		$this->dEndDate   = substr($this->endTime, 0, strlen('0000-00-00'));
 	}
 }
-

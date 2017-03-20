@@ -32,6 +32,8 @@
 
 namespace Components\Whatsnew\Helpers;
 
+use Event;
+
 /**
  * Helper class for returning "what's new" results
  */
@@ -52,7 +54,7 @@ class Finder
 
 		// get the search areas
 		$areas = array();
-		$search_areas = \Event::trigger('whatsnew.onWhatsNewAreas');
+		$search_areas = Event::trigger('whatsnew.onWhatsNewAreas');
 		foreach ($search_areas as $search_area)
 		{
 			$areas = array_merge($areas, $search_area);
@@ -60,7 +62,7 @@ class Finder
 
 		// get the results
 		$config = array($p, $limit, 0, $areas);
-		$results = \Event::trigger('onWhatsNew', $config);
+		$results = Event::trigger('onWhatsNew', $config);
 
 		$new = array();
 		$i = 0;
@@ -100,7 +102,7 @@ class Finder
 	 */
 	public static function parseTimePeriod($period)
 	{
-		require_once(__DIR__ . DS . 'period.php');
+		require_once __DIR__ . DS . 'period.php';
 
 		return new Period($period);
 	}

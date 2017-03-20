@@ -40,6 +40,7 @@ use Request;
 use Config;
 use Event;
 use Lang;
+use Html;
 
 /**
  * Controller class for dipslaying what's new
@@ -76,11 +77,11 @@ class Results extends SiteController
 		$menu->param = new \Hubzero\Config\Registry($menu->params);
 
 		// Incoming
-		$this->view->period = Request::getVar('period', $menu->param->get('period', 'month'));
+		$period = Request::getVar('period', $menu->param->get('period', 'month'));
 
 		// Paging variables
-		$this->view->start = Request::getInt('limitstart', 0);
-		$this->view->limit = Request::getInt('limit', Config::get('list_limit'));
+		$start = Request::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', Config::get('list_limit'));
 
 		// Get categories
 		$areas = $this->_getAreas();
@@ -89,9 +90,9 @@ class Results extends SiteController
 		$area = trim(Request::getWord('category', ''));
 
 		// Check the search string for a category prefix
-		if ($this->view->period != NULL)
+		if ($period != NULL)
 		{
-			$searchstring = strtolower($this->view->period);
+			$searchstring = strtolower($period);
 			foreach ($areas as $c => $t)
 			{
 				$regexp = '/' . $c . ':/';
@@ -123,7 +124,7 @@ class Results extends SiteController
 					}
 				}
 			}
-			$this->view->period = trim($searchstring);
+			$period = trim($searchstring);
 		}
 
 		// Get the active category
@@ -133,15 +134,15 @@ class Results extends SiteController
 		}
 		else
 		{
-			$this->view->limit = 5;
+			$limit = 5;
 			$activeareas = $areas;
 		}
 
 		// Process the keyword for exact phrase matches, etc.
-		$p = new Period($this->view->period);
+		$p = new Period($period);
 
 		// Get the search result totals
-		$this->view->totals = Event::trigger(
+		$totals = Event::trigger(
 			'whatsnew.onWhatsnew',
 			array(
 				$p,
@@ -151,49 +152,49 @@ class Results extends SiteController
 			)
 		);
 
-		$this->view->limit = ($this->view->limit == 0) ? 'all' : $this->view->limit;
+		$limit = ($limit == 0) ? 'all' : $limit;
 
 		// Get the search results
-		$this->view->results = Event::trigger(
+		$results = Event::trigger(
 			'whatsnew.onWhatsnew',
 			array(
 				$p,
-				$this->view->limit,
-				$this->view->start,
+				$limit,
+				$start,
 				$activeareas
 			)
 		);
 
 		// Get the total results found (sum of all categories)
 		$i = 0;
-		$this->view->total = 0;
-		$this->view->cats = array();
+		$total = 0;
+		$cats = array();
 		foreach ($areas as $c => $t)
 		{
-			$this->view->cats[$i]['category'] = $c;
+			$cats[$i]['category'] = $c;
 
 			// Do sub-categories exist?
 			if (is_array($t) && !empty($t))
 			{
 				// They do - do some processing
-				$this->view->cats[$i]['title'] = ucfirst($c);
-				$this->view->cats[$i]['total'] = 0;
-				$this->view->cats[$i]['_sub']  = array();
+				$cats[$i]['title'] = ucfirst($c);
+				$cats[$i]['total'] = 0;
+				$cats[$i]['_sub']  = array();
 				$z = 0;
 				// Loop through each sub-category
 				foreach ($t as $s => $st)
 				{
 					// Ensure a matching array of totals exist
-					if (is_array($this->view->totals[$i])
-					 && !empty($this->view->totals[$i])
-					 && isset($this->view->totals[$i][$z]))
+					if (is_array($totals[$i])
+					 && !empty($totals[$i])
+					 && isset($totals[$i][$z]))
 					{
 						// Add to the parent category's total
-						$this->view->cats[$i]['total'] = $this->view->cats[$i]['total'] + $this->view->totals[$i][$z];
+						$cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
 						// Get some info for each sub-category
-						$this->view->cats[$i]['_sub'][$z]['category'] = $s;
-						$this->view->cats[$i]['_sub'][$z]['title']    = stripslashes($st);
-						$this->view->cats[$i]['_sub'][$z]['total']    = $this->view->totals[$i][$z];
+						$cats[$i]['_sub'][$z]['category'] = $s;
+						$cats[$i]['_sub'][$z]['title']    = stripslashes($st);
+						$cats[$i]['_sub'][$z]['total']    = $totals[$i][$z];
 					}
 					$z++;
 				}
@@ -201,26 +202,26 @@ class Results extends SiteController
 			else
 			{
 				// No sub-categories - this should be easy
-				$this->view->cats[$i]['title'] = $t;
-				$this->view->cats[$i]['total'] = (!is_array($this->view->totals[$i])) ? $this->view->totals[$i] : 0;
+				$cats[$i]['title'] = $t;
+				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
 			}
 
 			// Add to the overall total
-			$this->view->total = $this->view->total + intval($this->view->cats[$i]['total']);
+			$total += intval($cats[$i]['total']);
 			$i++;
 		}
 
 		// Do we have an active area?
-		$this->view->active = '';
+		$active = '';
 		if (count($activeareas) == 1)
 		{
-			$this->view->active = $activeareas[0];
+			$active = $activeareas[0];
 		}
 
 		// Set the page title
-		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->_text($this->view->period);
+		$title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->_text($period);
 
-		Document::setTitle($this->view->title);
+		Document::setTitle($title);
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -231,39 +232,46 @@ class Results extends SiteController
 			);
 		}
 		Pathway::append(
-			$this->_text($this->view->period),
-			'index.php?option=' . $this->_option . '&period=' . $this->view->period
+			$this->_text($period),
+			'index.php?option=' . $this->_option . '&period=' . $period
 		);
 
 		// Build some options for the time period <select>
-		$this->view->periodlist = array();
-		$this->view->periodlist[] = \Html::select('option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
-		$this->view->periodlist[] = \Html::select('option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
-		$this->view->periodlist[] = \Html::select('option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
-		$this->view->periodlist[] = \Html::select('option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
+		$periodlist = array();
+		$periodlist[] = Html::select('option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
+		$periodlist[] = Html::select('option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
+		$periodlist[] = Html::select('option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
+		$periodlist[] = Html::select('option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
 
 		$thisyear = strftime("%Y",time());
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('10/1/' . $y))
 			{
-				$this->view->periodlist[] = \Html::select('option', $y, Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
+				$periodlist[] = Html::select('option', $y, Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
 			}
 		}
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('01/01/' . $y))
 			{
-				$this->view->periodlist[] = \Html::select('option', 'c_' . $y, Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
+				$periodlist[] = Html::select('option', 'c_' . $y, Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
 			}
 		}
 
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('cats', $cats)
+			->set('limit', $limit)
+			->set('start', $start)
+			->set('totals', $totals)
+			->set('total', $total)
+			->set('period', $period)
+			->set('periodlist', $periodlist)
+			->set('area', $area)
+			->set('active', $active)
+			->set('title', $title)
+			->set('results', $results)
+			->display();
 	}
 
 	/**
@@ -388,18 +396,18 @@ class Results extends SiteController
 
 				// URL link to article
 				$row->href = DS . ltrim($row->href, DS);
-				if (strstr($row->href, 'view'))
+				/*if (strstr($row->href, 'view'))
 				{
 					// tests to see if itemid has already been included - this occurs for typed content items
-					/*if (!strstr($row->href, 'Itemid'))
+					if (!strstr($row->href, 'Itemid'))
 					{
 						$temp = explode('id=', $row->href);
 						if (isset($temp[1]))
 						{
 							$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
 						}
-					}*/
-				}
+					}
+				}*/
 				$link = Route::url($row->href);
 
 				if (!isset($row->text) && isset($row->itext))
@@ -441,10 +449,18 @@ class Results extends SiteController
 	{
 		switch ($period)
 		{
-			case 'week':    return Lang::txt('COM_WHATSNEW_OPT_WEEK');    break;
-			case 'month':   return Lang::txt('COM_WHATSNEW_OPT_MONTH');   break;
-			case 'quarter': return Lang::txt('COM_WHATSNEW_OPT_QUARTER'); break;
-			case 'year':    return Lang::txt('COM_WHATSNEW_OPT_YEAR');    break;
+			case 'week':
+				return Lang::txt('COM_WHATSNEW_OPT_WEEK');
+				break;
+			case 'month':
+				return Lang::txt('COM_WHATSNEW_OPT_MONTH');
+				break;
+			case 'quarter':
+				return Lang::txt('COM_WHATSNEW_OPT_QUARTER');
+				break;
+			case 'year':
+				return Lang::txt('COM_WHATSNEW_OPT_YEAR');
+				break;
 			default:
 				$thisyear = strftime("%Y", time());
 				for ($y = $thisyear; $y >= 2002; $y--)
@@ -467,7 +483,7 @@ class Results extends SiteController
 						}
 					}
 				}
-			break;
+				break;
 		}
 	}
 
@@ -501,4 +517,3 @@ class Results extends SiteController
 		return $this->searchareas;
 	}
 }
-
