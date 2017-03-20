@@ -653,7 +653,7 @@ $area = Request::getVar('area', 'about');
 						}
 						?>
 						<a target="_blank" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
-							<img src="/components/com_citations/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
+							<img src="<?php echo Request::base(true); ?>/core/components/com_citations/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
 						</a>
 					</td>
 				</tr>
