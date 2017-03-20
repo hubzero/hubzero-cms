@@ -168,7 +168,7 @@ class Events extends SiteController
 					);
 				}
 				Pathway::append(
-					Lang::txt('EVENTS_WEEK_OF',$this->day),
+					Lang::txt('EVENTS_WEEK_OF', $this->day),
 					'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'
 				);
 			break;
@@ -264,9 +264,9 @@ class Events extends SiteController
 		$this->offset = Config::get('offset');
 
 		// Incoming
-		$this->year     = Request::getVar('year',  strftime("%Y", time()+($this->offset*60*60)));
+		$this->year     = Request::getVar('year', strftime("%Y", time()+($this->offset*60*60)));
 		$this->month    = Request::getVar('month', strftime("%m", time()+($this->offset*60*60)));
-		$this->day      = Request::getVar('day',   strftime("%d", time()+($this->offset*60*60)));
+		$this->day      = Request::getVar('day', strftime("%d", time()+($this->offset*60*60)));
 		$this->category = Request::getInt('category', 0);
 		$this->gid      = intval(User::get('gid'));
 
@@ -407,7 +407,7 @@ class Events extends SiteController
 
 		// Set some dates
 		$select_date = $year . '-' . $month . '-01 00:00:00';
-		$select_date_fin = $year . '-' . $month . '-' . date("t",mktime(0, 0, 0, ($month+1), 0, (int) $year)) . ' 23:59:59';
+		$select_date_fin = $year . '-' . $month . '-' . date("t", mktime(0, 0, 0, ($month+1), 0, (int) $year)) . ' 23:59:59';
 		$select_date = Date::of($select_date, Config::get('offset'));
 		$select_date_fin = Date::of($select_date_fin, Config::get('offset'));
 
@@ -481,7 +481,7 @@ class Events extends SiteController
 		$day    = intval($this->day);
 
 		$startday = _CAL_CONF_STARDAY;
-		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
+		$numday = ((date("w", mktime(0, 0, 0, $month, $day, $year)) - $startday) % 7);
 		if ($numday == -1)
 		{
 			$numday = 6;
@@ -517,7 +517,7 @@ class Events extends SiteController
 			$week = array();
 			$week['day']   = sprintf("%02d", $this_currentdate->day);
 			$week['month'] = sprintf("%02d", $this_currentdate->month);
-			$week['year']  = sprintf("%4d",  $this_currentdate->year);
+			$week['year']  = sprintf("%4d", $this_currentdate->year);
 
 			$select_date     = sprintf("%4d-%02d-%02d 00:00:00", $week['year'], $week['month'], $week['day']);
 			$select_date_fin = sprintf("%4d-%02d-%02d 23:59:59", $week['year'], $week['month'], $week['day']);
@@ -711,13 +711,13 @@ class Events extends SiteController
 		}
 
 		$event_up = new EventsDate($row->publish_up);
-		$row->start_date = Html::getDateFormat($event_up->year,$event_up->month,$event_up->day,0);
+		$row->start_date = Html::getDateFormat($event_up->year, $event_up->month, $event_up->day, 0);
 		$row->start_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES')
 						 ? $event_up->get12hrTime()
 						 : $event_up->get24hrTime();
 
 		$event_down = new EventsDate($row->publish_down);
-		$row->stop_date = Html::getDateFormat($event_down->year,$event_down->month,$event_down->day,0);
+		$row->stop_date = Html::getDateFormat($event_down->year, $event_down->month, $event_down->day, 0);
 		$row->stop_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES')
 						? $event_down->get12hrTime()
 						: $event_down->get24hrTime();
@@ -1143,14 +1143,14 @@ class Events extends SiteController
 		);
 
 		// Incoming
-		$register   = Request::getVar('register', NULL, 'post');
-		$arrival    = Request::getVar('arrival', NULL, 'post');
-		$departure  = Request::getVar('departure', NULL, 'post');
-		$dietary    = Request::getVar('dietary', NULL, 'post');
-		$bos        = Request::getVar('bos', NULL, 'post');
-		$dinner     = Request::getVar('dinner', NULL, 'post');
-		$disability = Request::getVar('disability', NULL, 'post');
-		$race       = Request::getVar('race', NULL, 'post');
+		$register   = Request::getVar('register', null, 'post');
+		$arrival    = Request::getVar('arrival', null, 'post');
+		$departure  = Request::getVar('departure', null, 'post');
+		$dietary    = Request::getVar('dietary', null, 'post');
+		$bos        = Request::getVar('bos', null, 'post');
+		$dinner     = Request::getVar('dinner', null, 'post');
+		$disability = Request::getVar('disability', null, 'post');
+		$race       = Request::getVar('race', null, 'post');
 
 		if ($register)
 		{
@@ -1206,7 +1206,7 @@ class Events extends SiteController
 			$message = str_replace("\n", "\r\n", $message);
 
 			// check to see if event manager email is configured
-			if ($email != "" || $email != NULL || !isset($email))
+			if ($email != "" || $email != null || !isset($email))
 			{
 				// one for the event manager
 				$this->_sendEmail($hub, $email, $subject, $message);
@@ -1271,7 +1271,7 @@ class Events extends SiteController
 			')'
 		);
 		$this->database->query();
-		$races = Request::getVar('race', NULL, 'post');
+		$races = Request::getVar('race', null, 'post');
 		if (!is_null($races) && (!isset($races['refused']) || !$races['refused']))
 		{
 			$resp_id = $this->database->insertid();
@@ -1281,7 +1281,7 @@ class Events extends SiteController
 				{
 					$this->database->execute(
 						'INSERT INTO #__events_respondent_race_rel(respondent_id, race, tribal_affiliation)
-						VALUES (' . $resp_id . ', \'' . $race . '\', ' . ($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'NULL') . ')'
+						VALUES (' . $resp_id . ', \'' . $race . '\', ' . ($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'null') . ')'
 					);
 				}
 			}
@@ -1310,33 +1310,33 @@ class Events extends SiteController
 						? $this->database->quote(
 							$reg['position'] ? $reg['position'] : $reg['position_other']
 						)
-						: 'NULL';
+						: 'null';
 				break;
 				case 'gender':
 					$rv[] = (isset($reg['sex']) && ($reg['sex'] == 'male' || $reg['sex'] == 'female'))
 						? '\'' . substr($reg['sex'], 0, 1) . '\''
-						: 'NULL';
+						: 'null';
 				break;
 				case 'dinner':
-					$dinner = Request::getVar('dinner', NULL, 'post');
-					$rv[] = is_null($dinner) ? 'NULL' : $dinner ? '1' : '0';
+					$dinner = Request::getVar('dinner', null, 'post');
+					$rv[] = is_null($dinner) ? 'null' : $dinner ? '1' : '0';
 				break;
 				case 'dietary':
-					$rv[] = (($dietary = Request::getVar('dietary', NULL, 'post')))
+					$rv[] = (($dietary = Request::getVar('dietary', null, 'post')))
 						? $this->database->quote($dietary['specific'])
-						: 'NULL';
+						: 'null';
 				break;
 				case 'arrival': case 'departure':
-					$rv[] = ($date = Request::getVar($val, NULL, 'post'))
+					$rv[] = ($date = Request::getVar($val, null, 'post'))
 						? $this->database->quote($date['day'] . ' ' . $date['time'])
-						: 'NULL';
+						: 'null';
 				break;
 				case 'disability':
-					$disability = Request::getVar('disability', NULL, 'post');
+					$disability = Request::getVar('disability', null, 'post');
 					$rv[] = ($disability) ? '1' : '0';
 				break;
 				default:
-					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $this->database->quote($reg[$val]) : 'NULL';
+					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $this->database->quote($reg[$val]) : 'null';
 			}
 		}
 		return implode($rv, ',');
@@ -1365,7 +1365,7 @@ class Events extends SiteController
 	 * @param      mixed $row Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function editTask($row=NULL)
+	public function editTask($row=null)
 	{
 		// Check if they are logged in
 		if (User::isGuest())
@@ -1516,34 +1516,85 @@ class Events extends SiteController
 		if ($this->config->getCfg('calUseStdTime') == 'YES')
 		{
 			$start_hrs = intval($start_hrs);
-			if ($start_hrs >= 12) $start_pm = true;
-			if ($start_hrs > 12) $start_hrs -= 12;
-			else if ($start_hrs == 0) $start_hrs = 12;
-			if (strlen($start_mins) == 1) $start_mins = '0'.$start_mins;
+			if ($start_hrs >= 12)
+			{
+				$start_pm = true;
+			}
+			if ($start_hrs > 12)
+			{
+				$start_hrs -= 12;
+			}
+			else if ($start_hrs == 0)
+			{
+				$start_hrs = 12;
+			}
+			if (strlen($start_mins) == 1)
+			{
+				$start_mins = '0'.$start_mins;
+			}
 			$start_time = $start_hrs . ':' . $start_mins;
 
 			$end_hrs = intval($end_hrs);
-			if ($end_hrs >= 12) $end_pm = true;
-			if ($end_hrs > 12) $end_hrs -= 12;
-			else if ($end_hrs == 0) $end_hrs = 12;
+			if ($end_hrs >= 12)
+			{
+				$end_pm = true;
+			}
+			if ($end_hrs > 12)
+			{
+				$end_hrs -= 12;
+			}
+			else if ($end_hrs == 0)
+			{
+				$end_hrs = 12;
+			}
 
 			$registerby_hrs = intval($registerby_hrs);
-			if ($registerby_hrs >= 12) $registerby_pm = true;
-			if ($registerby_hrs > 12) $registerby_hrs -= 12;
-			else if ($registerby_hrs == 0) $registerby_hrs = 12;
-			if (strlen($registerby_mins) == 1) $registerby_mins = '0' . $registerby_mins;
+			if ($registerby_hrs >= 12)
+			{
+				$registerby_pm = true;
+			}
+			if ($registerby_hrs > 12)
+			{
+				$registerby_hrs -= 12;
+			}
+			else if ($registerby_hrs == 0)
+			{
+				$registerby_hrs = 12;
+			}
+			if (strlen($registerby_mins) == 1)
+			{
+				$registerby_mins = '0' . $registerby_mins;
+			}
 			$registerby_time = $registerby_hrs . ':' . $registerby_mins;
 		}
-		if (strlen($start_mins) == 1) $start_mins = '0' . $start_mins;
-		if (strlen($start_hrs) == 1) $start_hrs = '0' . $start_hrs;
+		if (strlen($start_mins) == 1)
+		{
+			$start_mins = '0' . $start_mins;
+		}
+		if (strlen($start_hrs) == 1)
+		{
+			$start_hrs = '0' . $start_hrs;
+		}
 		$start_time = $start_hrs . ':' . $start_mins;
 
-		if (strlen($end_mins) == 1) $end_mins = '0' . $end_mins;
-		if (strlen($end_hrs) == 1) $end_hrs = '0' . $end_hrs;
+		if (strlen($end_mins) == 1)
+		{
+			$end_mins = '0' . $end_mins;
+		}
+		if (strlen($end_hrs) == 1)
+		{
+			$end_hrs = '0' . $end_hrs;
+		}
 		$end_time = $end_hrs . ':' . $end_mins;
 
-		if (strlen($registerby_mins) == 1) $registerby_mins = '0' . $registerby_mins;
-		if (strlen($registerby_hrs) == 1) $registerby_hrs = '0' . $registerby_hrs;
+		if (strlen($registerby_mins) == 1)
+		{
+			$registerby_mins = '0' . $registerby_mins;
+		}
+		if (strlen($registerby_hrs) == 1)
+		{
+			$registerby_hrs = '0' . $registerby_hrs;
+		}
 		$registerby_time = $registerby_hrs . ':' . $registerby_mins;
 
 		$times = array();
@@ -1731,7 +1782,7 @@ class Events extends SiteController
 		$end_time   = Request::getVar('end_time', '17:00', 'post');
 		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = Request::getInt('end_pm', 0, 'post');
-		$time_zone	= Request::getVar('time_zone', -5, 'post');
+		$time_zone  = Request::getVar('time_zone', -5, 'post');
 		$tags       = Request::getVar('tags', '', 'post');
 
 		// Bind the posted data to an event object
@@ -1813,7 +1864,7 @@ class Events extends SiteController
 		$row->extra_info = $this->_clean($row->extra_info);
 
 		// Prepend http:// to URLs without it
-		if ($row->extra_info != NULL)
+		if ($row->extra_info != null)
 		{
 			if ((substr($row->extra_info, 0, 7) != 'http://') && (substr($row->extra_info, 0, 8) != 'https://'))
 			{
@@ -1827,19 +1878,43 @@ class Events extends SiteController
 			list($hrs, $mins) = explode(':', $start_time);
 			$hrs = intval($hrs);
 			$mins = intval($mins);
-			if ($hrs != 12 && $start_pm) $hrs += 12;
-			else if ($hrs == 12 && !$start_pm) $hrs = 0;
-			if ($hrs < 10) $hrs = '0' . $hrs;
-			if ($mins < 10) $mins = '0' . $mins;
+			if ($hrs != 12 && $start_pm)
+			{
+				$hrs += 12;
+			}
+			else if ($hrs == 12 && !$start_pm)
+			{
+				$hrs = 0;
+			}
+			if ($hrs < 10)
+			{
+				$hrs = '0' . $hrs;
+			}
+			if ($mins < 10)
+			{
+				$mins = '0' . $mins;
+			}
 			$start_time = $hrs . ':' . $mins;
 
 			list($hrs, $mins) = explode(':', $end_time);
 			$hrs = intval($hrs);
 			$mins = intval($mins);
-			if ($hrs!= 12 && $end_pm) $hrs += 12;
-			else if ($hrs == 12 && !$end_pm) $hrs = 0;
-			if ($hrs < 10) $hrs = '0' . $hrs;
-			if ($mins < 10) $mins = '0' . $mins;
+			if ($hrs!= 12 && $end_pm)
+			{
+				$hrs += 12;
+			}
+			else if ($hrs == 12 && !$end_pm)
+			{
+				$hrs = 0;
+			}
+			if ($hrs < 10)
+			{
+				$hrs = '0' . $hrs;
+			}
+			if ($mins < 10)
+			{
+				$mins = '0' . $mins;
+			}
 			$end_time = $hrs . ':' . $mins;
 		}
 
@@ -1847,21 +1922,50 @@ class Events extends SiteController
 		// really need to figure datetimes out
 		switch ($row->time_zone)
 		{
-			case -12:    $tz = 'Pacific/Kwajalein';      break;
-			case -9.5:   $tz = 'Pacific/Marquesa';       break;
-			case -3.5:   $tz = 'Canada/Newfoundland';    break;
-			case -2:     $tz = 'America/Noronha';        break;
-			case 3.5:    $tz = 'Asia/Tehran';            break;
-			case 4.5:    $tz = 'Asia/Kabul';             break;
-			case 6:      $tz = 'Asia/Dhaka';             break;
-			case 6.5:    $tz = 'Asia/Rangoon';           break;
-			case 8.75:   $tz = 'Asia/Shanghai';          break;
-			case 9.5:    $tz = 'Australia/Adelaide';     break;
-			case 11:     $tz = 'Asia/Vladivostok';       break;
-			case 11.5:   $tz = 'Asia/Vladivostok';       break;
-			case 13:     $tz = 'Pacific/Tongatapu';      break;
-			case 14:     $tz = 'Pacific/Kiritimati';     break;
-			default:     $tz = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
+			case -12:
+				$tz = 'Pacific/Kwajalein';
+				break;
+			case -9.5:
+				$tz = 'Pacific/Marquesa';
+				break;
+			case -3.5:
+				$tz = 'Canada/Newfoundland';
+				break;
+			case -2:
+				$tz = 'America/Noronha';
+				break;
+			case 3.5:
+				$tz = 'Asia/Tehran';
+				break;
+			case 4.5:
+				$tz = 'Asia/Kabul';
+				break;
+			case 6:
+				$tz = 'Asia/Dhaka';
+				break;
+			case 6.5:
+				$tz = 'Asia/Rangoon';
+				break;
+			case 8.75:
+				$tz = 'Asia/Shanghai';
+				break;
+			case 9.5:
+				$tz = 'Australia/Adelaide';
+				break;
+			case 11:
+				$tz = 'Asia/Vladivostok';
+				break;
+			case 11.5:
+				$tz = 'Asia/Vladivostok';
+				break;
+			case 13:
+				$tz = 'Pacific/Tongatapu';
+				break;
+			case 14:
+				$tz = 'Pacific/Kiritimati';
+				break;
+			default:
+				$tz = timezone_name_from_abbr('', $row->time_zone * 3600, null);
 		}
 
 		// create publish up date time string
@@ -2000,8 +2104,8 @@ class Events extends SiteController
 	/**
 	 * Check if an email address is valid
 	 *
-	 * @param      string $email Email address to check
-	 * @return     integer 1 = valid, 0 = invalid
+	 * @param   string   $email   Email address to check
+	 * @return  integer  1 = valid, 0 = invalid
 	 */
 	private function _validEmail($email)
 	{
@@ -2009,16 +2113,14 @@ class Events extends SiteController
 		{
 			return(1);
 		}
-		else
-		{
-			return(0);
-		}
+
+		return(0);
 	}
 
 	/**
 	 * Get all the events categories
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	private function _getCategories()
 	{
@@ -2104,24 +2206,24 @@ class Events extends SiteController
 		//remove namespaced elements (we do not need them...)
 		$string = preg_replace('#</*\w+:\w[^>]*>#i',"",$string);
 		//remove really unwanted tags
-		do {
+		do
+		{
 			$oldstring = $string;
 			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|input|select|textarea|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
-		} while ($oldstring != $string);
+		}
+		while ($oldstring != $string);
 
 		return $string;
 	}
 
 	/**
-	 * Short description for '_sendMail'
+	 * Send an email
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      string $email Parameter description (if any) ...
-	 * @param      unknown $subject Parameter description (if any) ...
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $name
+	 * @param   string  $email
+	 * @param   string  $subject
+	 * @param   string  $message
+	 * @return  void
 	 */
 	private function _sendMail($name, $email, $subject, $message)
 	{
@@ -2139,12 +2241,10 @@ class Events extends SiteController
 	}
 
 	/**
-	 * Short description for '_authorize'
+	 * Authorize
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $id
+	 * @return  boolean
 	 */
 	protected function _authorize($id='')
 	{
@@ -2173,4 +2273,3 @@ class Events extends SiteController
 		return false;
 	}
 }
-
