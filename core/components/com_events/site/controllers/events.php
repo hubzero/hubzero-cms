@@ -1835,7 +1835,7 @@ class Events extends SiteController
 
 			// Wrap up the content of the field and attach it to the event content
 			$fs = $this->config->fields;
-			foreach ($fields as $param=>$value)
+			foreach ($fields as $param => $value)
 			{
 				if (trim($value) != '')
 				{
@@ -2186,7 +2186,7 @@ class Events extends SiteController
 		$string = preg_replace("'<script[^>]*>.*?</script>'si", '', $string);
 		$string = preg_replace('/<!--.+?-->/', '', $string);
 
-		$string = str_replace(array("&amp;","&lt;","&gt;"),array("&amp;amp;","&amp;lt;","&amp;gt;",),$string);
+		$string = str_replace(array("&amp;", "&lt;", "&gt;"), array("&amp;amp;", "&amp;lt;", "&amp;gt;"), $string);
 		// fix &entitiy\n;
 
 		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u', "$1;", $string);
@@ -2204,7 +2204,7 @@ class Events extends SiteController
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu', "$1>", $string);
 		//remove namespaced elements (we do not need them...)
-		$string = preg_replace('#</*\w+:\w[^>]*>#i',"",$string);
+		$string = preg_replace('#</*\w+:\w[^>]*>#i', "", $string);
 		//remove really unwanted tags
 		do
 		{
