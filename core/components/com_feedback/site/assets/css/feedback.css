@@ -17,10 +17,6 @@
 	#introduction:after {
 		content: "\f075";
 	}
-	/* [!] IE 7 */
-	#introduction {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf075;</small>');
-	}
 
 	.col div {
 		position: relative;
@@ -45,31 +41,16 @@
 	.col div.story:before {
 		content: "\275D";
 	}
-	.col div.story {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x275D;&nbsp;</span>' + this.innerHTML);
-	}
 	.col div.wish:before {
 		content: "\f078";
-	}
-	.col div.wish {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf078;&nbsp;</span>' + this.innerHTML);
 	}
 	.col div.poll:before {
 		content: "\f080";
 	}
-	.col div.poll {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf080;&nbsp;</span>' + this.innerHTML);
-	}
 	.col div.report:before {
 		content: "\f01f";
 	}
-	.col div.report {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf01f;&nbsp;</span>' + this.innerHTML);
-	}
-	.col span.fontcon-before,
-	.col span.fontcon-after {
-		*top: 1.2em;
-	}
+
 /* Iframe */
 	iframe {
 		border: none;
