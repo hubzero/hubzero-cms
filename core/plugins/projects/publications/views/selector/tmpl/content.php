@@ -36,7 +36,7 @@ $pubParams = $this->publication->params;
 
 $filters = array(
 	'category'    => Request::getVar('category', ''),
-	'sortby'      => Request::getCmd('sortby', 'date'),
+	'sortby'      => Request::getCmd('sortby', 'title'),
 	'limit'       => Request::getInt('limit', 25), //Config::get('list_limit')),
 	'start'       => Request::getInt('limitstart', 0),
 	'search'      => Request::getVar('search', ''),
@@ -68,65 +68,78 @@ $database = \App::get('db');
 $pa = new \Components\Publications\Tables\Author($database);
 ?>
 <label for="pub-search"><?php echo Lang::txt('Search'); ?></label>
-<input id="pub-search" name="search" placeholder="Start typing here" type="text" data-list=".pub-selector" autocomplete="off" />
-<ul class="pub-selector" id="pub-selector">
-	<?php
-	foreach ($results as $item)
-	{
-		$selected = false;
-
-		$liId = 'choice-' . $item->get('id');
-
-		/*$info = $item->info;
-		if ($item->url)
+<input id="pub-search" name="search" placeholder="Start typing here" type="text" data-list=".pub-selector-" autocomplete="off" />
+<div id="pub-selector-results">
+	<ul class="pub-selector" id="pub-selector">
+		<?php
+		if (count($results) > 0)
 		{
-			$info .= ' <a href="' . $item->url . '" target="_blank">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
+		foreach ($results as $item)
+		{
+			$selected = false;
+
+			$liId = 'choice-' . $item->get('id');
+
+			/*$info = $item->info;
+			if ($item->url)
+			{
+				$info .= ' <a href="' . $item->url . '" target="_blank">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
+			}
+
+			$icon = $item->icon;
+			$icon = str_replace('/components/com_publications/assets/img/', '/core/components/com_publications/site/assets/img/', $icon);
+			*/
+			$authors = $pa->getAuthors($item->get('version_id'));
+
+			$description = '';
+			if ($item->get('abstract'))
+			{
+				$description = \Hubzero\Utility\String::truncate(stripslashes($item->get('abstract')), 300) . "\n";
+			}
+			else if ($item->get('description'))
+			{
+				$description = \Hubzero\Utility\String::truncate(stripslashes($item->get('description')), 300) . "\n";
+			}
+
+			$info = array();
+			if ($item->get('category'))
+			{
+				$info[] = $item->get('cat_name');
+			}
+			if ($item->get('doi'))
+			{
+				$info[] = 'doi:' . $item->get('doi');
+			}
+			?>
+			<li class="type-publication allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
+				<div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" width="40" height="40" alt=""/></div>
+				<!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
+				<span class="item-wrap">
+					<?php echo $item->get('title'); ?><br />
+					<span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
+				</span>
+				<span class="item-fullinfo">
+					<?php echo $description; ?>
+					<p class="details">
+						<?php
+						if ($authors)
+						{
+							echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_LIST') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
+						}
+						?>
+					</p>
+				</span>
+			</li>
+		<?php
+			}
 		}
-
-		$icon = $item->icon;
-		$icon = str_replace('/components/com_publications/assets/img/', '/core/components/com_publications/site/assets/img/', $icon);
-		*/
-		$authors = $pa->getAuthors($item->get('version_id'));
-
-		$description = '';
-		if ($item->get('abstract'))
+		else
 		{
-			$description = \Hubzero\Utility\String::truncate(stripslashes($item->get('abstract')), 300) . "\n";
-		}
-		else if ($item->get('description'))
-		{
-			$description = \Hubzero\Utility\String::truncate(stripslashes($item->get('description')), 300) . "\n";
-		}
-
-		$info = array();
-		if ($item->get('category'))
-		{
-			$info[] = $item->get('cat_name');
-		}
-		if ($item->get('doi'))
-		{
-			$info[] = 'doi:' . $item->get('doi');
+			?>
+			<li><?php echo Lang::txt('No results found.'); ?></li>
+			<?php
 		}
 		?>
-		<li class="type-publication allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
-			<div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" width="40" height="40" alt=""/></div>
-			<!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
-			<span class="item-wrap">
-				<?php echo $item->get('title'); ?><br />
-				<span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
-			</span>
-			<span class="item-fullinfo">
-				<?php echo $description; ?>
-				<p class="details">
-					<?php
-					if ($authors)
-					{
-						echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_LIST') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
-					}
-					?>
-				</p>
-			</span>
-		</li>
-	<?php } ?>
-</ul>
-<?php echo $pageNav->render(); ?>
+	</ul>
+	<?php echo $pageNav->render(); ?>
+</div>
