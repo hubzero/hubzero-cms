@@ -449,7 +449,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Load member params
 		$member = $this->model->member(true);
-		$view->oparams = new \Hubzero\Config\Registry($member->params);
+		$view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
 
 		// Sync active?
 		$remotes = array();
@@ -2804,7 +2804,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get connection details for user
 		$member = $this->model->member(true);
-		$view->oparams = new \Hubzero\Config\Registry($member->params);
+		$view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;

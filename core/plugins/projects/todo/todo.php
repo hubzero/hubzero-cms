@@ -85,11 +85,11 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 * @param	   object  $model			Project
 	 * @return	   array   integer
 	 */
-	public function &onProjectCount( $model, $admin = 0 )
+	public function &onProjectCount($model, $admin = 0)
 	{
 		$database = App::get('db');
 
-		$objTD = new \Components\Projects\Tables\Todo( $database );
+		$objTD = new \Components\Projects\Tables\Todo($database);
 		$counts['todo'] = $objTD->getTodos($model->get('id'), $filters = array('count' => 1));
 
 		if ($admin == 1)
@@ -111,7 +111,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 * @param	   string  $areas			Plugins to return data
 	 * @return	   array   Return array of html
 	 */
-	public function onProject ( $model, $action = '', $areas = null )
+	public function onProject ($model, $action = '', $areas = null)
 	{
 		$returnhtml = true;
 
@@ -124,7 +124,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
+		if (is_array($areas))
 		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
 			{
@@ -184,7 +184,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get side content for main project page
 	 *
-	 * @return
+	 * @param   object  $model
+	 * @return  string
 	 */
 	public function onProjectMiniList($model)
 	{
@@ -206,11 +207,11 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'projects'	 => array($model->get('id')),
-			'limit'      => $model->config()->get('sidebox_limit', 5),
-			'start'		 => 0,
-			'sortby'	 => 'due',
-			'sortdir'	 => 'ASC'
+			'projects' => array($model->get('id')),
+			'limit'    => $model->config()->get('sidebox_limit', 5),
+			'start'    => 0,
+			'sortby'   => 'due',
+			'sortdir'  => 'ASC'
 		);
 
 		$view->items = $this->todo->entries('list', $view->filters);
@@ -221,10 +222,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * To do in multiple projects (members/groups plugins)
 	 *
-	 * @param      array 	$filters    Query filters
-	 * @param      integer  $limit 		Number of entries
-	 *
-	 * @return     array
+	 * @param   string   $area
+	 * @param   object   $model
+	 * @param   array    $projects
+	 * @param   integer  $uid
+	 * @param   array    $filters    Query filters
+	 * @return  array
 	 */
 	public function onShared($area, $model, $projects, $uid, $filters)
 	{
@@ -256,12 +259,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * View of items
 	 *
-	 * @return	   string
+	 * @return  string
 	 */
 	public function page()
 	{
 		// Get default view from owner params
-		$mparams = new \Hubzero\Html\Parameter($this->model->member()->params);
+		$member = $this->model->member();
+		$mparams = new \Hubzero\Html\Parameter($member ? $member->params : '');
 		$defaultView = $mparams->get('todo_layout', 'pinboard');
 
 		// Incoming
@@ -271,33 +275,33 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=> 'projects',
-				'element'	=> 'todo',
-				'name'		=> 'view',
-				'layout'	=> $layout
+				'folder'  => 'projects',
+				'element' => 'todo',
+				'name'    => 'view',
+				'layout'  => $layout
 			)
 		);
 
 		// Filters for returning results
 		$view->filters = array(
-			'projects'	 => array($this->model->get('id')),
-			'limit'		 => Request::getInt('limit', $this->params->get('limit', 50)),
-			'start'		 => Request::getInt('limitstart', 0),
-			'todolist'	 => Request::getWord('list', ''),
-			'state'		 => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
-			'mine'		 => $mine,
+			'projects'   => array($this->model->get('id')),
+			'limit'      => Request::getInt('limit', $this->params->get('limit', 50)),
+			'start'      => Request::getInt('limitstart', 0),
+			'todolist'   => Request::getWord('list', ''),
+			'state'      => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
+			'mine'       => $mine,
 			'assignedto' => $mine == 1  ? $this->_uid : 0,
-			'sortby'	 => Request::getVar('sortby', 'priority'),
-			'sortdir'	 => Request::getVar('sortdir', 'ASC'),
-			'layout'	 => $layout
+			'sortby'     => Request::getVar('sortby', 'priority'),
+			'sortdir'    => Request::getVar('sortdir', 'ASC'),
+			'layout'     => $layout
 		);
 
-		$view->option		= $this->_option;
-		$view->database		= $this->_database;
-		$view->model		= $this->model;
-		$view->uid			= $this->_uid;
-		$view->title		= $this->_area['title'];
-		$view->todo		    = $this->todo;
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->model    = $this->model;
+		$view->uid      = $this->_uid;
+		$view->title    = $this->_area['title'];
+		$view->todo     = $this->todo;
 
 		// Update view preference if changed
 		if ($layout != $defaultView)
@@ -311,13 +315,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		return $view->loadTemplate();
-
 	}
 
 	/**
 	 * View of item
 	 *
-	 * @return	   string
+	 * @return  string
 	 */
 	public function item()
 	{
@@ -336,7 +339,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			array(
 				'folder'  => $this->_type,
 				'element' => $this->_name,
-				'name'	  => 'item',
+				'name'    => 'item',
 				'layout'  => $layout
 			)
 		);
@@ -365,15 +368,14 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Append breadcrumbs
 		Pathway::append(
-				stripslashes(\Hubzero\Utility\String::truncate($view->row->get('content'), 40)),
-				Route::url($this->model->link('todo')
-					. '&action=view&todoid=' . $todoid)
+			stripslashes(\Hubzero\Utility\String::truncate($view->row->get('content'), 40)),
+			Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid)
 		);
 
-		$view->uid			= $this->_uid;
-		$view->title		= $this->_area['title'];
-		$view->list			= Request::getVar('list', '');
-		$view->ajax			= Request::getVar('ajax', 0);
+		$view->uid   = $this->_uid;
+		$view->title = $this->_area['title'];
+		$view->list  = Request::getVar('list', '');
+		$view->ajax  = Request::getVar('ajax', 0);
 
 		return $view->loadTemplate();
 	}
@@ -381,7 +383,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save item
 	 *
-	 * @return	   string
+	 * @return  string
 	 */
 	public function save()
 	{
@@ -389,17 +391,17 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$listcolor	= Request::getVar('list', '');
-		$content	= Request::getVar('content', '');
-		$todoid		= Request::getInt('todoid', 0);
-		$newlist	= Request::getVar('newlist', '', 'post');
-		$newcolor	= Request::getVar('newcolor', '', 'post');
-		$page		= Request::getVar('page', 'list', 'post');
-		$assigned	= Request::getInt('assigned', 0);
-		$mine		= Request::getInt('mine', 0);
-		$state		= Request::getInt('state', 0);
-		$ajax		= Request::getInt('ajax', 0);
-		$task		= $this->_task;
+		$listcolor = Request::getVar('list', '');
+		$content   = Request::getVar('content', '');
+		$todoid    = Request::getInt('todoid', 0);
+		$newlist   = Request::getVar('newlist', '', 'post');
+		$newcolor  = Request::getVar('newcolor', '', 'post');
+		$page      = Request::getVar('page', 'list', 'post');
+		$assigned  = Request::getInt('assigned', 0);
+		$mine      = Request::getInt('mine', 0);
+		$state     = Request::getInt('state', 0);
+		$ajax      = Request::getInt('ajax', 0);
+		$task      = $this->_task;
 
 		$new = 0;
 
@@ -422,16 +424,16 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate extended database class
-		$objTD = new \Components\Projects\Tables\Todo( $this->_database );
+		$objTD = new \Components\Projects\Tables\Todo($this->_database);
 
 		// Load up todo if exists
 		if (!$objTD->loadTodo($this->model->get('id'), $todoid))
 		{
-			$objTD->created_by	= $this->_uid;
-			$objTD->created		= Date::toSql();
-			$objTD->projectid	= $this->model->get('id');
-			$assigned			= $assigned;
-			$new				= 1;
+			$objTD->created_by = $this->_uid;
+			$objTD->created    = Date::toSql();
+			$objTD->projectid  = $this->model->get('id');
+			$assigned          = $assigned;
+			$new               = 1;
 		}
 		else
 		{
@@ -448,20 +450,20 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Save if not empty
 		if ($task == 'save' && $content != '')
 		{
-			$content			= rtrim(stripslashes($content));
-			$objTD->content		= $content ? $content : $objTD->content;
-			$objTD->content		= \Hubzero\Utility\Sanitize::stripAll($objTD->content);
+			$content = rtrim(stripslashes($content));
+			$objTD->content = $content ? $content : $objTD->content;
+			$objTD->content = \Hubzero\Utility\Sanitize::stripAll($objTD->content);
 
 			// Save access under details
 			if (strlen($objTD->content) > 255)
 			{
 				$objTD->details = $objTD->content;
 			}
-			$objTD->content		= \Hubzero\Utility\String::truncate($objTD->content, 255);
+			$objTD->content     = \Hubzero\Utility\String::truncate($objTD->content, 255);
 
-			$objTD->color		= $listcolor == 'none' ? '' : $listcolor ;
+			$objTD->color       = $listcolor == 'none' ? '' : $listcolor ;
 			$objTD->assigned_to = $assigned;
-			$objTD->state		= $state;
+			$objTD->state       = $state;
 
 			// Get due date
 			$due = trim(Request::getVar('due', ''));
@@ -512,7 +514,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			// Store content
 			if (!$objTD->store())
 			{
-				$this->setError( $objTD->getError() );
+				$this->setError($objTD->getError());
 			}
 			else
 			{
@@ -533,7 +535,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				// Store content
 				if (!$objTD->store())
 				{
-					$this->setError( $objTD->getError() );
+					$this->setError($objTD->getError());
 				}
 				else
 				{
@@ -558,7 +560,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				// Store content
 				if (!$objTD->store())
 				{
-					$this->setError( $objTD->getError() );
+					$this->setError($objTD->getError());
 				}
 				else
 				{
@@ -570,10 +572,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 					{
 						// Record activity
 						$aid = $this->model->recordActivity(
-							Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to do',
-							Route::url('index.php?option=' . $this->_option
-								. '&alias=' . $this->model->get('alias') . '&active=todo'
-								. '&action=view&todoid=' . $objTD->id), 'todo', 1 );
+							Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'),
+							$objTD->id,
+							'to do',
+							Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
+							'todo',
+							1
+						);
 					}
 				}
 			}
@@ -586,14 +591,14 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$newlist = \Hubzero\Utility\Sanitize::stripAll(trim($newlist));
 			if (!$objTD->getListName($this->model->get('id'), $newcolor))
 			{
-				$objTD				= new \Components\Projects\Tables\Todo( $this->_database );
-				$objTD->created_by	= $this->_uid;
-				$objTD->created		= Date::toSql();
-				$objTD->projectid	= $this->model->get('id');
-				$objTD->content		= 'provisioned';
-				$objTD->state		= 2; // inactive
-				$objTD->todolist	= $newlist;
-				$objTD->color		= $newcolor;
+				$objTD = new \Components\Projects\Tables\Todo($this->_database);
+				$objTD->created_by = $this->_uid;
+				$objTD->created    = Date::toSql();
+				$objTD->projectid  = $this->model->get('id');
+				$objTD->content    = 'provisioned';
+				$objTD->state      = 2; // inactive
+				$objTD->todolist   = $newlist;
+				$objTD->color      = $newcolor;
 
 				// Store content
 				if (!$objTD->store())
@@ -610,10 +615,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		if ($new)
 		{
 			$aid = $this->model->recordActivity(
-				Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to do',
-				Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $this->model->get('alias') . '&active=todo'
-					. '&action=view&todoid=' . $objTD->id), 'todo', 1);
+				Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'),
+				$objTD->id,
+				'to do',
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
+				'todo',
+				1
+			);
 			// Store activity ID
 			if ($aid)
 			{
@@ -625,14 +633,11 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Set redirect path
 		if ($page == 'item')
 		{
-			$url = Route::url('index.php?option=' . $this->_option
-					. '&alias='.$this->model->get('alias') . '&active=todo'
-					. '&action=view&todoid=' . $objTD->id);
+			$url = Route::url('index.php?option=' . $this->_option . '&alias='.$this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id);
 		}
 		else
 		{
-			$url = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->model->get('alias') . '&active=todo&list=' . $objTD->color);
+			$url = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo&list=' . $objTD->color);
 		}
 
 		// Go to view
@@ -661,7 +666,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete item
 	 *
-	 * @return	   string
+	 * @return  string
 	 */
 	public function delete()
 	{
@@ -679,12 +684,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$gobacklist = '';
 
 		// Load todo
-		$objTD = new \Components\Projects\Tables\Todo( $this->_database );
+		$objTD = new \Components\Projects\Tables\Todo($this->_database);
 		if ($todoid && $objTD->loadTodo($this->model->get('id'), $todoid))
 		{
 			// Get associated commenting activities
-			$objC = new \Components\Projects\Tables\Comment( $this->_database );
-			$activities = $objC->collectActivities($todoid, "todo" );
+			$objC = new \Components\Projects\Tables\Comment($this->_database);
+			$activities = $objC->collectActivities($todoid, "todo");
 			$activities[] = $objTD->activityid;
 
 			// Store list name (for redirect)
@@ -719,7 +724,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			if ($deleteall)
 			{
 				// Get all to-do's on list
-				$todos = $objTD->getTodos( $this->model->get('id'), $filters = array('todolist' => $list) );
+				$todos = $objTD->getTodos($this->model->get('id'), $filters = array('todolist' => $list));
 				if (count($todos) > 0)
 				{
 					foreach ($todos as $todo)
@@ -727,21 +732,21 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 						if ($objTD->loadTodo($this->model->get('id'), $todo->id))
 						{
 							// Get associated commenting activities
-							$objC = new \Components\Projects\Tables\Comment( $this->_database );
-							$activities = $objC->collectActivities($todo->id, "todo" );
+							$objC = new \Components\Projects\Tables\Comment($this->_database);
+							$activities = $objC->collectActivities($todo->id, "todo");
 							$activities[] = $objTD->activityid;
 
 							// Delete todo
 							if ($objTD->deleteTodo($this->model->get('id'), $todo->id))
 							{
 								// Delete all associated comments
-								$comments = $objC->deleteComments( $todo->id, "todo" );
+								$comments = $objC->deleteComments($todo->id, "todo");
 
 								// Delete all associated activities
 								foreach ($activities as $a)
 								{
-									$objAA = new \Components\Projects\Tables\Activity( $this->_database );
-									$objAA->loadActivity( $a, $this->model->get('id') );
+									$objAA = new \Components\Projects\Tables\Activity($this->_database);
+									$objAA->loadActivity($a, $this->model->get('id'));
 									$objAA->deleteActivity();
 								}
 							}
@@ -751,7 +756,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// Clean-up colored items
-			$objTD->deleteList( $this->model->get('id'), $list );
+			$objTD->deleteList($this->model->get('id'), $list);
 			$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
 		}
 
@@ -775,7 +780,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Reorder items
 	 *
-	 * @return	   string
+	 * @return  string
 	 */
 	public function reorder()
 	{
@@ -789,15 +794,15 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$newid = Request::getInt('newid', 0);
 		$oldid = Request::getInt('oldid', 0);
-		$items = Request::getVar( 'item', array());
+		$items = Request::getVar('item', array());
 
 		if ($newid && $oldid)
 		{
-			$objTD1 = new \Components\Projects\Tables\Todo( $this->_database );
-			$objTD1->loadTodo ($this->model->get('id'), $oldid);
+			$objTD1 = new \Components\Projects\Tables\Todo($this->_database);
+			$objTD1->loadTodo($this->model->get('id'), $oldid);
 
-			$objTD2 = new \Components\Projects\Tables\Todo( $this->_database );
-			$objTD2->loadTodo ($this->model->get('id'), $newid);
+			$objTD2 = new \Components\Projects\Tables\Todo($this->_database);
+			$objTD2->loadTodo($this->model->get('id'), $newid);
 
 			$priority1 = $objTD1->priority;
 			$priority2 = $objTD2->priority;
@@ -813,8 +818,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$o = 1;
 			foreach ($items as $item)
 			{
-				$objTD = new \Components\Projects\Tables\Todo( $this->_database );
-				$objTD->loadTodo ($this->model->get('id'), $item);
+				$objTD = new \Components\Projects\Tables\Todo($this->_database);
+				$objTD->loadTodo($this->model->get('id'), $item);
 				$objTD->priority = $o;
 				$objTD->store();
 				$o++;
@@ -828,7 +833,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete comment
 	 *
-	 * @return	   void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _deleteComment()
 	{
@@ -840,11 +845,11 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$cid	= Request::getInt( 'cid', 0 );
+		$cid    = Request::getInt('cid', 0);
 		$todoid = $this->_todoid;
 
 		// Instantiate comment
-		$objC = new \Components\Projects\Tables\Comment( $this->_database );
+		$objC = new \Components\Projects\Tables\Comment($this->_database);
 
 		if ($objC->load($cid))
 		{
@@ -857,7 +862,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// delete associated activity
-			$objAA = new \Components\Projects\Tables\Activity( $this->_database );
+			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			if ($activityid && $objAA->load($activityid))
 			{
 				$objAA->deleteActivity();
@@ -882,7 +887,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save comment
 	 *
-	 * @return	   void, redirect
+	 * @return  void  redirect
 	 */
 	protected function _saveComment()
 	{
@@ -897,9 +902,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$itemid = Request::getInt( 'itemid', 0, 'post' );
-		$comment = trim(Request::getVar( 'comment', '', 'post' ));
-		$parent_activity = Request::getInt( 'parent_activity', 0, 'post' );
+		$itemid = Request::getInt('itemid', 0, 'post');
+		$comment = trim(Request::getVar('comment', '', 'post'));
+		$parent_activity = Request::getInt('parent_activity', 0, 'post');
 
 		// Clean-up
 		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
@@ -907,7 +912,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$comment = \Hubzero\Utility\String::truncate($comment, 800);
 
 		// Instantiate comment
-		$objC = new \Components\Projects\Tables\Comment( $this->_database );
+		$objC = new \Components\Projects\Tables\Comment($this->_database);
 		if ($comment)
 		{
 			$objC->itemid          = $itemid;
@@ -918,7 +923,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$objC->created_by      = $this->_uid;
 			if (!$objC->store())
 			{
-				$this->setError( $objC->getError() );
+				$this->setError($objC->getError());
 			}
 			else
 			{
@@ -931,13 +936,18 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			if ($objC->id )
+			if ($objC->id)
 			{
 				$what = Lang::txt('COM_PROJECTS_TODO_ITEM');
 				$url  = Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid);
 				$aid  = $this->model->recordActivity(
 					Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON') . ' ' . $what,
-					$objC->id, $what, $url, 'quote', 0 );
+					$objC->id,
+					$what,
+					$url,
+					'quote',
+					0
+				);
 			}
 
 			// Store activity ID

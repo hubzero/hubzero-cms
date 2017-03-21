@@ -265,7 +265,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		// Acting member
 		$member = $model->member();
-		if (!is_object($member->params))
+		if ($member && !is_object($member->params))
 		{
 			$member->params = new \Hubzero\Config\Registry($member->params);
 		}
@@ -301,7 +301,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$limit = intval($this->params->get('limit', 25));
 
 		$filters = array(
-			'role'    => $this->model->member()->role,
+			'role'    => ($this->model->member() ? $this->model->member()->role : 0),
 			'limit'   => Request::getVar('limit', $limit, 'request')
 		);
 

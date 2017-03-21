@@ -186,6 +186,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			// Load wiki language file
 			Lang::load('com_wiki') || Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
 
+			if ($model->access('readonly'))
+			{
+				Component::params('com_wiki')->set('access-page-view', true);
+				Component::params('com_wiki')->set('access-check-done', true);
+			}
+
 			// Set vars
 			$this->_database = App::get('db');
 			$this->_uid      = User::get('id');
