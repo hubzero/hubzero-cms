@@ -43,7 +43,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var	   boolean
+	 * @var	 boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -57,21 +57,21 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Store internal message
 	 *
-	 * @var	   array
+	 * @var	 array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return	   array   Plugin name and title
+	 * @return  array  Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array(
 			'name'    => 'todo',
 			'title'   => Lang::txt('COM_PROJECTS_TAB_TODO'),
-			'submenu' => NULL,
+			'submenu' => null,
 			'show'    => true,
 			'icon'    => 'f08d'
 		);
@@ -82,8 +82,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param	   object  $model			Project
-	 * @return	   array   integer
+	 * @param   object   $model   Project
+	 * @param   integer  $admin
+	 * @return  array    integer
 	 */
 	public function &onProjectCount($model, $admin = 0)
 	{
@@ -106,18 +107,18 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $model           Project model
-	 * @param	   string  $action			Plugin task
-	 * @param	   string  $areas			Plugins to return data
-	 * @return	   array   Return array of html
+	 * @param   object  $model   Project model
+	 * @param   string  $action  Plugin task
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
-	public function onProject ($model, $action = '', $areas = null)
+	public function onProject($model, $action = '', $areas = null)
 	{
 		$returnhtml = true;
 
 		$arr = array(
-			'html'     =>'',
-			'metadata' =>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		// Get this area details
@@ -154,26 +155,44 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$this->todo = new \Components\Projects\Models\Todo();
 
 			// Set vars
-			$this->_task		= $action ? $action : Request::getVar('action','');
-			$this->_todoid		= Request::getInt('todoid', 0);
-			$this->_database	= App::get('db');
-			$this->_uid 		= User::get('id');
+			$this->_task     = $action ? $action : Request::getVar('action','');
+			$this->_todoid   = Request::getInt('todoid', 0);
+			$this->_database = App::get('db');
+			$this->_uid      = User::get('id');
 
 			switch ($this->_task)
 			{
-				case 'page':
-					default:		$arr['html'] = $this->page();			break;
-				case 'save':		$arr['html'] = $this->save();			break;
-				case 'changestate': $arr['html'] = $this->save();			break;
-				case 'delete':		$arr['html'] = $this->delete();			break;
-				case 'assign':		$arr['html'] = $this->save();			break;
+				case 'save':
+					$arr['html'] = $this->save();
+					break;
+				case 'changestate':
+					$arr['html'] = $this->save();
+					break;
+				case 'delete':
+					$arr['html'] = $this->delete();
+					break;
+				case 'assign':
+					$arr['html'] = $this->save();
+					break;
 				case 'view':
 				case 'new':
-				case 'edit':		$arr['html'] = $this->item();			break;
-				case 'savecomment': $arr['html'] = $this->_saveComment();	break;
-				case 'deletecomment':$arr['html'] = $this->_deleteComment();break;
+				case 'edit':
+					$arr['html'] = $this->item();
+					break;
+				case 'savecomment':
+					$arr['html'] = $this->_saveComment();
+					break;
+				case 'deletecomment':
+					$arr['html'] = $this->_deleteComment();
+					break;
 				case 'reorder':
-				case 'sortitems':	$arr['html'] = $this->reorder();		break;
+				case 'sortitems':
+					$arr['html'] = $this->reorder();
+					break;
+				case 'page':
+				default:
+					$arr['html'] = $this->page();
+					break;
 			}
 		}
 
@@ -461,7 +480,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 			$objTD->content     = \Hubzero\Utility\String::truncate($objTD->content, 255);
 
-			$objTD->color       = $listcolor == 'none' ? '' : $listcolor ;
+			$objTD->color       = $listcolor == 'none' ? '' : $listcolor;
 			$objTD->assigned_to = $assigned;
 			$objTD->state       = $state;
 
@@ -509,7 +528,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$objTD->priority = $todoid ? $objTD->priority : $neworder;
 
 			// Get list name
-			$objTD->todolist = $listcolor == 'none' ? NULL : $objTD->getListName($this->model->get('id'), $objTD->color);
+			$objTD->todolist = $listcolor == 'none' ? null : $objTD->getListName($this->model->get('id'), $objTD->color);
 
 			// Store content
 			if (!$objTD->store())
