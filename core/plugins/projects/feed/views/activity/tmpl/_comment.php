@@ -34,14 +34,16 @@ defined('_HZEXEC_') or die();
 
 $comment = $this->comment;
 $newComment = false;
+$deletable = 0;
+
 if ($this->model->member())
 {
 	$newComment = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $comment->created
 		? true : false;
-}
 
-// Is user allowed to delete item?
-$deletable = ($comment->created_by == $this->uid or $this->model->member()->role == 1) ? 1 : 0;
+	// Is user allowed to delete item?
+	$deletable = ($comment->created_by == $this->uid or $this->model->member()->role == 1) ? 1 : 0;
+}
 
 $longComment = stripslashes($comment->comment);
 $longComment = str_replace('<!-- {FORMAT:HTML} -->', '', $longComment);
