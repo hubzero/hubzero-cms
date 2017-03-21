@@ -192,12 +192,25 @@ class Project extends \JTable
 				}
 				else
 				{
+					if ($filterby == 'public')
+					{
+						$privacy = " AND p.private = 0 ";
+					}
+					else if ($filterby == 'open')
+					{
+						$privacy = " AND p.private < 0 ";
+					}
+					else
+					{
+						$privacy = " AND p.private <= 0 ";
+					}
+
 					$query .= $uid
-							? " WHERE ((p.state = 1 AND p.private <= 0)
+							? " WHERE ((p.state = 1 " . $privacy . ")
 								OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND ((p.state = 1
 								AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
 								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state != 3)))) "
-							: " WHERE p.state = 1 AND p.private <= 0 ";
+							: " WHERE p.state = 1 " . $privacy;
 				}
 			}
 		}
