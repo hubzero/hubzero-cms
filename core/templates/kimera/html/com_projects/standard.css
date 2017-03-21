@@ -199,7 +199,7 @@ ul.projecttools a:focus {
 		vertical-align: top;
 	}
 	.main-content {
-		z-index: 555;
+		/*z-index: 555;*/
 		display: table-cell;
 		vertical-align: top;
 		width: 100%;
