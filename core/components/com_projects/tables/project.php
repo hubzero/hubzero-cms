@@ -188,16 +188,16 @@ class Project extends \JTable
 			{
 				if ($filterby == 'archived')
 				{
-					$query .= " WHERE p.state = 3 AND p.private = 0 ";
+					$query .= " WHERE p.state = 3 AND p.private <= 0 ";
 				}
 				else
 				{
 					$query .= $uid
-							? " WHERE ((p.state = 1 AND p.private = 0)
+							? " WHERE ((p.state = 1 AND p.private <= 0)
 								OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND ((p.state = 1
 								AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
 								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state != 3)))) "
-							: " WHERE p.state = 1 AND p.private = 0 ";
+							: " WHERE p.state = 1 AND p.private <= 0 ";
 				}
 			}
 		}

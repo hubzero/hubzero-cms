@@ -559,6 +559,13 @@ class Project extends Model
 				// Allow public view access
 				$this->params->set('access-view-project', true);
 			}
+			// If an open project
+			if ($this->get('private') < 0)
+			{
+				// Allow read-only mode for everything
+				$this->params->set('access-member-project', true);
+				$this->params->set('access-readonly-project', true);
+			}
 		}
 		else
 		{
