@@ -91,6 +91,8 @@ $total = $this->model->entries('count', $this->filters);
 					<li>
 						<select name="filterby">
 							<option value="all" <?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_ALL'); ?></option>
+							<option value="public" <?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PUBLIC'); ?></option>
+							<option value="open" <?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_OPEN'); ?></option>
 							<option value="archived" <?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_ARCHIVED'); ?></option>
 							<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
 								<option value="pending" <?php echo ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PENDING'); ?></option>
