@@ -34,6 +34,9 @@ namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
+use Components\Projects\Tables as ProjectTables;
+use Components\Projects\Helpers as ProjectHelpers;
+use Components\Publications\Models;
 use stdClass;
 use Exception;
 use Request;
@@ -42,6 +45,7 @@ use Date;
 use Lang;
 use User;
 use App;
+
 
 /**
  * Manage publication batch
@@ -161,7 +165,7 @@ class Batchcreate extends AdminController
 		$file   = Request::getVar('file', array(), 'FILES');
 		$dryRun = Request::getInt('dryrun', 1);
 
-		$this->data = NULL;
+		$this->data = null;
 
 		// Project ID must be supplied
 		$this->project = new \Components\Projects\Models\Project($id);
@@ -170,7 +174,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -181,7 +185,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -192,7 +196,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -207,7 +211,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -222,7 +226,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -258,7 +262,7 @@ class Batchcreate extends AdminController
 		// return results to user
 		echo json_encode(array(
 			'result'  => 'success',
-			'error'   => NULL,
+			'error'   => null,
 			'records' => $outputData,
 			'dryrun'  => $dryRun
 		));
@@ -272,7 +276,7 @@ class Batchcreate extends AdminController
 	 * @param   string   $output
 	 * @return  string
 	 */
-	public function parse($dryRun = 1, $output = NULL)
+	public function parse($dryRun = 1, $output = null)
 	{
 		// Set common props
 		$this->_uid = User::get('id');
@@ -461,7 +465,7 @@ class Batchcreate extends AdminController
 			$this->site = trim(Request::base(), DS);
 
 			// Process batch
-			$out = NULL;
+			$out = null;
 			$i = 0;
 			foreach ($items as $item)
 			{
@@ -509,7 +513,7 @@ class Batchcreate extends AdminController
 		$item['version']->version_number = 1;
 		$item['version']->created_by     = $this->_uid;
 		$item['version']->created        = Date::toSql();
-		$item['version']->secret         = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
+		$item['version']->secret         = strtolower(ProjectHelpers\Html::generateCode(10, 10, 0, 1, 1));
 		$item['version']->access         = 0;
 		$item['version']->main           = 1;
 		$item['version']->state          = 3;
@@ -524,10 +528,12 @@ class Batchcreate extends AdminController
 		$vid = $item['version']->id;
 
 		// Build pub object
-		$pub = new stdClass;
-		$pub = $item['version'];
-		$pub->id = $pid;
-		$pub->version_id = $vid;
+		// Originally this was a Version object.  Some functions were using methods in the Publication model, so I set it to use the Publication model instead.
+		$pub = new Models\Publication($pid, 'default', $vid);
+		$pub->project();
+		// $pub = $item['version'];
+		//$pub->id = $pid;
+		//$pub->version_id = $vid;
 
 		// Build version object
 		$version = new stdClass;
@@ -590,7 +596,7 @@ class Batchcreate extends AdminController
 			return;
 		}
 
-		$error = NULL;
+		$error = null;
 
 		// Start new attachment record
 		$attach = new Tables\Attachment($this->database);
@@ -646,7 +652,8 @@ class Batchcreate extends AdminController
 		$pid = $pub->id;
 
 		// Get latest Git hash
-		$vcs_hash = $this->_git->gitLog($attachment->path, '', 'hash');
+		$gitHelper = new ProjectHelpers\Git($this->projectPath);
+		$vcs_hash = $gitHelper->gitLog($attachment->path, '', 'hash');
 
 		// Create attachment record
 		if ($this->curationModel || $fileRecord['type'] != 'gallery')
@@ -657,7 +664,7 @@ class Batchcreate extends AdminController
 			$attachment->created_by             = $this->_uid;
 			$attachment->created                = Date::toSql();
 			$attachment->store();
-		}
+	}
 
 		// Copy files to the right location
 		if ($this->curationModel)
@@ -714,7 +721,7 @@ class Batchcreate extends AdminController
 		// Need to create project owner
 		if (!$author->project_owner_id)
 		{
-			$objO = new Tables\Owner($this->database);
+			$objO = new ProjectTables\Owner($this->database);
 
 			$objO->projectid     = $this->project->get('id');
 			$objO->userid        = $author->user_id;
@@ -745,10 +752,10 @@ class Batchcreate extends AdminController
 	 */
 	public function collectAuthorData($author, $ordering, $uid, &$item)
 	{
-		$firstName = NULL;
-		$lastName  = NULL;
-		$org       = NULL;
-		$error     = NULL;
+		$firstName = null;
+		$lastName  = null;
+		$org       = null;
+		$error     = null;
 
 		// Check that user ID exists
 		if (trim($uid))

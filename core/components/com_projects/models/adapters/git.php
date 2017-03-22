@@ -105,7 +105,7 @@ class Git extends Models\Adapter
 	{
 		// Parse incoming params and establish defaults
 		$filter        = isset($params['filter']) ? $params['filter'] : null;
-		$dirPath       = ! empty($params['subdir']) ? escapeshellarg($params['subdir']) : "";
+		$dirPath       = isset($params['subdir']) ? $params['subdir'] : null;
 		$showUntracked = isset($params['showUntracked']) ? $params['showUntracked'] : false;
 		$remotes       = isset($params['remoteConnections']) ? $params['remoteConnections'] : [];
 		$sortdir       = isset($params['sortdir']) && $params['sortdir'] == 'DESC' ? SORT_DESC : SORT_ASC;

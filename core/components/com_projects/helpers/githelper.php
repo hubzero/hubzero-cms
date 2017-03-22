@@ -747,7 +747,7 @@ class Git extends Object
 	 **/
 	public function getUntrackedFiles($subdir = '')
 	{
-		$cmd  = 'cd ' . DS . trim($this->_path, DS) . DS . trim($subdir, DS) . ' && ';
+		$cmd  = 'cd ' . DS . trim($this->_path, DS) . DS . trim(escapeshellarg($subdir), DS) . ' && ';
 		$cmd .= $this->_gitpath . ' clean -nd | grep -v ".' . DS . '." | cut -c 14-';
 
 		$results = $this->_exec($cmd);
