@@ -26,7 +26,7 @@ class Migration20170322093811ComResources extends Base
 			$this->db->setQuery($query);
 			$results = $this->db->loadObjectList();
 
-			foreach($results as $result)
+			foreach ($results as $result)
 			{
 				$alias = $this->normalize($result->type);
 				$query = "UPDATE #__resource_types SET alias=" . $this->db->quote($alias) . " WHERE id = " . $this->db->quote($result->id);
