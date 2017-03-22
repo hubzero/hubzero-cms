@@ -80,6 +80,9 @@ $this->css('orcid.css');
 
 $srv = $this->config->get('orcid_service', 'members');
 $tkn = $this->config->get('orcid_' . $srv . '_token');
+$clientID = $this->config->get('orcid_' . $srv . '_client_id');
+$redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri');
+
 ?>
 <section class="main section">
 	<form name="orcid-search-form">
@@ -143,10 +146,13 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 					<h4><?php echo Lang::txt('Create a new ORCID'); ?></h4>
 					<div class="grid nobreak">
 						<div class="col span8">
-							<p><?php echo Lang::txt('If you can\'t find your ID or would like to create one, click the "Create new ORCID" button.'); ?></p>
+							<p><?php echo Lang::txt('If you can\'t find your ID or would like to create one, click the "Create or Connect your ORCID iD" button.'); ?></p>
 						</div>
 						<div class="col span4 omega">
-							<p><a id="create-orcid" class="btn" href="https://orcid.org/register" target="_blank"><?php echo Lang::txt('Create new ORCID'); ?></a></p>
+							<p><a id="create-orcid" class="btn" href="https://<?php if ($this->config->get('orcid_service', 'members') == 'sandbox') { echo Lang::txt('sandbox.'); }?>orcid.org/oauth/authorize?client_id=<?php echo $clientID ?>
+							&response_type=code&scope=/authenticate&redirect_uri=<?php echo urlencode($redirectURI) ?>&family_names=<?php echo $this->escape($lname);?>
+							&given_names=<?php echo $this->escape($fname);?>&email=<?php echo $this->escape($email);?> " target="_blank">
+							<?php echo Lang::txt('Create or Connect your ORCID iD'); ?></a></p>
 						</div>
 					</div>
 				</div>

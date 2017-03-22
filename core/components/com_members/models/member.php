@@ -40,6 +40,8 @@ require_once(__DIR__ . DS . 'note.php');
 require_once(__DIR__ . DS . 'quota.php');
 require_once(__DIR__ . DS . 'host.php');
 
+define("TEMP_FILE", "/www/tmp/orcidRecords"); 
+
 /**
  * User model
  */
@@ -541,5 +543,104 @@ class Member extends User
 			->set(array('usageAgreement' => 0));
 
 		return $query->execute();
+	}
+	
+	/**
+	* check if user has registered with system or not
+	*
+	* @param   string   $name
+	* @return  boolean
+	*/
+	public static function profileExists($name)
+	{
+		$db = App::get('db');
+		$sql = 'SELECT uidNumber FROM #__xprofiles' . ' WHERE name = ' . '"' . $name . '"';
+		$db->setQuery($sql);
+
+		$id = $db->loadResult();
+		if ((int)$id != 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	* Save ORCID ID to user's profile (#__xprofile)
+	*
+	* @param   string   $name
+	* @param   string   $orcid
+	* @return  void
+	*/
+	public static function saveOrcidToProfile($name, $orcid)
+	{
+		$db = App::get('db');
+		$sql = 'UPDATE #__xprofiles SET orcid = ' . '"' . $orcid . '"' . ' WHERE name = ' . '"' . $name . '"';
+		$db->setQuery($sql);
+		$result = $db->execute();
+	}
+	
+	/**
+	* Save ORCID ID to file orcidRecords
+	*
+	* @param   string   $name
+	* @param   string   $orcid
+	* @return  void
+	*/
+	public static function saveOrcidToFile($name, $orcid)
+	{		
+		if (!file_exists(TEMP_FILE))
+		{
+			touch(TEMP_FILE);
+		}
+		
+		$jsonArr = json_decode(file_get_contents(TEMP_FILE), true);
+		
+		$jsonArr[$name] = $orcid;
+		
+		file_put_contents(TEMP_FILE, json_encode($jsonArr));
+	}
+	
+	/**
+	* Check if name in orcidRecords, which locates at \tmp directory
+	*
+	* @param   string   $name
+	* @return  boolean
+	*/
+	public static function nameExists($name)
+	{	
+		if (!file_exists(TEMP_FILE))
+		{
+			return false;
+		}
+		
+		if (false != $jsonArr = json_decode(file_get_contents(TEMP_FILE), true))
+		{
+			if (array_key_exists($name, $jsonArr))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+	
+	/**
+	* Get orcid from orcidRecords
+	*
+	* @param   string   $name
+	* @return  orcid ID
+	*/
+	public static function getORCIDFromFile($name)
+	{
+		if (false != $jsonArr = json_decode(file_get_contents(TEMP_FILE), true))
+		{
+			return $jsonArr[$name];
+		}
 	}
 }

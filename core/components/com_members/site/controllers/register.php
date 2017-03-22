@@ -555,7 +555,7 @@ class Register extends SiteController
 	 * @return  void
 	 */
 	public function createTask()
-	{
+	{		
 		if (!User::isGuest() && !User::get('tmp_user'))
 		{
 			App::redirect(
@@ -788,7 +788,14 @@ class Register extends SiteController
 
 					// Save profile data
 					$member = Member::oneOrNew($user->get('id'));
-
+					
+					$name = $xregistration->get('givenName', '') . ' ' . $xregistration->get('surname', '');
+					if (Member::nameExists($name))
+					{
+						$orcidID = Member::getORCIDFromFile($name);
+						Member::saveOrcidToProfile($name, $orcidID);
+					}
+					
 					if (!$member->saveProfile($profile, $access))
 					{
 						\Notify::error($member->getError());
@@ -1513,5 +1520,5 @@ class Register extends SiteController
 			$title = Lang::txt('COM_MEMBERS_REGISTER');
 		}
 		\Document::setTitle($title);
-	}
+	}	
 }

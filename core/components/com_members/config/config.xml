@@ -277,8 +277,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="members">Members</option>
 			<option value="sandbox">Sandbox</option>
 		</field>
-		<field name="orcid_members_token" type="text" menu="hide" default="" label="ORCID Members Token" description="Authorization token for the members ORCID service." />
+		<field name="orcid_sandbox_client_id" type="text" menu="hide" default="" label="ORCID Sandbox Client ID" description="Authorization client ID for the sandbox members ORCID service." />
+		<field name="orcid_members_client_id" type="text" menu="hide" default="" label="ORCID Members Client ID" description="Authorization client ID for the production members ORCID service." />
 		<field name="orcid_sandbox_token" type="text" menu="hide" default="" label="ORCID Sandbox Token" description="Authorization token for the sandbox ORCID service." />
+		<field name="orcid_members_token" type="text" menu="hide" default="" label="ORCID Members Token" description="Authorization token for the members ORCID service." />
+		<field name="orcid_sandbox_redirect_uri" type="text" menu="hide" default="" label="ORCID Sandbox Authentication Redirect URI" description="Authorization redirect URI for the sandbox ORCID service." />
+		<field name="orcid_members_redirect_uri" type="text" menu="hide" default="" label="ORCID Members Authentication Redirect URI" description="Authorization redirect URI for the members ORCID service." />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="defaultpic" type="text" menu="hide" default="/core/components/com_members/site/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<field name="picture" type="list" default="" label="Picture Handler" description="Select a handler for user pictures">
