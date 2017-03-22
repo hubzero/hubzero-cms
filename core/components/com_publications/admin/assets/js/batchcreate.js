@@ -116,7 +116,19 @@ jQuery(document).ready(function(jq){
 			           success: function(response)
 			           {
 							self.handleResults(response);
-			           }
+			           },
+					   error: function(response)
+	                   {
+						    var errorMessage = $(response.responseText).find("#errorbox").html();
+							errorMessage = errorMessage.length ? errorMessage: "A server error occurred.";
+							var errorObj = {
+								"result" : "error",
+								"error" : errorMessage,
+								"records": "" 
+							}; 
+					   		self.handleResults(JSON.stringify(errorObj));
+							
+					   }
 			     });
 
 			    return false;
