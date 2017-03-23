@@ -81,10 +81,45 @@ defined('_HZEXEC_') or die();
 				<?php echo $comment; ?>
 			</div>
 
-			<?php if ($attachment = $this->comment->get('attachment')) { ?>
-			<p class="comment-attachment icon-attachment">
-				<?php echo $attachment; ?>
-			</p>
+			<?php if ($this->comment->attachments->count() > 0) { ?>
+				<div class="comment-attachments">
+					<?php
+					foreach ($this->comment->attachments as $attachment)
+					{
+						if (!trim($attachment->get('description')))
+						{
+							$attachment->set('description', $attachment->get('filename'));
+						}
+
+						$link = $attachment->link('download');
+
+						if ($attachment->isImage())
+						{
+							if ($attachment->width() > 400)
+							{
+								$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							}
+							else
+							{
+								$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+							}
+						}
+						else
+						{
+							//$html = '<p class="attachment"><a href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">' . $attachment->get('description') . '</a></p>';
+							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html .= '<p class="attachment-meta">';
+							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('Click to download') . '</span>';
+							$html .= '</p>';
+							$html .= '</a>';
+						}
+
+						echo $html;
+					}
+					?>
+				</div><!-- / .comment-attachments -->
 			<?php } ?>
 
 			<p class="comment-options">
@@ -171,7 +206,7 @@ defined('_HZEXEC_') or die();
 			     ->set('cls', $cls)
 			     ->set('depth', $this->depth)
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies(array('state' => array(1, 3))))
+			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->rows())
 			     ->set('wishlist', $this->wishlist)
 			     ->set('wish', $this->wish)
 			     ->display();

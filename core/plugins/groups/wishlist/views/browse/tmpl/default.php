@@ -37,7 +37,7 @@ $this->css();
 
 $title = ($this->admin) ? Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 
-if (count($this->wishlist->items) > 0 && $this->items > $this->filters['limit'])
+if (count($this->rows) > 0 && $this->items > $this->filters['limit'])
 {
 	$title .= ' <span>(<a href="'.Route::url('index.php?option=com_wishlist&task=wishlist&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid).'">'.Lang::txt('PLG_GROUPS_WISHLIST_VIEW_ALL') .' '.$this->items.'</a>)</span>';
 }
@@ -71,9 +71,9 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 				<caption><?php echo $title; ?></caption>
 				<tbody>
 		<?php
-		if ($this->wishlist->items)
+		if ($this->rows->count())
 		{
-			foreach ($this->wishlist->items as $item)
+			foreach ($this->rows as $item)
 			{
 				$item->subject = $this->escape(stripslashes($item->subject));
 
@@ -121,7 +121,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 				$name = Lang::txt('PLG_GROUPS_WISHLIST_ANONYMOUS');
 				if (!$item->anonymous)
 				{
-					$name = '<a href="'.Route::url('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->authorname) . '</a>';
+					$name = '<a href="'.Route::url('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->proposer->get('name')) . '</a>';
 				}
 				?>
 					<tr class="<?php echo $state; ?>">
@@ -171,12 +171,12 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 						<td class="priority-4 voting">
 							<?php
 								$view = new \Hubzero\Component\View(array(
-									'base_path' => PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site',
+									'base_path' => Component::path('com_wishlist') . DS . 'site',
 									'name'      => 'wishlists',
 									'layout'    => '_vote'
 								));
 								$view->set('option', 'com_wishlist')
-								     ->set('item',  new \Components\Wishlist\Models\Wish($item))
+								     ->set('item',  $item)
 								     ->set('listid', $this->wishlist->id)
 								     ->set('plugin', 0)
 								     ->set('admin', 0)

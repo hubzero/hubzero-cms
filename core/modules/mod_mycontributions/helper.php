@@ -142,12 +142,11 @@ class Helper extends Module
 					{
 						// Get open wishes
 						require_once Component::path('com_wishlist') . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php';
-						require_once Component::path('com_wishlist') . DS . 'tables' . DS . 'wish.php';
-						require_once Component::path('com_wishlist') . DS . 'tables' . DS . 'wishlist.php';
+						require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
-						$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
-						$objWish = new \Components\Wishlist\Tables\Wish($database);
-						$listid = $objWishlist->get_wishlistID($rid, 'resource');
+						$wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($rid, 'resource');
+						//$objWish = new \Components\Wishlist\Models\Wish($database);
+						$listid = $wishlist->get('id');
 
 						$rows[$i]->w = 0;
 						$rows[$i]->w_new = 0;
@@ -156,8 +155,22 @@ class Helper extends Module
 						{
 							$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 							$filters = $controller->getFilters(1);
-							$wishes = $objWish->get_wishes($listid, $filters, 1, User::getInstance());
+
+							$entries = Wish::all()
+								->whereEquals('wishlist', $wishlist->get('id'));
+
+							$wishes = $entries
+								->select($entries->getTableName() . '.*')
+								->where('status', '!=', 2)
+								->order('accepted', 'desc')
+								->order('status', 'asc')
+								->order('proposed', 'desc')
+								->limit($filters['limit'])
+								->start($filters['start'])
+								->rows();
+
 							$unranked = 0;
+
 							if ($wishes)
 							{
 								foreach ($wishes as $w)

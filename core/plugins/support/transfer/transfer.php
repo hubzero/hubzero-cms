@@ -41,17 +41,17 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Retrieves a row from the database
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $parent   If the element has a parent element
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @param   string  $parent    If the element has a parent element
+	 * @return  array
 	 */
 	public function transferItem($from_type, $from_id, $to_type, $rid=0, $deactivate=1)
 	{
@@ -60,7 +60,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 		$database = App::get('db');
 
-		if ($from_type == NULL or $from_id == NULL or $to_type == NULL)
+		if ($from_type == null or $from_id == null or $to_type == null)
 		{
 			$this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_MISSING_INFO'));
 			return false;
@@ -81,9 +81,9 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		$anonymous = 0;
 
 		// get needed scripts
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
+		include_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
+		include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
 		$wconfig = Component::params('com_wishlist');
 		$admingroup = $wconfig->get('group') ? $wconfig->get('group') : 'hubadmin';
@@ -147,34 +147,32 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 			// Transfer from a Wish
 			case 'wish':
-				$row = new \Components\Wishlist\Tables\Wish($database);
-				$row->load($from_id);
+				$row = \Components\Wishlist\Models\Wish::oneOrFail($from_id);
 
-				if ($row->id)
+				if ($row->get('id'))
 				{
-					$author    = $row->proposed_by;
-					$subject   = \Hubzero\Utility\String::truncate($row->subject, 200); // max 200 characters
-					$body      = $row->about;
-					$anonymous = $row->anonymous;
+					$author    = $row->get('proposed_by');
+					$subject   = \Hubzero\Utility\String::truncate($row->get('subject'), 200); // max 200 characters
+					$body      = $row->get('about');
+					$anonymous = $row->get('anonymous');
 
 					// If we are de-activating original item
 					if ($deactivate)
 					{
-						$row->status = 2;
-						$row->ranking = 0;
+						$row->set('status', 2);
+						$row->set('ranking', 0);
 
 						// also delete all previous votes for this wish
-						$objR = new \Components\Wishlist\Tables\Rank($database);
-						$objR->remove_vote($from_id);
+						$objR = \Components\Wishlist\Models\Rank::oneOrFail($from_id);
+						$objR->destroy();
 					}
 
+					$wishlist = \Components\Wishlist\Models\Wishlist::oneOrFail($row->wishlist);
+
 					// get owner
-					$objG = new \Components\Wishlist\Tables\OwnerGroup($database);
-					$nativegroups = $objG->get_owner_groups($row->wishlist, $admingroup, '',1);
+					$nativegroups = $wishlist->getOwnergroups($admingroup, 1);
 					$owner = (count($nativegroups) > 0 && $nativegroups[0] != $admingroup) ? $nativegroups[0] : ''; // tool group
 
-					$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
-					$wishlist = $objWishlist->get_wishlist($row->wishlist);
 					if (isset($wishlist->resource) && isset($wishlist->resource->alias))
 					{
 						$tags  = $wishlist->resource->type == 7 ? 'tool:' : 'resource:';
@@ -233,7 +231,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'wish':
-				$newrow = new \Components\Wishlist\Models\Wish();
+				$newrow = \Components\Wishlist\Models\Wish::blank();
 				$newrow->set('subject', $subject);
 				$newrow->set('about', $body);
 				$newrow->set('proposed', $today);
@@ -242,8 +240,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				$newrow->set('anonymous', $anonymous);
 
 				// which wishlist?
-				$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
-				$mainlist = $objWishlist->get_wishlistID(1, 'general');
+				$mainlist = \Components\Wishlist\Models\Wishlist::oneByReference(1, 'general')->get('id');
 				$listid = 0;
 				if (!$rid && $owner)
 				{
@@ -329,7 +326,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 					break;
 
 					case 'wish':
-						include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
+						include_once Component::path('com_wishlist') . DS . 'helpers' . DS . 'economy.php';
 						$WE = new \Components\Wishlist\Helpers\Economy($database);
 						$WE->cleanupBonus($from_id);
 					break;
@@ -343,13 +340,13 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a resource ID via a tag
 	 *
-	 * @param      string $tag Tag
-	 * @return     mixed  False on error, Integer on success
+	 * @param   string  $tag  Tag
+	 * @return  mixed   False on error, Integer on success
 	 */
 	public function getResourceIdFromTag($tag)
 	{
 		// intended to find a resource from a tag, e.g. tool:cntbands
-		if ($tag === NULL)
+		if ($tag === null)
 		{
 			return false;
 		}
@@ -362,13 +359,13 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a resource ID via a group's alias (CN)
 	 *
-	 * @param      string $groupname Group CN
-	 * @return     mixed  False on error, Integer on success
+	 * @param   string  $groupname  Group CN
+	 * @return  mixed   False on error, Integer on success
 	 */
 	public function getResourceIdFromGroup($groupname)
 	{
 		// intended to find a resource from the name of owner group, e.g. app-cntbands
-		if ($groupname === NULL)
+		if ($groupname === null)
 		{
 			return false;
 		}
@@ -378,4 +375,3 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		return $database->loadResult();
 	}
 }
-

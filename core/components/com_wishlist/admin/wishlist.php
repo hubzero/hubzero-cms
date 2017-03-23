@@ -39,14 +39,8 @@ if (!\User::authorise('core.manage', 'com_wishlist'))
 }
 
 // Include scripts
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'wishlist.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'owner.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'ownergroup.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+include_once dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php';
+include_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 
 $controllerName = \Request::getCmd('controller', 'lists');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -61,12 +55,12 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_WISHLIST_WISHES'),
-	\Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=-1'),
+	\Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=0'),
 	($controllerName == 'wishes')
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_WISHLIST_COMMENTS'),
-	\Route::url('index.php?option=com_wishlist&controller=comments&wish=-1'),
+	\Route::url('index.php?option=com_wishlist&controller=comments&wish=0'),
 	($controllerName == 'comments')
 );
 
@@ -76,5 +70,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 // Initiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

@@ -25,19 +25,71 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
+namespace Components\Wishlist\Models;
 
-include_once(PATH_CORE.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
-include_once(PATH_CORE.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'plan.php');
-include_once(PATH_CORE.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'owner.php');
-include_once(PATH_CORE.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'ownergroup.php');
-include_once(PATH_CORE.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php');
-include_once(PATH_CORE.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'rank.php');
-include_once(PATH_CORE.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'attachment.php');
+use Hubzero\Database\Relational;
 
+/**
+ * Wishlist class for a ownergroup model
+ */
+class Ownergroup extends Relational
+{
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
+	protected $namespace = 'wishlist';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'groupid'  => 'positive|nonzero',
+		'wishlist' => 'positive|nonzero'
+	);
+
+	/**
+	 * Get the creator of this entry
+	 *
+	 * @return  object
+	 */
+	public function group()
+	{
+		$group = new \Hubzero\User\Group();
+		$group->read($this->get('groupid'));
+		return $group;
+	}
+
+	/**
+	 * Get the owning wishlist
+	 *
+	 * @return  object
+	 */
+	public function wishlist()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Wishlist', 'wishlist');
+	}
+
+	/**
+	 * Load a record by wishlist and groupid
+	 *
+	 * @param   integer  $wishlist
+	 * @param   integer  $groupid
+	 * @return  object
+	 */
+	public static function oneByWishlistAndGroup($wishlist, $groupid)
+	{
+		return self::all()
+			->whereEquals('wishlist', $wishlist)
+			->whereEquals('groupid', $groupid)
+			->row();
+	}
+}

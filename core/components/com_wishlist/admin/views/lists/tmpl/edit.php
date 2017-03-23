@@ -36,7 +36,7 @@ $canDo = \Components\Wishlist\Helpers\Permissions::getActions('list');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_WISHLIST_EDIT') : Lang::txt('COM_WISHLIST_NEW'));
 
-Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_LIST') . ': ' . $text, 'wishlist.png');
+Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_LIST') . ': ' . $text, 'wishlist');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -121,19 +121,18 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 						<td>
-							<time datetime="<?php echo $this->row->created; ?>"><?php echo $this->row->created; ?></time>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created ? $this->row->created : Date::toSql(); ?>" />
+							<time datetime="<?php echo $this->row->get('created'); ?>"><?php echo $this->row->get('created'); ?></time>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
-							$creator = $this->row->created_by ? $this->row->created_by : User::get('id');
-							$editor  = User::getInstance($creator);
-							echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : Lang::txt('unknown');
+							$editor  = User::getInstance($this->row->get('created_by'));
+							echo $this->escape(stripslashes($editor->get('name', Lang::txt('unknown'))));
 							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $creator; ?>" />
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
 						</td>
 					</tr>
 				</tbody>
@@ -143,13 +142,20 @@ function submitbutton(pressbutton)
 				<legend><span><?php echo Lang::txt('COM_WISHLIST_PARAMETERS'); ?></span></legend>
 
 				<div class="input-wrap">
-					<input type="checkbox" name="fields[state]" id="field-state" value="1" <?php echo $this->row->state ? 'checked="checked"' : ''; ?> />
 					<label for="field-state"><?php echo Lang::txt('COM_WISHLIST_STATE'); ?></label>
+					<select name="fields[state]" id="field-state">
+						<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+						<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+					</select>
 				</div>
 
 				<div class="input-wrap">
-					<input type="checkbox" name="fields[public]" id="field-public" value="1" <?php echo $this->row->public ? 'checked="checked"' : ''; ?> />
-					<label for="field-public"><?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?></label>
+					<label for="field-public"><?php echo Lang::txt('COM_WISHLIST_PRIVACY'); ?></label>
+					<select name="fields[public]" id="field-public">
+						<option value="0"<?php if ($this->row->get('public') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?></option>
+						<option value="1"<?php if ($this->row->get('public') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?></option>
+					</select>
 				</div>
 			</fieldset>
 		</div>

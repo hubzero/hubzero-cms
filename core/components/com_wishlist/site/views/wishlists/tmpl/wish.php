@@ -41,15 +41,15 @@ $this->css()
 	$error = $this->getError();
 
 	// What name should we dispay for the submitter?
-	$user = $this->wish->proposer();
+	$user = $this->wish->proposer;
 
 	$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 	if (!$this->wish->get('anonymous'))
 	{
-		$name = $this->escape(stripslashes($this->wish->proposer()->get('name', $name)));
-		if (in_array($this->wish->proposer()->get('access'), User::getAuthorisedViewLevels()))
+		$name = $this->escape(stripslashes($this->wish->proposer->get('name', $name)));
+		if (in_array($this->wish->proposer->get('access'), User::getAuthorisedViewLevels()))
 		{
-			$name = '<a href="' . Route::url($this->wish->proposer()->link()) . '">' . $name . '</a>';
+			$name = '<a href="' . Route::url($this->wish->proposer->link()) . '">' . $name . '</a>';
 		}
 	}
 
@@ -63,6 +63,9 @@ $this->css()
 
 	$this->wish->set('status', ($this->wish->get('accepted')==1 && $this->wish->get('status')==0 ? 6 : $this->wish->get('status')));
 	$due  = ($this->wish->get('due') !='0000-00-00 00:00:00') ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : '';
+
+	$this->wish->set('positive', $this->wish->votes()->whereEquals('helpful', 'yes')->total());
+	$this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
 ?>
 	<header id="content-header">
 		<h2><?php echo $this->title . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $this->wish->get('id'); ?></h2>
@@ -70,7 +73,7 @@ $this->css()
 		<div id="content-header-extra">
 			<ul id="useroptions">
 				<li>
-				<?php if ($prv = $this->wish->neighbor('prev')) { ?>
+				<?php /*if ($prv = $this->wish->neighbor('prev')) { ?>
 					<a class="icon-prev prev btn" href="<?php echo Route::url($this->wishlist->link('permalink', array_merge($this->filters, array('wishid' => $prv)))); ?>">
 						<span><?php echo Lang::txt('COM_WISHLIST_PREV'); ?></span>
 					</a>
@@ -94,25 +97,25 @@ $this->css()
 					<span class="icon-next next opposite btn">
 						<span><?php echo Lang::txt('COM_WISHLIST_NEXT'); ?></span>
 					</span>
-				<?php } ?>
+				<?php }*/ ?>
 				</li>
 			</ul>
 		</div><!-- / #content-header-extra -->
 	</header><!-- / #content-header -->
 
-<?php if (!$this->getError()) { ?>
-	<?php if ($this->wish->get('saved')==3) { ?>
-		<p class="passed">
-			<?php echo Lang::txt('COM_WISHLIST_NOTICE_WISH_CREATED'); ?>
-		</p>
-	<?php } ?>
+	<?php if (!$this->getError()) { ?>
+		<?php if ($this->wish->get('saved')==3) { ?>
+			<p class="passed">
+				<?php echo Lang::txt('COM_WISHLIST_NOTICE_WISH_CREATED'); ?>
+			</p>
+		<?php } ?>
 
-	<?php if ($this->wish->get('saved')==2 && $this->wishlist->access('manage')) { ?>
-		<p class="passed">
-			<?php echo Lang::txt('COM_WISHLIST_NOTICE_WISH_CHANGES_SAVED'); ?>
-		</p>
+		<?php if ($this->wish->get('saved')==2 && $this->wishlist->access('manage')) { ?>
+			<p class="passed">
+				<?php echo Lang::txt('COM_WISHLIST_NOTICE_WISH_CHANGES_SAVED'); ?>
+			</p>
+		<?php } ?>
 	<?php } ?>
-<?php } ?>
 
 	<section class="main section">
 		<div class="subject">
@@ -131,7 +134,7 @@ $this->css()
 		<?php } else { ?>
 			<div class="entry wish" id="w<?php echo $this->wish->get('id'); ?>">
 				<p class="entry-member-photo">
-					<img src="<?php echo $this->wish->proposer('picture'); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
+					<img src="<?php echo $this->wish->proposer->picture(); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
 				</p><!-- / .wish-member-photo -->
 
 				<div class="entry-content">
@@ -163,7 +166,7 @@ $this->css()
 						<p><?php echo $this->escape(stripslashes($this->wish->get('subject'))); ?></p>
 					</div><!-- / .wish-subject -->
 
-					<?php if ($content = $this->wish->content('parsed')) { ?>
+					<?php if ($content = $this->wish->content) { ?>
 						<div class="entry-long">
 							<?php echo $content; ?>
 						</div><!-- / .wish-details -->
@@ -171,7 +174,7 @@ $this->css()
 
 					<div class="entry-tags">
 						<p>Tags:</p>
-						<?php if ($tags = $this->wish->tags()) { ?>
+						<?php if ($tags = $this->wish->tags('string')) { ?>
 							<?php echo $tags; ?>
 						<?php } else { ?>
 							<?php echo Lang::txt('COM_WISHLIST_NONE'); ?>
@@ -182,10 +185,12 @@ $this->css()
 				<?php
 					if ($this->wishlist->access('manage'))
 					{
-						$eligible = array_merge($this->wishlist->owners('individuals'), $this->wishlist->owners('advisory'));
+						$owners = $this->wishlist->getOwners();
+
+						$eligible = array_merge($owners['individuals'], $owners['advisory']);
 						$eligible = array_unique($eligible);
 
-						$voters = ($this->wish->get('num_votes') <= count($eligible)) ? count($eligible) : $this->wish->get('num_votes');
+						$voters = ($this->wish->votes()->total() <= count($eligible)) ? count($eligible) : $this->wish->votes()->total();
 						//$html .= "\t\t\t".'<div class="wishpriority">'.Lang::txt('PRIORITY').': '.$this->wish->ranking.' <span>('.$this->wish->num_votes.' '.Lang::txt('NOTICE_OUT_OF').' '.$voters.' '.Lang::txt('VOTES').')</span>';
 						$html = '';
 						if ($this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted())
@@ -254,7 +259,7 @@ $this->css()
 						<table class="wish-priority" id="priority">
 							<caption>
 								<?php echo Lang::txt('COM_WISHLIST_PRIORITY'); ?>: <strong><?php echo $this->wish->get('ranking'); ?></strong>
-								<span>(<?php echo $this->wish->rankings('count') . ' '.Lang::txt('COM_WISHLIST_NOTICE_OUT_OF').' '.$voters.' '.Lang::txt('COM_WISHLIST_VOTES'); ?>)</span>
+								<span>(<?php echo $this->wish->rankings()->total('count') . ' '.Lang::txt('COM_WISHLIST_NOTICE_OUT_OF').' '.$voters.' '.Lang::txt('COM_WISHLIST_VOTES'); ?>)</span>
 							</caption>
 							<thead>
 								<tr>
@@ -627,20 +632,21 @@ $this->css()
 	</section><!-- / .main section -->
 
 <?php if (!$this->wish->isDeleted() && !$this->wish->isWithdrawn()) { ?>
+	<?php $comments = $this->wish->comments()->whereIn('state', array(1, 3))->rows(); ?>
 	<section class="below section" id="section-comments">
 		<div class="subject">
 			<h3>
-				<?php echo Lang::txt('COM_WISHLIST_COMMENTS');?> (<?php echo $this->wish->comments('count'); ?>)
+				<?php echo Lang::txt('COM_WISHLIST_COMMENTS');?> (<?php echo $comments->count(); ?>)
 			</h3>
 			<?php
-			if ($this->wish->comments()->count() > 0)
+			if ($comments->count() > 0)
 			{
 				$this->view('_list')
 				     ->set('parent', 0)
 				     ->set('cls', 'odd')
 				     ->set('depth', 0)
 				     ->set('option', $this->option)
-				     ->set('comments', $this->wish->comments())
+				     ->set('comments', $comments)
 				     ->set('wishlist', $this->wishlist)
 				     ->set('wish', $this->wish)
 				     ->display();
@@ -742,7 +748,7 @@ $this->css()
 			<div class="subject" id="full_plan">
 				<h3>
 					<?php echo Lang::txt('COM_WISHLIST_IMPLEMENTATION_PLAN'); ?>
-					<?php if ($this->wish->plan()->exists()) { ?>
+					<?php if ($this->wish->plan->get('id')) { ?>
 						(<a href="<?php echo Route::url($this->wish->link('editplan')); ?>"><?php echo Lang::txt('COM_WISHLIST_ACTION_EDIT'); ?></a>)
 					<?php } else { ?>
 						(<?php echo Lang::txt('COM_WISHLIST_PLAN_NOT_STARTED'); ?>)
@@ -758,14 +764,14 @@ $this->css()
 						<div class="grid">
 							<div class="col span6">
 								<label>
-									<?php echo Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO'); ?>:
+									<?php echo Lang::txt('COM_WISHLIST_WISH_ASSIGN_TO'); ?>:
 									<?php echo $this->wish->get('assignlist'); ?>
 								</label>
 							</div>
 							<div class="col span6 omega">
 								<label for="publish_up" id="publish_up-label">
 									<?php echo Lang::txt('COM_WISHLIST_DUE'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>)
-									<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $due ? $this->wish->due() : ''; ?>" />
+									<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" placeholder="YYYY-MM-DD" value="<?php echo $due ? $this->wish->due() : ''; ?>" />
 								</label>
 							</div>
 						</div>
@@ -780,7 +786,7 @@ $this->css()
 						<?php } ?>
 						<label>
 							<?php echo Lang::txt('COM_WISHLIST_ACTION_INSERT_TEXT'); ?>
-							<?php echo $this->editor('pagetext', $this->escape($this->wish->plan()->content('raw')), 35, 40, 'pagetext', array('class' => 'minimal no-footer')); ?>
+							<?php echo $this->editor('pagetext', $this->escape($this->wish->plan->get('pagetext')), 35, 40, 'pagetext', array('class' => 'minimal no-footer')); ?>
 						</label>
 
 						<input type="hidden" name="pageid" value="<?php echo $this->wish->plan()->get('id', 0); ?>" />
@@ -806,7 +812,7 @@ $this->css()
 								<?php echo Lang::txt('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?>
 							</p>
 						</div>
-				<?php } else if (!$this->wish->plan()->exists()) { ?>
+				<?php } else if (!$this->wish->plan->get('id')) { ?>
 						<p>
 							<?php echo Lang::txt('COM_WISHLIST_THERE_IS_NO_PLAN'); ?>
 							<a href="<?php echo Route::url($this->wish->link('editplan')); ?>">
@@ -837,9 +843,9 @@ $this->css()
 					<?php } ?>
 						<div class="planbody">
 							<p class="plannote">
-								<?php echo Lang::txt('COM_WISHLIST_PLAN_LAST_EDIT').' '.$this->wish->plan()->created('date').' at '.$this->wish->plan()->created('time').' '.Lang::txt('COM_WISHLIST_BY').' '.$this->wish->plan()->creator('name');?>
+								<?php echo Lang::txt('COM_WISHLIST_PLAN_LAST_EDIT').' '.$this->wish->plan->created('date').' at '.$this->wish->plan->created('time').' '.Lang::txt('COM_WISHLIST_BY').' '.$this->wish->plan->creator->get('name');?>
 							</p>
-							<?php echo $this->wish->plan()->content('parsed'); ?>
+							<?php echo $this->wish->plan->content; ?>
 						</div>
 				<?php } ?>
 					</fieldset>

@@ -32,19 +32,19 @@
 
 namespace Components\Wishlist\Models;
 
-use Hubzero\Base\ItemList;
-use Components\Wishlist\Tables;
+use Hubzero\Database\Relational;
+use Hubzero\User\Group;
 use Lang;
 use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wishlist.php');
-require_once(__DIR__ . DS . 'wish.php');
-require_once(__DIR__ . DS . 'owner.php');
+require_once __DIR__ . DS . 'wish.php';
+require_once __DIR__ . DS . 'owner.php';
+require_once __DIR__ . DS . 'ownergroup.php';
 
 /**
  * Wishlist model class
  */
-class Wishlist extends Base
+class Wishlist extends Relational
 {
 	/**
 	 * Open state
@@ -61,128 +61,105 @@ class Wishlist extends Base
 	const WISHLIST_STATE_PUBLIC  = 1;
 
 	/**
-	 * Table class name
+	 * The table to which the class pertains
+	 *
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__wishlist';
+
+	/**
+	 * Default order by for model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Wishlist';
+	public $orderBy = 'title';
 
 	/**
-	 * Container for interally cached data
+	 * Default order direction for select queries
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	private $_cache = array(
-		'wish'         => null,
-		'wishes.list'  => null,
-		'wishes.count' => null,
-		'wishes.first' => null,
-		'owners.list0' => null,
-		'owners.list1' => null
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'title'       => 'notempty',
+		'category'    => 'notempty',
+		'referenceid' => 'positive|nonzero'
 	);
 
 	/**
-	 * Adapter
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_adapter = null;
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
 
 	/**
-	 * Constructor
+	 * Fields to be parsed
 	 *
-	 * @param   string   $oid    Integer, array, or object
-	 * @param   integer  $scope  Scope type [group, etc.]
-	 * @return  void
+	 * @var  array
 	 */
-	public function __construct($oid=null, $scope=null)
+	protected $parsed = array(
+		'description'
+	);
+
+	/**
+	 * Component configuration
+	 *
+	 * @var  object
+	 */
+	protected $config = null;
+
+	/**
+	 * Load a record by wishlist and groupid
+	 *
+	 * @param   integer  $referenceid
+	 * @param   string   $category
+	 * @return  object
+	 */
+	public static function oneByReference($referenceid, $category)
 	{
-		$this->_db = \App::get('db');
-
-		if ($this->_tbl_name)
-		{
-			$cls = $this->_tbl_name;
-			$this->_tbl = new $cls($this->_db);
-
-			if (!($this->_tbl instanceof \JTable))
-			{
-				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
-				);
-				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
-			}
-
-			if (is_numeric($oid))
-			{
-				if ($scope && is_string($scope))
-				{
-					$this->_tbl->loadByCategory($oid, $scope);
-				}
-				// Make sure $oid isn't empty
-				// This saves a database call
-				else if ($oid)
-				{
-					$this->_tbl->load($oid);
-				}
-			}
-			else if (is_string($oid) && $scope)
-			{
-				$this->set('category', $scope);
-				$this->set('referenceid', $oid);
-
-				$oid = $this->_adapter()->item('id');
-
-				$this->_tbl->loadByCategory($oid, $scope);
-				$this->_adapter = null;
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
-
-		if ($scope && is_string($scope))
-		{
-			$this->set('category', $scope);
-		}
+		return self::all()
+			->whereEquals('referenceid', $referenceid)
+			->whereEquals('category', $category)
+			->row();
 	}
 
 	/**
-	 * Returns a reference to this model
+	 * Create the wishlist
 	 *
-	 * @param   string   $oid    Integer, array, or object
-	 * @param   integer  $scope  Scope type [group, etc.]
-	 * @return  object
+	 * @return  boolean
 	 */
-	static function &getInstance($oid=null, $scope=null)
+	public function stage()
 	{
-		static $instances;
-
-		if (!isset($instances))
+		if ($this->get('id'))
 		{
-			$instances = array();
+			return true;
 		}
 
-		$key = $scope . '_';
-		if (is_numeric($oid) || is_string($oid))
+		if (!$this->_adapter()->exists())
 		{
-			$key .= $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key .= $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key .= $oid['id'];
+			$this->addError(Lang::txt('Item of category "%s" and ID of "%s" could not be found.', $this->get('category'), $this->get('referenceid')));
+			return false;
 		}
 
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($oid, $scope);
-		}
+		$this->set('title', $this->get('title', $this->get('category') . ' #' . $this->get('referenceid')));
+		$this->set('description', $this->_adapter()->title());
+		$this->set('public', 1);
 
-		return $instances[$key];
+		return $this->save();
 	}
 
 	/**
@@ -251,10 +228,9 @@ class Wishlist extends Base
 				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
 				if (!is_file($path))
 				{
-					//throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
 					throw new \RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->_adapter = new $cls($this->get('referenceid'));
@@ -264,182 +240,74 @@ class Wishlist extends Base
 	}
 
 	/**
-	 * Create the wishlist
-	 *
-	 * @return  boolean
-	 */
-	public function setup()
-	{
-		if ($this->exists())
-		{
-			return true;
-		}
-
-		if (!$this->_adapter()->exists())
-		{
-			$this->setError(Lang::txt('Item of category "%s" and ID of "%s" could not be found.', $this->get('category'), $this->get('referenceid')));
-			return false;
-		}
-
-		$this->set('title', $this->_adapter()->title());
-
-		$this->set('id', $this->_tbl->createlist(
-			$this->get('category'),
-			$this->get('referenceid'),
-			1,
-			$this->get('title'),
-			$this->_adapter()->item('title')
-		));
-
-		if (!$this->get('id'))
-		{
-			$this->setError(Lang::txt('Failed to create wishlist for category "%s" and ID of "%s".', $this->get('category'), $this->get('referenceid')));
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Determine if wishlist is public or private
 	 *
 	 * @return  boolean  True if public, false if not
 	 */
 	public function isPublic()
 	{
-		if ($this->get('public') == self::WISHLIST_STATE_PUBLIC)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Set and get a specific wish
-	 *
-	 * @param   integer  $id  Wish ID
-	 * @return  object
-	 */
-	public function wish($id=null)
-	{
-		if (!($this->_cache['wish'] instanceof Wish)
-		 || ($id !== null && (int) $this->_cache['wish']->get('id') != $id))
-		{
-			$this->_cache['wish'] = null;
-
-			if ($this->_cache['wishes.list'] instanceof ItemList)
-			{
-				foreach ($this->_cache['wishes.list'] as $key => $wish)
-				{
-					if ((int) $wish->get('id') == $id || (string) $wish->get('alias') == $id)
-					{
-						$this->_cache['wish'] = $wish;
-						break;
-					}
-				}
-			}
-
-			if (!$this->_cache['wish'])
-			{
-				$this->_cache['wish'] = Wish::getInstance($id, $this->get('scope'), $this->get('scope_id'));
-			}
-
-			if (!$this->_cache['wish']->exists())
-			{
-				$this->_cache['wish']->set('scope', $this->get('scope'));
-				$this->_cache['wish']->set('scope_id', $this->get('scope_id'));
-			}
-		}
-
-		return $this->_cache['wish'];
+		return ($this->get('public') == self::WISHLIST_STATE_PUBLIC);
 	}
 
 	/**
 	 * Get a count or list of wishes
 	 *
-	 * @param   string   $rtrn     What data to return [count, list, first]
-	 * @param   array    $filters  Filters to apply to data fetch
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function wishes($rtrn='', $filters=array(), $clear=false)
+	public function wishes()
 	{
-		if (!isset($filters['wishlist']))
-		{
-			$filters['wishlist'] = (int) $this->get('id');
-		}
-
-		$tbl = new Tables\Wish($this->_db);
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!is_numeric($this->_cache['wishes.count']) || $clear)
-				{
-					$this->_cache['wishes.count'] = (int) $tbl->get_count($this->get('id'), $filters, $this->get('admin'), User::getInstance());
-				}
-				return $this->_cache['wishes.count'];
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['wishes.list'] instanceof ItemList) || $clear)
-				{
-					if ($results = $tbl->get_wishes($this->get('id'), $filters, $this->get('admin'), User::getInstance()))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Wish($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_cache['wishes.list'] = new ItemList($results);
-				}
-				return $this->_cache['wishes.list'];
-			break;
-		}
+		return $this->oneToMany(__NAMESPACE__ . '\\Wish', 'wishlist');
 	}
 
 	/**
 	 * Get a list of owners
 	 *
-	 * @param   string   $rtrn    What data to return [count, list, first]
-	 * @param   integer  $native
-	 * @return  array
+	 * @return  object
 	 */
-	public function owners($rtrn='', $native=0)
+	public function owners()
 	{
-		$tbl = new Tables\Owner($this->_db);
+		return $this->oneToMany(__NAMESPACE__ . '\\Owner', 'wishlist');
+	}
 
-		if (!is_array($this->_cache['owners.list' . $native]))
+	/**
+	 * Get a list of owners
+	 *
+	 * @return  object
+	 */
+	public function ownergroups()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Ownergroup', 'wishlist');
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove wishes
+		foreach ($this->wishes()->rows() as $wish)
 		{
-			$category = $this->get('category');
-			$this->_tbl->$category = $this->_adapter()->item();
-			if ($data = $tbl->get_owners($this->get('id'), $this->config('group', 'hubadmin'), $this->_tbl, $native))
+			if (!$wish->destroy())
 			{
-				$results = $data;
+				$this->addError($wish->getError());
+				return false;
 			}
-			else
-			{
-				$results = array(
-					'individuals' => array(),
-					'groups'      => array(),
-					'advisory'    => array()
-				);
-			}
-			$this->_cache['owners.list' . $native] = $results;
 		}
 
-		if ($rtrn && isset($this->_cache['owners.list' . $native][$rtrn]))
+		// Remove owners
+		foreach ($this->owners()->rows() as $owner)
 		{
-			return $this->_cache['owners.list' . $native][$rtrn];
+			if (!$owner->destroy())
+			{
+				$this->addError($owner->getError());
+				return false;
+			}
 		}
 
-		return $this->_cache['owners.list' . $native];
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 
 	/**
@@ -449,7 +317,7 @@ class Wishlist extends Base
 	 * @param   mixed   $data  integer|string|array
 	 * @return  object
 	 */
-	public function remove($what, $data)
+	public function removeOwner($what, $data)
 	{
 		$data = $this->_toArray($data);
 
@@ -459,11 +327,11 @@ class Wishlist extends Base
 		{
 			case 'advisory':
 			case 'individuals':
-				$tbl = new Tables\Owner($this->_db);
+				$tbl = new Owner($this->_db);
 			break;
 
 			case 'groups':
-				$tbl = new Tables\OwnerGroup($this->_db);
+				$tbl = new OwnerGroup($this->_db);
 			break;
 
 			default:
@@ -498,10 +366,6 @@ class Wishlist extends Base
 			}
 		}
 
-		// Reset the owners lists
-		$this->_cache['owners.list0'] = null;
-		$this->_cache['owners.list1'] = null;
-
 		return $this;
 	}
 
@@ -512,7 +376,7 @@ class Wishlist extends Base
 	 * @param   mixed   $data  integer|string|array
 	 * @return  object
 	 */
-	public function add($what, $data)
+	public function addOwner($what, $data)
 	{
 		$data = $this->_toArray($data);
 
@@ -523,67 +387,253 @@ class Wishlist extends Base
 			case 'advisory':
 				if ($this->config('allow_advisory', 0))
 				{
-					$tbl = new Tables\Owner($this->_db);
-
-					if (!$tbl->save_owners($this->get('id'), $this->config(), $data, 2))
+					foreach ($data as $datum)
 					{
-						$this->setError($tbl->getError());
+						$user = User::getInstance($datum);
+						if (!$user->get('id'))
+						{
+							continue;
+						}
+
+						$record = Owner::oneByWishlistAndUser($this->get('id'), $datum);
+
+						if ($record->isNew())
+						{
+							$record->set('wishlist', $this->get('id'));
+							$record->set('userid', $datum);
+							$record->set('type', 2);
+
+							if (!$record->save())
+							{
+								$this->addError($record->getError());
+							}
+						}
 					}
 				}
 			break;
 
 			case 'individuals':
-				$tbl = new Tables\Owner($this->_db);
-
-				if (!$tbl->save_owners($this->get('id'), $this->config(), $data))
+				foreach ($data as $datum)
 				{
-					$this->setError($tbl->getError());
+					$user = User::getInstance($datum);
+					if (!$user->get('id'))
+					{
+						continue;
+					}
+
+					$record = Owner::oneByWishlistAndUser($this->get('id'), $datum);
+
+					if ($record->isNew())
+					{
+						$record->set('wishlist', $this->get('id'));
+						$record->set('userid', $datum);
+						$record->set('type', 0);
+
+						if (!$record->save())
+						{
+							$this->addError($record->getError());
+						}
+					}
 				}
 			break;
 
 			case 'groups':
-				$tbl = new Tables\OwnerGroup($this->_db);
-
-				if (!$tbl->save_owner_groups($this->get('id'), $this->config(), $data))
+				foreach ($data as $datum)
 				{
-					$this->setError($tbl->getError());
+					$group = Group::getInstance($datum);
+					if (!$group)
+					{
+						continue;
+					}
+
+					$record = Ownergroup::oneByWishlistAndGroup($this->get('id'), $datum);
+
+					if ($record->isNew())
+					{
+						$record->set('wishlist', $this->get('id'));
+						$record->set('groupid', $datum);
+
+						if (!$record->save())
+						{
+							$this->addError($record->getError());
+						}
+					}
 				}
 			break;
 
 			default:
-				//throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
-				throw new \RuntimeException("Lang::txt('Owner type not supported.')", 404);
+				throw new \InvalidArgumentException(Lang::txt('Owner type "%s" not supported.', $what));
 			break;
 		}
-
-		// Reset the owners lists
-		$this->_cache['owners.list0'] = null;
-		$this->_cache['owners.list1'] = null;
 
 		return $this;
 	}
 
 	/**
-	 * Turn a comma or space deliniated string into an array
+	 * Get a list of owners
 	 *
-	 * @param   string  $string
+	 * @param   object   $admingroup  Admin Group
+	 * @param   integer  $native      Get groups assigned to this wishlist?
+	 * @param   integer  $wishid      Wish ID
 	 * @return  array
 	 */
-	public function _toArray($string='')
+	public function getOwners($admingroup=null, $native=0, $wishid=0)
 	{
-		if (is_array($string))
+		if (!$admingroup)
 		{
-			return $string;
+			$admingroup = $this->config()->get('group');
+		}
+
+		$owners = array();
+
+		// If private user list, add the user
+		if ($this->get('category') == 'user')
+		{
+			$owners[] = $this->get('referenceid');
+		}
+
+		$owners += $this->_adapter()->owners();
+
+		// Get groups
+		$groups = $this->getOwnergroups($admingroup, $native);
+
+		foreach ($groups as $g)
+		{
+			$group = Group::getInstance($g);
+
+			if ($group && $group->get('gidNumber'))
+			{
+				$members  = $group->get('members');
+				$managers = $group->get('managers');
+				$members  = array_merge($members, $managers);
+
+				foreach ($members as $member)
+				{
+					$owners[] = $member;
+				}
+			}
+		}
+
+		// Get individuals
+		if (!$native)
+		{
+			foreach ($this->owners()->where('type', '!=', 2)->rows() as $result)
+			{
+				$owners[] = $result->userid;
+			}
+		}
+
+		$owners = array_unique($owners);
+		sort($owners);
+
+		// Are we also including advisory committee?
+		$wconfig = Component::params('com_wishlist');
+
+		$advisory = array();
+
+		if ($wconfig->get('allow_advisory'))
+		{
+			foreach ($this->owners()->whereEquals('type', 2)->rows() as $result)
+			{
+				$advisory[] = $result->userid;
+			}
+		}
+
+		// Find out those who voted - for distribution of points
+		if ($wishid)
+		{
+			$activeowners = array();
+
+			$result = Rank::all()
+				->whereEquals('wishid', $wishid)
+				->whereIn('userid', $owners)
+				->rows();
+
+			if ($result->count() > 0)
+			{
+				foreach ($result as $r)
+				{
+					$activeowners[] = $r->userid;
+				}
+
+				$owners = $activeowners;
+			}
+		}
+
+		$collect = array();
+		$collect['individuals'] = $owners;
+		$collect['groups']      = $groups;
+		$collect['advisory']    = $advisory;
+
+		return $collect;
+	}
+
+	/**
+	 * Get the groups of a wishlist owner
+	 *
+	 * @param   string   $controlgroup  Control group name
+	 * @param   integer  $native        Get groups assigned to this wishlist?
+	 * @return  array
+	 */
+	public function getOwnergroups($controlgroup, $native=0)
+	{
+		$groups = array();
+
+		// If private user list, add the user
+		if ($this->get('category') == 'group')
+		{
+			$groups[] = $this->get('referenceid');
+		}
+
+		$groups += $this->_adapter()->groups();
+
+		// if primary list, add all site admins
+		if ($controlgroup && $this->get('category') == 'general')
+		{
+			$instance = Group::getInstance($controlgroup);
+
+			if (is_object($instance))
+			{
+				$groups[] = $instance->get('gidNumber');
+			}
+		}
+
+		if (!$native)
+		{
+			foreach ($this->ownergroups as $g)
+			{
+				$groups[] = $g->groupid;
+			}
+		}
+
+		$groups = array_unique($groups);
+
+		sort($groups);
+
+		return $groups;
+	}
+
+	/**
+	 * Turn a comma or space deliniated string into an array
+	 *
+	 * @param   mixed  $data
+	 * @return  array
+	 */
+	public function _toArray($data='')
+	{
+		if (is_array($data))
+		{
+			return $data;
 		}
 
 		if (!strstr($data, ' ') && !strstr($data, ','))
 		{
-			return array($string);
+			return array($data);
 		}
 
-		$string = str_replace(' ', ',', $string);
-		$arr    = explode(',', $string);
-		$arr    = array_map('trim', $arr);
+		$data = str_replace(' ', ',', $data);
+		$arr  = explode(',', $data);
+		$arr  = array_map('trim', $arr);
 		foreach ($arr as $key => $value)
 		{
 			if ($value == '')
@@ -591,7 +641,7 @@ class Wishlist extends Base
 				unset($arr[$key]);
 			}
 		}
-		$arr    = array_unique($arr);
+		$arr  = array_unique($arr);
 
 		return $arr;
 	}
@@ -609,14 +659,9 @@ class Wishlist extends Base
 			return $user;
 		}
 
-		$this->_db->setQuery("SELECT `id` FROM `#__users` WHERE `username`=" . $this->_db->quote($user));
+		$row = User::getInstance($user);
 
-		if (($result = $this->_db->loadResult()))
-		{
-			return $result;
-		}
-
-		return 0;
+		return $row->get('id', 0);
 	}
 
 	/**
@@ -632,14 +677,35 @@ class Wishlist extends Base
 			return $group;
 		}
 
-		$this->_db->setQuery("SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`=" . $this->_db->quote($group));
+		$g = Group::getInstance($group);
 
-		if (($result = $this->_db->loadResult()))
+		if ($g)
 		{
-			return $result;
+			return $g->get('gidNumber');
 		}
 
 		return 0;
+	}
+
+	/**
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
+	 *
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default  Value to return if key isn't found
+	 * @return  mixed
+	 */
+	public function config($key=null, $default=null)
+	{
+		if (!isset($this->config))
+		{
+			$this->config = \Component::params('com_wishlist');
+		}
+		if ($key)
+		{
+			return $this->config->get($key, $default);
+		}
+		return $this->config;
 	}
 
 	/**
@@ -690,11 +756,12 @@ class Wishlist extends Base
 				$this->config()->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
 				$this->config()->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
 
-				if ($this->exists())
+				if ($this->get('id'))
 				{
 					// Get list administrators
-					$managers = $this->owners('individuals');
-					$advisory = $this->owners('advisory');
+					$owners = $this->getOwners($this->config('group'));
+					$managers = $owners['individuals'];
+					$advisory = $owners['advisory'];
 
 					if (in_array(User::get('id'), $managers))
 					{
@@ -733,18 +800,17 @@ class Wishlist extends Base
 		// do we give more weight to votes coming from advisory committee?
 		$votesplit = $this->config('votesplit', 0);
 
-		if ($this->wishes()->total() > 0)
+		if ($this->wishes->count() > 0)
 		{
-			$managers = $this->owners('individuals');
-			$advisory = $this->owners('advisory');
+			$owners = $this->getOwners($this->config('group'));
+			$voters = $owners['individuals'] + $owners['advisory'];
 
-			$voters = array_merge($managers, $advisory);
 			if (!count($voters))
 			{
 				return false;
 			}
 
-			foreach ($this->wishes() as $item)
+			foreach ($this->wishes as $item)
 			{
 				$weight_e = 4;
 				$weight_i = 5;
@@ -758,7 +824,7 @@ class Wishlist extends Base
 				$ranking = 0;
 
 				// first consider votes by list owners
-				if ($item->rankings()->total() > 0)
+				if ($item->rankings->count() > 0)
 				{
 					$imp     = 0;
 					$eff     = 0;
@@ -766,7 +832,7 @@ class Wishlist extends Base
 					$skipped = 0; // how many times effort selection was skipped
 					$divisor = 0;
 
-					foreach ($item->rankings() as $vote)
+					foreach ($item->rankings as $vote)
 					{
 						if (in_array($vote->get('userid'), $voters))
 						{
@@ -774,7 +840,7 @@ class Wishlist extends Base
 							$num++;
 							if ($votesplit && in_array($vote->get('userid'), $advisory))
 							{
-								$imp += $vote->importance * $co_adv;
+								$imp += $vote->get('importance') * $co_adv;
 								$divisor += $co_adv;
 							}
 							else if ($votesplit)
@@ -798,21 +864,23 @@ class Wishlist extends Base
 						else
 						{
 							// need to clean up this vote! looks like owners list changed since last voting
-							//$remove = $objR->remove_vote($item->id, $vote->userid);
-							$vote->delete();
+							$vote->destroy();
 						}
 					}
 
 					// average values
-					$imp = ($votesplit && $divisor) ? $imp/$divisor: $imp/$num;
-					$eff = ($num - $skipped) != 0 ? $eff/($num - $skipped) : 0;
-					$weight_i = ($num - $skipped) != 0 ? $weight_i : 7;
+					if (($votesplit && $divisor) || $num)
+					{
+						$imp = ($votesplit && $divisor) ? $imp/$divisor: $imp/$num;
+						$eff = ($num - $skipped) != 0 ? $eff/($num - $skipped) : 0;
+						$weight_i = ($num - $skipped) != 0 ? $weight_i : 7;
 
-					// we need to factor in how many people voted
-					$certainty = $co + $num/count($voters);
+						// we need to factor in how many people voted
+						$certainty = $co + $num/count($voters);
 
-					$ranking += ($imp * $weight_i) * $certainty;
-					$ranking += ($eff * $weight_e) * $certainty;
+						$ranking += ($imp * $weight_i) * $certainty;
+						$ranking += ($eff * $weight_e) * $certainty;
+					}
 				}
 
 				// determine weight of community feedback
@@ -831,9 +899,9 @@ class Wishlist extends Base
 				$item->set('ranking', $ranking);
 
 				// store new content
-				if (!$item->store(false))
+				if (!$item->save())
 				{
-					$this->setError($item->getError());
+					$this->addError($item->getError());
 					return false;
 				}
 			}
@@ -842,4 +910,3 @@ class Wishlist extends Base
 		return true;
 	}
 }
-

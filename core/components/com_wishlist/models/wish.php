@@ -32,28 +32,23 @@
 
 namespace Components\Wishlist\Models;
 
-use Components\Members\Models\Member;
+use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
-use Hubzero\Base\ItemList;
-use Components\Wishlist\Tables;
 use User;
 use Lang;
 use Date;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'attachment.php');
-require_once(__DIR__ . DS . 'comment.php');
-require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'plan.php');
-require_once(__DIR__ . DS . 'vote.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
+require_once __DIR__ . DS . 'attachment.php';
+require_once __DIR__ . DS . 'comment.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'plan.php';
+require_once __DIR__ . DS . 'vote.php';
+require_once __DIR__ . DS . 'rank.php';
 
 /**
- * Wishlist model class for a wish
+ * Model class for a wishlist item
  */
-class Wish extends Base
+class Wish extends Relational
 {
 	/**
 	 * Open state
@@ -105,198 +100,151 @@ class Wish extends Base
 	const WISH_STATE_FLAGGED = 7;
 
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\Wishlist\\Tables\\Wish';
+	protected $namespace = 'wishlist';
 
 	/**
-	 * Model context
+	 * The table to which the class pertains
+	 *
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__wishlist_item';
+
+	/**
+	 * Default order by for model
 	 *
 	 * @var string
 	 */
-	protected $_context = 'com_wishlist.wish.about';
+	public $orderBy = 'title';
 
 	/**
-	 * Attachment
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	protected $_attachment = null;
+	public $orderDir = 'asc';
 
 	/**
-	 * Adapter
+	 * Fields and their validation criteria
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_adapter = null;
-
-	/**
-	 * Plan
-	 *
-	 * @var object
-	 */
-	private $_plan = null;
-
-	/**
-	 * Hubzero\User\User
-	 *
-	 * @var object
-	 */
-	private $_proposer = null;
-
-	/**
-	 * User
-	 *
-	 * @var object
-	 */
-	private $_owner = null;
-
-	/**
-	 * Cached data
-	 *
-	 * @var array
-	 */
-	private $_cache = array(
-		'tag.cloud'        => null,
-		'comments.count'   => null,
-		'comments.list'    => null,
-		'comments.authors' => null,
-		'votes.count'      => null,
-		'votes.list'       => null,
-		'votes.positive'   => null,
-		'votes.negative'   => null,
-		'ranks.list'       => null
+	protected $rules = array(
+		'subject'    => 'notempty',
+		'wishlist'  => 'positive|nonzero'
 	);
 
 	/**
-	 * Constructor
-	 * 
-	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
-	 * @return  void
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
 	 */
-	public function __construct($oid=null)
-	{
-		parent::__construct($oid);
+	public $initiate = array(
+		'proposed',
+		'proposed_by'
+	);
 
-		if ($this->exists())
+	/**
+	 * Fields to be parsed
+	 *
+	 * @var  array
+	 */
+	protected $parsed = array(
+		'about'
+	);
+
+	/**
+	 * Component configuration
+	 *
+	 * @var  object
+	 */
+	protected $config = null;
+
+	/**
+	 * Generates automatic proposed field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticProposed($data)
+	{
+		if (!isset($data['proposed']) || !$data['proposed'])
 		{
-			if ($this->get('positive') === null)
-			{
-				$this->set('positive', $this->votes('positive'));
-			}
-			if ($this->get('negative') === null)
-			{
-				$this->set('negative', $this->votes('negative'));
-			}
+			$data['proposed'] = Date::of('now')->toSql();
 		}
+		return $data['proposed'];
 	}
 
 	/**
-	 * Returns a reference to this model
+	 * Generates automatic proposed field value
 	 *
-	 * @param   mixed   $oid  ID (int) or array or object
-	 * @return  object
+	 * @param   array   $data  the data being saved
+	 * @return  string
 	 */
-	static function &getInstance($oid=0)
+	public function automaticProposedBy($data)
 	{
-		static $instances;
-
-		if (!isset($instances))
+		if (!isset($data['proposed_by']) || !$data['proposed_by'])
 		{
-			$instances = array();
+			$data['proposed_by'] = User::get('id');
 		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
+		return $data['proposed_by'];
 	}
 
 	/**
 	 * Get the creator of this entry
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property  What data to return
-	 * @param   mixed   $default   Default value
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function proposer($property=null, $default=null)
+	public function proposer()
 	{
-		if (!($this->_proposer instanceof \Hubzero\User\User))
-		{
-			$this->_proposer = \User::oneOrNew($this->get('proposed_by'));
-		}
-		if ($property)
-		{
-			if ($property == 'picture')
-			{
-				return $this->_proposer->picture($this->get('anonymous'));
-			}
-			return $this->_proposer->get($property, $default);
-		}
-		return $this->_proposer;
+		return $this->belongsToOne('Hubzero\User\User', 'proposed_by');
 	}
 
 	/**
 	 * Get the owner of this entry
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property  What data to return
-	 * @param   mixed   $default   Default value
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function owner($property=null, $default=null)
+	public function assignee()
 	{
-		if (!($this->_owner instanceof \Hubzero\User\User))
-		{
-			$this->_owner = \User::oneOrNew($this->get('assigned'));
-		}
-		if ($property)
-		{
-			if ($property == 'picture')
-			{
-				return $this->_owner->picture();
-			}
-			return $this->_owner->get($property, $default);
-		}
-		return $this->_owner;
+		return $this->belongsToOne('Hubzero\User\User', 'assigned');
 	}
 
 	/**
-	 * Get the attachment on the wish
+	 * Get the owning wishlist of this entry
 	 *
-	 * @return  object WishlistModelAttachment
+	 * @return  object
 	 */
-	public function attachment()
+	public function wishlist()
 	{
-		if (!isset($this->_attachment))
-		{
-			$this->_attachment = Attachment::getInstance(0, $this->get('id'));
-		}
-		return $this->_attachment;
+		return $this->belongsToOne(__NAMESPACE__ . '\\Wishlist', 'wishlist');
+	}
+
+	/**
+	 * Get the attachments on the wish
+	 *
+	 * @return  object
+	 */
+	public function attachments()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Attachment', 'wish');
+	}
+
+	/**
+	 * Get the plan for this wish
+	 *
+	 * @return  object
+	 */
+	public function plan()
+	{
+		return $this->oneToOne(__NAMESPACE__ . '\\Plan', 'wishid');
 	}
 
 	/**
@@ -341,20 +289,19 @@ class Wish extends Base
 	 */
 	public function _date($key, $rtrn='')
 	{
-		switch (strtolower($rtrn))
+		$rtrn = strtolower($rtrn);
+
+		if ($rtrn == 'date')
 		{
-			case 'date':
-				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get($key);
-			break;
+			return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($rtrn == 'time')
+		{
+			return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get($key);
 	}
 
 	/**
@@ -364,11 +311,7 @@ class Wish extends Base
 	 */
 	public function isOpen()
 	{
-		if ($this->get('status') == static::WISH_STATE_OPEN)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('status') == static::WISH_STATE_OPEN);
 	}
 
 	/**
@@ -378,11 +321,7 @@ class Wish extends Base
 	 */
 	public function isAccepted()
 	{
-		if ($this->get('status') == static::WISH_STATE_ACCEPTED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('status') == static::WISH_STATE_ACCEPTED);
 	}
 
 	/**
@@ -392,11 +331,7 @@ class Wish extends Base
 	 */
 	public function isRejected()
 	{
-		if ($this->get('status') == static::WISH_STATE_REJECTED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('status') == static::WISH_STATE_REJECTED);
 	}
 
 	/**
@@ -406,11 +341,7 @@ class Wish extends Base
 	 */
 	public function isWithdrawn()
 	{
-		if ($this->get('status') == static::WISH_STATE_WITHDRAWN)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('status') == static::WISH_STATE_WITHDRAWN);
 	}
 
 	/**
@@ -420,11 +351,7 @@ class Wish extends Base
 	 */
 	public function isDeleted()
 	{
-		if ($this->get('status') == static::WISH_STATE_DELETED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('status') == static::WISH_STATE_DELETED);
 	}
 
 	/**
@@ -434,11 +361,7 @@ class Wish extends Base
 	 */
 	public function isGranted()
 	{
-		if ($this->get('status') == static::WISH_STATE_GRANTED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('status') == static::WISH_STATE_GRANTED);
 	}
 
 	/**
@@ -462,11 +385,7 @@ class Wish extends Base
 	 */
 	public function isReported()
 	{
-		if ($this->get('status') == static::WISH_STATE_FLAGGED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('status') == static::WISH_STATE_FLAGGED);
 	}
 
 	/**
@@ -558,6 +477,24 @@ class Wish extends Base
 	}
 
 	/**
+	 * Get a ranking
+	 *
+	 * @param   string  $rtrn  Data format to return
+	 * @return  mixed
+	 */
+	public function ranking($rtrn='importance')
+	{
+		if (!$this->get('myranking', null))
+		{
+			$model = Rank::oneByUserAndWish(User::get('id'), $this->get('id'));
+
+			$this->set('myranking', $model);
+		}
+
+		return $this->get('myranking')->get($rtrn);
+	}
+
+	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
@@ -582,7 +519,7 @@ class Wish extends Base
 		{
 			if (!$this->get('referenceid') || !$this->get('category'))
 			{
-				$wishlist = Wishlist::getInstance($this->get('wishlist'));
+				$wishlist = Wishlist::oneOrNew($this->get('wishlist'));
 				$this->set('referenceid', $wishlist->get('referenceid'));
 				$this->set('category', $wishlist->get('category'));
 			}
@@ -612,12 +549,11 @@ class Wish extends Base
 	/**
 	 * Store changes to this offering
 	 *
-	 * @param   boolean  $check  Perform data validation check?
 	 * @return  boolean  False if error, True on success
 	 */
-	public function store($check=true)
+	public function save()
 	{
-		if (!$this->get('anonymous'))
+		if (is_null($this->get('anonymous')))
 		{
 			$this->set('anonymous', 0);
 		}
@@ -629,12 +565,61 @@ class Wish extends Base
 		);
 		$this->set('about', \Hubzero\Utility\Sanitize::clean($string));
 
-		if (!parent::store($check))
+		return parent::save();
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove comments
+		foreach ($this->comments()->rows() as $comment)
 		{
-			return false;
+			if (!$comment->destroy())
+			{
+				$this->addError($comment->getError());
+				return false;
+			}
 		}
 
-		return true;
+		// Remove rankings
+		foreach ($this->rankings()->rows() as $ranking)
+		{
+			if (!$ranking->destroy())
+			{
+				$this->addError($ranking->getError());
+				return false;
+			}
+		}
+
+		// Remove votes
+		foreach ($this->votes()->rows() as $vote)
+		{
+			if (!$vote->destroy())
+			{
+				$this->addError($vote->getError());
+				return false;
+			}
+		}
+
+		// Remove attachments
+		foreach ($this->attachments()->rows() as $attachment)
+		{
+			if (!$attachment->destroy())
+			{
+				$this->addError($attachment->getError());
+				return false;
+			}
+		}
+
+		// Remove all tags
+		$this->tag('');
+
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 
 	/**
@@ -646,7 +631,7 @@ class Wish extends Base
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
-		if (!$this->exists())
+		if (!$this->get('id'))
 		{
 			switch (strtolower($what))
 			{
@@ -663,12 +648,9 @@ class Wish extends Base
 			}
 		}
 
-		if (!($this->_cache['tag.cloud'] instanceof Tags))
-		{
-			$this->_cache['tag.cloud'] = new Tags($this->get('id'));
-		}
+		$cloud = new Tags($this->get('id'));
 
-		return $this->_cache['tag.cloud']->render($what, array('admin' => $admin));
+		return $cloud->render($what, array('admin' => $admin));
 	}
 
 	/**
@@ -681,123 +663,37 @@ class Wish extends Base
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		if (!($this->_cache['tag.cloud'] instanceof Tags))
-		{
-			$this->_cache['tag.cloud'] = new Tags($this->get('id'));
-		}
+		$cloud = new Tags($this->get('id'));
 
-		return $this->_cache['tag.cloud']->setTags($tags, $user_id, $admin);
+		return $cloud->setTags($tags, $user_id, $admin);
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Parses content string as directed
 	 *
-	 * @param   string   $as       Format to return state in [text, number]
-	 * @param   integer  $shorten  Number of characters to shorten text to
-	 * @return  mixed    String or Integer
+	 * @return  string
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function transformContent()
 	{
-		$as = strtolower($as);
-		$options = array();
+		$field = 'about';
 
-		switch ($as)
+		$property = "_{$field}Parsed";
+
+		if (!isset($this->$property))
 		{
-			case 'parsed':
-				$content = $this->get('about.parsed', null);
+			$params = array(
+				'option'   => 'com_wishlist',
+				'scope'    => 'wishlist',
+				'pagename' => 'wishlist',
+				'pageid'   => $this->get('id'),
+				'filepath' => '',
+				'domain'   => $this->get('wishlist')
+			);
 
-				if ($content == null)
-				{
-					$config = array(
-						'option'   => 'com_wishlist',
-						'scope'    => 'wishlist',
-						'pagename' => 'wishlist',
-						'pageid'   => $this->get('id'),
-						'filepath' => '',
-						'domain'   => $this->get('wishlist')
-					);
-
-					$this->set('about', stripslashes($this->get('about')));
-					$content = $this->get('about');
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('about.parsed', $this->get('about'));
-					$this->set('about', $content);
-
-					return $this->get('about.parsed') ? $this->content($as, $shorten) : NULL;
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-			break;
-
-			case 'raw':
-			default:
-				$content = stripslashes($this->get('about'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				//$content = str_replace(array('&lt;', '&gt;'), array('<', '>'), $content);
-			break;
+			$this->$property = Html::content('prepare', $this->get($field, ''), $params);
 		}
 
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-		return $content;
-	}
-
-	/**
-	 * Get the plan for this wish
-	 *
-	 * @return  object
-	 */
-	public function plan()
-	{
-		if (!($this->_plan instanceof Plan))
-		{
-			$this->_plan = new Plan(0, $this->get('id'));
-		}
-
-		return $this->_plan;
-	}
-
-	/**
-	 * Get the record either immediately before or after the current one
-	 * in a listing of records. 
-	 *
-	 * @param   string   $directtion  [prev|next]
-	 * @param   array    $filters     Filters to apply
-	 * @param   integer  $user_id     A user ID
-	 * @return  boolean
-	 */
-	public function neighbor($direction, $filters=array(), $user_id=null)
-	{
-		$direction = strtolower($direction);
-		if ($direction != 'prev' && $direction != 'next')
-		{
-			return null;
-		}
-
-		if ($user_id === null)
-		{
-			$user_id = User::get('id');
-		}
-
-		return $this->_tbl->getWishId(
-			$direction,
-			$this->get('id'),
-			$this->get('wishlist'),
-			$this->get('admin', 0),
-			$user_id,
-			$filters
-		);
+		return $this->$property;
 	}
 
 	/**
@@ -809,23 +705,19 @@ class Wish extends Base
 	 */
 	public function rank($effort, $importance)
 	{
-		$tbl = new Tables\Wish\Rank($this->_db);
-		$tbl->load_vote(User::get('id'), $this->get('id'));
+		$rank = Rank::oneByUserAndWish(User::get('id'), $this->get('id'));
 
-		$tbl->wishid     = $this->get('id');
-		$tbl->userid     = User::get('id');
-		$tbl->voted      = Date::toSql();
-		$tbl->importance = $importance;
-		$tbl->effort     = $effort;
+		$rank->set(array(
+			'wishid'     => $this->get('id'),
+			'userid'     => User::get('id'),
+			'voted'      => Date::toSql(),
+			'importance' => $importance,
+			'effort'     => $effort
+		));
 
-		if (!$tbl->check())
+		if (!$rank->save())
 		{
-			$this->setError($tbl->getError());
-			return false;
-		}
-		if (!$tbl->store())
-		{
-			$this->setError($tbl->getError());
+			$this->addError($rank->getError());
 			return false;
 		}
 
@@ -842,45 +734,42 @@ class Wish extends Base
 	{
 		if (!$this->isOpen())
 		{
-			$this->setError(Lang::txt('Cannot vote for closed wishes.'));
+			$this->addError(Lang::txt('Cannot vote for closed wishes.'));
 			return false;
 		}
 
 		if ($this->get('proposed_by') == User::get('id'))
 		{
-			$this->setError(Lang::txt('Cannot vote for your own entry.'));
+			$this->addError(Lang::txt('Cannot vote for your own entry.'));
 			return false;
 		}
-
-		$tbl = new \Components\Wishlist\Tables\Vote($this->_db);
 
 		$vote = strtolower($vote);
 
 		// Check if the user already voted
-		if ($voted = $tbl->checkVote($this->get('id'), 'wish', User::get('id')))
+		$voted = Vote::oneByUserAndWish(User::get('id'), $this->get('id'));
+
+		if ($voted->get('id'))
 		{
-			$tbl->loadVote($this->get('id'), 'wish', User::get('id'));
-			if ($vote == $tbl->helpful)
+			if ($vote == $voted->get('helpful'))
 			{
 				return true;
 			}
 		}
 
-		$tbl->referenceid = $this->get('id');
-		$tbl->category    = 'wish';
-		$tbl->voter       = User::get('id');
-		$tbl->ip          = Request::ip();
-		$tbl->voted       = Date::toSql();
-		$tbl->helpful     = $vote;
+		// Create a new entry
+		$voted->set(array(
+			'referenceid' => $this->get('id'),
+			'category'    => 'wish',
+			'voter'       => User::get('id'),
+			'ip'          => Request::ip(),
+			'voted'       => Date::toSql(),
+			'helpful'     => $vote
+		));
 
-		if (!$tbl->check())
+		if (!$voted->save())
 		{
-			$this->setError($tbl->getError());
-			return false;
-		}
-		if (!$tbl->store())
-		{
-			$this->setError($tbl->getError());
+			$this->addError($voted->getError());
 			return false;
 		}
 
@@ -890,155 +779,21 @@ class Wish extends Base
 	/**
 	 * Get a list or count of votes
 	 *
-	 * @param   string   $rtrn     Data format to return
-	 * @param   array    $filters  Filters to apply to data fetch
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function votes($rtrn='list', $filters=array(), $clear = false)
+	public function votes()
 	{
-		if (!isset($filters['id']))
-		{
-			$filters['id'] = $this->get('id');
-		}
-		if (!isset($filters['category']))
-		{
-			$filters['category'] = 'wish';
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'positive':
-			case 'negative':
-			case 'count':
-				if (!is_numeric($this->_cache['votes.count']) || $clear)
-				{
-					$this->_cache['votes.count']    = 0;
-					$this->_cache['votes.positive'] = 0;
-					$this->_cache['votes.negative'] = 0;
-
-					foreach ($this->votes('list') as $vote)
-					{
-						if ($vote->helpful == 'yes')
-						{
-							$this->_cache['votes.positive']++;
-						}
-						else
-						{
-							$this->_cache['votes.negative']++;
-						}
-						$this->_cache['votes.count']++;
-					}
-				}
-				return $this->_cache['votes.' . $rtrn];
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['votes.list'] instanceof ItemList) || $clear)
-				{
-					$tbl = new \Components\Wishlist\Tables\Vote($this->_db);
-
-					$results = $tbl->getResults($filters);
-					if (!$results)
-					{
-						$results = array();
-					}
-					$this->_cache['votes.list'] = new ItemList($results);
-				}
-				return $this->_cache['votes.list'];
-			break;
-		}
+		return $this->oneToMany(__NAMESPACE__ . '\\Vote', 'referenceid')->whereEquals('category', 'wish');
 	}
 
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param   string   $rtrn     Data format to return
-	 * @param   array    $filters  Filters to apply to data fetch
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function comments($rtrn='list', $filters=array(), $clear = false)
+	public function comments()
 	{
-		if (!isset($filters['item_id']))
-		{
-			$filters['item_id'] = $this->get('id');
-		}
-		if (!isset($filters['item_type']))
-		{
-			$filters['item_type'] = 'wish';
-		}
-		if (!isset($filters['parent']))
-		{
-			$filters['parent'] = 0;
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state'] = array(static::APP_STATE_PUBLISHED, static::APP_STATE_FLAGGED);
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!is_numeric($this->_cache['comments.count']) || $clear)
-				{
-					$this->_cache['comments.count'] = Comment::all()
-						->whereEquals('item_id', $filters['item_id'])
-						->whereEquals('item_type', $filters['item_type'])
-						->whereIn('state', $filters['state'])
-						->total();
-				}
-				return $this->_cache['comments.count'];
-			break;
-
-			case 'authors':
-				if (!is_array($this->_cache['comments.authors']) || $clear)
-				{
-					$this->_cache['comments.authors'] = array();
-
-					if (!$this->_cache['comments.authors'])
-					{
-						$c = $this->comments('list', $filters);
-					}
-					foreach ($c as $com)
-					{
-						$this->_cache['comments.authors'][] = $com->get('created_by');
-
-						foreach ($com->replies(array('state' => $filters['state'])) as $rep)
-						{
-							$this->_cache['comments.authors'][] = $rep->get('created_by');
-
-							foreach ($rep->replies(array('state' => $filters['state'])) as $res)
-							{
-								$this->_cache['comments.authors'][] = $res->get('created_by');
-							}
-						}
-					}
-					$this->_cache['comments.authors'] = array_unique($this->_cache['comments.authors']);
-				}
-				return $this->_cache['comments.authors'];
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_cache['comments.list'] || $clear)
-				{
-					$results = Comment::all()
-						->whereEquals('parent', $filters['parent'])
-						->whereEquals('item_id', $filters['item_id'])
-						->whereEquals('item_type', $filters['item_type'])
-						->whereIn('state', $filters['state'])
-						->ordered()
-						->rows();
-
-					$this->_cache['comments.list'] = $results;
-				}
-				return $this->_cache['comments.list'];
-			break;
-		}
+		return $this->oneShiftsToMany(__NAMESPACE__ . '\\Comment', 'item_id', 'item_type')->whereEquals('parent', 0);
 	}
 
 	/**
@@ -1049,66 +804,30 @@ class Wish extends Base
 	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
-	public function rankings($rtrn='list', $filters=array(), $clear=false)
+	public function rankings()
 	{
-		$tbl = new Tables\Wish\Rank($this->_db);
-
-		if (!isset($filters['wish']))
-		{
-			$filters['wish'] = $this->get('id');
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				return $this->rankings('list')->total();
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['ranks.list'] instanceof ItemList) || $clear)
-				{
-					if ($results = $tbl->get_votes($this->get('id')))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Vote($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_cache['ranks.list'] = new ItemList($results);
-				}
-				return $this->_cache['ranks.list'];
-			break;
-		}
+		return $this->oneToMany(__NAMESPACE__ . '\\Rank', 'wishid');
 	}
 
 	/**
-	 * Get a ranking
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
 	 *
-	 * @param   string  $rtrn  Data format to return
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default  Value to return if key isn't found
 	 * @return  mixed
 	 */
-	public function ranking($rtrn='importance')
+	public function config($key=null, $default=null)
 	{
-		if (!$this->get('myranking', null))
+		if (!isset($this->config))
 		{
-			$tbl = new Tables\Wish\Rank($this->_db);
-			$tbl->load_vote(User::get('id'), $this->get('id'));
-
-			$this->set('myranking', $tbl);
+			$this->config = \Component::params('com_wishlist');
 		}
-		// Not ranked?
-		if (!$this->get('myranking')->id)
+		if ($key)
 		{
-			return NULL;
+			return $this->config->get($key, $default);
 		}
-
-		return $this->get('myranking')->$rtrn;
+		return $this->config;
 	}
 
 	/**
@@ -1183,67 +902,4 @@ class Wish extends Base
 
 		return $this->config()->get('access-' . $action . '-' . $assetType);
 	}
-
-	/**
-	 * Purge data associated with this wish
-	 *
-	 * @param   string   $what  What to purge
-	 * @return  boolean  True on success, false if not
-	 */
-	public function purge($what)
-	{
-		$what = strtolower($what);
-
-		switch ($what)
-		{
-			case 'rank':
-			case 'ranks':
-			case 'rankings':
-				$objR = new Tables\Wish\Rank($this->_db);
-				if (!$objR->remove_vote($this->get('id')))
-				{
-					$this->setError($objR->getError());
-					return false;
-				}
-			break;
-
-			case 'vote':
-			case 'votes':
-			case 'feedback':
-				$v = new \Components\Wishlist\Tables\Vote($this->_db);
-				if (!$v->deleteVotes(array('id' => $this->get('id'), 'category' => 'wish')))
-				{
-					$this->setError($v->getError());
-					return false;
-				}
-			break;
-
-			case 'plan':
-				$plan = $this->plan();
-				if (!$plan->delete())
-				{
-					$this->setError($plan->getError());
-					return false;
-				}
-			break;
-
-			case 'comment':
-			case 'comments':
-				foreach ($this->comments() as $comment)
-				{
-					if (!$comment->delete())
-					{
-						$this->setError($comment->getError());
-						return false;
-					}
-				}
-			break;
-
-			default:
-			break;
-		}
-
-		return true;
-	}
 }
-

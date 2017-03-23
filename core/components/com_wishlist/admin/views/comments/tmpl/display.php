@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Wishlist\Helpers\Permissions::getActions('component');
 
-Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_COMMENTS'), 'wishlist.png');
+Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_COMMENTS'), 'wishlist');
 if ($canDo->get('core.edit.state'))
 {
 	Toolbar::publishList();
@@ -176,7 +176,7 @@ function submitbutton(pressbutton)
 					<?php } ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')))); ?>
 				</td>
 				<td class="priority-3">
 					<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>

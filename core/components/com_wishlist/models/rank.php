@@ -33,13 +33,14 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Database\Relational;
+use User;
 use Lang;
 use Date;
 
 /**
- * Wishlist class for a wish plan model
+ * Wishlist model class for a ranking
  */
-class Plan extends Relational
+class Rank extends Relational
 {
 	/**
 	 * The table namespace
@@ -57,7 +58,7 @@ class Plan extends Relational
 	 *
 	 * @var  string
 	 **/
-	protected $table = '#__wishlist_implementation';
+	protected $table = '#__wishlist_vote';
 
 	/**
 	 * Default order by for model
@@ -79,8 +80,7 @@ class Plan extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'pagetext' => 'notempty',
-		'wishid'   => 'positive|nonzero'
+		'wishid' => 'positive|nonzero'
 	);
 
 	/**
@@ -89,18 +89,31 @@ class Plan extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
-		'created',
-		'created_by'
+		'voted',
+		'userid'
 	);
 
 	/**
-	 * Fields to be parsed
+	 * Generates automatic voted field value
 	 *
-	 * @var  array
-	 */
-	protected $parsed = array(
-		'pagetext'
-	);
+	 * @param   array   $data  The data being saved
+	 * @return  string
+	 **/
+	public function automaticVoted($data)
+	{
+		return (isset($data['voted']) && $data['voted'] ? $data['voted'] : Date::toSql());
+	}
+
+	/**
+	 * Generates automatic userid field value
+	 *
+	 * @param   array  $data  The data being saved
+	 * @return  int
+	 **/
+	public function automaticUserid($data)
+	{
+		return (isset($data['userid']) && $data['userid'] ? (int)$data['userid'] : (int)User::get('id'));
+	}
 
 	/**
 	 * Get the owning wish
@@ -117,9 +130,9 @@ class Plan extends Relational
 	 *
 	 * @return  object
 	 */
-	public function creator()
+	public function user()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'userid');
 	}
 
 	/**
@@ -128,48 +141,35 @@ class Plan extends Relational
 	 * @param   string  $rtrn  What data to return
 	 * @return  string
 	 */
-	public function created($rtrn='')
+	public function voted($rtrn='')
 	{
 		$rtrn = strtolower($rtrn);
 
 		if ($rtrn == 'date')
 		{
-			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+			return Date::of($this->get('voted'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
 		if ($rtrn == 'time')
 		{
-			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+			return Date::of($this->get('voted'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
 
-		return $this->get('created');
+		return $this->get('voted');
 	}
 
 	/**
-	 * Parses content string as directed
+	 * Load a record by user and wish
 	 *
-	 * @return  string
+	 * @param   integer  $userid
+	 * @param   integer  $wishid
+	 * @return  object
 	 */
-	public function transformContent()
+	public static function oneByUserAndWish($userid, $wishid)
 	{
-		$field = 'about';
-
-		$property = "_{$field}Parsed";
-
-		if (!isset($this->$property))
-		{
-			$params = array(
-				'option'   => 'com_wishlist',
-				'scope'    => 'wishlist',
-				'pagename' => 'wishlist',
-				'pageid'   => $this->get('wishid'),
-				'filepath' => '',
-				'domain'   => $this->get('wishid')
-			);
-
-			$this->$property = Html::content('prepare', $this->get($field, ''), $params);
-		}
-
-		return $this->$property;
+		return self::all()
+			->whereEquals('userid', $userid)
+			->whereEquals('wishid', $wishid)
+			->row();
 	}
 }

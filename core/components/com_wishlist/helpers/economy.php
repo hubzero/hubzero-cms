@@ -32,7 +32,8 @@
 
 namespace Components\Wishlist\Helpers;
 
-use Components\Wishlist\Tables;
+use Components\Wishlist\Models\Wishlist;
+use Components\Wishlist\Models\Wish;
 use Hubzero\Base\Object;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
@@ -111,9 +112,8 @@ class Economy extends Object
 		{
 			return null;
 		}
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php');
-		$objWish = new Tables\Wish($this->_db);
-		$wish = $objWish->get_wish($wishid, '', 1);
+		require_once dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php';
+		$wish = Wish::oneOrNew($wishid);
 
 		if (is_object($wish) && $wish->bonus > 0)
 		{
@@ -153,9 +153,8 @@ class Economy extends Object
 			return null;
 		}
 
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php');
-		$objWish = new Tables\Wish($this->_db);
-		$wish = $objWish->get_wish ($wishid);
+		require_once dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php';
+		$wish = Wish::oneOrNew($wishid);
 
 		$points = !$points ? $wish->bonus : $points;
 
@@ -167,8 +166,8 @@ class Economy extends Object
 			$admingroup = $wconfig->get('group', 'hubadmin');
 
 			// get list owners
-			$objOwner = new Tables\Owner( $this->_db);
-			$owners   = $objOwner->get_owners($wish->wishlist, $admingroup, '', 0, $wishid);
+			$wishlist = Wishlist::oneOrFail($wish->wishlist);
+			$owners   = $wishlist->getOwners();
 			$owners   = $owners['individuals'];
 
 			$mainshare = $wish->assigned ? $points*0.8 : 0; //80%
@@ -257,4 +256,3 @@ class Economy extends Object
 		}
 	}
 }
-

@@ -37,13 +37,13 @@ use Components\Wishlist\Models\Wish;
 use Components\Wishlist\Models\Attachment;
 use Components\Wishlist\Models\Comment;
 use Components\Wishlist\Models\Plan;
-use Components\Wishlist\Tables;
+use Components\Wishlist\Models\Vote;
 use Components\Wishlist\Helpers\Economy;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Hubzero\Content\Server;
 use Hubzero\Bank\Teller;
-use Exception;
+use Filesystem;
 use Component;
 use Request;
 use Pathway;
@@ -81,7 +81,7 @@ class Wishlists extends SiteController
 	/**
 	 * Build the page title
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
@@ -101,8 +101,8 @@ class Wishlists extends SiteController
 	/**
 	 * Build the breadcrumbs
 	 *
-	 * @param      object $wishlist Wishlist
-	 * @return     void
+	 * @param   object  $wishlist  Wishlist
+	 * @return  void
 	 */
 	protected function _buildPathway($wishlist)
 	{
@@ -169,7 +169,7 @@ class Wishlists extends SiteController
 	/**
 	 * Display a login form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function loginTask()
 	{
@@ -188,7 +188,7 @@ class Wishlists extends SiteController
 	/**
 	 * Show a list of entries for this list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function wishlistTask()
 	{
@@ -215,25 +215,27 @@ class Wishlists extends SiteController
 
 		if ($id)
 		{
-			$model = Wishlist::getInstance($id);
+			$model = Wishlist::oneOrFail($id);
 		}
 		else
 		{
-			$model = Wishlist::getInstance($refid, $cat);
-			if (!$model->exists())
+			$refid = $refid ?: 1;
+			$cat   = $cat ?: 'general';
+
+			$model = Wishlist::oneByReference($refid, $cat);
+
+			if ($model->isNew())
 			{
 				$model->set('referenceid', $refid);
-				$model->setup();
+				$model->set('category', $cat);
+				$model->stage();
 			}
 		}
 
 		// cannot find this list
-		if (!$model->exists())
+		if (!$model->get('id'))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
-			);
-			return;
+			App::abort(404, Lang::txt('COM_WISHLIST_NOT_FOUND'));
 		}
 
 		// remember list id for plugin use
@@ -245,11 +247,13 @@ class Wishlists extends SiteController
 		// Authorize list owners
 		if (!User::isGuest())
 		{
-			if (in_array(User::get('id'), $model->owners('individuals')))
+			$owners = $model->getOwners($this->config->get('group'));
+
+			if (in_array(User::get('id'), $owners['individuals']))
 			{
 				$this->_admin = 2;
 			}
-			else if (in_array(User::get('id'), $model->owners('advisory')))
+			else if (in_array(User::get('id'), $owners['advisory']))
 			{
 				$this->_admin = 3;
 			}
@@ -271,51 +275,252 @@ class Wishlists extends SiteController
 			if (!$plugin)
 			{
 				$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
-				$this->loginTask();
-				return;
+				return $this->loginTask();
 			}
 			else
 			{
 				// not authorized
-				throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH'), 403);
+				App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 			}
-			return;
 		}
 
+		// Query filters defaults
+		$dflt = isset($this->banking) && $this->banking ? 'bonus' : 'date';
+		if ($this->_admin)
+		{
+			$dflt = 'ranking';
+		}
+
+		/*$filters = array();
+		$filters['sortby']   = Request::getWord('sortby', $dflt);
+		$filters['filterby'] = Request::getWord('filterby', 'all');
+		$filters['search']   = Request::getVar('search', '');
+		$filters['tag']      = Request::getVar('tags', '');
+		$filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
+		$filters['start']    = Request::getInt('limitstart', 0);
+		$filters['new']      = Request::getInt('newsearch', 0);
+		$filters['start']    = $filters['new'] ? 0 : $filters['start'];
+		$filters['comments'] = Request::getVar('comments', 1, 'get');
+
+		if (!in_array($filters['sortby'], array('date', 'submitter', 'feedback', 'ranking')))
+		{
+			$filters['sortby'] = 'date';
+		}
+
+		if (!in_array($filters['filterby'], array('all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private')))
+		{
+			$filters['filterby'] = 'all';
+		}*/
+		$filters = $this->getFilters($this->_admin);
+
 		// Get list filters
-		$this->view->filters = $this->getFilters($this->_admin);
-		$this->view->filters['limit'] = (isset($this->limit)) ? $this->limit : $this->view->filters['limit'];
+		//$filters = $this->getFilters($this->_admin);
+		//$filters['limit'] = (isset($this->limit)) ? $this->limit : $filters['limit'];
 
 		// Get individual wishes
-		$total = $model->wishes('count', $this->view->filters);
+		$entries = Wish::all()
+			->whereEquals('wishlist', $model->get('id'));
+			/*->including(['comments', function ($comment)
+			{
+				$comment
+					->select('id', null, true)
+					->where('state', '!=', Wish::STATE_DELETED);
+			}]);*/
+
+		$w = $entries->getTableName();
+
+		if ($filters['search'])
+		{
+			$entries
+				->whereLike('subject', strtolower((string)$filters['search']), 1)
+				->orWhereLike('about', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
+
+		if ($filters['filterby'])
+		{
+			// list  filtering
+			switch ($filters['filterby'])
+			{
+				case 'granted':
+					$entries->whereEquals('status', 1);
+					break;
+				case 'open':
+					$entries->whereEquals('status', 0);
+					break;
+				case 'accepted':
+					$entries
+						->whereIn('status', array(0, 6))
+						->whereEquals('accepted', 1);
+					break;
+				case 'pending':
+					$entries
+						->whereEquals('accepted', 0)
+						->whereEquals('status', 0);
+					break;
+				case 'rejected':
+					$entries->whereEquals('status', 3);
+					break;
+				case 'withdrawn':
+					$entries->whereEquals('status', 4);
+					break;
+				case 'deleted':
+					$entries->whereEquals('status', 2);
+					break;
+				case 'useraccepted':
+					$entries
+						->whereEquals('accepted', 3)
+						->where('status', '!=', 2);
+					break;
+				case 'private':
+					$entries
+						->whereEquals('private', 1)
+						->where('status', '!=', 2);
+					break;
+				case 'public':
+					$entries
+						->whereEquals('private', 0)
+						->where('status', '!=', 2);
+					break;
+				case 'assigned':
+					$entries
+						->where('status', '!=', 2)
+						->whereRaw('assigned NOT NULL');
+					break;
+				case 'mine':
+					$entries
+						->where('status', '!=', 2)
+						->whereEquals('assigned', User::get('id'));
+				break;
+				case 'submitter':
+					$entries
+						->where('status', '!=', 2)
+						->whereEquals('proposed_by', User::get('id'));
+					break;
+				case 'all':
+				default:
+					$entries->where('status', '!=', 2);
+					break;
+			}
+		}
+
+		if (!$this->_admin)
+		{
+			$entries->whereEquals('private', 0);
+		}
+
+		// If filtering by tags...
+		if (isset($filters['tag']) && $filters['tag'])
+		{
+			$tags = $filters['tag'];
+			if (is_string($tags))
+			{
+				$tags = trim($tags);
+				$tags = preg_split("/(,|;)/", $tags);
+			}
+
+			foreach ($tags as $k => $tag)
+			{
+				$tags[$k] = strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
+			}
+
+			$to = '#__tags_object';
+			$t  = '#__tags';
+			$entries
+				->join($to, $to . '.objectid', $w . '.id', 'left')
+				->join($t, $to . '.tagid', $t . '.id', 'left')
+				->whereEquals($to . '.tbl', 'wishlist')
+				->whereIn($t . '.tag', $tags, 1)
+				->group($w . '.id');
+		}
+
+		// Get a total
+		$total = $entries->copy()->total();
+
+		// Select vote totals
+		$vote = Vote::blank();
+
+		$entries
+			->select($entries->getTableName() . '.*')
+			->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'positive')
+			->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'negative');
+
+		// list sorting
+		if ($filters['sortby'])
+		{
+			switch ($filters['sortby'])
+			{
+				case 'date':
+					$entries
+						->order('status', 'asc')
+						->order('proposed', 'desc');
+					break;
+				case 'submitter':
+					$u = User::getTableName(); //'#__users';
+					$entries
+						->select($u . '.name', 'authorname')
+						->join($u, $u . '.id', $entries->getTableName() . '.proposed_by', 'left')
+						->order($u . '.name', 'asc');
+					break;
+				case 'feedback':
+					$entries
+						->order('positive', 'desc')
+						->order('status', 'asc');
+					break;
+				case 'ranking':
+					$entries
+						->order('status', 'asc')
+						->order('ranking', 'desc')
+						->order('positive', 'desc')
+						->order('proposed', 'desc');
+					break;
+				case 'bonus':
+					$entries
+						->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)", 'bonus')
+						->order('status', 'asc')
+						->order('bonus', 'desc')
+						->order('positive', 'desc')
+						->order('proposed', 'desc');
+					break;
+				case 'all':
+				default:
+					$entries
+						->order('accepted', 'desc')
+						->order('status', 'asc')
+						->order('proposed', 'desc');
+					break;
+			}
+		}
+
+		$rows = $entries
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->rows();
 
 		// Get count of granted wishes
+		/*
 		$sp_filters = $this->view->filters;
 		$sp_filters['filterby'] = 'granted';
 		$model->set('granted_count', $model->wishes('count', $sp_filters, true)); //$objWish->get_count($model->get('id'), $sp_filters, $this->_admin, User::getInstance());
 		$model->set('granted_percentage', ($total > 0 && $model->get('granted_count') > 0 ? round(($model->get('granted_count')/$total) * 100, 0) : 0));
+		*/
 
 		// Some extras
-		$model->set('saved', $saved);
+		//$model->set('saved', $saved);
 		$model->set('banking', ($this->banking ? $this->banking : 0));
 		$model->set('banking', ($model->get('category') == 'user' ? 0 : $this->banking)); // do not allow points for individual wish lists
 
-		Request::setVar('id', $id);
+		//Request::setVar('id', $id);
 
-		$this->view->setLayout('display');
-		$this->view->title    = $this->_title;
-		$this->view->config   = $this->config;
-		$this->view->option   = $this->_option;
-		$this->view->task     = $this->_task;
-		$this->view->wishlist = $model;
-		$this->view->total    = $total;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('title', $this->_title)
+			->set('config', $this->config)
+			->set('wishlist', $model)
+			->set('total', $total)
+			->set('wishes', $rows)
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -336,88 +541,80 @@ class Wishlists extends SiteController
 
 		//$wishid = $this->wishid && !$wishid ? $this->wishid : $wishid;
 
-		$wish = Wish::getInstance($wishid);
-
-		if (!$wish->exists())
-		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
-		}
+		$wish = Wish::oneOrFail($wishid);
 
 		// Get wishlist info
-		$wishlist = Wishlist::getInstance($wish->get('wishlist'));
-		if (!$wishlist->exists())
-		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
-		}
+		$wishlist = Wishlist::oneOrFail($wish->get('wishlist'));
 
 		// Pass off some data
 		$wish->set('category', $wishlist->get('category'));
 		$wish->set('referenceid', $wishlist->get('referenceid'));
 
-			// get admin priviliges
-			$this->authorize_admin();
+		// get admin priviliges
+		$this->authorize_admin();
 
-			// Set page title
-			$this->_list_title = $wishlist->title();
+		// Set page title
+		$this->_list_title = $wishlist->title();
 
-			if (!$wishlist->isPublic() && !$this->_admin)
-			{
-				$this->_list_title = '';
-			}
-			$this->_buildTitle();
+		if (!$wishlist->isPublic() && !$this->_admin)
+		{
+			$this->_list_title = '';
+		}
+		$this->_buildTitle();
 
-			// Set the pathway
-			$this->_wishpath  = $wish->link();
-			$this->_wishtitle = String::truncate($wish->get('subject'), 80);
-			$this->_buildPathway($wishlist);
+		// Set the pathway
+		$this->_wishpath  = $wish->link();
+		$this->_wishtitle = String::truncate($wish->get('subject'), 80);
+		$this->_buildPathway($wishlist);
 
 			// Go through some access checks
-			if (User::isGuest() && $action)
+		if (User::isGuest())
+		{
+			if ($action)
 			{
-				$this->_msg = ($action=="addbonus") ? Lang::txt('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
-				$this->loginTask();
-				return;
+				$this->_msg = ($action == 'addbonus') ? Lang::txt('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
+				return $this->loginTask();
 			}
 
-			if (!$wishlist->isPublic() && User::isGuest())
+			if (!$wishlist->isPublic())
 			{
 				// need to log in to private list
 				$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
-				$this->loginTask();
-				return;
+				return $this->loginTask();
 			}
 
-			if ($wish->isPrivate() && User::isGuest())
+			if ($wish->isPrivate())
 			{
 				// need to log in to view private wish
 				$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
-				$this->loginTask();
-				return;
+				return $this->loginTask();
 			}
+		}
 
-			// Deleted wish
-			if ($wish->isDeleted() && !$wish->access('manage'))
-			{
-				throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
-			}
+		// Deleted wish
+		if ($wish->isDeleted() && !$wish->access('manage'))
+		{
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+		}
 
-			// Need to be admin to view private wish
-			if ($wish->isPrivate() && !$wish->access('view'))
-			{
-				throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH'), 403);
-			}
+		// Need to be admin to view private wish
+		if ($wish->isPrivate() && !$wish->access('view'))
+		{
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
+		}
 
-			// Get list filters
-			$filters = self::getFilters($wish->get('admin'));
+		// Get list filters
+		$filters = $this->getFilters($wish->get('admin'));
 
 			// Update average value for importance (this is tricky MySQL)
 		//	if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
 		//	{
-				//$objR = new Tables\Wish\Rank($this->database);
-				$votes = $wish->rankings(); //$objR->get_votes($wish->get('id'));
+			$owners = $wishlist->getOwners();
+
+				$votes = $wish->rankings;
 
 				// first consider votes by list owners
-				if ($votes && count($votes) > 0)
+				if ($votes->count() > 0)
 				{
 					$imp     = 0;
 					$divisor = 0;
@@ -428,7 +625,7 @@ class Wishlists extends SiteController
 
 					foreach ($votes as $vote)
 					{
-						if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $wishlist->owners('advisory')))
+						if (count($owners['advisory']) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $owners['advisory']))
 						{
 							$imp += $vote->get('importance') * $co_adv;
 							$divisor += $co_adv;
@@ -461,7 +658,7 @@ class Wishlists extends SiteController
 		//	}
 
 			// Build owners drop-down for assigning wishes
-			$wish->set('assignlist', $this->userSelect('assigned', $wishlist->owners('individuals'), $wish->get('assigned'), 1));
+			$wish->set('assignlist', $this->userSelect('assigned', $owners['individuals'], $wish->get('assigned'), 1));
 
 			// Do we have a due date?
 			$wish->set('urgent', 0);
@@ -503,50 +700,39 @@ class Wishlists extends SiteController
 		// Turn on/off banking
 		$wishlist->set('banking', ($wishlist->get('category') == 'user' ? 0 : $this->banking));
 
-		if (!$wishlist->isPublic() && !$wish->get('admin'))
-		{
-		//	$this->view->setLayout('private'); // Where did this layout go?? - throws an error is group wishes
-		}
-
-		$this->view->title      = $this->_title;
-		$this->view->config     = $this->config;
-		$this->view->admin      = $this->_admin;
-		$this->view->wishlist   = $wishlist;
-		$this->view->wish       = $wish;
-		$this->view->filters    = $filters;
-
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-		$this->view->setLayout('wish')->display();
+		$this->view
+			->set('title', $this->_title)
+			->set('config', $this->config)
+			->set('admin', $this->_admin)
+			->set('wishlist', $wishlist)
+			->set('wish', $wish)
+			->set('filters', $filters)
+			->setLayout('wish')
+			->display();
 	}
 
 	/**
 	 * Save wishlist settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savesettingsTask()
 	{
+		// Incoming
 		$listid  = Request::getInt('listid', 0);
 		$action  = Request::getWord('action', '');
 
-		// Make sure we have list id
-		if (!$listid)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
-			);
-			return;
-		}
+		// Get the wish list
+		$wishlist = Wishlist::oneOrFail($listid);
 
-		$wishlist = Wishlist::getInstance($listid);
+		if (!$wishlist->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
+		}
 
 		if (!$wishlist->access('manage'))
 		{
 			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
-			return;
 		}
 
 		// Deeleting a user/group
@@ -557,11 +743,11 @@ class Wishlists extends SiteController
 
 			if ($user)
 			{
-				$wishlist->remove('individuals', $user);
+				$wishlist->removeOwner('individuals', $user);
 			}
 			else if ($group)
 			{
-				$wishlist->remove('group', $group);
+				$wishlist->removeOwner('group', $group);
 			}
 
 			// update priority on all wishes
@@ -576,29 +762,29 @@ class Wishlists extends SiteController
 		// Check for request forgeries
 		Request::checkToken();
 
-		if (!$wishlist->bind(Request::getVar('fields', array(), 'post')))
-		{
-			throw new Exception($obj->getError(), 500);
-		}
+		$fields = Request::getVar('fields', array(), 'post');
+
+		$wishlist->set($fields);
+		$wishlist->removeAttribute('admin');
 
 		// store new content
-		if (!$wishlist->store())
+		if (!$wishlist->save())
 		{
-			throw new Exception($wishlist->getError(), 500);
+			App::abort(500, $wishlist->getError());
 		}
 
 		// Save new owners
 		if ($newowners = Request::getVar('newowners', '', 'post'))
 		{
-			$wishlist->add('individuals', $newowners);
+			$wishlist->addOwner('individuals', $newowners);
 		}
 		if ($newadvisory = Request::getVar('newadvisory', '', 'post'))
 		{
-			$wishlist->add('advisory', $newadvisory);
+			$wishlist->addOwner('advisory', $newadvisory);
 		}
 		if ($newgroups = Request::getVar('newgroups', '', 'post'))
 		{
-			$wishlist->add('groups', $newgroups);
+			$wishlist->addOwner('groups', $newgroups);
 		}
 
 		// update priority on all wishes
@@ -612,19 +798,19 @@ class Wishlists extends SiteController
 	/**
 	 * Display wishlist settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function settingsTask()
 	{
 		// get list id
 		$id  = Request::getInt('id', 0);
 
-		$wishlist = new Wishlist($id);
+		$wishlist = Wishlist::oneOrFail($id);
 
-		if (!$wishlist->exists())
+		if (!$wishlist->get('id'))
 		{
 			// list not found
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 500);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
 		// Get List Title
@@ -644,23 +830,19 @@ class Wishlists extends SiteController
 		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_MANAGE_SETTINGS');
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
-		$this->view->title    = $this->_title;
-		$this->view->wishlist = $wishlist;
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-		$this->view->display();
+		$this->view
+			->set('title', $this->_title)
+			->set('wishlist', $wishlist)
+			->display();
 	}
 
 	/**
 	 * Save a wish's implementation plan
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveplanTask()
 	{
@@ -669,20 +851,22 @@ class Wishlists extends SiteController
 		// Make sure we have wish id
 		if (!$wishid)
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
 
-		$objWish = new Wish($wishid);
-		if (!$objWish->exists())
+		$objWish = Wish::oneOrFail($wishid);
+
+		if (!$objWish->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
 
-		$wishlist = Wishlist::getInstance($objWish->get('wishlist'));
-		if (!$wishlist->exists())
+		$wishlist = Wishlist::oneOrFail($objWish->get('wishlist'));
+
+		if (!$wishlist->get('id'))
 		{
 			// list not found
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
 		// Get List Title
@@ -701,22 +885,21 @@ class Wishlists extends SiteController
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		$pageid = Request::getInt('pageid', 0, 'post');
 
 		// Initiate extended database class
-		$page = new Plan($pageid);
-		$old  = new Plan($pageid);
+		$old  = Plan::oneOrNew($pageid);
 
+		$page = Plan::oneOrNew($pageid);
 		$page->set('version', Request::getInt('version', 1, 'post'));
 
 		$create_revision = Request::getInt('create_revision', 0, 'post');
 		if ($create_revision)
 		{
-			$page->set('id', 0);
+			$page->set('id', null);
 			$page->set('version', $old->get('version') + 1);
 		}
 
@@ -734,18 +917,18 @@ class Wishlists extends SiteController
 		// We don't want to create a whole new revision if just the tags were changed
 		if ($oldpagetext != $newpagetext or (!$create_revision && $pageid))
 		{
-			$page->set('pagehtml', $page->content('parsed'));
+			$page->set('pagehtml', $page->content);
 
 			// Store content
-			if (!$page->store())
+			if (!$page->save())
 			{
-				throw new Exception($page->getError(), 500);
+				App::abort(500, $page->getError());
 			}
 		}
 
 		// do we have a due date?
-		$isdue  = Request::getInt('isdue', 0);
-		$due    = Request::getVar('publish_up', '');
+		$isdue = Request::getInt('isdue', 0);
+		$due   = Request::getVar('publish_up', '');
 
 		if ($due)
 		{
@@ -762,11 +945,12 @@ class Wishlists extends SiteController
 		$objWish->set('assigned', ($assignedto ? $assignedto : 0));
 
 		// store our due date
-		if (!$objWish->store())
+		if (!$objWish->save())
 		{
-			throw new Exception($objWish->getError(), 500);
+			App::abort(500, $objWish->getError());
 		}
-		else if ($new_assignee)
+
+		if ($new_assignee)
 		{
 			// Build e-mail components
 			$admin_email = Config::get('mailfrom');
@@ -816,7 +1000,7 @@ class Wishlists extends SiteController
 	/**
 	 * Display a form for creating a wish
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addwishTask()
 	{
@@ -826,32 +1010,33 @@ class Wishlists extends SiteController
 		$refid    = Request::getInt('rid', 0);
 		$category = Request::getCmd('category', '');
 
-		$wish = new Wish($wishid);
+		$wish = Wish::oneOrNew($wishid);
 
 		if (!$listid && $refid)
 		{
 			if (!$category)
 			{
-				throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+				App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			}
 
-			$wishlist = Wishlist::getInstance($refid, $category);
-			if (!$wishlist->exists())
+			$wishlist = Wishlist::oneByReference($refid, $category);
+
+			if (!$wishlist->get('id'))
 			{
 				$wishlist->set('category', $category);
 				$wishlist->set('referenceid', $refid);
-				$wishlist->setup();
+				$wishlist->stage();
 			}
 		}
 		else
 		{
-			$wishlist = Wishlist::getInstance($listid);
+			$wishlist = Wishlist::oneOrFail($listid);
 		}
 
-		if (!$wishlist->exists())
+		if (!$wishlist->get('id'))
 		{
 			// list not found
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
 		// Build page title
@@ -859,10 +1044,10 @@ class Wishlists extends SiteController
 		$this->_buildTitle();
 
 		// Set the pathway
-		$this->_taskpath = $wish->exists()
+		$this->_taskpath = $wish->get('id')
 							? $wish->link('edit')
 							: 'index.php?option=' . $this->_option . '&task=add&category=' . $category . '&rid=' . $refid;
-		$this->_taskname = $wish->exists()
+		$this->_taskname = $wish->get('id')
 							? Lang::txt('COM_WISHLIST_EDITWISH')
 							: Lang::txt('COM_WISHLIST_ADD');
 		$this->_buildPathway($wishlist);
@@ -871,18 +1056,17 @@ class Wishlists extends SiteController
 		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		// get admin priviliges
 		if (!$wishlist->isPublic() && !$wishlist->access('manage'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH'), 403);
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 		}
 
 		// Get some defaults
-		if (!$wish->exists())
+		if (!$wish->get('id'))
 		{
 			$wish->set('proposed_by', User::get('id'));
 			$wish->set('status', 0);
@@ -907,60 +1091,57 @@ class Wishlists extends SiteController
 			$funds   = ($funds > 0) ? $funds : '0';
 		}
 
-		// Output HTML
-		$this->view->title    = $this->_title;
-		$this->view->config   = $this->config;
-		$this->view->admin    = $this->_admin;
-		$this->view->wishlist = $wishlist;
-		$this->view->wish     = $wish;
-
 		// Get URL to page explaining virtual economy
 		$aconfig = Component::params('com_answers');
-		$this->view->infolink = $aconfig->get('infolink', Request::base(true) . '/kb/points/');
-		$this->view->funds    = $funds;
-		$this->view->banking  = $this->banking;
 
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-		$this->view->setLayout('editwish')->display();
+		$this->view
+			->set('infolink', $aconfig->get('infolink', Request::base(true) . '/kb/points/'))
+			->set('funds', $funds)
+			->set('banking', $this->banking)
+			->set('title', $this->_title)
+			->set('config', $this->config)
+			->set('admin', $this->_admin)
+			->set('wishlist', $wishlist)
+			->set('wish', $wish)
+			->setLayout('editwish')
+			->display();
 	}
 
 	/**
 	 * Save chanegs to a wish
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savewishTask()
 	{
-		$listid = Request::getInt('wishlist', 0);
-		$wishid = Request::getInt('id', 0);
-		$reward = Request::getVar('reward', '');
-		$funds  = Request::getVar('funds', '0');
-		$tags   = Request::getVar('tags', '');
-
 		// Login required
 		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
+		$listid = Request::getInt('wishlist', 0);
+		$reward = Request::getVar('reward', '');
+		$funds  = Request::getVar('funds', '0');
+		$tags   = Request::getVar('tags', '');
+
 		// Get wish list info
-		$wishlist = Wishlist::getInstance($listid);
-		if (!$wishlist->exists())
+		$wishlist = Wishlist::oneOrFail($listid);
+
+		if (!$wishlist->get('id'))
 		{
 			// list not found
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
 		// trim and addslashes all posted items
-		$_POST = array_map('trim', $_POST);
+		$fields = Request::getVar('fields', array(), 'post');
 
 		// initiate class and bind posted items to database fields
-		$row = new Wish($_POST);
+		$row = Wish::oneOrNew($fields['id'])->set($fields);
+
+		$wishid = $row->get('id');
 
 		// If we are editing
 		$by = Request::getVar('by', '', 'post');
@@ -1017,16 +1198,18 @@ class Wishlists extends SiteController
 			$aconfig = Component::params('com_answers');
 			$infolink = $aconfig->get('infolink', \Request::base(true) . '/kb/points/');
 
-			$this->view->title    = Lang::txt(strtoupper($this->_option));
-			$this->view->config   = $this->config;
-			$this->view->admin    = $this->_admin;
-			$this->view->wishlist = $wishlist;
-			$this->view->wish     = $row;
-			$this->view->infolink = $infolink;
-			$this->view->funds    = $funds;
-			$this->view->banking  = $this->banking;
-			$this->view->setError($this->getError());
-			$this->view->setLayout('editwish')->display();
+			$this->view
+				->set('title', Lang::txt(strtoupper($this->_option)))
+				->set('config', $this->config)
+				->set('admin', $this->_admin)
+				->set('wishlist', $wishlist)
+				->set('wish', $row)
+				->set('infolink', $infolink)
+				->set('funds', $funds)
+				->set('banking', $this->banking)
+				->setError($this->getError())
+				->setLayout('editwish')
+				->display();
 			return;
 		}
 
@@ -1036,9 +1219,9 @@ class Wishlists extends SiteController
 		$row->set('proposed', ($wishid ? $row->get('proposed') : Date::toSql()));
 
 		// store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Add/change the tags
@@ -1051,8 +1234,8 @@ class Wishlists extends SiteController
 			$admin_email = Config::get('mailfrom');
 
 			// Get author name
-			$name  = $row->proposer('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
-			$login = $row->proposer('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
+			$name  = $row->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
+			$login = $row->proposer->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
 			if ($row->get('anonymous'))
 			{
@@ -1122,6 +1305,7 @@ class Wishlists extends SiteController
 		]);
 
 		$saved = $wishid ? 2 : 3;
+
 		App::redirect(
 			Route::url($row->link('permalink', array('saved' => $saved)))
 		);
@@ -1130,7 +1314,7 @@ class Wishlists extends SiteController
 	/**
 	 * Show a form for editing a wish
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editwishTask()
 	{
@@ -1142,22 +1326,24 @@ class Wishlists extends SiteController
 		// Check if wish exists on this list
 		if ($id = Request::getInt('id', 0))
 		{
-			$wishlist = Wishlist::getInstance(Request::getInt('id', 0));
+			$wishlist = Wishlist::oneOrFail(Request::getInt('id', 0));
 		}
 		else
 		{
-			$wishlist = Wishlist::getInstance($refid, $cat);
+			$wishlist = Wishlist::oneByReference($refid, $cat);
 		}
-		if (!$wishlist->exists())
+
+		if (!$wishlist->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
 		// load wish
-		$wish = new Wish(Request::getInt('wishid', 0));
-		if (!$wish->exists())
+		$wish = Wish::oneOrFail(Request::getInt('wishid', 0));
+
+		if (!$wish->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
 
 		$changed = false;
@@ -1173,13 +1359,12 @@ class Wishlists extends SiteController
 			$this->_taskpath = $wish->link();
 			$this->_taskname = Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 			$this->_buildPathway($wishlist);
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		if (!$wishlist->access('manage') && $wish->get('proposed_by') != User::get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH'), 403);
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 		}
 
 		if ($this->_task == 'editprivacy')
@@ -1227,8 +1412,7 @@ class Wishlists extends SiteController
 					$wish->set('granted_by', User::get('id'));
 					$wish->set('granted_vid', ($vid ? $vid : 0));
 
-					$objWish = new Tables\Wish($this->database);
-					$w = $objWish->get_wish($wish->get('id'), User::get('id'));
+					//$w = Wish::oneOrNew($wish->get('id'));
 					$wish->set('points', $w->bonus);
 
 					if ($this->banking)
@@ -1288,16 +1472,15 @@ class Wishlists extends SiteController
 		// no status change, only information
 		else if ($this->_task == 'editwish')
 		{
-			$this->addwishTask($wish->get('id'));
-			return;
+			return $this->addwishTask($wish->get('id'));
 		}
 
 		if ($changed)
 		{
 			// save changes
-			if (!$wish->store())
+			if (!$wish->save())
 			{
-				throw new Exception($wish->getError(), 500);
+				App::abort(500, $wish->getError());
 			}
 			else if ($this->_task == 'editwish')
 			{
@@ -1326,7 +1509,7 @@ class Wishlists extends SiteController
 	/**
 	 * Move a wish
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function movewishTask()
 	{
@@ -1349,7 +1532,7 @@ class Wishlists extends SiteController
 		// missing wish id
 		if (!$wishid)
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
 
 		// missing or invalid resource ID
@@ -1372,29 +1555,30 @@ class Wishlists extends SiteController
 		else
 		{
 			// moving to another list
-			$oldlist = Wishlist::getInstance($listid);
+			$oldlist = Wishlist::oneOrFail($listid);
 
 			// Where do we put this wish?
-			$newlist = Wishlist::getInstance($refid, $category);
-			if (!$newlist->exists())
+			$newlist = Wishlist::oneByReference($refid, $category);
+
+			if (!$newlist->get('id'))
 			{
 				// Create wishlist for resource if doesn't exist
-				if (!$newlist->setup())
+				if (!$newlist->stage())
 				{
-					throw new Exception($newlist->getError(), 500);
+					App::abort(500, $newlist->getError());
 				}
 			}
 
 			// cannot add a wish to a non-found list
-			if (!$newlist->exists())
+			if (!$newlist->get('id'))
 			{
-				throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+				App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			}
 
 			if ($listid != $newlist->get('id'))
 			{
 				// Transfer wish
-				$wish = new Wish($wishid);
+				$wish = Wish::oneOrNew($wishid);
 				$wish->set('wishlist', $newlist->get('id'));
 				$wish->set('assigned', 0); // moved wish is not assigned to anyone yet
 				$wish->set('ranking', 0); // zero ranking
@@ -1407,15 +1591,15 @@ class Wishlists extends SiteController
 					$wish->set('accepted', 0);
 				}
 
-				if (!$wish->store())
+				if (!$wish->save())
 				{
-					throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
+					App::abort(500, Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
 				}
 
 				// also delete all previous owner votes for this wish
 				if (!$wish->purge('rankings'))
 				{
-					throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
+					App::abort(500, Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
 				}
 
 				// delete plan if option chosen
@@ -1423,7 +1607,7 @@ class Wishlists extends SiteController
 				{
 					if (!$wish->purge('plan'))
 					{
-						throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
+						App::abort(500, Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
 					}
 				}
 
@@ -1432,7 +1616,7 @@ class Wishlists extends SiteController
 				{
 					if (!$wish->purge('comments'))
 					{
-						throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
+						App::abort(500, Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
 					}
 				}
 
@@ -1441,17 +1625,17 @@ class Wishlists extends SiteController
 				{
 					if (!$wish->purge('votes'))
 					{
-						throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
+						App::abort(500, Lang::txt('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
 					}
 				}
 
 				// send message about transferred wish
 
-				$oldtitle = $oldlist->get('title'); //$objWishlist->getTitle($listid);
-				$newtitle = $newlist->get('title'); //$objWishlist->getTitle($newlist);
+				$oldtitle = $oldlist->get('title');
+				$newtitle = $newlist->get('title');
 
-				$name  = $wish->proposer('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
-				$login = $wish->proposer('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
+				$name  = $wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
+				$login = $wish->proposer->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
 				if ($wish->get('anonymous'))
 				{
@@ -1522,26 +1706,18 @@ class Wishlists extends SiteController
 		$wishid = Request::getInt('wish', 0);
 		$amount = Request::getInt('amount', 0);
 
-		// missing wish id
-		/*if (!$wishid or !$listid)
-		{
-			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
-		}*/
+		$wishlist = Wishlist::oneOrFail(Request::getInt('wishlist', 0));
 
-		//$objWishlist = new Wishlist($this->database);
-		//$objWish = new Wish($this->database);
-
-		$wishlist = new Wishlist(Request::getInt('wishlist', 0));
-		if (!$wishlist->exists())
+		if (!$wishlist->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
-		$wish = new Wish(Request::getInt('wish', 0));
-		if (!$wish->exists())
+		$wish = Wish::oneOrNew(Request::getInt('wish', 0));
+
+		if (!$wish->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
 
 		// Login required
@@ -1556,12 +1732,11 @@ class Wishlists extends SiteController
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			$this->login();
-			return;
+			return $this->login();
 		}
 
 		// check available user funds
-		$BTL = new \Hubzero\Bank\Teller(User::get('id'));
+		$BTL = new Teller(User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -1570,15 +1745,15 @@ class Wishlists extends SiteController
 		// missing amount
 		if ($amount == 0)
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_INVALID_AMOUNT'), 500);
+			App::abort(500, Lang::txt('COM_WISHLIST_ERROR_INVALID_AMOUNT'));
 		}
 		if ($amount < 0)
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_NEGATIVE_BONUS'), 500);
+			App::abort(500, Lang::txt('COM_WISHLIST_ERROR_NEGATIVE_BONUS'));
 		}
 		else if ($amount > $funds)
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_NO_FUNDS'), 500);
+			App::abort(500, Lang::txt('COM_WISHLIST_ERROR_NO_FUNDS'));
 		}
 
 		// put the  amount on hold
@@ -1603,19 +1778,21 @@ class Wishlists extends SiteController
 	public function deletewishTask()
 	{
 		// Check if wish exists on this list
-		$wishlist = new Wishlist(
+		$wishlist = Wishlist::oneByReference(
 			Request::getInt('rid', 0),
 			Request::getCmd('category', '')
 		);
-		if (!$wishlist->exists())
+
+		if (!$wishlist->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
 		}
 
-		$wish = new Wish(Request::getInt('wishid', 0));
-		if (!$wish->exists())
+		$wish = Wish::oneOrNew(Request::getInt('wishid', 0));
+
+		if (!$wish->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
 
 		// Login required
@@ -1630,34 +1807,19 @@ class Wishlists extends SiteController
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
-		// get admin priviliges
-		//$this->authorize_admin($wishlist->id);
-
-		//$objWish->load($wishid);
 		if (!$wishlist->access('manage') && $wish->get('proposed_by') != User::get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH'), 403);
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 		}
 
-		//$withdraw = 0; //$this->_task=='withdraw' ? 1 : 0; /* [!] zooley - Mark as deleted instead of withdrawn? Seems to cause confusion if wish still appears in lists. */
-
+		//[!] zooley - Mark as deleted instead of withdrawn? Seems to cause confusion if wish still appears in lists. */
 		$wish->set('status', 2);
-		if ($wish->store()) //$objWish->delete_wish($wishid, $withdraw))
+
+		if ($wish->save())
 		{
-			// also delete all votes for this wish
-			/*$objR = new WishRank($this->database);
-
-			if ($objR->remove_vote($wishid))
-			{
-				// re-calculate rankings of remaining wishes
-				$this->listid = $wishlist->id;
-				$wishlist->rank();
-			}*/
-
 			// return bonuses
 			if ($this->banking)
 			{
@@ -1708,50 +1870,19 @@ class Wishlists extends SiteController
 		$refid    = Request::getInt('rid', 0);
 		$category = Request::getCmd('category', '');
 
-		$wishlist = Wishlist::getInstance($refid, $category);
-		if (!$wishlist->exists())
+		$wishlist = Wishlist::oneOrFail($refid, $category);
+		if (!$wishlist->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
 		$wishid   = Request::getInt('wishid', 0);
 
-		$wish = Wish::getInstance($wishid);
-		if (!$wish->exists())
+		$wish = Wish::oneOrFail($wishid);
+		if (!$wish->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
 		}
-
-		//$objWishlist = new Tables\Wishlist($this->database);
-		//$objWish = new Tables\Wish($this->database);
-		//$objR = new Tables\Wish\Rank($this->database);
-
-		// figure list id
-		/*if ($category && $refid)
-		{
-			$listid = $objWishlist->get_wishlistID($refid, $category);
-		}
-
-		// cannot rank a wish if list/wish is not found
-		if (!$listid or !$wishid)
-		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
-		}
-
-		$wishlist = $objWishlist->get_wishlist($listid);
-		$item = $objWish->get_wish($wishid, User::get('id'));
-
-		// cannot proceed if wish id is not found
-		if (!$wishlist or !$item)
-		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
-		}
-
-		// is this wish on correct list?
-		if ($listid != $wishlist->id)
-		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'), 404);
-		}*/
 
 		// get vote
 		$effort     = Request::getVar('effort', '', 'post');
@@ -1770,14 +1901,13 @@ class Wishlists extends SiteController
 			// Set the pathway
 			$this->_buildPathway($wishlist);
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_RANK');
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		// Need to be list admin
 		if (!$wishlist->access('manage') || $wishlist->get('admin') == 1)
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH_ACTION'), 403);
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH_ACTION'));
 		}
 
 		// did user make selections?
@@ -1805,7 +1935,7 @@ class Wishlists extends SiteController
 		// update priority on all wishes
 		if (!$wishlist->rank())
 		{
-			throw new Exception($wishlist->getError(), 500);
+			App::abort(500, $wishlist->getError());
 		}
 
 		// Log activity
@@ -1850,14 +1980,14 @@ class Wishlists extends SiteController
 		$when     = Date::toSql();
 
 		// Get wishlist info
-		$wishlist = Wishlist::getInstance($listid);
+		$wishlist = Wishlist::oneOrFail($listid);
 
-		if (!$wishlist->exists())
+		if (!$wishlist->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
-		$objWish = new Wish($wishid);
+		$objWish = Wish::oneOrFail($wishid);
 
 		// Get List Title
 		$this->_list_title = $wishlist->get('title');
@@ -1871,15 +2001,14 @@ class Wishlists extends SiteController
 		if (!$id && !$ajax)
 		{
 			// cannot proceed
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
 
 		// is the user logged in?
 		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		if ($id && $category)
@@ -1910,7 +2039,7 @@ class Wishlists extends SiteController
 			// Save the data
 			if (!$row->save())
 			{
-				throw new Exception($row->getError(), 500);
+				App::abort(500, $row->getError());
 			}
 
 			// Build e-mail components
@@ -1967,7 +2096,7 @@ class Wishlists extends SiteController
 			// collect ids of people who were already emailed
 			$contacted = array();
 
-			if ($objWish->get('proposed_by') != $row->get('added_by'))
+			if ($objWish->get('proposed_by') != $row->get('created_by'))
 			{
 				$contacted[] = $objWish->get('proposed_by');
 
@@ -1979,7 +2108,7 @@ class Wishlists extends SiteController
 			} // -- end send to wish author
 
 			if ($objWish->get('assigned')
-			 && $objWish->get('assigned') != $row->get('added_by')
+			 && $objWish->get('assigned') != $row->get('created_by')
 			 && !in_array($objWish->get('assigned'), $contacted))
 			{
 				$contacted[] = $objWish->get('assigned');
@@ -2009,8 +2138,13 @@ class Wishlists extends SiteController
 			}
 
 			// get all users who commented
-			$commentors = $objWish->comments('authors');
+			$commentors = array();
+			foreach ($objWish->comments as $comment)
+			{
+				$commentors[] = $comment->get('created_by');
+			}
 			$comm = array_diff($commentors, $contacted);
+			$comm = array_unique($comm);
 
 			if (count($comm) > 0)
 			{
@@ -2053,9 +2187,7 @@ class Wishlists extends SiteController
 	public function deletereplyTask()
 	{
 		// Incoming
-		$row = Comment::oneOrFail(
-			Request::getInt('replyid', 0)
-		);
+		$row = Comment::oneOrFail(Request::getInt('replyid', 0));
 
 		// Do we have a reply ID?
 		if (!$row->get('id'))
@@ -2067,7 +2199,7 @@ class Wishlists extends SiteController
 		if ($row->get('created_by') != User::get('id'))
 		{
 			App::redirect(
-				Request::getVar('HTTP_REFERER', NULL, 'server'),
+				Request::getVar('HTTP_REFERER', null, 'server'),
 				Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
 				'error'
 			);
@@ -2079,18 +2211,18 @@ class Wishlists extends SiteController
 
 		if (!$row->save())
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(500, $row->getError());
 		}
 
 		// Log activity
-		$wishlist = Wishlist::getInstance(Request::getInt('listid', 0));
+		$wishlist = Wishlist::oneOrFail(Request::getInt('listid', 0));
 
-		if (!$wishlist->exists())
+		if (!$wishlist->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
-		$wish = new Wish(Request::getInt('wishid', 0));
+		$wish = Wish::oneOrNew(Request::getInt('wishid', 0));
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
@@ -2111,7 +2243,7 @@ class Wishlists extends SiteController
 
 		// Go back to the page
 		App::redirect(
-			Request::getVar('HTTP_REFERER', NULL, 'server')
+			Request::getVar('HTTP_REFERER', null, 'server')
 		);
 	}
 
@@ -2126,7 +2258,7 @@ class Wishlists extends SiteController
 		if (User::isGuest())
 		{
 			// Get wishlist info
-			$wishlist = new Wishlist(
+			$wishlist = Wishlist::oneByReference(
 				Request::getInt('refid', 0),
 				Request::getCmd('cat', '')
 			);
@@ -2138,8 +2270,7 @@ class Wishlists extends SiteController
 			// Set the pathway
 			$this->_buildPathway($wishlist);
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		$this->wishTask();
@@ -2152,18 +2283,16 @@ class Wishlists extends SiteController
 	 */
 	public function rateitemTask()
 	{
-		$wish = new Wish(
-			Request::getInt('refid', 1)
-		);
+		$wish = Wish::oneOrNew(Request::getInt('refid', 1));
 
-		if (!$wish->exists())
+		if (!$wish->get('id'))
 		{
 			// cannot proceed
 			return;
 		}
 
 		// Load the wishlist
-		$wishlist = Wishlist::getInstance($wish->get('wishlist'));
+		$wishlist = Wishlist::oneOrFail($wish->get('wishlist'));
 
 		// Login required
 		if (User::isGuest())
@@ -2176,8 +2305,7 @@ class Wishlists extends SiteController
 			$this->_buildPathway($wishlist);
 
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_RATE');
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		// Incoming
@@ -2185,7 +2313,7 @@ class Wishlists extends SiteController
 		$vote = Request::getWord('vote', ''); // assuming text only vote. Fix for sql injection ticket 1182
 
 		//$this->authorize_admin($listid);
-		$filters = self::getFilters($wishlist->access('manage'));
+		$filters = $this->getFilters($wishlist->access('manage'));
 
 		if ($wish->vote($vote))
 		{
@@ -2195,30 +2323,31 @@ class Wishlists extends SiteController
 		// update display
 		if (Request::getInt('ajax', 0))
 		{
-			$this->view->setLayout('_vote');
+			$wish->set('vote', $vote);
 
-			$this->view->item    = $wish;
-			$this->view->item->set('vote', $vote);
-
-			$this->view->option  = $this->_option;
-			$this->view->page    = 'wishlist';
-			$this->view->filters = $filters;
-			$this->view->display();
+			$this->view
+				->set('page', 'wishlist')
+				->set('filters', $filters)
+				->set('item', $wish)
+				->setLayout('_vote')
+				->display();
 			return;
 		}
 
+		$filter = '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag'];
+
 		if ($page == 'wishlist')
 		{
-			App::redirect(
-				str_replace('&amp;', '&', Route::url($wishlist->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
-			);
+			$route = $wishlist->link();
 		}
 		else
 		{
-			App::redirect(
-				str_replace('&amp;', '&', Route::url($wish->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
-			);
+			$route = $wish->link();
 		}
+
+		App::redirect(
+			str_replace('&amp;', '&', Route::url($route . $filter))
+		);
 	}
 
 	/**
@@ -2246,7 +2375,7 @@ class Wishlists extends SiteController
 			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
 		}
 
-		if (!in_array($filters['sortby'], array('date', 'submitter', 'feedback', 'ranking')))
+		if (!in_array($filters['sortby'], array('date', 'submitter', 'feedback', 'ranking', 'bonus')))
 		{
 			$filters['sortby'] = 'date';
 		}
@@ -2286,9 +2415,11 @@ class Wishlists extends SiteController
 		{
 			$admingroup = $this->config->get('group', 'hubadmin');
 
+			$wishlist = Wishlist::oneOrNew($listid);
+
 			// Get list administrators
-			$objOwner = new Tables\Owner($this->database);
-			$owners = $objOwner->get_owners($listid,  $admingroup);
+			$owners = $wishlist->getOwners($admingroup);
+
 			$managers =  $owners['individuals'];
 			$advisory =  $owners['advisory'];
 
@@ -2321,30 +2452,17 @@ class Wishlists extends SiteController
 	 */
 	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$database = \App::get('db');
+		$database = App::get('db');
 
-		$query = "SELECT a.id AS value, a.name AS text"
-			  . "\n FROM #__users AS a"
-			  . "\n WHERE a.block = '0' ";
-		if (count($ownerids) > 0)
-		{
-			$query .= "AND (a.id IN (";
-			$tquery = '';
-			foreach ($ownerids as $owner)
-			{
-				$tquery .= "'" . $owner . "',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
+		$query = $database->getQuery()
+			->select('id', 'value')
+			->select('name', 'text')
+			->from('#__users')
+			->whereEquals('block', 0)
+			->whereIn('id', $ownerids)
+			->order('name', 'asc');
 
-			$query .= $tquery . ")) ";
-		}
-		else
-		{
-			$query .= " AND 2=1 ";
-		}
-		$query .= "\n ORDER BY " . $order;
-
-		$database->setQuery($query);
+		$database->setQuery($query->toString());
 		if ($nouser)
 		{
 			$users[] = \Html::select('option', '', 'No User', 'value', 'text');
@@ -2383,12 +2501,11 @@ class Wishlists extends SiteController
 		}
 
 		// Make the filename safe
-		$file['name'] = \Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		//make sure that file is acceptable type
-		$attachment = new Attachment(array(
-			'id'          => 0,
+		$attachment = Attachment::blank()->set(array(
 			'description' => Request::getVar('description', ''),
 			'wish'        => $listdir,
 			'filename'    => $file['name']
@@ -2406,7 +2523,7 @@ class Wishlists extends SiteController
 		// Build the path if it doesn't exist
 		if (!is_dir($path))
 		{
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH');
@@ -2414,7 +2531,7 @@ class Wishlists extends SiteController
 		}
 
 		// Perform the upload
-		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING'));
 			return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_ERROR_UPLOADING');
@@ -2424,16 +2541,16 @@ class Wishlists extends SiteController
 			// Scan for viruses
 			$path = $path . DS . $file['name']; //PATH_CORE . DS . 'virustest';
 
-			if (!\Filesystem::isSafe($path))
+			if (!Filesystem::isSafe($path))
 			{
-				if (\Filesystem::delete($path))
+				if (Filesystem::delete($path))
 				{
 					$this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
 					return Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.');
 				}
 			}
 
-			if (!$attachment->store(true))
+			if (!$attachment->save())
 			{
 				$this->setError($attachment->getError());
 			}
@@ -2452,26 +2569,26 @@ class Wishlists extends SiteController
 		$file   = Request::getVar('file', '');
 		$wishid = Request::getInt('wishid', 0);
 
-		$wish = new Wish($wishid);
+		$wish = Wish::oneOrFail($wishid);
 
 		// Ensure we have a path
-		if (!$wish->exists() || $wish->isDeleted() || $wish->isWithdrawn())
+		if (!$wish->get('id') || $wish->isDeleted() || $wish->isWithdrawn())
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_FILE_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_FILE_NOT_FOUND'));
 		}
 
-		$attachment = new Attachment($file, $wishid);
+		$attachment = Attachment::oneByWishAndFile($wishid, $file);
 
 		// Ensure we have a path
-		if (!$attachment->exists())
+		if (!$attachment->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_FILE_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_FILE_NOT_FOUND'));
 		}
 
 		//make sure that file is acceptable type
 		if (!$attachment->isAllowedType())
 		{
-			throw new Exception(Lang::txt('Unknown file type.'), 404);
+			App::abort(404, Lang::txt('Unknown file type.'));
 		}
 
 		// Add PATH_CORE
@@ -2480,7 +2597,7 @@ class Wishlists extends SiteController
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			throw new Exception(Lang::txt('COM_WISHLIST_FILE_NOT_FOUND') . ' ' . $filename, 404);
+			App::abort(404, Lang::txt('COM_WISHLIST_FILE_NOT_FOUND') . ' ' . $filename);
 		}
 
 		// Initiate a new content server and serve up the file
@@ -2492,7 +2609,7 @@ class Wishlists extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			throw new Exception(Lang::txt('COM_WISHLIST_SERVER_ERROR'), 500);
+			App::abort(500, Lang::txt('COM_WISHLIST_SERVER_ERROR'));
 		}
 
 		exit;

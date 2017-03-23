@@ -33,7 +33,7 @@
 namespace Modules\WishVoters;
 
 use Hubzero\Module\Module;
-use Components\Wishlist\Tables\Wishlist;
+use Components\Wishlist\Models\Wishlist;
 use Component;
 use Request;
 use Lang;
@@ -50,11 +50,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = \App::get('db');
-
-		include_once(Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php');
-
-		$objWishlist = new Wishlist($database);
+		include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
 		// Which list is being viewed?
 		$listid   = Request::getInt('id', 0);
@@ -64,7 +60,7 @@ class Helper extends Module
 		// Figure list id
 		if ($category && $refid)
 		{
-			$listid = $objWishlist->get_wishlistID($refid, $category);
+			$listid = Wishlist::onebyReference($refid, $category)->get('id');
 		}
 
 		// Cannot rank a wish if list/wish is not found
@@ -74,10 +70,13 @@ class Helper extends Module
 			return;
 		}
 
+		$database = \App::get('db');
 		$database->setQuery(
-			"SELECT DISTINCT v.userid, SUM(v.importance) as imp, COUNT(v.wishid) as times "
-			. " FROM #__wishlist_vote as v JOIN #__wishlist_item as w ON w.id=v.wishid WHERE w.wishlist='" . $listid . "'"
-			. " GROUP BY v.userid ORDER BY times DESC, v.voted DESC "
+			"SELECT DISTINCT v.userid, SUM(v.importance) as imp, COUNT(v.wishid) as times
+			FROM `#__wishlist_vote` as v
+			INNER JOIN `#__wishlist_item` as w ON w.id=v.wishid
+			WHERE w.wishlist=" . $database->quote($listid) . "
+			GROUP BY v.userid ORDER BY times DESC, v.voted DESC "
 		);
 		$this->rows = $database->loadObjectList();
 		if ($database->getErrorNum())

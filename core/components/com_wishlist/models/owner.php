@@ -32,56 +32,62 @@
 
 namespace Components\Wishlist\Models;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'owner.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'ownergroup.php');
+use Hubzero\Database\Relational;
 
 /**
  * Wishlist class for a owner model
  */
-class Owner extends Base
+class Owner extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Owner';
+	protected $namespace = 'wishlist';
 
 	/**
-	 * Returns a reference to this model
+	 * Fields and their validation criteria
 	 *
-	 * @param   mixed   $oid  ID (int) or array or object
+	 * @var  array
+	 */
+	protected $rules = array(
+		'userid'   => 'positive|nonzero',
+		'wishlist' => 'positive|nonzero'
+	);
+
+	/**
+	 * Get the creator of this entry
+	 *
 	 * @return  object
 	 */
-	static function &getInstance($oid=0)
+	public function user()
 	{
-		static $instances;
+		return $this->belongsToOne('Hubzero\User\User', 'userid');
+	}
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+	/**
+	 * Get the owning wishlist
+	 *
+	 * @return  object
+	 */
+	public function wishlist()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Wishlist', 'wishlist');
+	}
 
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
+	/**
+	 * Load a record by wishlist and userid
+	 *
+	 * @param   integer  $wishlist
+	 * @param   integer  $userid
+	 * @return  object
+	 */
+	public static function oneByWishlistAndUser($wishlist, $userid)
+	{
+		return self::all()
+			->whereEquals('wishlist', $wishlist)
+			->whereEquals('userid', $userid)
+			->row();
 	}
 }
-

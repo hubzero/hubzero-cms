@@ -74,6 +74,26 @@ abstract class Base extends Object
 	}
 
 	/**
+	 * Get owners
+	 *
+	 * @return  array
+	 */
+	public function owners()
+	{
+		return array();
+	}
+
+	/**
+	 * Get groups
+	 *
+	 * @return  array
+	 */
+	public function groups()
+	{
+		return array();
+	}
+
+	/**
 	 * Generate and return the title for this wishlist
 	 *
 	 * @return  string

@@ -78,6 +78,65 @@ class Resource extends Base
 	}
 
 	/**
+	 * Get owners
+	 *
+	 * @return  array
+	 */
+	public function owners()
+	{
+		$owners = array();
+
+		if ($this->_item->type != 7)
+		{
+			$sql = "SELECT a.authorid
+				FROM `#__author_assoc` AS a
+				WHERE a.subtable='resources'
+				AND a.subid=" . $this->_item->id;
+
+			$db = \App::get('db');
+			$db->setQuery($sql);
+			$cons = $db->loadObjectList();
+
+			foreach ($cons as $con)
+			{
+				$owners[] = $con->authorid;
+			}
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * Get groups
+	 *
+	 * @return  array
+	 */
+	public function groups()
+	{
+		$groups = array();
+
+		if ($this->_item->type == 7)
+		{
+			$db = \App::get('db');
+			$query = "SELECT g.cn FROM `#__tool_groups` AS g
+				INNER JOIN `#__xgroups` AS xg ON g.cn=xg.cn
+				INNER JOIN `#__tool` AS t ON g.toolid=t.id
+				INNER JOIN `#__resources` as r ON r.alias = t.toolname
+				WHERE r.id = " . $db->quote($this->_item->id) . " AND g.role=1";
+
+			$db->setQuery($query);
+			$toolgroup = $db->loadResult();
+
+			if ($toolgroup)
+			{
+				$groups[] = $toolgroup;
+			}
+		}
+
+		return $groups;
+	}
+
+	/**
 	 * Generate and return the title for this wishlist
 	 *
 	 * @return  string

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,8 +33,8 @@ namespace Components\Wishlist\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Item\Comment;
-use Components\Wishlist\Tables\Wishlist;
-use Components\Wishlist\Tables\Wish;
+use Components\Wishlist\Models\Wishlist;
+use Components\Wishlist\Models\Wish;
 use Exception;
 use Request;
 use Config;
@@ -47,7 +46,7 @@ use Date;
 use App;
 
 /**
- * Cotnroller class for wishes
+ * Cotnroller class for comments
  */
 class Comments extends AdminController
 {
@@ -76,7 +75,7 @@ class Comments extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
@@ -92,12 +91,12 @@ class Comments extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'title'
+				'id'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
-				'ASC'
+				'DESC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
@@ -111,64 +110,30 @@ class Comments extends AdminController
 				'limitstart',
 				0,
 				'int'
-			)
-		);
-		$this->view->filters['sortby'] = $this->view->filters['sort'];
-		if (!$this->view->filters['wish'])
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('Missing wish ID'),
-				'error'
-			);
-			return;
-		}
-
-		$this->view->wish = new Wish($this->database);
-		$this->view->wish->load($this->view->filters['wish']);
-
-		$this->view->wishlist = new Wishlist($this->database);
-		$this->view->wishlist->load($this->view->wish->wishlist);
-
-		// Get records
-		// add the appropriate filters and apply them
-		$filters = array(
+			),
 			'item_type' => 'wish',
-			'parent'    => 0,
-			'search'    => $this->view->filters['search']
+			'parent'    => 0
 		);
-		if ($this->view->filters['wish'] > 0)
+
+		$wish = Wish::oneOrNew($filters['wish']);
+
+		$wishlist = Wishlist::oneOrNew($wish->get('wishlist'));
+
+		// Load child comments of the parents in the first set.
+		// This will result in a pagination limit break, but it provides
+		// a clearer story of a wish
+		$model = Comment::all();
+
+		if ($filters['wish'])
 		{
-			$filters['item_id'] = $this->view->filters['wish'];
-		}
-		if (isset($this->view->filters['sort']))
-		{
-			$filter['sort'] = $this->view->filters['sort'];
-			if (isset($this->view->filters['sort_Dir']))
-			{
-				$filters['sort_Dir'] = $this->view->filters['sort_Dir'];
-			}
+			$model->whereEquals('item_id', $filters['wish']);
 		}
 
-		if (isset($this->view->filters['limit']))
-		{
-			$filters['limit'] = $this->view->filters['limit'];
-		}
-		if (isset($this->view->filters['start']))
-		{
-			$filters['start'] = $this->view->filters['start'];
-		}
-
-		/*
-		 * Load child comments of the parents in the first set.
-		 * This will result in a pagination limit break, but it provides
-		 * a clearer story of a wish
-		 */
-		$comments1 = Comment::all()
+		$comments1 = $model
 			->whereEquals('item_type', $filters['item_type'])
 			->whereEquals('parent', $filters['parent'])
-			->ordered()
-			->paginated()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		$comments = array();
@@ -180,32 +145,44 @@ class Comments extends AdminController
 			foreach ($comments1 as $comment1)
 			{
 				$comment1->set('prfx', '');
-				$comment1->set('wish', $this->view->filters['wish']);
+				$comment1->set('wish', $filters['wish']);
 				$comments[] = $comment1;
 
 				foreach ($comment1->replies() as $comment2)
 				{
 					$comment2->set('prfx', $spacer . $pre);
-					$comment2->set('wish', $this->view->filters['wish']);
+					$comment2->set('wish', $filters['wish']);
 					$comments[] = $comment2;
 
 					foreach ($comment2->replies() as $comment3)
 					{
 						$comment3->set('prfx', $spacer . $spacer . $pre);
-						$comment3->set('wish', $this->view->filters['wish']);
+						$comment3->set('wish', $filters['wish']);
 						$comments[] = $comment3;
 					}
 				}
 			}
 		}
 
-		$this->view->total = Comment::all()
+		$model = Comment::all();
+
+		if ($filters['wish'])
+		{
+			$model->whereEquals('item_id', $filters['wish']);
+		}
+
+		$total = $model
 			->whereEquals('item_type', $filters['item_type'])
 			->total();
-		$this->view->rows  = $comments;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $comments)
+			->set('total', $total)
+			->set('wish', $wish)
+			->set('wishlist', $wishlist)
+			->display();
 	}
 
 	/**
@@ -470,4 +447,3 @@ class Comments extends AdminController
 		);
 	}
 }
-

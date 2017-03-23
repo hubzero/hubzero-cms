@@ -32,128 +32,149 @@
 
 namespace Components\Wishlist\Models;
 
-use Components\Members\Models\Member;
+use Hubzero\Database\Relational;
+use Request;
+use User;
 use Lang;
 use Date;
-
-require_once(__DIR__ . DS . 'base.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
 
 /**
  * Wishlist model class for a vote
  */
-class Vote extends Base
+class Vote extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Wish\\Rank';
+	protected $namespace = 'vote';
 
 	/**
-	 * Hubzero\User\User
+	 * The table to which the class pertains
 	 *
-	 * @var object
-	 */
-	private $_creator = null;
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__vote_log';
 
 	/**
-	 * Constructor
+	 * Default order by for model
 	 *
-	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
-	 * @return  void
+	 * @var string
 	 */
-	public function __construct($oid=null, $wish=null)
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'referenceid' => 'positive|nonzero',
+		'category'    => 'notempty'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'voted',
+		'voter',
+		'ip'
+	);
+
+	/**
+	 * Generates automatic voted field value
+	 *
+	 * @param   array   $data  The data being saved
+	 * @return  string
+	 **/
+	public function automaticVoted($data)
 	{
-		$this->_db = \App::get('db');
+		return (isset($data['voted']) && $data['voted'] ? $data['voted'] : Date::toSql());
+	}
 
-		if ($this->_tbl_name)
-		{
-			$cls = $this->_tbl_name;
-			$this->_tbl = new $cls($this->_db);
+	/**
+	 * Generates automatic userid field value
+	 *
+	 * @param   array  $data  The data being saved
+	 * @return  int
+	 **/
+	public function automaticVoter($data)
+	{
+		return (isset($data['voter']) && $data['voter'] ? (int)$data['voter'] : (int)User::get('id'));
+	}
 
-			if (!($this->_tbl instanceof \JTable))
-			{
-				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
-				);
-				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
-			}
-
-			if (is_numeric($oid) || is_string($oid))
-			{
-				// Make sure $oid isn't empty
-				// This saves a database call
-				if ($oid)
-				{
-					if ($wish) // Load by User ID and Wish ID
-					{
-						$this->_tbl->load_vote($oid, $wish);
-					}
-					else
-					{
-						$this->_tbl->load($oid);
-					}
-				}
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
+	/**
+	 * Generates automatic userid field value
+	 *
+	 * @param   array  $data  The data being saved
+	 * @return  int
+	 **/
+	public function automaticIp($data)
+	{
+		return (isset($data['ip']) && $data['ip'] ? $data['ip'] : Request::ip());
 	}
 
 	/**
 	 * Get the creator of this entry
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property  What data to return
-	 * @param   mixed   $default   Default value
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function creator($property=null, $default=null)
+	public function voter()
 	{
-		if (!($this->_creator instanceof \Hubzero\User\User))
-		{
-			$this->_creator = \User::getInsatnce($this->get('userid'));
-		}
-		if ($property)
-		{
-			if ($property == 'picture')
-			{
-				return $this->_creator->picture();
-			}
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
+		return $this->belongsToOne('Hubzero\User\User', 'voter');
 	}
 
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string   $rtrn  What data to return
-	 * @return  boolean
+	 * @param   string  $rtrn  What data to return
+	 * @return  string
 	 */
-	public function created($rtrn='')
+	public function voted($rtrn='')
 	{
-		switch (strtolower($rtrn))
+		$rtrn = strtolower($rtrn);
+
+		if ($rtrn == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			return Date::of($this->get('voted'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($rtrn == 'time')
+		{
+			return Date::of($this->get('voted'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('voted');
+	}
+
+	/**
+	 * Load a record by user and wish
+	 *
+	 * @param   integer  $voter
+	 * @param   integer  $referenceid
+	 * @return  object
+	 */
+	public static function oneByUserAndWish($voter, $referenceid)
+	{
+		return self::all()
+			->whereEquals('voter', $voter)
+			->whereEquals('referenceid', $referenceid)
+			->whereEquals('category', 'wish')
+			->row();
 	}
 }
-

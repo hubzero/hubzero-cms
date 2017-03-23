@@ -109,6 +109,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 			</fieldset>
 			<div class="clear"></div>
 
+			<?php $owners = $this->wishlist->getOwners(); ?>
+
 			<div class="explaination">
 				<p><?php echo Lang::txt('COM_WISHLIST_SETTINGS_EDIT_GROUPS'); ?></p>
 			</div>
@@ -127,7 +129,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 						<tbody>
 					<?php
 					$allmembers = array();
-					$groups = $this->wishlist->owners('groups');
+					$groups = $owners['groups'];
 					if (count($groups) > 0)
 					{
 						$k = 1;
@@ -192,7 +194,9 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					<?php
 					$allmembers = array_unique($allmembers);
 
-					$individuals = $this->wishlist->owners('individuals');
+					$individuals = $owners['individuals'];
+
+					$native = $this->wishlist->getOwners(null, 1);
 
 					// if we have people outside of groups
 					if (count($individuals) > count($allmembers))
@@ -209,7 +213,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo $this->escape($kuser->get('name')); ?></td>
 								<td><?php echo $this->escape($kuser->get('username')); ?></td>
 								<td>
-									<?php echo ($n> 1 && !in_array($individuals[$i], $this->wishlist->owners('individuals', 1)))  ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]).'" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
+									<?php echo ($n> 1 && !in_array($individuals[$i], $native['individuals']))  ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]).'" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
 								</td>
 							</tr>
 							<?php
@@ -239,74 +243,74 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 			</fieldset>
 			<div class="clear"></div>
 
-	<?php if ($this->wishlist->config('allow_advisory', 0)) { ?>
-			<div class="explaination">
-				<p><?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_INFO'); ?></p>
-			</div>
-			<fieldset>
-				<legend><?php echo Lang::txt('COM_WISHLIST_ADVISORY'); ?></legend>
-				<div class="field-wrap">
-					<table class="tktlist">
-						<thead>
-							<tr>
-								<th style="width:20px;"></th>
-								<th><?php echo Lang::txt('COM_WISHLIST_IND_NAME'); ?></th>
-								<th><?php echo Lang::txt('COM_WISHLIST_IND_LOGIN'); ?></th>
-								<th style="width:80px;"><?php echo Lang::txt('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
-							</tr>
-						</thead>
-						<tbody>
-					<?php
-					// if we have people outside of groups
-					$advisory = $this->wishlist->owners('advisory');
-					if (count($advisory) > 0)
-					{
-						$k=1;
-
-						for ($i=0, $n=count($advisory); $i < $n; $i++)
-						{
-							if (!in_array($advisory[$i], $allmembers))
-							{
-								$quser = User::getInstance($advisory[$i]);
-							?>
-							<tr>
-								<td><?php echo $k; ?>.</td>
-								<td><?php echo $this->escape($quser->get('name')); ?></td>
-								<td><?php echo $this->escape($quser->get('username')); ?></td>
-								<td>
-									<a href="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></a>
-								</td>
-							</tr>
-							<?php
-								$k++;
-							}
-						}
-					} else { ?>
-							<tr>
-								<td colspan="4"><?php echo Lang::txt('COM_WISHLIST_NO_ADVISORY_FOUND'); ?></td>
-							</tr>
-					<?php } ?>
-						</tbody>
-					</table>
+			<?php if ($this->wishlist->config('allow_advisory', 0)) { ?>
+				<div class="explaination">
+					<p><?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_INFO'); ?></p>
 				</div>
+				<fieldset>
+					<legend><?php echo Lang::txt('COM_WISHLIST_ADVISORY'); ?></legend>
+					<div class="field-wrap">
+						<table class="tktlist">
+							<thead>
+								<tr>
+									<th style="width:20px;"></th>
+									<th><?php echo Lang::txt('COM_WISHLIST_IND_NAME'); ?></th>
+									<th><?php echo Lang::txt('COM_WISHLIST_IND_LOGIN'); ?></th>
+									<th style="width:80px;"><?php echo Lang::txt('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+						<?php
+						// if we have people outside of groups
+						$advisory = $owners['advisory'];
+						if (count($advisory) > 0)
+						{
+							$k=1;
 
-				<label for="field_newadvisory">
-					<?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>:
-					<?php
-					$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newadvisory', 'field_newadvisory', '', '')));
-					if (count($mc) > 0) {
-						echo $mc[0];
-					} else { ?>
-					<input type="text" name="newadvisory" id="field_newadvisory" value="" />
-					<?php } ?>
-					<span><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
-				</label class="hint">
-			<?php if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) { ?>
-				<input type="hidden" name="fields[public]" value="<?php echo $this->wishlist->get('public'); ?>" />
-			<?php } ?>
-			</fieldset>
-			<div class="clear"></div>
-	<?php } // -- end if allow advisory ?>
+							for ($i=0, $n=count($advisory); $i < $n; $i++)
+							{
+								if (!in_array($advisory[$i], $allmembers))
+								{
+									$quser = User::getInstance($advisory[$i]);
+								?>
+								<tr>
+									<td><?php echo $k; ?>.</td>
+									<td><?php echo $this->escape($quser->get('name')); ?></td>
+									<td><?php echo $this->escape($quser->get('username')); ?></td>
+									<td>
+										<a href="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></a>
+									</td>
+								</tr>
+								<?php
+									$k++;
+								}
+							}
+						} else { ?>
+								<tr>
+									<td colspan="4"><?php echo Lang::txt('COM_WISHLIST_NO_ADVISORY_FOUND'); ?></td>
+								</tr>
+						<?php } ?>
+							</tbody>
+						</table>
+					</div>
+
+					<label for="field_newadvisory">
+						<?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>:
+						<?php
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newadvisory', 'field_newadvisory', '', '')));
+						if (count($mc) > 0) {
+							echo $mc[0];
+						} else { ?>
+						<input type="text" name="newadvisory" id="field_newadvisory" value="" />
+						<?php } ?>
+						<span><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
+					</label class="hint">
+				<?php if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) { ?>
+					<input type="hidden" name="fields[public]" value="<?php echo $this->wishlist->get('public'); ?>" />
+				<?php } ?>
+				</fieldset>
+				<div class="clear"></div>
+			<?php } // -- end if allow advisory ?>
 
 			<p class="submit">
 				<input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
