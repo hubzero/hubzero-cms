@@ -14,10 +14,10 @@
 	-- -- -- -- -- -- --
 
 */
-	.activity ul {
+	.activity > ul {
 		margin-left: 30px;
 	}
-	.activity ul li {
+	.activity > ul > li {
 		padding: 0;
 		margin: 0;
 		position: relative;
@@ -192,7 +192,7 @@
 	}
 
 @media (min-width: 40em) {
-	.activity ul {
+	.activity > ul {
 		margin-left: 70px;
 	}
 	.activity-actor-picture {
