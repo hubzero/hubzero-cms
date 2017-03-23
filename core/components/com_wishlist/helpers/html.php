@@ -77,26 +77,54 @@ class Html
 		{
 			switch ($rawnum)
 			{
-				case 0: $output = Lang::txt('COM_WISHLIST_RUBBISH');     break;
-				case 1: $output = Lang::txt('COM_WISHLIST_MAYBE');       break;
-				case 2: $output = Lang::txt('COM_WISHLIST_INTERESTING'); break;
-				case 3: $output = Lang::txt('COM_WISHLIST_GOODIDEA');    break;
-				case 4: $output = Lang::txt('COM_WISHLIST_IMPORTANT');   break;
-				case 5: $output = Lang::txt('COM_WISHLIST_CRITICAL');    break;
+				case 0:
+					$output = Lang::txt('COM_WISHLIST_RUBBISH');
+					break;
+				case 1:
+					$output = Lang::txt('COM_WISHLIST_MAYBE');
+					break;
+				case 2:
+					$output = Lang::txt('COM_WISHLIST_INTERESTING');
+					break;
+				case 3:
+					$output = Lang::txt('COM_WISHLIST_GOODIDEA');
+					break;
+				case 4:
+					$output = Lang::txt('COM_WISHLIST_IMPORTANT');
+					break;
+				case 5:
+					$output = Lang::txt('COM_WISHLIST_CRITICAL');
+					break;
 			}
 		}
 		else if ($category == 'effort')
 		{
 			switch ($rawnum)
 			{
-				case 0: $output = Lang::txt('COM_WISHLIST_TWOMONTHS');   break;
-				case 1: $output = Lang::txt('COM_WISHLIST_TWOWEEKS');    break;
-				case 2: $output = Lang::txt('COM_WISHLIST_ONEWEEK');     break;
-				case 3: $output = Lang::txt('COM_WISHLIST_TWODAYS');     break;
-				case 4: $output = Lang::txt('COM_WISHLIST_ONEDAY');      break;
-				case 5: $output = Lang::txt('COM_WISHLIST_FOURHOURS');   break;
-				case 6: $output = Lang::txt('COM_WISHLIST_DONT_KNOW');   break;
-				case 7: $output = Lang::txt('COM_WISHLIST_NA');          break;
+				case 0:
+					$output = Lang::txt('COM_WISHLIST_TWOMONTHS');
+					break;
+				case 1:
+					$output = Lang::txt('COM_WISHLIST_TWOWEEKS');
+					break;
+				case 2:
+					$output = Lang::txt('COM_WISHLIST_ONEWEEK');
+					break;
+				case 3:
+					$output = Lang::txt('COM_WISHLIST_TWODAYS');
+					break;
+				case 4:
+					$output = Lang::txt('COM_WISHLIST_ONEDAY');
+					break;
+				case 5:
+					$output = Lang::txt('COM_WISHLIST_FOURHOURS');
+					break;
+				case 6:
+					$output = Lang::txt('COM_WISHLIST_DONT_KNOW');
+					break;
+				case 7:
+					$output = Lang::txt('COM_WISHLIST_NA');
+					break;
 			}
 		}
 

@@ -48,11 +48,11 @@ use Lang;
 class Economy extends Object
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Constructor

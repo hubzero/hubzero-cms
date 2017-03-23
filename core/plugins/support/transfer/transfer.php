@@ -176,7 +176,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 					if (isset($wishlist->resource) && isset($wishlist->resource->alias))
 					{
 						$tags  = $wishlist->resource->type == 7 ? 'tool:' : 'resource:';
-						$tags .= $wishlist->resource->alias ? $wishlist->resource->alias : $wishlist->referenceid ;
+						$tags .= $wishlist->resource->alias ? $wishlist->resource->alias : $wishlist->referenceid;
 					}
 				}
 				else

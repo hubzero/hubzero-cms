@@ -404,38 +404,50 @@ class Wish extends Relational
 				$ky = 'COM_WISHLIST_WISH_STATUS_';
 				switch ($this->get('status'))
 				{
-					case static::WISH_STATE_ACCEPTED:  $state = Lang::txt($ky . 'ACCEPTED');  break;
-					case static::WISH_STATE_WITHDRAWN: $state = Lang::txt($ky . 'WITHDRAWN'); break;
-					case static::WISH_STATE_REJECTED:  $state = Lang::txt($ky . 'REJECTED');  break;
-					case static::WISH_STATE_DELETED:   $state = Lang::txt($ky . 'DELETED');   break;
-					case static::WISH_STATE_GRANTED:   $state = Lang::txt($ky . 'GRANTED');   break;
+					case static::WISH_STATE_ACCEPTED:
+						$state = Lang::txt($ky . 'ACCEPTED');
+						break;
+					case static::WISH_STATE_WITHDRAWN:
+						$state = Lang::txt($ky . 'WITHDRAWN');
+						break;
+					case static::WISH_STATE_REJECTED:
+						$state = Lang::txt($ky . 'REJECTED');
+						break;
+					case static::WISH_STATE_DELETED:
+						$state = Lang::txt($ky . 'DELETED');
+						break;
+					case static::WISH_STATE_GRANTED:
+						$state = Lang::txt($ky . 'GRANTED');
+						break;
 					case static::WISH_STATE_OPEN:
 					default:
 						$state = ($this->get('accepted') == 1) ? Lang::txt($ky . 'ACCEPTED') : Lang::txt($ky . 'PENDING');
-						/*if (!$this->get('ranked'))
-						{
-							$state = Lang::txt($ky . 'NEW');
-						}*/
-					break;
+						break;
 				}
 			break;
 
 			case 'alias':
 				switch ($this->get('status'))
 				{
-					case static::WISH_STATE_ACCEPTED:  $state = 'accepted';  break;
-					case static::WISH_STATE_WITHDRAWN: $state = 'withdrawn'; break;
-					case static::WISH_STATE_REJECTED:  $state = 'rejected';  break;
-					case static::WISH_STATE_DELETED:   $state = 'deleted';   break;
-					case static::WISH_STATE_GRANTED:   $state = 'granted';   break;
+					case static::WISH_STATE_ACCEPTED:
+						$state = 'accepted';
+						break;
+					case static::WISH_STATE_WITHDRAWN:
+						$state = 'withdrawn';
+						break;
+					case static::WISH_STATE_REJECTED:
+						$state = 'rejected';
+						break;
+					case static::WISH_STATE_DELETED:
+						$state = 'deleted';
+						break;
+					case static::WISH_STATE_GRANTED:
+						$state = 'granted';
+						break;
 					case static::WISH_STATE_OPEN:
 					default:
 						$state = ($this->get('accepted') == 1) ? 'accepted' : 'pending';
-						/*if (!$this->get('ranked'))
-						{
-							$state = 'new';
-						}*/
-					break;
+						break;
 				}
 			break;
 
@@ -450,10 +462,16 @@ class Wish extends Relational
 						$state .= $this->due() != '0000-00-00 00:00:00'
 								? '; ' . Lang::txt('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due()
 								: '';
-					break;
-					case static::WISH_STATE_WITHDRAWN: $state = Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO'); break;
-					case static::WISH_STATE_REJECTED:  $state = Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
-					case static::WISH_STATE_DELETED:   $state = Lang::txt('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
+						break;
+					case static::WISH_STATE_WITHDRAWN:
+						$state = Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO');
+						break;
+					case static::WISH_STATE_REJECTED:
+						$state = Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');
+						break;
+					case static::WISH_STATE_DELETED:
+						$state = Lang::txt('COM_WISHLIST_WISH_STATUS_DELETED_INFO');
+						break;
 					case static::WISH_STATE_GRANTED:
 						$user = User::getInstance($this->get('granted_by'));
 						$state = $this->granted() != '0000-00-00 00:00:00'
@@ -463,7 +481,7 @@ class Wish extends Relational
 					case static::WISH_STATE_OPEN:
 					default:
 						$state = Lang::txt('COM_WISHLIST_WISH_STATUS_PENDING_INFO');
-					break;
+						break;
 				}
 			break;
 
@@ -536,7 +554,7 @@ class Wish extends Relational
 					//throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
 					throw new RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->_adapter = new $cls($this->get('referenceid'));

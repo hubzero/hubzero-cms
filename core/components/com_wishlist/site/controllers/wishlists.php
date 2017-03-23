@@ -291,41 +291,11 @@ class Wishlists extends SiteController
 			$dflt = 'ranking';
 		}
 
-		/*$filters = array();
-		$filters['sortby']   = Request::getWord('sortby', $dflt);
-		$filters['filterby'] = Request::getWord('filterby', 'all');
-		$filters['search']   = Request::getVar('search', '');
-		$filters['tag']      = Request::getVar('tags', '');
-		$filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
-		$filters['start']    = Request::getInt('limitstart', 0);
-		$filters['new']      = Request::getInt('newsearch', 0);
-		$filters['start']    = $filters['new'] ? 0 : $filters['start'];
-		$filters['comments'] = Request::getVar('comments', 1, 'get');
-
-		if (!in_array($filters['sortby'], array('date', 'submitter', 'feedback', 'ranking')))
-		{
-			$filters['sortby'] = 'date';
-		}
-
-		if (!in_array($filters['filterby'], array('all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private')))
-		{
-			$filters['filterby'] = 'all';
-		}*/
 		$filters = $this->getFilters($this->_admin);
-
-		// Get list filters
-		//$filters = $this->getFilters($this->_admin);
-		//$filters['limit'] = (isset($this->limit)) ? $this->limit : $filters['limit'];
 
 		// Get individual wishes
 		$entries = Wish::all()
 			->whereEquals('wishlist', $model->get('id'));
-			/*->including(['comments', function ($comment)
-			{
-				$comment
-					->select('id', null, true)
-					->where('state', '!=', Wish::STATE_DELETED);
-			}]);*/
 
 		$w = $entries->getTableName();
 
@@ -506,11 +476,8 @@ class Wishlists extends SiteController
 		*/
 
 		// Some extras
-		//$model->set('saved', $saved);
 		$model->set('banking', ($this->banking ? $this->banking : 0));
 		$model->set('banking', ($model->get('category') == 'user' ? 0 : $this->banking)); // do not allow points for individual wish lists
-
-		//Request::setVar('id', $id);
 
 		$this->view
 			->set('filters', $filters)
@@ -538,8 +505,6 @@ class Wishlists extends SiteController
 		$com     = Request::getInt('com', 0, 'get');
 		$canedit = false;
 		$saved   = Request::getInt('saved', 0);
-
-		//$wishid = $this->wishid && !$wishid ? $this->wishid : $wishid;
 
 		$wish = Wish::oneOrFail($wishid);
 
@@ -606,96 +571,91 @@ class Wishlists extends SiteController
 		// Get list filters
 		$filters = $this->getFilters($wish->get('admin'));
 
-			// Update average value for importance (this is tricky MySQL)
-		//	if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
-		//	{
-			$owners = $wishlist->getOwners();
+		$owners = $wishlist->getOwners();
 
-				$votes = $wish->rankings;
+		$votes = $wish->rankings;
 
-				// first consider votes by list owners
-				if ($votes->count() > 0)
-				{
-					$imp     = 0;
-					$divisor = 0;
-					$co_adv  = 0.8;
-					$co_reg  = 0.2;
-					$effort  = 0;
-					$counter = 0;
+		// first consider votes by list owners
+		if ($votes->count() > 0)
+		{
+			$imp     = 0;
+			$divisor = 0;
+			$co_adv  = 0.8;
+			$co_reg  = 0.2;
+			$effort  = 0;
+			$counter = 0;
 
-					foreach ($votes as $vote)
-					{
-						if (count($owners['advisory']) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $owners['advisory']))
-						{
-							$imp += $vote->get('importance') * $co_adv;
-							$divisor += $co_adv;
-						}
-						else
-						{
-							$imp += $vote->get('importance') * $co_reg;
-							$divisor += $co_reg;
-						}
-						if ($vote->get('effort') != 6)
-						{
-							$effort += $vote->get('effort');
-							$counter++;
-						}
-					}
-
-					// weighted average
-					$wish->set('average_imp', ($imp/$divisor));
-
-					// Set average effort
-					if ($counter)
-					{
-						$wish->set('average_effort', ($effort/$counter));
-					}
-					else
-					{
-						$wish->set('average_effort', 7);
-					}
-				}
-		//	}
-
-			// Build owners drop-down for assigning wishes
-			$wish->set('assignlist', $this->userSelect('assigned', $owners['individuals'], $wish->get('assigned'), 1));
-
-			// Do we have a due date?
-			$wish->set('urgent', 0);
-			if ($wish->get('due') != '0000-00-00 00:00:00')
+			foreach ($votes as $vote)
 			{
-				$delivery = $this->convertTime($wish->get('average_effort'));
-				if ($wish->get('due') < $delivery['warning'])
+				if (count($owners['advisory']) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $owners['advisory']))
 				{
-					$wish->set('urgent', 1);
+					$imp += $vote->get('importance') * $co_adv;
+					$divisor += $co_adv;
 				}
-				if ($wish->get('due') < $delivery['immediate'])
+				else
 				{
-					$wish->set('urgent', 2);
+					$imp += $vote->get('importance') * $co_reg;
+					$divisor += $co_reg;
+				}
+				if ($vote->get('effort') != 6)
+				{
+					$effort += $vote->get('effort');
+					$counter++;
 				}
 			}
 
-			// check available user funds
-			if ($action == 'addbonus' && $this->banking)
-			{
-				$BTL = new Teller(User::get('id'));
-				$balance = $BTL->summary();
-				$credit  = $BTL->credit_summary();
-				$funds   = $balance - $credit;
-				$funds   = ($funds > 0) ? $funds : '0';
-				$wish->set('funds', $funds);
-			}
+			// weighted average
+			$wish->set('average_imp', ($imp/$divisor));
 
-			if ($action == 'move')
+			// Set average effort
+			if ($counter)
 			{
-				$wish->set('cats', $this->config->get('categories', 'general, resource'));
+				$wish->set('average_effort', ($effort/$counter));
 			}
+			else
+			{
+				$wish->set('average_effort', 7);
+			}
+		}
 
-			// Record some extra actions
-			$wish->set('action', $action);
-			$wish->set('saved', $saved);
-			$wish->set('com', $com);
-		//}
+		// Build owners drop-down for assigning wishes
+		$wish->set('assignlist', $this->userSelect('assigned', $owners['individuals'], $wish->get('assigned'), 1));
+
+		// Do we have a due date?
+		$wish->set('urgent', 0);
+		if ($wish->get('due') != '0000-00-00 00:00:00')
+		{
+			$delivery = $this->convertTime($wish->get('average_effort'));
+			if ($wish->get('due') < $delivery['warning'])
+			{
+				$wish->set('urgent', 1);
+			}
+			if ($wish->get('due') < $delivery['immediate'])
+			{
+				$wish->set('urgent', 2);
+			}
+		}
+
+		// check available user funds
+		if ($action == 'addbonus' && $this->banking)
+		{
+			$BTL = new Teller(User::get('id'));
+			$balance = $BTL->summary();
+			$credit  = $BTL->credit_summary();
+			$funds   = $balance - $credit;
+			$funds   = ($funds > 0) ? $funds : '0';
+			$wish->set('funds', $funds);
+		}
+
+		if ($action == 'move')
+		{
+			$wish->set('cats', $this->config->get('categories', 'general, resource'));
+		}
+
+		// Record some extra actions
+		$wish->set('action', $action);
+		$wish->set('saved', $saved);
+		$wish->set('com', $com);
 
 		// Turn on/off banking
 		$wishlist->set('banking', ($wishlist->get('category') == 'user' ? 0 : $this->banking));
