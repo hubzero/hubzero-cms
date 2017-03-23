@@ -1052,10 +1052,12 @@ class Project extends Model
 		$showDeleted = $admin ? true : false;
 		$setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
 
+		$filters['uid'] = isset($filters['uid']) ? $filters['uid'] : User::get('id');
+
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				return (int) $this->_tbl->getCount($filters, $admin, User::get('id'), $showDeleted, $setupComplete);
+				return (int) $this->_tbl->getCount($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
 			break;
 
 			case 'group':
@@ -1069,7 +1071,7 @@ class Project extends Model
 			break;
 
 			default:
-			$results = $this->_tbl->getRecords($filters, $admin, User::get('id'), $showDeleted, $setupComplete);
+			$results = $this->_tbl->getRecords($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
 			break;
 		}
 

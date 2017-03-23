@@ -45,6 +45,11 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="display_limit" type="text" size="5" default="50" label="PLG_MEMBERS_PROJECTS_PARAM_LIMIT_LABEL" description="PLG_MEMBERS_PROJECTS_PARAM_LIMIT_DESC"/>
+				<field name="show" type="list" default="none" label="PLG_MEMBERS_PROJECTS_PARAM_SHOW_LABEL" description="PLG_MEMBERS_PROJECTS_PARAM_SHOW_DESC">
+					<option value="none">PLG_MEMBERS_PROJECTS_PARAM_SHOW_NONE</option>
+					<option value="public">PLG_MEMBERS_PROJECTS_PARAM_SHOW_PUBLIC</option>
+					<option value="all">PLG_MEMBERS_PROJECTS_PARAM_SHOW_ALL</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

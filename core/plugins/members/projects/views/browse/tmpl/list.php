@@ -51,6 +51,12 @@ switch ($this->which)
 		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_ALL');
 		break;
 }
+
+$isUser = false;
+if (User::get('id') == $this->user->get('id'))
+{
+	$isUser = true;
+}
 ?>
 
 	<table class="entries">
@@ -67,9 +73,11 @@ switch ($this->which)
 						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=status&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a>
 					</th>
 				<?php } ?>
-				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>>
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=role&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a>
-				</th>
+				<?php if ($isUser) { ?>
+					<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>>
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=role&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a>
+					</th>
+				<?php } ?>
 			</tr>
 		</thead>
 		<tbody>
@@ -93,7 +101,10 @@ switch ($this->which)
 					<td class="th_image">
 						<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
 							<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo htmlentities($this->escape($row->get('title'))); ?>"  class="project-image" />
-						</a> <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?>
+						</a>
+						<?php if ($isUser) { ?>
+							<?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?>
+						<?php } ?>
 					</td>
 					<td class="th_privacy">
 						<?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?>
@@ -136,9 +147,11 @@ switch ($this->which)
 							?>
 						</td>
 					<?php } ?>
-					<td class="th_role">
-						<?php echo $role; ?>
-					</td>
+					<?php if ($isUser) { ?>
+						<td class="th_role">
+							<?php echo $role; ?>
+						</td>
+					<?php } ?>
 				</tr>
 				<?php
 			}
