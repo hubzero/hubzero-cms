@@ -42,7 +42,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 
 /**
  * API controller class for collections
@@ -266,7 +266,7 @@ class Collectionsv1_0 extends ApiController
 	 * @apiUri    /collections/{id}
 	 * @apiParameter {
 	 * 		"name":        "id",
-	 * 		"description": "Blog entry identifier",
+	 * 		"description": "Entry identifier",
 	 * 		"type":        "integer",
 	 * 		"required":    true,
 	 * 		"default":     null
