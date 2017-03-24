@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Steve Snyder <snyder13@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,92 +34,55 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Search plugin for wiki pages
+ * What's New Plugin class for com_wiki articles
  */
-class plgSearchWiki extends \Hubzero\Plugin\Plugin
+class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Build search query and add it to the $results
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param   object  $request   \Components\Search\Models\Basic\Request
-	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
-	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
-	 * @return  void
+	 * @var  boolean
 	 */
-	public static function onSearch($request, &$results, $authz)
+	protected $_autoloadLanguage = true;
+
+	/**
+	 * Return the alias and name for this category of content
+	 *
+	 * @return  array
+	 */
+	public function onWhatsnewAreas()
 	{
-		$terms = $request->get_term_ar();
-		$weight = '(match(wp.title) against (\'' . join(' ', $terms['stemmed']) . '\') + match(wv.pagetext) against (\'' . join(' ', $terms['stemmed']) . '\'))';
+		return array(
+			'wiki' => Lang::txt('PLG_WHATSNEW_WIKI')
+		);
+	}
 
-		$addtl_where = array();
-		foreach ($terms['mandatory'] as $mand)
+	/**
+	 * Pull a list of records that were created within the time frame ($period)
+	 *
+	 * @param   object   $period      Time period to pull results for
+	 * @param   mixed    $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   array    $areas       Active area(s)
+	 * @param   array    $tagids      Array of tag IDs
+	 * @return  array
+	 */
+	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
+	{
+		if (is_array($areas) && $limit)
 		{
-			$addtl_where[] = "(wp.title LIKE '%$mand%' OR wv.pagetext LIKE '%$mand%')";
-		}
-		foreach ($terms['forbidden'] as $forb)
-		{
-			$addtl_where[] = "(wp.title NOT LIKE '%$forb%' AND wv.pagetext NOT LIKE '%$forb%')";
-		}
-
-		$viewlevels	= implode(',', User::getAuthorisedViewLevels());
-
-		if ($gids = $authz->get_group_ids())
-		{
-			$authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
-		}
-		else
-		{
-			$authorization = '(wp.access IN (0,' . $viewlevels . '))';
-		}
-
-		// fml
-		$groupAuth = array();
-		if ($authz->is_super_admin())
-		{
-			$groupAuth[] = '1';
-		}
-		else
-		{
-			$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
-			if (!$authz->is_guest())
+			if (!isset($areas[$this->_name])
+			 && !in_array($this->_name, $areas))
 			{
-				$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-				if ($gids = $authz->get_group_ids())
-				{
-					$groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
-				}
+				return array();
 			}
 		}
 
-		$rows = new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
-				wp.title,
-				wp.scope,
-				wp.scope_id,
-				wv.pagehtml AS description,
-				CASE
-					WHEN wp.path != '' THEN concat(wp.path, '/', wp.pagename)
-					ELSE wp.pagename
-				END AS link,
-				$weight AS weight,
-				wv.created AS date,
-				CASE
-					WHEN wp.scope='project' THEN 'Project Notes'
-					ELSE 'Wiki'
-				END AS section
-			FROM `#__wiki_versions` wv
-			INNER JOIN `#__wiki_pages` wp
-				ON wp.id = wv.page_id
-			LEFT JOIN `#__xgroups` xg ON xg.gidNumber = wp.scope_id AND wp.scope='group'
-			WHERE
-				$authorization AND
-				$weight > 0 AND
-				wp.state < 2 AND
-				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_versions` wv2 WHERE wv2.page_id = wv.page_id) " .
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-				" AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
-			 ORDER BY $weight DESC"
-		);
+		// Do we have a time period?
+		if (!is_object($period))
+		{
+			return array();
+		}
 
 		include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
@@ -127,175 +90,41 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/project.php');
 		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
 
-		foreach ($rows->to_associative() as $row)
+		if (!$limit)
 		{
-			if (!$row)
+			return Components\Wiki\Models\Page::all()
+				->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+				->where('created', '>=', $period->cStartDate)
+				->where('created', '<', $period->cEndDate)
+				->order('created', 'desc')
+				->count();
+		}
+		else
+		{
+			$pages = Components\Wiki\Models\Page::all()
+				->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+				->order('created', 'desc')
+				->where('created', '>=', $period->cStartDate)
+				->where('created', '<', $period->cEndDate)
+				->limit($limit)
+				->start($limitstart)
+				->rows();
+
+			$rows = array();
+
+			foreach ($pages as $page)
 			{
-				continue;
+				$row = new stdClass;
+				$row->title = $page->title;
+				$row->href  = Route::url($page->link());
+				$row->text  = strip_tags($page->version->get('pagehtml'));
+				$row->category = $page->get('scope');
+				$row->section = $this->_name;
+
+				$rows[] = $row;
 			}
 
-			$page = \Components\Wiki\Models\Page::blank();
-			$page->set('pagename', $row->link);
-			$page->set('scope', $row->scope);
-			$page->set('scope_id', $row->scope_id);
-
-			$row->set_link(Route::url($page->link()));
-			// rough de-wikifying. probably a bit faster than rendering to html and then stripping the tags, but not perfect
-			//$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
-			$row->set_description(strip_tags($row->get_description()));
-			$results->add($row);
-		}
-	}
-
-	/**
-	 * onGetTypes - Announces the available hubtype
-	 * 
-	 * @param   mixed   $type 
-	 * @access  public
-	 * @return  void
-	 */
-	public function onGetTypes($type = null)
-	{
-		// The name of the hubtype
-		$hubtype = 'wiki';
-
-		if (isset($type) && $type == $hubtype)
-		{
-			return $hubtype;
-		}
-		elseif (!isset($type))
-		{
-			return $hubtype;
-		}
-	}
-
-	/**
-	 * onIndex 
-	 * 
-	 * @param   string   $type
-	 * @param   integer  $id 
-	 * @param   boolean  $run 
-	 * @access  public
-	 * @return  void
-	 */
-	public function onIndex($type, $id, $run = false)
-	{
-		if ($type == 'wiki')
-		{
-			if ($run === true)
-			{
-				// Establish a db connection
-				$db = App::get('db');
-
-				// Sanitize the string
-				$id = \Hubzero\Utility\Sanitize::paranoid($id);
-
-				// Get the record
-				$sql = "SELECT * FROM `#__wiki_pages`
-					INNER JOIN `#__wiki_versions`
-					ON `#__wiki_pages`.version_id = `#__wiki_versions`.id
-					WHERE `#__wiki_pages`.id = {$id} AND `#__wiki_pages`.state = 1;";
-
-				$row = $db->setQuery($sql)->query()->loadObject();
-
-				// Get the name of the author
-				$sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
-				$author = $db->setQuery($sql1)->query()->loadResult();
-
-				// Get any tags
-				$sql2 = "SELECT tag
-					FROM `#__tags`
-					LEFT JOIN `#__tags_object`
-					ON `#__tags`.id=`#__tags_object`.tagid
-					WHERE `#__tags_object`.objectid = {$id} AND `#__tags_object`.tbl = 'wiki';";
-				$tags = $db->setQuery($sql2)->query()->loadColumn();
-
-				// Determine the path
-				if ($row->scope == 'site')
-				{
-					$path = '/wiki/' . $row->path;
-				}
-				elseif ($row->scope == 'group')
-				{
-					$group = \Hubzero\User\Group::getInstance($row->scope_id);
-
-					// Make sure group is valid.
-					if (is_object($group))
-					{
-						$cn = $group->get('cn');
-						$path = '/groups/'. $cn . '/wiki/' . $row->path;
-					}
-				}
-				else
-				{
-					// Only group and site wiki is supported right now
-					// @TODO: Project Notes
-					return;
-				}
-
-				// Public condition
-				if ($row->state == 1 && ($row->access == 0 || $row->access = 1))
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
-				}
-				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
-
-				if ($row->scope != 'group')
-				{
-					$owner_type = 'user';
-					$owner = $row->created_by;
-				}
-				else
-				{
-					$owner_type = 'group';
-					$owner = $row->scope_id;
-				}
-
-				// Get the title
-				$title = $row->title;
-
-				// Build the description, clean up text
-				$content = $row->pagehtml;
-				$content = preg_replace('/<[^>]*>/', ' ', $content);
-				$content = preg_replace('/ {2,}/', ' ', $content);
-				$description = \Hubzero\Utility\Sanitize::stripAll($content);
-
-				// Create a record object
-				$record = new \stdClass;
-				$record->id = $type . '-' . $id;
-				$record->hubtype = $type;
-				$record->title = $title;
-				$record->description = $description;
-				$record->author = array($author);
-				$record->tags = $tags;
-				$record->path = $path;
-				$record->access_level = $access_level;
-				$record->owner = $owner;
-				$record->owner_type = $owner_type;
-
-				// Return the formatted record
-				return $record;
-			}
-			else
-			{
-				$db = App::get('db');
-				$sql = "SELECT `#__wiki_pages`.id
-					FROM `#__wiki_pages`
-					INNER JOIN `#__wiki_versions`
-					ON `#__wiki_pages`.version_id = `#__wiki_versions`.id
-					WHERE `#__wiki_pages`.state = 1;";
-				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return $ids;
-			}
+			return $rows;
 		}
 	}
 }
