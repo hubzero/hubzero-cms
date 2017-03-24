@@ -92,7 +92,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		$sql = "SELECT r.id, r.created_by, v.id as tool_version_id,
 				v.toolid, v.toolname, v.title, v.description,
 				v.instance, v.revision, v.released
-				FROM #__resources AS r, #__tool_version AS v
+				FROM `#__resources` AS r, `#__tool_version` AS v
 				WHERE r.published=1
 				AND r.type=7
 				AND r.standalone=1
@@ -102,7 +102,8 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				GROUP BY r.id
 				ORDER BY v.title, v.toolname, v.revision DESC";
 
-		$database->setQuery( $sql );
+		$database->setQuery($sql);
+
 		if (!($rows = $database->loadObjectList()))
 		{
 			// No applicable results
@@ -110,8 +111,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Includes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'doi.php');
+		require_once Component::path('com_publications') . DS . 'models' . DS . 'doi.php';
 
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi();
@@ -122,6 +122,8 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
+		require_once Component::path('com_resources') . DS . 'tables' . DS . 'resource.php';
+
 		// Go through records
 		foreach ($rows as $row)
 		{
@@ -130,12 +132,13 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 
 			// Map data
 			$pubYear = $row->released && $row->released != '0000-00-00 00:00:00'
-					? gmdate('Y', strtotime($row->released)) : gmdate('Y');
+					? gmdate('Y', strtotime($row->released))
+					: gmdate('Y');
 			$doiService->set('pubYear', $pubYear);
 			$doiService->mapUser($row->created_by, array(), 'creator');
 			$doiService->set('resourceType', 'Software');
 			$doiService->set('title', htmlspecialchars(stripslashes($row->title)));
-			$doiService->set('url', $doiService->_configs->livesite . DS . 'resources' . DS . $row->toolname . DS . 'main');
+			$doiService->set('url', $doiService->_configs->livesite . '/resources/' . $row->toolname . '/main');
 
 			// Register DOI
 			$masterDoi = $doiService->register();
@@ -153,7 +156,9 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Issue master DOI for tool resources if does not exist
+	 * Set rankings for resources that haven't been ranked yet
+	 *
+	 * NOTE: This method is currently unused and unfinished!
 	 *
 	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
@@ -250,6 +255,8 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		$queued = $database->loadObjectList();
 
+		require_once Component::path('com_resources') . DS . 'models' . DS . 'resource.php';
+
 		// Loop through each resource and rank it
 		foreach ($queued as $item)
 		{
@@ -258,12 +265,14 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				continue;
 			}
 
-			//if ($resource->rank())
-			//{
+			$resource = new \Components\Resources\Models\Resource($item->id);
+
+			if ($resource->rank())
+			{
 				// mark as sent and save
 				$resource->ranked = Date::toSql();
-				//$resource->store();
-			//}
+				$resource->store();
+			}
 
 			$processed[] = $item->id;
 		}
@@ -286,19 +295,8 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		$interval = strtoupper($params->get('audit_frequency', '1 MONTH'));
 		$now      = Date::toSql();
 
-		// Get records needing to be processed
-		$db = App::get('db');
-		/*$db->setQuery(
-			"SELECT DISTINCT(r.id), r.*
-			FROM `#__resources` AS r
-			LEFT JOIN `#__audit_results` AS a ON a.scope_id=r.id
-			WHERE (a.scope=" . $db->quote('resource') . " OR a.scope='' OR a.scope IS NULL)
-			AND (DATE_ADD(a.processed, INTERVAL " . $interval . ") < " . $db->quote($now) . " OR a.processed = '0000-00-00 00:00:00' OR a.processed IS NULL)
-			LIMIT 0," . $limit
-		);
-		$data = $db->loadAssocList();*/
-
 		// Get records that haven't been processed
+		$db = App::get('db');
 		$db->setQuery(
 			"SELECT r.*
 			FROM `#__resources` AS r
@@ -340,9 +338,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		// Process records
 		if (count($data) > 0)
 		{
-			//$nxt = Date::of('now')->modify('+' . $interval)->toSql();
-
-			include_once(PATH_CORE . '/components/com_resources/helpers/tests/links.php');
+			include_once Component::path('com_resources') . '/helpers/tests/links.php';
 
 			$auditor = new \Hubzero\Content\Auditor('resource');
 			$auditor->registerTest(new \Components\Resources\Helpers\Tests\Links);
@@ -356,11 +352,12 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				foreach ($reportcard['tests'] as $result)
 				{
 					$prev = Hubzero\Content\Auditor\Result::oneByScope($result->get('scope'), $result->get('scope_id'));
+
 					if ($prev->get('id'))
 					{
 						$result->set('id', $prev->get('id'));
 					}
-					//$result->set('next_process', $nxt);
+
 					$result->save();
 				}
 			}
