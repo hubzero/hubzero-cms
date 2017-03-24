@@ -72,7 +72,7 @@ class Router extends Base
 	public function parse(&$segments)
 	{
 		$vars = array();
-		$vars['task'] = 'list';
+		$vars['task'] = 'index';
 		$vars['controller'] = 'search';
 
 		if (isset($segments[0]))
