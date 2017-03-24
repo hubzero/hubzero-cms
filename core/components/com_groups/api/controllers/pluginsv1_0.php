@@ -83,7 +83,7 @@ class Pluginsv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-		$this->requiresAuthentication();
+		//$this->requiresAuthentication();
 
 		$cn = Request::getCmd('id', '');
 

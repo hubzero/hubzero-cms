@@ -227,17 +227,6 @@ class Solr extends SiteController
 			{
 				//@FIXME: SOLR-specific
 				$result['title'] = $result['title'][0];
-
-				// Appends http(s)://
-				if (isset($result['url']))
-				{
-					$result['url']  = rtrim(Request::base(), "/") . $result['url'];
-				}
-				else
-				{
-					$result['url'] = '';
-				}
-
 				$snippet = '';
 				foreach ($result as $field => &$r)
 				{
