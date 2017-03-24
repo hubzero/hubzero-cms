@@ -29,35 +29,32 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Resources\Models;
+namespace Components\Resources\Models\Stat;
 
-use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
-
-include_once __DIR__ . DS . 'author' . DS . 'role.php';
+use Date;
+use Lang;
 
 /**
- * Resource type model
+ * Resource stats clusters model
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Type extends Relational
+class Cluster extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'resource';
+	protected $namespace = 'resource_stats';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'type';
+	public $orderBy = 'id';
 
 	/**
 	 * Default order direction for select queries
@@ -72,60 +69,54 @@ class Type extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'type' => 'notempty'
+		'resid' => 'positive|nonzero'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Return a formatted timestamp for timestamp date
 	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'alias'
-	);
-
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
+	 * @param   string  $as  What data to return
 	 * @return  string
 	 */
-	public function automaticAlias($data)
+	public function processed($as='')
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 70)
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			$alias = substr($alias . ' ', 0, 70);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
+			$as = Lang::txt('DATE_FORMAT_HZ1');
 		}
-		$alias = str_replace(' ', '-', $alias);
 
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+		if ($as == 'time')
+		{
+			$as = Lang::txt('TIME_FORMAT_HZ1');
+		}
+
+		if ($as)
+		{
+			return Date::of($this->get('timestamp'))->toLocal($as);
+		}
+
+		return $this->get('timestamp');
 	}
 
 	/**
-	 * Get a list of roles for this type
+	 * Defines a belongs to one relationship between entry and resource
 	 *
-	 * @return  object
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public function roles()
+	public function resource()
 	{
-		$model = new RoleType();
-		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
+		return $this->belongsToOne('Components\Resources\Models\Orm\Resource', 'resid');
 	}
 
 	/**
-	 * Get major types
+	 * Defines a belongs to one relationship between entry and user
 	 *
-	 * @return  object
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public static function getMajorTypes()
+	public function user()
 	{
-		return self::all()
-			->whereEquals('category', 27)
-			->ordered()
-			->rows();
+		return $this->belongsToOne('Hubzero\User\User', 'uidNumber');
 	}
 }

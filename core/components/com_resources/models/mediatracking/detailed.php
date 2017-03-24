@@ -29,35 +29,41 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Resources\Models;
+namespace Components\Resources\Models\MediaTracking;
 
-use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
-
-include_once __DIR__ . DS . 'author' . DS . 'role.php';
 
 /**
- * Resource type model
+ * Detailed media tracking model
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Type extends Relational
+class Detailed extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'resource';
+	protected $namespace = 'media_tracking';
+
+	/**
+	 * The table to which the class pertains
+	 *
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__media_tracking_detailed';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'type';
+	public $orderBy = 'id';
 
 	/**
 	 * Default order direction for select queries
@@ -72,60 +78,28 @@ class Type extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'type' => 'notempty'
+		'object_id'   => 'positive|nonzero',
+		'object_type' => 'notempty',
+		'session_id'  => 'notempty',
+		'ip_address'  => 'notempty'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Get a record by its doi
 	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'alias'
-	);
-
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticAlias($data)
-	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 70)
-		{
-			$alias = substr($alias . ' ', 0, 70);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
-		}
-		$alias = str_replace(' ', '-', $alias);
-
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
-	}
-
-	/**
-	 * Get a list of roles for this type
-	 *
+	 * @param   integer  $user_id      User ID
+	 * @param   integer  $object_id    Object ID
+	 * @param   string   $object_type  Object type
 	 * @return  object
 	 */
-	public function roles()
+	public static function oneByUserAndResource($user_id, $object_id, $object_type = 'resource')
 	{
-		$model = new RoleType();
-		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
-	}
+		$row = self::all()
+			->whereEquals('user_id', $user_id)
+			->whereEquals('object_id', $object_id)
+			->whereEquals('object_type', $object_type)
+			->row();
 
-	/**
-	 * Get major types
-	 *
-	 * @return  object
-	 */
-	public static function getMajorTypes()
-	{
-		return self::all()
-			->whereEquals('category', 27)
-			->ordered()
-			->rows();
+		return $row;
 	}
 }

@@ -138,7 +138,7 @@ class Association extends Relational
 	 */
 	public function parent()
 	{
-		return $this->belongsToOne('Resource', 'parent_id', 'id');
+		return $this->belongsToOne(__NAMESPACE__ '\\Resource', 'parent_id', 'id');
 	}
 
 	/**
@@ -148,7 +148,7 @@ class Association extends Relational
 	 */
 	public function resource()
 	{
-		return $this->belongsToOne('Resource', 'child_id', 'id');
+		return $this->belongsToOne(__NAMESPACE__ '\\Resource', 'child_id', 'id');
 	}
 
 	/**

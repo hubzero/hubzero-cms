@@ -29,35 +29,32 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Resources\Models;
+namespace Components\Resources\Models\Import;
 
-use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
-
-include_once __DIR__ . DS . 'author' . DS . 'role.php';
+use Date;
+use Lang;
 
 /**
- * Resource type model
+ * Resource import hook model
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Type extends Relational
+class Hook extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'resource';
+	protected $namespace = 'resource_import';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'type';
+	public $orderBy = 'id';
 
 	/**
 	 * Default order direction for select queries
@@ -72,60 +69,54 @@ class Type extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'type' => 'notempty'
+		'name' => 'notempty'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
 	 */
-	public $always = array(
-		'alias'
+	public $initiate = array(
+		'created',
+		'created_by'
 	);
 
 	/**
-	 * Generates automatic owned by field value
+	 * Return a formatted timestamp for created date
 	 *
-	 * @param   array   $data  the data being saved
+	 * @param   string  $as  What data to return
 	 * @return  string
 	 */
-	public function automaticAlias($data)
+	public function created($as='')
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 70)
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			$alias = substr($alias . ' ', 0, 70);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
+			$as = Lang::txt('DATE_FORMAT_HZ1');
 		}
-		$alias = str_replace(' ', '-', $alias);
 
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+		if ($as == 'time')
+		{
+			$as = Lang::txt('TIME_FORMAT_HZ1');
+		}
+
+		if ($as)
+		{
+			return Date::of($this->get('created'))->toLocal($as);
+		}
+
+		return $this->get('created');
 	}
 
 	/**
-	 * Get a list of roles for this type
+	 * Defines a belongs to one relationship between audience and user
 	 *
-	 * @return  object
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public function roles()
+	public function creator()
 	{
-		$model = new RoleType();
-		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
-	}
-
-	/**
-	 * Get major types
-	 *
-	 * @return  object
-	 */
-	public static function getMajorTypes()
-	{
-		return self::all()
-			->whereEquals('category', 27)
-			->ordered()
-			->rows();
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 }

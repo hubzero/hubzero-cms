@@ -31,19 +31,19 @@
 
 namespace Components\Resources\Models;
 
-use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
+use Date;
+use Lang;
 
-include_once __DIR__ . DS . 'author' . DS . 'role.php';
+include_once __DIR__ . DS . 'hook.php';
+include_once __DIR__ . DS . 'run.php';
 
 /**
- * Resource type model
+ * Resource import model
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Type extends Relational
+class Import extends Relational
 {
 	/**
 	 * The table namespace
@@ -57,7 +57,7 @@ class Type extends Relational
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'type';
+	public $orderBy = 'id';
 
 	/**
 	 * Default order direction for select queries
@@ -72,60 +72,76 @@ class Type extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'type' => 'notempty'
+		'name' => 'notempty'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
 	 */
-	public $always = array(
-		'alias'
+	public $initiate = array(
+		'created_at',
+		'created_by'
 	);
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic added field value
 	 *
-	 * @param   array   $data  the data being saved
+	 * @param   array   $data  The data being saved
+	 * @return  string
+	 * @since   2.0.0
+	 **/
+	public function automaticCreatedAt($data)
+	{
+		return (isset($data['created_at']) && $data['created_at'] ? $data['created_at'] : Date::toSql());
+	}
+
+	/**
+	 * Return a formatted timestamp for created date
+	 *
+	 * @param   string  $as  What data to return
 	 * @return  string
 	 */
-	public function automaticAlias($data)
+	public function created($as='')
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 70)
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			$alias = substr($alias . ' ', 0, 70);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
+			$as = Lang::txt('DATE_FORMAT_HZ1');
 		}
-		$alias = str_replace(' ', '-', $alias);
 
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+		if ($as == 'time')
+		{
+			$as = Lang::txt('TIME_FORMAT_HZ1');
+		}
+
+		if ($as)
+		{
+			return Date::of($this->get('created_at'))->toLocal($as);
+		}
+
+		return $this->get('created_at');
 	}
 
 	/**
-	 * Get a list of roles for this type
+	 * Defines a belongs to one relationship between audience and user
 	 *
-	 * @return  object
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public function roles()
+	public function creator()
 	{
-		$model = new RoleType();
-		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
-	 * Get major types
+	 * Defines a one to many relationship between import and runs
 	 *
-	 * @return  object
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public static function getMajorTypes()
+	public function runs()
 	{
-		return self::all()
-			->whereEquals('category', 27)
-			->ordered()
-			->rows();
+		return $this->oneToMany(__NAMESPACE__ . '\\Import\\Run', 'import_id');
 	}
 }

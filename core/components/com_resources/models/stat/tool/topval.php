@@ -29,35 +29,30 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Resources\Models;
+namespace Components\Resources\Models\Stat\Tool;
 
-use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
-
-include_once __DIR__ . DS . 'author' . DS . 'role.php';
 
 /**
- * Resource type model
+ * Resource stats tools topvals model
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Type extends Relational
+class Topval extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	protected $namespace = 'resource';
+	protected $namespace = 'resource_stats_tools';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'type';
+	public $orderBy = 'id';
 
 	/**
 	 * Default order direction for select queries
@@ -72,60 +67,16 @@ class Type extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'type' => 'notempty'
+		'name' => 'notempty'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Defines a one to one relationship between entry and Top
 	 *
-	 * @var  array
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public $always = array(
-		'alias'
-	);
-
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticAlias($data)
+	public function top()
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 70)
-		{
-			$alias = substr($alias . ' ', 0, 70);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
-		}
-		$alias = str_replace(' ', '-', $alias);
-
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
-	}
-
-	/**
-	 * Get a list of roles for this type
-	 *
-	 * @return  object
-	 */
-	public function roles()
-	{
-		$model = new RoleType();
-		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
-	}
-
-	/**
-	 * Get major types
-	 *
-	 * @return  object
-	 */
-	public static function getMajorTypes()
-	{
-		return self::all()
-			->whereEquals('category', 27)
-			->ordered()
-			->rows();
+		return $this->oneToOne(__NAMESPACE__ . '\\Top', 'top');
 	}
 }

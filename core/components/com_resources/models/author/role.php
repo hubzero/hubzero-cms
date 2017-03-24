@@ -34,7 +34,7 @@ namespace Components\Resources\Models\Author;
 use Hubzero\Database\Relational;
 use Components\Resources\Models\Author\Role\Type;
 
-include_once(__DIR__ . DS . 'role' . DS . 'type.php');
+include_once __DIR__ . DS . 'role' . DS . 'type.php';
 
 /**
  * Resource author role model
@@ -133,20 +133,24 @@ class Role extends Relational
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		if ($as)
+		{
+			return Date::of($this->get('created'))->toLocal($as);
+		}
+
+		return $this->get('created');
 	}
 
 	/**
