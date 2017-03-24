@@ -93,7 +93,7 @@ class Level extends Relational
 		if (strlen($alias) > 11)
 		{
 			$alias = substr($alias . ' ', 0, 11);
-			$alias = substr($alias, 0, strrpos($alias,' '));
+			$alias = substr($alias, 0, strrpos($alias, ' '));
 		}
 		$alias = str_replace(' ', '-', $alias);
 
