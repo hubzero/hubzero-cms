@@ -34,6 +34,7 @@ namespace Components\Time\Site\Controllers;
 
 use Components\Time\Models\Hub;
 use Components\Time\Models\Contact;
+use Components\Time\Models\Allotment;
 
 /**
  * Hubs controller for time component
