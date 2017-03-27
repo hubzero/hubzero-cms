@@ -149,7 +149,21 @@ class Hub extends Relational
 	 **/
 	public function helperTotalHours()
 	{
-		$time = $this->records()->select('SUM(time)', 'time')->rows()->first()->time;
+		//$time = $this->records()->select('SUM(time)', 'time')->rows()->first()->time;
+		$records = Record::all();
+		$task = Task::blank();
+
+		$r = $records->getTableName();
+		$t = $task->getTableName();
+
+		$time = $records
+			->select('SUM(' . $r . '.time)', 'time')
+			->join($t, $t . '.id', $r . '.task_id')
+			->whereEquals($t . '.hub_id', $this->get('id'))
+			->rows()
+			->first()
+			->time;
+
 		return $time ? $time : 0;
 	}
 }
