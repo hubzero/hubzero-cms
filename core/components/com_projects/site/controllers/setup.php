@@ -766,20 +766,33 @@ class Setup extends Base
 					$objO = $this->model->table('Owner');
 					if ($this->_gid)
 					{
-						// Only add the creator
-						// They'll choose if they want to sync the entire group or not in the next step
-						if (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 0, 1, 1, '', $split_group_roles = 0))
+						$team = array(User::get('id'));
+						if ($this->config->get('init_team', 0) == 1)
 						{
-							$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
-							return false;
+							$group = \Hubzero\User\Group::getInstance($this->_gid);
+							if ($group)
+							{
+								$team = array_merge($group->get('managers'), $team);
+								$team = array_unique($team);
+							}
+						}
+						foreach ($team as $user_id)
+						{
+							// Only add the creator(s)
+							// They'll choose if they want to sync the entire group or not in the next step
+							if (!$objO->saveOwners($this->model->get('id'), $user_id, $user_id, $this->_gid, 1, 1, 1, '', 0))
+							{
+								$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
+								return false;
+							}
 						}
 						// Make sure project creator is manager
-						$objO->reassignRole(
+						/*$objO->reassignRole(
 							$this->model->get('id'),
-							$users = array(User::get('id')),
+							array(User::get('id')),
 							0,
 							1
-						);
+						);*/
 					}
 					elseif (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 1, 1, 1))
 					{
