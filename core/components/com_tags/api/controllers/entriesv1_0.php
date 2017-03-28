@@ -102,21 +102,21 @@ class Entriesv1_0 extends ApiController
 	 * 		"default":       "desc",
 	 * 		"allowedValues": "asc, desc"
 	 * }
-	  * @apiParameter {
+	 * @apiParameter {
 	 * 		"name":          "scope",
 	 * 		"description":   "Object scope (ex: group, resource, etc.)",
 	 * 		"type":          "string",
 	 * 		"required":      false,
 	 * 		"default":       null
 	 * }
-	  * @apiParameter {
+	 * @apiParameter {
 	 * 		"name":          "scope_id",
 	 * 		"description":   "Object scope ID. Typically a Resource ID, Group ID, etc.",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       0
 	 * }
-	  * @apiParameter {
+	 * @apiParameter {
 	 * 		"name":          "taggerid",
 	 * 		"description":   "ID of user that tagged items.",
 	 * 		"type":          "integer",
@@ -451,7 +451,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"required":    true,
 	 * 		"default":     0
 	 * }
-	  * @apiParameter {
+	 * @apiParameter {
 	 * 		"name":        "tagger",
 	 * 		"description": "ID of user who tagged the item. Supplying this will only remove tags by this user.",
 	 * 		"type":        "integer",
@@ -517,7 +517,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"required":    true,
 	 * 		"default":     0
 	 * }
-	  * @apiParameter {
+	 * @apiParameter {
 	 * 		"name":        "tagger",
 	 * 		"description": "ID of user who tagged the item.",
 	 * 		"type":        "integer",
