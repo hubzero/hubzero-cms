@@ -176,9 +176,46 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Create a new entry
+	 * Create an entry
 	 *
-	 * @return  void
+	 * @apiMethod POST
+	 * @apiUri    /tags
+	 * @apiParameter {
+	 * 		"name":        "raw_tag",
+	 * 		"description": "Tag text",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Normalized text (alpha-numeric, no punctuation)",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "description",
+	 * 		"description": "Longer description of a tag",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "admin",
+	 * 		"description": "Admin state (0 = no, 1 = yes)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "substitutes",
+	 * 		"description": "Comma-separated list of aliases or alternatives",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function createTask()
 	{
@@ -186,36 +223,42 @@ class Entriesv1_0 extends ApiController
 
 		$tag   = Request::getVar('tag', null, 'post');
 		$raw   = Request::getVar('raw_tag', null, 'post');
-		$label = Request::getVar('label', null, 'post');
+		$desc  = Request::getVar('description', null, 'post');
 		$admin = Request::getInt('admin', 0, 'post');
 		$subs  = Request::getVar('substitutes', null, 'post');
 
-		if (!$tag && !$raw_tag)
+		if (!$tag && !$raw)
 		{
 			throw new Exception(Lang::txt('COM_TAGS_ERROR_MISSING_DATA'), 500);
 		}
 
-		$tag = ($tag ? $tag : $raw_tag);
+		$tag = ($tag ? $tag : $raw);
 
-		$record = Tag::oneOrNew($tag);
+		$record = Tag::oneByTag($tag);
 
 		if ($record->isNew())
 		{
 			$record->set('admin', ($admin ? 1 : 0));
 
-			if ($raw_tag)
+			if ($raw)
 			{
-				$record->set('raw_tag', $raw_tag);
+				$record->set('raw_tag', $raw);
 			}
 			if ($tag)
 			{
 				$record->set('tag', $tag);
 			}
-
-			$record->set('label', $label);
-			$record->set('substitutions', $subs);
+			if ($desc)
+			{
+				$record->set('description', $desc);
+			}
 
 			if (!$record->save())
+			{
+				throw new Exception($record->getError(), 500);
+			}
+
+			if (!$record->saveSubstitutions($subs))
 			{
 				throw new Exception($record->getError(), 500);
 			}
@@ -225,66 +268,119 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Display info for a tag
+	 * Retrieve an entry
 	 *
-	 * @return  void
+	 * @apiMethod GET
+	 * @apiUri    /tags/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function readTask()
 	{
 		$name = Request::getWord('tag', '');
 		$id   = Request::getInt('id', 0);
-		$id   = ($id ? $id : $name);
 
-		$tag = Tag::oneOrFail($id);
+		$tag = ($id ? Tag::oneOrFail($id) : Tag::oneByTag($name));
 
 		if (!$tag->get('id'))
 		{
 			throw new Exception(Lang::txt('Specified tag does not exist.'), 404);
 		}
 
-		$this->send($tag->toObject());
+		$data = $tag->toObject();
+		//$data->substitutes = $tag->substitutes()->rows()->toObject();
+
+		$this->send($data);
 	}
 
 	/**
 	 * Update an entry
 	 *
-	 * @return  void
+	 * @apiMethod PUT
+	 * @apiUri    /tags/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "raw_tag",
+	 * 		"description": "Tag text",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Normalized text (alpha-numeric, no punctuation)",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "description",
+	 * 		"description": "Longer description of a tag",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "admin",
+	 * 		"description": "Admin state (0 = no, 1 = yes)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "substitutes",
+	 * 		"description": "Comma-separated list of aliases or alternatives",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function updateTask()
 	{
 		$this->requiresAuthentication();
 
-		$id    = Request::getInt('id', 0);
-		$tag   = Request::getVar('tag', null);
-		$raw   = Request::getVar('raw_tag', null);
-		$label = Request::getVar('label', null);
-		$admin = Request::getInt('admin', 0);
-		$subs  = Request::getVar('substitutes', null);
+		$id = Request::getInt('id', 0);
 
-		if (!$id)
+		$record = Tag::oneOrNew($id);
+
+		if (!$record->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_TAGS_ERROR_MISSING_DATA'), 500);
 		}
 
-		$record = Tag::oneOrNew($id);
+		$tag   = Request::getVar('tag', $record->get('tag'));
+		$raw   = Request::getVar('raw_tag', $record->get('raw_tag'));
+		$desc  = Request::getVar('description', $record->get('description'));
+		$admin = Request::getInt('admin', $record->get('admin'));
 
-		if ($record->isNew())
+		$record->set('admin', ($admin ? 1 : 0));
+		$record->set('raw_tag', $raw);
+		$record->set('tag', $tag);
+		$record->set('description', $desc);
+
+		if (!$record->save())
 		{
-			$record->set('admin', ($admin ? 1 : 0));
+			throw new Exception($record->getError(), 500);
+		}
 
-			if ($raw_tag)
-			{
-				$record->set('raw_tag', $raw_tag);
-			}
-			if ($tag)
-			{
-				$record->set('tag', $tag);
-			}
+		$subs = Request::getVar('substitutes', null);
 
-			$record->set('label', $label);
-			$record->set('substitutions', $subs);
-
-			if (!$record->save())
+		if ($subs)
+		{
+			if (!$record->saveSubstitutions($subs))
 			{
 				throw new Exception($record->getError(), 500);
 			}
@@ -294,9 +390,18 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Remove tag from an item
+	 * Delete an entry
 	 *
-	 * @return  void
+	 * @apiMethod DELETE
+	 * @apiUri    /tags/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function deleteTask()
 	{
@@ -304,9 +409,8 @@ class Entriesv1_0 extends ApiController
 
 		$name = Request::getWord('tag', '');
 		$id   = Request::getInt('id', 0);
-		$id   = ($id ? $id : $tag);
 
-		$tag = Tag::oneOrFail($id);
+		$tag = ($id ? Tag::oneOrFail($id) : Tag::oneByTag($name));
 
 		if (!$tag->get('id'))
 		{
@@ -324,7 +428,37 @@ class Entriesv1_0 extends ApiController
 	/**
 	 * Remove tag from an item
 	 *
-	 * @return  void
+	 * @apiMethod DELETE
+	 * @apiUri    /tags/{id}/remove
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope",
+	 * 		"description": "Item type",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope_id",
+	 * 		"description": "Item ID",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	  * @apiParameter {
+	 * 		"name":        "tagger",
+	 * 		"description": "ID of user who tagged the item. Supplying this will only remove tags by this user.",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @return    void
 	 */
 	public function removeTask()
 	{
@@ -332,7 +466,6 @@ class Entriesv1_0 extends ApiController
 
 		$name = Request::getWord('tag', '');
 		$id   = Request::getInt('id', 0);
-		//$id   = ($id ? $id : $name);
 
 		$tag = ($id ? Tag::oneOrFail($id) : Tag::oneByTag($name));
 
@@ -361,7 +494,37 @@ class Entriesv1_0 extends ApiController
 	/**
 	 * Add a tag to an item
 	 *
-	 * @return  void
+	 * @apiMethod DELETE
+	 * @apiUri    /tags/{id}/add
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope",
+	 * 		"description": "Item type",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope_id",
+	 * 		"description": "Item ID",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	  * @apiParameter {
+	 * 		"name":        "tagger",
+	 * 		"description": "ID of user who tagged the item.",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @return    void
 	 */
 	public function addTask()
 	{
@@ -369,9 +532,7 @@ class Entriesv1_0 extends ApiController
 
 		$name = Request::getWord('tag', '');
 		$id   = Request::getInt('id', 0);
-		$id   = ($id ? $id : $name);
 
-		//$tag = new Tag($id);
 		$tag = ($id ? Tag::oneOrFail($id) : Tag::oneByTag($name));
 
 		if (!$tag->get('id'))
@@ -381,7 +542,7 @@ class Entriesv1_0 extends ApiController
 
 		$scope    = Request::getWord('scope', '');
 		$scope_id = Request::getInt('scope_id', 0);
-		$tagger   = Request::getInt('tagger', 0);
+		$tagger   = Request::getInt('tagger', User::get('id'));
 
 		if (!$scope || !$scope_id)
 		{
