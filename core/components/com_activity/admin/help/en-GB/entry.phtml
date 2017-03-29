@@ -1,0 +1,78 @@
+<article>
+	<h1><span>Blog Entry</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#details">Details</a></li>
+		<li><a href="#publishing">Publishing</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>The edit/creation form for a blog entry.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Save changes and return to the edit form.</dd>
+
+			<dt>Save &amp; Close</dt>
+			<dd>Save changes and return to the listing of entries.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Discard any changes made and return to the listing of entries.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="details">
+		<h2><span>Details</span></h2>
+
+		<p>Every entry consists of a <strong>title</strong>, <strong>alias</strong>, and <strong>content</strong>.</p>
+
+		<dl>
+			<dt>Scope</dt>
+			<dd>(Site/Member/Group) The type of blog the entry resides in.</dd>
+
+			<dt>Group</dt>
+			<dd>The group associated with the blog this entry resides in. *This only applies if the <strong>scope</strong> is set to "group".</dd>
+
+			<dt>Title</dt>
+			<dd>The title of the post. A required field.</dd>
+
+			<dt>Alias</dt>
+			<dd>This is an optional identifier used priamrily for URLs. When an alias isn't provided, one is generated from the provided title. The text is made lowercase, all punctuation is stripped, and spaces are turned into dashes.</dd>
+
+			<dt>Content</dt>
+			<dd>The primary body of the post. A required field.</dd>
+
+			<dt>Tags</dt>
+			<dd>This is an optional, comma-separated list of keywords or phrases that describe the content of the entry.</dd>
+		</dl>
+	</section>
+	<section id="publishing">
+		<h2><span>Publishing</span></h2>
+
+		<p>The following options control various aspects of the published state (when and if an entry is available to users).</p>
+
+		<dl>
+			<dt>State</dt>
+			<dd>The published status of the entry. Unpublished and trashed jobs will never be run.</dd>
+
+			<dt>Publish up</dt>
+			<dd>A timestamp (YYYY-MM-DD hh:mm:ss) for when an entry should <strong>start</strong> being available. This allows for an entry to be set up and published in advance of when one wishes the entry to be read. When used with "Publish down", this gives the option of creating a window of time one wants the entry to available. For instance, an entry can be scheduled to be only available between March and September.</dd>
+
+			<dt>Publish down</dt>
+			<dd>A timestamp (YYYY-MM-DD hh:mm:ss) for when an entry should <strong>stop</strong> being available. This allows for an entry to stop being available after a given date/time. When used with "Publish upn", this gives the option of creating a window of time one wants an entry to be available. For instance, an entry can be scheduled to be only available between March and September.</dd>
+
+			<dt>Allow comments</dt>
+			<dd>Allow other users to post comments on this entry?</dd>
+		</dl>
+	</section>
+</article>
