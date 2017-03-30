@@ -85,6 +85,13 @@ class Base extends SiteController
 		// Make sure action can be performed
 		if (!$this->permissions->can($action))
 		{
+			// Users not submitting time only need to see reports and may not have acess to overview, therefore this redirects to the reports controller to check access there.
+			if ($action == 'view.overview')
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=reports')
+				);
+			} 
 			App::abort(401, Lang::txt('COM_TIME_ERROR_NOT_AUTHORIZED'));
 			return;
 		}
