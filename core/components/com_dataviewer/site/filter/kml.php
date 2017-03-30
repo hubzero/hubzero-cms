@@ -37,7 +37,7 @@ function filter($res, &$dd)
 		return;
 	}
 
-	while ($rec = mysql_fetch_assoc($data)) {
+	while ($rec = mysqli_fetch_assoc($data)) {
 		if ($rec[$dd['maps'][0]['lat']] == NULL || $rec[$dd['maps'][0]['lng']] == NULL) {
 			continue;
 		}

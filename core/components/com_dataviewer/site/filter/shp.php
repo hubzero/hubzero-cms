@@ -43,7 +43,7 @@ function filter($res, &$dd)
 	$csv .= $w . 'name' . $w;
 	$csv .= $nl;
 
-	while ($rec = mysql_fetch_assoc($data)) {
+	while ($rec = mysqli_fetch_assoc($data)) {
 		if ($rec[$dd['maps'][0]['lat']] == NULL || $rec[$dd['maps'][0]['lng']] == NULL) {
 			continue;
 		}

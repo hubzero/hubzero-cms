@@ -29,13 +29,13 @@ function filter($res, &$dd, $ob_mode = false)
 		header('Content-Disposition: attachment;filename=' . $file_name);
 
 		ob_end_flush();
-		ob_end_clean();
+		//ob_end_clean();
 	} else {
 		ob_clean();
 	}
 
 	//Header
-	$h_arr = mysql_fetch_assoc($data);
+	$h_arr = mysqli_fetch_assoc($data);
 	if (!$h_arr) {
 		print 'No data available';
 		return;
@@ -60,10 +60,10 @@ function filter($res, &$dd, $ob_mode = false)
 
 	print $csv;
 
-	mysql_data_seek($data, 0);
+	mysqli_data_seek($data, 0);
 
 	//Body
-	while ($rec = mysql_fetch_assoc($data)) {
+	while ($rec = mysqli_fetch_assoc($data)) {
 		$row = '';
 		foreach ($rec as $key => $val) {
 			if (!isset($dd['cols'][$key]['hide'])) {

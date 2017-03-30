@@ -24,16 +24,16 @@ function get_db($db = false)
 		$db['password'] = $db['pass'];
 	}
 
-	$link = mysql_connect($db['host'] , $db['user'], $db['password']);
+	$link = mysqli_connect($db['host'] , $db['user'], $db['password']);
 
-	if (!mysql_select_db($db['database'], $link)) {
-		print("DB error" . mysql_errno($link) . ": " . mysql_error($link));
+	if (!mysqli_select_db($db['database'], $link)) {
+		print("DB error" . mysqli_errno($link) . ": " . mysqli_error($link));
 		exit();
 	}
 
-	mysql_set_charset('utf8');
+	mysqli_set_charset($link,'utf8');
 
-	mysql_query("SET SESSION group_concat_max_len = 16384");
+	mysqli_query($link, "SET SESSION group_concat_max_len = 16384");
 
 	return $link;
 }
@@ -47,16 +47,17 @@ function get_results($sql, &$dd)
 	$res['sql'] = '';
 	$res['sql'] = $sql;
 
-	if ($result = mysql_query($sql)) {
+        $result =  mysqli_query($link, $sql);
+	if ($result) {
 		$res['data'] = $result;
-		$found = mysql_query('SELECT FOUND_ROWS() AS found');
-		$res['found'] = ($found) ? mysql_fetch_assoc($found) : 0;
+		$found = mysqli_query($link, 'SELECT FOUND_ROWS() AS found');
+		$res['found'] = ($found) ? mysqli_fetch_assoc($found) : 0;
 		$res['found'] = $res['found']['found'];
 		if (isset($dd['total_records'])) {
 			$res['total'] = $dd['total_records'];
 		} else {
-			$total = mysql_query(query_gen_total($dd));
-			$res['total'] = ($total) ? mysql_fetch_assoc($total) : 0;
+			$total = mysqli_query($link, query_gen_total($dd));
+			$res['total'] = ($total) ? mysqli_fetch_assoc($total) : 0;
 			$res['total'] = $res['total']['total'];
 		}
 	}
@@ -71,18 +72,18 @@ function query_gen(&$dd)
 	if (!isset($dd['cols']) && isset($dd['table'])) {
 		$link = isset($dd['db'])? get_db($dd['db']): get_db();
 		$sql = "SELECT DB_column_name, Column_info FROM Columns_Info WHERE Table_name='" . $dd['table'] . "'";
-		$result = mysql_query($sql, $link);
+		$result =  mysqli_query($link, $sql);
 		$col_info = array();
-		if ($result && mysql_num_rows($result) > 0) {
-			while ($rec = mysql_fetch_assoc($result)) {
+		if ($result && mysqli_num_rows($result) > 0) {
+			while ($rec = mysqli_fetch_assoc($result)) {
 				$col_info[$rec['DB_column_name']] = json_decode($rec['Column_info'], true);
 			}
 		}
 
 		$sql = "SHOW COLUMNS FROM `" . $dd['table'] . "`";
-		$result = mysql_query($sql, $link);
+		$result =  mysqli_query($link, $sql);
 
-		while ($rec = mysql_fetch_assoc($result)) {
+		while ($rec = mysqli_fetch_assoc($result)) {
 			if (isset($col_info[$rec['Field']])) {
 				$dd['cols'][$dd['table'] . '.' . $rec['Field']] = $col_info[$rec['Field']];
 			} else {
@@ -106,11 +107,11 @@ function query_gen(&$dd)
 
 		$link = isset($dd['db'])? get_db($dd['db']): get_db();
 		$sql = "SELECT CONCAT(Table_name, '.', DB_column_name) AS col, Column_info FROM Columns_Info WHERE Table_name IN ('" . $tables . "')";
-		$result = mysql_query($sql, $link);
+		$result = mysqli_query($link, $sql);
 
 		$col_info = array();
-		if ($result && mysql_num_rows($result) > 0) {
-			while ($rec = mysql_fetch_assoc($result)) {
+		if ($result && mysqli_num_rows($result) > 0) {
+			while ($rec = mysqli_fetch_assoc($result)) {
 				$col_info[$rec['col']] = json_decode($rec['Column_info'], true);
 			}
 		}
@@ -146,11 +147,11 @@ function query_gen(&$dd)
 
 		$link = isset($dd['db'])? get_db($dd['db']): get_db();
 		$sql = "SELECT CONCAT(Table_name, '.', DB_column_name) AS col, Column_info FROM Columns_Info WHERE Table_name IN ('" . $tables . "')";
-		$result = mysql_query($sql, $link);
+		$result = mysqli_query($link, $sql);
 
 		$col_info = array();
-		if ($result && mysql_num_rows($result) > 0) {
-			while ($rec = mysql_fetch_assoc($result)) {
+		if ($result && mysqli_num_rows($result) > 0) {
+			while ($rec = mysqli_fetch_assoc($result)) {
 				$col_info[$rec['col']] = json_decode($rec['Column_info'], true);
 			}
 		}
