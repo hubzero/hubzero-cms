@@ -103,9 +103,9 @@ function get_dd($db_id)
 	/* Dynamically set processing mode */
 	if (isset($dv_conf['proc_mode_switch']) && $dv_conf['proc_mode_switch']) {
 		$link = get_db();
-		mysql_query(query_gen_total($dd), $link);
-		$total = mysql_query('SELECT FOUND_ROWS() AS total', $link);
-		$total = mysql_fetch_assoc($total);
+		mysqli_query($link, query_gen_total($dd));
+                $total = mysqli_query($link, 'SELECT FOUND_ROWS() AS total');
+                $total = mysqli_fetch_assoc($total);
 		$total = isset($total['total']) ? $total['total'] : 0;
 		$dd['total_records'] = $total;
 
@@ -114,7 +114,7 @@ function get_dd($db_id)
 			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
 		} elseif (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 			$sql = "SELECT COUNT(*) AS cols FROM information_schema.columns WHERE table_name = '{$dd['table']}'";
-			$cols = mysql_fetch_assoc(mysql_query($sql, $link));
+			$cols = mysqli_fetch_assoc(mysqli_query($link, $sql));
 			$vis_col_count = $cols['cols'];
 		}
 
