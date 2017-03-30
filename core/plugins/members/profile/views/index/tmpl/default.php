@@ -71,18 +71,17 @@ if (isset($this->registration_update))
 	$invalid = $this->registration_update->_invalid;
 }
 
-/*
-//incremental registration
-require_once PATH_CORE . '/components/com_members/models/incremental/awards.php';
-require_once PATH_CORE . '/components/com_members/models/incremental/groups.php';
-require_once PATH_CORE . '/components/com_members/models/incremental/options.php';
+
+// incremental registration
+require_once Component::path('com_members') . '/models/incremental/awards.php';
+require_once Component::path('com_members') . '/models/incremental/groups.php';
+require_once Component::path('com_members') . '/models/incremental/options.php';
 
 $uid = (int)$this->profile->get('id');
-$incrOpts = new ModIncrementalRegistrationOptions;
-
+$incrOpts = new Components\Members\Models\Incremental\Options;
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
-*/
 
+// Profile info
 $entries = $this->profile->profiles();
 
 $p = $entries->getTableName();
@@ -216,7 +215,6 @@ $legacy = array(
 	<?php endif; ?>
 
 	<?php
-	/*
 	if ($isUser && $isIncrementalEnabled)
 	{
 		$awards = new Components\Members\Models\Incremental\Awards($this->profile);
@@ -235,22 +233,21 @@ $legacy = array(
 			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
 		}
 
-		$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) .'</p>';
+		$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) . '</p>';
 
 		$increm .= '</div>';
-		$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']) . '</span></div>';
+		$increm .= '<div id="wallet"><span>' . ($awards['prior'] + $awards['new']) . '</span></div>';
 		$increm .= '<script type="text/javascript">
-						window.bonus_eligible_fields = '.json_encode($awards['eligible']).';
-						window.bonus_amount = '.$incrOpts->getAwardPerField().';
+						window.bonus_eligible_fields = ' . json_encode($awards['eligible']) . ';
+						window.bonus_amount = ' . $incrOpts->getAwardPerField() . ';
 					</script>';
 		echo $increm;
 
 		$this->js('incremental', 'com_members');
 	}
-	*/
 	?>
 
-	<?php if (isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
+	<?php if (isset($update_missing) && in_array("usageAgreement", array_keys($update_missing))) : ?>
 		<div id="usage-agreement-popup">
 			<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
 				<h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
