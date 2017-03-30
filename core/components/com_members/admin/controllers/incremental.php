@@ -37,9 +37,9 @@ use Route;
 use Lang;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'awards.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'groups.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'options.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'awards.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'groups.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'options.php';
 
 /**
  * Controller class for incremental registration
