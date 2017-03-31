@@ -243,10 +243,14 @@ class Admin extends SiteController
 		// Github connection?
 		if ($status['github'])
 		{
-			$command = '/usr/bin/sudo -u apps '
-				. PATH_CORE . '/components/com_tools/scripts/git2svn.sh -g ' . $status['github']
-				. ' -s ' . $status['toolname']
-				. ' -c ' . PATH_CORE . '/..';
+			if (!file_exists('/usr/bin/git2svn.sh'))
+			{
+				$this->setError(Lang::txt('COM_TOOLS_GITHUB_REPO_GIT2SVN_MISSING'));
+			}
+				$command = '/usr/bin/sudo -u apps '
+					. '/usr/bin/git2svn.sh -g ' . $status['github']
+					. ' -s ' . $status['toolname']
+					. ' -c ' . PATH_CORE . '/..';
 
 			if (!$this->_invokeScript($command, Lang::txt('Github repository connection successful')))
 			{
