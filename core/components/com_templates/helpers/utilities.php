@@ -217,7 +217,7 @@ class Utilities
 
 		if (file_exists($thumb))
 		{
-			$html = Html::asset('image', ltrim(substr($thumb, strlen(PATH_ROOT)), DS) , Lang::txt('COM_TEMPLATES_PREVIEW'));
+			$html = Html::asset('image', ltrim(substr($thumb, strlen(PATH_ROOT)), DS), Lang::txt('COM_TEMPLATES_PREVIEW'));
 
 			if (file_exists($preview))
 			{
