@@ -51,7 +51,7 @@ class Groups
 	 *
 	 * @var  object
 	 */
-	private static $dbh = NULL;
+	private static $dbh = null;
 
 	/**
 	 * Constructor
