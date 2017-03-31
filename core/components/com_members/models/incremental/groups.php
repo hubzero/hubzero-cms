@@ -150,28 +150,38 @@ class Groups
 		$wantDisability = false;
 		foreach ($cols as $col)
 		{
-			if ($col['field'] == 'race')
-			{
-				$wantRace = true;
-				continue;
-			}
-			if ($col['field'] == 'disability')
-			{
-				$wantDisability = true;
-				continue;
-			}
-			$colNames[] = $col['field'];
+			$colNames[] = self::$dbh->quote($col['field']);
 		}
-		self::$dbh->setQuery('SELECT '.implode(', ', $colNames).' FROM `#__xprofiles` WHERE uidNumber = ' . $uid);
-		$profile = self::$dbh->loadAssoc();
+
+		self::$dbh->setQuery('SELECT profile_key, profile_value FROM `#__user_profiles` WHERE user_id = ' . $uid . ' AND profile_key IN ('.implode(', ', $colNames).')');
+		$data = self::$dbh->loadAssocList();
+		$profile = array();
+		foreach ($data as $datum)
+		{
+			$profile[$datum['profile_key']] = $datum['profile_value'];
+		}
+		self::$dbh->setQuery('SELECT name, sendEmail AS mailPreferenceOption FROM `#__users` WHERE id = ' . $uid);
+		$data = self::$dbh->loadAssoc();
+		foreach ($data as $key => $datum)
+		{
+			$profile[$key] = $datum;
+		}
+
 		$neededCols = array();
 		$nonUS = false;
 		foreach ($cols as $col)
 		{
-			if (!array_key_exists($col['field'], $profile))
+			// Was the field found in the results?
+			// If so, then the user filess it out
+			if (array_key_exists($col['field'], $profile))
 			{
 				continue;
 			}
+			if ($col['field'] == 'sendEmail')
+			{
+				$col['field'] = 'mailPreferenceOption';
+			}
+			// We need to handle this one a little differently
 			if ($col['field'] == 'mailPreferenceOption')
 			{
 				if ($profile[$col['field']] == -1)
@@ -180,31 +190,13 @@ class Groups
 				}
 				continue;
 			}
-			if (!trim($profile[$col['field']]))
+			// Default to the label value
+			if (!isset($profile[$col['field']]) || !trim($profile[$col['field']]))
 			{
 				$neededCols[$col['field']] = $col['label'];
 			}
 		}
-		if ($wantRace)
-		{
-			self::$dbh->setQuery('SELECT countryorigin FROM `#__xprofiles` WHERE uidNumber = ' . $uid);
-			if (!($country = self::$dbh->loadResult()) || strtolower($country) == 'us')
-			{
-				self::$dbh->setQuery('SELECT COUNT(*) FROM `#__xprofiles_race` WHERE uidNumber = ' . $uid);
-				if (!self::$dbh->loadResult())
-				{
-					$neededCols['race'] = 'Race';
-				}
-			}
-		}
-		if ($wantDisability)
-		{
-			self::$dbh->setQuery('SELECT 1 FROM `#__xprofiles_disability` WHERE uidNumber = ' . $uid . ' LIMIT 1');
-			if (!self::$dbh->loadResult())
-			{
-				$neededCols['disability'] = 'Disability';
-			}
-		}
+
 		return $neededCols;
 	}
 }
