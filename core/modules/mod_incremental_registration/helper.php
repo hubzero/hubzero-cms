@@ -90,6 +90,7 @@ class Helper extends Module
 		$uid = (int) User::get('id');
 		$dbh = App::get('db');
 
+		require_once Component::path('com_members') . '/models/member.php';
 		require_once Component::path('com_members') . '/models/incremental/awards.php';
 		require_once Component::path('com_members') . '/models/incremental/groups.php';
 		require_once Component::path('com_members') . '/models/incremental/options.php';
@@ -329,7 +330,6 @@ class Helper extends Module
 							$BTL->deposit($award, Lang::txt('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'), 'registration', 0);
 						}
 
-						$xp_update = 'UPDATE `#__xprofiles` SET ';
 						$aw_update = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1, ';
 						$first = true;
 						foreach (array_keys($row) as $k)
@@ -338,17 +338,36 @@ class Helper extends Module
 							{
 								if (isset($race))
 								{
-									$dbh->setQuery('DELETE FROM `#__xprofiles_race` WHERE uidNumber = '.$uid);
-									$dbh->execute();
+									$profiles = \Components\Members\Models\Profile::all()
+										->whereEquals('profile_key', $k)
+										->whereEquals('user_id', $uid)
+										->rows();
+
+									$found = array();
+									foreach ($profiles as $profile)
+									{
+										if (in_array($profile->get('profile_value'), $race))
+										{
+											$found[] = $profile->get('profile_value');
+											continue;
+										}
+
+										$profile->destroy();
+									}
+
 									foreach ($race as $r)
 									{
-										$dbh->setQuery('INSERT INTO `#__xprofiles_race` (uidNumber, race) VALUES ('.$uid.', '.$dbh->quote($r).')');
-										$dbh->execute();
-									}
-									if (isset($_POST['racenativetribe']))
-									{
-										$dbh->setQuery('UPDATE `#__xprofiles` SET nativeTribe = '.$dbh->quote($_POST['racenativetribe']).' WHERE uidNumber = '.$uid);
-										$dbh->execute();
+										if (in_array($r, $found))
+										{
+											continue;
+										}
+
+										$profile = \Components\Members\Models\Profile::blank();
+										$profile->set('profile_key', $k);
+										$profile->set('profile_value', $r);
+										$profile->set('user_id', $uid);
+										$profile->set('access', 5);
+										$profile->save();
 									}
 								}
 								continue;
@@ -360,7 +379,7 @@ class Helper extends Module
 								{
 									case 'yes':
 										$disabilities = isset($_POST['specificDisability']) && is_array($_POST['specificDisability']) ? $_POST['specificDisability'] : array();
-										if (($other = isset($_POST['otherDisability']) ? trim($_POST['otherDisability']) : NULL))
+										if (($other = isset($_POST['otherDisability']) ? trim($_POST['otherDisability']) : null))
 										{
 											$disabilities[] = $other;
 										}
@@ -372,21 +391,47 @@ class Helper extends Module
 										$disabilities[] = 'refused';
 									break;
 								}
-								foreach ($disabilities as $disability)
+								$profiles = \Components\Members\Models\Profile::all()
+									->whereEquals('profile_key', $k)
+									->whereEquals('user_id', $uid)
+									->rows();
+
+								$found = array();
+								foreach ($profiles as $profile)
 								{
-									$dbh->setQuery('INSERT INTO `#__xprofiles_disability` (uidNumber, disability) VALUES ('.$uid.', '.$dbh->quote($disability).')');
-									$dbh->execute();
+									if (in_array($profile->get('profile_value'), $disabilities))
+									{
+										$found[] = $profile->get('profile_value');
+										continue;
+									}
+
+									$profile->destroy();
 								}
-								continue;
-							}
-							if ($k == 'location') {
-								$dbh->setQuery('INSERT INTO `#__xprofiles_address` (uidNumber, addressPostal) VALUES('.$uid.', '.$dbh->quote($location).')');
-								$dbh->execute();
+
+								foreach ($disabilities as $r)
+								{
+									if (in_array($r, $found))
+									{
+										continue;
+									}
+
+									$profile = \Components\Members\Models\Profile::blank();
+									$profile->set('profile_key', $k);
+									$profile->set('profile_value', $r);
+									$profile->set('user_id', $uid);
+									$profile->set('access', 5);
+									$profile->save();
+								}
 								continue;
 							}
 							if ($k == 'name')
 							{
-								$dbh->setQuery('UPDATE `#__xprofiles` SET givenName = '.$dbh->quote($_POST['name']['first']).', middleName = '.$dbh->quote($_POST['name']['middle']).', surname = '.$dbh->quote($_POST['name']['last']).' WHERE uidNumber = '.$uid);
+								$dbh->setQuery('UPDATE `#__users` SET givenName = ' . $dbh->quote($_POST['name']['first']) . ', middleName = ' . $dbh->quote($_POST['name']['middle']) . ', surname = ' . $dbh->quote($_POST['name']['last']) . ' WHERE id = ' . $uid);
+								$dbh->execute();
+							}
+							if ($k == 'mailPreferenceOption')
+							{
+								$dbh->setQuery('UPDATE `#__users` SET sendEmail = ' . $dbh->quote($$k) . ' WHERE id = ' . $uid);
 								$dbh->execute();
 							}
 							if ($k == 'countryorigin' || $k == 'countryresident')
@@ -395,15 +440,18 @@ class Helper extends Module
 							}
 							if (isset($row[$k]))
 							{
-								$xp_update .= ($first ? '' : ', ') . $k . ' = ' . $dbh->quote($$k);
 								$aw_update .= ($first ? '' : ', ') . $k . ' = 1';
 								$first = false;
 							}
+							$profile = \Components\Members\Models\Profile::oneByKeyAndUser($k, $uid);
+							$profile->set('profile_key', $k);
+							$profile->set('profile_value', $$k);
+							$profile->set('user_id', $uid);
+							$profile->set('access', $profile->get('access', 5));
+							$profile->save();
 						}
 						if (!$first)
 						{
-							$dbh->setQuery($xp_update . ' WHERE uidNumber = ' . $uid);
-							$dbh->execute();
 							$dbh->setQuery($aw_update . ' WHERE user_id = ' . $uid);
 							$dbh->execute();
 						}
