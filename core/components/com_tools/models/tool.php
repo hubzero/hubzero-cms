@@ -172,7 +172,7 @@ class Tool
 
 		$this->_updatedkeys = array();
 
-		foreach ($cvars as $key=>$value)
+		foreach ($cvars as $key => $value)
 		{
 			if ($key{0} != '_')
 			{
@@ -231,7 +231,7 @@ class Tool
 
 		if (true)
 		{
-			foreach (self::$_propertyattrmap as $key=>$value)
+			foreach (self::$_propertyattrmap as $key => $value)
 			{
 				$current = $this->__get($key);
 
@@ -419,7 +419,7 @@ class Tool
 
 		$this->clear();
 
-		foreach ($result as $key=>$value)
+		foreach ($result as $key => $value)
 		{
 			$this->__set($key, $value);
 		}
@@ -501,7 +501,7 @@ class Tool
 
 		$first = true;
 
-		foreach ($classvars as $property=>$value)
+		foreach ($classvars as $property => $value)
 		{
 			if (($property{0} == '_') || in_array($property, $this->_list_keys))
 			{
@@ -620,7 +620,7 @@ class Tool
 			}
 			else
 			{
-				foreach ($list as $key=>$value)
+				foreach ($list as $key => $value)
 				{
 					$list[$key] = $db->Quote($value);
 				}
@@ -1383,9 +1383,9 @@ class Tool
 			" f.id=g.toolid AND g.role=1 " . "JOIN #__xgroups AS xg ON g.cn=xg.cn " .
 			"JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber AND uidNumber='$uid' ";
 
-		$this->_db->setQuery($sql);
+		$db->setQuery($sql);
 
-		return $this->_db->loadColumn();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -1480,13 +1480,13 @@ class Tool
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
-		else if ((preg_match('#^[a-zA-Z0-9]{3,15}$#',$tool['toolname']) == '' || is_numeric($tool['toolname'])) && !$id)
+		else if ((preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) == '' || is_numeric($tool['toolname'])) && !$id)
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME');
 		}
 
 		// Check if repository exists under /apps - added to allow for auto-AddRepo
-		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) OR is_dir('/apps/'.$tool['toolname'])))
+		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) or is_dir('/apps/'.$tool['toolname'])))
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
@@ -1577,7 +1577,7 @@ class Tool
 			}
 		}
 
-		if (empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || preg_match('#[^0-9]#' , $tool['vncGeometryX']) || preg_match('#[^0-9]#' , $tool['vncGeometryY']))
+		if (empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || preg_match('#[^0-9]#', $tool['vncGeometryX']) || preg_match('#[^0-9]#', $tool['vncGeometryY']))
 		{
 			$err['vncGeometry'] = Lang::txt('COM_TOOLS_ERR_VNCGEOMETRY');
 		}
@@ -1657,15 +1657,15 @@ class Tool
 
 		if (!$license['text'])
 		{
-			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_EMPTY') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_EMPTY');
 		}
 		else if ($bingo)
 		{
-			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_DEFAULTS') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_DEFAULTS');
 		}
 		else if (!$license['authorize'] && $code=='@OPEN')
 		{
-			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_AUTH_MISSING') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_AUTH_MISSING');
 		}
 		else
 		{
@@ -1707,10 +1707,10 @@ class Tool
 	 * @param	  unknown $toolname Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
-	public static function getToolId($toolname=NULL)
+	public static function getToolId($toolname=null)
 	{
 		$db = \App::get('db');
-		if ($toolname=== NULL)
+		if ($toolname === null)
 		{
 			return false;
 		}
@@ -1794,10 +1794,10 @@ class Tool
 	 * @param	  string $ticketid Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	public static function saveTicketId($toolid=NULL, $ticketid=NULL)
+	public static function saveTicketId($toolid=null, $ticketid=null)
 	{
 		$db = \App::get('db');
-		if ($toolid=== NULL or $ticketid=== NULL)
+		if ($toolid=== null or $ticketid === null)
 		{
 			return false;
 		}
@@ -1818,10 +1818,10 @@ class Tool
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
-	public static function getTicketId($toolid=NULL)
+	public static function getTicketId($toolid=null)
 	{
 		$db = \App::get('db');
-		if ($toolid=== NULL)
+		if ($toolid === null)
 		{
 			return false;
 		}
@@ -1845,10 +1845,18 @@ class Tool
 
 		switch ($filters['filterby'])
 		{
-			case 'mine':      $filter .= " AND f.registered_by='" . User::get('username') . "' "; break;
-			case 'published': $filter .= " AND f.published='1' AND f.state!='9' ";					break;
-			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
-			case 'all':       $filter .= " ";														break;
+			case 'mine':
+				$filter .= " AND f.registered_by='" . User::get('username') . "' "; 
+			break;
+			case 'published':
+				$filter .= " AND f.published='1' AND f.state!='9' ";
+			break;
+			case 'dev':
+				$filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' ";
+			break;
+			case 'all':
+				$filter .= " ";
+			break;
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
