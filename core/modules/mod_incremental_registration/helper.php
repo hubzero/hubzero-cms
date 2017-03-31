@@ -224,7 +224,7 @@ class Helper extends Module
 						}
 						else
 						{
-							$race = array_map('trim',  $_POST['race']);
+							$race = array_map('trim', $_POST['race']);
 						}
 					}
 
