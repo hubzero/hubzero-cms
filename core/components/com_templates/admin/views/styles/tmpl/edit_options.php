@@ -29,34 +29,32 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
+// No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER'), 'thememanager');
-Toolbar::custom('edit', 'back.png', 'back_f2.png', 'Back', false, false);
+	$fieldSets = $this->form->getFieldsets('params');
 
-?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
-	<div class="grid">
-		<div class="col span6">
-			<h3 class="title">
-				<?php echo Lang::txt('COM_TEMPLATES_SITE_PREVIEW'); ?>
-			</h3>
-		</div>
-		<div class="col span6">
-			<h3>
-				<a href="<?php echo $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id; ?>" target="_blank"><?php echo Lang::txt('JBROWSERTARGET_NEW'); ?></a>
-			</h3>
-		</div>
-	</div>
-	<div class="temprev">
-		<iframe src="<?php echo $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id; ?>" name="previewframe" class="previewframe"></iframe>
-	</div>
+	$k = 0;
+	foreach ($fieldSets as $name => $fieldSet) :
+		$label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_TEMPLATES_' . $name . '_FIELDSET_LABEL';
+		echo Html::sliders('panel', Lang::txt($label), $name . '-options');
 
-	<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
-	<input type="hidden" name="template" value="<?php echo $this->template; ?>" />
-	<input type="hidden" name="option" value="<?php echo $this->option;?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="client" value="<?php echo $this->client->id;?>" />
-	<?php echo Html::input('token'); ?>
-</form>
+			if (isset($fieldSet->description) && trim($fieldSet->description)) :
+				echo '<p class="tip">' . $this->escape(Lang::txt($fieldSet->description)) . '</p>';
+			endif;
+		$k++;
+			?>
+		<fieldset class="panelform">
+			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+				<div class="input-wrap">
+					<?php if (!$field->hidden) : ?>
+						<?php echo $field->label; ?>
+					<?php endif; ?>
+					<?php echo $field->input; ?>
+				</div>
+			<?php endforeach; ?>
+		</fieldset>
+	<?php endforeach; ?>
+	<?php if (!$k) { ?>
+		<p class="warning"><?php echo Lang::txt('No options found for this template.'); ?></p>
+	<?php } ?>
