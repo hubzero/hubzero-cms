@@ -33,17 +33,17 @@
 defined('_HZEXEC_') or die();
 
 // include needed libs
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'citation.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'author.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tag.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tagobject.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'importer.php');
+require_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+require_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'author.php';
+require_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+require_once Component::path('com_citations') . DS . 'tables' . DS . 'sponsor.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'format.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'tag.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'tagobject.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'importer.php';
 
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
@@ -59,6 +59,11 @@ use Components\Citations\Models\Importer;
  */
 class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Plugin scope
+	 *
+	 * @var	 string
+	 */
 	const PLUGIN_SCOPE = 'group';
 
 	/**
@@ -115,14 +120,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	* Return data on a group view (this will be some form of HTML)
 	*
-	* @param   object  $group       Current group
-	* @param   string  $option      Name of the component
-	* @param   string  $authorized  User's authorization level
-	* @param   integer $limit       Number of records to pull
-	* @param   integer $limitstart  Start of records to pull
-	* @param   string  $action      Action to perform
-	* @param   array   $access      What can be accessed
-	* @param   array   $areas       Active area(s)
+	* @param   object   $group       Current group
+	* @param   string   $option      Name of the component
+	* @param   string   $authorized  User's authorization level
+	* @param   integer  $limit       Number of records to pull
+	* @param   integer  $limitstart  Start of records to pull
+	* @param   string   $action      Action to perform
+	* @param   array    $access      What can be accessed
+	* @param   array    $areas       Active area(s)
 	* @return  array
 	*/
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
@@ -148,30 +153,31 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// get database object
-		$this->database = App::get('db');
-
-		// get the group members
-		$members = $group->get('members');
-
-		// Set some variables so other functions have access
-		$this->authorized = $authorized;
-		$this->members    = $members;
-		$this->group      = $group;
-		$this->option     = $option;
-		$this->action     = $action;
-		$this->access     = $access;
-
-		$this->importer = new Importer(
-			App::get('db'),
-			App::get('filesystem'),
-			App::get('config')->get('tmp_path') . DS . 'citations',
-			App::get('session')->getId()
-		);
+		$this->group     = $group;
 
 		// if we want to return content
 		if ($returnhtml)
 		{
+			// get database object
+			$this->database = App::get('db');
+
+			// get the group members
+			$members = $group->get('members');
+
+			// Set some variables so other functions have access
+			$this->authorized = $authorized;
+			$this->members    = $members;
+			$this->option     = $option;
+			$this->action     = $action;
+			$this->access     = $access;
+
+			$this->importer = new Importer(
+				App::get('db'),
+				App::get('filesystem'),
+				App::get('config')->get('tmp_path') . DS . 'citations',
+				App::get('session')->getId()
+			);
+
 			// set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
@@ -215,26 +221,48 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			// run task based on action
 			switch ($this->action)
 			{
-				case 'save':     $arr['html'] .= $this->_save();     break;
-				case 'add':      $arr['html'] .= $this->_edit();     break;
-				case 'edit':     $arr['html'] .= $this->_edit();     break;
-				case 'delete':   $arr['html'] .= $this->_delete();   break;
-				case 'publish':  $arr['html'] .= $this->_publish();  break;
-				case 'browse':   $arr['html'] .= $this->_browse();   break;
-				case 'import':   $arr['html'] .= $this->_import();   break;
-				case 'upload':   $arr['html'] .= $this->_upload();   break;
-				case 'settings': $arr['html'] .= $this->_settings(); break;
-				case 'process':  $arr['html'] .= $this->_process();  break;
-				default:         $arr['html'] .= $this->_browse();
+				case 'save':
+					$arr['html'] .= $this->_save();
+					break;
+				case 'add':
+					$arr['html'] .= $this->_edit();
+					break;
+				case 'edit':
+					$arr['html'] .= $this->_edit();
+					break;
+				case 'delete':
+					$arr['html'] .= $this->_delete();
+					break;
+				case 'publish':
+					$arr['html'] .= $this->_publish();
+					break;
+				case 'browse':
+					$arr['html'] .= $this->_browse();
+					break;
+				case 'import':
+					$arr['html'] .= $this->_import();
+					break;
+				case 'upload':
+					$arr['html'] .= $this->_upload();
+					break;
+				case 'settings':
+					$arr['html'] .= $this->_settings();
+					break;
+				case 'process':
+					$arr['html'] .= $this->_process();
+					break;
+				default:
+					$arr['html'] .= $this->_browse();
 			}
 		}
 
 		// set metadata for menu
 		$arr['metadata']['count'] = \Components\Citations\Models\Citation::all()
-			->where('scope', '=', self::PLUGIN_SCOPE)
-			->where('scope_id', '=', $this->group->get('gidNumber'))
-			->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+			->whereEquals('scope', self::PLUGIN_SCOPE)
+			->whereEquals('scope_id', $this->group->get('gidNumber'))
+			->whereEquals('published', \Components\Citations\Models\Citation::STATE_PUBLISHED)
 			->count();
+
 		$arr['metadata']['alert'] = '';
 
 		// Return the output
@@ -513,7 +541,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		Document::setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
+		Document::setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle);
 
 		// push jquery to doc
 		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
@@ -550,12 +578,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				foreach ($authors as &$author)
 				{
-					/***
-					* Because the multi-select keys off of a comma,
-					* imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
-					* Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
-					* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
-					***/
+					// Because the multi-select keys off of a comma,
+					// imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
+					// Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
+					// format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
 					$authorEntry = explode(',', $author);
 					if (count($authorEntry) == 2)
 					{
@@ -564,7 +590,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 					$authorString .= $author;
 
-					if ($totalAuths > 1 && $x < $totalAuths - 1 )
+					if ($totalAuths > 1 && $x < $totalAuths - 1)
 					{
 						$authorString .= ',';
 					}
@@ -707,9 +733,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				{
 					// create a new author entry
 					$authorObj = \Components\Citations\Models\Author::blank()->set(array(
-						'cid' => $citation->id,
+						'cid'      => $citation->id,
 						'ordering' => $key,
-						'author' => $a
+						'author'   => $a
 					));
 
 					$authorObj->save();
@@ -832,9 +858,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		elseif ((bool)$bulk)
 		{
-			/***
+			/**
 			 * @TODO move to API, possible use of whereIn()?
-			 ***/
+			 */
 
 			// when no selection has been made
 			if ($bulk == true && $citationIDs == '')
@@ -844,10 +870,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
 					'warning'
 				);
-					return;
-				}
+				return;
+			}
 			$published = array();
-			$citationIDs = explode(',',$citationIDs);
+			$citationIDs = explode(',', $citationIDs);
 			$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
 
 			// error, no such citation
@@ -934,7 +960,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// get the variables
 		$id = Request::getVar('id', 0);
-		$citationIDs = Request::getVar('citationIDs', '' );
+		$citationIDs = Request::getVar('citationIDs', '');
 		$bulk = Request::getVar('bulk', false);
 
 		// for single citation operation
@@ -966,9 +992,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// for bulk citations operation
 		elseif ((bool)$bulk)
 		{
-			/***
+			/**
 			 * @TODO move to API, possible use of whereIn()?
-			 ***/
+			 */
 
 			// when no selection has been made
 			if ($bulk == true && $citationIDs == '')
@@ -1051,7 +1077,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($_POST)
 		{
 			$display = Request::getVar('display', '');
-			$format = Request::getVar('citation-format', '');
+			$format  = Request::getVar('citation-format', '');
 
 			$params = json_decode($this->group->get('params'));
 			if (!is_object($params))
@@ -1060,7 +1086,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 
 			// craft a clever name
-			$name = "custom-group-" . $this->group->cn;
+			$name = 'custom-group-' . $this->group->cn;
 
 			// fetch or create new format
 			$citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
@@ -1181,14 +1207,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// instansiate the view
 		$view = $this->view('display', 'import');
 		$view->group = $this->group;
-		$view->messages = NULL;
+		$view->messages = null;
 		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
 		$view->isManager = ($this->authorized == 'manager') ? true : false;
 
 		if ($view->isManager == false)
 		{
 			App::redirect(
-			Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
 				Lang::txt('This function can only be performed by a group manager.'),
 				'warning'
 			);
@@ -1213,7 +1239,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// instansiate the view
 		$view = $this->view('review', 'import');
 		$view->group = $this->group;
-		$view->messages = NULL;
+		$view->messages = null;
 
 		Request::checkToken();
 
@@ -1309,7 +1335,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// instansiate the view
 		$view = $this->view('saved', 'import');
 		$view->group = $this->group;
-		$view->messages = NULL;
+		$view->messages = null;
 		$config  = new \Hubzero\Config\Registry($this->group->get('params'));
 
 		Request::checkToken();
@@ -1352,7 +1378,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		if (isset($group) && $group != '')
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
+			require_once Component::path('com_groups') . DS . 'tables' . DS . 'group.php';
 			$gob = new \Components\Groups\Tables\Group($this->database);
 			$cn = $gob->getName($group);
 
@@ -1463,7 +1489,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (function_exists('curl_init'))
 		{
 			$cURL = curl_init();
-			curl_setopt($cURL, CURLOPT_URL, $url );
+			curl_setopt($cURL, CURLOPT_URL, $url);
 			curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($cURL, CURLOPT_TIMEOUT, 10);
 			$r = curl_exec($cURL);
@@ -1656,37 +1682,37 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 					// pull the appropriate ones.
 					$citations->whereIn('id', $collection);
-			} // end searching
+				} // end searching
 
-			// for tags
-			if ($filter == "tag" && $value != "")
-			{
-				$collection = array();
-				$cite = clone $citations;
-				foreach ($cite as $c)
+				// for tags
+				if ($filter == "tag" && $value != "")
 				{
-					foreach ($c->tags as $tag)
+					$collection = array();
+					$cite = clone $citations;
+					foreach ($cite as $c)
 					{
-						if ($tag->tag == $value)
+						foreach ($c->tags as $tag)
 						{
-							array_push($collection, $c->id);
+							if ($tag->tag == $value)
+							{
+								array_push($collection, $c->id);
+							}
 						}
 					}
-				}
 
-				// remove duplicates
-				$collection = array_unique($collection);
+					// remove duplicates
+					$collection = array_unique($collection);
 
 					// get the tagged ones
 					$citations->whereIn('id', $collection);
 				} // end if tags
 
-			if ($filter == "sort" && $value != "")
-			{
-				$clause = explode(" ", $value);
-				$citations->order($clause[0], $clause[1]);
-			}
-		} // end foreach filters as filter
+				if ($filter == "sort" && $value != "")
+				{
+					$clause = explode(" ", $value);
+					$citations->order($clause[0], $clause[1]);
+				}
+			} // end foreach filters as filter
 
 			return array('citations' => $citations, 'filters' => $filters);
 		}
@@ -1708,11 +1734,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		return;
 
 		$view = $this->view('default', 'member');
-		$view->group	= $group;
-		$view->option	= 'com_groups';
-		$view->task		= $this->_name;
+		$view->group    = $group;
+		$view->option   = 'com_groups';
+		$view->task     = $this->_name;
 		$view->database = App::get('db');
-		$view->title	= Lang::txt(strtoupper($this->_name));
+		$view->title    = Lang::txt(strtoupper($this->_name));
 
 		$view->citationTemplate = 'apa';
 
