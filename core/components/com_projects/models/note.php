@@ -32,11 +32,11 @@
 
 namespace Components\Projects\Models;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
-
 use Components\Projects\Tables;
+
+include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
+include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
+include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
 /**
  * Project Note model
@@ -94,12 +94,12 @@ class Note extends \Components\Wiki\Models\Book
 	 *
 	 * @param   integer  $id
 	 * @param   boolean  $register
-	 * @param   boolean
+	 * @param   boolean  $listed
 	 * @return  mixed
 	 */
-	public function getPublicStamp($id = 0, $register = false, $listed = NULL)
+	public function getPublicStamp($id = 0, $register = false, $listed = null)
 	{
-		if (!is_file(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'tables' . DS . 'publicstamp.php'))
+		if (!is_file(dirname(__DIR__) . DS . 'tables' . DS . 'publicstamp.php'))
 		{
 			return false;
 		}
@@ -111,7 +111,7 @@ class Note extends \Components\Wiki\Models\Book
 			return false;
 		}
 
-		require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
+		require_once dirname(__DIR__) . DS . 'tables' . DS . 'publicstamp.php';
 
 		$objSt = new Tables\Stamp($this->_db);
 
@@ -119,12 +119,12 @@ class Note extends \Components\Wiki\Models\Book
 		$reference = array(
 			'pageid'   => $page->get('id'),
 			'pagename' => $page->get('pagename'),
-			'revision' => NULL
+			'revision' => null
 		);
 
 		// Check valid stamp
 		$objSt->checkStamp($this->_project_id, json_encode($reference), 'notes');
-		$list = ($listed !== NULL && $listed != $objSt->listed) ? true : false;
+		$list = ($listed !== null && $listed != $objSt->listed) ? true : false;
 
 		if ($list == true)
 		{
@@ -200,7 +200,7 @@ class Note extends \Components\Wiki\Models\Book
 	 * @param   string   $orderby
 	 * @return  array
 	 */
-	public function getNotes($limit = 0, $orderby = 'p.scope, p.times_rated ASC, p.id')
+	public function getNotes($limit = 0, $orderby = 'p.path ASC, p.title ASC, p.times_rated ASC, p.id')
 	{
 		$query = "SELECT DISTINCT p.id, p.path, p.pagename, p.title, p.scope, p.times_rated
 				  FROM `#__wiki_pages` AS p
@@ -253,7 +253,7 @@ class Note extends \Components\Wiki\Models\Book
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
-		return $result ? $result[0] : NULL;
+		return $result ? $result[0] : null;
 	}
 
 	/**
