@@ -253,7 +253,7 @@ $this->css()
 					<?php } else if ($status == 'underreview') { ?>
 						<span class="underreview"><?php echo Lang::txt('COM_ANSWERS_STATUS_UNDER_REVIEW'); ?></span>
 					<?php } else { ?>
-						<span class="closed"><?php echo Lang::txt('COM_ANSWERS_STATUS_CLOSED'); ?></span></p>
+						<span class="closed"><?php echo Lang::txt('COM_ANSWERS_STATUS_CLOSED'); ?></span>
 					<?php } ?>
 					</p>
 					<?php
@@ -405,6 +405,7 @@ $this->css()
 							 ->set('item_id', 0)
 							 ->set('parent', 0)
 							 ->set('cls', 'odd')
+							 ->set('thread', 'ca')
 							 ->set('depth', 0)
 							 ->set('option', $this->option)
 							 ->set('question', $this->question)

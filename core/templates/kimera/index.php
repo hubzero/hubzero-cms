@@ -101,7 +101,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								</a>
 							</h1>
 
-							<nav id="account" class="account-navigation" role="navigation">
+							<nav id="account" class="account-navigation">
 								<ul>
 									<li>
 										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('Search'); ?></a>
@@ -141,7 +141,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								</ul>
 							</nav>
 
-							<nav id="nav" class="main-navigation" role="main">
+							<nav id="nav" class="main-navigation" aria-label="<?php echo Lang::txt('TPL_KIMERA_MAINMENU'); ?>">
 								<jdoc:include type="modules" name="user3" />
 							</nav>
 						</header>
@@ -178,7 +178,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 			</div><!-- / #top -->
 
 			<div id="wrap">
-				<main id="content" class="<?php echo Request::getCmd('option', ''); ?>" role="main">
+				<main id="content" class="<?php echo Request::getCmd('option', ''); ?>">
 					<div class="inner<?php if ($this->countModules('left or right')) { echo ' withmenu'; } ?>">
 					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">
