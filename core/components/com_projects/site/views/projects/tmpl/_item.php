@@ -49,7 +49,26 @@ $privacyTxt = $this->row->isPublic()
 	</td>
 	<td class="mini faded">
 		<?php
-		echo ($this->row->groupOwner()) ? '<span class="i_group"><a href="' . Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')) . '">' . $this->row->groupOwner('description') . '</a></span>' : '<span class="i_user"><a href="' . Route::url('index.php?option=com_members&id=' . $this->row->owner('id')) . '">' . $this->row->owner('name') . '</a></span>';
+		if ($this->row->groupOwner())
+		{
+			echo '<span class="i_group"><a href="' . Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')) . '">' . $this->row->groupOwner('description') . '</a></span>';
+		}
+		else
+		{
+			$owner = $this->row->owner();
+
+			$name = Lang::txt('COM_PROJECTS_UNKNOWN');
+			if ($owner->get('id'))
+			{
+				$name = $owner->get('name');
+				if (in_array($owner->get('access'), User::getAuthorisedViewLevels()))
+				{
+					$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $owner->get('id')) . '">' . $name . '</a>';
+				}
+			}
+
+			echo '<span class="i_user">' . $name . '</span>';
+		}
 
 		// Reviewers
 		if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')) && $this->row->owner())

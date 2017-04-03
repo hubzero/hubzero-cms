@@ -214,4 +214,4 @@ Document::setTitle(Lang::txt('COM_KB'));
 			<?php } ?>
 		</aside><!-- / .aside -->
 	</div><!-- / .section-inner -->
-</div><!-- / .main section -->
+</section><!-- / .main section -->
