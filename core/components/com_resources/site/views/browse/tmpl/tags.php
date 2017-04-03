@@ -99,7 +99,7 @@ $this->css()
 				</ul>
 			</div><!-- / #level-1 -->
 			<div id="level-2">
-				<h3><?php echo Lang::txt('COM_RESOURCES'); ?> <select name="sortby" id="sortby"></select></h3>
+				<h3><?php echo Lang::txt('COM_RESOURCES'); ?></h3>
 				<ul>
 					<li id="level-2-loading"></li>
 				</ul>
