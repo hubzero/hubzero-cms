@@ -118,18 +118,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Return data on a group view (this will be some form of HTML)
-	*
-	* @param   object   $group       Current group
-	* @param   string   $option      Name of the component
-	* @param   string   $authorized  User's authorization level
-	* @param   integer  $limit       Number of records to pull
-	* @param   integer  $limitstart  Start of records to pull
-	* @param   string   $action      Action to perform
-	* @param   array    $access      What can be accessed
-	* @param   array    $areas       Active area(s)
-	* @return  array
-	*/
+	 * Return data on a group view (this will be some form of HTML)
+	 *
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
+	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		$returnhtml = true;
@@ -570,7 +570,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
 			{
 				// formats the author for the multi-author plugin
-				$authors = explode(';',$view->row->author);
+				$authors = explode(';', $view->row->author);
 
 				$authorString = '';
 				$totalAuths = count($authors);
@@ -826,7 +826,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			// toggle the state
 			if ($citation->published != $citation::STATE_PUBLISHED)
 			{
-				$citation->set('published',  $citation::STATE_PUBLISHED);
+				$citation->set('published', $citation::STATE_PUBLISHED);
 				$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
 			}
 			else
@@ -884,7 +884,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				// toggle the state
 				if ($citation->published != $citation::STATE_PUBLISHED)
 				{
-					$citation->set('published',  $citation::STATE_PUBLISHED);
+					$citation->set('published', $citation::STATE_PUBLISHED);
 				}
 				else
 				{
@@ -1008,7 +1008,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 
 			$deleted = array();
-			$citationIDs = explode(',',$citationIDs);
+			$citationIDs = explode(',', $citationIDs);
 			$string = 'PLG_GROUPS_CITATIONS_CITATION_DELETED';
 
 			// error, no such citation
@@ -1018,7 +1018,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 
 				// toggle the state
-				$citation->set('published',  $citation::STATE_DELETED);
+				$citation->set('published', $citation::STATE_DELETED);
 
 				// save the state
 				if ($citation->scope == self::PLUGIN_SCOPE
@@ -1208,7 +1208,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view = $this->view('display', 'import');
 		$view->group = $this->group;
 		$view->messages = null;
-		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
 		$view->isManager = ($this->authorized == 'manager') ? true : false;
 
 		if ($view->isManager == false)
@@ -1276,7 +1276,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file, 'group', $this->group->get('gidNumber')));
+		$citations = Event::trigger('citation.onImport', array($file, 'group', $this->group->get('gidNumber')));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
