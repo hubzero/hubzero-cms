@@ -164,13 +164,13 @@ class Hubs extends Base
 			$contacts = array_map(function($obj) use ($hubId){
 				$obj->set('hub_id', $hubId);
 				return $obj;
-			},$contacts);
+			}, $contacts);
 
 			$allotments = array_map(function($obj) use ($hubId){
 				$obj->set('hub_id', $hubId);
 				return $obj;
-			},$allotments);
-			$hub->set('id',$hubId);
+			}, $allotments);
+			$hub->set('id', $hubId);
 		}
 		$hub->attach('contacts', $contacts);
 		$hub->attach('allotments', $allotments);

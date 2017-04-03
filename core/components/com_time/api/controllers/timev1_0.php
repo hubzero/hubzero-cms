@@ -296,7 +296,7 @@ class Timev1_0 extends ApiController
 
 		if ($hub_id = Request::getInt('hid', false))
 		{
-			$this->authorizeOrFail('view.report','hub',$hub_id);
+			$this->authorizeOrFail('view.report', 'hub', $hub_id);
 			$task->whereEquals('hub_id', $hub_id);
 		}
 		if ($active = Request::getInt('pactive', false))

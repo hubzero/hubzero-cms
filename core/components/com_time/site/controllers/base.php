@@ -91,7 +91,7 @@ class Base extends SiteController
 				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=reports')
 				);
-			} 
+			}
 			App::abort(401, Lang::txt('COM_TIME_ERROR_NOT_AUTHORIZED'));
 			return;
 		}
