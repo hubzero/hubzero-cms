@@ -185,7 +185,7 @@ class Note extends \Components\Wiki\Models\Book
 				$where .= $k == count($remaining) ? '' : ' OR ';
 				$k++;
 			}
-			$query .= "AND (".$where.")";
+			$query .= "AND (" . $where . ")";
 			$this->_db->setQuery($query);
 			return $this->_db->loadObjectList();
 		}

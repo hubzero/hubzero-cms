@@ -827,7 +827,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$html  = '<div class="status"><h4>' . Lang::txt('PLG_DEBUG_QUERIES_LOGGED',  $db->getCount()) . ': ' . $db->getTimer() .' seconds</h4></div>';
+		$html  = '<div class="status"><h4>' . Lang::txt('PLG_DEBUG_QUERIES_LOGGED', $db->getCount()) . ': ' . $db->getTimer() .' seconds</h4></div>';
 		$html .= '<ol>';
 
 		$selectQueryTypeTicker = array();
@@ -940,8 +940,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		$html  = '<ul>';
 		foreach ($called as $info)
 		{
-			$file = !empty($info['file']) ? substr($info['file'],strlen(PATH_ROOT)) : "";
-			$line = !empty($info['line']) ? $info['line'] : ""; 
+			$file = !empty($info['file']) ? substr($info['file'], strlen(PATH_ROOT)) : "";
+			$line = !empty($info['line']) ? $info['line'] : "";
 			$html .= '<li><code>';
 			$html .= '<span class="tm">' . $info['event'] . '</span> ';
 			$html .= '<span class="op">&mdash;</span> ';
