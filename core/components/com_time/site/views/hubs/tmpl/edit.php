@@ -84,28 +84,30 @@ HTML::behavior('core');
 				</div>
 
 				<label for="contact"><?php echo Lang::txt('COM_TIME_HUBS_CONTACTS'); ?>:</label>
+				<?php $index = 0; ?>
 				<?php foreach ($this->row->contacts as $contact) : ?>
-					<div class="grouping contact-grouping grid" id="contact-<?php echo $contact->id; ?>-group">
+					<div class="grouping contact-grouping grid" id="contact-<?php echo $index; ?>-group">
 						<div class="col span4">
-							<input type="text" name="contacts[<?php echo $contact->id; ?>][name]" id="" value="<?php echo $this->escape(stripslashes($contact->name)); ?>" />
+							<input type="text" name="contacts[<?php echo $index; ?>][name]" id="" value="<?php echo $this->escape(stripslashes($contact->name)); ?>" />
 						</div>
 						<div class="col span2">
-							<input type="text" name="contacts[<?php echo $contact->id; ?>][phone]" id="" value="<?php echo $this->escape(stripslashes($contact->phone)); ?>" />
+							<input type="text" name="contacts[<?php echo $index; ?>][phone]" id="" value="<?php echo $this->escape(stripslashes($contact->phone)); ?>" />
 						</div>
 						<div class="col span2">
-							<input type="text" name="contacts[<?php echo $contact->id; ?>][email]" id="" value="<?php echo $this->escape(stripslashes($contact->email)); ?>" />
+							<input type="text" name="contacts[<?php echo $index; ?>][email]" id="" value="<?php echo $this->escape(stripslashes($contact->email)); ?>" />
 						</div>
 						<div class="col span2">
-							<input type="text" name="contacts[<?php echo $contact->id; ?>][role]" id="" value="<?php echo $this->escape(stripslashes($contact->role)); ?>" />
-							<input type="hidden" name="contacts[<?php echo $contact->id; ?>][id]" value="<?php echo $contact->id; ?>" />
+							<input type="text" name="contacts[<?php echo $index; ?>][role]" id="" value="<?php echo $this->escape(stripslashes($contact->role)); ?>" />
+							<input type="hidden" name="contacts[<?php echo $index; ?>][id]" value="<?php echo $contact->id; ?>" />
 						</div>
 						<div class="col span2 omega">
 							<a href="<?php echo Route::url($this->base . '&task=deletecontact&id=' . $contact->id); ?>" class="btn btn-danger icon-delete delete_contact" title="Delete contact">Delete</a>
 						</div>
 					</div>
+					<?php $index++; ?>
 				<?php endforeach; ?>
 
-				<div class="grouping grid" id="new-contact-group">
+				<div class="grouping grid contact-grouping" id="new-contact-group">
 					<div class="col span4">
 						<input type="text" name="contacts[new][name]" id="new_name" placeholder="name" class="new_contact" />
 					</div>
@@ -164,25 +166,27 @@ HTML::behavior('core');
 
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_TIME_HUBS_ALLOTMENTS'); ?>:</legend>
+					<?php $index = 0; ?>
 					<?php foreach ($this->row->allotments as $allotment) : ?>
-						<div class="grouping allotment-grouping grid" id="allotment-<?php echo $allotment->id; ?>-group">
+						<div class="grouping allotment-grouping grid" id="allotment-<?php echo $index; ?>-group">
 							<div class="col span4">
-								<input type="text" name="allotments[<?php echo $allotment->id; ?>][start_date]" id="" value="<?php echo $this->escape($allotment->start_date); ?>" class="hadDatepicker" />
+								<input type="text" name="allotments[<?php echo $index; ?>][start_date]" id="" value="<?php echo $this->escape($allotment->start_date); ?>" class="hadDatepicker" />
 							</div>
 							<div class="col span4">
-								<input type="text" name="allotments[<?php echo $allotment->id; ?>][end_date]" id="" value="<?php echo $this->escape($allotment->end_date); ?>" class="hadDatepicker" />
+								<input type="text" name="allotments[<?php echo $index; ?>][end_date]" id="" value="<?php echo $this->escape($allotment->end_date); ?>" class="hadDatepicker" />
 							</div>
 							<div class="col span2">
-								<input type="text" name="allotments[<?php echo $allotment->id; ?>][hours]" id="" value="<?php echo $this->escape($allotment->hours); ?>" />
+								<input type="text" name="allotments[<?php echo $index; ?>][hours]" id="" value="<?php echo $this->escape($allotment->hours); ?>" />
 							</div>
 							<div class="col span2 omega">
-								<input type="hidden" name="allotments[<?php echo $allotment->id; ?>][id]" value="<?php echo $allotment->id; ?>" />
+								<input type="hidden" name="allotments[<?php echo $index; ?>][id]" value="<?php echo $allotment->id; ?>" />
 								<a href="<?php echo Route::url($this->base . '&task=deleteallotment&id=' . $allotment->id); ?>" class="btn btn-danger icon-delete delete_contact" title="Delete allotment">Delete</a>
 							</div>
 						</div>
+					<?php $index++; ?>
 					<?php endforeach; ?>
 
-					<div class="grouping grid" id="new-allotment-group">
+					<div class="grouping allotment-grouping grid" id="new-allotment-group">
 						<div class="col span4">
 							<input type="text" name="allotments[new][start_date]" id="new_start_date" placeholder="YYYY-MM-DD" class="hadDatepicker new_allotment" />
 						</div>

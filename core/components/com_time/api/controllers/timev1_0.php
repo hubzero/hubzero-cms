@@ -63,6 +63,12 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . 
  */
 class Timev1_0 extends ApiController
 {
+	public function execute()
+	{
+		$userId = User::getInstance()->get('id');
+		App::set('authn', array('user_id' => $userId));
+		parent::execute();
+	}
 	/**
 	 * Lists all applicable time records
 	 *
