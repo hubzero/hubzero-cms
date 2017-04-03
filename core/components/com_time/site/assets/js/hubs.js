@@ -75,37 +75,48 @@ HUB.Plugins.TimeHubs = {
 
 		// Add click event to delete buttons
 		$("body").on("click", ".delete_contact", function(event) {
-			if(confirm === false) {
-				// Prevent delete action
-				event.preventDefault();
+			var currentUrl = window.location.href.split('?')[0];
+			var hubId = currentUrl.split('/').slice(-1);
+			if (isNaN(hubId) === false)
+			{
+				if(confirm === false) 
+				{
+					// Prevent delete action
+					event.preventDefault();
 
-				// This is the confirm dialog box message
-				var msg = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This entry will be permanently deleted and cannot be recovered. Are you sure?</p>';
-				// Also grab the url that was being loaded (i.e. the item that is to be deleted)
-				var action = $(this).attr("href");
+					// This is the confirm dialog box message
+					var msg = '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This entry will be permanently deleted and cannot be recovered. Are you sure?</p>';
+					// Also grab the url that was being loaded (i.e. the item that is to be deleted)
+					var action = $(this).attr("href");
 
-				// Set dialog box message and title
-				dc.html(msg);
-				dc.attr('title','Delete Entry?');
+					// Set dialog box message and title
+					dc.html(msg);
+					dc.attr('title','Delete Entry?');
 
-				// Create the dialog box
-				dc.dialog({
-					resizable: false,
-					height: 180,
-					width: 350,
-					modal: true,
-					buttons: {
-						Cancel: function() {
-							// Close the dialog box, as if nothing happened
-							$(this).dialog("close");
-						},
-						"Delete entry": function() {
-							// Follow the delete link again, this time with confirm true so the action goes through as expected
-							confirm = true;
-							window.location.href = action;
+					// Create the dialog box
+					dc.dialog({
+						resizable: false,
+						height: 180,
+						width: 350,
+						modal: true,
+						buttons: {
+							Cancel: function() {
+								// Close the dialog box, as if nothing happened
+								$(this).dialog("close");
+							},
+							"Delete entry": function() {
+								// Follow the delete link again, this time with confirm true so the action goes through as expected
+								confirm = true;
+								window.location.href = action;
+							}
 						}
-					}
-				});
+					});
+				}
+			}
+			else 
+			{
+				event.preventDefault();
+				$(this).closest('.grouping').remove();
 			}
 		});
 
@@ -120,68 +131,85 @@ HUB.Plugins.TimeHubs = {
 
 			// Prevent delete action
 			event.preventDefault();
+			var currentUrl = window.location.href.split('?')[0];
+			var hubId = currentUrl.split('/').slice(-1);
+			var parentGroup = $(this).closest('.contact-grouping');
 
 			// @FIXME: maybe add some checks here
 
-			// Grab the variables
-			var name  = $("#new_name").val();
-			var phone = $("#new_phone").val();
-			var email = $("#new_email").val();
-			var role  = $("#new_role").val();
-			var hid   = $("#hub_id").val();
+			var contact = getContactInfo();
+			if (isNaN(hubId) === false)
+			{
+				// Create a ajax call to save the contact
+				$.ajax({
+					url: "/api/time/saveContact",
+					data: "hid="+hubId+"&name="+contact.name+"&phone="+contact.phone+"&email="+contact.email+"&role="+contact.role,
+					dataType: "json",
+					cache: false,
+					success: function(json){
+						// If success, add another row for a new contact
+						addContact(parentGroup, contact, hubId);
 
-			// Create a ajax call to save the contact
-			$.ajax({
-				url: "/api/time/saveContact",
-				data: "hid="+hid+"&name="+name+"&phone="+phone+"&email="+email+"&role="+role,
-				dataType: "json",
-				cache: false,
-				success: function(json){
-					// If success, add another row for a new contact
-
-					// Get the new contact id
-					var cid = json;
-
-					// Create the new row
-					var new_row  = '<div class="grouping contact-grouping grid" id="brand_new">';
-						new_row += '<div class="col span4">';
-						new_row += '<input type="text" name="contact['+cid+'][name]" placeholder="'+name+'" />';
-						new_row += '</div>';
-						new_row += '<div class="col span2">';
-						new_row += '<input type="text" name="contact['+cid+'][phone]" placeholder="'+phone+'" />';
-						new_row += '</div>';
-						new_row += '<div class="col span2">';
-						new_row += '<input type="text" name="contact['+cid+'][email]" placeholder="'+email+'" />';
-						new_row += '</div>';
-						new_row += '<div class="col span2">';
-						new_row += '<input type="text" name="contact['+cid+'][role]" placeholder="'+role+'" />';
-						new_row += '</div>';
-						new_row += '<input type="hidden" name="contact['+cid+'][id]" value="'+cid+'" />';
-						new_row += '<div class="col span2 omega">';
-						new_row += '<a href="/time/hubs/deletecontact/'+cid+'" class="btn btn-danger icon-delete delete_contact" title="Delete contact">Delete</a>';
-						new_row += '</div>';
-						new_row += '</div>';
-
-					// Clear the values from the new contact fields and reset styles, now that we saved
-					$("#new_name").val('name');
-					$("#new_phone").val('phone');
-					$("#new_email").val('email');
-					$("#new_role").val('role');
-					$(".new_contact").removeAttr('style');
-					$(".new_contact_row input").removeAttr('style');
-					$(".save_contact").removeAttr('style');
-
-					// Add the new row and fade it in
-					$('#new-contact-group').before(new_row);
-					$('#brand_new').slideDown('slow', 'linear', function() {
-						// Animation complete
-						var new_id = 'contact-' + cid + '-group';
-						$('#brand_new').attr('id', new_id);
-					});
-				}
-			});
+					}
+				});
+			}
+			else
+			{
+				addContact(parentGroup, contact);
+			}
 		});
 
+		var getContactInfo = function(){
+			var contactObj =  {
+				'name' :  $("#new_name").val(),
+				'phone' : $("#new_phone").val(),
+				'email' : $("#new_email").val(),
+				'role' : $("#new_role").val()
+			};
+			return contactObj;
+		};
+		var addContact = function(parentObj, contact, cId){
+			// Get the new contact id
+			var cId = (typeof cId !== 'undefined') ? cId : "";
+			var newItemIndex = $(parentObj).index('.contact-grouping');
+
+			// Create the new row
+			var new_row  = '<div class="grouping contact-grouping grid" id="brand_new">';
+				new_row += '<div class="col span4">';
+				new_row += '<input type="text" name="contacts['+newItemIndex+'][name]" placeholder="name" value="'+contact.name+'" />';
+				new_row += '</div>';
+				new_row += '<div class="col span2">';
+				new_row += '<input type="text" name="contacts['+newItemIndex+'][phone]" placeholder="phone" value="'+contact.phone+'" />';
+				new_row += '</div>';
+				new_row += '<div class="col span2">';
+				new_row += '<input type="text" name="contacts['+newItemIndex+'][email]" placeholder="email" value="'+contact.email+'" />';
+				new_row += '</div>';
+				new_row += '<div class="col span2">';
+				new_row += '<input type="text" name="contacts['+newItemIndex+'][role]" placeholder="role" value="'+contact.role+'" />';
+				new_row += '</div>';
+				new_row += '<input type="hidden" name="contacts['+newItemIndex+'][id]" value="'+cId+'" />';
+				new_row += '<div class="col span2 omega">';
+				new_row += '<a href="/time/hubs/deletecontact/'+cId+'" class="btn btn-danger icon-delete delete_contact" title="Delete contact">Delete</a>';
+				new_row += '</div>';
+				new_row += '</div>';
+
+			// Clear the values from the new contact fields and reset styles, now that we saved
+			$("#new_name").val('');
+			$("#new_phone").val('');
+			$("#new_email").val('');
+			$("#new_role").val('');
+			$(".new_contact").removeAttr('style');
+			$(".new_contact_row input").removeAttr('style');
+			$(".save_contact").removeAttr('style');
+
+			// Add the new row and fade it in
+			$('#new-contact-group').before(new_row);
+			$('#brand_new').slideDown('slow', 'linear', function() {
+				// Animation complete
+				var new_id = 'contact-' + newItemIndex + '-group';
+				$('#brand_new').attr('id', new_id);
+			});
+		};
 		// --------------------
 		// Save allotment
 		// --------------------
@@ -193,63 +221,83 @@ HUB.Plugins.TimeHubs = {
 
 			// Prevent delete action
 			event.preventDefault();
+			var currentUrl = window.location.href.split('?')[0];
+			var hubId = currentUrl.split('/').slice(-1);
+			var parentGroup = $(this).closest('.allotment-grouping');
 
 			// @FIXME: maybe add some checks here
 
 			// Grab the variables
-			var startd = $("#new_start_date");
-			var endd   = $("#new_end_date");
-			var hours  = $("#new_hours");
-			var hid    = $("#hub_id").val();
+			var allotment = getAllotmentInfo();
 
+			if (isNaN(hubId) === false)
+			{
 			// Create a ajax call to save the contact
-			$.ajax({
-				url: "/api/time/saveallotment",
-				data: "hid="+hid+"&start_date="+startd.val()+"&end_date="+endd.val()+"&hours="+hours.val(),
-				dataType: "json",
-				cache: false,
-				success: function(json){
-					// If success, add another row for a new contact
+				$.ajax({
+					url: "/api/time/saveallotment",
+					data: "hid="+hubId+"&start_date="+allotment.startd.val()+"&end_date="+allotment.endd.val()+"&hours="+allotment.hours.val(),
+					dataType: "json",
+					cache: false,
+					success: function(json){
+						// If success, add another row for a new contact
 
-					// Get the new contact id
-					var cid = json;
-
-					// Create the new row
-					var new_row  = '<div class="grouping allotment-grouping grid" id="brand_new">';
-						new_row += '<div class="col span4">';
-						new_row += '<input type="text" name="allotments['+cid+'][start_date]" placeholder="'+startd.val()+'" />';
-						new_row += '</div>';
-						new_row += '<div class="col span4">';
-						new_row += '<input type="text" name="allotments['+cid+'][end_date]" placeholder="'+endd.val()+'" />';
-						new_row += '</div>';
-						new_row += '<div class="col span2">';
-						new_row += '<input type="text" name="allotments['+cid+'][hours]" placeholder="'+hours.val()+'" />';
-						new_row += '</div>';
-						new_row += '<input type="hidden" name="allotments['+cid+'][id]" value="'+cid+'" />';
-						new_row += '<div class="col span2 omega">';
-						new_row += '<a href="/time/hubs/deleteallotment/'+cid+'" class="btn btn-danger icon-delete delete_contact" title="Delete allotment">Delete</a>';
-						new_row += '</div>';
-						new_row += '</div>';
-
-					// Clear the values from the new contact fields and reset styles, now that we saved
-					startd.val('');
-					endd.val('');
-					hours.val('');
-
-					$(".new_allotment").removeAttr('style');
-					$(".new_allotment_row input").removeAttr('style');
-					$(".save_allotment").removeAttr('style');
-
-					// Add the new row and fade it in
-					$('#new-allotment-group').before(new_row);
-					$('#brand_new').slideDown('slow', 'linear', function() {
-						// Animation complete
-						var new_id = 'allotment-' + cid + '-group';
-						$('#brand_new').attr('id', new_id);
-					});
-				}
-			});
+						// Get the new contact id
+						addAllotment(parentGroup, allotment, json);
+					}
+				});
+			}
+			else
+			{
+				addAllotment(parentGroup, allotment);
+			}
 		});
+
+		var getAllotmentInfo = function(){
+			var obj = {
+				"startd" : $("#new_start_date"),
+				"endd"   : $("#new_end_date"),
+				"hours"  : $("#new_hours")
+			};
+			return obj;
+		};
+
+		var addAllotment = function(parentObj, allotment, cId){
+			var cId = (typeof cId !== 'undefined') ? cId : "";
+			var newItemIndex = $(parentObj).index('.allotment-grouping');
+			// Create the new row
+			var new_row  = '<div class="grouping allotment-grouping grid" id="brand_new">';
+				new_row += '<div class="col span4">';
+				new_row += '<input type="text" name="allotments[' + newItemIndex + '][start_date]" value="' + allotment.startd.val() + '" />';
+				new_row += '</div>';
+				new_row += '<div class="col span4">';
+				new_row += '<input type="text" name="allotments[' + newItemIndex + '][end_date]" value="' + allotment.endd.val() + '" />';
+				new_row += '</div>';
+				new_row += '<div class="col span2">';
+				new_row += '<input type="text" name="allotments[' + newItemIndex + '][hours]" value="' + allotment.hours.val() + '" />';
+				new_row += '</div>';
+				new_row += '<input type="hidden" name="allotments[' + newItemIndex + '][id]" value="'+cId+'" />';
+				new_row += '<div class="col span2 omega">';
+				new_row += '<a href="/time/hubs/deleteallotment/'+cId+'" class="btn btn-danger icon-delete delete_contact" title="Delete allotment">Delete</a>';
+				new_row += '</div>';
+				new_row += '</div>';
+
+			// Clear the values from the new contact fields and reset styles, now that we saved
+			allotment.startd.val('');
+			allotment.endd.val('');
+			allotment.hours.val('');
+
+			$(".new_allotment").removeAttr('style');
+			$(".new_allotment_row input").removeAttr('style');
+			$(".save_allotment").removeAttr('style');
+
+			// Add the new row and fade it in
+			$('#new-allotment-group').before(new_row);
+			$('#brand_new').slideDown('slow', 'linear', function() {
+				// Animation complete
+				var new_id = 'allotment-' + newItemIndex + '-group';
+				$('#brand_new').attr('id', new_id);
+			});
+		};
 
 		// --------------------
 		// Permissions dialog

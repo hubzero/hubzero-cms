@@ -182,7 +182,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		// Loop through and check permissions and grab raw object from rows
 		foreach ($records->including('task') as $record)
 		{
-			if ($permissions->can('view.report', 'hubs', $record->task->hub_id))
+			if ($permissions->can('view.report', 'hub', $record->task->hub_id))
 			{
 				$summary[] = $record->toObject();
 			}

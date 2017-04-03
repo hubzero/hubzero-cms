@@ -46,6 +46,12 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . D
  */
 class Recordsv1_0 extends ApiController
 {
+	public function execute()
+	{
+		$userId = User::getInstance()->get('id');
+		App::set('authn', array('user_id' => $userId));
+		parent::execute();
+	}
 	/**
 	 * Deletes a time record
 	 *
