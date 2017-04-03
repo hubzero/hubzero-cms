@@ -32,6 +32,8 @@
 
 namespace Components\Publications\Helpers;
 
+use Component;
+
 /**
  * Html helper class
  */
@@ -40,31 +42,29 @@ class Html
 	/**
 	 * Get publication path
 	 *
-	 * @param      string 	$pid
-	 * @param      string 	$vid
-	 * @param      string 	$base
-	 * @param      string 	$filedir
-	 * @param      boolean 	$root
-	 * @return     string
+	 * @param   string   $pid
+	 * @param   string   $vid
+	 * @param   string   $base
+	 * @param   string   $filedir
+	 * @param   boolean  $root
+	 * @return  string
 	 */
-	public static function buildPubPath( $pid = NULL, $vid = NULL,
-		$base = '', $filedir = '', $root = 0
-	)
+	public static function buildPubPath($pid = null, $vid = null, $base = '', $filedir = '', $root = 0)
 	{
-		if ($vid === NULL or $pid === NULL )
+		if ($vid === null or $pid === null)
 		{
 			return false;
 		}
 		if (!$base)
 		{
-			$pubconfig = Component::params( 'com_publications' );
+			$pubconfig = Component::params('com_publications');
 			$base = $pubconfig->get('webpath');
 		}
 
 		$base = DS . trim($base, DS);
 
-		$pub_dir     =  \Hubzero\Utility\String::pad( $pid );
-		$version_dir =  \Hubzero\Utility\String::pad( $vid );
+		$pub_dir     =  \Hubzero\Utility\String::pad($pid);
+		$version_dir =  \Hubzero\Utility\String::pad($vid);
 		$path        = $base . DS . $pub_dir . DS . $version_dir;
 		$path        = $filedir ? $path . DS . $filedir : $path;
 		$path        = $root ? PATH_APP . $path : $path;
@@ -75,21 +75,18 @@ class Html
 	/**
 	 * Get publication thumbnail
 	 *
-	 * @param      int 		$pid
-	 * @param      int 		$versionid
-	 * @param      array 	$config
-	 * @param      boolean 	$force
-	 * @param      string	$cat
-	 * @return     string HTML
+	 * @param   int      $pid
+	 * @param   int      $versionid
+	 * @param   array    $config
+	 * @param   boolean  $force
+	 * @param   string   $cat
+	 * @return  string   HTML
 	 */
-	public static function getThumb(
-		$pid = 0, $versionid = 0, $config = NULL,
-		$force = false, $cat = ''
-	)
+	public static function getThumb($pid = 0, $versionid = 0, $config = null, $force = false, $cat = '')
 	{
 		if (empty($config))
 		{
-			$config = Component::params( 'com_publications' );
+			$config = Component::params('com_publications');
 		}
 
 		// Get publication directory path
@@ -123,16 +120,14 @@ class Html
 	/**
 	 * Show contributors
 	 *
-	 * @param      array 	$contributors
-	 * @param      boolean 	$showorgs
-	 * @param      boolean 	$showaslist
-	 * @param      boolean 	$incSubmitter
-	 *
-	 * @return     string
+	 * @param   array    $contributors
+	 * @param   boolean  $showorgs
+	 * @param   boolean  $showaslist
+	 * @param   boolean  $incSubmitter
+	 * @param   boolean  $format
+	 * @return  string
 	 */
-	public static function showContributors( $contributors = '', $showorgs = false,
-		$showaslist = false, $incSubmitter = false, $format = false
-	)
+	public static function showContributors($contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false, $format = false)
 	{
 		$view = new \Hubzero\Component\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
@@ -150,11 +145,12 @@ class Html
 	/**
 	 * Draw supporting docs quick links
 	 *
-	 * @return string HTML
+	 * @param   object  $publication
+	 * @return  string  HTML
 	 */
-	public static function drawSupportingItems($publication = NULL)
+	public static function drawSupportingItems($publication = null)
 	{
-		if ($publication == NULL)
+		if ($publication == null)
 		{
 			return false;
 		}
@@ -170,11 +166,11 @@ class Html
 	/**
 	 * Display a list of skill levels
 	 *
-	 * @param      array   $levels List of levels
-	 * @param      integer $sel    Selected level
-	 * @return     string HTML
+	 * @param   array    $levels  List of levels
+	 * @param   integer  $sel     Selected level
+	 * @return  string   HTML
 	 */
-	public static function skillLevelCircle( $levels = array(), $sel = 0 )
+	public static function skillLevelCircle($levels = array(), $sel = 0)
 	{
 		$html = '';
 
@@ -197,11 +193,11 @@ class Html
 	/**
 	 * Show license information for a publication
 	 *
-	 * @param      object  $publication   	Publication model
-	 * @param      string  $class  			CSS class for the license hyperlink
-	 * @return     string HTML
+	 * @param   object  $publication  Publication model
+	 * @param   string  $class        CSS class for the license hyperlink
+	 * @return  string  HTML
 	 */
-	public static function showLicense( $publication, $class = "showinbox" )
+	public static function showLicense($publication, $class = "showinbox")
 	{
 		$license = $publication->license();
 		if (!$license)
@@ -241,14 +237,14 @@ class Html
 	/**
 	 * Display resource sub view content
 	 *
-	 * @param      array  $sections Active plugins' content
-	 * @param      array  $cats     Active plugins' names
-	 * @param      string $active   Current plugin name
-	 * @param      string $h        Hide class
-	 * @param      string $c        Extra classes
-	 * @return     string HTML
+	 * @param   array   $sections  Active plugins' content
+	 * @param   array   $cats      Active plugins' names
+	 * @param   string  $active    Current plugin name
+	 * @param   string  $h         Hide class
+	 * @param   string  $c         Extra classes
+	 * @return  string  HTML
 	 */
-	public static function sections( $sections, $cats, $active='about', $h, $c )
+	public static function sections($sections, $cats, $active='about', $h, $c)
 	{
 		$html = '';
 
@@ -278,15 +274,15 @@ class Html
 	/**
 	 * Output tab controls for resource plugins (sub views)
 	 *
-	 * @param      string $option Component name
-	 * @param      string $id     Publication ID
-	 * @param      array  $cats   Active plugins' names
-	 * @param      string $active Current plugin name
-	 * @param      string $alias  Publication alias
-	 * @param      string $version  Publication version
-	 * @return     string HTML
+	 * @param   string  $option   Component name
+	 * @param   string  $id       Publication ID
+	 * @param   array   $cats     Active plugins' names
+	 * @param   string  $active   Current plugin name
+	 * @param   string  $alias    Publication alias
+	 * @param   string  $version  Publication version
+	 * @return  string  HTML
 	 */
-	public static function tabs( $option, $id, $cats, $active = 'about', $alias = '', $version = '' )
+	public static function tabs($option, $id, $cats, $active = 'about', $alias = '', $version = '')
 	{
 		$html  = '';
 		$html .= "\t" . '<ul class="sub-menu">' . "\n";
@@ -319,7 +315,7 @@ class Html
 					if ($active != 'about')
 					{
 						$title = Document::getTitle();
-						Document::setTitle( $title . ': ' . $cat[$name] );
+						Document::setTitle($title . ': ' . $cat[$name]);
 					}
 				}
 				$html .= "\t\t" . '<li id="sm-' . $i . '"';
@@ -336,19 +332,17 @@ class Html
 	/**
 	 * Generate a citation for a publication
 	 *
-	 * @param      object  $cite      Citation data
-	 * @param      object  $pub       Publication model
-	 * @param      string  $citations Citations to prepend
-	 * @return     string HTML
+	 * @param   object  $cite       Citation data
+	 * @param   object  $pub        Publication model
+	 * @param   string  $citations  Citations to prepend
+	 * @return  string  HTML
 	 */
-	public static function citation( $cite, $pub, $citations )
+	public static function citation($cite, $pub, $citations)
 	{
-		include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
-			. DS . 'helpers' . DS . 'format.php' );
-		include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
-			. DS . 'tables' . DS . 'type.php' );
+		include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+		include_once Component::path('com_citations') . DS . 'tables' . DS . 'type.php';
 
-		$cconfig  = Component::params( 'com_citations' );
+		$cconfig  = Component::params('com_citations');
 
 		$template = "{AUTHORS} ({YEAR}). <b>{TITLE/CHAPTER}</b>. <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b> {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}. {VERSION}. {PUBLISHER}. doi:{DOI}";
 
@@ -364,11 +358,15 @@ class Html
 
 			$formatted = $formatter->formatCitation($cite, false, true, $cconfig);
 
-			$formatted = str_replace('"', '', $formatted);
+			// The following line was meant to remove quote marks from around the title
+			// Instead, it removes all quote marks, resulting in invalid HTML.
+			// So, we try a little mroe specific approach.
+			//$formatted = str_replace('"', '', $formatted);
+			$formatted = str_replace(array('<b>"', '"</b>'), array('<b>', '</b>'), $formatted);
+
 			if ($cite->doi && $cite->url)
 			{
-				$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">'
-					. 'doi:' . $cite->doi . '</a>', $formatted);
+				$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">doi:' . $cite->doi . '</a>', $formatted);
 			}
 			else
 			{
@@ -395,10 +393,10 @@ class Html
 	/**
 	 * Show version info
 	 *
-	 * @param      object  $publication   	Publication model
-	 * @return     string HTML
+	 * @param   object  $publication  Publication model
+	 * @return  string  HTML
 	 */
-	public static function showVersionInfo( $publication )
+	public static function showVersionInfo($publication)
 	{
 		$lastPubRelease = $publication->lastPublicRelease();
 		$option         = 'com_publications';
@@ -512,14 +510,10 @@ class Html
 	/**
 	 * Show access message
 	 *
-	 * @param      object  $publication   	Publication object
-	 * @param      string  $option 			Component name
-	 * @param      boolean $authorized
-	 * @param      boolean $restricted
-	 * @param      string  $editlink
-	 * @return     string HTML
+	 * @param   object  $publication  Publication object
+	 * @return  string  HTML
 	 */
-	public static function showAccessMessage( $publication)
+	public static function showAccessMessage($publication)
 	{
 		$msg = '';
 
@@ -642,10 +636,10 @@ class Html
 	/**
 	 * Get status
 	 *
-	 * @param      int  $state
-	 * @return     string HTML
+	 * @param   int     $state
+	 * @return  string  HTML
 	 */
-	public static function getState( $state )
+	public static function getState($state)
 	{
 		switch ($state)
 		{
@@ -675,10 +669,10 @@ class Html
 	/**
 	 * Show supplementary info
 	 *
-	 * @param      object  $publication   	Publication model
-	 * @return     string HTML
+	 * @param   object  $publication  Publication model
+	 * @return  string  HTML
 	 */
-	public static function showSubInfo( $publication )
+	public static function showSubInfo($publication)
 	{
 		$action = $publication->isPublished() ? Lang::txt('COM_PUBLICATIONS_LISTED_IN') : Lang::txt('COM_PUBLICATIONS_IN');
 		$html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . Route::url($publication->link('category')) . '">' . $publication->category()->name . '</a>';
@@ -698,10 +692,10 @@ class Html
 	/**
 	 * Show title
 	 *
-	 * @param      object  $publication   	Publication model
-	 * @return     string HTML
+	 * @param   object  $publication  Publication model
+	 * @return  string  HTML
 	 */
-	public static function title( $publication )
+	public static function title($publication)
 	{
 		$txt = stripslashes($publication->version->get('title'));
 
@@ -724,10 +718,11 @@ class Html
 	/**
 	 * Show pre-defined publication footer (curated)
 	 *
-	 * @param      object  $publication   	Publication object
-	 * @return     string HTML
+	 * @param   object  $publication  Publication object
+	 * @param   string  $html
+	 * @return  string  HTML
 	 */
-	public static function footer( $publication, $html = '' )
+	public static function footer($publication, $html = '')
 	{
 		if (isset($publication->_curationModel))
 		{
@@ -744,17 +739,17 @@ class Html
 	/**
 	 * Generate the primary resources button
 	 *
-	 * @param      string  $class    Class to add
-	 * @param      string  $href     Link url
-	 * @param      string  $msg      Link text
-	 * @param      string  $xtra     Extra parameters to add (deprecated)
-	 * @param      string  $title    Link title
-	 * @param      string  $action   Link action
-	 * @param      boolean $disabled Is the button disable?
-	 * @param      string  $pop      Pop-up content
-	 * @return     string
+	 * @param   string   $class     Class to add
+	 * @param   string   $href      Link url
+	 * @param   string   $msg       Link text
+	 * @param   string   $xtra      Extra parameters to add (deprecated)
+	 * @param   string   $title     Link title
+	 * @param   string   $action    Link action
+	 * @param   boolean  $disabled  Is the button disable?
+	 * @param   string   $pop       Pop-up content
+	 * @return  string
 	 */
-	public static function drawLauncher( $icon, $pub, $url, $title, $disabled, $pop, $action = 'download',  $showArchive = false)
+	public static function drawLauncher($icon, $pub, $url, $title, $disabled, $pop, $action = 'download',  $showArchive = false)
 	{
 		if ($disabled)
 		{
@@ -768,26 +763,26 @@ class Html
 			<div class="button-highlighter">
 				<p class="launch-primary <?php echo $icon; ?>"><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" id="launch-primary"></a></p>
 				<?php if ($showArchive == true) { ?>
-				<div class="launch-choices hidden" id="launch-choices">
-					<div>
-						<p><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="download"><?php echo $title; ?></a></p>
-						<p><a href="<?php echo $archiveUrl; ?>" class="archival" title="<?php echo Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BUNDLE'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></p>
+					<div class="launch-choices hidden" id="launch-choices">
+						<div>
+							<p><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="download"><?php echo $title; ?></a></p>
+							<p><a href="<?php echo $archiveUrl; ?>" class="archival" title="<?php echo Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BUNDLE'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></p>
+						</div>
 					</div>
-				</div>
-			<?php } ?>
+				<?php } ?>
 			</div>
-
-	<?php	}
+			<?php
+		}
 	}
 
 	/**
 	 * Write publication category
 	 *
-	 * @param      string $cat_alias
-	 * @param      string $typetitle
-	 * @return     string HTML
+	 * @param   string  $cat_alias
+	 * @param   string  $typetitle
+	 * @return  string  HTML
 	 */
-	public static function writePubCategory( $cat_alias = '', $typetitle = '' )
+	public static function writePubCategory($cat_alias = '', $typetitle = '')
 	{
 		$html = '';
 
@@ -804,7 +799,7 @@ class Html
 		elseif ($pubtitle)
 		{
 			$normalized = strtolower($typetitle);
-			$cls = preg_replace("/[^a-zA-Z0-9]/", "", $normalized);
+			$cls = preg_replace("/[^a-zA-Z0-9]/", '', $normalized);
 
 			if (substr($normalized, -3) == 'ies')
 			{
@@ -826,13 +821,12 @@ class Html
 	/**
 	 * Show publication title in draft flow
 	 *
-	 * @param      object $pub
-	 * @param      string $url
-	 * @param      string $tabtitle
-	 * @param      string $append
-	 * @return     string HTML
+	 * @param   object  $pub
+	 * @param   string  $tabtitle
+	 * @param   string  $append
+	 * @return  mixed
 	 */
-	public static function showPubTitle( $pub, $tabtitle = '', $append = '' )
+	public static function showPubTitle($pub, $tabtitle = '', $append = '')
 	{
 		if ($pub->project()->isProvisioned())
 		{
@@ -847,47 +841,45 @@ class Html
 			<?php if ($append) { echo $append; } ?>
 			</h3>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
 	 * Show pub title for provisioned projects
 	 *
-	 * @param      object $pub
-	 * @param      string $url
-	 * @param      string $append
-	 * @return     string HTML
+	 * @param   object  $pub
+	 * @param   string  $append
+	 * @return  void
 	 */
-	public static function showPubTitleProvisioned( $pub, $append = '' )
+	public static function showPubTitleProvisioned($pub, $append = '')
 	{
-	?>
+		?>
 		<h3 class="prov-header">
 			<a href="<?php echo Route::url($pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo \Hubzero\Utility\String::truncate($pub->get('title'), 65); ?>"
 			<?php if ($append) { echo $append; } ?>
 		</h3>
-	<?php
+		<?php
 	}
 
 	/**
 	 * Generate the primary resources button
 	 *
-	 * @param      string  $class    Class to add
-	 * @param      string  $href     Link url
-	 * @param      string  $msg      Link text
-	 * @param      string  $xtra     Extra parameters to add (deprecated)
-	 * @param      string  $title    Link title
-	 * @param      string  $action   Link action
-	 * @param      boolean $disabled Is the button disable?
-	 * @param      string  $pop      Pop-up content
-	 * @return     string
+	 * @param   string   $class     Class to add
+	 * @param   string   $href      Link url
+	 * @param   string   $msg       Link text
+	 * @param   string   $xtra      Extra parameters to add (deprecated)
+	 * @param   string   $title     Link title
+	 * @param   string   $action    Link action
+	 * @param   boolean  $disabled  Is the button disable?
+	 * @param   string   $pop       Pop-up content
+	 * @return  string
 	 */
-	public static function primaryButton($class, $href, $msg,
-		$xtra = '', $title = '', $action = '', $disabled = false, $pop = '')
+	public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '')
 	{
 		$view = new \Hubzero\Component\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-			'name'   => 'view',
-			'layout' => '_primary'
+			'name'      => 'view',
+			'layout'    => '_primary'
 		));
 		$view->option   = 'com_publications';
 		$view->disabled = $disabled;
@@ -905,32 +897,36 @@ class Html
 	/**
 	 * Include status bar - publication steps/sections/version navigation
 	 *
-	 * @return     array
+	 * @param   object   $item
+	 * @param   string   $step
+	 * @param   boolean  $showSubSteps
+	 * @param   integer  $review
+	 * @return  void
 	 */
-	public static function drawStatusBar($item, $step = NULL, $showSubSteps = false, $review = 0)
+	public static function drawStatusBar($item, $step = null, $showSubSteps = false, $review = 0)
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'edit',
-				'layout'	=>'statusbar'
+				'folder'  =>'projects',
+				'element' =>'publications',
+				'name'    =>'edit',
+				'layout'  =>'statusbar'
 			)
 		);
-		$view->row 			 = $item->row;
-		$view->version 		 = $item->version;
-		$view->panels 		 = $item->panels;
-		$view->active 		 = isset($item->active) ? $item->active : NULL;
-		$view->move 		 = isset($item->move) ? $item->move : 0;
-		$view->step 		 = $step;
-		$view->lastpane 	 = $item->lastpane;
-		$view->option 		 = $item->option;
-		$view->project 		 = $item->project;
-		$view->current_idx 	 = $item->current_idx;
-		$view->last_idx 	 = $item->last_idx;
-		$view->checked 		 = $item->checked;
-		$view->url 			 = $item->url;
-		$view->review		 = $review;
+		$view->row           = $item->row;
+		$view->version       = $item->version;
+		$view->panels        = $item->panels;
+		$view->active        = isset($item->active) ? $item->active : null;
+		$view->move          = isset($item->move) ? $item->move : 0;
+		$view->step          = $step;
+		$view->lastpane      = $item->lastpane;
+		$view->option        = $item->option;
+		$view->project       = $item->project;
+		$view->current_idx   = $item->current_idx;
+		$view->last_idx      = $item->last_idx;
+		$view->checked       = $item->checked;
+		$view->url           = $item->url;
+		$view->review        = $review;
 		$view->show_substeps = $showSubSteps;
 		$view->display();
 	}
@@ -938,25 +934,47 @@ class Html
 	/**
 	 * Get the classname for a rating value
 	 *
-	 * @param      integer $rating Rating (out of 5 total)
-	 * @return     string
+	 * @param   integer  $rating  Rating (out of 5 total)
+	 * @return  string
 	 */
 	public static function getRatingClass($rating=0)
 	{
 		switch ($rating)
 		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
+			case 0.5:
+				$class = ' half-stars';
+				break;
+			case 1:
+				$class = ' one-stars';
+				break;
+			case 1.5:
+				$class = ' onehalf-stars';
+				break;
+			case 2:
+				$class = ' two-stars';
+				break;
+			case 2.5:
+				$class = ' twohalf-stars';
+				break;
+			case 3:
+				$class = ' three-stars';
+				break;
+			case 3.5:
+				$class = ' threehalf-stars';
+				break;
+			case 4:
+				$class = ' four-stars';
+				break;
+			case 4.5:
+				$class = ' fourhalf-stars';
+				break;
+			case 5:
+				$class = ' five-stars';
+				break;
 			case 0:
-			default:  $class = ' no-stars';      break;
+			default:
+				$class = ' no-stars';
+				break;
 		}
 		return $class;
 	}
@@ -964,9 +982,9 @@ class Html
 	/**
 	 * Encode some basic characters
 	 *
-	 * @param      string  $str    Text to convert
-	 * @param      integer $quotes Include quotes?
-	 * @return     string
+	 * @param   string   $str     Text to convert
+	 * @param   integer  $quotes  Include quotes?
+	 * @return  string
 	 */
 	public static function encode_html($str, $quotes = 1)
 	{
@@ -988,9 +1006,9 @@ class Html
 	 * Clean text of potential XSS and other unwanted items such as
 	 * HTML comments and javascript. Also shortens text.
 	 *
-	 * @param      string  $text    Text to clean
-	 * @param      integer $desclen Length to shorten to
-	 * @return     string
+	 * @param   string   $text     Text to clean
+	 * @param   integer  $desclen  Length to shorten to
+	 * @return  string
 	 */
 	public static function cleanText($text, $desclen=300)
 	{
@@ -1021,9 +1039,9 @@ class Html
 	/**
 	 * Extract content wrapped in <nb: tags
 	 *
-	 * @param      string $text Text t extract from
-	 * @param      string $tag  Tag to extract <nb:tag></nb:tag>
-	 * @return     string
+	 * @param   string  $text  Text to extract from
+	 * @param   string  $tag   Tag to extract <nb:tag></nb:tag>
+	 * @return  string
 	 */
 	public static function parseTag($text, $tag)
 	{
@@ -1061,13 +1079,12 @@ class Html
 	/**
 	 * Create thumb name
 	 *
-	 * @param      string $image
-	 * @param      string $tn
-	 * @param      string $ext
-	 *
-	 * @return     string
+	 * @param   string  $image
+	 * @param   string  $tn
+	 * @param   string  $ext
+	 * @return  string
 	 */
-	public static function createThumbName( $image=null, $tn='_thumb', $ext = 'png' )
+	public static function createThumbName($image=null, $tn='_thumb', $ext = 'png')
 	{
 		return \Filesystem::name($image) . $tn . '.' . $ext;
 	}
@@ -1075,22 +1092,21 @@ class Html
 	/**
 	 * Get disk space
 	 *
-	 * @param      array  	$rows		Publications objet array
-	 *
-	 * @return     integer
+	 * @param   array    $rows  Publications objet array
+	 * @return  integer
 	 */
-	public static function getDiskUsage( $rows = array() )
+	public static function getDiskUsage($rows = array())
 	{
 		$used = 0;
 
 		if (!empty($rows))
 		{
-			$pubconfig = Component::params( 'com_publications' );
+			$pubconfig = Component::params('com_publications');
 			$base = trim($pubconfig->get('webpath'), DS);
 
 			foreach ($rows as $row)
 			{
-				$path = DS . $base . DS . \Hubzero\Utility\String::pad( $row->id );
+				$path = DS . $base . DS . \Hubzero\Utility\String::pad($row->id);
 				$used = $used + self::computeDiskUsage($path, PATH_APP, false);
 			}
 		}
@@ -1101,11 +1117,10 @@ class Html
 	/**
 	 * Get used disk space in path
 	 *
-	 * @param      string 	$path
-	 * @param      string 	$prefix
-	 * @param      boolean 	$git
-	 *
-	 * @return     integer
+	 * @param   string   $path
+	 * @param   string   $prefix
+	 * @param   boolean  $git
+	 * @return  integer
 	 */
 	public static function computeDiskUsage($path = '', $prefix = '', $git = true)
 	{
@@ -1131,14 +1146,14 @@ class Html
 	/**
 	 * Send email
 	 *
-	 * @param      object 	$publication   Models\Publication
-	 * @param      array 	$addressees
-	 * @param      string 	$subject
-	 * @param      string 	$message
-	 * @return     void
+	 * @param   object   $publication  Models\Publication
+	 * @param   array    $addressees
+	 * @param   string   $subject
+	 * @param   string   $message
+	 * @param   boolean  $hubMessage
+	 * @return  boolean
 	 */
-	public static function notify( $publication, $addressees = array(),
-		$subject = NULL, $message = NULL, $hubMessage = false)
+	public static function notify($publication, $addressees = array(), $subject = null, $message = null, $hubMessage = false)
 	{
 		if (!$subject || !$message || empty($addressees))
 		{
@@ -1178,13 +1193,13 @@ class Html
 			'layout'    => '_plain'
 		));
 
-		$eview->publication 	= $publication;
-		$eview->message			= $message;
-		$eview->subject			= $subject;
+		$eview->publication = $publication;
+		$eview->message     = $message;
+		$eview->subject     = $subject;
 
 		$body = array();
-		$body['plaintext'] 	= $eview->loadTemplate(false);
-		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
+		$body['plaintext'] = $eview->loadTemplate(false);
+		$body['plaintext'] = str_replace("\n", "\r\n", $body['plaintext']);
 
 		// HTML email
 		$eview->setLayout('_html');
@@ -1192,12 +1207,12 @@ class Html
 		$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 		$body_plain = is_array($body) && isset($body['plaintext']) ? $body['plaintext'] : $body;
-		$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : NULL;
+		$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : null;
 
 		// Send HUB message
 		if ($hubMessage)
 		{
-			Event::trigger( 'xmessage.onSendMessage',
+			Event::trigger('xmessage.onSendMessage',
 				array(
 					'publication_status_changed',
 					$subject,
@@ -1235,17 +1250,17 @@ class Html
 				$mail->send();
 			}
 		}
+
+		return true;
 	}
 
 	/**
-	 * Short description for 'alert'
+	 * Display an alert message
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $msg Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   string  $msg
+	 * @return  string
 	 */
-	public static function alert( $msg )
+	public static function alert($msg)
 	{
 		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
