@@ -81,6 +81,7 @@ class Hubs extends Base
 
 		// Display
 		$this->view->row   = $hub;
+		dlog($hub->contacts);
 		$this->view->start = $this->start($hub);
 		$this->view->display();
 	}
@@ -113,10 +114,13 @@ class Hubs extends Base
 			'support_level'    => Request::getVar('support_level')
 		));
 
+
+
 		$contacts = array();
 		// Set the contact info on the hub
 		foreach (Request::getVar('contacts', array(), 'post') as $contact)
 		{
+			$contact['hub_id'] = $hub->id;
 			// First check and make sure we don't save a completely empty contact
 			if (empty($contact['name'])
 			 && empty($contact['phone'])
@@ -125,7 +129,6 @@ class Hubs extends Base
 			{
 				break;
 			}
-
 			$contacts[] = Contact::oneOrNew(isset($contact['id']) ? $contact['id'] : 0)->set($contact);
 		}
 
@@ -140,10 +143,36 @@ class Hubs extends Base
 			{
 				break;
 			}
-
 			$allotments[] = Allotment::oneOrNew(isset($allotment['id']) ? $allotment['id'] : 0)->set($allotment);
 		}
+		if ($hub->isNew())
+		{
+			if (!$hubId = $hub->save())
+			{
+				foreach ($hub->getErrors() as $error)
+				{
+					$hub->attach('contacts', $contacts);
+					$hub->attach('allotments', $allotments);
+					$this->view->setError($error);
+					$this->view->setLayout('edit');
+					$this->view->task = 'edit';
+					$this->editTask($hub);
+					return;
+				}
+			}
 
+			$contacts = array_map(function($obj) use ($hubId){
+				$obj->set('hub_id', $hubId);
+				return $obj;
+			},$contacts);
+
+			$allotments = array_map(function($obj) use ($hubId){
+				$obj->set('hub_id', $hubId);
+				return $obj;
+			},$allotments);
+			$hub->set('id',$hubId);
+		}
+		$hub->attach('contacts', $contacts);
 		$hub->attach('allotments', $allotments);
 
 		// Save the hub info
