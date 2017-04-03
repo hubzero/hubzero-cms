@@ -830,15 +830,16 @@ class Html
 	{
 		if ($pub->project()->isProvisioned())
 		{
-			return Html::showPubTitleProvisioned($pub, $append);
+			return self::showPubTitleProvisioned($pub, $append);
 		}
 		$typetitle = self::writePubCategory($pub->category()->alias, $pub->category()->name);
 		$tabtitle  = $tabtitle ? $tabtitle : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS'));
 		$pubUrl    = Route::url($pub->link('editversion'));
 		?>
 		<div id="plg-header">
-			<h3 class="publications c-header"><a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->get('title'), 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
-			<?php if ($append) { echo $append; } ?>
+			<h3 class="publications c-header">
+				<a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->get('title'), 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
+				<?php if ($append) { echo $append; } ?>
 			</h3>
 		</div>
 		<?php
@@ -994,10 +995,13 @@ class Html
 			'<' => '&#60;',
 			'>' => '&#62;',
 		);
-		if ($quotes) $a = $a + array(
-			"'" => '&#39;',
-			'"' => '&#34;',
-		);
+		if ($quotes)
+		{
+			$a = $a + array(
+				"'" => '&#39;',
+				'"' => '&#34;',
+			);
+		}
 
 		return strtr($str, $a);
 	}
