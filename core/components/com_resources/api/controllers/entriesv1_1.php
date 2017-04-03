@@ -36,6 +36,7 @@ namespace Components\Resources\Api\Controllers;
 use Components\Resources\Tables\Resource;
 use Components\Resources\Tables\Type;
 use Components\Resources\Helpers\Tags;
+use Components\Resources\Models\Orm\Resource as ResourceORM;
 use Hubzero\Component\ApiController;
 use Component;
 use Exception;
@@ -112,6 +113,8 @@ class Entriesv1_1 extends ApiController
 			require_once Component::path('com_resources') . '/helpers/tags.php';
 			$tagging = new Tags;
 			$tags = $tagging->get_tags_with_objects();
+
+			require_once Component::path('com_resources') . '/models/orm/resource.php';
 		}
 
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
@@ -166,6 +169,18 @@ class Entriesv1_1 extends ApiController
 					$description = html_entity_decode($description);
 					$description = \Hubzero\Utility\Sanitize::stripAll($description);
 					$obj->description = $description;
+
+					$authors = ResourceORM::one($entry->id)
+						->authors()
+						->select('name')
+						->rows()
+						->toObject();
+
+					$obj->author = array();
+					foreach ($authors as $author)
+					{
+						array_push($obj->author, $author->name);
+					}
 
 					if ($entry->standalone != 1 || $entry->published != 1)
 					{
