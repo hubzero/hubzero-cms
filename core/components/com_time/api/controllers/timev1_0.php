@@ -63,12 +63,6 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . 
  */
 class Timev1_0 extends ApiController
 {
-	public function execute()
-	{
-		$userId = User::getInstance()->get('id');
-		App::set('authn', array('user_id' => $userId));
-		parent::execute();
-	}
 	/**
 	 * Lists all applicable time records
 	 *
@@ -290,13 +284,12 @@ class Timev1_0 extends ApiController
 	{
 		// Require authentication and authorization
 		$this->requiresAuthentication();
-		$this->authorizeOrFail('view.reports');
+		$this->authorizeOrFail();
 
 		$task = Task::all();
 
 		if ($hub_id = Request::getInt('hid', false))
 		{
-			$this->authorizeOrFail('view.report', 'hub', $hub_id);
 			$task->whereEquals('hub_id', $hub_id);
 		}
 		if ($active = Request::getInt('pactive', false))
@@ -807,12 +800,12 @@ class Timev1_0 extends ApiController
 	 * @return  bool
 	 * @throws  Exception
 	 */
-	private function authorizeOrFail($action = 'api', $group = null, $id = null)
+	private function authorizeOrFail()
 	{
 		$permissions = new Permissions('com_time');
 
 		// Make sure action can be performed
-		if (!$permissions->can($action, $group, $id))
+		if (!$permissions->can('api'))
 		{
 			App::abort(401, 'Unauthorized');
 		}
