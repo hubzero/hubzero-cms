@@ -190,7 +190,7 @@ function submitbutton(pressbutton)
 
 					$cls  = 'public';
 					$task = 'accessprivate';
-					if ($row->private)
+					if ($row->private > 0)
 					{
 						$cls  = 'private';
 						$task = 'accesspublic';

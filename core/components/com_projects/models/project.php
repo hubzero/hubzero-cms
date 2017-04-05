@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -47,6 +46,9 @@ require_once(__DIR__ . DS . 'tags.php');
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
+use Date;
+use Lang;
+use User;
 
 /**
  * Project model
@@ -550,6 +552,16 @@ class Project extends Model
 			}
 		}
 
+		// Is the user a manager of the component? (set in component permissions)
+		if (User::authorise('core.manage', 'com_projects'))
+		{
+			$this->params->set('access-view-project', true);
+			$this->params->set('access-member-project', true);
+			$this->params->set('access-manager-project', true); // May edit project properties
+			$this->params->set('access-content-project', true); // May add/edit/delete all content
+			return;
+		}
+
 		// Is user project member?
 		$member = $this->member();
 		if (empty($member) || !$member->id)
@@ -572,7 +584,7 @@ class Project extends Model
 			$this->params->set('access-view-project', true);
 			$this->params->set('access-member-project', true); // internal project view
 
-			if ($this->isArchived())
+			if ($this->isArchived() || $this->get('private') < 0)
 			{
 				// Read-only
 				$this->params->set('access-readonly-project', true);
