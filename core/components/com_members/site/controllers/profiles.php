@@ -597,7 +597,8 @@ class Profiles extends SiteController
 		}
 
 		// Make sure member is approved
-		if (!$profile->get('approved') || $profile->get('block'))
+		// Removed the !$profile->get('approved') check from conditional since the Unapproved System plugin will handle this check.
+		if ($profile->get('block'))
 		{
 			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
