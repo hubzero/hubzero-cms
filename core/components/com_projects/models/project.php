@@ -559,6 +559,7 @@ class Project extends Model
 			$this->params->set('access-member-project', true);
 			$this->params->set('access-manager-project', true); // May edit project properties
 			$this->params->set('access-content-project', true); // May add/edit/delete all content
+			$this->params->set('access-owner-project', true);
 			return;
 		}
 
