@@ -285,9 +285,9 @@ class Link extends Base
 		$desc 		= Request::getVar( 'desc', '', 'post', 'array');
 
 		// Incoming selections
-		if (empty($toAttach))
+		if (!is_array($toAttach))
 		{
-			$toAttach = array($url);
+			$toAttach = array($toAttach);
 		}
 
 		// Get configs
