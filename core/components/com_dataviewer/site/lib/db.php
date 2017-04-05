@@ -26,7 +26,7 @@ function get_db($db = false)
 
 	$link = mysqli_connect($db['host'] , $db['user'], $db['password']);
 
-	if (!mysqli_select_db($db['database'], $link)) {
+	if (!mysqli_select_db($link, $db['database'])) {
 		print("DB error" . mysqli_errno($link) . ": " . mysqli_error($link));
 		exit();
 	}
