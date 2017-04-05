@@ -284,12 +284,13 @@ class Timev1_0 extends ApiController
 	{
 		// Require authentication and authorization
 		$this->requiresAuthentication();
-		$this->authorizeOrFail();
+		$this->authorizeOrFail('view.reports');
 
 		$task = Task::all();
 
 		if ($hub_id = Request::getInt('hid', false))
 		{
+			$this->authorizeOrFail('view.report', 'hub', $hub_id);
 			$task->whereEquals('hub_id', $hub_id);
 		}
 		if ($active = Request::getInt('pactive', false))
@@ -800,12 +801,12 @@ class Timev1_0 extends ApiController
 	 * @return  bool
 	 * @throws  Exception
 	 */
-	private function authorizeOrFail()
+	private function authorizeOrFail($action = 'api', $group = null, $id = null)
 	{
 		$permissions = new Permissions('com_time');
 
 		// Make sure action can be performed
-		if (!$permissions->can('api'))
+		if (!$permissions->can($action, $group, $id))
 		{
 			App::abort(401, 'Unauthorized');
 		}
