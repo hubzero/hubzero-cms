@@ -257,9 +257,15 @@ class Projects extends Base
 			$this->view->filters['sortdir'] = 'ASC';
 		}
 
-		if (!in_array($this->view->filters['filterby'], array('all', 'public', 'archived', 'pending')))
+		if (!in_array($this->view->filters['filterby'], array('all', 'open', 'public', 'archived', 'pending')))
 		{
-			$this->view->filters['sortdir'] = 'all';
+			$this->view->filters['filterby'] = 'all';
+		}
+		// We're filtering by a specific state
+		// Do NOT include all projects the user may have access to as some of them may not be of this state
+		if (in_array($this->view->filters['filterby'], array('open', 'public')))
+		{
+			$this->view->filters['uid'] = 0;
 		}
 
 		/*if ($reviewer == 'sensitive' || $reviewer == 'sponsored')

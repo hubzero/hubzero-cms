@@ -61,7 +61,7 @@ $counts = $this->model->get('counts');
 		<?php if ($this->model->isPublic()) { ?>
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1'); ?>"><?php echo Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a></li>
 		<?php } ?>
-		<?php if (isset($counts['team']) && $counts['team'] > 1) { ?>
+		<?php if (isset($counts['team']) && $counts['team'] > 1 && $this->model->member()) { ?>
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></li>
 		<?php } ?>
 				</ul>
