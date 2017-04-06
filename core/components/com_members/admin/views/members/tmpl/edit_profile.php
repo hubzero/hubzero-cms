@@ -84,11 +84,19 @@ $fields = $form->getFieldset('basic');
 					<div class="col span9">
 						<?php
 						echo '<div class="input-wrap" style="padding-right: 0" id="input-' . $field->fieldname . '" ' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
-						echo $field->label;
-						echo $field->input;
-						if ($field->description)
+						if ($field->hidden)
 						{
-							echo '<span class="hint">' . $field->description . '</span>';
+							echo '<label for="profile_' . $field->fieldname . '">' . $field->fieldname . '</label>';
+							echo '<input type="text" name="' . $field->name . '" id="profile_' . $field->fieldname . '" value="' . $this->escape($field->value) . '" />';
+						}
+						else
+						{
+							echo $field->label;
+							echo $field->input;
+							if ($field->description)
+							{
+								echo '<span class="hint">' . $field->description . '</span>';
+							}
 						}
 						if (!isset($access[$field->fieldname]))
 						{
