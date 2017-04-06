@@ -339,7 +339,7 @@ HUB.Plugins.GroupCalendar = {
 
 			// time fields
 			$('#event_start_time, #event_end_time').datetimepicker({
-				timeFormat: 'h:mm tt',
+				timeFormat: 'hh:mm tt',
 				timeOnly: true
 			});
 

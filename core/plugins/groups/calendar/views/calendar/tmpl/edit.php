@@ -141,8 +141,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_up_time = '';
 							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 							{
-								$publish_up_date = Date::of($publish_up)->toLocal('m/d/Y');
-								$publish_up_time = Date::of($publish_up)->toLocal('g:i a');
+								$publish_up_date = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'),'m/d/Y');
+								$publish_up_time = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'),'g:i a');
 							}
 						?>
 						<div class="input-group">
@@ -160,8 +160,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_down_time = '';
 							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down_date = Date::of($publish_down)->toLocal('m/d/Y');
-								$publish_down_time = Date::of($publish_down)->toLocal('g:i a');
+								$publish_down_date = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'),'m/d/Y');
+								$publish_down_time = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'),'g:i a');
 							}
 						?>
 						<div class="input-group">
