@@ -1392,8 +1392,9 @@ class connections
 				$file = Entity::fromPath($path, $this->connection->adapter());
 				if (!$file->exists())
 				{
-					$view->setError(Lang::txt('Failed to find the file at ' . $path));
-					return $collection;
+					//$this->setError(Lang::txt('Failed to find the file at ' . $path));
+					//return $collection;
+					continue;
 				}
 				$collection->add(Entity::fromPath($path, $this->connection->adapter()));
 			}
