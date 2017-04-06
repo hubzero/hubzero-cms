@@ -1329,7 +1329,8 @@ class Members extends AdminController
 				'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1),
 				'action_browse' => (isset($element->browse) ? (int) $element->browse : 0),
 				'min'           => (isset($element->min) ? (int) $element->min : 0),
-				'max'           => (isset($element->max) ? (int) $element->max : 0)
+				'max'           => (isset($element->max) ? (int) $element->max : 0),
+				'default_value' => (isset($element->value) ? (string) $element->value : '')
 			));
 
 			if ($field->get('type') == 'dropdown')

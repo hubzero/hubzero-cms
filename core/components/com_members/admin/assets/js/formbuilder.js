@@ -602,6 +602,7 @@
         INTEGER_ONLY: 'field_options.integer_only',
         MIN: 'field_options.min',
         MAX: 'field_options.max',
+        VALUE: 'field_options.value',
         MINLENGTH: 'field_options.minlength',
         MAXLENGTH: 'field_options.maxlength',
         LENGTH_UNITS: 'field_options.min_max_length_units'
@@ -867,7 +868,7 @@
   Formbuilder.registerField('text', {
     order: 0,
     view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
-    edit: '', //<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
+    edit: '', //"<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class='symbol'><span class='fa fa-font'></span></span> Text",
     defaultAttributes: function(attrs) {
       attrs.field_options.size = 'small';
@@ -1018,19 +1019,20 @@ return __p
 };
 
 this["Formbuilder"]["templates"]["edit/label_description"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<input type=\'text\' data-rv-input=\'model.' +
-((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
-'\' />\n<input type=\'text\' data-rv-input=\'model.' +
-((__t = ( Formbuilder.options.mappings.NAME )) == null ? '' : __t) +
-'\' placeholder="Add a name for this field" />\n<textarea data-rv-input=\'model.' +
-((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
-'\'\n  placeholder=\'Add a longer description to this field\'></textarea>';
-
-}
-return __p
+  obj || (obj = {});
+  var __t, __p = '', __e = _.escape;
+  with (obj) {
+    __p += '<input type=\'text\' data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
+    '\' />\n<input type=\'text\' data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.NAME )) == null ? '' : __t) +
+    '\' placeholder="Add a name for this field" />\n<textarea data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
+    '\'\n  placeholder=\'Add a longer description to this field\'></textarea>\n<input type=\'text\' data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.VALUE )) == null ? '' : __t) +
+    '\'\n  placeholder=\'Enter default value\' />';
+  }
+  return __p
 };
 
 this["Formbuilder"]["templates"]["edit/min_max"] = function(obj) {

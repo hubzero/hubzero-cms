@@ -515,6 +515,10 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 						}
 					}
 
+					if ($value = $field->get('default_value'))
+					{
+						$formfield->setValue($value);
+					}
 					if (isset($this->registration['_profile'][$field->get('name')]))
 					{
 						$formfield->setValue($this->registration['_profile'][$field->get('name')]);
