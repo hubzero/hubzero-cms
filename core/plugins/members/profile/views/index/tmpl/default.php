@@ -594,7 +594,7 @@ $legacy = array(
 					{
 						$value = $profile->get('label', $value);
 					}
-					$value = $value ?: $this->profile->get($field->get('name'));
+					$value = $value ?: $this->profile->get($field->get('name'), $field->get('default_value'));
 
 					if ($value)
 					{
