@@ -618,7 +618,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load the view
 		return $view->loadTemplate();
 	}
-
 	/**
 	 * Save an entry
 	 *
@@ -630,7 +629,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//get request vars
 		$event              = Request::getVar('event', array(), 'post');
-		$event['time_zone'] = Request::getVar('time_zone', -5);
+		$event['time_zone'] = Request::getVar('time_zone', null);
 		$event['params']    = Request::getVar('params', array());
 		$event['content']   = Request::getVar('content', '', 'post', 'STRING', JREQUEST_ALLOWRAW);
 		$registration       = Request::getVar('include-registration', 0);
@@ -653,19 +652,16 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event['created_by'] = $this->user->get('id');
 		}
 
-		// timezone
-		$timezone = new DateTimezone(Config::get('offset'));
-
 		// Handle all-day events, iCal is literal
 		// Interpreted as <up>12:00am - <down>11:59pm
 		$allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
 		if ($allday)
 		{
 			$event['publish_up'] = $event['publish_up'] . ' 12:00am';
-			$event['publish_up'] = Date::of($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'])->toSql();
 
 			$event['publish_down'] = $event['publish_down'] . '11:59pm';
-			$event['publish_down'] = Date::of($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'])->toSql();
 		}
 
 		//parse publish up date/time
@@ -676,7 +672,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
 			}
-			$event['publish_up'] = Date::of($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'])->toSql();
 			unset($event['publish_up_time']);
 		}
 
@@ -688,7 +684,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_down'] = $event['publish_down'] . ' ' . $event['publish_down_time'];
 			}
-			$event['publish_down'] = Date::of($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'])->toSql();
 			unset($event['publish_down_time']);
 		}
 
@@ -697,7 +693,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			//remove @ symbol
 			$event['registerby'] = str_replace("@", "", $event['registerby']);
-			$event['registerby'] = Date::of($event['registerby'], $timezone)->format("Y-m-d H:i:s");
+			$event['registerby'] = Date::of($event['registerby'], $event['time_zone'])->toSql();
 		}
 
 		//stringify params

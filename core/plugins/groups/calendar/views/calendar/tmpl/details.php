@@ -141,9 +141,9 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo Date::of($publish_up, $this->event->get('time_zone'))->format('l, F d, Y @ g:i a T', true); ?>
+					<?php echo Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
 					&mdash;
-					<?php echo Date::of($publish_down, $this->event->get('time_zone'))->format('l, F d, Y @ g:i a T', true); ?>
+					<?php echo Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
 				</td>
 			</tr>
 		<?php else : ?>
