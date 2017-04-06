@@ -516,7 +516,7 @@ class Pipeline extends SiteController
 		}
 
 		// get default license text
-		$this->database->setQuery("SELECT text, name, title FROM #__tool_licenses ORDER BY ordering ASC");
+		$this->database->setQuery("SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC");
 		$this->view->licenses = $this->database->loadObjectList();
 
 		// Set the page title
@@ -675,9 +675,12 @@ class Pipeline extends SiteController
 	/**
 	 * Write sync status to file
 	 *
-	 * @return   void
+	 * @param   string   $content
+	 * @param   string   $file
+	 * @param   boolean  $append
+	 * @return  void
 	 */
-	protected function _writeToFile($content = '', $file = '', $append = false )
+	protected function _writeToFile($content = '', $file = '', $append = false)
 	{
 		$place   = $append == true ? 'a' : 'w';
 		$content = $append ? $content . "\n" : $content;
@@ -694,7 +697,7 @@ class Pipeline extends SiteController
 	 */
 	public function createTask()
 	{
-		$this->view->setLayout( 'edit' );
+		$this->view->setLayout('edit');
 
 		// set defaults
 		list($vncGeometryX, $vncGeometryY) = preg_split('/[x]/', $this->config->get('default_vnc'));
@@ -714,7 +717,7 @@ class Pipeline extends SiteController
 			'vncGeometryY' => $vncGeometryY,
 			'team'         => User::get('username'),
 			'hostreq'      => $this->config->get('default_hostreq', 'sessions'),
-			'github'	   => '',
+			'github'       => '',
 			'publishType'  => 'standard'
 		);
 
@@ -753,7 +756,8 @@ class Pipeline extends SiteController
 	/**
 	 * Show an edit form
 	 *
-	 * @return     void
+	 * @param   object  $tool
+	 * @return  void
 	 */
 	public function editTask($tool = null)
 	{
@@ -1027,7 +1031,11 @@ class Pipeline extends SiteController
 		{
 			$txt = new \Hubzero\Config\Registry('');
 		}
-		$txt->set('github', $tool['github']);
+
+		if ($this->config->get('github') && isset($tool['github']))
+		{
+			$txt->set('github', $tool['github']);
+		}
 
 		$ptype = (empty($tool['publishType']) || $tool['publishType'] == 'standard') ? 'standard': 'weber=';
 		$txt->set('publishType', $ptype);
@@ -1068,7 +1076,7 @@ class Pipeline extends SiteController
 			$hztv->instance      = $tool['toolname'] . $dev_suffix;
 			$hztv->mw            = $this->config->get('default_mw', 'narwhal');
 			$hztv->hostreq       = $tool['hostreq'];
-			$hztv->params		 = $params;
+			$hztv->params        = $params;
 
 			$hzt->add('version', $hztv->instance);
 		}
