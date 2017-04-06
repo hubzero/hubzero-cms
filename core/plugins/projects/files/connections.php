@@ -704,7 +704,7 @@ class connections
 				{
 					// Also compare MD5 hash to make sure this is the same part as before
 					$hash = md5_file($chunk_file);
-					if (strcmp($hash,$_GET['flowChunkHash']) === 0)
+					if (strcmp($hash, $_GET['flowChunkHash']) === 0)
 					{
 						header("HTTP/1.0 200 OK");
 						exit;
