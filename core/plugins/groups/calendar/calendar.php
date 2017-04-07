@@ -541,6 +541,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
 
+
 		//get calendars
 		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$view->calendars = $eventsCalendarArchive->calendars('list', array(
@@ -552,6 +553,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// do we have access to edit
 		if ($view->event->get('id'))
 		{
+			$timezone = $view->event->get('time_zone');
 			//check to see if user has the correct permissions to edit
 			if ($this->user->get('id') != $view->event->get('created_by') && $this->authorized != 'manager')
 			{
@@ -576,6 +578,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				return;
 			}
 		}
+
+		$timezone = isset($timezone) ? $timezone : isset($this->event) ? $this->event->get('time_zone') : null;
+		$view->timezone = isset($timezone) ? $timezone : -5;
 
 		//push some vars to the view
 		$view->month      = $this->month;
