@@ -39,10 +39,10 @@ use stdClass;
 class Link extends Base
 {
 	/**
-	* Attachment type name
-	*
-	* @var		string
-	*/
+	 * Attachment type name
+	 *
+	 * @var		string
+	 */
 	protected	$_name = 'link';
 
 	/**
@@ -78,7 +78,7 @@ class Link extends Base
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
 
 		// Get default title
-		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
 		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Fancy launcher?
@@ -137,7 +137,7 @@ class Link extends Base
 
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId])
-					 ? $attachments['elements'][$elementId] : NULL;
+					 ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments(
@@ -147,7 +147,7 @@ class Link extends Base
 		);
 
 		$disabled = 0;
-		$pop 	  = NULL;
+		$pop 	  = null;
 
 		if ($pub->isUnpublished() || $pub->isDown())
 		{
@@ -192,7 +192,7 @@ class Link extends Base
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : Lang::txt('View publication');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null,
 					$title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
@@ -237,12 +237,12 @@ class Link extends Base
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
 
-		$path = NULL;
+		$path = null;
 		if ($itemId)
 		{
 			foreach ($attachments as $attach)
@@ -307,7 +307,7 @@ class Link extends Base
 
 		// Get existing attachments for the elemnt
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
@@ -330,8 +330,8 @@ class Link extends Base
 			$a++;
 			$ordering = $i + 1;
 
-			$title = isset($titles[$i]) ? $titles[$i] : NULL;
-			$desc  = isset($desc[$i]) ? $desc[$i] : NULL;
+			$title = isset($titles[$i]) ? $titles[$i] : null;
+			$desc  = isset($desc[$i]) ? $desc[$i] : null;
 
 			if ($this->addAttachment($identifier, $title, $pub, $configs, User::get('id'), $elementId, $element, $ordering))
 			{
@@ -377,7 +377,7 @@ class Link extends Base
 	public function addAttachment($path, $title, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
 		// Need to check against allowed types
-		$accept = isset($element->typeParams->accept) ? $element->typeParams->accept : NULL;
+		$accept = isset($element->typeParams->accept) ? $element->typeParams->accept : null;
 		if ($configs->check)
 		{
 			if (!$this->checkAllowed(array($path), $accept))
@@ -504,7 +504,7 @@ class Link extends Base
 		$params		= $element->typeParams;
 		$required	= $element->required;
 		$counter 	= count($attachments);
-		$allowed 	= isset($params->accept) ? $params->accept :  NULL;
+		$allowed 	= isset($params->accept) ? $params->accept :  null;
 
 		if (!$required)
 		{
