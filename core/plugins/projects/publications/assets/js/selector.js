@@ -63,12 +63,14 @@ HUB.ProjectPublicationsSelector = {
 					debug: true
 				};
 
-			container.infinitescroll(
-				opts,
-				function(newElements) {
-					HUB.ProjectPublicationsSelector.showOddEven();
-				}
-			);
+			if (jQuery().infinitescroll) {
+				container.infinitescroll(
+					opts,
+					function(newElements) {
+						HUB.ProjectPublicationsSelector.showOddEven();
+					}
+				);
+			}
 
 			var typedelay = (function(){
 				var timer = 0;
@@ -93,7 +95,7 @@ HUB.ProjectPublicationsSelector = {
 						$.get($('.item-add').attr('href') + '&search=' + input.val(), {}, function(data){
 							var results = $(data).find('#pub-selector-results').html();
 
-							if (results) {
+							if (results && jQuery().infinitescroll) {
 								// Disable infinite scroll
 								container.infinitescroll('destroy');
 								container.data('infinitescroll', null);
