@@ -184,7 +184,9 @@ class Archive extends Model
 			$title    = $event->get('title');
 			$content  = str_replace("\r\n", '\n', $event->get('content'));
 			$location = $event->get('adresse_info');
-			$url      = $event->get('extra_info');
+			$url  	  = $event->get('extra_info');
+			$allDay   = $event->get('allday');
+			
 
 			// get event timezone setting
 			// use this in "DTSTART;TZID="
@@ -194,7 +196,18 @@ class Archive extends Model
 			// get publish up/down dates in UTC
 			$publishUp = Date::of($event->get('publish_up'));
 			$publishDown = Date::of($event->get('publish_down'));
+			if ($allDay == "1")
+			{
+				$dtStart = 'DTSTART;VALUE=DATE:' . $publishUp->format('Ymd', true);
+				$dtEnd = 'DTEND;VALUE=DATE:' . $publishDown->format('Ymd', true);
+			}
+			else
+			{
+				$dtStart = 'DTSTART:' . $publishUp->format('Ymd\THis\Z');
+				$dtEnd = 'DTEND:' . $publishDown->format('Ymd\THis\Z');
+			}
 
+			/* 2017-04-11 Patrick: This is actually no longer true, therefore the best course of action would be to add the UTC datetime (adding a Z as a suffix)
 			// Set eastern timezone as publish up/down date timezones
 			// since all event date/times are stores relative to eastern
 			// ----------------------------------------------------------------------------------
@@ -202,7 +215,7 @@ class Archive extends Model
 			// adjust date/time display according to that timezone and their systems timezone setting
 			$publishUp->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
 			$publishDown->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
-
+			*/
 			// create now, created, and modified vars
 			$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
 			$created  = gmdate('Ymd', strtotime($event->get('created'))) . 'T' . gmdate('His', strtotime($event->get('created'))) . 'Z';
@@ -213,10 +226,10 @@ class Archive extends Model
 			$output .= "UID:{$uid}\r\n";
 			$output .= "SEQUENCE:{$sequence}\r\n";
 			$output .= "DTSTAMP:{$now}\r\n";
-			$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
+			$output .= $dtStart  . "\r\n";
 			if ($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
+				$output .= $dtEnd . "\r\n";
 			}
 			else
 			{

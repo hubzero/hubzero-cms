@@ -388,7 +388,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$source            = new stdClass;
 			$source->title     = $calendar->get('title');
-			$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calender_id=' . $calendar->get('id'));
+			$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=' . $calendar->get('id'));
 			$source->className = ($calendar->get('color')) ? 'fc-event-' . $calendar->get('color') : 'fc-event-default';
 			array_push($sources, $source);
 		}
@@ -396,7 +396,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// add uncategorized source
 		$source            = new stdClass;
 		$source->title     = 'Uncategorized';
-		$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calender_id=0');
+		$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=0');
 		$source->className = 'fc-event-default';
 		array_push($sources, $source);
 
@@ -419,7 +419,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// get request params
 		$start      = Request::getVar('start');
 		$end        = Request::getVar('end');
-		$calendarId = Request::getInt('calender_id', 'null');
+		$calendarId = Request::getInt('calendar_id', null);
 
 		// format date/times
 		$start = Date::of($start . ' 00:00:00');
@@ -437,6 +437,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'publish_down' => $end->format('Y-m-d H:i:s'),
 			'non_repeating'    => true
 		));
+
 
 		// get repeating events
 		$rawEventsRepeating = $eventsCalendar->events('repeating', array(
@@ -456,17 +457,18 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$up   = Date::of($rawEvent->get('publish_up'));
 			$down = Date::of($rawEvent->get('publish_down'));
+			$timeFormat = 'Y-m-d\TH:i:sO';
 
 			$event            = new stdClass;
 			$event->id        = $rawEvent->get('id');
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
-			$event->start     = Date::of($rawEvent->get('publish_up'))->toLocal('Y-m-d\TH:i:sO');
+			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat);
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = Date::of($rawEvent->get('publish_down'))->toLocal('Y-m-d\TH:i:sO');
+				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat);
 			}
 
 			// add start & end for displaying dates user clicked on
@@ -492,9 +494,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				// Kevin: Don't change this value. Everyone else is wrong.
 				// Seriously this is the correct way to do all-day events.
 				// Previous entries may need to be corrected, but future events will be correct.
-				$end_day = strtotime($event->end . '+ 24 hours');
-				$down = date('Y-m-d H:i:s', $end_day);
-				$event->end = $down;
+				$endDay = Date::of($event->end)->subtract('24 hours');
+				if ($endDay < $up)
+				{
+					$event->end = Date::of($event->start)->add('24 hours')->format($timeFormat);
+				}
 			}
 
 			array_push($events, $event);
@@ -553,7 +557,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// do we have access to edit
 		if ($view->event->get('id'))
 		{
-			$timezone = $view->event->get('time_zone');
 			//check to see if user has the correct permissions to edit
 			if ($this->user->get('id') != $view->event->get('created_by') && $this->authorized != 'manager')
 			{
@@ -577,9 +580,31 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				);
 				return;
 			}
+			else
+			{
+				$allDay = $view->event->get('allday');
+				$endDate = $view->event->get('publish_down');
+				if ($allDay == '1' && !empty($endDate))
+				{
+					$newEndDate = Date::of($endDate)->subtract('24 hours')->toSql();
+					$view->event->set('publish_down', $newEndDate);
+				}
+				
+			}
 		}
 
-		$timezone = isset($timezone) ? $timezone : isset($this->event) ? $this->event->get('time_zone') : null;
+		//are we passing an events array back from save
+		if (isset($this->event))
+		{
+			$view->event = $this->event;
+		}
+
+		$timezone = $view->event->get('time_zone');
+		if ($view->event->get('allday') == "1")
+		{
+			$timezone = 'UTC';
+		}
+
 		$view->timezone = isset($timezone) ? $timezone : -5;
 
 		//push some vars to the view
@@ -597,11 +622,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
 		);
 
-		//are we passing an events array back from save
-		if (isset($this->event))
-		{
-			$view->event = $this->event;
-		}
 
 		//added need scripts and stylesheets
 		$this->js('fileupload/jquery.fileupload', 'system');
@@ -658,15 +678,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		// Handle all-day events, iCal is literal
-		// Interpreted as <up>12:00am - <down>11:59pm
+		// Since Google adopts the behavior of adding 24 hours to whatever the end date is, I've done the same here.
+		// If no end date set, it assumes the allday event was scheduled for just the publish_up day selected.
 		$allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
 		if ($allday)
 		{
-			$event['publish_up'] = $event['publish_up'] . ' 12:00am';
-			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'])->toSql();
+			$event['publish_up'] = Date::of($event['publish_up'])->toSql();
 
-			$event['publish_down'] = $event['publish_down'] . '11:59pm';
-			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'])->toSql();
+			$event['publish_down'] = !empty($event['publish_down']) ? $event['publish_down'] : $event['publish_up'];
+			$event['publish_down'] = Date::of($event['publish_down'])->add('24 hours')->toSql();
 		}
 
 		//parse publish up date/time
