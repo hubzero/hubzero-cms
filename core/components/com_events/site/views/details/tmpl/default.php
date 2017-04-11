@@ -117,7 +117,7 @@ $this->css()
 			$html .= '  </tr>'."\n";
 			$html .= '  <tr>'."\n";
 			$html .= '   <th scope="row">'.Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION').':</th>'."\n";
-			$html .= '   <td>'. $this->row->content .'</td>'."\n";
+			$html .= '   <td>'. html_entity_decode($this->row->content) .'</td>'."\n";
 			$html .= '  </tr>'."\n";
 			$html .= '  <tr>'."\n";
 			$html .= '   <th scope="row">'.Lang::txt('EVENTS_CAL_LANG_EVENT_WHEN').':</th>'."\n";
