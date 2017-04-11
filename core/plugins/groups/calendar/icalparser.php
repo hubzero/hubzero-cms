@@ -4,7 +4,8 @@
  *
  * @author Roman Ožana <ozana@omdesign.cz>
  */
-class IcalParser {
+class IcalParser
+{
 
 	/**
 	 * Var to hold calendar timezone
@@ -308,9 +309,8 @@ class IcalParser {
 				$value .= 'T000000Z';
 				$allDay = true;
 			}
-			
-			// Checks if time contains the value Z, which indicates it is not necessary to convert a timezone since it is already in UTC
 
+			// Checks if time contains the value Z, which indicates it is not necessary to convert a timezone since it is already in UTC
 			if (substr($value, -1) != 'Z')
 			{
 				$value = Date::of($value, ($timezone ? : $this->timezone));
