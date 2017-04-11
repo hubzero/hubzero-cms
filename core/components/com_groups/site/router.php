@@ -209,7 +209,7 @@ class Router extends Base
 					$vars['pagename'] = array_pop($segments);
 				}
 
-				$s = implode(DS,$segments);
+				$s = implode(DS, $segments);
 				$vars['scope'] = $s;
 			}
 			else

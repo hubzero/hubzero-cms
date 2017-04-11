@@ -589,7 +589,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 					$newEndDate = Date::of($endDate)->subtract('24 hours')->toSql();
 					$view->event->set('publish_down', $newEndDate);
 				}
-				
 			}
 		}
 

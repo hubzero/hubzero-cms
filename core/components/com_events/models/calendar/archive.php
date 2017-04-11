@@ -186,7 +186,6 @@ class Archive extends Model
 			$location = $event->get('adresse_info');
 			$url  	  = $event->get('extra_info');
 			$allDay   = $event->get('allday');
-			
 
 			// get event timezone setting
 			// use this in "DTSTART;TZID="
