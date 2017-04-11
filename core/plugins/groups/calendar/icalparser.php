@@ -305,10 +305,20 @@ class IcalParser {
 		{
 			if (strlen($value) == 8)
 			{
-				$value .= 'T050000Z';
+				$value .= 'T000000Z';
 				$allDay = true;
 			}
-			$value = new JDate($value, ($timezone ? : $this->timezone));
+			
+			// Checks if time contains the value Z, which indicates it is not necessary to convert a timezone since it is already in UTC
+
+			if (substr($value, -1) != 'Z')
+			{
+				$value = Date::of($value, ($timezone ? : $this->timezone));
+			}
+			else
+			{
+				$value = Date::of($value);
+			}
 		}
 
 		if ($key === 'RRULE' && preg_match_all('#(?<key>[^=;]+)=(?<value>[^;]+)#', $value, $matches, PREG_SET_ORDER))
