@@ -40,12 +40,15 @@ use Component;
 use Request;
 use User;
 use App;
+use Document;
 
 /**
  * Incremental Registration Module controller class
  */
 class Helper extends Module
 {
+	private static $MAX_PROMPTS_PER = 5;
+
 	/**
 	 * Path to template overrides
 	 *
@@ -107,8 +110,8 @@ class Helper extends Module
 			return;
 		}
 
-		// looks like an error page, don't show
-		if (\JDocument::getInstance('error')->getTitle())
+		// user has enough problems already, don't show
+		if (Document::getType() === 'error')
 		{
 			return;
 		}
@@ -135,6 +138,7 @@ class Helper extends Module
 
 			if ($row)
 			{
+				$row = array_slice($row, 0, self::$MAX_PROMPTS_PER);
 				$dbh->setQuery('SELECT popover_text, award_per FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
 				list($introText, $awardPer) = $dbh->loadRow();
 
