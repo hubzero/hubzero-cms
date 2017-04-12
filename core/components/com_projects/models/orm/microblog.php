@@ -34,12 +34,34 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Projects database model
+ * Projects microblog model
  *
  * @uses  \Hubzero\Database\Relational
  */
 class Microblog extends Relational
 {
-	protected $table = '#__project_microblog';
-}
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 **/
+	protected $namespace = 'project';
 
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__project_microblog';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'projectid'  => 'positive|nonzero',
+		'activityid' => 'positive|nonzero',
+		'blogentry'  => 'notempty'
+	);
+}

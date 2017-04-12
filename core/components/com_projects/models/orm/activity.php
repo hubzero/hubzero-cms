@@ -34,12 +34,47 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Projects database model
+ * Projects activity model
  *
  * @uses  \Hubzero\Database\Relational
  */
 class Activity extends Relational
 {
-	protected $table = '#__project_activity';
-}
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 **/
+	protected $namespace = 'project';
 
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__project_activity';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var string
+	 */
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'desc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'projectid' => 'positive|nonzero',
+		'activity'  => 'notempty'
+	);
+}
