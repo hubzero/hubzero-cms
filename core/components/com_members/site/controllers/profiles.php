@@ -365,10 +365,10 @@ class Profiles extends SiteController
 		}
 
 		$db = App::get('db');
+		$i = 1;
 
 		if ($filters['q'])
 		{
-			$i = 1;
 			foreach ($filters['q'] as $q)
 			{
 				if ($q['field'] == 'name')
@@ -427,15 +427,16 @@ class Profiles extends SiteController
 			}
 		}
 
+		// If the sort value wasn't already an applied filter
+		// we need to join on the profiles table to be able to sort by that value
 		if (!$sortFound)
 		{
-			$i = 1;
 			$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']), 'left');
 			$filters['sort'] = 't' . $i . '.profile_value';
 		}
 
 		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
-//echo $entries->toString(); die();
+
 		$rows = $entries
 			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
