@@ -314,24 +314,39 @@ class Profiles extends SiteController
 			->where($a . '.activation', '>', 0)
 			->where($a . '.approved', '>', 0);
 
-		// Take filters and apply them to the tasks
-		/*if ($filters['search'])
+		// Validate sorting vars
+		switch ($filters['sortby'])
 		{
-			foreach ($filters['search'] as $term)
-			{
-				//$entries->where($a . '.name', 'LIKE', "%{$term}%");
+			case 'surname':
+			case 'name':
+				$filters['sort'] = 'surname';
+				break;
 
-				$entries->whereLike($a . '.name', strtolower((string)$term), 1)
-					->orWhereLike($a . '.username', strtolower((string)$term), 1)
-					->orWhereLike($a . '.email', strtolower((string)$term), 1)
-					->resetDepth();
-			}
-		}*/
+			default:
+				$sorts = array('surname');
+				foreach (Filters::getFieldNames() as $column)
+				{
+					$sorts[] = $column['raw'];
+				}
+				$filters['sort'] = $filters['sortby'];
+				if (!in_array($filters['sortby'], $sorts))
+				{
+					$filters['sort'] = 'surname';
+				}
+				break;
+		}
+
+		// Make sure sort direction is valid
+		$filters['sort_Dir'] = strtolower(Request::getWord('sort_Dir', 'asc'));
+		if (!in_array($filters['sort_Dir'], array('asc', 'desc')))
+		{
+			$filters['sort_Dir'] = 'asc';
+		}
 
 		if ($filters['tags'])
 		{
 			$to = '#__tags_object';
-			$t = '#__tags';
+			$t  = '#__tags';
 
 			$tags = explode(',', $filters['tags']);
 			$tags = array_map('trim', $tags);
@@ -385,22 +400,30 @@ class Profiles extends SiteController
 					$q['value'] = '%' . $q['value'] . '%';
 				}
 
-				$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']), 'inner');
+				if (in_array($q['o'], array('>', '>=', '<', '<=')) && is_numeric($q['value']))
+				{
+					$entries->joinRaw(
+						$b . ' AS t' . $i,
+						't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int)$q['value'],
+						'inner'
+					);
+				}
+				else
+				{
+					$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']), 'inner');
+				}
+
+				if ($filters['sort'] == $q['field'])
+				{
+					$filters['sort'] = 't' . $i . '.profile_value';
+				}
+
 				$entries->whereIn('t' . $i . '.access', User::getAuthorisedViewLevels());
 				$i++;
 			}
 		}
 
 		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
-
-		switch ($filters['sortby'])
-		{
-			case 'name':
-			default:
-				$filters['sort'] = 'surname';
-				$filters['sort_Dir'] = 'asc';
-			break;
-		}
 
 		$rows = $entries
 			->order($filters['sort'], $filters['sort_Dir'])
