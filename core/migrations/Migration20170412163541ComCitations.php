@@ -15,7 +15,7 @@ class Migration20170412163541ComCitations extends Base
         public function up()
         {
                 foreach ([
-                'CREATE TABLE `jos_citations_visualizations` (
+                'CREATE TABLE `#__citations_visualizations` (
                         `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
                         `name` varchar(50) NOT NULL,
                         PRIMARY KEY (`id`),
