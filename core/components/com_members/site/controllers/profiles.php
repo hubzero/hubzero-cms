@@ -431,7 +431,7 @@ class Profiles extends SiteController
 		// we need to join on the profiles table to be able to sort by that value
 		if (!$sortFound)
 		{
-			$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']), 'left');
+			$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']), 'inner');
 			$filters['sort'] = 't' . $i . '.profile_value';
 		}
 
