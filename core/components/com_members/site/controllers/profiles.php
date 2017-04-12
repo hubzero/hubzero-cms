@@ -315,11 +315,13 @@ class Profiles extends SiteController
 			->where($a . '.approved', '>', 0);
 
 		// Validate sorting vars
+		$sortFound = false;
 		switch ($filters['sortby'])
 		{
 			case 'surname':
 			case 'name':
 				$filters['sort'] = 'surname';
+				$sortFound = true;
 				break;
 
 			default:
@@ -362,9 +364,10 @@ class Profiles extends SiteController
 			$entries->group($a . '.id');
 		}
 
+		$db = App::get('db');
+
 		if ($filters['q'])
 		{
-			$db = App::get('db');
 			$i = 1;
 			foreach ($filters['q'] as $q)
 			{
@@ -416,6 +419,7 @@ class Profiles extends SiteController
 				if ($filters['sort'] == $q['field'])
 				{
 					$filters['sort'] = 't' . $i . '.profile_value';
+					$sortFound = true;
 				}
 
 				$entries->whereIn('t' . $i . '.access', User::getAuthorisedViewLevels());
@@ -423,8 +427,15 @@ class Profiles extends SiteController
 			}
 		}
 
-		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
+		if (!$sortFound)
+		{
+			$i = 1;
+			$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']), 'left');
+			$filters['sort'] = 't' . $i . '.profile_value';
+		}
 
+		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
+//echo $entries->toString(); die();
 		$rows = $entries
 			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
