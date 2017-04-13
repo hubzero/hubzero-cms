@@ -1,4 +1,4 @@
-body {
+	body {
 		padding: 0 !important;
 		background: #000;
 	}
@@ -8,7 +8,6 @@ body {
 	a:focus {
 		outline:none;
 	}
-
 /*---------------------------------------------------------------
     Video Container & Player
 ---------------------------------------------------------------*/
@@ -29,12 +28,15 @@ body {
 		position: relative;
 		width: 100%;
 		background: #000;
-		overflow: hidden
+		overflow: hidden;
 	}
 	#video-player {
 		z-index: 886;
 		display: block;
 		margin: 0 auto;
+		width: 100%;
+		height: auto;
+		max-height:95vh;
 	}
 	#video-player.sized {
 		width: 100% !important;

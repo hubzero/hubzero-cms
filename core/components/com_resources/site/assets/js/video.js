@@ -76,6 +76,8 @@ HUB.Video = {
 			padding = window.outerWidth - window.innerWidth;
 			
 			if(isPopup) {
+				resize_width = $jQ(window.opener).width() * .90;
+				resize_height = $jQ(window.opener).height() * .75;
 				window.resizeTo(resize_width + padding, resize_height + toolbar);
 				//$jQ("#video-player").addClass('sized');
 			}
