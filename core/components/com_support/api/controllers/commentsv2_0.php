@@ -246,7 +246,7 @@ class Commentsv2_0 extends ApiController
 		$comment->set('access', (Request::get('private', false) == 'true' ? 1 : 0));
 
 		$changes = array();
-		foreach (['group', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
+		foreach (['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
 		{
 			if (Request::get($index, null))
 			{
@@ -318,11 +318,11 @@ class Commentsv2_0 extends ApiController
 		$comment->set('changelog', json_encode($changelog));
 		if (!$comment->save())
 		{
-			throw new Exception(print_r($comment->getErrors(),1), 500);
+			throw new Exception(print_r($comment->getErrors(), 1), 500);
 		}
 		if (!$ticket->save())
 		{
-			throw new Exception(print_r($ticket->getErrors(),1), 500);
+			throw new Exception(print_r($ticket->getErrors(), 1), 500);
 		}
 
 		// There's now a ticket and a comment, lets add attachments

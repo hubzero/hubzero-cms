@@ -320,9 +320,20 @@ class Ticketsv2_0 extends ApiController
 		$ticket->set('referrer', '/api/v2.0/support/tickets');
 		$ticket->set('instances', 1);
 		$ticket->set('section', 1);
-		$ticket->set('group', Request::get('group', ''));
 		$ticket->set('open', 1);
 
+		if (Request::get('group', null))
+		{
+			$group_model = \Components\Groups\Models\Orm\Group::oneByCn(Request::get('group'));
+			if ($group_model->get('gidNumber', null))
+			{
+				$model->set('group_id', $group_model->get('gidNumber'));
+			}
+			else
+			{
+				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_GROUP_CN"), 404);
+			}
+		}
 		// Save the data
 		if (!$ticket->save())
 		{
@@ -374,19 +385,10 @@ class Ticketsv2_0 extends ApiController
 
 		$response = new stdClass;
 		$response->id = $ticket->get('id');
+		$response->owner_id = $owner->get('id');
+		$response->submitter_id = $submitter->get('id');
 
-		$response->owner = new stdClass;
-		$response->owner->username = $owner->get('username');
-		$response->owner->name     = $owner->get('name');
-		$response->owner->id       = $owner->get('id');
-		$response->owner->email		 = $owner->get('email');
-
-		$response->submitter = new stdClass;
-		$response->submitter->name     = $submitter->get('name');
-		$response->submitter->username = $submitter->get('username');
-		$response->submitter->email    = $submitter->get('email');
-		$response->submitter->id       = $submitter->get('id');
-
+		$response->group_id = $ticket->group_id;
 
 		foreach (array('status', 'created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop)
 		{
@@ -471,7 +473,7 @@ class Ticketsv2_0 extends ApiController
 			{
 				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_STATUS"), 404);
 			}
-			$model->set('status', $status) ;
+			$model->set('status', $status);
 			$model->set('open', $status_model->get('open'));
 		}
 
@@ -490,7 +492,7 @@ class Ticketsv2_0 extends ApiController
 		{
 			if (in_array($severity, ['minor', 'normal', 'major', 'critical']))
 			{
-				$model->set('severity' , $severity);
+				$model->set('severity', $severity);
 			}
 			else
 			{
@@ -501,9 +503,9 @@ class Ticketsv2_0 extends ApiController
 		if ($group)
 		{
 			$group_model = \Components\Groups\Models\Orm\Group::oneByCn($group);
-			if ($group_model->get('gidNumber'))
+			if ($group_model->get('gidNumber', null))
 			{
-				$model->set('group', $group);
+				$model->set('group_id', $group_model->get('gidNumber'));
 			}
 			else
 			{
