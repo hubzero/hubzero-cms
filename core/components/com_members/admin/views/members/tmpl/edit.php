@@ -51,6 +51,8 @@ Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('user');
 
+$this->css();
+
 Html::behavior('switcher', 'submenu');
 ?>
 <script type="text/javascript">

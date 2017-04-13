@@ -32,13 +32,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Document::addStyleDeclaration('
-	.toolbar-box .icon-32-buildprofile:before { content: "\f007"; }
-	.toolbar-box .icon-32-buildprofile:after { content: "\f0ad"; right: 0px; bottom: -2px; }
-	.authenticator, .authenticator-status { display: inline-block; text-transform: uppercase; font-size: 0.85em; color: #777; border-radius: 0.25em; padding: 0.2em 0.4em; line-height: 1; border: 1px solid #777; margin: 0 0.5em; }
-	.authenticator-status { display: inline-block; color: red; border-color: red; }
-');
-
 $canDo = Components\Members\Helpers\Admin::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS'));
@@ -72,6 +65,8 @@ if ($canDo->get('core.delete'))
 }
 Toolbar::spacer();
 Toolbar::help('users');
+
+$this->css();
 
 Html::behavior('tooltip');
 ?>
