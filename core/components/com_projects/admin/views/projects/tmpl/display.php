@@ -118,7 +118,7 @@ function submitbutton(pressbutton)
 				<th class="priority-5" scope="col"> </th>
 				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-3" scope="col"><?php echo Html::grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th scope="col"><?php echo Lang::txt('Team'); ?></th>
+				<th class="priority-3" scope="col"><?php echo Lang::txt('Team'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
