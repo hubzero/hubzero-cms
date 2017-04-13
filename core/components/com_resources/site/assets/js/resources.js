@@ -244,7 +244,7 @@ jQuery(document).ready(function($){
 			$('.embedded-video iframe').load(function(event){
 				var iframe = $(this);
 				setTimeout(function() {
-					var height = iframe.contents().outerHeight(true);
+					var height = '75vh';
 					
 					// make embed area height of iframe
 					$('.embedded-video').animate({
