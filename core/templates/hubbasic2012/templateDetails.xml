@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 HUBzero Foundation, LLC.
+ Copyright 2005-2015 HUBzero Foundation, LLC.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<install type="template" version="1.5">
+<extension type="template" version="1.5">
 	<name>hubbasic2012</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
@@ -101,6 +101,4 @@
 		<position>notices</position>
 		<position>search</position>
 	</positions>
-	<params>
-	</params>
-</install>
+</extension>

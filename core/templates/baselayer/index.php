@@ -155,7 +155,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 			</div>
 		<?php endif; ?>
 
-		<main id="content" class="<?php echo Request::getVar('option', ''); ?>" role="main">
+		<main id="content" class="<?php echo Request::getCmd('option', ''); ?>" role="main">
 			<div class="inner">
 				<?php if ($this->countModules('left or right')) : ?>
 					<section class="main section cf">

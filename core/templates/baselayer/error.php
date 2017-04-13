@@ -152,7 +152,7 @@ Lang::load('tpl_' . $this->template);
 			</div>
 		</header>
 
-		<main id="content" class="<?php echo Request::getVar('option', ''); ?>" role="main">
+		<main id="content" class="<?php echo Request::getCmd('option', ''); ?>" role="main">
 			<div class="section-inner">
 				<div class="grid">
 					<div class="col span6 error-code">
