@@ -1,0 +1,37 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_members/admin/assets/css/members.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_members CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.toolbar-box .icon-32-buildprofile:before {
+		content: "\f007";
+	}
+	.toolbar-box .icon-32-buildprofile:after {
+		content: "\f0ad"; right: 0px; bottom: -2px;
+	}
+	.authenticator,
+	.authenticator-status {
+		display: inline-block;
+		text-transform: uppercase;
+		font-size: 0.85em;
+		color: #777;
+		border-radius: 0.25em;
+		padding: 0.2em 0.4em;
+		line-height: 1;
+		border: 1px solid #777;
+		margin: 0 0.5em;
+	}
+	.authenticator-status {
+		color: red;
+		border-color: red;
+	}
