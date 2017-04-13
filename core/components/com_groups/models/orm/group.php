@@ -190,7 +190,7 @@ class Group extends Relational
 	 */
 	public function applicants()
 	{
-		return $this->oneToMany('Applicant', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Applicant', 'gidNumber');
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Group extends Relational
 	 */
 	public function invitees()
 	{
-		return $this->oneToMany('Invitee', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Invitee', 'gidNumber');
 	}
 
 	/**
@@ -210,7 +210,7 @@ class Group extends Relational
 	 */
 	public function members()
 	{
-		return $this->oneToMany('Member', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Member', 'gidNumber');
 	}
 
 	/**
@@ -220,7 +220,17 @@ class Group extends Relational
 	 */
 	public function managers()
 	{
-		return $this->oneToMany('Manager', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Manager', 'gidNumber');
+	}
+
+	/**
+	 * Get a list of categories
+	 *
+	 * @return  object
+	 */
+	public function categories()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Page\\Category', 'gidNumber');
 	}
 
 	/**
@@ -230,7 +240,7 @@ class Group extends Relational
 	 */
 	public function pages()
 	{
-		return $this->oneToMany('Page', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Page', 'gidNumber');
 	}
 
 	/**
@@ -240,7 +250,7 @@ class Group extends Relational
 	 */
 	public function modules()
 	{
-		return $this->oneToMany('Module', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Module', 'gidNumber');
 	}
 
 	/**
@@ -250,7 +260,7 @@ class Group extends Relational
 	 */
 	public function roles()
 	{
-		return $this->oneToMany('Role', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Role', 'gidNumber');
 	}
 
 	/**
@@ -260,7 +270,7 @@ class Group extends Relational
 	 */
 	public function logs()
 	{
-		return $this->oneToMany('Log', 'gidNumber');
+		return $this->oneToMany(__NAMESPACE__ . '\\Log', 'gidNumber');
 	}
 
 	/**

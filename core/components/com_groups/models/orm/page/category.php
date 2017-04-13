@@ -78,4 +78,14 @@ class Category extends Relational
 	{
 		return $this->belongsToOne('Components\Groups\Models\Orm\Group', 'gidNumber');
 	}
+
+	/**
+	 * Get pages assigned to this category
+	 *
+	 * @return  object
+	 */
+	public function pages()
+	{
+		return $this->oneToMany('Components\Groups\Models\Orm\Page', 'category');
+	}
 }
