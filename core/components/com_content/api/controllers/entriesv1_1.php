@@ -35,7 +35,7 @@ namespace Components\Resources\Api\Controllers;
 
 use Components\Resources\Tables\Resource;
 use Components\Resources\Tables\Type;
-use Components\Tags\Models\Cloud;
+use Components\Resources\Helpers\Tags;
 use Components\Resources\Models\Orm\Resource as ResourceORM;
 use Hubzero\Component\ApiController;
 use Component;
@@ -110,7 +110,10 @@ class Entriesv1_1 extends ApiController
 			$filters['tag'] = '';	
 			$searchable = Request::getVar('searchable', false);
 
-			require_once Component::path('com_tags') . '/models/cloud.php';
+			require_once Component::path('com_resources') . '/helpers/tags.php';
+			$tagging = new Tags;
+			$tags = $tagging->get_tags_with_objects();
+
 			require_once Component::path('com_resources') . '/models/orm/resource.php';
 		}
 
@@ -201,14 +204,15 @@ class Entriesv1_1 extends ApiController
 
 					$resource = new Resource($entry->id);
 					$groups = $resource->getGroups();
-					$tagCloud = new Cloud($entry->id, 'resources');
-					$tags = $tagCloud->tags()->toObject();
 
-					if (!empty($tags))
+					if (isset($tags))
 					{
 						foreach ($tags as $tag)
 						{
-							$obj->tags[] = $tag->raw_tag;
+							if (in_array($entry->id, $tag->rids))
+							{
+								$obj->tags[] = $tag->raw_tag;
+							}
 						}
 					}
 
