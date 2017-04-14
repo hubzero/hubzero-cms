@@ -1061,7 +1061,7 @@ class Sync extends \Hubzero\Base\Object
 				$path = $file->get('localPath');
 			return $path;
 		}, $localIds);
-	
+
 		foreach ($remotes['paths'] as $remote)
 		{
 			if (!in_array($remote['path'], $localIds) && $remote['converted'] != 1)
