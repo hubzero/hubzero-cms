@@ -97,11 +97,11 @@ class Profiles extends SiteController
 			return;
 		}
 
-		require_once dirname(dirname(__DIR__)) . '/tables/incremental/awards.php';
-		require_once dirname(dirname(__DIR__)) . '/tables/incremental/groups.php';
-		require_once dirname(dirname(__DIR__)) . '/tables/incremental/options.php';
+		require_once dirname(dirname(__DIR__)) . '/models/incremental/awards.php';
+		require_once dirname(dirname(__DIR__)) . '/models/incremental/groups.php';
+		require_once dirname(dirname(__DIR__)) . '/models/incremental/options.php';
 
-		$ia = new \ModIncrementalRegistrationAwards($profile);
+		$ia = new \Components\Members\Models\Incremental\Awards($profile);
 		$ia->optOut();
 
 		App::redirect(
@@ -230,10 +230,11 @@ class Profiles extends SiteController
 				$user = Member::blank()->set($row);
 
 				$obj = array();
-				$obj['id']      = $user->get('id');
-				$obj['name']    = $user->name;
-				$obj['org']     = (in_array($user->get('access'), User::getAuthorisedViewLevels()) ? $user->get('organization', '') : '');
-				$obj['picture'] = $user->picture();
+				$obj['id']       = $user->get('id');
+				$obj['name']     = $user->get('name');
+				$obj['username'] = $user->get('username');
+				$obj['org']      = (in_array($user->get('access'), User::getAuthorisedViewLevels()) ? $user->get('organization', '') : '');
+				$obj['picture']  = $user->picture();
 
 				$json[] = $obj;
 			}
