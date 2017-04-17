@@ -563,7 +563,8 @@ class Resources extends SiteController
 				// Get the first child
 				if ($firstChild || $model->isTool())
 				{
-					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, '');
+					$xact = 'data-pop-out="true"';
+					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, $xact);
 				}
 
 				// Get the sections
