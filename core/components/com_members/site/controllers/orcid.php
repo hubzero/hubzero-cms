@@ -45,6 +45,28 @@ use User;
 class Orcid extends SiteController
 {
 	/**
+	* user's name
+	*
+	*/
+    protected $_userName;
+	
+	/**
+	* user's ORCID ID
+	*
+	*/
+    protected $_userOrcidID;
+	
+	/**
+	 * OAuth tokens
+	 *
+	 * @var  array
+	 */
+	protected $_oauthToken = array(
+		'members' => 'https://orcid.org/oauth/token',
+		'sandbox' => 'https://sandbox.orcid.org/oauth/token'
+	);
+	
+	/**
 	 * A list of ORCID services that can be used
 	 *
 	 * @var  array
@@ -514,5 +536,88 @@ class Orcid extends SiteController
 		curl_close($initedCurl);
 
 		print_r($curl_response);
+	}
+		
+	/**
+	 * Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.
+	 * When deny button is hit, ORCID posts error code back but we do nothing here.
+	 *
+	 * @param   null
+	 * @return  void
+	 */
+	public function excAuth()
+	{
+		// Get client ID and client secret
+		$srv = $this->config->get('orcid_service', 'members');
+		$clientID = $this->config->get('orcid_' . $srv . '_client_id');
+		$clientSecret = $this->config->get('orcid_' . $srv . '_token');
+		$oauthToken = $this->_oauthToken[$srv];
+		
+		if (Request::getVar('code'))
+		{
+			//Build request parameter string
+			$params = "client_id=" . $clientID . "&client_secret=" . $clientSecret. "&grant_type=authorization_code&code=" . Request::getVar('code', '');
+			
+			//Initialize cURL session
+			$ch = curl_init();
+
+			//Set cURL options
+			curl_setopt($ch, CURLOPT_URL, $oauthToken);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+
+			//Execute cURL command
+			$result = curl_exec($ch);
+
+			//Transform cURL response from json string to php array
+			if ($result)
+			{
+				$response = json_decode($result, true);
+				$this->_userName = $response['name'];
+				$this->_userOrcidID = $response['orcid'];
+			}
+			
+			//Close cURL session
+			curl_close($ch);
+		}
+		else if (Request::getVar('error') && Request::getVar('error_description'))
+		{
+			//If user clicks on the deny button, it does nothing.
+		}
+		else
+		{
+			echo "Unexpected response from ORCID";
+		}
+		
+	}
+
+	/**
+	 * Show the landing page about user and ORCID ID
+	 *
+	 * @return  void
+	 */
+	public function redirectTask()
+	{
+		$this->excAuth();
+		
+		// It means when ORCID posts authorization code back
+		if (Request::getVar('code'))
+		{
+			//Check if there is such user's record in database
+			if (Member::userExists($this->_userName))
+			{
+				Member::saveORCIDToProfile($this->_userName, $this->_userOrcidID);
+			}
+			else
+			{
+				Member::saveOrcidToSession($this->_userName, $this->_userOrcidID);
+			}
+		}
+		
+		$view = new \Hubzero\Component\View(array('name' => 'orcid', 'layout' => 'redirect'));
+		$view->set('userName', $this->_userName)->set('userORCID', $this->_userOrcidID);
+		$view->display();
 	}
 }

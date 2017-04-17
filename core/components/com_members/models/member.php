@@ -28,19 +28,14 @@
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
-
 namespace Components\Members\Models;
-
 use Hubzero\User\User;
 use Hubzero\Config\Registry;
-
 require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'note.php');
 require_once(__DIR__ . DS . 'quota.php');
 require_once(__DIR__ . DS . 'host.php');
-
-define("TEMP_FILE", "/www/tmp/orcidRecords"); 
 
 /**
  * User model
@@ -57,14 +52,12 @@ class Member extends User
 	 * @var  string
 	 */
 	protected $table = '#__users';
-
 	/**
 	 * Has profile data been loaded?
 	 *
 	 * @var  bool
 	 */
 	private $profileLoaded = false;
-
 	/**
 	 * Get profile fields
 	 *
@@ -74,7 +67,6 @@ class Member extends User
 	{
 		return $this->oneToMany('Profile', 'user_id');
 	}
-
 	/**
 	 * Get notes
 	 *
@@ -84,7 +76,6 @@ class Member extends User
 	{
 		return $this->oneToMany('Note', 'user_id');
 	}
-
 	/**
 	 * Get quota
 	 *
@@ -94,7 +85,6 @@ class Member extends User
 	{
 		return $this->oneToOne('Quota', 'user_id');
 	}
-
 	/**
 	 * Get hosts
 	 *
@@ -104,7 +94,6 @@ class Member extends User
 	{
 		return $this->oneToMany('Host', 'uidNumber');
 	}
-
 	/**
 	 * Gets an attribute by key
 	 *
@@ -124,23 +113,18 @@ class Member extends User
 		{
 			return $this->tags();
 		}
-
 		if (!$this->hasAttribute($key) && !$this->profileLoaded)
 		{
 			// Collect multi-value fields into arrays
 			$data = Profile::collect($this->profiles);
-
 			foreach ($data as $k => $v)
 			{
 				$this->set($k, $v);
 			}
-
 			$this->profileLoaded = true;
 		}
-
 		return parent::get($key, $default);
 	}
-
 	/**
 	 * Is the user's email confirmed?
 	 *
@@ -150,7 +134,6 @@ class Member extends User
 	{
 		return ($this->get('emailConfirmed') == 1);
 	}
-
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired such as edit, delete, etc.
@@ -164,9 +147,7 @@ class Member extends User
 		{
 			return '';
 		}
-
 		$link = 'index.php?option=com_members&id=' . $this->get('id');
-
 		// If it doesn't exist or isn't published
 		$type = strtolower($type);
 		switch ($type)
@@ -175,14 +156,11 @@ class Member extends User
 			case 'changepassword':
 				$link .= '&task=' . $type;
 			break;
-
 			default:
 			break;
 		}
-
 		return $link;
 	}
-
 	/**
 	 * Get tags on an entry
 	 *
@@ -199,7 +177,6 @@ class Member extends User
 				case 'array':
 					return array();
 				break;
-
 				case 'string':
 				case 'cloud':
 				case 'html':
@@ -208,12 +185,9 @@ class Member extends User
 				break;
 			}
 		}
-
 		$cloud = new Tags($this->get('id'));
-
 		return $cloud->render($what, array('admin' => $admin));
 	}
-
 	/**
 	 * Tag the entry
 	 *
@@ -225,10 +199,8 @@ class Member extends User
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
 		$cloud = new Tags($this->get('id'));
-
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
-
 	/**
 	 * Save data
 	 *
@@ -239,40 +211,33 @@ class Member extends User
 		if (is_array($this->get('params')))
 		{
 			$params = new Registry($this->get('params'));
-
 			$this->set('params', $params);
 		}
 		if (is_object($this->get('params')))
 		{
 			$this->set('params', $this->get('params')->toString());
 		}
-
 		// Map set data to profile fields
 		$attribs = $this->getAttributes();
 		$columns = $this->getStructure()->getTableColumns($this->getTableName());
 		$profile = null;
-
 		foreach ($attribs as $key => $val)
 		{
 			if ($key == 'accessgroups')
 			{
 				continue;
 			}
-
 			if ($key == 'profile' || $key == 'profiles')
 			{
 				$profile = $val;
 			}
-
 			if (!isset($columns[$key]))
 			{
 				$this->removeAttribute($key);
 			}
 		}
-
 		// Save record
 		$result = parent::save();
-
 		if ($result)
 		{
 			if ($profile)
@@ -280,16 +245,13 @@ class Member extends User
 				$result = $this->saveProfile($profile);
 			}
 		}
-
 		if (!$result)
 		{
 			// Reset the data to the way it was before save attempt
 			$this->set($attribs);
 		}
-
 		return $result;
 	}
-
 	/**
 	 * Save profile data
 	 *
@@ -301,9 +263,7 @@ class Member extends User
 	{
 		$profile = (array)$profile;
 		$access  = (array)$access;
-
 		$keep = array();
-
 		foreach ($this->profiles as $field)
 		{
 			// Remove any entries not in the incoming data
@@ -314,10 +274,8 @@ class Member extends User
 					$this->addError($field->getError());
 					return false;
 				}
-
 				continue;
 			}
-
 			// Push to the list of fields we want to keep
 			if (!isset($keep[$field->get('profile_key')]))
 			{
@@ -329,13 +287,10 @@ class Member extends User
 				$values = $keep[$field->get('profile_key')];
 				$values = is_array($values) ? $values : array($values->get('profile_value') => $values);
 				$values[$field->get('profile_value')] = $field;
-
 				$keep[$field->get('profile_key')] = $values;
 			}
 		}
-
 		$i = 1;
-
 		foreach ($profile as $key => $data)
 		{
 			if ($key == 'tag' || $key == 'tags')
@@ -343,7 +298,6 @@ class Member extends User
 				$this->tag($data);
 				continue;
 			}
-
 			// Is it a multi-value field?
 			if (is_array($data))
 			{
@@ -351,24 +305,19 @@ class Member extends User
 				{
 					continue;
 				}
-
 				foreach ($data as $val)
 				{
 					if (is_array($val) || is_object($val))
 					{
 						$val = json_encode($val);
 					}
-
 					$val = trim($val);
-
 					// Skip empty values
 					if (!$val)
 					{
 						continue;
 					}
-
 					$field = null;
-
 					// Try to find an existing entry
 					if (isset($keep[$key]))
 					{
@@ -386,12 +335,10 @@ class Member extends User
 							unset($keep[$key]);
 						}
 					}
-
 					if (!($field instanceof Profile))
 					{
 						$field = Profile::blank();
 					}
-
 					$field->set(array(
 						'user_id'       => $this->get('id'),
 						'profile_key'   => $key,
@@ -399,14 +346,12 @@ class Member extends User
 						'ordering'      => $i,
 						'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
 					));
-
 					if (!$field->save())
 					{
 						$this->addError($field->getError());
 						return false;
 					}
 				}
-
 				// Remove any values not already found
 				if (isset($keep[$key]) && is_array($keep[$key]))
 				{
@@ -423,19 +368,15 @@ class Member extends User
 			else
 			{
 				$val = trim($data);
-
 				$field = null;
-
 				if (isset($keep[$key]))
 				{
 					$field = $keep[$key];
 				}
-
 				if (!($field instanceof Profile))
 				{
 					$field = Profile::blank();
 				}
-
 				// If value is empty
 				if (!$val)
 				{
@@ -448,11 +389,9 @@ class Member extends User
 							return false;
 						}
 					}
-
 					// Move along. Nothing to see here.
 					continue;
 				}
-
 				$field->set(array(
 					'user_id'       => $this->get('id'),
 					'profile_key'   => $key,
@@ -460,20 +399,16 @@ class Member extends User
 					'ordering'      => $i,
 					'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
 				));
-
 				if (!$field->save())
 				{
 					$this->addError($field->getError());
 					return false;
 				}
 			}
-
 			$i++;
 		}
-
 		return true;
 	}
-
 	/**
 	 * Delete the record and all associated data
 	 *
@@ -482,9 +417,7 @@ class Member extends User
 	public function destroy()
 	{
 		$data = $this->toArray();
-
 		Event::trigger('user.onUserBeforeDelete', array($data));
-
 		// Remove profile fields
 		foreach ($this->profiles()->rows() as $field)
 		{
@@ -494,7 +427,6 @@ class Member extends User
 				return false;
 			}
 		}
-
 		// Remove notes
 		foreach ($this->notes()->rows() as $note)
 		{
@@ -504,7 +436,6 @@ class Member extends User
 				return false;
 			}
 		}
-
 		// Remove hosts
 		foreach ($this->hosts()->rows() as $host)
 		{
@@ -514,21 +445,16 @@ class Member extends User
 				return false;
 			}
 		}
-
 		// Remove tags
 		$this->tag('');
-
 		// Attempt to delete the record
 		$result = parent::destroy();
-
 		if ($result)
 		{
 			Event::trigger('user.onUserAfterDelete', array($data, true, $this->getError()));
 		}
-
 		return $result;
 	}
-
 	/**
 	 * Clears all terms of use agreements
 	 *
@@ -537,12 +463,25 @@ class Member extends User
 	public static function clearTerms()
 	{
 		$tbl = self::blank();
-
 		$query = $tbl->getQuery()
 			->update($tbl->getTableName())
 			->set(array('usageAgreement' => 0));
-
 		return $query->execute();
+	}
+	
+	/**
+	* Get user ID
+	*
+	* @param   string   $name
+	* @return  int user ID
+	*/
+	public static function getUserID($name)
+	{
+		$db = App::get('db');
+		$sql = 'SELECT id FROM #__users' . ' WHERE name = ' . '"' . $name . '"';
+		$db->setQuery($sql);
+		$id = (int)$db->loadResult();
+		return $id;
 	}
 	
 	/**
@@ -551,14 +490,10 @@ class Member extends User
 	* @param   string   $name
 	* @return  boolean
 	*/
-	public static function profileExists($name)
+	public static function userExists($name)
 	{
-		$db = App::get('db');
-		$sql = 'SELECT uidNumber FROM #__xprofiles' . ' WHERE name = ' . '"' . $name . '"';
-		$db->setQuery($sql);
-
-		$id = $db->loadResult();
-		if ((int)$id != 0)
+		$userID = self::getUserID($name);
+		if ((int)$userID != 0)
 		{
 			return true;
 		}
@@ -569,78 +504,71 @@ class Member extends User
 	}
 	
 	/**
-	* Save ORCID ID to user's profile (#__xprofile)
+	* Save ORCID ID to Session
 	*
 	* @param   string   $name
 	* @param   string   $orcid
 	* @return  void
 	*/
-	public static function saveOrcidToProfile($name, $orcid)
+	public static function saveOrcidToSession($name, $orcid)
 	{
-		$db = App::get('db');
-		$sql = 'UPDATE #__xprofiles SET orcid = ' . '"' . $orcid . '"' . ' WHERE name = ' . '"' . $name . '"';
-		$db->setQuery($sql);
-		$result = $db->execute();
+		$sesID = "session_" . str_replace(' ', '', $name);
+		Session::set($sesID, $orcid);
 	}
 	
 	/**
-	* Save ORCID ID to file orcidRecords
-	*
-	* @param   string   $name
-	* @param   string   $orcid
-	* @return  void
-	*/
-	public static function saveOrcidToFile($name, $orcid)
-	{		
-		if (!file_exists(TEMP_FILE))
-		{
-			touch(TEMP_FILE);
-		}
-		
-		$jsonArr = json_decode(file_get_contents(TEMP_FILE), true);
-		
-		$jsonArr[$name] = $orcid;
-		
-		file_put_contents(TEMP_FILE, json_encode($jsonArr));
-	}
-	
-	/**
-	* Check if name in orcidRecords, which locates at \tmp directory
-	*
-	* @param   string   $name
-	* @return  boolean
-	*/
-	public static function nameExists($name)
-	{	
-		if (!file_exists(TEMP_FILE))
-		{
-			return false;
-		}
-		
-		if (false != $jsonArr = json_decode(file_get_contents(TEMP_FILE), true))
-		{
-			if (array_key_exists($name, $jsonArr))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
-	
-	/**
-	* Get orcid from orcidRecords
+	* Get orcid from Session
 	*
 	* @param   string   $name
 	* @return  orcid ID
 	*/
-	public static function getORCIDFromFile($name)
+	public static function getORCIDFromSession($name)
 	{
-		if (false != $jsonArr = json_decode(file_get_contents(TEMP_FILE), true))
+		$sesID = "session_" . str_replace(' ', '', $name);
+		$orcid = Session::get($sesID);
+		return $orcid;
+	}
+	
+	/**
+	* Save orcid to #_user_profiles
+	*
+	* @param   string   $name, $orcid
+	* @return  void
+	*/
+	public static function saveORCIDToProfile($name, $orcid)
+	{	
+		$userID = self::getUserID($name);
+		$db = App::get('db');
+		
+		//Check if the user already has orcid record
+		$exist_q = "SELECT EXISTS(SELECT * FROM #__user_profiles WHERE user_id = $userID AND profile_key = " . '"orcid"' . ")";
+		$db->setQuery($exist_q);
+		$exist = (int)$db->loadResult();
+		
+		//Get new ID based on existing maximum ID
+		$id_q = "SELECT MAX(id) FROM #__user_profiles";
+		$db->setQuery($id_q);
+		$newID = (int)$db->loadResult() + 1;
+		
+		//Get new ordering based on existing maximum ordering
+		$order_q = "SELECT MAX(ordering) FROM #__user_profiles where user_id = $userID";
+		$db->setQuery($order_q);
+		$newOrdering = (int)$db->loadResult() + 1;
+		
+		if ($exist == 1)
 		{
-			return $jsonArr[$name];
+			$update_q = "UPDATE #__user_profiles SET profile_value = " . '"' . $orcid  . '"' . " WHERE user_id = $userID AND profile_key = " . '"orcid"';
+			$db->setQuery($update_q);
+			$db->execute();
+		}
+		else
+		{
+			$orcid_sql = "INSERT INTO " . $db->quoteName('#__user_profiles') . " (" . $db->quoteName('id') . "," . $db->quoteName('user_id') . "," 
+			. $db->quoteName('profile_key') . "," . $db->quoteName('profile_value') . "," . $db->quoteName('ordering') . "," . $db->quoteName('access') 
+			. ") VALUES (" . $newID . "," . $userID . "," . '"orcid"'. "," . '"' . $orcid . '"' . "," . $newOrdering . "," . "1)";
+			
+			$db->setQuery($orcid_sql);
+			$result = $db->query();
 		}
 	}
 }

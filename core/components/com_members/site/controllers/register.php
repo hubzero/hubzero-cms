@@ -790,10 +790,14 @@ class Register extends SiteController
 					$member = Member::oneOrNew($user->get('id'));
 					
 					$name = $xregistration->get('givenName', '') . ' ' . $xregistration->get('surname', '');
-					if (Member::nameExists($name))
+					
+					if (Member::userExists($name))
 					{
-						$orcidID = Member::getORCIDFromFile($name);
-						Member::saveOrcidToProfile($name, $orcidID);
+						$orcidID = Member::getORCIDFromSession($name);
+						if ($orcidID != null)
+						{
+							$profile['orcid'] = $orcidID;
+						}	
 					}
 					
 					if (!$member->saveProfile($profile, $access))
@@ -1520,5 +1524,5 @@ class Register extends SiteController
 			$title = Lang::txt('COM_MEMBERS_REGISTER');
 		}
 		\Document::setTitle($title);
-	}	
+	}
 }

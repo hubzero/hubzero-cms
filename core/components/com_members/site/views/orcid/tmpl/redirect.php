@@ -37,11 +37,11 @@ defined('_HZEXEC_') or die();
 <section class="main section">
       <div class="grid nobreak">
 		<?php if (Request::getVar('code')) { ?>
-		<h1>Thank you, <?php echo $this->name; ?>!</h1>
+		<h1><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_THANK_YOU'); ?><?php echo $this->userName; ?><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_EXCLAMATION_MARK'); ?></h1>
 		<br>
-		<p>Your ORCID <img src="<?php echo Request::root()?>/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width='16' height='16' alt="iD"/> is <?php echo $this->orcidID; ?></p>
+		<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_YOUR_ORCID'); ?><img src="<?php echo Request::root()?>/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width='16' height='16' alt="iD"/> <?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_IS'); ?> <?php echo $this->userORCID; ?></p>
 		<?php } elseif (Request::getVar('error') && Request::getVar('error_description')) { ?>
-		<p>Sorry, your ORCID isn't generated or you don't login to ORCID. If you still want to know anything about ORCID, please go to <a class="btn" href="https://orcid.org/signin" target="_blank">Sign in or Register ORCID</a></p>
+		<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_DENY'); ?><a class="btn" href="https://orcid.org/signin" target="_blank"><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_SIGN_IN_OR_REGISTER'); ?></a></p>
 		<?php } ?>
       </div>
 </section>
