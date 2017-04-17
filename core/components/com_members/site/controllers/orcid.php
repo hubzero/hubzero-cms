@@ -48,13 +48,13 @@ class Orcid extends SiteController
 	* user's name
 	*
 	*/
-    protected $_userName;
+	protected $_userName;
 	
 	/**
 	* user's ORCID ID
 	*
 	*/
-    protected $_userOrcidID;
+	protected $_userOrcidID;
 	
 	/**
 	 * OAuth tokens
@@ -170,7 +170,7 @@ class Orcid extends SiteController
 
 		$url .= implode('+AND+', $bits);
 		
-		$header = array('Accept: application/vnd.orcid+xml');		
+		$header = array('Accept: application/vnd.orcid+xml');
 		if ($srv != 'public')
 		{
 			$header[] = 'Authorization: Bearer ' . $tkn;
@@ -537,14 +537,14 @@ class Orcid extends SiteController
 
 		print_r($curl_response);
 	}
-		
+	
 	/**
-	 * Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.
-	 * When deny button is hit, ORCID posts error code back but we do nothing here.
-	 *
-	 * @param   null
-	 * @return  void
-	 */
+	* Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.
+	* When deny button is hit, ORCID posts error code back but we do nothing here.
+	*
+	* @param   null
+	* @return  void
+	*/
 	public function excAuth()
 	{
 		// Get client ID and client secret
@@ -560,17 +560,17 @@ class Orcid extends SiteController
 			
 			//Initialize cURL session
 			$ch = curl_init();
-
+			
 			//Set cURL options
 			curl_setopt($ch, CURLOPT_URL, $oauthToken);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-
+			
 			//Execute cURL command
 			$result = curl_exec($ch);
-
+			
 			//Transform cURL response from json string to php array
 			if ($result)
 			{
@@ -590,7 +590,6 @@ class Orcid extends SiteController
 		{
 			echo "Unexpected response from ORCID";
 		}
-		
 	}
 
 	/**
