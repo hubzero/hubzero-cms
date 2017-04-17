@@ -53,11 +53,14 @@ HUB.Resources = {
 		HUBpresenter_window = window.open(source+'&time='+time+'&auto-resume=true','name','height=800,width=1100');
 		$('.hubpresenter').trigger('click');
 	},
-	popoutInlineVideo: function(time)
+	popoutInlineVideo: function(time, directSource)
 	{
-		var source = $('.embedded-video iframe').attr('src');
+		var source = directSource === undefined ? $('.embedded-video iframe').attr('src') : directSource;
 		HUBpresenter_window = window.open(source+'&time='+time+'&auto-resume=true','name','height=800,width=1100');
-		$('.video').trigger('click');
+		if (directSource === undefined)
+		{
+			$('.video').trigger('click');
+		}
 	},
 	fullscreenHubpresenter: function()
 	{
@@ -221,7 +224,7 @@ jQuery(document).ready(function($){
 	});
 	
 	//html5 video open
-	$(".com_resources").on('click', '.video', function(event) {
+	$(".com_resources, #tagbrowser").on('click', '.video', function(event) {
 		event.preventDefault();
 
 		if ($('.embedded-video').length)
@@ -239,27 +242,35 @@ jQuery(document).ready(function($){
 		else
 		{
 			var source = $(this).attr('href').tmplComponent();
-			var content = '<section class="embedded-video"><iframe src="' + source + '"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></section>';
-			$('section.upperpane').after(content);
-			$('.embedded-video iframe').load(function(event){
-				var iframe = $(this);
-				setTimeout(function() {
-					var height = '75vh';
-					
-					// make embed area height of iframe
-					$('.embedded-video').animate({
-						height: height
-					}, 800, function() {
-						$(this).addClass('loaded');
-					});
+			var popout = $(this).data('popOut');
+			if (popout == true)
+			{ 
+				HUB.Resources.popoutInlineVideo('00:00:00', source);
+			}
+			else
+			{
+				var content = '<section class="embedded-video"><iframe src="' + source + '"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></section>';
+				$('section.upperpane').after(content);
+				$('.embedded-video iframe').load(function(event){
+					var iframe = $(this);
+					setTimeout(function() {
+						var height = '75vh';
+						
+						// make embed area height of iframe
+						$('.embedded-video').animate({
+							height: height
+						}, 800, function() {
+							$(this).addClass('loaded');
+						});
 
-					// scroll to embedded media
-					$('body').animate({
-						scrollTop: $('.embedded-video').offset().top
-					}, 1000);
-				}, 100);
-				
-			});
+						// scroll to embedded media
+						$('body').animate({
+							scrollTop: $('.embedded-video').offset().top
+						}, 1000);
+					}, 100);
+					
+				});
+			}
 
 			// change bbb text
 			$(this).text('Hide Presentation');
