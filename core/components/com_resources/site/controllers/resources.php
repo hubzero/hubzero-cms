@@ -478,7 +478,7 @@ class Resources extends SiteController
 				$bits['tag'] = Request::getVar('input', '');
 				$bits['tag2'] = Request::getVar('input2', '');
 				$bits['sortby'] = Request::getVar('sortby', 'title');
-				$bits['filter']  = Request::getVar('filter', array('level0','level1','level2','level3','level4'));
+				$bits['filter']  = Request::getVar('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
 				$bits['ranking'] = $this->config->get('show_ranking');
 
 				if ($bits['tag'] == $bits['tag2'])
@@ -885,7 +885,7 @@ class Resources extends SiteController
 			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			App::redirect(Route::url($redirect, false), '','',false);
+			App::redirect(Route::url($redirect, false), '', '', false);
 		}
 
 		//do we have javascript?
@@ -1041,7 +1041,7 @@ class Resources extends SiteController
 			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			App::redirect(Route::url($redirect, false), '','',false);
+			App::redirect(Route::url($redirect, false), '', '', false);
 		}
 
 		// Instantiate a new view
@@ -1792,21 +1792,21 @@ class Resources extends SiteController
 					foreach ($all_logical_types as $logical_type)
 					{
 						//if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
-						// && strcasecmp($matches[ 1 ][ 0 ], $as_mnemonic) == 0)
+						// && strcasecmp($matches[1][0], $as_mnemonic) == 0)
 						if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
-						 && substr(strtolower($matches[ 1 ][ 0 ]), -strlen($as_mnemonic)) == $as_mnemonic)
+						 && substr(strtolower($matches[1][0]), -strlen($as_mnemonic)) == $as_mnemonic)
 						{
-							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
+							$relevant_logical_types_by_id[$logical_type->id] = $logical_type;
 							break;
 						}
 						elseif ($as_mnemonic == 'slides' && $logical_type->type == 'Presentation Slides')
 						{
-							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
+							$relevant_logical_types_by_id[$logical_type->id] = $logical_type;
 							break;
 						}
 						elseif ($as_mnemonic == 'notes' && $logical_type->type == 'Lecture Notes')
 						{
-							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
+							$relevant_logical_types_by_id[$logical_type->id] = $logical_type;
 							break;
 						}
 					}
@@ -1821,7 +1821,7 @@ class Resources extends SiteController
 					$grandchildren = $rhelper->children;
 					foreach ($grandchildren as $grandchild)
 					{
-						if (isset($relevant_logical_types_by_id[ (int)$grandchild->logicaltype ]))
+						if (isset($relevant_logical_types_by_id[(int)$grandchild->logicaltype]))
 						{
 							if (stripslashes($grandchild->introtext) != '')
 							{
@@ -1910,32 +1910,78 @@ class Resources extends SiteController
 							$enclosure->url = $podcast;
 							switch (Html::getFileExtension($podcast))
 							{
-								case 'm4v': $enclosure->type = 'video/x-m4v'; break;
-								case 'mp4': $enclosure->type = 'video/mp4'; break;
-								case 'wmv': $enclosure->type = 'video/wmv'; break;
-								case 'mov': $enclosure->type = 'video/quicktime'; break;
-								case 'qt': $enclosure->type = 'video/quicktime'; break;
-								case 'mpg': $enclosure->type = 'video/mpeg'; break;
-								case 'mpeg': $enclosure->type = 'video/mpeg'; break;
-								case 'mpe': $enclosure->type = 'video/mpeg'; break;
-								case 'mp2': $enclosure->type = 'video/mpeg'; break;
-								case 'mpv2': $enclosure->type = 'video/mpeg'; break;
-
-								case 'mp3': $enclosure->type = 'audio/mpeg'; break;
-								case 'm4a': $enclosure->type = 'audio/x-m4a'; break;
-								case 'aiff': $enclosure->type = 'audio/x-aiff'; break;
-								case 'aif': $enclosure->type = 'audio/x-aiff'; break;
-								case 'wav': $enclosure->type = 'audio/x-wav'; break;
-								case 'ra': $enclosure->type = 'audio/x-pn-realaudio'; break;
-								case 'ram': $enclosure->type = 'audio/x-pn-realaudio'; break;
-
-								case 'ppt': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
-								case 'pps': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
-								case 'pdf': $enclosure->type = 'application/pdf'; break;
-								case 'doc': $enclosure->type = 'application/msword'; break;
-								case 'txt': $enclosure->type = 'text/plain'; break;
-								case 'html': $enclosure->type = 'text/html'; break;
-								case 'htm': $enclosure->type = 'text/html'; break;
+								case 'm4v':
+									$enclosure->type = 'video/x-m4v';
+									break;
+								case 'mp4':
+									$enclosure->type = 'video/mp4';
+									break;
+								case 'wmv':
+									$enclosure->type = 'video/wmv';
+									break;
+								case 'mov':
+									$enclosure->type = 'video/quicktime';
+									break;
+								case 'qt':
+									$enclosure->type = 'video/quicktime';
+									break;
+								case 'mpg':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpeg':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpe':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mp2':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpv2':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mp3':
+									$enclosure->type = 'audio/mpeg';
+									break;
+								case 'm4a':
+									$enclosure->type = 'audio/x-m4a';
+									break;
+								case 'aiff':
+									$enclosure->type = 'audio/x-aiff';
+									break;
+								case 'aif':
+									$enclosure->type = 'audio/x-aiff';
+									break;
+								case 'wav':
+									$enclosure->type = 'audio/x-wav';
+									break;
+								case 'ra':
+									$enclosure->type = 'audio/x-pn-realaudio';
+									break;
+								case 'ram':
+									$enclosure->type = 'audio/x-pn-realaudio';
+									break;
+								case 'ppt':
+									$enclosure->type = 'application/vnd.ms-powerpoint';
+									break;
+								case 'pps':
+									$enclosure->type = 'application/vnd.ms-powerpoint';
+									break;
+								case 'pdf':
+									$enclosure->type = 'application/pdf';
+									break;
+								case 'doc':
+									$enclosure->type = 'application/msword';
+									break;
+								case 'txt':
+									$enclosure->type = 'text/plain';
+									break;
+								case 'html':
+									$enclosure->type = 'text/html';
+									break;
+								case 'htm':
+									$enclosure->type = 'text/html';
+									break;
 							}
 							$enclosure->length = $fs;
 
@@ -2059,8 +2105,8 @@ class Resources extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$id    = Request::getInt('id',0);
-		$alias = Request::getVar('alias','');
+		$id    = Request::getInt('id', 0);
+		$alias = Request::getVar('alias', '');
 		$d     = Request::getVar('d', 'inline');
 
 		//make sure we have a proper disposition
@@ -2475,7 +2521,7 @@ class Resources extends SiteController
 				for ($i=0, $n=count($auths); $i < $n; $i++)
 				{
 					$author = trim($auths[$i]);
-					$author = preg_replace('/\{\{(.+)\}\}/i','',$author);
+					$author = preg_replace('/\{\{(.+)\}\}/i', '', $author);
 					if (strstr($author, ','))
 					{
 						$author_arr = explode(',', $author);
@@ -2486,8 +2532,8 @@ class Resources extends SiteController
 					}
 					else
 					{
-						$author_arr = explode(' ',$author);
-						$author_arr = array_map('trim',$author_arr);
+						$author_arr = explode(' ', $author);
+						$author_arr = array_map('trim', $author_arr);
 
 						$last = array_pop($author_arr);
 						$addarray['author'][$i]['first'] = (count($author_arr) > 0) ? implode(' ', $author_arr) : '';
@@ -2536,7 +2582,10 @@ class Resources extends SiteController
 					: $HTTP_USER_AGENT;
 
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+			continue;
+		}
 
 		$fsize = filesize($p . $f);
 		$mod_date = date('r', filemtime($p.$f));
