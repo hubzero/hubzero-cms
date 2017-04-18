@@ -37,6 +37,7 @@ use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
 use Request;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -116,6 +117,16 @@ class Groupsv1_0 extends ApiController
 		$filters['fields'] = array_map('trim', $filters['fields']);
 
 		$response = \Hubzero\User\Group::find($filters);
+
+		$base = rtrim(Request::base(), '/');
+
+		foreach ($response as $i => $r)
+		{
+			$group = \Hubzero\User\Group::getInstance($r->gidNumber);
+
+			$response[$i]->url  = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $group->get('cn')), '/'));
+			$response[$i]->logo = str_replace('/api', '', $base . '/' . ltrim($group->getLogo(), '/'));
+		}
 
 		$this->send($response);
 	}
@@ -357,6 +368,56 @@ class Groupsv1_0 extends ApiController
 				}
 			}
 		}
+
+		$base = rtrim(Request::base(), '/');
+		$group['url'] = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'));
+
+		$sections = array();
+
+		$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($group);
+		$plugins = Event::trigger('groups.onGroupAreas', array());
+
+		if ($plugins)
+		{
+			$isMember = (in_array(User::get('id'), $record->get('members')));
+
+			foreach ($plugins as $section)
+			{
+				if (!$section['display_menu_tab'])
+				{
+					continue;
+				}
+
+				if (User::isGuest() && $pluginAccess[$section['name']] != 'anyone')
+				{
+					continue;
+				}
+
+				if ($pluginAccess[$section['name']] == 'nobody')
+				{
+					continue;
+				}
+
+				if (!$isMember && $pluginAccess[$section['name']] == 'members')
+				{
+					continue;
+				}
+
+				$section['url'] = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=' . $section['name']), '/'));
+
+				$sections[] = $section;
+			}
+		}
+
+		array_unshift($sections, array(
+			'name'             => 'overview',
+			'title'            => 'Overview',
+			'default_access'   => 'anyone',
+			'display_menu_tab' => true,
+			'url'              => str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=overview'), '/'))
+		));
+
+		$group['sections'] = $sections;
 
 		$this->send($group);
 	}
