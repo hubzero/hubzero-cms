@@ -812,7 +812,7 @@ class File extends Base
 		}
 
 		$zip = new ZipArchive;
-		if ($zip->open($bundle, ZipArchive::OVERWRITE) === TRUE)
+		if ($zip->open($bundle, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)
 		{
 			$i = 0;
 			foreach ($attachments as $attach)
