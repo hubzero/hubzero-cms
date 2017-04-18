@@ -84,6 +84,9 @@ $total = $this->model->entries('count', $this->filters);
 				}
 				?>
 				<ul class="entries-menu order-options">
+					<?php if (!empty($this->filters['reviewer']) && (strtolower($this->filters['reviewer']) == 'sponsored')): ?>
+					<li><a<?php echo ($this->filters['sortby'] == 'grant_status') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=grant_status' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></a></li>
+					<?php endif;?>
 					<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
 					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
 				</ul>
@@ -122,16 +125,14 @@ $total = $this->model->entries('count', $this->filters);
 					$this->filters['start'],
 					$this->filters['limit']
 				);
-				$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-				$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-				$pageNav->setAdditionalUrlParam('reviewer', $this->filters['reviewer']);
-				$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
-
 				$pagenavhtml = $pageNav->render();
 				$pagenavhtml = str_replace('projects/?','projects/browse/?', $pagenavhtml);
 				?>
 				<fieldset>
 					<?php echo $pagenavhtml; ?>
+					<?php if (!empty($this->filters['reviewer'])): ?>
+						<input type="hidden" name="reviewer" value="<?php echo $this->filters['reviewer'];?>" />
+					<?php endif; ?>
 				</fieldset>
 				<div class="clear"></div>
 				<?php

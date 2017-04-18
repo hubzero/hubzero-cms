@@ -247,7 +247,7 @@ class Projects extends Base
 		$this->view->filters['reviewer'] = $reviewer;
 		$this->view->filters['filterby'] = Request::getWord('filterby', 'all');
 
-		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status')))
+		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status')))
 		{
 			$this->view->filters['sortby'] = 'title';
 		}

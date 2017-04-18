@@ -326,6 +326,10 @@ class Project extends \JTable
 					$sort .= 'p.created ' . $sortdir . ' ';
 					break;
 
+				case 'grant_status':
+					$sort .= 'grant_status ' . $sortdir . ' ';
+					break;
+
 				case 'type':
 					$sort .= 'p.type ' . $sortdir . ' ';
 					break;
@@ -393,6 +397,7 @@ class Project extends \JTable
 		$updates  = isset($filters['updates']) && $filters['updates'] == 1 ? 1: 0;
 		$getowner = isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
 		$activity = isset($filters['activity']) && $filters['activity'] == 1 ? 1: 0;
+		$grantStatus = isset($filters['sortby']) && $filters['sortby'] == 'grant_status' ? true: false;
 
 		$query  = "SELECT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 
@@ -414,6 +419,11 @@ class Project extends \JTable
 		{
 			$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa
 						WHERE pa.projectid=p.id AND pa.state != 2) as activity ";
+		}
+
+		if ($grantStatus)
+		{
+			$query .= ", SUBSTR(SUBSTRING_INDEX(p.params, 'grant_status=', -1), 1, 1) as grant_status ";
 		}
 		$query .= $this->buildQuery($filters, $admin, $uid, $showall, $setup_complete);
 
