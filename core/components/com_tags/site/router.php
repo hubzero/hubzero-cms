@@ -114,7 +114,10 @@ class Router extends Base
 		}
 		if (isset($segments[2]))
 		{
-			$vars['task'] = $segments[2];
+			if (in_array($segments[2], array('delete', 'edit', 'feed', 'feed.rss')))
+			{
+				$vars['task'] = $segments[2];
+			}
 		}
 
 		return $vars;
