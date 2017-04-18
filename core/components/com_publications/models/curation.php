@@ -2135,7 +2135,7 @@ class Curation extends Object
 
 		// Create bundle
 		$zip = new ZipArchive;
-		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === true)
+		if ($zip->open($tarpath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true)
 		{
 			// Bundle file attachments
 			$attModel->bundleItems(
