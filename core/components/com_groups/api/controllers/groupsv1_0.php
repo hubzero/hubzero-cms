@@ -194,7 +194,7 @@ class Groupsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$cn              = Request::getWord('cn', '');
-		$title           = Request::getVar('title','');
+		$title           = Request::getVar('title', '');
 		$tags            = Request::getVar('tags', '');
 		$publicDesc      = Request::getVar('public_description', '');
 		$privateDesc     = Request::getVar('private_description', '');
@@ -505,7 +505,7 @@ class Groupsv1_0 extends ApiController
 		$publicDesc      = Request::getVar('public_description', $group->get('public_desc'));
 		$privateDesc     = Request::getVar('private_description', $group->get('private_desc'));
 		$joinPolicy      = strtolower(Request::getVar('join_policy', $group->get('join_policy')));
-		$discoverability = strtolower(Request::getVar('discoverability',  $group->get('discoverability')));
+		$discoverability = strtolower(Request::getVar('discoverability', $group->get('discoverability')));
 
 		// var to hold errors
 		$errors = array();

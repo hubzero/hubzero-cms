@@ -52,6 +52,7 @@ use Request;
 use Route;
 use Event;
 use Lang;
+use User;
 use App;
 
 /**
@@ -1408,7 +1409,7 @@ class Resources extends SiteController
 		// Display different main text if "playing" a resource
 		if ($this->_task == 'play')
 		{
-			$activechild = NULL;
+			$activechild = null;
 			if (is_object($this->activechild))
 			{
 				$activechild = $this->activechild;
