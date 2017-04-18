@@ -2740,12 +2740,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/padraic/mockery.git",
+                "url": "https://github.com/mockery/mockery.git",
                 "reference": "9e7b45359141a6735c6085edaa960ca07a329962"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/9e7b45359141a6735c6085edaa960ca07a329962",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/9e7b45359141a6735c6085edaa960ca07a329962",
                 "reference": "9e7b45359141a6735c6085edaa960ca07a329962",
                 "shasum": ""
             },
