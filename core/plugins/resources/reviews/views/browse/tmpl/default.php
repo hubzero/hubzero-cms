@@ -44,7 +44,7 @@ $this->css()
 		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>">
 			<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
 		</a>
-	<?php } else { ?>
+	<?php } else if (!$this->isAuthor) { ?>
 		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>">
 			<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
 		</a>
@@ -71,7 +71,7 @@ if ($this->reviews->count() > 0)
 }
 else
 {
-	echo '<p>' . Lang::txt('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND') . '</p>' . "\n";
+	echo '<div class="results-none"><p>' . Lang::txt('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND') . '</p></div>' . "\n";
 }
 
 // Display the review form if needed
