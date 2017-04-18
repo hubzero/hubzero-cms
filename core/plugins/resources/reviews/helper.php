@@ -63,14 +63,29 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		// Perform an action
 		switch ($action)
 		{
-			case 'addreview':    $this->editreview();   break;
-			case 'editreview':   $this->editreview();   break;
-			case 'savereview':   $this->savereview();   break;
-			case 'deletereview': $this->deletereview(); break;
-			case 'savereply':    $this->savereply();    break;
-			case 'deletereply':  $this->deletereply();  break;
-			case 'rateitem':     $this->rateitem();     break;
-			default: break;
+			case 'addreview':
+				$this->editreview();
+				break;
+			case 'editreview':
+				$this->editreview();
+				break;
+			case 'savereview':
+				$this->savereview();
+				break;
+			case 'deletereview':
+				$this->deletereview();
+				break;
+			case 'savereply':
+				$this->savereply();
+				break;
+			case 'deletereply':
+				$this->deletereply();
+				break;
+			case 'rateitem':
+				$this->rateitem();
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -133,8 +148,6 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$resource =& $this->resource;
-
 		// Incoming
 		$replyid = Request::getInt('comment', 0);
 
@@ -146,7 +159,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Do we have a resource ID?
-		if (!$resource->id)
+		if (!$this->resource->id)
 		{
 			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
@@ -165,7 +178,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$reply->save();
 
 		App::Redirect(
-			Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews', false)
+			Route::url('index.php?option=' . $this->_option . '&id=' . $this->resource->id . '&active=reviews', false)
 		);
 	}
 
@@ -246,10 +259,8 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$resource =& $this->resource;
-
 		// Do we have an ID?
-		if (!$resource->id)
+		if (!$this->resource->id)
 		{
 			// No - fail! Can't do anything else without an ID
 			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
@@ -265,14 +276,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 		else
 		{
-			$review = \Components\Resources\Reviews\Models\Review::oneByUser($resource->id, User::get('id'));
+			$review = \Components\Resources\Reviews\Models\Review::oneByUser($this->resource->id, User::get('id'));
 		}
 
 		if (!$review->get('id'))
 		{
 			// New review, get the user's ID
 			$review->set('user_id', User::get('id'));
-			$review->set('resource_id', $resource->id);
+			$review->set('resource_id', $this->resource->id);
 		}
 		else
 		{
@@ -301,6 +312,13 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
+		// Is the user an author ont his resource?
+		if ($this->isAuthor)
+		{
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_AUTHOR_NOTICE'));
+			return;
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -326,14 +344,13 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Calculate the new average rating for the parent resource
-		$resource =& $this->resource;
-		$resource->calculateRating();
-		$resource->updateRating();
+		$this->resource->calculateRating();
+		$this->resource->updateRating();
 
 		// Instantiate a helper object and get all the contributor IDs
 		$database = App::get('db');
 
-		$helper = new \Components\Resources\Helpers\Helper($resource->id, $database);
+		$helper = new \Components\Resources\Helpers\Helper($this->resource->id, $database);
 		$helper->getContributorIDs();
 		$users = $helper->contributorIDs;
 
@@ -350,7 +367,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		);
 		$eview->option   = $this->_option;
 		$eview->user     = User::getInstance();
-		$eview->resource = $resource;
+		$eview->resource = $this->resource;
 		$eview->review   = $row;
 		$message = $eview->loadTemplate();
 
@@ -381,8 +398,6 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$resource =& $this->resource;
-
 		// Incoming
 		$reviewid = Request::getInt('comment', 0);
 
@@ -394,7 +409,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Do we have a resource ID?
-		if (!$resource->id)
+		if (!$this->resource->id)
 		{
 			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
@@ -412,11 +427,11 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$review->save();
 
 		// Recalculate the average rating for the parent resource
-		$resource->calculateRating();
-		$resource->updateRating();
+		$this->resource->calculateRating();
+		$this->resource->updateRating();
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews', false)
+			Route::url('index.php?option=' . $this->_option . '&id=' . $this->resource->id . '&active=reviews', false)
 		);
 	}
 }

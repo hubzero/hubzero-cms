@@ -33,3 +33,28 @@
 		padding: 0;
 		text-align: right;
 	}
+
+	/* No results */
+	#reviews-section .results-none {
+		max-width: 30em;
+		margin: 90px auto;
+		padding: 5em 0 0 0;
+		text-align: center;
+		position: relative;
+	}
+	#reviews-section .results-none p {
+		font-size: 1.5em;
+		line-height: 1.8em;
+		font-weight: 300;
+		margin: 0 0 2em 0;
+	}
+	#reviews-section .results-none:before {
+		position: absolute;
+		top: 0px;
+		left: 50%;
+		font-size: 5em;
+		margin-left: -0.5em;
+		content: "\2298";
+		font-family: "Fontcons";
+		color: rgba(0, 0, 0, 0.2);
+	}
