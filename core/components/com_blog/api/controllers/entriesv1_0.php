@@ -294,6 +294,7 @@ class Entriesv1_0 extends ApiController
 			}
 		}
 
+		$row->set('tags', $tags);
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
 		if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
