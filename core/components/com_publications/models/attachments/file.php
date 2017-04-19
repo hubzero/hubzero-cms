@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models\Attachment;
@@ -45,32 +46,36 @@ class File extends Base
 	/**
 	* Attachment type name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'file';
+	protected $_name = 'file';
 
 	/**
 	* Git handler
 	*
-	* @var
+	* @var  object
 	*/
-	protected	$_git = NULL;
+	protected $_git = null;
 
 	/**
 	 * Unique attachment properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_connector = array('path', 'vcs_hash');
 
 	/**
 	 * Get configs
 	 *
-	 * @return  boolean
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @return  object
 	 */
-	public function getConfigs( $element, $elementId, $pub, $blockParams )
+	public function getConfigs($element, $elementId, $pub, $blockParams)
 	{
-		$configs	= new stdClass;
+		$configs = new stdClass;
 		$typeParams = $element->typeParams;
 
 		// which directory to copy files to
@@ -79,7 +84,7 @@ class File extends Base
 
 		// which subdirectory to copy files to
 		$configs->subdir = isset($typeParams->subdir) && $typeParams->subdir
-							? $typeParams->subdir : NULL;
+							? $typeParams->subdir : null;
 
 		// Directory path within pub folder
 		$configs->dirPath = $configs->subdir
@@ -100,7 +105,7 @@ class File extends Base
 			? $typeParams->fancyLauncher : 0;
 
 		// Allow changes in non-draft version?
-		$configs->freeze 	= isset($blockParams->published_editing)
+		$configs->freeze = isset($blockParams->published_editing)
 							&& $blockParams->published_editing == 0
 							&& ($pub->isPublished() || $pub->isPending())
 							? 1 : 0;
@@ -110,7 +115,7 @@ class File extends Base
 
 		// Default handler assigned in configs?
 		$configs->handler = isset($typeParams->handler) && $typeParams->handler
-							? $typeParams->handler : NULL;
+							? $typeParams->handler : null;
 
 		// Bundle multple files in an element together or serve independently?
 		$configs->multiZip = isset($typeParams->multiZip) ? $typeParams->multiZip : 1;
@@ -129,12 +134,12 @@ class File extends Base
 		$configs->logPath = $pub->path('logs', true);
 
 		// Get default title
-		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
 		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Get bundle name
-		$versionParams 		  = $pub->params;
-		$bundleName			  = $versionParams->get('element' . $elementId . 'bundlename', $configs->title);
+		$versionParams        = $pub->params;
+		$bundleName           = $versionParams->get('element' . $elementId . 'bundlename', $configs->title);
 		$configs->bundleTitle = $bundleName ? $bundleName : $configs->title;
 		$configs->bundleName  = $bundleName ? $bundleName . '.zip' : 'bundle.zip';
 
@@ -142,20 +147,21 @@ class File extends Base
 		$configs->allowRename = false;
 
 		// Include in bundle?
-		$configs->includeInPackage = isset($typeParams->includeInPackage)
-			&& $typeParams->includeInPackage == 0 ? false : true;
+		$configs->includeInPackage = isset($typeParams->includeInPackage) && $typeParams->includeInPackage == 0 ? false : true;
 
 		// Bundle with dir hierarchy?
 		$configs->bundleDirHierarchy = isset($typeParams->bundleDirHierarchy)
-							? $typeParams->bundleDirHierarchy : 1;
+							? $typeParams->bundleDirHierarchy
+							: 1;
 
 		// Bundle directory
 		$configs->bundleDirectory = isset($typeParams->bundleDirectory)
-							? trim($typeParams->bundleDirectory) : NULL;
+							? trim($typeParams->bundleDirectory)
+							: null;
 
 		// Archival path
 		$tarname  = Lang::txt('Publication') . '_' . $pub->id . '.zip';
-		$configs->archPath	= $configs->pubBase . DS . $tarname;
+		$configs->archPath = $configs->pubBase . DS . $tarname;
 
 		return $configs;
 	}
@@ -163,14 +169,21 @@ class File extends Base
 	/**
 	 * Add to zip bundle
 	 *
+	 * @param   object   $zip
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   string   $readme
+	 * @param   boolean  $bundleDir
 	 * @return  boolean
 	 */
-	public function addToBundle( $zip, $attachments, $element, $elementId,
-		$pub, $blockParams, &$readme, $bundleDir)
+	public function addToBundle($zip, $attachments, $element, $elementId, $pub, $blockParams, &$readme, $bundleDir)
 	{
 		// Get configs
 		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
-		$filePath = NULL;
+		$filePath = null;
 
 		if ($configs->includeInPackage == false)
 		{
@@ -180,29 +193,30 @@ class File extends Base
 		// Add inside bundles
 		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
-			$filePath  = $this->bundle($attachments, $configs, false);
-			$bPath 	   = $configs->pubBase . DS . 'bundles';
+			$filePath = $this->bundle($attachments, $configs, false);
+			$bPath    = $configs->pubBase . DS . 'bundles';
 			if (is_file($filePath))
 			{
-				$where  = $bundleDir;
+				$where = $bundleDir;
 				if ($configs->bundleDirectory)
 				{
 					$where .= DS . $configs->bundleDirectory;
 				}
-				if ($configs->directory
-					&& strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				if ($configs->directory && strtolower($configs->bundleDirectory) != strtolower($configs->directory))
 				{
 					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
 				}
 				$where .= DS . basename($filePath);
+
 				$zip->addFile($filePath, $where);
-				$readme   .= "\n" . $element->label . ': ' . "\n";
-				$readme   .= '>>> ' . str_replace($bPath . DS, '', $filePath) . "\n";
+
+				$readme .= "\n" . $element->label . ': ' . "\n";
+				$readme .= '>>> ' . str_replace($bPath . DS, '', $filePath) . "\n";
 			}
 		}
 		elseif ($attachments)
 		{
-			$readme   .= "\n" . $element->label . ': ' . "\n";
+			$readme .= "\n" . $element->label . ': ' . "\n";
 			$added = array();
 
 			// Add separately
@@ -212,7 +226,7 @@ class File extends Base
 
 				$fileinfo = pathinfo($filePath);
 				$a_dir  = $fileinfo['dirname'];
-				$a_dir	= trim(str_replace($configs->pubPath, '', $a_dir), DS);
+				$a_dir  = trim(str_replace($configs->pubPath, '', $a_dir), DS);
 
 				$fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$fPath .= basename($filePath);
@@ -231,13 +245,12 @@ class File extends Base
 					}
 				}
 
-				$where  = $bundleDir;
+				$where = $bundleDir;
 				if ($configs->bundleDirectory)
 				{
 					$where .= DS . $configs->bundleDirectory;
 				}
-				if ($configs->directory
-					&& strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				if ($configs->directory && strtolower($configs->bundleDirectory) != strtolower($configs->directory))
 				{
 					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
 				}
@@ -246,7 +259,7 @@ class File extends Base
 
 				if ($zip->addFile($filePath, $where))
 				{
-					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+					$readme .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
 				}
 			}
 		}
@@ -257,10 +270,15 @@ class File extends Base
 	/**
 	 * Draw list
 	 *
-	 * @return  boolean
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   boolean  $authorized
+	 * @return  mixed    False on failure, string on success
 	 */
-	public function drawPackageList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -270,7 +288,7 @@ class File extends Base
 			return false;
 		}
 
-		$list = NULL;
+		$list = null;
 
 		if (!$attachments)
 		{
@@ -302,13 +320,12 @@ class File extends Base
 			{
 				$fileinfo = pathinfo($filePath);
 				$a_dir  = $fileinfo['dirname'];
-				$a_dir	= trim(str_replace($configs->pubPath, '', $a_dir), DS);
+				$a_dir  = trim(str_replace($configs->pubPath, '', $a_dir), DS);
 				$fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$fPath .= basename($filePath);
 
 				$where = '';
-				if ($configs->directory
-					&& strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				if ($configs->directory && strtolower($configs->bundleDirectory) != strtolower($configs->directory))
 				{
 					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
 				}
@@ -318,14 +335,15 @@ class File extends Base
 
 				if (!$configs->bundleDirHierarchy)
 				{
-					$where = $configs->subdir && $class == 'level1' ? DS . $configs->subdir : '';
-					$where.= DS . basename($filePath);
+					$where  = $configs->subdir && $class == 'level1' ? DS . $configs->subdir : '';
+					$where .= DS . basename($filePath);
 				}
 
 				// File model
 				$file = new \Components\Projects\Models\File($filePath);
 
-				$list .= '<li class="' . $class . '"><span class="item-title" id="file-' . $attach->id . '">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span>';
+				$list .= '<li class="' . $class . '">';
+				$list .= '<span class="item-title" id="file-' . $attach->id . '">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span>';
 				$list .= '<span class="item-details">' . $attach->path . '</span>';
 				$list .= '</li>';
 			}
@@ -337,10 +355,15 @@ class File extends Base
 	/**
 	 * Draw list
 	 *
-	 * @return  boolean
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   boolean  $authorized
+	 * @return  string
 	 */
-	public function drawList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -377,8 +400,7 @@ class File extends Base
 			// Serve as bundle
 			$html .= '<li>';
 			$html .= $file->exists() && $authorized
-					? '<a href="' . Route::url($pub->link('serve') . '&el=' . $elementId )
-					. '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
+					? '<a href="' . Route::url($pub->link('serve') . '&el=' . $elementId) . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
 					: $icon . ' ' . $title . $notice;
 			$html .= '<span class="extras">';
 			$html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
@@ -386,9 +408,11 @@ class File extends Base
 			$html .= $file->get('ext') ? ')' : '';
 			if ($authorized === 'administrator')
 			{
-				$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
-				. $pub->get('id') . '&el=' . $elementId . '&v=' . $pub->get('version_number') . '">'
-				. Lang::txt('COM_PUBLICATIONS_EDIT') . '</a></span>';
+				$html .= ' <span class="edititem">';
+				$html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id=' . $pub->get('id') . '&el=' . $elementId . '&v=' . $pub->get('version_number') . '">';
+				$html .= Lang::txt('COM_PUBLICATIONS_EDIT');
+				$hmtl .= '</a>';
+				$html .= '</span>';
 			}
 			$html .= '</span>';
 			$html .='</li>';
@@ -419,9 +443,11 @@ class File extends Base
 				$html .= $file->get('ext') ? ')' : '';
 				if ($authorized === 'administrator')
 				{
-					$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
-					. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
-					. Lang::txt('COM_PUBLICATIONS_EDIT') . '</a></span>';
+					$html .= ' <span class="edititem">';
+					$html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id=' . $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">';
+					$html .= Lang::txt('COM_PUBLICATIONS_EDIT');
+					$html .= '</a>';
+					$html .= '</span>';
 				}
 				$html .= '</span>';
 				$html .='</li>';
@@ -434,19 +460,27 @@ class File extends Base
 	/**
 	 * Draw launcher
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $elements
+	 * @param   boolean  $authorized
 	 * @return  boolean
 	 */
-	public function drawLauncher( $element, $elementId, $pub, $blockParams, $elements, $authorized )
+	public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId])
-					 ? $attachments['elements'][$elementId] : NULL;
+					? $attachments['elements'][$elementId]
+					: null;
 
 		$showArchive = isset($pub->_curationModel->_manifest->params->show_archival)
-				? $pub->_curationModel->_manifest->params->show_archival :  0;
+				? $pub->_curationModel->_manifest->params->show_archival
+				: 0;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments(
@@ -456,18 +490,18 @@ class File extends Base
 		);
 
 		$disabled = 0;
-		$pop 	  = NULL;
+		$pop = null;
 
 		if ($pub->isUnpublished() || $pub->isDown())
 		{
-			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-			$disabled 	= 1;
+			$pop = Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$disabled = 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+				? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+				: Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
@@ -476,7 +510,7 @@ class File extends Base
 			$pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
-		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
+		$pop = $pop ? '<p class="warning">' . $pop . '</p>' : '';
 
 		// Is default handler assigned?
 		$handler =  $configs->handler;
@@ -491,9 +525,7 @@ class File extends Base
 		// Which role?
 		$role = $element->params->role;
 
-		$url = Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number )
-				. '?el=' . $elementId;
+		$url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
 
 		// Primary button
 		if ($role == 1)
@@ -506,19 +538,18 @@ class File extends Base
 			elseif ($attachments)
 			{
 				$attach = $attachments[0];
-				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
-				$title = $configs->title ? $configs->title : Lang::txt('Download content');
+				$fpath  = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
+				$title  = $configs->title ? $configs->title : Lang::txt('Download content');
 			}
 			else
 			{
-				$fpath = NULL;
-				$title = NULL;
+				$fpath = null;
+				$title = null;
 			}
 
 			if ($configs->fancyLauncher)
 			{
-				$html  = \Components\Publications\Helpers\Html::drawLauncher('ic-download', $pub, $url,
-						$title, $disabled, $pop, 'download', $showArchive);
+				$html = \Components\Publications\Helpers\Html::drawLauncher('ic-download', $pub, $url, $title, $disabled, $pop, 'download', $showArchive);
 			}
 			else
 			{
@@ -534,20 +565,20 @@ class File extends Base
 				{
 					// Get ext
 					$parts  = explode('.', $fpath);
-					$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
+					$ext 	= count($parts) > 1 ? array_pop($parts) : null;
 					$ext	= strtolower($ext);
 					$label.= $ext ?  ' <span class="caption">(' . strtoupper($ext) . ')</span>' : '';
 				}
 				$class = 'btn btn-primary active icon-next';
 				$class .= $disabled ? ' link_disabled' : '';
 
-				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL, $title, '', $disabled, $pop);
+				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop);
 			}
 		}
 		elseif ($role == 2 && $attachments)
 		{
 			$html .= '<ul>';
-			$html .= self::drawList( $attachments, $element, $elementId,
+			$html .= self::drawList($attachments, $element, $elementId,
 					$pub, $blockParams, $authorized);
 			$html .= '</ul>';
 		}
@@ -558,10 +589,16 @@ class File extends Base
 	/**
 	 * Transfer files from one version to another
 	 *
+	 * @param   object   $elementparams
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $attachments
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
 	 * @return  boolean
 	 */
-	public function transferData( $elementparams, $elementId, $pub, $blockParams,
-			$attachments, $oldVersion, $newVersion)
+	public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
 	{
 		// Get configs
 		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
@@ -590,17 +627,17 @@ class File extends Base
 		$newConfigs->dirHierarchy = $configs->dirHierarchy;
 
 		// Create new path
-		if (!is_dir( $newPath ))
+		if (!is_dir($newPath))
 		{
-			Filesystem::makeDirectory( $newPath, 0755, true, true );
+			Filesystem::makeDirectory($newPath, 0755, true, true);
 		}
 
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
 			// Make new attachment record
-			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id') ))
+			$pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id')))
 			{
 				continue;
 			}
@@ -618,7 +655,7 @@ class File extends Base
 			// Make sure we have subdirectories
 			if (!is_dir(dirname($copyTo)))
 			{
-				Filesystem::makeDirectory( dirname($copyTo), 0755, true, true );
+				Filesystem::makeDirectory(dirname($copyTo), 0755, true, true);
 			}
 
 			// Copy file
@@ -657,18 +694,23 @@ class File extends Base
 	/**
 	 * Serve
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   integer  $itemId
 	 * @return  boolean
 	 */
-	public function serve( $element, $elementId, $pub, $blockParams, $itemId = 0)
+	public function serve($element, $elementId, $pub, $blockParams, $itemId = 0)
 	{
 		// Incoming
-		$forceDownload = Request::getInt( 'download', 0 );		// Force downlaod action?
+		$forceDownload = Request::getInt('download', 0); // Force downlaod action?
 
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
@@ -682,7 +724,7 @@ class File extends Base
 		{
 			// Default action - download
 			// Build download path
-			$download = NULL;
+			$download = null;
 
 			// Default serve - download
 			if ($itemId)
@@ -728,7 +770,7 @@ class File extends Base
 			}
 			else
 			{
-				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOWNLOAD') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOWNLOAD'));
 				return false;
 			}
 		}
@@ -739,34 +781,39 @@ class File extends Base
 	/**
 	 * Build file path depending on configs
 	 *
+	 * @param   string   $path
+	 * @param   integer  $id
+	 * @param   object   $configs
+	 * @param   object   $params
+	 * @param   string   $suffix
 	 * @return  string
 	 */
-	public function getFilePath( $path, $id, $configs = NULL, $params = NULL, $suffix = NULL )
+	public function getFilePath($path, $id, $configs = null, $params = null, $suffix = null)
 	{
 		if (!$suffix && $params)
 		{
 			// Get file attachment params
-			$fParams = new \Hubzero\Config\Registry( $params );
+			$fParams = new \Hubzero\Config\Registry($params);
 			$suffix  = $fParams->get('suffix');
 		}
 		// Do we transfer file with subdirectories?
 		if ($configs->dirHierarchy == 1)
 		{
-			$path = trim($path, DS);
-			$name = $suffix ? \Components\Projects\Helpers\Html::fixFileName($path, ' (' . $suffix . ')') : $path;
-			$fpath  = $configs->pubPath . DS . $name;
+			$path  = trim($path, DS);
+			$name  = $suffix ? \Components\Projects\Helpers\Html::fixFileName($path, ' (' . $suffix . ')') : $path;
+			$fpath = $configs->pubPath . DS . $name;
 		}
 		elseif ($configs->dirHierarchy == 2)
 		{
 			// Do not preserve dir hierarchy, but append number for same-name files
-			$name 	= $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
-			$fpath  = $configs->pubPath . DS . $name;
+			$name  = $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+			$fpath = $configs->pubPath . DS . $name;
 		}
 		else
 		{
 			// Attach record number to file name
-			$name 	= \Components\Projects\Helpers\Html::fixFileName(basename($path), '-' . $id);
-			$fpath  = $configs->pubPath . DS . $name;
+			$name  = \Components\Projects\Helpers\Html::fixFileName(basename($path), '-' . $id);
+			$fpath = $configs->pubPath . DS . $name;
 		}
 
 		return $fpath;
@@ -775,11 +822,14 @@ class File extends Base
 	/**
 	 * Bundle files together
 	 *
-	 * @return  string
+	 * @param   array    $attachments
+	 * @param   object   $configs
+	 * @param   boolean  $overwrite
+	 * @return  mixed    False on error, string on success
 	 */
-	public function bundle( $attachments, $configs = NULL, $overwrite = false )
+	public function bundle($attachments, $configs = null, $overwrite = false)
 	{
-		if ($configs === NULL || count($attachments) < 2)
+		if ($configs === null || count($attachments) < 2)
 		{
 			return false;
 		}
@@ -793,14 +843,14 @@ class File extends Base
 		$path = $configs->pubBase . DS . 'bundles';
 
 		// Bundle name
-		$bundle	= $path . DS . $configs->bundleName;
+		$bundle = $path . DS . $configs->bundleName;
 
 		// Create pub version path
-		if (!is_dir( $path ))
+		if (!is_dir($path))
 		{
-			if (!Filesystem::makeDirectory( $path, 0755, true, true ))
+			if (!Filesystem::makeDirectory($path, 0755, true, true))
 			{
-				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
 				return false;
 			}
 		}
@@ -812,7 +862,7 @@ class File extends Base
 		}
 
 		$zip = new ZipArchive;
-		if ($zip->open($bundle, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)
+		if ($zip->open($bundle, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true)
 		{
 			$i = 0;
 			foreach ($attachments as $attach)
@@ -835,14 +885,19 @@ class File extends Base
 	/**
 	 * Save incoming file selection
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $toAttach
 	 * @return  boolean
 	 */
-	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
+	public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
 	{
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = Request::getVar( 'selecteditems', '');
+			$selections = Request::getVar('selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -862,8 +917,7 @@ class File extends Base
 		}
 
 		// Git helper
-		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
-			. DS . 'helpers' . DS . 'githelper.php' );
+		include_once PATH_CORE . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php';
 		$this->_git = new \Components\Projects\Helpers\Git($configs->path);
 
 		// Counter
@@ -946,8 +1000,12 @@ class File extends Base
 	/**
 	 * Remove attachment
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @return  boolean
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
@@ -984,15 +1042,19 @@ class File extends Base
 	/**
 	 * Update file attachment properties
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @return  boolean
 	 */
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= Request::getVar( 'title', '' );
-		$name 	= Request::getVar( 'filename', '' );
-		$thumb 	= Request::getInt( 'makedefault', 0 );
+		$title = Request::getVar('title', '');
+		$name  = Request::getVar('filename', '');
+		$thumb = Request::getInt('makedefault', 0);
 
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
@@ -1003,12 +1065,12 @@ class File extends Base
 			return false;
 		}
 
-		$gone  = is_file($configs->path . DS . $row->path) ? false : true;
+		$gone = is_file($configs->path . DS . $row->path) ? false : true;
 
 		// Update label
-		$row->title 		= $title;
-		$row->modified_by 	= User::get('id');
-		$row->modified 		= Date::toSql();
+		$row->title       = $title;
+		$row->modified_by = User::get('id');
+		$row->modified    = Date::toSql();
 
 		// Update record
 		if (!$row->store())
@@ -1025,7 +1087,7 @@ class File extends Base
 		if ($thumb)
 		{
 			// Get handler model
-			$modelHandler = new \Components\Publications\Models\Handlers( $this->_parent->_db );
+			$modelHandler = new \Components\Publications\Models\Handlers($this->_parent->_db);
 
 			// Load image handler
 			$handler = $modelHandler->ini('imageviewer');
@@ -1048,8 +1110,14 @@ class File extends Base
 	/**
 	 * Add/edit file attachment
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   string   $filePath
+	 * @param   object   $pub
+	 * @param   object   $configs
+	 * @param   integer  $uid
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   integer  $ordering
+	 * @return  boolean
 	 */
 	public function addAttachment($filePath, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
@@ -1068,16 +1136,15 @@ class File extends Base
 		$new = 0;
 		$update = 0;
 
-		$objPA = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-		if ($objPA->loadElementAttachment($pub->version_id, array( 'path' => $filePath),
-			$elementId, $this->_name, $element->role))
+		$objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+		if ($objPA->loadElementAttachment($pub->version_id, array('path' => $filePath), $elementId, $this->_name, $element->role))
 		{
 			// Update if new hash
 			if ($vcs_hash && $vcs_hash != $objPA->vcs_hash)
 			{
-				$objPA->vcs_hash 				= $vcs_hash;
-				$objPA->modified_by 			= $uid;
-				$objPA->modified 				= Date::toSql();
+				$objPA->vcs_hash    = $vcs_hash;
+				$objPA->modified_by = $uid;
+				$objPA->modified    = Date::toSql();
 				$update = 1; // Copy file again (new version)
 
 				// Reflect the update in curation record
@@ -1087,21 +1154,21 @@ class File extends Base
 		else
 		{
 			$new = 1;
-			$objPA->publication_id 			= $pub->id;
-			$objPA->publication_version_id 	= $pub->version_id;
-			$objPA->path 					= $filePath;
-			$objPA->type 					= $this->_name;
-			$objPA->vcs_hash 				= $vcs_hash;
-			$objPA->created_by 				= $uid;
-			$objPA->created 				= Date::toSql();
-			$objPA->role 					= $element->role;
+			$objPA->publication_id         = $pub->id;
+			$objPA->publication_version_id = $pub->version_id;
+			$objPA->path                   = $filePath;
+			$objPA->type                   = $this->_name;
+			$objPA->vcs_hash               = $vcs_hash;
+			$objPA->created_by             = $uid;
+			$objPA->created                = Date::toSql();
+			$objPA->role                   = $element->role;
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
 		}
 
-		$objPA->element_id 	= $elementId;
-		$objPA->ordering 	= $ordering;
+		$objPA->element_id = $elementId;
+		$objPA->ordering   = $ordering;
 
 		// Copy file from project repo into publication directory
 		if ($objPA->store())
@@ -1112,7 +1179,7 @@ class File extends Base
 				$suffix = $this->checkForDuplicate($configs->path . DS . $filePath, $objPA, $configs);
 				if ($suffix)
 				{
-					$pa = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
+					$pa = new \Components\Publications\Tables\Attachment($this->_parent->_db);
 					$pa->saveParam($objPA, 'suffix', $suffix);
 				}
 			}
@@ -1124,9 +1191,9 @@ class File extends Base
 			}
 
 			// Make default image (if applicable)
-			if ($configs->handler  && $configs->handler->getName() == 'imageviewer')
+			if ($configs->handler && $configs->handler->getName() == 'imageviewer')
 			{
-				$currentDefault = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
+				$currentDefault = new \Components\Publications\Tables\Attachment($this->_parent->_db);
 
 				if (!$currentDefault->getDefault($pub->version_id))
 				{
@@ -1143,11 +1210,11 @@ class File extends Base
 	/**
 	 * Check if file with same name exists in directory
 	 *
-	 * @param      object  		$objPA
-	 * @param      object  		$pub
-	 * @param      object  		$configs
-	 *
-	 * @return     boolean or error
+	 * @param   string   $copyFrom
+	 * @param   object   $objPA
+	 * @param   object   $configs
+	 * @param   integer  $suffix
+	 * @return  boolean
 	 */
 	public function checkForDuplicate($copyFrom, $objPA, $configs, $suffix = 0)
 	{
@@ -1158,7 +1225,7 @@ class File extends Base
 		if (file_exists($copyTo))
 		{
 			$suffix = $suffix + 1;
-			return $this->checkForDuplicate($copyFrom, $objPA, $configs, $suffix );
+			return $this->checkForDuplicate($copyFrom, $objPA, $configs, $suffix);
 		}
 		else
 		{
@@ -1169,28 +1236,27 @@ class File extends Base
 	/**
 	 * Publish file attachment
 	 *
-	 * @param      object  		$objPA
-	 * @param      object  		$pub
-	 * @param      object  		$configs
-	 * @param      boolean  	$update   force update of file
-	 *
-	 * @return     boolean or error
+	 * @param   object   $objPA
+	 * @param   object   $pub
+	 * @param   object   $configs
+	 * @param   integer  $update   force update of file
+	 * @return  boolean
 	 */
 	public function publishAttachment($objPA, $pub, $configs, $update = 0)
 	{
 		// Create pub version path
-		if (!is_dir( $configs->pubPath ))
+		if (!is_dir($configs->pubPath))
 		{
-			if (!Filesystem::makeDirectory( $configs->pubPath, 0755, true, true ))
+			if (!Filesystem::makeDirectory($configs->pubPath, 0755, true, true))
 			{
-				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
 				return false;
 			}
 		}
 
-		$file 		= $objPA->path;
-		$copyFrom 	= isset($configs->copyFrom) ? $configs->copyFrom : $configs->path . DS . $file;
-		$copyTo 	= $this->getFilePath($file, $objPA->id, $configs, $objPA->params);
+		$file     = $objPA->path;
+		$copyFrom = isset($configs->copyFrom) ? $configs->copyFrom : $configs->path . DS . $file;
+		$copyTo   = $this->getFilePath($file, $objPA->id, $configs, $objPA->params);
 
 		// Copy
 		if (is_file($copyFrom))
@@ -1213,7 +1279,7 @@ class File extends Base
 			$objPA->content_hash = $md5hash;
 
 			// Create hash file
-			$hfile =  $copyTo . '.hash';
+			$hfile = $copyTo . '.hash';
 			if (!is_file($hfile))
 			{
 				$handle = fopen($hfile, 'w');
@@ -1240,11 +1306,10 @@ class File extends Base
 	/**
 	 * Unpublish file attachment
 	 *
-	 * @param      object  		$objPA
-	 * @param      object  		$pub
-	 * @param      object  		$configs
-	 *
-	 * @return     boolean or error
+	 * @param   object   $objPA
+	 * @param   object   $pub
+	 * @param   object   $configs
+	 * @return  boolean
 	 */
 	public function unpublishAttachment($row, $pub, $configs)
 	{
@@ -1252,10 +1317,10 @@ class File extends Base
 		$deletePath = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
 		// Hash file
-		$hfile =  $deletePath . '.hash';
+		$hfile = $deletePath . '.hash';
 
 		// Delete file
-		if (is_file( $deletePath ))
+		if (is_file($deletePath))
 		{
 			if (Filesystem::delete($deletePath))
 			{
@@ -1283,26 +1348,28 @@ class File extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object  $element
+	 * @param   array   $formats
 	 * @return  object
 	 */
-	public function getStatus( $element, $attachments )
+	public function getStatus($element, $attachments)
 	{
 		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
-		$max 		= $element->max;
-		$min 		= $element->min;
-		$role 		= $element->role;
-		$params		= $element->typeParams;
-		$required	= $element->required;
-		$counter 	= count($attachments);
+		$max      = $element->max;
+		$min      = $element->min;
+		$role     = $element->role;
+		$params   = $element->typeParams;
+		$required = $element->required;
+		$counter  = count($attachments);
 
 		// Check for correct number of files
 		if ($min > 0 && $counter < $min)
 		{
 			if ($counter)
 			{
-				$status->setError( Lang::txt('Need at least ' . $min . ' file(s)') );
+				$status->setError(Lang::txt('Need at least ' . $min . ' file(s)'));
 			}
 			else
 			{
@@ -1317,7 +1384,7 @@ class File extends Base
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( Lang::txt('Maximum ' . $max . ' files allowed') );
+			$status->setError(Lang::txt('Maximum ' . $max . ' files allowed'));
 		}
 		// Check allowed formats
 		elseif (!self::checkAllowed($attachments, $params->allowed_ext))
@@ -1330,17 +1397,17 @@ class File extends Base
 					$error .= ' ' . $ext .',';
 				}
 				$error = substr($error, 0, strlen($error) - 1);
-				$status->setError( $error );
+				$status->setError($error);
 			}
 			else
 			{
-				$status->setError( Lang::txt('File format not allowed') );
+				$status->setError(Lang::txt('File format not allowed'));
 			}
 		}
 		// Check required formats
 		elseif (!self::checkRequired($attachments, $params->required_ext))
 		{
-			$status->setError( Lang::txt('Missing a file of required format') );
+			$status->setError(Lang::txt('Missing a file of required format'));
 		}
 
 		if (!$required)
@@ -1357,9 +1424,11 @@ class File extends Base
 	/**
 	 * Check for allowed formats
 	 *
-	 * @return  object
+	 * @param   array    $attachments
+	 * @param   array    $formats
+	 * @return  boolean
 	 */
-	public function checkAllowed( $attachments, $formats = array() )
+	public function checkAllowed($attachments, $formats = array())
 	{
 		if (empty($attachments))
 		{
@@ -1388,9 +1457,11 @@ class File extends Base
 	/**
 	 * Check for required formats
 	 *
-	 * @return  object
+	 * @param   array    $attachments
+	 * @param   array    $formats
+	 * @return  boolean
 	 */
-	public function checkRequired( $attachments, $formats = array() )
+	public function checkRequired($attachments, $formats = array())
 	{
 		if (empty($attachments))
 		{
@@ -1425,7 +1496,10 @@ class File extends Base
 	/**
 	 * Build Data object
 	 *
-	 * @return  HTML string
+	 * @param   object   $att
+	 * @param   object   $view
+	 * @param   integer  $i
+	 * @return  object
 	 */
 	public function buildDataObject($att, $view, $i = 1)
 	{
@@ -1442,10 +1516,10 @@ class File extends Base
 		// Customize title
 		$defaultTitle	= $view->manifest->params->title
 						? str_replace('{pubtitle}', $view->pub->title,
-						$view->manifest->params->title) : NULL;
+						$view->manifest->params->title) : null;
 		$defaultTitle	= $view->manifest->params->title
 						? str_replace('{pubversion}', $view->pub->version_label,
-						$defaultTitle) : NULL;
+						$defaultTitle) : null;
 
 		// Set default title
 		$incNum = $view->manifest->params->max > 1 ? ' (' . $i . ')' : '';
@@ -1463,13 +1537,12 @@ class File extends Base
 		$data->set('viewer', $view->viewer);
 		$data->set('pubPath', $configs->pubPath);
 		$data->set('props', $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId);
-		$data->set('downloadUrl', Route::url($view->pub->link('serve')
-							. '&el=' . $view->elementId . '&a=' . $att->id . '&download=1' ));
+		$data->set('downloadUrl', Route::url($view->pub->link('serve') . '&el=' . $view->elementId . '&a=' . $att->id . '&download=1'));
 
 		// Is attachment (image) also publication thumbnail
-		$params = new \Hubzero\Config\Registry( $att->params );
-		$data->set('pubThumb', $params->get('pubThumb', NULL));
-		$data->set('suffix', $params->get('suffix', NULL));
+		$params = new \Hubzero\Config\Registry($att->params);
+		$data->set('pubThumb', $params->get('pubThumb', null));
+		$data->set('suffix', $params->get('suffix', null));
 
 		return $data;
 	}
@@ -1477,12 +1550,15 @@ class File extends Base
 	/**
 	 * Draw attachment
 	 *
-	 * @return  HTML string
+	 * @param   object  $data
+	 * @param   object  $params
+	 * @param   object  $handler
+	 * @return  HTML    string
 	 */
-	public function drawAttachment($data, $params, $handler = NULL)
+	public function drawAttachment($data, $params, $handler = null)
 	{
 		// Check if we have an alternative view of attachments for the handler
-		$html = is_object($handler) ? $handler->drawAttachment($data, $params) : NULL;
+		$html = is_object($handler) ? $handler->drawAttachment($data, $params) : null;
 		if ($html)
 		{
 			return $html;
@@ -1491,19 +1567,19 @@ class File extends Base
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'attachments',
-				'layout'	=> $this->_name
+				'folder'  =>'projects',
+				'element' =>'publications',
+				'name'    =>'attachments',
+				'layout'  => $this->_name
 			)
 		);
 
-		$view->data 	= $data;
-		$view->params   = $params;
+		$view->data   = $data;
+		$view->params = $params;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
