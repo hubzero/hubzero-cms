@@ -1031,12 +1031,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "f7d05433fb1db583f460f79cbc2484e8be293e89"
+                "reference": "53bbb0b387a513030abdca106727b0fd50841bf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/f7d05433fb1db583f460f79cbc2484e8be293e89",
-                "reference": "f7d05433fb1db583f460f79cbc2484e8be293e89",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/53bbb0b387a513030abdca106727b0fd50841bf6",
+                "reference": "53bbb0b387a513030abdca106727b0fd50841bf6",
                 "shasum": ""
             },
             "require": {
@@ -1069,7 +1069,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2017-04-18 16:20:00"
+            "time": "2017-04-19 15:43:00"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1437,6 +1437,7 @@
                 }
             ],
             "description": "Flysystem adapter for Dropbox",
+            "abandoned": "spatie/flysystem-dropbox",
             "time": "2016-04-25 18:51:39"
         },
         {
