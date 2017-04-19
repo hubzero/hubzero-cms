@@ -204,7 +204,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "crated_by",
+	 * 		"name":        "created_by",
 	 * 		"description": "User ID of entry creator",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
@@ -271,9 +271,8 @@ class Entriesv1_0 extends ApiController
 			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
 			'publish_up'     => Request::getVar('publish_up', new Date('now'), 'post'),
 			'publish_down'   => Request::getVar('publish_down', null, 'post'),
-			'hits'           => Request::getInt('hits', 0, 'post'),
-			'tags'           => Request::getVar('tags', null, 'post')
 		);
+		$tags = Request::getVar('tags', null, 'post');
 
 		$row = new Entry();
 
@@ -282,17 +281,14 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 500);
 		}
 
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
-
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
 		}
 
-		if (isset($fields['tags']))
+		if (!empty($tags))
 		{
-			if (!$row->tag($fields['tags'], User::get('id')))
+			if (!$row->tag($tags, User::get('id')))
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
