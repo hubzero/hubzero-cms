@@ -337,7 +337,7 @@ class connections
 		// Check items
 		if (!$items || count($items) == 0)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+			//$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
 			return;
 		}
 
