@@ -3005,7 +3005,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$zip = new ZipArchive;
 
-		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === true)
+		if ($zip->open($tarpath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true)
 		{
 			$i = 0;
 

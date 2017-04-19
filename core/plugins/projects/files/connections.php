@@ -341,13 +341,17 @@ class connections
 			return;
 		}
 
+		$result = false;
+
 		if (count($items) > 1)
 		{
-			$archive = $items->compress();
-			$result  = $archive->serve('project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip');
+			if ($archive = $items->compress())
+			{
+				$result = $archive->serve('project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip');
 
-			// Delete the tmp file for serving
-			$archive->delete();
+				// Delete the tmp file for serving
+				$archive->delete();
+			}
 		}
 		else
 		{
