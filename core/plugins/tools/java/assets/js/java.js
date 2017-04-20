@@ -191,10 +191,13 @@ HUB.Mw = {
 			if (w < 100) { w = 100; }
 			if (h < 100) { h = 100; }
 
-			$('#app-content').css({
-				'width': w.toString() + 'px',
-				'height': h.toString() + 'px'
-			});
+			$('#app-content')
+				.css({
+					'width': w.toString() + 'px',
+					'height': h.toString() + 'px'
+				})
+				.parent()
+				.css('width', w.toString() + 'px');
 
 			$('#app-size').html(w.toString()+' x '+h.toString());
 
@@ -284,9 +287,11 @@ HUB.Mw = {
 					$('#app-size').html($('#app-content').width()+' x '+$('#app-content').height());
 				},
 				stop: function(event, ui) {
-					if ($('#theapp')) {
+					if ($('#theapp').length) {
 						var w = parseFloat($('#app-content').width()),
 							h = parseFloat($('#app-content').height());
+
+						$('#app-content').parent().css('width', w + 'px');
 
 						if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
 							if ($('#app-header')) {

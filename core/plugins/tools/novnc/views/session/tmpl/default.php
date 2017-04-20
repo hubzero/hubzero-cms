@@ -124,6 +124,7 @@ else
 				appfooter = $('#app-footer'),
 				appcontent = $('#app-content'),
 				appcontainer = $('#noVNC_container'),
+				appwrap = appcontent.parent(),
 				footermenu = $('<ul></ul>');
 
 			$('#noVNC-control-bar').removeClass('hidden');
@@ -158,6 +159,8 @@ else
 					maxWidth: 3900,
 					handles: 'se',
 					resize: function(event, ui) {
+						appwrap
+							.width(appcontent.width());
 						appcontainer
 							.width(appcontent.width())
 							.height(appcontent.height());
@@ -174,6 +177,12 @@ else
 						} else {
 							$('.ui-resizable-handle').css('bottom', '-3em');
 						}
+
+						// We need to set the width of the wrapping container
+						// Otherwise some elements may overflow, pushing the
+						// wrap to larger than it should be
+						appwrap
+							.width(w);
 
 						app
 							.attr('width', w)
