@@ -91,7 +91,7 @@ if (!$this->app->sess) {
 
 	<?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', array($this->app, $this->output, $readOnly))); ?>
 
-	<div id="app-wrap">
+	<div id="app-wrap" style="width: <?php echo $this->output->width; ?>px;">
 		<div id="app-header">
 			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
 			<?php if ($this->app->sess) { ?>
