@@ -186,10 +186,11 @@ class Git extends Models\Adapter
 				continue;
 			}
 
-			// Moved setting date to this location so that the date always shows even if modified was not selected as the sorting mechanism.
 			// Need to get extra metadata (slower)
-			$file->set('date', $this->_file($file, $dirPath, 'date'));
-
+			// This method was causing quite a bit of sluggishness (if only I paid attention to the comment above). 
+			// I've instead added retrieving the date with filemtime to the defaults() method in the File model.
+			// $file->set('date', $this->_file($file, $dirPath, 'date'));
+			
 			// Check for remote connections
 			$syncRecord = null;
 			if (isset($remotes[$file->get('localPath')]))
