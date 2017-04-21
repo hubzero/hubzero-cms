@@ -54,7 +54,7 @@ class File extends Object
 	 * @param	string	$path
 	 * @return  void
 	 */
-	public function __construct($localPath = NULL, $repoPath = NULL)
+	public function __construct($localPath = null, $repoPath = null)
 	{
 		$this->set('localPath', $localPath); // Path to item within repo
 
@@ -160,7 +160,7 @@ class File extends Object
 			$this->set('type', 'file');
 			$this->set('ext', Helpers\Html::getFileExtension($this->get('localPath')));
 		}
-		
+
 		if ($this->exists())
 		{
 			$this->set('date', Date::of(filemtime($this->get('fullPath'))));
@@ -179,7 +179,7 @@ class File extends Object
 			return file_get_contents($this->get('fullPath'));
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -187,14 +187,14 @@ class File extends Object
 	 *
 	 * @return  mixed
 	 */
-	public function getPreview($model, $hash = '', $get = 'name', $render = '', $hashed = NULL)
+	public function getPreview($model, $hash = '', $get = 'name', $render = '', $hashed = null)
 	{
 		if (!($model instanceof Project))
 		{
 			return false;
 		}
 
-		$image = NULL;
+		$image = null;
 
 		if (!$hashed)
 		{
@@ -211,13 +211,13 @@ class File extends Object
 					break;
 
 				case 'thumb':
-					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : NULL;
+					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : null;
 					$maxWidth  = 80;
 					$maxHeight = 80;
 					break;
 
 				default:
-					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : NULL;
+					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : null;
 					$maxWidth  = 180;
 					$maxHeight = 180;
 					break;
@@ -228,7 +228,7 @@ class File extends Object
 		$target  = PATH_APP . DS . trim($model->config()->get('imagepath', '/site/projects'), DS);
 		$target .= DS . strtolower($model->get('alias')) . DS . 'preview';
 
-		$remoteThumb = NULL;
+		$remoteThumb = null;
 		if ($this->get('remoteId') && $this->get('modified'))
 		{
 			$remoteThumb = substr($this->get('remoteId'), 0, 20) . '_' . strtotime($this->get('modified')) . '.png';
@@ -315,7 +315,7 @@ class File extends Object
 	 *
 	 * @return  mixed
 	 */
-	public function setSize($size = NULL)
+	public function setSize($size = null)
 	{
 		if (intval($size) > 0)
 		{
@@ -504,7 +504,7 @@ class File extends Object
 		$this->set('fullPath', $fullPath . $this->get('localPath'));
 
 		$dirname = dirname($this->get('dirname')) == '.'
-				? NULL : dirname($this->get('dirname'));
+				? null : dirname($this->get('dirname'));
 		$this->set('dirname', $dirname);
 		$this->setParents();
 
@@ -518,7 +518,7 @@ class File extends Object
 	 * @param      string $mimeType
 	 * @return     string
 	 */
-	protected function _fixUpMimeType ($mimeType = NULL)
+	protected function _fixUpMimeType ($mimeType = null)
 	{
 		if ($this->get('ext'))
 		{
@@ -568,7 +568,7 @@ class File extends Object
 	 * @param      string  $icon
 	 * @return     string
 	 */
-	public function setIcon ($ext = NULL, $basename = false, $icon = '')
+	public function setIcon ($ext = null, $basename = false, $icon = '')
 	{
 		if ($this->get('icon') && $this->get('ext') == $ext)
 		{
