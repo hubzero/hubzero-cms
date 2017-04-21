@@ -160,6 +160,11 @@ class File extends Object
 			$this->set('type', 'file');
 			$this->set('ext', Helpers\Html::getFileExtension($this->get('localPath')));
 		}
+		
+		if ($this->exists())
+		{
+			$this->set('date', Date::of(filemtime($this->get('fullPath'))));
+		}
 	}
 
 	/**

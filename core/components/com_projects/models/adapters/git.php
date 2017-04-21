@@ -186,6 +186,11 @@ class Git extends Models\Adapter
 				continue;
 			}
 
+			// Need to get extra metadata (slower)
+			// This method was causing quite a bit of sluggishness (if only I paid attention to the comment above). 
+			// I've instead added retrieving the date with filemtime to the defaults() method in the File model.
+			// $file->set('date', $this->_file($file, $dirPath, 'date'));
+			
 			// Check for remote connections
 			$syncRecord = null;
 			if (isset($remotes[$file->get('localPath')]))
