@@ -176,7 +176,18 @@ class Entriesv1_1 extends ApiController
 					$citation->id = 'citation-' . $entry->id;
 					$citation->description = $entry->abstract;
 					$citation->doi = $entry->doi;
-					$citation->tags = explode(';', $entry->keywords);
+
+					$tags = explode(',', $entry->keywords);
+					foreach ($tags as $key => &$tag)
+					{
+						$tag = \Hubzero\Utility\Sanitize::stripAll($tag);
+						if ($tag == '')
+						{
+							unset($tags[$key]);
+						}
+					}
+					$citation->tags = $tags;
+
 					$citation->author = explode(';', $entry->author);
 
 					if ($entry->published == 1)
