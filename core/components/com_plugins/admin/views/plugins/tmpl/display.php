@@ -34,12 +34,12 @@
 defined('_HZEXEC_') or die();
 
 // Include the component HTML helpers.
-Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-$state = $this->get('State');
-$canDo = \Components\Plugins\Admin\Helpers\Plugins::getActions();
+//$state = $this->get('State');
+$canDo = \Components\Plugins\Helpers\Plugins::getActions();
 
 Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGINS'), 'plugin');
 
@@ -63,8 +63,8 @@ if ($canDo->get('core.admin'))
 Toolbar::divider();
 Toolbar::help('plugins');
 
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn  = $this->escape($this->state->get('list.direction'));
+$listOrder = $this->escape($this->filters['sort']);
+$listDirn  = $this->escape($this->filters['sort_Dir']);
 $canOrder  = User::authorise('core.edit.state', 'com_plugins');
 $saveOrder = $listOrder == 'ordering';
 ?>
@@ -72,7 +72,7 @@ $saveOrder = $listOrder == 'ordering';
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_PLUGINS_SEARCH_IN_TITLE'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PLUGINS_SEARCH_IN_TITLE'); ?>" />
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
@@ -80,17 +80,17 @@ $saveOrder = $listOrder == 'ordering';
 		<div class="filter-select fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', \Components\Plugins\Admin\Helpers\Plugins::stateOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
+				<?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
 			</select>
 
 			<select name="filter_folder" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER');?></option>
-				<?php echo Html::select('options', \Components\Plugins\Admin\Helpers\Plugins::folderOptions(), 'value', 'text', $this->state->get('filter.folder'));?>
+				<?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::folderOptions(), 'value', 'text', $this->filters['folder']);?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 		</div>
 	</fieldset>
@@ -130,66 +130,76 @@ $saveOrder = $listOrder == 'ordering';
 		<tfoot>
 			<tr>
 				<td colspan="12">
-					<?php echo $this->pagination->getListFooter(); ?>
+					<?php echo $this->items->pagination; ?>
 				</td>
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php foreach ($this->items as $i => $item) :
-			$ordering   = ($listOrder == 'ordering');
-			$canEdit    = User::authorise('core.edit',       'com_plugins');
-			$canCheckin = User::authorise('core.manage',     'com_checkin') || $item->checked_out==User::get('id') || $item->checked_out==0;
-			$canChange  = User::authorise('core.edit.state', 'com_plugins') && $canCheckin;
-			?>
-			<tr class="row<?php echo $i % 2; ?>">
-				<td class="center">
-					<?php echo Html::grid('id', $i, $item->extension_id); ?>
-				</td>
-				<td>
-					<?php if ($item->checked_out) : ?>
-						<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, '', $canCheckin); ?>
-					<?php endif; ?>
-					<?php if ($canEdit) : ?>
-						<a href="<?php echo Route::url('index.php?option=com_plugins&task=edit&extension_id='.(int) $item->extension_id); ?>">
-							<?php echo $item->name; ?></a>
-					<?php else : ?>
-							<?php echo $item->name; ?>
-					<?php endif; ?>
-				</td>
-				<td class="center">
-					<?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>
-				</td>
-				<td class="priority-2 order">
-					<?php if ($canChange) : ?>
-						<?php if ($saveOrder) :?>
-							<?php if ($listDirn == 'asc') : ?>
-								<span><?php echo $this->pagination->orderUpIcon($i, (@$this->items[$i-1]->folder == $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (@$this->items[$i+1]->folder == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-							<?php elseif ($listDirn == 'desc') : ?>
-								<span><?php echo $this->pagination->orderUpIcon($i, (@$this->items[$i-1]->folder == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (@$this->items[$i+1]->folder == $item->folder), 'orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-							<?php endif; ?>
+			<?php
+			$i = 0;
+			$folders = $this->items->fieldsByKey('folder');
+			foreach ($this->items as $item) :
+
+				$item->loadLanguage(true);
+
+				$ordering   = ($listOrder == 'ordering');
+				$canEdit    = User::authorise('core.edit', 'com_plugins');
+				$canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out==User::get('id') || $item->checked_out==0;
+				$canChange  = User::authorise('core.edit.state', 'com_plugins') && $canCheckin;
+				?>
+				<tr class="row<?php echo $i % 2; ?>">
+					<td class="center">
+						<?php echo Html::grid('id', $i, $item->extension_id); ?>
+					</td>
+					<td>
+						<?php if ($item->checked_out) : ?>
+							<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, '', $canCheckin); ?>
 						<?php endif; ?>
-						<?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-						<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
-					<?php else : ?>
-						<?php echo $item->ordering; ?>
-					<?php endif; ?>
-				</td>
-				<td class="priority-3 nowrap center">
-					<?php echo $this->escape($item->folder);?>
-				</td>
-				<td class="priority-3 nowrap center">
-					<?php echo $this->escape($item->element);?>
-				</td>
-				<td class="priority-4 center">
-					<?php echo $this->escape($item->access_level); ?>
-				</td>
-				<td class="priority-5 center">
-					<?php echo (int) $item->extension_id;?>
-				</td>
-			</tr>
-			<?php endforeach; ?>
+						<?php if ($canEdit) : ?>
+							<a href="<?php echo Route::url('index.php?option=com_plugins&task=edit&id=' . (int) $item->extension_id . '&' . Session::getFormToken() . '=1'); ?>">
+								<?php echo Lang::txt($item->name); ?>
+							</a>
+						<?php else : ?>
+							<?php echo Lang::txt($item->name); ?>
+						<?php endif; ?>
+					</td>
+					<td class="center">
+						<?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>
+					</td>
+					<td class="priority-2 order">
+						<?php if ($canChange) : ?>
+							<?php if ($saveOrder) :?>
+								<?php if ($listDirn == 'asc') : ?>
+									<span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i-1] == $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+									<span><?php echo $this->items->pagination->orderDownIcon($i, $this->items->pagination->total, (@$folders[$i+1] == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								<?php elseif ($listDirn == 'desc') : ?>
+									<span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i-1] == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+									<span><?php echo $this->items->pagination->orderDownIcon($i, $this->items->pagination->total, (@$folders[$i+1] == $item->folder), 'orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								<?php endif; ?>
+							<?php endif; ?>
+							<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
+							<input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
+						<?php else : ?>
+							<?php echo $item->ordering; ?>
+						<?php endif; ?>
+					</td>
+					<td class="priority-3 nowrap center">
+						<?php echo $this->escape($item->folder); ?>
+					</td>
+					<td class="priority-3 nowrap center">
+						<?php echo $this->escape($item->element); ?>
+					</td>
+					<td class="priority-4 center">
+						<?php echo $this->escape($item->access_level); ?>
+					</td>
+					<td class="priority-5 center">
+						<?php echo (int) $item->extension_id; ?>
+					</td>
+				</tr>
+				<?php
+				$i++;
+			endforeach;
+			?>
 		</tbody>
 	</table>
 

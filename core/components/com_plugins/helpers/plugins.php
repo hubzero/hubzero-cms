@@ -30,13 +30,14 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Plugins\Admin\Helpers;
+namespace Components\Plugins\Helpers;
 
 use Hubzero\Base\Object;
-use Exception;
+use Hubzero\Access\Access;
 use Filesystem;
 use Html;
 use User;
+use App;
 
 /**
  * Plugins component helper.
@@ -60,7 +61,7 @@ class Plugins
 		$result    = new Object;
 		$assetName = self::$extension;
 
-		$actions = \JAccess::getActions($assetName);
+		$actions = Access::getActionsFromFile(\Component::path($assetName) . '/config/access.xml');
 
 		foreach ($actions as $action)
 		{
@@ -92,51 +93,23 @@ class Plugins
 	 */
 	public static function folderOptions()
 	{
-		$db    = \App::get('db');
-		$query = $db->getQuery(true);
+		$db = App::get('db');
 
-		$query->select('DISTINCT(folder) AS value, folder AS text');
-		$query->from('#__extensions');
-		$query->where($db->quoteName('type').' = '.$db->quote('plugin'));
-		$query->order('folder');
+		$query = $db->getQuery()
+			->select('DISTINCT(folder)', 'value')
+			->select('folder', 'text')
+			->from('#__extensions')
+			->whereEquals('type', 'plugin')
+			->order('folder', 'asc');
 
-		$db->setQuery($query);
+		$db->setQuery($query->toString());
 		$options = $db->loadObjectList();
 
 		if ($error = $db->getErrorMsg())
 		{
-			throw new Exception($error, 500);
+			App::abort(500, $error);
 		}
 
 		return $options;
-	}
-
-	/**
-	 * Returns an array of standard published state filter options.
-	 *
-	 * @return  object
-	 */
-	public function parseXMLTemplateFile($templateBaseDir, $templateDir)
-	{
-		$data = new Object;
-
-		// Check of the xml file exists
-		$filePath = Filesystem::cleanPath($templateBaseDir.'/templates/'.$templateDir.'/templateDetails.xml');
-		if (is_file($filePath))
-		{
-			$xml = \JInstaller::parseXMLInstallFile($filePath);
-
-			if ($xml['type'] != 'template')
-			{
-				return false;
-			}
-
-			foreach ($xml as $key => $value)
-			{
-				$data->set($key, $value);
-			}
-		}
-
-		return $data;
 	}
 }

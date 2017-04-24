@@ -34,12 +34,12 @@ namespace Components\Plugins\Admin\Controllers;
 
 use Hubzero\Utility\Arr;
 use Hubzero\Component\AdminController;
-use Components\Plugins\Admin\Models;
-use Exception;
-use Session;
+use Components\Plugins\Models\Plugin;
 use Request;
 use Notify;
 use Route;
+use Cache;
+use Event;
 use Lang;
 use App;
 
@@ -92,104 +92,179 @@ class Plugins extends AdminController
 	 */
 	public function displayTask()
 	{
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'plugins.php');
+		$filters = array(
+			'folder' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.folder',
+				'filter_folder',
+				''
+			),
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'filter_search',
+				''
+			)),
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'filter_state',
+				''
+			),
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'filter_access',
+				0,
+				'int'
+			),
+			'enabled' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.enabled',
+				'filter_state',
+				'',
+				'int'
+			),
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'folder'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
 
-		$model = new Models\Plugins();
+		$query = Plugin::all()
+			->where('state', '>=', 0);
 
-		$this->view->ftp = \JClientHelper::setCredentialsFromRequest('ftp');
+		$p = $query->getTableName();
+		$u = '#__users';
+		$a = '#__viewlevels';
 
-		$this->view->state      = $model->getState();
-		$this->view->items      = $model->getItems();
-		$this->view->pagination = $model->getPagination();
+		$query->select($p . '.*');
 
-		// Check for errors.
-		if (count($errors = $model->getErrors()))
+		// Join over the users for the checked out user.
+		$query
+			->select($u . '.name', 'editor')
+			->join($u, $u . '.id', $p . '.checked_out', 'left');
+
+		// Join over the access groups.
+		$query
+			->select($a . '.title', 'access_level')
+			->join($a, $a . '.id', $p . '.access', 'left');
+
+		// Filter by access level.
+		if ($filters['access'])
 		{
-			App::abort(500, implode("\n", $errors));
+			$query->whereEquals($p . '.access', (int) $filters['access']);
 		}
 
-			// Check if there are no matching items
-		if (!count($this->view->items))
+		// Filter by published state
+		if (is_numeric($filters['state']))
+		{
+			$query->whereEquals($p . '.enabled', (int) $filters['state']);
+		}
+		elseif ($filters['state'] === '')
+		{
+			$query->whereIn($p . '.enabled', array(0, 1));
+		}
+
+		// Filter by folder.
+		if ($filters['folder'])
+		{
+			$query->whereEquals($p . '.folder', $filters['folder']);
+		}
+
+		// Filter by search in id
+		if (!empty($filters['search']) && stripos($filters['search'], 'id:') === 0)
+		{
+			$query->whereEquals($p . '.extension_id', (int) substr($filters['search'], 3));
+		}
+
+		if ($filters['sort'] == 'name')
+		{
+			$query->order('name', $filters['sort_Dir']);
+			$query->order('ordering', 'asc');
+		}
+		else if ($filters['sort'] == 'ordering')
+		{
+			$query->order('folder', 'asc');
+			$query->order('ordering', $filters['sort_Dir']);
+			$query->order('name', 'asc');
+		}
+		else
+		{
+			$query->order($filters['sort'], $filters['sort_Dir']);
+			$query->order('name', 'asc');
+			$query->order('ordering', 'asc');
+		}
+
+		$items = $query
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		// Check if there are no matching items
+		if (!count($items))
 		{
 			Notify::warning(Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS'));
 		}
 
 		$this->view
+			->set('filters', $filters)
+			->set('items', $items)
 			->display();
 	}
 
 	/**
 	 * Method to edit an existing record.
 	 *
+	 * @param   object  $model
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($model = null)
 	{
-		// Initialise variables.
-		$model   = new Models\Plugin();
-		$table   = $model->getTable();
-		$cid     = Request::getVar('cid', array(), 'post', 'array');
-		$key     = $table->getKeyName();
-		$context = "$this->_option.edit.plugin";
-
-		// Get the previous record id (if any) and the current record id.
-		$recordId = (int) (count($cid) ? $cid[0] : Request::getInt($key));
-		if ($recordId)
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			Request::setVar('extension_id', $recordId);
-		}
-		$checkin  = property_exists($table, 'checked_out');
-
-		// Access check.
-		if (!$this->allowEdit(array($key => $recordId), $key))
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
-				Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'),
-				'error'
-			);
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		if ($checkin && !$model->checkout($recordId))
+		Request::setVar('hidemainmenu', 1);
+
+		if (!is_object($model))
 		{
+			// Incoming
+			$id = Request::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
+			// Load the record
+			$model = Plugin::oneOrNew($id);
+		}
+
+		// Fail if checked out not by 'me'
+		if ($model->get('checked_out') && $model->get('checked_out') != User::get('id'))
+		{
+			Notify::warning(Lang::txt('COM_PLUGINS_CHECKED_OUT'));
+			return $this->cancelTask();
+		}
+
+		if (!$model->isNew())
+		{
+			// Checkout the record
+			$model->checkout();
 			// Check-out failed, display a notice but allow the user to see the record.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false), //$this->getRedirectToItemAppend($recordId, $key), false),
-				Lang::txt('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()),
-				'error'
-			);
+			//Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
+			//return $this->cancelTask();
 		}
 
-		$this->holdEditId($context, $recordId);
-
-		User::setState($context . '.data', null);
-
-		//$id = Request::getInt('extension_id');
-
-		/*if (!$this->checkEditId('com_plugins.edit.plugin', $id))
-		{
-			// Somehow the person just went to the form - we don't allow that.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id),
-				'error'
-			);
-		}
-
-		$result = parent::edit($key, $urlVar);
-
-		$model = new Models\Plugin();*/
-
-		$this->view->state = $model->getState();
-		$this->view->item  = $model->getItem();
-		$this->view->form  = $model->getForm();
-
-		if (count($errors = $model->getErrors()))
-		{
-			throw new Exception(implode("\n", $errors), 500);
-		}
+		// Load the language file
+		$model->loadLanguage();
 
 		$this->view
+			->set('item', $model)
+			->set('form', $model->getForm())
 			->setLayout('edit')
 			->display();
 	}
@@ -202,150 +277,77 @@ class Plugins extends AdminController
 	 */
 	public function saveTask()
 	{
-		// Check for request forgeries.
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		// Check for request forgeries
+		Request::checkToken();
 
-		// Initialise variables.
-		$model   = new Models\Plugin();
-		$table   = $model->getTable();
-		$data    = Request::getVar('jform', array(), 'post', 'array');
-		$checkin = property_exists($table, 'checked_out');
-		$context = "$this->_option.edit.plugin";
-		$task    = $this->getTask();
-		$key     = $table->getKeyName();
-
-		$recordId = Request::getInt($key);
-
-		if (!$this->checkEditId($context, $recordId))
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			// Somehow the person just went to the form and tried to save it. We don't allow that.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
-				Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId),
-				'error'
-			);
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Populate the row id from the session.
-		$data[$key] = $recordId;
+		// Incoming
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
-		// Access check.
-		if (!$this->allowSave($data, $key))
+		// Initiate extended database class
+		$model = Plugin::oneOrNew($fields['extension_id'])->set($fields);
+
+		// Get parameters
+		$params = Request::getVar('params', array(), 'post');
+
+		$p = $model->params;
+
+		if (is_array($params))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
-				Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED', $model->getError()),
-				'error'
-			);
-		}
-
-		// Validate the posted data.
-		// Sometimes the form needs some posted data, such as for plugins and modules.
-		$form = $model->getForm($data, false);
-
-		if (!$form)
-		{
-			throw new Exception($model->getError());
-		}
-
-		// Test whether the data is valid.
-		$validData = $model->validate($form, $data);
-
-		// Check for validation errors.
-		if ($validData === false)
-		{
-			// Get the validation messages.
-			$errors = $model->getErrors();
-
-			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			$txt = array();
+			foreach ($params as $k => $v)
 			{
-				if ($errors[$i] instanceof Exception)
-				{
-					Notify::warning($errors[$i]->getMessage());
-				}
-				else
-				{
-					Notify::warning($errors[$i]);
-				}
+				$p->set($k, $v);
 			}
-
-			// Save the data in the session.
-			User::setState($context . '.data', $data);
-
-			// Redirect back to the edit screen.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false)
-			);
+			$model->set('params', $p->toString());
 		}
 
-		// Attempt to save the data.
-		if (!$model->save($validData))
+		// Trigger before save event
+		$result = Event::trigger('onExtensionBeforeSave', array($this->_option . '.plugin', &$model, $model->isNew()));
+
+		if (in_array(false, $result, true))
 		{
-			// Save the data in the session.
-			User::setState($context . '.data', $validData);
-
-			// Redirect back to the edit screen.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false),
-				Lang::txt('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()),
-				'error'
-			);
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
-		// Save succeeded, so check-in the record.
-		if ($checkin && $model->checkin($validData[$key]) === false)
+		// Store content
+		if (!$model->save())
 		{
-			// Save the data in the session.
-			User::setState($context . '.data', $validData);
-
-			// Check-in failed, so go back to the record and display a notice.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false),
-				Lang::txt('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()),
-				'error'
-			);
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
-		Notify::success(
-			Lang::txt(
-				(Lang::hasKey($this->text_prefix . '_SAVE_SUCCESS') ? $this->text_prefix : 'JLIB_APPLICATION') . '_SAVE_SUCCESS'
-			)
-		);
+		// Trigger after save event
+		Event::trigger('onExtensionAfterSave', array($this->_option . '.plugin', &$model, $model->isNew()));
 
-		// Redirect the user and adjust session state based on the chosen task.
-		switch ($task)
+		// Clean the cache.
+		$this->cleanCache();
+
+		// Success message
+		Notify::success(Lang::txt('COM_PLUGINS_SAVE_SUCCESS'));
+
+		// Display the edit form
+		if ($this->getTask() == 'apply')
 		{
-			case 'apply':
-				// Set the record data in the session.
-				//$recordId = $model->getState($this->context . '.id');
-				$this->holdEditId($context, $recordId);
-				User::setState($context . '.data', null);
-				$model->checkout($recordId);
-
-				// Redirect back to the edit screen.
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false)
-				);
-				break;
-
-			default:
-				// Clear the record id and data from the session.
-				$this->releaseEditId($context, $recordId);
-				User::setState($context . '.data', null);
-
-				// Redirect to the list screen.
-				$url = Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false);
-				if ($component = Request::getVar('component', ''))
-				{
-					$url = Route::url('index.php?option=com_' . $component . '&controller=plugins', false);
-				}
-
-				App::redirect(
-					$url
-				);
-				break;
+			return $this->editTask($model);
 		}
+
+		// Check the record back in
+		$model->checkin();
+
+		/*if (!$model->checkin())
+		{
+			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
+		}*/
+
+		// Set the redirect
+		$this->cancelTask();
 	}
 
 	/**
@@ -356,37 +358,52 @@ class Plugins extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Session::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken();
 
-		// Get items to remove from the request.
-		$cid = Request::getVar('cid', array(), '', 'array');
-
-		if (!is_array($cid) || count($cid) < 1)
+		if (!User::authorise('core.delete', $this->_option))
 		{
-			throw new Exception(Lang::txt($this->text_prefix . '_NO_ITEM_SELECTED'), 500);
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
-		else
+
+		// Incoming
+		$cid = Request::getInt('cid', 0);
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$success = 0;
+
+		foreach ($ids as $id)
 		{
-			// Get the model.
-			$model = new Models\Plugin();
+			// Load the record
+			$model = Plugin::oneOrFail(intval($id));
 
-			// Make sure the item ids are integers
-			Arr::toInteger($cid);
+			// Trigger before delete event
+			Event::trigger('onExtensionBeforeDelete', array('com_plugins.plugin', $model->getTableName()));
 
-			// Remove the items.
-			if ($model->delete($cid))
-			{
-				Notify::success(Lang::txts($this->text_prefix . '_N_ITEMS_DELETED', count($cid)));
-			}
-			else
+			// Attempt to delete the record
+			if (!$model->destroy())
 			{
 				Notify::error($model->getError());
+				continue;
 			}
+
+			// Trigger after delete event
+			Event::trigger('onExtensionAfterDelete', array('com_plugins.plugin', $model->getTableName()));
+
+			$success++;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option, false)
-		);
+		if ($success)
+		{
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Set the success message
+			Notify::success(Lang::txt('COM_PLUGINS_N_ITEMS_DELETED', $success));
+		}
+
+		// Redirect back to the listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -397,7 +414,13 @@ class Plugins extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		Session::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Get items to publish from the request.
 		$cid   = Request::getVar('cid', array(), '', 'array');
@@ -411,51 +434,53 @@ class Plugins extends AdminController
 		$task  = $this->getTask();
 		$value = Arr::getValue($data, $task, 0, 'int');
 
-		if (empty($cid))
-		{
-			throw new Exception(Lang::txt($this->text_prefix . '_NO_ITEM_SELECTED'), 500);
-		}
-		else
-		{
-			// Get the model.
-			$model = new Models\Plugin();
+		$success = 0;
 
-			// Make sure the item ids are integers
-			Arr::toInteger($cid);
+		foreach ($cid as $id)
+		{
+			// Load the record
+			$model = Plugin::oneOrFail(intval($id));
 
-			// Publish the items.
-			if (!$model->publish($cid, $value))
+			// Set state
+			$model->set('enabled', $value);
+
+			if (!$model->save())
 			{
-				throw new Exception($model->getError(), 500);
+				Notify::error($model->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Set the success message
+			if ($value == 1)
+			{
+				$ntext = 'COM_PLUGINS_N_ITEMS_PUBLISHED';
+			}
+			elseif ($value == 0)
+			{
+				$ntext = 'COM_PLUGINS_N_ITEMS_UNPUBLISHED';
+			}
+			elseif ($value == 2)
+			{
+				$ntext = 'COM_PLUGINS_N_ITEMS_ARCHIVED';
 			}
 			else
 			{
-				if ($value == 1)
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_PUBLISHED';
-				}
-				elseif ($value == 0)
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_UNPUBLISHED';
-				}
-				elseif ($value == 2)
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_ARCHIVED';
-				}
-				else
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_TRASHED';
-				}
-				Notify::success(Lang::txts($ntext, count($cid)));
+				$ntext = 'COM_PLUGINS_N_ITEMS_TRASHED';
 			}
+
+			Notify::success(Lang::txts($ntext, $success));
 		}
 
-		$extension    = Request::getCmd('extension');
-		$extensionURL = ($extension) ? '&extension=' . Request::getCmd('extension') : '';
-
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . $extensionURL, false)
-		);
+		// Redirect back to the listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -466,29 +491,44 @@ class Plugins extends AdminController
 	public function reorderTask()
 	{
 		// Check for request forgeries.
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Initialise variables.
 		$ids = Request::getVar('cid', null, 'post', 'array');
 		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
-		$model  = new Models\Plugin();
-		$return = $model->reorder($ids, $inc);
+		$success = 0;
 
-		if ($return === false)
+		foreach ($ids as $id)
 		{
-			// Reorder failed.
-			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED', $model->getError()));
+			// Load the record and reorder it
+			$model = Plugin::oneOrFail(intval($id));
+
+			if (!$model->move($inc))
+			{
+				Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED', $model->getError()));
+				continue;
+			}
+
+			$success++;
 		}
-		else
+
+		if ($success)
 		{
-			// Reorder succeeded.
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Set the success message
 			Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ITEM_REORDERED'));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option, false)
-		);
+		// Redirect back to the listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -499,7 +539,12 @@ class Plugins extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries.
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Get the input
 		$pks   = Request::getVar('cid', null, 'post', 'array');
@@ -509,26 +554,25 @@ class Plugins extends AdminController
 		Arr::toInteger($pks);
 		Arr::toInteger($order);
 
-		// Get the model
-		$model  = new Models\Plugin();
-
 		// Save the ordering
-		$return = $model->saveorder($pks, $order);
+		$return = Plugin::saveorder($pks, $order);
 
 		if ($return === false)
 		{
 			// Reorder failed
-			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED', $model->getError()));
+			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED'));
 		}
 		else
 		{
+			// Clean the cache.
+			$this->cleanCache();
+
 			// Reorder succeeded.
 			Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ORDERING_SAVED'));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option, false)
-		);
+		// Redirect back to the listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -539,28 +583,30 @@ class Plugins extends AdminController
 	public function checkinTask()
 	{
 		// Check for request forgeries.
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken(['get', 'post']);
 
-		// Initialise variables.
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
 		$ids = Request::getVar('cid', null, 'post', 'array');
 
-		$model  = new Models\Plugin();
-		$return = $model->checkin($ids);
+		foreach ($ids as $id)
+		{
+			$model = Plugin::oneOrFail(intval($id));
+			$model->checkin();
 
-		if ($return === false)
-		{
-			// Checkin failed.
-			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
-		}
-		else
-		{
-			// Checkin succeeded.
-			Notify::success(Lang::txts($this->text_prefix . '_N_ITEMS_CHECKED_IN', count($ids)));
+			/*if (!$model->checkin())
+			{
+				Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
+				continue;
+			}*/
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option, false)
-		);
+		// Redirect back to the listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -571,49 +617,21 @@ class Plugins extends AdminController
 	 */
 	public function cancelTask()
 	{
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
-
-		// Initialise variables.
-		$model   = new Models\Plugin();
-		$table   = $model->getTable();
-		$checkin = property_exists($table, 'checked_out');
-		$context = "$this->_option.edit.plugin";
-		$key     = $table->getKeyName();
-
-		$recordId = Request::getInt($key);
-
 		// Attempt to check-in the current record.
-		if ($recordId)
+		if ($id = Request::getInt('id', 0))
 		{
-			// Check we are holding the id in the edit list.
-			if (!$this->checkEditId($context, $recordId))
-			{
-				// Somehow the person just went to the form - we don't allow that.
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
-					Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId),
-					'error'
-				);
-			}
+			$model = Plugin::oneOrNew($id);
 
-			if ($checkin)
+			if ($model->get('checked_out') && $model->get('checked_out') == User::get('id'))
 			{
-				if ($model->checkin($recordId) === false)
+				$model->checkin();
+				// Check-in failed, go back to the record and display a notice.
+				/*if (!$model->checkin())
 				{
-					// Check-in failed, go back to the record and display a notice.
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false),
-						Lang::txt('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()),
-						'error'
-					);
-				}
+					Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
+				}*/
 			}
 		}
-
-		// Clean the session data and redirect.
-		$this->releaseEditId($context, $recordId);
-
-		User::setState($context . '.data', null);
 
 		if ($component = Request::getVar('component', ''))
 		{
@@ -626,67 +644,6 @@ class Plugins extends AdminController
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false)
 		);
-	}
-
-	/**
-	 * Method to add a record ID to the edit list.
-	 *
-	 * @param   string   $context  The context for the session storage.
-	 * @param   integer  $id       The ID of the record to add to the edit list.
-	 * @return  void
-	 */
-	protected function holdEditId($context, $id)
-	{
-		// Initialise variables.
-		$values = (array) User::getState($context . '.id');
-
-		// Add the id to the list if non-zero.
-		if (!empty($id))
-		{
-			array_push($values, (int) $id);
-			$values = array_unique($values);
-			User::setState($context . '.id', $values);
-		}
-	}
-
-	/**
-	 * Method to check whether an ID is in the edit list.
-	 *
-	 * @param   string   $context  The context for the session storage.
-	 * @param   integer  $id       The ID of the record to add to the edit list.
-	 * @return  void
-	 */
-	protected function releaseEditId($context, $id)
-	{
-		$values = (array) User::getState($context . '.id');
-
-		// Do a strict search of the edit list values.
-		$index = array_search((int) $id, $values, true);
-
-		if (is_int($index))
-		{
-			unset($values[$index]);
-			User::setState($context . '.id', $values);
-		}
-	}
-
-	/**
-	 * Method to check whether an ID is in the edit list.
-	 *
-	 * @param   string   $context  The context for the session storage.
-	 * @param   integer  $id       The ID of the record to add to the edit list.
-	 * @return  boolean  True if the ID is in the edit list.
-	 */
-	protected function checkEditId($context, $id)
-	{
-		if ($id)
-		{
-			$values = (array) User::getState($context . '.id');
-
-			return in_array((int) $id, $values);
-		}
-
-		return true;
 	}
 
 	/**
@@ -739,44 +696,12 @@ class Plugins extends AdminController
 	}
 
 	/**
-	 * Method to check if you can add a new record.
+	 * Clean cached data
 	 *
-	 * @param   array  $data  An array of input data.
-	 * @return  boolean
+	 * @return  void
 	 */
-	protected function allowAdd($data = array())
+	public function cleanCache()
 	{
-		return (User::authorise('core.create', $this->_option) || count(User::getAuthorisedCategories($this->_option, 'core.create')));
-	}
-
-	/**
-	 * Method to check if you can add a new record.
-	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key; default is id.
-	 * @return  boolean
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		return User::authorise('core.edit', $this->_option);
-	}
-
-	/**
-	 * Method to check if you can save a new or existing record.
-	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
-	 * @return  boolean
-	 */
-	protected function allowSave($data, $key = 'id')
-	{
-		$recordId = isset($data[$key]) ? $data[$key] : '0';
-
-		if ($recordId)
-		{
-			return $this->allowEdit($data, $key);
-		}
-
-		return $this->allowAdd($data);
+		Cache::clean($this->_option);
 	}
 }
