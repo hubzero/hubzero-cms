@@ -604,7 +604,7 @@ class Entriesv1_0 extends ApiController
 					)
 				],
 				'recipients' => [
-					$entry->get('created_by')
+					$row->get('created_by')
 				]
 			]);
 		}
