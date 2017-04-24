@@ -116,8 +116,8 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 						$groups[] = $database->quote($ug->gidNumber);
 					}
 				}
-				$g = implode(",", $groups);
-				$c = implode(",", $cns);
+				$g = implode(',', $groups);
+				$c = implode(',', $cns);
 
 				if (!empty($groups))
 				{
@@ -159,19 +159,19 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				$tquery[] = $database->quote($tagg->get('id'));
 			}
 
-			$sql2 .= " AND (a.tagid IN (".implode(',', $tquery).")";
+			$sql2 .= " AND (a.tagid IN (" . implode(',', $tquery) . ")";
 			$sql2 .= (count($authors) > 0) ? " OR " : "";
 		}
 		if (count($authors) > 0)
 		{
-			$aquery = '';
+			$aquery = array();
 			foreach ($authors as $author)
 			{
-				$aquery .= "'".$author->user_id."',";
+				$aquery[] = $database->quote($author->user_id);
 			}
-			$aquery = substr($aquery, 0, strlen($aquery) - 1);
+
 			$sql2 .= ($tags) ? "" : " AND (";
-			$sql2 .= " PA.user_id IN (".$aquery.")";
+			$sql2 .= " PA.user_id IN (" . implode(',', $aquery) . ")";
 		}
 		$sql2 .= ($tags || count($authors) > 0) ? ")" : "";
 
@@ -181,44 +181,54 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql2 .= "AND r.state=1 ";
 		$sql2 .= "GROUP BY r.publication_id ORDER BY r.ranking LIMIT 10";
 
+		// Build the query that get publications related by tag
+		$sql3 = "SELECT DISTINCT r.publication_id as id, NULL AS pageid, r.id AS version,
+				r.title, C.alias, r.abstract, C.category, r.state as published,
+				r.published_up, NULL AS scope, C.rating, C.times_rated, C.ranking,
+				rt.alias AS class, rt.name AS section
+				FROM `#__publications` AS C
+				INNER JOIN `#__publication_categories` AS rt ON rt.id = C.category
+				INNER JOIN `#__publication_versions` AS r ON r.publication_id = C.id
+				INNER JOIN `#__publication_attachments` AS a ON a.publicaiton_id = C.id
+				WHERE r.publication_id !=" . $publication->id . "
+				AND C.category!=8
+				AND r.access=0
+				AND r.state=1
+				AND a.object_name='publication'
+				AND a.object_id=" . $publication->id . "
+				GROUP BY r.publication_id
+				ORDER BY r.ranking
+				LIMIT 10";
+
 		// Build the final query
-		$query = "SELECT k.* FROM (($sql1) UNION ($sql2)) AS k ORDER BY ranking DESC LIMIT 10";
+		$query = "SELECT k.* FROM (($sql1) UNION ($sql2) UNION ($sql3)) AS k ORDER BY ranking DESC LIMIT 10";
 
 		// Execute the query
 		$database->setQuery($query);
 		$related = $database->loadObjectList();
 
 		// Instantiate a view
+		$layout = 'default';
+
 		if ($miniview)
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'publications',
-					'element' => 'related',
-					'name'    => 'browse',
-					'layout'  => 'mini'
-				)
-			);
-		}
-		else
-		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'publications',
-					'element' => 'related',
-					'name'    => 'browse'
-				)
-			);
+			$layout = 'mini';
 		}
 
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'publications',
+				'element' => 'related',
+				'name'    => 'browse',
+				'layout'  => $layout
+			)
+		);
+
 		// Pass the view some info
-		$view->option      = $option;
-		$view->publication = $publication;
-		$view->related     = $related;
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view->set('option', $option);
+		$view->set('publication', $publication);
+		$view->set('related', $related);
+		$view->setErrors($this->getErrors());
 
 		// Return the output
 		$arr['html'] = $view->loadTemplate();
