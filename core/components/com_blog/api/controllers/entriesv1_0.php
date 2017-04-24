@@ -477,21 +477,20 @@ class Entriesv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'id'             => Request::getInt('id', 0, 'post'),
-			'scope'          => Request::getVar('scope', '', 'post'),
-			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'post'),
-			'content'        => Request::getVar('content', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
-			'created_by'     => Request::getInt('created_by', 0, 'post'),
-			'state'          => Request::getInt('state', 0, 'post'),
-			'access'         => Request::getInt('access', 0, 'post'),
-			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
-			'publish_up'     => Request::getVar('publish_up', null, 'post'),
-			'publish_down'   => Request::getVar('publish_down', null, 'post'),
-			'hits'           => Request::getInt('hits', 0, 'post'),
-			'tags'           => Request::getVar('tags', null, 'post')
+			'id'             => Request::getInt('id', 0, 'put'),
+			'scope'          => Request::getVar('scope', '', 'put'),
+			'scope_id'       => Request::getInt('scope_id', 0, 'put'),
+			'title'          => Request::getVar('title', null, 'put', 'none', 2),
+			'alias'          => Request::getVar('alias', 0, 'put'),
+			'content'        => Request::getVar('content', null, 'put', 'none', 2),
+			'created'        => Request::getVar('created', new Date('now'), 'put'),
+			'created_by'     => Request::getInt('created_by', 0, 'put'),
+			'state'          => Request::getInt('state', 0, 'put'),
+			'access'         => Request::getInt('access', 0, 'put'),
+			'allow_comments' => Request::getInt('allow_comments', 0, 'put'),
+			'publish_up'     => Request::getVar('publish_up', new Date('now'), 'put'),
+			'publish_down'   => Request::getVar('publish_down', null, 'put'),
+			'hits'           => Request::getInt('hits', 0, 'put'),
 		);
 
 		$row = Entry::oneOrFail($fields['id']);
@@ -505,9 +504,6 @@ class Entriesv1_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
 		}
-
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
 		if (!$row->save())
 		{
