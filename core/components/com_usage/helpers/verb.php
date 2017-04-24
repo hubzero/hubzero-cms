@@ -69,7 +69,7 @@ class Verb
 		}
 
 		$task = array(
-			"task" => "Metrics.metrics_base.{$params[0]}",
+			"task" => "metrics_base.{$params[0]}",
 			"args" => $args2pass,
 		);
 
