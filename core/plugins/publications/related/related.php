@@ -189,7 +189,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				FROM `#__publications` AS C
 				INNER JOIN `#__publication_categories` AS rt ON rt.id = C.category
 				INNER JOIN `#__publication_versions` AS r ON r.publication_id = C.id
-				INNER JOIN `#__publication_attachments` AS a ON a.publicaiton_id = C.id
+				INNER JOIN `#__publication_attachments` AS a ON a.publication_id = C.id
 				WHERE r.publication_id !=" . $publication->id . "
 				AND C.category!=8
 				AND r.access=0
