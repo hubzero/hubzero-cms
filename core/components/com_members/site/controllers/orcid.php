@@ -54,25 +54,25 @@ class Orcid extends SiteController
 	/**
 	* user's ORCID ID
 	*
-	* @var string    
+	* @var string
 	*/
 	protected $_userOrcidID;
 	
 	/**
-	 * OAuth tokens
-	 *
-	 * @var  array
-	 */
+	* OAuth tokens
+	*
+	* @var  array
+	*/
 	protected $_oauthToken = array(
 		'members' => 'https://orcid.org/oauth/token',
 		'sandbox' => 'https://sandbox.orcid.org/oauth/token'
 	);
 	
 	/**
-	 * A list of ORCID services that can be used
-	 *
-	 * @var  array
-	 */
+	* A list of ORCID services that can be used
+	*
+	* @var  array
+	*/
 	protected $_services = array(
 		'public'  => 'pub.orcid.org',
 		'publicsandbox'  => 'pub.sandbox.orcid.org',
@@ -81,12 +81,12 @@ class Orcid extends SiteController
 	);
 
 	/**
-	 * Recursively parse XML
-	 *
-	 * @param   object  $root
-	 * @param   array   $fields
-	 * @return  void
-	 */
+	* Recursively parse XML
+	*
+	* @param   object  $root
+	* @param   array   $fields
+	* @return  void
+	*/
 	private function _parseXml($root, &$fields)
 	{
 		foreach ($root->children() as $ch)
@@ -107,11 +107,11 @@ class Orcid extends SiteController
 	}
 
 	/**
-	 * Parse an XML tree and pull results
-	 *
-	 * @param   object  $root
-	 * @return  array
-	 */
+	* Parse an XML tree and pull results
+	*
+	* @param   object  $root
+	* @return  array
+	*/
 	private function _parseTree($root)
 	{
 		$records = array();
@@ -137,15 +137,15 @@ class Orcid extends SiteController
 
 		return $records;
 	}
-
+	
 	/**
-	 * Search ORCID by name or email
-	 *
-	 * @param   string  $fname  First name
-	 * @param   string  $lname  Last name
-	 * @param   string  $email  Email address
-	 * @return  string
-	 */
+	* Search ORCID by name or email
+	*
+	* @param   string  $fname  First name
+	* @param   string  $lname  Last name
+	* @param   string  $email  Email address
+	* @return  string
+	*/
 	private function _fetchXml($fname, $lname, $email)
 	{
 		$srv = $this->config->get('orcid_service', 'members');
@@ -208,14 +208,14 @@ class Orcid extends SiteController
 		}
 		return $root;
 	}
-
+	
 	/**
-	 * Format ORCID search results
-	 *
-	 * @param   array   $records
-	 * @param   string  $callbackPrefix
-	 * @return  string
-	 */
+	* Format ORCID search results
+	*
+	* @param   array   $records
+	* @param   string  $callbackPrefix
+	* @return  string
+	*/
 	private function _format($records, $callbackPrefix)
 	{
 		$view = new \Hubzero\Component\View(array(
@@ -229,11 +229,11 @@ class Orcid extends SiteController
 	}
 
 	/**
-	 * Parse response headers
-	 *
-	 * @param   string  $header
-	 * @return  string
-	 */
+	* Parse response headers
+	*
+	* @param   string  $header
+	* @return  string
+	*/
 	private function _http_parse_headers($header)
 	{
 		$retVal = array();
@@ -258,11 +258,11 @@ class Orcid extends SiteController
 	}
 
 	/**
-	 * Save an ORCID to a profile
-	 *
-	 * @param   string   $orcid
-	 * @return  boolean
-	 */
+	* Save an ORCID to a profile
+	*
+	* @param   string   $orcid
+	* @return  boolean
+	*/
 	private function _save($orcid)
 	{
 		// Instantiate a new profile object
@@ -279,11 +279,11 @@ class Orcid extends SiteController
 	}
 
 	/**
-	 * Fetch...
-	 *
-	 * @param   boolean  $is_return
-	 * @return  void
-	 */
+	* Fetch...
+	*
+	* @param   boolean  $is_return
+	* @return  void
+	*/
 	public function fetchTask($is_return = false)
 	{
 		$first_name  = Request::getVar('fname', '');
@@ -374,10 +374,10 @@ class Orcid extends SiteController
 	}
 
 	/**
-	 * Show a form for searching/creating an ID
-	 *
-	 * @return  void
-	 */
+	* Show a form for searching/creating an ID
+	*
+	* @return  void
+	*/
 	public function displayTask()
 	{
 		$this->fetchTask(true);
@@ -388,10 +388,10 @@ class Orcid extends SiteController
 	}
 
 	/**
-	 * Associate an ID
-	 *
-	 * @return  void
-	 */
+	* Associate an ID
+	*
+	* @return  void
+	*/
 	public function associateTask()
 	{
 		if (User::isGuest())
@@ -408,10 +408,10 @@ class Orcid extends SiteController
 	}
 
 	/**
-	 * Create an ID
-	 *
-	 * @return  void
-	 */
+	* Create an ID
+	*
+	* @return  void
+	*/
 	public function createTask()
 	{
 		$output = new \stdClass();
@@ -540,7 +540,7 @@ class Orcid extends SiteController
 		print_r($curl_response);
 	}
 	
-	/**
+	/*
 	* Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.
 	* When deny button is hit, ORCID posts error code back but we do nothing here.
 	*
@@ -568,7 +568,7 @@ class Orcid extends SiteController
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			
 			//Execute cURL command
 			$result = curl_exec($ch);
@@ -594,14 +594,14 @@ class Orcid extends SiteController
 		}
 	}
 	
-	/**
+	/*
 	* Save orcid to #_user_profiles
 	*
 	* @param   string   $name, $orcid
 	* @return  void
 	*/
 	public static function saveORCIDToProfile($userID, $orcid)
-	{	
+	{
 		//$userID = self::getUserID($name);
 		$db = App::get('db');
 		
@@ -622,12 +622,12 @@ class Orcid extends SiteController
 			$id_q = "SELECT MAX(id) FROM #__user_profiles";
 			$db->setQuery($id_q);
 			$newID = (int)$db->loadResult() + 1;
-		
+			
 			//Get new ordering based on existing maximum ordering
 			$order_q = "SELECT MAX(ordering) FROM #__user_profiles where user_id = $userID";
 			$db->setQuery($order_q);
 			$newOrdering = (int)$db->loadResult() + 1;
-		
+			
 			$orcid_sql = "INSERT INTO " . $db->quoteName('#__user_profiles') . " (" . $db->quoteName('id') . "," . $db->quoteName('user_id') . "," 
 			. $db->quoteName('profile_key') . "," . $db->quoteName('profile_value') . "," . $db->quoteName('ordering') . "," . $db->quoteName('access') 
 			. ") VALUES (" . $newID . "," . $userID . "," . '"orcid"'. "," . '"' . $orcid . '"' . "," . $newOrdering . "," . "1)";
@@ -636,7 +636,7 @@ class Orcid extends SiteController
 			$result = $db->query();
 		}
 	}
-
+	
 	/**
 	 * Show the landing page about user and ORCID ID
 	 *
