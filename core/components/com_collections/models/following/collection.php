@@ -47,21 +47,21 @@ class Collection extends Base
 	 *
 	 * @var object
 	 */
-	private $_obj = NULL;
+	private $_obj = null;
 
 	/**
 	 * File path
 	 *
 	 * @var string
 	 */
-	private $_image = NULL;
+	private $_image = null;
 
 	/**
 	 * URL
 	 *
 	 * @var string
 	 */
-	private $_baselink = NULL;
+	private $_baselink = null;
 
 	/**
 	 * Constructor
@@ -77,6 +77,13 @@ class Collection extends Base
 		{
 			case 'group':
 				$group = \Hubzero\User\Group::getInstance($this->_obj->get('object_id'));
+				if (!$group)
+				{
+					$group = new \Hubzero\User\Group();
+					$group->set('gidNumber', $this->_obj->get('object_id'));
+					$group->set('cn', $this->_obj->get('object_id'));
+					$group->set('alias', $this->_obj->get('object_id'));
+				}
 				$this->_baselink = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->_obj->get('alias');
 			break;
 
@@ -150,9 +157,9 @@ class Collection extends Base
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get an image path
 	 *
-	 * @return  object
+	 * @return  string
 	 */
 	public function image()
 	{
@@ -160,9 +167,9 @@ class Collection extends Base
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get an alias
 	 *
-	 * @return  object
+	 * @return  string
 	 */
 	public function alias()
 	{
@@ -170,9 +177,9 @@ class Collection extends Base
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get a title
 	 *
-	 * @return  object
+	 * @return  string
 	 */
 	public function title()
 	{
@@ -180,8 +187,9 @@ class Collection extends Base
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get a link
 	 *
+	 * @param   string  $what
 	 * @return  object
 	 */
 	public function link($what='base')
