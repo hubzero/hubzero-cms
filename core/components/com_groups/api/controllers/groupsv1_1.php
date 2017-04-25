@@ -115,7 +115,7 @@ class Groupsv1_1 extends ApiController
 
 		$filters['fields'] = explode(',', $filters['fields']);
 		$filters['fields'] = array_map('trim', $filters['fields']);
-		
+
 		$response = \Hubzero\User\Group::find($filters);
 
 		$base = rtrim(Request::base(), '/');
