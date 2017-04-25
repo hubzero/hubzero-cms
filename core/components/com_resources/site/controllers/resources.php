@@ -1909,54 +1909,78 @@ class Resources extends SiteController
 							$enclosure->url = $podcast;
 							switch (Html::getFileExtension($podcast))
 							{
-								case 'm4v': $enclosure->type = 'video/x-m4v';
-								break;
-								case 'mp4': $enclosure->type = 'video/mp4';
-								break;
-								case 'wmv': $enclosure->type = 'video/wmv';
-								break;
-								case 'mov': $enclosure->type = 'video/quicktime';
-								break;
-								case 'qt': $enclosure->type = 'video/quicktime';
-								break;
-								case 'mpg': $enclosure->type = 'video/mpeg';
-								break;
-								case 'mpeg': $enclosure->type = 'video/mpeg';
-								break;
-								case 'mpe': $enclosure->type = 'video/mpeg';
-								break;
-								case 'mp2': $enclosure->type = 'video/mpeg';
-								break;
-								case 'mpv2': $enclosure->type = 'video/mpeg';
-								break;
-								case 'mp3': $enclosure->type = 'audio/mpeg';
-								break;
-								case 'm4a': $enclosure->type = 'audio/x-m4a';
-								break;
-								case 'aiff': $enclosure->type = 'audio/x-aiff';
-								break;
-								case 'aif': $enclosure->type = 'audio/x-aiff';
-								break;
-								case 'wav': $enclosure->type = 'audio/x-wav';
-								break;
-								case 'ra': $enclosure->type = 'audio/x-pn-realaudio';
-								break;
-								case 'ram': $enclosure->type = 'audio/x-pn-realaudio';
-								break;
-								case 'ppt': $enclosure->type = 'application/vnd.ms-powerpoint';
-								break;
-								case 'pps': $enclosure->type = 'application/vnd.ms-powerpoint';
-								break;
-								case 'pdf': $enclosure->type = 'application/pdf';
-								break;
-								case 'doc': $enclosure->type = 'application/msword';
-								break;
-								case 'txt': $enclosure->type = 'text/plain';
-								break;
-								case 'html': $enclosure->type = 'text/html';
-								break;
-								case 'htm': $enclosure->type = 'text/html';
-								break;
+								case 'm4v':
+									$enclosure->type = 'video/x-m4v';
+									break;
+								case 'mp4':
+									$enclosure->type = 'video/mp4';
+									break;
+								case 'wmv':
+									$enclosure->type = 'video/wmv';
+									break;
+								case 'mov':
+									$enclosure->type = 'video/quicktime';
+									break;
+								case 'qt':
+									$enclosure->type = 'video/quicktime';
+									break;
+								case 'mpg':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpeg':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpe':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mp2':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpv2':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mp3':
+									$enclosure->type = 'audio/mpeg';
+									break;
+								case 'm4a':
+									$enclosure->type = 'audio/x-m4a';
+									break;
+								case 'aiff':
+									$enclosure->type = 'audio/x-aiff';
+									break;
+								case 'aif':
+									$enclosure->type = 'audio/x-aiff';
+									break;
+								case 'wav':
+									$enclosure->type = 'audio/x-wav';
+									break;
+								case 'ra':
+									$enclosure->type = 'audio/x-pn-realaudio';
+									break;
+								case 'ram':
+									$enclosure->type = 'audio/x-pn-realaudio';
+									break;
+								case 'ppt':
+									$enclosure->type = 'application/vnd.ms-powerpoint';
+									break;
+								case 'pps':
+									$enclosure->type = 'application/vnd.ms-powerpoint';
+									break;
+								case 'pdf':
+									$enclosure->type = 'application/pdf';
+									break;
+								case 'doc':
+									$enclosure->type = 'application/msword';
+									break;
+								case 'txt':
+									$enclosure->type = 'text/plain';
+									break;
+								case 'html':
+									$enclosure->type = 'text/html';
+									break;
+								case 'htm':
+									$enclosure->type = 'text/html';
+									break;
 							}
 							$enclosure->length = $fs;
 
