@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 if (!$this->ajax)
 {
 	$this->css('curation.css')
-		 ->js('curation.js');
+		->js('curation.js');
 }
 ?>
 <div id="abox-content" class="curation-wrap">
@@ -46,9 +46,12 @@ if (!$this->ajax)
 			<input type="hidden" name="task" value="assign" />
 			<input type="hidden" name="confirm" value="1" />
 		</fieldset>
+
 		<p class="info"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_INSTRUCT'); ?></p>
-		<label><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_CHOOSE'); ?>
-		<?php
+
+		<label for="owner">
+			<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_CHOOSE'); ?>
+			<?php
 			$selected = $this->pub->curator() ? $this->pub->curator('name') : '';
 			$mc = Event::trigger( 'hubzero.onGetSingleEntryWithSelect', array(array('members', 'owner', 'owner', '', $selected,'','owner')) );
 			if (count($mc) > 0) {
@@ -60,12 +63,13 @@ if (!$this->ajax)
 				<input type="hidden" name="selected" value="<?php echo $this->pub->curator; ?>" />
 			<?php } ?>
 		</label>
+
 		<p class="submitarea">
 			<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
 			<?php if ($this->ajax) { ?>
-			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PUBLICATIONS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PUBLICATIONS_CANCEL'); ?>" />
 			<?php } else { ?>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PUBLICATIONS_CANCEL'); ?></a>
+				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PUBLICATIONS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>
