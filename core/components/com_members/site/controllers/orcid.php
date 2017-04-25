@@ -47,12 +47,14 @@ class Orcid extends SiteController
 	/**
 	* user's name
 	*
+	* @var string
 	*/
 	protected $_userName;
 	
 	/**
 	* user's ORCID ID
 	*
+	* @var string    
 	*/
 	protected $_userOrcidID;
 	
@@ -591,6 +593,49 @@ class Orcid extends SiteController
 			echo "Unexpected response from ORCID";
 		}
 	}
+	
+	/**
+	* Save orcid to #_user_profiles
+	*
+	* @param   string   $name, $orcid
+	* @return  void
+	*/
+	public static function saveORCIDToProfile($userID, $orcid)
+	{	
+		//$userID = self::getUserID($name);
+		$db = App::get('db');
+		
+		//Check if the user already has orcid record in #__user_profiles
+		$exist_q = "SELECT EXISTS(SELECT * FROM #__user_profiles WHERE user_id = $userID AND profile_key = " . '"orcid"' . ")";
+		$db->setQuery($exist_q);
+		$exist = (int)$db->loadResult();
+		
+		if ($exist == 1)
+		{
+			$update_q = "UPDATE #__user_profiles SET profile_value = " . '"' . $orcid  . '"' . " WHERE user_id = $userID AND profile_key = " . '"orcid"';
+			$db->setQuery($update_q);
+			$db->execute();
+		}
+		else
+		{
+			//Get new ID for #__user_profiles based on existing maximum ID
+			$id_q = "SELECT MAX(id) FROM #__user_profiles";
+			$db->setQuery($id_q);
+			$newID = (int)$db->loadResult() + 1;
+		
+			//Get new ordering based on existing maximum ordering
+			$order_q = "SELECT MAX(ordering) FROM #__user_profiles where user_id = $userID";
+			$db->setQuery($order_q);
+			$newOrdering = (int)$db->loadResult() + 1;
+		
+			$orcid_sql = "INSERT INTO " . $db->quoteName('#__user_profiles') . " (" . $db->quoteName('id') . "," . $db->quoteName('user_id') . "," 
+			. $db->quoteName('profile_key') . "," . $db->quoteName('profile_value') . "," . $db->quoteName('ordering') . "," . $db->quoteName('access') 
+			. ") VALUES (" . $newID . "," . $userID . "," . '"orcid"'. "," . '"' . $orcid . '"' . "," . $newOrdering . "," . "1)";
+			
+			$db->setQuery($orcid_sql);
+			$result = $db->query();
+		}
+	}
 
 	/**
 	 * Show the landing page about user and ORCID ID
@@ -604,14 +649,18 @@ class Orcid extends SiteController
 		// It means when ORCID posts authorization code back
 		if (Request::getVar('code'))
 		{
-			//Check if there is such user's record in database
-			if (Member::userExists($this->_userName))
+			/*
+			* Check if there is such user's id in database. If there is, then save the orcid in #__user_profiles. 
+			* Otherwise save the orcid in session for later use.
+			*/
+			$user_id = User::get('id');
+			if ($user_id != 0)
 			{
-				Member::saveORCIDToProfile($this->_userName, $this->_userOrcidID);
+				Orcid::saveORCIDToProfile($user_id, $this->_userOrcidID);
 			}
 			else
 			{
-				Member::saveOrcidToSession($this->_userName, $this->_userOrcidID);
+				Session::set('orcid', $this->_userOrcidID);
 			}
 		}
 		
