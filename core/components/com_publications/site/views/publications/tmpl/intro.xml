@@ -19,9 +19,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Publication Introduction Layout">
+	<layout title="Introduction">
 		<message>
-			<![CDATA[STANDARD PUBLICATION INTRODUCTION LAYOUT DESC]]>
+			<![CDATA[Introduction]]>
 		</message>
 	</layout>
 	<state>

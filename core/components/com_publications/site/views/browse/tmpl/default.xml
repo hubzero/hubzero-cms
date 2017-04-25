@@ -19,15 +19,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Browse Publications Layout">
+	<layout title="Browse Publications">
 		<message>
-			<![CDATA[STANDARD BROWSE PUBLICATIONS LAYOUT DESC]]>
+			<![CDATA[Browse Publications]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Browse Publications Layout</name>
-		<description>STANDARD BROWSE PUBLICATIONS LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>
