@@ -555,7 +555,7 @@ class Register extends SiteController
 	 * @return  void
 	 */
 	public function createTask()
-	{		
+	{
 		if (!User::isGuest() && !User::get('tmp_user'))
 		{
 			App::redirect(
