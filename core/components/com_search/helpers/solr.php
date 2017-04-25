@@ -97,15 +97,14 @@ class SolrHelper
 
 	public static function getQueueDB($limit = 100)
 	{
-			$db = App::get('db');
-			$userID = User::get('id');
-			$timestamp = Date::of()->toSql();
+		$db = App::get('db');
+		$userID = User::get('id');
+		$timestamp = Date::of()->toSql();
 
-			if ($db->tableExists('#__search_queue') && count($ids) > 0)
-			{
-				$sql = "SELECT id, type, type_id FROM `#__search_queue` WHERE status";
-			}
-		
+		if ($db->tableExists('#__search_queue') && count($ids) > 0)
+		{
+			$sql = "SELECT id, type, type_id FROM `#__search_queue` WHERE status";
+		}
 	}
 
 	/**

@@ -105,7 +105,7 @@ class Coursesv1_0 extends base
 				$entry->raw_content = $course->description;
 				$entry->url = '/courses/' . $course->alias;
 				$entry->id = 'course-' . $course->id;
-				
+
 				$model = new CourseModel($course->id);
 				$managers = $model->managers();
 				$instructors = $model->instructors();
@@ -134,7 +134,7 @@ class Coursesv1_0 extends base
 					$entry->access_level = 'private';
 				}
 				else
-				{	
+				{
 					$entry->access_level = 'public';
 				}
 
