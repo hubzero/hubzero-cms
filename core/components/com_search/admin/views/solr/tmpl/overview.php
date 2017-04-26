@@ -31,6 +31,7 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+dlog('here');
 
 Toolbar::title(Lang::txt('Search: Overview'));
 Toolbar::preferences($this->option, '550');
