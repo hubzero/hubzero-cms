@@ -136,7 +136,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		include_once(__DIR__ . DS . 'models' . DS . 'review.php');
+		include_once __DIR__ . DS . 'models' . DS . 'review.php';
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgPublicationsReviewsHelper();
@@ -148,14 +148,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		// Get reviews for this publication
 		$database = App::get('db');
 		$r = new \Components\Publications\Tables\Review($database);
-		$reviews = $r->getRatings($model->get('id'));
-		if (!$reviews)
-		{
-			$reviews = array();
-		}
 
-		$arr['count'] = count($reviews);
+		$arr['count'] = $r->countRatings($model->get('id'));
 		$arr['name']  = 'reviews';
+
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
@@ -171,6 +167,12 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 					'warning'
 				);
 				return;
+			}
+
+			$reviews = $r->getRatings($model->get('id'));
+			if (!$reviews)
+			{
+				$reviews = array();
 			}
 
 			// Instantiate a view
@@ -199,7 +201,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'metadata')
 				->set('url', Route::url($model->link($this->_name)))
 				->set('url2', Route::url($model->link($this->_name) . '&action=addreview#reviewform'))
-				->set('reviews', $reviews);
+				->set('reviews', $arr['count']);
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
