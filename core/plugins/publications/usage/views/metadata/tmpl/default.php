@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,7 +33,4 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<p class="review">
-	<a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_NUM_REVIEWS', $this->reviews); ?></a>
-	(<a href="<?php echo $this->url2; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_THIS'); ?></a>)
-</p>
+<p class="usage"><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $this->views, $this->downloads); ?></p>
