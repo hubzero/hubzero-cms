@@ -35,9 +35,9 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Model class for publication category
+ * Model class for publication attachment
  */
-class Category extends Relational
+class Attachment extends Relational
 {
 	/**
 	 * The table namespace
@@ -47,38 +47,74 @@ class Category extends Relational
 	public $namespace = 'publication';
 
 	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'ordering';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
 	 * Fields and their validation criteria
 	 *
 	 * @var  array
 	 */
 	protected $rules = array(
-		'name' => 'notempty',
-		'alias' => 'notempty',
-		'url_alias' => 'notempty'
+		'type' => 'notempty',
+		'path' => 'notempty',
+		'publication_id' => 'positive|nonzero',
+		'publication_version_id' => 'positive|nonzero'
 	);
 
 	/**
-	 * Check usage
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @return  integer
+	 * @var  array
 	 */
-	public function checkUsage()
-	{
-		require_once __DIR__ . DS . 'publication.php';
-
-		return Publication::all()
-			->whereEquals('category', $this->get('id'))
-			->total();
-	}
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
 
 	/**
-	 * Get contributable categories
+	 * Establish relationship to parent publication
 	 *
 	 * @return  object
 	 */
-	public static function contributable()
+	public function publication()
 	{
-		return self::all()
-			->whereEquals('contributable', 1);
+		return $this->belongsToOne(__NAMESPACE__ . '\\Publication', 'publication_id');
+	}
+
+	/**
+	 * Establish relationship to parent publication version
+	 *
+	 * @return  object
+	 */
+	public function version()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Version', 'publication_version_id');
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		if ($this->get('type') == 'file')
+		{
+			// Remove the file
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 }

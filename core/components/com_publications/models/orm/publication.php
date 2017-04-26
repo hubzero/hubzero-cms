@@ -35,7 +35,6 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 require_once __DIR__ . DS . 'version.php';
-require_once __DIR__ . DS . 'author.php';
 require_once __DIR__ . DS . 'rating.php';
 require_once __DIR__ . DS . 'type.php';
 require_once __DIR__ . DS . 'category.php';
@@ -71,7 +70,7 @@ class Publication extends Relational
 	 */
 	public function type()
 	{
-		return $this->oneToOne('Type', 'id', 'master_type');
+		return $this->oneToOne(__NAMESPACE__ . '\\Type', 'id', 'master_type');
 	}
 
 	/**
@@ -81,7 +80,7 @@ class Publication extends Relational
 	 */
 	public function category()
 	{
-		return $this->oneToOne('Category', 'id', 'category');
+		return $this->oneToOne(__NAMESPACE__ . '\\Category', 'id', 'category');
 	}
 
 	/**
@@ -91,7 +90,7 @@ class Publication extends Relational
 	 */
 	public function versions()
 	{
-		return $this->oneToMany('Version', 'publication_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Version', 'publication_id');
 	}
 
 	/**
@@ -101,7 +100,7 @@ class Publication extends Relational
 	 */
 	public function ratings()
 	{
-		return $this->oneToMany('Rating', 'publication_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Rating', 'publication_id');
 	}
 
 	/**

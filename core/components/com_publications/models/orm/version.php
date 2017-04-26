@@ -34,6 +34,10 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 
+require_once __DIR__ . DS . 'attachment.php';
+require_once __DIR__ . DS . 'author.php';
+require_once __DIR__ . DS . 'license.php';
+
 /**
  * Model class for publication version
  */
@@ -45,6 +49,15 @@ class Version extends Relational
 	 * @var  string
 	 */
 	public $namespace = 'publication';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'publication_id' => 'positive|nonzero'
+	);
 
 	/**
 	 * Automatic fields to populate every time a row is created
@@ -62,7 +75,7 @@ class Version extends Relational
 	 */
 	public function publication()
 	{
-		return $this->belongsToOne('Publication');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Publication', 'publication_id');
 	}
 
 	/**
@@ -72,7 +85,27 @@ class Version extends Relational
 	 */
 	public function authors()
 	{
-		return $this->oneToMany('Author', 'publication_version_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Author', 'publication_version_id');
+	}
+
+	/**
+	 * Establish relationship to attachments
+	 *
+	 * @return  object
+	 */
+	public function attachments()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Attachment', 'publication_version_id');
+	}
+
+	/**
+	 * Establish relationship to license
+	 *
+	 * @return  object
+	 */
+	public function license()
+	{
+		return $this->oneToOne(__NAMESPACE__ . '\\License', 'license_type');
 	}
 
 	/**
@@ -82,12 +115,22 @@ class Version extends Relational
 	 */
 	public function destroy()
 	{
-		// Remove comments
+		// Remove authors
 		foreach ($this->authors as $author)
 		{
 			if (!$author->destroy())
 			{
 				$this->addError($author->getError());
+				return false;
+			}
+		}
+
+		// Remove attachments
+		foreach ($this->attachments as $attachment)
+		{
+			if (!$attachment->destroy())
+			{
+				$this->addError($attachment->getError());
 				return false;
 			}
 		}
