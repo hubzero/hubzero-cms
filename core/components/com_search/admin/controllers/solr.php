@@ -37,23 +37,128 @@ use Components\Search\Models\Solr\QueueDB;
 use Components\Search\Models\Solr\Facet;
 use \Hubzero\Search\Query;
 use Components\Search\Helpers\SolrHelper;
+use Components\Developer\Models\Application;
+use Hubzero\Access\Group as Accessgroup;
 use stdClass;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'indexqueue.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'facet.php';
+require_once Component::path('com_developer') . DS . 'models' . DS . 'application.php';
 
 /**
  * Search AdminController Class
  */
 class Solr extends AdminController
 {
+	public function execute()
+	{
+		$solrUser = User::oneByUsername('hubzerosolrworker')->get('id');
+		if (file_exists(PATH_APP . '/config/solr.json') && $solrUser >= 0)
+		{
+			parent::execute();
+		}
+		else
+		{
+			$this->configure();
+		}
+	}
+
+	/**
+	 * configure - Adds solr index user and creates json file 
+	 * 
+	 * @access private
+	 * @return void
+	 */
+	private function configure()
+	{
+		$user = User::oneByUsername('hubzerosolrworker');
+		if ($user->get('username') == '')
+		{
+			// Automatically set email which passes validation
+			$hostname = Request::host();
+			if ($hostname != 'localhost')
+			{
+				$user->set('email', 'hubzero-solr@'. $hostname);
+			}
+			else
+			{
+				$config = App::get('config');
+				$email = $config->get('mail')->mailfrom;
+				$email = explode('@', $email);
+				$user->set('email', 'solr@' . $email[1] . '.local');
+			}
+
+			// Set name
+			$user->set('username', 'hubzerosolrworker');
+			$user->set('name', 'HUBzero Solr Worker');
+			$user->set('loginShell', '/bin/nologin');
+			$user->set('ftpShell', '/usr/bin/sftp-server');
+
+			// Give the Solr user full permissions
+			$accessgroups = Accessgroup::all();
+			$accessgroups = $accessgroups->rows()->toObject();
+			$userAccessGroups = array();
+
+			foreach ($accessgroups as $ag)
+			{
+				array_push($userAccessGroups, $ag->id);
+			}
+
+			$user->set('accessgroups', $userAccessGroups);
+			$newpass = \JUserHelper::genRandomPassword();
+			$user->set('password', \Hubzero\User\Password::getPasshash($newpass));
+
+			// Save the User
+			if ($user->save())
+			{
+				// Change password
+				$result = \Hubzero\User\Password::changePassword($user->get('id'), $newpass);
+
+				if (!$result)
+				{
+					\Notify::error($result->getError());
+				}
+
+				// Make an application
+				$application = Application::oneOrNew(0);
+				$application->set('name', 'HUBzero - Solr Indexing');
+				$application->set('description', 'DO NOT DELETE! Application used by Solr indexer.');
+				if (!$application->save())
+				{
+					\Notify::error($application->getError());
+				}
+
+				$application = $application->toObject();
+				$config = array();
+				$config['solr_client_id'] = $application->client_id;
+				$config['solr_client_secret'] = $application->client_secret;
+				$config['solr_username'] = $user->get('username');
+				$config['solr_password'] = $newpass;
+				$json = json_encode($config);
+
+				$filesystem = App::get('filesystem');
+				$filesystem->write(PATH_APP . '/config/solr.json', $json);
+			}
+			else
+			{
+				\Notify::error($user->getError());
+			}
+		}
+
+		\Notify::success(Lang::txt('COM_SEARCH_SOLR_CONFIGURATION_MADE'));
+
+		return $this->displayTask();
+	}
+
 	/**
 	 * Display the overview
 	 */
 	public function displayTask()
 	{
+		$this->view = new \Hubzero\Component\View;
+
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
@@ -82,6 +187,11 @@ class Solr extends AdminController
 			$logs = array();
 		}
 
+		// Explicitly set the view since it may be called by another method
+		$this->view->setLayout('overview');
+		$this->view->setName('solr');
+		$this->view->option = $this->_option;
+
 		// Get queue status
 		$this->view->queueStats = SolrHelper::queueStatus();
 
@@ -89,7 +199,6 @@ class Solr extends AdminController
 		$this->view->status = $status;
 		$this->view->logs = $logs;
 		$this->view->lastInsert = $insertTime;
-		$this->view->setLayout('overview');
 
 		// Display the view
 		$this->view->display();
