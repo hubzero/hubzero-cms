@@ -29,7 +29,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Publications\Orm\Models;
+namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 
@@ -65,8 +65,7 @@ class License extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'title' => 'notempty',
-		'text'  => 'notempty'
+		'title' => 'notempty'
 	);
 
 	/**
@@ -85,7 +84,8 @@ class License extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
-		'ordering'
+		'ordering',
+		'icon'
 	);
 
 	/**
@@ -107,6 +107,22 @@ class License extends Relational
 		}
 
 		return $data['ordering'];
+	}
+
+	/**
+	 * Generates automatic icon field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticIcon($data)
+	{
+		if (!isset($data['icon']) || !$data['icon'])
+		{
+			$data['icon'] = '/core/components/com_publications/site/assets/img/logos/license.gif';
+		}
+
+		return $data['icon'];
 	}
 
 	/**
@@ -228,6 +244,66 @@ class License extends Relational
 		}
 
 		return true;
+	}
+
+	/**
+	 * Is this the main entry?
+	 *
+	 * @return  boolean
+	 */
+	public function isMain()
+	{
+		return ($this->get('main') == 1);
+	}
+
+	/**
+	 * Is this license being used?
+	 *
+	 * @return  boolean
+	 */
+	public function isUsed()
+	{
+		require_once __DIR__ . DS . 'version.php';
+
+		$total = Version::all()
+			->whereEquals('license_type', $this->get('id'))
+			->total();
+
+		return ($total > 0);
+	}
+
+	/**
+	 * Set this record to be the main record
+	 * Unsets all other records.
+	 *
+	 * @return  boolean
+	 */
+	public function setMain()
+	{
+		if ($this->get('main') == 1)
+		{
+			return true;
+		}
+
+		$db = \App::get('db');
+		$query = $db->getQuery()
+			->update($this->getTableName())
+			->set(array('main' => 1))
+			->where('id', '=', $this->get('id'))
+			->toString();
+
+		if (!$db->execute($query))
+		{
+			return false;
+		}
+
+		$query = $db->getQuery()
+			->update($this->getTableName())
+			->set(array('main' => 0))
+			->where('id', '!=', $this->get('id'))
+			->toString();
+
+		return $db->execute($query);
 	}
 
 	/**

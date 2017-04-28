@@ -73,6 +73,14 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	\Route::url('index.php?option=com_publications&controller=batchcreate'),
 	$controllerName == 'batchcreate'
 );
+require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
+{
+	\Submenu::addEntry(
+		\Lang::txt('COM_PUBLICATIONS_PLUGINS'),
+		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=publications&filter_type=publications')
+	);
+}
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
