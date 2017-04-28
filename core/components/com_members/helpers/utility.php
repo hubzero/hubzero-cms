@@ -262,7 +262,7 @@ class Utility
 
 		if (!$msg->send())
 		{
-			$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+			//$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
 			// @FIXME: LOG ERROR SOMEWHERE
 			return false;
 		}
@@ -313,4 +313,3 @@ class Utility
 		return ($result) ? true : false;
 	}
 }
-
