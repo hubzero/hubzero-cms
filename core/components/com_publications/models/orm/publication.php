@@ -64,6 +64,13 @@ class Publication extends Relational
 	);
 
 	/**
+	 * Component configuration
+	 *
+	 * @var  object
+	 */
+	protected $config = null;
+
+	/**
 	 * Establish relationship to type
 	 *
 	 * @return  object
@@ -104,6 +111,46 @@ class Publication extends Relational
 	}
 
 	/**
+	 * Get the creator of this entry
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
+
+	/**
+	 * Establish relationship to group
+	 *
+	 * @return  object
+	 */
+	public function group()
+	{
+		return $this->belongsToOne('Hubzero\\User\\Group', 'gidNumber', 'group_owner');
+	}
+
+	/**
+	 * Establish relationship to project
+	 *
+	 * @return  object
+	 */
+	public function project()
+	{
+		return $this->belongsToOne('Components\Projects\Models\Orm\Project', 'project_id');
+	}
+
+	/**
+	 * Get the ancestor this was forked from
+	 *
+	 * @return  object
+	 */
+	public function ancestor()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Publication', 'forked_from');
+	}
+
+	/**
 	 * Delete the record and all associated data
 	 *
 	 * @return  boolean  False if error, True on success
@@ -132,5 +179,26 @@ class Publication extends Relational
 
 		// Attempt to delete the record
 		return parent::destroy();
+	}
+
+	/**
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
+	 *
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default
+	 * @return  mixed
+	 */
+	public function config($key=null, $default=null)
+	{
+		if (!isset($this->config))
+		{
+			$this->config = \Component::params('com_publications');
+		}
+		if ($key)
+		{
+			return $this->config->get($key, $default);
+		}
+		return $this->config;
 	}
 }
