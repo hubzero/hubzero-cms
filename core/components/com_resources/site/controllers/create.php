@@ -978,8 +978,24 @@ class Create extends SiteController
 			{
 				$recipients[] = ['user', $author->get('authorid')];
 			}
-			$group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
-			$recipients[] = ['group', $group->get('gidNumber')];
+
+			if (!$prev && $row->get('group_owner'))
+			{
+				$group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
+			}
+			if ($prev && !$row->get('group_owner'))
+			{
+				$group = \Hubzero\User\Group::getInstance($prev);
+			}
+			if (!$group)
+			{
+				$group = new \Hubzero\User\Group();
+			}
+
+			if ($group->get('gidNumber'))
+			{
+				$recipients[] = ['group', $group->get('gidNumber')];
+			}
 
 			Event::trigger('system.logActivity', [
 				'activity' => [
