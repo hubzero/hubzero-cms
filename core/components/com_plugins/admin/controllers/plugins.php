@@ -299,7 +299,6 @@ class Plugins extends AdminController
 
 		if (is_array($params))
 		{
-			$txt = array();
 			foreach ($params as $k => $v)
 			{
 				$p->set($k, $v);
