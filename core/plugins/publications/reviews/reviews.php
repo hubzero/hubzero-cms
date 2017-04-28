@@ -48,27 +48,12 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Constructor
-	 *
-	 * @param   object  &$subject  Event observer
-	 * @param   array   $config    Optional config values
-	 * @return  void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->infolink = '/kb/points/';
-		$this->banking = Component::params('com_members')->get('bankAccounts');
-	}
-
-	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @param      string $version 		Version name
-	 * @param      boolean $extended 	Whether or not to show panel
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
 	public function &onPublicationAreas($model, $version = 'default', $extended = true)
 	{
@@ -176,6 +161,9 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				$reviews = array();
 			}
 
+			$infolink = '/kb/points/';
+			$banking = Component::params('com_members')->get('bankAccounts');
+
 			// Instantiate a view
 			$view = $this->view('default', 'browse')
 				->set('option', $option)
@@ -183,8 +171,8 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				->set('reviews', $reviews)
 				->set('voting', $this->params->get('voting', 1))
 				->set('h', $h)
-				->set('banking', $this->banking)
-				->set('infolink', $this->infolink)
+				->set('banking', $banking)
+				->set('infolink', $infolink)
 				->set('config', $this->params);
 
 			if ($h->getError())
