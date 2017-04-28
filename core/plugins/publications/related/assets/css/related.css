@@ -5,3 +5,50 @@
 */
 	.related-publications {
 	}
+
+	#whatsrelated ul,
+	#whatsrelated p {
+		margin: 0;
+		padding: 0.5em 0.5em 0.5em 2em ;
+		border-left: 1px solid #9da6b7;
+		border-right: 1px solid #9da6b7;
+		border-bottom: 1px solid #9da6b7;
+		list-style: none;
+	}
+	#whatsrelated ul {
+		padding-left: 0.5em;
+	}
+	#whatsrelated li {
+		margin: 0;
+		padding: 0.5em;
+		padding-left: 2.5em;
+		font-size: 90%;
+		list-style: none;
+	}
+	#whatsrelated li.nodata {
+		border: none;
+		list-style: none;
+		padding-bottom: 1em;
+	}
+	#whatsrelated li span {
+		display: inline;
+		color: #999;
+		font-size: 90%;
+	}
+	#whatsrelated h3,
+	#whatspop h3 {
+		margin: 0;
+		padding: 0;
+		color: #747b88;
+		text-transform: uppercase;
+		font-size: 85%;
+		display: block;
+		border-bottom: 4px solid #9da6b7;
+	}
+	#whatsrelated {
+		padding: 0;
+		margin-bottom: 2em;
+	}
+	#whatspop {
+		margin-bottom: 2em;
+	}

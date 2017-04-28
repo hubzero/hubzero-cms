@@ -46,24 +46,6 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @param   object  $publication  Current publication
-	 * @return  array
-	 */
-	public function &onPublicationSubAreas($publication)
-	{
-		$areas = array();
-		if ($publication->category()->_params->get('plg_recommendations', 1) == 1)
-		{
-			$areas = array(
-				'recommendations' => Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS')
-			);
-		}
-		return $areas;
-	}
-
-	/**
 	 * Return data on a publication sub view (this will be some form of HTML)
 	 *
 	 * @param   object   $publication  Current publication
@@ -80,15 +62,13 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		$areas = array('recommendations');
-		if (!array_intersect($areas, $this->onPublicationSubAreas($publication))
-		&& !array_intersect($areas, array_keys( $this->onPublicationSubAreas($publication))))
+		if (!$publication->category()->_params->get('plg_recommendations', 1))
 		{
-			return false;
+			return $arr;
 		}
 
 		// Get some needed libraries
-		include_once(__DIR__ . DS . 'models' . DS . 'recommendation.php');
+		include_once __DIR__ . DS . 'models' . DS . 'recommendation.php';
 
 		// Get recommendations
 		$r = Plugins\Publications\Recommendations\Models\Recommendation::find(
@@ -99,17 +79,16 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 		$results = $r->limit($this->params->get('display_limit', 10))->rows();
 
 		// Pass the view some info
-		$view = $this->view('default', 'browse');
+		$view = $this->view('default', 'browse')
+			->set('option', $option)
+			->set('publication', $publication)
+			->set('results', $results)
+			->setErrors($this->getErrors());
 
 		if ($miniview)
 		{
 			$view->setLayout('mini');
 		}
-
-		$view->set('option', $option);
-		$view->set('publication', $publication);
-		$view->set('results', $results);
-		$view->setErrors($this->getErrors());
 
 		// Return the output
 		$arr['html'] = $view->loadTemplate();
