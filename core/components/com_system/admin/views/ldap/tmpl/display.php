@@ -34,6 +34,9 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_SYSTEM_LDAP_CONFIGURATION'), 'config.png');
 Toolbar::preferences($this->option, '550');
+
+$this->css('ldap')
+	->js('ldap');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
@@ -58,8 +61,16 @@ Toolbar::preferences($this->option, '550');
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><input type="submit" name="exportUsers" id="exportUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" onclick="submitbutton('exportUsers');" /></td>
-						<td><?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_USERS_TO_LDAP'); ?></td>
+						<td class="key"><!-- onclick="submitbutton('exportUsers');" -->
+							<input type="submit" name="exportUsers" id="exportUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" data-delay="3" data-start="0" data-progress="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=exportusersbatch&' . Session::getFormToken() . '=1&no_html=1&limit=' . $this->config->get('batch_limit', 1000) . '&start='); ?>" />
+						</td>
+						<td>
+							<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_USERS_TO_LDAP'); ?>
+							<div class="progress-container">
+								<strong><?php echo Lang::txt('COM_SYSTEM_LDAP_RUN_PROGRESS'); ?> <span class="progress-percentage">0%</span></strong>
+								<div class="progress"></div>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<td class="key"><input type="submit" name="deleteUsers" id="deleteUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP'); ?>" onclick="submitbutton('deleteUsers');" /></td>
