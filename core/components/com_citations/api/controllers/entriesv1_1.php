@@ -199,24 +199,32 @@ class Entriesv1_1 extends ApiController
 						$citation->access_level = 'private';
 					}
 
-					if ($entry->scope = 'member')
+					if ($entry->scope == 'member')
 					{
 						$citation->owner_type = 'user';
 						$citation->owner = $entry->uid;
-						$citation->url = '/members/' . $entry->uid . '/citations/' . $entry->id;
+						$citation->url = '/members/' . $entry->uid . '/citations';
 					}
 					elseif ($entry->scope == 'group')
 					{
 						$citation->owner_type = 'group';
 						$citation->owner = $entry->scope_id;
-						$group = \Hubzero\User\Group::getInstance($entry->scope_id)->get('cn');
-						$citation->url = '/groups/' . $group . '/citations/' . $entry->id;
+						$group = \Hubzero\User\Group::getInstance($entry->scope_id);
+						if ($group)
+						{
+							$group = $group->get('cn');
+							$citation->url = '/groups/' . $group . '/citations';
+						}
+						else
+						{
+							$citation->url = '/citations/' . $entry->id;
+						}
 					}
 					else
 					{
 						$citation->owner_type = 'user';
 						$citation->owner = $entry->uid;
-						$citation->url = '/citations/' . $entry->uid;
+						$citation->url = '/citations/view/' . $entry->id;
 					}
 					$response->citations[] = $citation;
 				}
