@@ -161,9 +161,10 @@ class Publicationsv1_1 extends ApiController
 			{
 				$obj = new stdClass;
 				$obj->id            = 'publication-' . $entry->get('id');
+				$obj->hubtype       = 'publication';
 				$obj->title         = $entry->get('title');
 				$obj->description   = $entry->get('abstract');
-				$obj->url           = $entry->link('version');
+				$obj->url           = Route::url($entry->link('version'));
 				$obj->doi           = $entry->get('doi');
 				$statusName         = $entry->getStatusName();
 				$obj->status        = $statusName;
