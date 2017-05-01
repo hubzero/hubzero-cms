@@ -145,7 +145,7 @@ class Projectsv1_1 extends ApiController
 					}
 
 					$privacy = $entry->get('private');
-					if ($privacy == 0)
+					if ($privacy == 0 && $entry->isProvisioned())
 					{
 						$obj->access_level = 'public';
 					}
