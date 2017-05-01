@@ -55,7 +55,7 @@ $noResult = count($this->results) > 0 ? false : true;
 		<fieldset class="entry-search">
 			<legend>Search site</legend>
 			<label for="terms">Search terms</label>
-			<input type="text" name="terms" id="terms" value="<?php echo $terms; ?>" placeholder="Enter keyword or phrase" />
+			<input type="text" name="terms" id="terms" value="<?php echo htmlspecialchars($terms); ?>" placeholder="Enter keyword or phrase" />
 			<input type="hidden" name="section" value="<?php echo $this->section; ?>" />
 		</fieldset>
 		<?php if ($this->section == 'map' && 0) { ?>
@@ -142,7 +142,7 @@ $noResult = count($this->results) > 0 ? false : true;
 								<?php endif; ?>
 
 								<!-- Result URL -->
-								<div class="result-url"><a href="<?php echo $result['url'] ?>"><?php echo $result['url']; ?></a></div>
+								<div class="result-url"><a href="<?php echo $result['url']; ?>"><?php echo $result['url']; ?></a></div>
 
 							</div> <!-- End Result Body -->
 						</div> <!-- End Result -->
@@ -160,6 +160,7 @@ $noResult = count($this->results) > 0 ? false : true;
 					<?php endif; ?>
 					<div class="clearfix"></div>
 					<input type="hidden" name="terms" value="<?php echo $terms; ?>" />
+					<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 				</form>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
