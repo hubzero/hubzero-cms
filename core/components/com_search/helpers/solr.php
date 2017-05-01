@@ -41,98 +41,26 @@ use Solarium;
  */
 class SolrHelper
 {
-	/**
-	 * enqueueDB
-	 * 
-	 * @param   string  $type 
-	 * @param   array   $ids
-	 * @param   string  $action
-	 * @static
-	 * @access  public
-	 * @return  void
-	 * @throws  Hubzero\Exception\Exception
-	 */
-	public static function enqueueDB($type = '', $ids = array(), $action='index')
+	public function __construct()
 	{
-		if ($type != '' && !empty($ids))
-		{
-			$db = App::get('db');
-			$userID = User::get('id');
-			$timestamp = Date::of()->toSql();
+		$config = Component::params('com_search');
+		$core = $config->get('solr_core');
+		$port = $config->get('solr_port');
+		$host = $config->get('solr_host');
+		$path = $config->get('solr_path');
 
-			if ($db->tableExists('#__search_queue') && count($ids) > 0)
-			{
-				$sql = "INSERT INTO `#__search_queue` (type, type_id, status, action, created_by, created) VALUES ";
+		$solrConfig = array('endpoint' =>
+			array($core =>
+				array('host' => $host, 'port' => $port,
+							'path' => $path, 'core' => $core,)
+						)
+		);
 
-				foreach ($ids as $key => $id)
-				{
-					if (!is_array($id))
-					{
-						$sql .= "('" . $type . "'," . $id . ", 0, '". $action ."', " . $userID . ", '$timestamp}'),";
-					}
-				}
+		$this->connection = new Solarium\Client($solrConfig);
+		$this->query = $this->connection->createSelect();
 
-				$sql = rtrim($sql, ',');
-				$sql .= ';';
-
-				try
-				{
-					$db->setQuery($sql);
-					$db->query();
-					return true;
-				}
-				catch (\Exception $e)
-				{
-					//@FIXME: properly handle this error
-					ddie($e->getMessage());
-				}
-			}
-			else
-			{
-				throw new \Hubzero\Exception\Exception('Queue table does not exist.');
-			}
-		}
-		return false;
+		return $this;
 	}
-
-	public static function getQueueDB($limit = 100)
-	{
-		$db = App::get('db');
-		$userID = User::get('id');
-		$timestamp = Date::of()->toSql();
-
-		if ($db->tableExists('#__search_queue') && count($ids) > 0)
-		{
-			$sql = "SELECT id, type, type_id FROM `#__search_queue` WHERE status";
-		}
-	}
-
-	/**
-	 * queueStatus - a rudimentary report to check up on the queue
-	 * 
-	 * @static
-	 * @access  public
-	 * @return  void
-	 */
-	public static function queueStatus()
-	{
-		$sql = "SELECT 
-		MAX(modified) as modified,
-		MAX(created) as created,
-		count(*) as total,
-		FLOOR(AVG(modified - created) / 60) as serviceTime,
-		(SELECT count(*) FROM `#__search_queue` WHERE status = 0) as notstarted,
-		(SELECT count(*) FROM `#__search_queue` WHERE status = 1) as indexed,
-		(SELECT count(*) FROM `#__search_queue` WHERE status = 2) as failed
-		FROM `#__search_queue`;";
-
-		$db = App::get('db');
-		$db->setQuery($sql);
-		$report = $db->query()->loadAssoc();
-
-		return $report;
-	}
-
 	/**
 	 * parseDocumentID - returns a friendly way to access the type and id from a solr ID 
 	 * 
@@ -141,7 +69,7 @@ class SolrHelper
 	 * @access  public
 	 * @return  mixed
 	 */
-	public static function parseDocumentID($id = '')
+	public function parseDocumentID($id = '')
 	{
 		if ($id != '')
 		{
@@ -161,5 +89,31 @@ class SolrHelper
 			return array('type' => $type, 'id' => $id);
 		}
 		return false;
+	}
+
+	/**
+	 * removeDocument - Removes a single document from the search index
+	 *
+	 * @param string $id
+	 * @access public
+	 * @return boolean 
+	 */
+	public function removeDocument($id)
+	{
+		if ($id != null)
+		{
+			$update = $this->connection->createUpdate();
+			$update->addDeleteQuery('id:'.$id);
+			$update->addCommit();
+			$response = $this->connection->update($update);
+
+			// @FIXME: Increase error checking 
+			// Wild assumption that the update was successful
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
