@@ -107,7 +107,7 @@ class Entriesv1_1 extends ApiController
 		if (User::authorise('core.admin', 'com_resources'))
 		{
 			$admin = true;
-			$filters['tag'] = '';	
+			$filters['tag'] = '';
 			$searchable = Request::getVar('searchable', false);
 
 			require_once Component::path('com_tags') . '/models/cloud.php';
@@ -161,7 +161,7 @@ class Entriesv1_1 extends ApiController
 					{
 						$obj->url = '/resources/' . $entry->id;
 					}
-						
+
 					$obj->title = $entry->title;
 					$obj->id = 'resource-' . $entry->id;
 					$obj->hubtype = 'resource';

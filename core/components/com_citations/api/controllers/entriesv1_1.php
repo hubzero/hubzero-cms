@@ -139,7 +139,7 @@ class Entriesv1_1 extends ApiController
 			$filters['collection_id'] = $collection;
 		}
 
-		if (User::authorise('core.admin',  'com_citations'))
+		if (User::authorise('core.admin', 'com_citations'))
 		{
 			$admin = true;
 			$searchable = Request::getVar('searchable', false);

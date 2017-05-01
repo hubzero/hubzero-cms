@@ -53,6 +53,5 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 		 * @TODO: Implement mechanism to send to Solr index
 		 * This Event is called in the Relational save() method.
 		 **/
-		
 	}
 }
