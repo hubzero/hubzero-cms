@@ -33,7 +33,6 @@ namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Search\Models\Solr\Blacklist;
-use Components\Search\Models\Solr\QueueDB;
 use Components\Search\Models\Solr\Facet;
 use \Hubzero\Search\Query;
 use Components\Search\Helpers\SolrHelper;
@@ -42,7 +41,6 @@ use Hubzero\Access\Group as Accessgroup;
 use stdClass;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'indexqueue.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'facet.php';
 require_once Component::path('com_developer') . DS . 'models' . DS . 'application.php';
@@ -130,12 +128,15 @@ class Solr extends AdminController
 					\Notify::error($application->getError());
 				}
 
+				$comConfig = Component::params('com_search');
 				$application = $application->toObject();
 				$config = array();
 				$config['solr_client_id'] = $application->client_id;
 				$config['solr_client_secret'] = $application->client_secret;
 				$config['solr_username'] = $user->get('username');
 				$config['solr_password'] = $newpass;
+				$config['solr_host'] = $comConfig->get('solr_host', 'localhost');
+				$config['solr_port'] = $comConfig->get('solr_port', '8445');
 				$json = json_encode($config);
 
 				$filesystem = App::get('filesystem');
@@ -192,9 +193,6 @@ class Solr extends AdminController
 		$this->view->setName('solr');
 		$this->view->option = $this->_option;
 
-		// Get queue status
-		$this->view->queueStats = SolrHelper::queueStatus();
-
 		$this->view->mechanism = $config->get('engine');
 		$this->view->status = $status;
 		$this->view->logs = $logs;
@@ -203,92 +201,6 @@ class Solr extends AdminController
 		// Display the view
 		$this->view->display();
 	}
-
-	/**
-	 * fullindexTask - Populates the queue with all indexable items
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	public function fullindexTask()
-	{
-		$processing = QueueDB::all()->where('status', '=', 0)->count();
-		if ($processing > 0)
-		{
-			App::redirect(
-				Route::url('index.php?option=com_search&task=searchindex', false),
-				Lang::txt('The index is still building. Please wait until it is finished.'), 'info'
-			);
-		}
-
-		// Get the enabled types and associated content
-		$enabledTypes = Event::trigger('search.onGetTypes');
-		foreach ($enabledTypes as $type)
-		{
-			$rows = Event::trigger('search.onIndex', array($type, null, false))[0];
-
-			try
-			{
-				if (count($rows) > 0)
-				{
-					SolrHelper::enqueueDB($type, $rows);
-				}
-			}
-			catch (\Hubzero\Exception $e)
-			{
-				\Notify::error($e->getMessage());
-			}
-		}
-
-		// Redirect to search index queue view
-		App::redirect(
-			Route::url('index.php?option=com_search&task=searchindex', false),
-			Lang::txt('Full index initiated.')
-		);
-	}
-
-	public function submitToQueueTask()
-	{
-		$type = Request::get('type', false);
-
-		// Quit early if no type specified
-		if ($type === false)
-		{
-			return;
-		}
-
-		$indexQueue = Indexqueue::all()->where('hubtype', '=', $type)->rows()->toObject();
-		if (count($indexQueue) == 0)
-		{
-			$newEntry = Indexqueue::oneOrNew(0);
-			$newEntry->set('hubtype', $type);
-			$newEntry->set('action', 'index');
-
-			if ($newEntry->save())
-			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false),
-					'Successfully added '. $type . ' to queue.', 'success'
-				);
-			}
-			else
-			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false),
-					'Failed to add '. $type . ' to queue!', 'error'
-				);
-			}
-		}
-		else
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=searchIndex', false),
-				$type . ' is already in the queue.', 'warning'
-			);
-		}
-	}
-
-
 
 	/**
 	 * documentByTypeTask - view a type's records
@@ -396,10 +308,9 @@ class Solr extends AdminController
 		$entry->set('created_by', User::getInstance()->get('id', 0));
 		$entry->save();
 
-		$item = SolrHelper::parseDocumentID($id);
-
+		$helper = new SolrHelper;
 		// Remove from index
-		if (SolrHelper::enqueueDB($item['type'], array($item['id']), 'delete'))
+		if ($helper->removeDocument($id, 'delete'))
 		{
 			// Redirect back to the search page.
 			App::redirect(
@@ -443,36 +354,6 @@ class Solr extends AdminController
 	 */
 	public function searchIndexTask()
 	{
-		// @TODO modify for RabbitMQ
-		// Check to see if the queue is still being processed
-		$db = App::get('db');
-		$countQuery = "SELECT COUNT(*) FROM #__search_queue WHERE status = 0";
-		$db->setQuery($countQuery);
-		$db->query();
-		$processing = $db->loadResult();
-
-		if ($processing > 0)
-		{
-			// See if the CRON is still processing
-			$this->view->processing = true;
-
-			// Check to see if the CRON task has stalled
-			$db->setQuery("SELECT MAX(modified) AS lastUpdated FROM `#__search_queue` WHERE status = 1");
-			$db->query();
-			$max = $db->loadResult();
-
-			if ($max > 0)
-			{
-				$ago = Date::of($max);
-				$ago = $ago->relative('hour');
-				$ago = explode(" ", $ago)[0];
-				if ($ago > 1)
-				{
-					$this->view->stalled = true;
-				}
-			}
-		}
-
 		if (in_array('parent_id', array_keys($_GET)))
 		{
 			Request::checkToken(["post", "get"]);
