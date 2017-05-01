@@ -152,7 +152,16 @@ class Entriesv1_1 extends ApiController
 				foreach ($records as $i => $entry)
 				{
 					$obj = new stdClass;
-					$obj->url = '/resources' . $entry->alias . '/' . $entry->id;
+
+					if ($entry->alias != '')
+					{
+						$obj->url = '/resources/' . $entry->alias;
+					}
+					else
+					{
+						$obj->url = '/resources/' . $entry->id;
+					}
+						
 					$obj->title = $entry->title;
 					$obj->id = 'resource-' . $entry->id;
 					$obj->hubtype = 'resource';
