@@ -682,7 +682,7 @@ class Membership extends AdminController
 				if (is_object($targetuser))
 				{
 					$uid = $targetuser->get('id');
-					if (in_array($uid,$invitees))
+					if (in_array($uid, $invitees))
 					{
 						$users[] = $uid;
 					}
