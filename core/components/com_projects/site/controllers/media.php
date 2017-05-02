@@ -457,7 +457,7 @@ class Media extends Base
 				}
 
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media;
+				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . urldecode($media);
 				$redirect = true;
 			}
 		}
