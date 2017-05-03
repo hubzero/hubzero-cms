@@ -55,11 +55,6 @@ $this->css('introduction.css', 'system')
 		</ul>
 	</div>
 </header>
-<?php
-	foreach ($this->messages as $message) {
-		echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
-	}
-?>
 
 <section id="introduction" class="section">
 	<div class="grid">

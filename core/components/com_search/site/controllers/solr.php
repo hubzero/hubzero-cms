@@ -141,6 +141,7 @@ class Solr extends SiteController
 
 		$this->view->pagination = new \Hubzero\Pagination\Paginator($numFound, $start, $limit);
 		$this->view->pagination->setAdditionalUrlParam('terms', $terms);
+		$this->view->pagination->setAdditionalUrlParam('type', $type);
 
 		if (isset($results) && count($results) > 0)
 		{
@@ -161,7 +162,6 @@ class Solr extends SiteController
 		}
 
 		$this->view->terms = $terms;
-		$this->view->total = $numFound;
 		$this->view->type = $type;
 		$this->view->section = $section;
 		$this->view->setLayout('display');
@@ -242,17 +242,6 @@ class Solr extends SiteController
 			{
 				//@FIXME: SOLR-specific
 				$result['title'] = $result['title'][0];
-
-				// Appends http(s)://
-				if (isset($result['url']))
-				{
-					$result['url']  = rtrim(Request::base(), "/") . $result['url'];
-				}
-				else
-				{
-					$result['url'] = '';
-				}
-
 				$snippet = '';
 				foreach ($result as $field => &$r)
 				{

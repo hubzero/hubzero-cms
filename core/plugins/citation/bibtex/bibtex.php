@@ -32,6 +32,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+use Components\Citations\Models\Citation;
 
 /**
  * Citations plugin class for bibtex
@@ -165,16 +166,26 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		// Make sure 0 is not the %
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
 
-		// Database object
-		$db = \App::get('db');
+		$existingCitations = Citation::all();
+		if (!empty($scope))
+		{
+			$existingCitations->whereEquals('scope', $scope);
+		}
+		if (!empty($scope_id))
+		{
+			$existingCitations->whereEquals('scope_id', $scope_id);
+		}
 
-		// Set query and get the result
-		$sql = "SELECT id, title, doi, isbn, scope, scope_id FROM `#__citations`";
-		$db->setQuery($sql);
-		$result = $db->loadObjectList();
+		$matchingKeys = array('isbn', 'title', 'doi');
+		$searchParams = array_intersect_key($citation, array_flip($matchingKeys));
+		$searchParams = array_filter($searchParams);
+		if (!empty($searchParams))
+		{
+			$existingCitations->filterBySearch($searchParams);
+		}
 
 		// Loop through all current citations
-		foreach ($result as $r)
+		foreach ($existingCitations->rows() as $r)
 		{
 			$id    = $r->id;
 			$title = $r->title;

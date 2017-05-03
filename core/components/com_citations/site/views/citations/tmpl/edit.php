@@ -43,21 +43,23 @@ $fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
 $fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
 $fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and Badges" : $fieldset_label;
 
-$t = array();
-$b = array();
 
-foreach ($this->tags as $tag)
-{
-	$t[] = $tag['raw_tag'];
-}
+$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
+					array(
+						array('tags', 'tags', 'actags', '', 
+							implode(",", $this->tags)
+						)	
+					)
+				);
 
-foreach ($this->badges as $badge)
-{
-	$b[] = $badge['raw_tag'];
-}
+$badges_list = Event::trigger('hubzero.onGetMultiEntry', 
+					array(
+						array('tags', 'badges', 'actags1', '', 
+							implode(",", $this->badges)
+						)
+					)
+				);
 
-$tags_list   = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', implode(",",$t))));
-$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))));
 
 //get the referrer
 $backLink = Route::url('index.php?option=' . $this->option);
@@ -161,12 +163,48 @@ $pid = Request::getInt('publication', 0);
 					</label>
 				</div>
 			</div>
+			<fieldset class="author-manager" data-add="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=add&' . $this->token . '=1'); ?>" data-update="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=update&' . $this->token . '=1'); ?>" data-list="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=display&' . $this->token . '=1'); ?>">
+					<div class="grid">
+						<div class="col span10">
+							<label for="field-author">
+								<?php echo Lang::txt('COM_CITATIONS_AUTHORS') . ' '; ?>
+								<span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+								<?php
+									$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : ''))));
+									if (count($mc) > 0) {
+										echo $mc[0];
+									} else { ?>
+									<input type="text" name="author" id="field-author" value="" />
+								<?php } ?>
+							</label>
+						</div>
+						<div class="col span2 omega">
+							<button class="btn btn-success add-author"><?php echo Lang::txt('COM_CITATIONS_ADD'); ?></button>
+						</div>
+					</div>
 
-			<label for="author">
-				<?php echo Lang::txt('COM_CITATIONS_AUTHORS'); ?>:
-				<input type="text" name="fields[author]" id="author" size="30" value="<?php echo $this->escape($this->row->author); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_AUTHORS_HINT'); ?></span>
-			</label>
+					<div class="field-wrap author-list">
+						<?php if (count($this->row->relatedAuthors) > 0) { ?>
+							<?php foreach ($this->row->relatedAuthors()->order('ordering', 'ASC') as $i => $author) { ?>
+								<p class="citation-author" id="author_<?php echo $author->id; ?>">
+									<span class="author-handle">
+									</span>
+									<span class="author-name">
+										<?php echo $author->author; ?>
+									</span>
+									<span class="author-description">
+										<input type="hidden" name="author[<?php echo $i; ?>][id]" value="<?php echo $author->id; ?>" />
+										<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" data-id="<?php echo $author->id; ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $author->id . '&' . $this->token . '=1'); ?>">
+											<?php echo Lang::txt('JDELETE'); ?>
+										</a>
+									</span>
+								</p>
+							<?php } ?>
+						<?php } else { ?>
+							<p class="author-instructions"><?php //echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT'); ?></p>
+						<?php } ?>
+					</div>
+					</fieldset>
 
 			<label for="authoraddress">
 				<?php echo Lang::txt('COM_CITATIONS_AUTHOR_ADDRESS'); ?>:
@@ -350,7 +388,7 @@ $pid = Request::getInt('publication', 0);
 			</label>
 			<label for="formatted">
 				<?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_CITATION'); ?>:
-				<textarea name="fields[formatted]" id="formatted" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->formatted)); ?></textarea>
+				<textarea name="fields[formatted]" id="formatted" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->get('formatted'))); ?></textarea>
 			</label>
 		</fieldset><div class="clear"></div>
 

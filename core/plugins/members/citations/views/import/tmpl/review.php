@@ -76,20 +76,14 @@ $base = $this->member->link() . '&active=citations';
 						<?php $counter = 0; ?>
 						<?php foreach ($citations_require_attention as $c) : ?>
 							<?php
-								//load the duplicate citation
-								$cc = new \Components\Citations\Tables\Citation($database);
-								$cc->load($c['duplicate']);
+                                //load the duplicate citation
+                                $cc = $c['duplicate'];
 
-								//get the type
-								$ct = new \Components\Citations\Tables\Type($database);
-								$type = $ct->getType($cc->type);
-								$type_title = $type[0]['type_title'];
+                                $type_title = $cc->relatedType->get('type_title');
+                                $tags = implode(', ', \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false));
+                                $badges = implode(', ', \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false));
+                            ?>
 
-								//get citations tags
-								$th = new \Components\Citations\Tables\Tags($cc->id);
-								$tags   = $th->render('string');
-								$badges = $th->render('string', array('label' => 'badges'), true);
-							?>
 							<tr>
 								<!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
 								<td>
@@ -130,7 +124,19 @@ $base = $this->member->link() . '&active=citations';
 											</tr>
 										</thead>
 										<tbody>
-											<?php foreach (array_keys($c) as $k) : ?>
+										<?php
+											$recordAttributes = $cc->getAttributes();
+											$changedKeys = array();
+											foreach ($c as $attribute => $value)
+											{
+												if (!empty($recordAttributes[$attribute]) || !empty($value))
+												{
+													$changedKeys[] = $attribute;
+												} 
+											}
+												
+										?>
+											<?php foreach ($changedKeys as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
 													<tr>
 														<td class="key">
@@ -155,10 +161,7 @@ $base = $this->member->link() . '&active=citations';
 																					case 'tags':	echo $tags;				break;
 																					case 'badges':	echo $badges;			break;
 																					default:
-																						if (in_array($k, $cc->getFields()))
-																						{
-																							echo html_entity_decode(nl2br($cc->$k));
-																						}
+																						echo html_entity_decode(nl2br($cc->get($k)));
 																					break;
 																				}
 																			?>

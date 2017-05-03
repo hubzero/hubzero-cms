@@ -32,8 +32,9 @@
 
 namespace Components\Citations\Admin\Controllers;
 
+require_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
 use Hubzero\Component\AdminController;
-use Components\Citations\Tables\Type;
+use Components\Citations\Models\Type;
 use Request;
 use Route;
 use Lang;
@@ -52,7 +53,8 @@ class Types extends AdminController
 	public function displayTask()
 	{
 		$ct = new Type($this->database);
-		$this->view->types = $ct->getType();
+		$this->view->types = Type::all();
+		$this->_displayMessages();
 
 		// Output the HTML
 		$this->view->display();
@@ -79,17 +81,11 @@ class Types extends AdminController
 
 		$this->view->config = $this->config;
 
-		if (!is_object($row))
+		if (!($row instanceof Type))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
-			if (is_array($id))
-			{
-				$id = (!empty($id)) ? $id[0] : 0;
-			}
-
-			$row = new Type($this->database);
-			$row->load($id);
+			$id = Request::getInt('id', 0);
+			$row = Type::oneOrNew($id);
 		}
 
 		$this->view->type = $row;
@@ -99,7 +95,7 @@ class Types extends AdminController
 		{
 			\Notify::error($error);
 		}
-
+		$this->_displayMessages();
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -117,33 +113,23 @@ class Types extends AdminController
 		Request::checkToken();
 
 		$fields = Request::getVar('type', array(), 'post');
+		$typeId = !empty($fields['id']) ? $fields['id'] : null;
+		unset($fields['id']);
 
-		$row = new Type($this->database);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
-
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		$row = Type::oneOrNew($typeId);
+		$row->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError(), 'com.citations');
 			$this->editTask($row);
 			return;
 		}
 
+		Notify::success(Lang::txt('CITATION_TYPE_SAVED'), 'com.citations');
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_TYPE_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -164,26 +150,35 @@ class Types extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
+			Notify::error(Lang::txt('CITATION_NO_TYPE'), 'com.citations');
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('CITATION_NO_TYPE'),
-				'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
 
-		$ct = new Type($this->database);
-		foreach ($ids as $id)
+		$deleteTypes = Type::all()->whereIn('id', $ids)->rows();
+		if (!$deleteTypes->destroyAll())
 		{
-			// Delete the type
-			$ct->delete($id);
+			Notify::error(Lang::txt('CITATION_TYPE_ERROR_REMOVED'), 'com.citations');
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			);
 		}
 
+		Notify::success(Lang::txt('CITATION_TYPE_REMOVED'), 'com.citations');
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_TYPE_REMOVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
+	}
+
+	private function _displayMessages($domain = 'com.citations')
+	{
+		foreach (Notify::messages($domain) as $message)
+		{
+			Notify::message($message['message'], $message['type']);
+		}
 	}
 }
 

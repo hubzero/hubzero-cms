@@ -44,6 +44,8 @@ else
 Toolbar::custom('addfacet', 'new', 'add', 'COM_SEARCH_ADD_FACET', false);
 Toolbar::custom('deletefacet', 'delete', 'delete', 'COM_SEARCH_DELETE_FACET', true);
 Toolbar::spacer();
+Toolbar::custom('fullindex', 'refresh', 'refresh', 'COM_SEARCH_SOLR_FULLINDEX', false);
+Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;

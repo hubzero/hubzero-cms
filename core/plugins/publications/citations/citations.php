@@ -102,15 +102,23 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get a needed library
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+		include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+		include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
+		include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+		include_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
+		include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 		// Get citations for this publication
-		$database = App::get('db');
-		$c = new \Components\Citations\Tables\Citation($database);
-		$citations = $c->getCitations('publication', $publication->id);
+		$c = \Components\Citations\Models\Association::all()
+			->whereEquals('tbl', 'publication')
+			->whereEquals('oid', $publication->id)
+			->including('citation')
+			->rows();
+		$citations = array();
+		foreach($c as $assoc)
+		{
+			$citations[] = $assoc->citation;
+		}
 
 		$arr['count'] = $citations ? count($citations) : 0;
 		$arr['name']  = 'citations';

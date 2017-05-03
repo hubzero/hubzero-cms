@@ -32,8 +32,6 @@
 
 namespace Components\Citations\Download;
 
-use Components\Citations\Tables\Type;
-
 include_once(__DIR__ . DS . 'downloadable.php');
 
 /**
@@ -87,22 +85,7 @@ class Endnote extends Downloadable
 		//var to hold document conetnt
 		$doc = '';
 
-		//get all the citation types
-		$db = \App::get('db');
-		$ct = new Type($db);
-		$types = $ct->getType();
-
-		$type = '';
-		foreach ($types as $t)
-		{
-			if ($t['id'] == $row->type)
-			{
-				$type = $t['type_title'];
-			}
-		}
-
-		//set the type to generic if we dont have one
-		$type = ($type != '') ? $type : 'Generic';
+		$type = $row->relatedType()->row()->get('type_title', 'Generic');
 
 		//set the type
 		$doc .= "%0 {$type}" . "\r\n";

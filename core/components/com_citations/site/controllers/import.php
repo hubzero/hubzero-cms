@@ -32,8 +32,8 @@
 
 namespace Components\Citations\Site\Controllers;
 
-use Components\Citations\Tables\Citation;
-use Components\Citations\Tables\Type;
+use Components\Citations\Models\Citation;
+use Components\Citations\Models\Format;
 use Components\Citations\Tables\Tags;
 use Components\Citations\Models\Importer;
 use Hubzero\Component\SiteController;
@@ -264,6 +264,18 @@ class Import extends SiteController
 
 		// Instantiate a new view
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+		if (!empty($citations_require_attention) && is_array($citations_require_attention))
+		{
+			$citationRequiredIds = array_map(function($value){
+				return $value['duplicate'];
+			}, $citations_require_attention);
+			$citations = Citation::all()->including('relatedType')->whereIn('id', $citationRequiredIds)->rows(); 
+			foreach ($citations_require_attention as &$citation)
+			{
+				$citation['duplicate'] = $citations->seek($citation['duplicate']);
+			}
+		}
+
 		$this->view->citations_require_attention    = $citations_require_attention;
 		$this->view->citations_require_no_attention = $citations_require_no_attention;
 
@@ -420,22 +432,18 @@ class Import extends SiteController
 		$this->view->config    = $this->config;
 		$this->view->database  = $this->database;
 		$this->view->filters   = $filters;
+		$this->view->defaultFormat = Format::getDefault();
 		$this->view->citations = array();
+		$citations_saved = Citation::all()->whereIn('id', $citations_saved)->rows();
 
 		foreach ($citations_saved as $cs)
 		{
-			$cc = new Citation($this->database);
-			$cc->load($cs);
-			$this->view->citations[] = $cc;
+			$this->view->citations[] = $cs;
 		}
 
 		$this->view->openurl['link'] = '';
 		$this->view->openurl['text'] = '';
 		$this->view->openurl['icon'] = '';
-
-		//take care fo type
-		$ct = new Type($this->database);
-		$this->view->types = $ct->getType();
 
 		//get any messages
 		$this->view->messages = Notify::messages('citations');

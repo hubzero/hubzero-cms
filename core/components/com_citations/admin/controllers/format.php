@@ -35,7 +35,7 @@ namespace Components\Citations\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Citations\Helpers;
 use Components\Citations\Tables;
-use Components\Citations\Models\Format as	CitationFormat;
+use Components\Citations\Models\Format as CitationFormat;
 use Request;
 use Route;
 use Lang;

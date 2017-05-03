@@ -440,6 +440,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				$content = preg_replace('/ {2,}/', ' ', $content);
 				$description = \Hubzero\Utility\Sanitize::stripAll($content);
 
+				// Grab the DOI if there exists one
 				if (isset($row->doi))
 				{
 					$doi = $row->doi;
@@ -455,8 +456,8 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				$record->hubtype = $type;
 				$record->title = $title;
 				$record->description = $description;
+				$record->doi = $doi;
 				$record->author = $authorNames;
-				$row->doi = $doi;
 				$record->tags = $tags;
 				$record->path = $path;
 				$record->access_level = $access_level;

@@ -597,3 +597,72 @@
 	.citation-citation .download {
 		margin: 10px 0 0 0;
 	}
+    #hubForm .author-manager .span2 {
+        text-align: right;
+    }
+    #hubForm .author-manager .author-instructions {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #hubForm .author-manager button {
+        margin-top: 2.4em;
+    }
+
+	#hubForm .citation-author {
+        background: #f7f7f7;
+        border-radius: 0.25em;
+        position: relative;
+        margin: 0 0 0.5em 0;
+        padding: 1em;
+    }
+    #hubForm .citation-author .author-name {
+        margin-right: 4em;
+        display: inline-block;
+        width: 80%;
+    }
+    #hubForm .citation-author .author-handle {
+        margin-right: 1em;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        position: relative;
+    }
+    #hubForm .citation-author .author-handle:after {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        position: absolute;
+        top: 0.2em;
+        left: 0;
+        content: "\f0dc";
+        font-family: "Fontcons";
+        font-size: 16px;
+        line-height: 1;
+        color: #ccc;
+    }
+    #hubForm .citation-author:hover .author-handle,
+    #hubForm .citation-author:hover .author-handle:after,
+    #hubForm .citation-author .author-handle:hover:after,
+    #hubForm .citation-author .author-handle:after:hover {
+        cursor: move;
+        color: #333;
+    }
+	#hubForm .citation-author span.author-description {
+        position: absolute;
+        right: 1em;
+        top: 25%;
+        font-size: 90%;
+    }
+    #hubForm .citation-author .delete {
+        font-size: 1.7em;
+        display: block;
+        overflow: hidden;
+        width: 1em;
+        height: 1em;
+        border: none;
+    }
+    #hubForm .citation-author .delete:before {
+        margin-right: 1em;
+        content: "\f014";
+        font-family: "Fontcons";
+    }

@@ -32,6 +32,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+use Components\Citations\Models\Citation;
 
 /**
  * Citations plugin class for bibtex
@@ -264,21 +265,12 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 	protected function getCitationVars()
 	{
 		// Get all the vars that a citation can have
-		$db = App::get('db');
-		$tbl = new \Components\Citations\Tables\Citation($db);
-		$keys = $tbl->getProperties();
-
-		// Remove any private vars
-		foreach ($keys as $k => $v)
-		{
-			if (substr($v, 0, 1) == '_')
-			{
-				unset($keys[$k]);
-			}
-		}
+		$obj = Citation::blank();
+		$tableName = $obj->getTableName();
+		$keys = $obj->getStructure()->getTableColumns($tableName);
 
 		// Return keys with keys reset
-		return array_values($keys);
+		return array_keys($keys);
 	}
 
 	/**
@@ -371,17 +363,26 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 		// Make sure 0 is not the %
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
+		$existingCitations = Citation::all();
+        if (!empty($scope))
+        {
+            $existingCitations->whereEquals('scope', $scope);
+        }
+        if (!empty($scope_id))
+        {
+            $existingCitations->whereEquals('scope_id', $scope_id);
+        }
 
-		// Database object
-		$db = App::get('db');
+        $matchingKeys = array('isbn', 'title', 'doi');
+        $searchParams = array_intersect_key($citation, array_flip($matchingKeys));
+        $searchParams = array_filter($searchParams);
+        if (!empty($searchParams))
+        {
+            $existingCitations->filterBySearch($searchParams);
+        }
 
-		// Set the query and get the result
-		$sql = "SELECT id, title, doi, isbn, scope, scope_id FROM `#__citations`";
-		$db->setQuery($sql);
-		$result = $db->loadObjectList();
-
-		// Loop through all current citations
-		foreach ($result as $r)
+        // Loop through all current citations
+        foreach ($existingCitations->rows() as $r)
 		{
 			$id    = $r->id;
 			$title = $r->title;
@@ -392,28 +393,23 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 			if (!isset($scope))
 			{
-				// Match titles based on percect param
-				similar_text($title, $citation['title'], $similar);
-				if ($similar >= $title_match)
-				{
-					$title_does_match = true;
-				}
-
 				// Direct matches on doi
-				if (isset($citation['doi']) && ($doi == $citation['doi']) && ($doi != '' && $title_does_match))
+				if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '')
 				{
 					$match = $id;
 					break;
 				}
 
 				// Direct matches on isbn
-				if (isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != '' && $title_does_match))
+				if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '')
 				{
 					$match = $id;
 					break;
 				}
 
-				if ($title_does_match)
+				// Match titles based on percect param
+				similar_text($title, $citation['title'], $similar);
+				if ($similar >= $title_match)
 				{
 					$match = $id;
 					break;
@@ -424,32 +420,27 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 				// Matching within a scope domain
 				if ($cScope == $scope && $cScope_id == $scope_id)
 				{
-					// Match titles based on percect param
-					similar_text($title, $citation['title'], $similar);
-					if ($similar >= $title_match)
-					{
-						$title_does_match = true;
-					}
-
 					// Direct matches on doi
-					if (isset($citation['doi']) && ($doi == $citation['doi']) && ($doi != '' && $title_does_match))
-					{
-						$match = $id;
-						break;
-					}
+					if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '')
+					 {
+						 $match = $id;
+						 break;
+					 }
 
-					// Direct matches on isbn
-					if (isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != '' && $title_does_match))
-					{
-						$match = $id;
-						break;
-					}
+					 // Direct matches on isbn
+					 if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '')
+					 {
+						 $match = $id;
+						 break;
+					 }
 
-					if ($title_does_match)
-					{
-						$match = $id;
-						break;
-					}
+					 // Match titles based on percect param
+					 similar_text($title, $citation['title'], $similar);
+					 if ($similar >= $title_match)
+					 {
+						 $match = $id;
+						 break;
+					 }
 				}
 			}
 		} // End foreach result as r

@@ -690,6 +690,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'scope' => self::PLUGIN_SCOPE,
 				'scope_id' => $scope_id,
 			));
+		if ($isNew)
+		{
+			$citation->tempId = $cid;
+		}
 
 		$customID = Request::getVar('custom4', '');
 		if ($customID != '')
@@ -1308,6 +1312,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!$this->importer->writeRequiresNoAttention($citations[0]['no_attention']))
 		{
 			Notify::error(Lang::txt('Unable to write temporary file.'));
+		}
+		if (!empty($citations[0]['attention']))
+		{
+			$citationRequiredIds = array_map(function($value){
+				return isset($value['duplicate']) ? $value['duplicate'] : false;
+			}, (array) $citations[0]['attention']);
+			$citeCollection = Citation::all()->including('relatedType')->whereIn('id', $citationRequiredIds)->rows();
+			foreach ($citations[0]['attention'] as &$citation)
+			{
+				$citation['duplicate'] = $citeCollection->seek($citation['duplicate']);
+			}
 		}
 
 		$view->citations_require_attention = $citations[0]['attention'];

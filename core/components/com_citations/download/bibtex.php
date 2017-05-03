@@ -32,7 +32,6 @@
 
 namespace Components\Citations\Download;
 
-use Components\Citations\Tables\Type;
 
 include_once(__DIR__ . DS . 'downloadable.php');
 
@@ -90,31 +89,12 @@ class Bibtex extends Downloadable
 		$addarray = array();
 
 		//get all the citation types
-		$db = \App::get('db');
-		$ct = new Type($db);
-		$types = $ct->getType();
-
-		//find the right title
-		$type = '';
-		foreach ($types as $t)
-		{
-			if ($t['id'] == $row->type)
-			{
-				$type = $t['type'];
-			}
-		}
-		$type = ($type != '') ? $type : 'Generic';
+		$type = $row->relatedType()->row()->get('type', 'Generic');
 
 		if (!$row->cite)
 		{
-			$au = new \Components\Citations\Tables\Author($db);
-			$authors = $au->getRecords(array('cid' => $row->id, 'start' => 0, 'limit' => 1));
-
-			foreach ($authors as $author)
-			{
-				$row->cite .= strtolower($author->surname);
-			}
-
+			$author = $row->relatedAuthors()->order('ordering', 'asc')->limit(1)->row();
+			$row->cite .= strtolower($author->surname);
 			$row->cite .= $row->year;
 			$t = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($row->title));
 			$row->cite .= (strlen($t) > 10 ? substr($t, 0, 10) : $t);
@@ -130,9 +110,24 @@ class Bibtex extends Downloadable
 			$author = trim($auths[$i]);
 			$author_arr = explode(',', $author);
 			$author_arr = array_map('trim', $author_arr);
+			if (count($author_arr) < 2)
+			{
+				$author_arr = explode(' ', $author);
+				$first = array_shift($author_arr);
+				$last = array_pop($author_arr);
+				foreach ($author_arr as $leftover)
+				{
+					$first.= ' ' . $leftover;
+				}
+				$addarray['author'][$i]['first'] = (!empty($first)) ? $first : '';
+				$addarray['author'][$i]['last']  = (!empty($last)) ? trim($last) : '';
+			}
+			else
+			{
 
-			$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
-			$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
+				$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
+				$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
+			}
 
 			$addarray['author'][$i]['first'] = preg_replace('/\{\{\d+\}\}/', '', $addarray['author'][$i]['first']);
 			$addarray['author'][$i]['last']  = preg_replace('/\{\{\d+\}\}/', '', $addarray['author'][$i]['last']);

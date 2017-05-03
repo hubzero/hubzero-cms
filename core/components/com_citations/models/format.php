@@ -82,6 +82,15 @@ class Format extends Relational
 		//'asset_id'
 	);
 
+	public static function getDefault($fallbackDefault = 'IEEE')
+	{
+		$config = Component::params('com_citations');
+		$defaultFormat = !empty($config->get('default_citation_format')) ? $config->get('default_citation_format'): $fallbackDefault;
+		$format = Format::blank();
+		$format->whereEquals('style', $defaultFormat)->limit(1);
+		return $format->row();
+	}
+
 
 	/**
 	 * Defines a one to one relationship with citation
@@ -89,9 +98,9 @@ class Format extends Relational
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function citation()
+	public function citations()
 	{
-		return $this->belongsToOne('Citation', 'id', 'format');
+		return $this->belongsToMany('Citation', 'format', 'style');
 	}
 
 

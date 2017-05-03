@@ -40,8 +40,6 @@ $this->css()
 $label    = $this->config->get('citation_label', 'number');
 $rollover = $this->config->get('citation_rollover', 'no');
 $rollover = ($rollover == 'yes') ? 1 : 0;
-$citationsFormat = new \Components\Citations\Tables\Format($this->database);
-$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
 //batch downloads
 $batch_download = $this->config->get("citation_batch_download", 1);
@@ -127,11 +125,9 @@ if ($label == 'none') {
 
 				<?php if (count($this->citations) > 0) : ?>
 					<?php
-						$formatter = new \Components\Citations\Helpers\Format();
-						$formatter->setTemplate($template);
 
 						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-						$counter = $this->filters['start'] + 1;
+						$counter = $this->filters['limitstart'] + 1;
 
 						if ($counter == '')
 						{
@@ -157,9 +153,10 @@ if ($label == 'none') {
 							<?php $x = 0; ?>
 							<?php foreach ($this->citations as $cite) : ?>
 								<tr>
+									<?php $citeId = $cite->id; ?>
 									<?php if ($batch_download) : ?>
 										<td class="batch">
-											<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+											<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $citeId; ?>" />
 										</td>
 									<?php endif; ?>
 									<?php if ($label != "none") : ?>
@@ -191,11 +188,7 @@ if ($label == 'none') {
 									<?php endif; ?>
 									<td class="citation-container">
 										<?php
-											$formatted = $cite->formatted
-												? $cite->formatted
-												: $formatter->formatCitation($cite,
-													$this->filters['search'], $coins, $this->config);
-
+											$formatted = $cite->formatted(array('format'=>$this->defaultFormat));
 											if ($cite->doi)
 											{
 												$formatted = str_replace('doi:' . $cite->doi,
@@ -212,18 +205,12 @@ if ($label == 'none') {
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
 											<div class="citation-notes">
 												<?php
-													$cs = new \Components\Citations\Tables\Sponsor($this->database);
-													$sponsors = $cs->getCitationSponsor($cite->id);
 													$final = "";
-													if ($sponsors)
+													if ($cite->sponsors)
 													{
-														foreach ($sponsors as $s)
+														foreach ($cite->sponsors as $s)
 														{
-															$sp = $cs->getSponsor($s);
-															if ($sp)
-															{
-																$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
-															}
+															$final .= '<a rel="external" href="' . $s->get('link') . '">' . $s->get('sponsor') . '</a>, ';
 														}
 													}
 												?>
@@ -239,21 +226,21 @@ if ($label == 'none') {
 											$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView)
 											{
-												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl);
+												echo $cite->citationDetails($this->openurl);
 											}
 											?>
 											<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>
 											<?php endif; ?>
 
 											<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-												<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+												<?php echo \Components\Citations\Helpers\Format::citationTags($cite); ?>
 											<?php endif; ?>
 										</div>
 									</td>
 									<?php if ($this->isAdmin === true) : ?>
 										<td class="col-edit">
-											<a class="icon-edit" href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">
+											<a class="icon-edit" href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id=' . $citeId); ?>">
 												<?php echo Lang::txt('COM_CITATIONS_EDIT'); ?>
 											</a>
 										</td>
@@ -270,7 +257,7 @@ if ($label == 'none') {
 					// Initiate paging
 					$pageNav = $this->pagination(
 						$this->total,
-						$this->filters['start'],
+						$this->filters['limitstart'],
 						$this->filters['limit']
 					);
 					$pageNav->setAdditionalUrlParam('task', 'browse');

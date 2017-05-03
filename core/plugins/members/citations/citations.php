@@ -113,12 +113,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		$this->database = App::get('db');
 
-		// Instantiate citations object and get count
-		$obj = new \Components\Citations\Tables\Citation($this->database);
-		$this->grand_total = $obj->getCount(array(
-			'scope'    => 'member',
+		$filters = array(
+			'scope' => 'member',
 			'scope_id' => $member->get('id')
-		), true);
+		);
+		$this->grand_total = Citation::getFilteredRecords($filters)->count();
 
 		$arr['metadata']['count'] = $this->grand_total;
 
@@ -237,13 +236,18 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// Only display published citations to non-managers.
 		if ($view->isAdmin)
 		{
-			// Get filtered citations
-			$view->citations = $obj['citations']->paginated()->rows();
+			// get filtered citations
+			$view->citations = $obj['citations']->paginated()->including(['relatedAuthors', function($author){
+				$author->order('ordering', 'asc');
+			}])->rows();
 		}
 		else
 		{
 			$view->citations = $obj['citations']
 				->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+				->including(['relatedAuthors', function($author){
+					$author->order('ordering', 'asc');
+				}])
 				->paginated()
 				->rows();
 		}
@@ -406,109 +410,106 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// Load the object
 		if (is_object($row))
-		{
-			$view->row = $row;
-		}
-		else
-		{
-			$view->row = \Components\Citations\Models\Citation::oneOrNew($id);
+	{
+		$view->row = $row;
+	}
+	else
+	{
+		$view->row = \Components\Citations\Models\Citation::oneOrNew($id);
 
-			// Check to see if this member created this citation
-			if (!$view->row->isNew() && ($view->row->uid != User::get('id') || $view->row->scope != 'member'))
+		// Check to see if this member created this citation
+		if (!$view->row->isNew() && ($view->row->uid != User::get('id') || $view->row->scope != 'member'))
+		{
+			// redirect
+			App::redirect(
+				Route::url($this->member->link() . '&active=' . $this->_name),
+				Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
+				'warning'
+			);
+		}
+	}
+
+	// Make sure title isnt too long
+	$maxTitleLength = 30;
+	$shortenedTitle = (strlen($view->row->title) > $maxTitleLength)
+		? substr($view->row->title, 0, $maxTitleLength) . '&hellip;'
+		: $view->row->title;
+
+	// Set the pathway
+	if ($id && $id != 0)
+	{
+		Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
+		Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
+	}
+	else
+	{
+		Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
+	}
+
+	// Set the page title
+	Document::setTitle( Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle );
+
+	// Push jquery to doc
+	Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
+
+	// Instantiate a new view
+	$view->title  = Lang::txt('PLG_MEMBERS_CITATIONS') . ': ' . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
+
+	// No ID, so we're creating a new entry
+	// Set the ID of the creator
+	if (!$id)
+	{
+		$view->row->uid = User::get('id');
+
+		// Tags & badges
+		$view->tags   = array();
+		$view->badges = array();
+
+		$view->row->id = -time();
+	}
+	else
+	{
+		if ((!$view->authors = $view->row->relatedAuthors()->order('ordering', 'asc')) && ($view->row->relatedAuthors->count() == 0 && $view->row->author != ''))
+		{
+			// Formats the author for the multi-author plugin
+			$authors = explode(';',$view->row->author);
+
+			$authorString = '';
+			$totalAuths = count($authors);
+			$x = 0;
+
+
+			foreach ($authors as &$author)
 			{
-				// redirect
-				App::redirect(
-					Route::url($this->member->link() . '&active=' . $this->_name),
-					Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
-					'warning'
-				);
-			}
-		}
-
-		// Make sure title isnt too long
-		$maxTitleLength = 30;
-		$shortenedTitle = (strlen($view->row->title) > $maxTitleLength)
-			? substr($view->row->title, 0, $maxTitleLength) . '&hellip;'
-			: $view->row->title;
-
-		// Set the pathway
-		if ($id && $id != 0)
-		{
-			Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
-			Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
-		}
-		else
-		{
-			Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
-		}
-
-		// Set the page title
-		Document::setTitle( Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle );
-
-		// Push jquery to doc
-		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
-
-		// Instantiate a new view
-		$view->title  = Lang::txt('PLG_MEMBERS_CITATIONS') . ': ' . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
-
-		// No ID, so we're creating a new entry
-		// Set the ID of the creator
-		if (!$id)
-		{
-			$view->row->uid = User::get('id');
-
-			// Tags & badges
-			$view->tags   = array();
-			$view->badges = array();
-
-			$view->row->id = -time();
-		}
-		else
-		{
-			if ($view->row->relatedAuthors->count())
-			{
-				$view->authors = $view->row->relatedAuthors;
-			}
-			elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
-			{
-				// Formats the author for the multi-author plugin
-				$authors = explode(';',$view->row->author);
-
-				$authorString = '';
-				$totalAuths = count($authors);
-				$x = 0;
-
-
-				foreach ($authors as &$author)
+				/***
+				* Because the multi-select keys off of a comma,
+				* imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
+				* Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
+				* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
+				***/
+				$authorEntry = explode(',', $author);
+				if (count($authorEntry == 2))
 				{
-					/***
-					* Because the multi-select keys off of a comma,
-					* imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
-					* Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
-					* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
-					***/
-					$authorEntry = explode(',', $author);
-					if (count($authorEntry == 2))
-					{
-						$author = $authorEntry[1] . ' ' . $authorEntry[0];
-					}
-
-					$authorString .= $author;
-
-					if ($totalAuths > 1 && $x < $totalAuths - 1 )
-					{
-						$authorString .= ',';
-					}
-
-					$x = $x + 1;
+					$author = $authorEntry[1] . ' ' . $authorEntry[0];
 				}
 
-				$view->authorString = $authorString;
+				$authorString .= $author;
+
+				if ($totalAuths > 1 && $x < $totalAuths - 1 )
+				{
+					$authorString .= ',';
+				}
+
+				$x = $x + 1;
 			}
 
-			// Tags & badges
-			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
-			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
+			$view->authorString = $authorString;
+		}
+
+			// tags & badges
+			
+			$view->tags = \Components\Citations\Helpers\Format::citationTags($view->row, false);
+			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, false);
 		}
 
 		// Output HTML
@@ -598,6 +599,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'scope' => $scope,
 				'scope_id' => $scopeID
 			));
+
+		if ($isNew)
+		{
+			$citation->tempId = $cid;
+		}
 
 		// Store new content
 		if (!$citation->save() && !$citation->validate())
@@ -816,7 +822,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$this->member->setParam('citations_show_badges' , $citation_show_badges);
 
 			// save profile settings
-			if (!$this->member->update())
+			if (!$this->member->save())
 			{
 				// failed
 				App::redirect(
@@ -1193,6 +1199,19 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		if (!empty($citations_require_attention))
+		{
+			$citationRequiredIds = array_map(function($value){
+				return isset($value['duplicate']) ? $value['duplicate'] : false;
+			}, (array) $citations_require_attention);
+			$citeCollection = Citation::all()->including('relatedType')->whereIn('id', $citationRequiredIds)->rows();
+			foreach ($citations_require_attention as &$citation)
+			{
+				$citation['duplicate'] = $citeCollection->seek($citation['duplicate']);
+			}
+		}		
+
+
 		$view = $this->view('review', 'import');
 		$view->citations_require_attention    = $citations_require_attention;
 		$view->citations_require_no_attention = $citations_require_no_attention;
@@ -1351,12 +1370,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			'search' => ''
 		);
 		$view->citations = array();
-
-		foreach ($citations_saved as $cs)
+		$citations = Citation::all()->whereIn('id', $citations_saved);
+		foreach ($citations as $citation)
 		{
-			$cc = new \Components\Citations\Tables\Citation($this->database);
-			$cc->load($cs);
-			$view->citations[] = $cc;
+			$view->citations[] = $citation;
 		}
 
 		$view->openurl['link'] = '';

@@ -36,9 +36,6 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-//database object
-$database = App::get('db');
-
 //declare vars
 $citations_require_attention = $this->citations_require_attention;
 $citations_require_no_attention = $this->citations_require_no_attention;
@@ -77,19 +74,9 @@ $no_show = array("errors","duplicate");
 						<?php $counter = 0; ?>
 						<?php foreach ($citations_require_attention as $c) : ?>
 							<?php
-								//load the duplicate citation
-								$cc = new \Components\Citations\Tables\Citation($database);
-								$cc->load($c['duplicate']);
-
-								//get the type
-								$ct = new \Components\Citations\Tables\Type($database);
-								$type = $ct->getType($cc->type);
-								$type_title = $type[0]['type_title'];
-
-								//get citations tags
-								$th = new \Components\Citations\Tables\Tags($cc->id);
-								$tags = $th->render('string');
-								$badges = $th->render('string', array('label' => 'badges'), true);
+								$type_title = $c['duplicate']->relatedType->get('type_title');
+								$tags = implode(', ', \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false));
+								$badges = implode(', ', \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false));
 							?>
 							<tr>
 								<!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
@@ -128,9 +115,20 @@ $no_show = array("errors","duplicate");
 											</tr>
 										</thead>
 										<tbody>
-											<?php foreach (array_keys($c) as $k) : ?>
+											<?php
+												$recordAttributes = $c['duplicate']->getAttributes();
+												$changedKeys = array();
+												foreach ($c as $attribute => $value)
+												{
+													if (!empty($recordAttributes[$attribute]) || !empty($value))
+													{
+														$changedKeys[] = $attribute;
+													} 
+												}
+													
+											?>
+											<?php foreach ($changedKeys as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
-												<?php if (isset($c[$k]) && $c[$k] != '' && isset($cc->$k) && $cc->$k != ''): ?>
 													<tr>
 														<td class="key">
 															<?php echo str_replace("_", " ", $k); ?>
@@ -153,7 +151,7 @@ $no_show = array("errors","duplicate");
 																					case 'type':	echo $type_title;		break;
 																					case 'tags':	echo $tags;				break;
 																					case 'badges':	echo $badges;			break;
-																					default:		echo html_entity_decode(nl2br($cc->$k));
+																					default:		echo html_entity_decode(nl2br($c['duplicate']->get($k)));
 																				}
 																			?>
 																		</span>
@@ -162,7 +160,6 @@ $no_show = array("errors","duplicate");
 															</table>
 														</td>
 													</tr>
-												<?php endif; ?>
 												<?php endif; ?>
 											<?php endforeach; ?>
 										</tbody>

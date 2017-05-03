@@ -38,6 +38,7 @@ foreach (array('citation', 'association', 'author', 'secondary', 'tags', 'type',
 }
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'download.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'citation.php');
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'citations'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

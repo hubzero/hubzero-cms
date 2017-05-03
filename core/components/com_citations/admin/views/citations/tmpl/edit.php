@@ -311,7 +311,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="citation-formatted"><?php echo Lang::txt('MANUAL_FORMAT_CITATION'); ?>:</label>
-					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->formatted), 50, 10, 'formatted'); ?>
+					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted')), 50, 10, 'formatted'); ?>
 				</div>
 			</fieldset>
 		</div>
@@ -414,10 +414,10 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_CITATIONS_FIELD_SPONSORS_HINT'); ?>">
 					<label for="field-sponsors"><?php echo Lang::txt('COM_CITATIONS_FIELD_SPONSORS'); ?></label>
-					<select name="sponsors[]" id="field-sponsors" multiple="multiple">
-						<!--<option value="sponsors">- Select Citation Sponsor &mdash;</option>-->
+					<select name="sponsors[]" id="field-sponsors" class="noUniform" multiple="multiple">
+						<option value="">- Select Citation Sponsor -</option>
 						<?php foreach ($this->sponsors as $s) : ?>
-							<?php $sel = (in_array($s['id'], $this->row_sponsors)) ? 'selected="selected"': ''; ?>
+							<?php $sel = (in_array($s->get('id'), $this->row_sponsors)) ? 'selected="selected"': ''; ?>
 							<option <?php echo $sel; ?> value="<?php echo $s['id']; ?>"><?php echo $this->escape(stripslashes($s['sponsor'])); ?></option>
 						<?php endforeach; ?>
 					</select>
@@ -430,7 +430,7 @@ function submitbutton(pressbutton)
 							$t = array();
 							foreach ($this->tags as $tag)
 							{
-								$t[] = stripslashes($tag['raw_tag']);
+								$t[] = stripslashes($tag);
 							}
 						?>
 						<label for="field-tags"><?php echo Lang::txt('COM_CITATIONS_FIELD_TAGS'); ?></label>
@@ -444,7 +444,7 @@ function submitbutton(pressbutton)
 							$b = array();
 							foreach ($this->badges as $badge)
 							{
-								$b[] = stripslashes($badge['raw_tag']);
+								$b[] = stripslashes($badge);
 							}
 						?>
 						<label for="field-badges"><?php echo Lang::txt('COM_CITATIONS_FIELD_BADGES'); ?></label>

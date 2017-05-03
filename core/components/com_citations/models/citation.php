@@ -34,10 +34,20 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Database\Rows;
 use Hubzero\Utility\String;
 use Hubzero\Base\Object;
+use Components\Tags\Models\Tag;
 
-require_once(__DIR__ . DS . 'link.php');
+require_once Component::path('com_citations') . DS . 'models' . DS . 'link.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'author.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'sponsor.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'format.php';
+require_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
+require_once Component::path('com_tags') . DS . 'models' . DS . 'tag.php';
+require_once Component::path('com_resources') . DS . 'models' . DS . DS . 'orm' . DS . 'resource.php';
+require_once Component::path('com_publications') . DS . 'models' . DS . DS . 'orm' . DS . 'publication.php';
 
 /**
  * Hubs database model
@@ -69,26 +79,403 @@ class Citation extends Relational
 		'type'  => 'notempty',
 		'title' => 'notempty'
 	);
-
 	/**
 	 * Automatically fillable fields
-	 *
+	 
 	 * @var array
 	 **/
 	public $always = array(
-		//'name_normalized',
-		//'asset_id'
+		'author'
 	);
+	
+	
+	private $badgesSeparated = false;
 
+	public static function getFilteredRecords($filters = array(), $admin = false)
+	{
+		$records = self::all();
+		$recordIdField = $records->getQualifiedFieldName('id');
+		$records->select($records->getQualifiedFieldName('*'))
+				->select('u.username')
+				->select('F.format', 'template')
+				->select('CS.sec_cits_cnt', 'sec_cnt')
+				->including(['relatedAuthors', function($author){
+					$author->order('ordering', 'asc');
+				}])
+				->including('assignedFormat')
+				->including('sponsors')
+				->including('tags')
+				->including(['resources', function($resource){
+					$resource->whereEquals('#__citations_assoc.tbl', 'resource');
+				}])
+				->join('#__users AS u', $records->getQualifiedFieldName('uid'), 'u.id', 'left')
+				->join('#__citations_secondary AS CS', $recordIdField, 'CS.cid', 'left')
+				->join('#__citations_format AS F', $records->getQualifiedFieldName('format'), 'F.style', 'left')
+				->group($recordIdField);
+		// scope & scope Id
+		if (!empty($filters['scope']) && $filters['scope'] != 'all')
+		{
+			if ($filters['scope'] == 'hub')
+			{
+				$records->whereEquals('scope', 'hub', 1);
+				$records->orWhereEquals('scope', '', 1);
+				$records->orWhere('scope', 'IS', null, 1); 
+				$records->resetDepth();
+			}
+			else
+			{
+				$records->whereEquals('scope', $filters['scope']);
+				
+			}
+		}
+		elseif ($filters['scope'] != 'all')
+		{
+			if (empty($filters['scope_id']))
+			{
+				$records->whereEquals('scope_id', '', 1);
+				$records->whereEquals('scope', '', 1);
+				$records->resetDepth();
+			}	
+		}
+
+		if (!empty($filters['scope_id']))
+		{
+			$records->whereEquals('scope_id', $filters['scope_id']);
+		}
+
+		if (!isset($filters['published']))
+		{
+			$filters['published'] = array(1);
+		}
+
+		$records->whereIn('published', $filters['published']);
+
+		if (!empty($filters['sort']))
+		{
+			$sortValues = explode(' ', $filters['sort']);
+			$columnSort = !empty($sortValues[0]) ? $sortValues[0] : $sortValues;
+			$direction = !empty($sortValues[1]) ? $sortValues[1] : 'ASC';
+			$records->order($columnSort, $direction);		
+		}
+
+		if (!empty($filters['filter']))
+		{
+			$filterValues = array('nonaff' => 0, 'aff' => 1);
+			$records->whereEquals('affiliated', $filterValues[$filters['filter']]);
+		}
+
+		if (!empty($filters['type']))
+		{
+			$records->whereEquals('type' , $filters['type']);
+		}
+
+		if (!empty($filters['tag']))
+		{
+			$tags = explode(',', $filters['tag']);
+			$records->whereRelatedHas('tags', function($tag) use ($tags){
+				$tag->select('tag', 'tagcount', true)->whereIn('tag', $tags)
+					->group('objectid')
+					->having('tagcount', '=', count($tags));
+				return $tag;
+			});
+		}
+
+		if (!empty($filters['search']))
+		{
+			$searchQuery = $filters['search'];
+			$records->filterBySearch($searchQuery, 1);
+
+			// @FIXME Add migration to create this index
+			$records->orWhereRelatedHas('relatedAuthors',function($author) use ($searchQuery){
+				$authorFields = array('givenName', 'surname', 'author');
+				$query = 'MATCH(' . implode(',', $authorFields) . ') AGAINST (? IN BOOLEAN MODE)';
+				$author->whereRaw($query, (array) $searchQuery);
+				return $author;
+			}, 1);
+			$records->resetDepth();
+		}
+		if (!empty($filters['publishedin']))
+		{
+			$records->whereLike('booktitle', $filters['publishedin'], 1);
+			$records->orWhereLike('journal', $filters['publishedin'], 1);
+			$records->resetDepth();
+		}
+
+		$authorFields = array_intersect_key($filters, array('author' => null, 'geo' => '', 'aff' => ''));
+		$maxOptions = array('geo' => 4, 'aff' => 3);
+		$authorFields = array_filter($authorFields);
+		foreach ($maxOptions as $filter => $max)
+		{
+			if (isset($authorFields[$filter]))
+			{
+				$selectedValues = array_filter($authorFields[$filter], function($item){
+					if ($item == 1)
+					{
+						return $item;
+					}
+				});
+				if (count($selectedValues) == $max)
+				{
+					unset($authorFields[$filter]);
+				}
+			}
+		}
+		if (!empty($authorFields))
+		{
+			$records->whereRelatedHas('relatedAuthors',function($author) use ($authorFields){
+				foreach ($authorFields as $field => $value)
+				{
+					$func = 'filterBy' . ucfirst($field);
+					if (method_exists($author, $func))
+					{
+						$author->$func($value);
+					}
+				}
+				return $author;
+			}, 1);
+		}
+		$records->filterByReftype($filters);
+		return $records;
+	}
+
+	public function filterBySearch($term, $depth = 0, $searchableFields = array('title', 'isbn', 'doi', 'abstract', 'author', 'publisher'))
+	{
+		if (is_array($term))
+		{
+			$searchTerms = array_intersect_key($term, array_flip($searchableFields));
+			$term = '';
+			$term = array_reduce($searchTerms, function($concat, $item){
+				$concat .= $item . ' ';
+				return $concat;
+			});
+			$query = 'MATCH(' . implode(',', array_keys($searchTerms)) . ') AGAINST (? IN BOOLEAN MODE)';
+		}	
+		else
+		{
+			$query = 'MATCH(' . implode(',', $searchableFields) . ') AGAINST (? IN BOOLEAN MODE)';
+		}
+		$this->whereRaw($query, (array) $term, $depth);
+		return $this;
+	}
+	
+	public function filterByReftype($filters)
+	{	
+		$refTypes = array(
+			'research' => array('R', 'N', 'S'),
+			'education' => array('E'),
+			'cyberinfrastructure' => array('C', 'A', 'HD', 'I'),
+			'eduresearch' => array('research', 'education')
+		);
+
+		if (isset($filters['reftype']) && is_array($filters['reftype']))
+		{
+			$filters['reftype'] = array_filter($filters['reftype'], function($ref){
+				if ($ref == 1)
+				{
+					return $ref;
+				}
+			});
+			
+			if (count($filters['reftype']) < 4)
+			{
+
+				$refKeys = array_keys($filters['reftype']);
+				$firstQuery = $refKeys[0];
+				$query = '(';
+				$queryBindings = array();
+				foreach ($refKeys as $reftype)
+				{
+					$combination = false;
+					$excludes = array();
+					switch ($reftype)
+					{
+						case 'research':
+							$excludes = $refTypes['education'];
+							break;
+						case 'cyberinfrastructure':
+							$excludes = array_merge($refTypes['research'], $refTypes['education']);
+						case 'education':
+							$excludes = $refTypes['research'];
+							break;
+						case 'eduresearch':
+							$combination = true;
+							break;
+					}
+					$query .= $firstQuery == $reftype ? '((' : ' OR ((';
+
+					if ($combination === false)
+					{
+						$valueCount = count($refTypes[$reftype]);	
+						$queryBindings = array_merge($queryBindings, $refTypes[$reftype]);
+						for ($i = 1; $i <= $valueCount - 1; $i++)
+						{
+							$query .= " `ref_type` LIKE ? OR ";
+						}
+						$query .= " `ref_type` LIKE ?) ";
+					}
+					else
+					{
+						$comboType1 = $refTypes[$reftype][0];
+						$comboType2 = $refTypes[$reftype][1];
+						$firstValue = true;
+						foreach ($refTypes[$comboType1] as $type1)
+						{
+							foreach ($refTypes[$comboType2] as $type2)
+							{
+								$queryBindings[] = $type1;
+								$queryBindings[] = $type2;
+								$query .= $firstValue ? '' : ' OR ';
+								$query .= "(`ref_type` LIKE ? AND `ref_type` LIKE ?)"; 
+								$firstValue = false;
+							}
+						} 
+						$query .= ")";
+					}
+
+					if (!empty($excludes))
+					{
+						$excludesCount = count($excludes);
+						$queryBindings = array_merge($queryBindings, $excludes);
+						for ($i = 1; $i <= $excludesCount; $i++)
+						{
+							$query .= "AND `ref_type` NOT LIKE ? ";
+						}
+					}
+					$query .= ")";
+				}
+				$query .= ')';
+				$queryBindings = array_map(function($value){
+					return '%' . $value . '%';
+				}, $queryBindings);
+				$this->whereRaw($query, $queryBindings);
+			}
+		}
+		return $this;
+	}
+
+	public function isOwner()
+	{
+		$this->select('id', 'citation_id')->from('#__citations_assoc');
+		return $this;
+	}
+
+	public static function getYearlyStats($filters = array())
+	{
+		$publishState = empty($filters['published']) ? array(1) : $filters['published'];
+		$publishState = !is_array($publishState) ? array($publishState) : $publishState;
+		$scope = empty($filters['scope']) ? 'hub' : $filters['scope'];
+		$citations = self::all()->select('affiliated')
+								->select('year')
+								->select('id', 'totalcite', true)
+								->whereIn('published', $publishState)
+								->group('year')
+								->group('affiliated')
+								->order('year', 'desc');
+
+		if ($scope == 'hub')
+		{
+			$citations->whereEquals('scope', '', 1);
+			$citations->orWhere('scope', 'IS', null, 1);
+			$citations->orWhereEquals('scope', $scope, 1);
+			$citations->resetDepth();
+		}
+		elseif ($scope != 'all' && !empty($filters['scope_id']))
+		{
+			$citations->whereEquals('scope', $scope);
+			$citations->whereEquals('scope_id', $filters['scope_id']);
+		}
+
+		$earliestYear = self::blank()->select('year')
+									 ->where('year', '!=', '')
+									 ->where('year', 'IS NOT', null)
+								     ->where('year', '>', 0)
+									 ->order('year', 'asc')->limit(1)->row()->year;
+		$groupCitations = array();
+		$affiliations = array('non-affiliate' => 0, 'affiliate' => 0);
+		$affiliationLabels = array_keys($affiliations);
+
+		for ($i = date('Y'); $i >= $earliestYear; $i--)
+		{
+			$groupCitations[$i] = $affiliations; 			
+		}
+		$emptyLabel = 'No Year';
+		$groupCitations[$emptyLabel] = $affiliations;
+		foreach ($citations->rows() as $cite)
+		{
+			$year = $cite->year;
+			$year = !empty($year) && ($year != "0") ? $year : $emptyLabel;
+			$affNum = $cite->affiliated;
+			$affLabel = $affiliationLabels[$affNum];
+			// Set count for affliation
+			if ($year == $emptyLabel)
+			{
+				$groupCitations[$year][$affLabel] += $cite->totalcite;
+			}
+			else
+			{
+				$groupCitations[$year][$affLabel] = $cite->totalcite;
+			}
+		}
+
+		return $groupCitations;
+	}
+
+	public function assignedFormat()
+	{
+		return $this->belongsToOne('Format', 'format', 'style');
+	}
+
+	public function resources()
+	{
+		return $this->manyToMany('\Components\Resources\Models\Orm\Resource', '#__citations_assoc', 'cid', 'oid');
+	}
+
+	public function associations()
+	{
+		return $this->oneToMany('Association', 'cid');
+	}
+
+	public function publications()
+	{
+		
+		return $this->manytoMany('\Components\Publications\Models\Orm\Publication', '#__citations_assoc', 'cid', 'oid')->whereEquals('#__citations_assoc.tbl', 'publication');
+	}
+
+	public function canEdit($userId = null)
+	{
+		$owners = $this->publications()->select('owners.userid')->join('#__project_owners as owners', '#__publications.project_id', 'owners.projectid');
+		$ownerIds = array();
+		foreach ($owners->rows() as $owner)
+		{
+			$ownerIds[] = $owner->userid;
+		}
+		$ownerIds = array_filter($ownerIds);
+		if (!isset($userId))
+		{
+			$userId = User::getInstance()->get('id');
+		}
+
+		if (in_array($userId, $ownerIds))
+		{
+			return true;
+		}
+		return false; 
+	}
+
+	public function sponsors()
+	{
+		return $this->manyToMany('Sponsor', '#__citations_sponsors_assoc', 'cid', 'sid');
+	}
 	/**
 	 * Defines a one to many relationship with authors
 	 *
 	 * @return $this
 	 * @since  1.3.2
 	 **/
+
 	public function relatedAuthors()
 	{
-		return $this->oneToMany('Author', 'cid', 'id');
+		return $this->oneToMany('Author', 'cid');
 	}
 
 	/**
@@ -102,6 +489,12 @@ class Citation extends Relational
 		return $this->belongsToOne('Type', 'type', 'id');
 	}
 
+	public function getModelName()
+	{
+		$this->modelName = 'citations';
+		return $this->modelName;
+	}
+
 	/**
 	 * Defines a many to many relationship with tags
 	 *
@@ -109,7 +502,76 @@ class Citation extends Relational
 	 */
 	public function tags()
 	{
-		return $this->oneToMany('TagObject', 'objectid', 'id');
+		return $this->manyShiftsToMany('\Components\Tags\Models\Tag', '#__tags_object', 'objectid', 'tbl', 'tagid');
+	}
+
+	public function updateTags($tags, $label= '', $strength = 1)
+	{
+		$currentTags = $this->tags()->whereEquals('jos_tags_object.label', $label)->rows();
+		$currentTagKeys = array();
+		foreach ($currentTags as $obj)
+		{
+			$currentTagKeys[] = $obj->get('tag');
+		}
+
+		$tags = !is_array($tags) ? explode(',', $tags) : $tags;
+		$removeTags = array_diff($currentTagKeys, $tags);
+		$addTags = array_diff($tags, $currentTagKeys);
+		foreach ($addTags as $tag)
+		{
+			$newTag = Tag::oneByTag($tag);
+			$newTag->set('raw_tag', $tag);
+			if ($newTag->isNew())
+			{
+				$newTag->save();
+			}
+			$newTag->addTo('citations', $this->get('id'), User::getInstance()->get('id'), $strength, $label);
+		}
+
+		foreach ($currentTags as $tag)
+		{
+			$tagName = $tag->get('tag');
+			if (in_array($tagName, $removeTags))
+			{
+				$tag->removeFrom('citations', $this->get('id'));
+			}
+		}	
+	}
+
+
+	public function separateTagsAndBadges()
+	{
+		if (!$this->badgesSeparated) 
+		{
+			if ($this->tags->count() > 0)
+			{
+				$newTags = new Rows();
+				if (!$badges = $this->get('badges'))
+				{
+					$badges = new Rows();
+				}
+				if (!$this->tags()->rows()->first()->hasAttribute('associative_label'))
+				{
+					$this->tags = $this->tags()->select('#__tags_object.label', 'associative_label')->rows();
+				}
+				
+				foreach ($this->tags as $index => $obj)
+				{
+					if ($obj->associative_label == 'badge')
+					{
+						$badges->push($obj);
+					}
+					else
+					{
+						$newTags->push($obj);
+					}
+				}
+				$this->set('filteredTags', $newTags);
+				$this->set('badges', $badges);
+			}
+			$this->badgesSeparated = true;
+		}
+		return $this;
 	}
 
 	/**
@@ -119,7 +581,7 @@ class Citation extends Relational
 	 */
 	public function links()
 	{
-		return $this->oneToMany('Link');
+		return $this->oneToMany('Link', 'citation_id');
 	}
 
 	/**
@@ -129,9 +591,12 @@ class Citation extends Relational
 	 * @param   string  $highlight
 	 * @return  object
 	 */
-	//public function formatted($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
 	public function formatted($config = array('format' => 'apa'), $highlight = NULL)
 	{
+		if (!empty($this->get('formatted')))
+		{
+			return $this->get('formatted');
+		}
 		//get hub specific details
 		$hub_name = \Config::get('sitename');
 		$hub_url  = rtrim(\Request::base(), '/');
@@ -141,7 +606,7 @@ class Citation extends Relational
 		$include_coins = isset($config['include_coins']) ? $config['include_coins'] : "no";
 		$c_type = 'journal';
 
-		$type = $this->relatedType->type;
+		$type = 'book';
 
 		switch (strtolower($type))
 		{
@@ -170,16 +635,24 @@ class Citation extends Relational
 
 		// array to hold replace vals
 		$replace_values = array();
+		
+		$template = $this->template;
 
-		// get the template
-		// default to IEEE
-		try
+		// get the default template
+		if (empty($template))
 		{
-			$format = \Components\Citations\Models\Format::oneOrFail($config['citationFormat']);
-		}
-		catch (\Exception $e)
-		{
-			$format = \Components\Citations\Models\Format::all()->where('style', 'LIKE', '%IEEE%')->row()->toObject();
+			$template = $this->assignedFormat->get('format');
+			if (empty($template))
+			{
+				if (isset($config['format']) && $config['format'] instanceof Format)
+				{
+					$template = $config['format']->format;
+				}
+				else
+				{
+					$template = Format::getDefault()->format;
+				}
+			}
 		}
 
 		// get the template keys
@@ -284,7 +757,7 @@ class Citation extends Relational
 					// prefer the use of the relational table 
 					if ($this->relatedAuthors->count() > 0)
 					{
-						$authors = $this->relatedAuthors()->order('ordering', 'asc');
+						$authors = $this->relatedAuthors;
 						$authorCount = $this->relatedAuthors->count();
 					}
 					elseif ($auth != '' && $this->relatedAuthors->count() == 0)
@@ -430,8 +903,6 @@ class Citation extends Relational
 
 		// Add more to coins
 
-		$template = $format->format;
-
 		$tmpl = isset($template) ? $template : $default_template;
 		$cite = strtr($tmpl, $replace_values);
 
@@ -446,7 +917,6 @@ class Citation extends Relational
 		// Reduce multiple spaces to one
 		$pattern = "/\s/s";
 		$cite = preg_replace($pattern, ' ', $cite);
-
 		// Strip empty punctuation inside
 		$b = array(
 			"''" => '',
@@ -463,7 +933,8 @@ class Citation extends Relational
 			',.' => '.',
 			'","'=> '',
 			'doi:.'=>'',
-			'(DOI:).'=>''
+			'(DOI:).'=>'',
+			'(DOI: )'=>''
 		);
 
 		foreach ($b as $k => $i)
@@ -522,7 +993,6 @@ class Citation extends Relational
 
 			$cite .= $coins;
 		}
-
 		// output the citation
 		return $cite;
 	}
@@ -563,26 +1033,84 @@ class Citation extends Relational
 	 */
 	public function citationDetails($openurl = array())
 	{
-		$html  = '';
+		$details  = '';
 
 		// are we allowing downloading
-		$html .= '<a class="icon-download bibtex" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
-		$html .= '<span class="separator"> | </span>';
-		$html .= '<a class="icon-download endnote" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
+		$details .= '<a class="icon-download bibtex" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
+		$details .= '<span class="separator"> | </span>';
+		$details .= '<a class="icon-download endnote" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
 
 		// if we have an open url link and we want to use open urls
 		if ($openurl['link'])
 		{
 			if ($open = self::citationOpenUrl($openurl, $this))
 			{
-				$html .= '<span class="separator"> | </span>' . $open;
+				$details .= '<span class="separator"> | </span>' . $open;
 			}
 		}
 
 		// citation association - to HUB resources
-		//$html .= $this->citationAssociation($config, $citation);
+		$details .= $this->formattedResourceLinks();
 
-		return $html;
+		if ($this->eprint)
+		{
+			$details .= '<span>|</span>';
+			$details .= '<a href="' . String::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+		}
+
+		return $details;
+	}
+
+	public function formattedResourceLinks()
+	{
+		if (!$this->resources)
+		{
+			return null;
+		}
+		else
+		{
+			$resourceCount = count($this->resources);
+			if ($resourceCount > 0)
+			{
+				$config = Component::params('com_citations');
+				$internallyCitedImage = $config->get('citation_cited', 0);
+				$internallyCitedImageSingle = $config->get('citation_cited_single', '');
+				$internallyCitedImageMultiple = $config->get('citation_cited_multiple', '');
+				$image = '';
+				$label = '';
+				$links = '';
+				$count = 1;
+				$multiple = false;
+
+				if ($resourceCount > 1)
+				{
+					$links .= '<span>|</span><span style="line-height:1.6em;color:#444">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span>';
+					$multiple = true;
+				}
+				else
+				{
+					$links .= '<span>|</span>';
+				}
+				$imageSrc = $multiple ? (!empty($internallyCitedImageMultiple)) ? $internallyCitedImageMultiple : $internallyCitedImageSingle : $internallyCitedImageSingle; 
+			
+				$linkText = \Lang::txt('COM_CITATIONS_RESOURCES_CITED');
+				$linkImage = '<img src="' . $imageSrc . '" />';
+
+				$displayValue = ($internallyCitedImage) ? 'linkImage' : 'linkText';
+				foreach($this->resources as $resource)
+				{
+					if ($multiple)
+					{
+						$linkText = '[' . $count . ']';
+					}
+					$links .= '<a href="' . $resource->link() . '">' . $$displayValue . '</a>';
+					$count++;
+				}
+				return $links;
+			}
+		}
+		
+		
 	}
 
 	/**
@@ -593,7 +1121,7 @@ class Citation extends Relational
 	public function badgeCloud()
 	{
 		$html = '<ul class="tags badges">';
-		foreach ($this->tags as $badge)
+		foreach ($this->tags() as $badge)
 		{
 			if ($badge->label == "badge" && $badge->tbl = 'citations')
 			{
@@ -615,9 +1143,9 @@ class Citation extends Relational
 	{
 		$html = '';
 
-		$tags = clone $this->tags;
+		$tags = clone $this->tags();
 
-		if ($this->tags->count() > 0)
+		if ($this->tags()->count() > 0)
 		{
 			$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
 
@@ -655,7 +1183,7 @@ class Citation extends Relational
 		$query = array();
 
 		// citation type
-		$citation_type = $citation->relatedType;
+		$citation_type = $citation->relatedType()->get('type');
 
 		// do we have a title
 		if (isset($citation->title) && $citation->title != '')
@@ -752,4 +1280,84 @@ class Citation extends Relational
 
 		return $html;
 	}
+	public function saveAndPropagate()
+	{
+		if (!$this->save())
+		{
+			return false;
+		}
+		// Loop through the relationships and save
+		// Both rows and models know how to save, so it doesn't matter
+		// which of the two the particular relationship returned
+		foreach ($this->getRelationships() as $relationship => $rows)
+		{
+			$this->$relationship()->associate($rows);
+			if (!$rows->save())
+			{
+				$this->setErrors($rows->getErrors());
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public function destroy()
+	{
+		$relatedAuthors = $this->relatedAuthors;
+		$associations = $this->associations;
+		if (!$relatedAuthors->destroyAll())
+		{
+			$this->setErrors($relatedAuthors->getErrors());
+			return false;
+		}
+		if (!$associations->destroyAll())
+		{
+			$this->setErrors($associations->getErrors());
+			return false;
+		}
+		if (!parent::destroy())
+		{
+			return false;
+		}
+		$this->sponsors()->sync(array());
+		$this->updateTags(array());
+		$this->updateTags(array(), 'badge');
+		return true;
+		
+	}
+
+	public function automaticAuthor()
+	{
+		if (!empty($this->tempId))
+		{
+			$this->set('id', $this->tempId);
+		}
+
+		$authors = $this->relatedAuthors()->order('ordering', 'ASC')->rows();
+		$convertedAuthors = array();
+		foreach ($authors as $author)
+		{
+			$lastName = $author->get('surname', '');
+			$firstName = $author->get('givenName', '');
+			$middleName = $author->get('middleName', '');
+			$memberId = $author->get('uidNumber', '');
+			$authorText = $lastName;
+			$authorText .= ', ' . $firstName;
+			$authorText .= !empty($firstName) && !empty($middleName) ? ' ' . $middleName : '';
+			$authorText .= !empty($memberId) ? '{{' . $memberId . '}}' : '';
+			if (empty(trim($authorText)))
+			{
+				continue;
+			}
+			$convertedAuthors[] = $authorText;
+		}
+
+		if (!empty($this->tempId))
+		{
+			$this->removeAttribute('id');
+		}
+
+		return implode(';', $convertedAuthors);
+	}
+
 }

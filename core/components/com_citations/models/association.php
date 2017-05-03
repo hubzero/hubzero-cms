@@ -25,62 +25,38 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author	Patrick Mulligan <jpmulligan@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
+ * @since	 Class available since release 1.3.2
  */
 
-namespace Components\Search\Api;
+namespace Components\Citations\Models;
 
-use Hubzero\Component\Router\Base;
+use Hubzero\Database\Relational;
+use Hubzero\Utility\String;
+use Hubzero\Base\Object;
 
 /**
- * Routing class for the component
+ * Hubs database model
+ *
+ * @uses \Hubzero\Database\Relational
  */
-class Router extends Base
+class Association extends Relational
 {
-	/**
-	 * Build the route for the component.
-	 *
-	 * @param   array  &$query  An array of URL arguments
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
-	 */
-	public function build(&$query)
-	{
-		$segments = array();
-
-		if (!empty($query['controller']))
-		{
-			$segments[] = $query['controller'];
-			unset($query['controller']);
-		}
-
-		if (!empty($query['task']))
-		{
-			$segments[] = $query['task'];
-			unset($query['task']);
-		}
-
-		return $segments;
-	}
 
 	/**
-	 * Parse the segments of a URL.
+	 * Default order by for model
 	 *
-	 * @param   array  &$segments  The segments of the URL to parse.
-	 * @return  array  The URL attributes to be used by the application.
-	 */
-	public function parse(&$segments)
+	 * @var string
+	 **/
+	public $orderBy = 'id';
+
+
+	protected $table = '#__citations_assoc';
+
+	public function citation()
 	{
-		$vars = array();
-		$vars['task'] = 'index';
-		$vars['controller'] = 'search';
-
-		if (isset($segments[0]))
-		{
-			// /search/suggest
-			$vars['task'] = $segments[0];
-		}
-
-		return $vars;
+		return $this->belongsToOne('Citation', 'cid');
 	}
 }

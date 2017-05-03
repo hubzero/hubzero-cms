@@ -372,7 +372,7 @@ class Tag extends Relational
 			$log->save();
 		}
 
-		$this->purgeCache();
+		//$this->purgeCache();
 
 		return $result;
 	}
@@ -429,11 +429,18 @@ class Tag extends Relational
 			$this->addError($to->getError());
 			return false;
 		}
+		$objectAttributes = $this->getAttributes();
+		foreach ($objectAttributes as $index => $value)
+		{
+			$this->removeAttribute($index);
+		}
 
-		if ($this->hasAttribute('objects'))
+		if (!empty($objectAttributes['objects']))
 		{
 			$this->set('objects', $this->objects()->total());
 		}
+		$this->set('id', $objectAttributes['id']);
+		$this->set('raw_tag', $objectAttributes['raw_tag']);
 		$this->save();
 
 		return true;

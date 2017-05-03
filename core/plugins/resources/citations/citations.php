@@ -95,17 +95,23 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$database = App::get('db');
 
-		// Get a needed library
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+		include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
+		include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+		include_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
+		include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-		// Get reviews for this resource
-		$c = new \Components\Citations\Tables\Citation($database);
-		$citations = $c->getCitations('resource', $model->resource->id);
+		// Get citations for this resource
+		$c = \Components\Citations\Models\Association::all()
+			->whereEquals('tbl', 'resource')
+			->whereEquals('oid', $model->resource->id)
+			->including('citation')
+			->rows();
+		$citations = array();
+		foreach($c as $assoc)
+		{
+			$citations[] = $assoc->citation;
+		}
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
