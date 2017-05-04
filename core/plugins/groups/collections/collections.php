@@ -1079,6 +1079,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		// Get model
 		$item = new \Components\Collections\Models\Item(intval($fields['id']));
+		$tmp = null;
+		if (substr($item->get('title'), 0, 3) == 'tmp')
+		{
+			$tmp = $item->get('title');
+		}
 
 		// Bind content
 		if (!$item->bind($fields))
@@ -1105,6 +1110,37 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError($item->getError());
 			return $this->_edit($item);
+		}
+
+		// It's possible that multiple temporary items could have been created
+		// This can happen if someone drops multiple files at once on the file
+		// uploader. So, we need to move any attachments back to the main one
+		// and remove the extra items.
+		//
+		// @TODO: Find a better way to do this
+		if ($tmp)
+		{
+			$db = App::get('db');
+			$db->setQuery("SELECT id FROM `#__collections_items` WHERE `title`=" . $db->quote($tmp) . " AND `id`!=" . $db->quote($item->get('id')));
+			$others = $db->loadColumn();
+
+			if (count($others) > 0)
+			{
+				$db->setQuery("SELECT * FROM `#__collections_assets` WHERE `item_id` in (" . implode(",", $others) . ")");
+				$assets = $db->loadObjectList();
+				foreach ($assets as $asset)
+				{
+					$asset = new \Components\Collections\Models\Asset($asset);
+					if (!$asset->move($item->get('id')))
+					{
+						$this->setError($item->getError());
+						return $this->_edit($item);
+					}
+				}
+
+				$db->setQuery("DELETE FROM `#__collections_items` WHERE `id` in (" . implode(",", $others) . ")");
+				$db->query();
+			}
 		}
 
 		// Create a post entry linking the item to the board
