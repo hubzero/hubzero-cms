@@ -90,7 +90,7 @@ class Author extends Relational
 		return $this->belongsToOne('Page', 'page_id');
 	}
 
-		/**
+	/**
 	 * Saves a string of comma-separated usernames or IDs to authors table
 	 *
 	 * @param   mixed    $authors  String or array of authors
