@@ -95,8 +95,7 @@ jQuery(function($) {
 var PlaceholderTest = function(parent){
 	var input = $('<input type="input" value="" placeholder="placeholder"/>');
 	input.css('opacity','0')
-	     .css('position','absolute')
-	     .css('left', '-1000px');
+		.css('position','fixed');
 	$('body').append(input);
 	input.on('input',function(e){
 		parent.find("input[placeholder]").removeAttr("placeholder");
