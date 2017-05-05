@@ -1385,13 +1385,14 @@ class connections
 		{
 			foreach ($entities as $entity)
 			{
+				$entity = urldecode($entity);
 				if (count(explode('/', $entity)) > 1)
 				{
-					$path = urldecode($entity);
+					$path = $entity;
 				}
 				else
 				{
-					$path = trim($this->subdir, '/') . '/' . urldecode($entity);
+					$path = trim($this->subdir, '/') . '/' . $entity;
 				}
 				$file = Entity::fromPath($path, $this->connection->adapter());
 				if (!$file->exists())
