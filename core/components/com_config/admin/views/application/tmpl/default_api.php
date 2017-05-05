@@ -33,19 +33,37 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<div id="submenu-box">
-	<div class="submenu-box">
-		<div class="submenu-pad">
-			<ul id="submenu" class="configuration">
-				<li><a href="#page-site" id="site" class="active"><?php echo Lang::txt('JSITE'); ?></a></li>
-				<li><a href="#page-system" id="system"><?php echo Lang::txt('COM_CONFIG_SYSTEM'); ?></a></li>
-				<li><a href="#page-server" id="server"><?php echo Lang::txt('COM_CONFIG_SERVER'); ?></a></li>
-				<li><a href="#page-api" id="api"><?php echo Lang::txt('COM_CONFIG_API'); ?></a></li>
-				<li><a href="#page-permissions" id="permissions"><?php echo Lang::txt('COM_CONFIG_PERMISSIONS'); ?></a></li>
-				<li><a href="#page-filters" id="filters"><?php echo Lang::txt('COM_CONFIG_TEXT_FILTERS')?></a></li>
-			</ul>
-			<div class="clr"></div>
-		</div>
+<div class="grid">
+	<div class="col span6">
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('COM_CONFIG_API_RATELIMIT_SHORT'); ?></span></legend>
+
+			<?php
+			foreach ($this->form->getFieldset('rl_short') as $field):
+			?>
+				<div class="input-wrap">
+					<?php echo $field->label; ?>
+					<?php echo $field->input; ?>
+				</div>
+			<?php
+			endforeach;
+			?>
+		</fieldset>
 	</div>
-	<div class="clr"></div>
+	<div class="col span6">
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('COM_CONFIG_API_RATELIMIT_LONG'); ?></span></legend>
+
+			<?php
+			foreach ($this->form->getFieldset('rl_long') as $field):
+			?>
+				<div class="input-wrap">
+					<?php echo $field->label; ?>
+					<?php echo $field->input; ?>
+				</div>
+			<?php
+			endforeach;
+			?>
+		</fieldset>
+	</div>
 </div>

@@ -182,7 +182,6 @@ class Application extends AdminController
 			// Attempt to save the configuration.
 			$data   = $return;
 			$return = $model->save($data);
-
 		}
 		catch (\Hubzero\Config\Exception\FileNotFoundException $e)
 		{
