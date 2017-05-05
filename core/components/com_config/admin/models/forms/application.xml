@@ -827,6 +827,58 @@
 				description="COM_CONFIG_FIELD_OFFLINE_IMAGE_DESC" />
 		</fieldset>
 	</fields>
+	<fields name="rate_limit">
+		<fields name="short">
+			<fieldset
+				name="rl_short"
+				label="CONFIG_RATELIMIT_SHORT_LABEL">
+				<field
+					name="period"
+					type="text"
+					default="1"
+					label="COM_CONFIG_FIELD_RATELIMIT_SHORTPERIOD_LABEL"
+					description="COM_CONFIG_FIELD_RATELIMIT_SHORTPERIOD_DESC"
+					required="false"
+					filter="integer"
+					size="6" />
+
+				<field
+					name="limit"
+					type="text"
+					default="120"
+					label="COM_CONFIG_FIELD_RATELIMIT_SHORTLIMIT_LABEL"
+					description="COM_CONFIG_FIELD_RATELIMIT_SHORTLIMIT_DESC"
+					required="false"
+					filter="integer"
+					size="6" />
+			</fieldset>
+		</fields>
+		<fields name="long">
+			<fieldset
+				name="rl_long"
+				label="CONFIG_RATELIMIT_LONG_LABEL">
+				<field
+					name="period"
+					type="text"
+					default="1440"
+					label="COM_CONFIG_FIELD_RATELIMIT_LONGPERIOD_LABEL"
+					description="COM_CONFIG_FIELD_RATELIMIT_LONGPERIOD_DESC"
+					required="false"
+					filter="integer"
+					size="6" />
+
+				<field
+					name="limit"
+					type="text"
+					default="10000"
+					label="COM_CONFIG_FIELD_RATELIMIT_LONGLIMIT_LABEL"
+					description="COM_CONFIG_FIELD_RATELIMIT_LONGLIMIT_DESC"
+					required="false"
+					filter="integer"
+					size="6" />
+			</fieldset>
+		</fields>
+	</fields>
 		<fieldset
 			name="filters"
 			label="COM_CONFIG_TEXT_FILTERS"
