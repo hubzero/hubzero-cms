@@ -215,7 +215,6 @@ class Batchcreate extends AdminController
 			));
 			exit();
 		}
-
 		// Load reader
 		libxml_use_internal_errors(true);
 		$this->reader = new \XMLReader();
@@ -240,7 +239,6 @@ class Batchcreate extends AdminController
 
 		// Validation
 		$outputData = $this->validateTask();
-
 		// Parse data if passed validations
 		if (!$this->getError())
 		{
@@ -337,7 +335,6 @@ class Batchcreate extends AdminController
 			if ($this->reader->name === 'publication')
 			{
 				$node = new \SimpleXMLElement($this->reader->readOuterXML());
-
 				// Check that category exists
 				$category = isset($node->cat) ? $node->cat : 'dataset';
 				$catId = $objCat->getCatId($category);
@@ -431,7 +428,6 @@ class Batchcreate extends AdminController
 					{
 						$attributes = $author->attributes();
 						$uid = $attributes['uid'];
-
 						$this->collectAuthorData($author, $i, $uid, $item);
 						$i++;
 					}
@@ -756,6 +752,7 @@ class Batchcreate extends AdminController
 		$lastName  = null;
 		$org       = null;
 		$error     = null;
+		$uid = (int) $uid;
 
 		// Check that user ID exists
 		if (trim($uid))
