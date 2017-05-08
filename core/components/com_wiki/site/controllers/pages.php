@@ -485,6 +485,7 @@ class Pages extends SiteController
 		$revision = $this->page->version;
 		$revision->set('version', $revision->get('version') + 1);
 		$revision->set(Request::getVar('revision', array(), 'post', 'none', 2));
+		$revision->set('created', Date::toSql());
 		$revision->set('id', 0);
 
 		// Incoming page
