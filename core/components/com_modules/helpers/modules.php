@@ -80,8 +80,8 @@ abstract class Modules
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = Html::select('option', '1',  Lang::txt('JPUBLISHED'));
-		$options[] = Html::select('option', '0',  Lang::txt('JUNPUBLISHED'));
+		$options[] = Html::select('option', '1', Lang::txt('JPUBLISHED'));
+		$options[] = Html::select('option', '0', Lang::txt('JUNPUBLISHED'));
 		$options[] = Html::select('option', '-2', Lang::txt('JTRASHED'));
 
 		return $options;
