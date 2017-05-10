@@ -204,7 +204,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "crated_by",
+	 * 		"name":        "created_by",
 	 * 		"description": "User ID of entry creator",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
@@ -271,7 +271,6 @@ class Entriesv1_0 extends ApiController
 			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
 			'publish_up'     => Request::getVar('publish_up', with(new Date('now'))->toSql(), 'post'),
 			'publish_down'   => Request::getVar('publish_down', null, 'post'),
-			'hits'           => Request::getInt('hits', 0, 'post')
 		);
 
 		$row = new Entry();
@@ -296,6 +295,7 @@ class Entriesv1_0 extends ApiController
 			}
 		}
 
+		$row->set('tags', $tags);
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
 		if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
