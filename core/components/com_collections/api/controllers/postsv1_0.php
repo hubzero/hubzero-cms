@@ -313,7 +313,7 @@ class Postsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		# Output the newly created post
+		// Output the newly created post
 		$href = 'index.php?option=com_collections&controller=media&post=';
 		$base = rtrim(Request::base(), '/');
 		$base = str_replace('/api', '', $base) . '/';
@@ -556,7 +556,7 @@ class Postsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		# Output the newly created post
+		// Output the newly created post
 		$href = 'index.php?option=com_collections&controller=media&post=';
 		$base = rtrim(Request::base(), '/');
 		$base = str_replace('/api', '', $base) . '/';
