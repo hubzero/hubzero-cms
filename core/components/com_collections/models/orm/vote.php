@@ -33,7 +33,7 @@ namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
 
-require_once(__DIR__ . DS . 'item.php');
+require_once __DIR__ . DS . 'item.php';
 
 /**
  * Collection vote model
@@ -43,14 +43,14 @@ class Vote extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'collections';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'created';
 
@@ -87,7 +87,7 @@ class Vote extends Relational
 	 */
 	public function item()
 	{
-		return $this->belongsToOne('Item', 'item_id');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Item', 'item_id');
 	}
 
 	/**
@@ -100,4 +100,3 @@ class Vote extends Relational
 		return $this->belongsToOne('Hubzero\User\User', 'user_id');
 	}
 }
-

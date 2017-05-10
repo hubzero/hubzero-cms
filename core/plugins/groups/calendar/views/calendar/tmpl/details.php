@@ -97,15 +97,15 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 <table class="group-event-details">
 	<tbody>
 		<?php
-			$timezone     = timezone_name_from_abbr('',$this->event->get('time_zone')*3600, NULL);
+			$timezone     = timezone_name_from_abbr('', $this->event->get('time_zone')*3600, null);
 			$publish_up   = $this->event->get('publish_up');
 			$publish_down = $this->event->get('publish_down');
 			$allday_event = $this->event->get('allday');
 
 			// show alternative event start/ends
 			// used for repeating events
-			$start = Request::getInt('start', NULL, 'get');
-			$end   = Request::getInt('end', NULL, 'get');
+			$start = Request::getInt('start', null, 'get');
+			$end   = Request::getInt('end', null, 'get');
 
 			if ($start || ($start && $end))
 			{
@@ -120,15 +120,15 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 				<td width="50%">
 					<?php
 						// check to see if its a single date all day event
-						$d1 = Date::of($publish_up)->toLocal('m d');
-						$d2 = Date::of($publish_down)->toLocal('m d');
+						$d1 = Date::of($publish_up);
+						$d2 = Date::of($publish_down)->subtract('24 hours');
 						if ($d1 == $d2 || $publish_down == '0000-00-00 00:00:00')
 						{
-							echo Date::of($publish_up)->toLocal('l, F d, Y');
+							echo $d1->format('l, F d, Y', true);
 						}
 						else
 						{
-							echo Date::of($publish_up)->toLocal('l, F d, Y') . ' - ' . Date::of($publish_down)->toLocal('l, F d, Y');
+							echo $d1->format('l, F d, Y', true) . ' - ' . $d2->format('l, F d, Y', true);
 						}
 					?>
 				</td>
@@ -141,20 +141,20 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo Date::of($publish_up)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_up)->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
+					<?php echo Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
 					&mdash;
-					<?php echo Date::of($publish_down)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_down)->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
+					<?php echo Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
 				</td>
 			</tr>
 		<?php else : ?>
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
-					<?php echo Date::of($publish_up)->toLocal('l, F d, Y'); ?>
+					<?php echo Date::of($publish_up, $this->event->get('time_zone'))->format('l, F d, Y', true); ?>
 				</td>
 				<th class="time"></th>
 				<td>
-					<?php echo Date::of($publish_up)->toLocal('g:i a') . Date::of($publish_up)->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
+					<?php echo Date::of($publish_up, $this->event->get('time_zone'))->format('g:i a T', true); ?>
 				</td>
 			</tr>
 		<?php endif; ?>

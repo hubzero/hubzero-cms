@@ -59,7 +59,7 @@ jQuery(document).ready(function(jq){
 			action: attach.attr("data-action"),
 			params: {dir: $('#field-dir').val(), i: $('.item-asset').length},
 			multiple: true,
-			debug: false,
+			debug: true,
 			template: '<div class="qq-uploader">' +
 						'<div class="qq-upload-button"><span>' + attach.attr('data-txt-instructions') + '</span></div>' + 
 						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-txt-instructions') + '</span></div>' +

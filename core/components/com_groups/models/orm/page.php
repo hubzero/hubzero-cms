@@ -32,9 +32,8 @@
 namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
-use Lang;
 
+require_once __DIR__ . DS . 'page' . DS . 'category.php';
 require_once __DIR__ . DS . 'page' . DS . 'version.php';
 require_once __DIR__ . DS . 'page' . DS . 'hit.php';
 
@@ -157,7 +156,45 @@ class Page extends Relational
 	 */
 	public function versions()
 	{
-		return $this->oneToMany('Components\Groups\Models\Orm\Page\Version', 'pageid');
+		return $this->oneToMany(__NAMESPACE__ . '\\Page\\Version', 'pageid');
+	}
+
+	/**
+	 * Get parent category
+	 *
+	 * @return  object
+	 */
+	public function category()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Page\\Category', 'category');
+	}
+
+	/**
+	 * Get page hits
+	 *
+	 * @return  object
+	 */
+	public function hits()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Page\\Hit', 'pageid');
+	}
+
+	/**
+	 * Create a page hit
+	 *
+	 * @return  object
+	 */
+	public function hit()
+	{
+		$hit = Page\Hit::blank()
+			->set(array(
+				'gidNumber' => $this->get('gidNumber'),
+				'pageid' => $this->get('id'),
+				'userid' => \User::get('id'),
+				'ip' => \Request::ip()
+			));
+
+		return $hit->save();
 	}
 
 	/**
@@ -173,6 +210,16 @@ class Page extends Relational
 			if (!$version->destroy())
 			{
 				$this->addError($version->getError());
+				return false;
+			}
+		}
+
+		// Remove hits
+		foreach ($this->hits()->rows() as $hit)
+		{
+			if (!$hit->destroy())
+			{
+				$this->addError($hit->getError());
 				return false;
 			}
 		}

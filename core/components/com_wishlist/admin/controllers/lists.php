@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,7 +32,7 @@
 namespace Components\Wishlist\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Wishlist\Tables\Wishlist;
+use Components\Wishlist\Models\Wishlist;
 use Request;
 use Config;
 use Notify;
@@ -73,7 +72,7 @@ class Lists extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
@@ -110,16 +109,37 @@ class Lists extends AdminController
 			)
 		);
 
-		$obj = new Wishlist($this->database);
+		$model = Wishlist::all();
 
-		// Get record count
-		$this->view->total = $obj->getCount($this->view->filters);
+		if ($filters['search'])
+		{
+			$model
+				->whereLike('title', strtolower((string)$filters['search']), 1)
+				->orwhereLike('description', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
+
+		if ($filters['category'])
+		{
+			$model->whereEquals('category', $filters['category']);
+		}
 
 		// Get records
-		$this->view->rows = $obj->getRecords($this->view->filters);
+		$rows = $model
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		$categories = Wishlist::all()
+			->select('DISTINCT(category)')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->set('categories', $categories)
+			->display();
 	}
 
 	/**
@@ -149,8 +169,13 @@ class Lists extends AdminController
 			}
 
 			// Load category
-			$row = new Wishlist($this->database);
-			$row->load($id);
+			$row = Wishlist::oneOrNew($id);
+		}
+
+		if ($row->isNew())
+		{
+			$row->set('created', Date::toSql());
+			$row->set('created_by', User::get('id'));
 		}
 
 		/*
@@ -186,24 +211,12 @@ class Lists extends AdminController
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Wishlist($this->database);
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
-		$row->state  = (isset($fields['state']))  ? 1 : 0;
-		$row->public = (isset($fields['public'])) ? 1 : 0;
-
-		// Check content
-		if (!$row->check())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Wishlist::oneOrNew($fields['id'])->set($fields);
+		$row->set('state', (isset($fields['state']))  ? 1 : 0);
+		$row->set('public', (isset($fields['public'])) ? 1 : 0);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
@@ -246,16 +259,15 @@ class Lists extends AdminController
 			return $this->cancelTask();
 		}
 
-		// Create a Wishlist object
-		$wishlist = new Wishlist($this->database);
-
 		$i = 0;
 		foreach ($ids as $id)
 		{
+			$row = Wishlist::oneOrFail($id);
+
 			// Delete the list
-			if (!$wishlist->delete($id))
+			if (!$row->destroy())
 			{
-				Notify::error($wishlist->getError());
+				Notify::error($row->getError());
 				continue;
 			}
 
@@ -298,24 +310,23 @@ class Lists extends AdminController
 
 		switch ($this->getTask())
 		{
-			case 'accesspublic':     $access = 0; break;
-			case 'accessregistered': $access = 1; break;
-			case 'accessspecial':    $access = 2; break;
+			case 'accesspublic':
+				$access = 0;
+				break;
+			case 'accessregistered':
+				$access = 1;
+				break;
+			case 'accessspecial':
+				$access = 2;
+				break;
 		}
 
 		// Load the article
-		$row = new Wishlist($this->database);
-		$row->load($id);
-		$row->public = $access;
+		$row = Wishlist::oneOrFail($id);
+		$row->set('public', $access);
 
 		// Check and store the changes
-		if (!$row->check())
-		{
-			Notify::error($row->getError());
-			return $this->cancelTask();
-		}
-
-		if (!$row->store())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 		}
@@ -355,10 +366,10 @@ class Lists extends AdminController
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new Wishlist($this->database);
-			$row->load($id);
-			$row->state = $state;
-			if (!$row->store())
+			$row = Wishlist::oneOrFail($id);
+			$row->set('state', $state);
+
+			if (!$row->save())
 			{
 				Notify::error($row->getError());
 				continue;
@@ -390,4 +401,3 @@ class Lists extends AdminController
 		);
 	}
 }
-

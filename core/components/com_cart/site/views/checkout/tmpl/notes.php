@@ -66,7 +66,37 @@ if (!empty($this->notifications))
 			<div class="col span12">
 				<form name="notes" class="full" method="post" id="hubForm">
 					<fieldset>
-						<label>Please add any notes/comments:
+
+						<?php
+
+						$genericNotesLabel = 'Please add any notes/comments:';
+
+						if (!empty($this->noteFields))
+						{
+							foreach ($this->noteFields as $sId => $field)
+							{
+								?>
+
+								<label>
+									<?php
+									echo '<strong>' . $field['pName'] . ', ' . $field['sSku'] . ':</strong> ' . $field['sCheckoutNotes'];
+									if ($field['sCheckoutNotesRequired'])
+									{
+										echo ' <em>Required</em>';
+									}
+									?>
+									<textarea name="notes-<?php echo $sId; ?>"></textarea>
+								</label>
+
+								<?php
+							}
+
+							$genericNotesLabel = 'Other notes/comments:';
+						}
+
+						?>
+
+						<label><?php echo $genericNotesLabel; ?>
 							<textarea name="notes"></textarea>
 						</label>
 

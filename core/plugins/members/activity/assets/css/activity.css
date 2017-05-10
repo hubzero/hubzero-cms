@@ -185,9 +185,19 @@
 		color: #5cb4e4;
 	}
 
-	.activities .activity-event>*:first-child{
+	.activities .activity-event>*:first-child {
 		margin-top: 0;
 		padding-top: 0;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	.activities .activity-event-preview>*:first-child,
+	.activities .activity-event-content>*:first-child {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.activities .activity-event-preview>*:last-child,
+	.activities .activity-event-content>*:last-child {
 		margin-bottom: 0;
 		padding-bottom: 0;
 	}

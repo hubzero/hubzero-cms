@@ -214,7 +214,7 @@ class Gitlab
 	public function _putRequest($resource, $params = array())
 	{
 		// init post request
-		$request = $this->client->put($this->url . DS . $resource);
+		$request = $this->client->createRequest('POST', $this->url . DS . $resource);
 
 		// set post fields
 		foreach ($params as $key => $value)
@@ -226,7 +226,7 @@ class Gitlab
 		$request->addHeader('PRIVATE-TOKEN', $this->token);
 
 		// send and return response
-		$response = $request->send($request);
+		$response = $this->client->send($request);
 		return $response->json();
 	}
 }

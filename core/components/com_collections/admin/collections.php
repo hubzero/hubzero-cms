@@ -38,8 +38,8 @@ if (!\User::authorise('core.manage', 'com_collections'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'orm' . DS . 'collection.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 
 $controllerName = \Request::getCmd('controller', 'collections');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -54,7 +54,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_COLLECTIONS_POSTS'),
-	\Route::url('index.php?option=com_collections&controller=posts'),
+	\Route::url('index.php?option=com_collections&controller=posts&collection_id=0&item_id=0'),
 	$controllerName == 'posts'
 );
 \Submenu::addEntry(
@@ -63,11 +63,9 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'items'
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

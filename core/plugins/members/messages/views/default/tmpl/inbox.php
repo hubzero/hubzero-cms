@@ -144,8 +144,13 @@ $this->css()
 							<?php
 							if (substr($row->type, -8) == '_message')
 							{
-								$u = User::getInstance($row->created_by);
-								echo '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
+								$from = Lang::txt('PLG_MEMBERS_MESSAGES_ANONYMOUS');
+								if (!$row->anonymous)
+								{
+									$u = User::getInstance($row->created_by);
+									$from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
+								}
+								echo $from;
 							}
 							else
 							{

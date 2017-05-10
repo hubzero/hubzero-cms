@@ -97,11 +97,11 @@ class Profiles extends SiteController
 			return;
 		}
 
-		require_once dirname(dirname(__DIR__)) . '/tables/incremental/awards.php';
-		require_once dirname(dirname(__DIR__)) . '/tables/incremental/groups.php';
-		require_once dirname(dirname(__DIR__)) . '/tables/incremental/options.php';
+		require_once dirname(dirname(__DIR__)) . '/models/incremental/awards.php';
+		require_once dirname(dirname(__DIR__)) . '/models/incremental/groups.php';
+		require_once dirname(dirname(__DIR__)) . '/models/incremental/options.php';
 
-		$ia = new \ModIncrementalRegistrationAwards($profile);
+		$ia = new \Components\Members\Models\Incremental\Awards($profile);
 		$ia->optOut();
 
 		App::redirect(
@@ -125,7 +125,7 @@ class Profiles extends SiteController
 
 		$restrict = '';
 
-		$referrer = Request::getVar('HTTP_REFERER', NULL, 'server');
+		$referrer = Request::getVar('HTTP_REFERER', null, 'server');
 		if ($referrer && preg_match('/members\/\d+\/messages/i', $referrer))
 		{
 			if (!User::authorise('core.admin', $this->_option)
@@ -196,7 +196,21 @@ class Profiles extends SiteController
 
 			// match member names on all three name parts
 			//$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
-			$match = "LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%');
+			if (strstr($filters['search'], ' '))
+			{
+				$parts = explode(' ', $filters['search']);
+
+				// Someone typed a name with a space so it could be "first middle last", "first last", or "first middle"
+				$match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR (LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($parts[0]) . '%') . "
+					AND (LOWER(u.middleName) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . " OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . ")))";
+			}
+			else
+			{
+				$match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . ")";
+			}
 			$query = "SELECT u.id, u.name, u.username, u.access, $match as rel
 					FROM `#__users` AS u
 					WHERE $match AND u.block=0 AND u.activation>0 AND u.email NOT LIKE '%@invalid' $restrict
@@ -216,10 +230,11 @@ class Profiles extends SiteController
 				$user = Member::blank()->set($row);
 
 				$obj = array();
-				$obj['id']      = $user->get('id');
-				$obj['name']    = $user->name;
-				$obj['org']     = (in_array($user->get('access'), User::getAuthorisedViewLevels()) ? $user->get('organization', '') : '');
-				$obj['picture'] = $user->picture();
+				$obj['id']       = $user->get('id');
+				$obj['name']     = $user->get('name');
+				$obj['username'] = $user->get('username');
+				$obj['org']      = (in_array($user->get('access'), User::getAuthorisedViewLevels()) ? $user->get('organization', '') : '');
+				$obj['picture']  = $user->picture();
 
 				$json[] = $obj;
 			}
@@ -300,24 +315,41 @@ class Profiles extends SiteController
 			->where($a . '.activation', '>', 0)
 			->where($a . '.approved', '>', 0);
 
-		// Take filters and apply them to the tasks
-		/*if ($filters['search'])
+		// Validate sorting vars
+		$sortFound = false;
+		switch ($filters['sortby'])
 		{
-			foreach ($filters['search'] as $term)
-			{
-				//$entries->where($a . '.name', 'LIKE', "%{$term}%");
+			case 'surname':
+			case 'name':
+				$filters['sort'] = 'surname';
+				$sortFound = true;
+				break;
 
-				$entries->whereLike($a . '.name', strtolower((string)$term), 1)
-					->orWhereLike($a . '.username', strtolower((string)$term), 1)
-					->orWhereLike($a . '.email', strtolower((string)$term), 1)
-					->resetDepth();
-			}
-		}*/
+			default:
+				$sorts = array('surname');
+				foreach (Filters::getFieldNames() as $column)
+				{
+					$sorts[] = $column['raw'];
+				}
+				$filters['sort'] = $filters['sortby'];
+				if (!in_array($filters['sortby'], $sorts))
+				{
+					$filters['sort'] = 'surname';
+				}
+				break;
+		}
+
+		// Make sure sort direction is valid
+		$filters['sort_Dir'] = strtolower(Request::getWord('sort_Dir', 'asc'));
+		if (!in_array($filters['sort_Dir'], array('asc', 'desc')))
+		{
+			$filters['sort_Dir'] = 'asc';
+		}
 
 		if ($filters['tags'])
 		{
 			$to = '#__tags_object';
-			$t = '#__tags';
+			$t  = '#__tags';
 
 			$tags = explode(',', $filters['tags']);
 			$tags = array_map('trim', $tags);
@@ -333,10 +365,11 @@ class Profiles extends SiteController
 			$entries->group($a . '.id');
 		}
 
+		$db = App::get('db');
+		$i = 1;
+
 		if ($filters['q'])
 		{
-			$db = App::get('db');
-			$i = 1;
 			foreach ($filters['q'] as $q)
 			{
 				if ($q['field'] == 'name')
@@ -371,22 +404,39 @@ class Profiles extends SiteController
 					$q['value'] = '%' . $q['value'] . '%';
 				}
 
-				$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']), 'inner');
+				if (in_array($q['o'], array('>', '>=', '<', '<=')) && is_numeric($q['value']))
+				{
+					$entries->joinRaw(
+						$b . ' AS t' . $i,
+						't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int)$q['value'],
+						'inner'
+					);
+				}
+				else
+				{
+					$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']), 'inner');
+				}
+
+				if ($filters['sort'] == $q['field'])
+				{
+					$filters['sort'] = 't' . $i . '.profile_value';
+					$sortFound = true;
+				}
+
 				$entries->whereIn('t' . $i . '.access', User::getAuthorisedViewLevels());
 				$i++;
 			}
 		}
 
-		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
-
-		switch ($filters['sortby'])
+		// If the sort value wasn't already an applied filter
+		// we need to join on the profiles table to be able to sort by that value
+		if (!$sortFound)
 		{
-			case 'name':
-			default:
-				$filters['sort'] = 'surname';
-				$filters['sort_Dir'] = 'asc';
-			break;
+			$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']), 'inner');
+			$filters['sort'] = 't' . $i . '.profile_value';
 		}
+
+		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
 
 		$rows = $entries
 			->order($filters['sort'], $filters['sort_Dir'])
@@ -545,7 +595,7 @@ class Profiles extends SiteController
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
-				Lang::txt('You must be a logged in to access this area.'),
+				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
 		}
@@ -578,6 +628,13 @@ class Profiles extends SiteController
 
 		// Ensure we have a member
 		if (!$profile->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+		}
+
+		// Make sure member is approved
+		// Removed the !$profile->get('approved') check from conditional since the Unapproved System plugin will handle this check.
+		if ($profile->get('block'))
 		{
 			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 		}
@@ -898,17 +955,17 @@ class Profiles extends SiteController
 		}
 
 		// Redirect user back to main account page
-		$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
+		$return = base64_decode(Request::getVar('return', '', 'method', 'base64'));
 		$this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
 		$session = App::get('session');
 
 		// Redirect user back to main account page
 		if (Request::getInt('no_html', 0))
 		{
-			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			if ($session->get('badpassword', '0') || $session->get('expiredpassword', '0'))
 			{
-				$session->set('badpassword','0');
-				$session->set('expiredpassword','0');
+				$session->set('badpassword', '0');
+				$session->set('expiredpassword', '0');
 			}
 
 			echo json_encode(array("success" => true));
@@ -916,10 +973,10 @@ class Profiles extends SiteController
 		}
 		else
 		{
-			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			if ($session->get('badpassword', '0') || $session->get('expiredpassword', '0'))
 			{
-				$session->set('badpassword','0');
-				$session->set('expiredpassword','0');
+				$session->set('badpassword', '0');
+				$session->set('expiredpassword', '0');
 			}
 		}
 	}
@@ -1092,7 +1149,7 @@ class Profiles extends SiteController
 		if ($request !== null && !empty($resourcemessage))
 		{
 			$sitename =  Config::get('sitename');
-			$live_site = rtrim(Request::base(),'/');
+			$live_site = rtrim(Request::base(), '/');
 
 			// Email subject
 			$subject = $hubName . " Account Resource Request";
@@ -1360,6 +1417,17 @@ class Profiles extends SiteController
 			$member->set('usageAgreement', 0);
 		}
 
+		$access  = Request::getVar('access', array(), 'post');
+
+		if (is_array($access))
+		{
+			foreach ($access as $k => $v)
+			{
+				$member->setParam('access_' . $k, intval($v));
+			}
+			$member->set('params', $member->params->toString());
+		}
+
 		// Save the changes
 		if (!$member->save())
 		{
@@ -1374,7 +1442,6 @@ class Profiles extends SiteController
 
 		// Incoming profile edits
 		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
-		$access  = Request::getVar('access', array(), 'post');
 		$field_to_check = Request::getVar('field_to_check', array());
 
 		$old = Profile::collect($member->profiles);

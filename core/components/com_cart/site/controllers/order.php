@@ -364,7 +364,7 @@ class Order extends ComponentController
 
 		// Send emails to customer and admin
 		$logger = new \CartMessenger('Complete order');
-		$logger->emailOrderComplete($tInfo->info);
+		$logger->emailOrderComplete($tInfo);
 
 		return true;
 	}

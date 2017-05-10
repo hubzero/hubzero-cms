@@ -151,8 +151,7 @@
 
 					var that = this;
 
-
-					$('div.col-edit').bind('click', function(e) {
+					$('div.col-edit').on('click', function(e) {
 						var col = ds.dd[$('div.col-edit').index(this)];
 
 						//$('#col-prop-dialog').html(function(i, h) { return h.supplant(col); });
@@ -195,7 +194,22 @@
 
 						});
 
-						$('#col-prop-dialog').find('.tabs').tabs().tabs('select', 0).end()
+						// When a base href is set, jQuery UI Tabs will try to use it
+						// as the URL for links that only have the anchor defined. This
+						// means it's (incorrectly) loading tab content via AJAX.
+						//
+						// https://bugs.jqueryui.com/ticket/7822
+						//
+						// So, we temporarily remove the base href.
+						var bases = document.getElementsByTagName('base');
+						var baseHref = null;
+
+						if (bases.length > 0) {
+							baseHref = bases[0].href;
+							bases[0].href = '';
+						}
+
+						$('#col-prop-dialog').find('.tabs').tabs().tabs('option', 'active', 0).end()
 						.dialog({
 							title: 'Column Properties : ' + col.label,
 							width: 650,
@@ -207,6 +221,7 @@
 								},
 								Cancel: function() {
 									$(this).dialog( "close" );
+									bases[0].href = baseHref;
 								}
 							}
 						});

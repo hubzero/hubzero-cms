@@ -101,11 +101,11 @@ function submitbutton(pressbutton)
 						<div class="input-wrap">
 							<label for="acgroup"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label></td>
 							<?php
-							$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','','','','owner')));
+							$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group_id', 'acgroup','','','','owner')));
 							if (count($gc) > 0) {
 								echo $gc[0];
 							} else { ?>
-							<input type="text" name="group" value="" id="acgroup" value="" size="30" autocomplete="off" />
+							<input type="text" name="group_id" value="" id="acgroup" value="" size="30" autocomplete="off" />
 							<?php } ?>
 						</div>
 					</div>

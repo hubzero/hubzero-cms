@@ -34,7 +34,6 @@
 defined('_HZEXEC_') or die();
 
 $this->css();
-
 ?>
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS'); ?></h3>
 
@@ -48,21 +47,38 @@ $this->css();
 	</ul>
 <?php } ?>
 
-<ul class="sub-menu">
-	<li class="active">
-		<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
-		</a>
-	</li>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
-		</a>
-	</li>
-</ul>
+<?php if (User::get('id') == $this->user->get('id')) { ?>
+	<ul class="sub-menu">
+		<li class="active">
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
+			</a>
+		</li>
+	</ul>
+<?php } ?>
 
 <div id="s-projects">
 	<div class="container">
+		<nav class="entries-filters">
+			<ul class="entries-menu filter-options">
+				<li>
+					<a<?php echo (!$this->filters['filterby'] || $this->filters['filterby'] == 'active') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_FILTER_STATUS_ACTIVE'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filters['filterby'] == 'archived') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&filterby=archived'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_FILTER_STATUS_ARCHIVED'); ?>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
 		<?php
 		if ($this->which == 'all')
 		{

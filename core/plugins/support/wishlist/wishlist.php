@@ -208,12 +208,11 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'wish':
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+				include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wish.php';
 
-				$wish = new \Components\Wishlist\Tables\Wish($database);
-				$wish->load($refid);
-				$wish->status = 7;
-				$wish->store();
+				$wish = \Components\Wishlist\Models\Wish::oneOrFail($refid);
+				$wish->set('status', 7);
+				$wish->save();
 			break;
 
 			case 'wishcomment':
@@ -246,12 +245,11 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'wish':
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+				include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wish.php';
 
-				$wish = new \Components\Wishlist\Tables\Wish($database);
-				$wish->load($refid);
-				$wish->status = 0;
-				$wish->store();
+				$wish = \Components\Wishlist\Models\Wish::oneOrFail($refid);
+				$wish->set('status', 0);
+				$wish->save();
 			break;
 
 			case 'wishcomment':
@@ -287,21 +285,11 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'wish':
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'owner.php');
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'ownergroup.php');
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
+				include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
 				// Delete the wish
-				$wish = new \Components\Wishlist\Tables\Wish($database);
-				$wish->delete_wish($referenceid);
-
-				// also delete all votes for this wish
-				$objR = new \Components\Wishlist\Tables\Wish\Rank($database);
-				$objR->remove_vote($referenceid);
+				$wish = \Components\Wishlist\Models\Wish::oneOrFail($referenceid);
+				$wish->destroy();
 
 				$message .= Lang::txt('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_WISH_REMOVAL', $parentid);
 			break;

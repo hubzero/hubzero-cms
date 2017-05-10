@@ -65,7 +65,7 @@ class Setup extends Base
 		// Incoming
 		$defaultSection = $this->_task == 'edit' ? 'info' : '';
 		$this->section  = Request::getVar('active', $defaultSection);
-		$this->group    = NULL;
+		$this->group    = null;
 
 		// Login required
 		if (User::isGuest())
@@ -177,8 +177,8 @@ class Setup extends Base
 		}
 
 		// Send to requested page
-		$step = $this->section ? array_search($this->section, $setupSteps) : NULL;
-		$step = $step !== NULL && $step <= $this->model->get('setup_stage') ? $step : $this->model->get('setup_stage');
+		$step = $this->section ? array_search($this->section, $setupSteps) : null;
+		$step = $step !== null && $step <= $this->model->get('setup_stage') ? $step : $this->model->get('setup_stage');
 
 		if ($step < $this->_setupComplete)
 		{
@@ -365,6 +365,8 @@ class Setup extends Base
 			}
 		}
 
+		Event::trigger('projects.onProjectAfterSave', array($this->model));
+
 		// Don't go next in case of error
 		if ($this->getError())
 		{
@@ -510,10 +512,10 @@ class Setup extends Base
 			// Collect grant information
 			if ($this->config->get('grantinfo', 0))
 			{
-				$grant_agency    = Request::getVar('grant_agency', '');
-				$grant_title     = Request::getVar('grant_title', '');
-				$grant_PI        = Request::getVar('grant_PI', '');
-				$grant_budget    = Request::getVar('grant_budget', '');
+				$grant_agency = Request::getVar('grant_agency', '');
+				$grant_title  = Request::getVar('grant_title', '');
+				$grant_PI     = Request::getVar('grant_PI', '');
+				$grant_budget = Request::getVar('grant_budget', '');
 				$this->model->saveParam('grant_budget', $grant_budget);
 				$this->model->saveParam('grant_agency', $grant_agency);
 				$this->model->saveParam('grant_title', $grant_title);
@@ -599,6 +601,10 @@ class Setup extends Base
 
 		// Trigger project create event
 		Event::trigger('projects.onProjectCreate', array($this->model));
+
+		// Set the session flag indicating the new submission
+		Session::set('newsubmission.project', true);
+
 	}
 
 	/**
@@ -726,7 +732,7 @@ class Setup extends Base
 							->limit(1)
 							->row();
 
-						if ($existingField->id != NULL)
+						if ($existingField->id != null)
 						{
 							$existingField->set('description_value', $formFields[$kField->name]);
 							$existingField->set('ordering', $kField->ordering);
@@ -760,20 +766,33 @@ class Setup extends Base
 					$objO = $this->model->table('Owner');
 					if ($this->_gid)
 					{
-						// Only add the creator
-						// They'll choose if they want to sync the entire group or not in the next step
-						if (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 0, 1, 1, '', $split_group_roles = 0))
+						$team = array(User::get('id'));
+						if ($this->config->get('init_team', 0) == 1)
 						{
-							$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
-							return false;
+							$group = \Hubzero\User\Group::getInstance($this->_gid);
+							if ($group)
+							{
+								$team = array_merge($group->get('managers'), $team);
+								$team = array_unique($team);
+							}
+						}
+						foreach ($team as $user_id)
+						{
+							// Only add the creator(s)
+							// They'll choose if they want to sync the entire group or not in the next step
+							if (!$objO->saveOwners($this->model->get('id'), $user_id, $user_id, $this->_gid, 1, 1, 1, '', 0))
+							{
+								$this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
+								return false;
+							}
 						}
 						// Make sure project creator is manager
-						$objO->reassignRole(
+						/*$objO->reassignRole(
 							$this->model->get('id'),
-							$users = array(User::get('id')),
-							0 ,
+							array(User::get('id')),
+							0,
 							1
-						);
+						);*/
 					}
 					elseif (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 1, 1, 1))
 					{
@@ -784,11 +803,9 @@ class Setup extends Base
 
 				// Record activity
 				$this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_INFO_UPDATED'));
-
 			break;
 
 			case 'team':
-
 				if ($new)
 				{
 					return false;
@@ -827,11 +844,9 @@ class Setup extends Base
 						$this->_setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
 					}
 				}
-
 			break;
 
 			case 'settings':
-
 				if ($new)
 				{
 					return false;
@@ -863,13 +878,10 @@ class Setup extends Base
 						if ($key == 'grant_status')
 						{
 							// Meta data for comment
-							$meta = '<meta>' . Date::of('now')->toLocal('M d, Y')
-							. ' - ' . User::get('name') . '</meta>';
+							$meta = '<meta>' . Date::of('now')->toLocal('M d, Y') . ' - ' . User::get('name') . '</meta>';
 
 							$cbase   = $this->model->get('admin_notes');
-							$cbase  .= '<nb:sponsored>'
-							. Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE')
-							. $meta . '</nb:sponsored>';
+							$cbase  .= '<nb:sponsored>' . Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE') . $meta . '</nb:sponsored>';
 							$this->model->set('admin_notes', $cbase);
 
 							// Save admin notes
@@ -1036,7 +1048,7 @@ class Setup extends Base
 		if ($ajax)
 		{
 			echo json_encode(array(
-				'error' => $this->model->getError(),
+				'error'   => $this->model->getError(),
 				'message' => Lang::txt('COM_PROJECTS_VERIFY_PASSED')
 			));
 			return;
@@ -1057,8 +1069,8 @@ class Setup extends Base
 	public function suggestaliasTask()
 	{
 		// Incoming
-		$title   = isset($this->_text) ? $this->_text : trim(Request::getVar('text', ''));
-		$title   = urldecode($title);
+		$title = isset($this->_text) ? $this->_text : trim(Request::getVar('text', ''));
+		$title = urldecode($title);
 
 		$suggested = Helpers\Html::suggestAlias($title);
 		$maxLength = $this->config->get('max_name_length', 30);
@@ -1083,10 +1095,10 @@ class Setup extends Base
 	private function _txtClean(&$text)
 	{
 		// Handle special characters copied from MS Word
-		$text = str_replace('“','"', $text);
-		$text = str_replace('”','"', $text);
-		$text = str_replace("’","'", $text);
-		$text = str_replace("‘","'", $text);
+		$text = str_replace('“', '"', $text);
+		$text = str_replace('”', '"', $text);
+		$text = str_replace("’", "'", $text);
+		$text = str_replace("‘", "'", $text);
 
 		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
 		$text = preg_replace('/{.+?}/', '', $text);

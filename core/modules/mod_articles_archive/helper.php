@@ -70,18 +70,24 @@ class Helper extends Module
 	public static function getList(&$params)
 	{
 		// Get database
-		$db = \App::get('db');
+		$db = App::get('db');
 
-		$query = $db->getQuery(true);
-		$query->select('MONTH(created) AS created_month, created, id, title, YEAR(created) AS created_year');
-		$query->from('#__content');
-		$query->where('state = 2 AND checked_out = 0');
-		$query->group('created_year DESC, created_month DESC');
+		$query = $db->getQuery()
+			->select('MONTH(created)', 'created_month')
+			->select('created')
+			->select('id')
+			->select('title')
+			->select('YEAR(created)', 'created_year')
+			->from('#__content')
+			->whereEquals('state', 2)
+			->whereEquals('checked_out', 0)
+			->group('created_year')
+			->group('created_month');
 
 		// Filter by language
 		if (App::get('languag.filter'))
 		{
-			$query->where('language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
+			$query->whereIn('language', array(Lang::getTag(), '*'));
 		}
 
 		$db->setQuery($query, 0, intval($params->get('count')));

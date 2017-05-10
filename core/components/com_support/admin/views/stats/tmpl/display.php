@@ -46,18 +46,24 @@ Html::behavior('chart', 'resize');
 
 $this->css('stats');
 
+$gidNumber = 0;
+if ($group = \Hubzero\User\Group::getInstance($this->group))
+{
+	$gidNumber = $group->get('gidNumber');
+}
+
 $database = App::get('db');
 $sql = "SELECT status
-		FROM #__support_tickets
+		FROM `#__support_tickets`
 		WHERE open=0
 		AND type='{$this->type}' ";
 		if ($this->group == '_none_')
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND group_id=0";
 		}
 		else if ($this->group)
 		{
-			$sql .= " AND `group`='{$this->group}' ";
+			$sql .= " AND `group_id`=" . $database->quote($gidNumber);
 		}
 		$sql .= " ORDER BY status ASC";
 $database->setQuery($sql);
@@ -78,15 +84,15 @@ foreach ($resolutions as $resolution)
 }
 
 $sql = "SELECT severity
-		FROM #__support_tickets
+		FROM `#__support_tickets`
 		WHERE type='{$this->type}' ";
-		if ($this->group)
+		if ($this->group == '_none_')
 		{
-			$sql .= " AND `group`='{$this->group}' ";
+			$sql .= " AND group_id=0";
 		}
-		else
+		else if ($this->group)
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND `group_id`=" . $database->quote($gidNumber);
 		}
 		$sql .= " ORDER BY severity ASC";
 $database->setQuery($sql);
@@ -144,7 +150,7 @@ $base = rtrim($base, '/');
 					foreach ($this->groups as $group)
 					{
 				?>
-				<option value="<?php echo $group->group; ?>"<?php if ($this->group == $group->group) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->group); ?></option>
+				<option value="<?php echo $group->cn; ?>"<?php if ($this->group == $group->cn) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
 				<?php
 					}
 				}

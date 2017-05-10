@@ -337,17 +337,21 @@ class connections
 		// Check items
 		if (!$items || count($items) == 0)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+			//$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
 			return;
 		}
 
+		$result = false;
+
 		if (count($items) > 1)
 		{
-			$archive = $items->compress();
-			$result  = $archive->serve('project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip');
+			if ($archive = $items->compress())
+			{
+				$result = $archive->serve('project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip');
 
-			// Delete the tmp file for serving
-			$archive->delete();
+				// Delete the tmp file for serving
+				$archive->delete();
+			}
 		}
 		else
 		{
@@ -704,7 +708,7 @@ class connections
 				{
 					// Also compare MD5 hash to make sure this is the same part as before
 					$hash = md5_file($chunk_file);
-					if (strcmp($hash,$_GET['flowChunkHash']) === 0)
+					if (strcmp($hash, $_GET['flowChunkHash']) === 0)
 					{
 						header("HTTP/1.0 200 OK");
 						exit;
@@ -1381,19 +1385,21 @@ class connections
 		{
 			foreach ($entities as $entity)
 			{
+				$entity = urldecode($entity);
 				if (count(explode('/', $entity)) > 1)
 				{
-					$path = urldecode($entity);
+					$path = $entity;
 				}
 				else
 				{
-					$path = trim($this->subdir, '/') . '/' . urldecode($entity);
+					$path = trim($this->subdir, '/') . '/' . $entity;
 				}
 				$file = Entity::fromPath($path, $this->connection->adapter());
 				if (!$file->exists())
 				{
-					$view->setError(Lang::txt('Failed to find the file at ' . $path));
-					return $collection;
+					//$this->setError(Lang::txt('Failed to find the file at ' . $path));
+					//return $collection;
+					continue;
 				}
 				$collection->add(Entity::fromPath($path, $this->connection->adapter()));
 			}

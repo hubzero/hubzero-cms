@@ -36,6 +36,7 @@ use Hubzero\Component\AdminController;
 use Hubzero\Image\Mozify;
 use Request;
 use Config;
+use Notify;
 
 /**
  * Newsletter tools Controller
@@ -49,19 +50,18 @@ class Tools extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
 		//set view vars
-		$this->view->code     = ($this->code) ? $this->code : '';
-		$this->view->preview  = ($this->preview) ? $this->preview : '';
-		$this->view->original = ($this->original) ? $this->original : '';
+		$code     = (isset($this->code) && $this->code) ? $this->code : '';
+		$preview  = (isset($this->preview) && $this->preview) ? $this->preview : '';
+		$original = (isset($this->original) && $this->original) ? $this->original : '';
 
 		// Output the HTML
-		$this->view->setLayout('display')->display();
+		$this->view
+			->setLayout('display')
+			->set('code', $code)
+			->set('preview', $preview)
+			->set('original', $original)
+			->display();
 	}
 
 	/**
@@ -72,8 +72,8 @@ class Tools extends AdminController
 	public function mozifyTask()
 	{
 		//get request vars
-		$imageFile  = Request::getVar('image-file','', 'files');
-		$imageUrl   = Request::getVar('image-url','', 'post');
+		$imageFile  = Request::getVar('image-file', '', 'files');
+		$imageUrl   = Request::getVar('image-url', '', 'post');
 		$mosaicSize = Request::getInt('mosaic-size', 5, 'post');
 
 		//temp upload path
@@ -138,7 +138,8 @@ class Tools extends AdminController
 			$this->code     = null;
 			$this->preview  = null;
 			$this->original = $image;
-			$this->setError($hubzeroImageMozify->getError());
+
+			Notify::error($hubzeroImageMozify->getError());
 		}
 
 		$this->displayTask();

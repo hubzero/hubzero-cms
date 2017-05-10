@@ -64,9 +64,7 @@ else
 		<div class="subject">
 			<div class="grid overviewcontainer">
 				<div class="col span8">
-					<header>
-						<?php echo \Components\Publications\Helpers\Html::title( $this->publication ); ?>
-					</headeR>
+					<?php echo str_replace(' id="content-header"', '', \Components\Publications\Helpers\Html::title($this->publication)); ?>
 
 					<?php if ($this->publication->params->get('show_authors') && $this->publication->_authors) { ?>
 						<div id="authorslist">
@@ -76,7 +74,7 @@ else
 
 					<p class="ataglance"><?php echo $this->publication->description ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->description), 250) : ''; ?></p>
 
-					<?php echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication ); // Show published date and category ?>
+					<?php echo \Components\Publications\Helpers\Html::showSubInfo($this->publication); // Show published date and category ?>
 				</div><!-- / .overviewcontainer -->
 				<div class="col span4 omega launcharea">
 					<?php
@@ -107,14 +105,14 @@ else
 					}
 
 					// Show additional docs
-					$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::drawSupportingItems( $this->publication) : '';
+					$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::drawSupportingItems($this->publication) : '';
 
 					// Show version information
-					$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::showVersionInfo( $this->publication) : '';
+					$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::showVersionInfo($this->publication) : '';
 
 					// Show license information
 					$html .= $this->tab != 'play' && $this->publication->license() && $this->publication->license()->name != 'standard'
-							? \Components\Publications\Helpers\Html::showLicense( $this->publication, 'play' ) : '';
+							? \Components\Publications\Helpers\Html::showLicense($this->publication, 'play') : '';
 
 					echo $html;
 					?>
@@ -168,12 +166,12 @@ if ($this->publication->access('view-all'))
 		$this->version
 	);
 
-	$html .= \Components\Publications\Helpers\Html::sections( $this->sections, $this->cats, $this->tab, 'hide', 'main' );
+	$html .= \Components\Publications\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main');
 
 	// Add footer notice
 	if ($this->tab == 'about')
 	{
-		$html .= \Components\Publications\Helpers\Html::footer( $this->publication );
+		$html .= \Components\Publications\Helpers\Html::footer($this->publication);
 	}
 
 	$html .= '</div><!-- / .subject -->'."\n";
@@ -181,7 +179,7 @@ if ($this->publication->access('view-all'))
 }
 
 // Show related content
-$out = Event::trigger( 'publications.onPublicationSub', array($this->publication, $this->option, 1) );
+$out = Event::trigger('publications.onPublicationSub', array($this->publication, $this->option, 1));
 if (count($out) > 0)
 {
 	foreach ($out as $ou)

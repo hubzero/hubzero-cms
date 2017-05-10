@@ -56,6 +56,7 @@ $this->css();
 				</li>
 			<?php  } ?>
 			</ul>
+			<?php /*
 			<div class="delivery">
 				<p><?php echo Lang::txt('PLG_PROJECTS_WATCH_UPDATES_DELIVERED_TO_EMAIL', User::get('email')); ?></p>
 			<h5><?php echo Lang::txt('PLG_PROJECTS_WATCH_UPDATES_FREQUENCY'); ?>:</h5>
@@ -65,6 +66,8 @@ $this->css();
 				</li>
 			</ul>
 			</div>
+			*/?>
+			<input type="hidden" name="frequency" value="immediate" />
 
 			<p class="submitarea">
 				<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_WATCH_SAVE'); ?>" />

@@ -45,13 +45,13 @@ use Lang;
 use User;
 use Date;
 
-require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'watching.php');
-require_once(__DIR__ . DS . 'comment.php');
-require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'status.php');
+require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'watching.php';
+require_once __DIR__ . DS . 'comment.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'status.php';
 
 /**
  * Support model for a ticket
@@ -758,7 +758,7 @@ class Ticket extends Model
 					// Convert line breaks to <br /> tags
 					$this->set('report_parsed', nl2br($this->get('report_parsed')));
 					// Convert tabs to spaces to preserve indention
-					$this->set('report_parsed', str_replace("\t",' &nbsp; &nbsp;', $this->get('report_parsed')));
+					$this->set('report_parsed', str_replace("\t", ' &nbsp; &nbsp;', $this->get('report_parsed')));
 					// Look for any attachments (old style)
 					$this->set('report_parsed', $attach->parse($this->get('report_parsed')));
 
@@ -1030,15 +1030,15 @@ class Ticket extends Model
 				}
 			}
 
-			if ($this->_acl->authorize($this->get('group')))
+			if ($this->_acl->authorize($this->get('group_id')))
 			{
-				$this->_acl->setAccess('read',   'tickets',  1);
-				$this->_acl->setAccess('update', 'tickets',  1);
-				$this->_acl->setAccess('delete', 'tickets',  1);
+				$this->_acl->setAccess('read', 'tickets', 1);
+				$this->_acl->setAccess('update', 'tickets', 1);
+				$this->_acl->setAccess('delete', 'tickets', 1);
 				$this->_acl->setAccess('create', 'comments', 1);
-				$this->_acl->setAccess('read',   'comments', 1);
+				$this->_acl->setAccess('read', 'comments', 1);
 				$this->_acl->setAccess('create', 'private_comments', 1);
-				$this->_acl->setAccess('read',   'private_comments', 1);
+				$this->_acl->setAccess('read', 'private_comments', 1);
 
 				$this->set('_cc-check-done', true);
 			}
@@ -1065,4 +1065,3 @@ class Ticket extends Model
 		return $this->_acl->check($action, $item);
 	}
 }
-

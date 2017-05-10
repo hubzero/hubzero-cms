@@ -289,7 +289,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		{
 			//Document::addScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
 			//Document::addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
-			Document::addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css');
+			Document::addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/smoothness/jquery-ui.css');
 
 			Document::addScript('/core/plugins/projects/databases/res/main.js');
 			Document::addStyleSheet('/core/plugins/projects/databases/res/main.css');

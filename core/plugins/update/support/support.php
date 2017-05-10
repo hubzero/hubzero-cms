@@ -90,7 +90,15 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 		// Only tickets for a specified group?
 		if ($group = $this->params->get('support_ticket_group'))
 		{
-			$where[] = "t.`group`=" . $database->quote($group);
+			if (!is_numeric($group))
+			{
+				$g = \Hubzero\User\Group::getInstance($group);
+				if ($g)
+				{
+					$group = $g->get('gidNumber');
+				}
+			}
+			$where[] = "t.`group_id`=" . $database->quote((int)$group);
 		}
 
 		// Only tickets for specified owners?
@@ -384,4 +392,3 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-

@@ -98,14 +98,15 @@ class Entries extends AdminController
 		$s = Substitute::blank()->getTableName();
 
 		$model
-			->select('DISTINCT ' . $t . '.*')
-			->join($s, $s . '.tag_id', $t . '.id', 'left');
+			->select('DISTINCT ' . $t . '.*');
 
 		if ($filters['search'])
 		{
 			$filters['search'] = strtolower((string)$filters['search']);
 
-			$model->whereLike($t . '.raw_tag', $filters['search'], 1)
+			$model
+				->join($s, $s . '.tag_id', $t . '.id', 'left')
+				->whereLike($t . '.raw_tag', $filters['search'], 1)
 				->orWhereLike($t . '.tag', $filters['search'], 1)
 				->orWhereLike($s . '.raw_tag', $filters['search'], 1)
 				->orWhereLike($s . '.tag', $filters['search'], 1)
@@ -140,7 +141,7 @@ class Entries extends AdminController
 	 * @param   object  $tag  Tag being edited
 	 * @return  void
 	 */
-	public function editTask($tag=NULL)
+	public function editTask($tag=null)
 	{
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
@@ -230,7 +231,7 @@ class Entries extends AdminController
 	/**
 	 * Remove one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{

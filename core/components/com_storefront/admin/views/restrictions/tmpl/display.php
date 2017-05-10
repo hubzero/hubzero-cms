@@ -27,14 +27,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Hubzero\Html\Builder\Behavior;
+
 defined('_HZEXEC_') or die();
 //print_r($this->sku->getId()); die;
+
+function fetchButton($type = 'Popup', $name = '', $text = '', $url = '', $width = 640, $height = 480, $top = 0, $left = 0, $onClose = '')
+{
+	echo '5555'; die;
+}
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s permitted users', 'storefront.png');
 
-Toolbar::appendButton('Popup', 'new', 'New', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'new', 'Add Users', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId(), 570, 170);
 if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();
@@ -46,18 +53,31 @@ Toolbar::appendButton('Popup', 'upload', 'Upload CSV', 'index.php?option=' . $th
 Toolbar::spacer();
 Toolbar::cancel();
 
+App::get('document')->addScriptDeclaration(
+	'jQuery(document).ready(function($) {
+		$(\'a[data-title="Add Users"]\').removeClass(\'modal\').addClass(\'specialPop\');
+	});'
+);
+Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }'));
+
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
+	function refreshMe() {
+		location.reload();
 	}
-	// do field validation
-	submitform(pressbutton);
-}
+</script>
+<script type="text/javascript">
+
+	function submitbutton(pressbutton)
+	{
+		var form = document.adminForm;
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
+		// do field validation
+		submitform(pressbutton);
+	}
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">

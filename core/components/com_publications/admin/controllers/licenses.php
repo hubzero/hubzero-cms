@@ -33,18 +33,33 @@
 namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Publications\Tables;
+use Components\Publications\Models\Orm\License;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
+
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'license.php';
 
 /**
  * Manage publication licenses
  */
 class Licenses extends AdminController
 {
+	/**
+	 * Executes a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * List resource types
 	 *
@@ -53,7 +68,7 @@ class Licenses extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.licenses.limit',
 				'limit',
@@ -84,32 +99,24 @@ class Licenses extends AdminController
 		);
 
 		// Instantiate an object
-		$rt = new \Components\Publications\Tables\License($this->database);
+		$entries = License::all();
 
-		// Get a record count
-		$this->view->total = $rt->getCount($this->view->filters);
-
-		// Get records
-		$this->view->rows = $rt->getRecords($this->view->filters);
-
-		// Set any errors
-		if ($this->getError())
+		if ($filters['search'])
 		{
-			$this->view->setError($this->getError());
+			$entries->whereLike('title', strtolower((string)$filters['search']));
 		}
 
-		// Output the HTML
-		$this->view->display();
-	}
+		// Get records
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
-	/**
-	 * Add a new type
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		// Output the HTML
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -120,6 +127,12 @@ class Licenses extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -129,99 +142,54 @@ class Licenses extends AdminController
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
-			$row = new \Components\Publications\Tables\License($this->database);
-			$row->loadLicense($id);
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			\Notify::error($this->getError());
+			$row = License::oneOrNew($id);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
 
 	/**
-	 * Save record and fall through to edit view
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(true);
-	}
-
-	/**
 	 * Save record
 	 *
-	 * @param   boolean  $redirect
 	 * @return  void
 	 */
-	public function saveTask($redirect = false)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false);
-
 		// Initiate extended database class
-		$row = new \Components\Publications\Tables\License($this->database);
-		if (!$row->bind($fields))
-		{
-			App::redirect($url, $row->getError(), 'error');
-			return;
-		}
-
-		$row->customizable = Request::getInt('customizable', 0, 'post');
-		$row->agreement    = Request::getInt('agreement', 0, 'post');
-		$row->active       = Request::getInt('active', 0, 'post');
-		$row->icon         = $row->icon ? $row->icon : '/core/components/com_publications/site/assets/img/logos/license.gif';
-
-		if (!$row->id)
-		{
-			$row->ordering = $row->getNextOrder();
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		$row = License::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
+		Notify::success(Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED'));
+
 		// Redirect to edit view?
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			App::redirect(
-				$url,
-				Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
-			);
+			return $this->editTask($row);
 		}
-		else
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
-			);
-		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -260,15 +228,15 @@ class Licenses extends AdminController
 		$id = Request::getVar('id', array(0), '', 'array');
 
 		// Load row
-		$row = new \Components\Publications\Tables\License($this->database);
-		$row->loadLicense((int) $id[0]);
+		$row = License::oneOrFail((int) $id[0]);
 
 		// Update order
-		$row->changeOrder($dir);
+		if (!$row->move($dir))
+		{
+			Notify::error($row->getError());
+		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -282,49 +250,34 @@ class Licenses extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getVar('id', array(0), '', 'array');
 
 		if (count($id) > 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'));
+			return $this->cancelTask();
 		}
-
-		// Initialize
-		$row = new \Components\Publications\Tables\License($this->database);
-
-		$id = intval($id[0]);
 
 		// Load row
-		$row->loadLicense($id);
-
-		// Make default
-		$row->main = 1;
+		$row = License::oneOrFail((int) $id[0]);
 
 		// Save
-		if (!$row->store())
+		if (!$row->setMain())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
+			Notify::error($row->getError());
+			return $this->cancelTask();
 		}
 
-		// Fix up all other licenses
-		$row->undefault($id);
-
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_MADE_DEFAULT')
-		);
+		Notify::success(Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_MADE_DEFAULT'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -338,40 +291,87 @@ class Licenses extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array(0), '', 'array');
 
-		// Initialize
-		$row = new \Components\Publications\Tables\License($this->database);
+		$success = 0;
 
 		foreach ($ids as $id)
 		{
-			$id = intval($id);
-			if (!$id)
+			// Load row
+			$row = License::oneOrFail((int) $id);
+			$row->set('active', $row->get('active') == 1 ? 0 : 1);
+
+			// Save
+			if (!$row->save())
 			{
+				Notify::error($row->getError());
 				continue;
 			}
 
-			// Load row
-			$row->loadLicense($id);
-			$row->active = $row->active == 1 ? 0 : 1;
+			$success++;
+		}
 
-			// Save
-			if (!$row->store())
-			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					$row->getError(),
-					'error'
-				);
-				return;
-			}
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_PUBLISHED'));
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_PUBLISHED')
-		);
+		$this->cancelTask();
+	}
+
+	/**
+	 * Remove one or more entries
+	 *
+	 * @return  void  Redirects back to main listing
+	 */
+	public function removeTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming (expecting an array)
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$success = 0;
+
+		foreach ($ids as $id)
+		{
+			$row = License::onrOrFail($id);
+
+			if ($row->isUsed())
+			{
+				Notify::error(Lang::txt('COM_PUBLICATIONS_ITEM_BEING_USED'));
+				continue;
+			}
+
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_PUBLICATIONS_ITEMS_REMOVED', $i));
+		}
+
+		// Redirect
+		$this->cancelTask();
 	}
 }

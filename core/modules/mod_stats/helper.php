@@ -72,7 +72,6 @@ class Helper extends Module
 	{
 		$db    = \App::get('db');
 		$rows  = array();
-		$query = $db->getQuery(true);
 
 		$serverinfo = $params->get('serverinfo');
 		$siteinfo   = $params->get('siteinfo');
@@ -115,23 +114,24 @@ class Helper extends Module
 
 		if ($siteinfo)
 		{
-			$query->select('COUNT(id) AS count_users');
-			$query->from('#__users');
-			$db->setQuery($query);
+			$query = $db->getQuery()
+				->select('COUNT(id)', 'count_users')
+				->from('#__users');
+			$db->setQuery($query->toString());
 			$users = $db->loadResult();
 
-			$query->clear();
-			$query->select('COUNT(id) AS count_items');
-			$query->from('#__content');
-			$query->where('state = 1');
-			$db->setQuery($query);
+			$query = $db->getQuery()
+				->select('COUNT(id)', 'count_items')
+				->from('#__content')
+				->whereEquals('state', '1');
+			$db->setQuery($query->toString());
 			$items = $db->loadResult();
 
-			$query->clear();
-			$query->select('COUNT(id) AS count_links ');
-			$query->from('#__weblinks');
-			$query->where('state = 1');
-			$db->setQuery($query);
+			$query = $db->getQuery()
+				->select('COUNT(id)', 'count_links')
+				->from('#__weblinks')
+				->whereEquals('state', '1');
+			$db->setQuery($query->toString());
 			$links = $db->loadResult();
 
 			if ($users)
@@ -161,11 +161,11 @@ class Helper extends Module
 
 		if ($counter)
 		{
-			$query->clear();
-			$query->select('SUM(hits) AS count_hits');
-			$query->from('#__content');
-			$query->where('state = 1');
-			$db->setQuery($query);
+			$query = $db->getQuery()
+				->select('SUM(hits)', 'count_hits')
+				->from('#__content')
+				->whereEquals('state', '1');
+			$db->setQuery($query->toString());
 			$hits = $db->loadResult();
 
 			if ($hits)

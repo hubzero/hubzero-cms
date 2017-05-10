@@ -120,6 +120,17 @@ class Projects extends AdminController
 				'search',
 				''
 			)),
+			'filterby' => Request::getState(
+				$this->_option . '.projects.filterby',
+				'filterby',
+				''
+			),
+			'private' => Request::getState(
+				$this->_option . '.projects.private',
+				'private',
+				-1,
+				'int'
+			),
 			'sortby' => Request::getState(
 				$this->_option . '.projects.sort',
 				'filter_order',
@@ -136,6 +147,11 @@ class Projects extends AdminController
 			'quota'      => Request::getVar('quota', 'all', 'post')
 		);
 
+		if (!in_array($this->view->filters['filterby'], array('active', 'archived')))
+		{
+			$this->view->filters['filterby'] = '';
+		}
+
 		$this->view->limit = $this->view->filters['limit'];
 		$this->view->start = $this->view->filters['start'];
 
@@ -149,10 +165,10 @@ class Projects extends AdminController
 		$obj = new Tables\Project($this->database);
 
 		// Get records
-		$this->view->rows = $obj->getRecords($this->view->filters, true, 0, 1);
+		$this->view->rows = $obj->getRecords($this->view->filters, 'admin', 0, 1);
 
 		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters, true, 0, 1);
+		$this->view->total = $obj->getCount($this->view->filters, 'admin', 0, 1);
 
 		// Filtering by quota
 		if ($this->view->filters['quota'] != 'all' && $this->view->rows)
@@ -420,6 +436,11 @@ class Projects extends AdminController
 			$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_MESSAGE_SENT');
 		}
 
+		if (!$action && !$message)
+		{
+			$model->recordActivity(Lang::txt('COM_PROJECTS_MSG_ADMIN_UPDATED'), 0, '', '', 'project', 0, $admin = 1);
+		}
+
 		// Save changes
 		if (!$model->store())
 		{
@@ -456,6 +477,9 @@ class Projects extends AdminController
 
 		// Change ownership
 		$this->_changeOwnership();
+
+		// Allow plugins to respond to changes
+		Event::trigger('projects.onProjectAfterSave', array($this->model));
 
 		// Send message
 		if ($this->config->get('messaging', 0) && $sendmail && count($managers) > 0)
@@ -619,7 +643,6 @@ class Projects extends AdminController
 		{
 			// Update record(s)
 			$model = new Models\Project($id);
-			$model->set('private', $private);
 
 			if (!$model->exists())
 			{
@@ -627,11 +650,16 @@ class Projects extends AdminController
 				continue;
 			}
 
+			$model->set('private', $private);
+
 			if (!$model->store())
 			{
 				Notify::error($model->getError());
 				continue;
 			}
+
+			// Allow plugins to respond to changes
+			Event::trigger('projects.onProjectAfterSave', array($model));
 
 			$i++;
 		}
@@ -673,7 +701,6 @@ class Projects extends AdminController
 			{
 				// Update record(s)
 				$model = new Models\Project($id);
-				$model->set('state', 3);
 
 				if (!$model->exists())
 				{
@@ -681,11 +708,16 @@ class Projects extends AdminController
 					continue;
 				}
 
+				$model->set('state', 3);
+
 				if (!$model->store())
 				{
 					Notify::error($model->getError());
 					continue;
 				}
+
+				// Allow plugins to respond to changes
+				Event::trigger('projects.onProjectAfterSave', array($model));
 
 				$i++;
 			}
@@ -729,7 +761,6 @@ class Projects extends AdminController
 			{
 				// Update record(s)
 				$model = new Models\Project($id);
-				$model->set('state', 1);
 
 				if (!$model->exists())
 				{
@@ -737,11 +768,16 @@ class Projects extends AdminController
 					continue;
 				}
 
+				$model->set('state', 1);
+
 				if (!$model->store())
 				{
 					Notify::error($model->getError());
 					continue;
 				}
+
+				// Allow plugins to respond to changes
+				Event::trigger('projects.onProjectAfterSave', array($model));
 
 				$i++;
 			}

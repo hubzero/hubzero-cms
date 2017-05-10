@@ -34,6 +34,7 @@ defined('_HZEXEC_') or die();
 // Get requirements
 $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 ?>
+<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/publications/assets/js/jquery.infinitescroll.min.js"></script>
 <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/publications/assets/js/selector.js"></script>
 <div id="abox-content">
 	<h3>

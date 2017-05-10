@@ -12,13 +12,8 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$.each($('.quote-long'), function(index, value){
-		$(value).css('display', 'none');
-	});
-
-	$.each($('.quote-short'), function(index, value){
-		$(value).css('display', 'inline-block');
-	});
+	$('.quote-long').css('display', 'none');
+	$('.quote-short').css('display', 'inline-block');
 
 	$('.show-more').on('click', function(e){
 		e.preventDefault();
@@ -35,7 +30,7 @@ jQuery(document).ready(function(jq){
 		$('body').animate({
 			scrollTop: $('#' + q).offset().top
 		}, 1000);
-		$('#' + q + '-long')[0].style.display = 'inline-block';
-		$('#' + q + '-short')[0].style.display = 'none';
+		$('#' + q + '-long').css('display', 'inline-block');
+		$('#' + q + '-short').css('display', 'none');
 	}
 });

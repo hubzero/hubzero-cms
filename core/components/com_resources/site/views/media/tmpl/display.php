@@ -54,9 +54,7 @@ $this->css('component.css');
 		</p>
 	<?php } ?>
 
-	<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-		<p><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_EXPLANATION'); ?></p>
-	<?php } else { ?>
+	<?php if (count($this->folders) > 0 || count($this->docs) > 0) { ?>
 		<table>
 			<tbody>
 			<?php

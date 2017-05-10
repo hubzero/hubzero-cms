@@ -32,12 +32,11 @@
 
 namespace Components\Collections\Models\Orm;
 
-use Hubzero\Base\ItemList;
+//use Hubzero\Base\ItemList;
 use Components\Tags\Models\Cloud;
-use Components\Tags\Models\Tag;
-use Components\Tags\Tables;
+//use Components\Tags\Models\Tag;
 
-require_once(dirname(dirname(dirname(__DIR__))) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Collections Tagging class
@@ -58,7 +57,7 @@ class Tags extends Cloud
 	 * @param   integer  $admin  Admin flag
 	 * @return  array
 	 */
-	public function getTagsForIds($ids=array(), $admin=0)
+	/*public function getTagsForIds($ids=array(), $admin=0)
 	{
 		$tt = new Tables\Tag($this->_db);
 		$tj = new Tables\Object($this->_db);
@@ -101,7 +100,7 @@ class Tags extends Cloud
 			}
 		}
 		return $tags;
-	}
+	}*/
 
 	/**
 	 * Append a tag to the internal cloud
@@ -109,7 +108,7 @@ class Tags extends Cloud
 	 * @param   mixed   $tag
 	 * @return  object
 	 */
-	public function append($tag)
+	/*public function append($tag)
 	{
 		if (!($this->_cache['tags.list'] instanceof ItemList))
 		{
@@ -139,6 +138,5 @@ class Tags extends Cloud
 		$this->_cache['tags.list']->add($tag);
 
 		return $this;
-	}
+	}*/
 }
-

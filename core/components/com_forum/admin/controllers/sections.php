@@ -249,7 +249,7 @@ class Sections extends AdminController
 			$form      = $model->getForm($data, false);
 			$validData = $model->validate($form, $data);
 
-			$section->assetRules = new \JAccessRules($validData['rules']);
+			$section->assetRules = new \Hubzero\Access\Rules($validData['rules']);
 		}
 
 		if (!$section->save())

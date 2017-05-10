@@ -58,7 +58,7 @@ class Utilities
 		}
 
 		$message = new Message();
-		$message->setSubject($subject)
+		$message->setSubject(Config::get('sitename') . ' ' . $subject)
 		        ->addFrom($from['email'], $from['name'])
 		        ->addTo($email);
 
@@ -253,7 +253,7 @@ class Utilities
 						'none'      => 2,
 						'tool'      => 3
 					);
-					if (in_array($pieces[1],$allowed))
+					if (in_array($pieces[1], $allowed))
 					{
 						$pieces[1] = $allowed[$pieces[1]];
 					}
@@ -329,7 +329,7 @@ class Utilities
 	public static function addAttachments($ticketid, $commentid=0)
 	{
 		$attachments = Request::getVar('attachments', null, 'files', 'array');
-		if (is_array($attachments) && is_array($attachments['name']))
+		if (is_array($attachments) && count($attachments) > 0 && is_array($attachments['name']))
 		{
 			for ($i=0; $i < count($attachments['name']); $i++)
 			{
@@ -347,4 +347,3 @@ class Utilities
 		}
 	}
 }
-

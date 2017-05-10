@@ -38,9 +38,9 @@ if (!\User::authorise('core.manage', 'com_wiki'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'parser.php');
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'book.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'parser.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'book.php';
 
 // Initiate controller
 $controllerName = \Request::getCmd('controller', 'pages');
@@ -48,7 +48,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'pages';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 \Submenu::addEntry(
@@ -57,8 +57,8 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 	true
 );
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
+require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_WIKI_PLUGINS'),

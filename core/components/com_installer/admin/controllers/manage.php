@@ -162,7 +162,7 @@ class Manage extends AdminController
 
 		\Hubzero\Utility\Arr::toInteger($eid, array());
 		$result = $model->remove($eid);
-		App::edirect(Route::url('index.php?option=com_installer&controller=manage', false));
+		App::redirect(Route::url('index.php?option=com_installer&controller=manage', false));
 	}
 
 	/**

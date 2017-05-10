@@ -3,33 +3,52 @@
 	Publications Related plugin CSS
 	-- -- -- -- -- -- --
 */
-	.related-resources {
+	.related-publications {
+	}
+
+	#whatsrelated ul,
+	#whatsrelated p {
 		margin: 0;
-		border-top: 1px solid #dedede;
-		border-bottom: none;
-		}
-	.related-resources td {
-		border-color: #dedede;
-		}
-	.related-resources td.ranking {
-		color: #777;
-		position: relative;
-		background: url("../img/ranking_bar_base.gif") 2.5em 0.8em no-repeat;
-		width: 10em;
-		padding-left: 0;
-		}
-	.related-resources td.ranking span { 
-		display: block;
-		margin: -1.2em 0 0 2.5em;
+		padding: 0.5em 0.5em 0.5em 2em ;
+		border-left: 1px solid #9da6b7;
+		border-right: 1px solid #9da6b7;
+		border-bottom: 1px solid #9da6b7;
+		list-style: none;
+	}
+	#whatsrelated ul {
+		padding-left: 0.5em;
+	}
+	#whatsrelated li {
+		margin: 0;
+		padding: 0.5em;
+		padding-left: 2.5em;
+		font-size: 90%;
+		list-style: none;
+	}
+	#whatsrelated li.nodata {
+		border: none;
+		list-style: none;
+		padding-bottom: 1em;
+	}
+	#whatsrelated li span {
+		display: inline;
+		color: #999;
+		font-size: 90%;
+	}
+	#whatsrelated h3,
+	#whatspop h3 {
+		margin: 0;
 		padding: 0;
-		height: 9px;
-		background: url("../img/ranking_bar.gif") 0 0 no-repeat;
-		text-indent: -555em;
-		overflow: hidden;
-		position: absolute;
-		}
-	.related-resources td.type {
-		color: #bcbcbc;
-		text-align: right;
-		padding-right: 0;
-		}
+		color: #747b88;
+		text-transform: uppercase;
+		font-size: 85%;
+		display: block;
+		border-bottom: 4px solid #9da6b7;
+	}
+	#whatsrelated {
+		padding: 0;
+		margin-bottom: 2em;
+	}
+	#whatspop {
+		margin-bottom: 2em;
+	}

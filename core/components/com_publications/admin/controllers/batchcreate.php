@@ -161,7 +161,7 @@ class Batchcreate extends AdminController
 		$file   = Request::getVar('file', array(), 'FILES');
 		$dryRun = Request::getInt('dryrun', 1);
 
-		$this->data = NULL;
+		$this->data = null;
 
 		// Project ID must be supplied
 		$this->project = new \Components\Projects\Models\Project($id);
@@ -170,7 +170,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -181,7 +181,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -192,7 +192,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -207,11 +207,10 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
-
 		// Load reader
 		libxml_use_internal_errors(true);
 		$this->reader = new \XMLReader();
@@ -222,7 +221,7 @@ class Batchcreate extends AdminController
 			echo json_encode(array(
 				'result'  => 'error',
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
-				'records' => NULL
+				'records' => null
 			));
 			exit();
 		}
@@ -236,7 +235,6 @@ class Batchcreate extends AdminController
 
 		// Validation
 		$outputData = $this->validateTask();
-
 		// Parse data if passed validations
 		if (!$this->getError())
 		{
@@ -258,7 +256,7 @@ class Batchcreate extends AdminController
 		// return results to user
 		echo json_encode(array(
 			'result'  => 'success',
-			'error'   => NULL,
+			'error'   => null,
 			'records' => $outputData,
 			'dryrun'  => $dryRun
 		));
@@ -272,7 +270,7 @@ class Batchcreate extends AdminController
 	 * @param   string   $output
 	 * @return  string
 	 */
-	public function parse($dryRun = 1, $output = NULL)
+	public function parse($dryRun = 1, $output = null)
 	{
 		// Set common props
 		$this->_uid = User::get('id');
@@ -333,7 +331,6 @@ class Batchcreate extends AdminController
 			if ($this->reader->name === 'publication')
 			{
 				$node = new \SimpleXMLElement($this->reader->readOuterXML());
-
 				// Check that category exists
 				$category = isset($node->cat) ? $node->cat : 'dataset';
 				$catId = $objCat->getCatId($category);
@@ -427,7 +424,6 @@ class Batchcreate extends AdminController
 					{
 						$attributes = $author->attributes();
 						$uid = $attributes['uid'];
-
 						$this->collectAuthorData($author, $i, $uid, $item);
 						$i++;
 					}
@@ -461,7 +457,7 @@ class Batchcreate extends AdminController
 			$this->site = trim(Request::base(), DS);
 
 			// Process batch
-			$out = NULL;
+			$out = null;
 			$i = 0;
 			foreach ($items as $item)
 			{
@@ -590,7 +586,7 @@ class Batchcreate extends AdminController
 			return;
 		}
 
-		$error = NULL;
+		$error = null;
 
 		// Start new attachment record
 		$attach = new Tables\Attachment($this->database);
@@ -745,10 +741,11 @@ class Batchcreate extends AdminController
 	 */
 	public function collectAuthorData($author, $ordering, $uid, &$item)
 	{
-		$firstName = NULL;
-		$lastName  = NULL;
-		$org       = NULL;
-		$error     = NULL;
+		$firstName = null;
+		$lastName  = null;
+		$org       = null;
+		$error     = null;
+		$uid = (int) $uid;
 
 		// Check that user ID exists
 		if (trim($uid))

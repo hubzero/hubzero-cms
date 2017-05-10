@@ -37,8 +37,6 @@ use Hubzero\Utility\Arr;
 use ContentHelperRoute;
 use Component;
 use JModelLegacy;
-use JFactory;
-use JAccess;
 use Route;
 use User;
 
@@ -82,8 +80,7 @@ class Helper extends Module
 		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
 		// Set application parameters in model
-		$app = JFactory::getApplication();
-		$appParams = $app->getParams();
+		$appParams = App::has('params') ? App::get('params') : new \Hubzero\Config\Registry('');
 		$model->setState('params', $appParams);
 
 		// Set the filters based on the module params
@@ -93,7 +90,7 @@ class Helper extends Module
 
 		// Access filter
 		$access = !Component::params('com_content')->get('show_noauth');
-		$authorised = JAccess::getAuthorisedViewLevels(User::get('id'));
+		$authorised = User::getAuthorisedViewLevels();
 		$model->setState('filter.access', $access);
 
 		// Category filter

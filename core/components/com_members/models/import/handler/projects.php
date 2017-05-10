@@ -47,6 +47,19 @@ include_once Component::path('com_projects') . '/models/project.php';
 class Projects extends Object
 {
 	/**
+	 * Return a sample for import header and content
+	 *
+	 * @return  array
+	 */
+	public function sample()
+	{
+		return array(
+			'header'  => 'projects',
+			'content' => 'projectalias;projectalias;projectalias'
+		);
+	}
+
+	/**
 	 * Bind all raw data
 	 *
 	 * @param   object  $raw

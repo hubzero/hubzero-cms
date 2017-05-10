@@ -35,6 +35,8 @@ use Hubzero\Database\Relational;
 
 require_once __DIR__ . DS . 'mailinglist.php';
 require_once __DIR__ . DS . 'newsletter.php';
+require_once __DIR__ . DS . 'mailing' . DS . 'recipient.php';
+require_once __DIR__ . DS . 'mailing' . DS . 'recipient' . DS . 'action.php';
 
 /**
  * Newsletter model for a mailing
@@ -78,7 +80,7 @@ class Mailing extends Relational
 	 */
 	public function newsletter()
 	{
-		return $this->belongsToOne('Newsletter', 'nid');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Newsletter', 'nid');
 	}
 
 	/**
@@ -88,6 +90,26 @@ class Mailing extends Relational
 	 */
 	public function mailinglist()
 	{
-		return $this->belongsToOne('Mailinglist', 'lid');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Mailinglist', 'lid');
+	}
+
+	/**
+	 * Get a list of recipients
+	 *
+	 * @return  object
+	 */
+	public function recipients()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Mailing\\Recipient', 'mid');
+	}
+
+	/**
+	 * Get a list of actions
+	 *
+	 * @return  object
+	 */
+	public function actions()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Mailing\\Recipient\\Action', 'mailingid');
 	}
 }

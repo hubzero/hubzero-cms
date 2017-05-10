@@ -41,7 +41,7 @@ list($popoverText, $awardPer, $testGroup) = $dbh->loadRow();
 $dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx');
 $recur = $dbh->loadColumn();
 
-$groups = new ModIncrementalRegistrationGroups;
+$groups = new Components\Members\Models\Incremental\Groups;
 $possibleCols = $groups->getPossibleColumns();
 $groupDefs = $groups->getAllGroups();
 ?>

@@ -136,7 +136,7 @@ Html::behavior('multiselect');
 			$canCreate = User::authorise('core.create', $this->option);
 			$canEdit   = User::authorise('core.edit', $this->option);
 			// If this group is super admin and this user is not super admin, $canEdit is false
-			if (!User::authorise('core.admin') && \JAccess::checkGroup($row->get('id'), 'core.admin'))
+			if (!User::authorise('core.admin') && Hubzero\Access\Access::checkGroup($row->get('id'), 'core.admin'))
 			{
 				$canEdit = false;
 			}

@@ -120,6 +120,7 @@ $this->css()
 				<?php if (count($this->categories) > 0) { ?>
 					<ul class="entries-menu filter-options">
 						<li>
+							<label for="filter-type"><?php echo Lang::txt('Category'); ?></label>
 							<select name="category" id="filter-type">
 								<option value="" <?php echo (!$this->filters['category']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('All Categories'); ?></option>
 								<?php foreach ($this->categories as $item) { ?>

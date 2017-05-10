@@ -240,6 +240,18 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 					elseif ($this->profile->get('activation') == 3)
 					{
 						$confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_DOMAIN_SUPPLIED') . '<input type="hidden" name="activation" id="activation" value="3" />';
+
+						if ($lnks = Hubzero\Auth\Link::find_by_user_id($this->profile->get('id')))
+						{
+							$confirmed .= '<fieldset class="radio authenticators">';
+							$confirmed .= '<ul>';
+							foreach ($lnks as $lnk)
+							{
+								$confirmed .= '<li>' . Lang::txt('COM_MEMBERS_AUTHENTICATOR') . ': <span class="authenticator">' . $lnk['auth_domain_name'] . '</span></li>';
+							}
+							$confirmed .= '</ul>';
+							$confirmed .= '</fieldset>';
+						}
 					}
 					elseif ($this->profile->get('activation') < 0)
 					{

@@ -26,18 +26,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-20115 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Collections\Admin\Controllers;
 
-use Components\Collections\Models\Collection;
-use Components\Collections\Models\Post;
+use Components\Collections\Models\Orm\Post;
 use Hubzero\Component\AdminController;
 use Request;
-use Config;
+use Notify;
 use Route;
+use User;
 use Lang;
 use App;
 
@@ -67,9 +67,7 @@ class Posts extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
-			'state'  => -1,
-			'access' => -1,
+		$filters = array(
 			'collection_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.collection_id',
 				'collection_id',
@@ -97,43 +95,80 @@ class Posts extends AdminController
 				'search',
 				''
 			)),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'-1'
 			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
+				'-1'
 			)
 		);
 
-		$obj = new Collection($this->view->filters['collection_id']);
+		$model = Post::all()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}]);
 
-		// Get record count
-		$this->view->filters['count'] = true;
-		$this->view->total = $obj->posts($this->view->filters);
+		if ($filters['search'])
+		{
+			$model->whereLike('title', strtolower((string)$filters['search']));
+		}
+
+		if ($filters['state'] >= 0)
+		{
+			$model->whereEquals('state', $filters['state']);
+		}
+
+		if ($filters['access'] >= 0)
+		{
+			$model->whereEquals('access', (int)$filters['access']);
+		}
+
+		if ($filters['collection_id'])
+		{
+			$model->whereEquals('collection_id', $filters['collection_id']);
+		}
+
+		if ($filters['item_id'])
+		{
+			$model->whereEquals('item_id', $filters['item_id']);
+		}
 
 		// Get records
-		$this->view->filters['count'] = false;
-		$this->view->rows  = $obj->posts($this->view->filters);
+		$rows = $model
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		if (Request::getCmd('tmpl') == 'component')
+		{
+			$this->view->setLayout('display_alt');
+		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
-	 * Edit a collection
+	 * Edit a post
 	 *
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		if (!is_object($row))
 		{
@@ -145,20 +180,12 @@ class Posts extends AdminController
 				$id = (!empty($id) ? $id[0] : 0);
 			}
 
-			// Load category
-			$row = new Post($id);
+			// Load record
+			$row = Post::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -173,39 +200,37 @@ class Posts extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
-		// Initiate extended database class
-		$row = new Post($fields['id']);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		// Initiate model
+		$row = Post::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Process tags
 		//$row->tag(trim(Request::getVar('tags', '')));
 
-		if ($this->_task == 'apply')
+		Notify::success(Lang::txt('COM_COLLECTIONS_POST_SAVED'));
+
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_COLLECTIONS_POST_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -216,31 +241,64 @@ class Posts extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken();
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
+		$i = 0;
 
 		if (count($ids) > 0)
 		{
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
-				$entry = new Post(intval($id));
+				$entry = Post::oneOrFail(intval($id));
+
 				// Delete the entry
-				if (!$entry->delete())
+				if (!$entry->destroy())
 				{
-					\Notify::error($entry->getError());
+					Notify::error($entry->getError());
+					continue;
 				}
+
+				$i++;
 			}
 		}
 
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_COLLECTIONS_ITEMS_DELETED'));
+		}
+
+		// Set the redirect
+		$this->cancelTask();
+	}
+
+	/**
+	 * Cancel a task
+	 *
+	 * @return  void
+	 */
+	public function cancelTask()
+	{
+		$item_id = Request::getInt('item_id');
+		$item_id = ($item_id ? '&item_id=' . $item_id : '');
+
+		$collection_id = Request::getInt('collection_id');
+		$collection_id = ($collection_id ? '&collection_id=' . $collection_id : '');
+
+		$tmpl = Request::getCmd('tmpl');
+		$tmpl = ($tmpl ? '&tmpl=' . $tmpl : '');
+
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_COLLECTIONS_ITEMS_DELETED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $item_id . $collection_id . $tmpl, false)
 		);
 	}
 }
-

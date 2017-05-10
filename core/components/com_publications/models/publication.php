@@ -38,24 +38,22 @@ use Components\Publications\Tables;
 use Hubzero\Base\ItemList;
 
 // Include table classes
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'access.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'audience.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-require_once( dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'access.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
 
 // Projects
-require_once( PATH_CORE . DS . 'components'.DS
-	.'com_projects' . DS . 'models' . DS . 'project.php');
-require_once( PATH_CORE . DS . 'components'.DS
-	.'com_projects' . DS . 'models' . DS . 'repo.php');
+require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'models' . DS . 'project.php');
+require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'models' . DS . 'repo.php');
 
 // Common models
 require_once(__DIR__ . DS . 'curation.php');
@@ -74,34 +72,33 @@ class Publication extends Object
 	/**
 	 * Authorized
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
 	private $_authorized = false;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Container for properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_data = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $oid  Publication ID or alias
-	 * @param      string  $version  Publication version number or alias (dev/default)
-	 * @param      integer $vid  Publication version ID
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   integer  $oid      Publication ID or alias
+	 * @param   string   $version  Publication version number or alias (dev/default)
+	 * @param   integer  $vid      Publication version ID
+	 * @return  void
 	 */
-	public function __construct($oid = NULL, $version = 'default', $vid = NULL)
+	public function __construct($oid = null, $version = 'default', $vid = null)
 	{
 		$this->_db = \App::get('db');
 
@@ -188,8 +185,8 @@ class Publication extends Object
 	/**
 	 * Returns a reference to an article model
 	 *
-	 * @param      mixed $oid Article ID or alias
-	 * @return     object KbModelArticle
+	 * @param   mixed   $oid  ID or alias
+	 * @return  object
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -224,8 +221,8 @@ class Publication extends Object
 	/**
 	 * Check if a property is set
 	 *
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
+	 * @param   string   $property  Name of property to set
+	 * @return  boolean  True if set
 	 */
 	public function __isset($property)
 	{
@@ -235,9 +232,9 @@ class Publication extends Object
 	/**
 	 * Set a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @param   mixed   $value     Value to set property to
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -247,8 +244,8 @@ class Publication extends Object
 	/**
 	 * Get a property
 	 *
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
+	 * @param   string  $property  Name of property to retrieve
+	 * @return  mixed
 	 */
 	public function __get($property)
 	{
@@ -262,8 +259,9 @@ class Publication extends Object
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
 	 *
-	 * @param      string $key Config property to retrieve
-	 * @return     mixed
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default
+	 * @return  mixed
 	 */
 	public function config($key=null, $default=null)
 	{
@@ -281,8 +279,7 @@ class Publication extends Object
 	/**
 	 * Check if the publication exists
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  bool
 	 */
 	public function masterExists()
 	{
@@ -296,8 +293,7 @@ class Publication extends Object
 	/**
 	 * Check if the version exists
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  bool
 	 */
 	public function exists()
 	{
@@ -311,7 +307,8 @@ class Publication extends Object
 	/**
 	 * Set/get version alternative label if applicable (dev/default)
 	 *
-	 * @return     array
+	 * @param   string  $name
+	 * @return  mixed
 	 */
 	public function versionAlias($name = 'default')
 	{
@@ -331,10 +328,10 @@ class Publication extends Object
 	/**
 	 * Check if the publication belongs to project
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   int   $projectId
+	 * @return  bool
 	 */
-	public function belongsToProject( $projectId = NULL)
+	public function belongsToProject($projectId = null)
 	{
 		if (!$projectId)
 		{
@@ -355,9 +352,9 @@ class Publication extends Object
 	/**
 	 * Get version property
 	 *
-	 * @param      string $property
-	 * @param      string $versionAlias   dev/default
-	 * @return     string
+	 * @param   string  $property
+	 * @param   string  $versionAlias  dev/default
+	 * @return  mixed
 	 */
 	public function versionProperty($property = '', $versionAlias = 'default')
 	{
@@ -381,8 +378,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted created timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -392,8 +389,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function modified($as='')
 	{
@@ -403,8 +400,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function published($as='')
 	{
@@ -420,8 +417,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function unpublished($as='')
 	{
@@ -431,8 +428,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function submitted($as='')
 	{
@@ -442,8 +439,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function accepted($as='')
 	{
@@ -453,8 +450,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function archived($as='')
 	{
@@ -464,8 +461,8 @@ class Publication extends Object
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function released($as='')
 	{
@@ -475,7 +472,7 @@ class Publication extends Object
 	/**
 	 * Does publication have future release date?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isEmbargoed()
 	{
@@ -493,7 +490,7 @@ class Publication extends Object
 	/**
 	 * Determine future archive date
 	 *
-	 * @return     string
+	 * @return  mixed
 	 */
 	public function futureArchivalDate()
 	{
@@ -505,21 +502,21 @@ class Publication extends Object
 				return $archDate;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $key Field to return
-	 * @param      string $as  What data to return
-	 * @return     string
+	 * @param   string  $key  Field to return
+	 * @param   string  $as   What data to return
+	 * @return  string
 	 */
 	protected function _date($key, $as='')
 	{
 		if ($this->get($key) == $this->_db->getNullDate())
 		{
-			return NULL;
+			return null;
 		}
 		switch (strtolower($as))
 		{
@@ -548,14 +545,14 @@ class Publication extends Object
 	/**
 	 * Get the home project of this entry
 	 *
-	 * @return  object Models\Project
+	 * @return  object  Models\Project
 	 */
 	public function project()
 	{
 		if (empty($this->_project))
 		{
 			$this->_project = new \Components\Projects\Models\Project($this->publication->project_id);
-			$this->_project->_params = new \Hubzero\Config\Registry( $this->_project->params );
+			$this->_project->_params = new \Hubzero\Config\Registry($this->_project->params);
 		}
 
 		return $this->_project;
@@ -564,7 +561,7 @@ class Publication extends Object
 	/**
 	 * Get last public release
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function lastPublicRelease()
 	{
@@ -580,7 +577,7 @@ class Publication extends Object
 	/**
 	 * Get the master type of this entry
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function masterType()
 	{
@@ -588,7 +585,7 @@ class Publication extends Object
 		{
 			$this->_type = new Tables\MasterType($this->_db);
 			$this->_type->load($this->publication->master_type);
-			$this->_type->_params = new \Hubzero\Config\Registry( $this->_type->params );
+			$this->_type->_params = new \Hubzero\Config\Registry($this->_type->params);
 		}
 
 		return $this->_type;
@@ -598,14 +595,14 @@ class Publication extends Object
 	 * Set curation
 	 * Get & apply manifest from saved record or master type)
 	 *
-	 * @param      boolean 	$setProgress 	Get status of each section
-	 * @return     mixed
+	 * @param   boolean  $setProgress  Get status of each section
+	 * @return  mixed
 	 */
 	public function setCuration($setProgress = true)
 	{
 		if (!$this->exists())
 		{
-			return NULL;
+			return null;
 		}
 
 		$this->masterType();
@@ -631,10 +628,13 @@ class Publication extends Object
 	/**
 	 * Get curation model or its properties
 	 *
-	 * @param      string 	$property
-	 * @return     mixed
+	 * @param   string  $property
+	 * @param   int     $blockId
+	 * @param   string  $blockProperty
+	 * @param   int     $elementId
+	 * @return  mixed
 	 */
-	public function curation($property = NULL, $blockId = NULL, $blockProperty = NULL, $elementId = NULL)
+	public function curation($property = null, $blockId = null, $blockProperty = null, $elementId = null)
 	{
 		if (!isset($this->_curationModel))
 		{
@@ -699,7 +699,7 @@ class Publication extends Object
 								}
 								else
 								{
-									return NULL;
+									return null;
 								}
 								break;
 						}
@@ -739,15 +739,15 @@ class Publication extends Object
 	/**
 	 * Get the category of this entry
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function category()
 	{
 		if (empty($this->_category))
 		{
-			$this->_category = new Tables\Category( $this->_db );
+			$this->_category = new Tables\Category($this->_db);
 			$this->_category->load($this->publication->category);
-			$this->_category->_params = new \Hubzero\Config\Registry( $this->_category->params );
+			$this->_category->_params = new \Hubzero\Config\Registry($this->_category->params);
 		}
 
 		return $this->_category;
@@ -756,13 +756,13 @@ class Publication extends Object
 	/**
 	 * Get the authors of this entry
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function authors()
 	{
 		if (!isset($this->_tblAuthors))
 		{
-			$this->_tblAuthors = new Tables\Author( $this->_db );
+			$this->_tblAuthors = new Tables\Author($this->_db);
 		}
 		if (!$this->exists())
 		{
@@ -780,15 +780,16 @@ class Publication extends Object
 	/**
 	 * Get publication table
 	 *
+	 * @param   string  $name
 	 * @return  object
 	 */
-	public function table($name = NULL)
+	public function table($name = null)
 	{
 		if ($name == 'Author')
 		{
 			if (!isset($this->_tblAuthor))
 			{
-				$this->_tblAuthor = new Tables\Author( $this->_db );
+				$this->_tblAuthor = new Tables\Author($this->_db);
 			}
 			return $this->_tblAuthor;
 		}
@@ -796,7 +797,7 @@ class Publication extends Object
 		{
 			if (!isset($this->_tblContent))
 			{
-				$this->_tblContent = new Tables\Attachment( $this->_db );
+				$this->_tblContent = new Tables\Attachment($this->_db);
 			}
 			return $this->_tblContent;
 		}
@@ -804,7 +805,7 @@ class Publication extends Object
 		{
 			if (!isset($this->_tblLicense))
 			{
-				$this->_tblLicense = new Tables\License( $this->_db );
+				$this->_tblLicense = new Tables\License($this->_db);
 			}
 			return $this->_tblLicense;
 		}
@@ -814,12 +815,11 @@ class Publication extends Object
 
 	/**
 	 * Get unlinked contributors
-	 * @param      array 	$contributors
-	 * @param      boolean 	$incSubmitter
 	 *
-	 * @return     string
+	 * @param   boolean  $incSubmitter
+	 * @return  string
 	 */
-	public function getUnlinkedContributors($incSubmitter = false )
+	public function getUnlinkedContributors($incSubmitter = false)
 	{
 		if (!$this->exists())
 		{
@@ -856,12 +856,12 @@ class Publication extends Object
 				{
 					$name = $contributor->name;
 				}
-				$name = str_replace( '"', '&quot;', $name );
+				$name = str_replace('"', '&quot;', $name);
 				$names[] = $name;
 			}
 			if (count($names) > 0)
 			{
-				$html = implode( '; ', $names );
+				$html = implode('; ', $names);
 			}
 		}
 		return $html;
@@ -870,7 +870,7 @@ class Publication extends Object
 	/**
 	 * Get submitter of this entry
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function submitter()
 	{
@@ -889,7 +889,7 @@ class Publication extends Object
 	/**
 	 * Get project owner
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function owner()
 	{
@@ -909,7 +909,7 @@ class Publication extends Object
 	/**
 	 * Get curator group names
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function curatorGroups()
 	{
@@ -937,7 +937,7 @@ class Publication extends Object
 	/**
 	 * Get access group names
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function getAccessGroups()
 	{
@@ -947,8 +947,8 @@ class Publication extends Object
 		}
 		if (!isset($this->_accessGroups))
 		{
-			$paccess = new Tables\Access( $this->_db );
-			$aGroups = $paccess->getGroups( $this->version->id, $this->publication->id );
+			$paccess = new Tables\Access($this->_db);
+			$aGroups = $paccess->getGroups($this->version->id, $this->publication->id);
 			$this->_accessGroups = $this->getGroupProperty($aGroups);
 		}
 
@@ -958,10 +958,9 @@ class Publication extends Object
 	/**
 	 * Get group property
 	 *
-	 * @param      object 	$groups
-	 * @param      string 	$get
-	 *
-	 * @return     array
+	 * @param   object  $groups
+	 * @param   string  $get
+	 * @return  array
 	 */
 	public function getGroupProperty($groups, $get = 'cn')
 	{
@@ -982,7 +981,8 @@ class Publication extends Object
 	/**
 	 * Get publication content
 	 *
-	 * @return     mixed
+	 * @param   bool   $reload
+	 * @return  mixed
 	 */
 	public function attachments($reload = false)
 	{
@@ -992,11 +992,11 @@ class Publication extends Object
 		}
 		if (!isset($this->_tblContent))
 		{
-			$this->_tblContent = new Tables\Attachment( $this->_db );
+			$this->_tblContent = new Tables\Attachment($this->_db);
 		}
 		if (!isset($this->_attachments) || $reload == true)
 		{
-			$this->_attachments = $this->_tblContent->sortAttachments ( $this->version->id );
+			$this->_attachments = $this->_tblContent->sortAttachments ($this->version->id);
 		}
 
 		return $this->_attachments;
@@ -1005,7 +1005,7 @@ class Publication extends Object
 	/**
 	 * Get publication license
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function license()
 	{
@@ -1015,7 +1015,7 @@ class Publication extends Object
 		}
 		if (!isset($this->_tblLicense))
 		{
-			$this->_tblLicense = new Tables\License( $this->_db );
+			$this->_tblLicense = new Tables\License($this->_db);
 		}
 		if (!isset($this->_license))
 		{
@@ -1028,8 +1028,7 @@ class Publication extends Object
 	/**
 	 * Check if the resource was deleted
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  bool
 	 */
 	public function isDeleted()
 	{
@@ -1043,8 +1042,7 @@ class Publication extends Object
 	/**
 	 * Check if the draft is ready
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  bool
 	 */
 	public function isReady()
 	{
@@ -1058,8 +1056,7 @@ class Publication extends Object
 	/**
 	 * Check if the resource is pending approval
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  bool
 	 */
 	public function isPending()
 	{
@@ -1073,8 +1070,7 @@ class Publication extends Object
 	/**
 	 * Check if the resource is pending author changes
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  bool
 	 */
 	public function isWorked()
 	{
@@ -1088,7 +1084,7 @@ class Publication extends Object
 	/**
 	 * Is publication unpublished?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isUnpublished()
 	{
@@ -1102,7 +1098,7 @@ class Publication extends Object
 	/**
 	 * Is this main version
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isMain()
 	{
@@ -1116,7 +1112,7 @@ class Publication extends Object
 	/**
 	 * Is this main published version?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isCurrent()
 	{
@@ -1130,7 +1126,7 @@ class Publication extends Object
 	/**
 	 * Is this dev version
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isDev()
 	{
@@ -1144,7 +1140,7 @@ class Publication extends Object
 	/**
 	 * Does this version have expired unpublished date
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isDown()
 	{
@@ -1158,8 +1154,7 @@ class Publication extends Object
 	/**
 	 * Check if the publication is published
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  bool
 	 */
 	public function isPublished()
 	{
@@ -1188,8 +1183,7 @@ class Publication extends Object
 	/**
 	 * Authorize current user
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  void
 	 */
 	private function _authorize()
 	{
@@ -1304,8 +1298,8 @@ class Publication extends Object
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string   $action  Action to check
+	 * @return  boolean  True if authorized, false if not
 	 */
 	public function access($action = 'view')
 	{
@@ -1323,7 +1317,8 @@ class Publication extends Object
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function creator($property=null)
 	{
@@ -1346,7 +1341,8 @@ class Publication extends Object
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function modifier($property=null)
 	{
@@ -1357,7 +1353,7 @@ class Publication extends Object
 		if ($property)
 		{
 			$property = ($property == 'uidNumber' ? 'id' : $property);
-			return $this->_modifier ? $this->_modifier->get($property) : NULL;
+			return $this->_modifier ? $this->_modifier->get($property) : null;
 		}
 		return $this->_modifier;
 	}
@@ -1369,7 +1365,8 @@ class Publication extends Object
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function curator($property=null)
 	{
@@ -1384,7 +1381,7 @@ class Publication extends Object
 		if ($property)
 		{
 			$property = ($property == 'uidNumber' ? 'id' : $property);
-			return $this->_curator ? $this->_curator->get($property) : NULL;
+			return $this->_curator ? $this->_curator->get($property) : null;
 		}
 		return $this->_curator;
 	}
@@ -1397,9 +1394,9 @@ class Publication extends Object
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
 	 *
-	 * @param      string  $as      Format to return content in [parsed, clean, raw]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string   $as       Format to return content in [parsed, clean, raw]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  mixed    String or Integer
 	 */
 	public function describe($as='parsed', $shorten=0)
 	{
@@ -1472,9 +1469,9 @@ class Publication extends Object
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
 	 *
-	 * @param      string  $as      Format to return content in [parsed, clean, raw]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string   $as       Format to return content in [parsed, clean, raw]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  mixed    String or Integer
 	 */
 	public function notes($as='parsed', $shorten=0)
 	{
@@ -1542,9 +1539,10 @@ class Publication extends Object
 	/**
 	 * Get the content of nbtag in metadata field
 	 *
-	 * @return     mixed String or Integer
+	 * @param   string  $aliasmap
+	 * @return  mixed   String or Integer
 	 */
-	public function getNbtag ($aliasmap = '')
+	public function getNbtag($aliasmap = '')
 	{
 		$data = array();
 
@@ -1558,7 +1556,7 @@ class Publication extends Object
 			}
 		}
 
-		$value = isset($data[$aliasmap]) ? $data[$aliasmap] : NULL;
+		$value = isset($data[$aliasmap]) ? $data[$aliasmap] : null;
 
 		return $value;
 	}
@@ -1571,9 +1569,11 @@ class Publication extends Object
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
 	 *
-	 * @param      string  $as      Format to return content in [parsed, clean, raw]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string   $aliasmap
+	 * @param   string   $field
+	 * @param   string   $as        Format to return content in [parsed, clean, raw]
+	 * @param   integer  $shorten   Number of characters to shorten text to
+	 * @return  mixed    String or Integer
 	 */
 	public function parse($aliasmap = '', $field = '', $as='parsed', $shorten=0)
 	{
@@ -1656,8 +1656,8 @@ class Publication extends Object
 	/**
 	 * Store changes to this database entry
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean  $check  Perform data validation check?
+	 * @return  boolean  False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -1669,14 +1669,14 @@ class Publication extends Object
 				return true;
 			}
 			$this->setError($this->publication->getError());
-			return false;
 		}
+		return false;
 	}
 
 	/**
 	 * Get version count
 	 *
-	 * @return     void
+	 * @return  int
 	 */
 	public function versionCount()
 	{
@@ -1686,7 +1686,7 @@ class Publication extends Object
 	/**
 	 * Get citations
 	 *
-	 * @return     void
+	 * @return  mixed
 	 */
 	public function getCitations()
 	{
@@ -1696,14 +1696,14 @@ class Publication extends Object
 		}
 		if (!isset($this->_citations))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
 
-			$cc = new \Components\Citations\Tables\Citation( $this->_db );
+			$cc = new \Components\Citations\Tables\Citation($this->_db);
 
-			$this->_citations = $cc->getCitations( 'publication', $this->get('id') );
+			$this->_citations = $cc->getCitations('publication', $this->get('id'));
 		}
 
 		return $this->_citations;
@@ -1712,7 +1712,7 @@ class Publication extends Object
 	/**
 	 * Get citations count
 	 *
-	 * @return     void
+	 * @return  int
 	 */
 	public function getCitationsCount()
 	{
@@ -1724,7 +1724,7 @@ class Publication extends Object
 	/**
 	 * Get last citation date
 	 *
-	 * @return     void
+	 * @return  mixed
 	 */
 	public function getLastCitationDate()
 	{
@@ -1734,14 +1734,14 @@ class Publication extends Object
 		}
 		if (!isset($this->_lastCitationDate))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
 
-			$cc = new \Components\Citations\Tables\Citation( $this->_db );
+			$cc = new \Components\Citations\Tables\Citation($this->_db);
 
-			$this->_lastCitationDate = $cc->getLastCitationDate( 'publication', $this->get('id') );
+			$this->_lastCitationDate = $cc->getLastCitationDate('publication', $this->get('id'));
 		}
 
 		return $this->_lastCitationDate;
@@ -1750,11 +1750,10 @@ class Publication extends Object
 	/**
 	 * Get tags
 	 *
-	 * @param      int $tagger_id
-	 * @param      int $strength
-	 * @param      boolean $admin
-	 *
-	 * @return     string HTML
+	 * @param   int     $tagger_id
+	 * @param   int     $strength
+	 * @param   int     $admin
+	 * @return  string  HTML
 	 */
 	public function getTags($tagger_id = 0, $strength = 0, $admin = 0)
 	{
@@ -1764,9 +1763,9 @@ class Publication extends Object
 		}
 		if (!isset($this->_tags))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
+			include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
 
-			$rt = new Helpers\Tags( $this->_db );
+			$rt = new Helpers\Tags($this->_db);
 			$this->_tags = $rt->get_tags_on_object($this->get('id'), 0, 0, $tagger_id, $strength, $admin);
 		}
 
@@ -1776,33 +1775,32 @@ class Publication extends Object
 	/**
 	 * Get tags for editing
 	 *
-	 * @param      int $tagger_id
-	 * @param      int $strength
-	 *
-	 * @return     string HTML
+	 * @param   int     $tagger_id
+	 * @param   int     $strength
+	 * @param   int     $admin
+	 * @return  string  HTML
 	 */
-	public function getTagsForEditing( $tagger_id = 0, $strength = 0, $admin = 0 )
+	public function getTagsForEditing($tagger_id = 0, $strength = 0, $admin = 0)
 	{
 		if (!$this->exists())
 		{
 			return false;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
+		include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
-		$rt = new Helpers\Tags( $this->_db );
-		$this->_tagsForEditing = $rt->get_tag_string( $this->get('id'), 0, 0, $tagger_id, $strength, $admin );
+		$rt = new Helpers\Tags($this->_db);
+		$this->_tagsForEditing = $rt->get_tag_string($this->get('id'), 0, 0, $tagger_id, $strength, $admin);
 		return $this->_tagsForEditing;
 	}
 
 	/**
 	 * Get tag cloud
 	 *
-	 * @param      boolean $admin
-	 *
-	 * @return     string HTML
+	 * @param   boolean  $admin
+	 * @return  string   HTML
 	 */
-	public function getTagCloud( $admin = 0 )
+	public function getTagCloud($admin = 0)
 	{
 		if (!$this->exists())
 		{
@@ -1811,9 +1809,9 @@ class Publication extends Object
 
 		if (!isset($this->_tagCloud))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
+			include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
-			$rt = new Helpers\Tags( $this->_db );
+			$rt = new Helpers\Tags($this->_db);
 			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->get('id'));
 		}
 
@@ -1823,7 +1821,7 @@ class Publication extends Object
 	/**
 	 * Get path to archival bundle
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function bundlePath()
 	{
@@ -1835,10 +1833,7 @@ class Publication extends Object
 		{
 			// Archival package
 			$tarname  = Lang::txt('Publication') . '_' . $this->get('id') . '.zip';
-			$this->_bundlePath = Helpers\Html::buildPubPath(
-				$this->get('id'),
-				$this->get('version_id'),
-				'', '', 1) . DS . $tarname;
+			$this->_bundlePath = Helpers\Html::buildPubPath($this->get('id'), $this->get('version_id'), '', '', 1) . DS . $tarname;
 		}
 
 		return $this->_bundlePath;
@@ -1847,13 +1842,13 @@ class Publication extends Object
 	/**
 	 * Get wiki page
 	 *
-	 * @param      object $attachment
-	 * @param      object $publication
-	 * @param      string $masterscope
-	 * @param      string $versionid
-	 * @return     object
+	 * @param   object  $attachment
+	 * @param   object  $publication
+	 * @param   string  $masterscope
+	 * @param   string  $versionid
+	 * @return  mixed
 	 */
-	public function getWikiPage( $pageid = NULL, $masterscope = NULL, $versionid = NULL )
+	public function getWikiPage($pageid = null, $masterscope = null, $versionid = null)
 	{
 		if (!$pageid || !$this->exists())
 		{
@@ -1864,7 +1859,7 @@ class Publication extends Object
 		if ($this->get('state') == 3)
 		{
 			// Draft - load latest version
-			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id
+			$query .= ", (SELECT v.pagetext FROM #__wiki_versions as v WHERE v.page_id=p.id
 			  ORDER by p.state ASC, v.version DESC LIMIT 1) as pagetext ";
 		}
 		else
@@ -1872,26 +1867,27 @@ class Publication extends Object
 			$date = $this->accepted() ? $this->accepted() : $this->submitted();
 			$date = $date ? $date : $this->published();
 
-			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id AND ";
+			$query .= ", (SELECT v.pagetext FROM #__wiki_versions as v WHERE v.page_id=p.id AND ";
 			$query .= $versionid ? " v.id=" . $versionid : " v.created <= '" . $date . "'";
 			$query .= " ORDER BY v.created DESC LIMIT 1) as pagetext ";
 		}
 
-		$query .= " FROM #__wiki_page as p WHERE p.scope LIKE '" . $masterscope . "%' ";
+		$query .= " FROM #__wiki_pages as p WHERE p.scope LIKE '" . $masterscope . "%' ";
 		$query .=  is_numeric($pageid) ? " AND p.id='$pageid' " : " AND p.pagename='$pageid' ";
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
-		return $result ? $result[0] : NULL;
+		return $result ? $result[0] : null;
 	}
 
 	/**
 	 * Get path to specific publication directory
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param   string  $type  The type of link to return
+	 * @param   bool    $root
+	 * @return  string
 	 */
 	public function path($type = '', $root = false)
 	{
@@ -1926,16 +1922,15 @@ class Publication extends Object
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param   string   $type  The type of link to return
+	 * @return  boolean
 	 */
 	public function link($type = '')
 	{
 		if (!isset($this->_base))
 		{
 			$this->_base  = 'index.php?option=com_publications';
-			$this->_base .= $this->get('alias')
-				? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
+			$this->_base .= $this->get('alias') ? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
 		}
 		if (!isset($this->_editBase) && strpos($type, 'edit') !== false)
 		{
@@ -2033,10 +2028,9 @@ class Publication extends Object
 	/**
 	 * Save param
 	 *
-	 * @param      string 	$param
-	 * @param      string 	$value
-	 *
-	 * @return     void
+	 * @param   string  $param
+	 * @param   string  $value
+	 * @return  mixed
 	 */
 	public function saveParam($param = '', $value = '')
 	{
@@ -2064,9 +2058,8 @@ class Publication extends Object
 	/**
 	 * Log access
 	 *
-	 * @param      string 	$type
-	 *
-	 * @return     void
+	 * @param   string  $type
+	 * @return  void
 	 */
 	public function logAccess($type = 'view')
 	{
@@ -2078,7 +2071,7 @@ class Publication extends Object
 
 		if (!isset($this->_tblLog))
 		{
-			$this->_tblLog = new Tables\Log( $this->_db );
+			$this->_tblLog = new Tables\Log($this->_db);
 		}
 
 		// Build log path (access logs)
@@ -2087,7 +2080,7 @@ class Publication extends Object
 		// Create log directory
 		if (!is_dir(PATH_APP . $logPath))
 		{
-			Filesystem::makeDirectory( PATH_APP . $logPath, 0755, true, true);
+			Filesystem::makeDirectory(PATH_APP . $logPath, 0755, true, true);
 		}
 
 		$this->_tblLog->logAccess($this->get('id'), $this->get('version_id'), $type, $logPath);
@@ -2100,7 +2093,8 @@ class Publication extends Object
 	 * it will return that property value. Otherwise,
 	 * it returns the entire Group object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function groupOwner($property=null)
 	{
@@ -2119,7 +2113,7 @@ class Publication extends Object
 		if ($property)
 		{
 			$property = ($property == 'id' ? 'gidNumber' : $property);
-			return $this->_groupOwner ? $this->_groupOwner->get($property) : NULL;
+			return $this->_groupOwner ? $this->_groupOwner->get($property) : null;
 		}
 		return $this->_groupOwner;
 	}
@@ -2160,7 +2154,7 @@ class Publication extends Object
 	/**
 	 * Check if this is a tool publication
 	 *
-	 * @return     array
+	 * @return  bool
 	 */
 	public function isTool()
 	{
@@ -2182,7 +2176,7 @@ class Publication extends Object
 	/**
 	 * Get alias or id
 	 *
-	 * @return     array
+	 * @return  mixed
 	 */
 	public function identifier()
 	{
@@ -2197,12 +2191,12 @@ class Publication extends Object
 	/**
 	 * Get status name
 	 *
-	 * @param      int $status
-	 * @return     string HTML
+	 * @param   int     $status
+	 * @return  string  HTML
 	 */
-	public function getStatusName($status = NULL)
+	public function getStatusName($status = null)
 	{
-		if ($status === NULL)
+		if ($status === null)
 		{
 			$status = $this->get('state');
 		}
@@ -2241,12 +2235,12 @@ class Publication extends Object
 	/**
 	 * Get status name
 	 *
-	 * @param      int $status
-	 * @return     string HTML
+	 * @param   int     $status
+	 * @return  string  HTML
 	 */
-	public function getStatusCss($status = NULL)
+	public function getStatusCss($status = null)
 	{
-		if ($status === NULL)
+		if ($status === null)
 		{
 			$status = $this->get('state');
 		}
@@ -2285,42 +2279,37 @@ class Publication extends Object
 	/**
 	 * Get status date
 	 *
-	 * @param      object $row
-	 * @return     string HTML
+	 * @param   object  $row
+	 * @return  string  HTML
 	 */
-	public function getStatusDate($row = NULL)
+	public function getStatusDate($row = null)
 	{
-		if ($row === NULL)
+		if ($row === null)
 		{
-			$row    = $this->version;
+			$row = $this->version;
 		}
 		$status = $row && isset($row->state) ? $row->state : $this->get('state');
 
 		switch ($status)
 		{
 			case 0:
-				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'))
-						. ' ' . Date::of($row->published_down)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED')) . ' ' . Date::of($row->published_down)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
 			case 1:
-				$date = (Date::of($row->published_up)->toUnix() > Date::toUnix()) ? Lang::txt('to be') . ' ' : '';
-				$date .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
-					. ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-
+				$date  = (Date::of($row->published_up)->toUnix() > Date::toUnix()) ? Lang::txt('to be') . ' ' : '';
+				$date .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED')) . ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
 			case 3:
 			case 4:
 			default:
-				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED'))
-					. ' ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED')) . ' ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
 			case 5:
 			case 7:
-				$date = strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
-						. ' ' . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED')) . ' ' . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 		}
 

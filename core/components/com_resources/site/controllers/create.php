@@ -356,7 +356,7 @@ class Create extends SiteController
 				$session = App::get('session');
 				if (!$session->get('resources_temp_id'))
 				{
-					$row->set('id', '9999' . rand(1000,10000));
+					$row->set('id', '9999' . rand(1000, 10000));
 					$session->set('resources_temp_id', $row->get('id'));
 				}
 				else
@@ -382,7 +382,7 @@ class Create extends SiteController
 	 * @param   boolean  $check
 	 * @return  void
 	 */
-	public function step_attach($check = FALSE)
+	public function step_attach($check = false)
 	{
 		if ($this->view->getName() != 'steps')
 		{
@@ -391,7 +391,7 @@ class Create extends SiteController
 
 		if (!isset($this->view->database))
 		{
-			if ($check == TRUE)
+			if ($check == true)
 			{
 				foreach ($this->steps as $step => $name)
 				{
@@ -481,7 +481,7 @@ class Create extends SiteController
 	 * @param   string   $parent_label  Tag
 	 * @return  void
 	 */
-	private function _loadFocusAreas($type, $labels = null, $parent_id = NULL, $parent_label = NULL)
+	private function _loadFocusAreas($type, $labels = null, $parent_id = null, $parent_label = null)
 	{
 		if (is_null($labels))
 		{
@@ -845,7 +845,7 @@ class Create extends SiteController
 		// build path to temp upload folder and future permanent folder
 		$session = App::get('session');
 		$created = Date::format('Y-m-d 00:00:00');
-		$oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id'),'');
+		$oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id'), '');
 		$newPath = $row->filespace();
 
 		// if we have a temp dir, move it to permanent location
@@ -978,8 +978,24 @@ class Create extends SiteController
 			{
 				$recipients[] = ['user', $author->get('authorid')];
 			}
-			$group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
-			$recipients[] = ['group', $group->get('gidNumber')];
+
+			if (!$prev && $row->get('group_owner'))
+			{
+				$group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
+			}
+			if ($prev && !$row->get('group_owner'))
+			{
+				$group = \Hubzero\User\Group::getInstance($prev);
+			}
+			if (!$group)
+			{
+				$group = new \Hubzero\User\Group();
+			}
+
+			if ($group->get('gidNumber'))
+			{
+				$recipients[] = ['group', $group->get('gidNumber')];
+			}
 
 			Event::trigger('system.logActivity', [
 				'activity' => [
@@ -1412,6 +1428,12 @@ class Create extends SiteController
 			return;
 		}
 
+		// If the resource gets published (auto-publish or the user is in the auto-approved list), trigger the onAfterContentSubmission event
+		if ($resource->get('published'))
+		{
+			Event::trigger('content.onAfterContentSubmission', array('Resource'));
+		}
+
 		// Output HTML
 		$this->setView($this->_controller, 'thanks');
 
@@ -1687,10 +1709,10 @@ class Create extends SiteController
 	private function _txtClean($text)
 	{
 		// Handle special characters copied from MS Word
-		$text = str_replace('“','"', $text);
-		$text = str_replace('”','"', $text);
-		$text = str_replace("’","'", $text);
-		$text = str_replace("‘","'", $text);
+		$text = str_replace('“', '"', $text);
+		$text = str_replace('”', '"', $text);
+		$text = str_replace("’", "'", $text);
+		$text = str_replace("‘", "'", $text);
 
 		//$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
 		//$text = preg_replace('/{.+?}/', '', $text);

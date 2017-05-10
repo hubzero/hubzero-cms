@@ -40,7 +40,7 @@ class Helper
 	/**
 	 * Get the encrypter utility
 	 *
-	 * @return  void
+	 * @return  object
 	 */
 	protected static function getEncrypter()
 	{
@@ -57,8 +57,8 @@ class Helper
 	/**
 	 * Generate Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
 	 *
-	 * @param 	$mailingRecipientObject		Mailing Recipient Object
-	 * @return 	string						Email Token for verify and tracking
+	 * @param   object  $mailingRecipientObject  Mailing Recipient Object
+	 * @return  string  Email Token for verify and tracking
 	 */
 	public static function generateMailingToken($mailingRecipientObject)
 	{
@@ -81,9 +81,9 @@ class Helper
 	/**
 	 * Generate Confirmation Token
 	 *
-	 * @param 	$email			Confirmation Email Address
-	 * @param 	$mailinglist	Mailing list
-	 * @return 	string
+	 * @param   string  $email        Confirmation Email Address
+	 * @param   array   $mailinglist  Mailing list
+	 * @return  string
 	 */
 	public static function generateConfirmationToken($emailAddress, $mailinglistObject)
 	{
@@ -106,8 +106,8 @@ class Helper
 	/**
 	 * Parse Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
 	 *
-	 * @param 	$mailingToken	String Mailing token
-	 * @return 	object			Mailing Recipient Object
+	 * @param   string  $mailingToken  String Mailing token
+	 * @return  object  Mailing Recipient Object
 	 */
 	public static function parseMailingToken($mailingToken)
 	{
@@ -146,7 +146,7 @@ class Helper
 		$database = \App::get('db');
 
 		//try to load mailing recipient object to validate
-		$sql = "SELECT * FROM #__newsletter_mailing_recipients
+		$sql = "SELECT * FROM `#__newsletter_mailing_recipients`
 				WHERE mid=" . $database->quote($mailingId) . "
 				AND email=" . $database->quote($email);
 		$database->setQuery($sql);
@@ -160,9 +160,9 @@ class Helper
 	/**
 	 * Parse Confirmation Email & Token to make sure its was a valid combination
 	 *
-	 * @param 	$email		Confirmation Email Address
-	 * @param 	$token 		Confirmation Token
-	 * @return 	array()
+	 * @param   string  $email  Confirmation Email Address
+	 * @param   string  $token  Confirmation Token
+	 * @return  array
 	 */
 	public static function parseConfirmationToken($confirmationToken)
 	{
@@ -201,7 +201,7 @@ class Helper
 		$database = \App::get('db');
 
 		//attempt to load mailing list email object
-		$sql = "SELECT * FROM #__newsletter_mailinglist_emails AS mle
+		$sql = "SELECT * FROM `#__newsletter_mailinglist_emails` AS mle
 				WHERE mle.mid=" . $database->quote($mailinglistId) . "
 				AND mle.email=" . $database->quote($email);
 		$database->setQuery($sql);
@@ -210,11 +210,10 @@ class Helper
 		return $mailinglistEmail;
 	}
 
-
 	/**
 	 * Creates empty GIF image
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public static function mailingOpenTrackerGif ()
 	{
@@ -224,18 +223,17 @@ class Helper
 		imagecolortransparent($im, $red);
 		imagefilledrectangle($im, 0, 0, 99, 99, 0xFF0000);
 		header('Content-Type: image/gif');
-		imagegif ($im);
+		imagegif($im);
 		imagedestroy($im);
 	}
-
 
 	/**
 	 * Send confirmation Email to user
 	 *
-	 * @param 	$email			Confirmation Email Address
-	 * @param 	$mailinglist	Mailing list we just subscribed to
-	 * @param 	$addedByAdmin	Did we sign up or we were added by admin?
-	 * @return 	void
+	 * @param   string  $email         Confirmation Email Address
+	 * @param   array   $mailinglist   Mailing list we just subscribed to
+	 * @param   bool    $addedByAdmin  Did we sign up or we were added by admin?
+	 * @return  bool
 	 */
 	public static function sendMailinglistConfirmationEmail($emailAddress, $mailinglistObject, $addedByAdmin = true)
 	{
@@ -295,13 +293,12 @@ class Helper
 		return true;
 	}
 
-
 	/**
 	 * Helper Function to add all tracking methods to email message
 	 *
-	 * @param    $emailMessage    Email Body
-	 * @param    $emailToken      Email Token to track per message
-	 * @return   String
+	 * @param   string  $emailMessage  Email Body
+	 * @param   string  $emailToken    Email Token to track per message
+	 * @return  string
 	 */
 	public static function addTrackingToEmailMessage($emailMessage, $emailToken)
 	{
@@ -310,14 +307,14 @@ class Helper
 		$emailMessage = self::addOpenTrackingToEmailMessage($emailMessage, $emailToken);
 		$emailMessage = self::addPrintTrackingToEmailMessage($emailMessage, $emailToken);
 		$emailMessage = self::addForwardingToEmailMessage($emailMessage, $emailToken);
+
 		return $emailMessage;
 	}
-
 
 	/**
 	 * Get protocol for tracking
 	 *
-	 * @return   String
+	 * @return  string
 	 */
 	public static function getNewsletterTrackingProtocol()
 	{
@@ -328,13 +325,12 @@ class Helper
 		return $params->get('email_tracking_protocol', 'http');
 	}
 
-
 	/**
 	 * Add Click Tracking to Email Message
 	 *
-	 * @param    $emailMessage    Email Body
-	 * @param    $emailToken      Email Token to track per message
-	 * @return   String
+	 * @param   string  $emailMessage  Email Body
+	 * @param   string  $emailToken    Email Token to track per message
+	 * @return  string
 	 */
 	public static function addclickTrackingtoEmailMessage($emailMessage, $emailToken)
 	{
@@ -367,13 +363,12 @@ class Helper
 		return $emailMessage;
 	}
 
-
 	/**
 	 * Add Open Tracking to Email Message
 	 *
-	 * @param    $emailMessage    Email Body
-	 * @param    $emailToken      Email Token to track per message
-	 * @return   String
+	 * @param   string  $emailMessage  Email Body
+	 * @param   string  $emailToken    Email Token to track per message
+	 * @return  string
 	 */
 	public static function addOpenTrackingToEmailMessage($emailMessage, $emailToken)
 	{
@@ -390,13 +385,12 @@ class Helper
 		return $emailMessage;
 	}
 
-
 	/**
 	 * Add Print Tracking to Email Message
 	 *
-	 * @param    $emailMessage    Email Body
-	 * @param    $emailToken      Email Token to track per message
-	 * @return   String
+	 * @param   string  $emailMessage  Email Body
+	 * @param   string  $emailToken    Email Token to track per message
+	 * @return  string
 	 */
 	public static function addPrintTrackingToEmailMessage($emailMessage, $emailToken)
 	{
@@ -424,13 +418,12 @@ class Helper
 		return $emailMessage;
 	}
 
-
 	/**
 	 * Add Forwarding Tracking to Email Message
 	 *
-	 * @param    $emailMessage    Email Body
-	 * @param    $emailToken      Email Token to track per message
-	 * @return   String
+	 * @param   string  $emailMessage  Email Body
+	 * @param   string  $emailToken    Email Token to track per message
+	 * @return  string
 	 */
 	public static function addForwardingToEmailMessage($emailMessage, $emailToken)
 	{

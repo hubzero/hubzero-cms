@@ -74,7 +74,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		// if this is the logged in user show them
-		if ($user->get('id') == $member->get('id'))
+		if ($this->params->get('show', 'none') != 'none' || $user->get('id') == $member->get('id'))
 		{
 			$areas['projects'] = Lang::txt('PLG_MEMBERS_PROJECTS');
 			$areas['icon'] = 'f03f';
@@ -112,37 +112,68 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
+		require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
 		// Model
 		$this->model = new \Components\Projects\Models\Project();
 
 		// Set filters
 		$this->_filters = array(
-			'mine'    => 1,
-			'updates' => 1,
-			'getowner'=> 1,
-			'sortby'  => Request::getVar('sortby', 'title'),
-			'sortdir' => Request::getVar('sortdir', 'ASC')
+			'mine'     => 1,
+			'updates'  => 1,
+			'getowner' => 1,
+			'sortby'   => Request::getVar('sortby', 'title'),
+			'sortdir'  => Request::getVar('sortdir', 'ASC'),
+			'filterby' => Request::getVar('filterby', 'active'),
+			'uid'      => $member->get('id')
 		);
+		if (!in_array($this->_filters['filterby'], array('active', 'archived')))
+		{
+			$this->_filters['filterby'] = 'active';
+		}
+
+		// If configured to only show public projects to other users
+		// We'll let admins see everything
+		if ($this->params->get('show') == 'public' && !$user->authorise('core.manage', 'com_projects'))
+		{
+			if ($user->get('id') != $member->get('id'))
+			{
+				$this->_filters['private'] = 0;
+			}
+		}
 
 		// Get a record count
 		$this->_total = $this->model->entries('count', $this->_filters);
 
-		$this->_user  = $user;
+		$this->_user = $member;
 
 		if ($returnhtml)
 		{
 			// Which view
 			$task = Request::getVar('action', '');
 
+			if ($user->get('id') != $member->get('id'))
+			{
+				$task = '';
+			}
+
 			switch ($task)
 			{
-				case 'all':     $arr['html'] = $this->_view('all');   break;
-				case 'group':   $arr['html'] = $this->_view('group'); break;
-				case 'owned':   $arr['html'] = $this->_view('owned'); break;
-				case 'updates': $arr['html'] = $this->_updates();     break;
-				default:        $arr['html'] = $this->_view('all');   break;
+				case 'all':
+					$arr['html'] = $this->_view('all');
+					break;
+				case 'group':
+					$arr['html'] = $this->_view('group');
+					break;
+				case 'owned':
+					$arr['html'] = $this->_view('owned');
+					break;
+				case 'updates':
+					$arr['html'] = $this->_updates();
+					break;
+				default:
+					$arr['html'] = $this->_view('all');
+					break;
 			}
 		}
 
@@ -219,10 +250,12 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		// Get all projects user has access to
 		$projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
 
-		$view->filters = array('limit' => Request::getVar('limit', 25, 'request'));
+		$view->filters = array(
+			'limit' => Request::getVar('limit', 25, 'request')
+		);
 
 		// Get shared updates feed from blog plugin
-		$results = Event::trigger( 'projects.onShared', array(
+		$results = Event::trigger('projects.onShared', array(
 			'feed',
 			$this->model,
 			$projects,
@@ -230,7 +263,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 			$view->filters
 		));
 
-		$view->content      = !empty($results) && isset($results[0]) ? $results[0] : NULL;
+		$view->content      = !empty($results) && isset($results[0]) ? $results[0] : null;
 		$view->newcount     = $this->model->table()->getUpdateCount(
 			$projects,
 			$this->_user->get('id')

@@ -232,7 +232,8 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
 					<select name="private">
-						<option value="0" <?php if ($this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
+						<option value="-1" <?php if ($this->model->get('private') < 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_OPEN'); ?></option>
+						<option value="0" <?php if ($this->model->get('private') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
 						<option value="1" <?php if (!$this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
 					</select>
 				</div>

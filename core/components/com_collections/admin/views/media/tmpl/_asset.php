@@ -46,7 +46,7 @@ defined('_HZEXEC_') or die();
 	<span class="asset-description">
 		<input type="hidden" name="assets[<?php echo $this->i; ?>][type]" value="<?php echo $this->asset->get('type'); ?>" />
 		<input type="hidden" name="assets[<?php echo $this->i; ?>][id]" value="<?php echo $this->asset->get('id'); ?>" />
-		<a class="icon-delete delete" data-id="<?php echo $this->asset->get('id'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+		<a class="icon-delete delete" data-id="<?php echo $this->asset->get('id'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 			<?php echo Lang::txt('JACTION_DELETE'); ?>
 		</a>
 	</span>

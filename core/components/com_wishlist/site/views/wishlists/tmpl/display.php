@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +33,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->css('vote.css', 'com_answers')
+     ->css('vote.css')
      ->js();
 
 $sitename = Config::get('sitename');
@@ -42,10 +41,9 @@ $sitename = Config::get('sitename');
 $base = $this->wishlist->link();
 
 $cloud = new \Components\Wishlist\Models\Tags($this->wishlist->get('id'));
-$total = $this->wishlist->wishes('list', $this->filters);
 
-/* Wish List */
-if ($this->wishlist->exists())
+// Wish List
+if ($this->wishlist->get('id'))
 {
 	if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 		<section class="main section">
@@ -186,12 +184,12 @@ if ($this->wishlist->exists())
 								<?php echo Lang::txt('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?>
 								<?php echo ($this->filters['tag'] != '') ? Lang::txt('COM_WISHLIST_WISHES_TAGGED_WITH', $this->escape($this->filters['tag'])) : ''; ?>
 								<span>
-									(<?php echo ($this->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start']; ?> - <?php echo $this->filters['start'] + $this->wishlist->wishes()->total(); ?> of <?php echo $this->total; ?>)
+									(<?php echo ($this->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start']; ?> - <?php echo $this->filters['start'] + $this->wishes->count(); ?> of <?php echo $this->total; ?>)
 								</span>
 							</caption>
 							<tbody>
 						<?php
-						if ($this->wishlist->wishes()->total())
+						if ($this->wishes->count())
 						{
 							$y = 1;
 
@@ -208,7 +206,7 @@ if ($this->wishlist->exists())
 								}
 							}
 
-							foreach ($this->wishlist->wishes() as $item)
+							foreach ($this->wishes as $item)
 							{
 								$item->set('category', $this->wishlist->get('category'));
 								$item->set('referenceid', $this->wishlist->get('referenceid'));
@@ -232,10 +230,10 @@ if ($this->wishlist->exists())
 								$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 								if (!$item->get('anonymous'))
 								{
-									$name = $this->escape(stripslashes($item->proposer()->get('name', $name)));
-									if (in_array($item->proposer()->get('access'), User::getAuthorisedViewLevels()))
+									$name = $this->escape(stripslashes($item->proposer->get('name', $name)));
+									if (in_array($item->proposer->get('access'), User::getAuthorisedViewLevels()))
 									{
-										$name = '<a href="' . Route::url($item->proposer()->link()) . '">' . $name . '</a>';
+										$name = '<a href="' . Route::url($item->proposer->link()) . '">' . $name . '</a>';
 									}
 								}
 								?>
@@ -259,8 +257,8 @@ if ($this->wishlist->exists())
 											<span class="entry-date"><time datetime="<?php echo $item->proposed(); ?>"><?php echo $item->proposed('date'); ?></time></span>
 											<span class="entry-details-divider">&bull;</span>
 											<span class="entry-comments">
-												<a href="<?php echo Route::url($item->link('comments')); ?>" title="<?php echo $item->get('numreplies', 0); ?> <?php echo Lang::txt('COM_WISHLIST_COMMENTS'); ?>">
-													<?php echo $item->get('numreplies', 0); ?>
+												<a href="<?php echo Route::url($item->link('comments')); ?>" title="<?php echo $item->comments()->total(); ?> <?php echo Lang::txt('COM_WISHLIST_COMMENTS'); ?>">
+													<?php echo $item->comments()->total(); ?>
 												</a>
 											</span>
 										</span>
@@ -364,7 +362,6 @@ if ($this->wishlist->exists())
 						</table>
 						<?php
 						// Page navigation
-						// Initiate paging
 						$pageNav = $this->pagination(
 							$this->total,
 							$this->filters['start'],
@@ -440,7 +437,7 @@ if ($this->wishlist->exists())
 
 						// Show what's popular
 						if ($this->wishlist->access('manage')
-						 && $this->wishlist->wishes()->total() >= 10
+						 && $this->wishes->count() >= 10
 						 && $this->wishlist->get('category') == 'general'
 						 && $this->filters['filterby'] == 'all')
 						{

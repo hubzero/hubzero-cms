@@ -52,10 +52,16 @@ class Helper extends Module
 	{
 		$db = \App::get('db');
 
+		$where = '';
+		if (!$this->params->get('include_archived', 1))
+		{
+			$where = " AND g.published != 2";
+		}
+
 		// Get all groups the user is a member of
 		$query1 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_applicants` AS m
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
 
 		$query2 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_members` AS m
@@ -63,15 +69,15 @@ class Helper extends Module
 						(SELECT uidNumber
 						 FROM `#__xgroups_managers` AS manager
 						 WHERE manager.gidNumber = m.gidNumber)
-				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
 
 		$query3 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_managers` AS m
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
 
 		$query4 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager
 				   FROM `#__xgroups` AS g, `#__xgroups_invitees` AS m
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
 
 		switch ($type)
 		{
@@ -158,7 +164,7 @@ class Helper extends Module
 		// Get the user's groups
 		$this->allgroups = $this->_getGroups(User::get('id'), 'all');
 
-		include_once(\Component::path('com_groups') . DS . 'models' . DS . 'recent.php');
+		include_once \Component::path('com_groups') . DS . 'models' . DS . 'recent.php';
 
 		$recents = Recent::all()
 			->whereEquals('user_id', User::get('id'))
@@ -185,4 +191,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-

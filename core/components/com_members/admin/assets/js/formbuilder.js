@@ -602,6 +602,7 @@
         INTEGER_ONLY: 'field_options.integer_only',
         MIN: 'field_options.min',
         MAX: 'field_options.max',
+        VALUE: 'field_options.value',
         MINLENGTH: 'field_options.minlength',
         MAXLENGTH: 'field_options.maxlength',
         LENGTH_UNITS: 'field_options.min_max_length_units'
@@ -795,16 +796,16 @@
   });
 }).call(this);
 
-/*
+
 (function() {
   Formbuilder.registerField('number', {
     order: 30,
     view: "<input type='text' />\n<% if (units = rf.get(Formbuilder.options.mappings.UNITS)) { %>\n  <%= units %>\n<% } %>",
-    edit: "<%= Formbuilder.templates['edit/min_max']() %>\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
+    edit: "<%= Formbuilder.templates['edit/min_max']() %>", //\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-number\">123</span></span> Number"
   });
 }).call(this);
-*/
+
 
 (function() {
   Formbuilder.registerField('paragraph', {
@@ -867,7 +868,7 @@
   Formbuilder.registerField('text', {
     order: 0,
     view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
-    edit: "", //<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
+    edit: '', //"<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class='symbol'><span class='fa fa-font'></span></span> Text",
     defaultAttributes: function(attrs) {
       attrs.field_options.size = 'small';
@@ -876,12 +877,25 @@
   });
 }).call(this);
 
+/*(function() {
+  Formbuilder.registerField('range', {
+    order: 0,
+    view: "<input type='range' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
+    edit: "<%= Formbuilder.templates['edit/min_max']() %>",
+    addButton: '<span class="symbol"><span class="fa fa-range"></span></span> Range',
+    defaultAttributes: function(attrs) {
+      attrs.field_options.size = 'small';
+      return attrs;
+    }
+  });
+}).call(this);*/
+
 (function() {
   Formbuilder.registerField('url', {
     order: 35,
-    view: "<input type='text' placeholder='http://' />",
-    edit: "",
-    addButton: "<span class=\"symbol\"><span class=\"fa fa-link\"></span></span> Website"
+    view: '<input type="text" placeholder="http://" />',
+    edit: '',
+    addButton: '<span class="symbol"><span class="fa fa-link"></span></span> Website'
   });
 }).call(this);
 
@@ -1005,28 +1019,29 @@ return __p
 };
 
 this["Formbuilder"]["templates"]["edit/label_description"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<input type=\'text\' data-rv-input=\'model.' +
-((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
-'\' />\n<input type=\'text\' data-rv-input=\'model.' +
-((__t = ( Formbuilder.options.mappings.NAME )) == null ? '' : __t) +
-'\' placeholder="Add a name for this field" />\n<textarea data-rv-input=\'model.' +
-((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
-'\'\n  placeholder=\'Add a longer description to this field\'></textarea>';
-
-}
-return __p
+  obj || (obj = {});
+  var __t, __p = '', __e = _.escape;
+  with (obj) {
+    __p += '<input type=\'text\' data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
+    '\' />\n<input type=\'text\' data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.NAME )) == null ? '' : __t) +
+    '\' placeholder="Add a name for this field" />\n<textarea data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
+    '\'\n  placeholder=\'Add a longer description to this field\'></textarea>\n<input type=\'text\' data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.VALUE )) == null ? '' : __t) +
+    '\'\n  placeholder=\'Enter default value\' />';
+  }
+  return __p
 };
 
 this["Formbuilder"]["templates"]["edit/min_max"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Minimum / Maximum</div>\n\nAbove\n<input type="text" data-rv-input="model.' +
+__p += '<div class=\'fb-edit-section-header\'>Minimum / Maximum</div>\n\nMin\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MIN )) == null ? '' : __t) +
-'" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nBelow\n<input type="text" data-rv-input="model.' +
+'" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nMax\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MAX )) == null ? '' : __t) +
 '" style="width: 30px" />\n';
 

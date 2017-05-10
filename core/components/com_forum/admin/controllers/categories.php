@@ -144,7 +144,7 @@ class Categories extends AdminController
 		if ($filters['scope_id'] >= 0)
 		{
 			$sections = Section::all()
-				->whereEquals('scope' , $filters['scope'])
+				->whereEquals('scope', $filters['scope'])
 				->whereEquals('scope_id', $filters['scope_id'])
 				->ordered('title', 'ASC')
 				->rows();
@@ -313,7 +313,7 @@ class Categories extends AdminController
 			$form      = $model->getForm($data, false);
 			$validData = $model->validate($form, $data);
 
-			$category->assetRules = new \JAccessRules($validData['rules']);
+			$category->assetRules = new \Hubzero\Access\Rules($validData['rules']);
 		}
 
 		if (!$category->get('scope'))

@@ -132,9 +132,12 @@
 	}
 	.groups-container .group-details {
 		padding: 1em;
-		min-height: 6.5em;
+		height: 6.7em;
 		text-align: center;
 		overflow: hidden;
+	}
+	.firefox .groups-container .group-details {
+		height: 6.9em;
 	}
 	.groups-container img {
 		height: 100%;

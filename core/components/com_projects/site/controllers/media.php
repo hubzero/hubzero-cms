@@ -161,7 +161,7 @@ class Media extends Base
 			}
 
 			//move from temp location to target location which is user folder
-			$target = fopen($path . DS . $file , "w");
+			$target = fopen($path . DS . $file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -403,7 +403,7 @@ class Media extends Base
 	{
 		// Incoming
 		$media    = trim(Request::getVar('media', 'thumb'));
-		$source   = NULL;
+		$source   = null;
 		$redirect = false;
 		$dir      = 'preview';
 
@@ -457,7 +457,7 @@ class Media extends Base
 				}
 
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media;
+				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . urldecode($media);
 				$redirect = true;
 			}
 		}
@@ -497,7 +497,7 @@ class Media extends Base
 		}
 		$default = PATH_CORE . DS . $masterpic;
 
-		$default = is_file($default) ? $default : NULL;
+		$default = is_file($default) ? $default : null;
 
 		$src  = $this->model->get('picture')
 				&& is_file(PATH_APP . DS . $path . DS . $this->model->get('picture'))
@@ -529,7 +529,7 @@ class Media extends Base
 		if ($this->model->get('picture'))
 		{
 			$thumb = Helpers\Html::createThumbName($this->model->get('picture'));
-			$src = $thumb && file_exists($path . DS . $thumb) ? $path . DS . $thumb : NULL;
+			$src = $thumb && file_exists($path . DS . $thumb) ? $path . DS . $thumb : null;
 		}
 
 		if (!$src)

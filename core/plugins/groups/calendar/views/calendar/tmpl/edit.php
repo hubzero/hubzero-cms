@@ -141,8 +141,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_up_time = '';
 							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 							{
-								$publish_up_date = Date::of($publish_up)->toLocal('m/d/Y');
-								$publish_up_time = Date::of($publish_up)->toLocal('g:i a');
+								$publish_up_date = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone,'m/d/Y');
+								$publish_up_time = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone,'g:i a');
 							}
 						?>
 						<div class="input-group">
@@ -160,8 +160,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_down_time = '';
 							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down_date = Date::of($publish_down)->toLocal('m/d/Y');
-								$publish_down_time = Date::of($publish_down)->toLocal('g:i a');
+								$publish_down_date = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone,'m/d/Y');
+								$publish_down_time = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone,'g:i a');
 							}
 						?>
 						<div class="input-group">
@@ -183,9 +183,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<label>
 						<?php echo Lang::txt('Timezone:'); ?> <span class="optional">Optional</span>
 						<?php
-							$timezone = $this->event->get('time_zone');
-							$timezone = (isset($timezone)) ? $timezone: -5;
-							echo \Components\Events\Helpers\Html::buildTimeZoneSelect($timezone, '');
+							echo \Components\Events\Helpers\Html::buildTimeZoneSelect($this->timezone, '');
 						?>
 					</label>
 				</fieldset>
@@ -272,7 +270,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						</label>
 						<label for="after">
 							<input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?php if ($repeating['end'] == 'count') { echo 'checked="checked"'; } ?> /> After
-							<input type="text" name="reccurance[ends][count]" placeholder="x" class="after-input event_recurrence_end_count" value="<?php echo $repeating['count']; ?>" /> times
+							<input type="text" name="reccurance[ends][count]" placeholder="x" class="after-input event_recurrence_end_count" value="<?php echo $repeating['count']; ?>" /> occurrences 
 						</label>
 						<label for="on">
 							<input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?php if ($repeating['end'] == 'until') { echo 'checked="checked"'; } ?> /> On
@@ -318,7 +316,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							<?php echo Lang::txt('Password:'); ?> <span class="optional">Optional</span>
 							<input type="text" name="event[restricted]" value="<?php echo $this->escape($this->event->get('restricted')); ?>" />
 							<span class="hint">
-								<?php echo Lang::txt('If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.') ; ?>
+								<?php echo Lang::txt('If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.'); ?>
 							</span>
 						</label>
 

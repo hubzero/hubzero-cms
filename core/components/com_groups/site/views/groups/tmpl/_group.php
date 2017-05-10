@@ -103,7 +103,7 @@ $published = ($group->get('published')) ? true : false;
 		<div class="group-details">
 			<span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
 			<?php if ($published) : ?>
-				<a class="group-title" rel="<?php echo $group->get('gidNumber'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn='. $group->get('cn')); ?>">
+				<a class="group-title" data-id="<?php echo $group->get('gidNumber'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn='. $group->get('cn')); ?>">
 					<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($group->get('description')), 60)); ?>
 				</a>
 			<?php else : ?>
@@ -117,11 +117,20 @@ $published = ($group->get('published')) ? true : false;
 					<?php
 					switch ($status)
 					{
-						case 'manager': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_MANAGER'); break;
-						case 'member':  echo Lang::txt('COM_GROUPS_BROWSE_STATUS_MEMBER');  break;
-						case 'pending': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_PENDING'); break;
-						case 'invitee': echo Lang::txt('COM_GROUPS_BROWSE_STATUS_INVITED'); break;
-						default: break;
+						case 'manager':
+							echo Lang::txt('COM_GROUPS_BROWSE_STATUS_MANAGER');
+							break;
+						case 'member':
+							echo Lang::txt('COM_GROUPS_BROWSE_STATUS_MEMBER');
+							break;
+						case 'pending':
+							echo Lang::txt('COM_GROUPS_BROWSE_STATUS_PENDING');
+							break;
+						case 'invitee':
+							echo Lang::txt('COM_GROUPS_BROWSE_STATUS_INVITED');
+							break;
+						default:
+							break;
 					}
 					?>
 				</span>
@@ -154,22 +163,33 @@ $published = ($group->get('published')) ? true : false;
 										->whereEquals('state', 1)
 										->ordered()
 										->row();
-									$dt = Date::of($activity->get('created'));
-									$ct = Date::of('now');
-
-									$lapsed = $ct->toUnix() - $dt->toUnix();
-
-									if ($lapsed < 30)
+									if (!$activity->get('id'))
 									{
-										echo Lang::txt('COM_GROUPS_ACTIVITY_JUST_NOW');
+										$activity->set('created', $group->get('created'));
 									}
-									elseif ($lapsed > 30 && $lapsed < 60)
+									if (!$activity->get('created') || $activity->get('created') == '0000-00-00 00:00:00')
 									{
-										echo Lang::txt('COM_GROUPS_ACTIVITY_A_MINUTE_AGO');
+										echo Lang::txt('COM_GROUPS_UNKNOWN');
 									}
 									else
 									{
-										echo $dt->relative('week');
+										$dt = Date::of($activity->get('created'));
+										$ct = Date::of('now');
+
+										$lapsed = $ct->toUnix() - $dt->toUnix();
+
+										if ($lapsed < 30)
+										{
+											echo Lang::txt('COM_GROUPS_ACTIVITY_JUST_NOW');
+										}
+										elseif ($lapsed > 30 && $lapsed < 60)
+										{
+											echo Lang::txt('COM_GROUPS_ACTIVITY_A_MINUTE_AGO');
+										}
+										else
+										{
+											echo $dt->relative('week');
+										}
 									}
 									?></span>
 									<?php echo Lang::txt('COM_GROUPS_ACTIVITY_LAST'); ?>
@@ -196,7 +216,7 @@ $published = ($group->get('published')) ? true : false;
 								<?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
 							</div>
 							<div class="col span6 omega">
-								<a class="btn btn-success tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
+								<a class="btn btn-success" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
 							</div>
 						</div>
 					<?php elseif ($group->get('join_policy') == 3) : ?>

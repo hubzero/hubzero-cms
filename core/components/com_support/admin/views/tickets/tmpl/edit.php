@@ -574,11 +574,20 @@ if (!$no_html)
 								<label for="ticket-field-group">
 									<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:<br />
 									<?php
-									$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','', $this->row->get('group'),'','owner')));
+									$group = '';
+									if ($this->row->get('group_id'))
+									{
+										if ($g = \Hubzero\User\Group::getInstance($this->row->get('group_id')))
+										{
+											$group = $g->get('cn');
+										}
+									}
+
+									$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group_id', 'acgroup','', $group,'','owner')));
 									if (count($gc) > 0) {
 										echo $gc[0];
 									} else { ?>
-									<input type="text" name="group" value="<?php echo $this->escape($this->row->get('group')); ?>" id="acgroup" value="" size="30" autocomplete="off" />
+									<input type="text" name="group_id" value="<?php echo $this->escape($this->row->get('group_id')); ?>" id="acgroup" value="" size="30" autocomplete="off" />
 									<?php } ?>
 								</label>
 							</div>

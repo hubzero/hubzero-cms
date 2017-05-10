@@ -90,36 +90,16 @@ $this->css()
 					$fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
 					?>
 					<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW'); ?>">
-						<?php /*<li><a class="filter-all<?php echo ($this->filters['policy'] == '') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_ALL'); ?>"><?php echo Lang::txt('JALL'); ?></a></li>
-						<li><a class="filter-open<?php echo ($this->filters['policy'] == 'open') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=open' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></a></li>
-						<li><a class="filter-restricted<?php echo ($this->filters['policy'] == 'restricted') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=restricted' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></a></li>
-						<li><a class="filter-invite<?php echo ($this->filters['policy'] == 'invite') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=invite' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?></a></li>
-						<li><a class="filter-closed<?php echo ($this->filters['policy'] == 'closed') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=closed' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?></a></li>
 						<li>
-							<select name="index">
-								<option value="">- All -</option>
-								<?php
-								$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-								foreach ($letters as $letter)
-								{
-									echo '<option value="' . strtolower($letter) . '"';
-									if ($this->filters['index'] == strtolower($letter))
-									{
-										echo ' selected="selected"';
-									}
-									echo '>' . $letter . '</option>';
-								}
-								?>
-							</select>
-						</li>*/?>
-						<li>
-							<select name="published">
+							<label for="filter-published"><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE'); ?></label>
+							<select name="published" id="filter-published">
 								<option value="1" <?php echo ($this->filters['published'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE'); ?></option>
 								<option value="2" <?php echo ($this->filters['published'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED'); ?></option>
 							</select>
 						</li>
 						<li>
-							<select name="policy">
+							<label for="filter-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY'); ?></label>
+							<select name="policy" id="filter-policy">
 								<option value=""><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_ALL'); ?></option>
 								<option value="open" <?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></option>
 								<option value="restricted" <?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></option>

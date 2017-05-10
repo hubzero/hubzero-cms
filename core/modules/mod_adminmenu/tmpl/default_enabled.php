@@ -49,13 +49,6 @@ $menu->addChild(
 
 $menu->addSeparator();
 
-/*
-$menu->addChild(
-	new Node(Lang::txt('MOD_MENU_USER_PROFILE'), 'index.php?option=com_admin&task=profile.edit&id=' . User::id, 'class:profile')
-);
-$menu->addSeparator();
-*/
-
 if (User::authorise('core.admin'))
 {
 	$menu->addChild(new Node(Lang::txt('MOD_MENU_CONFIGURATION'), 'index.php?option=com_config', 'class:config'));
@@ -83,10 +76,10 @@ if ($chm || $cam)
 		$menu->addSeparator();
 	}
 
-	if (User::authorise('core.admin'))
+	/*if (User::authorise('core.admin'))
 	{
 		$menu->addChild(new Node(Lang::txt('MOD_MENU_UPDATE'), 'index.php?option=com_update', 'class:update'));
-	}
+	}*/
 
 	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_LDAP'), 'index.php?option=com_system&controller=ldap', 'class:ldap'));
 	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_GEO'), 'index.php?option=com_system&controller=geodb', 'class:geo'));

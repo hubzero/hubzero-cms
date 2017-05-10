@@ -496,25 +496,35 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a, endColorstr=#f47a20)";
 	}
 	.content-header-extra .secondary {
-		margin: 5px 0 0 10px;
-		padding: 0 0 0 15px;
 		list-style: none;
-		overflow: hidden;
-		background: url('/core/components/com_citations/site/assets/img/childlink.gif') 0 0 no-repeat;
+		margin: 0.5em 0 0 2em;
+		padding: 0;
+		position: relative;
+	}
+	.content-header-extra .secondary:before {
+		content: "";
+		display: block;
+		width: 1em;
+		height: 1em;
+		border-bottom: 1px dotted rgba(0, 0, 0, 0.5);
+		border-left: 1px dotted rgba(0, 0, 0, 0.5);
+		position: absolute;
+		top: 0;
+		left: -1.5em;
 	}
 	.content-header-extra .secondary li {
-		margin:3px 5px 0 5px;
-		padding:0;
-		float:left;
+		margin: 3px 5px 0 5px;
+		padding: 0;
+		float: left;
 	}
 	.content-header-extra .secondary li a {
-		font-size:0.85em;
-		line-height:0.85em;
+		font-size: 0.85em;
+		line-height: 0.85em;
 	}
 	.content-header-extra .secondary li.spacer {
-		color:#aaa;
-		font-size:0.8em;
-		margin:3px 2px 0 2px;
+		color: #aaa;
+		font-size: 0.8em;
+		margin: 3px 2px 0 2px;
 	}
 	.main.citation-section {
 		padding-top:0;

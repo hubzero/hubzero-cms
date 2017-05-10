@@ -36,8 +36,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Base\Object;
 
-include_once(__DIR__ . DS . 'author' . DS . 'role.php');
-include_once(__DIR__ . DS . 'author' . DS . 'role' . DS . 'type.php');
+include_once __DIR__ . DS . 'author' . DS . 'role.php';
 
 /**
  * Resource type model
@@ -114,7 +113,7 @@ class Type extends Relational
 	public function roles()
 	{
 		$model = new RoleType();
-		return $this->manyToMany('\Components\Resources\Models\Author\Role', $model->getTableName(), 'type_id', 'role_id');
+		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
 	}
 
 	/**

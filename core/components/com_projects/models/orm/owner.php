@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,16 +34,50 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Projects database model
+ * Projects owner model
  *
  * @uses  \Hubzero\Database\Relational
  */
 class Owner extends Relational
 {
-	protected $table = '#__project_owners';
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
+	protected $namespace = 'project';
 
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'projectid' => 'positive|nonzero'
+	);
+
+	/**
+	 * Defines a belongs to one relationship between owner and project
+	 *
+	 * @return  object
+	 */
 	public function project()
 	{
-		return $this->belongsToOne('Project', 'projectid');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Project', 'projectid');
+	}
+
+	/**
+	 * Load a single record by project ID and user ID
+	 *
+	 * @param   integer  $projectid
+	 * @param   integer  $userid
+	 * @return  object
+	 */
+	public static function oneByProjectAndUser($projectid, $userid)
+	{
+		return self::all()
+			->whereEquals('projectid', $projectid)
+			->whereEquals('userid', $userid)
+			->row();
 	}
 }

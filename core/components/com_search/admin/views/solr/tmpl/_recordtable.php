@@ -95,7 +95,13 @@ defined('_HZEXEC_') or die();
 					</td>
 					<td>
 						<?php if (!in_array($document['id'], $this->blacklist)): ?>
-							<a class="button" href="<?php echo Route::url('index.php?option='.$this->option.'&task=addToBlackList&controller='. $this->controller . '&id=' . $document['id']); ?>"><?php echo Lang::txt('COM_SEARCH_ADD_BLACKLIST'); ?></a>
+							<a class="button" href="<?php echo Route::url('index.php?option='.$this->option.'&task=addToBlackList&controller='.
+							$this->controller
+							. '&id=' . $document['id']
+							. '&facet=' . $this->facet
+							. '&limit=' . $this->pagination->limit
+							. '&limitstart=' . $this->pagination->limitstart
+							); ?>"><?php echo Lang::txt('COM_SEARCH_ADD_BLACKLIST'); ?></a>
 						<?php else: ?>
 							<span><?php echo Lang::txt('COM_SEARCH_MARKED_FOR_REMOVAL'); ?></span>
 						<?php endif; ?>
@@ -107,7 +113,8 @@ defined('_HZEXEC_') or die();
 	<tfoot>
 		<tr>
 			<td colspan="11">
-				<?php echo $this->pagination; ?>
+				<input type="hidden" name="facet" value="<?php echo $this->facet;?>"/>
+				<?php echo $this->pagination->render(); ?>
 			</td>
 		</tr>
 	</tfoot>

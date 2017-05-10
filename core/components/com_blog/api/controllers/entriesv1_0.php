@@ -43,7 +43,7 @@ use Route;
 use User;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 
 /**
  * API controller class for blog entries
@@ -219,7 +219,7 @@ class Entriesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "access",
-	 * 		"description": "Access level (0 = public, 1 = registered users, 4 = private)",
+	 * 		"description": "Access level (1 = public, 2 = registered users, 5 = private)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
 	 * 		"default":     0
@@ -262,17 +262,16 @@ class Entriesv1_0 extends ApiController
 			'scope'          => Request::getVar('scope', '', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
 			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'post'),
+			'alias'          => Request::getVar('alias', null, 'post'),
 			'content'        => Request::getVar('content', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
-			'created_by'     => Request::getInt('created_by', 0, 'post'),
-			'state'          => Request::getInt('state', 0, 'post'),
-			'access'         => Request::getInt('access', 0, 'post'),
+			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'created_by'     => Request::getInt('created_by', User::get('id'), 'post'),
+			'state'          => Request::getInt('state', 1, 'post'),
+			'access'         => Request::getInt('access', 1, 'post'),
 			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
-			'publish_up'     => Request::getVar('publish_up', new Date('now'), 'post'),
+			'publish_up'     => Request::getVar('publish_up', with(new Date('now'))->toSql(), 'post'),
 			'publish_down'   => Request::getVar('publish_down', null, 'post'),
 		);
-		$tags = Request::getVar('tags', null, 'post');
 
 		$row = new Entry();
 
@@ -286,9 +285,11 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
 		}
 
-		if (!empty($tags))
+		$tags = Request::getVar('tags', null, 'post');
+
+		if (isset($tags))
 		{
-			if (!$row->tag($tags, User::get('id')))
+			if (!$row->tag($tags, $fields['created_by']))
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
@@ -430,7 +431,7 @@ class Entriesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "access",
-	 * 		"description": "Access level (0 = public, 1 = registered users, 4 = private)",
+	 * 		"description": "Access level (1 = public, 2 = registered users, 5 = private)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
 	 * 		"default":     0
@@ -476,29 +477,30 @@ class Entriesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$fields = array(
-			'id'             => Request::getInt('id', 0, 'put'),
-			'scope'          => Request::getVar('scope', '', 'put'),
-			'scope_id'       => Request::getInt('scope_id', 0, 'put'),
-			'title'          => Request::getVar('title', null, 'put', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'put'),
-			'content'        => Request::getVar('content', null, 'put', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'put'),
-			'created_by'     => Request::getInt('created_by', 0, 'put'),
-			'state'          => Request::getInt('state', 0, 'put'),
-			'access'         => Request::getInt('access', 0, 'put'),
-			'allow_comments' => Request::getInt('allow_comments', 0, 'put'),
-			'publish_up'     => Request::getVar('publish_up', new Date('now'), 'put'),
-			'publish_down'   => Request::getVar('publish_down', null, 'put'),
-			'hits'           => Request::getInt('hits', 0, 'put'),
-		);
+		$id = Request::getInt('id', 0);
 
-		$row = Entry::oneOrFail($fields['id']);
+		$row = Entry::oneOrFail($id);
 
 		if ($row->isNew())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 		}
+
+		$fields = array(
+			'scope'          => Request::getVar('scope', $row->get('scope')),
+			'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
+			'title'          => Request::getVar('title', $row->get('title')),
+			'alias'          => Request::getVar('alias', $row->get('alias')),
+			'content'        => Request::getVar('content', $row->get('content')),
+			'created'        => Request::getVar('created', $row->get('created')),
+			'created_by'     => Request::getInt('created_by', $row->get('created_by')),
+			'state'          => Request::getInt('state', $row->get('state')),
+			'access'         => Request::getInt('access', $row->get('access')),
+			'allow_comments' => Request::getInt('allow_comments', $row->get('allow_comments')),
+			'publish_up'     => Request::getVar('publish_up', $row->get('publish_up')),
+			'publish_down'   => Request::getVar('publish_down', $row->get('publish_down')),
+			'hits'           => Request::getInt('hits', $row->get('hits'))
+		);
 
 		if (!$row->set($fields))
 		{
@@ -510,9 +512,11 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
 		}
 
-		if (isset($fields['tags']))
+		$tags = Request::getVar('tags', null);
+
+		if (isset($tags))
 		{
-			if (!$row->tag($fields['tags'], User::get('id')))
+			if (!$row->tag($tags, $fields['created_by']))
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}

@@ -50,7 +50,9 @@ class Ldap extends AdminController
 	public function displayTask()
 	{
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**
@@ -62,14 +64,8 @@ class Ldap extends AdminController
 	{
 		if (file_exists(PATH_APP . DS . 'hubconfiguration.php'))
 		{
-			include_once(PATH_APP . DS . 'hubconfiguration.php');
+			include_once PATH_APP . DS . 'hubconfiguration.php';
 		}
-
-		$table = new \JTableExtension($this->database);
-		$table->load($table->find(array(
-			'element' => $this->_option,
-			'type'    => 'component'
-		)));
 
 		if (class_exists('HubConfig'))
 		{
@@ -85,20 +81,28 @@ class Ldap extends AdminController
 			$this->config->set('ldap_managerpw', $hub_config->hubLDAPAcctMgrPW);
 		}
 
-		$table->params = $this->config->toString();
+		$db = App::get('db');
 
-		$table->store();
+		$query = $db->getQuery()
+			->update('#__extensions')
+			->set(array(
+				'params' => $this->config->toString()
+			))
+			->whereEquals('element', $this->_option)
+			->whereEquals('type', 'component');
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SYSTEM_LDAP_IMPORT_COMPLETE')
-		);
+		$db->setQuery($query->toString());
+		$db->query();
+
+		Notify::success(Lang::txt('COM_SYSTEM_LDAP_IMPORT_COMPLETE'));
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Delete LDAP group entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteGroupsTask()
 	{
@@ -148,9 +152,7 @@ class Ldap extends AdminController
 			Notify::info(Lang::txt('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -177,9 +179,7 @@ class Ldap extends AdminController
 			Notify::info(Lang::txt('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -206,8 +206,67 @@ class Ldap extends AdminController
 			Notify::info(Lang::txt('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
+	}
+
+	/**
+	 * Sync users by batching them
+	 *
+	 * @return  void
+	 */
+	public function exportUsersBatchTask()
+	{
+		$start = Request::getInt('start', 0);
+		$limit = Request::getInt('limit', 1000);
+
+		$response = new \stdClass;
+		$response->processed = 0;
+		$response->total     = 0;
+		$response->start     = ($start + $limit);
+		$response->success   = array();
+		$response->errors    = array();
+
+		$db = \App::get('db');
+		$query = $db->getQuery()
+			->select('COUNT(id)')
+			->from('#__users');
+		$db->setQuery($query->toString());
+
+		$response->total = $db->loadResult();
+
+		$query = $db->getQuery()
+			->select('id')
+			->from('#__users')
+			->order('id', 'desc')
+			->start($start)
+			->limit($limit);
+		$db->setQuery($query->toString());
+
+		$result = $db->loadColumn();
+
+		if ($result)
+		{
+			foreach ($result as $row)
+			{
+				try
+				{
+					\Hubzero\Utility\Ldap::syncUser($row);
+				}
+				catch (\Exception $e)
+				{
+					$this->addError($row . ': ' . $e->getMessage());
+				}
+
+				$response->processed++;
+			}
+		}
+
+		// The following properties are currently private
+		// @TODO: Make them public or add accessor methods
+		//$response->errors  = \Hubzero\Utility\Ldap::$errors;
+		//$response->success = \Hubzero\Utility\Ldap::$success;
+
+		echo json_encode($response);
+		exit();
 	}
 }

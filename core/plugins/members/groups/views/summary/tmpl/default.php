@@ -55,29 +55,42 @@ $this->css()
 <?php if ($this->total) { ?>
 	<div class="container">
 		<nav class="entries-filters">
-			<ul class="entries-menu filter-options">
+			<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_STATE'); ?>">
+				<li>
+					<a class="sort-title<?php echo ($this->state == 'active') ? ' active' : ''; ?>" href="<?php echo Route::url($base . '&filter=' . $this->filter); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ACTIVE'); ?>
+					</a>
+				</li>
+				<li>
+					<a class="sort-alias<?php echo ($this->state == 'archived') ? ' active' : ''; ?>" href="<?php echo Route::url($base . '&filter=' . $this->filter . '&state=archived'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED'); ?>
+					</a>
+				</li>
+			</ul>
+
+			<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_MEMBERSHIP'); ?>">
 				<li>
 					<a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url($base); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_ALL', $this->total); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url($base . '&filter=managers'); ?>">
+					<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=managers'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> data-status="member" href="<?php echo Route::url($base . '&filter=members'); ?>">
+					<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> data-status="member" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=members'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> data-status="applicant" href="<?php echo Route::url($base . '&filter=applicants'); ?>">
+					<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> data-status="applicant" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=applicants'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_APPLICANT'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> data-status="invitee" href="<?php echo Route::url($base . '&filter=invitees'); ?>">
+					<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> data-status="invitee" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=invitees'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITEES'); ?>
 					</a>
 				</li>
@@ -211,22 +224,33 @@ $this->css()
 													->whereEquals('state', 1)
 													->ordered()
 													->row();
-												$dt = Date::of($activity->get('created'));
-												$ct = Date::of('now');
-
-												$lapsed = $ct->toUnix() - $dt->toUnix();
-
-												if ($lapsed < 30)
+												if (!$activity->get('id'))
 												{
-													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
+													$activity->set('created', $group->created);
 												}
-												elseif ($lapsed > 30 && $lapsed < 60)
+												if (!$activity->get('created') || $activity->get('created') == '0000-00-00 00:00:00')
 												{
-													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
+													echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_UNKNOWN');
 												}
 												else
 												{
-													echo $dt->relative('week');
+													$dt = Date::of($activity->get('created'));
+													$ct = Date::of('now');
+
+													$lapsed = $ct->toUnix() - $dt->toUnix();
+
+													if ($lapsed < 30)
+													{
+														echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_JUST_NOW');
+													}
+													elseif ($lapsed > 30 && $lapsed < 60)
+													{
+														echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_A_MINUTE_AGO');
+													}
+													else
+													{
+														echo $dt->relative('week');
+													}
 												}
 												?></span>
 												<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_LAST'); ?>

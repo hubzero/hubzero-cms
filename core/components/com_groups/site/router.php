@@ -209,7 +209,7 @@ class Router extends Base
 					$vars['pagename'] = array_pop($segments);
 				}
 
-				$s = implode(DS,$segments);
+				$s = implode(DS, $segments);
 				$vars['scope'] = $s;
 			}
 			else
@@ -241,7 +241,7 @@ class Router extends Base
 				}
 				else
 				{
-					if (in_array($vars['action'], array('editcalendar','deletecalendar','refreshcalendar', 'subscribe')))
+					if (in_array($vars['action'], array('events', 'editcalendar', 'deletecalendar', 'refreshcalendar', 'subscribe')))
 					{
 						$vars['calendar_id'] = $segments[3];
 					}

@@ -57,7 +57,11 @@ class Redirect
 	{
 		$assetName = self::$extension;
 
-		$actions = \JAccess::getActions($assetName);
+		$path = dirname(__DIR__) . '/config/access.xml';
+
+		$actions = \Hubzero\Access\Access::getActionsFromFile($path);
+		$actions ?: array();
+
 		$result  = new Object;
 
 		foreach ($actions as $action)

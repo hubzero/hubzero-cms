@@ -86,11 +86,11 @@ HUB.Plugins.MembersAccount = {
 		$.ajax({
 			url: "index.php?option=com_members&task=myaccount&active=account&action=checkPass",
 			type: "POST",
-			data: "password1="+pass.val(),
+			data: {"password1": pass.val()},
 			dataType: "html",
 			cache: false,
 			success: function(html){
-				if(html.length > 0 && pass.val() != '') {
+				if (html.length > 0 && pass.val() != '') {
 					passrule.html(html);
 				}
 				else

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,11 +32,11 @@
 namespace Components\Wishlist\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Wishlist\Tables\Wishlist;
-use Components\Wishlist\Tables\Wish;
-use Components\Wishlist\Tables\Wish\Plan;
-use Components\Wishlist\Tables\Owner;
-use Components\Wishlist\Tables\OwnerGroup;
+use Components\Wishlist\Models\Wishlist;
+use Components\Wishlist\Models\Wish;
+use Components\Wishlist\Models\Wish\Plan;
+use Components\Wishlist\Models\Owner;
+use Components\Wishlist\Models\OwnerGroup;
 use Components\Wishlist\Models\Tags;
 use Exception;
 use stdClass;
@@ -80,7 +79,7 @@ class Wishes extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
@@ -92,9 +91,9 @@ class Wishes extends AdminController
 				0,
 				'int'
 			),
-			'filterby' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.filterby',
-				'filterby',
+			'status' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.status',
+				'status',
 				'all'
 			),
 			'tag' => Request::getState(
@@ -127,30 +126,93 @@ class Wishes extends AdminController
 				'int'
 			)
 		);
-		if (!$this->view->filters['wishlist'])
+
+		$wishlist = Wishlist::oneOrNew($filters['wishlist']);
+
+		$model = Wish::all();
+
+		if ($filters['wishlist'])
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=lists', false),
-				Lang::txt('Missing list ID'),
-				'error'
-			);
-			return;
+			$model->whereEquals('wishlist', $filters['wishlist']);
 		}
-		$this->view->filters['sortby'] = $this->view->filters['sort'];
 
-		$this->view->wishlist = new Wishlist($this->database);
-		$this->view->wishlist->load($this->view->filters['wishlist']);
+		if ($filters['search'])
+		{
+			$model
+				->whereLike('subject', strtolower((string)$filters['search']), 1)
+				->orWhereLike('about', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
 
-		$obj = new Wish($this->database);
-
-		// Get record count
-		$this->view->total = $obj->get_count($this->view->filters['wishlist'], $this->view->filters, true);
+		if ($filters['status'])
+		{
+			// list  filtering
+			switch ($filters['status'])
+			{
+				case 'granted':
+					$model->whereEquals('status', 1);
+					break;
+				case 'open':
+					$model->whereEquals('status', 0);
+					break;
+				case 'accepted':
+					$model
+						->whereIn('status', array(0, 6))
+						->whereEquals('accepted', 1);
+					break;
+				case 'pending':
+					$model
+						->whereEquals('accepted', 0)
+						->whereEquals('status', 0);
+					break;
+				case 'rejected':
+					$model->whereEquals('status', 3);
+					break;
+				case 'withdrawn':
+					$model->whereEquals('status', 4);
+					break;
+				case 'deleted':
+					$model->whereEquals('status', 2);
+					break;
+				case 'useraccepted':
+					$model
+						->whereEquals('accepted', 3)
+						->where('status', '!=', 2);
+					break;
+				case 'private':
+					$model
+						->whereEquals('private', 1)
+						->where('status', '!=', 2);
+					break;
+				case 'public':
+					$model
+						->whereEquals('private', 0)
+						->where('status', '!=', 2);
+					break;
+				case 'assigned':
+					$model
+						->where('status', '!=', 2)
+						->whereRaw('assigned NOT NULL');
+					break;
+				case 'all':
+				default:
+					$model->where('status', '!=', 2);
+					break;
+			}
+		}
 
 		// Get records
-		$this->view->rows = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
+		$rows = $model
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('wishlist', $wishlist)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -169,7 +231,7 @@ class Wishes extends AdminController
 
 		Request::setVar('hidemainmenu', 1);
 
-		$this->view->wishlist = Request::getInt('wishlist', 0);
+		$wishlist = Request::getInt('wishlist', 0);
 
 		if (!is_object($row))
 		{
@@ -182,19 +244,12 @@ class Wishes extends AdminController
 			}
 
 			// Load category
-			$row = new Wish($this->database);
-			$row->load($id);
+			$row = Wish::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->id)
+		if ($row->isNew())
 		{
-			$this->view->row->wishlist = $this->view->wishlist;
-		}
-		else if (!$this->view->wishlist)
-		{
-			$this->view->wishlist = $this->view->row->wishlist;
+			$row->set('wishlist', $wishlist);
 		}
 
 		/*
@@ -202,46 +257,36 @@ class Wishes extends AdminController
 		$this->view->form = $m->getForm();
 		*/
 
-		$obj = new Wishlist($this->database);
-		$filters = array();
-		$filters['sort'] = 'title';
-		$filters['sort_Dir'] = 'ASC';
-		$this->view->lists = $obj->getRecords($filters);
+		$lists = Wishlist::all()
+			->order('title', 'asc')
+			->rows();
 
 		// who are list owners?
 		$this->admingroup = $this->config->get('group', 'hubadmin');
 
-		$objOwner = new Owner($this->database);
-		$objG     = new OwnerGroup($this->database);
-
-		$this->view->ownerassignees = array();
-		$this->view->ownerassignees[-1] = array();
 		$none = new stdClass;
 		$none->id = '-1';
 		$none->name = Lang::txt('COM_WISHLIST_SELECT');
-		$this->view->ownerassignees[-1][] = $none;
 
-		$this->view->assignees = null;
+		$ownerassignees = array();
+		$ownerassignees[-1] = array();
+		$ownerassignees[-1][] = $none;
 
-		if ($this->view->lists)
+		$assignees = null;
+
+		if ($lists)
 		{
-			foreach ($this->view->lists as $k => $list)
+			foreach ($lists as $k => $list)
 			{
-				if ($list->category == 'resource')
-				{
-					include_once(\Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
-					$list->resource = new \Components\Resources\Tables\Resource($this->database);
-					$list->resource->load($list->referenceid);
-				}
-				$this->view->ownerassignees[$list->id] = array();
-
 				$none = new stdClass;
 				$none->id = '0';
 				$none->name = Lang::txt('COM_WISHLIST_NONE');
 
-				$this->view->ownerassignees[$list->id][] = $none;
+				$ownerassignees[$list->id] = array();
+				$ownerassignees[$list->id][] = $none;
 
-				$owners = $objOwner->get_owners($list->id, $this->admingroup, $list);
+				$owners = $list->getOwners($this->admingroup);
+
 				if (count($owners['individuals']) > 0)
 				{
 					$query = "SELECT a.id, a.name FROM `#__users` AS a WHERE a.block = '0' AND a.id IN (" . implode(',', $owners['individuals']) . ") ORDER BY a.name";
@@ -251,30 +296,25 @@ class Wishes extends AdminController
 
 					foreach ($users as $row2)
 					{
-						$this->view->ownerassignees[$list->id][] = $row2;
+						$ownerassignees[$list->id][] = $row2;
 					}
 
-					if ($list->id == $this->view->row->wishlist)
+					if ($list->id == $row->wishlist)
 					{
-						$this->view->assignees = $this->view->ownerassignees[$list->id];
+						$assignees = $ownerassignees[$list->id];
 					}
 				}
 			}
 		}
 
-		// Get the plan for this wish
-		$objPlan = new Plan($this->database);
-		$plan = $objPlan->getPlan($this->view->row->id);
-		$this->view->plan = $plan ? $plan[0] : $objPlan;
-
-		// Get tags on this wish
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
-		$tagging = new Tags($this->view->row->id);
-		$this->view->tags = $tagging->render('string');
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
+			->set('row', $row)
+			->set('lists', $lists)
+			->set('ownerassignees', $ownerassignees)
+			->set('assignees', $assignees)
+			->set('wishlist', $wishlist)
 			->display();
 	}
 
@@ -299,78 +339,45 @@ class Wishes extends AdminController
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Wish($this->database);
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Wish::oneOrNew($fields['id'])->set($fields);
 
-		$row->anonymous = (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0;
-		$row->private   = (isset($fields['private']) && $fields['private']) ? 1 : 0;
-		$row->accepted  = (isset($fields['accepted']) && $fields['accepted']) ? 1 : 0;
-
-		// Check content
-		if (!$row->check())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row->set('anonymous', (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0);
+		$row->set('private', (isset($fields['private']) && $fields['private']) ? 1 : 0);
+		$row->set('accepted', (isset($fields['accepted']) && $fields['accepted']) ? 1 : 0);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
-		$tagging = new Tags($row->id);
-		$tagging->setTags($fields['tags'], User::get('id'));
+		// Set tags
+		$row->tag($fields['tags'], User::get('id'));
 
 		$plan = Request::getVar('plan', array(), 'post', 'none', 2);
-		$plan['create_revision'] = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
-		$plan['wishid'] = ($plan['wishid'] ? $plan['wishid'] : $row->id);
+		$plan['wishid'] = ($plan['wishid'] ? $plan['wishid'] : $row->get('id'));
+
+		$create_revision = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
+		unset($plan['create_revision']);
 
 		// Initiate extended database class
-		$page = new Plan($this->database);
-		if (!$fields['id'])
-		{
-			// New page - save it to the database
-			$old = new Plan($this->database);
-		}
-		else
-		{
-			// Existing page - load it up
-			$page->load($plan['id']);
+		$old  = Plan::oneOrNew($plan['id']);
 
-			// Get the revision before changes
-			$old = $page;
+		$page = Plan::oneOrNew($plan['id']);
+		$page->set($plan);
+
+		// Forcefully create a new revision?
+		if ($create_revision && rtrim(stripslashes($old->get('pagetext'))) != rtrim(stripslashes($page->get('pagetext'))))
+		{
+			$page->set('version', $page->get('version') + 1);
+			$page->set('id', null);
 		}
 
-		$page->bind($plan);
-
-		if ($plan['create_revision'] && rtrim(stripslashes($old->pagetext)) != rtrim(stripslashes($page->pagetext)))
+		if (!$page->save())
 		{
-			$page->version = $page->version + 1;
-			$page->id = 0;
-		}
-
-		if ($page->pagetext)
-		{
-			$page->version = ($page->version ? $page->version : $page->version + 1);
-
-			if (!$page->check())
-			{
-				Notify::error($page->getError());
-				return $this->editTask($row);
-			}
-
-			if (!$page->store())
-			{
-				Notify::error($page->getError());
-				return $this->editTask($row);
-			}
+			Notify::error($page->getError());
+			return $this->editTask($row);
 		}
 
 		Notify::success(Lang::txt('COM_WISHLIST_WISH_SAVED'));
@@ -381,9 +388,7 @@ class Wishes extends AdminController
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wishlist=' . $row->wishlist, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -409,16 +414,14 @@ class Wishes extends AdminController
 		$i = 0;
 		if (count($ids) > 0)
 		{
-			$tbl = new Wish($this->database);
-
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
-				$id = intval($id);
+				$row = Wish::oneOrFail(intval($id));
 
-				if (!$tbl->delete($id))
+				if (!$row->destroy())
 				{
-					Notify::error($tbl->getError());
+					Notify::error($row->getError());
 					continue;
 				}
 
@@ -462,26 +465,25 @@ class Wishes extends AdminController
 
 		switch ($this->getTask())
 		{
-			case 'accesspublic':     $access = 0; break;
-			case 'accessregistered': $access = 1; break;
-			case 'accessspecial':    $access = 2; break;
+			case 'accesspublic':
+				$access = 0;
+				break;
+			case 'accessregistered':
+				$access = 1;
+				break;
+			case 'accessspecial':
+				$access = 2;
+				break;
 		}
 
 		// Load the article
-		$row = new Wish($this->database);
-		$row->load($id);
-		$row->private = $access;
+		$row = Wish::oneOrFail($id);
+		$row->set('private', $access);
 
 		// Check and store the changes
-		if (!$row->check())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
-			return $this->cancelTask();
-		}
-		if (!$row->store())
-		{
-			Notify::error($row->getError());
-			return $this->cancelTask();
 		}
 
 		// Set the redirect
@@ -513,43 +515,47 @@ class Wishes extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH')),
-				'error'
-			);
-			return;
+			Notify::warning($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+			return $this->cancelTask();
 		}
 
 		// Update record(s)
+		$i = 0;
 		foreach ($ids as $id)
 		{
-			// Updating a category
-			$row = new Wish($this->database);
-			$row->load($id);
-			$row->status = $state;
-			$row->store();
+			$row = Wish::oneOrFail($id);
+			$row->set('status', $state);
+
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$i++;
 		}
 
-		// Set message
-		switch ($state)
+		if ($i)
 		{
-			case '-1':
-				$message = Lang::txt('COM_WISHLIST_TRASHED', count($ids));
-			break;
-			case '1':
-				$message = Lang::txt('COM_WISHLIST_ITEMS_GRANTED', count($ids));
-			break;
-			case '0':
-				$message = Lang::txt('COM_WISHLIST_ITEMS_PENDING', count($ids));
-			break;
+			// Set message
+			switch ($state)
+			{
+				case '-1':
+					$message = Lang::txt('COM_WISHLIST_TRASHED', $i);
+					break;
+				case '1':
+					$message = Lang::txt('COM_WISHLIST_ITEMS_GRANTED', $i);
+					break;
+				case '0':
+					$message = Lang::txt('COM_WISHLIST_ITEMS_PENDING', $i);
+					break;
+			}
+
+			Notify::success($message);
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''), false),
-			$message
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -567,4 +573,3 @@ class Wishes extends AdminController
 		);
 	}
 }
-

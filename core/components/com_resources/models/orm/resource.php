@@ -39,9 +39,9 @@ use Hubzero\Utility\String;
 use Component;
 use Date;
 
-require_once(__DIR__ . DS . 'association.php');
-require_once(dirname(__DIR__) . DS . 'type.php');
-require_once(dirname(__DIR__) . DS . 'author.php');
+require_once __DIR__ . DS . 'association.php';
+require_once dirname(__DIR__) . DS . 'type.php';
+require_once dirname(__DIR__) . DS . 'author.php';
 
 /**
  * Resource model
@@ -175,7 +175,7 @@ class Resource extends Relational
 
 		if (!$model->save())
 		{
-			$this->setError($model->getError());
+			$this->addError($model->getError());
 			return false;
 		}
 
@@ -207,7 +207,7 @@ class Resource extends Relational
 
 		if (!$model->save())
 		{
-			$this->setError($model->getError());
+			$this->addError($model->getError());
 			return false;
 		}
 
@@ -231,7 +231,7 @@ class Resource extends Relational
 
 			if (!$child->destroy())
 			{
-				$this->setError($child->getError());
+				$this->addError($child->getError());
 				return false;
 			}
 		}
@@ -245,7 +245,20 @@ class Resource extends Relational
 		{
 			if (!$parent->destroy())
 			{
-				$this->setError($parent->getError());
+				$this->addError($parent->getError());
+				return false;
+			}
+		}
+
+		// Remove any associated files
+		$path = $this->filespace();
+
+		if (is_dir($path))
+		{
+			if (!Filesystem::deleteDirectory($path))
+			{
+				$this->addError('Unable to delete file(s).');
+
 				return false;
 			}
 		}
@@ -337,9 +350,10 @@ class Resource extends Relational
 	 */
 	public function tags($as = 'list')
 	{
-		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
 
 		$cloud = new Tags($this->get('id'));
+
 		if ($as == 'list')
 		{
 			$tags = array();
@@ -347,12 +361,11 @@ class Resource extends Relational
 			{
 				array_push($tags, $tag->tag);
 			}
+
 			return $tags;
 		}
-		else
-		{
-			return $cloud->tags();
-		}
+
+		return $cloud->tags();
 	}
 
 	/**

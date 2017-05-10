@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           core/plugins/filesystem/awss3/awss3.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2016 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.0" type="plugin" group="filesystem">
+	<name>Filesystem - AWS S3</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2016 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>PLG_FILESYSTEM_AWSS3_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="awss3">awss3.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_filesystem_awss3.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="user_credentials">
+				<field name="app_id" type="text" default="" label="PLG_FILESYSTEM_AWSS3_APP_ID_LABEL" description="PLG_FILESYSTEM_AWSS3_APP_ID_DESC" />
+				<field name="app_secret" type="text" default="" label="PLG_FILESYSTEM_AWSS3_APP_SECRET_LABEL" description="PLG_FILESYSTEM_AWSS3_APP_SECRET_DESC" />
+				<field name="bucket" type="text" default="" label="PLG_FILESYSTEM_AWSS3_BUCKET_LABEL" description="PLG_FILESYSTEM_AWSS3_BUCKET_DESC" />
+				<field name="directory" type="text" default="" label="PLG_FILESYSTEM_AWSS3_DIRECTORY_LABEL" description="PLG_FILESYSTEM_AWSS3_DIRECTORY_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

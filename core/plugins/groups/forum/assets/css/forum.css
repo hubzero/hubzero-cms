@@ -79,6 +79,9 @@
 	.group_forum .entries tfoot {
 		text-align: right;
 	}
+	.group_forum .entries thead {
+		text-align: right;
+	}
 	.group_forum .entry-details {
 		display: block;
 	}

@@ -7,14 +7,6 @@
 	.supportingdocs { 
 		margin: 0 0 1em 0;
 	}
-	.aside .supportingdocs h3 {
-		margin: 0;
-		padding: 0.4em 1em;
-		color: #fff;
-		font-size: 1em;
-		background: #d6ccc4; 
-		display: block;
-	}
 	.supportingdocs ul {
 		margin: 0;
 		padding: 0;
@@ -49,21 +41,7 @@
 		display: inline;
 		font-size: 75%;
 	}
-	.supportingdocs .help {
-		background: url("images/help.gif") 0 0 no-repeat;
-		margin: 0;
-		padding: 0;
-		display: block;
-		width: 20px;
-		height: 20px;
-		overflow: hidden;
-		text-indent: -20em;
-		position: absolute; 
-		top: 0.6em; 
-		right: 0;
-		border: none;
-	}
-	.extras {
+	.supportingdocs .extras {
 		float: right;
 		color: #CCC;
 		font-size: 85%;

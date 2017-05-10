@@ -348,7 +348,7 @@ $fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 					foreach ($this->filters['q'] as $i => $q)
 					{
 						$pageNav->setAdditionalUrlParam('q[' . $i . '][field]', $q['human_field']);
-						$pageNav->setAdditionalUrlParam('q[' . $i . '][operator]', $q['o']);
+						$pageNav->setAdditionalUrlParam('q[' . $i . '][operator]', $q['operator']);
 						$pageNav->setAdditionalUrlParam('q[' . $i . '][value]', strtolower($q['human_value']));
 					}
 				}

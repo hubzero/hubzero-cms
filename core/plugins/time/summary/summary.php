@@ -148,7 +148,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 	public static function getTimePerTask()
 	{
 		$permissions = new Permissions('com_time');
-		$hub_id      = Request::getInt('hub_id',  null);
+		$hub_id      = Request::getInt('hub_id', null);
 		$task_id     = Request::getInt('task_id', null);
 		$start       = Request::getCmd('start_date', Date::of(strtotime('today - 1 month'))->format('Y-m-d'));
 		$end         = Request::getCmd('end_date', Date::format('Y-m-d'));
@@ -182,7 +182,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		// Loop through and check permissions and grab raw object from rows
 		foreach ($records->including('task') as $record)
 		{
-			if ($permissions->can('view.report', 'hubs', $record->task->hub_id))
+			if ($permissions->can('view.report', 'hub', $record->task->hub_id))
 			{
 				$summary[] = $record->toObject();
 			}

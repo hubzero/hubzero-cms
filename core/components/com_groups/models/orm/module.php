@@ -138,6 +138,6 @@ class Module extends Relational
 	 */
 	public function group()
 	{
-		return $this->belongsToOne('Group', 'gidNumber');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Group', 'gidNumber');
 	}
 }

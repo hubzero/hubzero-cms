@@ -388,7 +388,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$source            = new stdClass;
 			$source->title     = $calendar->get('title');
-			$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calender_id=' . $calendar->get('id'));
+			$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=' . $calendar->get('id'));
 			$source->className = ($calendar->get('color')) ? 'fc-event-' . $calendar->get('color') : 'fc-event-default';
 			array_push($sources, $source);
 		}
@@ -396,7 +396,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// add uncategorized source
 		$source            = new stdClass;
 		$source->title     = 'Uncategorized';
-		$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calender_id=0');
+		$source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=0');
 		$source->className = 'fc-event-default';
 		array_push($sources, $source);
 
@@ -419,7 +419,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// get request params
 		$start      = Request::getVar('start');
 		$end        = Request::getVar('end');
-		$calendarId = Request::getInt('calender_id', 'null');
+		$calendarId = Request::getInt('calendar_id', null);
 
 		// format date/times
 		$start = Date::of($start . ' 00:00:00');
@@ -434,8 +434,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'calendar_id'  => $calendarId,
 			'state'        => array(1),
 			'publish_up'   => $start->format('Y-m-d H:i:s'),
-			'publish_down' => $end->format('Y-m-d H:i:s')
+			'publish_down' => $end->format('Y-m-d H:i:s'),
+			'non_repeating'    => true
 		));
+
 
 		// get repeating events
 		$rawEventsRepeating = $eventsCalendar->events('repeating', array(
@@ -455,17 +457,18 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$up   = Date::of($rawEvent->get('publish_up'));
 			$down = Date::of($rawEvent->get('publish_down'));
+			$timeFormat = 'Y-m-d\TH:i:sO';
 
 			$event            = new stdClass;
 			$event->id        = $rawEvent->get('id');
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
-			$event->start     = Date::of($rawEvent->get('publish_up'))->toLocal('Y-m-d\TH:i:sO');
+			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat);
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = Date::of($rawEvent->get('publish_down'))->toLocal('Y-m-d\TH:i:sO');
+				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat);
 			}
 
 			// add start & end for displaying dates user clicked on
@@ -491,9 +494,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				// Kevin: Don't change this value. Everyone else is wrong.
 				// Seriously this is the correct way to do all-day events.
 				// Previous entries may need to be corrected, but future events will be correct.
-				$end_day = strtotime($event->end . '+ 24 hours');
-				$down = date('Y-m-d H:i:s', $end_day);
-				$event->end = $down;
+				$endDay = Date::of($event->end)->subtract('24 hours');
+				if ($endDay < $up)
+				{
+					$event->end = Date::of($event->start)->add('24 hours')->format($timeFormat);
+				}
 			}
 
 			array_push($events, $event);
@@ -540,6 +545,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
 
+
 		//get calendars
 		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$view->calendars = $eventsCalendarArchive->calendars('list', array(
@@ -574,7 +580,31 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				);
 				return;
 			}
+			else
+			{
+				$allDay = $view->event->get('allday');
+				$endDate = $view->event->get('publish_down');
+				if ($allDay == '1' && !empty($endDate))
+				{
+					$newEndDate = Date::of($endDate)->subtract('24 hours')->toSql();
+					$view->event->set('publish_down', $newEndDate);
+				}
+			}
 		}
+
+		//are we passing an events array back from save
+		if (isset($this->event))
+		{
+			$view->event = $this->event;
+		}
+
+		$timezone = $view->event->get('time_zone');
+		if ($view->event->get('allday') == "1")
+		{
+			$timezone = 'UTC';
+		}
+
+		$view->timezone = isset($timezone) ? $timezone : -5;
 
 		//push some vars to the view
 		$view->month      = $this->month;
@@ -591,11 +621,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
 		);
 
-		//are we passing an events array back from save
-		if (isset($this->event))
-		{
-			$view->event = $this->event;
-		}
 
 		//added need scripts and stylesheets
 		$this->js('fileupload/jquery.fileupload', 'system');
@@ -617,7 +642,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load the view
 		return $view->loadTemplate();
 	}
-
 	/**
 	 * Save an entry
 	 *
@@ -629,7 +653,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//get request vars
 		$event              = Request::getVar('event', array(), 'post');
-		$event['time_zone'] = Request::getVar('time_zone', -5);
+		$event['time_zone'] = Request::getVar('time_zone', null);
 		$event['params']    = Request::getVar('params', array());
 		$event['content']   = Request::getVar('content', '', 'post', 'STRING', JREQUEST_ALLOWRAW);
 		$registration       = Request::getVar('include-registration', 0);
@@ -652,19 +676,16 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event['created_by'] = $this->user->get('id');
 		}
 
-		// timezone
-		$timezone = new DateTimezone(Config::get('offset'));
-
 		// Handle all-day events, iCal is literal
-		// Interpreted as <up>12:00am - <down>11:59pm
+		// Since Google adopts the behavior of adding 24 hours to whatever the end date is, I've done the same here.
+		// If no end date set, it assumes the allday event was scheduled for just the publish_up day selected.
 		$allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
 		if ($allday)
 		{
-			$event['publish_up'] = $event['publish_up'] . ' 12:00am';
-			$event['publish_up'] = Date::of($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_up'] = Date::of($event['publish_up'])->toSql();
 
-			$event['publish_down'] = $event['publish_down'] . '11:59pm';
-			$event['publish_down'] = Date::of($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_down'] = !empty($event['publish_down']) ? $event['publish_down'] : $event['publish_up'];
+			$event['publish_down'] = Date::of($event['publish_down'])->add('24 hours')->toSql();
 		}
 
 		//parse publish up date/time
@@ -675,7 +696,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
 			}
-			$event['publish_up'] = Date::of($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'])->toSql();
 			unset($event['publish_up_time']);
 		}
 
@@ -687,7 +708,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_down'] = $event['publish_down'] . ' ' . $event['publish_down_time'];
 			}
-			$event['publish_down'] = Date::of($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
+			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'])->toSql();
 			unset($event['publish_down_time']);
 		}
 
@@ -696,7 +717,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			//remove @ symbol
 			$event['registerby'] = str_replace("@", "", $event['registerby']);
-			$event['registerby'] = Date::of($event['registerby'], $timezone)->format("Y-m-d H:i:s");
+			$event['registerby'] = Date::of($event['registerby'], $event['time_zone'])->toSql();
 		}
 
 		//stringify params
@@ -1841,14 +1862,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				// create date object in local timezone
 				$until = (isset($reccurance['ends']['until'])) ? $reccurance['ends']['until'] : 1;
+				$endTime = Request::getVar('event[publish_down_time]', '11:59 pm', 'post');
 
 				// create date time object where timezoen is configured value
 				// let php convert to UTC when formatting
 				$timezone = new DateTimezone(Config::get('offset'));
-				$date = Date::of($until, $timezone);
-
-				// subtract by 1 second (iCal standard)
-				$date->modify('-1 second');
+				$date = Date::of($until . ' '. $endTime, $timezone);
 
 				//set the rule
 				$rule[] = 'UNTIL=' . $date->format('Ymd\THis\Z');

@@ -39,8 +39,8 @@ $base = rtrim(str_replace('/administrator', '', $base), '/');
 $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 
 // Get author name
-$name  = $this->wish->proposer('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
-$login = $this->wish->proposer('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
+$name  = $this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
+$login = $this->wish->proposer->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
 if ($this->wish->get('anonymous'))
 {
@@ -60,7 +60,7 @@ switch ($this->action)
 {
 	case 'assigned':
 	case 'created':
-		$content = html_entity_decode(strip_tags($this->wish->content('raw')), ENT_COMPAT, 'UTF-8');
+		$content = html_entity_decode(strip_tags($this->wish->get('about')), ENT_COMPAT, 'UTF-8');
 		$message .= html_entity_decode($content, ENT_QUOTES, 'UTF-8');
 	break;
 

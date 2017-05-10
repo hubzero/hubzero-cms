@@ -80,6 +80,10 @@ HUBzero is a registered trademark of Purdue University.
 				</field>
 				<field name="handler_base_path" type="text" menu="hide" default="/srv/projects/" label="Handler Base Path" description="The base path to use when constructing tool launch links for files within the browse view." />
 				<field name="default_connection_name" type="text" menu="hide" default="%s Master Repository" label="Default Connection Name" description="The label given to the primary versioned repository within the files connections inteface. The name supports the '%s' placeholder for the project name." />
+				<field name="project_quota" type="list" default="0" label="Enable New Project Usage Indicator" description="Enable project usage">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

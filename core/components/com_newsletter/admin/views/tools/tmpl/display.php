@@ -34,17 +34,10 @@
 defined('_HZEXEC_') or die();
 
 //set title
-Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools.png');
+Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools');
 
 // add jquery
 Html::behavior('framework');
-?>
-
-<?php
-	if ($this->getError())
-	{
-		echo '<p class="error">' . $this->getError() . '</p>';
-	}
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">

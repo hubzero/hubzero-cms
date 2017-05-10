@@ -2,35 +2,36 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Storefront\Admin\Controllers;
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'restrictions.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'restrictions.php';
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
@@ -90,7 +91,6 @@ class Restrictions extends AdminController
 
 		RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
 
-
 		// Get record count
 		$this->view->filters['return'] = 'count';
 		$this->view->total = RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
@@ -143,6 +143,11 @@ class Restrictions extends AdminController
 		);
 	}
 
+	/**
+	 * Display a form for a new entry
+	 *
+	 * @return  void
+	 */
 	public function newTask()
 	{
 		$sId = Request::getVar('id', '');
@@ -158,23 +163,45 @@ class Restrictions extends AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * Add users
+	 *
+	 * @return  void
+	 */
 	public function addusersTask()
 	{
 		$sId = Request::getInt('sId', '');
 		$users = Request::getVar('users', '');
 
 		$users = explode(',', $users);
+		$noHubUserMatch = array();
+		$matched = 0;
 		foreach ($users as $user)
 		{
-			$usr = new \Hubzero\User\Profile(trim($user));
+			$user = trim($user);
+			$usr = new \Hubzero\User\Profile($user);
 			$uId = $usr->get('uidNumber');
 			if ($uId)
 			{
-				print_r(RestrictionsHelper::addSkuUser($uId, $sId));
+				RestrictionsHelper::addSkuUser($uId, $sId);
+				$matched++;
+			}
+			else
+			{
+				$noHubUserMatch[] = $user;
 			}
 		}
+
+		$this->view->matched = $matched;
+		$this->view->noUserMatch = $noHubUserMatch;
+		$this->view->display();
 	}
 
+	/**
+	 * Display a form for uploading
+	 *
+	 * @return  void
+	 */
 	public function uploadTask()
 	{
 		$sId = Request::getInt('id', '');
@@ -185,6 +212,11 @@ class Restrictions extends AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * Handle upload of a CSV
+	 *
+	 * @return  void
+	 */
 	public function uploadcsvTask()
 	{
 		// Check for request forgeries
@@ -194,15 +226,15 @@ class Restrictions extends AdminController
 		$csvFile = Request::getVar('csvFile', false, 'files', 'array');
 
 		$sId = Request::getVar('sId', '');
+		$inserted = 0;
+		$skipped = array();
+		$ignored = array();
 
-		if (isset($csvFile['name']) && $csvFile['name'] && $csvFile['type'] == 'text/csv')
+		if (isset($csvFile['name']) && $csvFile['name'])
 		{
-			if (($handle = fopen($csvFile['tmp_name'], "r")) !== FALSE)
+			if (($handle = fopen($csvFile['tmp_name'], "r")) !== false)
 			{
-				$inserted = 0;
-				$skipped = array();
-				$ignored = array();
-				while (($line = fgetcsv($handle, 1000, ",")) !== FALSE)
+				while (($line = fgetcsv($handle, 1000, ',')) !== false)
 				{
 					if (!empty($line[0]))
 					{
@@ -215,23 +247,28 @@ class Restrictions extends AdminController
 							{
 								$inserted++;
 							}
-							else {
+							else
+							{
 								$skipped[] = $usr;
 							}
 						}
-						else {
+						else
+						{
 							$ignored[] = $line[0];
 						}
 					}
 				}
 				fclose($handle);
+
+
 			}
 			else
 			{
 				$this->view->setError('Could not read the file.');
 			}
 		}
-		else {
+		else
+		{
 			$this->view->setError('No file or bad file was uploaded. Please make sure you upload the CSV formated file.');
 		}
 
@@ -243,4 +280,3 @@ class Restrictions extends AdminController
 		$this->view->display();
 	}
 }
-

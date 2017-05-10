@@ -16,6 +16,9 @@
 	width: 50px;
 	height: 50px;
 }
+.results .summary .details span {
+	margin-right: 2em;
+}
 
 .subject h3 {
 	font-size: 115%;

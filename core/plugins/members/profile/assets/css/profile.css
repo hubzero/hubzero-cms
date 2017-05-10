@@ -542,28 +542,25 @@
 
 /* Members Incremental */
 	#award-info {
-		display:none;
+		display: none;
 		background: #fdf6ba;
-		padding: 10px 20px;
+		padding: 1em 1.5em;
 		border: 2px solid #ffba00;
 		margin-bottom: 1em;
 	}
-	#award-info strong {
-		padding-left: 17px;
-		background: url('/core/components/com_store/site/assets/img/coin.gif') no-repeat top left;
+	#award-info strong:before {
+		content: "\f006";
+		font-family: "Fontcons";
+		margin-right: 0.1em;
+		font-size: 1.2em;
+		border: none;
+		color: orange;
 	}
-	#award-info .opt-out {
-		background: url('/core/components/com_support/site/assets/img/delete.png') no-repeat top left #f3f3f3;
-		padding-left: 20px;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 20px;
-	}
+
 	#wallet {
 		position: fixed;
 		bottom: 1em;
 		right: 1em;
-		background: url('/core/components/com_store/site/assets/img/wallet.png') no-repeat 10px -12px #fdf6ba;
 		padding-left: 65px;
 		border: 2px solid #ffba00;
 		width: 100px;
@@ -572,10 +569,13 @@
 		font-weight: bold;
 		display: none;
 	}
-	#wallet span {
-		padding-left: 17px;
-		background: url('/core/components/com_store/site/assets/img/coin.gif') no-repeat 0 4px;
-		line-height: 40px;
+	#wallet span:before {
+		content: "\f006";
+		font-family: "Fontcons";
+		margin-right: 0.1em;
+		font-size: 1.2em;
+		border: none;
+		color: orange;
 	}
 
 	#orcid-fetch {

@@ -90,6 +90,11 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT * FROM `#__users` WHERE id={$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
+				if (!is_object($row) || empty($row))
+				{
+					return;
+				}
+
 				// Determine the path
 				$path = '/members/' . $id;
 
@@ -335,7 +340,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 					r.publication_id AS id,
 					r.title AS title,
 					concat(coalesce(r.description, ''), coalesce(r.abstract, '')) AS description,
-					concat('/publications/', r.id) AS link,
+					concat('/publications/', r.publication_id) AS link,
 					1 AS weight,
 					rt.alias AS section,
 					aa.ordering

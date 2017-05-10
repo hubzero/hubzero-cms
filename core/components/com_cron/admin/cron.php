@@ -42,8 +42,8 @@ if (!\User::authorise('core.manage', 'com_cron'))
 	true
 );
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
+require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_CRON_PLUGINS'),
@@ -51,10 +51,9 @@ if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
 	);
 }
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'job.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'jobs.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'job.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'jobs.php';
 
 $controller = new Controllers\Jobs();
 $controller->execute();
-$controller->redirect();

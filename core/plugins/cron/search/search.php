@@ -32,6 +32,7 @@ defined('_HZEXEC_') or die();
 
 use Hubzero\Search\Query;
 use Hubzero\Search\Index;
+use Components\Search\Models\Solr\QueueDB;
 
 /**
  * Cron plugin for Search indexing
@@ -77,11 +78,11 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		require_once Component::path('com_search') . DS . 'models' . DS . 'indexqueue.php';
-		require_once Component::path('com_search') . DS . 'models' . DS . 'blacklist.php';
+		require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'indexqueue.php';
+		require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
 
 		// Get the type needed to be indexed;
-		$items = \Components\Search\Models\QueueDB::all()
+		$items = QueueDB::all()
 			->where('status', '=', 0)
 			->limit(100)
 			->rows();
@@ -89,7 +90,7 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 		// Refresh indexed material if no work to do
 		if ($items->count() <= 0)
 		{
-			$items = \Components\Search\Models\QueueDB::all()
+			$items = QueueDB::all()
 				->where('status', '=', 1)
 				->where('action', '=', 'index')
 				->order('modified', 'ASC')

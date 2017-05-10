@@ -147,6 +147,22 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 
 			<div class="activity-event">
 				<?php
+				if ($this->row->log->get('scope') == 'activity.comment')
+				{
+					// For now, we can assume this is from a group. For now.
+					// @TODO: Find a better way to associate comments to their parent scope (group, projects)
+					$group = Hubzero\User\Group::getInstance($this->row->log->get('scope_id'));
+					if ($group)
+					{
+						?>
+						<div class="activity-source">
+							<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity'); ?>"><?php echo $group->get('description'); ?></a>
+						</div>
+						<?php
+					}
+				}
+				?>
+				<?php
 				$content = $this->row->log->get('description');
 				$short = null;
 

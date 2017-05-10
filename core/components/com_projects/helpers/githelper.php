@@ -44,28 +44,28 @@ class Git extends Object
 	 *
 	 * @var string
 	 */
-	private $_gitpath 		= NULL;
+	private $_gitpath 		= null;
 
 	/**
 	 * User ID
 	 *
 	 * @var integer
 	 */
-	private $_uid 			= NULL;
+	private $_uid 			= null;
 
 	/**
 	 * Full path to Git repo
 	 *
 	 * @var string
 	 */
-	private $_path 		    = NULL;
+	private $_path 		    = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @return     void
 	 */
-	public function __construct($path = NULL)
+	public function __construct($path = null)
 	{
 		// Get component configs
 		$configs = Component::params('com_projects');
@@ -87,7 +87,7 @@ class Git extends Object
 	 *
 	 * @return     string
 	 */
-	public function iniGit( $path = NULL)
+	public function iniGit( $path = null)
 	{
 		if (!$path)
 		{
@@ -110,7 +110,7 @@ class Git extends Object
 		if (in_array('# Changes to be committed:', $gitInitCheck))
 		{
 			$this->callGit('commit -am "Initial commit"');
-		} 
+		}
 
 		// Need to create .git repository if not yet there
 		if (!is_dir($gitRepoBase))
@@ -171,7 +171,7 @@ class Git extends Object
 	 *
 	 * @return     string
 	 */
-	public function gitStatus ($status = NULL)
+	public function gitStatus ($status = null)
 	{
 		// Clean up
 		$this->cleanup();
@@ -467,7 +467,7 @@ class Git extends Object
 		$what = '';
 
 		// Set exec command for retrieving different commit information
-		switch ( $return )
+		switch ($return)
 		{
 			case 'combined':
 				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%H||%f" --name-only --max-count=1 ';
@@ -607,10 +607,10 @@ class Git extends Object
 	{
 		if (empty($out))
 		{
-			return NULL;
+			return null;
 		}
 
-		$response = NULL;
+		$response = null;
 		switch ($return)
 		{
 			case 'combined':
@@ -711,13 +711,13 @@ class Git extends Object
 	 * @param   string  $subdir  Local directory path
 	 * @return  array
 	 */
-	public function getFiles($subdir = '')
+	public function getFiles($subdir = '', $showAll = false)
 	{
 		// Make sure subdir has a trailing slash
 		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
-
+		$showArg = $showAll ? '-r' : '';
 		// Get Git status
-		$out = $this->callGit('ls-tree --name-only master ' . escapeshellarg($subdir));
+		$out = $this->callGit("ls-tree $showArg --name-only master " . escapeshellarg($subdir));
 
 		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
 	}
@@ -850,8 +850,8 @@ class Git extends Object
 				'hash'			=> $gitData['hash'],
 				'author'		=> $gitData['author'],
 				'date'			=> date('c', $gitData['date']),
-				'size'			=> NULL,
-				'message'		=> NULL
+				'size'			=> null,
+				'message'		=> null
 			);
 		}
 
@@ -895,16 +895,16 @@ class Git extends Object
 						'type' 			=> $type,
 						'remoteid' 		=> 0,
 						'converted' 	=> 0,
-						'rParent'		=> NULL,
+						'rParent'		=> null,
 						'local_path'	=> $filename,
 						'title'			=> basename($filename),
-						'author'		=> NULL,
+						'author'		=> null,
 						'modified'		=> gmdate('Y-m-d H:i:s', $time),
-						'synced'		=> NULL,
+						'synced'		=> null,
 						'fullPath' 		=> $localPath . DS . $filename,
 						'mimeType'		=> Filesystem::mimetype($localPath . DS . $filename),
-						'md5' 			=> NULL,
-						'rename'		=> NULL
+						'md5' 			=> null,
+						'rename'		=> null
 					);
 				}
 			}
@@ -1018,7 +1018,7 @@ class Git extends Object
 						// Specific local directory is synced?
 						$lFilename = $localDir ? preg_replace( "/^" . $localDir. "\//", "", $filename) : $filename;
 
-						$conn 		= isset($connections['paths']) ? $connections['paths'] : NULL;
+						$conn 		= isset($connections['paths']) ? $connections['paths'] : null;
 						$search 	= $status == 'R' || $status == 'W' ? $rename : $filename;
 						$found 		= isset($conn[$search]) && $conn[$search]['type'] == $type ? $conn[$search] : false;
 
@@ -1028,15 +1028,15 @@ class Git extends Object
 							$found 	= isset($conn[$filename]) && $conn[$filename]['type'] == $type ? $conn[$filename] : false;
 						}
 
-						$remoteid 	= $found ? $found['remote_id'] : NULL;
+						$remoteid 	= $found ? $found['remote_id'] : null;
 						$converted 	= $found ? $found['converted']: 0;
-						$rParent	= $found ? $found['rParent'] : NULL;
-						$syncT		= $found ? $found['synced'] : NULL;
+						$rParent	= $found ? $found['rParent'] : null;
+						$syncT		= $found ? $found['synced'] : null;
 
 						$md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename)
-							? hash_file('md5', $localPath . DS . $filename) : NULL;
+							? hash_file('md5', $localPath . DS . $filename) : null;
 
-						$mimeType = $type == 'file' ? Filesystem::mimetype($localPath . DS . $filename) : NULL;
+						$mimeType = $type == 'file' ? Filesystem::mimetype($localPath . DS . $filename) : null;
 
 						// We are only interested in last local change on the file
 						if (!isset($locals[$lFilename]))
@@ -1194,11 +1194,11 @@ class Git extends Object
 				}
 
 				$gitData 	= $this->gitLog($name, $hash, 'combined');
-				$date		= isset($gitData['date']) ? $gitData['date'] : NULL;
-				$author 	= isset($gitData['author']) ? $gitData['author'] : NULL;
-				$email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
+				$date		= isset($gitData['date']) ? $gitData['date'] : null;
+				$author 	= isset($gitData['author']) ? $gitData['author'] : null;
+				$email 		= isset($gitData['email']) ? $gitData['email'] : null;
 				$message 	= $this->gitLog($name, $hash, 'message');
-				$content	= $binary ? NULL : $this->gitLog($name, $hash, 'content');
+				$content	= $binary ? null : $this->gitLog($name, $hash, 'content');
 
 				// SFTP?
 				if (strpos($message, '[SFTP]') !== false)
@@ -1218,10 +1218,10 @@ class Git extends Object
 					'hash' 			=> $hash,
 					'file' 			=> $serveas,
 					'base' 			=> $local_path,
-					'remote'		=> NULL,
+					'remote'		=> null,
 					'local'			=> true,
 					'content'		=> '',
-					'preview'		=> NULL,
+					'preview'		=> null,
 					'original'		=> $original,
 					'hide'			=> 0,
 					'message'		=> $message,
@@ -1386,13 +1386,13 @@ class Git extends Object
 						}
 					}
 
-					return $fetch == 1 ? $rename : NULL;
+					return $fetch == 1 ? $rename : null;
 				}
 			}
 		}
 		else
 		{
-			return NULL;
+			return null;
 		}
 	}
 
@@ -1413,8 +1413,8 @@ class Git extends Object
 		for ($k = (count($versions) - 1); $k >= 0; $k--)
 		{
 			$current 	= $versions[$k];
-			$previous 	= ($k - 1) >= 0 ? $versions[$k - 1] : NULL;
-			$next 		= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : NULL;
+			$previous 	= ($k - 1) >= 0 ? $versions[$k - 1] : null;
+			$next 		= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : null;
 
 			// Deleted?
 			if ($current['commitStatus'] == 'D')

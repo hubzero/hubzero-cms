@@ -113,11 +113,12 @@ class Git extends Models\Adapter
 		$sortby        = isset($params['sortby']) ? $params['sortby'] : 'name';
 		$files         = isset($params['files']) && is_array($params['files']) ? $params['files'] : [];
 		$dirsOnly      = isset($params['dirsOnly']) ? $params['dirsOnly'] : false;
+		$showAll       = isset($params['showAll']) ? $params['showAll'] : false;
 
 		if (!$dirsOnly)
 		{
 			// Get a list of files from the git repository
-			$files = empty($files) ? $this->_git->getFiles($dirPath) : $files;
+			$files = empty($files) ? $this->_git->getFiles($dirPath, $showAll) : $files;
 
 			// Add untracked?
 			$untracked = $showUntracked ? $this->_git->getUntrackedFiles($dirPath) : [];
@@ -185,6 +186,11 @@ class Git extends Models\Adapter
 				continue;
 			}
 
+			// Need to get extra metadata (slower)
+			// This method was causing quite a bit of sluggishness (if only I paid attention to the comment above). 
+			// I've instead added retrieving the date with filemtime to the defaults() method in the File model.
+			// $file->set('date', $this->_file($file, $dirPath, 'date'));
+
 			// Check for remote connections
 			$syncRecord = null;
 			if (isset($remotes[$file->get('localPath')]))
@@ -192,8 +198,15 @@ class Git extends Models\Adapter
 				// Pick up data from sync record
 				$syncRecord = $remotes[$file->get('localPath')];
 				$file->set('remote', $syncRecord->service);
+				$file->set('remoteid', $syncRecord->remote_id);
 				$file->set('author', $syncRecord->remote_author);
-				$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
+
+				// Added this conditional so that the local repo date takes priority.  Otherwise the date will always show the day Google Drive was connected which is not helpful.
+				if (!$file->get('date'))
+				{
+					$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
+				}
+
 				$file->set('mimeType', $syncRecord->remote_format);
 				$file->set('converted', $syncRecord->remote_editing);
 			}

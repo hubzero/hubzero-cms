@@ -175,7 +175,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit')) : ?>
-						<a class="state <?php echo ($row->get('enabled') ? 'yes': 'no'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle_enabled&id=' . $row->get('id')); ?>">
+						<a class="state <?php echo ($row->get('enabled') ? 'yes': 'no'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle_enabled&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 							<span><?php echo Lang::txt(($row->get('enabled') ? 'JYES': 'JNO')); ?></span>
 						</a>
 					<?php else : ?>

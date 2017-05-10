@@ -32,12 +32,13 @@
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Item\Comment;
 use Lang;
 use Date;
 
-require_once(__DIR__ . DS . 'asset.php');
-require_once(__DIR__ . DS . 'vote.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once __DIR__ . DS . 'asset.php';
+require_once __DIR__ . DS . 'vote.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Collection item model
@@ -47,14 +48,14 @@ class Item extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'collections';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'created';
 
@@ -71,9 +72,7 @@ class Item extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'title'       => 'notempty',
-		'object_type' => 'notempty',
-		'object_id'   => 'positive|nonzero'
+		'type' => 'notempty'
 	);
 
 	/**
@@ -89,7 +88,7 @@ class Item extends Relational
 	/**
 	 * Fields to be parsed
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $parsed = array(
 		'description'
@@ -135,7 +134,7 @@ class Item extends Relational
 	 */
 	public function posts()
 	{
-		return $this->oneToMany('Post', 'item_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Post', 'item_id');
 	}
 
 	/**
@@ -145,7 +144,7 @@ class Item extends Relational
 	 */
 	public function assets()
 	{
-		return $this->oneToMany('Asset', 'item_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Asset', 'item_id');
 	}
 
 	/**
@@ -155,7 +154,20 @@ class Item extends Relational
 	 */
 	public function votes()
 	{
-		return $this->oneToMany('Vote', 'item_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Vote', 'item_id');
+	}
+
+	/**
+	 * Get a list of comments
+	 *
+	 * @return  object
+	 */
+	public function comments()
+	{
+		//return $this->oneShiftsToMany(__NAMESPACE__ . '\\Comment', 'item_id', 'item_type')->whereEquals('parent', 0);
+		return Comment::all()
+			->whereEquals('item_type', 'collection')
+			->whereEquals('item_id', $this->get('id'));
 	}
 
 	/**
@@ -188,5 +200,76 @@ class Item extends Relational
 
 		return $tags->render($as, array('admin' => $admin));
 	}
-}
 
+	/**
+	 * Tag the entry
+	 *
+	 * @param   string   $tags     Tags to apply
+	 * @param   integer  $user_id  ID of tagger
+	 * @param   integer  $admin    Tag as admin? 0=no, 1=yes
+	 * @return  boolean
+	 */
+	public function tag($tags=null, $user_id=0, $admin=0)
+	{
+		$cloud = new Tags($this->get('id'));
+
+		return $cloud->setTags($tags, $user_id, $admin);
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Can't delete what doesn't exist
+		if ($this->isNew())
+		{
+			return true;
+		}
+
+		// Remove posts
+		foreach ($this->posts()->rows() as $post)
+		{
+			if (!$post->destroy())
+			{
+				$this->addError($post->getError());
+				return false;
+			}
+		}
+
+		// Remove votes
+		foreach ($this->votes()->rows() as $vote)
+		{
+			if (!$vote->destroy())
+			{
+				$this->addError($vote->getError());
+				return false;
+			}
+		}
+
+		// Remove comments
+		foreach ($this->comments()->rows() as $comment)
+		{
+			if (!$comment->destroy())
+			{
+				$this->addError($comment->getError());
+				return false;
+			}
+		}
+
+		// Remove assets
+		foreach ($this->assets()->rows() as $asset)
+		{
+			if (!$asset->destroy())
+			{
+				$this->addError($asset->getError());
+				return false;
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+}

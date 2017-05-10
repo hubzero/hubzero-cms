@@ -173,7 +173,15 @@
 		width: 50%;
 	}
 
+	.group_managers .activity-content {
+		border-color: #beace0;
+	}
+	.group_managers .activity-content:before {
+		border-color: transparent #beace0 transparent transparent;
+	}
+
 	/* Action */
+	.group_managers>.activity-content .activity-channel,
 	.activity-action {
 		font-size: 0.75em;
 		line-height: 1;
@@ -188,6 +196,16 @@
 		position: absolute;
 		bottom: 1.61803399em;
 		left: 2em;
+	}
+	.group_managers>.activity-content .activity-channel {
+		left: 10em;
+		border-color: #beace0;
+		color: #beace0;
+	}
+	.group_managers>.activity-content .activity-channel:before {
+		content: "\f023";
+		font-family: "Fontcons";
+		margin-right: 0.3em;
 	}
 	.subscribed .activity-action,
 	.invited .activity-action,
@@ -220,6 +238,16 @@
 	.activities .activity-event>*:first-child{
 		margin-top: 0;
 		padding-top: 0;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	.activities .activity-event-preview>*:first-child,
+	.activities .activity-event-content>*:first-child {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.activities .activity-event-preview>*:last-child,
+	.activities .activity-event-content>*:last-child {
 		margin-bottom: 0;
 		padding-bottom: 0;
 	}
@@ -319,7 +347,7 @@
 		color: #999;*/
 		white-space: nowrap;
 		overflow: hidden;
-		background-color: #fff;
+		/*background-color: #fff;*/
 		-webkit-transition: all 50ms ease-in 0s;
 		-moz-transition: all 50ms ease-in 0s;
 		transition: all 50ms ease-in 0s;

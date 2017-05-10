@@ -247,7 +247,7 @@ class Projects extends Base
 		$this->view->filters['reviewer'] = $reviewer;
 		$this->view->filters['filterby'] = Request::getWord('filterby', 'all');
 
-		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status')))
+		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status')))
 		{
 			$this->view->filters['sortby'] = 'title';
 		}
@@ -257,9 +257,15 @@ class Projects extends Base
 			$this->view->filters['sortdir'] = 'ASC';
 		}
 
-		if (!in_array($this->view->filters['filterby'], array('all', 'public', 'archived', 'pending')))
+		if (!in_array($this->view->filters['filterby'], array('all', 'open', 'public', 'archived', 'pending')))
 		{
-			$this->view->filters['sortdir'] = 'all';
+			$this->view->filters['filterby'] = 'all';
+		}
+		// We're filtering by a specific state
+		// Do NOT include all projects the user may have access to as some of them may not be of this state
+		if (in_array($this->view->filters['filterby'], array('open', 'public')))
+		{
+			$this->view->filters['uid'] = 0;
 		}
 
 		/*if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
@@ -659,6 +665,13 @@ class Projects extends Base
 		if ($error)
 		{
 			$this->view->setError($error);
+		}
+
+		// Check session if this is a newly submitted entry. Trigger a proper event if so.
+		if (Session::get('newsubmission.project')) {
+			// Unset the new submission session flag
+			Session::set('newsubmission.project');
+			Event::trigger('content.onAfterContentSubmission', array('Project'));
 		}
 
 		$this->view->display();

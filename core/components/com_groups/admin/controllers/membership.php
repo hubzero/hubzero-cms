@@ -152,6 +152,7 @@ class Membership extends AdminController
 			$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
 
 			//add invite emails to list
+			$added = 0;
 			foreach ($inviteemails as $inviteemail)
 			{
 				$this->view->rows[$inviteemail['email']]            = new \stdClass;
@@ -160,7 +161,13 @@ class Membership extends AdminController
 				$this->view->rows[$inviteemail['email']]->email     = $inviteemail['email'];
 				$this->view->rows[$inviteemail['email']]->uidNumber = null;
 				$this->view->rows[$inviteemail['email']]->role      = 'inviteemail';
+
+				$added++;
 			}
+
+			// Make sure the number of emails added are appended to the total
+			// so that pagination will be correct
+			$this->view->total += $added;
 		}
 
 		$this->view->group = $group;
@@ -675,7 +682,7 @@ class Membership extends AdminController
 				if (is_object($targetuser))
 				{
 					$uid = $targetuser->get('id');
-					if (in_array($uid,$invitees))
+					if (in_array($uid, $invitees))
 					{
 						$users[] = $uid;
 					}

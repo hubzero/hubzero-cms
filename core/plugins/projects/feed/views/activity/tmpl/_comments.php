@@ -33,7 +33,7 @@
 defined('_HZEXEC_') or die();
 
 ?>
-<ol class="comments" id="comments_<?php echo $this->activity->id; ?>">
+<ul class="comments" id="comments_<?php echo $this->activity->id; ?>">
 	<?php
 	if ($this->comments && count($this->comments) > 0)
 	{
@@ -47,8 +47,9 @@ defined('_HZEXEC_') or die();
 				->set('activity', $this->activity)
 				->set('uid', $this->uid)
 				->set('edit', $this->edit)
+				->set('online', $this->online)
 				->display();
 		}
 	}
 	?>
-</ol>
+</ul>

@@ -180,6 +180,13 @@ class Entries extends SiteController
 			}
 		}
 
+		// Check session if this is a newly submitted entry. Trigger a proper event if so.
+		if (Session::get('newsubmission.blog')) {
+			// Unset the new submission session flag
+			Session::set('newsubmission.blog');
+			Event::trigger('content.onAfterContentSubmission', array('Blog'));
+		}
+
 		// Output HTML
 		$this->view
 			->set('archive', $this->model)
@@ -287,6 +294,9 @@ class Entries extends SiteController
 
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
+		// Record if this is a new submission
+		$isNewSubmission = $row->isNew();
+
 		// Store new content
 		if (!$row->save())
 		{
@@ -317,6 +327,12 @@ class Entries extends SiteController
 				$row->get('created_by')
 			]
 		]);
+
+		// If the new resource is published, set the session flag indicating the new submission
+		if ($isNewSubmission)
+		{
+			Session::set('newsubmission.blog', true);
+		}
 
 		// Redirect to the entry
 		App::redirect(

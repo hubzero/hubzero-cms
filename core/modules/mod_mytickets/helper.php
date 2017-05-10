@@ -108,7 +108,7 @@ class Helper extends Module
 			$g = array();
 			foreach ($xgroups as $xgroup)
 			{
-				$g[] = $database->quote($xgroup->cn);
+				$g[] = $database->quote($xgroup->gidNumber);
 			}
 			$groups = implode(",", $g);
 		}
@@ -121,7 +121,7 @@ class Helper extends Module
 				"SELECT id, summary, category, open, status, severity, owner, created, login, name,
 					(SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
 				FROM `#__support_tickets` as st
-				WHERE st.open=1 AND type=0 AND st.group IN ($groups)
+				WHERE st.open=1 AND type=0 AND st.group_id IN ($groups)
 				ORDER BY created DESC
 				LIMIT $limit"
 			);

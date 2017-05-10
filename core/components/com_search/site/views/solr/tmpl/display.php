@@ -82,12 +82,12 @@ $noResult = count($this->results) > 0 ? false : true;
 				<h3>Category</h3>
 				<ul>
 					<li>
-						<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="/search/?terms=<?php echo $this->terms; ?>">All Categories <span class="item-count"><?php echo $this->catTotal; ?></span></a>
+						<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="/search/?terms=<?php echo $this->terms; ?>">All Categories <span class="item-count"><?php echo $this->total; ?></span></a>
 					</li>
-					<?php foreach ($this->categories as $category): ?>
-					<?php if ($category['count'] > 0): ?>
+					<?php foreach ($this->facets as $facet): ?>
+					<?php if ($facet->count > 0): ?>
 					<li>
-						<a <?php echo ($this->type == $category['type']) ? 'class="active"' : ''; ?> href="/search/?terms=<?php echo $this->terms; ?>&type=<?php echo $category['type']; ?>"><?php echo $category['name'] ?> <span class="item-count"><?php echo $category['count']; ?></span></a>
+						<a <?php echo ($this->type == $facet->id) ? 'class="active"' : ''; ?> href="/search/?terms=<?php echo $this->terms; ?>&type=<?php echo $facet->id; ?>"><?php echo $facet->name; ?> <span class="item-count"><?php echo $facet->count; ?></span></a>
 					</li>
 					<?php endif; ?>
 					<?php endforeach; ?>

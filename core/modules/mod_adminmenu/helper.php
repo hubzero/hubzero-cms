@@ -81,23 +81,32 @@ class Helper extends Module
 	 */
 	public static function getMenus()
 	{
-		$db = \App::get('db');
-		$query = $db->getQuery(true);
-
-		$query->select('a.*, SUM(b.home) AS home');
-		$query->from('#__menu_types AS a');
-		$query->leftJoin('#__menu AS b ON b.menutype = a.menutype AND b.home != 0');
-		$query->select('b.language');
-		$query->leftJoin('#__languages AS l ON l.lang_code = language');
-		$query->select('l.image');
-		$query->select('l.sef');
-		$query->select('l.title_native');
-		$query->where('(b.client_id = 0 OR b.client_id IS NULL)');
+		$db = App::get('db');
+		$query = $db->getQuery()
+			->select('a.*')
+			->select('SUM(b.home)', 'home')
+			->from('#__menu_types', 'a')
+			->joinRaw('#__menu AS b', 'b.menutype = a.menutype AND b.home != 0', 'left')
+			->select('b.language')
+			->join('#__languages AS l', 'l.lang_code', 'language', 'left')
+			->select('l.image')
+			->select('l.sef')
+			->select('l.title_native')
+			->whereRaw('(b.client_id = 0 OR b.client_id IS NULL)');
 
 		// sqlsrv change
-		$query->group('a.id, a.menutype, a.description, a.title, b.menutype,b.language,l.image,l.sef,l.title_native');
+		$query
+			->group('a.id')
+			->group('a.menutype')
+			->group('a.description')
+			->group('a.title')
+			->group('b.menutype')
+			->group('b.language')
+			->group('l.image')
+			->group('l.sef')
+			->group('l.title_native');
 
-		$db->setQuery($query);
+		$db->setQuery($query->toString());
 
 		return $db->loadObjectList();
 	}
@@ -112,25 +121,32 @@ class Helper extends Module
 	{
 		// Initialise variables.
 		$lang   = App::get('language');
-		$db     = \App::get('db');
-		$query  = $db->getQuery(true);
+		$db     = App::get('db');
 		$result = array();
 		$langs  = array();
 
 		// Prepare the query.
-		$query->select('m.id, m.title, m.alias, m.link, m.parent_id, m.img, e.element, e.protected');
-		$query->from('#__menu AS m');
+		$query = $db->getQuery()
+			->select('m.id')
+			->select('m.title')
+			->select('m.alias')
+			->select('m.link')
+			->select('m.parent_id')
+			->select('m.img')
+			->select('e.element')
+			->select('e.protected')
+			->from('#__menu', 'm');
 
 		// Filter on the enabled states.
-		$query->leftJoin('#__extensions AS e ON m.component_id = e.extension_id');
-		$query->where('m.client_id = 1');
-		$query->where('e.enabled = 1');
-		$query->where('m.id > 1');
+		$query->join('#__extensions AS e', 'm.component_id', 'e.extension_id', 'left')
+			->whereEquals('m.client_id', '1')
+			->whereEquals('e.enabled', '1')
+			->where('m.id', '>', '1');
 
 		// Order by lft.
-		$query->order('m.lft');
+		$query->order('m.lft', 'asc');
 
-		$db->setQuery($query);
+		$db->setQuery($query->toString());
 
 		// Component list
 		$components	= $db->loadObjectList();

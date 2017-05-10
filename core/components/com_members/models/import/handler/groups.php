@@ -43,6 +43,19 @@ use Lang;
 class Groups extends Object
 {
 	/**
+	 * Return a sample for import header and content
+	 *
+	 * @return  array
+	 */
+	public function sample()
+	{
+		return array(
+			'header'  => 'groups',
+			'content' => 'groupalias;groupalias;groupalias'
+		);
+	}
+
+	/**
 	 * Bind all raw data
 	 *
 	 * @param   object  $raw

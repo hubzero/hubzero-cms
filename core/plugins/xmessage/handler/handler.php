@@ -41,18 +41,18 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Marks action items as completed
 	 *
-	 * @param      string  $type      Item type
-	 * @param      array   $uids      User IDs
-	 * @param      string  $component ITem component
-	 * @param      unknown $element Parameter description (if any) ...
-	 * @return     boolean True if no errors
+	 * @param   string   $type       Item type
+	 * @param   array    $uids       User IDs
+	 * @param   string   $component  Item component
+	 * @param   integer  $element
+	 * @return  boolean  True if no errors
 	 */
 	public function onTakeAction($type, $uids=array(), $component='', $element=null)
 	{
@@ -82,7 +82,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 						if ($xseen->get('whenseen') == ''
 						 || $xseen->get('whenseen') == $database->getNullDate()
-						 || $xseen->get('whenseen') == NULL)
+						 || $xseen->get('whenseen') == null)
 						{
 							$xseen->set('whenseen', Date::toSql());
 							$xseen->save();
@@ -98,18 +98,18 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send a message to one or more users
 	 *
-	 * @param      string  $type        Message type (maps to #__xmessage_component table)
-	 * @param      string  $subject     Message subject
-	 * @param      string  $message     Message to send
-	 * @param      array   $from        Message 'from' data (e.g., name, address)
-	 * @param      array   $to          List of user IDs
-	 * @param      string  $component   Component name
-	 * @param      integer $element     ID of object that needs an action item
-	 * @param      string  $description Action item description
-	 * @param      integer $group_id    Parameter description (if any) ...
-	 * @return     mixed   True if no errors else error message
+	 * @param   string   $type         Message type (maps to #__xmessage_component table)
+	 * @param   string   $subject      Message subject
+	 * @param   string   $message      Message to send
+	 * @param   array    $from         Message 'from' data (e.g., name, address)
+	 * @param   array    $to           List of user IDs
+	 * @param   string   $component    Component name
+	 * @param   integer  $element      ID of object that needs an action item
+	 * @param   string   $description  Action item description
+	 * @param   integer  $group_id     Parameter description (if any) ...
+	 * @return  mixed    True if no errors else error message
 	 */
-	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0, $bypassGroupsCheck = false)
+	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0, $bypassGroupsCheck=false, $anonymous=0)
 	{
 		// Do we have a message?
 		if (!$message)
@@ -181,6 +181,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		$xmessage->set('component', $component);
 		$xmessage->set('type', $type);
 		$xmessage->set('group_id', $group_id);
+		$xmessage->set('anonymous', (int)$anonymous);
 
 		if (!$xmessage->save())
 		{
@@ -314,4 +315,3 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-

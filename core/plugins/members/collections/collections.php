@@ -201,44 +201,99 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			switch ($this->action)
 			{
 				// Comments
-				case 'savecomment':   $arr['html'] = $this->_savecomment();   break;
-				case 'newcomment':    $arr['html'] = $this->_newcomment();    break;
-				case 'editcomment':   $arr['html'] = $this->_editcomment();   break;
-				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
+				case 'savecomment':
+					$arr['html'] = $this->_savecomment();
+					break;
+				case 'newcomment':
+					$arr['html'] = $this->_newcomment();
+					break;
+				case 'editcomment':
+					$arr['html'] = $this->_editcomment();
+					break;
+				case 'deletecomment':
+					$arr['html'] = $this->_deletecomment();
+					break;
 
-				case 'followers': $arr['html'] = $this->_followers(); break;
-				case 'following': $arr['html'] = $this->_following(); break;
-				case 'follow':    $arr['html'] = $this->_follow('member');    break;
-				case 'unfollow':  $arr['html'] = $this->_unfollow('member');  break;
+				case 'followers':
+					$arr['html'] = $this->_followers();
+					break;
+				case 'following':
+					$arr['html'] = $this->_following();
+					break;
+				case 'follow':
+					$arr['html'] = $this->_follow('member');
+					break;
+				case 'unfollow':
+					$arr['html'] = $this->_unfollow('member');
+					break;
 
 				// Entries
-				case 'savepost':   $arr['html'] = $this->_save();   break;
-				case 'newpost':    $arr['html'] = $this->_new();    break;
-				case 'editpost':   $arr['html'] = $this->_edit();   break;
-				case 'deletepost': $arr['html'] = $this->_delete(); break;
-				case 'posts':      $arr['html'] = $this->_posts();  break;
+				case 'savepost':
+					$arr['html'] = $this->_save();
+					break;
+				case 'newpost':
+					$arr['html'] = $this->_new();
+					break;
+				case 'editpost':
+					$arr['html'] = $this->_edit();
+					break;
+				case 'deletepost':
+					$arr['html'] = $this->_delete();
+					break;
+				case 'posts':
+					$arr['html'] = $this->_posts();
+					break;
 
 				case 'comment':
-				case 'post':    $arr['html'] = $this->_post();   break;
-				case 'vote':    $arr['html'] = $this->_vote();   break;
-				case 'collect': $arr['html'] = $this->_repost(); break;
-				case 'remove':  $arr['html'] = $this->_remove(); break;
-				case 'move':    $arr['html'] = $this->_move();   break;
+				case 'post':
+					$arr['html'] = $this->_post();
+					break;
+				case 'vote':
+					$arr['html'] = $this->_vote();
+					break;
+				case 'collect':
+					$arr['html'] = $this->_repost();
+					break;
+				case 'remove':
+					$arr['html'] = $this->_remove();
+					break;
+				case 'move':
+					$arr['html'] = $this->_move();
+					break;
 
-				case 'followcollection': $arr['html'] = $this->_follow('collection'); break;
-				case 'unfollowcollection': $arr['html'] = $this->_unfollow('collection'); break;
-				case 'collectcollection':  $arr['html'] = $this->_repost();           break;
-				case 'newcollection':      $arr['html'] = $this->_newcollection();    break;
-				case 'editcollection':     $arr['html'] = $this->_editcollection();   break;
-				case 'savecollection':     $arr['html'] = $this->_savecollection();   break;
-				case 'deletecollection':   $arr['html'] = $this->_deletecollection(); break;
+				case 'followcollection':
+					$arr['html'] = $this->_follow('collection');
+					break;
+				case 'unfollowcollection':
+					$arr['html'] = $this->_unfollow('collection');
+					break;
+				case 'collectcollection':
+					$arr['html'] = $this->_repost();
+					break;
+				case 'newcollection':
+					$arr['html'] = $this->_newcollection();
+					break;
+				case 'editcollection':
+					$arr['html'] = $this->_editcollection();
+					break;
+				case 'savecollection':
+					$arr['html'] = $this->_savecollection();
+					break;
+				case 'deletecollection':
+					$arr['html'] = $this->_deletecollection();
+					break;
 
 				case 'all':
-				case 'collections':      $arr['html'] = $this->_collections();      break;
+				case 'collections':
+					$arr['html'] = $this->_collections();
+					break;
 
-				case 'collection': $arr['html'] = $this->_collection(); break;
-
-				case 'feed': $arr['html'] = $this->_feed(); break;
+				case 'collection':
+					$arr['html'] = $this->_collection();
+					break;
+				case 'feed':
+					$arr['html'] = $this->_feed();
+					break;
 				default:
 					if ($this->params->get('defaultView', 'feed') == 'collections')
 					{
@@ -962,6 +1017,11 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Get model
 		$item = new \Components\Collections\Models\Item(intval($fields['id']));
+		$tmp = null;
+		if (substr($item->get('title'), 0, 3) == 'tmp')
+		{
+			$tmp = $item->get('title');
+		}
 
 		// Bind content
 		if (!$item->bind($fields))
@@ -988,6 +1048,37 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError($item->getError());
 			return $this->_edit($item);
+		}
+
+		// It's possible that multiple temporary items could have been created
+		// This can happen if someone drops multiple files at once on the file
+		// uploader. So, we need to move any attachments back to the main one
+		// and remove the extra items.
+		//
+		// @TODO: Find a better way to do this
+		if ($tmp)
+		{
+			$db = App::get('db');
+			$db->setQuery("SELECT id FROM `#__collections_items` WHERE `title`=" . $db->quote($tmp) . " AND `id`!=" . $db->quote($item->get('id')));
+			$others = $db->loadColumn();
+
+			if (count($others) > 0)
+			{
+				$db->setQuery("SELECT * FROM `#__collections_assets` WHERE `item_id` in (" . implode(",", $others) . ")");
+				$assets = $db->loadObjectList();
+				foreach ($assets as $asset)
+				{
+					$asset = new \Components\Collections\Models\Asset($asset);
+					if (!$asset->move($item->get('id')))
+					{
+						$this->setError($item->getError());
+						return $this->_edit($item);
+					}
+				}
+
+				$db->setQuery("DELETE FROM `#__collections_items` WHERE `id` in (" . implode(",", $others) . ")");
+				$db->query();
+			}
 		}
 
 		// Create a post entry linking the item to the board

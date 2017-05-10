@@ -36,7 +36,7 @@ use Lang;
 
 // Import library dependencies
 include_once(__DIR__ . DS . 'extension.php');
-include_once(PATH_CORE . '/components/com_admin/admin/script.php');
+include_once(dirname(__DIR__) . '/helpers/script.php');
 
 /**
  * Installer Database Model
@@ -86,7 +86,7 @@ class Database extends Extension
 	 */
 	public function getItems()
 	{
-		$folder = PATH_CORE . '/components/com_admin/amdin/sql/updates/';
+		$folder = dirname(__DIR__) . '/sql/updates/';
 		$changeSet = \JSchemaChangeset::getInstance(\App::get('db'), $folder);
 		return $changeSet;
 	}
@@ -248,4 +248,3 @@ class Database extends Extension
 		}
 	}
 }
-

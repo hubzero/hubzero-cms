@@ -44,14 +44,14 @@ class Asset extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = 'collections';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'ordering';
 
@@ -69,7 +69,8 @@ class Asset extends Relational
 	 */
 	protected $rules = array(
 		'filename' => 'notempty',
-		'item_id'  => 'positive|nonzero'
+		'item_id'  => 'positive|nonzero',
+		'type'     => 'notempty'
 	);
 
 	/**
@@ -79,17 +80,58 @@ class Asset extends Relational
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
+		'created_by',
+		'ordering'
 	);
 
 	/**
 	 * Fields to be parsed
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $parsed = array(
 		'description'
 	);
+
+	/**
+	 * Generates automatic ordering field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  integer
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->whereEquals('item_id', $data['item_id'])
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
+
+	/**
+	 * Generates automatic type field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  integer
+	 */
+	public function automaticType($data)
+	{
+		$allowed = array('file', 'link');
+
+		if (!isset($data['type']) || !$data['type'] || !in_array($data['type'], $allowed))
+		{
+			$data['type'] = 'file';
+		}
+
+		return $data['type'];
+	}
 
 	/**
 	 * Return a formatted timestamp for created date
@@ -131,7 +173,7 @@ class Asset extends Relational
 	 */
 	public function item()
 	{
-		return $this->belongsToOne('Item');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Item');
 	}
 
 	/**
@@ -170,5 +212,84 @@ class Asset extends Relational
 
 		return false;
 	}
-}
 
+	/**
+	 * Mark a record as trashed and rename the file
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function trash()
+	{
+		if ($this->get('type') == 'file')
+		{
+			$ext  = Filesystem::extension($this->get('filename'));
+			$path = $this->filespace() . DS . $this->get('item_id') . DS;
+
+			$file  = $path . $this->get('filename');
+			$trash = Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;
+
+			if (file_exists($file))
+			{
+				if (!Filesystem::move($file, $path . $trash))
+				{
+					$this->addError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
+					return false;
+				}
+			}
+
+			$this->set('filename', $trash);
+		}
+
+		$this->set('state', self::STATE_DELETED);
+
+		return parent::save();
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Can't delete what doesn't exist
+		if ($this->isNew())
+		{
+			return true;
+		}
+
+		// Remove associated files
+		if ($this->get('type') == 'file')
+		{
+			$ext  = Filesystem::extension($this->get('filename'));
+			$path = $this->filespace() . DS . $this->get('item_id') . DS;
+
+			$files = array(
+				// The file
+				'orign' => $path . $this->get('filename'),
+				// Medium sized (if an image)
+				'mediu' => $path . Filesystem::name($this->get('filename')) . '_m.' . $ext,
+				// Thumbnail (if an image)
+				'thumb' => $path . Filesystem::name($this->get('filename')) . '_t.' . $ext//,
+				// Thumbnail (if an image)
+				// A previously "trashed" file
+				//'trash' => $path . Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;
+			);
+
+			foreach ($files as $file)
+			{
+				if (file_exists($file))
+				{
+					if (!Filesystem::delete($file))
+					{
+						$this->addError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
+						return false;
+					}
+				}
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+}

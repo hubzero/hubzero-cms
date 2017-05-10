@@ -43,6 +43,16 @@ include_once dirname(dirname(__DIR__)) . '/tags.php';
 class Tags extends Object
 {
 	/**
+	 * Return a sample for import header and content
+	 *
+	 * @return  array
+	 */
+	public function sample()
+	{
+		return array();
+	}
+
+	/**
 	 * Bind all raw data
 	 *
 	 * @param   object  $raw

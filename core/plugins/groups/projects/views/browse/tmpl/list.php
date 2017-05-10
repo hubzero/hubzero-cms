@@ -121,19 +121,20 @@ switch ($this->which)
 							{
 								$html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
 							}
-							else if ($row->isInactive())
-							{
-								$html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
-							}
-							else if ($row->isPending())
-							{
-								$html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
-							}
-							else if ($row->isArchived())
-							{
-								$html .= '<span class="archived">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
-							}
 						}
+						if ($row->isInactive())
+						{
+							$html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
+						}
+						else if ($row->isPending())
+						{
+							$html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
+						}
+						else if ($row->isArchived())
+						{
+							$html .= '<span class="archived">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+						}
+
 						echo $html;
 						?>
 					</td>

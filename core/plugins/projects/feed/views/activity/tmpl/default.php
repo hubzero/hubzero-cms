@@ -35,6 +35,21 @@ defined('_HZEXEC_') or die();
 if (count($this->activities) > 0 ) { ?>
 	<div class="activity-items" id="activity-feed">
 		<?php
+		// get all sessions
+		$online = array();
+		$sessions = Hubzero\Session\Helper::getAllSessions(array(
+			'guest'    => 0,
+			'distinct' => 1
+		));
+		if ($sessions)
+		{
+			// see if any session matches our userid
+			foreach ($sessions as $session)
+			{
+				$online[] = $session->userid;
+			}
+		}
+
 		// Loop through activities
 		foreach ($this->activities as $activity)
 		{
@@ -44,6 +59,7 @@ if (count($this->activities) > 0 ) { ?>
 				->set('model', $this->model)
 				->set('activity', $activity)
 				->set('uid', $this->uid)
+				->set('online', $online)
 				->display();
 		}
 		?>

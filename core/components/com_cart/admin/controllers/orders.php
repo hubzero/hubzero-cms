@@ -36,8 +36,8 @@ use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
 use Hubzero\User\Profile;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
 require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
@@ -86,8 +86,6 @@ class Orders extends AdminController
 			)
 		);
 
-		//print_r($this->view->filters); die;
-
 		// Get record count
 		$this->view->filters['count'] = true;
 		$this->view->total = Cart::getAllTransactions($this->view->filters);
@@ -112,7 +110,6 @@ class Orders extends AdminController
 		}
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 
@@ -127,11 +124,13 @@ class Orders extends AdminController
 		$id = Request::getVar('id', array(0));
 
 		// Get transaction info
-		$tInfo = Cart::getTransactionInfo($id);
+		$transactionItems = Cart::getTransactionItems($id, false);
+		$transactionInfo = Cart::getTransactionInfo($id);
+		$transactionInfoItems = unserialize($transactionInfo->tiItems);
 
-		$tItems = unserialize($tInfo->tiItems);
+		$tInfo = $transactionInfo;
 
-		foreach ($tItems as $item)
+		foreach ($transactionInfoItems as $item)
 		{
 			// Check if the product is still available
 			$warehouse = new Warehouse();
@@ -141,20 +140,21 @@ class Orders extends AdminController
 				// product no longer available
 				$item['info']->available = false;
 			}
-			else {
+			else
+			{
 				$item['info']->available = true;
 			}
 		}
 
-		$tInfo->tiItems = $tItems;
+		$tInfo->tiItems = $transactionInfoItems;
 
 		// Get user info
 		$userId = Cart::getCartUser($tInfo->crtId);
 		$user = Profile::getInstance($userId);
-		//print_r($user); die;
 
 		$this->view->user = $user;
 		$this->view->tInfo = $tInfo;
+		$this->view->items = $transactionItems;
 		$this->view->tId = $id;
 
 		$this->view
@@ -197,8 +197,6 @@ class Orders extends AdminController
 			)
 		);
 
-		//print_r($this->view->filters); die;
-
 		// Get orders count
 		$this->view->total = CartOrders::getItemsOrdered('count', $this->view->filters);
 
@@ -220,7 +218,7 @@ class Orders extends AdminController
 	/**
 	 * Download CSV report (default)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
@@ -255,7 +253,61 @@ class Orders extends AdminController
 
 		foreach ($rowsRaw as $row)
 		{
-			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['Name'], $row['uidNumber']);
+			// Get the notes, both SKU-specific and other
+			$transactionItems = Cart::getTransactionItems($row['tId'], false);
+
+			//continue;
+
+			$transactionInfo = Cart::getTransactionInfo($row['tId']);
+			$transactionInfoItems = unserialize($transactionInfo->tiItems);
+
+			$notes = array();
+			foreach ($transactionItems as $sId => $item)
+			{
+				$meta = $item['transactionInfo']->tiMeta;
+				if (!empty($meta->checkoutNotes))
+				{
+					$notes[] = array(
+						//'label' => $item['info']->pName . ', ' . $item['info']->sSku,
+						'label' => $transactionInfoItems[$sId]['info']->pName . ', ' . $transactionInfoItems[$sId]['info']->sSku,
+						'notes' => $meta->checkoutNotes);
+				}
+			}
+
+			$genericNotesLabel = '';
+			if (!empty($notes))
+			{
+				$genericNotesLabel = 'Other notes/comments';
+			}
+
+			if ($transactionInfo->tiNotes)
+			{
+				$notes[] = array(
+					'label' => $genericNotesLabel,
+					'notes' => $transactionInfo->tiNotes);
+			}
+
+			$notesValue = '';
+			if (!empty($notes))
+			{
+				$notesCount = 0;
+				foreach ($notes as $note)
+				{
+					if ($notesCount)
+					{
+						$notesValue .= ' *** ';
+					}
+					$notesValue .= $note['label'];
+					if ($note['label'])
+					{
+						$notesValue .= ': ';
+					}
+					$notesValue .= $note['notes'];
+					$notesCount++;
+				}
+			};
+
+			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber'], $notesValue);
 		}
 
 		header("Content-Type: text/csv");
@@ -266,7 +318,7 @@ class Orders extends AdminController
 		header("Expires: 0"); // Proxies
 
 		$output = fopen("php://output", "w");
-		$row = array('Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)');
+		$row = array('Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)', 'Order Notes');
 		fputcsv($output, $row);
 		foreach ($rows as $row) {
 			fputcsv($output, $row);
@@ -278,7 +330,7 @@ class Orders extends AdminController
 	/**
 	 * Download CSV report (default)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadOrdersTask()
 	{
@@ -297,8 +349,6 @@ class Orders extends AdminController
 			)
 		);
 
-		//print_r($filters); die;
-
 		// Get orders, request array to be returned
 		$orders = CartOrders::getItemsOrdered('list', $filters);
 
@@ -315,7 +365,7 @@ class Orders extends AdminController
 		foreach ($rowsRaw as $row)
 		{
 			$itemInfo = $row->itemInfo['info'];
-			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->Name, $row->uidNumber);
+			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber);
 		}
 
 		header("Content-Type: text/csv");
@@ -328,7 +378,8 @@ class Orders extends AdminController
 		$output = fopen("php://output", "w");
 		$row = array('SKU ID', 'Product', 'QTY', 'Price', 'Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)');
 		fputcsv($output, $row);
-		foreach ($rows as $row) {
+		foreach ($rows as $row)
+		{
 			fputcsv($output, $row);
 		}
 		fclose($output);

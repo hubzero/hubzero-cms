@@ -48,7 +48,7 @@ foreach ($this->shares as $share)
 	}
 }
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php';
 
 $database = App::get('db');
 $preferences = new \Components\Tools\Tables\Preferences($database);
@@ -91,7 +91,7 @@ if (!$this->app->sess) {
 
 	<?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', array($this->app, $this->output, $readOnly))); ?>
 
-	<div id="app-wrap">
+	<div id="app-wrap" style="width: <?php echo $this->output->width; ?>px;">
 		<div id="app-header">
 			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
 			<?php if ($this->app->sess) { ?>
@@ -305,10 +305,11 @@ if (!$this->app->sess) {
 							<?php endforeach; } ?>
 						</select>
 					</label>
+					<?php /* https://hubzero.org/support/ticket/9826
 					<label for="field-readonly" id="readonly-label">
 						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
 						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
-					</label>
+					</label> */ ?><div>&nbsp;</div>
 
 					<p class="submit">
 						<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_SHARE'); ?>" id="share-btn" />

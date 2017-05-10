@@ -41,14 +41,14 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onWhatsnewAreas()
 	{
@@ -60,12 +60,12 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
 	 *
-	 * @param      object  $period     Time period to pull results for
-	 * @param      mixed   $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      array   $areas      Active area(s)
-	 * @param      array   $tagids     Array of tag IDs
-	 * @return     array
+	 * @param   object   $period      Time period to pull results for
+	 * @param   mixed    $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   array    $areas       Active area(s)
+	 * @param   array    $tagids      Array of tag IDs
+	 * @return  array
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
@@ -84,12 +84,16 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+		include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
+
+		// @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
+		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
+		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
 
 		if (!$limit)
 		{
-			return \Components\Wiki\Models\Page::all()
-				->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+			return Components\Wiki\Models\Page::all()
+				->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
 				->where('created', '>=', $period->cStartDate)
 				->where('created', '<', $period->cEndDate)
 				->order('created', 'desc')
@@ -97,8 +101,8 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$pages = \Components\Wiki\Models\Page::all()
-				->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
+			$pages = Components\Wiki\Models\Page::all()
+				->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
 				->order('created', 'desc')
 				->where('created', '>=', $period->cStartDate)
 				->where('created', '<', $period->cEndDate)

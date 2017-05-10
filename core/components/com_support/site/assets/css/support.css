@@ -826,7 +826,6 @@
 		margin: 0.4em auto 0 auto;
 	}
 	#tktlist .status.new,
-	#tktlist .status.waiting,
 	#tktlist .status.closed {
 		display: block;
 	}
@@ -836,15 +835,11 @@
 	#tktlist .new {
 		color: #ff1177;
 	}
-	#tktlist .waiting {
-		color: #AA3300;
-	}
 	#tktlist .closed {
 		color: #aaaaaa;
 	}
 	#tktlist small.status-before,
-	#tktlist .status.closed:before, 
-	#tktlist .status.waiting:before,
+	#tktlist .status.closed:before,
 	#tktlist .status.new:before {
 		font-size: 1em;
 		line-height: 1;
@@ -854,11 +849,23 @@
 	#tktlist .status.closed:before {
 		content: "\2714";
 	}
-	#tktlist .status.waiting:before {
-		content: "\f017";
-	}
 	#tktlist .status.new:before {
 		content: "\273D";
+	}
+	#tktlist .ticket-target_date {
+		display: inline-block;
+		margin: 0.5em 0 0 0;
+		font-size: 1.5em;
+		line-height: 1;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		color: #ccc;
+	}
+	#tktlist .ticket-target_date:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+		content: "\f0d0";
 	}
 	/* Severity */
 	#tktlist .ticket-severity {

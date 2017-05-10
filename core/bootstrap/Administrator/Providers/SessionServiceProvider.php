@@ -101,45 +101,53 @@ class SessionServiceProvider extends ServiceProvider
 			{
 				$db = $this->app['db'];
 
-				$query = $db->getQuery(true);
-				$query->select($query->qn('session_id'))
-					->from($query->qn('#__session'))
-					->where($query->qn('session_id') . ' = ' . $query->q($this->app['session']->getId()));
+				$query = $db->getQuery()
+					->select('session_id')
+					->from('#__session')
+					->whereEquals('session_id', $this->app['session']->getId())
+					->limit(1)
+					->start(0);
 
-				$db->setQuery($query, 0, 1);
+				$db->setQuery($query->toString());
 				$exists = $db->loadResult();
 
 				// If the session record doesn't exist initialise it.
 				if (!$exists)
 				{
-					$query->clear();
-
 					$ip = $this->app['request']->ip();
 
 					if ($this->app['session']->isNew())
 					{
-						$query->insert($query->qn('#__session'))
-							->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
-							->values($query->q($this->app['session']->getId()) . ', ' . (int) $this->app['client']->id . ', ' . $query->q((int) time()) . ', ' . $query->q($ip));
-						$db->setQuery($query);
+						$query = $db->getQuery()
+							->insert('#__session')
+							->values(array(
+								'session_id' => $this->app['session']->getId(),
+								'client_id'  => (int) $this->app['client']->id,
+								'time'       => (int) time(),
+								'ip'         => $ip
+							));
+
+						$db->setQuery($query->toString());
 					}
 					else
 					{
-						$query->insert($query->qn('#__session'))
-							->columns(
-								$query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('guest') . ', ' .
-								$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') .  ', ' . $query->q('ip')
-							)
-							->values(
-								$query->q($this->app['session']->getId()) . ', ' . (int) $this->app['client']->id . ', ' . (int) $this->app['user']->get('guest') . ', ' .
-								$query->q((int) $this->app['session']->get('session.timer.start')) . ', ' . (int) $this->app['user']->get('id') . ', ' . $query->q($this->app['user']->get('username')) .  ', ' . $query->q($ip)
-							);
+						$query = $db->getQuery()
+							->insert('#__session')
+							->values(array(
+								'session_id' => $this->app['session']->getId(),
+								'client_id'  => (int) $this->app['client']->id,
+								'guest'      => (int) $this->app['user']->get('guest'),
+								'time'       => (int) $this->app['session']->get('session.timer.start'),
+								'userid'     => (int) $this->app['user']->get('id'),
+								'username'   => $this->app['user']->get('username'),
+								'ip'         => $ip
+							));
 
-						$db->setQuery($query);
+						$db->setQuery($query->toString());
 					}
 
 					// If the insert failed, exit the application.
-					if ($this->app['client']->id != 4 && !$db->execute())
+					if (!$db->execute())
 					{
 						exit($db->getErrorMsg());
 					}

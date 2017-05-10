@@ -38,6 +38,12 @@ $this->css();
 
 $base = rtrim(Request::base(true), '/');
 
+$gidNumber = 0;
+if ($group = \Hubzero\User\Group::getInstance($this->group))
+{
+	$gidNumber = $group->get('gidNumber');
+}
+
 $database = App::get('db');
 $sql = "SELECT status
 		FROM `#__support_tickets`
@@ -45,11 +51,11 @@ $sql = "SELECT status
 		AND type='{$this->type}' ";
 		if ($this->group == '_none_')
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND group_id=0";
 		}
 		else if ($this->group)
 		{
-			$sql .= " AND `group`='{$this->group}' ";
+			$sql .= " AND `group_id`=" . $database->quote($gidNumber);
 		}
 		$sql .= " ORDER BY status ASC";
 $database->setQuery($sql);
@@ -74,11 +80,11 @@ $sql = "SELECT severity
 		WHERE type='{$this->type}' ";
 		if ($this->group == '_none_')
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			$sql .= " AND group_id=0";
 		}
 		else if ($this->group)
 		{
-			$sql .= " AND `group`='{$this->group}' ";
+			$sql .= " AND `group_id`=" . $database->quote($gidNumber);
 		}
 		$sql .= " ORDER BY severity ASC";
 $database->setQuery($sql);
@@ -175,7 +181,7 @@ function getMonthName($month)
 							foreach ($this->groups as $group)
 							{
 						?>
-						<option value="<?php echo $group->group; ?>"<?php if ($this->group == $group->group) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->group); ?></option>
+						<option value="<?php echo $group->cn; ?>"<?php if ($this->group == $group->cn) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
 						<?php
 							}
 						}

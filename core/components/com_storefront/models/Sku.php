@@ -48,8 +48,8 @@ class Sku
 	/**
 	 * Contructor
 	 *
-	 * @param  void
-	 * @return void
+	 * @param   int   $sId
+	 * @return  void
 	 */
 	public function __construct($sId = false)
 	{
@@ -85,6 +85,8 @@ class Sku
 			$this->setActiveStatus($skuInfo['info']->sActive);
 			$this->setRestricted($skuInfo['info']->sRestricted);
 			$this->setPublishTime($skuInfo['info']->publish_up, $skuInfo['info']->publish_down);
+			$this->setCheckoutNotes($skuInfo['info']->sCheckoutNotes);
+			$this->setCheckoutNotesRequired($skuInfo['info']->sCheckoutNotesRequired);
 
 			// Set meta
 			if (!empty($skuInfo['meta']))
@@ -123,7 +125,7 @@ class Sku
 	{
 		if (empty($this->data->price))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->price;
 	}
@@ -138,7 +140,7 @@ class Sku
 	{
 		if (empty($this->data->name))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->name;
 	}
@@ -158,7 +160,7 @@ class Sku
 	{
 		if (empty($this->data->weight))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->weight;
 	}
@@ -202,6 +204,45 @@ class Sku
 		return $this->data->publishTime;
 	}
 
+	public function setCheckoutNotes($checkoutNotes)
+	{
+		$this->data->checkoutNotes = $checkoutNotes;
+		return true;
+	}
+
+	public function getCheckoutNotes()
+	{
+		if (empty($this->data->checkoutNotes))
+		{
+			return null;
+		}
+		return $this->data->checkoutNotes;
+	}
+
+	public function setCheckoutNotesRequired($checkoutNotesRequired)
+	{
+		if (!$checkoutNotesRequired)
+		{
+			$checkoutNotesRequired = 0;
+		}
+		else
+		{
+			$checkoutNotesRequired = 1;
+		}
+		$this->data->checkoutNotesRequired = $checkoutNotesRequired;
+	}
+
+	public function getCheckoutNotesRequired()
+	{
+		if (!isset($this->data->checkoutNotesRequired))
+		{
+			return 'DEFAULT';
+		}
+
+		return $this->data->checkoutNotesRequired;
+	}
+
+
 
 	/**
 	 * Set ID
@@ -219,7 +260,7 @@ class Sku
 	{
 		if (empty($this->data->id))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->id;
 	}
@@ -238,7 +279,7 @@ class Sku
 	{
 		if (empty($this->data->pId))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->pId;
 	}
@@ -271,7 +312,8 @@ class Sku
 			{
 				$optionGroupOptionsSet[] = $optionGroupId;
 			}
-			else {
+			else
+			{
 				// There are some options set that are from option groups not applied to this product
 				// (most likely due to the removal of the option group from the product.) This should never happen.
 				$extraOptionsSet = true;
@@ -412,6 +454,8 @@ class Sku
 					`publish_up` = " . $db->quote($this->getPublishTime()->publish_up) . ",
 					`publish_down` = " . $db->quote($this->getPublishTime()->publish_down) . ",
 					`sRestricted` = " . $this->getRestricted() . ",
+					`sCheckoutNotes` = " . $db->quote($this->getCheckoutNotes()) . ",
+					`sCheckoutNotesRequired` = " . $this->getCheckoutNotesRequired() . ",
 					`sActive` = " . $this->getActiveStatus();
 
 		if (!empty($sId))
@@ -713,7 +757,7 @@ class Sku
 	{
 		if (!isset($this->data->meta))
 		{
-			return NULL;
+			return null;
 		}
 		if (!empty($key))
 		{
@@ -767,7 +811,6 @@ class Sku
 	{
 		$this->data->options = $options;
 	}
-
 
 	// Static ----------------------------
 
@@ -858,6 +901,4 @@ class Sku
 		$db->setQuery($sql);
 		$db->query();
 	}
-
-
 }

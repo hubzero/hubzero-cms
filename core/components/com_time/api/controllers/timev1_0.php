@@ -34,6 +34,7 @@ namespace Components\Time\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Components\Time\Models\Hub;
+use Components\Time\Models\Allotment;
 use Components\Time\Models\Task;
 use Components\Time\Models\Record;
 use Components\Time\Models\Contact;
@@ -46,6 +47,7 @@ use Date;
 use Request;
 
 require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'allotment.php';
 require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'task.php';
 require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
 require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'contact.php';
@@ -512,6 +514,65 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
+	 * Saves a hub contact
+	 *
+	 * @apiMethod POST
+	 * @apiUri    /time/saveAllotment
+	 * @apiParameter {
+	 * 		"name":        "start_date",
+	 * 		"description": "Start date (YYYY-MM-DD)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "end_date",
+	 * 		"description": "End date (YYYY-MM-DD)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "hours",
+	 * 		"description": "Hours alloted",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "hid",
+	 * 		"description": "Hub id to which the contact belongs",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @return  void
+	 */
+	public function saveAllotmentTask()
+	{
+		// Require authentication and authorization
+		$this->requiresAuthentication();
+		$this->authorizeOrFail();
+
+		// Incoming posted data (grab individually for added security)
+		$c           = [];
+		$c['start_date'] = Request::getString('start_date');
+		$c['end_date']   = Request::getString('end_date');
+		$c['hours']      = Request::getString('hours');
+		$c['hub_id']     = Request::getInt('hid');
+
+		// Create object and store new content
+		$allotment = Allotment::blank()->set($c);
+		if (!$allotment->save())
+		{
+			App::abort(500, 'Allotment creation failed');
+		}
+
+		// Return message (include $contact object for use again by the javascript)
+		$this->send($allotment->id, 201);
+	}
+
+	/**
 	 * Retrieves possible unique values based on table and column
 	 *
 	 * @apiMethod GET
@@ -589,8 +650,8 @@ class Timev1_0 extends ApiController
 
 		// Create object and get records
 		$records = Record::whereEquals('user_id', App::get('authn')['user_id'])
-                         ->where('date', '>=', $start)
-                         ->where('date', '<', $end);
+			->where('date', '>=', $start)
+			->where('date', '<', $end);
 
 		// Restructure response into the format that the calendar plugin expects
 		$response = [];
@@ -632,8 +693,8 @@ class Timev1_0 extends ApiController
 
 		// Create object and get records
 		$records = Record::whereEquals('user_id', App::get('authn')['user_id'])
-                         ->where('date', '>=',    Date::of(strtotime("{$dateofToday} - {$dayOfWeek}days"))->toSql())
-                         ->where('date', '<',     Date::of(strtotime("{$dateofToday} + " . (7-$dayOfWeek) . 'days'))->toSql());
+			->where('date', '>=', Date::of(strtotime("{$dateofToday} - {$dayOfWeek}days"))->toSql())
+			->where('date', '<', Date::of(strtotime("{$dateofToday} + " . (7-$dayOfWeek) . 'days'))->toSql());
 
 		// Restructure response into the format that the calendar plugin expects
 		$response = [];

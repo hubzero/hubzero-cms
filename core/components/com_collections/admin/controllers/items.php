@@ -26,17 +26,17 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-20115 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Collections\Admin\Controllers;
 
-use Components\Collections\Models\Item;
-use Components\Collections\Tables;
+use Components\Collections\Models\Orm\Item;
+use Components\Collections\Models\Orm\Asset;
 use Hubzero\Component\AdminController;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
 use User;
@@ -69,9 +69,7 @@ class Items extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
-			'state'  => -1,
-			'access' => -1,
+		$filters = array(
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
@@ -87,40 +85,86 @@ class Items extends AdminController
 				'search',
 				''
 			)),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
+			'type' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.type',
+				'type',
+				''
+			)),
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'-1'
 			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
+				'-1'
 			)
 		);
 
-		$obj = new Tables\Item($this->database);
+		$model = Item::all()
+			->including(['creator', function ($creator){
+				$creator->select('*');
+			}]);
 
-		// Get record count
-		$this->view->total = $obj->find('count', $this->view->filters);
+		if ($filters['search'])
+		{
+			$model->whereLike('title', strtolower((string)$filters['search']));
+		}
+
+		if ($filters['state'] >= 0)
+		{
+			$model->whereEquals('state', $filters['state']);
+		}
+
+		if ($filters['access'] >= 0)
+		{
+			$model->whereEquals('access', (int)$filters['access']);
+		}
+
+		if ($filters['type'])
+		{
+			$model->whereEquals('type', $filters['type']);
+		}
+		else
+		{
+			$model->where('type', '!=', 'collection');
+		}
 
 		// Get records
-		$this->view->rows  = $obj->find('list', $this->view->filters);
+		$rows = $model
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		$types = Item::all()
+			->select('DISTINCT(type)')
+			->whereRaw("type != ''")
+			->whereRaw("type != 'collection'")
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->set('types', $types)
+			->display();
 	}
 
 	/**
 	 * Edit a collection
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -133,26 +177,18 @@ class Items extends AdminController
 				$id = (!empty($id) ? $id[0] : 0);
 			}
 
-			// Load category
-			$row = new Item($id);
+			$row = Item::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->exists())
+		if ($row->isNew())
 		{
-			$this->view->row->set('created_by', User::get('id'));
-			$this->view->row->set('created', Date::toSql());
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row->set('created_by', User::get('id'));
+			$row->set('created', Date::toSql());
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -167,36 +203,66 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
-		$row = new Item($fields['id']);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
-
-		// Add some data
-		if ($files  = Request::getVar('fls', '', 'files', 'array'))
-		{
-			$row->set('_files', $files);
-		}
-		$row->set('_assets', Request::getVar('assets', null, 'post'));
-		$row->set('_tags', trim(Request::getVar('tags', '')));
+		$row = Item::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Save assets
+		$assets = Request::getVar('assets', array(), 'post');
+
+		$k = 1;
+
+		foreach ($assets as $i => $asset)
+		{
+			$a = Asset::oneOrNew($asset['id']);
+			$a->set('type', $asset['type']);
+			$a->set('item_id', $row->get('id'));
+			$a->set('ordering', $k);
+			$a->set('filename', $asset['filename']);
+			$a->set('state', $a::STATE_PUBLISHED);
+
+			if (strtolower($a->get('filename')) == 'http://')
+			{
+				if (!$a->get('id'))
+				{
+					continue;
+				}
+
+				if (!$a->destroy())
+				{
+					Notify::error($a->getError());
+					continue;
+				}
+			}
+
+			if (!$a->save())
+			{
+				Notify::error($a->getError());
+				continue;
+			}
+
+			$k++;
 		}
 
 		// Process tags
 		$row->tag(trim(Request::getVar('tags', '')));
+
+		Notify::success(Lang::txt('COM_COLLECTIONS_POST_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -204,10 +270,7 @@ class Items extends AdminController
 		}
 
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_COLLECTIONS_POST_SAVED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -220,29 +283,40 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
+		$i = 0;
 
 		if (count($ids) > 0)
 		{
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
-				$entry = new Item(intval($id));
+				$entry = Item::oneOrFail(intval($id));
 
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					\Notify::error($entry->getError());
+					Notify::error($entry->getError());
+					continue;
 				}
+
+				$i++;
 			}
 		}
 
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_COLLECTIONS_ITEMS_DELETED'));
+		}
+
 		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_COLLECTIONS_ITEMS_DELETED')
-		);
+		$this->cancelTask();
 	}
 }

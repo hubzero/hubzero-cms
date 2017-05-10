@@ -32,22 +32,17 @@
 
 namespace Components\Newsletter\Site;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'newsletter.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'template.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'primary.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'secondary.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailinglist.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailinglist.email.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.recipient.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.recipient.action.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
+
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
 
 //build controller path and name
-$controllerName = \Request::getCmd('controller', 'newsletter');
+$controllerName = \Request::getCmd('controller', 'newsletters');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'newsletter';
+	$controllerName = 'newsletters';
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
@@ -55,4 +50,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 // Instantiate controller and execute
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

@@ -53,8 +53,12 @@ $this->css()
 				<td><?php
 				if (substr($this->xmessage->get('type'), -8) == '_message')
 				{
-					$u = $this->xmessage->creator;
-					$from = '<a href="'.Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
+					$from = Lang::txt('PLG_MEMBERS_MESSAGES_ANONYMOUS');
+					if (!$this->xmessage->anonymous)
+					{
+						$u = $this->xmessage->creator;
+						$from = '<a href="'.Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
+					}
 				}
 				else
 				{

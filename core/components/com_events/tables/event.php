@@ -80,7 +80,7 @@ class Event extends \JTable
 	 * @param      integer $oid Event ID
 	 * @return     void
 	 */
-	public function publish($oid = NULL, $state = 1, $userId = 0)
+	public function publish($oid = null, $state = 1, $userId = 0)
 	{
 		if (!$oid)
 		{
@@ -96,7 +96,7 @@ class Event extends \JTable
 	 * @param      integer $oid Event ID
 	 * @return     void
 	 */
-	public function unpublish($oid=NULL)
+	public function unpublish($oid=null)
 	{
 		if (!$oid)
 		{
@@ -468,6 +468,12 @@ class Event extends \JTable
 			$where[] = "(repeating_rule IS NOT NULL AND repeating_rule<>'')";
 		}
 
+		// only non-repeating events?
+		if (isset($filters['non_repeating']))
+		{
+			$where[] = "(repeating_rule IS NULL OR repeating_rule = '')";
+		}
+
 		// if we have and conditions
 		if (count($where) > 0)
 		{
@@ -490,4 +496,3 @@ class Event extends \JTable
 		return $sql;
 	}
 }
-

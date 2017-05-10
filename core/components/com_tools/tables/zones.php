@@ -177,9 +177,17 @@ class Zones extends \JTable
 				$where[] = "t.`ipFROM` <= INET_ATON(" . $this->_db->quote($filters['ip']) . ")";
 				$where[] = "t.`ipTO` >= INET_ATON(" . $this->_db->quote($filters['ip']) . ")";
 			}
-			if (isset($filters['continent']) && $filters['continent'] != '')
+			if (isset($filters['continent']) && $filters['continent'])
 			{
-				$where[] = "LOWER(t.`continent`)=" . $this->_db->quote(strtolower($filters['continent']));
+				if (!is_array($filters['continent']))
+				{
+					$filters['continent'] = array($filters['continent']);
+				}
+				foreach ($filters['continent'] as $k => $v)
+				{
+					$filters['continent'][$k] = $this->_db->quote(strtolower($v));
+				}
+				$where[] = "LOWER(t.`continent`) IN (" . implode(',', $filters['continent']) . ")";
 			}
 			if (isset($filters['countrySHORT']) && $filters['countrySHORT'] != '')
 			{

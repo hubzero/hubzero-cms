@@ -92,6 +92,15 @@ function submitbutton(pressbutton)
 					<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
 					<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
+
+				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
+				<select name="access" id="filter-access" onchange="this.form.submit()">
+					<option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<?php //echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+					<option value="0"<?php if ($this->filters['access'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC'); ?></option>
+					<option value="1"<?php if ($this->filters['access'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED'); ?></option>
+					<option value="4"<?php if ($this->filters['access'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE'); ?></option>
+				</select>
 			</div>
 		</div>
 	</fieldset>
@@ -99,23 +108,20 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->total(); ?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_OWNER', 'object_type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_POSTS', 'posts', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_OWNER', 'object_type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_POSTS', 'posts', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6">
+				<td colspan="7">
 					<?php
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					echo $this->rows->pagination;
 					?>
 				</td>
 			</tr>
@@ -126,7 +132,6 @@ function submitbutton(pressbutton)
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
-			//$row =& $this->rows[$i];
 			switch ($row->get('state'))
 			{
 				case 1:
@@ -175,6 +180,9 @@ function submitbutton(pressbutton)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
+				<td class="priority-4">
+					<?php echo $row->get('id'); ?>
+				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
@@ -214,13 +222,15 @@ function submitbutton(pressbutton)
 					</span>
 				</td>
 				<td>
-					<?php if ($row->get('posts', 0) > 0) { ?>
+					<?php
+					$posts = $row->posts()->total();
+					if ($posts > 0) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&collection_id=' . $row->get('id')); ?>">
-							<span><?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $row->get('posts', 0)); ?></span>
+							<span><?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $posts); ?></span>
 						</a>
 					<?php } else { ?>
 						<span>
-							<span><?php echo $row->get('posts', 0); ?></span>
+							<span><?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $posts); ?></span>
 						</span>
 					<?php } ?>
 				</td>
@@ -237,8 +247,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

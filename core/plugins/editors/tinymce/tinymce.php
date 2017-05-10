@@ -74,11 +74,11 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		// Lets get the default template for the site application
 		$db = App::get('db');
-		$query = $db->getQuery(true);
-
-		$query->select('template');
-		$query->from('#__template_styles');
-		$query->where('client_id=0 AND home=1');
+		$query = $db->getQuery()
+			->select('template')
+			->from('#__template_styles');
+			->whereEquals('client_id', 0)
+			->whereEquals('home', 1);
 
 		$db->setQuery($query);
 		$template = $db->loadResult();
@@ -201,11 +201,11 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		// Plugins
 
 		// fonts
-		$fonts =  $this->params->def( 'fonts', 1 );
+		$fonts =  $this->params->def('fonts', 1);
 
 		if ($fonts)
 		{
-			$buttons1_add[]	= 'fontselect,fontsizeselect';
+			$buttons1_add[] = 'fontselect,fontsizeselect';
 		}
 
 		// paste
@@ -290,7 +290,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		{
 			$plugins[]  = 'advhr';
 			$elements[] = 'hr[id|title|alt|class|width|size|noshade|style]';
-			$buttons3_add[]	= 'advhr';
+			$buttons3_add[] = 'advhr';
 		}
 		else
 		{
@@ -373,7 +373,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		}
 
 		// blockquote
-		$blockquote = $this->params->def( 'blockquote', 1 );
+		$blockquote = $this->params->def('blockquote', 1);
 
 		if ($blockquote)
 		{
@@ -381,7 +381,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		}
 
 		// wordcount
-		$wordcount = $this->params->def( 'wordcount', 1 );
+		$wordcount = $this->params->def('wordcount', 1);
 
 		if ($wordcount)
 		{
@@ -393,8 +393,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($template)
 		{
-			$plugins[]	= 'template';
-			$buttons4[]	= 'template';
+			$plugins[] = 'template';
+			$buttons4[] = 'template';
 		}
 
 		// advimage
@@ -402,25 +402,25 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($advimage)
 		{
-			$plugins[]	= 'advimage';
-			$elements[]	= 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style]';
+			$plugins[] = 'advimage';
+			$elements[] = 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style]';
 		}
 
 		// advlink
-		$advlink	= $this->params->def('advlink', 1);
+		$advlink = $this->params->def('advlink', 1);
 
 		if ($advlink)
 		{
-			$plugins[]	= 'advlink';
-			$elements[]	= 'a[id|class|name|href|hreflang|target|title|onclick|rel|style]';
+			$plugins[] = 'advlink';
+			$elements[] = 'a[id|class|name|href|hreflang|target|title|onclick|rel|style]';
 		}
 
 		//advlist
-		$advlist	= $this->params->def('advlist', 1);
+		$advlist = $this->params->def('advlist', 1);
 
 		if ($advlist)
 		{
-			$plugins[]	= 'advlist';
+			$plugins[] = 'advlist';
 		}
 
 		// autosave
@@ -428,7 +428,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($autosave)
 		{
-			$plugins[]	= 'autosave';
+			$plugins[] = 'autosave';
 		}
 
 		// context menu
@@ -436,15 +436,15 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($contextmenu)
 		{
-			$plugins[]	= 'contextmenu';
+			$plugins[] = 'contextmenu';
 		}
 
 		// inline popups
-		$inlinepopups			= $this->params->def('inlinepopups', 1);
+		$inlinepopups = $this->params->def('inlinepopups', 1);
 
 		if ($inlinepopups)
 		{
-			$plugins[]	= 'inlinepopups';
+			$plugins[] = 'inlinepopups';
 			$dialog_type = 'dialog_type : "modal",';
 		}
 		else
@@ -481,7 +481,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		{
 			case 0: /* Simple mode*/
 				$load = "\t<script type=\"text/javascript\" src=\"".
-						Request::root().$this->_basePath.
+						Request::root() . $this->_basePath .
 						"/tiny_mce.js\"></script>\n";
 
 				$return = $load .
@@ -511,7 +511,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 			case 1: /* Advanced mode*/
 				$load = "\t<script type=\"text/javascript\" src=\"".
-						Request::root().$this->_basePath.
+						Request::root() . $this->_basePath .
 						"/tiny_mce.js\"></script>\n";
 
 				$return = $load .
@@ -551,7 +551,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 			case 2: /* Extended mode*/
 				$load = "\t<script type=\"text/javascript\" src=\"".
-						Request::root().$this->_basePath.
+						Request::root() . $this->_basePath .
 						"/tiny_mce.js\"></script>\n";
 
 				$return = $load .
@@ -617,7 +617,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGetContent($editor)
 	{
-		return 'tinyMCE.get(\''.$editor.'\').getContent();';
+		return 'tinyMCE.get(\'' . $editor . '\').getContent();';
 	}
 
 	/**
@@ -628,7 +628,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	 */
 	public function onSetContent($editor, $html)
 	{
-		return 'tinyMCE.get(\''.$editor.'\').setContent('.$html.');';
+		return 'tinyMCE.get(\'' . $editor . '\').setContent(' . $html . ');';
 	}
 
 	/**
@@ -653,7 +653,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 				return navigator.appName==\"Microsoft Internet Explorer\";
 			}
 
-			function jInsertEditorText( text, editor ) {
+			function jInsertEditorText(text, editor) {
 				if (isBrowserIE()) {
 					if (window.parent.tinyMCE) {
 						window.parent.tinyMCE.selectedInstance.selection.moveToBookmark(window.parent.global_ie_bookmark);
@@ -748,8 +748,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 				if ($button->get('name'))
 				{
 					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
-					$href    = ($button->get('link')) ? ' href="'.Request::base().$button->get('link').'"' : null;
-					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
+					$href    = ($button->get('link')) ? ' href="' . Request::base() . $button->get('link') . '"' : null;
+					$onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"' : 'onclick="IeCursorFix(); return false;"';
 					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
 					$return .= '<div class="button2-left"><div class="' . $button->get('name')
 						. '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options')
@@ -770,7 +770,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	private function _toogleButton($name)
 	{
 		$return  = "\n<div class=\"toggle-editor\">\n";
-		$return .= "<div class=\"button2-left\"><div class=\"blank\"><a href=\"#\" onclick=\"tinyMCE.execCommand('mceToggleEditor', false, '" . $name . "');return false;\" title=\"".Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR').'">'.Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR')."</a></div></div>";
+		$return .= "<div class=\"button2-left\"><div class=\"blank\"><a href=\"#\" onclick=\"tinyMCE.execCommand('mceToggleEditor', false, '" . $name . "');return false;\" title=\"" . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '">' . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . "</a></div></div>";
 		$return .= "</div>\n";
 
 		return $return;

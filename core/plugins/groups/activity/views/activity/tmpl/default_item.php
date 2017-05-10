@@ -72,7 +72,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 	data-context="<?php echo $this->row->log->get('scope'); ?>"
 	data-action="<?php echo $this->row->log->get('action'); ?>"
 	id="activity<?php echo $this->row->get('id'); ?>"
-	class="activity <?php echo $status . ($this->row->get('starred') ? ' starred' : ''); ?>">
+	class="activity <?php echo $this->row->get('scope'); ?> <?php echo $status . ($this->row->get('starred') ? ' starred' : ''); ?>">
 
 	<div class="activity-actor-picture<?php if ($online) { echo ' tooltips" title="' . Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE'); } ?>">
 		<?php if ($creator->get('public')) { ?>
@@ -97,7 +97,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 			<div class="activity-details">
 				<span class="activity-actor"><?php echo $name; ?></span>
 				<span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
-				<span class="activity-channel"><?php echo $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')); ?></span>
+				<span class="activity-channel"><?php echo ($this->row->get('scope') == 'group_managers' ? Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS') : Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL')); //$this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')); ?></span>
 				<span class="activity-context"><?php
 					$scope = explode('.', $this->row->log->get('scope'));
 					echo $this->escape($scope[0]);
@@ -280,8 +280,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 
 						<input type="hidden" name="activity[id]" value="0" />
 						<input type="hidden" name="activity[action]" value="created" />
-						<input type="hidden" name="activity[scope]" value="<?php echo $this->row->get('scope'); ?>" />
-						<input type="hidden" name="activity[scope_id]" value="<?php echo $this->row->get('scope_id'); ?>" />
+						<input type="hidden" name="activity[scope]" value="<?php echo $this->row->log->get('scope'); ?>" />
+						<input type="hidden" name="activity[scope_id]" value="<?php echo $this->row->log->get('scope_id'); ?>" />
 						<input type="hidden" name="activity[parent]" value="<?php echo $this->row->log->get('id'); ?>" />
 						<input type="hidden" name="activity[created]" value="" />
 						<input type="hidden" name="activity[created_by]" value="<?php echo User::get('id'); ?>" />

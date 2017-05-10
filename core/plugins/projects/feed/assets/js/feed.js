@@ -46,29 +46,29 @@ jQuery(document).ready(function($){
 
 	container
 		// Showing comment area
-		.on('click', '.showc', function(e) {
+		.on('click', '.reply', function(e) {
 			e.preventDefault();
 
-			var id = $(this).attr('id').replace('addc_', '');
+			var bt = $(this);
+
+			var id = bt.attr('id').replace('addc_', '');
 			var acid = $('#commentform_' + id);
 
 			if (acid.length) {
 				if (acid.hasClass('hidden')) {
 					acid.removeClass('hidden');
 
-					$(this).text($(this).attr('data-active'));
-
-					/*
-					var frm = acid.find('form');
-					frm.addClass('focused');
-
-					var txt = acid.find('.commentarea')[0];
-					$(txt)
-						.focus();*/
+					bt
+						.addClass('active')
+						.attr('title', bt.attr('data-txt-active'))
+						.text(bt.attr('data-txt-active'));
 				} else {
 					acid.addClass('hidden');
 
-					$(this).text($(this).attr('data-inactive'));
+					bt
+						.removeClass('active')
+						.attr('title', bt.attr('data-txt-inactive'))
+						.text(bt.attr('data-txt-inactive'));
 				}
 			}
 		})
@@ -89,6 +89,33 @@ jQuery(document).ready(function($){
 				e.preventDefault();
 			}
 			return res;
+		})
+		.on('click', '.edit', function(e) {
+			e.preventDefault();
+
+			var bt = $(this),
+				frm = $('#' + bt.attr('data-form'));
+				cnt = $('#' + bt.attr('data-content'));
+
+			if (frm.length) {
+				if (frm.hasClass('hidden')) {
+					frm.removeClass('hidden');
+					cnt.addClass('hidden');
+
+					bt
+						.addClass('active')
+						.attr('title', bt.attr('data-txt-active'))
+						.text(bt.attr('data-txt-active'));
+				} else {
+					frm.addClass('hidden');
+					cnt.removeClass('hidden');
+
+					bt
+						.removeClass('active')
+						.attr('title', bt.attr('data-txt-inactive'))
+						.text(bt.attr('data-txt-inactive'));
+				}
+			}
 		})
 		// Have submit button reset the form
 		.on('click', '.c-submit', function(e) {
@@ -177,69 +204,71 @@ jQuery(document).ready(function($){
 	}
 
 	// New content URL
-	var url = container.attr('data-base').nohtml() + '&ajax=1&action=update&recorded=';
+	if (container.attr('data-base')) {
+		var url = container.attr('data-base').nohtml() + '&ajax=1&action=update&recorded=';
 
-	// Frequency to poll for new content (in seconds)
-	// Default to 60 if nothing found
-	var freq = container.attr('data-frequency');
-	freq = (freq ? freq : 60);
+		// Frequency to poll for new content (in seconds)
+		// Default to 60 if nothing found
+		var freq = container.attr('data-frequency');
+		freq = (freq ? freq : 60);
 
-	setInterval(function () {
-		var first = container.find('.activity-item');
-		if (first.length) {
-			url += first.attr('data-recorded');
-		}
-
-		if (_DEBUG) {
-			window.console && console.log('called:' + url);
-		}
-
-		$.getJSON(url, {}, function(data){
-			if (data.activities.length <= 0) {
-				if (_DEBUG) {
-					window.console && console.log('No results found');
-				}
-				return;
+		setInterval(function () {
+			var first = container.find('.activity-item');
+			if (first.length) {
+				url += first.attr('data-recorded');
 			}
 
-			for (var i = 0; i< data.activities.length; i++)
-			{
-				var item = data.activities[i];
+			if (_DEBUG) {
+				window.console && console.log('called:' + url);
+			}
 
-				if (item.class = 'quote' && $('#comments_'+item.parent).length) {
-					if ($('#c_' + item.eid).length) {
-						if (_DEBUG) {
-							window.console && console.log('Comment #' + item.eid + ' already exists!');
+			$.getJSON(url, {}, function(data){
+				if (data.activities.length <= 0) {
+					if (_DEBUG) {
+						window.console && console.log('No results found');
+					}
+					return;
+				}
+
+				for (var i = 0; i< data.activities.length; i++)
+				{
+					var item = data.activities[i];
+
+					if (item.class = 'quote' && $('#comments_'+item.parent).length) {
+						if ($('#c_' + item.eid).length) {
+							if (_DEBUG) {
+								window.console && console.log('Comment #' + item.eid + ' already exists!');
+							}
+							// Comment already exists!
+							continue;
 						}
-						// Comment already exists!
+
+						$('#comments_' + item.parent).append($(item.body).hide().fadeIn());
+
+						if ($('#li_' + item.parent).length) {
+							$('#li_' + item.parent).attr('data-recorded', item.activity.recorded);
+						}
+
 						continue;
 					}
 
-					$('#comments_' + item.parent).append($(item.body).hide().fadeIn());
-
-					if ($('#li_' + item.parent).length) {
-						$('#li_' + item.parent).attr('data-recorded', item.activity.recorded);
+					if ($('#li_' + item.eid).length) {
+						if (_DEBUG) {
+							window.console && console.log('Activity #' + item.eid + ' already exists!');
+						}
+						// Activity already exists!
+						continue;
 					}
 
-					continue;
+					$('#activity-feed').prepend($(item.body).hide().fadeIn());
 				}
 
-				if ($('#li_' + item.eid).length) {
-					if (_DEBUG) {
-						window.console && console.log('Activity #' + item.eid + ' already exists!');
-					}
-					// Activity already exists!
-					continue;
-				}
+				setTimeout(function() {
+					$('.newitem').removeClass('newitem');
+				}, 5 * 1000);
 
-				$('#activity-feed').prepend($(item.body).hide().fadeIn());
-			}
-
-			setTimeout(function() {
-				$('.newitem').removeClass('newitem');
-			}, 5 * 1000);
-
-			jQuery(document).trigger('ajaxLoad');
-		});
-	}, freq * 1000);
+				jQuery(document).trigger('ajaxLoad');
+			});
+		}, freq * 1000);
+	}
 });

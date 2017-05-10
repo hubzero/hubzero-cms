@@ -183,12 +183,9 @@ class Calendar extends Model
 							// get the repeating & pass start date
 							$rule = new \Recurr\Rule($result->repeating_rule, $start);
 
-							// define constraint that date must be between event publish_up & end
-							$constraint  = new \Recurr\Transformer\Constraint\BetweenConstraint($start, $end);
-
 							// create transformmer & generate occurances
 							$transformer = new \Recurr\Transformer\ArrayTransformer();
-							$occurrences = $transformer->transform($rule, null, $constraint);
+							$occurrences = $transformer->transform($rule, null);
 
 							// calculate diff so we can create down
 							$diff = new DateInterval('P0Y0DT0H0M');
@@ -358,16 +355,11 @@ class Calendar extends Model
 				$event = new Event();
 			}
 
-			// set the timezone
-			$tz = new DateTimezone(Config::get('offset'));
-
 			// start already datetime objects
 			$start = $incomingEvent['DTSTART'];
-			$start->setTimezone($tz);
 
 			// set publish up/down
 			$publish_up   = $start->toSql();
-			$publish_down = '0000-00-00 00:00:00';
 			$allday       = (isset($incomingEvent['ALLDAY']) && $incomingEvent['ALLDAY'] == 1) ? 1 : 0;
 			$rrule        = null;
 
@@ -375,8 +367,11 @@ class Calendar extends Model
 			if (isset($incomingEvent['DTEND']))
 			{
 				$end = $incomingEvent['DTEND'];
-				$end->setTimezone($tz);
 				$publish_down = $end->toSql();
+			}
+			elseif ($allday == 1)
+			{
+				$publish_down = Date::of($start)->add('24 hours')->toSql();
 			}
 
 			// handle rrule
@@ -414,12 +409,6 @@ class Calendar extends Model
 				{
 					$rrule .= ';BYDAY=' . $incomingEvent['RRULE']['BYDAY'];
 				}
-			}
-
-			// handle all day events
-			if ($start->add(new DateInterval('P1D')) == $end)
-			{
-				$publish_down = '0000-00-00 00:00:00';
 			}
 
 			// set event details

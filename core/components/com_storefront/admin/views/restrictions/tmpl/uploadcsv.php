@@ -92,17 +92,22 @@ else {
 		if (!empty($this->ignored))
 		{
 			?>
-			<p><?php echo count($this->ignored); ?> user<?php echo count($this->ignored) == 1 ? '' : 's'; ?> could not be found and <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:</p>
-			<ul>
+			<p><?php echo count($this->ignored); ?> user<?php echo count($this->ignored) == 1 ? '' : 's'; ?> could not be found and <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:<br>
 
 			<?php
+			$i = 0;
 			foreach ($this->ignored as $ignore)
 			{
-				echo '<li>' . $ignore . '</li>';
+				if ($i)
+				{
+					echo ', ';
+				}
+				echo $ignore;
+				$i = 1;
 			}
 			?>
 
-			</ul>
+			</p>
 		<?php
 		}
 		?>

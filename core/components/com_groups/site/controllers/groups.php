@@ -376,6 +376,13 @@ class Groups extends Base
 		$this->view->activePage    = $activePage;
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
+		// Check session if this is a newly submitted entry. Trigger a proper event if so.
+		if (Session::get('newsubmission.group')) {
+			// Unset the new submission session flag
+			Session::set('newsubmission.group');
+			Event::trigger('content.onAfterContentSubmission', array('Group'));
+		}
+
 		// Is this a super group?
 		if ($this->view->group->isSuperGroup())
 		{
@@ -466,7 +473,7 @@ class Groups extends Base
 		}
 		else
 		{
-			// Check to make sure we have  cname
+			// Check to make sure we have cname
 			if (!$this->cn)
 			{
 				$this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
@@ -919,6 +926,8 @@ class Groups extends Base
 		if ($this->_task == 'new')
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_CREATED_SUCCESS', $group->get('description')), 'passed');
+			// If the new group is published, set the session flag indicating the new submission
+			Session::set('newsubmission.group', true);
 		}
 		else
 		{
