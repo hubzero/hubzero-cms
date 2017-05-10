@@ -29,18 +29,17 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Modules\Admin;
+// No direct access.
+defined('_HZEXEC_') or die();
+?>
+<div class="configuration">
+	<div class="configuration-options">
+		<button type="button" onclick="Joomla.submitbutton('save');"><?php echo Lang::txt('JSAVE');?></button>
+		<button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo Lang::txt('JCANCEL');?></button>
+	</div>
+	<?php echo Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)) ?>
+</div>
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_modules'))
-{
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'modules.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'module.php';
-require_once __DIR__ . DS . 'controllers' . DS . 'modules.php';
-
-// initiate controller
-$controller = new Controllers\Modules();
-$controller->execute();
+<?php
+$this->setLayout('edit');
+echo $this->loadTemplate();

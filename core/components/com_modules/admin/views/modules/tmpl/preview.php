@@ -29,18 +29,26 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Modules\Admin;
+// no direct access
+defined('_HZEXEC_') or die();
+?>
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_modules'))
-{
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
+<script>
+var form = window.top.document.adminForm
+var title = form.title.value;
 
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'modules.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'module.php';
-require_once __DIR__ . DS . 'controllers' . DS . 'modules.php';
+var alltext = window.top.<?php echo $this->editor->getContent('text') ?>;
+</script>
 
-// initiate controller
-$controller = new Controllers\Modules();
-$controller->execute();
+<table class="center" width="90%">
+	<tbody>
+		<tr>
+			<td class="contentheading" colspan="2"><script>document.write(title);</script></td>
+		</tr>
+		<tr>
+			<td valign="top" height="90%" colspan="2">
+				<script>document.write(alltext);</script>
+			</td>
+		</tr>
+	</tbody>
+</table>

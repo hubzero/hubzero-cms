@@ -1,20 +1,69 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_modules
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+$isNew      = ($this->item->id == 0);
+$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
+$canDo      = Components\Modules\Helpers\Modules::getActions();
+$item       = $this->get('Item');
+
+Toolbar::title(Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)), 'module');
+
+// If not checked out, can save the item.
+if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create')))
+{
+	Toolbar::apply();
+	Toolbar::save();
+}
+if (!$checkedOut && $canDo->get('core.create'))
+{
+	Toolbar::save2new();
+}
+	// If an existing item, can save to a copy.
+if (!$isNew && $canDo->get('core.create'))
+{
+	Toolbar::save2copy();
+}
+Toolbar::cancel();
+Toolbar::help('module');
+
+
+//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('combobox');
 
-$hasContent = empty($this->item->module) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
+$hasContent = empty($this->item->get('module')) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
 
 $script = "Joomla.submitbutton = function(task)
 	{
@@ -33,7 +82,7 @@ $script .= "	Joomla.submitform(task, document.getElementById('item-form'));
 
 Document::addScriptDeclaration($script);
 ?>
-<form action="<?php echo Route::url('index.php?option=com_modules&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -176,6 +225,8 @@ Document::addScriptDeclaration($script);
 		</div>
 	</div>
 
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<?php echo Html::input('token'); ?>
 </form>

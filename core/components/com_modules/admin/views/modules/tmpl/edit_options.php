@@ -29,18 +29,31 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Modules\Admin;
+// No direct access.
+defined('_HZEXEC_') or die();
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_modules'))
-{
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
+	$fieldSets = $this->form->getFieldsets('params');
 
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'modules.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'module.php';
-require_once __DIR__ . DS . 'controllers' . DS . 'modules.php';
+	foreach ($fieldSets as $name => $fieldSet) :
+		$label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_MODULES_'.$name.'_FIELDSET_LABEL';
+		echo Html::sliders('panel', Lang::txt($label), $name.'-options');
+			if (isset($fieldSet->description) && trim($fieldSet->description)) :
+				echo '<p class="tip">'.$this->escape(Lang::txt($fieldSet->description)).'</p>';
+			endif;
+			?>
+		<fieldset class="panelform">
+			<?php $hidden_fields = ''; ?>
 
-// initiate controller
-$controller = new Controllers\Modules();
-$controller->execute();
+			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+				<?php if (!$field->hidden) : ?>
+					<div class="input-wrap">
+						<?php echo $field->label; ?><br />
+						<?php echo $field->input; ?>
+					</div>
+				<?php else : $hidden_fields.= $field->input; ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+
+			<?php echo $hidden_fields; ?>
+		</fieldset>
+	<?php endforeach; ?>

@@ -29,18 +29,40 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Modules\Admin;
+namespace Components\Modules\Models;
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_modules'))
+use Hubzero\Database\Relational;
+
+/**
+ * Module extension model
+ */
+class Menu extends Relational
 {
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
+	protected $namespace = 'modules';
+
+	/**
+	 * The table name, non-standard naming 
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__modules_menu';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'menuid';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
 }
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'modules.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'module.php';
-require_once __DIR__ . DS . 'controllers' . DS . 'modules.php';
-
-// initiate controller
-$controller = new Controllers\Modules();
-$controller->execute();

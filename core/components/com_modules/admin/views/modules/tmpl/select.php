@@ -29,18 +29,41 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Modules\Admin;
+// No direct access.
+defined('_HZEXEC_') or die();
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_modules'))
-{
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
+// Include the component HTML helpers.
+//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::behavior('tooltip');
+?>
 
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'modules.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'module.php';
-require_once __DIR__ . DS . 'controllers' . DS . 'modules.php';
+<h2 class="modal-title"><?php echo Lang::txt('COM_MODULES_TYPE_CHOOSE')?></h2>
 
-// initiate controller
-$controller = new Controllers\Modules();
-$controller->execute();
+<table id="new-modules-list" class="adminlist">
+	<thead>
+		<tr>
+			<th scope="col"><?php echo Lang::txt('JGLOBAL_TITLE'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_MODULES_HEADING_MODULE'); ?></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($this->items as &$item) : ?>
+		<tr>
+			<?php
+			// Prepare variables for the link.
+
+			$link = 'index.php?option=com_modules&task=add&eid='. $item->extension_id;
+			$name = $this->escape($item->name);
+			$desc = $this->escape($item->desc);
+			?>
+			<td>
+				<span class="editlinktip hasTip" title="<?php echo $name.' :: '.$desc; ?>"><a href="<?php echo Route::url($link); ?>" target="_top"><?php echo $name; ?></a></span>
+			</td>
+			<td>
+				<?php echo $this->escape($item->module); ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+	</tbody>
+</table>
+<div class="clr"></div>
