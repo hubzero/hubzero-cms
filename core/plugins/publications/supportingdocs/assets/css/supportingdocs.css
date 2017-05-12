@@ -7,31 +7,19 @@
 	.supportingdocs { 
 		margin: 0 0 1em 0;
 	}
-	.supportingdocs ul {
+	.supportingdocs ul.element-list {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		background: #F7F4F2;
-		border-top: 1px solid #E7DFD8;
-		border-bottom: 1px solid #E7DFD8;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
-	.supportingdocs ul li {
-		margin: 0 1px;
-		padding: 0.6em 1em;
+	.supportingdocs ul.element-list li {
+		margin: 0;
+		padding: 0.6em 0;
 		border: none;
-		border-top: 1px solid #fff;
-		background-position: 1em 0.5em;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
 		position: relative;
 		list-style: none;
-	}
-	.supportingdocs ul li a {
-		background: none;
-		color: #CC9666;
-		border: none;
-	}
-	.supportingdocs ul li a:hover {
-		color: #f60;
-		border: none;
 	}
 	.supportingdocs small,
 	.supportingdocs span {
