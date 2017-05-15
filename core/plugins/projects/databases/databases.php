@@ -676,7 +676,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$sub_dirs = array();
 			$list = array();
 			chdir($path);
-			exec('find . -type d -not \(-name ".?*" -prune \)', $list);
+			exec('find . -type d -not \( -name ".?*" -prune \)', $list);
 			foreach ($list as $d)
 			{
 				$d = ltrim($d, './');
