@@ -784,6 +784,9 @@ jQuery(document).ready(function($){
 								<th class="key"><label for="badge-image"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_IMAGE'); ?>:</label></th>
 								<td>
 									<img src="<?php echo $this->badge->get('img_url'); ?>" width="125" />
+									<label for="badge-image" class="label clearfix">Image File</label>
+									<input type="file" name="badge_image" id="badge-image" />
+									<p class="note clearfix"><strong>NOTE:</strong> Selecting a new image file will overwrite the image above when you save your changes.</p>
 								</td>
 							</tr>
 							<tr class="badge-field-toggle">

@@ -496,9 +496,14 @@ class Sections extends AdminController
 					{
 						$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE'));
 					}
+					// Added to allow users to overwrite their own image. 
+					// Since it accepts multipe image types, this ensures all pre-existing images are removed
+					//   so the one they are uploading is displayed.
+					array_map('unlink', glob($uploadDirectory . 'badge.*'));
 
 					// Get the final file path
 					$target_path = $uploadDirectory . 'badge.' . $ext;
+
 
 					if (!$move = move_uploaded_file($badge_image['tmp_name'], $target_path))
 					{
