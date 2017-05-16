@@ -198,7 +198,7 @@ class Archive extends \Hubzero\Base\Object
 		{
 			$sku->setTrackInventory($fields['sTrackInventory']);
 		}
-		if (isset($fields['sInventory']) && $fields['sInventory'])
+		if (isset($fields['sInventory']) && $fields['sInventory'] >= 0)
 		{
 			$sku->setInventoryLevel($fields['sInventory']);
 		}
