@@ -44,7 +44,7 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
 class CurrentCart extends Cart
 {
 	// Session cart
-	var $cart = NULL;
+	var $cart = null;
 
 	// Syncing enabled?
 	var $sync = true;
@@ -774,7 +774,7 @@ class CurrentCart extends Cart
 	 * @param	int 	$tId transaction ID
 	 * @return 	void
 	 */
-	public function updateTransactionCustomerStatus($status, $tId = NULL)
+	public function updateTransactionCustomerStatus($status, $tId = null)
 	{
 		if (!$tId)
 		{
@@ -2207,6 +2207,6 @@ class CurrentCart extends Cart
 				parent::killTransaction($tId);
 			}
 		}
-		$this->cart->tId = NULL;
+		$this->cart->tId = null;
 	}
 }

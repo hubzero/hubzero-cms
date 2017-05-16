@@ -422,4 +422,3 @@ class Product extends \Hubzero\Component\SiteController
 		}
 	}
 }
-
