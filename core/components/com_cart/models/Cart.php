@@ -211,6 +211,19 @@ abstract class Cart
 		{
 			$sql .= " AND `tStatus` = 'completed'";
 		}
+		if (isset($filters['report-from']) && strtotime($filters['report-from']))
+		{
+			$showFrom = date("Y-m-d", strtotime($filters['report-from']));
+			$sql .= " AND t.`tLastUpdated` >= '{$showFrom}'";
+		}
+		if (isset($filters['report-to']) && strtotime($filters['report-to']))
+		{
+			// Add one day to include all the records of the end day
+			$showTo = strtotime($filters['report-to'] . ' +1 day');
+			$showTo = date("Y-m-d 00:00:00", $showTo);
+			$sql .= " AND t.`tLastUpdated` <= '{$showTo}'";
+		}
+
 		if (isset($filters['sort']) && (empty($filters['count']) || !$filters['count']))
 		{
 			$sql .= " ORDER BY " . $filters['sort'];

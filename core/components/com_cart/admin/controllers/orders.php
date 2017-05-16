@@ -83,6 +83,16 @@ class Orders extends AdminController
 				'report-notes',
 				0,
 				'int'
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 
@@ -250,6 +260,16 @@ class Orders extends AdminController
 				'report-notes',
 				0,
 				'int'
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 
@@ -257,7 +277,6 @@ class Orders extends AdminController
 		$filters['returnFormat'] = 'array';
 		$filters['userInfo'] = true;
 		$rowsRaw = Cart::getAllTransactions($filters);
-		$date = date('d-m-Y');
 
 		$rows = array();
 
@@ -320,8 +339,12 @@ class Orders extends AdminController
 			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber'], $notesValue);
 		}
 
+		$dateFrom = date('dMY', strtotime($filters['report-from']));
+		$dateTo = date('dMY', strtotime($filters['report-to']));
+		$date = date('d-m-Y');
+
 		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=cart-orders" . $date . ".csv");
+		header("Content-Disposition: attachment; filename=cart-orders-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
 		// Disable caching
 		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 		header("Pragma: no-cache"); // HTTP 1.0

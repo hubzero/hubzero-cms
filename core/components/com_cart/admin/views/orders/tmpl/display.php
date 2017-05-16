@@ -70,6 +70,13 @@ $this->view('_submenu')
 					<option value="0"<?php if ($this->filters['report-notes'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ALL'); ?></option>
 					<option value="1"<?php if ($this->filters['report-notes'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ONLY'); ?></option>
 				</select>
+				&nbsp;&nbsp;
+				<label for="filter-report-from">From:</label>
+				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+				&mdash;
+				<label for="filter-report-to">To:</label>
+				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
 			</div>
 		</div>
 	</fieldset>
