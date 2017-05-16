@@ -146,7 +146,7 @@ class Member extends User
 	 */
 	public function isEmailConfirmed()
 	{
-		return ($this->get('emailConfirmed') == 1);
+		return ($this->get('activation') > 0);
 	}
 
 	/**
