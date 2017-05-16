@@ -116,7 +116,16 @@ if (!empty($this->notifications))
 
 				?>
 
+				<?php
+				if (empty($this->statusMessage) || $this->statusMessage != 'restricted')
+				{
+				?>
+
 				<div id="price" class="<?php echo $out ? 'outofstock' : ''; ?>"><?php echo $priceRange; ?></div>
+
+				<?php
+				}
+				?>
 
 				<form id="productInfo" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 					<input type="hidden" name="pId" value="<?php echo $this->pId; ?>" />
