@@ -263,7 +263,7 @@ class Register extends SiteController
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
 				$eview->sitename   = Config::get('sitename');
-				$eview->xprofile   = $target_profile;
+				$eview->xprofile   = $xprofile;
 				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
