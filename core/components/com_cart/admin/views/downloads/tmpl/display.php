@@ -68,24 +68,32 @@ $this->view('_submenu')
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<?php
-	if (!empty($this->filters['skuRequested']))
-	{
-	?>
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			&nbsp;
-		</div>
-		<div class="col width-50 fltrt">
-			<select name="skuRequested" id="skuRequested" onchange="this.form.submit();">
-				<option value="0"<?php if ($this->filters['skuRequested'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('All SKUs'); ?></option>
-				<option value="<?php echo $this->filters['skuRequested']; ?>" selected="selected"><?php echo $this->skuRequestedName; ?></option>
-			</select>
+		<div class="grid">
+			<div class="col span12 align-right">
+
+				<?php
+				if (!empty($this->filters['skuRequested']))
+				{
+				?>
+					<select name="skuRequested" id="skuRequested" onchange="this.form.submit();">
+						<option value="0"<?php if ($this->filters['skuRequested'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('All SKUs'); ?></option>
+						<option value="<?php echo $this->filters['skuRequested']; ?>" selected="selected"><?php echo $this->skuRequestedName; ?></option>
+					</select>
+					&nbsp;&nbsp;
+				<?php
+				}
+				?>
+
+				<label for="filter-report-from">From:</label>
+				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+				&mdash;
+				<label for="filter-report-to">To:</label>
+				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
+			</div>
 		</div>
 	</fieldset>
-	<?php
-	}
-	?>
 	<table class="adminlist">
 		<thead>
 			<tr>

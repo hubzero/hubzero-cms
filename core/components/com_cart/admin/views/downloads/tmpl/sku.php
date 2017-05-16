@@ -62,6 +62,18 @@ $this->view('_submenu')
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<div class="grid">
+			<div class="col span12 align-right">
+				<label for="filter-report-from">From:</label>
+				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+				&mdash;
+				<label for="filter-report-to">To:</label>
+				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
+			</div>
+		</div>
+	</fieldset>
 	<table class="adminlist">
 		<thead>
 			<tr>
