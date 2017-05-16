@@ -56,7 +56,7 @@ class Warehouse extends \Hubzero\Base\Object
 	/**
 	 * array Product categories to look at (to define scope)
 	 */
-	var $lookupCollections = NULL;
+	var $lookupCollections = null;
 
 	// Access levels scope (what is allowed to display)
 	var $accessLevelsScope = false;
@@ -68,7 +68,7 @@ class Warehouse extends \Hubzero\Base\Object
 	var $userScope = false;
 
 	// Database instance
-	var $db = NULL;
+	var $db = null;
 
 	/**
 	 * Constructor method
@@ -106,7 +106,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	public function resetLookupCollections()
 	{
-		$this->lookupCollections[] = NULL;
+		$this->lookupCollections[] = null;
 	}
 
 	/**
