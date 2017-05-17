@@ -61,6 +61,39 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
+<script>
+	$( function() {
+		var dateFormat = "mm/dd/yy",
+			from = $( "#filter-report-from" )
+				.datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 1
+				})
+				.on( "change", function() {
+					to.datepicker( "option", "minDate", getDate( this ) );
+				}),
+			to = $( "#filter-report-to" ).datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 1
+				})
+				.on( "change", function() {
+					from.datepicker( "option", "maxDate", getDate( this ) );
+				});
+
+		function getDate( element ) {
+			var date;
+			try {
+				date = $.datepicker.parseDate( dateFormat, element.value );
+			} catch( error ) {
+				date = null;
+			}
+
+			return date;
+		}
+	} );
+</script>
 
 <?php
 $this->view('_submenu')
