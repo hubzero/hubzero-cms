@@ -41,37 +41,37 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Resource types and "all" category
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_areas = null;
 
 	/**
 	 * Resource types
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_cats  = null;
 
 	/**
 	 * Results total
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -84,7 +84,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onWhatsnewAreas()
 	{
@@ -120,12 +120,12 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
 	 *
-	 * @param      object  $period     Time period to pull results for
-	 * @param      mixed   $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      array   $areas      Active area(s)
-	 * @param      array   $tagids     Array of tag IDs
-	 * @return     array
+	 * @param   object   $period      Time period to pull results for
+	 * @param   mixed    $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   array    $areas       Active area(s)
+	 * @param   array    $tagids      Array of tag IDs
+	 * @return  array
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
@@ -277,7 +277,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Push styles and scripts to the document
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public static function documents()
 	{
@@ -291,9 +291,9 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Special formatting for results
 	 *
-	 * @param      object $row    Database row
-	 * @param      string $period Time period
-	 * @return     string
+	 * @param   object  $row     Database row
+	 * @param   string  $period  Time period
+	 * @return  string
 	 */
 	public static function out($row, $period)
 	{
@@ -317,10 +317,18 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		// Set the display date
 		switch ($rparams->get('show_date', $config->get('show_date')))
 		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));   break;
-			case 3: $thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); break;
+			case 0:
+				$thedate = '';
+				break;
+			case 1:
+				$thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 2:
+				$thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 3:
+				$thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
 		}
 
 		// Start building HTML
@@ -333,7 +341,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 			if ($row->area == 'Tools')
 			{
-				$stats = new \Components\Resources\Helpers\Usage\Stats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			else
 			{
@@ -366,18 +374,40 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		{
 			switch ($row->rating)
 			{
-				case 0.5: $class = ' half-stars';      break;
-				case 1:   $class = ' one-stars';       break;
-				case 1.5: $class = ' onehalf-stars';   break;
-				case 2:   $class = ' two-stars';       break;
-				case 2.5: $class = ' twohalf-stars';   break;
-				case 3:   $class = ' three-stars';     break;
-				case 3.5: $class = ' threehalf-stars'; break;
-				case 4:   $class = ' four-stars';      break;
-				case 4.5: $class = ' fourhalf-stars';  break;
-				case 5:   $class = ' five-stars';      break;
+				case 0.5:
+					$class = ' half-stars';
+					break;
+				case 1:
+					$class = ' one-stars';
+					break;
+				case 1.5:
+					$class = ' onehalf-stars';
+					break;
+				case 2:
+					$class = ' two-stars';
+					break;
+				case 2.5:
+					$class = ' twohalf-stars';
+					break;
+				case 3:
+					$class = ' three-stars';
+					break;
+				case 3.5:
+					$class = ' threehalf-stars';
+					break;
+				case 4:
+					$class = ' four-stars';
+					break;
+				case 4.5:
+					$class = ' fourhalf-stars';
+					break;
+				case 5:
+					$class = ' five-stars';
+					break;
 				case 0:
-				default:  $class = ' no-stars';      break;
+				default:
+					$class = ' no-stars';
+					break;
 			}
 
 			$html .= "\t\t" . '<div class="metadata">' . "\n";
@@ -405,4 +435,3 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		return $html;
 	}
 }
-
