@@ -44,7 +44,7 @@ class Gitlab
 	/**
 	 * Default Guzzle options/ headers
 	 *
-	 *@var array
+	 * @var array
 	 */
 	private $options;
 
@@ -72,7 +72,7 @@ class Gitlab
 		$this->url    = rtrim($url, DS);
 		$this->token  = $token;
 		$this->options = array(
-			'verify' => false, 
+			'verify' => false,
 			'headers' => array('PRIVATE-TOKEN' => $token)
 		);
 		$this->client = new \GuzzleHttp\Client;
@@ -189,7 +189,6 @@ class Gitlab
 		// return $respone->json();
 
 		return json_decode($response->getBody(), true);
-		
 	}
 
 	/**
