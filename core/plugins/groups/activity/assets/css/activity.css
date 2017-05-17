@@ -87,6 +87,7 @@
 		-ms-border-radius: 0.25em;
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
+		display: none;
 	}
 	.activities .activity-actor-picture img {
 		-webkit-border-radius: 0.25em;
@@ -97,11 +98,17 @@
 	}
 	/* Content */
 	.activities .activity-content {
-		margin: 0 0 1em 70px;
+		margin: 0 0 1em 0;
 		position: relative;
 		background-color: #fff;
 		border: 1px solid #d9d9d9;
 		padding: 0;
+		-ms-word-break: normal;
+		word-wrap: normal;
+		word-break: normal;
+		-webkit-hyphens: auto;
+		-moz-hyphens: auto;
+		hyphens: auto;
 	}
 	.activities .activity-body {
 		position: relative;
@@ -109,33 +116,6 @@
 	.activity-event {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 		padding: 0.61803399em 1.61803399em 1.61803399em 1.61803399em;
-	}
-	/* Arrow */
-	.activities .activity-content:before,
-	.activities .activity-content:after {
-		content: "";
-		position: absolute;
-		top: 10px;
-		left: -20px;
-		border-width: 10px;
-		border-style: solid;
-		border-color: transparent #dad9d9 transparent transparent;
-		display: block; 
-		width: 0;
-	}
-	.activities .activity-content:before {
-		top: 10px; 
-		left: -20px;
-		bottom: auto;
-		border-width: 10px;
-		border-color: transparent #dad9d9 transparent transparent;
-	}
-	.activities .activity-content:after {
-		top: 10px; 
-		left: -18px;
-		bottom: auto;
-		border-width: 10px;
-		border-color: transparent #fff transparent transparent; 
 	}
 
 	/* Reply form */
@@ -181,8 +161,8 @@
 	}
 
 	/* Action */
-	.group_managers>.activity-content .activity-channel,
-	/*.activity-action {
+	/*.group_managers>.activity-content .activity-channel,
+	.activity-action {
 		font-size: 0.75em;
 		line-height: 1;
 		border: 1px solid #aaa;
@@ -289,6 +269,44 @@
 		opacity: 1;
 	}
 
+@media (min-width: 40em) {
+	.activity > ul {
+		margin-left: 70px;
+	}
+	.activities .activity-actor-picture {
+		display: block;
+	}
+	.activities .activity-content {
+		margin: 0 0 1em 70px;
+	}
+	/* Arrow */
+	.activity-content:before,
+	.activity-content:after {
+		content: "";
+		position: absolute;
+		top: 10px;
+		left: -20px;
+		border-width: 10px;
+		border-style: solid;
+		border-color: transparent #dad9d9 transparent transparent;
+		display: block; 
+		width: 0;
+	}
+	.activity-content:before {
+		top: 10px; 
+		left: -20px;
+		bottom: auto;
+		border-width: 10px;
+		border-color: transparent #dad9d9 transparent transparent;
+	}
+	.activity-content:after {
+		top: 10px; 
+		left: -18px;
+		bottom: auto;
+		border-width: 10px;
+		border-color: transparent #fff transparent transparent; 
+	}
+}
 @media (min-width: 50em) {
 	.activities .activity-details {
 		margin: 1em 7em 0 0;
