@@ -46,28 +46,28 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	/**
 	 * Stores the initialized Facebook object.
 	 *
-	 * @var Facebook object
+	 * @var  object  Facebook
 	 */
-	private $facebook;
+	private $facebook = null;
 
 	/**
-	 * Stores the FacebookRedirectHelper object,
-	 *  retrieved from calling getRedirectLoginHelper on the facebook object.
-	 * @var FacebookRedirectLoginHelper object 
+	 * Get the Facebook object, instantiating it if need be
+	 *
+	 * @return  object
 	 */
-	private $facebookRedirectHelper;
-
-	public function __construct($subject, $config)
+	protected function facebook()
 	{
-		parent::__construct($subject, $config);
-		$this->facebook = new \Facebook\Facebook([
-			'app_id' => $this->params->get('app_id'),
-			'app_secret' => $this->params->get('app_secret'),
-			'default_graph_version' => $this->params->get('graph_version')
-		]);
-		$this->facebookRedirectHelper = $this->facebook->getRedirectLoginHelper();
-			
-	} 
+		if (is_null($this->facebook))
+		{
+			$this->facebook = new \Facebook\Facebook([
+				'app_id' => $this->params->get('app_id'),
+				'app_secret' => $this->params->get('app_secret'),
+				'default_graph_version' => $this->params->get('graph_version')
+			]);
+		}
+
+		return $this->facebook;
+	}
 
 	/**
 	 * Perform logout (not currently used)
@@ -185,7 +185,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			'redirect_uri' => self::getReturnUrl($view->return)
 		);
 
-		$loginUrl = $this->facebookRedirectHelper->getLoginUrl($params['redirect_uri'], array('email'));
+		$loginUrl = $this->facebook()->getRedirectLoginHelper()->getLoginUrl($params['redirect_uri'], array('email'));
 
 		// Redirect to the login URL
 		App::redirect($loginUrl);
@@ -203,7 +203,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	{
 		try
 		{
-			$session = $this->facebookRedirectHelper->getAccessToken();
+			$session = $this->facebook()->getRedirectLoginHelper()->getAccessToken();
 		}
 		catch (\Facebook\Exceptions\FacebookSDKException $ex)
 		{
@@ -219,8 +219,8 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		{
 			try
 			{
-				$this->facebook->setDefaultAccessToken($session);
-				$facebookResponse = $this->facebook->get('/me?fields=email,name');
+				$this->facebook()->setDefaultAccessToken($session);
+				$facebookResponse = $this->facebook()->get('/me?fields=email,name');
 				$user_profile = $facebookResponse->getGraphUser();
 
 				$id       = $user_profile->getId();
@@ -311,10 +311,9 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-
 		try
 		{
-			$session = $this->facebookRedirectHelper->getAccessToken();
+			$session = $this->facebook()->getRedirectLoginHelper()->getAccessToken();
 		}
 		catch (\Facebook\Exceptions\FacebookSDKException $ex)
 		{
@@ -330,8 +329,8 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		{
 			try
 			{
-				$this->facebook->setDefaultAccessToken($session);
-				$facebookResponse = $this->facebook->get('/me');
+				$this->facebook()->setDefaultAccessToken($session);
+				$facebookResponse = $this->facebook()->get('/me');
 				$user_profile = $facebookResponse->getGraphUser();
 				$graph_node = $facebookResponse->getGraphNode();
 
