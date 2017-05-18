@@ -76,7 +76,7 @@ $this->css('pipeline.css')
 </header><!-- / #content-header -->
 
 <?php if ($this->getError()) { ?>
-<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
 <section class="section">
@@ -168,31 +168,36 @@ $this->css('pipeline.css')
 					<input type="hidden" name="tool[hostreq]" id="t_hostreq" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
 				<?php } ?>
 			</fieldset>
-			
-			<?php if ($this->config->get('github')) { ?>
-			<div class="explaination">
-				<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
-			</div>
-			<fieldset>
-				<legend><?php echo Lang::txt('Github Repository URL'); ?>:</legend>
-				<label for="github">
-					<?php echo Lang::txt('Github Repository for Source Code (<strong>must be public</strong>)') ?>: 
-					<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the web URL of the source code repository on the github.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
-				</label>
-				<p class="hint"><?php echo Lang::txt('Web URL: https://github.com/yourgithubrepo'); ?></p>
-			</fieldset>
+
+			<?php if ($this->config->get('github', 1)) { ?>
+				<div class="explaination">
+					<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
+				</div>
+				<fieldset>
+					<legend><?php echo Lang::txt('Github Repository URL'); ?>:</legend>
+
+					<label for="github">
+						<?php echo Lang::txt('Github Repository for Source Code (<strong>must be public</strong>)') ?>: 
+						<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the web URL of the source code repository on the github.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+					</label>
+					<p class="hint"><?php echo Lang::txt('Web URL: https://github.com/yourgithubrepo'); ?></p>
+				</fieldset>
 			<?php } ?>
-			
-			<?php if ($this->config->get('jupyter')) { ?>
-			<fieldset>
-				<legend><?php echo Lang::txt('Publishing Option'); ?>:</legend>
-				<label>
-					<input type="radio" name="tool[publishType]" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option" /> Publish as a standard hub tool
-				</label>
-				<label>
-					<input type="radio" name="tool[publishType]" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option" /> Publish as a Jupyter Notebook
-				</label>
-			</fieldset>
+
+			<?php if ($this->config->get('jupyter', 1)) { ?>
+				<fieldset>
+					<legend><?php echo Lang::txt('Publishing Option'); ?>:</legend>
+
+					<label for="tool_publishType_standard">
+						<input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option" />
+						<?php echo Lang::txt('Publish as a standard hub tool'); ?>
+					</label>
+
+					<label for="tool_publishType_jupyter">
+						<input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option" />
+						<?php echo Lang::txt('Publish as a Jupyter Notebook'); ?>
+					</label>
+				</fieldset>
 			<?php } ?>
 
 			<fieldset>
@@ -200,9 +205,7 @@ $this->css('pipeline.css')
 
 				<label for="t_exec">
 					<?php echo Lang::txt('COM_TOOLS_TOOL_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					
 					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS'); ?>">What should I choose?</span>
-					
 					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
 				</label>
 
@@ -213,15 +216,13 @@ $this->css('pipeline.css')
 
 				<label for="t_code">
 					<?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					
 					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS'); ?>">What should I choose?</span>
-					
 					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
 				</label>
 
 				<label for="t_wiki">
 					<?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS'); ?>">What should I choose?</span>				
+					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS'); ?>">What should I choose?</span>
 					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
 				</label>
 
