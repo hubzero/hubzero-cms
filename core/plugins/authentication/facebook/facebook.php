@@ -283,10 +283,11 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			// If we have a real user, drop the authenticator cookie
 			if (isset($user) && is_object($user))
 			{
+				$apiVersion = $this->facebook()->getDefaultGraphVersion();
 				// Set cookie with login preference info
 				$prefs = array(
 					'user_id'       => $user->get('id'),
-					'user_img'      => 'https://graph.facebook.com/v2.0/' . $id . '/picture?type=normal',
+					'user_img'      => 'https://graph.facebook.com/' . $apiVersion . '/' . $id . '/picture?type=normal',
 					'authenticator' => 'facebook'
 				);
 
