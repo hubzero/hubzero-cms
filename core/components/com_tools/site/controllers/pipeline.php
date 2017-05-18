@@ -1032,7 +1032,7 @@ class Pipeline extends SiteController
 			$txt = new \Hubzero\Config\Registry('');
 		}
 
-		if ($this->config->get('github') && isset($tool['github']))
+		if ($this->config->get('github', 1) && isset($tool['github']))
 		{
 			$txt->set('github', $tool['github']);
 		}
