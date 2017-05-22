@@ -86,27 +86,31 @@ class Helper extends Module
 		{
 			if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
 			{
-				//make sure that the group for each blog post has the right privacy setting
-				if (!$gf->get('scope_id'))
+				if ($gf->get('scope') == 'group')
 				{
-					continue;
-				}
-
-				$group = $gf->item();
-				if (is_object($group))
-				{
-					$blog_access = GroupHelper::getPluginAccess($group, 'blog');
-
-					if ($blog_access == 'nobody'
-					 || ($blog_access == 'registered' && User::isGuest())
-					 || ($blog_access == 'members' && !in_array(User::get('id'), $group->get('members'))))
+					//make sure that the group for each blog post has the right privacy setting
+					if (!$gf->get('scope_id'))
 					{
 						continue;
 					}
-				}
-				else
-				{
-					continue;
+
+					$group = $gf->item();
+
+					if (is_object($group))
+					{
+						$blog_access = GroupHelper::getPluginAccess($group, 'blog');
+
+						if ($blog_access == 'nobody'
+						 || ($blog_access == 'registered' && User::isGuest())
+						 || ($blog_access == 'members' && !in_array(User::get('id'), $group->get('members'))))
+						{
+							continue;
+						}
+					}
+					else
+					{
+						continue;
+					}
 				}
 			}
 
