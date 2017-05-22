@@ -606,6 +606,11 @@ $legacy = array(
 						// IF the type is a URL, link it
 						if ($field->get('type') == 'url')
 						{
+							$parsed = parse_url($value);
+							if (empty($parsed['scheme']))
+							{
+								$value = 'http://' . ltrim($value, '/');
+							}
 							$value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
 						}
 					}
