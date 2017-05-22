@@ -110,11 +110,11 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 						<td>
 							(
 							<?php if ($row->version->get('version') > 1) { ?>
-								<a href="<?php echo Route::url($row->link() . '&task=compare&oldid=' . ($row->version->get('version') - 1). '&diff=' . $row->version->get('version')); ?>"><?php echo Lang::txt('COM_WIKI_DIFF'); ?></a> |
+								<a href="<?php echo Route::url($row->link() . '&' . ($this->sub ? 'action' : 'task') . '=compare&oldid=' . ($row->version->get('version') - 1). '&diff=' . $row->version->get('version')); ?>"><?php echo Lang::txt('COM_WIKI_DIFF'); ?></a> |
 							<?php } else { ?>
 								<?php echo Lang::txt('COM_WIKI_DIFF'); ?> |
 							<?php } ?>
-								<a href="<?php echo Route::url($row->link() . '&task=history'); ?>"><?php echo Lang::txt('COM_WIKI_HIST'); ?></a>
+								<a href="<?php echo Route::url($row->link() . '&' . ($this->sub ? 'action' : 'task') . '=history'); ?>"><?php echo Lang::txt('COM_WIKI_HIST'); ?></a>
 							)
 						</td>
 						<td>
