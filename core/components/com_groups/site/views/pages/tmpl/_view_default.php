@@ -113,7 +113,7 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 
 		foreach ($profiles as $profile) : ?>
 			<?php if ($counter <= 12 && $profile->get('id')) : ?>
-				<?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels())) { ?>
+				<?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels()) && ($profile->get('activation') > 0)) { ?>
 					<a href="<?php echo Route::url($profile->link()); ?>" class="member" title="<?php echo Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name'))); ?>">
 				<?php } else { ?>
 					<div class="member">

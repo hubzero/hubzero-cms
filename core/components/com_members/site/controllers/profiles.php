@@ -667,19 +667,14 @@ class Profiles extends SiteController
 		}
 
 		// Check if unconfirmed
-		if ($profile->get('activation') < 1 && !User::authorise('core.manage', $this->_option))
+
+		$loggedInUserId = User::getInstance()->get('id');
+		if ($profile->get('activation') < 1 && $loggedInUserId != $profile->get('id') && (User::isGuest() || !User::authorise('core.manage', $this->_option)))
 		{
-			//App::abort(403, Lang::txt('COM_MEMBERS_NOT_CONFIRMED'));
-			$rtrn = Request::getVar('REQUEST_URI', Route::url($profile->link()), 'server');
-			/*
-			App::redirect(
-				Route::url('index.php?option=com_members&controller=member&task=unconfirmed&return=' . base64_encode($rtrn))
-			);
-			*/
-			// Prep vars for unconfirmed page
-			$return = Request::getVar('return', urlencode('/'));
+			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 
 			// Offer explaination and eternal redemption to the user, instead of leaving them high and dry
+			/*
 			$this->view
 				->set('title', Lang::txt('COM_MEMBERS_REGISTER_UNCONFIRMED'))
 				->set('email', $profile->get('email'))
@@ -690,6 +685,7 @@ class Profiles extends SiteController
 				->setLayout('unconfirmed')
 				->display();
 			return;
+			*/
 		}
 
 		// Check for name
