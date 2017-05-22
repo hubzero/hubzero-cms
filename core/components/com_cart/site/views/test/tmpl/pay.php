@@ -36,12 +36,12 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 ?>
 
 <header id="content-header">
-	<h2>Pretend payment page</h2>
+	<h2>Payment</h2>
 </header>
 
 <section class="main section">
 	<div class="section-inner">
-		<p>Imagine you have a lot of money and free to spend it. He is it, the pretend pay page. Just hit the 'Pay' button.</p>
+		<p>Click the 'Pay' button to finalize the order.</p>
 
 		<form action="" id="frm" method="post">
 
