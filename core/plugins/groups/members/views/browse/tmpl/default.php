@@ -279,27 +279,20 @@ $option = 'com_groups';
 									<span class="status"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
 								<?php } else { ?>
 									<span class="name">
-										<?php if (in_array($u->get('access'), User::getAuthorisedviewLevels())) { ?><a href="<?php echo Route::url($url); ?>"><?php } ?>
 											<?php
 												//handles the comma
+												$displayName = '';
 												$surname = $u->get('surname');
 												$givenName = $u->get('givenName');
-
-												if ($surname != "" && $givenName != "")
-												{
-													echo $this->escape(stripslashes($u->get('surname')) . ', ' . stripslashes($u->get('givenName')));
-												}
-												elseif ($surname =! "" && $givenName == "")
-												{
-													echo $this->escape(stripslashes($u->get('surname')));
-
-												}
-												elseif ($surname == "" && $givenName != "")
-												{
-													echo $this->escape(stripslashes($u->get('givenName')));
-												}
+												$displayName = !empty($surname) ? $surname : '';
+												$displayName .= !empty($givenName) ? !empty($displayName) ? ', ' . $givenName : $givenName :  '';
+								
 											?>
-										<?php if (in_array($u->get('access'), User::getAuthorisedviewLevels())) { ?></a><?php } ?>
+										<?php if (in_array($u->get('access'), User::getAuthorisedviewLevels()) && ($u->get('activation') > 0)) { ?>
+											<a href="<?php echo Route::url($url); ?>"><?php echo $displayName;?></a>
+										<?php } else { ?>
+											<?php echo $displayName; ?>
+										<?php } ?>
 									</span>
 									<span class="status"><?php echo $status; ?></span><br />
 
@@ -418,26 +411,30 @@ $option = 'com_groups';
 									$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 									$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 								}
+								$html .= "\t\t\t\t" . '<td class="message-member">';
 								if (is_object($u) && User::get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
-									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 								} else {
 									$membersParams = Component::params('com_members');
 									$userMessaging = $membersParams->get('user_messaging', 1);
 									if (!$inviteemail && $this->messages_acl != 'nobody')
 									{
-										if (in_array(User::get('id'), $this->group->get('managers')))
+										if ($u->get('activation') > 0)
 										{
-											$html .= "\t\t\t\t".'<td class="message-member"><a class="tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
+											if (in_array(User::get('id'), $this->group->get('managers')) && ($u->get('activation') > 0))
+											{
+												$html .= '<a class="tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') . '</a>';
+											}
+											else if (($userMessaging == 2 || ($userMessaging == 1 && in_array(User::get('id'), $this->group->get('members')))) && ($u->get('activation') > 0))
+											{
+												$html .= '<a class="tooltips" href="'.Route::url('index.php?option=com_members&id='.User::get('id').'&active=messages&task=new&to[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') . '</a>';
+											}
 										}
-										else if ($userMessaging == 2 || ($userMessaging == 1 && in_array(User::get('id'), $this->group->get('members'))))
+										else
 										{
-											$html .= "\t\t\t\t".'<td class="message-member"><a class="tooltips" href="'.Route::url('index.php?option=com_members&id='.User::get('id').'&active=messages&task=new&to[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>';
+											$html .= '<span class="unconfirmed">' . Lang::txt('PLG_GROUPS_MEMBERS_EMAIL_NOT_ACTIVATED') . '</span>';
 										}
 									}
-									else
-									{
-										$html .= "\t\t\t\t".'<td class="message-member"></td>'."\n";
-									}
+									$html .= '</td>' . "\n";
 								}
 								echo $html;
 							?>
