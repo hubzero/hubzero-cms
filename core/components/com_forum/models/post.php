@@ -369,7 +369,13 @@ class Post extends Relational
 			}
 		}
 
-		$cloud = new Tags($this->get('thread'));
+		$thread = $this->get('thread');
+		if (!$thread && !$this->get('parent'))
+		{
+			$thread = $this->get('id');
+		}
+
+		$cloud = new Tags($thread);
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
