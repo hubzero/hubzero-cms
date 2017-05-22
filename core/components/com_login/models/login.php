@@ -32,11 +32,88 @@
 
 namespace Components\Login\Models;
 
+use Hubzero\Base\Object;
+use Hubzero\Utility\Uri;
+use Request;
+use App;
+
 /**
  * Login Model
  */
-class Login extends \JModelLegacy
+class Login extends Object
 {
+	/**
+	 * Indicates if the internal state has been set
+	 *
+	 * @var  boolean
+	 */
+	protected $__state_set = null;
+
+	/**
+	 * A state object
+	 *
+	 * @var  string
+	 */
+	protected $state;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 * @return  void
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+
+		// Set the model state
+		if (!array_key_exists('state', $config))
+		{
+			$config['state'] = new Object;
+		}
+
+		$this->state = $config['state'];
+
+		// Set the internal state marker - used to ignore setting state from the request
+		if (!empty($config['ignore_request']))
+		{
+			$this->__state_set = true;
+		}
+	}
+
+	/**
+	 * Method to get model state variables
+	 *
+	 * @param   string  $property  Optional parameter name
+	 * @param   mixed   $default   Optional default value
+	 * @return  object  The property where specified, the state object where omitted
+	 */
+	public function getState($property = null, $default = null)
+	{
+		if (!$this->__state_set)
+		{
+			// Protected method to auto-populate the model state.
+			$this->populateState();
+
+			// Set the model state set flag to true.
+			$this->__state_set = true;
+		}
+
+		return $property === null ? $this->state : $this->state->get($property, $default);
+	}
+
+	/**
+	 * Method to set model state variables
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $value     The value of the property to set or null.
+	 * @return  mixed   The previous value of the property or null if not set.
+	 */
+	public function setState($property, $value = null)
+	{
+		return $this->state->set($property, $value);
+	}
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -47,16 +124,17 @@ class Login extends \JModelLegacy
 	protected function populateState()
 	{
 		$credentials = array(
-			'username' => \Request::getVar('username', '', 'method', 'username'),
-			'password' => \Request::getVar('passwd', '', 'post', 'string', JREQUEST_ALLOWRAW)
+			'username' => Request::getVar('username', '', 'method', 'username'),
+			'password' => Request::getVar('passwd', '', 'post', 'string', JREQUEST_ALLOWRAW)
 		);
 		$this->setState('credentials', $credentials);
 
-		// check for return URL from the request first
-		if ($return = \Request::getVar('return', '', 'method', 'base64'))
+		// Check for return URL from the request first
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
-			if (!\JURI::isInternal($return))
+
+			if (!Uri::isInternal($return))
 			{
 				$return = '';
 			}
@@ -118,6 +196,7 @@ class Login extends \JModelLegacy
 	 * Note that we load regardless of state or access level since access
 	 * for public is the only thing that makes sense since users are not logged in
 	 * and the module lets them log in.
+	 *
 	 * This is put in as a failsafe to avoid super user lock out caused by an unpublished
 	 * login module or by a module set to have a viewing access level that is not Public.
 	 *
@@ -133,10 +212,10 @@ class Login extends \JModelLegacy
 			return $clean;
 		}
 
-		$lang     = \Lang::getTag();
-		$clientId = (int) \App::get('client')->id;
+		$lang     = App::get('language')->getTag();
+		$clientId = (int) App::get('client')->id;
 
-		$cache       = \App::get('cache');
+		$cache       = App::get('cache');
 		$cacheid     = 'com_modules.' . md5(serialize(array($clientId, $lang)));
 		$loginmodule = array();
 
@@ -151,31 +230,38 @@ class Login extends \JModelLegacy
 
 		if (!$clean)
 		{
-			$db = \App::get('db');
+			$db = App::get('db');
 
-			$query = $db->getQuery(true);
-			$query->select('m.id, m.title, m.module, m.position, m.showtitle, m.params');
-			$query->from('#__modules AS m');
-			$query->where('m.module =' . $db->Quote($module) .' AND m.client_id = 1');
+			$query = $db->getQuery()
+				->select('m.id')
+				->select('m.title')
+				->select('m.module')
+				->select('m.position')
+				->select('m.showtitle')
+				->select('m.params')
+				->from('#__modules', 'm')
+				->whereEquals('m.module', $module)
+				->whereEquals('m.client_id', 1);
 
-			$query->join('LEFT', '#__extensions AS e ON e.element = m.module AND e.client_id = m.client_id');
-			$query->where('e.enabled = 1');
+			$query->joinRaw('#__extensions AS e', 'e.element = m.module AND e.client_id = m.client_id', 'left')
+				->whereEquals('e.enabled', 1);
 
 			// Filter by language
-			if (\App::isSite() && \App::get('language.filter'))
+			if (App::isSite() && App::get('language.filter'))
 			{
-				$query->where('m.language IN (' . $db->Quote($lang) . ',' . $db->Quote('*') . ')');
+				$query->whereIn('m.language', array($lang, '*'));
 			}
 
-			$query->order('m.position, m.ordering');
+			$query->order('m.position', 'asc')
+				->order('m.ordering', 'asc');
 
 			// Set the query
-			$db->setQuery($query);
+			$db->setQuery($query->toString());
 			$modules = $db->loadObjectList();
 
 			if ($db->getErrorNum())
 			{
-				\App::abort(500, \Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
+				App::abort(500, \Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
 				return $loginmodule;
 			}
 

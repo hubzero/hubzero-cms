@@ -40,8 +40,8 @@ class Group extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -54,8 +54,6 @@ class Group extends \JTable
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetName()
 	{
@@ -67,8 +65,6 @@ class Group extends \JTable
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -78,12 +74,9 @@ class Group extends \JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   object   $table  A JTable object for the asset parent.
 	 * @param   integer  $id     The id for the asset
-	 *
 	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetParentId($table = null, $id = null)
 	{
@@ -94,7 +87,7 @@ class Group extends \JTable
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
 			$query->where('name = ' . $db->quote('com_groups'));
@@ -121,7 +114,7 @@ class Group extends \JTable
 	/**
 	 * Validate fields before store()
 	 *
-	 * @return     boolean True if all fields are valid
+	 * @return  boolean  True if all fields are valid
 	 */
 	public function check()
 	{
@@ -136,7 +129,10 @@ class Group extends \JTable
 	/**
 	 * Save changes
 	 *
-	 * @return     boolean
+	 * @param   string   $src
+	 * @param   string   $orderingFilter
+	 * @param   string   $ignore
+	 * @return  boolean
 	 */
 	public function save($src, $orderingFilter ='', $ignore = '')
 	{
@@ -147,7 +143,7 @@ class Group extends \JTable
 	/**
 	 * Insert or Update the object
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function store($updateNulls = false)
 	{
@@ -159,10 +155,10 @@ class Group extends \JTable
 	 * Populate the current object with a database record if found
 	 * Accepts either an alias or an ID
 	 *
-	 * @param      mixed $oid Unique ID or alias of object to retrieve
-	 * @return     boolean True on success
+	 * @param   mixed    $oid  Unique ID or alias of object to retrieve
+	 * @return  boolean  True on success
 	 */
-	public function load($oid = NULL, $reset = true)
+	public function load($oid = null, $reset = true)
 	{
 		if (empty($oid))
 		{
@@ -190,22 +186,34 @@ class Group extends \JTable
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  database query
 	 */
 	private function _buildMembersQuery($filters=array())
 	{
-		$query = "FROM (
+		/*$query = "FROM (
 			(" . $this->_groupTable('invitee', 'i', $filters) . ") UNION
 			(" . $this->_groupTable('applicant', 'a', $filters) . ") UNION
 			(" . $this->_groupTable('member', 'm', $filters) . ") UNION
 			(" . $this->_groupTable('manager', 'n', $filters) . ")
+		) AS v";*/
+		$query = "FROM (
+			(" . $this->_groupTable('invitee', 'i', $filters) . ") UNION
+			(" . $this->_groupTable('applicant', 'a', $filters) . ") UNION
+			(" . $this->_groupTable('member', 'm', $filters) . ")
 		) AS v";
 
 		$where = array();
 
 		if (isset($filters['status']) && $filters['status'])
 		{
+			$query = "FROM (
+				(" . $this->_groupTable('invitee', 'i', $filters) . ") UNION
+				(" . $this->_groupTable('applicant', 'a', $filters) . ") UNION
+				(" . $this->_groupTable('member', 'm', $filters) . ") UNION
+				(" . $this->_groupTable('manager', 'n', $filters) . ")
+			) AS v";
+
 			$where[] = "v.`role`=" . $this->_db->quote($filters['status']);
 		}
 
@@ -234,15 +242,15 @@ class Group extends \JTable
 	/**
 	 * Build sub-query
 	 *
-	 * @param  string $role    Role [member, invitee, applicant, manager]
-	 * @param  string $tbl     Table alias
-	 * @param  array  $filters Filters to build query from
-	 * @return string
+	 * @param   string  $role     Role [member, invitee, applicant, manager]
+	 * @param   string  $tbl      Table alias
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string
 	 */
 	private function _groupTable($role='member', $tbl='m', $filters=array())
 	{
 		$query = "SELECT u.name, u.username, u.email, {$tbl}.uidNumber, '{$role}' AS role
-					FROM #__xgroups_{$role}s AS {$tbl} JOIN #__users AS u ON {$tbl}.uidNumber=u.id";
+					FROM `#__xgroups_{$role}s` AS {$tbl} JOIN `#__users` AS u ON {$tbl}.uidNumber=u.id";
 
 		if (isset($filters['gidNumber']))
 		{
@@ -253,10 +261,10 @@ class Group extends \JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get count of members
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array    $filters
+	 * @return  integer  Return course units
 	 */
 	public function countMembers($filters=array())
 	{
@@ -268,10 +276,10 @@ class Group extends \JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get an object list of members
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array   $filters
+	 * @return  object  Return course units
 	 */
 	public function findMembers($filters=array())
 	{
@@ -325,10 +333,9 @@ class Group extends \JTable
 	 */
 	public function getName($id)
 	{
-		$query = "SELECT cn FROM `#__xgroups` WHERE gidNumber = " . $id . ";";
+		$query = "SELECT cn FROM `#__xgroups` WHERE gidNumber = " . (int)$id . ";";
 		$this->_db->setQuery($query);
 
 		return $this->_db->loadResult();
 	}
 }
-

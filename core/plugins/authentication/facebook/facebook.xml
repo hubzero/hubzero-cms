@@ -46,6 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="app_id"       type="text" size="20" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_KEY_LABEL"    description="PLG_AUTHENTICATION_FACEBOOK_PARAM_KEY_DESC" />
 				<field name="app_secret"   type="text" size="32" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_SECRET_LABEL" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_SECRET_DESC" />
+				<field name="graph_version"   type="text" size="10" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_GRAPH_VERSION_LABEL" description="PLG_AUTHENTICATION_FACEBOOK_GRAPH_VERSION_DESC" default="v2.9" />
 				<field name="display_name" type="text" size="32" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_NAME_LABEL"   description="PLG_AUTHENTICATION_FACEBOOK_PARAM_NAME_DESC" default="Facebook" />
 				<field name="site_login"  type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_SITELOGIN_DESC">
 					<option value="0">JNo</option>

@@ -177,7 +177,14 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			);
 			$downloads = (int) $db->loadResult();
 
-			$arr['metadata'] = '<p class="usage">' . Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $views, $downloads) . '</p>';
+			$view = $this->view('default', 'metadata')
+				->set('publication', $publication)
+				->set('views', $views)
+				->set('downloads', $downloads);
+
+			$arr['metadata'] = $view->loadTemplate();
+
+			//$arr['metadata'] = '<p class="usage">' . Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $views, $downloads) . '</p>';
 		/*}
 
 		if ($stats->users)

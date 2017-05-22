@@ -50,7 +50,9 @@ class Ldap extends AdminController
 	public function displayTask()
 	{
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**
@@ -205,5 +207,66 @@ class Ldap extends AdminController
 		}
 
 		$this->cancelTask();
+	}
+
+	/**
+	 * Sync users by batching them
+	 *
+	 * @return  void
+	 */
+	public function exportUsersBatchTask()
+	{
+		$start = Request::getInt('start', 0);
+		$limit = Request::getInt('limit', 1000);
+
+		$response = new \stdClass;
+		$response->processed = 0;
+		$response->total     = 0;
+		$response->start     = ($start + $limit);
+		$response->success   = array();
+		$response->errors    = array();
+
+		$db = \App::get('db');
+		$query = $db->getQuery()
+			->select('COUNT(id)')
+			->from('#__users');
+		$db->setQuery($query->toString());
+
+		$response->total = $db->loadResult();
+
+		$query = $db->getQuery()
+			->select('id')
+			->from('#__users')
+			->order('id', 'desc')
+			->start($start)
+			->limit($limit);
+		$db->setQuery($query->toString());
+
+		$result = $db->loadColumn();
+
+		if ($result)
+		{
+			foreach ($result as $row)
+			{
+				try
+				{
+					\Hubzero\Utility\Ldap::syncUser($row);
+				}
+				catch (\Exception $e)
+				{
+					$this->addError($row . ': ' . $e->getMessage());
+				}
+
+				$response->processed++;
+			}
+		}
+
+		// The following properties are currently private
+		// @TODO: Make them public or add accessor methods
+		//$response->errors  = \Hubzero\Utility\Ldap::$errors;
+		//$response->success = \Hubzero\Utility\Ldap::$success;
+
+		echo json_encode($response);
+		exit();
 	}
 }

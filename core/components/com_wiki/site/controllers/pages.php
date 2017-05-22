@@ -485,6 +485,7 @@ class Pages extends SiteController
 		$revision = $this->page->version;
 		$revision->set('version', $revision->get('version') + 1);
 		$revision->set(Request::getVar('revision', array(), 'post', 'none', 2));
+		$revision->set('created', Date::toSql());
 		$revision->set('id', 0);
 
 		// Incoming page
@@ -1066,7 +1067,7 @@ class Pages extends SiteController
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 		// set auto page breaks
-		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
 		// set image scale factor
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -1078,7 +1079,7 @@ class Pages extends SiteController
 		$pdf->setCreator = \Config::get('sitename');
 
 		$pdf->setDocModificationTimeStamp($this->page->modified());
-		$pdf->setHeaderData(NULL, 0, strtoupper($this->page->title), NULL, array(84, 94, 124), array(146, 152, 169));
+		$pdf->setHeaderData(null, 0, strtoupper($this->page->title), null, array(84, 94, 124), array(146, 152, 169));
 		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
 
 		$pdf->AddPage();

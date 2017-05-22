@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('license');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSES'), 'license');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -47,6 +47,11 @@ if ($canDo->get('core.edit.state'))
 {
 	Toolbar::save('makedefault', Lang::txt('COM_PUBLICATIONS_MAKE_DEFAULT'));
 	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
+}
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	Toolbar::deleteList();
 }
 
 $this->css();
@@ -62,78 +67,77 @@ $this->css();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'active', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DEFAULT'); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="7"><?php
-				$pageNav = $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				echo $pageNav->render();
-				?></td>
+				<td colspan="7">
+					<?php echo $this->rows->pagination; ?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-	$class = $row->active == 1 ? 'on' : 'off';
-?>
-			<tr class="<?php echo "row$k"; ?>">
-				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
-				</td>
-				<td class="priority-4">
-					<?php echo $row->id; ?>
-				</td>
-				<td class="priority-3">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
-						<span><?php echo $this->escape($row->name); ?></span>
-					</a>
-				</td>
-				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
-						<span><?php echo $this->escape($row->title); ?></span>
-					</a>
-				</td>
-				<td class="priority-2 centeralign">
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo Lang::txt($class); ?></span>
-					</span>
-				</td>
-				<td class="priority-2 centeralign">
-					<?php if ($row->main == 1) { ?>
-						<span class="state default">
-							<span><?php echo Lang::txt('JYES'); ?></span>
+			<?php
+			$k = 0;
+			$i = 0;
+			$orderings = $this->rows->fieldsByKey('ordering');
+			foreach ($this->rows as $row)
+			{
+				$class = $row->active == 1 ? 'on' : 'off';
+				?>
+				<tr class="<?php echo "row$k"; ?>">
+					<td>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					</td>
+					<td class="priority-4">
+						<?php echo $row->id; ?>
+					</td>
+					<td class="priority-3">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+							<span><?php echo $this->escape($row->name); ?></span>
+						</a>
+					</td>
+					<td>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+							<span><?php echo $this->escape($row->title); ?></span>
+						</a>
+					</td>
+					<td class="priority-2 centeralign">
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo Lang::txt($class); ?></span>
 						</span>
-					<?php } ?>
-				</td>
-				<td class="order">
-					<span>
-						<?php echo $pageNav->orderUpIcon($i, (isset($this->rows[$i-1]->ordering))); ?>
-					</span>
-					<span>
-						<?php echo $pageNav->orderDownIcon($i, $n, (isset($this->rows[$i+1]->ordering))); ?>
-					</span>
-					<input type="hidden" name="order[]" value="<?php echo $row->ordering; ?>" />
-				</td>
-			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+					</td>
+					<td class="priority-2 centeralign">
+						<?php if ($row->main == 1) { ?>
+							<span class="state default">
+								<span><?php echo Lang::txt('JYES'); ?></span>
+							</span>
+						<?php } ?>
+					</td>
+					<td class="order">
+						<?php if ($this->filters['sort'] == 'ordering') { ?>
+							<span>
+								<?php echo $this->rows->pagination->orderUpIcon($i, isset($orderings[$i-1])); ?>
+							</span>
+							<span>
+								<?php echo $this->rows->pagination->orderDownIcon($i, $this->rows->pagination->total, isset($orderings[$i+1])); ?>
+							</span>
+						<?php } ?>
+						<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" disabled="disabled" class="text-area-order" />
+					</td>
+				</tr>
+				<?php
+				$k = 1 - $k;
+				$i++;
+			}
+			?>
 		</tbody>
 	</table>
 

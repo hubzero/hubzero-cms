@@ -41,21 +41,21 @@ if (!\User::authorise('core.manage', $option))
 }
 
 // Include jtables
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'resource.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'assoc.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'review.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'doi.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'contributor.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'contributor' . DS . 'role.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'resource.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'type.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'assoc.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'review.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'doi.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'contributor.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'license.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'contributor' . DS . 'role.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php';
 
 // include helpers
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 // include importer
 require_once __DIR__ . DS . 'import' . DS . 'importer.php';
@@ -97,8 +97,8 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	\Route::url('index.php?option=' . $option . '&controller=roles'),
 	$controllerName == 'roles'
 );
-require_once(dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
+require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_RESOURCES_PLUGINS'),
@@ -117,11 +117,9 @@ if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
 	$controllerName == 'importhooks'
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

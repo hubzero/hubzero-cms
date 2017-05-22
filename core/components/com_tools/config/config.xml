@@ -47,11 +47,11 @@ HUBzero is a registered trademark of Purdue University.
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="params_whitelist" type="text" menu="hide" label="Directory Parameter Whitelist" default="/home" description="White-list of directories acceptable to include in tool parameter passing feature" />
-		<field name="github" type="list" default="0" label="Accept Github Repo" description="Offer an option to pull code from a remote (public) Github repository.">
+		<field name="github" type="list" default="1" label="Accept Github Repo" description="Offer an option to pull code from a remote (public) Github repository.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>
-		<field name="jupyter" type="list" default="0" label="Enable Jupyter" description="Offer an option to publish as a Jupyter notebook.">
+		<field name="jupyter" type="list" default="1" label="Enable Jupyter" description="Offer an option to publish as a Jupyter notebook.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>

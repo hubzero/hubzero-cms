@@ -1,0 +1,27 @@
+/*
+|--------------------------------------------------------------------------
+| Countdown Clock and Buttons
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Progress Meter
+|--------------------------------------------------------------------------
+*/
+.progress {
+	margin: 10px 0 0 0;
+	height: 30px;
+	border-radius: 4px;
+	background-image: -webkit-linear-gradient(top, #EFEFEF, #F0F0F0); 
+	border: 1px solid #efefef;
+}
+.progress .ui-progressbar-value {
+	height: 30px;
+	border-radius: 3px;
+	background: #3149a5; 
+	-webkit-transition: all 0.5s ease-in-out;
+}
+.progress-percentage {
+	color: #3149a5;
+}

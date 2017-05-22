@@ -19,15 +19,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Publication License Layout">
+	<layout title="License">
 		<message>
-			<![CDATA[STANDARD PUBLICATION LICENSE LAYOUT DESC]]>
+			<![CDATA[License]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Publication License Layout</name>
-		<description>STANDARD PUBLICATION LICENSE LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

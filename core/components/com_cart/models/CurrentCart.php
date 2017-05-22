@@ -32,9 +32,7 @@ namespace Components\Cart\Models;
 use Components\Cart\Models\Cart;
 use Components\Cart\Helpers\CartHelper;
 use Hubzero\Base\Model;
-use Request;
 use User;
-use Lang;
 use Components\Storefront\Models\Product;
 
 require_once 'Cart.php';
@@ -45,31 +43,20 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
  */
 class CurrentCart extends Cart
 {
-	/**
-	 * Session cart
-	 *
-	 * @var  object
-	 */
-	public $cart = null;
+	// Session cart
+	var $cart = null;
 
-	/**
-	 * Syncing enabled?
-	 *
-	 * @var  bool
-	 */
-	public $sync = true;
+	// Syncing enabled?
+	var $sync = true;
 
-	/**
-	 * Cookie max age
-	 *
-	 * @var  int
-	 */
-	public $cookieTTL = 7776000; // 60 * 60 * 24 * 90 = 90 days
+	// Cookie max age
+	var $cookieTTL = 7776000; // 60 * 60 * 24 * 90 = 90 days
 
 	/**
 	 * Cart constructor
 	 *
-	 * @return  void
+	 * @param void
+	 * @return void
 	 */
 	public function __construct()
 	{
@@ -100,14 +87,12 @@ class CurrentCart extends Cart
 		if ($cart)
 		{
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-			if (!$juser->get('guest'))
-			{
+			if (!$juser->get('guest')) {
 				if (empty($this->cart->linked) || !$this->cart->linked)
 				{
 					// link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
 					// if linking fails create a new cart
-					if (!$this->linkCarts())
-					{
+					if (!$this->linkCarts()) {
 						$this->createCart();
 					}
 				}
@@ -135,8 +120,8 @@ class CurrentCart extends Cart
 	/**
 	 * Set syncing
 	 *
-	 * @param   bool  $mode
-	 * @return  void
+	 * @param bool $mode
+	 * @return void
 	 */
 	public function setSync($mode = true)
 	{
@@ -146,9 +131,9 @@ class CurrentCart extends Cart
 	/**
 	 * Add SKU to cart
 	 *
-	 * @param   int   $sId  SKU ID
-	 * @param   int   $qty  Quantity
-	 * @return  void
+	 * @param SKU ID
+	 * @param int Quantity
+	 * @return void
 	 */
 	public function add($sId, $qty = 1)
 	{
@@ -161,10 +146,10 @@ class CurrentCart extends Cart
 	/**
 	 * Update/set SKU in cart
 	 *
-	 * @param   int   $sId             SKU ID
-	 * @param   int   $qty             Quantity
-	 * @param   bool  $retainOldValue  Retain old value
-	 * @return  void
+	 * @param int   SKU ID
+	 * @param int   Quantity
+	 * @param bool  Retain old value
+	 * @return void
 	 */
 	public function update($sId, $qty = 1, $retainOldValue = false)
 	{
@@ -177,8 +162,8 @@ class CurrentCart extends Cart
 	/**
 	 * Delete SKU from cart
 	 *
-	 * @param   int   $sId  SKU ID
-	 * @return  void
+	 * @param SKU ID
+	 * @return void
 	 */
 	public function delete($sId)
 	{
@@ -191,8 +176,8 @@ class CurrentCart extends Cart
 	/**
 	 * Get session info about cart
 	 *
-	 * @param   bool   $sync  Flag whether the session cart should be synced with DB first
-	 * @return  array  of items in the cart
+	 * @param bool $updateDb Flag whether the session cart should be synced with DB first
+	 * @return array of items in the cart
 	 */
 	public function getCartInfo($sync = false)
 	{
@@ -209,7 +194,8 @@ class CurrentCart extends Cart
 	/**
 	 * Check if the cart is empty
 	 *
-	 * @return  bool
+	 * @param void
+	 * @return bool
 	 */
 	public function isEmpty()
 	{
@@ -219,8 +205,8 @@ class CurrentCart extends Cart
 	/**
 	 * Get any changes to cart items' inventory or pricing since last visit.
 	 * Works like a flash variable -- gets messages once and then resets the state
-	 *
-	 * @return  array  of change messages
+	 * @param false
+	 * @return array of change messages
 	 */
 	private function getCartChanges()
 	{
@@ -267,8 +253,7 @@ class CurrentCart extends Cart
 				if ($item->crtiQty)
 				{
 					$changes[] = array($itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty, 'info');
-				}
-				else
+				} else
 				{
 					$changes[] = array($itemName . ' is no longer in stock', 'info');
 				}
@@ -306,8 +291,8 @@ class CurrentCart extends Cart
 
 	/**
 	 * Check if there are any changes to cart items' inventory or pricing since last visit
-	 *
-	 * @return  bool
+	 * @param false
+	 * @return bool
 	 */
 	private function cartChanged()
 	{
@@ -316,7 +301,7 @@ class CurrentCart extends Cart
 
 	/**
 	 * Check if there are any messages to display (cart changes or other set messages)
-	 *
+	 * @param   void
 	 * @return  bool
 	 */
 	public function hasMessages()
@@ -328,9 +313,8 @@ class CurrentCart extends Cart
 
 	/**
 	 * Set a cart message
-	 *
-	 * @param   string  $msg   Message
-	 * @param   string  $type  Message type, used to set the CSS class name
+	 * @param   string  Message
+	 * @param   string  Message type, used to set the CSS class name
 	 * @return  void
 	 */
 	public function setMessage($msg, $type = 'info')
@@ -342,7 +326,7 @@ class CurrentCart extends Cart
 	/**
 	 * Get all cart messages, both changes and set messages
 	 * Works like a flash variable -- gets messages once and then resets the state/messages
-	 *
+	 * @param   void
 	 * @return  void
 	 */
 	public function getMessages()
@@ -361,7 +345,7 @@ class CurrentCart extends Cart
 			$this->cart->hasMessages = false;
 			// Erase messages
 			unset($this->cart->messages);
-		}
+		};
 
 		// Get cart changes
 		$changes = array();
@@ -379,8 +363,8 @@ class CurrentCart extends Cart
 	/**
 	 * Redirect to cart different cart pages
 	 *
-	 * @param   string  $where  Where to redirect
-	 * @return  void
+	 * @param string Where to redirect
+	 * @return void
 	 */
 	public function redirect($where)
 	{
@@ -394,7 +378,7 @@ class CurrentCart extends Cart
 		}
 
 		App::redirect(
-			$redirect_url
+				$redirect_url
 		);
 	}
 
@@ -403,7 +387,8 @@ class CurrentCart extends Cart
 	 *
 	 * Shipping (if shippable) -> Registration info (if needed) -> Summary page
 	 *
-	 * @return  string  method name
+	 * @param void
+	 * @return string method name
 	 */
 	public function getNextCheckoutStep()
 	{
@@ -419,8 +404,7 @@ class CurrentCart extends Cart
 		{
 			$stepInfo->step = 'summary';
 		}
-		else
-		{
+		else {
 			$stepInfo->step = $nextStep->tsStep;
 			$stepInfo->meta = $nextStep->tsMeta;
 		}
@@ -431,7 +415,8 @@ class CurrentCart extends Cart
 	/**
 	 * Get steps for a transaction
 	 *
-	 * @return  string  method name
+	 * @param void
+	 * @return string method name
 	 */
 	private function getCheckoutSteps()
 	{
@@ -446,7 +431,8 @@ class CurrentCart extends Cart
 	/**
 	 * Get existing or create a new transaction (if doesn't exist)
 	 *
-	 * @return  array  of items in the transaction, FALSE on failed attempt
+	 * @param void
+	 * @return array of items in the transaction, FALSE on failed attempt
 	 */
 	public function getTransaction()
 	{
@@ -466,7 +452,8 @@ class CurrentCart extends Cart
 	/**
 	 * Check if transaction is still valid and get transaction details and items
 	 *
-	 * @return  array  of items in the transaction or false on failed attempt
+	 * @param void
+	 * @return array of items in the transaction or false on failed attempt
 	 */
 	public function liftTransaction()
 	{
@@ -524,8 +511,8 @@ class CurrentCart extends Cart
 	/**
 	 * Checks if transaction shipping info is correct and saves it
 	 *
-	 * @param   void   (gets info from POST)
-	 * @return  array  status and messages
+	 * @param void (gets info from POST)
+	 * @return array status and messages
 	 */
 	public function setTransactionShippingInfo()
 	{
@@ -612,8 +599,8 @@ class CurrentCart extends Cart
 	/**
 	 * Saves transaction shipping cost and shipping discounts
 	 *
-	 * @param   double  $shippingCost  shipping cost
-	 * @return  bool    true
+	 * @param 	double 		$shippingCost shipping cost
+	 * @return 	bool		true
 	 */
 	public function setTransactionShippingCost($shippingCost)
 	{
@@ -664,8 +651,8 @@ class CurrentCart extends Cart
 	/**
 	 * Saves transaction notes
 	 *
-	 * @param   string  $notes
-	 * @return  bool    true
+	 * @param 	string 		notes
+	 * @return 	bool		true
 	 */
 	public function setTransactionNotes($notes)
 	{
@@ -683,9 +670,9 @@ class CurrentCart extends Cart
 	/**
 	 * Set the meta information for a given transaction item
 	 *
-	 * @param   int    $sId   SKU id of the item that needs to e updated
-	 * @param   mixed  $meta  Meta info
-	 * @return  void
+	 * @param int 		sId		SKU id of the item that needs to e updated
+	 * @param mixed		meta	Meta info
+	 * @return void
 	 */
 	private function setTransactionItemMeta($sId, $meta)
 	{
@@ -701,9 +688,9 @@ class CurrentCart extends Cart
 	/**
 	 * Add the meta information for a given transaction item
 	 *
-	 * @param   int    $sId   SKU id of the item that needs to e updated
-	 * @param   mixed  $meta  Meta info
-	 * @return  void
+	 * @param int 		sId		SKU id of the item that needs to e updated
+	 * @param mixed		meta	Meta info
+	 * @return void
 	 */
 	public function addTransactionItemMeta($sId, $meta)
 	{
@@ -712,8 +699,7 @@ class CurrentCart extends Cart
 		{
 			$this->setTransactionItemMeta($sId, json_encode($meta));
 		}
-		else
-		{
+		else {
 			// Merge the current meta and the new meta
 			$allMeta = (object) array_merge((array) $currentMeta, (array) $meta);
 			$this->setTransactionItemMeta($sId, json_encode($allMeta));
@@ -723,8 +709,8 @@ class CurrentCart extends Cart
 	/**
 	 * Get the meta information for a given transaction item
 	 *
-	 * @param   int    $sId  SKU id of the item that needs to e updated
-	 * @return  mixed  Meta info
+	 * @param int 		sId		SKU id of the item that needs to e updated
+	 * @return mixed	meta	Meta info
 	 */
 	private function getTransactionItemMeta($sId)
 	{
@@ -740,7 +726,8 @@ class CurrentCart extends Cart
 	/**
 	 * Gets all transaction related info about current cart transaction
 	 *
-	 * @return  object  false on no results
+	 * @param void
+	 * @return object, false on no results
 	 */
 	public function getTransactionData()
 	{
@@ -783,9 +770,9 @@ class CurrentCart extends Cart
 	/**
 	 * Set customer status
 	 *
-	 * @param   string  $status  new status
-	 * @param   int     $tId     transaction ID
-	 * @return  void
+	 * @param	string 	$status new status
+	 * @param	int 	$tId transaction ID
+	 * @return 	void
 	 */
 	public function updateTransactionCustomerStatus($status, $tId = null)
 	{
@@ -818,8 +805,8 @@ class CurrentCart extends Cart
 	/**
 	 * Set selected saved shipping addresses for this user
 	 *
-	 * @param   int   $saId  saved address ID
-	 * @return  bool
+	 * @param int saved address ID
+	 * @return bool
 	 */
 	public function setSavedShippingAddress($saId)
 	{
@@ -857,7 +844,8 @@ class CurrentCart extends Cart
 	/**
 	 * Generate unique security token to verify the place order calls
 	 *
-	 * @return  string  token
+	 * @param 		void
+	 * @return		string	token
 	 */
 	public function getToken()
 	{
@@ -872,9 +860,8 @@ class CurrentCart extends Cart
 	/**
 	 * Verify security token
 	 *
-	 * @param   string  $token
-	 * @param   int     $tId
-	 * @return  bool
+	 * @param 		string	token
+	 * @return		bool
 	 */
 	public function verifyToken($token, $tId = false)
 	{
@@ -893,7 +880,8 @@ class CurrentCart extends Cart
 	/**
 	 * Finalizes transaction in the DB
 	 *
-	 * @return  void
+	 * @param 		void
+	 * @return		void
 	 */
 	public function finalizeTransaction()
 	{
@@ -915,10 +903,10 @@ class CurrentCart extends Cart
 	/**
 	 * Mark step for current transaction as completed (default) or not-completed
 	 *
-	 * @param   string  $step    Step
-	 * @param   mixed   $meta    Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA steps for each SKU)
-	 * @param   bool    $status  Completed (true) or not completed (false)
-	 * @return  bool
+	 * @param 	string Step
+	 * @param 	mixed Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA steps for each SKU)
+	 * @param 	bool Completed (true) or not completed (false)
+	 * @return 	bool
 	 */
 	public function setStepStatus($step, $meta = '', $status = true)
 	{
@@ -935,13 +923,13 @@ class CurrentCart extends Cart
 		return true;
 	}
 
+
 	/********************************************* Coupon functions **********************************************/
 
 	/**
 	 * Add coupon to cart
-	 *
-	 * @param   string  $couponCode  coupon code
-	 * @return  bool    true on sucess
+	 * @param 	string		$couponCode coupon code
+	 * @return	bool		true on sucess
 	 */
 	public function addCoupon($couponCode)
 	{
@@ -982,9 +970,8 @@ class CurrentCart extends Cart
 
 	/**
 	 * Check if coupon applies to the cart and add a SKU to cart if needed and possible
-	 *
-	 * @param   int   $cnId  coupon ID
-	 * @return  bool  true on cuccess, exception on failure
+	 * @param 	int			$cnId coupon ID
+	 * @return	bool		true on cuccess, exception on failure
 	 */
 	public function applyCoupon($cnId)
 	{
@@ -1034,6 +1021,8 @@ class CurrentCart extends Cart
 				$warehouse = $this->warehouse;
 				$productOptions = $warehouse->getProductOptions($couponObject->cnoObjectId);
 
+				$productOptions = $productOptions->options;
+
 				// See if the product has only one SKU, then add this SKU to cart (There is no way do decide what SKU to add if there are several of them)
 				if (sizeof($productOptions->skus) == 1)
 				{
@@ -1054,8 +1043,8 @@ class CurrentCart extends Cart
 
 	/**
 	 * Get coupons applied to the cart
-	 *
-	 * @return  array  coupons
+	 * @param 	void
+	 * @return	array		coupons
 	 */
 	public function getCoupons()
 	{
@@ -1073,9 +1062,8 @@ class CurrentCart extends Cart
 
 	/**
 	 * Checks if coupon is applied to the cart
-	 *
-	 * @param   string  $couponCode  coupon code
-	 * @return  bool
+	 * @param 	string		$couponCode coupon code
+	 * @return	bool
 	 */
 	private function isCouponApplied($cnCode)
 	{
@@ -1100,7 +1088,9 @@ class CurrentCart extends Cart
 	 * Do the maintenance of coupons -- make sure all coupons are valid and in order, remove unnecessary coupons...
 	 * Return all perks available for the cart
 	 *
-	 * @return  array  perks
+	 * @param 	object 		$cartInfo
+	 * @param	object		$cartCoupons
+	 * @return 	array		perks
 	 */
 	public function getCouponPerks()
 	{
@@ -1217,8 +1207,7 @@ class CurrentCart extends Cart
 				}
 
 			}
-			else
-			{
+			else {
 				throw new \Exception(Lang::txt('Invalid coupon. Invalid action type.'));
 			}
 
@@ -1425,9 +1414,8 @@ class CurrentCart extends Cart
 
 	/**
 	 * Remove coupon from cart
-	 *
-	 * @param   int   $cnId  coupon ID
-	 * @return  bool  true on sucess
+	 * @param 	int		$cnId coupon ID
+	 * @return	bool		true on sucess
 	 */
 	public function removeCoupon($cnId)
 	{
@@ -1444,6 +1432,7 @@ class CurrentCart extends Cart
 		$sql = "DELETE FROM `#__cart_coupons` WHERE `cnId` = " . $this->_db->quote($cnId) . " AND `crtId` = " . $this->_db->quote($this->crtId);
 
 		$this->_db->setQuery($sql);
+		//echo $this->_db->_sql;
 		$this->_db->query();
 
 		return true;
@@ -1452,7 +1441,9 @@ class CurrentCart extends Cart
 	/**
 	 * Handle memberships
 	 *
-	 * @return  object  membership info
+	 * @param 	object 		$cartInfo
+	 * @param	object		$cartCoupons
+	 * @return 	object		membership info
 	 */
 	public function getMembershipInfo()
 	{
@@ -1513,7 +1504,8 @@ class CurrentCart extends Cart
 	 * Get all items in the cart if cart exists, if cart doesn't exist reset session data and create a new cart
 	 * This is primarily for cases when session cart doesn't exist anymore. In most cases cart will be there.
 	 *
-	 * @return  array  of items in the cart
+	 * @param void
+	 * @return array of items in the cart
 	 */
 	private function getItems()
 	{
@@ -1531,7 +1523,8 @@ class CurrentCart extends Cart
 	/**
 	 * Update cart based on current availability (and pricing) and return all items in the cart, update cart's 'lastUpdated' field
 	 *
-	 * @return  array  of items in the cart
+	 * @param void
+	 * @return array of items in the cart
 	 */
 	private function getUpdatedItems()
 	{
@@ -1644,7 +1637,8 @@ class CurrentCart extends Cart
 	/**
 	 * Get cart info from session, no DB call, simply use session data
 	 *
-	 * @return  bool
+	 * @param void
+	 * @return bool
 	 */
 	private function liftSessionCart()
 	{
@@ -1653,7 +1647,7 @@ class CurrentCart extends Cart
 			echo "<br>Lifting session cart";
 		}
 
-		$session = \App::get('session');
+		$session = \App::get('session'); //Factory::getSession();
 		$cart = $session->get('cart');
 
 		if ($cart && !empty($cart->crtId))
@@ -1668,7 +1662,8 @@ class CurrentCart extends Cart
 	/**
 	 * Sync session cart with the latest info from DB
 	 *
-	 * @return  void
+	 * @param void
+	 * @return void
 	 */
 	private function syncSessionCart()
 	{
@@ -1713,7 +1708,8 @@ class CurrentCart extends Cart
 	/**
 	 * Update session with instance cart info (no product syncing)
 	 *
-	 * @return  void
+	 * @param void
+	 * @return void
 	 */
 	private function updateSession()
 	{
@@ -1724,7 +1720,8 @@ class CurrentCart extends Cart
 	/**
 	 * Clear session cart
 	 *
-	 * @return  void
+	 * @param void
+	 * @return void
 	 */
 	private function clearSessionCart()
 	{
@@ -1735,7 +1732,8 @@ class CurrentCart extends Cart
 	/**
 	 * Get cart info from cookie
 	 *
-	 * @return  bool
+	 * @param void
+	 * @return bool
 	 */
 	private function liftCookie()
 	{
@@ -1784,8 +1782,8 @@ class CurrentCart extends Cart
 	 * Lift requested cart
 	 * For logged in users use liftUserCart function instead.
 	 *
-	 * @param   int   $crtId  Cart ID
-	 * @return  bool
+	 * @param int $crtId Cart ID
+	 * @return bool
 	 */
 	private function liftCart($crtId)
 	{
@@ -1800,7 +1798,8 @@ class CurrentCart extends Cart
 	/**
 	 * Create a new cart
 	 *
-	 * @return  void
+	 * @param void
+	 * @return void
 	 */
 	private function createCart()
 	{
@@ -1818,8 +1817,7 @@ class CurrentCart extends Cart
 			$uId = $juser->id;
 			$cart->linked = 1;
 		}
-		else
-		{
+		else {
 			$cart->linked = 0;
 		}
 
@@ -1851,7 +1849,8 @@ class CurrentCart extends Cart
 	 * Link a session cart with user's cart. If these carts are different -- merge them.
 	 * If there is only a session cart -- make it the user's cart
 	 *
-	 * @return  bool
+	 * @param void
+	 * @return bool
 	 */
 	private function linkCarts()
 	{
@@ -1859,6 +1858,8 @@ class CurrentCart extends Cart
 		{
 			echo "<br>Linking carts";
 		}
+
+		//print_r($this); die;
 
 		// Kill the old cookie
 		setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
@@ -1986,7 +1987,8 @@ class CurrentCart extends Cart
 	/**
 	 * Create new transaction
 	 *
-	 * @return  bool
+	 * @param void
+	 * @return bool
 	 */
 	private function createTransaction()
 	{
@@ -2019,7 +2021,8 @@ class CurrentCart extends Cart
 	/**
 	 * Populate transaction items and required steps -- cart must be synced.
 	 *
-	 * @return  void
+	 * @param void
+	 * @return void
 	 */
 	private function populateTransaction()
 	{
@@ -2036,6 +2039,8 @@ class CurrentCart extends Cart
 		$warehouse = $this->warehouse;
 
 		$transactionSubtotalAmount = 0;
+
+		//print_r($cartItems); die;
 
 		foreach ($cartItems as $sId => $skuInfo)
 		{
@@ -2077,9 +2082,9 @@ class CurrentCart extends Cart
 			}
 
 			// Reserve/lock items
-			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
+			require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
 			$sku = \Components\Storefront\Models\Sku::getInstance($sId);
-
+			//print_r($sku); die;
 			$sku->reserveInventory($skuInfo['cartInfo']->qty);
 		}
 
@@ -2135,7 +2140,8 @@ class CurrentCart extends Cart
 	/**
 	 * Attempts to rebuild a transaction if there is enough inventory and prices have not changed
 	 *
-	 * @return  bool  Success or failure
+	 * @param void
+	 * @return bool Success or failure
 	 */
 	private function rebuildTransaction()
 	{
@@ -2161,7 +2167,7 @@ class CurrentCart extends Cart
 		// lock transaction items
 		$warehouse = $this->warehouse;
 
-		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
+		require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
 
 		foreach ($tItems as $sId => $item)
 		{
@@ -2178,7 +2184,8 @@ class CurrentCart extends Cart
 	/**
 	 * Kill all cart pending transactions
 	 *
-	 * @return  mixed
+	 * @param void
+	 * @return void
 	 */
 	private function cleanOldTransactions()
 	{

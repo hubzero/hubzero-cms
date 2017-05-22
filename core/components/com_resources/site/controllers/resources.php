@@ -52,6 +52,7 @@ use Request;
 use Route;
 use Event;
 use Lang;
+use User;
 use App;
 
 /**
@@ -478,7 +479,7 @@ class Resources extends SiteController
 				$bits['tag'] = Request::getVar('input', '');
 				$bits['tag2'] = Request::getVar('input2', '');
 				$bits['sortby'] = Request::getVar('sortby', 'title');
-				$bits['filter']  = Request::getVar('filter', array('level0','level1','level2','level3','level4'));
+				$bits['filter']  = Request::getVar('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
 				$bits['ranking'] = $this->config->get('show_ranking');
 
 				if ($bits['tag'] == $bits['tag2'])
@@ -563,7 +564,8 @@ class Resources extends SiteController
 				// Get the first child
 				if ($firstChild || $model->isTool())
 				{
-					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, '');
+					$xact = 'data-pop-out="true"';
+					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, $xact);
 				}
 
 				// Get the sections
@@ -1791,7 +1793,7 @@ class Resources extends SiteController
 					foreach ($all_logical_types as $logical_type)
 					{
 						//if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
-						// && strcasecmp($matches[ 1 ][ 0 ], $as_mnemonic) == 0)
+						// && strcasecmp($matches[1][0], $as_mnemonic) == 0)
 						if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
 						 && substr(strtolower($matches[1][0]), -strlen($as_mnemonic)) == $as_mnemonic)
 						{
@@ -2581,7 +2583,10 @@ class Resources extends SiteController
 					: $HTTP_USER_AGENT;
 
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+			continue;
+		}
 
 		$fsize = filesize($p . $f);
 		$mod_date = date('r', filemtime($p.$f));

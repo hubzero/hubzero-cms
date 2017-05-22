@@ -36,8 +36,8 @@ if (!\User::authorise('core.manage', 'com_oaipmh'))
 	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'config.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'config.php';
 
 $task = \Request::getCmd('task');
 
@@ -51,8 +51,8 @@ $task = \Request::getCmd('task');
 	\Route::url('index.php?option=com_oaipmh&task=schemas'),
 	($task == 'schemas')
 );
-require_once(dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
+require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_OAIPMH_PLUGINS'),

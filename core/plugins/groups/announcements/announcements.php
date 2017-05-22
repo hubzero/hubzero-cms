@@ -606,6 +606,20 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
+		$extension = 'plg_groups_announcements';
+		$basePath  = PATH_APP;
+
+		if ($group->isSuperGroup())
+		{
+			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
+		}
+
+		$lang = App::get('language');
+		$lang->load($extension, $basePath, null, false, true)
+		|| $lang->load($extension, PATH_APP . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true)
+		|| $lang->load($extension, PATH_APP . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true)
+		|| $lang->load($extension, PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true);
+
 		// Create view object
 		$eview = new Hubzero\Mail\View(array(
 			'base_path' => __DIR__,

@@ -41,32 +41,29 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		$this->infolink = '/kb/points/';
-		$this->banking  = Component::params('com_members')->get('bankAccounts');
-
-		include_once(__DIR__ . DS . 'helper.php');
+		include_once __DIR__ . DS . 'helper.php';
 	}
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
@@ -83,8 +80,8 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Rate a resource
 	 *
-	 * @param      string $option Name of the component
-	 * @return     array
+	 * @param   string  $option  Name of the component
+	 * @return  array
 	 */
 	public function onResourcesRateItem($option)
 	{
@@ -112,11 +109,11 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @param   string  $option    Name of the component
+	 * @param   array   $areas     Active area(s)
+	 * @param   string  $rtrn      Data to be returned
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -146,11 +143,14 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			$rtrn = '';
 		}
 
-		include_once(__DIR__ . DS . 'models' . DS . 'review.php');
+		include_once __DIR__ . DS . 'models' . DS . 'review.php';
+
+		$isAuthor = (in_array(User::get('id'), $model->contributors('id')));
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $model->resource;
+		$h->isAuthor = $isAuthor;
 		$h->option   = $option;
 		$h->_option  = $option;
 		$h->execute();
@@ -179,6 +179,9 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				);
 			}
 
+			$this->infolink = '/kb/points/';
+			$this->banking  = Component::params('com_members')->get('bankAccounts');
+
 			// Instantiate a view
 			$view = $this->view('default', 'browse')
 				->set('voting', $this->params->get('voting', 1))
@@ -189,6 +192,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				->set('infolink', $this->infolink)
 				->set('config', $this->params)
 				->set('h', $h)
+				->set('isAuthor', $isAuthor)
 				->setErrors($h->getErrors());
 
 			// Return the output
@@ -202,6 +206,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 			$view = $this->view('default', 'metadata')
 				->set('reviews', $reviews)
+				->set('isAuthor', $isAuthor)
 				->set('url', Route::url($url))
 				->set('url2', Route::url($url . '&action=addreview#reviewform'));
 

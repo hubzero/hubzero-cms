@@ -436,6 +436,11 @@ class Projects extends AdminController
 			$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_MESSAGE_SENT');
 		}
 
+		if (!$action && !$message)
+		{
+			$model->recordActivity(Lang::txt('COM_PROJECTS_MSG_ADMIN_UPDATED'), 0, '', '', 'project', 0, $admin = 1);
+		}
+
 		// Save changes
 		if (!$model->store())
 		{

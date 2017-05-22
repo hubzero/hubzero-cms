@@ -227,11 +227,9 @@ if ($revertAllowed && $this->pub->accepted())
 
 							$admin = $this->project->table('Activity')->checkActivity( $this->project->get('id'), $activity);
 							 if ($admin != 1) { ?>
-							<li id="next-publish">
-								<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH')
-							. ' <a href="' . Route::url($this->pub->link('editversion') . '&action=republish') . '">'
-							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REPUBLISH') . ' &raquo;</a>';  ?></p>
-							</li>
+							<li><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH'); ?></p>
+								<?php echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">'
+							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ; ?></li>
 							<?php } ?>
 							<?php if ($admin == 1) { ?>
 							<li id="next-question"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_BY_ADMIN');  ?></p></li>
