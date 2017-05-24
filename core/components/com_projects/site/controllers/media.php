@@ -183,24 +183,38 @@ class Media extends Base
 			$hi = new \Hubzero\Image\Processor($path . DS . $file);
 			if (count($hi->getErrors()) == 0)
 			{
+				// PHP versions < 7 has issues with reading EXIF data
+				// So, we want to try and catch those specific errors
+				// and ignore them.
 				try
 				{
 					$hi->autoRotate();
+				}
+				catch (\Exception $e)
+				{
+					if (strpos($e->getMessage(), 'Illegal IFD size') !== false
+					 || strpos($e->getMessage(), 'Illegal IFD offset') !== false)
+					{
+						// PURR #1186, QUBES #618
+						// Ignore. Let's just move on.
+					}
+					else
+					{
+						echo json_encode(array('error' => $e->getMessage()));
+						return;
+					}
+				}
+
+				try
+				{
 					$hi->resize(200);
 					$hi->setImageType(IMAGETYPE_PNG);
 					$hi->save($path . DS . $file);
 				}
 				catch (\Exception $e)
 				{
-					if (strpos($e->getMessage(), 'Illegal IFD size') !== false)
-					{
-						// PURR #1186, QUBES #618
-						continue;
-					}
-					else
-					{
-						App::abort('500', $e);
-					}
+					echo json_encode(array('error' => $e->getMessage()));
+					return;
 				}
 			}
 			else
@@ -226,7 +240,8 @@ class Media extends Base
 				}
 				catch (\Exception $e)
 				{
-					error_log($e->getMessage());
+					echo json_encode(array('error' => $e->getMessage()));
+					return;
 				}
 			}
 			else
