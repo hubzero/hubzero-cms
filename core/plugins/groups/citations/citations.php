@@ -395,7 +395,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// get the preferred labeling scheme
-		$view->label = "both";
+		$view->label = $this->params->get('labeling_scheme', "both");
 
 		if ($view->label == "none")
 		{

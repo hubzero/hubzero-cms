@@ -128,7 +128,7 @@ if (isset($this->messages))
 							<?php endif; ?>
 						</thead>
 						<tbody>
-							<?php $x = 0; ?>
+							<?php $x = (1 + Request::getInt('start', 0)); ?>
 							<?php foreach ($this->citations as $cite) : ?>
 								<?php if (!$this->isManager && $cite->published == $cite::STATE_UNPUBLISHED) { continue; } ?> 
 								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
@@ -153,13 +153,21 @@ if (isset($this->messages))
 
 												switch ($this->label)
 												{
-													case 'number':
+													case 'id':
 														echo "<span class=\"number\">{$cite->id}.</span>";
+														break;
+													case 'number':
+														echo "<span class=\"sequential\">{$x}.</span>";
 														break;
 													case 'type':
 														echo "<span class=\"type\">{$type}</span>";
 														break;
+													case 'numtype':
+														echo "<span class=\"number\">{$x}. </span>";
+														echo "<span class=\"type\">{$type}</span>";
+														break;
 													case 'both':
+													default:
 														echo "<span class=\"number\">{$cite->id}. </span>";
 														echo "<span class=\"type\">{$type}</span>";
 														break;
@@ -249,6 +257,7 @@ if (isset($this->messages))
 										</td>
 									<?php endif; ?>
 								</tr>
+								<?php $x++; ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
