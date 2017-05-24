@@ -65,6 +65,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="id">Record ID</option>
 					<option value="number">Sequential Number</option>
 					<option value="type">Citation Type</option>
+					<option value="none">None</option>
 				</field>
 			</fieldset>
 		</fields>
