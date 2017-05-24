@@ -474,7 +474,7 @@ class Project extends Model
 				$this->params->set('access-view-project', true);
 			}
 			// If an open project
-			if ($this->get('private') < 0 && $this->isActive())
+			if ($this->get('private') < 0 && ($this->isActive() || $this->isArchived()))
 			{
 				// Allow read-only mode for everything
 				$this->params->set('access-member-project', true);
@@ -564,9 +564,17 @@ class Project extends Model
 		{
 			$this->params->set('access-view-project', true);
 			$this->params->set('access-member-project', true);
-			$this->params->set('access-manager-project', true); // May edit project properties
-			$this->params->set('access-content-project', true); // May add/edit/delete all content
-			$this->params->set('access-owner-project', true);
+
+			if ($this->isArchived())
+			{
+				$this->params->set('access-readonly-project', true);
+			}
+			else
+			{
+				$this->params->set('access-manager-project', true); // May edit project properties
+				$this->params->set('access-content-project', true); // May add/edit/delete all content
+				$this->params->set('access-owner-project', true);
+			}
 			return;
 		}
 
