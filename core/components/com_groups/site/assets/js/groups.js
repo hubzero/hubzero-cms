@@ -478,10 +478,14 @@ HUB.Groups = {
 		$('.form-controls .dropdown-menu a').on('click', function(event) {
 			event.preventDefault();
 
-			// store the action for hte user
-			if (localStorage)
-			{
-				localStorage.setItem('groups.pagemanager.action', $(this).attr('data-action'));
+			// store the action for the user
+			try {
+				if (localStorage) {
+					localStorage.setItem('groups.pagemanager.action', $(this).attr('data-action'));
+				}
+			}
+			catch(e) {
+				// ignore any local storage-related exceptions
 			}
 
 			// change which is active
@@ -505,12 +509,16 @@ HUB.Groups = {
 			}
 		});
 
-		// prefill last choice
-		if (localStorage && localStorage.getItem('groups.pagemanager.action'))
-		{
-			var action = localStorage.getItem('groups.pagemanager.action');
-			var item = $('.form-controls .dropdown-menu a[data-action="'+action+'"]');
-			item.trigger('click');
+		// pre-fill last choice
+		try {
+			if (localStorage && localStorage.getItem('groups.pagemanager.action')) {
+				var action = localStorage.getItem('groups.pagemanager.action');
+				var item = $('.form-controls .dropdown-menu a[data-action="' + action + '"]');
+				item.trigger('click');
+			}
+		}
+		catch(e) {
+			// ignore any local storage-related exceptions
 		}
 	},
 
