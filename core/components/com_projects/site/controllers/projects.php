@@ -404,12 +404,6 @@ class Projects extends Base
 			$this->model->member(true);
 		}
 
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Set the page title
-		$this->_buildTitle();
-
 		// Do we need to login?
 		if (User::isGuest() && $action == 'login')
 		{
@@ -640,6 +634,12 @@ class Projects extends Base
 			$this->model->set('counts', Helpers\Html::getCountArray($counts));
 		}
 
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Set the page title
+		$this->_buildTitle();
+
 		// Output HTML
 		$this->view->params   = $this->model->params;
 		$this->view->model    = $this->model;
@@ -668,7 +668,8 @@ class Projects extends Base
 		}
 
 		// Check session if this is a newly submitted entry. Trigger a proper event if so.
-		if (Session::get('newsubmission.project')) {
+		if (Session::get('newsubmission.project'))
+		{
 			// Unset the new submission session flag
 			Session::set('newsubmission.project');
 			Event::trigger('content.onAfterContentSubmission', array('Project'));
