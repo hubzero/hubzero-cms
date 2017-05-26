@@ -127,6 +127,6 @@ $this->css();
 	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
-		<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_POST'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 	</p>
 </form>
