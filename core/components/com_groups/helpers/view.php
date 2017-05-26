@@ -237,6 +237,7 @@ class View
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'groups',
 			'layout' => '_menu'
 		));
@@ -349,6 +350,7 @@ class View
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'groups',
 			'layout' => '_content'
 		));
@@ -431,6 +433,7 @@ class View
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'groups',
 			'layout' => '_toolbar'
 		));
@@ -699,6 +702,7 @@ class View
 
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'pages',
 			'layout' => '_view_login'
 		));
@@ -757,6 +761,7 @@ class View
 
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'pages',
 			'layout' => '_view_component'
 		));
@@ -843,6 +848,7 @@ class View
 
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'pages',
 			'layout' => '_view_php'
 		));

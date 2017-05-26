@@ -83,7 +83,7 @@ class Template extends Document
 		$this->set('document', ob_get_clean());
 
 		// run output declared in parent
-		parent::output($echo);
+		return parent::output($echo);
 	}
 
 	/**
