@@ -122,7 +122,7 @@ class Quotas extends AdminController
 
 		if ($filters['class_alias'])
 		{
-			$entries->whereEquals('class_alias', $filters['class_alias']);
+			$entries->whereEquals($cats . '.alias', $filters['class_alias']);
 		}
 
 		// Get records
