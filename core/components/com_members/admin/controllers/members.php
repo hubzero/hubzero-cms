@@ -639,6 +639,9 @@ class Members extends AdminController
 		// Drop through to edit form?
 		if ($this->getTask() == 'apply')
 		{
+			// Force reload te record as it's possible other pieces
+			// of code made changes (i.e., password change)
+			$user = Member::oneOrNew($user->get('id'));
 			return $this->editTask($user);
 		}
 
