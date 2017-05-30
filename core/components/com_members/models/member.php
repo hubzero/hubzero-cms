@@ -55,14 +55,14 @@ class Member extends User
 	* @var  string
 	*/
 	protected $table = '#__users';
-	
+
 	/**
 	* Has profile data been loaded?
 	*
 	* @var  bool
 	*/
 	private $profileLoaded = false;
-	
+
 	/**
 	* Get profile fields
 	*
@@ -72,7 +72,7 @@ class Member extends User
 	{
 		return $this->oneToMany('Profile', 'user_id');
 	}
-	
+
 	/**
 	* Get notes
 	*
@@ -82,7 +82,7 @@ class Member extends User
 	{
 		return $this->oneToMany('Note', 'user_id');
 	}
-	
+
 	/**
 	* Get quota
 	*
@@ -92,7 +92,7 @@ class Member extends User
 	{
 		return $this->oneToOne('Quota', 'user_id');
 	}
-	
+
 	/**
 	* Get hosts
 	*
@@ -102,7 +102,7 @@ class Member extends User
 	{
 		return $this->oneToMany('Host', 'uidNumber');
 	}
-	
+
 	/**
 	* Gets an attribute by key
 	*
@@ -138,7 +138,7 @@ class Member extends User
 
 		return parent::get($key, $default);
 	}
-	
+
 	/**
 	* Is the user's email confirmed?
 	*
@@ -148,7 +148,7 @@ class Member extends User
 	{
 		return ($this->get('activation') > 0);
 	}
-	
+
 	/**
 	* Generate and return various links to the entry
 	* Link will vary depending upon action desired such as edit, delete, etc.
@@ -180,7 +180,7 @@ class Member extends User
 
 		return $link;
 	}
-	
+
 	/**
 	* Get tags on an entry
 	*
@@ -211,7 +211,7 @@ class Member extends User
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
-	
+
 	/**
 	* Tag the entry
 	*
@@ -226,7 +226,7 @@ class Member extends User
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
-	
+
 	/**
 	* Save data
 	*
@@ -287,7 +287,7 @@ class Member extends User
 
 		return $result;
 	}
-	
+
 	/**
 	* Save profile data
 	*
@@ -526,7 +526,7 @@ class Member extends User
 
 		return $result;
 	}
-	
+
 	/**
 	* Clears all terms of use agreements
 	*
