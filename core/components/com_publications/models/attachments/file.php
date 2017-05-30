@@ -671,13 +671,11 @@ class File extends Base
 
 				// Create hash file
 				$hfile =  $copyTo . '.hash';
-				if (!is_file($hfile))
-				{
-					$handle = fopen($hfile, 'w');
-					fwrite($handle, $md5hash);
-					fclose($handle);
-					chmod($hfile, 0644);
-				}
+				$handle = fopen($hfile, 'w');
+				fwrite($handle, $md5hash);
+				fclose($handle);
+				chmod($hfile, 0644);
+
 				$pAttach->store();
 
 				// Produce thumbnail (if applicable)
@@ -1280,13 +1278,11 @@ class File extends Base
 
 			// Create hash file
 			$hfile = $copyTo . '.hash';
-			if (!is_file($hfile))
-			{
-				$handle = fopen($hfile, 'w');
-				fwrite($handle, $md5hash);
-				fclose($handle);
-				chmod($hfile, 0644);
-			}
+			$handle = fopen($hfile, 'w');
+			fwrite($handle, $md5hash);
+			fclose($handle);
+			chmod($hfile, 0644);
+
 			$objPA->store();
 
 			// Produce thumbnail (if applicable)
