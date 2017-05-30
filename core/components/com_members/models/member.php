@@ -471,7 +471,7 @@ class Member extends User
 
 		return true;
 	}
-	
+
 	/**
 	* Delete the record and all associated data
 	*
