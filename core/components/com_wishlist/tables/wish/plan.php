@@ -100,10 +100,10 @@ class Plan extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT *, xp.name AS authorname
-					FROM `#__wishlist_implementation` AS p
-					LEFT JOIN `#__users` AS xp ON xp.id=p.created_by
-					WHERE p.wishid = " . $this->_db->quote($wishid) . " ORDER BY p.created DESC LIMIT 1";
+		$query  = "SELECT plans.*, users.name AS authorname
+			FROM `#__wishlist_implementation` AS plans
+			LEFT JOIN `#__users` AS users ON users.id=plans.created_by
+			WHERE plans.wishid = " . $this->_db->quote($wishid) . " ORDER BY plans.created DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
