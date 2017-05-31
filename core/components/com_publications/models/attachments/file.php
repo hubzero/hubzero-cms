@@ -44,17 +44,17 @@ use ZipArchive;
 class File extends Base
 {
 	/**
-	* Attachment type name
-	*
-	* @var  string
-	*/
+	 * Attachment type name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'file';
 
 	/**
-	* Git handler
-	*
-	* @var  object
-	*/
+	 * Git handler
+	 *
+	 * @var  object
+	 */
 	protected $_git = null;
 
 	/**
