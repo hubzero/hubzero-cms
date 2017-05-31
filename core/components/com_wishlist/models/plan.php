@@ -102,6 +102,47 @@ class Plan extends Relational
 		'pagetext'
 	);
 
+	public function __construct($oid=null, $wishid=null)
+	{
+		$this->_db = \App::get('db');
+
+		if ($this->_tbl_name)
+		{
+			$cls = $this->_tbl_name;
+			$this->_tbl = new $cls($this->_db);
+
+			if (!($this->_tbl instanceof \JTable))
+			{
+				$this->_logError(
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
+				);
+				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
+			}
+
+			if ($oid)
+			{
+				if (is_numeric($oid) || is_string($oid))
+				{
+					// Make sure $oid isn't empty
+					// This saves a database call
+					$this->_tbl->load($oid);
+				}
+				else if (is_object($oid) || is_array($oid))
+				{
+					$this->bind($oid);
+				}
+			}
+			else if ($wishid)
+			{
+				if ($plans = $this->_tbl->getPlan($wishid))
+				{
+					$this->bind($plans[0]);
+				}
+			}
+		}
+	}
+
+
 	/**
 	 * Get the owning wish
 	 *
