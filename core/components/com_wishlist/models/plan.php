@@ -79,7 +79,7 @@ class Plan extends Base
 	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
 	 * @return  void
 	 */
-	public function __construct($oid=null, $wish=null)
+	public function __construct($oid=null, $wishid=null)
 	{
 		$this->_db = \App::get('db');
 
@@ -109,9 +109,9 @@ class Plan extends Base
 					$this->bind($oid);
 				}
 			}
-			else if ($wish)
+			else if ($wishid)
 			{
-				if ($plans = $this->_tbl->getPlan($wish))
+				if ($plans = $this->_tbl->getPlan($wishid))
 				{
 					$this->bind($plans[0]);
 				}
@@ -271,4 +271,3 @@ class Plan extends Base
 		return $content;
 	}
 }
-
