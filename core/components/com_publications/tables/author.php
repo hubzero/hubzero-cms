@@ -580,6 +580,7 @@ class Author extends \JTable
 					modified_by=" . $this->_db->quote($this->modified_by) . ",
 					role=" . $this->_db->quote($this->role) . ",
 					name=" . $this->_db->quote($this->name) . ",
+					status=" . $this->_db->quote($this->status) . ",
 					organization=" . $this->_db->quote($this->organization) . "
 					WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id)
 					. " AND project_owner_id=" . $this->_db->quote($this->project_owner_id)
