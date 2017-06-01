@@ -35,6 +35,9 @@ defined('_HZEXEC_') or die();
 
 use Hubzero\Utility\Sanitize;
 
+/**
+* Search ticket object?
+*/
 class plgSearchTickets extends \Hubzero\Plugin\Plugin
 {
 	/**
