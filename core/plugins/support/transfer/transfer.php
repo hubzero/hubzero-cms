@@ -48,10 +48,11 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieves a row from the database
 	 *
-	 * @param   string  $refid     ID of the database table row
-	 * @param   string  $category  Element type (determines table to look in)
-	 * @param   string  $parent    If the element has a parent element
-	 * @return  array
+	 * @param   string   $from_type
+	 * @param   integer  $from_id
+	 * @param   string   $to_type 
+	 * @param   integer  $rid
+	 * @return  integer
 	 */
 	public function transferItem($from_type, $from_id, $to_type, $rid=0, $deactivate=1)
 	{
@@ -72,12 +73,12 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		// collectors
+		// Collectors
 		$author    = '';
 		$subject   = '';
 		$body      = '';
 		$tags      = '';
-		$owner     = ''; // name of group owning the item
+		$owner     = ''; // Name of group owning the item
 		$anonymous = 0;
 
 		// get needed scripts
@@ -169,7 +170,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 					$wishlist = \Components\Wishlist\Models\Wishlist::oneOrFail($row->wishlist);
 
-					// get owner
+					// Get owner
 					$nativegroups = $wishlist->getOwnergroups($admingroup, 1);
 					$owner = (count($nativegroups) > 0 && $nativegroups[0] != $admingroup) ? $nativegroups[0] : ''; // tool group
 
@@ -188,7 +189,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 		}
 
-		// if no author can be found, use current administrator
+		// If no author can be found, use current administrator
 		$author = User::getInstance($author);
 		if (!is_object($author))
 		{
@@ -239,7 +240,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				$newrow->set('status', 0);
 				$newrow->set('anonymous', $anonymous);
 
-				// which wishlist?
+				// Which wishlist?
 				$mainlist = \Components\Wishlist\Models\Wishlist::oneByReference(1, 'general')->get('id');
 				$listid = 0;
 				if (!$rid && $owner)
@@ -264,7 +265,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Checkin ticket
-			//$newrow->checkin();
+			// $newrow->checkin();
 
 			// Extras
 			if ($newrow->exists())
@@ -293,7 +294,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		// If we are de-activating original item
 		if ($deactivate)
 		{
-			// overwrite old entry
+			// Overwrite old entry
 			if (!$row->store())
 			{
 				$this->setError($row->getError());
@@ -306,7 +307,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				switch ($from_type)
 				{
 					case 'ticket':
-						// no banking yet
+						// No banking yet
 					break;
 
 					case 'question':
@@ -345,7 +346,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 	 */
 	public function getResourceIdFromTag($tag)
 	{
-		// intended to find a resource from a tag, e.g. tool:cntbands
+		// Intended to find a resource from a tag, e.g. tool:cntbands
 		if ($tag === null)
 		{
 			return false;
@@ -364,7 +365,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 	 */
 	public function getResourceIdFromGroup($groupname)
 	{
-		// intended to find a resource from the name of owner group, e.g. app-cntbands
+		// Intended to find a resource from the name of owner group, e.g. app-cntbands
 		if ($groupname === null)
 		{
 			return false;
