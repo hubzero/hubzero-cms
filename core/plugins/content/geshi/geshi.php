@@ -29,7 +29,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
+// No direct access
 defined('_HZEXEC_') or die;
 
 /**
@@ -40,8 +40,8 @@ class plgContentGeshi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Prepare the content for display
 	 *
-	 * @param   string   $context  The context of the content being passed to the plugin.
-	 * @param   object   $row      The article object.  Note $article->text is also available
+	 * @param   string   $context  The context of the content being passed to the plugin
+	 * @param   object   $article  The row object
 	 * @param   object   $params   The article params
 	 * @param   integer  $page     The 'page' number
 	 * @return  void
@@ -105,7 +105,7 @@ class plgContentGeshi extends \Hubzero\Plugin\Plugin
 	 */
 	protected static function parseAttributes($string)
 	{
-		// Initialise variables.
+		// Initialise variables
 		$attr = array();
 		$retarray = array();
 
