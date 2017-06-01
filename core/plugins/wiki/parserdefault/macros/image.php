@@ -423,6 +423,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
 	 *
 	 * @param   string  $file  Filename
+	 * @param   boolean $alt   Switches between relative and absolute path?
 	 * @return  string
 	 */
 	private function _path($file, $alt=false)
