@@ -3,8 +3,9 @@ abstract class CCObject
 {
 	/**
 	 * Validate an object to check that all required fields have been supplied
-	 * @params array $params - object property names to reference for validation before HTTP requests
-	 * @return void
+	 
+	 * @params  array  $params  object property names to reference for validation before HTTP requests
+	 * @return  void
 	 */
 	protected function validate(Array $params)
 	{
@@ -25,12 +26,23 @@ abstract class CCObject
 	}
 }
 
-
-
+/**
+ * ContactList class
+ */
 class ContactList extends CCObject
 {
+	/**
+	 * @var integer  $contactCount
+	 * @var unknown  $displayOnSignup
+	 * @var integer  $id
+	 * @var string   $link
+	 * @var string   $name
+	 * @var unknown  $optInDefault
+	 * @var unknown  $sortOrder
+	 * @var boolean  $updated  Maybe string?
+	 */
 	public $contactCount;
-	public $displayOnSignup;
+	public $displayOnSignup
 	public $id;
 	public $link;
 	public $name;
@@ -40,7 +52,8 @@ class ContactList extends CCObject
 
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  Associative array of properties/values
 	 */
 	public function __construct($params = array())
 	{
@@ -56,9 +69,10 @@ class ContactList extends CCObject
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
-	 * @param  SimpleXMLElement $parsedReturn - parsed XML
-	 * @return
+	 * @param  SimpleXMLElement  $parsedReturn  parsed XML
+	 * @return array
 	 */
 	public static function createStruct($parsedReturn)
 	{
@@ -74,6 +88,7 @@ class ContactList extends CCObject
 
 	/**
 	 * Create XML Representation of the object
+	 *
 	 * @return SimpleXMLElement
 	 */
 	public function createXml()
@@ -95,6 +110,12 @@ class ContactList extends CCObject
 		return $xml->asXML();
 	}
 
+	/**
+	 * Create associative array of object from XML?
+	 *
+	 * @param   object  $parsedResponse
+	 * @return  array
+	 */
 	public static function createMemberStruct($parsedResponse)
 	{
 		$contact['link'] = (string) $parsedResponse->link->Attributes()->href;
@@ -106,8 +127,57 @@ class ContactList extends CCObject
 	}
 }
 
+/**
+ * Contact class
+ */
 class Contact extends CCObject
 {
+	/**
+	 *
+	 * @var  string  $link
+	 * @var  integer  $id
+	 * @var  $updated
+	 * @var  $status
+	 * @var  string  $emailAddress
+	 * @var  $emailType
+	 * @var  string  $firstName
+	 * @var  string  $middleName
+	 * @var  string  $lastName
+	 * @var  string  $fullName
+	 * @var  string  $jobTitle
+	 * @var  string  $companyName
+	 * @var  $homePhone
+	 * @var  $workPhone
+	 * @var  string  $addr1
+	 * @var  string  $addr2
+	 * @var  string  $addr3
+	 * @var  string  $city
+	 * @var  integer  $stateCode
+	 * @var  string  $stateName
+	 * @var  integer  $countryCode
+	 * @var  string  $countryName
+	 * @var  integer  $postalCode
+	 * @var  integer  $subPostalCode
+	 * @var  string  $notes
+	 * @var  $customField1
+	 * @var  $customField2
+	 * @var  $customField3
+	 * @var  $customField4
+	 * @var  $customField5
+	 * @var  $customField6
+	 * @var  $customField7
+ 	 * @var  $customField8
+	 * @var  $customField9
+	 * @var  $customField10
+	 * @var  $customField11
+	 * @var  $customField12
+	 * @var  $customField13
+	 * @var  $customField14
+	 * @var  $customField15
+	 * @var  $contactLists
+	 * @var  $confirmed
+	 * @var  $optInSource
+	 */
 	public $link;
 	public $id;
 	public $updated;
@@ -155,7 +225,8 @@ class Contact extends CCObject
 
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  associative array of properties/values
 	 */
 	public function __construct($params = array())
 	{
@@ -224,9 +295,10 @@ class Contact extends CCObject
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
-	 * @param  SimpleXMLElement $parsedReturn - parsed XML
-	 * @return
+	 * @param   SimpleXMLElement  $parsedReturn  parsed XML
+	 * @return  array
 	 */
 	public static function createStruct($parsedReturn)
 	{
@@ -283,6 +355,7 @@ class Contact extends CCObject
 
 	/**
 	 * Create XML Representation of the object
+	 *
 	 * @return SimpleXMLElement
 	 */
 	public function createXml()
@@ -348,8 +421,61 @@ class Contact extends CCObject
 	}
 }
 
+/**
+ * Campaign class
+ */
 class Campaign extends CCObject
 {
+	/**
+	 * @var  string                $name
+         * @var  integer               $id
+         * @var  string                $link
+         * @var  $status
+         * @var  string                $campaignDate
+         * @var  string                $lastEditDate
+         * @var  string                $lastRunDate
+         * @var  string                $campaignSent
+         * @var  string                $campaignOpens
+         * @var  integer               $campaignClicks
+         * @var  integer               $campaignBounces
+         * @var  integer               $campaignForwards
+         * @var  integer               $campaignOptOuts
+         * @var  $campaignSpamReports
+         * @var  string		       $subject
+         * @var  string 	       $fromName
+         * @var  $campaignType
+         * @var  $vawp
+         * @var  string 	       $vawpLinkText
+         * @var  string 	       $vawpText
+         * @var  $permissionReminder
+         * @var  string 	       $permissionReminderText
+         * @var  $greetingSalutation
+         * @var  string		       $greetingName
+         * @var  string		       $greetingString
+         * @var  string		       $orgName
+         * @var  string                $orgAddr1
+         * @var  string                $orgAddr2
+         * @var  string                $orgAddr3
+         * @var  string                $orgCity
+         * @var  string                $orgState
+         * @var  string                $orgInternationalState
+         * @var  string                $orgCountry
+         * @var  integer               $orgPostalCode
+         * @var  string                $incForwardEmail
+         * @var  string                $forwardEmailLinkText
+         * @var  string                $incSubscribeLink
+         * @var  string                $subscribeLinkText
+         * @var  $emailContentFormat
+         * @var  string                $emailContent
+         * @var  $textVersionContent
+         * @var  $styleSheet
+         * @var  array                 $lists
+         * @var  string                $fromAddress
+         * @var  string                $replyAddress
+         * @var  $archiveStatus
+         * @var  $archiveUrl
+         * @var  array                 $urls
+	 */
 	public $name;
 	public $id;
 	public $link;
@@ -398,10 +524,11 @@ class Campaign extends CCObject
 	public $archiveStatus;
 	public $archiveUrl;
 	public $urls = array();
-
+	
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  associative array of properties/values
 	 */
 	public function __construct($params=array())
 	{
@@ -457,7 +584,8 @@ class Campaign extends CCObject
 
 	/**
 	 * Create XML Representation of the object
-	 * @return SimpleXMLElement
+	 *
+	 * @return  SimpleXMLElement
 	 */
 	public function createXml()
 	{
@@ -553,8 +681,9 @@ class Campaign extends CCObject
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
-	 * @param  SimpleXMLElement $parsedReturn - parsed XML
+	 * @param  SimpleXMLElement  $parsedReturn  parsed XML
 	 * @return
 	 */
 	public static function createOverviewStruct($parsedReturn)
@@ -570,8 +699,9 @@ class Campaign extends CCObject
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
-	 * @param  SimpleXMLElement $parsedReturn - parsed XML
+	 * @param  SimpleXMLElement  $parsedReturn  parsed XML
 	 * @return
 	 */
 	public static function createStruct($parsedReturn)
@@ -647,15 +777,24 @@ class Campaign extends CCObject
 	}
 }
 
+/**
+ * Folder class
+ */
 class Folder extends CCObject
 {
+	/**
+	 * @var  $name
+         * @var  $id
+         * @var  $link
+	 */
 	public $name;
 	public $id;
 	public $link;
 
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  associative array of properties/values
 	 */
 	public function __construct($params = array())
 	{
@@ -666,8 +805,9 @@ class Folder extends CCObject
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
-	 * @param  SimpleXMLElement $parsedReturn - parsed XML
+	 * @param  SimpleXMLElement  $parsedReturn  parsed XML
 	 * @return
 	 */
 	public static function createStruct($parsedReturn)
@@ -680,7 +820,8 @@ class Folder extends CCObject
 
 	/**
 	 * Create XML Representation of the object
-	 * @return SimpleXMLElement
+	 *
+	 * @return  SimpleXMLElement
 	 */
 	public function createXml()
 	{
@@ -694,8 +835,25 @@ class Folder extends CCObject
 	}
 }
 
+/**
+ * Image class
+ */
 class Image extends CCObject
 {
+	/**
+	 * @var  string    $name
+         * @var  integer   $id
+         * @var  string    $link
+         * @var  $updated
+         * @var  string    $imageUrl
+         * @var  integer   $height
+         * @var  integer   $width
+         * @var  string    $description
+         * @var  string    $folder
+         * @var  string    $md5hash
+         * @var  integer   $fileSize
+         * @var  string    $fileType
+	 */
 	public $name;
 	public $id;
 	public $link;
@@ -711,7 +869,8 @@ class Image extends CCObject
 
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  Associative array of properties/values
 	 */
 	public function __construct($params = array())
 	{
@@ -731,8 +890,9 @@ class Image extends CCObject
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
-	 * @param  SimpleXMLElement $parsedReturn - parsed XML
+	 * @param  SimpleXMLElement  $parsedReturn  Parsed XML
 	 * @return
 	 */
 	public static function createStruct($parsedReturn)
@@ -755,6 +915,7 @@ class Image extends CCObject
 
 	/**
 	 * Create XML Representation of the object
+	 *
 	 * @return SimpleXMLElement
 	 */
 	public function createXml()
@@ -766,8 +927,19 @@ class Image extends CCObject
 	}
 }
 
+/**
+ * VerifiedAddress class
+ */
 class VerifiedAddress extends CCObject
 {
+	/**
+	 * @var  string   $email
+         * @var  unknown  $status
+         * @var  unknown  $verifiedTime
+         * @var  integer  $id
+         * @var  string   $link
+         * @var  unknown  $updated
+	 */
 	public $email;
 	public $status;
 	public $verifiedTime;
@@ -777,7 +949,8 @@ class VerifiedAddress extends CCObject
 
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  Associative array of properties/values
 	 */
 	public function __construct($params = array())
 	{
@@ -791,8 +964,9 @@ class VerifiedAddress extends CCObject
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
-	 * @param  SimpleXMLElement $parsedReturn - parsed XML
+	 * @param  SimpleXMLElement  $parsedReturn  parsed XML
 	 * @return
 	 */
 	public static function createStruct($parsedResponse)
@@ -807,6 +981,9 @@ class VerifiedAddress extends CCObject
 	}
 }
 
+/**
+ * EventFee
+ */
 class EventFee
 {
 	public $label;
