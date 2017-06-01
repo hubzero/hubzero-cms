@@ -50,7 +50,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param   object   $publication  Current publication
+	 * @param   object   $model  Current publication
 	 * @param   string   $version      Version name
 	 * @param   boolean  $extended     Whether or not to show panel
 	 * @return  array
@@ -91,7 +91,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param   object   $publication  Current publication
+	 * @param   object   $model        Current publication
 	 * @param   string   $option       Name of the component
 	 * @param   array    $areas        Active area(s)
 	 * @param   string   $rtrn         Data to be returned
@@ -201,6 +201,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get all replies for an item
 	 *
+	 * @param   integer  $id        Item id
 	 * @param   object   $item      Item to look for reports on
 	 * @param   string   $category  Item type
 	 * @param   integer  $level     Depth
