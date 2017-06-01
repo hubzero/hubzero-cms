@@ -36,6 +36,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 if (!function_exists('sortDir'))
 {
+	/**
+	* Returns opposite of how it was sorted
+	*
+	* @param  array  $filters  Array of filters
+	* @param  string $current  
+	* @param  string $dir      Direction of order
+	*/
 	function sortDir($filters, $current, $dir='DESC')
 	{
 		if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir)
