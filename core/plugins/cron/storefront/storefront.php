@@ -258,7 +258,9 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 	/**
 	 * Handles the actual sending of emails
 	 *
-	 * @return bool
+	 * @param  boolean  $skusInfo     [description]
+	 * @param  boolean  $productsInfo [description]
+	 * @return boolean
 	 **/
 	private function sendNotifications($skusInfo, $productsInfo)
 	{
