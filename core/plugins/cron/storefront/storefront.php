@@ -312,6 +312,12 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 
+	/**
+	* Summary
+	*
+	* @param  array  $notificationsIndex
+	* @param  [type] $scope
+	*/
 	private function recordNotifications($notificationsIndex, $scope)
 	{
 		//print_r($notificationsIndex); die;
