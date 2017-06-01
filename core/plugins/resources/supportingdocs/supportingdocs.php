@@ -48,7 +48,8 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param   object  $resource  Current resource
+	 * @param   object   $model  Current model
+	 * @param   integer  $archive
 	 * @return  array
 	 */
 	public function &onResourcesAreas($model, $archive = 0)
@@ -87,7 +88,7 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
 			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
-				// do nothing
+				// Do nothing
 				return $arr;
 			}
 		}
