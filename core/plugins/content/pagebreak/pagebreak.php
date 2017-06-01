@@ -48,6 +48,8 @@ defined('_HZEXEC_') or die;
 class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Prepares page?
+	 *
 	 * @param   string   $context  The context of the content being passed to the plugin.
 	 * @param   object   $row      The article object.  Note $article->text is also available
 	 * @param   object   $params   The article params
