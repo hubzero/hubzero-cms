@@ -61,7 +61,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 * @param   string   $msg      message
 	 * @return  void
 	 */
-	public function onAfterStoreUser($user, $isnew, $succes, $msg)
+	public function onAfterStoreUser($user, $isnew, $success, $msg)
 	{
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
 	}
@@ -87,7 +87,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 * @param   string   $msg      message
 	 * @return  boolean  True on success
 	 */
-	public function onAfterDeleteUser($user, $succes, $msg)
+	public function onAfterDeleteUser($user, $success, $msg)
 	{
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
 
@@ -141,7 +141,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method is called after group data is stored in the database
 	 *
-	 * @param   object  $user  holds the new group data (\Hubzero\User\Group)
+	 * @param   object  $group  holds the new group data (\Hubzero\User\Group)
 	 * @return  void
 	 */
 	public function onAfterStoreGroup($group)
@@ -152,7 +152,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method is called after group data is deleted from the database
 	 *
-	 * @param   object  $user  holds the new group data (\Hubzero\User\Group)
+	 * @param   object  $group  holds the new group data (\Hubzero\User\Group)
 	 * @return  void
 	 */
 	public function onAfterDeleteGroup($group)
