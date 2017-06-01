@@ -130,6 +130,12 @@ foreach ($profiles as $profile)
 	}
 }
 
+/**
+* Renders if argument is json?
+*
+* @param  string  $v
+* @return string
+*/
 function renderIfJson($v)
 {
 	if (strstr($v, '{'))
