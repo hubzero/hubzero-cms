@@ -41,15 +41,15 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $model  Current model
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
@@ -67,10 +67,11 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      integer $miniview  View style
-	 * @return     array
+	 * @param   object  $model   Current model
+	 * @param   string  $option  Name of the component
+	 * @param   array   $areas   Array of areas?
+	 * @param   string  $rtrn    What to return
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -110,23 +111,23 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get Open URL
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function getOpenUrl()
 	{
-		//var to store open url stuff
+		// Var to store open url stuff
 		$openUrl = null;
 
-		//get the users id to make lookup
+		// Get the users id to make lookup
 		$userIp = Request::ip();
 
-		//get the param for ip regex to use machine ip
+		// Get the param for ip regex to use machine ip
 		$ipRegex = array(
 			'10.\d{2,5}.\d{2,5}.\d{2,5}',
 			'192.\d{1,5}.\d{1,5}.\d{1,5}'
 		);
 
-		// do we use the machine ip?
+		// Do we use the machine IP?
 		$useMachineIp = false;
 		foreach ($ipRegex as $ipr)
 		{
@@ -137,7 +138,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//make url based on if were using machine ip or users
+		// Make URL based on if were using machine ip or users
 		if ($useMachineIp)
 		{
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
@@ -147,7 +148,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $userIp;
 		}
 
-		//get the resolver
+		// Get the resolver
 		$r = null;
 		if (function_exists('curl_init'))
 		{
@@ -159,11 +160,11 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			curl_close($cURL);
 		}
 
-		//parse the return from resolver lookup
+		// Parse the return from resolver lookup
 		$xml = simplexml_load_string($r);
 		$resolver = $xml->resolverRegistryEntry->resolver;
 
-		//if we have resolver set vars for creating open urls
+		// If we have resolver set vars for creating open urls
 		if ($resolver != null)
 		{
 			$openUrl = new stdClass;
@@ -172,7 +173,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			$openUrl->icon = $resolver->linkIcon;
 		}
 
-		// return open url
+		// Return open URL
 		return $openUrl;
 	}
 }
