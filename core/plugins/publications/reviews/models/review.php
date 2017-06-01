@@ -162,6 +162,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
+	 * @param      boolean  $property  Holds property value
 	 * @return     mixed
 	 */
 	public function creator($property=null)
