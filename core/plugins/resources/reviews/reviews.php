@@ -62,7 +62,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param   object  $resource  Current resource
+	 * @param   object  $model  Current model
 	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
@@ -109,10 +109,10 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param   object  $resource  Current resource
-	 * @param   string  $option    Name of the component
-	 * @param   array   $areas     Active area(s)
-	 * @param   string  $rtrn      Data to be returned
+	 * @param   object  $model   Current model
+	 * @param   string  $option  Name of the component
+	 * @param   array   $areas   Active area(s)
+	 * @param   string  $rtrn    Data to be returned
 	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
@@ -219,11 +219,12 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get all replies for an item
 	 *
-	 * @param      object  $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @param      integer $level    Depth
-	 * @param      boolean $abuse    Abuse flag
-	 * @return     array
+	 * @param   integer  $id
+	 * @param   object   $item      Item to look for reports on
+	 * @param   string   $category  Item type
+	 * @param   integer  $level     Depth
+	 * @param   boolean  $abuse     Abuse flag
+	 * @return  array
 	 */
 	/*public static function getComments($id, $item, $category, $level, $abuse=false)
 	{
@@ -254,9 +255,9 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get abuse reports for a comment
 	 *
-	 * @param      integer $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @return     integer
+	 * @param   integer  $item      Item to look for reports on
+	 * @param   string   $category  Item type
+	 * @return  integer
 	 */
 	/*public static function getAbuseReports($item, $category)
 	{
