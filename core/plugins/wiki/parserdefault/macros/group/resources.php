@@ -165,7 +165,8 @@ class Resources extends GroupMacro
 	/**
 	 * Get item limit
 	 *
-	 * @param  array  $args  Macro Arguments
+	 * @param  array   $args    Macro Arguments
+	 * @param  integer $default Default return value
 	 * @return mixed
 	 */
 	private function _getLimit(&$args, $default = 5)
