@@ -584,6 +584,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of items in a collection
 	 *
+	 * @param      string  $what
 	 * @return     string
 	 */
 	private function _follow($what='collection')
