@@ -134,31 +134,31 @@ class Contact extends CCObject
 {
 	/**
 	 *
-	 * @var  string  $link
+	 * @var  string   $link
 	 * @var  integer  $id
-	 * @var  $updated
+	 * @var  unknown  $updated  
 	 * @var  $status
-	 * @var  string  $emailAddress
-	 * @var  $emailType
-	 * @var  string  $firstName
-	 * @var  string  $middleName
-	 * @var  string  $lastName
-	 * @var  string  $fullName
-	 * @var  string  $jobTitle
-	 * @var  string  $companyName
+	 * @var  string   $emailAddress
+	 * @var  unknown  $emailType
+	 * @var  string   $firstName
+	 * @var  string   $middleName
+	 * @var  string   $lastName
+	 * @var  string   $fullName
+	 * @var  string   $jobTitle
+	 * @var  string   $companyName
 	 * @var  $homePhone
 	 * @var  $workPhone
-	 * @var  string  $addr1
-	 * @var  string  $addr2
-	 * @var  string  $addr3
-	 * @var  string  $city
+	 * @var  string   $addr1
+	 * @var  string   $addr2
+	 * @var  string   $addr3
+	 * @var  string   $city
 	 * @var  integer  $stateCode
-	 * @var  string  $stateName
+	 * @var  string   $stateName
 	 * @var  integer  $countryCode
-	 * @var  string  $countryName
+	 * @var  string   $countryName
 	 * @var  integer  $postalCode
 	 * @var  integer  $subPostalCode
-	 * @var  string  $notes
+	 * @var  string   $notes
 	 * @var  $customField1
 	 * @var  $customField2
 	 * @var  $customField3
@@ -356,7 +356,7 @@ class Contact extends CCObject
 	/**
 	 * Create XML Representation of the object
 	 *
-	 * @return SimpleXMLElement
+	 * @return  SimpleXMLElement
 	 */
 	public function createXml()
 	{
@@ -427,54 +427,54 @@ class Contact extends CCObject
 class Campaign extends CCObject
 {
 	/**
-	 * @var  string                $name
-         * @var  integer               $id
-         * @var  string                $link
-         * @var  $status
-         * @var  string                $campaignDate
-         * @var  string                $lastEditDate
-         * @var  string                $lastRunDate
-         * @var  string                $campaignSent
-         * @var  string                $campaignOpens
-         * @var  integer               $campaignClicks
-         * @var  integer               $campaignBounces
-         * @var  integer               $campaignForwards
-         * @var  integer               $campaignOptOuts
-         * @var  $campaignSpamReports
-         * @var  string		       $subject
-         * @var  string 	       $fromName
-         * @var  $campaignType
-         * @var  $vawp
-         * @var  string 	       $vawpLinkText
-         * @var  string 	       $vawpText
-         * @var  $permissionReminder
-         * @var  string 	       $permissionReminderText
-         * @var  $greetingSalutation
-         * @var  string		       $greetingName
-         * @var  string		       $greetingString
-         * @var  string		       $orgName
-         * @var  string                $orgAddr1
-         * @var  string                $orgAddr2
-         * @var  string                $orgAddr3
-         * @var  string                $orgCity
-         * @var  string                $orgState
-         * @var  string                $orgInternationalState
-         * @var  string                $orgCountry
-         * @var  integer               $orgPostalCode
-         * @var  string                $incForwardEmail
-         * @var  string                $forwardEmailLinkText
-         * @var  string                $incSubscribeLink
-         * @var  string                $subscribeLinkText
-         * @var  $emailContentFormat
-         * @var  string                $emailContent
-         * @var  $textVersionContent
-         * @var  $styleSheet
-         * @var  array                 $lists
-         * @var  string                $fromAddress
-         * @var  string                $replyAddress
-         * @var  $archiveStatus
-         * @var  $archiveUrl
-         * @var  array                 $urls
+	 * @var  string   $name
+         * @var  integer  $id
+         * @var  string   $link
+         * @var  unknown  $status
+         * @var  string   $campaignDate
+         * @var  string   $lastEditDate
+         * @var  string   $lastRunDate
+         * @var  string   $campaignSent
+         * @var  string   $campaignOpens
+         * @var  integer  $campaignClicks
+         * @var  integer  $campaignBounces
+         * @var  integer  $campaignForwards
+         * @var  integer  $campaignOptOuts
+         * @var  unknown  $campaignSpamReports
+         * @var  string	  $subject
+         * @var  string   $fromName
+         * @var  unknown  $campaignType
+         * @var  unknown  $vawp
+         * @var  string   $vawpLinkText
+         * @var  string   $vawpText
+         * @var  unknown  $permissionReminder
+         * @var  string   $permissionReminderText
+         * @var  unknown  $greetingSalutation
+         * @var  string	  $greetingName
+         * @var  string	  $greetingString
+         * @var  string	  $orgName
+         * @var  string   $orgAddr1
+         * @var  string   $orgAddr2
+         * @var  string   $orgAddr3
+         * @var  string   $orgCity
+         * @var  string   $orgState
+         * @var  string   $orgInternationalState
+         * @var  string   $orgCountry
+         * @var  integer  $orgPostalCode
+         * @var  string   $incForwardEmail
+         * @var  string   $forwardEmailLinkText
+         * @var  string   $incSubscribeLink
+         * @var  string   $subscribeLinkText
+         * @var  unknown  $emailContentFormat
+         * @var  string   $emailContent
+         * @var  unknown  $textVersionContent
+         * @var  unknown  $styleSheet
+         * @var  array    $lists
+         * @var  string   $fromAddress
+         * @var  string   replyAddress
+         * @var  unknown  $archiveStatus
+         * @var  unknown  $archiveUrl
+         * @var  array    $urls
 	 */
 	public $name;
 	public $id;
@@ -783,9 +783,9 @@ class Campaign extends CCObject
 class Folder extends CCObject
 {
 	/**
-	 * @var  $name
-         * @var  $id
-         * @var  $link
+	 * @var  string   $name
+         * @var  integer  $id
+         * @var  string   $link
 	 */
 	public $name;
 	public $id;
@@ -994,6 +994,7 @@ class EventFee
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params=array())
@@ -1007,6 +1008,7 @@ class EventFee
 
 	/**
 	 * Create associate array of object from XML
+	 *
 	 * @static
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
@@ -1022,8 +1024,32 @@ class EventFee
 	}
 }
 
+/**
+ * Registrant class
+ */
 class Registrant extends CCObject
 {
+	/**
+	 * @var  string   $title
+         * @var  string   $link
+         * @var  integer  $id
+         * @var  unknown  $updated
+         * @var  string   $lastName
+         * @var  string   $firstName
+         * @var  string   $email
+         * @var  unknown  $personalInformation
+         * @var  unknown  $businessInformation
+         * @var  $customInformation1
+         * @var  $customInformation2
+         * @var  $registrationStatus
+         * @var  $registrationDate
+         * @var  integer  $guestCount
+         * @var  $paymentStatus
+         * @var  integer  $orderAmount
+         * @var  $currencyType
+         * @var  $paymentType
+         * @var  $costs
+	 */
 	public $title;
 	public $link;
 	public $id;
@@ -1046,6 +1072,7 @@ class Registrant extends CCObject
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params = array())
@@ -1074,6 +1101,7 @@ class Registrant extends CCObject
 
 	/**
 	 * Create an associative array of object properties from XML
+	 *
 	 * @static
 	 * @param SimpleXMLElement $parsedResponse - XML of registrant
 	 * @return
@@ -1117,8 +1145,17 @@ class Registrant extends CCObject
 	}
 }
 
+/**
+ * Cost class
+ */
 class Cost
 {
+	/*
+	 * @var  integer  $count
+         * @var  unknown  $feeType
+         * @var  unknown  $rate
+         * @var  integer  $total
+	 */
 	public $count;
 	public $feeType;
 	public $rate;
@@ -1126,7 +1163,8 @@ class Cost
 
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  Associative array of properties/values
 	 */
 	public function __construct($params = array())
 	{
@@ -1138,8 +1176,9 @@ class Cost
 
 	 /**
 	 * Create associative array of object properties
+	 *
 	 * @static
-	 * @param array $params - Array representing an event Cost
+	 * @param  array  $params  Array representing an event Cost
 	 * @return array
 	 */
 	public static function createStruct($params = array())
@@ -1152,14 +1191,21 @@ class Cost
 	}
 }
 
+/**
+ * CustomField class
+ */
 class CustomField
 {
+	/**
+	 * @var  string   $question
+	 * @var  unknown  $answers
+	 */
 	public $question;
 	public $answers;
 
 	/**
-	 * @param string $question - registration question
-	 * @param array $answers -  answers for question
+	 * @param  string  $question  Registration question
+	 * @param  array   $answers   Answers for question
 	 */
 	public function __construct($question, $answers = array())
 	{
@@ -1169,9 +1215,10 @@ class CustomField
 
 	/**
 	 * Create CustomField object from XML
+	 *
 	 * @static
-	 * @param SimpleXMLElement $parsedXml
-	 * @return CustomField
+	 * @param   SimpleXMLElement  $parsedXml
+	 * @return  CustomField
 	 */
 	public static function createFromXml($parsedXml)
 	{
@@ -1186,6 +1233,18 @@ class CustomField
 
 class RegistrantInformation
 {
+	/**
+	 * @var  $label
+         * @var  $addr1
+         * @var  $addr2
+         * @var  $addr3
+         * @var  $city
+         * @var  $state
+         * @var  $postalCode
+         * @var  $province
+         * @var  $country
+         * @var  $phone
+	 */
 	public $label;
 	public $addr1;
 	public $addr2;
@@ -1199,6 +1258,7 @@ class RegistrantInformation
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params = array())
@@ -1217,6 +1277,7 @@ class RegistrantInformation
 
 	/**
 	 * Create associative array of object properties from XML
+	 *
 	 * @static
 	 * @param SimpleXMLElement $regInfoXml - XML of registrant information
 	 * @return array
@@ -1237,12 +1298,16 @@ class RegistrantInformation
 	}
 }
 
+/**
+ * PersonalInformation class
+ */
 class PersonalInformation extends RegistrantInformation
 {
 	public $cellPhone;
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params = array())
@@ -1253,6 +1318,7 @@ class PersonalInformation extends RegistrantInformation
 
 	/**
 	 * Create array from associative array of object properties
+	 *
 	 * @static
 	 * @param SimpleXMLElement $regInfoXml - XML of registrant information
 	 * @return array
@@ -1265,8 +1331,20 @@ class PersonalInformation extends RegistrantInformation
 	}
 }
 
+/**
+ * BusinessInformation class
+ */
 class BusinessInformation extends RegistrantInformation
 {
+	/**
+	 * @var  $fax
+         * @var  $website
+         * @var  $blog
+         * @var  $company
+         * @var  $jobTitle
+         * @var  $department
+         * @var  
+	 */
 	public $fax;
 	public $website;
 	public $blog;
@@ -1276,6 +1354,7 @@ class BusinessInformation extends RegistrantInformation
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params = array())
@@ -1291,6 +1370,7 @@ class BusinessInformation extends RegistrantInformation
 
 	/**
 	 * Create an associative array of object properties from XML
+	 *
 	 * @static
 	 * @param SimpleXMLElement $businessXml - XML of business information
 	 * @return array
@@ -1308,8 +1388,21 @@ class BusinessInformation extends RegistrantInformation
 	}
 }
 
+/**
+ * EventLocation class
+ */
 class EventLocation
 {
+	/**
+	 * @var  $location
+         * @var  $addr1
+         * @var  $addr2
+         * @var  $addr3
+         * @var  $city
+         * @var  $state
+         * @var  $country
+         * @var  $postalCode
+	 */
 	public $location;
 	public $addr1;
 	public $addr2;
@@ -1321,6 +1414,7 @@ class EventLocation
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params = array())
@@ -1336,8 +1430,34 @@ class EventLocation
 	}
 }
 
+/**
+ * CCEvent class
+ */
 class CCEvent extends CCObject
 {
+	/**
+         * @var  $title
+         * @var  $link
+         * @var  $updated
+         * @var  $id
+         * @var  $name
+         * @var  $description
+         * @var  $registered
+         * @var  $createdDate
+         * @var  $status
+         * @var  $eventType
+         * @var  $eventLocation
+         * @var  $registrationUrl
+         * @var  $startDate
+         * @var  $endDate
+         * @var  $publishDate
+         * @var  $attendedCount
+         * @var  $cancelledCount
+         * @var  $eventFeeRequired
+         * @var  $currencyType
+         * @var  $paymentOptions
+         * @var   $registrationTypes
+         */
 	public $title;
 	public $link;
 	public $updated;
@@ -1362,6 +1482,7 @@ class CCEvent extends CCObject
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params = array())
@@ -1391,6 +1512,7 @@ class CCEvent extends CCObject
 
 	/**
 	 * Create an associative array of object properties from XML
+	 *
 	 * @static
 	 * @param SimpleXMLElement $parsedResponse - XML of an event
 	 * @return array
@@ -1454,18 +1576,26 @@ class CCEvent extends CCObject
 	}
 }
 
+/**
+ * PyamentOption class
+ */
 class PaymentOption
 {
 }
 
 class PayPalPayment extends PaymentOption
 {
+	/**
+         * @var   $type
+         * @var  $payPalEmail
+         */
 	public $type;
 	public $payPalEmail;
 
 	/**
 	 * Constructor
-	 * @param string $paypalAddress - Paypal email address
+	 *
+	 * @param  string  $paypalAddress  Paypal email address
 	 */
 	public function __construct($paypalAddress)
 	{
@@ -1474,8 +1604,14 @@ class PayPalPayment extends PaymentOption
 	}
 }
 
+/**
+ * DoorPayment class
+ */
 class DoorPayment extends PaymentOption
 {
+         /**
+          * @var   $type
+          */	
 	public $type;
 
 	/**
@@ -1489,6 +1625,16 @@ class DoorPayment extends PaymentOption
 
 class CheckPayment extends PaymentOption
 {
+         /**
+          * @var  $type
+          * @var  $addr1
+          * @var  $addr2
+          * @var  $addr3
+          * @var  $city
+          * @var  $state
+          * @var  $country
+          * @var  $postalCode
+          */
 	public $type;
 	public $addr1;
 	public $addr2;
@@ -1500,6 +1646,7 @@ class CheckPayment extends PaymentOption
 
 	/**
 	 * Constructor
+	 *
 	 * @param array $params - associative array of properties/values
 	 */
 	public function __construct($params=array())
@@ -1516,6 +1663,7 @@ class CheckPayment extends PaymentOption
 
 	/**
 	 * Create an associative array of object properties from XML
+	 *
 	 * @static
 	 * @param SimpleXMLElement $parsedReturn - XML of a check payment
 	 * @return array
@@ -1534,8 +1682,19 @@ class CheckPayment extends PaymentOption
 	}
 }
 
+/**
+ * RegistrationType
+ */
 class RegistrationType
 {
+	 /**
+          * @var  $name
+          * @var  $registrationLimit
+          * @var  $registrationClosedManually
+          * @var  $guestLimit
+          * @var  $ticketing
+          * @var  $eventFees
+          */
 	public $name;
 	public $registrationLimit;
 	public $registrationClosedManually;
@@ -1545,7 +1704,8 @@ class RegistrationType
 
 	/**
 	 * Constructor
-	 * @param array $params - associative array of properties/values
+	 *
+	 * @param  array  $params  associative array of properties/values
 	 */
 	public function __construct($params=array())
 	{
@@ -1559,6 +1719,7 @@ class RegistrationType
 
 	/**
 	 * Create an associative array of object properties from XML
+	 *
 	 * @static
 	 * @param SimpleXMLElement $parsedResponse - XML of a registration type
 	 * @return array
@@ -1580,8 +1741,22 @@ class RegistrationType
 	}
 }
 
+/**
+ * CampaignEvent class
+ */
 class CampaignEvent
 {
+         /**
+          * @var  $id
+          * @var  $title
+          * @var  $updated
+          * @var  $contactId
+          * @var  $emailAddress
+          * @var  $campaignId
+          * @var  $campaignName
+          * @var  $campaignLink
+          * @var  $eventTime
+          */
 	public $id;
 	public $title;
 	public $updated;
@@ -1592,6 +1767,11 @@ class CampaignEvent
 	public $campaignLink;
 	public $eventTime;
 
+	/**
+	 * Constructor
+	 *
+	 * @param  array  $params  associative array of properties/values
+	 */
 	public function __construct($params = array())
 	{
 		$this->id = (isset($params['id'])) ? $params['id'] : '';
@@ -1620,6 +1800,9 @@ class CampaignEvent
 	}
 }
 
+/**
+ * Schedule class
+ */
 class Schedule extends CCObject
 {
 	public $link;
@@ -1699,6 +1882,7 @@ class Utility
 
 	/**
 	 * Find the next link from collection XML
+	 *
 	 * @static
 	 * @param SimpleXMLElement $item
 	 * @return string - valid nextlink to be used, else false if none could be found
@@ -1710,6 +1894,9 @@ class Utility
 	}
 }
 
+/**
+ * CTCException class
+ */
 class CTCTException extends Exception
 {
 	public function __construct($message, $code = 0, Exception $previous = null)
