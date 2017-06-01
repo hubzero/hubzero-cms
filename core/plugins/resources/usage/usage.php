@@ -46,8 +46,8 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object $model  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
@@ -65,11 +65,11 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object  $model   Current model
+	 * @param   string  $option  Name of the component
+	 * @param   array   $areas   Active area(s)
+	 * @param   string  $rtrn    Data to be returned
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -224,8 +224,8 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Round time into nearest second/minutes/hours/days
 	 *
-	 * @param      integer $time Time
-	 * @return     string
+	 * @param   integer  $time  Time
+	 * @return  string
 	 */
 	public static function timeUnits($time)
 	{
@@ -252,8 +252,9 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get overview data
 	 *
-	 * @param      integer $id  Resource ID
-	 * @return     array
+	 * @param   integer  $id      Resource ID
+	 * @param   integer  $period  Resource period
+	 * @return  array
 	 */
 	public static function getOverview($id, $period=1)
 	{
@@ -271,11 +272,11 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check for data for a given time period
 	 *
-	 * @param      integer $id  Resource ID
-	 * @param      integer $top Value type (1 = country, 2 = domain, 3 = org)
-	 * @param      integer $tid Stats ID for that tool
-	 * @param      string  $datetime Timestamp YYYY-MM-DD
-	 * @return     array
+	 * @param   integer  $id        Resource ID
+	 * @param   integer  $top       Value type (1 = country, 2 = domain, 3 = org)
+	 * @param   integer  $tid       Stats ID for that tool
+	 * @param   string   $datetime  Timestamp YYYY-MM-DD
+	 * @return  array
 	 */
 	public static function getTopValue($id, $top, $tid, $datetime, $prd=14)
 	{
@@ -304,9 +305,10 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	 * Get the stats ID for a specific resource
 	 * Getting this now allows for faster data pulling later on
 	 *
-	 * @param      integer $id       Resource ID
-	 * @param      string  $datetime Timestamp YYYY-MM-DD
-	 * @return     array
+	 * @param   integer  $id        Resource ID
+	 * @param   string   $datetime  Timestamp YYYY-MM-DD
+	 * @param   integer  $period    Resource period
+	 * @return  array
 	 */
 	public static function getTid($id, $datetime, $period=14)
 	{
@@ -321,17 +323,17 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	 * Get data for orgs, countries, domains for a given time period
 	 * (1 = country, 2 = domain, 3 = org)
 	 *
-	 * @param      integer $id       Resource ID
-	 * @param      string  $datetime Timestamp YYYY-MM-DD
-	 * @return     array
+	 * @param   integer  $id        Resource ID
+	 * @param   string   $datetime  Timestamp YYYY-MM-DD
+	 * @return  array
 	 */
 	public function getValues($id, $period)
 	{
 		$results = $this->getOverview($id, $period);
 
 		$users = array();
-		//$interactive = array();
-		//$sessions = array();
+		// $interactive = array();
+		// $sessions = array();
 		$runs = array();
 
 		$data = new stdClass;
@@ -340,19 +342,19 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 		foreach ($results as $result)
 		{
-			//$point = new stdClass;
+			// $point = new stdClass;
 			$result->datetime = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . ' 00:00:00';
-			//$point->users = $result->users;
-			//$point->users = $result->users;
+			// $point->users = $result->users;
+			// $point->users = $result->users;
 
-			//$data->users[]       = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->users . "]";
-			//$interactive[] = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->sessions . "]";
-			//$sessions[]    = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->simulations . "]";
-			//$data->runs[]        = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->jobs . "]";
+			// $data->users[]       = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->users . "]";
+			// $interactive[] = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->sessions . "]";
+			// $sessions[]    = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->simulations . "]";
+			// $data->runs[]        = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->jobs . "]";
 			$data->points[] = $result;
 
-			//$usersTop = ($result->users > $usersTop) ? $result->users : $usersTop;
-			//$runsTop = ($result->jobs > $runsTop) ? $result->jobs : $runsTop;
+			// $usersTop = ($result->users > $usersTop) ? $result->users : $usersTop;
+			// $runsTop = ($result->jobs > $runsTop) ? $result->jobs : $runsTop;
 		}
 
 		ob_clean();
@@ -365,9 +367,9 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	 * Get data for orgs, countries, domains for a given time period
 	 * (1 = country, 2 = domain, 3 = org)
 	 *
-	 * @param      integer $id       Resource ID
-	 * @param      string  $datetime Timestamp YYYY-MM-DD
-	 * @return     array
+	 * @param   integer  $id        Resource ID
+	 * @param   string   $datetime  Timestamp YYYY-MM-DD
+	 * @return  array
 	 */
 	public function getTopValues($id, $datetime)
 	{
@@ -522,4 +524,3 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		die();
 	}
 }
-
