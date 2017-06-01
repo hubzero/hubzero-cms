@@ -1527,8 +1527,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Applies filters to Citations model and returns applied filters
 	 *
-	 * @param   array  $filters  array of POST values
-	 * @return  array  sanitized and validated filter values
+	 * @param   array    $filters   Array of POST values
+	 * @param   integer  $scope_id  Value of scope id
+	 * @return  array    Sanitized and validated filter values
 	 */
 	private function _filterHandler($filters = array(),  $scope_id = 0)
 	{
