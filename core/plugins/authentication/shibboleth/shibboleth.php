@@ -150,6 +150,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		return $ip;
 	}
 
+	/**
+	 * Summary (if any) ...
+	 *
+	 * @return unknown
+	 */
 	private static function getInstitutions()
 	{
 		static $inst = NULL;
@@ -162,6 +167,13 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		return $inst;
 	}
 
+	/**
+	 * Summary
+	 *
+	 * @param   unknown  $eid ID compared to entity_id
+	 * @param   unknown  $key
+	 * @return  unknown
+	 */
 	public static function getInstitutionByEntityId($eid, $key = NULL)
 	{
 		foreach (self::getInstitutions() as $inst)
@@ -179,11 +191,13 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	/**
 	 * When linking an account, by default a parameter of the plugin is used to
 	 * determine the text "link your <something> account", and failing that the
-	 * plugin name is used (eg., "link your Shibboleth account".
+	 * plugin name is used (EX: "link your Shibboleth account").
 	 *
 	 * Neither is appropriate here because we want to vary the text based on the
 	 * ID provider used. I don't think the average user knows what InCommon or
 	 * Shibboleth mean in this context.
+	 *
+	 * @return  string
 	 */
 	public static function onGetLinkDescription()
 	{
@@ -192,10 +206,15 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		{
 			return $rv;
 		}
-		// probably only possible if the user abruptly deletes their cookies
+		// Probably only possible if the user abruptly deletes their cookies
 		return 'InCommon';
 	}
 
+	/**
+	 * Summary (if any) ...
+	 *
+	 * @return  array  Array of service, user, and task
+	 */
 	private static function getLoginParams()
 	{
 		$service = rtrim(Request::base(),'/');
@@ -217,6 +236,9 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 *
 	 * We want to show a button with the name of the previously-used ID
 	 * provider on it instead of something generic like "Shibboleth"
+	 *
+	 * @param   $return
+	 * @return  string  HTML
 	 */
 	public static function onGetSubsequentLoginDescription($return)
 	{
@@ -243,19 +265,19 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 	public static function onRenderOption($return = NULL, $title = 'With an affiliated institution:')
 	{
-		// hide the login box if the plugin is in "debug mode" and the special key is not set in the request
+		// Hide the login box if the plugin is in "debug mode" and the special key is not set in the request
 		$params = Plugin::params('authentication', 'shibboleth');
 		if (($testKey = $params->get('testkey', NULL)) && !array_key_exists($testKey, $_GET))
 		{
 			return '<span />';
 		}
-		// saved id provider? use it as the default
+		// Saved id provider? Use it as the default
 		$prefill = isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : NULL;
 		if (!$prefill && // no cookie
 				($host = self::getHostByAddress(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], $params->get('dns', '8.8.8.8'))) && // can get a host
 				preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma))
-		{ // hostname lookup seems php jsonrational (not an ip address, has a few dots in it
-			// try to look up a provider to pre-select based on the user's hostname
+		{ // Hostname lookup seems php jsonrational (not an ip address, has a few dots in it)
+			// Try to look up a provider to pre-select based on the user's hostname
 			foreach (self::getInstitutions() as $inst)
 			{
 				if (fnmatch('*'.$ma[1], $inst['host']))
@@ -266,7 +288,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// attach style and scripts
+		// Attach style and scripts
 		foreach (array('bootstrap-select.min.js', 'shibboleth.js', 'bootstrap-select.min.css', 'bootstrap-theme.min.css', 'shibboleth.css') as $asset)
 		{
 			$mtd = 'addPlugin'.(preg_match('/[.]js$/', $asset) ? 'script': 'stylesheet');
@@ -275,7 +297,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 		list($a, $h) = self::htmlify();
 
-		// make a dropdown/button combo that (hopefully) gets prettied up client-side into a bootstrap dropdown
+		// Make a dropdown/button combo that (hopefully) gets prettied up client-side into a bootstrap dropdown
 		$html = ['<div class="shibboleth account incommon-color" data-placeholder="'.$a($title).'">'];
 		$html[] = '<h3>Select an affiliated institution</h3>';
 		$html[] = '<ol>';
@@ -289,7 +311,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform when logging out a user session
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function logout()
 	{
@@ -302,8 +324,8 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check login status
 	 *
-	 * @access	public
-	 * @return	Array $status
+	 * @access  public
+	 * @return  Array $status
 	 */
 	public function status()
 	{
@@ -332,9 +354,9 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform when logging in a user session
 	 *
-	 * @param      unknown &$credentials Parameter description (if any) ...
-	 * @param      array &$options Parameter description (if any) ...
-	 * @return     void
+	 * @param   unknown &$credentials Parameter description (if any) ...
+	 * @param   array &$options Parameter description (if any) ...
+	 * @return  void
 	 */
 	public function login(&$credentials, &$options)
 	{
@@ -356,7 +378,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			App::redirect($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=shibboleth&shib-session=' . urlencode($_COOKIE['shib-session']));
 		}
 
-		// extract variables set by mod_shib, if any
+		// Extract variables set by mod_shib, if any
 		// https://www.incommon.org/federation/attributesummary.html
 		if (($sid = isset($_SERVER['REDIRECT_Shib-Session-ID']) ? $_SERVER['REDIRECT_Shib-Session-ID'] : (isset($_SERVER['Shib-Session-ID']) ? $_SERVER['Shib-Session-ID'] : NULL)))
 		{
@@ -380,12 +402,12 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				$attrs['email'] = $attrs['mail'];
 				unset($attrs['mail']);
 			}
-			// normalize things a bit
+			// Normalize things a bit
 			if (!isset($attrs['username']) && isset($attrs['eppn']))
 			{
 				$attrs['username'] = preg_replace('/@.*$/', '', $attrs['eppn']);
 			}
-			// eppn is sometimes or maybe always in practice an email address
+			// Eppn is sometimes or maybe always in practice an email address
 			if (!isset($attrs['email']) && isset($attrs['eppn']) && strpos($attrs['eppn'], '@'))
 			{
 				$attrs['email'] = $attrs['eppn'];
@@ -410,18 +432,18 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method to display login prompt
 	 *
-	 * @access	public
-	 * @param   object	$view	view object
-	 * @param 	object	$tpl	template object
-	 * @return	void
+	 * @access  public
+	 * @param   object  $view  View object
+	 * @param   object  $tpl   Template object
+	 * @return  void
 	 */
 	public function display($view, $tpl)
 	{
 		list($service, $com_user, $task) = self::getLoginParams();
 		$return = $view->return ? '&return='.$view->return : '';
 
-		// discovery service for mod_shib to feed back the appropriate id provider
-		// entityID. see below for more info
+		// Discovery service for mod_shib to feed back the appropriate id provider
+		// entityID. See below for more info
 		if (array_key_exists('wayf', $_GET))
 		{
 			if (isset($_GET['return']) && isset($_COOKIE['shib-entity-id']))
@@ -430,11 +452,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				App::redirect($_GET['return'].'&entityID='.$_COOKIE['shib-entity-id']);
 			}
 			self::log('failed wayf', $service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
-			// invalid request, back to the login page with you
+			// Invalid request, back to the login page with you
 			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 		}
 
-		// invalid idp in request, send back to login landing
+		// Invalid idp in request, send back to login landing
 		$eid = isset($_GET['idp']) ? $_GET['idp'] : (isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : NULL);
 		if (!isset($eid) || !self::getInstitutionByEntityId($eid))
 		{
@@ -442,18 +464,18 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.$return);
 		}
 
-		// we're about to do at least a few redirects, some of which are out of our
+		// We're about to do at least a few redirects, some of which are out of our
 		// control, so save a bit of state for when we get back
 		//
-		// we don't use the session store because we'd like it to outlive the
+		// We don't use the session store because we'd like it to outlive the
 		// session so we can suggest this idp next time
 		if (isset($_GET['idp']))
 		{
 			setcookie('shib-entity-id', $_GET['idp'], time()+60*60*24, '/');
 		}
-		// send the request to mod_shib.
+		// Send the request to mod_shib.
 		//
-		// this path should be set up in your configuration something like this:
+		// This path should be set up in your configuration something like this:
 		//
 		// <Location /login/shibboleth>
 		// 	AuthType shibboleth
@@ -471,11 +493,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// 	<SessionInitiator type="SAMLDS" URL="https://dev06.hubzero.org/login?authenticator=shibboleth&amp;wayf"/>
 		// </SessionInitiator>
 		//
-		// the important part here is the SAMLDS line pointing mod_shib right back
-		// here, but with &wayf in the query string. we look for that a little bit
+		// The important part here is the SAMLDS line pointing mod_shib right back
+		// here, but with &wayf in the query string. We look for that a little bit
 		// above here and feed the appropriate entity-id back to mod_shib with
 		// another redirect. I wouldn't be at all surprised if there is a cleaner
-		// way to communicate this that avoids the network hop. pull request, pls
+		// way to communicate this that avoids the network hop. Pull request, pls
 		//
 		// (if you are only using one ID provider you can avoid configuring
 		// SessionInitiators at all and just define that service like:
@@ -487,7 +509,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// in which case mod_shib will not need to do discovery, having only one
 		// option.
 		//
-		// either way, the rewrite directs us back here to our login() method
+		// Either way, the rewrite directs us back here to our login() method
 		// where we can extract info about the authn from mod_shib
 		self::log('passing through to shibd');
 		self::log('session', $_SESSION);
@@ -497,11 +519,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @access  public
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response	   Authentication response object
+	 * @return  boolean 
 	 */
 	public function onAuthenticate($credentials, $options, &$response)
 	{
@@ -511,17 +533,17 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
-	 * @since 1.5
+	 * @access  public
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response	   Authentication response object
+	 * @return  boolean
+	 * @since   1.5
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// eppn is eduPersonPrincipalName and is the absolute lowest common
-		// denominator for InCommon attribute exchanges. we can't really do
+		// denominator for InCommon attribute exchanges. We can't really do
 		// anything without it
 		if (isset($options['shibboleth']['eppn']))
 		{
@@ -589,9 +611,9 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * @access	public
-	 * @param   array - $options
-	 * @return	void
+	 * @access  public
+	 * @param   array  $options
+	 * @return  void
 	 */
 	public function link($options = array())
 	{
