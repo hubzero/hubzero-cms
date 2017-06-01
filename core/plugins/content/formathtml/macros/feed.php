@@ -35,7 +35,7 @@ namespace Plugins\Content\Formathtml\Macros;
 use Plugins\Content\Formathtml\Macro;
 
 /**
- * macro class for displaying a youtube video
+ * Macro class for displaying a Youtube video
  */
 class Feed extends Macro
 {
@@ -62,14 +62,14 @@ class Feed extends Macro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
-		//get the args passed in
+		// Get the args passed in
 		$args = explode(',', $this->args);
 
-		// get feed url
+		// Get feed url
 		$url = $this->_getFeedUrl($args);
 
 		if (!$url)
@@ -77,19 +77,19 @@ class Feed extends Macro
 			return '';
 		}
 
-		// get feed details
+		// Get feed details
 		$limit = $this->_getFeedLimit($args, 5);
 		$class = $this->_getFeedClass($args);
 
-		// get feed
+		// Get feed
 		$feed = \App::get('feed.parser');
 		$feed->set_feed_url($url);
 		$feed->init();
 
-		//var to hold html
+		// Var to hold html
 		$html = '<div class="feed ' . $class . '">';
 
-		// display title
+		// Display title
 		$title = $feed->get_title();
 		$link  = $feed->get_permalink();
 		if ($title)
@@ -97,20 +97,20 @@ class Feed extends Macro
 			$html .= '<h3><a rel="external" href="' . $link . '">' . $title . '</a></h3>';
 		}
 
-		// display description
+		// Display description
 		$desc = $feed->get_description();
 		if ($desc)
 		{
 			$html .= '<p>' . $desc . '</p>';
 		}
 
-		// add each item
+		// Add each item
 		foreach ($feed->get_items(0, $limit) as $item)
 		{
 			$html .= $this->_renderItem($item);
 		}
 
-		// close feed
+		// Close feed
 		$html .= '</div>';
 
 		return $html;
@@ -155,7 +155,8 @@ class Feed extends Macro
 	/**
 	 * Get feed item limit
 	 *
-	 * @param   array  $args  Macro Arguments
+	 * @param   array    $args     Macro Arguments
+	 * @param   integer  $default  Default return value
 	 * @return  mixed
 	 */
 	private function _getFeedLimit(&$args, $default = 5)
@@ -170,7 +171,7 @@ class Feed extends Macro
 			}
 		}
 
-		// if we didnt find one return default
+		// If we didnt find one return default
 		return $default;
 	}
 
