@@ -47,7 +47,7 @@ class plgResourcesWatch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param   object  $resource  Current resource
+	 * @param   object  $publication  Current publication
 	 * @return  array
 	 */
 	public function &onResourcesSubAreas($publication)
