@@ -7,28 +7,28 @@ class Client
 	/**
 	 * The Slack incoming webhook endpoint
 	 *
-	 * @var  string
+	 * @var string
 	 */
 	protected $endpoint;
 
 	/**
 	 * The default channel to send messages to
 	 *
-	 * @var  string
+	 * @var string
 	 */
 	protected $channel;
 
 	/**
 	 * The default username to send messages as
 	 *
-	 * @var  string
+	 * @var string
 	 */
 	protected $username;
 
 	/**
 	 * The default icon to send messages with
 	 *
-	 * @var  string
+	 * @var string
 	 */
 	protected $icon;
 
@@ -36,21 +36,21 @@ class Client
 	 * Whether to link names like @regan or leave
 	 * them as plain text
 	 *
-	 * @var  boolean
+	 * @var boolean
 	 */
 	protected $link_names = false;
 
 	/**
 	 * Whether Slack should unfurl text-based URLs
 	 *
-	 * @var  boolean
+	 * @var boolean
 	 */
 	protected $unfurl_links = false;
 
 	/**
 	 * Whether Slack should unfurl media URLs
 	 *
-	 * @var  boolean
+	 * @var boolean
 	 */
 	protected $unfurl_media = true;
 
@@ -58,7 +58,7 @@ class Client
 	 * Whether message text should be formatted with Slack's
 	 * Markdown-like language
 	 *
-	 * @var  boolean
+	 * @var boolean
 	 */
 	protected $allow_markdown = true;
 
@@ -66,7 +66,7 @@ class Client
 	 * The attachment fields which should be formatted with
 	 * Slack's Markdown-like language
 	 *
-	 * @var  array
+	 * @var array
 	 */
 	protected $markdown_in_attachments = [];
 
@@ -74,17 +74,17 @@ class Client
 	/**
 	 * The Guzzle HTTP client instance
 	 *
-	 * @var  \GuzzleHttp\Client
+	 * @var \GuzzleHttp\Client
 	 */
 	protected $guzzle;
 
 	/**
 	 * Instantiate a new Client
 	 *
-	 * @param   string  $endpoint
-	 * @param   array   $attributes
-	 * @param   object  $guzzle
-	 * @return  void
+	 * @param  string $endpoint
+	 * @param  array  $attributes
+	 * @param  object $guzzle
+	 * @return void
 	 */
 	public function __construct($endpoint, array $attributes = [], Guzzle $guzzle = null)
 	{
@@ -113,9 +113,9 @@ class Client
 	 * Pass any unhandled methods through to a new Message
 	 * instance
 	 *
-	 * @param   string                $name       The name of the method
-	 * @param   array                 $arguments  The method arguments
-	 * @return  \Maknz\Slack\Message
+	 * @param  string                $name      The name of the method
+	 * @param  array                 $arguments The method arguments
+	 * @return \Maknz\Slack\Message
 	 */
 	public function __call($name, $arguments)
 	{
@@ -129,7 +129,7 @@ class Client
 	/**
 	 * Get the Slack endpoint
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	public function getEndpoint()
 	{
@@ -139,8 +139,8 @@ class Client
 	/**
 	 * Set the Slack endpoint
 	 *
-	 * @param   string  $endpoint
-	 * @return  void
+	 * @param  string $endpoint
+	 * @return void
 	 */
 	public function setEndpoint($endpoint)
 	{
@@ -150,7 +150,7 @@ class Client
 	/**
 	 * Get the default channel messages will be created for
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	public function getDefaultChannel()
 	{
@@ -160,8 +160,8 @@ class Client
 	/**
 	 * Set the default channel messages will be created for
 	 *
-	 * @param   string  $channel
-	 * @return  void
+	 * @param  string $channel
+	 * @return void
 	 */
 	public function setDefaultChannel($channel)
 	{
@@ -171,7 +171,7 @@ class Client
 	/**
 	 * Get the default username messages will be created for
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	public function getDefaultUsername()
 	{
@@ -181,8 +181,8 @@ class Client
 	/**
 	 * Set the default username messages will be created for
 	 *
-	 * @param  string  $username
-	 * @return  void
+	 * @param  string $username
+	 * @return void
 	 */
 	public function setDefaultUsername($username)
 	{
@@ -192,7 +192,7 @@ class Client
 	/**
 	 * Get the default icon messages will be created with
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	public function getDefaultIcon()
 	{
@@ -202,8 +202,8 @@ class Client
 	/**
 	 * Set the default icon messages will be created with
 	 *
-	 * @param   string  $icon
-	 * @return  void
+	 * @param  string $icon
+	 * @return void
 	 */
 	public function setDefaultIcon($icon)
 	{
@@ -214,7 +214,7 @@ class Client
 	 * Get whether messages sent will have names (like @regan)
 	 * will be converted into links
 	 *
-	 * @return  boolean
+	 * @return boolean
 	 */
 	public function getLinkNames()
 	{
@@ -225,8 +225,8 @@ class Client
 	 * Set whether messages sent will have names (like @regan)
 	 * will be converted into links
 	 *
-	 * @param   boolean  $value
-	 * @return  void
+	 * @param  boolean $value
+	 * @return void
 	 */
 	public function setLinkNames($value)
 	{
@@ -236,7 +236,7 @@ class Client
 	/**
 	 * Get whether text links should be unfurled
 	 *
-	 * @return  boolean
+	 * @return boolean
 	 */
 	public function getUnfurlLinks()
 	{
@@ -246,8 +246,8 @@ class Client
 	/**
 	 * Set whether text links should be unfurled
 	 *
-	 * @param   boolean  $value
-	 * @return  void
+	 * @param  boolean $value
+	 * @return void
 	 */
 	public function setUnfurlLinks($value)
 	{
@@ -257,7 +257,7 @@ class Client
 	/**
 	 * Get whether media links should be unfurled
 	 *
-	 * @return  boolean
+	 * @return boolean
 	 */
 	public function getUnfurlMedia()
 	{
@@ -267,8 +267,8 @@ class Client
 	/**
 	 * Set whether media links should be unfurled
 	 *
-	 * @param   boolean  $value
-	 * @return  void
+	 * @param  boolean $value
+	 * @return void
 	 */
 	public function setUnfurlMedia($value)
 	{
@@ -279,7 +279,7 @@ class Client
 	 * Get whether message text should be formatted with
 	 * Slack's Markdown-like language
 	 *
-	 * @return  boolean
+	 * @return boolean
 	 */
 	public function getAllowMarkdown()
 	{
@@ -290,8 +290,8 @@ class Client
 	 * Set whether message text should be formatted with
 	 * Slack's Markdown-like language
 	 *
-	 * @param boolean $value
-	 * @return  void
+	 * @param  boolean $value
+	 * @return void
 	 */
 	public function setAllowMarkdown($value)
 	{
@@ -302,7 +302,7 @@ class Client
 	 * Get the attachment fields which should be formatted
 	 * in Slack's Markdown-like language
 	 *
-	 * @return  array
+	 * @return array
 	 */
 	public function getMarkdownInAttachments()
 	{
@@ -313,8 +313,8 @@ class Client
 	 * Set the attachment fields which should be formatted
 	 * in Slack's Markdown-like language
 	 *
-	 * @param array $fields
-	 * @return  void
+	 * @param  array $fields
+	 * @return void
 	 */
 	public function setMarkdownInAttachments(array $fields)
 	{
@@ -324,7 +324,7 @@ class Client
 	/**
 	 * Create a new message with defaults
 	 *
-	 * @return  \Maknz\Slack\Message
+	 * @return \Maknz\Slack\Message
 	 */
 	public function createMessage()
 	{
@@ -346,8 +346,8 @@ class Client
 	/**
 	 * Send a message
 	 *
-	 * @param   \Maknz\Slack\Message  $message
-	 * @return  void
+	 * @param  \Maknz\Slack\Message $message
+	 * @return void
 	 */
 	public function sendMessage(Message $message)
 	{
@@ -361,8 +361,8 @@ class Client
 	/**
 	 * Prepares the payload to be sent to the webhook
 	 *
-	 * @param   \Maknz\Slack\Message  $message  The message to send
-	 * @return  array
+	 * @param  \Maknz\Slack\Message $message The message to send
+	 * @return array
 	 */
 	public function preparePayload(Message $message)
 	{
@@ -389,8 +389,8 @@ class Client
 	/**
 	 * Get the attachments in array form
 	 *
-	 * @param   \Maknz\Slack\Message  $message
-	 * @return  array
+	 * @param  \Maknz\Slack\Message $message
+	 * @return array
 	 */
 	protected function getAttachmentsAsArrays(Message $message)
 	{
