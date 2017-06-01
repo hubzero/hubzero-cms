@@ -139,7 +139,8 @@ class Events extends GroupMacro
 	/**
 	 * Render the events
 	 *
-	 * @param      array     Array of group events
+	 * @param      array  $group  Array of group events
+	 * @param      array  $events Array of events
 	 * @return     string
 	 */
 	private function renderEvents($group, $events)
