@@ -49,9 +49,9 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
 	 * Prepare content
 	 *
 	 * @param   string   $context  The context of the content being passed to the plugin.
-	 * @param   object   $article  The article object.  Note $article->text is also available
-	 * @param   object   $params   The article params
-	 * @param   integer  $page     The 'page' number
+	 * @param   object   $row      The row object.
+	 * @param   object   $params   The article params.
+	 * @param   integer  $page     The 'page' number.
 	 * @return  void
 	 */
 	public function onContentBeforeDisplay($context, &$row, &$params, $page=0)
