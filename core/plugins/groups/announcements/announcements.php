@@ -723,7 +723,6 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   object   $group
 	 * @param   string   $active
-	 * @param   integer  $id
 	 * @return  object
 	 */
 	public function onGroupsApiCreate($group, $active)
