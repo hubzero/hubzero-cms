@@ -176,6 +176,7 @@ class Attachment extends Object
 	 *
 	 * @param   string  $name
 	 * @param   string  $temp
+	 * @param   integer $size
 	 * @return  bool
 	 */
 	public function upload($name, $temp, $size)
