@@ -42,6 +42,7 @@ if (!function_exists('sortDir'))
 	* @param  array  $filters  Array of filters
 	* @param  string $current  
 	* @param  string $dir      Direction of order
+	* @return string
 	*/
 	function sortDir($filters, $current, $dir='DESC')
 	{
