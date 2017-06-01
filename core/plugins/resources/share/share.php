@@ -48,7 +48,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param   object  $resource  Current resource
+	 * @param   object  $model  Current model
 	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
@@ -66,10 +66,10 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param   object  $resource  Current resource
-	 * @param   string  $option    Name of the component
-	 * @param   array   $areas     Active area(s)
-	 * @param   string  $rtrn      Data to be returned
+	 * @param   object  $model   Current model
+	 * @param   string  $option  Name of the component
+	 * @param   array   $areas   Active area(s)
+	 * @param   string  $rtrn    Data to be returned
 	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
