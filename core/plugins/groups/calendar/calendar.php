@@ -1548,7 +1548,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Escape string for csv output
 	 *
-	 * @return  string
+	 * @param   string  $value  Escape quotations, commas, and new lines
+	 * @return  string  Escaped $value
 	 */
 	private function escapeCsv($value)
 	{
