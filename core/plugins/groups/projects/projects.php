@@ -276,7 +276,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 * On after group saved
 	 *
 	 * @param   object  $before  Group before changes
-	 * @param   object  $group   Group after changes
+	 * @param   object  $after   Group after changes
 	 * @return  void
 	 */
 	public function onGroupAfterSave($before, $after)
