@@ -69,8 +69,8 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   object  $model   Current model
 	 * @param   string  $option  Name of the component
-	 * @param   array   $areas   Array of areas?
-	 * @param   string  $rtrn    What to return
+	 * @param   array   $areas   Active area(s)
+	 * @param   string  $rtrn    Data to be returned
 	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
