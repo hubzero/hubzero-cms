@@ -41,14 +41,14 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onUsageAreas()
 	{
@@ -60,11 +60,12 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get the top list for a tool
 	 *
-	 * @param      object $database JDatabase
-	 * @param      string $period   Tiem period (quarterly, yearly, etc)
-	 * @param      string $dthis    Time (YYYY-MM)
-	 * @param      string $s_top    Top value
-	 * @return     string HTML
+	 * @param   object  $database      JDatabase
+	 * @param   string  $period        Tiem period (quarterly, yearly, etc)
+	 * @param   string  $dthis         Time (YYYY-MM)
+	 * @param   string  $s_top         Top value
+	 * @param   string  $table_header
+	 * @return  string HTML
 	 */
 	private function gettoplist($database, $period, $dthis, $s_top, $table_header='Value')
 	{
@@ -163,12 +164,12 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'gettoprank_tools'
+	 * Summary for 'gettoprank_tools'
 	 *
-	 * Long description (if any) ...
+	 * Description (if any) ...
 	 *
-	 * @param      object $database Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   object $database Parameter description (if any) ...
+	 * @return  string Return description (if any) ...
 	 */
 	private function gettoprank_tools($database)
 	{
@@ -230,8 +231,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Gets top cited tools
 	 *
-	 * @param      object $database JDatabase
-	 * @return     string HTML
+	 * @param   object $database JDatabase
+	 * @return  string HTML
 	 */
 	private function gettopcited_tools($database)
 	{
@@ -308,8 +309,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Format time
 	 *
-	 * @param      mixed $time Value to format
-	 * @return     string
+	 * @param   mixed $time Value to format
+	 * @return  string
 	 */
 	private function time_units($time)
 	{
@@ -336,11 +337,11 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build date selectors
 	 *
-	 * @param      object &$db    JDatabase
-	 * @param      string $period Time period (quarterly, yearly, etc)
-	 * @param      string $s_top  Top value
-	 * @param      string $dthis  Time (YYYY-MM)
-	 * @return     string HTML
+	 * @param   object &$db    JDatabase
+	 * @param   string $period Time period (quarterly, yearly, etc)
+	 * @param   string $s_top  Top value
+	 * @param   string $dthis  Time (YYYY-MM)
+	 * @return  string HTML
 	 */
 	private function drop_down_dates(&$db, $period, $s_top, $dthis)
 	{
@@ -567,9 +568,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	 * Returns TRUE if there is data in the database
 	 * for the date passed to it, FALSE otherwise.
 	 *
-	 * @param      string $yearmonth YYYY-MM
-	 * @param      string $period    Time period
-	 * @return     boolean
+	 * @param   string $yearmonth  YYYY-MM
+	 * @param   string $period     Time period
+	 * @return  boolean
 	 */
 	private function check_for_data($yearmonth, $period)
 	{
@@ -590,9 +591,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build navigation menu
 	 *
-	 * @param      string $period Timeperiod
-	 * @param      string $top    Top value
-	 * @return     string HTML
+	 * @param   string $period  Timeperiod
+	 * @param   string $top     Top value
+	 * @return  string HTML
 	 */
 	private function navlinks($period='12', $top='')
 	{
@@ -643,13 +644,13 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call for displaying usage data
 	 *
-	 * @param      string $option        Component name
-	 * @param      string $task          Component task
-	 * @param      object $db            JDatabase
-	 * @param      array  $months        Month names (Jan -> Dec)
-	 * @param      array  $monthsReverse Month names in reverse (Dec -> Jan)
-	 * @param      string $enddate       Time period
-	 * @return     string HTML
+	 * @param   string $option         Component name
+	 * @param   string $task           Component task
+	 * @param   object $db             JDatabase
+	 * @param   array  $months         Month names (Jan -> Dec)
+	 * @param   array  $monthsReverse  Month names in reverse (Dec -> Jan)
+	 * @param   string $enddate        Time period
+	 * @return  string HTML
 	 */
 	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
 	{
@@ -770,4 +771,3 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		return $html;
 	}
 }
-
