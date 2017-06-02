@@ -51,6 +51,7 @@ $this->css();
 					$limit = Request::getVar('limit') ? Request::getVar('limit') : $visibleCount;
 					$total = $this->count;
 					$start = $limit > $total ? 1 : Request::getVar('limitstart') + 1;
+
 					if ($start + $limit > $total)
 					{
 						$end = $total;
