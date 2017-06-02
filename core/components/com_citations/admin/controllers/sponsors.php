@@ -71,6 +71,7 @@ class Sponsors extends AdminController
 	/**
 	 * Edit a type
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
