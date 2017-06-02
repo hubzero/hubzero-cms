@@ -119,7 +119,7 @@ class Importer
 	 * Method to set adapater
 	 *
 	 * @access public
-	 * @param  ResourcesImportInterface Object
+	 * @param  object  $adapter
 	 * @return void
 	 */
 	public function setAdapter(\Components\Resources\Import\Interfaces\Adapter $adapter)
@@ -142,7 +142,7 @@ class Importer
 	 * Method auto detect adapter based on mime type
 	 *
 	 * @access private
-	 * @param  ResourcesImportInterface Object
+	 * @param  object  $import
 	 * @return void
 	 */
 	private function autoDetectAdapter(\Components\Resources\Models\Import $import)
@@ -183,6 +183,7 @@ class Importer
 	 * Count import data
 	 *
 	 * @access public
+	 * @param  object  $import
 	 * @return void
 	 */
 	public function count(\Components\Resources\Models\Import $import)
@@ -198,7 +199,9 @@ class Importer
 	 * Process import data
 	 *
 	 * @access public
-	 * @param  Closure Object
+	 * @param  object   $import
+	 * @param  array    $callbacks
+	 * @param  integer  $dryRun
 	 * @return void
 	 */
 	public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun = 1)
