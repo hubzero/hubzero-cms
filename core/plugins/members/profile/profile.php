@@ -104,12 +104,21 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$this->task = Request::getVar('action', 'view');
 			switch ($this->task)
 			{
-				case 'addaddress':    $arr['html'] = $this->addAddress();    break;
-				case 'editaddress':   $arr['html'] = $this->editAddress();   break;
-				case 'saveaddress':   $arr['html'] = $this->saveAddress();   break;
-				case 'deleteaddress': $arr['html'] = $this->deleteAddress(); break;
+				case 'addaddress':
+					$arr['html'] = $this->addAddress();
+				break;
+				case 'editaddress':
+					$arr['html'] = $this->editAddress();
+				break;
+				case 'saveaddress':
+					$arr['html'] = $this->saveAddress();
+				break;
+				case 'deleteaddress':
+					$arr['html'] = $this->deleteAddress();
+				break;
 				case 'view':
-				default:              $arr['html'] = $this->display();
+				default:
+					$arr['html'] = $this->display();
 			}
 		}
 
