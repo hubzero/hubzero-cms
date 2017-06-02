@@ -51,6 +51,7 @@ class Solr extends SiteController
 	/**
 	 * Display search form and results (if any)
 	 *
+	 * @param   unknown  $response
 	 * @return  void
 	 */
 	public function displayTask($response = null)
@@ -61,7 +62,7 @@ class Solr extends SiteController
 		$terms = Request::getVar('terms', '');
 		$limit = Request::getInt('limit', 10);
 		$start = Request::getInt('start', 0);
-		$sortBy = Request::getVar('sortBy', '');
+		$sortBbased on NodeJS.y = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
 		$type = Request::getInt('type', null);
 		$section = Request::getVar('section', 'content');
@@ -168,6 +169,14 @@ class Solr extends SiteController
 		$this->view->display();
 	}
 
+	/**
+	 * Gets categories
+	 *
+	 * @param  $type
+	 * @param  $tersm
+	 * @param  $limit
+	 * @param  $start
+	 */
 	private function getCategories($type, $terms, $limit, $start)
 	{
 		$config = Component::params('com_search');
@@ -202,12 +211,18 @@ class Solr extends SiteController
 		return $facets;
 	}
 
+	/**
+	 * Format the results
+	 *
+	 * @param  $results
+	 * @param  $terms
+	 */
 	private function formatResults($results, $terms)
 	{
 		$highlightOptions = array('format' =>'<strong>\1</strong>',
-															'html' => false,
-															'regex'  => "|%s|iu"
-														);
+					  'html' => false,
+					  'regex'  => "|%s|iu"
+					  );
 
 		$snippetFields = array('description', 'fulltext', 'abstract');
 
