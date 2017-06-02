@@ -36,6 +36,14 @@ $this->css()
 
 if (!function_exists('sortDir'))
 {
+	/**
+	 * Filters directory
+	 *
+	 * @param   array   $filters
+	 * @param   string  $current
+	 * @param   string  $dir
+	 * @return  string
+	 */
 	function sortDir($filters, $current, $dir='DESC')
 	{
 		if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir)
