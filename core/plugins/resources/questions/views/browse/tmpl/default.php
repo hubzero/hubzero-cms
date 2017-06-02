@@ -45,7 +45,22 @@ $this->css();
 	<table class="questions entries">
 		<caption>
 			<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?>
-			<span>(<?php echo $this->rows->count(); ?>)</span>
+			<span>
+				(<?php
+					$total = $this->count;
+					$start = Request::getVar('limitstart') + 1;
+					$limit = Request::getVar('limit');
+					if ($start + $limit > $total)
+					{
+						$end = $total;
+					}
+					else
+					{
+						$end = ($start - 1) + $limit;
+					}
+					echo Lang::txt('COM_ANSWERS_RESULTS_TOTAL', $start, $end, $total);
+				?>)
+			</span>
 		</caption>
 		<tbody>
 	<?php if ($this->rows) { ?>
@@ -129,5 +144,11 @@ $this->css();
 	<?php } ?>
 		</tbody>
 	</table>
+	<form>
+		<?php
+			$pageNav = $this->rows->pagination;
+			echo $pageNav;
+		?>
+	</form>
 	<div class="clearfix"></div>
 </div><!-- / .container -->
