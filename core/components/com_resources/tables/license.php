@@ -51,7 +51,8 @@ class License extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param   mixed  $oid  Integer or string (alias)
+	 * @param   unknown  $keys
+	 * @param   boolean  $reset
 	 * @return  void
 	 */
 	public function load($keys = NULL, $reset = true)
