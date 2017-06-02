@@ -364,6 +364,7 @@ class Helper extends Object
 	 *
 	 * @param      boolean $showorgs Show organizations?
 	 * @param      integer $newstyle Use new style formatting?
+	 * @param      integer $badges
 	 * @return     void
 	 */
 	public function getSubmitters($showorgs=false, $newstyle=0, $badges=0)
