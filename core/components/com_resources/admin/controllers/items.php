@@ -1350,6 +1350,7 @@ class Items extends AdminController
 	 * Sets the state of a resource
 	 * Redirects to main listing
 	 *
+	 * @param      integer  $publish
 	 * @return     void
 	 */
 	public function stateTask($publish=1)
