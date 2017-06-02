@@ -166,6 +166,7 @@ class Html
 	 *
 	 * @param      array  $as    Access levels
 	 * @param      string $value Value to select
+	 * @param      string $name
 	 * @return     string HTML
 	 */
 	public static function selectAccess($as, $value, $name = 'access')
@@ -190,6 +191,8 @@ class Html
 	 *
 	 * @param      array  $groups Groups to populate list
 	 * @param      string $value  Value to select
+	 * @param      string $name
+	 * @param      string $class
 	 * @return     string HTML
 	 */
 	public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
@@ -637,9 +640,7 @@ class Html
 	 * Generate COins microformat
 	 *
 	 * @param      object $cite     Resource citation data
-	 * @param      object $resource Resource
-	 * @param      object $config   Component config
-	 * @param      object $helper   Helper
+	 * @param      object $model
 	 * @return     string HTML
 	 */
 	//public static function citationCOins($cite, $resource, $config, $helper)
@@ -1396,7 +1397,7 @@ class Html
 	/**
 	 * Format a filesize to more understandable Gb/Mb/Kb/b
 	 *
-	 * @param      integer $fileSize File size to format
+	 * @param      integer $file_size File size to format
 	 * @return     string
 	 */
 	public static function formatsize($file_size)
