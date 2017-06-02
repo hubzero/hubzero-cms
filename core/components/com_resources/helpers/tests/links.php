@@ -46,12 +46,6 @@ class Links implements Test
 	private $client;
 
 	/**
-	 * Property indicating whether or not to use SSL.
-	 * @var boolean 
-	 */
-	private $verify;
-
-	/**
 	 * Constructor
 	 *
 	 * @param   string  $rooturl
@@ -60,10 +54,7 @@ class Links implements Test
 	public function __construct($verify = false)
 	{
 		$this->client = new Client();
-		$this->verify = $verify;
-
-		// Guzzle 6 no longer uses this method
-		//$this->client->setDefaultOption('verify', $verify);
+		$this->client->setDefaultOption('verify', $verify);
 	}
 
 	/**
@@ -102,11 +93,9 @@ class Links implements Test
 			{
 				try
 				{
-					
 					$response = $this->client->head($path, [
 						'exceptions' => false,
-						'timeout'    => 10,
-						'verify'	 => $this->verify
+						'timeout'    => 10
 					]);
 
 					$meta['code'] = $response->getStatusCode();
