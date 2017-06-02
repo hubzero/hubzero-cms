@@ -85,7 +85,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'profile' . DS . 'field.php';
+		require_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 		$arr = array(
 			'html' => '',
@@ -310,7 +310,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function editAddress($address = null)
 	{
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'address.php';
+		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
 		// get member addresses
 		if (!$address)
@@ -337,7 +337,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function saveAddress()
 	{
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'address.php';
+		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
 		// get request vars
 		$data = Request::getVar('address', array());
@@ -368,7 +368,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteAddress()
 	{
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'address.php';
+		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
 		// get request vars
 		$addressId = Request::getInt('addressid', 0);
