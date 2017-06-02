@@ -53,10 +53,10 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	 */
 	public function onInit()
 	{
-		// add ckeditor stylesheet
+		// Add ckeditor stylesheet
 		$this->css();
 
-		// add ckeditor
+		// Add ckeditor
 		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
 		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
 	}
@@ -107,6 +107,8 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Inserts text
+	 *
 	 * @param	string	$id
 	 * @return	string
 	 */
@@ -129,22 +131,22 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display the editor area.
 	 *
-	 * @param   string  $name    The control name.
-	 * @param   string  $html    The contents of the text area.
-	 * @param   string  $width   The width of the text area (px or %).
-	 * @param   string  $height  The height of the text area (px or %).
-	 * @param   int     $col     The number of columns for the textarea.
-	 * @param   int     $row     The number of rows for the textarea.
-	 * @param   boolean $buttons True and the editor buttons will be displayed.
-	 * @param   string  $id      An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
-	 * @param   string  $asset
-	 * @param   object  $author
-	 * @param   array   $params  Associative array of editor parameters.
+	 * @param   string   $name     The control name.
+	 * @param   string   $content  The contents of the text area.
+	 * @param   string   $width    The width of the text area (px or %).
+	 * @param   string   $height   The height of the text area (px or %).
+	 * @param   int      $col      The number of columns for the textarea.
+	 * @param   int      $row      The number of rows for the textarea.
+	 * @param   boolean  $buttons  True and the editor buttons will be displayed.
+	 * @param   string   $id       An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
+	 * @param   string   $asset
+	 * @param   object   $author
+	 * @param   array    $params  Associative array of editor parameters.
 	 * @return  string
 	 */
 	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{
-		// make sure we have an id too
+		// Make sure we have an id too
 		if (empty($id))
 		{
 			$id = $name;
@@ -183,17 +185,17 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			$params['height'] = (18 * intval($row)) . 'px';
 		}
 
-		// build config & json encode
+		// Build config & json encode
 		$config = json_encode($this->_buildConfig($params));
 
-		// fix script and php protected source
+		// Fix script and php protected source
 		//$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
 		$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
 		$config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
 		$config = str_replace('"\/<group:include([^>]*)\\\\\/>\/g"', '/<group:include([^>]*)\\/>/g', $config);
 		$config = str_replace('"\/{xhub:([^}]*)}\/gi"', '/{xhub:([^}]*)}/gi', $config);
 
-		// script to actually make ckeditor
+		// Script to actually make ckeditor
 		$script  = '<script type="text/javascript">';
 		$script .= 'if (typeof(jQuery) !== "undefined") {';
 		$script .= 'jQuery(document).ready(function() { jQuery("#'.$id.'").ckeditor(function() {}, '.$config.'); });';
@@ -213,7 +215,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			$atts[] = $key .'="' . $value . '"';
 		}
 
-		// output html and script
+		// Output html and script
 		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
 		if (App::isAdmin())
 		{
@@ -223,7 +225,12 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Displays buttons
 	 *
+	 * @param   string  $name
+	 * @param   array   $buttons
+	 * @param   string  $asset
+	 * @param   string  $string
 	 * @return  string
 	 */
 	private function _displayButtons($name, $buttons, $asset, $author)
@@ -299,16 +306,17 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build a config object
 	 *
-	 * @return  object stdClass
+	 * @param   array   $params
+	 * @return  object  stdClass
 	 */
 	private function _buildConfig($params = array())
 	{
 		static $template;
 
-		// merge incoming params with
+		// Merge incoming params with
 		$this->params->merge($params);
 
-		// object to hold our final config
+		// Object to hold our final config
 		$config                                = new stdClass;
 		$config->startupMode                   = 'wysiwyg';
 		$config->tabSpaces                     = 4;
@@ -347,11 +355,11 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			'/',
 			array('Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
 			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
-			//array('HubzeroAutoGrow', 'HubzeroMacro')
+			// Array('HubzeroAutoGrow', 'HubzeroMacro')
 			array('HubzeroMacro')
 		);
 
-		// if minimal toolbar
+		// If minimal toolbar
 		if (in_array('minimal', $this->params->get('class')))
 		{
 			$config->toolbar                   = array(
@@ -366,94 +374,94 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			//$config->hubzeroAutogrow_autoStart = false;
 		}
 
-		// image plugin if in minimal mode
+		// Image plugin if in minimal mode
 		if (in_array('minimal', $this->params->get('class')) && in_array('images', $this->params->get('class')))
 		{
 			// push after links section
 			$config->toolbar = array_merge(array_splice($config->toolbar, 0, 1), array(array('Image')), $config->toolbar);
 		}
 
-		// macros popup
+		// Macros popup
 		if (in_array('macros', $this->params->get('class')))
 		{
 			$config->toolbar[] = array('HubzeroMacro');
 		}
 
-		// if no footer
+		// If no footer
 		if (in_array('no-footer', $this->params->get('class')))
 		{
 			$config->removePlugins = 'elementspath';
 		}
 
-		// setup codemirror
+		// Setup codemirror
 		$config->codemirror                         = new stdClass;
 		$config->codemirror->autoFormatOnModeChange = false;
 		$config->codemirror->autoCloseTags          = false;
 		$config->codemirror->autoCloseBrackets      = false;
 
-		// startup mode
+		// Startup mode
 		if (in_array($this->params->get('startupMode'), array('wysiwyg','source')))
 		{
 			$config->startupMode = $this->params->get('startupMode');
 		}
 
-		// show source button
+		// Show source button
 		if ($this->params->get('sourceViewButton'))
 		{
 			array_unshift($config->toolbar[0], 'Source', '-');
 			$config->extraPlugins .= ',codemirror';
 		}
 
-		// height
+		// Height
 		if ($this->params->get('height'))
 		{
 			$config->height = $this->params->get('height', '200px');
 		}
 
-		// // autogrow auto-start
+		// // Autogrow auto-start
 		// if (is_bool($this->params->get('autoGrowAutoStart')))
 		// {
 		// 	$config->hubzeroAutogrow_autoStart = $this->params->get('autoGrowAutoStart');
 		// }
 
-		// // auto grow min height
+		// // Auto grow min height
 		// if (is_numeric($this->params->get('autoGrowMinHeight')))
 		// {
 		// 	$config->hubzeroAutogrow_minHeight = $this->params->get('autoGrowMinHeight');
 		// }
 
-		// // autogrow max height
+		// // Autogrow max height
 		// if (is_numeric($this->params->get('autoGrowMaxHeight')))
 		// {
 		// 	$config->hubzeroAutogrow_maxHeight = $this->params->get('autoGrowMaxHeight');
 		// }
 
-		// auto start spell check
+		// Auto start spell check
 		if (is_bool($this->params->get('spellCheckAutoStart')))
 		{
 			$config->scayt_autoStartup = $this->params->get('spellCheckAutoStart');
 		}
 
-		// spell check max suggesstions
+		// Spell check max suggesstions
 		if (is_numeric($this->params->get('spellCheckMaxSuggesstions')))
 		{
 			$config->scayt_maxSuggestions = $this->params->get('spellCheckMaxSuggesstions');
 		}
 
-		// class to add to ckeditor body
+		// Class to add to ckeditor body
 		if ($this->params->get('contentBodyClass'))
 		{
 			$config->bodyClass = $this->params->get('contentBodyClass');
 		}
 
-		// add stylesheets to ckeditor content
+		// Add stylesheets to ckeditor content
 		if (is_array($this->params->get('contentCss')) && count($this->params->get('contentCss')))
 		{
 			$config->contentsCss = $this->params->get('contentCss');
 		}
 		else
 		{
-			// always get front end template
+			// Always get front end template
 			if (!$template)
 			{
 				$db = App::get('db');
@@ -463,19 +471,19 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 
 			$app = substr(PATH_APP, strlen(PATH_ROOT));
 
-			// vars to hold css
+			// Vars to hold css
 			$css          = array();
 			$siteCss      = $app . '/cache/site/site.css';
 			$templateCssA = $app . '/templates/' . $template . '/css/main.css';
 			$templateCssC = '/core/templates/' . $template . '/css/main.css';
 
-			// do we have a site.css
+			// Do we have a site.css
 			if (file_exists(PATH_APP . $siteCss))
 			{
 				array_push($css, $siteCss);
 			}
 
-			// do we have a template main.css
+			// Do we have a template main.css
 			if (file_exists(PATH_ROOT . $templateCssA))
 			{
 				array_push($css, $templateCssA);
@@ -489,36 +497,36 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			{
 				$head = Document::getHeadData();
 
-				// add already added stylesheets
+				// Add already added stylesheets
 				foreach ($head['styleSheets'] as $sheet => $attribs)
 				{
 					array_push($css, $sheet);
 				}
 			}
 
-			// set the content css
+			// Set the content css
 			$config->contentsCss = $css;
 		}
 
-		// file browsing
+		// File browsing
 		if ($this->params->get('fileBrowserBrowseUrl'))
 		{
 			$config->filebrowserBrowseUrl = $this->params->get('fileBrowserBrowseUrl');
 		}
 
-		// image browsing
+		// Image browsing
 		if ($this->params->get('fileBrowserImageBrowseUrl'))
 		{
 			$config->filebrowserImageBrowseUrl = $this->params->get('fileBrowserImageBrowseUrl');
 		}
 
-		// file upload
+		// File upload
 		if ($this->params->get('fileBrowserUploadUrl'))
 		{
 			$config->filebrowserUploadUrl = $this->params->get('fileBrowserUploadUrl');
 		}
 
-		// file browse popup size
+		// File browse popup size
 		if ($this->params->get('fileBrowserWindowWidth'))
 		{
 			$config->filebrowserWindowWidth = $this->params->get('fileBrowserWindowWidth');
@@ -528,15 +536,15 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			$config->filebrowserWindowHeight = $this->params->get('fileBrowserWindowHeight');
 		}
 
-		// page templates
+		// Page templates
 		if ($this->params->get('templates_files') && is_object($this->params->get('templates_files')))
 		{
 			foreach ($this->params->get('templates_files') as $name => $template)
 			{
-				//make sure templates exists
+				// Make sure templates exists
 				if (file_exists(PATH_ROOT . $template))
 				{
-					// do we want to replace original ones
+					// Do we want to replace original ones
 					if ($this->params->get('templates_replace'))
 					{
 						$config->templates = array();
@@ -548,23 +556,23 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		// make template definition a string
+		// Make template definition a string
 		$config->templates = implode(',', $config->templates);
 
-		// allow scripts
+		// Allow scripts
 		if ($this->params->get('allowScriptTags'))
 		{
 			$config->protectedSource[] = '/<script[^>]*>(.|\n)*<\/script>/ig';
 		}
 
-		// allow php
+		// Allow php
 		if ($this->params->get('allowPhpTags'))
 		{
 			$config->protectedSource[] = '/<\?[\s\S]*?\?>/g';
 			$config->codemirror->mode = 'application/x-httpd-php';
 		}
 
-		// set editor skin
+		// Set editor skin
 		$config->skin = $this->params->get('skin', 'moono');
 
 		if (User::authorise('core.manage', 'com_system'))
