@@ -134,7 +134,7 @@ class Importer extends Object
 	/**
 	 * Defines a one to one relationship with citation
 	 *
-	 * @param   string  $path
+	 * @param   boolean  $force
 	 * @return  void
 	 */
 	public function cleanup($force = false)
@@ -242,6 +242,7 @@ class Importer extends Object
 	/**
 	 * Get a list of citations requiring attention
 	 *
+	 * @param   object  $data
 	 * @return  array
 	 */
 	public function writeRequiresAttention($data)
@@ -283,6 +284,7 @@ class Importer extends Object
 	/**
 	 * Get a list of citations requiring attention
 	 *
+	 * @param   object  $data
 	 * @return  array
 	 */
 	public function writeRequiresNoAttention($data)
