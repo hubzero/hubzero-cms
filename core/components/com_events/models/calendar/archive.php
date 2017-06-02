@@ -94,7 +94,7 @@ class Archive extends Model
 	 *
 	 * @param      string  $rtrn    What data to return
 	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
+	 * @param      boolean $clear Clear cached data?
 	 * @return     mixed
 	 */
 	public function calendars( $rtrn = 'list', $filters = array(), $clear = false )
@@ -123,7 +123,10 @@ class Archive extends Model
 	/**
 	 * Subscribe to group calendars
 	 *
-	 * @return void
+	 * @param   string   $name
+	 * @param   string   $scope
+	 * @param   unknown  $scope_id
+	 * @return  void
 	 */
 	public function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)
 	{
