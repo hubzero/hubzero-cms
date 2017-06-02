@@ -138,9 +138,9 @@ class Calendar extends Model
 	/**
 	 * Get a list of group pages
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
+	 * @param      string   $rtrn     What data to return
+	 * @param      array    $filters  Filters to apply to data retrieval
+	 * @param      boolean  $clear    Clear cached data?
 	 * @return     mixed
 	 */
 	public function events($rtrn = 'list', $filters = array(), $clear = false)
@@ -456,6 +456,7 @@ class Calendar extends Model
 	/**
 	 * Delete Calendar
 	 *
+	 * @param  boolean  $deleteEvents
 	 * @return [type] [description]
 	 */
 	public function delete($deleteEvents = false)
