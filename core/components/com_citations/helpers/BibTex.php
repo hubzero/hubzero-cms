@@ -179,6 +179,7 @@ class Structures_BibTex
 	 * Constructor
 	 *
 	 * @access public
+	 * @param  array  $options
 	 * @return void
 	 */
 	function Structures_BibTex($options = array())
@@ -280,9 +281,9 @@ class Structures_BibTex
 	/**
 	 * Adds to the content string
 	 *
-	 * @access public
-	 * @param  string $filename Name of the file
-	 * @return mixed  true on success PEAR_Error on failure
+	 * @access  public
+	 * @param   string  $bibstring Name of the file
+	 * @return  mixed   True on success PEAR_Error on failure
 	 */
 	function addContent($bibstring)
 	{
