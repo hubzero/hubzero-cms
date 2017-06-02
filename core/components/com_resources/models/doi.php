@@ -109,7 +109,9 @@ class Doi extends Relational
 	/**
 	 * Get a record by resource
 	 *
-	 * @param   string  $doi
+	 * @param   unknown  $rid
+	 * @param   unknown  $revision
+	 * @param   integer  $versionid
 	 * @return  object
 	 */
 	public static function oneByResource($rid, $revision = null, $versionid = 0)
