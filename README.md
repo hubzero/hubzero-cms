@@ -1,9 +1,11 @@
-This component is for the Partners page of QUBES
+This is a component for for the Partners page of QUBES.
+=======================================================
 This component will mimic the structure and admin editing style of the com_drwho component example from hubzero at:
-https://hubzero.org/documentation/2.1.0/webdevs/components
-If you are reading this and comparing this and the drwho component, you will find many similarites, however you will not find an API controller
+https://hubzero.org/documentation/2.1.0/webdevs/components .
+If you are reading this and comparing this and the drwho component, you will find many similarites, however you will not find an API controller.
 This is because the API controller is not necessary to the component, and was just provided in the example.
 	See for yourself by deleting the api folder!
+========================================================
 @author Jacob Harless jrharless@email.wm.edu
 
 Installation
