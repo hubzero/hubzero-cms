@@ -55,9 +55,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display comments on an object
 	 *
-	 * @param   type     $objType     Object type to pull comments for
-	 * @param   integer  $objId       Object ID to pull comments for
-	 * @param   string   $authorized  Authorization level
+	 * @param   object   $obj
+	 * @param   unknown  $option
+	 * @param   string   $url
+	 * @param   unknown  $params
 	 * @return  string   HTML
 	 */
 	public function onAfterDisplayContent($obj, $option, $url=null, $params = null)
