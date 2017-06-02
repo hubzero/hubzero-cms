@@ -156,6 +156,9 @@ class Import extends Model
 	 * Return import runs
 	 *
 	 * @access public
+	 * @param  string   $rtrn
+	 * @param  array    $filters
+	 * @param  boolean  $clear
 	 * @return string
 	 */
 	public function runs( $rtrn = 'list', $filters = array(), $clear = false )
