@@ -41,7 +41,7 @@
         "pelago/emogrifier": "dev-master",
         "aferrandini/phpqrcode": "1.0.1",
         "google/apiclient": "^2.0",
-        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/guzzle": "5.3.*",
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
         "phpdocumentor/reflection-docblock": "2.0.4",
