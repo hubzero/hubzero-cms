@@ -756,9 +756,10 @@ class Format
 	/**
 	 * Output a tagcloud of badges associated with a citation
 	 *
-	 * @param   object  $citation  Citation
-	 * @param   object  $database  JDatabase
-	 * @return  string  HTML
+	 * @param   object   $citation  Citation
+	 * @param   object   $database  JDatabase
+	 * @param   boolean  $includeHtml
+	 * @return  string   HTML
 	 */
 	public static function citationBadges($citation, $database, $includeHtml = true)
 	{
