@@ -113,8 +113,8 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set redirect and message
 	 *
-	 * @param   object  $url  URL to redirect to
-	 * @param   object  $msg  Message to send
+	 * @param   object  $course
+	 * @param   object  $offering
 	 * @return  void
 	 */
 	public function onCourseBeforeOutline($course, $offering)
@@ -187,6 +187,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing or creating an entry
 	 *
+	 * @param   object  $model
 	 * @return  string  HTML
 	 */
 	private function _edit($model=null)
