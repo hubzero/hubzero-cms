@@ -102,6 +102,7 @@ class Links implements Test
 			{
 				try
 				{
+					
 					$response = $this->client->head($path, [
 						'exceptions' => false,
 						'timeout'    => 10,
