@@ -200,6 +200,7 @@ class Entries extends SiteController
 	/**
 	 * Show a form for editing an entry
 	 *
+	 * @param   object  $entry
 	 * @return  void
 	 */
 	public function editTask($entry = null)
@@ -790,6 +791,8 @@ class Entries extends SiteController
 	/**
 	 * Method to check admin access permission
 	 *
+	 * @param   string   $assetType
+	 * @param   unknown  $assetId
 	 * @return  boolean  True on success
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
