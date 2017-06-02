@@ -475,8 +475,8 @@ class Create extends SiteController
 	/**
 	 * Recursive method for loading hierarchical focus areas (tags)
 	 *
-	 * @param   integer  $id            Resource type ID
-	 * @param   array    $labels        Tags
+	 * @param   unknown  $type
+	 * @param   unknown  $labels
 	 * @param   integer  $parent_id     Tag ID
 	 * @param   string   $parent_label  Tag
 	 * @return  void
