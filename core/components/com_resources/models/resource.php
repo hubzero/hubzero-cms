@@ -71,8 +71,8 @@ class Resource extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      integer  $oid  Resource ID or alias
+	 * @param      unknown  $revision
 	 * @return     void
 	 */
 	public function __construct($oid, $revision=null)
@@ -154,8 +154,8 @@ class Resource extends Object
 	/**
 	 * Returns a reference to a wiki page object
 	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
+	 * @param      integer  $oid
+	 * @param      unknown  $revision
 	 * @return     object
 	 */
 	static function &getInstance($oid=null, $revision=null)
@@ -584,7 +584,7 @@ class Resource extends Object
 	/**
 	 * Check if the resource is a tool or not
 	 *
-	 * @param      mixed $idx Index value
+	 * @param      array  $group
 	 * @return     array
 	 */
 	public function inGroup($group=null)
@@ -837,7 +837,10 @@ class Resource extends Object
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
 	 *
-	 * @param      mixed $idx Index value
+	 * @param      mixed    $idx Index value
+	 * @param      integer  $limit
+	 * @param      integer  $start
+	 * @param      string   $order
 	 * @return     array
 	 */
 	public function children($idx=null, $limit=0, $start=0, $order='ordering')
