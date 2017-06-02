@@ -50,7 +50,7 @@ class Permissions
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param   string   $extension  The extension.
+	 * @param   string   $assetType  Type of asset.
 	 * @param   integer  $assetId    The asset ID.
 	 * @return  object   Object
 	 */
