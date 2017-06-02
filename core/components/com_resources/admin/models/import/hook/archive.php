@@ -96,7 +96,7 @@ class Archive extends Object
 	 *
 	 * @param   string   $rtrn     What data to return
 	 * @param   array    $filters  Filters to apply to data retrieval
-	 * @param   boolean  $boolean  Clear cached data?
+	 * @param   boolean  $clear  Clear cached data?
 	 * @return  mixed
 	 */
 	public function hooks($rtrn = 'list', $filters = array(), $clear = false )
