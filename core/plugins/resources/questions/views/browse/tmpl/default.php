@@ -47,9 +47,10 @@ $this->css();
 			<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?>
 			<span>
 				(<?php
+					$visibleCount = sizeof($this->rows);
+					$limit = Request::getVar('limit') ? Request::getVar('limit') : $visibleCount;
 					$total = $this->count;
-					$start = Request::getVar('limitstart') + 1;
-					$limit = Request::getVar('limit');
+					$start = $limit > $total ? 1 : Request::getVar('limitstart') + 1;
 					if ($start + $limit > $total)
 					{
 						$end = $total;
