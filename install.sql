@@ -23,7 +23,7 @@ CREATE TABLE `jos_partners` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
   `date_joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `partner_type` varchar(100) NOT NULL DEFAULT '',
+  `partner_type` id(11) NOT NULL DEFAULT 0,
   `site_url` varchar(255) NOT NULL DEFAULT '',
   `social_media_url` varchar(255) NOT NULL DEFAULT '',
   `QUBES_group_url` varchar(255) NOT NULL DEFAULT '',
@@ -42,13 +42,11 @@ LOCK TABLES `jos_partners` WRITE;
 INSERT INTO `jos_partners` (`id`, `name`, `date_joined`, `partner_type`,'site_url' , 'social_media_url', `QUBES_group_url`, `logo_url`, 'QUBES_liason',
 'partner_liason', 'activites', `state`, `about`)
 VALUES
-	(1,'National Science Foundation','2014-09-17','type1','www.nsf.gov','https://twitter.com/NSF', 
+	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','https://twitter.com/NSF', 
 		'https://qubeshub.org/community/groups', 'https://www.nsf.gov/news/mmg/media/images/nsf_logo_f_272f4777-f5c4-4e49-8a2e-468e89b64b61_f.jpg', 
     '1234', '1234','activites',
     '<!-- {FORMAT:HTML} --><p>The National Science Foundation (NSF) is an independent federal agency created by Congress in 1950 "to promote the
 		 progress of science; to advance the national health, prosperity, and welfare; to secure the national defense…"’\n</p>');
-
-	
 /*!40000 ALTER TABLE `jos_partners` ENABLE KEYS */;
 UNLOCK TABLES;
 

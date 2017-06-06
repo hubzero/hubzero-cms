@@ -1,4 +1,4 @@
-This is a component for for the Partners page of QUBES.
+This is a component for the Partners page of QUBES.
 =======================================================
 
 This component will mimic the structure and admin editing style of the com_drwho component example from hubzero at:
