@@ -282,8 +282,10 @@ class Feedback extends SiteController
 		}
 
 		// Code cleaner for xhtml transitional compliance
-		$row->set('quote', Sanitize::stripAll($row->get('quote')));
-		$row->set('quote', str_replace('<br>', '<br />', $row->get('quote')));
+		$row->set('quote', Sanitize::stripScripts($row->get('quote')));
+		$row->set('quote', Sanitize::stripImages($row->get('quote')));
+		$row->set('quote', Sanitize::stripTags($row->get('quote')));
+		$row->set('quote', str_replace("\n", '<br />', $row->get('quote')));
 		$row->set('date', Date::toSql());
 
 		// Store new content
