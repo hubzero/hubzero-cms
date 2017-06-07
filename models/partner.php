@@ -68,7 +68,7 @@ class Partner extends Relational{
 			default:
 				$link .= '&task=view&id=' . $this->get('id');
 			break;
-		}()
+		}
 
 		return $link;
 	}
