@@ -23,15 +23,15 @@ CREATE TABLE `jos_partners` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
   `date_joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `partner_type` id(11) NOT NULL DEFAULT 0,
+  `partner_type` int(11) NOT NULL DEFAULT 0,
   `site_url` varchar(255) NOT NULL DEFAULT '',
-  `social_media_url` varchar(255) NOT NULL DEFAULT '',
-  `QUBES_group_url` varchar(255) NOT NULL DEFAULT '',
-  `logo_url` varchar(255) NOT NULL DEFAULT '',
-  'QUBES_liason' int(11) NOT NULL DEFAULT '0',
-  'partner_liason' int(11) NOT NULL DEFAULT 'O',
-  'activites' mediumtext NOT NULL;
-  `state` tinyint(2) NOT NULL DEFAULT '0',
+  `social_media_url` varchar(255) NOT NULL DEFAULT ' ',
+  `QUBES_group_url` varchar(255) NOT NULL DEFAULT ' ',
+  `logo_url` varchar(255) NOT NULL DEFAULT ' ',
+  `QUBES_liason` int(11) NOT NULL DEFAULT '0',
+  `partner_liason` int(11) NOT NULL DEFAULT '0',
+  `activites` mediumtext NOT NULL,
+  `state` tinyint(2) NOT NULL DEFAULT '0',  
   `about` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -39,12 +39,12 @@ CREATE TABLE `jos_partners` (
 LOCK TABLES `jos_partners` WRITE;
 /*!40000 ALTER TABLE `jos_partners` DISABLE KEYS */;
 
-INSERT INTO `jos_partners` (`id`, `name`, `date_joined`, `partner_type`,'site_url' , 'social_media_url', `QUBES_group_url`, `logo_url`, 'QUBES_liason',
-'partner_liason', 'activites', `state`, `about`)
+INSERT INTO `jos_partners` (`id`, `name`, `date_joined`, `partner_type`,`site_url` , `social_media_url`, `QUBES_group_url`, `logo_url`, `QUBES_liason`,
+`partner_liason`, `activites`, `state`, `about`)
 VALUES
-	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','https://twitter.com/NSF', 
+	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','https://twitter.com/NSF',
 		'https://qubeshub.org/community/groups', 'https://www.nsf.gov/news/mmg/media/images/nsf_logo_f_272f4777-f5c4-4e49-8a2e-468e89b64b61_f.jpg', 
-    '1234', '1234','activites',
+    '1234', '1234','activites', 1,
     '<!-- {FORMAT:HTML} --><p>The National Science Foundation (NSF) is an independent federal agency created by Congress in 1950 "to promote the
 		 progress of science; to advance the national health, prosperity, and welfare; to secure the national defense…"’\n</p>');
 /*!40000 ALTER TABLE `jos_partners` ENABLE KEYS */;
@@ -53,23 +53,25 @@ UNLOCK TABLES;
 
 #partner-type table
 # drop the table if it exists:
-DROP TABLE IF EXISTS 'jos_partner_types';
-CREATE TABLE 'jos_partner_types' (
-'id' int(11) NOT NULL AUTO_INCREMENT,
-'internal' varchar(255) NOT NULL DEFAULT '',
-'external' varchar(255) NOT NULL DEFAULT '',
-'description' mediumtext NOT NULL,
-PRIMARY KEY('id')
+DROP TABLE IF EXISTS `jos_partner_types`;
+
+CREATE TABLE `jos_partner_types` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`internal` varchar(255) NOT NULL DEFAULT '',
+`external` varchar(255) NOT NULL DEFAULT '',
+`description` mediumtext NOT NULL,
+PRIMARY KEY(`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=latin1;
 
 #insert new values
-INSERT INTO 'jos_partner_types'('id','internal','external','description')(
-(1,'Collaborators', 'Consortium Members', '<!-- {FORMAT:HTML} --><p>Sharing information, coordinating efforts \n</p>' ),
+INSERT INTO `jos_partner_types`(`id`,`internal`,`external`,`description`)
+VALUES
+(1,'Collaborators', 'Consortium Members', '<!-- {FORMAT:HTML} --><p>Sharing information, coordinating efforts \n</p>'),
 (2,'Alliance Partners', 'Partners', '<!-- {FORMAT:HTML} --><p>Joint programming (decision-making power is shared or transferred) \n</p>' ),
 (3,'Venture Partners', 'Featured Partners', '<!-- {FORMAT:HTML} --><p>Joint ventures \n</p>' ),
 (4,'Funding Partners', 'Sponsors', '<!-- {FORMAT:HTML} --><p>Recipient-donor relationship - determination for allocating funds \n</p>' ),
 (5,'Host Partners', 'Leadership Team', '<!-- {FORMAT:HTML} --><p>Cost-sharing; grant match; sharing of benefits and costs \n</p>' );
-)
+
 UNLOCK TABLES;
 
 
