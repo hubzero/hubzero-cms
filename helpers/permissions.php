@@ -1,5 +1,5 @@
 <?php
-namespace Components\Drwho\Helpers;
+namespace Components\Partners\Helpers;
 
 use Hubzero\Base\Object;
 use User;
