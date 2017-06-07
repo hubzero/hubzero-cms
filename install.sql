@@ -14,12 +14,12 @@
 # ************************************************************
 
 
-# Dump of table jos_partners
+# Dump of table jos_partners_partners
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `jos_partners`;
+DROP TABLE IF EXISTS `jos_partner_partners`;
 
-CREATE TABLE `jos_partners` (
+CREATE TABLE `jos_partner_partners` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
   `date_joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -36,10 +36,10 @@ CREATE TABLE `jos_partners` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `jos_partners` WRITE;
-/*!40000 ALTER TABLE `jos_partners` DISABLE KEYS */;
+LOCK TABLES `jos_partner_partners` WRITE;
+/*!40000 ALTER TABLE `jos_partner_partners` DISABLE KEYS */;
 
-INSERT INTO `jos_partners` (`id`, `name`, `date_joined`, `partner_type`,`site_url` , `social_media_url`, `QUBES_group_url`, `logo_url`, `QUBES_liason`,
+INSERT INTO `jos_partner_partners` (`id`, `name`, `date_joined`, `partner_type`,`site_url` , `social_media_url`, `QUBES_group_url`, `logo_url`, `QUBES_liason`,
 `partner_liason`, `activites`, `state`, `about`)
 VALUES
 	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','https://twitter.com/NSF',
@@ -47,7 +47,7 @@ VALUES
     '1234', '1234','activites', 1,
     '<!-- {FORMAT:HTML} --><p>The National Science Foundation (NSF) is an independent federal agency created by Congress in 1950 "to promote the
 		 progress of science; to advance the national health, prosperity, and welfare; to secure the national defense…"’\n</p>');
-/*!40000 ALTER TABLE `jos_partners` ENABLE KEYS */;
+/*!40000 ALTER TABLE `jos_partner_partners` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -73,5 +73,3 @@ VALUES
 (5,'Host Partners', 'Leadership Team', '<!-- {FORMAT:HTML} --><p>Cost-sharing; grant match; sharing of benefits and costs \n</p>' );
 
 UNLOCK TABLES;
-
-

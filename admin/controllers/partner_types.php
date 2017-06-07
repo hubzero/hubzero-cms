@@ -96,7 +96,7 @@ class Partner_types extends AdminController
 
 		// Get our model
 		// This is the entry point to the database and the 
-		// table of seasons we'll be retrieving data from
+		// table of partner_types we'll be retrieving data from
 		$record = Partner_type::all();
 
 		if ($this->view->filters['state'] >= 0)
@@ -204,7 +204,7 @@ class Partner_types extends AdminController
 		}
 
 		// Notify the user that the record was saved.
-		Notify::success(Lang::txt('COM_DRWHO_ENTRY_SAVED'));
+		Notify::success(Lang::txt('COM_PARTNERS_ENTRY_SAVED'));
 
 		if ($this->_task == 'apply')
 		{

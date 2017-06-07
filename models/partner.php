@@ -1,5 +1,6 @@
-<? php 
+<?php 
 namespace Components\Partners\Models;
+
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Session;
@@ -67,7 +68,7 @@ class Partner extends Relational{
 			default:
 				$link .= '&task=view&id=' . $this->get('id');
 			break;
-		}
+		}()
 
 		return $link;
 	}
