@@ -287,7 +287,7 @@ class VideoMacro extends WikiMacro
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
 	 *
 	 * @param      $file    Filename
-	 * @param      boolean  $alt  Switches between relative and absolute path?
+	 * @param      $alt  Switches between relative and absolute path?
 	 * @return     string
 	 */
 	private function _path($file, $alt=false)
