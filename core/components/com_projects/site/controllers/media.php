@@ -499,18 +499,26 @@ class Media extends Base
 	 */
 	public function getProjectImageSrc()
 	{
+
 		if (!$this->model->exists())
 		{
 			return false;
 		}
 
 		$path      = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
-		$masterpic = trim($this->config->get('masterpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
-		if ($masterpic == 'components/com_projects/assets/img/projects-large.gif')
+		$masterpic = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
+
+		if (!$masterpic || $masterpic == 'components/com_projects/site/assets/img/project.png')
 		{
 			$masterpic = 'components/com_projects/site/assets/img/projects-large.gif';
+			$defaultPath = PATH_CORE;
 		}
-		$default = PATH_CORE . DS . $masterpic;
+		else
+		{
+			$defaultPath = PATH_APP;
+		}
+
+		$default = $defaultPath . DS . $masterpic;
 
 		$default = is_file($default) ? $default : null;
 
@@ -553,8 +561,13 @@ class Media extends Base
 			if ($path == 'components/com_projects/assets/img/project.png')
 			{
 				$path = 'components/com_projects/site/assets/img/project.png';
+				$rootPath = PATH_CORE;
 			}
-			$src = PATH_CORE . DS . $path;
+			else
+			{
+				$rootPath = PATH_APP;
+			}
+			$src = $rootPath . DS . $path;
 		}
 
 		return $src;
