@@ -107,6 +107,10 @@ class Router extends Base
 					$vars['task'] = str_replace('import_', '', $vars['task']);
 				break;
 
+				case 'curate':
+					$vars['controller'] = 'curate';
+				break;
+
 				default:
 					$vars['controller'] = 'citations';
 				break;
