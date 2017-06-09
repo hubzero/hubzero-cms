@@ -27,7 +27,7 @@
     ],
     "require": {
         "ezyang/htmlpurifier": "4.5.0",
-        "facebook/graph-sdk": "^5.0",
+        "facebook/graph-sdk": "^5.5",
         "tecnickcom/tcpdf": "6.0.017",
         "leafo/lessphp": "0.5.0",
         "swiftmailer/swiftmailer": "v5.0.2",
