@@ -1,10 +1,12 @@
 <?php 
 namespace Components\Partners\Models;
+use Date;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Session;
-use Date;
+
+
 /**
 * Our partner class, for the partner component
 */
@@ -84,6 +86,4 @@ class Partner extends Relational{
 	{
 		return parent::destroy();
 	}
-}
-
 }

@@ -53,9 +53,9 @@ UNLOCK TABLES;
 
 #partner-type table
 # drop the table if it exists:
-DROP TABLE IF EXISTS `jos_partner_partner_types`;
+DROP TABLE IF EXISTS `.jos_partner_type_partner_types`;
 
-CREATE TABLE `jos_partner_partner_types` (
+CREATE TABLE `jos_partner_type_partner_types` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `internal` varchar(255) NOT NULL DEFAULT '',
 `external` varchar(255) NOT NULL DEFAULT '',
@@ -64,7 +64,7 @@ PRIMARY KEY(`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=latin1;
 
 #insert new values
-INSERT INTO `jos_partner_partner_types`(`id`,`internal`,`external`,`description`)
+INSERT INTO `jos_partner_type_partner_types`(`id`,`internal`,`external`,`description`)
 VALUES
 (1,'Collaborators', 'Consortium Members', '<!-- {FORMAT:HTML} --><p>Sharing information, coordinating efforts \n</p>'),
 (2,'Alliance Partners', 'Partners', '<!-- {FORMAT:HTML} --><p>Joint programming (decision-making power is shared or transferred) \n</p>' ),

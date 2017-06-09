@@ -1,10 +1,7 @@
 <?php
 namespace Components\Partners\Admin\Controllers;
-
-
 use Hubzero\Component\AdminController;
-
-//use \Components\Partners\Models\Partner_type;
+include("partner_types.php");
 use Request;
 use Config;
 use Notify;
@@ -101,122 +98,122 @@ class Partner extends Relational{
 }
 
 
-class Partner_type extends Relational
-{
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 **/
-	protected $namespace = 'partner';
+// class Partner_type extends Relational
+// {
+// 	/**
+// 	 * The table namespace
+// 	 *
+// 	 * @var  string
+// 	 **/
+// 	protected $namespace = 'partner';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'ordering';
+// 	/**
+// 	 * Default order by for model
+// 	 *
+// 	 * @var  string
+// 	 */
+// 	public $orderBy = 'ordering';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'title' => 'notempty'
-	);
+// 	/**
+// 	 * Fields and their validation criteria
+// 	 *
+// 	 * @var  array
+// 	 */
+// 	protected $rules = array(
+// 		'title' => 'notempty'
+// 	);
 
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 **/
-	public $always = array(
-		'alias'
-	);
+// 	/**
+// 	 * Automatically fillable fields
+// 	 *
+// 	 * @var  array
+// 	 **/
+// 	public $always = array(
+// 		'alias'
+// 	);
 
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticAlias($data)
-	{
-		$alias = str_replace(' ', '-', $data['title']);
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
-	}
+// 	/**
+// 	 * Generates automatic owned by field value
+// 	 *
+// 	 * @param   array   $data  the data being saved
+// 	 * @return  string
+// 	 */
+// 	public function automaticAlias($data)
+// 	{
+// 		$alias = str_replace(' ', '-', $data['title']);
+// 		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+// 	}
 
-	/**
-	 * Defines a belongs to one relationship between task and assignee
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
-	}
+// 	/**
+// 	 * Defines a belongs to one relationship between task and assignee
+// 	 *
+// 	 * @return  object
+// 	 */
+// 	public function creator()
+// 	{
+// 		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+// 	}
 
-	/**
-	 * Defines a one to many through relationship with records by way of tasks
-	 *
-	 * @return  $this
-	 */
-	public function partners()
-	{
-		return $this->oneToMany('Partner', '#__partners_partner_types');
-	}
+// 	/**
+// 	 * Defines a one to many through relationship with records by way of tasks
+// 	 *
+// 	 * @return  $this
+// 	 */
+// 	public function partners()
+// 	{
+// 		return $this->oneToMany('Partner', '#__partners_partner_types');
+// 	}
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params String or array of extra params to append
-	 * @return     string
-	 */
-	public function link($type='')
-	{
-		static $base;
+// 	/**
+// 	 * Generate and return various links to the entry
+// 	 * Link will vary depending upon action desired, such as edit, delete, etc.
+// 	 *
+// 	 * @param      string $type   The type of link to return
+// 	 * @param      mixed  $params String or array of extra params to append
+// 	 * @return     string
+// 	 */
+// 	public function link($type='')
+// 	{
+// 		static $base;
 
-		if (!isset($base))
-		{
-			$base = 'index.php?option=com_partners';
-		}
+// 		if (!isset($base))
+// 		{
+// 			$base = 'index.php?option=com_partners';
+// 		}
 
-		$link = $base;
+// 		$link = $base;
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'edit':
-				$link .= '&controller=partner_types&task=edit&id=' . $this->get('id');
-			break;
+// 		// If it doesn't exist or isn't published
+// 		switch (strtolower($type))
+// 		{
+// 			case 'edit':
+// 				$link .= '&controller=partner_types&task=edit&id=' . $this->get('id');
+// 			break;
 
-			case 'delete':
-				$link .= '&controller=partner_types&task=delete&id=' . $this->get('id') . '&' . Session::getFormToken() . '=1';
-			break;
+// 			case 'delete':
+// 				$link .= '&controller=partner_types&task=delete&id=' . $this->get('id') . '&' . Session::getFormToken() . '=1';
+// 			break;
 
-			case 'view':
-			case 'permalink':
-			default:
-				$link .= '&controller=partners&partner_types=' . $this->get('id');
-			break;
-		}
+// 			case 'view':
+// 			case 'permalink':
+// 			default:
+// 				$link .= '&controller=partners&partner_types=' . $this->get('id');
+// 			break;
+// 		}
 
-		return $link;
-	}
+// 		return $link;
+// 	}
 
-	/**
-	 * Deletes the existing/current model
-	 *
-	 * @return  bool
-	 */
-	public function destroy()
-	{
-		return parent::destroy();
-	}
-}
+// 	/**
+// 	 * Deletes the existing/current model
+// 	 *
+// 	 * @return  bool
+// 	 */
+// 	public function destroy()
+// 	{
+// 		return parent::destroy();
+// 	}
+// }
 
 
 
@@ -430,7 +427,7 @@ class Partners extends AdminController
 		// assigning the model to each season. It will also remove any
 		// previous assignments not found in the passed-in list.
 		$partner_type = Request::getVar('partner_type', array(), 'post');
-		
+
 		// if (!$row->partner_types()->sync($partner_types))
 		// {
 		// 	Notify::error($row->getError());
