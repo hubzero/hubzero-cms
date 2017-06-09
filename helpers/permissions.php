@@ -4,6 +4,7 @@ namespace Components\Partners\Helpers;
 use Hubzero\Base\Object;
 use User;
 
+
 /**
  * Permissions helper
  */

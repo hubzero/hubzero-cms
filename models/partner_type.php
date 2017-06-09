@@ -1,17 +1,14 @@
 <?php
 namespace Components\Partners\Models;
-
 use Hubzero\Database\Relational;
 use Session;
 use Date;
 
 // Include the models we'll be using
-
-
 /**
  * Drwho model class for a season
  */
-class Season extends Relational
+class Partner_type extends Relational
 {
 	/**
 	 * The table namespace
@@ -67,21 +64,12 @@ class Season extends Relational
 		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
-
 	/**
 	 * Defines a one to many through relationship with records by way of tasks
 	 *
 	 * @return  $this
 	 */
-	// public function partners()
-	// {
-	// 	return $this->oneToMany('Partner', '#__partners_partner_types');
-	// }
-
-
-
-
-
+	
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
@@ -105,17 +93,17 @@ class Season extends Relational
 		switch (strtolower($type))
 		{
 			case 'edit':
-				$link .= '&controller=seasons&task=edit&id=' . $this->get('id');
+				$link .= '&controller=partner_types&task=edit&id=' . $this->get('id');
 			break;
 
 			case 'delete':
-				$link .= '&controller=seasons&task=delete&id=' . $this->get('id') . '&' . Session::getFormToken() . '=1';
+				$link .= '&controller=partner_types&task=delete&id=' . $this->get('id') . '&' . Session::getFormToken() . '=1';
 			break;
 
 			case 'view':
 			case 'permalink':
 			default:
-				$link .= '&controller=characters&season=' . $this->get('id');
+				$link .= '&controller=partners&partner_types=' . $this->get('id');
 			break;
 		}
 

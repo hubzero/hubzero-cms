@@ -30,7 +30,7 @@ CREATE TABLE `jos_partner_partners` (
   `logo_url` varchar(255) NOT NULL DEFAULT ' ',
   `QUBES_liason` int(11) NOT NULL DEFAULT '0',
   `partner_liason` int(11) NOT NULL DEFAULT '0',
-  `activites` mediumtext NOT NULL,
+  `activities` mediumtext NOT NULL,
   `state` tinyint(2) NOT NULL DEFAULT '0',  
   `about` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
@@ -40,7 +40,7 @@ LOCK TABLES `jos_partner_partners` WRITE;
 /*!40000 ALTER TABLE `jos_partner_partners` DISABLE KEYS */;
 
 INSERT INTO `jos_partner_partners` (`id`, `name`, `date_joined`, `partner_type`,`site_url` , `social_media_url`, `QUBES_group_url`, `logo_url`, `QUBES_liason`,
-`partner_liason`, `activites`, `state`, `about`)
+`partner_liason`, `activities`, `state`, `about`)
 VALUES
 	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','https://twitter.com/NSF',
 		'https://qubeshub.org/community/groups', 'https://www.nsf.gov/news/mmg/media/images/nsf_logo_f_272f4777-f5c4-4e49-8a2e-468e89b64b61_f.jpg', 
@@ -53,9 +53,9 @@ UNLOCK TABLES;
 
 #partner-type table
 # drop the table if it exists:
-DROP TABLE IF EXISTS `jos_partner_types`;
+DROP TABLE IF EXISTS `jos_partner_partner_types`;
 
-CREATE TABLE `jos_partner_types` (
+CREATE TABLE `jos_partner_partner_types` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `internal` varchar(255) NOT NULL DEFAULT '',
 `external` varchar(255) NOT NULL DEFAULT '',
@@ -64,7 +64,7 @@ PRIMARY KEY(`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=latin1;
 
 #insert new values
-INSERT INTO `jos_partner_types`(`id`,`internal`,`external`,`description`)
+INSERT INTO `jos_partner_partner_types`(`id`,`internal`,`external`,`description`)
 VALUES
 (1,'Collaborators', 'Consortium Members', '<!-- {FORMAT:HTML} --><p>Sharing information, coordinating efforts \n</p>'),
 (2,'Alliance Partners', 'Partners', '<!-- {FORMAT:HTML} --><p>Joint programming (decision-making power is shared or transferred) \n</p>' ),
