@@ -581,7 +581,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$result = '/bin/bash';
 			}
 
-			$query = "UPDATE `#__users` SET `loginShell` = " . $db->quote($result) . " WHERE u.`id`=" . $db->quote($user['id']);
+			$query = "UPDATE `#__users` SET `loginShell` = " . $db->quote($result) . " WHERE `id`=" . $db->quote($user['id']);
 			$db->setQuery($query);
 			$db->query();
 
@@ -601,7 +601,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$result = '/bin/bash';
 			}
 
-			$query = "UPDATE `#__users` SET `ftpShell` = " . $db->quote($result) . " WHERE u.`id`=" . $db->quote($user['id']);
+			$query = "UPDATE `#__users` SET `ftpShell` = " . $db->quote($result) . " WHERE `id`=" . $db->quote($user['id']);
 			$db->setQuery($query);
 			$db->query();
 
