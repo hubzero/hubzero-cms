@@ -53,12 +53,12 @@ require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 // seasons and characters, we'll add a menu item for each controller.
 \Submenu::addEntry(
 	\Lang::txt('COM_PARTNERS'),
-	\Route::url('index.php?option=com_partner&controller=partners'),
+	\Route::url('index.php?option=com_partners&controller=partners'),
 	($controllerName == 'partners')
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_PARTNERS_PARTNER_TYPES'),
-	\Route::url('index.php?option=com_partner&controller=partner_types'),
+	\Route::url('index.php?option=com_partners&controller=partner_types'),
 	($controllerName == 'partner_types')
 );
 
