@@ -40,11 +40,12 @@ Toolbar::title(Lang::txt('Projects'), 'user.png');
 if ($this->config->get('custom_profile') == 'custom')
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
+	Toolbar::spacer();
 }
-
+Toolbar::archiveList();
+Toolbar::editList();
 Toolbar::spacer();
 Toolbar::preferences('com_projects', '550');
-Toolbar::editList();
 
 
 Html::behavior('tooltip');
