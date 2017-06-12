@@ -83,11 +83,10 @@ class Articles extends SiteController
 	 */
 	public function categoryTask()
 	{
-		$alias = Request::getVar('alias', '');
-		$id    = Request::getInt('id', 0);
+		$categoryAlias = Request::getVar('categoryAlias', '');
 
-		// Make sure we have an ID
-		if (!$alias && !$id)
+		// Make sure we have an alias for the category
+		if (!$categoryAlias)
 		{
 			return $this->displayTask();
 		}
@@ -95,7 +94,7 @@ class Articles extends SiteController
 		// Get the category
 		$this->view->catid = 0;
 
-		if ($alias == 'all')
+		if ($categoryAlias == 'all')
 		{
 			$category = new Category;
 			$category->set('alias', 'all');
@@ -105,7 +104,7 @@ class Articles extends SiteController
 		}
 		else
 		{
-			$category = ($alias ? Category::oneByAlias($alias) : Category::oneOrFail($id));
+			$category = Category::oneByAlias($categoryAlias);
 
 			$this->view->catid = $category->get('id');
 			if ($category->get('parent_id') > 1)
@@ -123,7 +122,7 @@ class Articles extends SiteController
 		$this->view->filters = array(
 			'sort'     => Request::getWord('sort', 'recent'),
 			'category' => $category->get('id'),
-			'search'   => Request::getVar('search','')
+			'search'   => Request::getVar('search', '')
 		);
 
 		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
@@ -151,11 +150,14 @@ class Articles extends SiteController
 	public function articleTask()
 	{
 		// Incoming
-		$alias = Request::getVar('alias', '');
-		$id    = Request::getInt('id', 0);
+		$articleAlias = Request::getVar('articleAlias', '');
+		$categoryId   = Request::getInt('categoryId', 0);
 
 		// Load the article
-		$article = ($alias ? Article::oneByAlias($alias) : Article::oneOrFail($id));
+		$article = Article::all()
+			->whereEquals('alias', $articleAlias)
+			->whereEquals('category', $categoryId)
+			->row();
 
 		if (!$article->get('id'))
 		{
@@ -445,4 +447,3 @@ class Articles extends SiteController
 		}
 	}
 }
-
