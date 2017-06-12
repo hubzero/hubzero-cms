@@ -187,7 +187,7 @@ class Hosts extends AdminController
 		foreach ($output as $line)
 		{
 			// If it's a new session, catch the session number...
-			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/",$line,$sess))
+			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/", $line, $sess))
 			{
 				$retval = $sess[1];
 			}
