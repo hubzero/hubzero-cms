@@ -141,56 +141,30 @@ class Router extends Base
 		{
 			case 1:
 				$vars['task'] = 'category';
-				$vars['alias'] = urldecode($segments[0]);
-				$vars['alias'] = str_replace(':', '-', $vars['alias']);
+				$vars['categoryAlias'] = urldecode($segments[0]);
+				$vars['categoryAlias'] = str_replace(':', '-', $vars['categoryAlias']);
 			break;
 
 			case 2:
-				$title1 = urldecode($segments[0]);
-				$title1 = str_replace(':', '-', $title1);
-				$title2 = urldecode($segments[1]);
-				$title2 = str_replace(':', '-', $title2);
+				$categoryAlias = urldecode($segments[0]);
+				$categoryAlias = str_replace(':', '-', $categoryAlias);
+				$articleAlias = urldecode($segments[1]);
+				$articleAlias = str_replace(':', '-', $articleAlias);
 
 				include_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 
 				$category = Category::all()
-					->whereEquals('path', $title1 . '/' . $title2)
+					->whereEquals('alias', $categoryAlias)
 					->row();
+				$categoryId = $category->get('id');
 
-				//$db = \App::get('db');
-
-				//$category = Category::oneByAlias($title2);
-
-				if ($category->get('id'))
+				if ($categoryId && $articleAlias)
 				{
-					// section/category
-					$vars['task']  = 'category';
-					$vars['id']    = $category->get('id');
-					//$vars['alias'] = $title2;
-					return $vars;
-				}
-				/*else
-				{
-					$category->loadAlias($title1);
-				}*/
-
-				if (!$category->get('id'))
-				{
-					$vars['alias']    = $title2;
-					$vars['task']     = 'article';
-					$vars['category'] = $title1;
-					return $vars;
-				}
-
-				/*$article = Article::oneByAliasAndCategory($title2, $category->get('id'));
-
-				if ($article->get('id'))
-				{
-					// section/article
-					$vars['id'] = $article->get('id');
+					$vars['articleAlias'] = $articleAlias;
 					$vars['task'] = 'article';
-					//$vars['alias'] = $title2; //urldecode($segments[1]);
-				}*/
+					$vars['categoryId'] = $categoryId;
+					return $vars;
+				}
 			break;
 
 			case 3:
