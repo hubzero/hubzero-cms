@@ -4,7 +4,7 @@ namespace Components\Partners\Admin\Controllers;
 use Hubzero\Component\AdminController;
 //use Components\Partner\Models\Partner;
 //use Components\Partner\Models\Partner_type;
-use Request;
+use JRequest;
 use Notify;
 use Route;
 use Lang;
