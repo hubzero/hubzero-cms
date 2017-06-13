@@ -106,6 +106,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 		<p class="hint">*<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
 		<?php } ?>
 
+		<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_PROMPT_NAME');?></p>
+		
 		<?php
 			// Showing submitter?
 			if ($showSubmitter && $this->pub->submitter())

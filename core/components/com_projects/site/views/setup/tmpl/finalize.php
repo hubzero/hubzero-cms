@@ -47,7 +47,7 @@ $this->view('_title')
 $privacylink = $this->config->get('privacylink', '/legal/privacy');
 $hipaa       = $this->config->get('HIPAAlink', 'http://www.hhs.gov/ocr/privacy/');
 $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/reg/ferpa/index.html');
-
+$hrpp        = $this->config->get('HRPPlink', 'https://www.irb.purdue.edu/');
 ?>
 
 <section class="main section" id="setup">
@@ -81,6 +81,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 				<h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE'); ?></h4>
 				<p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE_EXPLAIN'); ?> </p>
 				<p><?php echo Lang::txt('COM_PROJECTS_SETUP_MORE_ON'); ?><a href="<?php echo $hipaa; ?>" rel="external" > <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_SETUP_MORE_ON'); ?><a href="<?php echo $ferpa; ?>" rel="external" > <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA'); ?></a>.</p>
+				<p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE_HRPP'); ?><a href="<?php echo $hrpp; ?>" rel="external" > <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_HRPP'); ?></a>.</p>
 				<p class="info"><?php echo Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_NOTE'); ?></p>
 				<?php } else { ?>
 					<h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_WHY'); ?></h4>

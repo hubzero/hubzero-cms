@@ -138,6 +138,9 @@ if (count($this->authors) > 0)
 						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>*:</span>
 						<input type="text" class="inputrequired" name="organization" id="organization" value="" maxlength="255" />
 					<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_HINT'); ?></p>
+					<p class="hint" style="display:inline"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_NAME'); ?>
+					<p style="color:blue;display:inline;text-decoration:underline"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_NAME_TRANSLITERATED'); ?></p></p>
+					<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_INSTITUTION');?>
 					</label>
 					</div>
 				</div>
