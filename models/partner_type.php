@@ -6,7 +6,7 @@ use Date;
 
 // Include the models we'll be using
 /**
- * Drwho model class for a season
+ * Partners model class for partner_types
  */
 class Partner_type extends Relational
 {
@@ -15,14 +15,14 @@ class Partner_type extends Relational
 	 *
 	 * @var  string
 	 **/
-	protected $namespace = 'partner';
+	protected $namespace = 'partner_type';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'ordering';
+	public $orderBy = 'id';
 
 	/**
 	 * Fields and their validation criteria
@@ -30,7 +30,7 @@ class Partner_type extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'title' => 'notempty'
+		'internal' => 'notempty'
 	);
 
 	/**
@@ -38,37 +38,9 @@ class Partner_type extends Relational
 	 *
 	 * @var  array
 	 **/
-	public $always = array(
-		'alias'
-	);
 
 	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticAlias($data)
-	{
-		$alias = str_replace(' ', '-', $data['title']);
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
-	}
-
-	/**
-	 * Defines a belongs to one relationship between task and assignee
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
-	}
-
-	/**
-	 * Defines a one to many through relationship with records by way of tasks
-	 *
-	 * @return  $this
-	 */
+	
 	
 	/**
 	 * Generate and return various links to the entry
@@ -84,6 +56,7 @@ class Partner_type extends Relational
 
 		if (!isset($base))
 		{
+			//this is important for accessing table
 			$base = 'index.php?option=com_partners';
 		}
 
@@ -110,6 +83,51 @@ class Partner_type extends Relational
 		return $link;
 	}
 
+
+
+		//makes our html into beauty, or something
+		public function description($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+		$options = array();
+
+		switch ($as)
+		{
+			//site view
+			case 'parsed':
+				$content = $this->get('description.parsed', null);
+
+				if ($content === null)
+				{
+					$description = \Html::content('prepare', (string) $this->get('description', ''));
+
+					$this->set('description.parsed', (string) $description);
+
+					return $this->description($as, $shorten);
+				}
+
+				$options['html'] = true;
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->description('parsed'));
+			break;
+			//admin view
+			case 'raw':
+			default:
+				$content = $this->get('description');
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = String::truncate($content, $shorten, $options);
+		}
+			return $content;
+	}
+
+
 	/**
 	 * Deletes the existing/current model
 	 *
@@ -120,4 +138,3 @@ class Partner_type extends Relational
 		return parent::destroy();
 	}
 }
-

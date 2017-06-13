@@ -5,7 +5,7 @@ use Date;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Session;
-
+require_once('partner_type.php');
 class Partner extends Relational{
 		/**
 	 * The table namespace

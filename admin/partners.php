@@ -17,7 +17,7 @@ if (!\User::authorise('core.manage', 'com_partners'))
 // NOTE: We're using the __DIR__ constant. This is a constant
 // automatically defined in PHP 5.3+. Its value is the absolute
 // path up to the directory that this file is in.
-//require_once(dirname(__DIR__) . DS . 'models' . DS . 'show.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'partner.php');
 
 // Get the permissions helper.
 //
