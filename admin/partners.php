@@ -17,8 +17,10 @@ if (!\User::authorise('core.manage', 'com_partners'))
 // NOTE: We're using the __DIR__ constant. This is a constant
 // automatically defined in PHP 5.3+. Its value is the absolute
 // path up to the directory that this file is in.
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'partner.php');
 
+//this is very important, need to require once in order to access the class, dirname(__dir__) takes you up one level
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'partner.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'partner_type.php');
 // Get the permissions helper.
 //
 // This is a class that tries into the permissions ACL and 
@@ -70,12 +72,12 @@ require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 //
 // So, for a controller with the name of "show" in this component:
 //
-// /com_drwho
+// /com_partners
 //    /site
 //        /controllers
-//            /show.php
+//            /partners.php
 //
-// ... we get the final class name of "Components\Drwho\Site\Controllers\Show".
+// ... we get the final class name of "Components\Partners\Site\Controllers\Partners".
 //
 // Typically, directories are plural (controllers, models, tables, helpers).
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

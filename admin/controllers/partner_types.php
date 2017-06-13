@@ -11,7 +11,7 @@ use Lang;
 use App;
 
 /**
- * Partner controller for show partner types
+ * Partner controller for partner types
  * 
  * Accepts an array of configuration values to the constructor. If no config 
  * passed, it will automatically determine the component and controller names.
@@ -150,7 +150,7 @@ class Partner_types extends AdminController
 		}
 
 		$this->view->row = $row;
-		$this->view->partner_types = Partner_type::all()/*->ordered()*/;
+		$this->view->partner_types = Partner_type::all()->ordered();
 
 		// Output the view
 		// 

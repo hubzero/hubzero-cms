@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- general configuration for labels and permissions-->
 <config>
 	<fieldset name="basic">
 		<field name="show_stuff" type="list" default="1" label="COM_PARTNERS_CONFIG_SHOWSTUFF_LABEL" description="COM_PARTNERS_CONFIG_SHOWSTUFF_DESC">

@@ -5,10 +5,10 @@ use Date;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Session;
-require_once('partner_type.php');
+
 class Partner extends Relational{
 		/**
-	 * The table namespace
+	 * The table namespace, access to the SQL database
 	 *
 	 * @var string
 	 */
@@ -70,7 +70,8 @@ class Partner extends Relational{
 
 		return $link;
 	}
-
+	//this function is for the about text box in the edit, display and site. the different cases are for the different pages
+	//raw takes out the format tag and clean takes out the html tags
 	public function about($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);

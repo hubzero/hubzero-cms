@@ -1,4 +1,5 @@
 <?php
+//define namespace
 namespace Components\Partners\Helpers;
 
 use Hubzero\Base\Object;
@@ -18,7 +19,7 @@ class Permissions
 	public static $extension = 'com_partners';
 
 	/**
-	 * Gets a list of the actions that can be performed.
+	 * Gets a list of the actions that can be performed by the user, used in the views
 	 *
 	 * @param   string   $extension  The extension.
 	 * @param   integer  $assetId    The category ID.

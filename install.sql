@@ -18,11 +18,12 @@
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `jos_partner_partners`;
-
+#main partner table, everything is not null
+#Create the table, the naming conventions are going to be jos_modelname_controllername
 CREATE TABLE `jos_partner_partners` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `date_joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `name` varchar(255) NOT NULL DEFAULT '', 
+  `date_joined` datetime NOT NULL DEFAULT '0000-00-00',
   `partner_type` int(11) NOT NULL DEFAULT 0,
   `site_url` varchar(255) NOT NULL DEFAULT '',
   `social_media_url` varchar(255) NOT NULL DEFAULT ' ',

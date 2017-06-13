@@ -4,14 +4,14 @@ use Hubzero\Database\Relational;
 use Session;
 use Date;
 
-// Include the models we'll be using
+
 /**
  * Partners model class for partner_types
  */
 class Partner_type extends Relational
 {
 	/**
-	 * The table namespace
+	 * The table namespace, for the database
 	 *
 	 * @var  string
 	 **/
@@ -85,7 +85,8 @@ class Partner_type extends Relational
 
 
 
-		//makes our html into beauty, or something
+		//makes our description box text look better for the site, display or edit pages
+		//raw takes out format comment and clean takes out html tags
 		public function description($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
