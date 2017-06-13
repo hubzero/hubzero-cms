@@ -57,6 +57,7 @@ Html::behavior('framework');
 	<table class="adminlist">
 		<thead>
 			<tr>
+			<!--VERY IMPORTANT MESSAGE: where there is id, internal_name, external_name.., this is how it is sorted, make sure name is same as database-->
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_INTERNAL_NAME', 'internal', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -98,7 +99,7 @@ Html::behavior('framework');
 
 				<td class="priority-4">
 					<span>
-						<?php echo $this->escape($row->get('description')); ?>
+						<?php echo $this->escape($row->description('parsed')); ?>
 					</span>
 				</td>
 

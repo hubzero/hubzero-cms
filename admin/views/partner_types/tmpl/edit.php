@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_PARTNERS_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 50, 15, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+				<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')), 50, 15, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 			</div>
 		</fieldset>
 	</div>

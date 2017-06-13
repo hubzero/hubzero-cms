@@ -98,7 +98,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-about"><?php echo Lang::txt('COM_PARTNERS_FIELD_ABOUT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<?php echo $this->editor('fields[about]', $this->escape($this->row->get('about')), 50, 15, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+				<?php echo $this->editor('fields[about]', $this->escape($this->row->about('raw')), 50, 15, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 			</div>
 		</fieldset>
 

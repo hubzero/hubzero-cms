@@ -84,7 +84,46 @@ class Partner extends Relational{
 		return $link;
 	}
 
-	//may need to import a bio function, we will see!
+	public function about($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+		$options = array();
+
+		switch ($as)
+		{
+			//site view
+			case 'parsed':
+				$content = $this->get('about.parsed', null);
+
+				if ($content === null)
+				{
+					$about = \Html::content('prepare', (string) $this->get('about', ''));
+
+					$this->set('about.parsed', (string) $about);
+
+					return $this->about($as, $shorten);
+				}
+
+				$options['html'] = true;
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->about('parsed'));
+			break;
+			//admin view
+			case 'raw':
+			default:
+				$content = $this->get('about');
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = String::truncate($content, $shorten, $options);
+		}
+		return $content;
+	}
 
 		/**
 	 * Deletes the existing/current model
@@ -248,7 +287,7 @@ class Partners extends AdminController
 		}
 
 		$this->view->row = $row;
-		$this->view->partner_types = Partner_type::all()/*->ordered()*/;
+		$this->view->partner_types = Partner_type::all()->ordered();
 
 		// Output the view
 		// 

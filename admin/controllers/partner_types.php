@@ -94,6 +94,51 @@ class Partner_type extends Relational
 		return $link;
 	}
 
+
+
+		//makes our html into beauty, or something
+		public function description($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+		$options = array();
+
+		switch ($as)
+		{
+			//site view
+			case 'parsed':
+				$content = $this->get('description.parsed', null);
+
+				if ($content === null)
+				{
+					$description = \Html::content('prepare', (string) $this->get('description', ''));
+
+					$this->set('description.parsed', (string) $description);
+
+					return $this->description($as, $shorten);
+				}
+
+				$options['html'] = true;
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->description('parsed'));
+			break;
+			//admin view
+			case 'raw':
+			default:
+				$content = $this->get('description');
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = String::truncate($content, $shorten, $options);
+		}
+			return $content;
+	}
+
+
 	/**
 	 * Deletes the existing/current model
 	 *
@@ -203,7 +248,7 @@ class Partner_types extends AdminController
 			$record->whereLike('title', $search);
 		}
 
-		$this->view->rows = $record /*->ordered('filter_order', 'filter_order_Dir')->paginated()*/;
+		$this->view->rows = $record->ordered('filter_order', 'filter_order_Dir')->paginated();
 
 		// Output the view
 		$this->view->display();
