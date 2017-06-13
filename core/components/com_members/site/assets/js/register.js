@@ -124,10 +124,10 @@ jQuery(document).ready(function($){
 	}
 
 	if (userlogin.length > 0) {
-		usernameStatusAfter.after('<p class="hint" id="usernameStatus">&nbsp;</p>');
+		usernameStatusAfter.parent().append('<p class="hint" id="usernameStatus">&nbsp;</p>');
 
 		userlogin.focusout(function(obj) {
-			var timer = setTimeout('HUB.Register.checkLogin()',200);
+			var timer = setTimeout('HUB.Register.checkLogin()', 200);
 		});
 	}
 });
