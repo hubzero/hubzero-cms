@@ -463,8 +463,8 @@ class Resources extends SiteController
 				// Incoming
 				$bits['type'] = Request::getInt('type', 7);
 				$bits['id']   = Request::getInt('id', 0);
-				$bits['tg']   = Request::getVar('input', '');
-				$bits['tg2']  = Request::getVar('input2', '');
+				$bits['tg']   = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input', '')));
+				$bits['tg2']  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input2', '')));
 
 				$rt = new Tags($bits['id']);
 
@@ -474,11 +474,11 @@ class Resources extends SiteController
 
 			case 2:
 				// Incoming
-				$bits['type'] = Request::getInt('type', 7);
-				$bits['id'] = Request::getInt('id', 0);
-				$bits['tag'] = Request::getVar('input', '');
-				$bits['tag2'] = Request::getVar('input2', '');
-				$bits['sortby'] = Request::getVar('sortby', 'title');
+				$bits['type']    = Request::getInt('type', 7);
+				$bits['id']      = Request::getInt('id', 0);
+				$bits['tag']     = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input', '')));
+				$bits['tag2']    = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input2', '')));
+				$bits['sortby']  = Request::getWord('sortby', 'title');
 				$bits['filter']  = Request::getVar('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
 				$bits['ranking'] = $this->config->get('show_ranking');
 
