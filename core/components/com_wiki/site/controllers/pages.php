@@ -500,8 +500,18 @@ class Pages extends SiteController
 		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'post')));
 
 		// Get parameters
+		$p = Request::getVar('params', array(), 'post');
+
 		$params = new \Hubzero\Config\Registry($this->page->get('params', ''));
-		$params->merge(Request::getVar('params', array(), 'post'));
+		$params->merge($p);
+
+		foreach (array('hide_authors', 'allow_changes', 'allow_comments') as $key)
+		{
+			if (!isset($p[$key]) || !$p[$key])
+			{
+				$params->set($key, 0);
+			}
+		}
 
 		$this->page->set('params', $params->toString());
 
