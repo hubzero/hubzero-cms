@@ -47,7 +47,7 @@ $this->view('_title')
 $privacylink = $this->config->get('privacylink', '/legal/privacy');
 $hipaa       = $this->config->get('HIPAAlink', 'http://www.hhs.gov/ocr/privacy/');
 $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/reg/ferpa/index.html');
-$hrpp        = $this->config->get('HRPPlink', 'https://www.irb.purdue.edu/');
+$hrpp        = $this->config->get('HRPPlink');
 ?>
 
 <section class="main section" id="setup">
