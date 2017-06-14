@@ -76,6 +76,8 @@ Html::behavior('framework');
 		$i = 0;
 		foreach ($this->rows as $row) : ?>
 			<tr class="<?php echo "row$k"; ?>">
+
+
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
@@ -85,11 +87,19 @@ Html::behavior('framework');
 					<?php echo $row->get('id'); ?>
 				</td>
 
-				<td class="priority-4">					
+
+				<td>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape($row->get('internal')); ?>
+						</a>
+					<?php } else { ?>
 						<span>
 							<?php echo $this->escape($row->get('internal')); ?>
 						</span>
+					<?php } ?>
 				</td>
+
 
 				<td class="priority-4">					
 						<span>
