@@ -109,7 +109,8 @@ class Partners extends AdminController
 		// table of characters we'll be retrieving data from
 		
 		$record = Partner::all();
-
+		
+		$this->view->partner_types = Partner_type::all()->ordered();	
 		if ($this->view->filters['state'] >= 0)
 		{
 			$record->whereEquals('state', $this->view->filters['state']);

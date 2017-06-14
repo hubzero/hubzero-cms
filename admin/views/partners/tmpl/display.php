@@ -133,7 +133,17 @@ Html::behavior('framework');
 
 				<td class="priority-4">					
 						<span>
-							<?php echo $this->escape($row->get('partner_type')); ?>
+							<!--A little foreach loop to go throught the partner types and display the internal partner_type for each partner, rather than the id-->
+							<?php
+							foreach ($this->partner_types as $partner_type) { ?>
+								<?php
+								if ($row->get('partner_type') == $partner_type->get('id')){
+									echo $this->escape($partner_type->get('internal'));
+						}
+					}
+				
+				?>
+							
 						</span>
 				</td>
 
