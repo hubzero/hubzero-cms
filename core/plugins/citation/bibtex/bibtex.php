@@ -64,7 +64,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 	 * @param   integer  $scope_id
 	 * @return  array
 	 */
-	public function onImport($file, $scope = NULL, $scope_id = NULL)
+	public function onImport($file, $scope = null, $scope_id = null)
 	{
 		// File type
 		$active = 'bib';
@@ -94,7 +94,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$citations = $bibtex->data;
 
 		// Fix authors
-		for ($i=0;$i<count($citations); $i++)
+		for ($i=0; $i<count($citations); $i++)
 		{
 			$authors = array();
 			$auths   = isset($citations[$i]['author']) ? $citations[$i]['author'] : '';
@@ -146,7 +146,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 	 * @param   integer  $scope_id
 	 * @return  integer
 	 */
-	protected function checkDuplicateCitation($citation, $scope = NULL, $scope_id = NULL)
+	protected function checkDuplicateCitation($citation, $scope = null, $scope_id = null)
 	{
 		// Vars
 		$title = '';

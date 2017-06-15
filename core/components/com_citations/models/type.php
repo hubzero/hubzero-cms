@@ -113,9 +113,7 @@ class Type extends Relational
 					$citation->whereEquals('scope', $scope);
 					$citation->whereEquals('scope_id', $filters['scope_id']);
 				}
-			;}]
-			)
-			->rows();
+			}])->rows();
 		$typeStats = array();
 		foreach ($types as $type)
 		{

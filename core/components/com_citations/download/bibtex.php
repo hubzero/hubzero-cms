@@ -191,4 +191,3 @@ class Bibtex extends Downloadable
 		return $doc;
 	}
 }
-

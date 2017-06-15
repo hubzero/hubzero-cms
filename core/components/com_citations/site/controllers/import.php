@@ -140,7 +140,7 @@ class Import extends SiteController
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
 		//call the plugins
-		$this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+		$this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
 
 		//get any messages
 		$this->view->messages = Notify::messages('citations');
@@ -191,7 +191,7 @@ class Import extends SiteController
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file));
+		$citations = Event::trigger('citation.onImport', array($file));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
@@ -269,7 +269,7 @@ class Import extends SiteController
 			$citationRequiredIds = array_map(function($value){
 				return $value['duplicate'];
 			}, $citations_require_attention);
-			$citations = Citation::all()->including('relatedType')->whereIn('id', $citationRequiredIds)->rows(); 
+			$citations = Citation::all()->including('relatedType')->whereIn('id', $citationRequiredIds)->rows();
 			foreach ($citations_require_attention as &$citation)
 			{
 				$citation['duplicate'] = $citations->seek($citation['duplicate']);

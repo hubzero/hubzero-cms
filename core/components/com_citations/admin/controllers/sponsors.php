@@ -32,7 +32,7 @@
 
 namespace Components\Citations\Admin\Controllers;
 
-require_once Component::path('com_citations') . DS . 'models' . DS . 'sponsor.php'; 
+require_once Component::path('com_citations') . DS . 'models' . DS . 'sponsor.php';
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Sponsor;
@@ -190,4 +190,3 @@ class Sponsors extends AdminController
 		}
 	}
 }
-

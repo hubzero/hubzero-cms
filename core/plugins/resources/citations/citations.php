@@ -108,7 +108,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			->including('citation')
 			->rows();
 		$citations = array();
-		foreach($c as $assoc)
+		foreach ($c as $assoc)
 		{
 			$citations[] = $assoc->citation;
 		}
@@ -159,4 +159,3 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 		return $arr;
 	}
 }
-

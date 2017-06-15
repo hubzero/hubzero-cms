@@ -131,7 +131,7 @@ class Citations extends SiteController
 			$this->view->isAdmin = true;
 		}
 
-		$earliest_year = Citation::all()->where('year' , '!=', '')->where('year', 'IS NOT', null)->where('year', '!=', 0)->order('year', 'asc')->limit(1)->row()->year;
+		$earliest_year = Citation::all()->where('year', '!=', '')->where('year', 'IS NOT', null)->where('year', '!=', 0)->order('year', 'asc')->limit(1)->row()->year;
 		$earliest_year = !empty($earliest_year) ? $earliest_year : 1970;
 
 		// Incoming
@@ -563,7 +563,7 @@ class Citations extends SiteController
 
 		// Incoming - expecting an array id[]=4232
 		$id = Request::getInt('id', 0);
-		
+
 		if (!($citation instanceof Citation))
 		{
 			$citation = Citation::oneOrNew($id);
@@ -936,12 +936,12 @@ class Citations extends SiteController
 		{
 			if (array_key_exists($ignore, $b))
 			{
-				$b[$ignore] = NULL;
+				$b[$ignore] = null;
 			}
 		}
 		if (array_key_exists('id', $b))
 		{
-			$b['id'] = NULL;
+			$b['id'] = null;
 		}
 		$values = array_values($b);
 		$e = true;
@@ -967,7 +967,10 @@ class Citations extends SiteController
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+			continue;
+		}
 
 		$fsize = filesize($p . DS. $f);
 		$mod_date = date('r', filemtime($p . DS . $f));
@@ -1051,7 +1054,10 @@ class Citations extends SiteController
 		$image = Request::getVar('image', '');
 
 		// if we dont have an image were done
-		if ($image == '') return;
+		if ($image == '') 
+		{
+			return;
+		}
 
 		// file details
 		$image_details = pathinfo($image);
@@ -1126,7 +1132,6 @@ class Citations extends SiteController
 
 	private function _displayMessages($domain = 'com.citations')
 	{
-		
 		foreach (Notify::messages($domain) as $message)
 		{
 			Notify::message($message['message'], $message['type']);

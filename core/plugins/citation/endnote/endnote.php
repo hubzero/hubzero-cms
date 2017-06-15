@@ -64,7 +64,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 	 * @param   integer  $scope_id
 	 * @return  array
 	 */
-	public function onImport($file, $scope = NULL, $scope_id = NULL)
+	public function onImport($file, $scope = null, $scope_id = null)
 	{
 		// Endnote format
 		$active = 'enw';
@@ -131,7 +131,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 		foreach ($raw_citations as $k => $rc)
 		{
-			$raw_citations[$k] = NULL;
+			$raw_citations[$k] = null;
 			foreach ($rc as $r => $line)
 			{
 				$raw_citations[$k] .= $line . "\r\n";
@@ -145,8 +145,8 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		for ($i=0, $n=count($raw_citations); $i<$n; $i++)
 		{
 			// Split citation data match % sign followed by char
-			// $citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
-			$citation_data = preg_split('/%.{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
+			// $citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], null, PREG_SPLIT_OFFSET_CAPTURE);
+			$citation_data = preg_split('/%.{1}/', $raw_citations[$i], null, PREG_SPLIT_OFFSET_CAPTURE);
 
 			// Array to hold each citation
 			$citation = array();
@@ -162,9 +162,15 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 					{
 						switch ($key)
 						{
-							case "%A": $citation[$key] .= "; " . htmlspecialchars(trim($cd[0])); break;
-							case "%E": $citation[$key] .= "; " . htmlspecialchars(trim($cd[0])); break;
-							case "%Z": $citation[$key] .= "\n" . htmlspecialchars(trim($cd[0])); break;
+							case "%A":
+								$citation[$key] .= "; " . htmlspecialchars(trim($cd[0]));
+								break;
+							case "%E":
+								$citation[$key] .= "; " . htmlspecialchars(trim($cd[0]));
+								break;
+							case "%Z":
+								$citation[$key] .= "\n" . htmlspecialchars(trim($cd[0]));
+								break;
 						}
 					}
 					else
@@ -213,7 +219,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 					if (array_key_exists($key, $citation))
 					{
 						// Trim the value
-						$value = trim(trim($citation[$key],':;,'));
+						$value = trim(trim($citation[$key], ':;,'));
 
 						// Append the data if we have already set that variable
 						if (isset($cite[$tag]))
@@ -343,7 +349,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 	 * @param   integer  $scope_id
 	 * @return  integer
 	 */
-	protected function checkDuplicateCitation($citation, $scope = NULL, $scope_id = NULL)
+	protected function checkDuplicateCitation($citation, $scope = null, $scope_id = null)
 	{
 		// Vars
 		$title = '';
@@ -364,25 +370,25 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		// Make sure 0 is not the %
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
 		$existingCitations = Citation::all();
-        if (!empty($scope))
-        {
-            $existingCitations->whereEquals('scope', $scope);
-        }
-        if (!empty($scope_id))
-        {
-            $existingCitations->whereEquals('scope_id', $scope_id);
-        }
+		if (!empty($scope))
+		{
+			$existingCitations->whereEquals('scope', $scope);
+		}
+		if (!empty($scope_id))
+		{
+			$existingCitations->whereEquals('scope_id', $scope_id);
+		}
 
-        $matchingKeys = array('isbn', 'title', 'doi');
-        $searchParams = array_intersect_key($citation, array_flip($matchingKeys));
-        $searchParams = array_filter($searchParams);
-        if (!empty($searchParams))
-        {
-            $existingCitations->filterBySearch($searchParams);
-        }
+		$matchingKeys = array('isbn', 'title', 'doi');
+		$searchParams = array_intersect_key($citation, array_flip($matchingKeys));
+		$searchParams = array_filter($searchParams);
+		if (!empty($searchParams))
+		{
+			$existingCitations->filterBySearch($searchParams);
+		}
 
-        // Loop through all current citations
-        foreach ($existingCitations->rows() as $r)
+		// Loop through all current citations
+		foreach ($existingCitations->rows() as $r)
 		{
 			$id    = $r->id;
 			$title = $r->title;

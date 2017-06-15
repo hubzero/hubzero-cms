@@ -61,7 +61,7 @@ class Format extends AdminController
 			->row();
 
 		// see if the component config has a value.
-		if ($this->config->get('default_citation_format') != NULL)
+		if ($this->config->get('default_citation_format') != null)
 		{
 			$currentFormat = CitationFormat::all()
 			->where('style', 'LIKE', strtolower($this->config->get('default_citation_format')))

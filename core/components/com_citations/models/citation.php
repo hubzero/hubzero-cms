@@ -87,8 +87,8 @@ class Citation extends Relational
 	public $always = array(
 		'author'
 	);
-	
-	
+
+
 	private $badgesSeparated = false;
 
 	public static function getFilteredRecords($filters = array(), $admin = false)
@@ -119,13 +119,13 @@ class Citation extends Relational
 			{
 				$records->whereEquals('scope', 'hub', 1);
 				$records->orWhereEquals('scope', '', 1);
-				$records->orWhere('scope', 'IS', null, 1); 
+				$records->orWhere('scope', 'IS', null, 1);
 				$records->resetDepth();
 			}
 			else
 			{
 				$records->whereEquals('scope', $filters['scope']);
-				
+
 			}
 		}
 		elseif ($filters['scope'] != 'all')
@@ -155,7 +155,7 @@ class Citation extends Relational
 			$sortValues = explode(' ', $filters['sort']);
 			$columnSort = !empty($sortValues[0]) ? $sortValues[0] : $sortValues;
 			$direction = !empty($sortValues[1]) ? $sortValues[1] : 'ASC';
-			$records->order($columnSort, $direction);		
+			$records->order($columnSort, $direction);
 		}
 
 		if (!empty($filters['filter']))
@@ -166,7 +166,7 @@ class Citation extends Relational
 
 		if (!empty($filters['type']))
 		{
-			$records->whereEquals('type' , $filters['type']);
+			$records->whereEquals('type', $filters['type']);
 		}
 
 		if (!empty($filters['tag']))
@@ -186,7 +186,7 @@ class Citation extends Relational
 			$records->filterBySearch($searchQuery, 1);
 
 			// @FIXME Add migration to create this index
-			$records->orWhereRelatedHas('relatedAuthors',function($author) use ($searchQuery){
+			$records->orWhereRelatedHas('relatedAuthors', function($author) use ($searchQuery){
 				$authorFields = array('givenName', 'surname', 'author');
 				$query = 'MATCH(' . implode(',', $authorFields) . ') AGAINST (? IN BOOLEAN MODE)';
 				$author->whereRaw($query, (array) $searchQuery);
@@ -222,7 +222,7 @@ class Citation extends Relational
 		}
 		if (!empty($authorFields))
 		{
-			$records->whereRelatedHas('relatedAuthors',function($author) use ($authorFields){
+			$records->whereRelatedHas('relatedAuthors', function($author) use ($authorFields){
 				foreach ($authorFields as $field => $value)
 				{
 					$func = 'filterBy' . ucfirst($field);
@@ -249,7 +249,7 @@ class Citation extends Relational
 				return $concat;
 			});
 			$query = 'MATCH(' . implode(',', array_keys($searchTerms)) . ') AGAINST (? IN BOOLEAN MODE)';
-		}	
+		}
 		else
 		{
 			$query = 'MATCH(' . implode(',', $searchableFields) . ') AGAINST (? IN BOOLEAN MODE)';
@@ -257,9 +257,9 @@ class Citation extends Relational
 		$this->whereRaw($query, (array) $term, $depth);
 		return $this;
 	}
-	
+
 	public function filterByReftype($filters)
-	{	
+	{
 		$refTypes = array(
 			'research' => array('R', 'N', 'S'),
 			'education' => array('E'),
@@ -275,7 +275,7 @@ class Citation extends Relational
 					return $ref;
 				}
 			});
-			
+
 			if (count($filters['reftype']) < 4)
 			{
 
@@ -305,7 +305,7 @@ class Citation extends Relational
 
 					if ($combination === false)
 					{
-						$valueCount = count($refTypes[$reftype]);	
+						$valueCount = count($refTypes[$reftype]);
 						$queryBindings = array_merge($queryBindings, $refTypes[$reftype]);
 						for ($i = 1; $i <= $valueCount - 1; $i++)
 						{
@@ -325,10 +325,10 @@ class Citation extends Relational
 								$queryBindings[] = $type1;
 								$queryBindings[] = $type2;
 								$query .= $firstValue ? '' : ' OR ';
-								$query .= "(`ref_type` LIKE ? AND `ref_type` LIKE ?)"; 
+								$query .= "(`ref_type` LIKE ? AND `ref_type` LIKE ?)";
 								$firstValue = false;
 							}
-						} 
+						}
 						$query .= ")";
 					}
 
@@ -396,7 +396,7 @@ class Citation extends Relational
 
 		for ($i = date('Y'); $i >= $earliestYear; $i--)
 		{
-			$groupCitations[$i] = $affiliations; 			
+			$groupCitations[$i] = $affiliations;
 		}
 		$emptyLabel = 'No Year';
 		$groupCitations[$emptyLabel] = $affiliations;
@@ -437,7 +437,7 @@ class Citation extends Relational
 
 	public function publications()
 	{
-		
+
 		return $this->manytoMany('\Components\Publications\Models\Orm\Publication', '#__citations_assoc', 'cid', 'oid')->whereEquals('#__citations_assoc.tbl', 'publication');
 	}
 
@@ -459,7 +459,7 @@ class Citation extends Relational
 		{
 			return true;
 		}
-		return false; 
+		return false;
 	}
 
 	public function sponsors()
@@ -535,13 +535,13 @@ class Citation extends Relational
 			{
 				$tag->removeFrom('citations', $this->get('id'));
 			}
-		}	
+		}
 	}
 
 
 	public function separateTagsAndBadges()
 	{
-		if (!$this->badgesSeparated) 
+		if (!$this->badgesSeparated)
 		{
 			if ($this->tags->count() > 0)
 			{
@@ -554,7 +554,7 @@ class Citation extends Relational
 				{
 					$this->tags = $this->tags()->select('#__tags_object.label', 'associative_label')->rows();
 				}
-				
+
 				foreach ($this->tags as $index => $obj)
 				{
 					if ($obj->associative_label == 'badge')
@@ -591,7 +591,7 @@ class Citation extends Relational
 	 * @param   string  $highlight
 	 * @return  object
 	 */
-	public function formatted($config = array('format' => 'apa'), $highlight = NULL)
+	public function formatted($config = array('format' => 'apa'), $highlight = null)
 	{
 		if (!empty($this->get('formatted')))
 		{
@@ -635,7 +635,7 @@ class Citation extends Relational
 
 		// array to hold replace vals
 		$replace_values = array();
-		
+
 		$template = $this->template;
 
 		// get the default template
@@ -1091,13 +1091,13 @@ class Citation extends Relational
 				{
 					$links .= '<span>|</span>';
 				}
-				$imageSrc = $multiple ? (!empty($internallyCitedImageMultiple)) ? $internallyCitedImageMultiple : $internallyCitedImageSingle : $internallyCitedImageSingle; 
-			
+				$imageSrc = $multiple ? (!empty($internallyCitedImageMultiple)) ? $internallyCitedImageMultiple : $internallyCitedImageSingle : $internallyCitedImageSingle;
+
 				$linkText = \Lang::txt('COM_CITATIONS_RESOURCES_CITED');
 				$linkImage = '<img src="' . $imageSrc . '" />';
 
 				$displayValue = ($internallyCitedImage) ? 'linkImage' : 'linkText';
-				foreach($this->resources as $resource)
+				foreach ($this->resources as $resource)
 				{
 					if ($multiple)
 					{
@@ -1109,8 +1109,8 @@ class Citation extends Relational
 				return $links;
 			}
 		}
-		
-		
+
+
 	}
 
 	/**
@@ -1209,7 +1209,7 @@ class Citation extends Relational
 		if (isset($citation->isbn) && $citation->isbn != '')
 		{
 			// get the issn/isbn in db
-			$issn_isbn = $citation->isbn;;
+			$issn_isbn = $citation->isbn;
 
 			// check to see if we need to do any special processing to the issn/isbn before outputting
 			if (strstr($issn_isbn, "\r\n"))
@@ -1323,7 +1323,6 @@ class Citation extends Relational
 		$this->updateTags(array());
 		$this->updateTags(array(), 'badge');
 		return true;
-		
 	}
 
 	public function automaticAuthor()

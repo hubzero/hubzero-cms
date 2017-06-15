@@ -159,5 +159,5 @@ class Author extends Relational
 			}
 		}
 		return $this;
-	}	
+	}
 }

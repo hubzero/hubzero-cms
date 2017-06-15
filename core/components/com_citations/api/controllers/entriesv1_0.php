@@ -112,7 +112,7 @@ class Entriesv1_0 extends ApiController
 		);
 
 		//get the earliest year we have citations for
-		$earliest_year = Citation::all()->where('year' , '!=', '')->where('year', 'IS NOT', null)->where('year', '!=', 0)->order('year', 'asc')->limit(1)->row()->year;
+		$earliest_year = Citation::all()->where('year', '!=', '')->where('year', 'IS NOT', null)->where('year', '!=', 0)->order('year', 'asc')->limit(1)->row()->year;
 		$earliest_year = !empty($earliest_year) ? $earliest_year : 1990;
 
 		$filters['id']              = Request::getInt('id', 0);

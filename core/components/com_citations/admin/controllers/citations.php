@@ -86,7 +86,7 @@ class Citations extends AdminController
 				''
 			)),
 			'published' => array(0, 1),
-			'scope' => Request::getVar('scope','all')
+			'scope' => Request::getVar('scope', 'all')
 		);
 
 
@@ -333,13 +333,13 @@ class Citations extends AdminController
 		unset($citation['id']);
 
 		// toggle the affiliation
-		if (!isset($citation['affiliated']) || $citation['affiliated'] == NULL)
+		if (!isset($citation['affiliated']) || $citation['affiliated'] == null)
 		{
 				$citation['affiliated'] = 0;
 		}
 
 		// toggle fundeby
-		if (!isset($citation['fundedby']) || $citation['fundedby'] == NULL)
+		if (!isset($citation['fundedby']) || $citation['fundedby'] == null)
 		{
 				$citation['fundedby'] = 0;
 		}
@@ -376,7 +376,7 @@ class Citations extends AdminController
 			}
 		}
 
-        $row->attach('associations', $associations);
+		$row->attach('associations', $associations);
 
 		// Store new content
 		if (!$row->saveAndPropagate())
@@ -392,7 +392,6 @@ class Citations extends AdminController
 		$row->updateTags($this->tags);
 		$row->updateTags($this->badges, 'badge');
 
-		
 		Notify::success(Lang::txt('CITATION_SAVED', $row->id), 'com.citations');
 
 		// Redirect
@@ -414,12 +413,12 @@ class Citations extends AdminController
 		{
 			if (array_key_exists($ignore, $b))
 			{
-				$b[$ignore] = NULL;
+				$b[$ignore] = null;
 			}
 		}
-		if (array_key_exists('id',$b))
+		if (array_key_exists('id', $b))
 		{
-			$b['id'] = NULL;
+			$b['id'] = null;
 		}
 		$values = array_values($b);
 		$e = true;
@@ -448,37 +447,31 @@ class Citations extends AdminController
 		}
 
         if (count($ids) > 0)
-        {
-            // Loop through the IDs and delete the citation
-            $citations = Citation::whereIn('id', $ids)->rows();
-            $citationsRemoved = array();
-            foreach ($citations as $citation)
-            {
-                $citationId = $citation->get('id');
-                if (!$citation->destroy())
-                {
-                    foreach ($citation->getErrors() as $error)
-                    {
-                        Notify::error($citation->getError(), 'com.citations');
-                    }
-                    App::redirect(
-                        Route::url('index.php?option=com_citations&task=browse')
-                    );
-                }
-                else
-                {
-                    Notify::success(Lang::txt('CITATION_REMOVED', $citationId), 'com.citations');
-                }
-            }
-        }
+		{
+			// Loop through the IDs and delete the citation
+			$citations = Citation::whereIn('id', $ids)->rows();
+			$citationsRemoved = array();
+			foreach ($citations as $citation)
+			{
+				$citationId = $citation->get('id');
+				if (!$citation->destroy())
+				{
+					foreach ($citation->getErrors() as $error)
+					{
+						Notify::error($citation->getError(), 'com.citations');
+					}
+					App::redirect(Route::url('index.php?option=com_citations&task=browse'));
+				}
+				else
+				{
+					Notify::success(Lang::txt('CITATION_REMOVED', $citationId), 'com.citations');
+				}
+			}
+		}
 		else
 		{
-			
 			Notify::error($Lang::txt('NO_SELECTION'), 'com_citations');
 		}
-
-
-
 		// Redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true)

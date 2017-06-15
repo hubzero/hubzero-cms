@@ -158,21 +158,43 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			// Run task based on action
 			switch ($this->action)
 			{
-				case 'save':     $arr['html'] .= $this->saveAction();     break;
+				case 'save':
+					$arr['html'] .= $this->saveAction();
+					break;
 				case 'add':
-				case 'edit':     $arr['html'] .= $this->editAction();     break;
-				case 'delete':   $arr['html'] .= $this->deleteAction();   break;
-				case 'publish':  $arr['html'] .= $this->publishAction();  break;
-				case 'browse':   $arr['html'] .= $this->browseAction();   break;
-				case 'settings': $arr['html'] .= $this->settingsAction(); break;
-
-				case 'import':   $arr['html'] .= $this->importAction();   break;
-				case 'upload':   $arr['html'] .= $this->uploadAction();   break;
-				case 'review':   $arr['html'] .= $this->reviewAction();   break;
-				case 'process':  $arr['html'] .= $this->processAction();  break;
-				case 'saved':    $arr['html'] .= $this->savedAction();    break;
-
-				default:         $arr['html'] .= $this->browseAction();   break;
+				case 'edit':
+					$arr['html'] .= $this->editAction();
+					break;
+				case 'delete':
+					$arr['html'] .= $this->deleteAction();
+					break;
+				case 'publish':
+					$arr['html'] .= $this->publishAction();
+					break;
+				case 'browse':
+					$arr['html'] .= $this->browseAction();
+					break;
+				case 'settings':
+					$arr['html'] .= $this->settingsAction();
+					break;
+				case 'import':
+					$arr['html'] .= $this->importAction();
+					break;
+				case 'upload':
+					$arr['html'] .= $this->uploadAction();
+					break;
+				case 'review':
+					$arr['html'] .= $this->reviewAction();
+					break;
+				case 'process':
+					$arr['html'] .= $this->processAction();
+					break;
+				case 'saved':
+					$arr['html'] .= $this->savedAction();
+					break;
+				default:
+					$arr['html'] .= $this->browseAction();
+					break;
 			}
 		}
 
@@ -472,7 +494,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if ((!$view->authors = $view->row->relatedAuthors()->order('ordering', 'asc')) && ($view->row->relatedAuthors->count() == 0 && $view->row->author != ''))
 		{
 			// Formats the author for the multi-author plugin
-			$authors = explode(';',$view->row->author);
+			$authors = explode(';', $view->row->author);
 
 			$authorString = '';
 			$totalAuths = count($authors);
@@ -495,7 +517,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 				$authorString .= $author;
 
-				if ($totalAuths > 1 && $x < $totalAuths - 1 )
+				if ($totalAuths > 1 && $x < $totalAuths - 1)
 				{
 					$authorString .= ',';
 				}
@@ -507,7 +529,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 			// tags & badges
-			
+
 			$view->tags = \Components\Citations\Helpers\Format::citationTags($view->row, false);
 			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, false);
 		}
@@ -629,7 +651,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		elseif (!$isNew && ($authorCount == 0))
 		{
-			$authorField = explode(',',Request::getVar('author'));
+			$authorField = explode(',', Request::getVar('author'));
 			$totalAuths = count($authorField);
 
 			if ($totalAuths == 0)
@@ -737,7 +759,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			$deleted  = array();
 
-			$citationIDs = explode(',',$citationIDs);
+			$citationIDs = explode(',', $citationIDs);
 
 			foreach ($citationIDs as $id)
 			{
@@ -816,10 +838,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			// set member citation parameters
 			$this->member->setParam('citationFormat', $citationFormatID);
-			$this->member->setParam('include_coins' , $include_coins);
-			$this->member->setParam('coins_only' , $coins_only);
-			$this->member->setParam('citations_show_tags' , $citation_show_tags);
-			$this->member->setParam('citations_show_badges' , $citation_show_badges);
+			$this->member->setParam('include_coins', $include_coins);
+			$this->member->setParam('coins_only', $coins_only);
+			$this->member->setParam('citations_show_tags', $citation_show_tags);
+			$this->member->setParam('citations_show_badges', $citation_show_badges);
 
 			// save profile settings
 			if (!$this->member->save())
@@ -932,7 +954,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			// toggle the state
 			if ($citation->published != $citation::STATE_PUBLISHED)
 			{
-				$citation->set('published',  $citation::STATE_PUBLISHED);
+				$citation->set('published', $citation::STATE_PUBLISHED);
 				$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
 			}
 			else
@@ -980,7 +1002,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			}
 
 			$published = array();
-			$citationIDs = explode(',',$citationIDs);
+			$citationIDs = explode(',', $citationIDs);
 			$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
 
 			// error, no such citation
@@ -991,7 +1013,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				// toggle the state
 				if ($citation->published != $citation::STATE_PUBLISHED)
 				{
-					$citation->set('published',  $citation::STATE_PUBLISHED);
+					$citation->set('published', $citation::STATE_PUBLISHED);
 				}
 				else
 				{
@@ -1069,7 +1091,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// citation temp file cleanup
 		$this->importer->cleanup();
 
-		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
 
 		$view->messages = Notify::messages('plg_members_citations');
 
@@ -1129,7 +1151,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file, 'member', User::get('id')));
+		$citations = Event::trigger('citation.onImport', array($file, 'member', User::get('id')));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
@@ -1209,7 +1231,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			{
 				$citation['duplicate'] = $citeCollection->seek($citation['duplicate']);
 			}
-		}		
+		}
 
 
 		$view = $this->view('review', 'import');
@@ -1390,10 +1412,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Applies filters to Citations model and returns applied filters
-	* @param array  $filters array of POST values
-	* @return	array sanitized and validated filter values
-	*/
+	 * Applies filters to Citations model and returns applied filters
+	 * @param array  $filters array of POST values
+	 * @return	array sanitized and validated filter values
+	 */
 	private function _filterHandler($filters = array(),  $scope_id = 0)
 	{
 		$citations = \Components\Citations\Models\Citation::all();
@@ -1523,10 +1545,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Uses URL to determine OpenURL server
-	*
-	* @return  mixed
-	*/
+	 * Uses URL to determine OpenURL server
+	 *
+	 * @return  mixed
+	 */
 	private function _handleOpenURL()
 	{
 		// get the users id to make lookup
