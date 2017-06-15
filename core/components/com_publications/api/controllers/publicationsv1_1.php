@@ -173,7 +173,7 @@ class Publicationsv1_1 extends ApiController
 
 				foreach ($authors as $author)
 				{
-					$obj->authors[] = $author->name;
+					$obj->author[] = $author->name;
 				}
 
 				$obj->owner_type = 'user';
