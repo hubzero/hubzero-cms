@@ -520,11 +520,11 @@ class Project extends \JTable
 			$query .= " AND p.owned_by_group != '$groupid' ";
 		}
 
-		$query .= $uid
+		/*$query .= $uid
 				? " AND (p.state = 1 OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
 					AND ((p.state = 1 AND p.setup_stage = " . $setup_complete . ")
 					OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . ")))) "
-				: " AND p.state = 1 ";
+				: " AND p.state = 1 ";*/
 
 		// Sorting
 		if (!isset($filters['count']) or $filters['count'] == 0)
