@@ -6,6 +6,7 @@
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Adding partner component for QUBES partners </description>
 	<files>
+		<filename>router.php</filename>
 		<filename>partners.php</filename>
 		<filename>index.html</filename>
 	</files>

@@ -1,0 +1,52 @@
+/*
+
+	-- -- -- -- -- -- --
+	com_drwho CSS
+	-- -- -- -- -- -- --
+
+*/
+	pre {
+		color: blue;
+		background: transparent;
+		border: none;
+	}
+
+	.container .list-footer:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
+	.container fieldset {
+		margin-bottom: 1em;
+	}
+
+	.main-doctor {
+		margin-left: 2em;
+	}
+
+	/* Icons */
+	.icon-yes,
+	.icon-no {
+		display: block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		line-height: 1;
+	}
+	.icon-yes:before,
+	.icon-no:before {
+		font-family: "Fontcons"
+	}
+	.icon-yes {
+		color: green;
+	}
+	.icon-yes:before {
+		content: "\2714";
+	}
+	.icon-no {
+		color: #aaa;
+	}
+	.icon-no:before {
+		content: "\2298";
+	}
