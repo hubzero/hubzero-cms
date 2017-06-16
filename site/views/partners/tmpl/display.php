@@ -34,14 +34,14 @@ Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
 // Breadcrumbs are displayed via a breadcrumbs module and may or may not be enabled for
 // all hubs and/or templates. In general, it's good practice to set the pathway
 // even if it's unknown if hey will be displayed or not.
-Pathway::append(
-	Lang::txt('COM_PARTNERS'),  // Text to display
-	'index.php?option=' . $this->option  // Link. Route::url() not needed.
-);
+// Pathway::append(
+// 	Lang::txt('COM_PARTNERS'),  // Text to display
+// 	'index.php?option=' . $this->option  // Link. Route::url() not needed.
+// );
 
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_PARTNERS'); ?>: <?php echo Lang::txt('COM_PARTNERS'); ?></h2>
+	<h2><?php echo Lang::txt('COM_PARTNERS'); ?>:</h2>
 
 	<div id="content-header-extra">
 		<p>
@@ -52,6 +52,13 @@ Pathway::append(
 
 <section class="main section">
 	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
+					<div class="card">
+  <img src="img_avatar.png" alt="Avatar" style="width:100%">
+  <div class="container">
+    <h4><b>John Doe</b></h4> 
+    <p>Architect & Engineer</p> 
+  </div>
+</div>
 		<div class="subject">
 			<table class="entries">
 				<caption><?php echo Lang::txt('COM_PARTNERS'); ?></caption>
@@ -64,18 +71,30 @@ Pathway::append(
 				<tbody>
 					<?php foreach ($this->records as $record) { ?>
 						<tr>
+							
 							<th>
-								<?php echo $this->escape($record->get('id')); ?>
-							</th>
-							<td>
 								<a href="<?php echo Route::url($record->link()); ?>">
 									<?php echo $this->escape($record->get('name')); ?>
 								</a>
+							</th>
+							
+							<td>
+							<a href= "<?php echo $record->get('site_url')?>">
+								<?php echo $this->escape($record->get('site_url')); ?>
+							</a>
 							</td>
+
+							<td>
+							<a href= "">
+								<?php echo $this->escape($record->get('social_media_url')); ?>
+							</a>
+							</td>
+
 						</tr>
 					<?php } ?>
 				</tbody>
 			</table>
+
 
 			<?php 
 			echo $this
@@ -94,13 +113,12 @@ Pathway::append(
 					<?php foreach (\Components\Partners\Models\Partner_type::all() as $partner_type) { ?>
 						<?php
 						?>
-						<option<?php if ($this->filters['partner_type'] == $partner_type->get('id')) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($partner_type->get('internal')); ?>"><?php echo $this->escape($partner_type->get('external')); ?></option>
+						<option<?php if ($this->filters['partner_type'] == $partner_type->get('id')) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($partner_type->get('external')); ?>"><?php echo $this->escape($partner_type->get('external')); ?></option>
 					<?php } ?>
 				</select>
 				<input type="submit" value="<?php echo Lang::txt('COM_PARTNERS_GO'); ?>" />
 			</fieldset>
 
-			<p><a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=partner_types'); ?>"><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES'); ?></a></p>
 		</aside>
 	</form>
 </section>
