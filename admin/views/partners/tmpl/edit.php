@@ -156,10 +156,10 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	<!-- 
+	<!--These are important, especially box checked!!, allows you to use the edit/publish/delete buttons once you have checked something -->
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	-->
+	
 	<?php echo Html::input('token'); ?>
 </form>
