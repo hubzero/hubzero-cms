@@ -137,16 +137,21 @@ $link = $base . '/' . trim($sef, '/');
 				<td style="font-weight: normal; padding: 8px; text-align: left; " align="left">
 					<span class="activity-actor">
 						<?php
-						$creator = User::getInstance($row->log->get('created_by'));
-						$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
+						$name = Lang::txt('PLG_MEMBERS_ACTIVITY_ANONYMOUS');
 
-						if (in_array($creator->get('access'), User::getAuthorisedViewLevels())) { ?>
-							<a href="<?php echo $base . '/' . trim(Route::url($creator->link()), '/'); ?>">
-								<?php echo $name; ?>
-							</a>
-						<?php } else { ?>
-							<?php echo $name; ?>
-						<?php } ?>
+						if (!$this->row->log->get('anonymous'))
+						{
+							$creator = User::getInstance($row->log->get('created_by'));
+							$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
+
+							if (in_array($creator->get('access'), User::getAuthorisedViewLevels()))
+							{
+								$name = '<a href="' . $base . '/' . trim(Route::url($creator->link()), '/') . '">' . $name . '</a>';
+							}
+						}
+
+						echo $name;
+						?>
 					</span><br />
 					<span class="activity-event">
 						<?php echo str_replace('href="/', 'href="' . $base . '/', $row->log->get('description')); ?>

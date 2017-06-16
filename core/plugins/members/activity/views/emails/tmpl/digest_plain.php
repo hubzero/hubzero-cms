@@ -52,8 +52,13 @@ foreach ($this->rows as $row)
 		$output
 	);
 
-	$creator = User::getInstance($row->log->get('created_by'));
-	$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
+	$name = Lang::txt('PLG_MEMBERS_ACTIVITY_ANONYMOUS');
+
+	if (!$this->row->log->get('anonymous'))
+	{
+		$creator = User::getInstance($row->log->get('created_by'));
+		$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
+	}
 
 	$dt = Date::of($row->get('created'));
 	$ct = Date::of('now');
