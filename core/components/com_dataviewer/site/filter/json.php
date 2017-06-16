@@ -257,7 +257,7 @@ function filter($res, $dd)
 								$link_label = '<img class="dv_image lazy-load dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
 							}
 
-							$val[] = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
+							$val[] = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a> <br />';
 						}
 						$val = implode('&nbsp;', $val);
 					} else {
