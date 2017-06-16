@@ -36,57 +36,8 @@ defined('_HZEXEC_') or die();
 use Components\Publications\Models\Orm\Publication;
 
 require_once Component::path('com_publications') . DS . 'models' . DS . 'orm' . DS . 'publication.php';
+require_once __DIR__ . DS . 'childsorter.php';
 
-/**
- * Publications child sorter class
- */
-class PublicationChildSorter
-{
-	/**
-	 * Description for 'order'
-	 *
-	 * @var array
-	 */
-	private $order;
-
-	/**
-	 * Constructor
-	 *
-	 * @param      array $order Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($order)
-	{
-		$this->order = $order;
-	}
-
-	/**
-	 * Short description for 'sort'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function sort($a, $b)
-	{
-		$a_id = $a->get('id');
-		$b_id = $b->get('id');
-		$sec_diff = strcmp($a->get_section(), $b->get_section());
-		if ($sec_diff < 0)
-		{
-			return -1;
-		}
-		if ($sec_diff > 0)
-		{
-			return 1;
-		}
-		$a_ord = $this->order[$a_id];
-		$b_ord = $this->order[$b_id];
-		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
-	}
-}
 
 /**
  * Search plugin class for publications
@@ -96,10 +47,10 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -283,7 +234,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 
 		$sorter = new PublicationChildSorter($placed);
 		$rows = array();
-		foreach ($id_assoc as $id=>$row)
+		foreach ($id_assoc as $id => $row)
 		{
 			if (!array_key_exists((int)$id, $placed))
 			{
@@ -302,9 +253,9 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * onGetTypes - Announces the available hubtype
 	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
+	 * @param   mixed  $type 
+	 * @access  public
+	 * @return  string
 	 */
 	public function onGetTypes($type = null)
 	{
@@ -324,11 +275,11 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * onIndex 
 	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * @param   string   $type
+	 * @param   integer  $id 
+	 * @param   boolean  $run 
+	 * @access  public
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -344,37 +295,37 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 
 				// Get the record
 				$sql = "SELECT
-					#__publications.id,
+					`#__publications`.id,
 					alias,
-					#__publications.access,
+					`#__publications`.access,
 					master_doi,
 					published_up,
-					#__publications.created_by,
+					`#__publications`.created_by,
 					abstract,
 					description,
 					title,
 					doi,
 					state,
 					release_notes,
-					MAX(#__publication_versions.id) as latestVersion
-					FROM #__publications 
-				LEFT JOIN #__publication_versions
-				ON #__publications.id = #__publication_versions.publication_id
-				WHERE #__publications.id = {$id};";
+					MAX(`#__publication_versions`.id) as latestVersion
+					FROM `#__publications` 
+				LEFT JOIN `#__publication_versions`
+				ON `#__publications`.id = `#__publication_versions`.publication_id
+				WHERE `#__publications`.id = {$id};";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Get the name of the author
 				if (isset($row->latestVersion))
 				{
-					$sql1 = "SELECT user_id, name FROM #__publication_authors WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
+					$sql1 = "SELECT user_id, name FROM `#__publication_authors` WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
 					$authors = $db->setQuery($sql1)->query()->loadAssocList();
 
 					// Get any tags
 					$sql2 = "SELECT tag
-						FROM #__tags
-						LEFT JOIN #__tags_object
-						ON #__tags.id=#__tags_object.tagid
-						WHERE #__tags_object.objectid = {$row->latestVersion} AND #__tags_object.tbl = 'publications';";
+						FROM `#__tags`
+						LEFT JOIN `#__tags_object`
+						ON `#__tags`.id=`#__tags_object`.tagid
+						WHERE `#__tags_object`.objectid = {$row->latestVersion} AND `#__tags_object`.tbl = 'publications';";
 					$tags = $db->setQuery($sql2)->query()->loadColumn();
 				}
 				else
@@ -470,11 +421,10 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__publications;";
+				$sql = "SELECT id FROM `#__publications`;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
 		}
 	}
 }
-
