@@ -42,7 +42,7 @@ Toolbar::help('partner_types');
 // This line makes sure we're including the javascript framework
 Html::behavior('framework');
 ?>
-<!--This section of html is the main view for this page, need to add some code here so that clicking on Patners wont mess up-->
+<!--This section of html is the main view for this page-->
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<!-- for the search bar -->
 	<fieldset id="filter-bar">
@@ -72,6 +72,7 @@ Html::behavior('framework');
 		</tfoot>
 		<tbody>
 		<?php
+		// our for loop, i is incremented, k is weird, not sure of its use
 		$k = 0;
 		$i = 0;
 		foreach ($this->rows as $row) : ?>
@@ -87,7 +88,7 @@ Html::behavior('framework');
 					<?php echo $row->get('id'); ?>
 				</td>
 
-
+				<!--This makes the internal name clickable or not, if the user has edit abilities, we can click the name to take us to the edit page -->
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
@@ -100,13 +101,13 @@ Html::behavior('framework');
 					<?php } ?>
 				</td>
 
-
+				<!--External name -->
 				<td class="priority-4">					
 						<span>
 							<?php echo $this->escape($row->get('external')); ?>
 						</span>
 				</td>
-
+				<!-- this calls the description method in the partner type model and passes 'parsed' which echos the description without the format tag-->
 				<td class="priority-4">
 					<span>
 						<?php echo $this->escape($row->description('parsed')); ?>
@@ -121,13 +122,13 @@ Html::behavior('framework');
 		?>
 		</tbody>
 	</table>
-
+	<!--  dont think these are necessary, commenting out for now
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-
+	-->
 	<?php echo Html::input('token'); ?>
 </form>

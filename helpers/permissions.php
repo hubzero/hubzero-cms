@@ -5,7 +5,7 @@ namespace Components\Partners\Helpers;
 use Hubzero\Base\Object;
 use User;
 
-
+//this model needs to be required in admin/partners.php, and included in the view files
 /**
  * Permissions helper
  */

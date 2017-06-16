@@ -57,7 +57,7 @@ Html::behavior('framework');
 	<table class="adminlist">
 		<thead>
 			<tr>
-			<!--VERY IMPORTANT MESSAGE: where there is id, state, partner_type and liason, this is how it is sorted, make sure name is same as database-->
+			<!--VERY IMPORTANT MESSAGE: where there is id, state, partner_type and liason, this is how it is sorted, make sure name is same as database if you want sorting/ordering capabilities in the table -->
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -81,7 +81,7 @@ Html::behavior('framework');
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 
-
+				<!-- displays the id -->
 				<td class="priority-5">
 					<?php echo $row->get('id'); ?>
 				</td>
@@ -119,7 +119,9 @@ Html::behavior('framework');
 						$task = 'publish';
 						$cls  = 'trash';
 					}
-					//makes link clickable if we have edit capabilities
+
+
+					//makes name link clickable if we have edit capabilities, just displays name otherwise
 					if ($canDo->get('core.edit.state')) { ?>
 						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 							<span><?php echo $alt; ?></span>
@@ -161,13 +163,13 @@ Html::behavior('framework');
 		?>
 		</tbody>
 	</table>
-
+	<!-- 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-
+	-->
 	<?php echo Html::input('token'); ?>
 </form>

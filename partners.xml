@@ -2,9 +2,9 @@
 <extension type="component" version="2.0">
 	<name>Partners</name>
 	<author>QUBEShub</author>
-	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2017 QUBEShub.org</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Adding partner component for QUBES partners </description>
+	<description>Adding partner component for QUBES partners, should be able to be used by other organizations </description>
 	<files>
 		<filename>router.php</filename>
 		<filename>partners.php</filename>

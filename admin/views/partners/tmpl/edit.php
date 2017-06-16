@@ -55,47 +55,47 @@ function submitbutton(pressbutton)
 				<label for="field-name"><?php echo Lang::txt('COM_PARTNERS_FIELD_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>	
 				<input type="text" name="fields[name]" id="field-name" size="35" value="<?php echo $this->escape($this->row->get('name')); ?>" />
 			</div>
-
+			<!--Date joined-->
 			<div class="input-wrap">
 				<label for="field-date_joined"><?php echo Lang::txt('COM_PARTNERS_FIELD_DATE_JOINED'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[date_joined]" id="field-date_joined" size="35" value="<?php echo $this->escape($this->row->get('date_joined')); ?>" />
 			</div>
-
+			<!--URL to partners website-->
 			<div class="input-wrap">
 				<label for="field-site_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[site_url]" id="field-site_url" size="35" value="<?php echo $this->escape($this->row->get('site_url')); ?>" />
 			</div>
-			
+			<!--Logo link field -->
 			<div class="input-wrap">
 				<label for="field-logo_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[logo_url]" id="field-logo_url" size="35" value="<?php echo $this->escape($this->row->get('logo_url')); ?>" />
 			</div>
-
+			<!--QUBES group url -->
 			<div class="input-wrap">
 				<label for="field-QUBES_group_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_GROUP'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[QUBES_group_url]" id="field-QUBES_group_url" size="35" value="<?php echo $this->escape($this->row->get('QUBES_group_url')); ?>" />
 			</div>
+			<!--Social media url-->
 			<div class="input-wrap">
 				<label for="field-social_media_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_SOCIAL_MEDIA'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text"  name="fields[social_media_url]" id="field-social_media_url" size="35" value="<?php echo $this->escape($this->row->get('social_media_url')); ?>" />
 			</div>
-
+			<!--Qubes liason member number-->
 			<div class="input-wrap">
 				<label for="field-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[QUBES_liason]" id="field-QUBES_liason" size="35" value="<?php echo $this->escape($this->row->get('QUBES_liason')); ?>" />
 			</div>
-			
-		<div class="input-wrap">
+			<!-- partner liason member number -->
+			<div class="input-wrap">
 				<label for="field-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[partner_liason]" id="field-partner_liason" size="35" value="<?php echo $this->escape($this->row->get('partner_liason')); ?>" />
-
-
-			</div>			
+			</div>		
+			<!--activites text box -->	
 			<div class="input-wrap">
 				<label for="field-about"><?php echo Lang::txt('COM_PARTNERS_FIELD_ACTIVITIES'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<?php echo $this->editor('fields[activities]', $this->escape($this->row->get('activities')), 50, 15, 'field-activities', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 			</div>
-
+			<!-- about text box-->
 			<div class="input-wrap">
 				<label for="field-about"><?php echo Lang::txt('COM_PARTNERS_FIELD_ABOUT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<?php echo $this->editor('fields[about]', $this->escape($this->row->about('raw')), 50, 15, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
@@ -105,9 +105,11 @@ function submitbutton(pressbutton)
 
 
 		<fieldset class="adminform">
+			<!-- partner types form for selecting partner type, radio button = can only select one partner type -->
 			<legend><span><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES'); ?></span></legend>
 
 			<?php
+			//for loop to display each partner type, the radio button will be checked if the partner_type (int) is equal to the partner_type id
 			foreach ($this->partner_types as $partner_type) { ?>
 				<?php
 				$check = false;
@@ -154,10 +156,10 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-
+	<!-- 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-
+	-->
 	<?php echo Html::input('token'); ?>
 </form>

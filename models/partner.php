@@ -5,7 +5,7 @@ use Date;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Session;
-
+//needs to be required in admin!
 class Partner extends Relational{
 		/**
 	 * The table namespace, access to the SQL database

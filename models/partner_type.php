@@ -4,7 +4,7 @@ use Hubzero\Database\Relational;
 use Session;
 use Date;
 
-
+//
 /**
  * Partners model class for partner_types
  */

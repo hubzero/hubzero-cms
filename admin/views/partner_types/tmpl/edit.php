@@ -51,17 +51,17 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 			<!--to access values from database, need to use $this->escape($this->row->get('variable name in database')) -->
-			
+			<!-- internal name input field-->
 			<div class="input-wrap">
 				<label for="field-internal"><?php echo Lang::txt('COM_PARTNERS_FIELD_INTERNAL_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>	
 				<input type="text" name="fields[internal]" id="field-internal" size="35" value="<?php echo $this->escape($this->row->get('internal')); ?>" />
 			</div>
-
+			<!-- external name input field-->
 			<div class="input-wrap">
 				<label for="field-external"><?php echo Lang::txt('COM_PARTNERS_FIELD_EXTERNAL_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[external]" id="field-external" size="35" value="<?php echo $this->escape($this->row->get('external')); ?>" />
 			</div>
-
+			<!-- description box-->
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_PARTNERS_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')), 50, 15, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
@@ -74,6 +74,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
+				<!-- displays the id, cant edit-->
 					<th><?php echo Lang::txt('COM_PARTNERS_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('id', 0); ?>
@@ -83,10 +84,10 @@ function submitbutton(pressbutton)
 			</tbody>
 		</table>
 	<div class="clr"></div>
-
+	<!-- not necessary, but ill leave commented for now
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-
+		-->
 	<?php echo Html::input('token'); ?>
 </form>

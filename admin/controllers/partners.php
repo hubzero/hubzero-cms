@@ -82,7 +82,6 @@ class Partners extends AdminController
 				-1
 			)),
 
-			//changed from seasons, could be an error source
 			'partner_type' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.partner_type',
 				'partner_type',
@@ -106,7 +105,7 @@ class Partners extends AdminController
 
 		// Get our model
 		// This is the entry point to the database and the 
-		// table of characters we'll be retrieving data from
+		// table of partners we'll be retrieving data from
 		
 		$record = Partner::all();
 		
@@ -212,18 +211,13 @@ class Partners extends AdminController
 			return $this->editTask($row);
 		}
 
-		// Get all the seasons this character has been assigned to.
+		// Get the partner type has been assigned to.
 		//
-		// Here we're grabbing the array of seasons (checkboxes) and
-		// assigning the model to each season. It will also remove any
-		// previous assignments not found in the passed-in list.
+		// Here we're grabbing the array of partner_types (radio buttons) and
+		// assigning the model to the partner_type
 		$partner_type = Request::getVar('partner_type', array(), 'post');
 
-		// if (!$row->partner_types()->sync($partner_types))
-		// {
-		// 	Notify::error($row->getError());
-		// 	return $this->editTask($row);
-		// }
+
 
 		// Notify the user that the entry was saved
 		Notify::success(Lang::txt('COM_PARTNER_ENTRY_SAVED'));
@@ -243,7 +237,7 @@ class Partners extends AdminController
 	}
 
 	/**
-	 * Delete one or more entries
+	 * Delete one or more entries, didnt change any code from DRWHO here, except for the successful deletion message
 	 *
 	 * @return  void
 	 */
@@ -258,7 +252,6 @@ class Partners extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		//
 		// We're expecting an array of incoming IDs from the
 		// entries listing. But, we'll force the data into an
 		// array just to be extra sure.
@@ -303,7 +296,7 @@ class Partners extends AdminController
 	}
 
 	/**
-	 * Sets the state of one or more entries
+	 * Sets the state of one or more entries, no change from DRWHO
 	 *
 	 * @return  void
 	 */

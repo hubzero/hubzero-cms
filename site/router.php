@@ -3,7 +3,8 @@
 namespace Components\Partners\Site;
 
 use Hubzero\Component\Router\Base;
-
+//Router is for our URL's we are seeing and the buttons and links we are clicking,
+//THus is if we are /partners and we click on national science foundation, we will be taken to partners/partner/view/1
 // Most component client types (site, admin, api) will have
 // an associated router. All routers must have a class name
 // of `Router` and extend `Hubzero\Component\Router\Base`.

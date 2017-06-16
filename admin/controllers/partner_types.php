@@ -92,7 +92,7 @@ class Partner_types extends AdminController
 			)
 		);
 
-		// Get our model
+		// Get our model /// MAKE SURE MODEL HAS BEEN INCLUDED OR REQUIRED IN admin/partners.php
 		// This is the entry point to the database and the 
 		// table of partner_types we'll be retrieving data from
 		$record = Partner_type::all();
@@ -114,7 +114,7 @@ class Partner_types extends AdminController
 	}
 
 	/**
-	 * Show a form for editing an entry
+	 * Show a form for editing an entry, what is being run when we are on the edit page
 	 *
 	 * @param   object  $row
 	 * @return  void
@@ -135,7 +135,7 @@ class Partner_types extends AdminController
 		if (!is_object($row))
 		{
 			// Grab the incoming ID and load the record for editing
-			//
+			// populating fields with existing data
 			// IDs can come arrive in two formts: single integer or 
 			// an array of integers. If it's the latter, we'll only take 
 			// the first ID in the list.
@@ -148,7 +148,7 @@ class Partner_types extends AdminController
 			// Load the record
 			$row = Partner_type::oneOrNew($id);
 		}
-
+		//gives the row variable  and the partner_type model to the view
 		$this->view->row = $row;
 		$this->view->partner_types = Partner_type::all()->ordered();
 
@@ -179,7 +179,8 @@ class Partner_types extends AdminController
 		// *only* coming in through the submitted edit form.
 		Request::checkToken();
 
-		// Incoming
+		// Incoming, make sure that the 'fields' in html have the correct names corresponding to the database
+		// in order for the controller to hand the info to the model
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate the model and bind the incoming data to it

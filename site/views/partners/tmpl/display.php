@@ -1,4 +1,5 @@
 <?php
+// this is a very basic table display for the partners, needs to be edited before it is pushed to the real world
 // Push CSS to the document
 //
 // The css() method provides a quick and convenient way to attach stylesheets. 
@@ -52,13 +53,7 @@ Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
 
 <section class="main section">
 	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
-					<div class="card">
-  <img src="img_avatar.png" alt="Avatar" style="width:100%">
-  <div class="container">
-    <h4><b>John Doe</b></h4> 
-    <p>Architect & Engineer</p> 
-  </div>
-</div>
+		
 		<div class="subject">
 			<table class="entries">
 				<caption><?php echo Lang::txt('COM_PARTNERS'); ?></caption>
@@ -67,7 +62,7 @@ Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
 						<th><?php echo Lang::txt('COM_PARTNERS_COL_NAME'); ?></th>
 					</tr>
 				</thead>
-
+				<
 				<tbody>
 					<?php foreach ($this->records as $record) { ?>
 						<tr>
@@ -86,7 +81,7 @@ Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
 
 							<td>
 							<a href= "">
-								<?php echo $this->escape($record->get('social_media_url')); ?>
+								<?php echo $this->escape($record->get('activities')); ?>
 							</a>
 							</td>
 
