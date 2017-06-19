@@ -34,9 +34,10 @@ function submitbutton(pressbutton)
 		return;
 	}
 
-	// do field validation
-	if ($('#field-name').val() == ''){
-		alert("<?php echo Lang::txt('COM_PARTNERS_ERROR_MISSING_NAME'); ?>");
+	// do field validation, where we make sure required fields were not left blank
+	if ($('#field-name').val() == '' || $('#field-date_joined').val() == ''|| $('#field-site_url').val() == '' || $('#field-logo_url').val() == '' 
+		|| $('#field-activities').val() == '' || $('#field-about').val() == '' ){
+		alert("<?php echo Lang::txt('COM_PARTNERS_ERROR_MISSING_FIELDS'); ?>");
 	} else {
 		<?php echo $this->editor()->save('text'); ?>
 
