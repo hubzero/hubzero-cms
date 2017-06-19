@@ -72,22 +72,22 @@ function submitbutton(pressbutton)
 			</div>
 			<!--QUBES group url -->
 			<div class="input-wrap">
-				<label for="field-QUBES_group_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_GROUP'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-QUBES_group_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_GROUP'); ?> </label>
 				<input type="text" name="fields[QUBES_group_url]" id="field-QUBES_group_url" size="35" value="<?php echo $this->escape($this->row->get('QUBES_group_url')); ?>" />
 			</div>
 			<!--Social media url-->
 			<div class="input-wrap">
-				<label for="field-social_media_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_SOCIAL_MEDIA'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-social_media_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_SOCIAL_MEDIA'); ?> </label>
 				<input type="text"  name="fields[social_media_url]" id="field-social_media_url" size="35" value="<?php echo $this->escape($this->row->get('social_media_url')); ?>" />
 			</div>
 			<!--Qubes liason member number-->
 			<div class="input-wrap">
-				<label for="field-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?> </label>
 				<input type="text" name="fields[QUBES_liason]" id="field-QUBES_liason" size="35" value="<?php echo $this->escape($this->row->get('QUBES_liason')); ?>" />
 			</div>
 			<!-- partner liason member number -->
 			<div class="input-wrap">
-				<label for="field-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?></label>
 				<input type="text" name="fields[partner_liason]" id="field-partner_liason" size="35" value="<?php echo $this->escape($this->row->get('partner_liason')); ?>" />
 			</div>		
 			<!--activites text box -->	
