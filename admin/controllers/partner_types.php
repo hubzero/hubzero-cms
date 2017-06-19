@@ -83,7 +83,7 @@ class Partner_types extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'title'
+				'internal'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
@@ -101,10 +101,10 @@ class Partner_types extends AdminController
 		{
 			$record->whereEquals('state', $this->view->filters['state']);
 		}
-
+		//THIS is where search is specified, set to search internal name rn
 		if ($search = $this->view->filters['search'])
 		{
-			$record->whereLike('title', $search);
+			$record->whereLike('internal', $search);
 		}
 
 		$this->view->rows = $record->ordered('filter_order', 'filter_order_Dir')->paginated();

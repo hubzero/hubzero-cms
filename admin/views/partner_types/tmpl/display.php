@@ -2,7 +2,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
+	
 // Get the permissions helper
 $canDo = \Components\Partners\Helpers\Permissions::getActions('partner_types');
 
@@ -14,7 +14,7 @@ $canDo = \Components\Partners\Helpers\Permissions::getActions('partner_types');
 // perform such actions.
 Toolbar::title(Lang::txt('COM_PARTNERS_PARTNER_TYPES'));
 if ($canDo->get('core.admin'))
-{
+	{
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
