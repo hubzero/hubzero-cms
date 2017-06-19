@@ -45,19 +45,17 @@ use User;
 class Orcid extends SiteController
 {
 	/**
-	 * user's name
-	 *
-	 * @var string
-	 */
+	* user's name
+	*
+	* @var string
+	*/
 	protected $_userName;
-	
 	/**
 	 * user's ORCID ID
 	 *
 	 * @var string
 	 */
 	protected $_userOrcidID;
-	
 	/**
 	 * OAuth tokens
 	 *
@@ -67,7 +65,6 @@ class Orcid extends SiteController
 		'members' => 'https://orcid.org/oauth/token',
 		'sandbox' => 'https://sandbox.orcid.org/oauth/token'
 	);
-	
 	/**
 	 * A list of ORCID services that can be used
 	 *
@@ -172,7 +169,7 @@ class Orcid extends SiteController
 
 		$url .= implode('+AND+', $bits);
 		
-		$header = array('Accept: application/vnd.orcid+xml');		
+		$header = array('Accept: application/vnd.orcid+xml');
 		if ($srv != 'public')
 		{
 			$header[] = 'Authorization: Bearer ' . $tkn;
@@ -539,7 +536,6 @@ class Orcid extends SiteController
 
 		print_r($curl_response);
 	}
-	
 	/*
 	 * Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.
 	 * When deny button is hit, ORCID posts error code back but we do nothing here.
@@ -559,20 +555,16 @@ class Orcid extends SiteController
 		{
 			//Build request parameter string
 			$params = "client_id=" . $clientID . "&client_secret=" . $clientSecret. "&grant_type=authorization_code&code=" . Request::getVar('code', '');
-			
 			//Initialize cURL session
 			$ch = curl_init();
-			
 			//Set cURL options
 			curl_setopt($ch, CURLOPT_URL, $oauthToken);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			
 			//Execute cURL command
 			$result = curl_exec($ch);
-			
 			//Transform cURL response from json string to php array
 			if ($result)
 			{
@@ -580,7 +572,6 @@ class Orcid extends SiteController
 				$this->_userName = $response['name'];
 				$this->_userOrcidID = $response['orcid'];
 			}
-			
 			//Close cURL session
 			curl_close($ch);
 		}
@@ -593,7 +584,6 @@ class Orcid extends SiteController
 			echo "Unexpected response from ORCID";
 		}
 	}
-	
 	/*
 	 * Save orcid to #_user_profiles
 	 *
@@ -604,12 +594,10 @@ class Orcid extends SiteController
 	{
 		//$userID = self::getUserID($name);
 		$db = App::get('db');
-		
 		//Check if the user already has orcid record in #__user_profiles
 		$exist_q = "SELECT EXISTS(SELECT * FROM #__user_profiles WHERE user_id = $userID AND profile_key = " . '"orcid"' . ")";
 		$db->setQuery($exist_q);
 		$exist = (int)$db->loadResult();
-		
 		if ($exist == 1)
 		{
 			$update_q = "UPDATE #__user_profiles SET profile_value = " . '"' . $orcid  . '"' . " WHERE user_id = $userID AND profile_key = " . '"orcid"';
@@ -622,16 +610,13 @@ class Orcid extends SiteController
 			$id_q = "SELECT MAX(id) FROM #__user_profiles";
 			$db->setQuery($id_q);
 			$newID = (int)$db->loadResult() + 1;
-			
 			//Get new ordering based on existing maximum ordering
 			$order_q = "SELECT MAX(ordering) FROM #__user_profiles where user_id = $userID";
 			$db->setQuery($order_q);
 			$newOrdering = (int)$db->loadResult() + 1;
-			
 			$orcid_sql = "INSERT INTO " . $db->quoteName('#__user_profiles') . " (" . $db->quoteName('id') . "," . $db->quoteName('user_id') . "," 
 			. $db->quoteName('profile_key') . "," . $db->quoteName('profile_value') . "," . $db->quoteName('ordering') . "," . $db->quoteName('access') 
 			. ") VALUES (" . $newID . "," . $userID . "," . '"orcid"'. "," . '"' . $orcid . '"' . "," . $newOrdering . "," . "1)";
-			
 			$db->setQuery($orcid_sql);
 			$result = $db->query();
 		}
@@ -645,7 +630,6 @@ class Orcid extends SiteController
 	public function redirectTask()
 	{
 		$this->excAuth();
-		
 		// It means when ORCID posts authorization code back
 		if (Request::getVar('code'))
 		{
@@ -663,7 +647,6 @@ class Orcid extends SiteController
 				Session::set('orcid', $this->_userOrcidID);
 			}
 		}
-		
 		$view = new \Hubzero\Component\View(array('name' => 'orcid', 'layout' => 'redirect'));
 		$view->set('userName', $this->_userName)->set('userORCID', $this->_userOrcidID);
 		$view->display();
