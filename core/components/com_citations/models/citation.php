@@ -60,21 +60,21 @@ class Citation extends Relational
 	 * The table namespace
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $namespace = '';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var string
-	 **/
+	 */
 	public $orderBy = 'name';
 
 	/**
 	 * Fields and their validation criteria
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $rules = array(
 		'type'  => 'notempty',
 		'title' => 'notempty'
@@ -83,7 +83,7 @@ class Citation extends Relational
 	 * Automatically fillable fields
 	 
 	 * @var array
-	 **/
+	 */
 	public $always = array(
 		'author'
 	);
@@ -91,6 +91,12 @@ class Citation extends Relational
 
 	private $badgesSeparated = false;
 
+	/**
+	 * Returns results based on filters applied.
+	 *
+	 * @param   array   $filters  the string containg the various applied filters.
+	 * @return	Citation object
+	 */
 	public static function getFilteredRecords($filters = array(), $admin = false)
 	{
 		$records = self::all();
@@ -238,6 +244,15 @@ class Citation extends Relational
 		return $records;
 	}
 
+	/**
+	 * Applies filters based on search tearm provided.
+	 *
+	 * @param mixed	$term string containing search term or
+	 *		an associative array containing multiple search terms for multiple columns.
+	 * @param int $depth value indicating if the produced query string should
+	 *		be nested in parenthesis with other querys of the same depth.
+	 * @return $this
+	 */
 	public function filterBySearch($term, $depth = 0, $searchableFields = array('title', 'isbn', 'doi', 'abstract', 'author', 'publisher'))
 	{
 		if (is_array($term))
@@ -258,6 +273,12 @@ class Citation extends Relational
 		return $this;
 	}
 
+	/**
+	 * Applies filters based on reference type included in the applied filters.
+	 *
+	 * @param array $filters contains all the values included for filtering the results returned
+	 * @return $this
+	 */
 	public function filterByReftype($filters)
 	{
 		$refTypes = array(
@@ -359,6 +380,12 @@ class Citation extends Relational
 		return $this;
 	}
 
+	/**
+	 * Sorts resulted citations sorted by year and then separated by affiliated/non-affilated.
+	 *
+	 * @param array $filters contains all the values included for filtering the results returned
+	 * @return Citation object
+	 */
 	public static function getYearlyStats($filters = array())
 	{
 		$publishState = empty($filters['published']) ? array(1) : $filters['published'];
@@ -420,21 +447,41 @@ class Citation extends Relational
 		return $groupCitations;
 	}
 
+	/**
+	 * Defines a belongs to one relationship with format
+	 *
+	 * @return $this
+	 */
 	public function assignedFormat()
 	{
 		return $this->belongsToOne('Format', 'format', 'style');
 	}
 
+	/**
+	 * Defines a many to many relationship with resources
+	 *
+	 * @return $this
+	 */
 	public function resources()
 	{
 		return $this->manyToMany('\Components\Resources\Models\Orm\Resource', '#__citations_assoc', 'cid', 'oid');
 	}
 
+	/**
+	 * Defines a one to many relationship with associations
+	 *
+	 * @return $this
+	 */
 	public function associations()
 	{
 		return $this->oneToMany('Association', 'cid');
 	}
 
+	/**
+	 * Defines a many to many relationship with publications
+	 *
+	 * @return $this
+	 */
 	public function publications()
 	{
 
@@ -462,6 +509,11 @@ class Citation extends Relational
 		return false;
 	}
 
+	/**
+	 * Defines a many to many relationship with sponsors
+	 *
+	 * @return $this
+	 */
 	public function sponsors()
 	{
 		return $this->manyToMany('Sponsor', '#__citations_sponsors_assoc', 'cid', 'sid');
@@ -471,7 +523,7 @@ class Citation extends Relational
 	 *
 	 * @return $this
 	 * @since  1.3.2
-	 **/
+	 */
 
 	public function relatedAuthors()
 	{
@@ -483,7 +535,7 @@ class Citation extends Relational
 	 *
 	 * @return $this
 	 * @since  1.3.2
-	 **/
+	 */
 	public function relatedType()
 	{
 		return $this->belongsToOne('Type', 'type', 'id');

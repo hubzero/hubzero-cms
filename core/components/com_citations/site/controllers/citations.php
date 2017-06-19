@@ -33,15 +33,13 @@
 namespace Components\Citations\Site\Controllers;
 
 use Components\Citations\Models\Citation;
-use Components\Citations\Tables\Association;
-use Components\Citations\Tables\Author;
 use Components\Citations\Tables\Tags;
 use Components\Citations\Helpers\Download;
 use Components\Citations\Helpers\Format;
 use Components\Citations\Models\Type;
-use Components\Citations\Models\Format as NewFormat;
-use Components\Citations\Models\Author as NewAuthor;
-use Components\Citations\Models\Association as NewAssociation;
+use Components\Citations\Models\Format as FormatModel;
+use Components\Citations\Models\Author;
+use Components\Citations\Models\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Filesystem;
@@ -255,7 +253,7 @@ class Citations extends SiteController
 		$this->view->citations = $citations;
 
 		// Get default format
-		$this->view->defaultFormat = NewFormat::getDefault();
+		$this->view->defaultFormat = FormatModel::getDefault();
 
 		// Add some data to our view for form filtering/sorting
 		$this->view->types = Type::all()->rows();
@@ -682,7 +680,7 @@ class Citations extends SiteController
 		}
 		if ($updateAuthorsId)
 		{
-			$authors = NewAuthor::all()->whereEquals('cid', $updateAuthorsId)->rows();
+			$authors = Author::all()->whereEquals('cid', $updateAuthorsId)->rows();
 			foreach ($authors as $author)
 			{
 				$author->removeAttribute('cid');
@@ -699,7 +697,7 @@ class Citations extends SiteController
 			$assoc = array_map('trim', $assoc);
 			$assocId = !empty($assoc['id']) ? $assoc['id'] : null;
 			unset($assoc['id']);
-			$newAssociation = NewAssociation::oneOrNew($assocId)->set($assoc);
+			$newAssociation = Association::oneOrNew($assocId)->set($assoc);
 			if (!$newAssociation->isNew() && (empty($assoc['tbl']) || empty($assoc['oid'])))
 			{
 				$newAssociation->destroy();
