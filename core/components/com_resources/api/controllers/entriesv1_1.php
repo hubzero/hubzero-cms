@@ -208,7 +208,9 @@ class Entriesv1_1 extends ApiController
 						}
 					}
 
-					$resource = new Resource($entry->id);
+					$db = App::get('db');
+					$resource = new Resource($db);
+					$resource->load($entry->id);
 					$groups = $resource->getGroups();
 					$tagCloud = new Cloud($entry->id, 'resources');
 					$tags = $tagCloud->tags()->toObject();
@@ -223,8 +225,12 @@ class Entriesv1_1 extends ApiController
 
 					if (!empty($groups))
 					{
+						foreach ($groups as &$group)
+						{
+							$group = \Hubzero\User\Group::getInstance($group)->get('gidNumber');
+						}
 						$obj->owner_type = 'group';
-						$obj->owner = $entry->group_owner;
+						$obj->owner = $groups;
 					}
 					else
 					{
