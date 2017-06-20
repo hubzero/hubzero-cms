@@ -197,7 +197,7 @@ class Structures_BibTex
 			'wordWrapWidth'     => false,
 			'wordWrapBreak'     => "\n",
 			'wordWrapCut'       => 0,
-			'removeCurlyBraces' => false,
+			'removeCurlyBraces' => true,
 			'extractAuthors'    => true,
 		);
 		foreach ($options as $option => $value) {
@@ -904,8 +904,8 @@ class Structures_BibTex
 	{
 		//First we save the delimiters
 		$beginningdels = array_keys($this->_delimiters);
-		$firstchar     = substr($entry, 0, 1);
-		$lastchar      = substr($entry, -1, 1);
+		$firstchar     = substr($value, 0, 1);
+		$lastchar      = substr($value, -1, 1);
 		$begin         = '';
 		$end           = '';
 		while (in_array($firstchar, $beginningdels)) { //The first character is an opening delimiter
@@ -920,7 +920,7 @@ class Structures_BibTex
 			$lastchar  = substr($value, -1, 1);
 		}
 		//Now we get rid of the curly braces
-		$pattern     = '/([^\\\\])\{(.*?[^\\\\])\}/';
+		$pattern     = '/([^\\\\]|^)?\{(.*?[^\\\\])\}/';
 		$replacement = '$1$2';
 		$value       = preg_replace($pattern, $replacement, $value);
 		//Reattach delimiters
