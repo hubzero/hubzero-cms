@@ -36,7 +36,7 @@ use Components\Resources\Models;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
 use Request;
-use Route;
+use Notify;
 use User;
 use Date;
 use Lang;
@@ -47,6 +47,19 @@ use App;
  */
 class ImportHooks extends AdminController
 {
+	/**
+	 * Executes a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * Display imports
 	 *
@@ -69,22 +82,18 @@ class ImportHooks extends AdminController
 	}
 
 	/**
-	 * Add an Import
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an Import
 	 *
 	 * @return  void
 	 */
 	public function editTask()
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		// get request vars
@@ -96,12 +105,6 @@ class ImportHooks extends AdminController
 
 		// get the import object
 		$hook = new Models\Import\Hook($id);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			Notify::error($error);
-		}
 
 		// Output the HTML
 		$this->view
@@ -120,6 +123,12 @@ class ImportHooks extends AdminController
 		// check token
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$data = Request::getVar('hook', array());
 		$file = Request::getVar('file', array(), 'FILES');
@@ -130,7 +139,7 @@ class ImportHooks extends AdminController
 		// bind input to model
 		if (!$hook->bind($data))
 		{
-			$this->setError($hook->getError());
+			Notify::error($hook->getError());
 			return $this->editTask();
 		}
 
@@ -148,7 +157,7 @@ class ImportHooks extends AdminController
 		// attempt to save
 		if (!$hook->store(true))
 		{
-			$this->setError($hook->getError());
+			Notify::error($hook->getError());
 			return $this->editTask();
 		}
 
@@ -168,12 +177,10 @@ class ImportHooks extends AdminController
 			$hook->store();
 		}
 
-		//inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			Lang::txt('COM_RESOURCES_IMPORTHOOK_CREATED'),
-			'passed'
-		);
+		// Inform user & redirect
+		Notify::success(Lang::txt('COM_RESOURCES_IMPORTHOOK_CREATED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -221,11 +228,17 @@ class ImportHooks extends AdminController
 		// check token
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
+		$success = 0;
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
@@ -236,23 +249,23 @@ class ImportHooks extends AdminController
 
 			// attempt to delete hook
 			$hook->set('state', 2);
+
 			if (!$hook->store(true))
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-					$hook->getError(),
-					'error'
-				);
-				return;
+				Notify::error($hook->getError());
+				continue;
 			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_RESOURCES_IMPORTHOOK_REMOVED'));
 		}
 
 		// inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			Lang::txt('COM_RESOURCES_IMPORTHOOK_REMOVED'),
-			'passed'
-		);
+		$this->cancelTask();
 	}
 
 	/**
