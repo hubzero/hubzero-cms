@@ -73,7 +73,7 @@ function submitbutton(pressbutton)
 								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
 							</td>
 							<td>
-								<a href="<?php echo Route::url('index.php?option=com_resources&controller=importhooks&task=edit&id=' . $hook->get('id')); ?>">
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $hook->get('id')); ?>">
 									<?php echo $this->escape($hook->get('name')); ?>
 								</a><br />
 								<span class="hint">
@@ -93,7 +93,7 @@ function submitbutton(pressbutton)
 							</td>
 							<td class="priority-2">
 								<?php echo $hook->get('file'); ?> &mdash;
-								<a target="_blank" href="<?php echo Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id=' . $hook->get('id')); ?>">
+								<a target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id=' . $hook->get('id')); ?>">
 									<?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FILE_VIEWRAW'); ?>
 								</a>
 							</td>
