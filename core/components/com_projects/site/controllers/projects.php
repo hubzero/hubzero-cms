@@ -316,6 +316,7 @@ class Projects extends Base
 		$sync         = false;
 
 		// Stop ajax action if user got logged out
+		/* [!] I don't think this is needed anymore. Leaving for awhile incase need to re-introduce.
 		if ($ajax && User::isGuest())
 		{
 			// Project on hold
@@ -324,7 +325,7 @@ class Projects extends Base
 			$this->view->title  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
 			$this->view->display();
 			return;
-		}
+		}*/
 
 		// Check that project exists
 		if (!$this->model->exists())
