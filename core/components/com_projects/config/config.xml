@@ -96,6 +96,7 @@
 		<field name="privacylink" type="text" menu="hide" default="/legal/privacy" label="URL to Privacy Terms" description="URL to Privacy Terms" />
 		<field name="HIPAAlink" type="text" menu="hide" default="/legal/privacy" label="URL to HIPAA information" description="URL to to HIPAA information" />
 		<field name="FERPAlink" type="text" menu="hide" default="/legal/privacy" label="URL to FERPA information" description="URL to to FERPA information" />
+		<field name="HRPPlink" type="text" menu="hide" default="/legal/privacy" label="URL to HRPP" description="URL to Human Research Protection Program" />
 	</fieldset>
 	<fieldset name="ADMINGROUPS">
 		<field name="creatorgroup" type="text" menu="hide" default="" label="Restrict project creation to group" description="Alias of a group that can create projects (optional, will restrict all others!)" />

@@ -65,6 +65,9 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 							echo '<textarea name="tags" id="tags" rows="6" cols="35">' . $this->pub->getTagsForEditing() . '</textarea>' . "\n";
 						}
 						?>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS_SUGGESTIONS');?></p>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS_BROAD_SPECIFIC');?></p>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS_STANDARD');?><a target="_blank" href="https://purr.purdue.edu/kb/metadata/subject-tags" style="text-decoration:underline;"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS_HERE');?></p>
 				</div>
 			</div>
 </div>
