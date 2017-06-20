@@ -1052,7 +1052,7 @@ class Citations extends SiteController
 		$image = Request::getVar('image', '');
 
 		// if we dont have an image were done
-		if ($image == '') 
+		if ($image == '')
 		{
 			return;
 		}

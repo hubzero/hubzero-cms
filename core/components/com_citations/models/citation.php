@@ -59,43 +59,50 @@ class Citation extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $namespace = '';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
+
 	public $orderBy = 'name';
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $rules = array(
 		'type'  => 'notempty',
 		'title' => 'notempty'
 	);
+
 	/**
 	 * Automatically fillable fields
-	 
-	 * @var array
+	 *
+	 * @var  array
 	 */
 	public $always = array(
 		'author'
 	);
 
-
+	/**
+	 * Separate badges?
+	 *
+	 * @var  boolean
+	 */
 	private $badgesSeparated = false;
 
 	/**
 	 * Returns results based on filters applied.
 	 *
-	 * @param   array   $filters  the string containg the various applied filters.
-	 * @return	Citation object
+	 * @param   array    $filters  the string containg the various applied filters.
+	 * @param   boolean  $admin
+	 * @return  object   Citation 
 	 */
 	public static function getFilteredRecords($filters = array(), $admin = false)
 	{
@@ -141,7 +148,7 @@ class Citation extends Relational
 				$records->whereEquals('scope_id', '', 1);
 				$records->whereEquals('scope', '', 1);
 				$records->resetDepth();
-			}	
+			}
 		}
 
 		if (!empty($filters['scope_id']))
@@ -247,11 +254,10 @@ class Citation extends Relational
 	/**
 	 * Applies filters based on search tearm provided.
 	 *
-	 * @param mixed	$term string containing search term or
-	 *		an associative array containing multiple search terms for multiple columns.
-	 * @param int $depth value indicating if the produced query string should
-	 *		be nested in parenthesis with other querys of the same depth.
-	 * @return $this
+	 * @param   mixed  $term   string containing search term or an associative array containing multiple search terms for multiple columns.
+	 * @param   int    $depth  value indicating if the produced query string should be nested in parenthesis with other querys of the same depth.
+	 * @param   array  $searchableFields
+	 * @return  $this
 	 */
 	public function filterBySearch($term, $depth = 0, $searchableFields = array('title', 'isbn', 'doi', 'abstract', 'author', 'publisher'))
 	{
@@ -276,8 +282,8 @@ class Citation extends Relational
 	/**
 	 * Applies filters based on reference type included in the applied filters.
 	 *
-	 * @param array $filters contains all the values included for filtering the results returned
-	 * @return $this
+	 * @param   array  $filters  contains all the values included for filtering the results returned
+	 * @return  $this
 	 */
 	public function filterByReftype($filters)
 	{
@@ -413,10 +419,10 @@ class Citation extends Relational
 		}
 
 		$earliestYear = self::blank()->select('year')
-									 ->where('year', '!=', '')
-									 ->where('year', 'IS NOT', null)
-								     ->where('year', '>', 0)
-									 ->order('year', 'asc')->limit(1)->row()->year;
+									->where('year', '!=', '')
+									->where('year', 'IS NOT', null)
+									->where('year', '>', 0)
+									->order('year', 'asc')->limit(1)->row()->year;
 		$groupCitations = array();
 		$affiliations = array('non-affiliate' => 0, 'affiliate' => 0);
 		$affiliationLabels = array_keys($affiliations);
@@ -518,13 +524,13 @@ class Citation extends Relational
 	{
 		return $this->manyToMany('Sponsor', '#__citations_sponsors_assoc', 'cid', 'sid');
 	}
+
 	/**
 	 * Defines a one to many relationship with authors
 	 *
 	 * @return $this
 	 * @since  1.3.2
 	 */
-
 	public function relatedAuthors()
 	{
 		return $this->oneToMany('Author', 'cid');
@@ -589,7 +595,6 @@ class Citation extends Relational
 			}
 		}
 	}
-
 
 	public function separateTagsAndBadges()
 	{
@@ -917,7 +922,7 @@ class Citation extends Relational
 						$url = array_filter(array_values(explode("\r\n", $url)));
 						$url = $url[0];
 					}
-					elseif (strstr($url, " "))
+					elseif (strstr($url, ' '))
 					{
 						$url = array_filter(array_values(explode(" ", $url)));
 						$url = $url[0];
@@ -983,10 +988,10 @@ class Citation extends Relational
 			' ,' => '',
 			' .' => '',
 			',.' => '.',
-			'","'=> '',
-			'doi:.'=>'',
-			'(DOI:).'=>'',
-			'(DOI: )'=>''
+			'","' => '',
+			'doi:.' => '',
+			'(DOI:).' => '',
+			'(DOI: )' => ''
 		);
 
 		foreach ($b as $k => $i)
@@ -1048,7 +1053,6 @@ class Citation extends Relational
 		// output the citation
 		return $cite;
 	}
-
 
 	/**
 	 * Check if a property of an object exist and is filled in
@@ -1161,8 +1165,6 @@ class Citation extends Relational
 				return $links;
 			}
 		}
-
-
 	}
 
 	/**
@@ -1332,6 +1334,7 @@ class Citation extends Relational
 
 		return $html;
 	}
+
 	public function saveAndPropagate()
 	{
 		if (!$this->save())
@@ -1410,5 +1413,4 @@ class Citation extends Relational
 
 		return implode(';', $convertedAuthors);
 	}
-
 }
