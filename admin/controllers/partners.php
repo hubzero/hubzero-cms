@@ -11,6 +11,7 @@ use Date;
 use App;
 use Components\Partners\Models\Partner;
 use Components\Partners\Models\Partner_type;
+use Hubzero\User\Group;
 
 /**
  * Partners controller for showing partners
@@ -108,7 +109,7 @@ class Partners extends AdminController
 		// table of partners we'll be retrieving data from
 		
 		$record = Partner::all();
-		
+
 		$this->view->partner_types = Partner_type::all()->ordered();	
 		if ($this->view->filters['state'] >= 0)
 		{
@@ -159,6 +160,18 @@ class Partners extends AdminController
 			$row = Partner::oneOrNew($id);
 		}
 
+		$grouprows = \Hubzero\User\Group::find(array(
+			'type'       => array('all'),
+			'limit'      => 'all',
+			'search'     => '',
+			'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
+			'sortby'     => 'title',
+			'authorized' => 'admin'
+		));
+		//passing grouprows to view
+		
+
+		//pass rows
 		$this->view->row = $row;
 		$this->view->partner_types = Partner_type::all()->ordered();
 
@@ -170,6 +183,7 @@ class Partners extends AdminController
 		// is auto-assigned the task name, the layout will be 'save' but
 		// saveTask has no layout!
 		$this->view
+			->set('grouprows', $grouprows)
 			->setLayout('edit')
 			->display();
 	}
@@ -216,7 +230,7 @@ class Partners extends AdminController
 		// Here we're grabbing the array of partner_types (radio buttons) and
 		// assigning the model to the partner_type
 		$partner_type = Request::getVar('partner_type', array(), 'post');
-
+		$row->partner_type = $partner_type;
 
 
 		// Notify the user that the entry was saved

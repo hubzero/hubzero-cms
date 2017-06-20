@@ -71,11 +71,28 @@ function submitbutton(pressbutton)
 				<label for="field-logo_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[logo_url]" id="field-logo_url" size="35" value="<?php echo $this->escape($this->row->get('logo_url')); ?>" />
 			</div>
-			<!--QUBES group url -->
-			<div class="input-wrap">
-				<label for="field-QUBES_group_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_GROUP'); ?> </label>
-				<input type="text" name="fields[QUBES_group_url]" id="field-QUBES_group_url" size="35" value="<?php echo $this->escape($this->row->get('QUBES_group_url')); ?>" />
+
+			<!--QUBES group url (cidnumber)-->
+			<div class="input-wrap	">
+			<label for="field-groups_cn" name=fields[groups_cn] id="field-groups_cn"><?php echo Lang::txt('COM_PARTNERS_FIELD_GROUP_CN'); ?> </label>
+			
+			<select name="fields[groups_cn]" id="fields-groups_cn style="max-width: 15em;">
+							<!--echo the select message if no group has been selected, else show the previously selected group -->
+							<?php if ($this->row->get('groups_cn') == ''){ ?>
+							<option value=""><?php echo Lang::txt('COM_PARTNERS_SELECT'); ?></option>
+								<?php } else{ ?>
+							<option value=""><?php echo $this->row->get('groups_cn'); ?></option>
+								<?php } ?>
+
+							<?php
+							foreach ($this->grouprows as $grouprow)
+							{
+								echo '<option value="' . $grouprow->cn . '">'  . $grouprow->cn . '</option>' . "\n";
+							}
+							?>
+						</select>
 			</div>
+
 			<!--Social media url-->
 			<div class="input-wrap">
 				<label for="field-social_media_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_SOCIAL_MEDIA'); ?> </label>
