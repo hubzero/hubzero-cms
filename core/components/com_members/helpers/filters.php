@@ -165,8 +165,22 @@ class Filters
 		if (!empty($q))
 		{
 			// Go through query filters
-			foreach ($q as $val)
+			foreach ($q as $key => $val)
 			{
+				if (!is_int($key))
+				{
+					if (!$val)
+					{
+						continue;
+					}
+
+					$val = array(
+						'field' => $key,
+						'operator' => 'e',
+						'value' => $val
+					);
+				}
+
 				if (!isset($val['field']) || !isset($val['operator']) || !isset($val['value']))
 				{
 					continue;
@@ -245,7 +259,7 @@ class Filters
 	 * @param   string  $o  Operator of interest
 	 * @return  void
 	 */
-	private static function translateOperator($o)
+	public static function translateOperator($o)
 	{
 		$o = preg_replace('/[^a-z]/', '', strtolower($o));
 
@@ -283,7 +297,7 @@ class Filters
 	 * @param   string  $o  Operator of interest
 	 * @return  string  Value of operator
 	 */
-	private static function mapOperator($o)
+	public static function mapOperator($o)
 	{
 		if ($o == '=')
 		{

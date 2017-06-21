@@ -295,8 +295,149 @@ class Profiles extends SiteController
 	 */
 	public function browseTask()
 	{
-		// Incoming
-		$filters = Filters::getFilters("{$this->_option}.{$this->_controller}");
+		// Get all the fields we can use on this page
+		$fields = Field::all()
+			->whereIn('action_browse', User::getAuthorisedViewLevels())
+			->where('type', '!=', 'tags')
+			->ordered()
+			->rows();
+
+		$q = (array)Request::getVar('q', array());
+
+		$filters = array(
+			'search'   => Request::getVar('search', ''),
+			'q'        => array(),
+			'tags'     => Request::getVar('tags', ''),
+			'sort'     => strtolower(Request::getWord('sort', 'name')),
+			'sort_Dir' => strtolower(Request::getWord('sort_Dir', 'asc'))
+		);
+
+		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
+		if ($filters['search'])
+		{
+			$q[] = array(
+				'field'    => 'search',
+				'human_field' => Lang::txt('COM_MEMBERS_SEARCH'),
+				'operator' => 'like',
+				'value'    => $filters['search']
+			);
+		}
+
+		// Make sure sort direction is valid
+		if (!in_array($filters['sort_Dir'], array('asc', 'desc')))
+		{
+			$filters['sort_Dir'] = 'asc';
+		}
+
+		// Make sure sort value is valid
+		$searches = array();
+		$fieldnames = array('surname', 'name');
+		foreach ($fields as $field)
+		{
+			if (in_array($field->get('type'), array('text', 'textarea', 'orcid', 'address')))
+			{
+				$searches[] = $field->get('name');
+			}
+			$fieldnames[] = $field->get('name');
+		}
+
+		if (!in_array($filters['sort'], $fieldnames))
+		{
+			$filters['sort'] = 'name';
+		}
+
+		$sortFound = false;
+		if ($filters['sort'] == 'name')
+		{
+			$sortFound = true;
+		}
+
+		// Process incoming filters
+		foreach ($q as $key => $val)
+		{
+			if (!is_int($key))
+			{
+				if (!$val)
+				{
+					continue;
+				}
+
+				$val = array(
+					'field'    => $key,
+					'operator' => 'e',
+					'value'    => $val
+				);
+			}
+
+			if (!isset($val['field']) || !isset($val['operator']) || !isset($val['value']))
+			{
+				continue;
+			}
+
+			$val['field']          = preg_replace('/[^0-9a-zA-z\-_\.]/i', '', $val['field']);
+			$val['o']              = Filters::translateOperator($val['operator']);
+			$val['human_operator'] = Filters::mapOperator($val['o']);
+			$val['human_value']    = $val['value'];
+
+			foreach ($fields as $field)
+			{
+				if ($field->get('name') != $val['field'])
+				{
+					continue;
+				}
+
+				$val['human_field'] = $field->get('label');
+
+				$options = $field->options;
+
+				// Text-based field
+				if ($options->count() <= 0)
+				{
+					continue;
+				}
+
+				// Multi-value field (radios, checkboxes)
+				if (is_array($val['value']))
+				{
+					foreach ($val['value'] as $value)
+					{
+						$multi = $val;
+						$multi['value'] = $value;
+						$multi['human_value'] = $value;
+						foreach ($field->options as $option)
+						{
+							if ($option->get('value') == $value)
+							{
+								$multi['human_value'] = $option->get('label');
+							}
+						}
+						$filters['q'][] = $multi;
+					}
+				}
+				// Single-value field (select list)
+				else
+				{
+					foreach ($field->options as $option)
+					{
+						if ($option->get('value') == $val['value'])
+						{
+							$val['human_value'] = $option->get('label');
+						}
+					}
+				}
+			}
+
+			// No associated profile field was found
+			if (!isset($val['human_field']) || is_array($val['value']))
+			{
+				continue;
+			}
+
+			$filters['q'][] = $val;
+		}
+
+		// Distil down the results to only unique filters
+		$filters['q'] = array_map('unserialize', array_unique(array_map('serialize', $filters['q'])));
 
 		// Build query
 		$entries = Member::all();
@@ -315,37 +456,7 @@ class Profiles extends SiteController
 			->where($a . '.activation', '>', 0)
 			->where($a . '.approved', '>', 0);
 
-		// Validate sorting vars
-		$sortFound = false;
-		switch ($filters['sortby'])
-		{
-			case 'surname':
-			case 'name':
-				$filters['sort'] = 'surname';
-				$sortFound = true;
-				break;
-
-			default:
-				$sorts = array('surname');
-				foreach (Filters::getFieldNames() as $column)
-				{
-					$sorts[] = $column['raw'];
-				}
-				$filters['sort'] = $filters['sortby'];
-				if (!in_array($filters['sortby'], $sorts))
-				{
-					$filters['sort'] = 'surname';
-				}
-				break;
-		}
-
-		// Make sure sort direction is valid
-		$filters['sort_Dir'] = strtolower(Request::getWord('sort_Dir', 'asc'));
-		if (!in_array($filters['sort_Dir'], array('asc', 'desc')))
-		{
-			$filters['sort_Dir'] = 'asc';
-		}
-
+		// Tags
 		if ($filters['tags'])
 		{
 			$to = '#__tags_object';
@@ -372,30 +483,56 @@ class Profiles extends SiteController
 		{
 			foreach ($filters['q'] as $q)
 			{
-				if ($q['field'] == 'name')
+				if ($q['field'] == 'search')
 				{
-					if ($q['value'] && !is_array($q['value']))
+					if ($q['o'] == 'LIKE')
 					{
-						if ($q['o'] == 'LIKE')
+						// Explode multiple words into array
+						$search = explode(' ', $q['value']);
+
+						foreach ($search as $v => $term)
 						{
-							// Explode multiple words into array
-							$search = explode(' ', $q['value']);
+							$term = '%' . trim($term) . '%';
 
-							// Only allow alphabetical characters for search
-							//$search = preg_replace("/[^a-zA-Z]/", '', $search);
-
-							foreach ($search as $term)
+							if ($v == 0)
 							{
-								$term = '%' . trim($term) . '%';
+								$entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term), 'and', 1);
+							}
+							else
+							{
+								$entries->orWhere($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term), 1);
+							}
 
-								$entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term));
+							foreach ($searches as $z => $searching)
+							{
+								$entries->joinRaw(
+									$b . ' AS s' . $z,
+									's' . $z . '.user_id=' . $a . '.id AND s' . $z . '.profile_key=' . $db->quote($searching),
+									'left'
+								);
+
+								$entries->orWhere('s' . $z . '.profile_value', ' ' . $q['o'] . ' ', strtolower((string)$term), 1);
 							}
 						}
-						else
-						{
-							$entries->where($a . '.name', ' ' . $q['o'] . ' ', (string)$q['value']);
-						}
+						$entries->resetDepth();
 					}
+					else
+					{
+						$entries->where($a . '.name', ' ' . $q['o'] . ' ', (string)$q['value'], 1);
+
+						foreach ($searches as $searching)
+						{
+							$entries->joinRaw(
+								$b . ' AS s' . $i,
+								's' . $i . '.user_id=' . $a . '.id AND s' . $i . '.profile_key=' . $db->quote($searching),
+								'left'
+							);
+
+							$entries->orWhere('s' . $i . '.profile_value', ' ' . $q['o'] . ' ', (string)$q['value'], 1);
+						}
+						$entries->resetDepth();
+					}
+
 					continue;
 				}
 
@@ -412,9 +549,25 @@ class Profiles extends SiteController
 						'inner'
 					);
 				}
+				else if (is_array($q['value']))
+				{
+					foreach ($q['value'] as $key => $val)
+					{
+						$q['value'][$key] = $db->quote($val);
+					}
+					$entries->joinRaw(
+						$b . ' AS t' . $i,
+						't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value IN (' . implode(', ', $q['value']) . ')',
+						'inner'
+					);
+				}
 				else
 				{
-					$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']), 'inner');
+					$entries->joinRaw(
+						$b . ' AS t' . $i,
+						't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']),
+						'inner'
+					);
 				}
 
 				if ($filters['sort'] == $q['field'])
@@ -474,6 +627,7 @@ class Profiles extends SiteController
 		// Instantiate the view
 		$this->view
 			->set('config', $this->config)
+			->set('fields', $fields)
 			->set('filters', $filters)
 			->set('title', $title)
 			->set('rows', $rows)
