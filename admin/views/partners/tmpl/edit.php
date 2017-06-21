@@ -74,6 +74,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-site_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[site_url]" id="field-site_url" size="35" value="<?php echo $this->escape($this->row->get('site_url')); ?>" />
+				<span class="hint"><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME_HINT'); ?></span>
 			</div>
 			<!--Logo link field -->
 			<div class="input-wrap">
@@ -102,10 +103,10 @@ function submitbutton(pressbutton)
 						</select>
 			</div>
 
-			<!--Social media url-->
+			<!--Twitter Handle-->
 			<div class="input-wrap">
-				<label for="field-social_media_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_SOCIAL_MEDIA'); ?> </label>
-				<input type="text"  name="fields[social_media_url]" id="field-social_media_url" size="35" value="<?php echo $this->escape($this->row->get('social_media_url')); ?>" />
+				<label for="field-twitter_handle"><?php echo Lang::txt('COM_PARTNERS_FIELD_TWITTER_HANDLE'); ?> </label>
+				<input type="text"  name="fields[twitter_handle]" id="field-twitter_handle" size="35" value="<?php echo $this->escape($this->row->get('twitter_handle')); ?>" />
 			</div>
 			<!--Qubes liason member number-->
 			<div class="input-wrap">
