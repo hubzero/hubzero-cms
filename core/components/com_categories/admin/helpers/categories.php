@@ -1,4 +1,5 @@
 <?php
+namespace Components\Categories\Admin\Helpers;
 /**
  * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -6,6 +7,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+use User;
+use Hubzero\Base\Object;
 
 /**
  * Categories helper.
@@ -69,33 +73,33 @@ class CategoriesHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	string	$extension	The extension.
-	 * @param	int		$categoryId	The category ID.
-	 * @return	Object
-	 * @since	1.6
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The category ID.
+	 * @return  object
 	 */
-	public static function getActions($extension, $categoryId = 0)
+	public static function getActions($extension='com_categories', $assetType='component', $assetId = 0)
 	{
-		$result    = new \Hubzero\Base\Object;
-		$parts     = explode('.', $extension);
-		$component = $parts[0];
-
-		if (empty($categoryId))
+		$assetName  = $extension;
+		$assetName .= '.' . $assetType;
+		if ($assetId)
 		{
-			$assetName = $component;
-			$level = 'component';
-		}
-		else
-		{
-			$assetName = $component.'.category.'.(int) $categoryId;
-			$level = 'category';
+			$assetName .= '.' . (int) $assetId;
 		}
 
-		$actions = JAccess::getActions($component, $level);
+		$result = new Object;
+
+		$actions = array(
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
+		);
 
 		foreach ($actions as $action)
 		{
-			$result->set($action->name, User::authorise($action->name, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

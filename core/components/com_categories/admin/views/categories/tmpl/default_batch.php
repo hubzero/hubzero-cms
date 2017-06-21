@@ -13,8 +13,8 @@ $options = array(
 	Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
 	Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
 );
-$published = $this->state->get('filter.published');
-$extension = $this->escape($this->state->get('filter.extension'));
+$published = $this->filters['published'];
+$extension = $this->filters['extension'];
 ?>
 <fieldset class="batch">
 	<legend><?php echo Lang::txt('COM_CATEGORIES_BATCH_OPTIONS');?></legend>

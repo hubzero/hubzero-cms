@@ -198,7 +198,6 @@ class Citation extends Relational
 			$searchQuery = $filters['search'];
 			$records->filterBySearch($searchQuery, 1);
 
-			// @FIXME Add migration to create this index
 			$records->orWhereRelatedHas('relatedAuthors', function($author) use ($searchQuery){
 				$authorFields = array('givenName', 'surname', 'author');
 				$query = 'MATCH(' . implode(',', $authorFields) . ') AGAINST (? IN BOOLEAN MODE)';
