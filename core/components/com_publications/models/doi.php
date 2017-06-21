@@ -58,6 +58,13 @@ class Doi extends Object
 	 * @var object
 	 */
 	private $_db = NULL;
+	
+	/**
+	 * JDatabase
+	 *
+	 * @var object
+	 */
+	const CONTENT_TYPE_SERIES = 5;
 
 	/**
 	 * Constructor
@@ -226,6 +233,7 @@ class Doi extends Object
 		// Map resource type
 		$category = $pub->category();
 		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';
+		
 		$this->set('resourceType', $dcType);
 		$this->set('resourceTypeTitle', htmlspecialchars($category->name));
 
@@ -632,12 +640,30 @@ class Doi extends Object
 			$xmlfile.='	</contributor>';
 			$xmlfile.='</contributors>';
 		}
+
+		// Get url which contains the publication id
+		$urlArr = explode('/', $this->_data["url"]);
+		// Get the content type of the publication by its id
+		$sql = "SELECT master_type FROM #__publications where id = $urlArr[4]";
+		$this->_db->setQuery($sql);
+		$conType = $this->_db->loadResult();
+		// Set resTypeGenVal to Collection if publication is series
+		$resTypeGenVal = "Dataset";
+		if ($conType == Doi::CONTENT_TYPE_SERIES)
+		{
+			$resTypeGenVal = "Collection";
+		}
+		else
+		{
+			$resTypeGenVal = $this->get('resourceType');
+		}
+
 		$xmlfile.='<dates>
 			<date dateType="Valid">' . $this->get('datePublished') . '</date>
 			<date dateType="Accepted">' . $this->get('dateAccepted') . '</date>
 		</dates>
 		<language>' . $this->get('language') . '</language>
-		<resourceType resourceTypeGeneral="' . $this->get('resourceType') . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
+		<resourceType resourceTypeGeneral="' . $resTypeGenVal . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
 		if ($this->get('relatedDoi'))
 		{
 			$xmlfile.='<relatedIdentifiers>
