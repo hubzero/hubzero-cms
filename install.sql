@@ -54,7 +54,7 @@ UNLOCK TABLES;
 
 #partner-type table
 # drop the table if it exists:
-DROP TABLE IF EXISTS `.jos_partner_type_partner_types`;
+DROP TABLE IF EXISTS `jos_partner_type_partner_types`;
 
 CREATE TABLE `jos_partner_type_partner_types` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
