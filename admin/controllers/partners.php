@@ -225,13 +225,13 @@ class Partners extends AdminController
 			return $this->editTask($row);
 		}
 
+
 		// Get the partner type has been assigned to.
 		//
 		// Here we're grabbing the array of partner_types (radio buttons) and
 		// assigning the model to the partner_type
 		$partner_type = Request::getVar('partner_type', array(), 'post');
-		$row->partner_type = $partner_type;
-
+		
 
 		// Notify the user that the entry was saved
 		Notify::success(Lang::txt('COM_PARTNER_ENTRY_SAVED'));

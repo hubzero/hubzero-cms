@@ -56,11 +56,20 @@ function submitbutton(pressbutton)
 				<label for="field-name"><?php echo Lang::txt('COM_PARTNERS_FIELD_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>	
 				<input type="text" name="fields[name]" id="field-name" size="35" value="<?php echo $this->escape($this->row->get('name')); ?>" />
 			</div>
+
+
+
 			<!--Date joined-->
 			<div class="input-wrap">
-				<label for="field-date_joined"><?php echo Lang::txt('COM_PARTNERS_FIELD_DATE_JOINED'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[date_joined]" id="field-date_joined" size="35" value="<?php echo $this->escape($this->row->get('date_joined')); ?>" />
-			</div>
+					<label for="field-date_joined"><?php echo Lang::txt('COM_PARTNERS_FIELD_DATE_JOINED'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<!-- just had to simply change the type to date here -->
+					<input class = "input-wrap" type="date" name="fields[date_joined]" id="field-date_joined" size="45" value="<?php echo $this->escape($this->row->get('date_joined')); ?>" />
+				</div>
+
+
+
+
+
 			<!--URL to partners website-->
 			<div class="input-wrap">
 				<label for="field-site_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
@@ -72,10 +81,10 @@ function submitbutton(pressbutton)
 				<input type="text" name="fields[logo_url]" id="field-logo_url" size="35" value="<?php echo $this->escape($this->row->get('logo_url')); ?>" />
 			</div>
 
-			<!--QUBES group url (cidnumber)-->
+			<!--QUBES group url (cd)-->
 			<div class="input-wrap	">
 			<label for="field-groups_cn" name=fields[groups_cn] id="field-groups_cn"><?php echo Lang::txt('COM_PARTNERS_FIELD_GROUP_CN'); ?> </label>
-			
+			<!--important to assign fields for name and id so that database tracks it -->
 			<select name="fields[groups_cn]" id="fields-groups_cn style="max-width: 15em;">
 							<!--echo the select message if no group has been selected, else show the previously selected group -->
 							<?php if ($this->row->get('groups_cn') == ''){ ?>
@@ -83,7 +92,7 @@ function submitbutton(pressbutton)
 								<?php } else{ ?>
 							<option value=""><?php echo $this->row->get('groups_cn'); ?></option>
 								<?php } ?>
-
+							<!-- -->
 							<?php
 							foreach ($this->grouprows as $grouprow)
 							{
@@ -132,7 +141,6 @@ function submitbutton(pressbutton)
 				<?php
 				$check = false;
 					if ($this->row->get('partner_type') == $partner_type->get('id')){
-						 
 							$check =true;
 						}
 				

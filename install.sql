@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `jos_partner_partners`;
 CREATE TABLE `jos_partner_partners` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '', 
-  `date_joined` datetime NOT NULL DEFAULT '0000-00-00',
+  `date_joined` date NOT NULL DEFAULT '0000-00-00',
   `partner_type` int(11) NOT NULL DEFAULT 0,
   `site_url` varchar(255) NOT NULL DEFAULT '',
   `social_media_url` varchar(255) NOT NULL DEFAULT ' ',
