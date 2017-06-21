@@ -18,12 +18,7 @@ if ($canDo->get('core.admin'))
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state'))
-{
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
-}
+
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();

@@ -45,8 +45,7 @@ class Partner_types extends AdminController
 		// whenever a task of 'add' is called.
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
+
 
 		// Call the parent execute() method. Important! Otherwise, the
 		// controller will never actually execute anything.
@@ -278,88 +277,4 @@ class Partner_types extends AdminController
 		);
 	}
 
-	/**
-	 * Sets the state of one or more entries
-	 *
-	 * @return  void
-	 */
-	public function stateTask()
-	{
-		// [SECURITY] Check for request forgeries
-		//
-		// Unlike deleteTask() above, we're allowing requests from both
-		// GET and POST. This allows us to have single click "toggle" buttons
-		// on the entries list as well as handle checkboxes+toolbar button presses
-		// which submit a form. This is a little less secure but state change
-		// is fairly innocuous.
-		Request::checkToken(['get', 'post']);
-
-		$state = $this->_task == 'publish' ? 1 : 0;
-
-		// Incoming
-		//
-		// We're expecting an array of incoming IDs from the
-		// entries listing. But, we'll force the data into an
-		// array just to be extra sure.
-		$ids = JRequest::getVar('id', array(0));
-		$ids = (!is_array($ids) ? array($ids) : $ids);
-
-		// Do we actually have any entries?
-		if (count($ids) < 1)
-		{
-			// No entries found, so go back to the entries list with
-			// a message scolding the user for not selecting anything. Tsk, tsk.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_PARTNERS_SELECT_ENTRY_TO', $this->_task),
-				'error'
-			);
-			return;
-		}
-
-		// Loop through all the IDs
-		$success = 0;
-		foreach ($ids as $id)
-		{
-			// Load the entry and set its state
-			$row = Partner_type::oneOrNew(intval($id))->set(array('state' => $state));
-
-			// Store the changes
-			if (!$row->save())
-			{
-				// If the save() process fails for any reason, we'll take the 
-				// error message passed from the model and assign it to the message
-				// handler to be displayed by the template after we redirect back
-				// to the main listing.
-				Notify::error($row->getError());
-				continue;
-			}
-
-			// Here, we're countign the number of successful state changes
-			// so we can display that number in a message when we're done.
-			$success++;
-		}
-
-		// Get the appropriate message for the task called. We're
-		// passing in the number of successful state changes so it
-		// can be displayed in the message.
-		switch ($this->_task)
-		{
-			case 'publish':
-				$message = Lang::txt('COM_PARTNERS_ITEMS_PUBLISHED', $success);
-			break;
-			case 'unpublish':
-				$message = Lang::txt('COM_PARTNERS_ITEMS_UNPUBLISHED', $success);
-			break;
-			case 'archive':
-				$message = Lang::txt('COM_PARTNERS_ITEMS_ARCHIVED', $success);
-			break;
-		}
-
-		// Set the redirect URL to the main entries listing.
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$message
-		);
-	}
 }
