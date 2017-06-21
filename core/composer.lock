@@ -941,12 +941,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "b311866b4a0f4eb733abd9060258a905b118e3cd"
+                "reference": "9547cfe29a7c2b1858221380e99f1ce3294b9e68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/b311866b4a0f4eb733abd9060258a905b118e3cd",
-                "reference": "b311866b4a0f4eb733abd9060258a905b118e3cd",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/9547cfe29a7c2b1858221380e99f1ce3294b9e68",
+                "reference": "9547cfe29a7c2b1858221380e99f1ce3294b9e68",
                 "shasum": ""
             },
             "require": {
@@ -979,7 +979,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2017-06-06 13:37:38"
+            "time": "2017-06-21 12:50:47"
         },
         {
             "name": "hubzero/orcid-php",
@@ -2542,12 +2542,12 @@
             "version": "2.8.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/geocoder-php/Geocoder.git",
+                "url": "https://github.com/geocoder-php/php-common.git",
                 "reference": "8a66b8a227328f28ba12f98937a33c6fa0bb90f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/8a66b8a227328f28ba12f98937a33c6fa0bb90f8",
+                "url": "https://api.github.com/repos/geocoder-php/php-common/zipball/8a66b8a227328f28ba12f98937a33c6fa0bb90f8",
                 "reference": "8a66b8a227328f28ba12f98937a33c6fa0bb90f8",
                 "shasum": ""
             },
