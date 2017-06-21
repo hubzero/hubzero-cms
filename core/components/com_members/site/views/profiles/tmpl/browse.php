@@ -39,65 +39,190 @@ $this->css()
 
 $base = 'index.php?option=' . $this->option . '&task=browse';
 
-$exclude = array();
-if (!empty($this->filters['q']))
+$searches = array();
+$filters = array();
+foreach ($this->fields as $field)
 {
-	foreach ($this->filters['q'] as $q)
+	if ($field->get('type') == 'hidden' || $field->get('type') == 'number')
 	{
-		$exclude[] = strtolower($q['human_field']);
+		continue;
+	}
+	if (in_array($field->get('type'), array('text', 'textarea', 'orcid', 'address')))
+	{
+		$searches[] = $field;
+	}
+	else
+	{
+		$filters[] = $field;
 	}
 }
-
-$fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<div class="section-inner">
-		<div class="subject">
-			<form action="<?php echo Route::url($base); ?>" method="get">
-				<div class="container data-entry">
-					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER'); ?>" />
-					<fieldset class="entry-search">
-						<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->filters['tags']), 'actags'); ?>
-					</fieldset>
-				</div><!-- / .container -->
-			</form>
+	<form action="<?php echo Route::url($base); ?>" method="get" class="section-inner">
+		<aside class="aside">
+			<?php /*<div class="container">
+				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_SITE_MEMBERS'); ?></h3>
+				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_EXPLANATION'); ?></p>
+				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_SORTING_EXPLANATION'); ?></p>
+			</div><!-- / .container -->
 
-			<form action="<?php echo Route::url($base); ?>" method="get">
-				<div id="add-filters">
-					<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_RESULTS'); ?>:
-						<select name="q[0][field]" id="filter-field" data-base="<?php echo rtrim(Request::root(), '/'); ?>">
-							<?php foreach ($fields as $c) : ?>
+			<div class="container">
+				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_MEMBER_STATS'); ?></h3>
+				<table>
+					<tbody>
+						<tr>
+							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_TOTAL_MEMBERS'); ?></th>
+							<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_PRIVATE_PROFILES'); ?></th>
+							<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_NEW_PROFILES'); ?></th>
+							<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!-- / .container -->
+
+			<div class="container">
+				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_LOOKING_FOR_GROUPS'); ?></h3>
+				<p>
+					<?php echo Lang::txt('COM_MEMBERS_BROWSE_GO_TO_GROUPS', Route::url('index.php?option=com_groups')); ?>
+				</p>
+			</div><!-- / .container -->*/ ?>
+
+			<div class="container">
+				<fieldset>
+					<legend><?php echo Lang::txt('Narrow results'); ?></legend>
+
+					<div class="input-wrap">
+						<label for="filter-value-name">
+							<?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?>
+							<input type="text" name="search" id="filter-value-name" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Name or keyword...'); ?>" />
+						</label>
+					</div>
+
+					<fieldset class="filters">
+						<legend><?php echo Lang::txt('Filter'); ?></legend>
+
+						<?php foreach ($filters as $field) : ?>
+							<div class="input-wrap">
 								<?php
-								if (in_array($c['raw'], $exclude))
+								$value = array();
+								foreach ($this->filters['q'] as $i => $q)
 								{
-									continue;
+									if ($q['field'] == $field->get('name'))
+									{
+										$value[] = $q['value'];
+									}
 								}
 								?>
-								<option value="<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape($c['human']); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<?php echo Components\Members\Helpers\Filters::buildSelectOperators(); ?>
-						<input type="text" name="q[0][value]" id="filter-value" value="" />
-						<?php
-							$qs = array();
-							foreach ($this->filters['q'] as $i => $q) :
-								echo '<input type="hidden" name="q[' . ($i + 1) . '][field]" value="' . $this->escape($q['field']) . '" />' . "\n";
-								echo '<input type="hidden" name="q[' . ($i + 1) . '][operator]" value="' . $this->escape($q['operator']) . '" />' . "\n";
-								echo '<input type="hidden" name="q[' . ($i + 1) . '][value]" value="' . $this->escape($q['value']) . '" />' . "\n";
+								<?php if ($field->get('type') == 'radio' || $field->get('type') == 'checkboxes') { ?>
+									<fieldset>
+										<legend><?php echo $this->escape($field->get('label')); ?></legend>
+										<?php foreach ($field->options as $option) { ?>
+											<label class="option" for="filter-value-<?php echo $this->escape($field->get('name') . '-' . $option->get('value')); ?>">
+												<?php
+												$checked = '';
+												if (in_array($option->get('value'), $value))
+												{
+													$checked = 'checked="checked"';
+												}
+												?>
+												<input class="option" type="checkbox" name="q[<?php echo $this->escape($field->get('name')); ?>][]" value="<?php echo $this->escape($option->get('value')); ?>" <?php echo $checked; ?> id="filter-value-<?php echo $this->escape($field->get('name') . '-' . $option->get('value')); ?>" />
+												<?php echo $this->escape($option->get('label')); ?>
+											</label>
+										<?php } ?>
+									</fieldset>
+								<?php } elseif ($field->get('type') == 'select') { ?>
+									<label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
+										<?php echo $this->escape($field->get('label')); ?>
+										<select name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>">
+											<option value="">- All -</option>
+											<?php foreach ($field->options as $option) { ?>
+												<option value="<?php echo $this->escape($option->get('value')); ?>"<?php if (in_array($option->get('value'), $value)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($option->get('label')); ?></option>
+											<?php } ?>
+										</select>
+									</label>
+								<?php } elseif ($field->get('type') == 'number') { ?>
+									<label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
+										<?php echo $this->escape($field->get('label')); ?>
+										<?php if ($field->get('max')) { ?>
+											<input type="range" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" min="<?php echo $field->get('min', 0); ?>" <?php if ($field->get('max')) { echo ' max="' . $field->get('max') . '"'; } ?> step="1" value="<?php echo $this->escape(implode('', $value)); ?>" />
+										<?php } else{ ?>
+											<input type="number" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" <?php if ($field->get('min')) { echo ' min="' . $field->get('min') . '"'; } ?> <?php if ($field->get('max')) { echo ' max="' . $field->get('max') . '"'; } ?> value="<?php echo $this->escape(implode('', $value)); ?>" />
+										<?php } ?>
+									</label>
+								<?php } else { ?>
+									<label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
+										<?php echo $this->escape($field->get('label')); ?>
+										<input type="text" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" value="<?php echo $this->escape(implode('', $value)); ?>" />
+									</label>
+								<?php } ?>
+							</div>
+						<?php endforeach; ?>
+					</fieldset><!-- / filters -->
 
-								$qs[$i] = '&q[' . $i . '][field]=' . $q['field'] . '&q[' . $i . '][operator]=' . $q['operator'] . '&q[' . $i . '][value]=' . $q['value'];
-							endforeach;
-							?>
-						<input class="btn btn-secondary" id="filter-submit" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_ADD'); ?>" />
-					</p>
-				</div><!-- / .filters -->
-			</form>
+					<fieldset class="sorting">
+						<legend><?php echo Lang::txt('Sort'); ?></legend>
 
-			<?php if (!empty($this->filters['q']) || (is_array($this->filters['search']) && !empty($this->filters['search'][0]))) : ?>
+						<div class="input-wrap">
+							<label for="filter-value-sort">
+								<?php echo Lang::txt('Sort by'); ?>
+								<select name="sort" id="filter-value-sort">
+									<option value="name"><?php echo $this->escape('Name'); ?></option>
+									<?php foreach ($this->fields as $field) : ?>
+										<option value="<?php echo $this->escape($field->get('name')); ?>"><?php echo $this->escape($field->get('label')); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</label>
+						</div>
+
+						<div class="input-wrap">
+							<label for="filter-value-sort-dir">
+								<?php echo Lang::txt('Direction'); ?>
+								<select name="sort_Dir" id="filter-value-sort-dir">
+									<option value="asc"><?php echo $this->escape('Ascending (A-Z)'); ?></option>
+									<option value="desc"><?php echo $this->escape('Descending (Z-A)'); ?></option>
+								</select>
+							</label>
+						</div>
+					</fieldset><!-- / sort -->
+
+					<p><input class="btn" type="submit" value="<?php echo Lang::txt('Apply'); ?>" /></p>
+				</fieldset>
+			</div>
+		</aside><!-- / .aside -->
+
+		<div class="subject">
+			<?php if (!empty($this->filters['q'])) : ?>
+				<?php
+				$qs = array();
+				foreach ($this->filters['q'] as $i => $q) :
+					if (is_array($q['value']))
+					{
+						$qs[$i] = '&';
+						foreach ($q['value'] as $key => $val)
+						{
+							$qs[$i] .= 'q[' . $q['field'] . '][]=' . $val;
+						}
+					}
+					else if ($q['field'] == 'search')
+					{
+						$qs[$i] = '&' . $q['field'] . '=' . $q['value'];
+					}
+					else
+					{
+						$qs[$i] = '&q[' . $q['field'] . ']=' . $q['value'];
+					}
+				endforeach;
+				?>
 				<div id="applied-filters">
 					<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_APPLIED'); ?>:</p>
 					<ul class="filters-list">
@@ -105,34 +230,41 @@ $fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 							<?php foreach ($this->filters['q'] as $i => $q) : ?>
 								<?php
 								$route = $base;
-								foreach ($qs as $k => $s)
+								if (is_array($q['value']))
 								{
-									if ($k == $i)
+									foreach ($q['value'] as $key => $val)
 									{
-										continue;
+										?>
+										<li>
+											<i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($val); ?>
+											<a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('Remove filter'); ?>"><?php echo Lang::txt('Remove filter'); ?></a>
+										</li>
+										<?php
 									}
-									$route .= $s;
 								}
-								?>
-								<li>
-									<a href="<?php echo Route::url($route); ?>"
-										class="filters-x">x
-									</a>
-									<i><?php echo $q['human_field'] . ' ' . $q['human_operator']; ?></i>: <?php echo $this->escape($q['human_value']); ?>
-								</li>
+								else
+								{
+									foreach ($qs as $k => $s)
+									{
+										if ($k == $i)
+										{
+											continue;
+										}
+										$route .= $s;
+									}
+									?>
+									<li>
+										<i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($q['human_value']); ?>
+										<a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('Remove filter'); ?>"><?php echo Lang::txt('Remove filter'); ?></a>
+									</li>
+								<?php } ?>
 							<?php endforeach; ?>
-						<?php endif; ?>
-						<?php if (is_array($this->filters['search']) && !empty($this->filters['search'][0])) : ?>
-							<li>
-								<a href="<?php echo Route::url($base . '&search='); ?>" class="filters-x">x</a>
-								<i><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></i>: <?php echo $this->escape(implode(' ', $this->filters['search'])); ?>
-							</li>
 						<?php endif; ?>
 					</ul>
 				</div>
 			<?php endif; ?>
 
-			<form class="container members-container" action="<?php echo Route::url($base); ?>" method="get">
+			<div class="container members-container">
 				<div class="results tiled members">
 					<?php
 					if ($this->rows->count() > 0)
@@ -271,53 +403,61 @@ $fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 							<div class="result<?php echo ($cls) ? ' ' . $cls : ''; ?>">
 								<div class="result-body">
 									<div class="result-img">
-										<img src="<?php echo $row->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_BROWSE_AVATAR', $this->escape($name)); ?>" />
+										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>">
+											<img src="<?php echo $row->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_BROWSE_AVATAR', $this->escape($name)); ?>" />
+										</a>
 									</div>
 									<div class="result-title">
 										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>">
 											<?php echo $name; ?>
 										</a>
-										<?php foreach ($fields as $c) { ?>
+										<?php foreach ($this->fields as $c) { ?>
 											<?php
-											if (!in_array($c['raw'], array('org', 'organization'))) {
+											if (!in_array($c->get('name'), array('org', 'organization')))
+											{
 												continue;
 											}
 
-											if ($val = $row->get($c['raw'])) { ?>
+											if ($val = $row->get($c->get('name'))) { ?>
 												<span class="result-details">
-													<br />
-													<span class="<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($val), 60)); ?></span>
+													<span class="<?php echo $this->escape($c->get('name')); ?>">
+														<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($val), 60)); ?>
+													</span>
 												</span>
 											<?php } ?>
 										<?php } ?>
 									</div>
 									<div class="result-snippet">
-										<?php foreach ($fields as $c) { ?>
+										<?php foreach ($this->fields as $c) { ?>
 											<?php
-											if (in_array($c['raw'], array('name', 'org', 'organization'))) {
+											if (in_array($c->get('name'), array('name', 'org', 'organization')))
+											{
 												continue;
 											}
 
-											if ($val = $row->get($c['raw'])) {
+											if ($val = $row->get($c->get('name'))) {
 												$val = (is_array($val) ? implode(', ', $val) : $val);
 											?>
-												<div class="result-snippet-<?php echo $this->escape($c['raw']); ?>"><?php echo $this->escape(Hubzero\Utility\String::truncate(strip_tags(stripslashes($val)), 150)); ?></div>
+												<div class="result-snippet-<?php echo $this->escape($c->get('name')); ?>">
+													<?php echo $this->escape(Hubzero\Utility\String::truncate(strip_tags(stripslashes($val)), 150)); ?>
+												</div>
 											<?php } ?>
 										<?php } ?>
 									</div>
-									<?php if ($messageuser) { ?>
-										<div class="result-extras message-member">
-											<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
+									<div class="result-options">
+										<?php if ($messageuser) { ?>
+											<a class="icon-email btn message-member" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
 												<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE'); ?>
 											</a>
-										</div>
-									<?php } ?>
+										<?php } ?>
+										<a class="icon-user btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $row->get('id') . '&active=profile'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->escape($row->get('name'))); ?>">
+											<?php echo Lang::txt('COM_MEMBERS_PROFILE'); ?>
+										</a>
+									</div>
 									<?php if (!User::isGuest() && User::get('id') == $row->get('id')) { ?>
-										<div class="result-extras">
-											<span class="you">
-												<?php echo Lang::txt('COM_MEMBERS_BROWSE_YOUR_PROFILE'); ?>
-											</span>
-										</div>
+										<span class="you">
+											<?php echo Lang::txt('COM_MEMBERS_BROWSE_YOUR_PROFILE'); ?>
+										</span>
 									<?php } ?>
 								</div>
 							</div>
@@ -339,58 +479,25 @@ $fields = Components\Members\Helpers\Filters::getFieldNames(); //$exclude);
 				{
 					$pageNav->setAdditionalUrlParam('tags', $this->filters['tags']);
 				}
-				/*if ($this->filters['sortby'])
+				if ($this->filters['sort'])
 				{
-					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-				}*/
+					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+				}
+				if ($this->filters['sort_Dir'])
+				{
+					$pageNav->setAdditionalUrlParam('sort_Dir', $this->filters['sort_Dir']);
+				}
 				if (!empty($this->filters['q']))
 				{
 					foreach ($this->filters['q'] as $i => $q)
 					{
-						$pageNav->setAdditionalUrlParam('q[' . $i . '][field]', $q['human_field']);
-						$pageNav->setAdditionalUrlParam('q[' . $i . '][operator]', $q['operator']);
-						$pageNav->setAdditionalUrlParam('q[' . $i . '][value]', strtolower($q['human_value']));
+						$pageNav->setAdditionalUrlParam('q[' . $q['field'] . ']', $q['value']);
 					}
 				}
 				echo $pageNav;
 				?>
 				<div class="clearfix"></div>
-			</form><!-- / .container -->
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
-
-		<aside class="aside">
-			<div class="container">
-				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_SITE_MEMBERS'); ?></h3>
-				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_EXPLANATION'); ?></p>
-				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_SORTING_EXPLANATION'); ?></p>
-			</div><!-- / .container -->
-
-			<div class="container">
-				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_MEMBER_STATS'); ?></h3>
-				<table>
-					<tbody>
-						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_TOTAL_MEMBERS'); ?></th>
-							<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
-						</tr>
-						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_PRIVATE_PROFILES'); ?></th>
-							<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
-						</tr>
-						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_NEW_PROFILES'); ?></th>
-							<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
-						</tr>
-					</tbody>
-				</table>
-			</div><!-- / .container -->
-
-			<div class="container">
-				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_LOOKING_FOR_GROUPS'); ?></h3>
-				<p>
-					<?php echo Lang::txt('COM_MEMBERS_BROWSE_GO_TO_GROUPS', Route::url('index.php?option=com_groups')); ?>
-				</p>
-			</div><!-- / .container -->
-		</aside><!-- / .aside -->
-	</div>
+	</form>
 </section><!-- / .main section -->
