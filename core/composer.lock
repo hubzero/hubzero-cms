@@ -981,12 +981,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "29e3c146bb27251ba1376d0ef54fd4b55c5bdb80"
+                "reference": "f2ead6b92a1697e05e305d879301028a81ec58f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/29e3c146bb27251ba1376d0ef54fd4b55c5bdb80",
-                "reference": "29e3c146bb27251ba1376d0ef54fd4b55c5bdb80",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/f2ead6b92a1697e05e305d879301028a81ec58f9",
+                "reference": "f2ead6b92a1697e05e305d879301028a81ec58f9",
                 "shasum": ""
             },
             "require": {
