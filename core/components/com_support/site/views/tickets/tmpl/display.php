@@ -293,7 +293,7 @@ $this->css()
 										<?php } ?>
 									</p>
 									<p>
-										<a class="ticket-content" title="<?php echo $this->escape($row->content('parsed')); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+										<a class="ticket-content" title="<?php echo \Hubzero\Utility\Sanitize::stripTags($row->content('parsed')); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 											<?php echo ($row->content('clean') ? $row->content('clean', 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
 										</a>
 									</p>
