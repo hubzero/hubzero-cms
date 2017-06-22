@@ -35,9 +35,9 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Model class for publication version author
+ * Model class for publication block
  */
-class Author extends Relational
+class Block extends Relational
 {
 	/**
 	 * The table namespace
@@ -52,7 +52,16 @@ class Author extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'publication_version_id' => 'positive|nonzero'
+		'label' => 'notempty'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'block'
 	);
 
 	/**
@@ -61,30 +70,90 @@ class Author extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
-		'created',
+		'ordering'
 	);
 
 	/**
-	 * Establish relationship to parent version
+	 * Configuration registry
 	 *
-	 * @return  object
+	 * @var  object
 	 */
-	public function version()
+	protected $paramsRegistry = null;
+
+	/**
+	 * Decoded manifest
+	 *
+	 * @var  object
+	 */
+	protected $decodedManifest = null;
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticBlock($data)
 	{
-		return $this->belongsToOne('Version');
+		$alias = (isset($data['block']) && $data['block'] ? $data['block'] : $data['label']);
+		$alias = strip_tags($alias);
+		$alias = trim($alias);
+		if (strlen($alias) > 100)
+		{
+			$alias = substr($alias . ' ', 0, 100);
+			$alias = substr($alias, 0, strrpos($alias, ' '));
+		}
+		$alias = str_replace(' ', '-', $alias);
+
+		return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($alias));
 	}
 
 	/**
-	 * Get last order
+	 * Generates automatic ordering field value
 	 *
-	 * @return  integer
+	 * @param   array   $data  the data being saved
+	 * @return  string
 	 */
-	public function getLastOrder()
+	public function automaticOrdering($data)
 	{
-		return self::all()
-			->whereEquals('publication_version_id', $this->get('publication_version_id'))
-			->order('ordering', 'desc')
-			->row()
-			->get('ordering', 0);
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
+
+	/**
+	 * Get params as a Registry object
+	 *
+	 * @return  object
+	 */
+	public function transformParams()
+	{
+		if (!($this->paramsRegistry instanceof Registry))
+		{
+			$this->paramsRegistry = new Registry($this->get('params'));
+		}
+		return $this->paramsRegistry;
+	}
+
+	/**
+	 * Get manifest as a json_decoded object
+	 *
+	 * @return  object
+	 */
+	public function transformManifest()
+	{
+		if (is_null($this->decodedManifest))
+		{
+			$this->decodedManifest = json_decode($this->get('manifest'));
+		}
+		return $this->decodedManifest;
 	}
 }

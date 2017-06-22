@@ -35,9 +35,9 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Model class for publication version author
+ * Model class for publication rating
  */
-class Author extends Relational
+class Rating extends Relational
 {
 	/**
 	 * The table namespace
@@ -52,7 +52,8 @@ class Author extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'publication_version_id' => 'positive|nonzero'
+		'rating' => 'positive|nonzero',
+		'publication_id' => 'positive|nonzero'
 	);
 
 	/**
@@ -62,7 +63,18 @@ class Author extends Relational
 	 */
 	public $initiate = array(
 		'created',
+		'created_by',
 	);
+
+	/**
+	 * Establish relationship to parent publication
+	 *
+	 * @return  object
+	 */
+	public function publiation()
+	{
+		return $this->belongsToOne('Publication');
+	}
 
 	/**
 	 * Establish relationship to parent version
@@ -71,20 +83,29 @@ class Author extends Relational
 	 */
 	public function version()
 	{
-		return $this->belongsToOne('Version');
+		return $this->belongsToOne('Version', 'publication_version_id');
 	}
 
 	/**
-	 * Get last order
+	 * Get a record by publication ID and user ID, optional version ID
 	 *
-	 * @return  integer
+	 * @param   integer  $publication_id
+	 * @param   integer  $created_by
+	 * @param   integer  $publication_version_id
+	 * @return  object
 	 */
-	public function getLastOrder()
+	public function oneByPublicationAndUser($publication_id, $created_by, $publication_version_id = null)
 	{
-		return self::all()
-			->whereEquals('publication_version_id', $this->get('publication_version_id'))
-			->order('ordering', 'desc')
-			->row()
-			->get('ordering', 0);
+		$entry = self::all()
+			->whereEquals('publication_id', $publication_id)
+			->whereEquals('created_by', $created_by);
+
+		if ($publication_version_id)
+		{
+			$entry->whereEquals('publication_version_id', $publication_version_id);
+		}
+
+		return $entry
+			->row();
 	}
 }

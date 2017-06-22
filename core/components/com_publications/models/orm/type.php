@@ -34,17 +34,19 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 
+require_once __DIR__ . DS . 'block.php';
+
 /**
- * Model class for publication version author
+ * Model class for publication type
  */
-class Author extends Relational
+class Type extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	public $namespace = 'publication';
+	public $namespace = 'publication_master';
 
 	/**
 	 * Fields and their validation criteria
@@ -52,7 +54,8 @@ class Author extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'publication_version_id' => 'positive|nonzero'
+		'type'  => 'notempty',
+		'alias' => 'notempty'
 	);
 
 	/**
@@ -65,16 +68,6 @@ class Author extends Relational
 	);
 
 	/**
-	 * Establish relationship to parent version
-	 *
-	 * @return  object
-	 */
-	public function version()
-	{
-		return $this->belongsToOne('Version');
-	}
-
-	/**
 	 * Get last order
 	 *
 	 * @return  integer
@@ -82,9 +75,35 @@ class Author extends Relational
 	public function getLastOrder()
 	{
 		return self::all()
-			->whereEquals('publication_version_id', $this->get('publication_version_id'))
 			->order('ordering', 'desc')
 			->row()
 			->get('ordering', 0);
+	}
+
+	/**
+	 * Check usage
+	 *
+	 * @return  integer
+	 */
+	public function checkUsage()
+	{
+		require_once __DIR__ . DS . 'publication.php';
+
+		return Publication::all()
+			->whereEquals('master_type', $this->get('id'))
+			->total();
+	}
+
+	/**
+	 * Find one record by ordering
+	 *
+	 * @param   integer  $ordering
+	 * @return  object
+	 */
+	public static function oneByOrdering($ordering)
+	{
+		return self::all()
+			->whereEquals('ordering', (int)$ordering)
+			->row();
 	}
 }

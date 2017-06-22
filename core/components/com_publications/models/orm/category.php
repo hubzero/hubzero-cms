@@ -33,11 +33,12 @@
 namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Config\Registry;
 
 /**
- * Model class for publication version author
+ * Model class for publication category
  */
-class Author extends Relational
+class Category extends Relational
 {
 	/**
 	 * The table namespace
@@ -52,39 +53,66 @@ class Author extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'publication_version_id' => 'positive|nonzero'
+		'name'      => 'notempty',
+		'alias'     => 'notempty',
+		'url_alias' => 'notempty'
 	);
 
 	/**
-	 * Automatic fields to populate every time a row is created
+	 * Configuration registry
 	 *
-	 * @var  array
+	 * @var  object
 	 */
-	public $initiate = array(
-		'created',
-	);
+	protected $paramsRegistry = null;
 
 	/**
-	 * Establish relationship to parent version
+	 * Is this entry contributable
 	 *
-	 * @return  object
+	 * @return  boolean
 	 */
-	public function version()
+	public function isContributable()
 	{
-		return $this->belongsToOne('Version');
+		return ($this->get('contributable') == 1);
 	}
 
 	/**
-	 * Get last order
+	 * Is this entry used?
 	 *
-	 * @return  integer
+	 * @return  boolean
 	 */
-	public function getLastOrder()
+	public function isUsed()
+	{
+		require_once __DIR__ . DS . 'publication.php';
+
+		$total = Publication::all()
+			->whereEquals('category', $this->get('id'))
+			->total();
+
+		return ($total > 0);
+	}
+
+	/**
+	 * Get params as a Registry object
+	 *
+	 * @return  object
+	 */
+	public function transformParams()
+	{
+		if (!($this->paramsRegistry instanceof Registry))
+		{
+			$this->paramsRegistry = new Registry($this->get('params'));
+		}
+		return $this->paramsRegistry;
+	}
+
+	/**
+	 * Get contributable categories
+	 *
+	 * @return  object
+	 */
+	public static function contributable()
 	{
 		return self::all()
-			->whereEquals('publication_version_id', $this->get('publication_version_id'))
-			->order('ordering', 'desc')
-			->row()
-			->get('ordering', 0);
+			->whereEquals('contributable', 1);
 	}
 }
