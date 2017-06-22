@@ -533,9 +533,11 @@
 		line-height: 1;
 		font-size: 0.9em;
 		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
+		top: 1em;
+		left: 1em;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
 	}
 
 @media (min-width: 40em) {
