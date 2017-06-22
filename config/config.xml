@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- general configuration for labels and permissions-->
 <config>
-	<fieldset name="basic">
-		<field name="show_stuff" type="list" default="1" label="COM_PARTNERS_CONFIG_SHOWSTUFF_LABEL" description="COM_PARTNERS_CONFIG_SHOWSTUFF_DESC">
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-	</fieldset>
+
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_blog" section="component" />
 	</fieldset>
