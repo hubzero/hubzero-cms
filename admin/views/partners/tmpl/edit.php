@@ -54,64 +54,71 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 			<!--to access values from database, need to use $this->escape($this->row->get('variable name in database')) -->
 			
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_NAME'); ?>">
 				<label for="field-name"><?php echo Lang::txt('COM_PARTNERS_FIELD_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>	
 				<input type="text" name="fields[name]" id="field-name" size="35" value="<?php echo $this->escape($this->row->get('name')); ?>" />
+				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_NAME'); ?></span>
 			</div>
 
 
 
 			<!--Date joined-->
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_DATE_JOINED'); ?>">
 					<label for="field-date_joined"><?php echo Lang::txt('COM_PARTNERS_FIELD_DATE_JOINED'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<!-- just had to simply change the type to date here to get our calendar to show up-->
 					<input class = "input-wrap" type="date" name="fields[date_joined]" id="field-date_joined" size="45" value="<?php echo $this->escape($this->row->get('date_joined')); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_DATE_JOINED'); ?></span>
 				</div>
 
 			<!--URL to partners website-->
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_LINK'); ?>">
 				<label for="field-site_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[site_url]" id="field-site_url" size="35" value="<?php echo $this->escape($this->row->get('site_url')); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?></span>
 			</div>
 			<!--Logo link field -->
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_LOGO_URL'); ?>">
 				<label for="field-logo_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[logo_url]" id="field-logo_url" size="35" value="<?php echo $this->escape($this->row->get('logo_url')); ?>" />
+				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_LOGO_URL'); ?></span>
 			</div>
 
 
 
 			<!--Twitter Handle-->
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_TWITTER_HANDLE'); ?>">
 				<label for="field-twitter_handle"><?php echo Lang::txt('COM_PARTNERS_FIELD_TWITTER_HANDLE'); ?> </label>
 				<input type="text"  name="fields[twitter_handle]" id="field-twitter_handle" size="35" value="<?php echo $this->escape($this->row->get('twitter_handle')); ?>" />
+				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_TWITTER_HANDLE'); ?></span>
 			</div>
 			<!--Qubes liason member number-->
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_QUBES_LIASON'); ?>">
 				<label for="field-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?> </label>
 				<input type="text" name="fields[QUBES_liason]" id="field-QUBES_liason" size="35" value="<?php echo $this->escape($this->row->get('QUBES_liason')); ?>" />
 			</div>
 			<!-- partner liason member number -->
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_PARTNER_LIASON'); ?>">
 				<label for="field-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?></label>
 				<input type="text" name="fields[partner_liason]" id="field-partner_liason" size="35" value="<?php echo $this->escape($this->row->get('partner_liason')); ?>" />
+				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_PARTNER_LIASON'); ?></span>
 			</div>		
 			<!--activites text box -->	
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_ACTIVITIES'); ?>">
 				<label for="field-about"><?php echo Lang::txt('COM_PARTNERS_FIELD_ACTIVITIES'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<?php echo $this->editor('fields[activities]', $this->escape($this->row->get('activities')), 50, 15, 'field-activities', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_ACTIVITIES'); ?></span>
 			</div>
 			<!-- about text box-->
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_FIELD_ABOUT'); ?>">
 				<label for="field-about"><?php echo Lang::txt('COM_PARTNERS_FIELD_ABOUT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<?php echo $this->editor('fields[about]', $this->escape($this->row->about('raw')), 50, 15, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_ABOUT'); ?></span>
 			</div>
 		</fieldset>
 
 
 
-		<fieldset class="adminform">
+		<fieldset class="adminform" >
 			<!-- partner types form for selecting partner type, radio button = can only select one partner type -->
 			<legend><span><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES'); ?></span></legend>
 
