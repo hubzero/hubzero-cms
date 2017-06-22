@@ -1038,7 +1038,7 @@ class Structures_BibTex
 			//Intro
 			$bibtex .= '@'.strtolower($entry['type']).' { '.$entry['cite'].",\n";
 			//Other fields except author
-			foreach ($entry as $key=>$val) {
+			foreach ($entry as $key => $val) {
 				if ($this->_options['wordWrapWidth']>0) {
 					$val = $this->_wordWrap($val);
 				}
