@@ -405,7 +405,15 @@ class PdfForm
 				$im->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
 				$im->cropImage(max($widths), $crop[$this->pages]['height'], $crop[$this->pages]['x'], $crop[$this->pages]['y']);
 				$im->borderImage('white', 15, 15);
-				$im->paintTransparentImage($im->getImagePixelColor(0,0), 0.0, 0);
+				// paintTransparentImage() was deprecated at some point in favor of transparentPaintImage()
+				if (method_exists($im, 'transparentPaintImage'))
+				{
+					$im->transparentPaintImage($im->getImagePixelColor(0,0), 0.0, 0);
+				}
+				else
+				{
+					$im->paintTransparentImage($im->getImagePixelColor(0,0), 0.0, 0);
+				}
 				$im->writeImage($path . DS . ($this->pages + 1) . '.png');
 			}
 		}
