@@ -24,7 +24,9 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('partner');
 ?>
+
 <script type="text/javascript">
+
 function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
@@ -62,19 +64,15 @@ function submitbutton(pressbutton)
 			<!--Date joined-->
 			<div class="input-wrap">
 					<label for="field-date_joined"><?php echo Lang::txt('COM_PARTNERS_FIELD_DATE_JOINED'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<!-- just had to simply change the type to date here -->
+					<!-- just had to simply change the type to date here to get our calendar to show up-->
 					<input class = "input-wrap" type="date" name="fields[date_joined]" id="field-date_joined" size="45" value="<?php echo $this->escape($this->row->get('date_joined')); ?>" />
 				</div>
-
-
-
-
 
 			<!--URL to partners website-->
 			<div class="input-wrap">
 				<label for="field-site_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[site_url]" id="field-site_url" size="35" value="<?php echo $this->escape($this->row->get('site_url')); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?></span>
 			</div>
 			<!--Logo link field -->
 			<div class="input-wrap">
@@ -82,26 +80,7 @@ function submitbutton(pressbutton)
 				<input type="text" name="fields[logo_url]" id="field-logo_url" size="35" value="<?php echo $this->escape($this->row->get('logo_url')); ?>" />
 			</div>
 
-			<!--QUBES group url (cd)-->
-			<div class="input-wrap	">
-			<label for="field-groups_cn" name=fields[groups_cn] id="field-groups_cn"><?php echo Lang::txt('COM_PARTNERS_FIELD_GROUP_CN'); ?> </label>
-			<!--important to assign fields for name and id so that database tracks it -->
-			<select name="fields[groups_cn]" id="fields-groups_cn style="max-width: 15em;">
-							<!--echo the select message if no group has been selected, else show the previously selected group -->
-							<?php if ($this->row->get('groups_cn') == ''){ ?>
-							<option value=""><?php echo Lang::txt('COM_PARTNERS_SELECT'); ?></option>
-								<?php } else{ ?>
-							<option value=""><?php echo $this->row->get('groups_cn'); ?></option>
-								<?php } ?>
-							<!-- -->
-							<?php
-							foreach ($this->grouprows as $grouprow)
-							{
-								echo '<option value="' . $grouprow->cn . '">'  . $grouprow->cn . '</option>' . "\n";
-							}
-							?>
-						</select>
-			</div>
+
 
 			<!--Twitter Handle-->
 			<div class="input-wrap">
@@ -148,11 +127,38 @@ function submitbutton(pressbutton)
 				?>
 				<!-- changed here so that name=fields[partner-type] vs a partner_type field, thus during save task, we no longer need code to save which partner type we are, as everything is done through the fields[]-->
 				<div class="input-wrap">
-					<input class="option" type="radio" name="fields[partner_type]" id="fields-partner_type<?php echo $partner_type->get('id'); ?>" <?php if ($check) { echo ' checked="checked'; } ?> value="<?php echo $partner_type->get('id'); ?>" />
+					<input class="option" type="radio" name="fields[partner_type]" id="fields-partner_type<?php echo $partner_type->get('id'); ?>" <?php if ($check) { echo ' checked="checked"'; } ?> value="<?php echo $partner_type->get('id'); ?>" />
 					<label for="<?php echo $partner_type->get('id'); ?>"><?php echo $this->escape($partner_type->get('internal')); ?></label>
 				</div>
 			<?php } ?>
+
+
+
+
+			<!--QUBES group url (cd)-->
+			<legend><span><?php echo Lang::txt('COM_PARTNERS_FIELD_GROUP_CN'); ?></span></legend>
+				<?php
+				foreach ($this->grouprows as $grouprow) { ?>
+				<?php
+				$check = false;
+					if ($this->row->get('groups_cn') == $grouprow->cn){
+							$check =true;
+						}
+				
+				?>
+				<!-- changed here so that name=fields[partner-type] vs a partner_type field, thus during save task, we no longer need code to save which partner type we are, as everything is done through the fields[]-->
+				<div class="input-wrap">
+					<input class="option" type="radio" name="fields[groups_cn]" id="fields-groups_cn<?php echo $grouprow->cn ?>" <?php if ($check) { echo ' checked="checked"'; } ?> value="<?php echo $grouprow->cn; ?>" />
+					<label for="<?php echo $grouprow->cn; ?>"><?php echo $this->escape($grouprow->cn); ?></label>
+				</div>
+			<?php } ?>
+
+
 		</fieldset>
+
+
+
+			
 	</div>
 
 

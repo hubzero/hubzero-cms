@@ -231,7 +231,9 @@ class Partners extends AdminController
 		// Here we're grabbing the array of partner_types (radio buttons) and
 		// assigning the model to the partner_type
 		$partner_type = Request::getVar('partner_type', array(), 'post');
-		
+
+		//doing same thing with groups_cn
+		$groups_cn = Request::getVar('groups_cn', array(),'post');
 
 		// Notify the user that the entry was saved
 		Notify::success(Lang::txt('COM_PARTNER_ENTRY_SAVED'));
