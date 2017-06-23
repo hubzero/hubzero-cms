@@ -501,10 +501,10 @@ class Publications extends SiteController
 	}
 
 	/**
-     * Retrieves the data from database and compose the RDF file for download.
-     *
-     * @return  void
-     */
+	 * Retrieves the data from database and compose the RDF file for download.
+	 *
+	 * @return  void
+	 */
 	protected function _resourceMap()
 	{
 		$resourceMap = new \ResourceMapGenerator();
@@ -877,7 +877,7 @@ class Publications extends SiteController
 		);
 
 		// No content served
-		if ($content === NULL || $content == false)
+		if ($content === null || $content == false)
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 		}
@@ -985,9 +985,9 @@ class Publications extends SiteController
 					{
 						$name = $author->name ? $author->name : $author->p_name;
 						$auth = preg_replace('/{{(.*?)}}/s', '', $name);
-						if (!strstr($auth,','))
+						if (!strstr($auth, ','))
 						{
-							$bits = explode(' ',$auth);
+							$bits = explode(' ', $auth);
 							$n    = array_pop($bits) . ', ';
 							$bits = array_map('trim', $bits);
 							$auth = $n . trim(implode(' ', $bits));
@@ -1028,7 +1028,7 @@ class Publications extends SiteController
 					{
 						$name = $author->name ? $author->name : $author->p_name;
 						$author_arr = explode(',', $name);
-						$author_arr = array_map('trim',$author_arr);
+						$author_arr = array_map('trim', $author_arr);
 
 						$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
 						$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
@@ -1106,7 +1106,10 @@ class Publications extends SiteController
 					: $HTTP_USER_AGENT;
 
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+		}
+
 		$file = $p . DS . $f;
 
 		$fsize = filesize($file);
