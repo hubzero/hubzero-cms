@@ -33,20 +33,35 @@
 namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Publications\Tables;
+use Components\Publications\Tables\Category;
+use Components\Publications\Tables\MasterType;
+use Components\Publications\Models\Elements;
 use stdClass;
-use Document;
 use Request;
+use Notify;
 use Config;
 use Route;
 use Lang;
 use App;
 
 /**
- * Manage publication categories (former resource types)
+ * Manage publication categories
  */
 class Categories extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * List types
 	 *
@@ -55,7 +70,7 @@ class Categories extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.categories.limit',
 				'limit',
@@ -85,25 +100,23 @@ class Categories extends AdminController
 			)
 		);
 
-		$this->view->filters['state'] = 'all';
+		$filters['state'] = 'all';
 
 		// Instantiate an object
-		$rt = new \Components\Publications\Tables\Category($this->database);
+		$rt = new Category($this->database);
 
 		// Get a record count
-		$this->view->total = $rt->getCount($this->view->filters);
+		$total = $rt->getCount($filters);
 
 		// Get records
-		$this->view->rows = $rt->getCategories($this->view->filters);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
+		$rows = $rt->getCategories($filters);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -133,38 +146,21 @@ class Categories extends AdminController
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
-			$row = new \Components\Publications\Tables\Category($this->database);
+			$row = new Category($this->database);
 			$row->load($id);
 		}
 
-		$this->view->row = $row;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		$this->view->config = $this->config;
-
 		// Get all contributable master types
-		$objMT = new \Components\Publications\Tables\MasterType($this->database);
-		$this->view->types = $objMT->getTypes('alias', 1);
+		$objMT = new MasterType($this->database);
+		$types = $objMT->getTypes('alias', 1);
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('config', $this->config)
+			->set('types', $types)
 			->setLayout('edit')
 			->display();
-	}
-
-	/**
-	 * Save a publication and fall through to edit view
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(true);
 	}
 
 	/**
@@ -173,7 +169,7 @@ class Categories extends AdminController
 	 * @param   boolean  $redirect
 	 * @return  void
 	 */
-	public function saveTask($redirect = false)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
@@ -183,11 +179,12 @@ class Categories extends AdminController
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $prop['id'];
 
 		// Initiate extended database class
-		$row = new \Components\Publications\Tables\Category($this->database);
+		$row = new Category($this->database);
+
 		if (!$row->bind($prop))
 		{
-			App::redirect($url, $row->getError(), 'error');
-			return;
+			Notify::error($row->getError());
+			App::redirect($url);
 		}
 
 		// Get the custom fields
@@ -232,8 +229,8 @@ class Categories extends AdminController
 				}
 			}
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
-			$re = new \Components\Publications\Models\Elements($elements);
+			include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
+			$re = new Elements($elements);
 			$row->customFields = $re->toString();
 		}
 
@@ -252,42 +249,37 @@ class Categories extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			App::redirect($url, $row->getError(), 'error');
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			App::redirect($url, $row->getError(), 'error');
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
+		Notify::success(Lang::txt('COM_PUBLICATIONS_CATEGORY_SAVED'));
+
 		// Redirect to edit view?
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
 			App::redirect(
-				$url,
-				Lang::txt('COM_PUBLICATIONS_CATEGORY_SAVED')
+				$url
 			);
 		}
-		else
-		{
-			App::redirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Lang::txt('COM_PUBLICATIONS_CATEGORY_SAVED')
-			);
-		}
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Change status
 	 * Redirects to list
 	 *
-	 * @param   integer  $dir
 	 * @return  void
 	 */
-	public function changestatusTask($dir = 0)
+	public function changestatusTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
@@ -296,34 +288,39 @@ class Categories extends AdminController
 		$ids = Request::getVar('id', array(0), '', 'array');
 
 		// Initialize
-		$row = new \Components\Publications\Tables\Category($this->database);
+		$row = new Category($this->database);
 
+		$success = 0;
 		foreach ($ids as $id)
 		{
-			if (intval($id))
-			{
-				// Load row
-				$row->load($id);
-				$row->state = $row->state == 1 ? 0 : 1;
+			$id = intval($id);
 
-				// Save
-				if (!$row->store())
-				{
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						$row->getError(),
-						'error'
-					);
-					return;
-				}
+			if (!$id)
+			{
+				continue;
 			}
+
+			// Load row
+			$row->load($id);
+			$row->state = $row->state == 1 ? 0 : 1;
+
+			// Save
+			if (!$row->store())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_PUBLICATIONS_CATEGORY_ITEM_STATUS_CHNAGED'));
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_PUBLICATIONS_CATEGORY_ITEM_STATUS_CHNAGED')
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -369,8 +366,55 @@ class Categories extends AdminController
 			$option
 		);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
-		$elements = new \Components\Publications\Models\Elements();
+		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
+		$elements = new Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
+	}
+
+	/**
+	 * Removes one or more entries
+	 *
+	 * @return  void
+	 */
+	public function removeTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Do we have any IDs?
+		$success = 0;
+
+		// Loop through each ID and delete the necessary items
+		foreach ($ids as $id)
+		{
+			// Remove the profile
+			$row = new Category($this->database);
+			$row->load($id);
+
+			if (!$row->delete())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_PUBLICATIONS_CATEGORY_REMOVED'));
+		}
+
+		// Output messsage and redirect
+		$this->cancelTask();
 	}
 }

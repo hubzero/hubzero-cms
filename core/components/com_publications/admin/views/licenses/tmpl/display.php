@@ -48,6 +48,11 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::save('makedefault', Lang::txt('COM_PUBLICATIONS_MAKE_DEFAULT'));
 	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
 }
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	Toolbar::deleteList();
+}
 
 $this->css();
 ?>
@@ -62,7 +67,7 @@ $this->css();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -84,13 +89,13 @@ $this->css();
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-	$class = $row->active == 1 ? 'on' : 'off';
-?>
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
+			$class = $row->active == 1 ? 'on' : 'off';
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
@@ -130,10 +135,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<input type="hidden" name="order[]" value="<?php echo $row->ordering; ?>" />
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

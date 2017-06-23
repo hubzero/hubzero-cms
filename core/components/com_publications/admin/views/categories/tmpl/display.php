@@ -44,6 +44,11 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::editList();
 	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
 }
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	Toolbar::deleteList();
+}
 
 $this->css();
 ?>
@@ -85,7 +90,7 @@ $this->css();
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
 					<span class="block">
