@@ -33,13 +33,14 @@
 namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Publications\Tables\License;
+use Components\Publications\Models\Orm\License;
 use Request;
-use Config;
 use Notify;
 use Route;
 use Lang;
 use App;
+
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'license.php';
 
 /**
  * Manage publication licenses
@@ -47,7 +48,7 @@ use App;
 class Licenses extends AdminController
 {
 	/**
-	 * Execute a task
+	 * Executes a task
 	 *
 	 * @return  void
 	 */
@@ -55,7 +56,6 @@ class Licenses extends AdminController
 	{
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
-		$this->registerTask('save2new', 'save');
 
 		parent::execute();
 	}
@@ -99,18 +99,22 @@ class Licenses extends AdminController
 		);
 
 		// Instantiate an object
-		$rt = new License($this->database);
+		$entries = License::all();
 
-		// Get a record count
-		$total = $rt->getCount($filters);
+		if ($filters['search'])
+		{
+			$entries->whereLike('title', strtolower((string)$filters['search']));
+		}
 
 		// Get records
-		$rows = $rt->getRecords($filters);
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
-			->set('total', $total)
 			->set('rows', $rows)
 			->display();
 	}
@@ -123,8 +127,8 @@ class Licenses extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		if (!User::authorise('core.create', $this->_option)
-		 && !User::authorise('core.edit', $this->_option))
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
@@ -138,8 +142,7 @@ class Licenses extends AdminController
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
-			$row = new License($this->database);
-			$row->load($id);
+			$row = License::oneOrNew($id);
 		}
 
 		// Output the HTML
@@ -159,8 +162,8 @@ class Licenses extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		if (!User::authorise('core.create', $this->_option)
-		 && !User::authorise('core.edit', $this->_option))
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
@@ -168,36 +171,11 @@ class Licenses extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false);
-
 		// Initiate extended database class
-		$row = new License($this->database);
-
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			App::redirect($url);
-		}
-
-		$row->customizable = Request::getInt('customizable', 0, 'post');
-		$row->agreement    = Request::getInt('agreement', 0, 'post');
-		$row->active       = Request::getInt('active', 0, 'post');
-		$row->icon         = $row->icon ? $row->icon : '/core/components/com_publications/site/assets/img/logos/license.gif';
-
-		if (!$row->id)
-		{
-			$row->ordering = $row->getNextOrder();
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row = License::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
@@ -208,9 +186,7 @@ class Licenses extends AdminController
 		// Redirect to edit view?
 		if ($this->getTask() == 'apply')
 		{
-			App::redirect(
-				$url
-			);
+			return $this->editTask($row);
 		}
 
 		$this->cancelTask();
@@ -252,11 +228,13 @@ class Licenses extends AdminController
 		$id = Request::getVar('id', array(0), '', 'array');
 
 		// Load row
-		$row = new License($this->database);
-		$row->load((int) $id[0]);
+		$row = License::oneOrFail((int) $id[0]);
 
 		// Update order
-		$row->changeOrder($dir);
+		if (!$row->move($dir))
+		{
+			Notify::error($row->getError());
+		}
 
 		$this->cancelTask();
 	}
@@ -282,34 +260,23 @@ class Licenses extends AdminController
 
 		if (count($id) > 1)
 		{
-			Notify::error(Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'));
+			Notify::warning(Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'));
 			return $this->cancelTask();
 		}
 
-		$id = intval($id[0]);
-
-		// Initialize
-		$row = new License($this->database);
-
 		// Load row
-		$row->load($id);
-
-		// Make default
-		$row->main = 1;
+		$row = License::oneOrFail((int) $id[0]);
 
 		// Save
-		if (!$row->store())
+		if (!$row->setMain())
 		{
 			Notify::error($row->getError());
 			return $this->cancelTask();
 		}
 
-		// Fix up all other licenses
-		$row->undefault($id);
-
+		// Redirect
 		Notify::success(Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_MADE_DEFAULT'));
 
-		// Redirect
 		$this->cancelTask();
 	}
 
@@ -332,24 +299,16 @@ class Licenses extends AdminController
 		// Incoming
 		$ids = Request::getVar('id', array(0), '', 'array');
 
-		// Initialize
-		$row = new License($this->database);
-
 		$success = 0;
+
 		foreach ($ids as $id)
 		{
-			$id = intval($id);
-			if (!$id)
-			{
-				continue;
-			}
-
 			// Load row
-			$row->load($id);
-			$row->active = $row->active == 1 ? 0 : 1;
+			$row = License::oneOrFail((int) $id);
+			$row->set('active', $row->get('active') == 1 ? 0 : 1);
 
 			// Save
-			if (!$row->store())
+			if (!$row->save())
 			{
 				Notify::error($row->getError());
 				continue;
@@ -368,9 +327,9 @@ class Licenses extends AdminController
 	}
 
 	/**
-	 * Removes one or more entries
+	 * Remove one or more entries
 	 *
-	 * @return  void
+	 * @return  void  Redirects back to main listing
 	 */
 	public function removeTask()
 	{
@@ -382,21 +341,23 @@ class Licenses extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Incoming
+		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Do we have any IDs?
 		$success = 0;
 
-		// Loop through each ID and delete the necessary items
 		foreach ($ids as $id)
 		{
-			// Remove the profile
-			$row = new License($this->database);
-			$row->load($id);
+			$row = License::onrOrFail($id);
 
-			if (!$row->delete())
+			if ($row->isUsed())
+			{
+				Notify::error(Lang::txt('COM_PUBLICATIONS_ITEM_BEING_USED'));
+				continue;
+			}
+
+			if (!$row->destroy())
 			{
 				Notify::error($row->getError());
 				continue;
@@ -407,10 +368,10 @@ class Licenses extends AdminController
 
 		if ($success)
 		{
-			Notify::success(Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_REMOVED'));
+			Notify::success(Lang::txt('COM_PUBLICATIONS_ITEMS_REMOVED', $i));
 		}
 
-		// Output messsage and redirect
+		// Redirect
 		$this->cancelTask();
 	}
 }

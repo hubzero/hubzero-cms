@@ -33,16 +33,17 @@
 namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Publications\Tables\Category;
-use Components\Publications\Tables\MasterType;
+use Components\Publications\Models\Orm\Category;
 use Components\Publications\Models\Elements;
+use Components\Publications\Tables\MasterType;
 use stdClass;
 use Request;
 use Notify;
-use Config;
 use Route;
 use Lang;
 use App;
+
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'category.php';
 
 /**
  * Manage publication categories
@@ -50,7 +51,7 @@ use App;
 class Categories extends AdminController
 {
 	/**
-	 * Execute a task
+	 * Executes a task
 	 *
 	 * @return  void
 	 */
@@ -63,7 +64,7 @@ class Categories extends AdminController
 	}
 
 	/**
-	 * List types
+	 * List entries
 	 *
 	 * @return  void
 	 */
@@ -103,30 +104,26 @@ class Categories extends AdminController
 		$filters['state'] = 'all';
 
 		// Instantiate an object
-		$rt = new Category($this->database);
+		$entries = Category::all();
 
-		// Get a record count
-		$total = $rt->getCount($filters);
+		if ($filters['search'])
+		{
+			$entries->whereLike('name', strtolower((string)$filters['search']), 1)
+				->orWhereLike('description', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
 
 		// Get records
-		$rows = $rt->getCategories($filters);
+		$rows = $entries
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
-			->set('total', $total)
 			->set('rows', $rows)
 			->display();
-	}
-
-	/**
-	 * Add a new type
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -137,6 +134,12 @@ class Categories extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -146,8 +149,7 @@ class Categories extends AdminController
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
-			$row = new Category($this->database);
-			$row->load($id);
+			$row = Category::oneOrNew($id);
 		}
 
 		// Get all contributable master types
@@ -166,7 +168,6 @@ class Categories extends AdminController
 	/**
 	 * Save a type
 	 *
-	 * @param   boolean  $redirect
 	 * @return  void
 	 */
 	public function saveTask()
@@ -174,18 +175,16 @@ class Categories extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$prop = Request::getVar('prop', array(), 'post');
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $prop['id'];
-
 		// Initiate extended database class
-		$row = new Category($this->database);
-
-		if (!$row->bind($prop))
-		{
-			Notify::error($row->getError());
-			App::redirect($url);
-		}
+		$row = Category::oneOrNew($prop['id'])->set($prop);
 
 		// Get the custom fields
 		$fields = Request::getVar('fields', array(), 'post');
@@ -200,7 +199,7 @@ class Categories extends AdminController
 				{
 					$element = new stdClass();
 					$element->default  = (isset($val['default'])) ? $val['default'] : '';
-					$element->name     = (isset($val['name']) && trim($val['name']) != '') ? $val['name'] : $this->_normalize(trim($val['title']));
+					$element->name     = (isset($val['name']) && trim($val['name']) != '') ? $val['name'] : strtolower(preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title'])));
 					$element->label    = $val['title'];
 					$element->type     = (isset($val['type']) && trim($val['type']) != '') ? $val['type'] : 'text';
 					$element->required = (isset($val['required'])) ? $val['required'] : '0';
@@ -230,31 +229,27 @@ class Categories extends AdminController
 			}
 
 			include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
+
 			$re = new Elements($elements);
-			$row->customFields = $re->toString();
+			$row->set('customFields', $re->toString());
 		}
 
 		// Get parameters
-		$params = Request::getVar('params', '', 'post');
+		$params = Request::getVar('params', array(), 'post');
+
+		$p = $row->params;
+
 		if (is_array($params))
 		{
-			$txt = array();
 			foreach ($params as $k => $v)
 			{
-				$txt[] = "$k=$v";
+				$p->set($k, $v);
 			}
-			$row->params = implode("\n", $txt);
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
+			$row->set('params', $p->toString());
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
@@ -265,9 +260,7 @@ class Categories extends AdminController
 		// Redirect to edit view?
 		if ($this->getTask() == 'apply')
 		{
-			App::redirect(
-				$url
-			);
+			return $this->editTask($row);
 		}
 
 		$this->cancelTask();
@@ -284,25 +277,21 @@ class Categories extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array(0), '', 'array');
 
-		// Initialize
-		$row = new Category($this->database);
-
 		$success = 0;
+
 		foreach ($ids as $id)
 		{
-			$id = intval($id);
-
-			if (!$id)
-			{
-				continue;
-			}
-
 			// Load row
-			$row->load($id);
-			$row->state = $row->state == 1 ? 0 : 1;
+			$row = Category::oneOrFail((int) $id);
+			$row->set('state', $row->get('state') == 1 ? 0 : 1);
 
 			// Save
 			if (!$row->store())
@@ -321,23 +310,6 @@ class Categories extends AdminController
 
 		// Redirect
 		$this->cancelTask();
-	}
-
-	/**
-	 * Strip any non-alphanumeric characters and make lowercase
-	 *
-	 * @param   string   $txt     String to normalize
-	 * @param   boolean  $dashes  Allow dashes and underscores
-	 * @return  string
-	 */
-	private function _normalize($txt, $dashes=false)
-	{
-		$allowed = "a-zA-Z0-9";
-		if ($dashes)
-		{
-			$allowed = "a-zA-Z0-9\-_";
-		}
-		return strtolower(preg_replace("/[^$allowed]/", '', $txt));
 	}
 
 	/**
@@ -367,6 +339,7 @@ class Categories extends AdminController
 		);
 
 		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
+
 		$elements = new Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}
@@ -397,8 +370,7 @@ class Categories extends AdminController
 		foreach ($ids as $id)
 		{
 			// Remove the profile
-			$row = new Category($this->database);
-			$row->load($id);
+			$row = Category::oneOrFail($id);
 
 			if (!$row->delete())
 			{
