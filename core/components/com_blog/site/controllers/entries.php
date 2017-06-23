@@ -803,13 +803,18 @@ class Entries extends SiteController
 			{
 				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
 				$asset .= ($assetId) ? '.' . $assetId : '';
+
+				if ($assetType != 'component')
+				{
+					$at .= '.' . $assetType;
+				}
 			}
 
 			$at = '';
-			if ($assetType != 'component')
+			/*if ($assetType != 'component')
 			{
 				$at .= '.' . $assetType;
-			}
+			}*/
 
 			// Admin
 			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
