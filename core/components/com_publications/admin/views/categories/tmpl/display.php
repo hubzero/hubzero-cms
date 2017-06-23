@@ -44,6 +44,11 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::editList();
 	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
 }
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	Toolbar::deleteList();
+}
 
 $this->css();
 ?>

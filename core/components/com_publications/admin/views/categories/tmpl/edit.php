@@ -233,7 +233,7 @@ function submitbutton(pressbutton)
 				</tfoot>
 				<tbody id="field-items">
 				<?php
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+				include_once Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
 				$elements = new \Components\Publications\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();
 

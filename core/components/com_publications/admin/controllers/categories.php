@@ -35,9 +35,10 @@ namespace Components\Publications\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Publications\Models\Orm\Category;
 use Components\Publications\Models\Elements;
+use Components\Publications\Tables\MasterType;
 use stdClass;
-use Document;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -152,7 +153,7 @@ class Categories extends AdminController
 		}
 
 		// Get all contributable master types
-		$objMT = new \Components\Publications\Tables\MasterType($this->database);
+		$objMT = new MasterType($this->database);
 		$types = $objMT->getTypes('alias', 1);
 
 		// Output the HTML
@@ -229,7 +230,7 @@ class Categories extends AdminController
 
 			include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 
-			$re = new \Components\Publications\Models\Elements($elements);
+			$re = new Elements($elements);
 			$row->set('customFields', $re->toString());
 		}
 
@@ -339,7 +340,53 @@ class Categories extends AdminController
 
 		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 
-		$elements = new \Components\Publications\Models\Elements();
+		$elements = new Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
+	}
+
+	/**
+	 * Removes one or more entries
+	 *
+	 * @return  void
+	 */
+	public function removeTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Do we have any IDs?
+		$success = 0;
+
+		// Loop through each ID and delete the necessary items
+		foreach ($ids as $id)
+		{
+			// Remove the profile
+			$row = Category::oneOrFail($id);
+
+			if (!$row->delete())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_PUBLICATIONS_CATEGORY_REMOVED'));
+		}
+
+		// Output messsage and redirect
+		$this->cancelTask();
 	}
 }
