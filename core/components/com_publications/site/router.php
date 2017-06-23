@@ -114,7 +114,7 @@ class Router extends Base
 		$vars = array();
 
 		// Valid tasks not requiring id
-		$tasks = array('browse', 'start', 'submit', 'edit', 'publication');
+		$tasks = array('browse', 'start', 'submit', 'edit', 'publication', 'fork');
 
 		if (empty($segments[0]))
 		{
