@@ -36,7 +36,17 @@ use Hubzero\Component\SiteController;
 use Components\Publications\Tables;
 use Components\Publications\Models;
 use Components\Publications\Helpers;
+use Component;
 use Exception;
+use Document;
+use Pathway;
+use Request;
+use Plugin;
+use Notify;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Primary component controller
@@ -1345,6 +1355,326 @@ class Publications extends SiteController
 			$this->pageTask();
 			return;
 		}
+	}
+
+	/**
+	 * Fork a publication
+	 *
+	 * @return  void
+	 */
+	public function forkTask()
+	{
+		// Incoming
+		$pid = Request::getInt('project', 0);
+		$vid = Request::getInt('version', 0);
+
+		$this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');
+
+		// Redirect if publishing is turned off
+		if (!$this->_contributable || !$vid)
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option));
+			return;
+		}
+
+		// Redirect if forks aren't allowed
+		if (!$this->config->get('forks'))
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option));
+			return;
+		}
+
+		//echo 'not yet';
+		//return;
+
+		// Load language file
+		Lang::load('com_projects') ||
+		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+
+		// Set page title
+		$this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');
+		$this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		if (User::isGuest())
+		{
+			$this->_msg = Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START');
+			$this->_login();
+			return;
+		}
+
+		// Get project model
+		$project = new \Components\Projects\Models\Project();
+
+		// Get project information
+		if ($pid)
+		{
+			$project->loadProvisioned($pid);
+
+			if (!$project->exists())
+			{
+				App::redirect(Route::url('index.php?option=' . $this->_option . '&task=submit'));
+				return;
+			}
+
+			// Block unauthorized access
+			if (!$project->access('owner') && !$project->access('content'))
+			{
+				$this->_blockAccess();
+				return;
+			}
+
+			// Redirect to project if not provisioned
+			if (!$project->isProvisioned())
+			{
+				App::redirect(
+					Route::url($project->link('publications'))
+				);
+				return;
+			}
+		}
+		else
+		{
+			include_once Component::path('com_projects') . '/helpers/html.php';
+
+			// Need to provision a project
+			$alias = 'pub-' . strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
+
+			$project->set('provisioned', 1);
+			$project->set('alias', $alias);
+			$project->set('title', $alias);
+			$project->set('type', 2); // publication
+			$project->set('state', 1);
+			$project->set('setup_stage', 3);
+			$project->set('created', Date::toSql());
+			$project->set('created_by_user', User::get('id'));
+			$project->set('owned_by_user', User::get('id'));
+
+			$project->set('params', $project->type()->params);
+		}
+
+		// Is project registration restricted?
+		if (!$pid && !$project->access('create'))
+		{
+			$this->_buildPathway(null);
+
+			$this->view
+				->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'))
+				->set('title', $this->title)
+				->set('option', $this->_option)
+				->setName('error')
+				->setLayout('restricted')
+				->display();
+			return;
+		}
+
+		// Move creation of the project to _after_ the access check
+		// for project creation
+		if (!$project->get('id'))
+		{
+			// Save changes
+			if (!$project->store())
+			{
+				App::abort(500, $project->getError());
+			}
+
+			// Save the user as member and owner of the project
+			$objO = $project->table('Owner');
+
+			if (!$objO->saveOwners($project->get('id'), User::get('id'), User::get('id'), 0, 1, 1, 1, '', 0))
+			{
+				App::abort(500, $objO->getError());
+			}
+
+			/*
+			// Create and initialize local repo
+			if (!$project->repo()->iniLocal())
+			{
+				App::abort(500, Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
+			}*/
+		}
+
+		//
+		// Let's start copying...
+		//
+
+		include_once dirname(dirname(__DIR__)) . '/models/orm/publication.php';
+
+		// Load the version
+		$version = Models\Orm\Version::oneOrFail($vid);
+
+		$pubfilespace = $version->filespace();
+		$prjfilespace = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias');
+
+		// We're going to need the original ID later
+		$pub_id = $version->get('publication_id');
+
+		// Copy the publication's database entry
+		$publication = $version->publication;
+		$publication->set('id', 0);
+		$publication->set('checked_out', 0);
+		$publication->set('checked_out_time', '0000-00-00 00:00:00');
+		$publication->set('created', Date::of('now')->toSql());
+		$publication->set('created_by', User::get('id'));
+		$publication->set('rating', 0.0);
+		$publication->set('times_rated', 0);
+		$publication->set('group_owner', 0);
+		$publication->set('master_doi', '');
+		$publication->set('project_id', $project->get('id'));
+
+		if (!$publication->save())
+		{
+			// Abort! If we don't have the plublication record
+			// at this point, there's nothing else we can do.
+			App::abort(500, $publication->getError());
+		}
+
+		$authors = $version->authors;
+		$attachments = $version->attachments;
+
+		// Copy the version info and set it as the first version
+		$version->set('id', 0);
+		$version->set('publication_id', $publication->get('id'));
+		$version->set('doi', '');
+		$version->set('rating', 0.0);
+		$version->set('times_rated', 0);
+		$version->set('main', 1);
+		$version->set('state', 3);
+		$version->set('created', Date::of('now')->toSql());
+		$version->set('created_by', User::get('id'));
+		$version->set('published_up', '0000-00-00 00:00:00');
+		$version->set('published_down', '0000-00-00 00:00:00');
+		$version->set('modified', '0000-00-00 00:00:00');
+		$version->set('modified_by', 0);
+		$version->set('accepted', '0000-00-00 00:00:00');
+		$version->set('archived', '0000-00-00 00:00:00');
+		$version->set('submitted', '0000-00-00 00:00:00');
+		$version->set('version_label', '1.0.0');
+		$version->set('version_number', 1);
+		$version->set('curation', '');
+		$version->set('reviewed', '0000-00-00 00:00:00');
+		$version->set('reviewed_by', 0);
+		$version->set('curator', 0);
+		$version->set('curation_version_id', 0);
+
+		// Make sure we know where the info came from
+		$version->set('forked_from', $vid);
+
+		if (!$version->save())
+		{
+			App::abort(500, $version->getError());
+		}
+
+		// Copy tags
+		include_once dirname(dirname(__DIR__))  . DS . 'helpers' . DS . 'tags.php';
+
+		$rt = new Helpers\Tags($this->database);
+		if ($tags = $rt->get_tag_string($pub_id))
+		{
+			$rt->tag_object(User::get('id'), $pub_id, $tags, 1);
+		}
+
+		// Copy citations
+		include_once Component::path('com_citations')  . '/tables/association.php';
+
+		$c = new \Components\Citations\Tables\Association($this->database);
+		$citations = $c->getRecords(array(
+			'tbl' => 'publication',
+			'oid' => $pub_id
+		));
+		foreach ($citations as $citation)
+		{
+			$ca = new \Components\Citations\Tables\Association($this->database);
+			$ca->cid = $citation->cid;
+			$ca->tbl = $citation->tbl;
+			$ca->oid = $pub_id;
+
+			if (!$ca->save())
+			{
+				App::abort(500, $ca->getError());
+			}
+		}
+
+		// Copy authors
+		foreach ($authors as $author)
+		{
+			$owner_id = $author->get('project_owner_id');
+
+			$objO->load($owner_id);
+			$objO->id         = null;
+			$objO->added      = Date::of('now')->toSql();
+			$objO->num_visits = 0;
+			$objO->lastvisit  = null;
+			if ($objO->groupid != $project->get('owned_by_group'))
+			{
+				$objO->groupid = 0;
+			}
+			$objO->store();
+
+			$author->set('id', 0);
+			$author->set('publication_version_id', $version->get('id'));
+			$author->set('project_owner_id', $objO->id);
+			$author->set('created', Date::of('now')->toSql());
+			$author->set('created_by', User::get('id'));
+			$author->set('modified', '0000-00-00 00:00:00');
+			$author->set('modified_by', 0);
+
+			if (!$author->save())
+			{
+				App::abort(500, $author->getError());
+			}
+		}
+
+		// Copy attachments
+		foreach ($attachments as $attachment)
+		{
+			$attachment->set('id', 0);
+			$attachment->set('publication_id', $version->get('publication_id'));
+			$attachment->set('publication_version_id', $version->get('id'));
+			$attachment->set('created', Date::of('now')->toSql());
+			$attachment->set('created_by', User::get('id'));
+			$attachment->set('modified', '0000-00-00 00:00:00');
+			$attachment->set('modified_by', 0);
+
+			if (!$attachment->save())
+			{
+				App::abort(500, $attachment->getError());
+			}
+
+			if ($attachment->get('type') == 'file')
+			{
+				// Copy the files into the project
+				$from = $pubfilespace . '/' . $attachment->get('path');
+				$to   = $prjfilespace . '/' . $attachment->get('path');
+
+				if (!file_exists($from))
+				{
+					continue;
+				}
+
+				if (!Filesystem::copy($from, $to))
+				{
+					App::abort(500, $attachment->getError());
+				}
+			}
+		}
+
+		Notify::success(Lang::txt('COM_PUBLICATIONS_PUBLICATION_FORKED'));
+
+		// Redirect to the project
+		if ($pid)
+		{
+			App::redirect(
+				Route::url($project->link('publications') . '&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'))
+			);
+		}
+
+		// Redirect to the publication submission page
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&task=submit&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'))
+		);
 	}
 
 	/**

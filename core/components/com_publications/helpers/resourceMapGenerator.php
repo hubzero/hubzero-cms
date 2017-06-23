@@ -426,6 +426,11 @@ class ResourceMapGenerator
 			return;
 		}
 
+		if (Request::getInt('no_html') || Request::getInt('format') == 'raw')
+		{
+			return;
+		}
+
 		$rdfURL = '/publications/' . $id . '.rdf';
 
 		Document::addCustomTag('<link rel="resourcemap" type="application/rdf+xml" href="' . $rdfURL . '" />');
