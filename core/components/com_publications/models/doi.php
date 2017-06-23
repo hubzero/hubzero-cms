@@ -232,10 +232,10 @@ class Doi extends Object
 
 		// Map resource type
 		$category = $pub->category();
-		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';		
+		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';
 		$this->set('resourceType', $dcType);
 		$this->set('resourceTypeTitle', htmlspecialchars($category->name));
-
+		
 		// Map license
 		$license = $pub->license();
 		$this->set('license', htmlspecialchars($license->title));
