@@ -1682,7 +1682,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				$admingroup = $this->model->config()->get('admingroup', '');
 				$group = \Hubzero\User\Group::getInstance($admingroup);
-				$row->group = $group ? $group->get('cn') : '';
+				$row->group_id = $group ? $group->get('gidNumber') : '';
 
 				if (!$row->store())
 				{
