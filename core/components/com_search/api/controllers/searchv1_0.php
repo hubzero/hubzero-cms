@@ -27,59 +27,46 @@
  * @package   hubzero-cms
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
+ *
  */
 
-namespace Components\Search\Api;
+namespace Components\Search\Api\Controllers;
 
-use Hubzero\Component\Router\Base;
+use Hubzero\Component\ApiController;
+use Components\Search\Models\Solr\Blacklist;
+use Component;
+use Exception;
+use stdClass;
+use Request;
+use App;
 
 /**
- * Routing class for the component
+ * API controller class for Solr search
  */
-class Router extends Base
+class Searchv1_0 extends ApiController
 {
 	/**
-	 * Build the route for the component.
+	 * Returns a list of deleted search entries 
 	 *
-	 * @param   array  &$query  An array of URL arguments
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 * @apiMethod GET
+	 * @return    string JSON-encoded list of blacklisted document IDs 
 	 */
-	public function build(&$query)
+	public function blacklistTask()
 	{
-		$segments = array();
-
-		if (!empty($query['controller']))
+		$response = new stdClass;
+		if (User::authorise('core.admin', 'com_search'))
 		{
-			$segments[] = $query['controller'];
-			unset($query['controller']);
+			require_once Component::path('com_search') . '/models/solr/blacklist.php';
+			$model = Blacklist::all()->select('doc_id')->rows()->toObject();
+			$blacklist = array();
+			foreach ($model as $row)
+			{
+				array_push($blacklist, $row->doc_id);
+			}
+
+			$response->blacklist = $blacklist;
 		}
 
-		if (!empty($query['task']))
-		{
-			$segments[] = $query['task'];
-			unset($query['task']);
-		}
-
-		return $segments;
-	}
-
-	/**
-	 * Parse the segments of a URL.
-	 *
-	 * @param   array  &$segments  The segments of the URL to parse.
-	 * @return  array  The URL attributes to be used by the application.
-	 */
-	public function parse(&$segments)
-	{
-		$vars = array();
-		$vars['task'] = 'blacklist';
-		$vars['controller'] = 'search';
-
-		if (isset($segments[0]))
-		{
-			$vars['task'] = $segments[0];
-		}
-
-		return $vars;
+		$this->send($response);
 	}
 }
