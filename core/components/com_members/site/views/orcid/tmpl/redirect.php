@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 <section class="main section">
       <div class="grid nobreak">
 		<?php if (Request::getVar('code')) { ?>
-		<h1><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_THANK_YOU'); ?><?php echo $this->userName; ?><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_EXCLAMATION_MARK'); ?></h1>
+		<h1><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_THANK_YOU', $this->userName); ?></h1>
 		<br>
 		<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_YOUR_ORCID'); ?><img src="<?php echo Request::root()?>/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="16" height="16" alt="iD"/> <?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_IS'); ?> <?php echo $this->userORCID; ?></p>
 		<?php } elseif (Request::getVar('error') && Request::getVar('error_description')) { ?>

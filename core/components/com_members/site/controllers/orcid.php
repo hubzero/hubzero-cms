@@ -34,6 +34,7 @@ namespace Components\Members\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Members\Models\Member;
+use Components\Members\Models\Profile;
 use Exception;
 use Request;
 use Lang;
@@ -606,19 +607,13 @@ class Orcid extends SiteController
 		}
 		else
 		{
-			//Get new ID for #__user_profiles based on existing maximum ID
-			$id_q = "SELECT MAX(id) FROM #__user_profiles";
-			$db->setQuery($id_q);
-			$newID = (int)$db->loadResult() + 1;
-			//Get new ordering based on existing maximum ordering
-			$order_q = "SELECT MAX(ordering) FROM #__user_profiles where user_id = $userID";
-			$db->setQuery($order_q);
-			$newOrdering = (int)$db->loadResult() + 1;
-			$orcid_sql = "INSERT INTO " . $db->quoteName('#__user_profiles') . " (" . $db->quoteName('id') . "," . $db->quoteName('user_id') . "," 
-			. $db->quoteName('profile_key') . "," . $db->quoteName('profile_value') . "," . $db->quoteName('ordering') . "," . $db->quoteName('access') 
-			. ") VALUES (" . $newID . "," . $userID . "," . '"orcid"'. "," . '"' . $orcid . '"' . "," . $newOrdering . "," . "1)";
-			$db->setQuery($orcid_sql);
-			$result = $db->query();
+			$member = Member::oneOrNew($userID);
+			$profile = array('orcid'=>$orcid);
+			$access= array('orcid'=>1);
+			if (!$member->saveProfile($profile, $access))
+			{
+				\Notify::error($member->getError());
+			}
 		}
 	}
 	
@@ -640,7 +635,7 @@ class Orcid extends SiteController
 			$user_id = User::get('id');
 			if ($user_id != 0)
 			{
-				Orcid::saveORCIDToProfile($user_id, $this->_userOrcidID);
+				self::saveORCIDToProfile($user_id, $this->_userOrcidID);
 			}
 			else
 			{
