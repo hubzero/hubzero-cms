@@ -188,6 +188,52 @@ class Partners extends AdminController
 			->display();
 	}
 
+
+		/**
+	 * Download a picture, copied from  com_members/admin/controllers/members
+	 *
+	 * @return  void
+	 */
+	public function pictureTask()
+	{
+		// Get vars
+		$id = Request::getInt('id', 0);
+
+		// Check to make sure we have an id
+		if (!$id || $id == 0)
+		{
+			return;
+		}
+
+		// Load member
+		$member = Member::oneOrFail($id);
+
+		$file  = DS . trim($this->config->get('webpath', '/site/members'), DS);
+		$file .= DS . Profile\Helper::niceidformat($member->get('uidNumber'));
+		$file .= DS . Request::getVar('image', $member->get('pic 9ture'));
+
+		// Ensure the file exist
+		if (!file_exists(PATH_APP . DS . $file))
+		{
+			App::abort(404, Lang::txt('COM_MEMBERS_FILE_NOT_FOUND') . ' ' . $file);
+		}
+
+		// Serve up the image
+		$xserver = new \Hubzero\Content\Server();
+		$xserver->filename(PATH_APP . DS . $file);
+		$xserver->disposition('attachment');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+
+		// Serve up file
+		if (!$xserver->serve())
+		{
+			// Should only get here on error
+			App::abort(404, Lang::txt('COM_MEMBERS_MEDIA_ERROR_SERVING_FILE'));
+		}
+
+		exit;
+	}
+
 	/**
 	 * Save changes to an entry
 	 *
@@ -233,7 +279,7 @@ class Partners extends AdminController
 		$partner_type = Request::getVar('partner_type', array(), 'post');
 
 		//doing same thing with groups_cn
-		$groups_cn = Request::getVar('groups_cn', array(),'post');
+		
 
 		// Notify the user that the entry was saved
 		Notify::success(Lang::txt('COM_PARTNER_ENTRY_SAVED'));

@@ -83,7 +83,14 @@ function submitbutton(pressbutton)
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_LOGO_URL'); ?></span>
 			</div>
 
-
+			<div class="input-wrap">
+					<label for="fields-groups_cn"><?php echo Lang::txt('COM_PARTNERS_FIELD_GROUP_CN'); ?></label>
+					<select name="fields[groups_cn]" id="fields-groups_cn">
+						<?php foreach ($this->grouprows as $val) { ?>
+							<option<?php if ($this->row->get('groups_cn') == $val->cn) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($val->cn); ?>"><?php echo $this->escape($val->cn); ?></option>
+						<?php } ?>
+					</select>
+				</div>
 
 			<!--Twitter Handle-->
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_TWITTER_HANDLE'); ?>">
@@ -138,29 +145,6 @@ function submitbutton(pressbutton)
 					<label for="<?php echo $partner_type->get('id'); ?>"><?php echo $this->escape($partner_type->get('internal')); ?></label>
 				</div>
 			<?php } ?>
-
-
-
-
-			<!--QUBES group url (cd)-->
-			<legend><span><?php echo Lang::txt('COM_PARTNERS_FIELD_GROUP_CN'); ?></span></legend>
-				<?php
-				foreach ($this->grouprows as $grouprow) { ?>
-				<?php
-				$check = false;
-					if ($this->row->get('groups_cn') == $grouprow->cn){
-							$check =true;
-						}
-				
-				?>
-				<!-- changed here so that name=fields[partner-type] vs a partner_type field, thus during save task, we no longer need code to save which partner type we are, as everything is done through the fields[]-->
-				<div class="input-wrap">
-					<input class="option" type="radio" name="fields[groups_cn]" id="fields-groups_cn<?php echo $grouprow->cn ?>" <?php if ($check) { echo ' checked="checked"'; } ?> value="<?php echo $grouprow->cn; ?>" />
-					<label for="<?php echo $grouprow->cn; ?>"><?php echo $this->escape($grouprow->cn); ?></label>
-				</div>
-			<?php } ?>
-
-
 		</fieldset>
 
 
@@ -195,11 +179,25 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 	</div>
+
+		<div class="col span5">
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?></span></legend>
+
+			<?php if ($this->row->get('id')): ?>
+				<iframe height="420" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&id=' 
+				. $this->get('id') . '&t=' . time()); ?>"></iframe>
+			<?php else: ?>
+				<p class="warning"><?php echo Lang::txt('COM_PARTNERS_PICTURE_ADDED_LATER'); ?></p>
+			<?php endif; ?>
+		</fieldset>
+	</div>
+
 	<div class="clr"></div>
 	<!--These are important, especially box checked!!, allows you to use the edit/publish/delete buttons once you have checked something -->
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 	
-	<?php echo Html::input('token'); ?>
+	<?php echo Html::input('token'); ?>  
 </form>
