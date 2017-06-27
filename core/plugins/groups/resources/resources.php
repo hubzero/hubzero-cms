@@ -187,38 +187,6 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
-
-			if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php'))
-			{
-				require_once PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php';
-
-				$hgConf = \Components\Search\Models\Hubgraph\Configuration::instance();
-
-				if ($hgConf->isOptionEnabled('com_groups'))
-				{
-					$view =$this->view('default', 'results');
-					// Pass the view some info
-					$view->option = $option;
-					$view->group  = $group;
-
-					Lang::load('com_search', PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site');
-
-					ob_start();
-					$_GET['group'] = $group->gidNumber;
-					Request::setVar('group', $group->gidNumber);
-					define('HG_INLINE', 1);
-					require PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site' . DS . 'controllers' . DS . 'hubgraph.php';
-					$controller = new \Components\Search\Site\Controllers\Hubgraph();
-					$controller->execute();
-					$controller->redirect();
-
-					$view->hubgraphResponse = ob_get_clean();
-
-					return array(
-						'html' => $view->loadTemplate('hubgraph')
-					);
-				}
-			}
 		}
 
 		$database = App::get('db');
