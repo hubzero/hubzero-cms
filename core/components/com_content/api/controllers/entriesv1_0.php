@@ -89,18 +89,17 @@ class Entriesv1_0 extends ApiController
 
 			foreach ($pages as &$page)
 			{
-
 				// Build the path
 				$sql1 = "SELECT path FROM #__categories WHERE id={$page->catid};";
 				$path = $db->setQuery($sql1)->query()->loadResult();
 
-				if (strpos($path, 'uncategorized') === false)
+				if (strpos($path, 'uncategorized') === false && strpos($path, 'uncategorised') === false)
 				{
-					$url = '/' . $page->alias;
+					$url = $path . '/' . $page->alias;
 				}
 				else
 				{
-					$url = $path . '/' . $page->alias;
+					$url = '/' . $page->alias;
 				}
 
 				$page->url = $url;
