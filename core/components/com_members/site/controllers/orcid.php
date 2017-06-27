@@ -46,10 +46,10 @@ use User;
 class Orcid extends SiteController
 {
 	/**
-	* user's name
-	*
-	* @var string
-	*/
+	 * user's name
+	 *
+	 * @var string
+	 */
 	protected $_userName;
 	/**
 	 * user's ORCID ID
