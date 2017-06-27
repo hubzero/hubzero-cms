@@ -256,7 +256,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($rareas as $c=>$t)
+		foreach ($rareas as $c => $t)
 		{
 			$cats[$i]['category'] = $c;
 
@@ -269,7 +269,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$cats[$i]['_sub']  = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st)
+				foreach ($t as $s => $st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z]))
@@ -451,7 +451,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	 * @param      string $gid Group alias
 	 * @return     array
 	 */
-	private function getResourceIDs($gid=NULL)
+	private function getResourceIDs($gid=null)
 	{
 		if (!$gid)
 		{
@@ -645,7 +645,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			// Get a count
 			$counts = array();
 			$ares = $this->getResourcesAreas();
-			foreach ($ares as $area=>$val)
+			foreach ($ares as $area => $val)
 			{
 				if (is_array($val))
 				{
@@ -683,4 +683,3 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-
