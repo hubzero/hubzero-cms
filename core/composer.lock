@@ -315,12 +315,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "v4.5.0"
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
-                "reference": "v4.5.0",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
                 "shasum": ""
             },
             "require": {
@@ -981,12 +981,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "535d1e0881fc499b799ec69154244ff0fdd6f69c"
+                "reference": "559363f98f66207cbc1186e331ff3dcdf66bc079"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/535d1e0881fc499b799ec69154244ff0fdd6f69c",
-                "reference": "535d1e0881fc499b799ec69154244ff0fdd6f69c",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/559363f98f66207cbc1186e331ff3dcdf66bc079",
+                "reference": "559363f98f66207cbc1186e331ff3dcdf66bc079",
                 "shasum": ""
             },
             "require": {
@@ -1019,7 +1019,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2017-06-27 13:00:57"
+            "time": "2017-06-28 14:40:32"
         },
         {
             "name": "hubzero/orcid-php",
@@ -2335,7 +2335,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
