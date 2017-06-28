@@ -76,18 +76,25 @@ function submitbutton(pressbutton)
 				<input type="text" name="fields[site_url]" id="field-site_url" size="35" value="<?php echo $this->escape($this->row->get('site_url')); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?></span>
 			</div>
-			<!--Logo link field -->
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_LOGO_URL'); ?>">
-				<label for="field-logo_url"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[logo_url]" id="field-logo_url" size="35" value="<?php echo $this->escape($this->row->get('logo_url')); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_LOGO_URL'); ?></span>
-			</div>
 
+			
+			<!--GROUP CN -->
 			<div class="input-wrap">
 					<label for="fields-groups_cn"><?php echo Lang::txt('COM_PARTNERS_FIELD_GROUP_CN'); ?></label>
 					<select name="fields[groups_cn]" id="fields-groups_cn">
 						<?php foreach ($this->grouprows as $val) { ?>
 							<option<?php if ($this->row->get('groups_cn') == $val->cn) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($val->cn); ?>"><?php echo $this->escape($val->cn); ?></option>
+						<?php } ?>
+					</select>
+				</div>
+
+				<div class="input-wrap">
+					<label for="fields-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?></label>
+					<select name="fields[QUBES_liason]" id="fields-QUBES_liason">
+						<?php foreach ($this->QUBES_liasons as $val) { ?>
+							<option<?php if ($this->row->get('QUBES_liason') == $val->text) { echo ' selected="selected"'; }
+							?> value="<?php echo  $this->escape($val->text); ?>">
+							<?php echo $this->escape($val->text); ?></option>
 						<?php } ?>
 					</select>
 				</div>
@@ -98,11 +105,7 @@ function submitbutton(pressbutton)
 				<input type="text"  name="fields[twitter_handle]" id="field-twitter_handle" size="35" value="<?php echo $this->escape($this->row->get('twitter_handle')); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_TWITTER_HANDLE'); ?></span>
 			</div>
-			<!--Qubes liason member number-->
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_QUBES_LIASON'); ?>">
-				<label for="field-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?> </label>
-				<input type="text" name="fields[QUBES_liason]" id="field-QUBES_liason" size="35" value="<?php echo $this->escape($this->row->get('QUBES_liason')); ?>" />
-			</div>
+
 			<!-- partner liason member number -->
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_PARTNER_LIASON'); ?>">
 				<label for="field-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?></label>

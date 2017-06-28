@@ -168,9 +168,9 @@ class Partners extends AdminController
 			'sortby'     => 'title',
 			'authorized' => 'admin'
 		));
-		//passing grouprows to view
 		
-
+		
+		$QUBES_liasons = $this->userSelect('QUBES_liason', 0, 0);
 		//pass rows
 		$this->view->row = $row;
 		$this->view->partner_types = Partner_type::all()->ordered();
@@ -183,9 +183,47 @@ class Partners extends AdminController
 		// is auto-assigned the task name, the layout will be 'save' but
 		// saveTask has no layout!
 		$this->view
+			->set('QUBES_liasons',$QUBES_liasons)
 			->set('grouprows', $grouprows)
 			->setLayout('edit')
 			->display();
+	}
+
+
+
+		/**
+	 * Builds a select list of users
+	 *
+	 * @param      string  $name       Name of the select element
+	 * @param      string  $active     Selected value
+	 * @param      integer $nouser     Display an empty start option
+	 * @param      string  $javascript Any JS to attach to the select element
+	 * @param      string  $order      Field to order the users by
+	 * @return     string
+	 */
+	private function userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	{
+		$database = \App::get('db');
+
+		$group_id = 'g.id';
+		$aro_id = 'aro.id';
+
+		$query = "SELECT a.id AS value, a.name AS text, g.title AS groupname"
+			. "\n FROM #__users AS a"
+			. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
+			. "\n INNER JOIN #__usergroups AS g ON g.id = gm.group_id"
+			. "\n WHERE a.block = '0' AND g.title='Registered'" //options are = Public, Registered, Author, Editor, Publisher, Manager, Administrator, Super Users
+			. "\n ORDER BY ". $order;
+
+		$database->setQuery($query);
+		$result = $database->loadObjectList();
+
+		if (!$result)
+		{
+			$result = array();
+		}
+
+		return $result;
 	}
 
 
@@ -251,6 +289,39 @@ class Partners extends AdminController
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		/**
+		$row = new Partner($this->database);
+		$isNew = 0;
+		if ($row->id < 1)
+		{
+			$isNew = 1;
+		}
+
+		$old = new Partner($this->database);
+
+		if ($isNew)
+		{
+			// New entry
+			$row->QUBES_liason    = $row->QUBES_liason;
+			$row->QUBES_liason = $row->QUBES_liason ? $row->QUBES_liason : User::get('id');
+			$row->access     = 0;
+		}
+		else
+		{
+			$old->load($row->id);
+
+			$QUBES_liason_id = Request::getInt('QUBES_liason_id', 0);
+
+			if ($QUBES_liason_id)
+			{
+				$row->QUBES_liason = $row->QUBES_liason ? $row->QUBES_liason : $QUBES_liason_id;
+			}
+			else
+			{
+				$row->QUBES_liason = $row->QUBES_liason ? $row->QUBES_liason : User::get('id');
+			}
+		}
+		**/
 
 		// Initiate model and bind the incoming data to it
 		$row = Partner::oneOrNew($fields['id'])->set($fields);
