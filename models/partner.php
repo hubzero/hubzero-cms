@@ -172,4 +172,12 @@ class Partner extends Relational{
 	{
 		return parent::destroy();
 	}
+
+	public function transformBackgroundImg()
+	{
+		$params = Component::params('com_partners');
+		$base   = $params->get('image_location', DS . 'app' . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'partners' . DS);
+
+		return DS . trim($base, DS) . DS . $this->get('background_img');
+	}
 }
