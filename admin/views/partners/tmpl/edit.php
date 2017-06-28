@@ -87,12 +87,23 @@ function submitbutton(pressbutton)
 						<?php } ?>
 					</select>
 				</div>
-
+<!--QUBES Liason-->
 				<div class="input-wrap">
 					<label for="fields-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?></label>
 					<select name="fields[QUBES_liason]" id="fields-QUBES_liason">
-						<?php foreach ($this->QUBES_liasons as $val) { ?>
+						<?php foreach ($this->member_names as $val) { ?>
 							<option<?php if ($this->row->get('QUBES_liason') == $val->text) { echo ' selected="selected"'; }
+							?> value="<?php echo  $this->escape($val->text); ?>">
+							<?php echo $this->escape($val->text); ?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<!--Partner Liason-->
+				<div class="input-wrap">
+					<label for="fields-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?></label>
+					<select name="fields[partner_liason]" id="fields-QUBES_liason">
+						<?php foreach ($this->member_names as $val) { ?>
+							<option<?php if ($this->row->get('partner_liason') == $val->text) { echo ' selected="selected"'; }
 							?> value="<?php echo  $this->escape($val->text); ?>">
 							<?php echo $this->escape($val->text); ?></option>
 						<?php } ?>
@@ -106,12 +117,7 @@ function submitbutton(pressbutton)
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_TWITTER_HANDLE'); ?></span>
 			</div>
 
-			<!-- partner liason member number -->
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_PARTNER_LIASON'); ?>">
-				<label for="field-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?></label>
-				<input type="text" name="fields[partner_liason]" id="field-partner_liason" size="35" value="<?php echo $this->escape($this->row->get('partner_liason')); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_PARTNER_LIASON'); ?></span>
-			</div>		
+				
 			<!--activites text box -->	
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_ACTIVITIES'); ?>">
 				<label for="field-about"><?php echo Lang::txt('COM_PARTNERS_FIELD_ACTIVITIES'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>

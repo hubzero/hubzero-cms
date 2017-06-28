@@ -170,7 +170,7 @@ class Partners extends AdminController
 		));
 		
 		
-		$QUBES_liasons = $this->userSelect('QUBES_liason', 0, 0);
+		$member_names = $this->userSelect('QUBES_liason', 0, 0);
 		//pass rows
 		$this->view->row = $row;
 		$this->view->partner_types = Partner_type::all()->ordered();
@@ -183,7 +183,7 @@ class Partners extends AdminController
 		// is auto-assigned the task name, the layout will be 'save' but
 		// saveTask has no layout!
 		$this->view
-			->set('QUBES_liasons',$QUBES_liasons)
+			->set('member_names',$member_names)
 			->set('grouprows', $grouprows)
 			->setLayout('edit')
 			->display();
