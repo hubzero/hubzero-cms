@@ -227,50 +227,6 @@ class Partners extends AdminController
 	}
 
 
-		/**
-	 * Download a picture, copied from  com_members/admin/controllers/members
-	 *
-	 * @return  void
-	 */
-	public function pictureTask()
-	{
-		// Get vars
-		$id = Request::getInt('id', 0);
-
-		// Check to make sure we have an id
-		if (!$id || $id == 0)
-		{
-			return;
-		}
-
-		// Load member
-		$member = Member::oneOrFail($id);
-
-		$file  = DS . trim($this->config->get('webpath', '/site/members'), DS);
-		$file .= DS . Profile\Helper::niceidformat($member->get('uidNumber'));
-		$file .= DS . Request::getVar('image', $member->get('pic 9ture'));
-
-		// Ensure the file exist
-		if (!file_exists(PATH_APP . DS . $file))
-		{
-			App::abort(404, Lang::txt('COM_MEMBERS_FILE_NOT_FOUND') . ' ' . $file);
-		}
-
-		// Serve up the image
-		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename(PATH_APP . DS . $file);
-		$xserver->disposition('attachment');
-		$xserver->acceptranges(false); // @TODO fix byte range support
-
-		// Serve up file
-		if (!$xserver->serve())
-		{
-			// Should only get here on error
-			App::abort(404, Lang::txt('COM_MEMBERS_MEDIA_ERROR_SERVING_FILE'));
-		}
-
-		exit;
-	}
 
 	/**
 	 * Save changes to an entry
@@ -287,44 +243,72 @@ class Partners extends AdminController
 		// *only* coming in through the submitted edit form.
 		Request::checkToken();
 
+
+
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
-		/**
-		$row = new Partner($this->database);
-		$isNew = 0;
-		if ($row->id < 1)
-		{
-			$isNew = 1;
-		}
 
-		$old = new Partner($this->database);
-
-		if ($isNew)
-		{
-			// New entry
-			$row->QUBES_liason    = $row->QUBES_liason;
-			$row->QUBES_liason = $row->QUBES_liason ? $row->QUBES_liason : User::get('id');
-			$row->access     = 0;
-		}
-		else
-		{
-			$old->load($row->id);
-
-			$QUBES_liason_id = Request::getInt('QUBES_liason_id', 0);
-
-			if ($QUBES_liason_id)
-			{
-				$row->QUBES_liason = $row->QUBES_liason ? $row->QUBES_liason : $QUBES_liason_id;
-			}
-			else
-			{
-				$row->QUBES_liason = $row->QUBES_liason ? $row->QUBES_liason : User::get('id');
-			}
-		}
-		**/
 
 		// Initiate model and bind the incoming data to it
 		$row = Partner::oneOrNew($fields['id'])->set($fields);
+		
+
+
+		// See if we have an image coming in as well
+		$logo_image = Request::getVar('logo-image', false, 'files', 'array');
+
+		// If so, proceed with saving the image
+		if (isset($logo_image['name']) && $logo_image['name'])
+		{
+			// Build the upload path if it doesn't exist, THIS IS WHERE IMAGE WILL BE STORED
+			$image_location  = $this->config->get('image_location', 'app' . DS . 'site' . DS . 'media' . DS . 'images');
+			$uploadDirectory = PATH_ROOT . DS . trim($image_location, DS) . DS;
+
+			// Make sure upload directory exists and is writable
+			if (!is_dir($uploadDirectory))
+			{
+				if (!\Filesystem::makeDirectory($uploadDirectory))
+				{
+					Notify::error(Lang::txt('COM_PARTNERS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+					return $this->editTask($row);
+				}
+			}
+
+			// Scan for viruses
+			if (!\Filesystem::isSafe($logo_image['tmp_name']))
+			{
+				Notify::error(Lang::txt('COM_PARTNERS_ERROR_FAILED_VIRUS_SCAN'));
+				return $this->editTask($row);
+			}
+
+			if (!move_uploaded_file($logo_image['tmp_name'], $uploadDirectory . $logo_image['name']))
+			{
+				Notify::error(Lang::txt('COM_PARTNERS_ERROR_FILE_MOVE_FAILED'));
+				return $this->editTask($row);
+			}
+			else
+			{
+				if ($old = $row->get('logo_img'))
+				{
+					if (file_exists($uploadDirectory . $old))
+					{
+						\Filesystem::delete($uploadDirectory . $old);
+					}
+				}
+				// Move successful, save the image url to the billboard entry
+				$row->set('logo_img', $logo_image['name']);
+				if (!$row->save())
+				{
+					Notify::error($row->getError());
+					return $this->editTask($row);
+				}
+			}
+		}
+		else{
+			Notify::error(Lang::txt('COM_PARTNERS_ERROR_NAME_NULL'));
+			return $this->editTask($row);
+		}
 
 		// Validate and save the data
 		//

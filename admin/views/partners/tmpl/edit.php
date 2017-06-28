@@ -60,8 +60,6 @@ function submitbutton(pressbutton)
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_HINT_NAME'); ?></span>
 			</div>
 
-
-
 			<!--Date joined-->
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PARTNERS_HINT_DATE_JOINED'); ?>">
 					<label for="field-date_joined"><?php echo Lang::txt('COM_PARTNERS_FIELD_DATE_JOINED'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
@@ -76,7 +74,11 @@ function submitbutton(pressbutton)
 				<input type="text" name="fields[site_url]" id="field-site_url" size="35" value="<?php echo $this->escape($this->row->get('site_url')); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?></span>
 			</div>
-
+			<!--Logo -->
+			<div class="input-wrap">
+					<label for="logo-image"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?>:</label><br />
+					<input type="file" name="logo-image" id="logo-image" />
+				</div>
 			
 			<!--GROUP CN -->
 			<div class="input-wrap">
@@ -87,7 +89,7 @@ function submitbutton(pressbutton)
 						<?php } ?>
 					</select>
 				</div>
-<!--QUBES Liason-->
+			<!--QUBES Liason-->
 				<div class="input-wrap">
 					<label for="fields-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?></label>
 					<select name="fields[QUBES_liason]" id="fields-QUBES_liason">
@@ -189,6 +191,17 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 
+	<!--display image here -->
+	<?php if ($this->row->get('logo_img', false)) : ?>
+				<fieldset class="adminform">
+					<legend><span><?php echo Lang::txt('COM_PARTNERS_CURRENT_IMG'); ?></span></legend>
+					<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim($this->row->logo_img, DS)); ?>
+					<?php if (count($image->getErrors()) == 0) : ?>
+						<?php $image->resize(500); ?>
+						<div style="padding: 10px;"><img src="<?php echo $image->inline(); ?>" alt="logo image" /></div>
+					<?php endif; ?>
+				</fieldset>
+			<?php endif; ?>
 	<div class="clr"></div>
 	<!--These are important, especially box checked!!, allows you to use the edit/publish/delete buttons once you have checked something -->
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
