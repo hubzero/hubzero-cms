@@ -37,7 +37,7 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation, where we make sure required fields were not left blank
-	if ($('#field-name').val() == '' || $('#field-date_joined').val() == ''|| $('#field-site_url').val() == '' || $('#field-logo_url').val() == '' 
+	if ($('#field-name').val() == '' || $('#field-date_joined').val() == ''|| $('#field-site_url').val() == ''
 		|| $('#field-activities').val() == '' || $('#field-about').val() == '' ){
 		alert("<?php echo Lang::txt('COM_PARTNERS_ERROR_MISSING_FIELDS'); ?>");
 	} else {
@@ -186,19 +186,6 @@ function submitbutton(pressbutton)
 					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
 			</div>
-		</fieldset>
-	</div>
-
-		<div class="col span5">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?></span></legend>
-
-			<?php if ($this->row->get('id')): ?>
-				<iframe height="420" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&id=' 
-				. $this->get('id') . '&t=' . time()); ?>"></iframe>
-			<?php else: ?>
-				<p class="warning"><?php echo Lang::txt('COM_PARTNERS_PICTURE_ADDED_LATER'); ?></p>
-			<?php endif; ?>
 		</fieldset>
 	</div>
 
