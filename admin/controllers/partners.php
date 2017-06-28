@@ -253,7 +253,11 @@ class Partners extends AdminController
 		// Initiate model and bind the incoming data to it
 		$row = Partner::oneOrNew($fields['id'])->set($fields);
 		
-
+				// Get the partner type has been assigned to.
+		//
+		// Here we're grabbing the array of partner_types (radio buttons) and
+		// assigning the model to the partner_type
+		$partner_type = Request::getVar('partner_type', array(), 'post');
 
 		// See if we have an image coming in as well
 		$logo_image = Request::getVar('logo-image', false, 'files', 'array');
@@ -262,7 +266,7 @@ class Partners extends AdminController
 		if (isset($logo_image['name']) && $logo_image['name'])
 		{
 			// Build the upload path if it doesn't exist, THIS IS WHERE IMAGE WILL BE STORED
-			$image_location  = $this->config->get('image_location', 'app' . DS . 'site' . DS . 'media' . DS . 'images');
+			$image_location  = $this->config->get('image_location', 'app' . DS . 'site' . DS . 'media' . DS . 'images' . DS .'partners');
 			$uploadDirectory = PATH_ROOT . DS . trim($image_location, DS) . DS;
 
 			// Make sure upload directory exists and is writable
@@ -305,11 +309,7 @@ class Partners extends AdminController
 				}
 			}
 		}
-		else{
-			Notify::error(Lang::txt('COM_PARTNERS_ERROR_NAME_NULL'));
-			return $this->editTask($row);
-		}
-
+		
 		// Validate and save the data
 		//
 		// If save() returns false for any reason, me pass the error
@@ -331,7 +331,6 @@ class Partners extends AdminController
 		//
 		// Here we're grabbing the array of partner_types (radio buttons) and
 		// assigning the model to the partner_type
-		$partner_type = Request::getVar('partner_type', array(), 'post');
 
 		//doing same thing with groups_cn
 		
