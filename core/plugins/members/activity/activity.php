@@ -106,13 +106,25 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'settings':     $arr['html'] = $this->settingsAction(); break;
-				case 'savesettings': $arr['html'] = $this->savesettingsAction(); break;
-				case 'remove':       $arr['html'] = $this->removeAction(); break;
-				case 'unstar':       $arr['html'] = $this->starAction(); break;
-				case 'star':         $arr['html'] = $this->starAction(); break;
+				case 'settings':
+					$arr['html'] = $this->settingsAction();
+					break;
+				case 'savesettings':
+					$arr['html'] = $this->savesettingsAction();
+					break;
+				case 'remove':
+					$arr['html'] = $this->removeAction();
+					break;
+				case 'unstar':
+					$arr['html'] = $this->starAction();
+					break;
+				case 'star':
+					$arr['html'] = $this->starAction();
+					break;
 				case 'feed':
-				default:         $arr['html'] = $this->feedAction();     break;
+				default:
+					$arr['html'] = $this->feedAction();
+					break;
 			}
 		}
 
