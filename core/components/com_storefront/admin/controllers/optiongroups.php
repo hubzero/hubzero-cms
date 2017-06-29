@@ -450,4 +450,3 @@ class Optiongroups extends AdminController
 		);
 	}
 }
-
