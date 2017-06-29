@@ -103,7 +103,7 @@ function submitbutton(pressbutton)
 						<?php } ?>
 					</select>
 				</div>
-				<!--Partner Liason-->
+			<!--Partner Liason-->
 				<div class="input-wrap">
 					<label for="fields-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?></label>
 					<select name="fields[partner_liason]" id="fields-QUBES_liason">
