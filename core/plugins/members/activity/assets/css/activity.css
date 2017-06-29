@@ -28,7 +28,7 @@
 /* Filters */
 	.filters {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-		padding: 1.5em;
+		padding: 1.5em 1.5em 0.5em 1.5em;
 	}
 	.filters .omega {
 		text-align: right;
@@ -55,6 +55,12 @@
 	}
 	.filters a:hover {
 		border: none;
+	}
+	.filters .grid {
+		margin-bottom: 1em;
+	}
+	.filters .input-wrap {
+		margin-right: 1.5em;
 	}
 
 /* Activities */
@@ -97,6 +103,127 @@
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
 	}
+	.activities .activity-actor-picture .activity-context {
+		background: #f1f1f1;
+		background: rgba(0, 0, 0, 0.05);
+		color: #ccc;
+		color: rgba(0, 0, 0, 0.2);
+		display: block;
+		width: 48px;
+		height: 48px;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		font-size: 2em;
+		text-align: center;
+		overflow: hidden;
+		position: relative;
+		text-indent: 555em;
+		white-space: nowrap;
+	}
+	.activities .activity-actor-picture .activity-context:before {
+		position: absolute;
+		font-family: "Fontcons";
+		/*content: "\f056";*/
+		text-indent: 0;
+		top: 0;
+		left: 0;
+		right: 0;
+		line-height: 2em;
+	}
+
+	/* Areas */
+	.activity-context.wiki:before {
+		content: "\f072";
+	}
+	.activity-context.project:before {
+		content: "\f03f";
+	}
+	.activity-context.group:before {
+		content: "\f042";
+	}
+	.activity-context.collections:before {
+		content: "\f005";
+	}
+	.activity-context.comment:before {
+		content: "\f075";
+	}
+	.activity-context.announcement:before {
+		content: "\f095";
+	}
+	.activity-context.question:before {
+		content: "\f059";
+	}
+	.activity-context.wishlist:before {
+		content: "\f078";
+	}
+	.activity-context.support:before {
+		content: "\f055";
+	}
+	.activity-context.resource:before {
+		content: "\f0c5";
+	}
+	.activity-context.blog:before {
+		content: "\f036";
+	}
+	.activity-context.forum:before {
+		content: "\f086";
+	}
+
+	/* Actions */
+	.activity-context.emailed:before {
+		content: "\2709";
+	}
+	.activity-context.voted:before {
+		content: "\2605";
+	}
+	.activity-context.forked:before {
+		content: "\f16b";
+	}
+	.activity-context.downloaded:before {
+		content: "\f019";
+	}
+	.activity-context.uploaded:before {
+		content: "\f093";
+	}
+	.activity-context.reply:before {
+		content: "\f086";
+	}
+	.activity-context.shared:before {
+		content: "\f045";
+	}
+	/* Highlight a couple important actions */
+	.activities .activity-actor-picture .activity-context.support,
+	.activities .activity-actor-picture .activity-context.denied,
+	.activities .activity-actor-picture .activity-context.declined {
+		background: #f9e4e4;
+		color: #dd5555;
+	}
+	.activity-context.denied:before,
+	.activity-context.declined:before {
+		content: "\f088";
+	}
+	.activities .activity-actor-picture .activity-context.accepted {
+		background: #e7f2ff;
+		color: #5da6fb;
+		background-color: #e9f8e0;
+		color: #4bc800;
+	}
+	.activities .activity-actor-picture .activity-context.emailed,
+	.activities .activity-actor-picture .activity-context.invited {
+		background: #e7f2ff;
+		color: #5da6fb;
+	}
+	.activities .activity-actor-picture .activity-context.announcement {
+		background: #fffae7;
+		color: #ffd012;
+	}
+	.activity-context.accepted:before {
+		content: "\f087";
+	}
+
 	/* Content */
 	.activities .activity-content {
 		margin: 0 0 1em 0;
@@ -123,57 +250,6 @@
 		padding: 0 0 0.61803399em 0;
 	}
 
-	/* Action 
-	.activity-action {
-		display: inline-block;
-		font-size: 0.75em;
-		line-height: 1;
-		border: 1px solid #aaa;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		border-radius: 0.25em;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		padding: 0.3em 0.4em;
-		display: block;
-		position: absolute;
-		bottom: 1.61803399em;
-		left: 2em;
-	}*/
-	.subscribed .activity-action,
-	.invited .activity-action,
-	.created .activity-action {
-		border-color: #a3ca60;
-		color: #a3ca60;
-	}
-	.unsubscribed .activity-action,
-	.denied .activity-action,
-	.declined .activity-action,
-	.deleted .activity-action {
-		border-color: #d55;
-		color: #d55;
-	}
-	.joined .activity-action,
-	.accepted .activity-action {
-		border-color: #a3ca60;
-		color: #a3ca60;
-	}
-	.shared .activity-action,
-	.voted .activity-action {
-		border-color: #c463d1;
-		color: #c463d1;
-	}
-	.downloaded .activity-action {
-		border-color: #5cb4e4;
-		color: #5cb4e4;
-	}
-
-	/*.activities .activity-event>*:first-child {
-		margin-top: 0;
-		padding-top: 0;
-		margin-bottom: 0;
-		padding-bottom: 0;
-	}*/
 	.activities .activity-event-preview>*:first-child,
 	.activities .activity-event-content>*:first-child {
 		margin-top: 0;
@@ -200,11 +276,7 @@
 		margin-right: 1em;
 	}
 
-	.activity-time {
-		/*position: absolute;
-		top: 0.61803399em;
-		right: 0.61803399em;*/
-	}
+	.activity-action,
 	.activity-channel,
 	.activity-context {
 		display: none;
@@ -222,6 +294,24 @@
 
 	.icon-project:before {
 		content: "\f03f";
+	}
+
+	/* List of recent duplicate activities */
+	.activities .activity-duplicates {
+		margin: 1em 0 0 0;
+		padding: 0;
+		list-style: none;
+		font-size: 85%;
+		color: #aaa;
+	}
+	.activity-duplicates li {
+		margin: 0 0 0 1em;
+		padding: 0;
+	}
+	.activity-duplicates li:before {
+		content: "\f056";
+		font-family: "Fontcons";
+		margin-right: 0.4em;
 	}
 
 @media (min-width: 40em) {
@@ -299,13 +389,10 @@
 	}
 	.icon-starred:hover:before,
 	.activity-options .icon-starred:hover:before {
-		color: #f8d201; /*#e3cf7a;*/
+		color: #f8d201;
 	}
 	.activity-options .icon-pin:hover:before {
 		color: orange;
-	}
-	.activity-options .icon-delete:before {
-		/*margin-left: 0.1em;*/
 	}
 	.activity-options .icon-delete:hover:before {
 		color: red;
@@ -587,9 +674,6 @@
 		right: 0;
 		background: rgba(255, 255, 255, 0.9);
 	}
-	/*.attachment.img:hover .attachment-meta {
-		display: block;
-	}*/
 	.attachment-count {
 		color: #aaa;
 	}

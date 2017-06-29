@@ -52,13 +52,15 @@ $online = false;
 if ($this->row->log->get('created_by') == User::get('id'))
 {
 	// Same user so go ahead and link to profile
-	$name = '<a href="' . Route::url($creator->link()) . '">' . $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')))) . '</a>';
+	/*$name = '<a href="' . Route::url($creator->link()) . '">' . $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')))) . '</a>';
 
 	// If they posted as anonymous, indicate it
 	if ($this->row->log->get('anonymous'))
 	{
 		$name = Lang::txt('PLG_MEMBERS_ACTIVITY_AS_ANONYMOUS', $name);
-	}
+	}*/
+
+	$name = 'You';
 
 	$online = true;
 }
@@ -93,7 +95,24 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 	class="activity <?php echo $status . ($this->row->get('starred') ? ' starred' : ''); ?>">
 
 	<div class="activity-actor-picture<?php if ($online) { echo ' tooltips" title="' . Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE'); } ?>">
-		<?php if ($creator->get('public')) { ?>
+		<?php if ($this->row->log->get('created_by') == User::get('id')) { ?>
+			<span class="user-img-wrap">
+				<span class="activity-context <?php
+					$scope = explode('.', $this->row->log->get('scope'));
+					$context = $this->escape($scope[0]);
+					if (in_array('comment', $scope))
+					{
+						$context = 'comment';
+
+						if ($this->row->log->get('parent'))
+						{
+							$context = 'reply';
+						}
+					}
+					echo $context . ' ' . $this->row->log->get('action');
+				?>"><?php echo $context . ' ' . $this->row->log->get('action'); ?></span>
+			</span>
+		<?php } else if ($creator->get('public')) { ?>
 			<a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
 				<img src="<?php echo $creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
 				<?php if ($online) { ?>
@@ -149,7 +168,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 				<?php
 				if ($this->row->log->get('scope') == 'activity.comment')
 				{
-					// For now, we can assume this is from a group. For now.
+					// For now, we can assume this is from a group.
 					// @TODO: Find a better way to associate comments to their parent scope (group, projects)
 					$group = Hubzero\User\Group::getInstance($this->row->log->get('scope_id'));
 
@@ -164,7 +183,6 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 				}
 				else if (substr($this->row->log->get('scope'), 0, strlen('project')) == 'project')
 				{
-					// For now, we can assume this is from a group. For now.
 					// @TODO: Find a better way to associate comments to their parent scope (group, projects)
 					require_once Component::path('com_projects') . '/models/project.php';
 
@@ -203,6 +221,46 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 				<div class="activity-event-content<?php echo ($short ? ' hide' : ''); ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
 					<?php echo $content; ?>
 				</div>
+				<?php
+				if (in_array($this->row->log->get('action'), array('updated', 'emailed', 'downloaded', 'uploaded', 'denied', 'voted', 'shared')))
+				{
+					$recipient = Hubzero\Activity\Recipient::all();
+
+					$r = $recipient->getTableName();
+					$l = Hubzero\Activity\Log::blank()->getTableName();
+
+					$duplicates = $recipient
+						->select($r . '.*')
+						->including('log')
+						->join($l, $l . '.id', $r . '.log_id')
+						->whereEquals($r . '.scope', 'user')
+						->whereEquals($r . '.scope_id', $this->member->get('id'))
+						->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_UNPUBLISHED)
+						->whereEquals($l . '.action', $this->row->log->get('action'))
+						->whereEquals($l . '.scope', $this->row->log->get('scope'))
+						->whereEquals($l . '.scope_id', $this->row->log->get('scope_id'))
+						->whereEquals($l . '.created_by', $this->row->log->get('created_by'))
+						->whereEquals($l . '.description', $this->row->log->get('description'))
+						->where('created', '>=', Date::of($this->row->log->get('created'))->modify('-1 hour')->toSql())
+						->where('created', '<', $this->row->log->get('created'))
+						->order($r . '.created', 'desc')
+						->rows();
+
+					if ($duplicates->count() > 0)
+					{
+						?>
+						<ul class="activity-duplicates">
+							<?php foreach ($duplicates as $dup) { ?>
+								<li>
+									<span class="activity-action"><?php echo $dup->log->get('action'); ?></span>
+									<span class="activity-time"><time datetime="<?php echo Date::of($dup->log->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($dup->log->get('created'))->toLocal('M j') . ' @ ' . Date::of($dup->log->get('created'))->toLocal('g:i a'); ?></time></span>
+								</li>
+							<?php } ?>
+						</ul>
+						<?php
+					}
+				}
+				?>
 			</div><!-- / .activity-event -->
 
 			<div class="activity-options">
