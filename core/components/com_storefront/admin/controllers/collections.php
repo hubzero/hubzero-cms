@@ -457,4 +457,3 @@ class Collections extends AdminController
 		return true;
 	}
 }
-

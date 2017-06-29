@@ -458,4 +458,3 @@ class Options extends AdminController
 		);
 	}
 }
-

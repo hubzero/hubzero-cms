@@ -228,4 +228,3 @@ class Meta extends AdminController
 		);
 	}
 }
-

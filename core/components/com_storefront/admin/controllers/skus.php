@@ -493,4 +493,3 @@ class Skus extends AdminController
 		);
 	}
 }
-
