@@ -210,6 +210,7 @@ class Meta extends AdminController
 			);
 			return;
 		}
+		Notify::success(Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'));
 
 		$this->editTask($product);
 	}

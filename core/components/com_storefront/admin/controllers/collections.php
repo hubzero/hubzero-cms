@@ -218,6 +218,8 @@ class Collections extends AdminController
 			return;
 		}
 
+		Notify::success(Lang::txt('COM_STOREFRONT_COLLECTION_SAVED'));
+
 		$this->editTask($collection);
 	}
 
