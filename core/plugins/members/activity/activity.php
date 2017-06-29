@@ -140,17 +140,55 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function feedAction()
 	{
-		$filters = array();
-		$filters['filter'] = Request::getWord('filter');
-		$filters['search'] = Request::getVar('q');
-		$filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
-		$filters['start']  = Request::getInt('start', 0);
+		// Add lists of scopes and actions to filter by
+		$scopes = \Hubzero\Activity\Log::all()
+			->select('DISTINCT(scope)')
+			->order('scope', 'asc')
+			->rows()
+			->toArray();
+		$categories = array();
+		foreach ($scopes as $scope)
+		{
+			$cat = explode('.', $scope['scope']);
 
+			if ($cat[0] == 'activity')
+			{
+				continue;
+			}
+
+			if (!in_array($cat[0], $categories))
+			{
+				$categories[] = $cat[0];
+			}
+		}
+
+		// Incoming filters
+		$filters = array(
+			'filter' => Request::getWord('filter'),
+			'search' => Request::getVar('q'),
+			'scope'  => Request::getWord('scope'),
+			'created_by' => Request::getWord('created_by'),
+			'limit'  => Request::getInt('limit', Config::get('list_limit')),
+			'start'  => Request::getInt('start', 0)
+		);
+
+		// Validate filters
 		if (!in_array($filters['filter'], ['starred']))
 		{
 			$filters['filter'] = '';
 		}
 
+		if (!in_array($filters['created_by'], array('me', 'notme')))
+		{
+			$filters['created_by'] = '';
+		}
+
+		if (!in_array($filters['scope'], $categories))
+		{
+			$filters['scope'] = '';
+		}
+
+		// Build query to retrieve records
 		$recipient = Hubzero\Activity\Recipient::all();
 
 		$r = $recipient->getTableName();
@@ -169,6 +207,24 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 			$recipient->whereEquals($r . '.starred', 1);
 		}
 
+		if ($filters['created_by'])
+		{
+			if ($filters['created_by'] == 'me')
+			{
+				$recipient->whereEquals($l . '.created_by', $this->member->get('id'));
+			}
+
+			if ($filters['created_by'] == 'notme')
+			{
+				$recipient->where($l . '.created_by', '!=', $this->member->get('id'));
+			}
+		}
+
+		if ($filters['scope'])
+		{
+			$recipient->whereLike($l . '.scope', $filters['scope']);
+		}
+
 		if ($filters['search'])
 		{
 			$recipient->whereLike($l . '.description', $filters['search']);
@@ -183,20 +239,13 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 			->start($filters['start'])
 			->rows();
 
-		/* @TODO  Add lists of scopes and actions to filter by
-		$categories = \Hubzero\Activity\Log::all()
-			->select('action')
-			->whereIn('id', $ids)
-			->ordered()
-			->paginated();
-		*/
-
 		$digests = $this->params->get('email_digests');
 
+		// Build view
 		$view = $this->view('default', 'activity')
 			->set('digests', $digests)
 			->set('member', $this->member)
-			->set('categories', null)
+			->set('categories', $categories)
 			->set('filters', $filters)
 			->set('total', $total)
 			->set('rows', $entries);
