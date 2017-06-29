@@ -597,10 +597,12 @@ class Shop extends SiteController
 		// Get cart object
 		$item = new Cart($this->database);
 
+		$items = $item->getCartItems(User::get('id'));
+
 		// Calculate total
 		$cost = $item->getCartItems(User::get('id'), 'cost');
 
-		if (!$cost)
+		if (empty($items))
 		{
 			$this->setError(Lang::txt('COM_STORE_ERR_EMPTY_ORDER'));
 		}
