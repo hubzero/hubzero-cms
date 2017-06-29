@@ -86,10 +86,6 @@ class Queries extends SiteController
 
 		$this->view->lists = array();
 
-		// Get resolutions
-		$sr = new Resolution($this->database);
-		$this->view->lists['resolutions'] = $sr->getResolutions();
-
 		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
 		$id = Request::getInt('id', 0);

@@ -333,10 +333,6 @@ class Tickets extends AdminController
 		$this->view->filters = Utilities::getFilters();
 		$this->view->lists = array();
 
-		// Get resolutions
-		$sr = new Tables\Resolution($this->database);
-		$this->view->lists['resolutions'] = $sr->getResolutions();
-
 		// Get messages
 		$sm = new Tables\Message($this->database);
 		$this->view->lists['messages'] = $sm->getMessages();
@@ -920,10 +916,6 @@ class Tickets extends AdminController
 
 		$this->view->filters = Utilities::getFilters();
 		$this->view->lists = array();
-
-		// Get resolutions
-		$sr = new Tables\Resolution($this->database);
-		$this->view->lists['resolutions'] = $sr->getResolutions();
 
 		// Get categories
 		$sa = new Tables\Category($this->database);

@@ -127,10 +127,6 @@ class Queries extends AdminController
 
 		$this->view->lists = array();
 
-		// Get resolutions
-		$sr = new Resolution($this->database);
-		$this->view->lists['resolutions'] = $sr->getResolutions();
-
 		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
 		$id = Request::getVar('id', array(0));
