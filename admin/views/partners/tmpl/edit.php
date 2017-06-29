@@ -4,7 +4,7 @@ defined('_HZEXEC_') or die();
 
 // Get the permissions helper
 $canDo = \Components\Partners\Helpers\Permissions::getActions('partner');
-
+//use Components\Partners\Models\Partner;
 // Toolbar is a helper class to simplify the creation of Toolbar 
 // titles, buttons, spacers and dividers in the Admin Interface.
 //
@@ -46,6 +46,7 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	}
 }
+
 </script>
 <!--Setting enctype to multipart encoding allows us to access the image seperately with a request::getvar in partners -->
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form" enctype="multipart/form-data">
@@ -148,7 +149,6 @@ function submitbutton(pressbutton)
 					if ($this->row->get('partner_type') == $partner_type->get('id')){
 							$check =true;
 						}
-				
 				?>
 				<!-- changed here so that name=fields[partner-type] vs a partner_type field, thus during save task, we no longer need code to save which partner type we are, as everything is done through the fields[]-->
 				<div class="input-wrap">
@@ -195,13 +195,15 @@ function submitbutton(pressbutton)
 	<?php if ($this->row->get('logo_img', false)) : ?>
 				<fieldset class="adminform">
 					<legend><span><?php echo Lang::txt('COM_PARTNERS_CURRENT_IMG'); ?></span></legend>
-					<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim($this->row->logo_img, DS)); ?>
+					<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim('app/site/media/images/partners/' . $this->row->get('logo_img'), DS)); ?>
+					<legend><span><?php echo Lang::txt($this->row->get('logo_img')); ?></span></legend>
 					<?php if (count($image->getErrors()) == 0) : ?>
 						<?php $image->resize(500); ?>
 						<div style="padding: 10px;"><img src="<?php echo $image->inline(); ?>" alt="logo image" /></div>
 					<?php endif; ?>
 				</fieldset>
 			<?php endif; ?>
+
 	<div class="clr"></div>
 	<!--These are important, especially box checked!!, allows you to use the edit/publish/delete buttons once you have checked something -->
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
