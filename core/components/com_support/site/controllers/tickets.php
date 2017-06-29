@@ -674,7 +674,6 @@ class Tickets extends SiteController
 			{
 				$filters['search'] = '';
 			}
-
 			$query->query = $sq->getQuery($query->conditions);
 
 			// Get a record count
