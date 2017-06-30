@@ -66,7 +66,7 @@ class Services extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
+		$filters = array(
 			// Get paging variables
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
@@ -95,18 +95,16 @@ class Services extends AdminController
 
 		// get all available services
 		$objS = new Service($this->database);
-		$this->view->rows = $objS->getServices('', 1, '', $this->view->filters['sort'], $this->view->filters['sort_Dir'], '', 1);
+		$rows = $objS->getServices('', 1, '', $filters['sort'], $filters['sort_Dir'], '', 1);
 
-		$this->view->total = ($this->view->rows) ? count($this->view->rows) : 0;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$total = ($rows) ? count($rows) : 0;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -201,16 +199,9 @@ class Services extends AdminController
 			$row->load($id);
 		}
 
-		$this->view->row = $row;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -233,41 +224,68 @@ class Services extends AdminController
 		$row = new Service($this->database);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store content
 		if (!$row->check())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store content
 		if (!$row->store())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		$this->setMessage(
-			Lang::txt('COM_SERVICES_SAVED'),
-			'message'
-		);
+		Notify::success(Lang::txt('COM_SERVICES_SAVED'));
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
+	}
+
+	/**
+	 * Delete one or more entries
+	 *
+	 * @return 	void
+	 */
+	public function removeTask()
+	{
+		// get the request vars
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$success = 0;
+
+		foreach ($ids as $id)
+		{
+			$row = new Service($this->database);
+			$row->load(intval($id));
+
+			if (!$row->delete())
+			{
+				Notify::error(Lang::txt('COM_SERVICES_DELETE_FAILED', $id));
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_SERVICES_DELETE_SUCCESS'));
+		}
+
+		// Redirect back to list
+		$this->cancelTask();
 	}
 }
-
