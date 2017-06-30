@@ -657,7 +657,7 @@ class Mailinglist extends AdminController
 	{
 		$email = Request::getVar('email', array(), 'post');
 
-		$mid = ($email['mid']) ? $email['mid'] : Request::getInt('mid');
+		$mid = (isset($email['mid']) && $email['mid']) ? $email['mid'] : Request::getInt('mid');
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false)
