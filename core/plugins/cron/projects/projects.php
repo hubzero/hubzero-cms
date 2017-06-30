@@ -160,8 +160,8 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 				'com_projects',
 				true,
 				$project->created_by_user,
-				NULL,
-				NULL,
+				null,
+				null,
 				'sync',
 				array('files')
 			);
@@ -191,7 +191,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 
 		// Get all projects
 		$obj = new \Components\Projects\Tables\Project($database);
-		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias' );
+		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias');
 
 		if (!$projects)
 		{
@@ -215,4 +215,3 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-
