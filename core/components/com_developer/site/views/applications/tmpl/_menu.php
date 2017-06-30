@@ -35,8 +35,8 @@ defined('_HZEXEC_') or die();
 
 $tabs = array(
 	'details' => Lang::txt('COM_DEVELOPER_API_APPLICATION_TAB_DETAILS'),
-	'tokens'  => Lang::txt('COM_DEVELOPER_API_APPLICATION_TAB_TOKENS'),
-	'stats'   => Lang::txt('COM_DEVELOPER_API_APPLICATION_TAB_STATS')
+	'tokens'  => Lang::txt('COM_DEVELOPER_API_APPLICATION_TAB_TOKENS')//,
+	//'stats'   => Lang::txt('COM_DEVELOPER_API_APPLICATION_TAB_STATS')
 );
 ?>
 
