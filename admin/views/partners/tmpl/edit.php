@@ -141,12 +141,19 @@ function submitbutton(pressbutton)
 
 			<?php
 			//for loop to display each partner type, the radio button will be checked if the partner_type (int) is equal to the partner_type id
+
+			 $count = 0;
 			foreach ($this->partner_types as $partner_type) { ?>
 				<?php
 				$check = false;
 					if ($this->row->get('partner_type') == $partner_type->get('id')){
 							$check =true;
 						}
+					//will select first partner type if we are making a new partner
+					if (($this->row->get('partner_type') == 0) && ($this->partner_types != null) && ( $count == 0)){
+						$check=true;
+					}
+					$count +=1;
 				?>
 				<!-- changed here so that name=fields[partner-type] vs a partner_type field, thus during save task, we no longer need code to save which partner type we are, as everything is done through the fields[]-->
 				<div class="input-wrap">
