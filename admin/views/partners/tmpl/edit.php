@@ -75,11 +75,6 @@ function submitbutton(pressbutton)
 				<input type="text" name="fields[site_url]" id="field-site_url" size="35" value="<?php echo $this->escape($this->row->get('site_url')); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_PARTNERS_FIELD_LINK'); ?></span>
 			</div>
-			<!--Logo -->
-			<div class="input-wrap">
-					<label for="logo-image"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?>:</label><br />
-					<input type="file" name="logo-image" id="logo-image" />
-				</div>
 			
 			<!--GROUP CN -->
 			<div class="input-wrap">
@@ -193,12 +188,22 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 	</div>
-
+	<div class="col width-40 fltrt">
 	<!--display image here -->
 	<?php if ($this->row->get('logo_img', false)) : ?>
+			<fieldset class="adminform">
+				<!--Logo -->
+			<div class="input-wrap">
+					<label for="logo-image"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?>:</label><br />
+					<input type="file" name="logo-image" id="logo-image" />
+				</div>
+				</fieldset>
+
 				<fieldset class="adminform">
 					<legend><span><?php echo Lang::txt('COM_PARTNERS_CURRENT_IMG'); ?></span></legend>
+					<!--For some reason, logo_img is not being given the directory structure, so I manually give it here -->
 					<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim('app/site/media/images/partners/' . $this->row->get('logo_img'), DS)); ?>
+					<!--Displays file name -->
 					<legend><span><?php echo Lang::txt($this->row->get('logo_img')); ?></span></legend>
 					<?php if (count($image->getErrors()) == 0) : ?>
 						<?php $image->resize(500); ?>
@@ -206,7 +211,7 @@ function submitbutton(pressbutton)
 					<?php endif; ?>
 				</fieldset>
 			<?php endif; ?>
-
+	</div>
 	<div class="clr"></div>
 	<!--These are important, especially box checked!!, allows you to use the edit/publish/delete buttons once you have checked something -->
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
