@@ -125,7 +125,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 
 		// Get all projects
 		$obj = new \Components\Projects\Tables\Project($database);
-		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias');
+		$projects = $obj->getRecords(array('active' => true), 'admin', 0, 0, ($pconfig->get('confirm_step', 0) ? 3 : 2)); //$obj->getValidProjects(array(), array(), $pconfig, false, 'alias');
 
 		if (!$projects)
 		{
@@ -137,10 +137,10 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 
 		Request::setVar('auto', 1);
 
-		foreach ($projects as $alias)
+		foreach ($projects as $project)
 		{
 			// Load project
-			$project = $obj->getProject($alias, 0);
+			//$project = $obj->getProject($alias, 0);
 
 			$pparams   = new \Hubzero\Config\Registry($project->params);
 			$connected = $pparams->get('google_dir_id');
