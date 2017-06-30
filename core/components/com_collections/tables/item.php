@@ -247,10 +247,21 @@ class Item extends \JTable
 	protected function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS b";
-		$query .= " INNER JOIN #__collections_posts AS s ON s.item_id=b.id";
-		if (!isset($filters['collection_id']) || !$filters['collection_id'])
+		if (isset($filters['admin']) && $filters['admin'])
 		{
-			$query .= " INNER JOIN #__collections AS d ON s.collection_id=d.id";
+			$query .= " LEFT JOIN #__collections_posts AS s ON s.item_id=b.id";
+			if (!isset($filters['collection_id']) || !$filters['collection_id'])
+			{
+				$query .= " LEFT JOIN #__collections AS d ON s.collection_id=d.id";
+			}
+		}
+		else
+		{
+			$query .= " INNER JOIN #__collections_posts AS s ON s.item_id=b.id";
+			if (!isset($filters['collection_id']) || !$filters['collection_id'])
+			{
+				$query .= " INNER JOIN #__collections AS d ON s.collection_id=d.id";
+			}
 		}
 		$query .= " LEFT JOIN #__users AS u ON s.created_by=u.id";
 

@@ -70,6 +70,7 @@ class Items extends AdminController
 	{
 		// Get filters
 		$this->view->filters = array(
+			'admin'  => true,
 			'state'  => -1,
 			'access' => -1,
 			'sort' => Request::getState(
