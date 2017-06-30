@@ -465,17 +465,18 @@ class Newsletter extends AdminController
 	private function togglePublishedStateTask($publish = 1)
 	{
 		//get the request vars
-		$ids = Request::getVar("id", array());
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		//make sure we have ids
-		if (isset($ids) && count($ids) > 0)
+		if (count($ids) > 0)
 		{
 			//delete each newsletter
 			foreach ($ids as $id)
 			{
 				//instantiate newsletter object
 				$newsletterNewsletter = new Letter($this->database);
-				$newsletterNewsletter->load($id);
+				$newsletterNewsletter->load(intval($id));
 
 				//mark as deleted
 				$newsletterNewsletter->published = $publish;

@@ -139,9 +139,13 @@ Joomla.submitbutton = function(pressbutton)
 						</td>
 						<td class="priority-2">
 							<?php if ($newsletter->published) : ?>
-								<span class="state yes"><span><?php echo Lang::txt('JYES'); ?></span></span>
+								<a class="state yes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1'); ?>">
+									<span><?php echo Lang::txt('JYES'); ?></span>
+								</a>
 							<?php else : ?>
-								<span class="state no"><span><?php echo Lang::txt('JNO'); ?></span></span>
+								<a class="state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1'); ?>">
+									<span><?php echo Lang::txt('JYES'); ?></span>
+								</a>
 							<?php endif; ?>
 						</td>
 						<td>
