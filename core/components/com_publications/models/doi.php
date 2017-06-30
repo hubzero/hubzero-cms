@@ -43,7 +43,7 @@ class Doi extends Object
 	/**
 	 * DOI Configs
 	 */
-	var $_configs = NULL;
+	var $_configs = null;
 
 	/**
 	 * Container for properties
@@ -57,14 +57,21 @@ class Doi extends Object
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
+	
+	/**
+	 * JDatabase
+	 *
+	 * @var object
+	 */
+	const CONTENT_TYPE_SERIES = 5;
 
 	/**
 	 * Constructor
 	 *
 	 * @return     void
 	 */
-	public function __construct( $pub = NULL )
+	public function __construct( $pub = null )
 	{
 		$this->_db = \App::get('db');
 
@@ -163,7 +170,7 @@ class Doi extends Object
 	 *
 	 * @return   string
 	 */
-	public function getServicePath( $doi = NULL )
+	public function getServicePath( $doi = null )
 	{
 		if (!$this->on())
 		{
@@ -190,7 +197,7 @@ class Doi extends Object
 	 *
 	 * @return  void
 	 */
-	public function mapPublication($pub = NULL)
+	public function mapPublication($pub = null)
 	{
 		if (empty($pub) || !$pub instanceof Publication)
 		{
@@ -228,7 +235,7 @@ class Doi extends Object
 		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';
 		$this->set('resourceType', $dcType);
 		$this->set('resourceTypeTitle', htmlspecialchars($category->name));
-
+		
 		// Map license
 		$license = $pub->license();
 		$this->set('license', htmlspecialchars($license->title));
@@ -250,7 +257,7 @@ class Doi extends Object
 	 *
 	 * @return  void
 	 */
-	public function mapUser( $uid = NULL, $authors = array(), $type = 'creator')
+	public function mapUser( $uid = null, $authors = array(), $type = 'creator')
 	{
 		if (!empty($authors) && count($authors) > 0)
 		{
@@ -277,7 +284,7 @@ class Doi extends Object
 		$nameParts            = explode(" ", $name);
 		$name  = end($nameParts);
 		$name .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
-		$this->set($type , htmlspecialchars($name));
+		$this->set($type, htmlspecialchars($name));
 
 		if (!empty($orcid))
 		{
@@ -484,7 +491,7 @@ class Doi extends Object
 	 * @param   string   $status  DOI status [public, reserved]
 	 * @return  boolean
 	 */
-	public function update($doi = NULL, $sendXml = false, $status = 'public')
+	public function update($doi = null, $sendXml = false, $status = 'public')
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)
@@ -547,7 +554,7 @@ class Doi extends Object
 	 *
 	 * @return boolean
 	 */
-	public function delete($doi = NULL)
+	public function delete($doi = null)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)
@@ -572,7 +579,7 @@ class Doi extends Object
 	 *
 	 * @return     xml output
 	 */
-	public function buildXml( $doi = NULL)
+	public function buildXml( $doi = null)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)
@@ -632,12 +639,30 @@ class Doi extends Object
 			$xmlfile.='	</contributor>';
 			$xmlfile.='</contributors>';
 		}
+
+		// Get url which contains the publication id
+		$urlArr = explode('/', $this->_data["url"]);
+		// Get the content type of the publication by its id
+		$sql = "SELECT master_type FROM #__publications where id = $urlArr[4]";
+		$this->_db->setQuery($sql);
+		$conType = $this->_db->loadResult();
+		// Set resTypeGenVal to Collection if publication is series
+		$resTypeGenVal = "Dataset";
+		if ($conType == self::CONTENT_TYPE_SERIES)
+		{
+			$resTypeGenVal = "Collection";
+		}
+		else
+		{
+			$resTypeGenVal = $this->get('resourceType');
+		}
+
 		$xmlfile.='<dates>
 			<date dateType="Valid">' . $this->get('datePublished') . '</date>
 			<date dateType="Accepted">' . $this->get('dateAccepted') . '</date>
 		</dates>
 		<language>' . $this->get('language') . '</language>
-		<resourceType resourceTypeGeneral="' . $this->get('resourceType') . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
+		<resourceType resourceTypeGeneral="' . $resTypeGenVal . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
 		if ($this->get('relatedDoi'))
 		{
 			$xmlfile.='<relatedIdentifiers>
