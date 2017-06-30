@@ -106,8 +106,11 @@ class Mailinglist extends AdminController
 		$this->view->list->email_count = null;
 
 		// get request vars
-		$ids = Request::getVar('id', array());
-		$id = (isset($ids[0])) ? $ids[0] : null;
+		$id = Request::getVar('id', array());
+		if (is_array($id))
+		{
+			$id = (!empty($id) ? intval($id[0]) : 0);
+		}
 
 		// are we editing or adding a new list
 		if ($id)
