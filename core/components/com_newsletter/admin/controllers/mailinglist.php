@@ -313,7 +313,7 @@ class Mailinglist extends AdminController
 
 		// get current emails on list
 		$filters = array('status' => 'all');
-		$currentEmails = array_keys($newsletterMailinglist->getListEmails($this->mid, $key ='email', $filters));
+		$currentEmails = array_keys($newsletterMailinglist->getListEmails($this->mid, $key = 'email', $filters));
 
 		// get com_media params
 		$config = Component::params('com_media');
