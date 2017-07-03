@@ -550,8 +550,7 @@ class Orcid extends SiteController
 		$srv = $this->config->get('orcid_service', 'members');
 		$clientID = $this->config->get('orcid_' . $srv . '_client_id');
 		$clientSecret = $this->config->get('orcid_' . $srv . '_token');
-		$oauthToken = $this->_oauthToken[$srv];
-		
+		$oauthToken = $this->_oauthToken[$srv];	
 		if (Request::getVar('code'))
 		{
 			//Build request parameter string
