@@ -197,14 +197,15 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-40 fltrt">
 	<!--display image here -->
-	<?php if ($this->row->get('logo_img', false)) : ?>
-			<fieldset class="adminform">
+				<fieldset class="adminform">
 				<!--Logo -->
 			<div class="input-wrap">
 					<label for="logo-image"><?php echo Lang::txt('COM_PARTNERS_FIELD_LOGO'); ?>:</label><br />
 					<input type="file" name="logo-image" id="logo-image" />
 				</div>
 				</fieldset>
+	<?php if ($this->row->get('logo_img', false)) : ?>
+
 
 				<fieldset class="adminform">
 					<legend><span><?php echo Lang::txt('COM_PARTNERS_CURRENT_IMG'); ?></span></legend>

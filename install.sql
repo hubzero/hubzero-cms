@@ -44,7 +44,7 @@ INSERT INTO `jos_partner_partners` (`id`, `name`, `date_joined`, `partner_type`,
 `partner_liason`, `activities`, `state`, `about`)
 VALUES
 	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','NSF',
-		'nsf', 'https://www.nsf.gov/news/mmg/media/images/nsf_logo_f_272f4777-f5c4-4e49-8a2e-468e89b64b61_f.jpg', 
+		'nsf', '', 
     '1234', '1234','activites', 1,
     '<!-- {FORMAT:HTML} --><p>The National Science Foundation (NSF) is an independent federal agency created by Congress in 1950 "to promote the
 		 progress of science; to advance the national health, prosperity, and welfare; to secure the national defense…"’\n</p>');
