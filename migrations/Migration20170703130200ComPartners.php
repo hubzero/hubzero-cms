@@ -43,9 +43,9 @@ class Migration20170703130200ComPartners extends Base
 			$this->db->query();
 		}
 
-		if (!$this->db->tableExists('#__partner_partner_types'))
+		if (!$this->db->tableExists('#__partner_type_partner_types'))
 		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__partner_partner_types` (
+			$query = "CREATE TABLE IF NOT EXISTS `#__partner_type_partner_types` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `internal` varchar(255) NOT NULL DEFAULT '',
 			  `external` varchar(255) NOT NULL DEFAULT '',
@@ -76,9 +76,9 @@ class Migration20170703130200ComPartners extends Base
 			$this->db->query();
 		}
 
-		if ($this->db->tableExists('#__partner_partner_types'))
+		if ($this->db->tableExists('#__partner_type_partner_types'))
 		{
-			$query = "DROP TABLE #__partner_partner_types";
+			$query = "DROP TABLE #__partner_type_partner_types";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
