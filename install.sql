@@ -45,7 +45,7 @@ INSERT INTO `jos_partner_partners` (`id`, `name`, `date_joined`, `partner_type`,
 VALUES
 	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','NSF',
 		'nsf', '', 
-    '1234', '1234','activites', 1,
+    '', '','activites', 1,
     '<!-- {FORMAT:HTML} --><p>The National Science Foundation (NSF) is an independent federal agency created by Congress in 1950 "to promote the
 		 progress of science; to advance the national health, prosperity, and welfare; to secure the national defense…"’\n</p>');
 /*!40000 ALTER TABLE `jos_partner_partners` ENABLE KEYS */;
