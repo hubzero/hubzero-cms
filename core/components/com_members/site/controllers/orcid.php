@@ -599,8 +599,7 @@ class Orcid extends SiteController
 			$db = App::get('db');
 			$update_q = "UPDATE #__user_profiles SET profile_value = " . '"' . $orcid  . '"' . " WHERE user_id = $userID AND profile_key = " . '"orcid"';
 			$db->setQuery($update_q);
-			$db->execute();
-			
+			$db->execute();			
 		}
 		else
 		{
