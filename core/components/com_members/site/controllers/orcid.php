@@ -593,17 +593,14 @@ class Orcid extends SiteController
 	 */
 	public static function saveORCIDToProfile($userID, $orcid)
 	{
-		//$userID = self::getUserID($name);
-		$db = App::get('db');
-		//Check if the user already has orcid record in #__user_profiles
-		$exist_q = "SELECT EXISTS(SELECT * FROM #__user_profiles WHERE user_id = $userID AND profile_key = " . '"orcid"' . ")";
-		$db->setQuery($exist_q);
-		$exist = (int)$db->loadResult();
-		if ($exist == 1)
+		$row = Profile::oneByKeyAndUser('orcid', $userID);
+		if (($userID == $row->get('user_id')) && ('orcid' == $row->get('profile_key')))
 		{
+			$db = App::get('db');
 			$update_q = "UPDATE #__user_profiles SET profile_value = " . '"' . $orcid  . '"' . " WHERE user_id = $userID AND profile_key = " . '"orcid"';
 			$db->setQuery($update_q);
 			$db->execute();
+			
 		}
 		else
 		{
