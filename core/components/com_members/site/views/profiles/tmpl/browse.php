@@ -119,7 +119,14 @@ foreach ($this->fields as $field)
 								{
 									if ($q['field'] == $field->get('name'))
 									{
-										$value[] = $q['value'];
+										if (is_array($q['value']))
+										{
+											$value = array_merge($value, $q['value']);
+										}
+										else
+										{
+											$value[] = $q['value'];
+										}
 									}
 								}
 								?>
@@ -207,10 +214,10 @@ foreach ($this->fields as $field)
 				foreach ($this->filters['q'] as $i => $q) :
 					if (is_array($q['value']))
 					{
-						$qs[$i] = '&';
+						$qs[$i] = array();
 						foreach ($q['value'] as $key => $val)
 						{
-							$qs[$i] .= 'q[' . $q['field'] . '][]=' . $val;
+							$qs[$i][] = '&q[' . $q['field'] . '][]=' . $val;
 						}
 					}
 					else if ($q['field'] == 'search')
@@ -230,10 +237,31 @@ foreach ($this->fields as $field)
 							<?php foreach ($this->filters['q'] as $i => $q) : ?>
 								<?php
 								$route = $base;
-								if (is_array($q['value']))
+								if (is_array($q['human_value']))
 								{
-									foreach ($q['value'] as $key => $val)
+									foreach ($q['human_value'] as $key => $val)
 									{
+										// @TODO: This is messy. Find a better way to do this.
+										$route = $base;
+										foreach ($qs as $k => $s)
+										{
+											if ($k == $i)
+											{
+												if (is_array($s))
+												{
+													foreach ($s as $kkey => $ss)
+													{
+														if ($kkey == $key)
+														{
+															continue;
+														}
+														$route .= (is_array($ss) ? implode('', $ss) : $ss);
+													}
+												}
+												continue;
+											}
+											$route .= (is_array($s) ? implode('', $s) : $s);
+										}
 										?>
 										<li>
 											<i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($val); ?>
@@ -250,7 +278,7 @@ foreach ($this->fields as $field)
 										{
 											continue;
 										}
-										$route .= $s;
+										$route .= (is_array($s) ? implode('', $s) : $s);
 									}
 									?>
 									<li>
@@ -491,7 +519,17 @@ foreach ($this->fields as $field)
 				{
 					foreach ($this->filters['q'] as $i => $q)
 					{
-						$pageNav->setAdditionalUrlParam('q[' . $q['field'] . ']', $q['value']);
+						if (is_array($q['value']))
+						{
+							foreach ($q['value'] as $val)
+							{
+								$pageNav->setAdditionalUrlParam('q[' . $q['field'] . '][]', $val);
+							}
+						}
+						else
+						{
+							$pageNav->setAdditionalUrlParam('q[' . $q['field'] . ']', $q['value']);
+						}
 					}
 				}
 				echo $pageNav;

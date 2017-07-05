@@ -396,9 +396,10 @@ class Profiles extends SiteController
 					continue;
 				}
 
-				// Multi-value field (radios, checkboxes)
+				// Multi-value field (checkboxes)
 				if (is_array($val['value']))
 				{
+					$val['human_value'] = array();
 					foreach ($val['value'] as $value)
 					{
 						$multi = $val;
@@ -408,10 +409,12 @@ class Profiles extends SiteController
 						{
 							if ($option->get('value') == $value)
 							{
-								$multi['human_value'] = $option->get('label');
+								//$multi['human_value'] = $option->get('label');
+								$val['human_value'][] = $option->get('label');
+								break;
 							}
 						}
-						$filters['q'][] = $multi;
+						//$filters['q'][] = $multi;
 					}
 				}
 				// Single-value field (select list)
@@ -428,7 +431,7 @@ class Profiles extends SiteController
 			}
 
 			// No associated profile field was found
-			if (!isset($val['human_field']) || is_array($val['value']))
+			if (!isset($val['human_field']))// || is_array($val['value']))
 			{
 				continue;
 			}
