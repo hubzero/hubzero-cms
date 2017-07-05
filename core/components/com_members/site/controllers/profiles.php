@@ -351,6 +351,7 @@ class Profiles extends SiteController
 		{
 			$sortFound = true;
 		}
+		$filters['sqlsort'] = $filters['sort'];
 
 		// Process incoming filters
 		foreach ($q as $key => $val)
@@ -575,7 +576,7 @@ class Profiles extends SiteController
 
 				if ($filters['sort'] == $q['field'])
 				{
-					$filters['sort'] = 't' . $i . '.profile_value';
+					$filters['sqlsort'] = 't' . $i . '.profile_value';
 					$sortFound = true;
 				}
 
@@ -589,13 +590,13 @@ class Profiles extends SiteController
 		if (!$sortFound)
 		{
 			$entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']), 'inner');
-			$filters['sort'] = 't' . $i . '.profile_value';
+			$filters['sqlsort'] = 't' . $i . '.profile_value';
 		}
 
 		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
 
 		$rows = $entries
-			->order($filters['sort'], $filters['sort_Dir'])
+			->order($filters['sqlsort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 
