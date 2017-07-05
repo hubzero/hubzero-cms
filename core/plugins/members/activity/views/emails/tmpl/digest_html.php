@@ -139,7 +139,7 @@ $link = $base . '/' . trim($sef, '/');
 						<?php
 						$name = Lang::txt('PLG_MEMBERS_ACTIVITY_ANONYMOUS');
 
-						if (!$this->row->log->get('anonymous'))
+						if (!$row->log->get('anonymous'))
 						{
 							$creator = User::getInstance($row->log->get('created_by'));
 							$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
