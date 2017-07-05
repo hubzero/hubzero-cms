@@ -345,7 +345,7 @@ class Polls extends AdminController
 
 		if (count($ids) < 1)
 		{
-			$action = $publish ? 'COM_POLL_PUBLISH' : 'COM_POLL_UNPUBLISH';
+			$action = $state ? 'COM_POLL_PUBLISH' : 'COM_POLL_UNPUBLISH';
 
 			Notify::warning(Lang::txt('COM_POLL_SELECT_ITEM_TO', Lang::txt($action), true));
 
