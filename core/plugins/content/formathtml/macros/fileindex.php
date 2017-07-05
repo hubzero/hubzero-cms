@@ -67,12 +67,12 @@ class FileIndex extends Macro
 		{
 			$et = strip_tags($et);
 			// Get pages with a prefix
-			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE " . $this->_db->quote(strtolower($et) . '%') . " AND pageid=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
+			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE " . $this->_db->quote(strtolower($et) . '%') . " AND page_id=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
 		}
 		else
 		{
 			// Get all pages
-			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE pageid=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
+			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE page_id=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
 		}
 
 		// Perform query
@@ -92,8 +92,8 @@ class FileIndex extends Macro
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				$link = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
-				$fpath = PATH_APP . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
+				$link = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->page_id . DS . $row->filename;
+				$fpath = PATH_APP . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->page_id . DS . $row->filename;
 
 				$html .= '<li><a href="' . \Route::url($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
 				$huser = \User::getInstance($row->created_by);
@@ -120,4 +120,3 @@ class FileIndex extends Macro
 		}
 	}
 }
-
