@@ -185,7 +185,7 @@ foreach ($this->fields as $field)
 								<select name="sort" id="filter-value-sort">
 									<option value="name"><?php echo $this->escape('Name'); ?></option>
 									<?php foreach ($this->fields as $field) : ?>
-										<option value="<?php echo $this->escape($field->get('name')); ?>"><?php echo $this->escape($field->get('label')); ?></option>
+										<option value="<?php echo $this->escape($field->get('name')); ?>"<?php if ($field->get('name') == $this->filters['sort']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($field->get('label')); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</label>
@@ -195,8 +195,8 @@ foreach ($this->fields as $field)
 							<label for="filter-value-sort-dir">
 								<?php echo Lang::txt('Direction'); ?>
 								<select name="sort_Dir" id="filter-value-sort-dir">
-									<option value="asc"><?php echo $this->escape('Ascending (A-Z)'); ?></option>
-									<option value="desc"><?php echo $this->escape('Descending (Z-A)'); ?></option>
+									<option value="asc"<?php if ($this->filters['sort_Dir'] == 'asc') { echo ' selected="selected"'; } ?>><?php echo $this->escape('Ascending (A-Z)'); ?></option>
+									<option value="desc"<?php if ($this->filters['sort_Dir'] == 'desc') { echo ' selected="selected"'; } ?>><?php echo $this->escape('Descending (Z-A)'); ?></option>
 								</select>
 							</label>
 						</div>
