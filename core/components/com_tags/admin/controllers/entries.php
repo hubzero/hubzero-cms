@@ -498,7 +498,7 @@ class Entries extends AdminController
 				if ($tag_new)
 				{
 					// Yes, we are
-					$newtag = Tag::oneByAlias($tag_new);
+					$newtag = Tag::oneByTag($tag_new);
 					if (!$newtag->get('id'))
 					{
 						$newtag->set('raw_tag', $tag_new);
@@ -535,7 +535,7 @@ class Entries extends AdminController
 				}
 				else
 				{
-					Lang::txt('COM_TAGS_TAGS_COPIED');
+					Notify::success(Lang::txt('COM_TAGS_TAGS_COPIED'));
 				}
 
 				$this->cancelTask();
