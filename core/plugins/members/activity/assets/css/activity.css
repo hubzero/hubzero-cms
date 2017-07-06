@@ -171,6 +171,9 @@
 	.activity-context.forum:before {
 		content: "\f086";
 	}
+	.activity-context.tool:before {
+		content: "\f003";
+	}
 
 	/* Actions */
 	.activity-context.emailed:before {
