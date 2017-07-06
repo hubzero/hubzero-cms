@@ -834,7 +834,6 @@ class Owner extends \JTable
 			{
 				// Create system group
 				$group->set('cn',$cn);
-				$group->set('gidNumber', 0);
 				$group->create();
 				$group = \Hubzero\User\Group::getInstance( $cn );
 			}
