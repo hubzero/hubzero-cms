@@ -1509,7 +1509,7 @@ class Publications extends SiteController
 		$version = Models\Orm\Version::oneOrFail($vid);
 
 		$pubfilespace = $version->filespace();
-		$prjfilespace = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias');
+		$prjfilespace = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias') . '/files';
 
 		// We're going to need the original ID later
 		$pub_id = $version->get('publication_id');
@@ -1569,6 +1569,8 @@ class Publications extends SiteController
 		{
 			App::abort(500, $version->getError());
 		}
+
+		$newpubfilespace = $version->filespace();
 
 		// Copy tags
 		include_once dirname(dirname(__DIR__))  . DS . 'helpers' . DS . 'tags.php';
@@ -1631,6 +1633,13 @@ class Publications extends SiteController
 		}
 
 		// Copy attachments
+		if (!is_dir($prjfilespace))
+		{
+			if (!Filesystem::makeDirectory($prjfilespace, 0755, true, true))
+			{
+				App::abort(500, Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH'));
+			}
+		}
 		foreach ($attachments as $attachment)
 		{
 			$attachment->set('id', 0);
@@ -1641,26 +1650,51 @@ class Publications extends SiteController
 			$attachment->set('modified', '0000-00-00 00:00:00');
 			$attachment->set('modified_by', 0);
 
-			if (!$attachment->save())
-			{
-				App::abort(500, $attachment->getError());
-			}
-
 			if ($attachment->get('type') == 'file')
 			{
 				// Copy the files into the project
-				$from = $pubfilespace . '/' . $attachment->get('path');
-				$to   = $prjfilespace . '/' . $attachment->get('path');
+				$from   = $pubfilespace . '/' . $attachment->get('path');
+				$toProj = $prjfilespace . '/' . $attachment->get('path');
+				$toPub  = $newpubfilespace . '/' . $attachment->get('path');
 
 				if (!file_exists($from))
 				{
+					Notify::error('file does not exist: ' . $from);
 					continue;
 				}
 
-				if (!Filesystem::copy($from, $to))
+				if (!file_exists(dirname($toProj)))
 				{
-					App::abort(500, $attachment->getError());
+					Filesystem::makeDirectory(dirname($toProj), 0755, true, true);
 				}
+
+				// Copy to the project space
+				if (!Filesystem::copy($from, $toProj))
+				{
+					App::abort(500, Lang::txt('Failed to copy file "' . $from . '" to "' . $toProj . '"'));
+				}
+
+				// Copy to the publication space
+				if (!file_exists(dirname($toPub)))
+				{
+					Filesystem::makeDirectory(dirname($toPub), 0755, true, true);
+				}
+				if (!Filesystem::copy($from, $toPub))
+				{
+					App::abort(500, Lang::txt('Failed to copy file "' . $from . '" to "' . $toPub . '"'));
+				}
+				if (file_exists($from . '.hash'))
+				{
+					if (!Filesystem::copy($from . '.hash', $toPub . '.hash'))
+					{
+						App::abort(500, Lang::txt('Failed to copy file "' . $from . '.hash" to "' . $toPub . '.hash"'));
+					}
+				}
+			}
+
+			if (!$attachment->save())
+			{
+				App::abort(500, $attachment->getError());
 			}
 		}
 

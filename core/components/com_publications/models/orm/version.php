@@ -482,6 +482,6 @@ class Version extends Relational
 		$vid = String::pad($this->get('id'), 5);
 		$sec = $this->get('secret');
 
-		return PATH_APP . '/site/publications/' . $pid . '/' . $vid . '/' . $sec;
+		return PATH_APP . '/' . trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/') . '/' . $pid . '/' . $vid . '/' . $sec;
 	}
 }
