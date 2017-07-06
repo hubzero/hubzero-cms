@@ -53,7 +53,7 @@ Alternatively, the component comes with migrations that can be run via the comma
 Muse, that comes with all hubs. To do so, move the files from the component's /migrations
 directory and place them in the /app/migrations folder.
 
-The older migration is required fro the component to function properly and installs just the 
+The older migration is required for the component to function properly and installs just the 
 database tables and registers the component with the CMS. The other migration is optional and 
 only installs sample content.
 
