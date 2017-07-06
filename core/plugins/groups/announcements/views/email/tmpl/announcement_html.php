@@ -118,10 +118,12 @@ if ($this->announcement->priority == 1)
 						<tbody>
 							<tr>
 								<td style="text-align: left; padding: 20px;" align="left">
-									<?php echo $this->announcement->get('content'); ?>
-								</td>
-								<td style="text-align: left; padding: 20px;" align="left">
 									<a href="<?php echo $groupLink . '/announcements'; ?>"><?php echo $groupLink . '/announcements'; ?></a>
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: left; padding: 20px;" align="left">
+									<?php echo $this->announcement->get('content'); ?>
 								</td>
 							</tr>
 						</tbody>
