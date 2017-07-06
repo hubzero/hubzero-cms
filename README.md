@@ -46,7 +46,8 @@ item "Discover". From that page, click "Discover" in the toolbar. If you see "Dr
 in the resulting list, click the checkbox next to it and click the "Install" button.
 Either SSH into the virtual machine, navigate to the com_partners folder 
 
-== Muse ==
+Muse
+============
 
 Alternatively, the component comes with migrations that can be run via the command-line utility, 
 Muse, that comes with all hubs. To do so, move the files from the component's /migrations
