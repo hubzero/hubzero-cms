@@ -324,10 +324,10 @@ class Polls extends AdminController
 	}
 
 	/**
-	* Publishes or Unpublishes one or more records
-	*
-	* @return  void
-	*/
+	 * Publishes or Unpublishes one or more records
+	 *
+	 * @return  void
+	 */
 	public function publishTask()
 	{
 		// Check for request forgeries
@@ -373,10 +373,10 @@ class Polls extends AdminController
 	}
 
 	/**
-	* Mark a poll as open or closed
-	*
-	* @return  void
-	*/
+	 * Mark a poll as open or closed
+	 *
+	 * @return  void
+	 */
 	public function openTask()
 	{
 		// Check for request forgeries
