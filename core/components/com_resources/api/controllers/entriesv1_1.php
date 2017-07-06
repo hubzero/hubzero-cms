@@ -225,10 +225,20 @@ class Entriesv1_1 extends ApiController
 
 					if (!empty($groups))
 					{
-						foreach ($groups as &$group)
+						foreach ($groups as $g => $group)
 						{
-							$group = \Hubzero\User\Group::getInstance($group)->get('gidNumber');
+							$grp = \Hubzero\User\Group::getInstance($group);
+							if ($grp)
+							{
+								$groups[$g] = $grp->get('gidNumber');
+							}
+							// Group not found
+							else
+							{
+								unset($groups[$g]);
+							}
 						}
+						$groups = array_unique($groups);
 						$obj->owner_type = 'group';
 						$obj->owner = $groups;
 					}
