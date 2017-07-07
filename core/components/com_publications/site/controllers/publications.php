@@ -1509,7 +1509,7 @@ class Publications extends SiteController
 		$version = Models\Orm\Version::oneOrFail($vid);
 
 		$pubfilespace = $version->filespace();
-		$prjfilespace = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias') . '/files';
+		$prjfilespace = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias') . '/files' . ($vid ? '/publication_' . $vid : '');
 
 		// We're going to need the original ID later
 		$pub_id = $version->get('publication_id');
@@ -1578,7 +1578,7 @@ class Publications extends SiteController
 		$rt = new Helpers\Tags($this->database);
 		if ($tags = $rt->get_tag_string($pub_id))
 		{
-			$rt->tag_object(User::get('id'), $pub_id, $tags, 1);
+			$rt->tag_object(User::get('id'), $version->get('publication_id'), $tags, 1);
 		}
 
 		// Copy citations
@@ -1642,6 +1642,8 @@ class Publications extends SiteController
 		}
 		foreach ($attachments as $attachment)
 		{
+			$oldid = $attachment->get('id');
+
 			$attachment->set('id', 0);
 			$attachment->set('publication_id', $version->get('publication_id'));
 			$attachment->set('publication_version_id', $version->get('id'));
@@ -1650,51 +1652,102 @@ class Publications extends SiteController
 			$attachment->set('modified', '0000-00-00 00:00:00');
 			$attachment->set('modified_by', 0);
 
-			if ($attachment->get('type') == 'file')
-			{
-				// Copy the files into the project
-				$from   = $pubfilespace . '/' . $attachment->get('path');
-				$toProj = $prjfilespace . '/' . $attachment->get('path');
-				$toPub  = $newpubfilespace . '/' . $attachment->get('path');
-
-				if (!file_exists($from))
-				{
-					Notify::error('file does not exist: ' . $from);
-					continue;
-				}
-
-				if (!file_exists(dirname($toProj)))
-				{
-					Filesystem::makeDirectory(dirname($toProj), 0755, true, true);
-				}
-
-				// Copy to the project space
-				if (!Filesystem::copy($from, $toProj))
-				{
-					App::abort(500, Lang::txt('Failed to copy file "' . $from . '" to "' . $toProj . '"'));
-				}
-
-				// Copy to the publication space
-				if (!file_exists(dirname($toPub)))
-				{
-					Filesystem::makeDirectory(dirname($toPub), 0755, true, true);
-				}
-				if (!Filesystem::copy($from, $toPub))
-				{
-					App::abort(500, Lang::txt('Failed to copy file "' . $from . '" to "' . $toPub . '"'));
-				}
-				if (file_exists($from . '.hash'))
-				{
-					if (!Filesystem::copy($from . '.hash', $toPub . '.hash'))
-					{
-						App::abort(500, Lang::txt('Failed to copy file "' . $from . '.hash" to "' . $toPub . '.hash"'));
-					}
-				}
-			}
-
 			if (!$attachment->save())
 			{
 				App::abort(500, $attachment->getError());
+			}
+
+			if ($attachment->get('type') == 'file')
+			{
+				// Copy the files into the project
+				$path = explode('/', $attachment->get('path'));
+				$file = array_pop($path);
+				$path = implode('/', $path);
+				$filenew = $file;
+
+				$file2 = Filesystem::name($file) . '-' . $oldid . '.' . Filesystem::extension($file);
+				$file2new = Filesystem::name($file) . '-' . $attachment->get('id') . '.' . Filesystem::extension($file);
+
+				$from   = $pubfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
+				$toProj = $prjfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
+				$toPub  = $newpubfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
+
+				// Check the default location
+				if (!file_exists($from . $file))
+				{
+					// OK, maybe it's in the gallery
+					$from  = dirname($pubfilespace) . '/gallery/' . ($path ? $path . '/' : '');
+					$toPub = dirname($newpubfilespace) . '/gallery/' . ($path ? $path . '/' : '');
+
+					if (!file_exists($from . $file))
+					{
+						// Let's try an alternate file name
+						if (!file_exists($from . $file2))
+						{
+							Notify::error('File does not exist: ' . $from . $filenames['main']);
+							continue;
+						}
+						// Found it
+						else
+						{
+							$file = $file2;
+							$filenew = $file2new;
+						}
+					}
+				}
+
+				$source = array();
+				$source['main'] = $file;
+				$source['hash'] = $file . '.hash';
+				$source['thmb'] = \Components\Projects\Helpers\Html::createThumbName($file, '_tn', 'png');
+
+				$dest = array();
+				$dest['main'] = $filenew;
+				$dest['hash'] = $filenew . '.hash';
+				$dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png');
+
+				if (!is_dir($toProj))
+				{
+					Filesystem::makeDirectory($toProj, 0755, true, true);
+				}
+
+				/*$fileInfo = pathinfo($from);
+				$filename = $fileInfo['filename'];
+				$ext      = $fileInfo['extension'];
+
+				while (file_exists($toProj . '/' . $filename . '.' . $ext))
+				{
+					$filename .= rand(10, 99);
+				}
+				$filename .= $ext;
+				$filename = \Components\Projects\Helpers\Html::fixFileName($filename, '-' . $attachment->get('id'));*/
+
+				foreach ($source as $type => $filename)
+				{
+					if (!file_exists($from . $filename))
+					{
+						Notify::warning('File does not exist: ' . $from . $filename);
+						continue;
+					}
+
+					// Copy to the project space
+					if (!Filesystem::copy($from . $filename, $toProj . $dest[$type]))
+					{
+						App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $toProj . $dest[$type] . '"'));
+					}
+
+					// Make sure directory exist in publication space
+					if (!is_dir($toPub))
+					{
+						Filesystem::makeDirectory($toPub, 0755, true, true);
+					}
+
+					// Copy to the publication space
+					if (!Filesystem::copy($from . $filename, $toPub . $dest[$type]))
+					{
+						App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $toPub . $dest[$type] . '"'));
+					}
+				}
 			}
 		}
 
