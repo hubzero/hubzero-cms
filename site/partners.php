@@ -1,6 +1,6 @@
 <?php
 // Declare the namespace.
-namespace Components\Drwho\Site;
+namespace Components\Partners\Site;
 
 // The "Partner" model pulls in all other models used throughout the
 // component(aka the partner_type)

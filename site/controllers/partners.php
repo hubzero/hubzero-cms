@@ -1,6 +1,6 @@
 <?php
 // Declare the namespace.
-namespace Components\Drwho\Site\Controllers;
+namespace Components\Partners\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Partners\Models\Partner;
@@ -14,7 +14,7 @@ use User;
 use App;
 
 /**
- * Drwho controller for show characters
+ * Partners controller for showing partners
  * 
  * Accepts an array of configuration values to the constructor. If no config 
  * passed, it will automatically determine the component and controller names.
@@ -54,7 +54,7 @@ class Partners extends SiteController
 	}
 
 	/**
-	 * Default task. Displays a list of characters.
+	 * Default task. Displays a list of partners.
 	 *
 	 * @return	void
 	 */
