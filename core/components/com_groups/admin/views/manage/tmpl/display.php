@@ -175,11 +175,21 @@ function submitbutton(pressbutton)
 
 			switch ($row->type)
 			{
-				case '0': $type = Lang::txt('COM_GROUPS_TYPE_SYSTEM');  break;
-				case '1': $type = Lang::txt('COM_GROUPS_TYPE_HUB');     break;
-				case '2': $type = Lang::txt('COM_GROUPS_TYPE_PROJECT'); break;
-				case '3': $type = Lang::txt('COM_GROUPS_TYPE_SUPER');   break;
-				case '4': $type = Lang::txt('COM_GROUPS_TYPE_COURSE');  break;
+				case '0':
+					$type = '<span class="group-type system">' . Lang::txt('COM_GROUPS_TYPE_SYSTEM') . '</span>';
+					break;
+				case '1':
+					$type = '<span class="group-type hub">' . Lang::txt('COM_GROUPS_TYPE_HUB') . '</span>';
+					break;
+				case '2':
+					$type = '<span class="group-type project">' . Lang::txt('COM_GROUPS_TYPE_PROJECT') . '</span>';
+					break;
+				case '3':
+					$type = '<span class="group-type super">' . Lang::txt('COM_GROUPS_TYPE_SUPER') . '</span>';
+					break;
+				case '4':
+					$type = '<span class="group-type course">' . Lang::txt('COM_GROUPS_TYPE_COURSE') . '</span>';
+					break;
 			}
 
 			$pages = $p->count(array('gidNumber' => $row->gidNumber));

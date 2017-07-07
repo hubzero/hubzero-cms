@@ -32,13 +32,14 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$text = ($this->task == 'edit' ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
+$text = ($this->group->get('gidNumber') ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
 
 $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS').': ' . $text, 'groups.png');
 if ($canDo->get('core.edit'))
 {
+	Toolbar::apply();
 	Toolbar::save();
 }
 Toolbar::cancel();
@@ -49,7 +50,7 @@ Html::behavior('framework');
 Html::behavior('switcher', 'submenu');
 
 // are we using the email gateway for group forum
-$params =  Component::params('com_groups');
+$params = Component::params('com_groups');
 $allowEmailResponses = $params->get('email_comment_processing', 0);
 
 $autoEmailResponses  = $this->group->get('discussion_email_autosubscribe');
@@ -84,10 +85,10 @@ function submitbutton(pressbutton)
 	<?php echo $this->editor()->save('text'); ?>
 
 	// form field validation
-	if ($('#field-description').val() == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
+	if ($('#field-type').val() == '') {
+		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_TYPE'); ?>');
 	} else if ($('#field-cn').val() == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
+		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_CN'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
