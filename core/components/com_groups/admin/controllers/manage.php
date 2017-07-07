@@ -56,6 +56,19 @@ use App;
 class Manage extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Displays a list of groups
 	 *
 	 * @return  void
@@ -177,16 +190,6 @@ class Manage extends AdminController
 	}
 
 	/**
-	 * Create a new group
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Displays an edit form
 	 *
 	 * @return  void
@@ -268,12 +271,12 @@ class Manage extends AdminController
 
 			// Set the task - if anything fails and we re-enter edit mode
 			// we need to know if we were creating new or editing existing
-			$this->_task = 'new';
+			//$this->_task = 'new';
 			$before = new Group();
 		}
 		else
 		{
-			$this->_task = 'edit';
+			//$this->_task = 'edit';
 
 			// Load the group
 			$group->read($g['gidNumber']);
@@ -294,7 +297,8 @@ class Manage extends AdminController
 		}
 		if (!$g['description'])
 		{
-			$this->setError(Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION') . ': ' . Lang::txt('COM_GROUPS_TITLE'));
+			//$this->setError(Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION') . ': ' . Lang::txt('COM_GROUPS_TITLE'));
+			$g['description'] = $g['cn'];
 		}
 
 		// Push back into edit mode if any errors
@@ -427,6 +431,14 @@ class Manage extends AdminController
 
 		// Output messsage and redirect
 		Notify::success(Lang::txt('COM_GROUPS_SAVED'));
+
+		if ($this->getTask() == 'apply')
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $group->get('gidNumber'), false)
+			);
+			return;
+		}
 
 		$this->cancelTask();
 	}
