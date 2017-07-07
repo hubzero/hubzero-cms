@@ -28,7 +28,7 @@ $this->css();
 // This sets the <title> tag of the document and will overwrite any previous
 // title set. To append or modify an existing title, it must be retrieved first
 // with $title = Document::getTitle();
-Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
+Document::setTitle(Lang::txt('COM_PARTNERS'));
 
 // Set the pathway (breadcrumbs)
 //
@@ -42,7 +42,7 @@ Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
 
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_PARTNERS'); ?>:</h2>
+	<h2><?php echo Lang::txt('COM_PARTNERS'); ?></h2>
 
 	<div id="content-header-extra">
 		<p>
@@ -51,31 +51,36 @@ Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
 	</div>
 </header>
 
+
+<p>
+<?php print_r(\Components\Partners\Models\Partner_type::all()['partner_type']); ?>
+</p>
+
 <section class="main section">
 	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
-		
 		<div class="subject">
 			<table class="entries">
 				<caption><?php echo Lang::txt('COM_PARTNERS'); ?></caption>
 				<thead>
 					<tr>
 						<th><?php echo Lang::txt('COM_PARTNERS_COL_NAME'); ?></th>
+						<th><?php echo Lang::txt('COM_PARTNERS_COL_PARTNER_TYPE'); ?></th>
+						<th><?php echo Lang::txt('COM_PARTNER_COL_ABOUT'); ?></th>
 					</tr>
 				</thead>
-				<
 				<tbody>
 					<?php foreach ($this->records as $record) { ?>
 						<tr>
 							
-							<th>
+							<td>
 								<a href="<?php echo Route::url($record->link()); ?>">
 									<?php echo $this->escape($record->get('name')); ?>
 								</a>
-							</th>
+							</td>
 							
 							<td>
 							<a href= "<?php echo $record->get('site_url')?>">
-								<?php echo $this->escape($record->get('site_url')); ?>
+								<?php echo $this->escape($record->get('partner_type')); ?>
 							</a>
 							</td>
 
@@ -103,7 +108,7 @@ Document::setTitle(Lang::txt('COM_PARTNERS') . ': ');
 		</div>
 		<aside class="aside">
 			<fieldset>
-				<select name="season">
+				<select name="partner_type">
 					<option value=""><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES_ALL'); ?></option>
 					<?php foreach (\Components\Partners\Models\Partner_type::all() as $partner_type) { ?>
 						<?php
