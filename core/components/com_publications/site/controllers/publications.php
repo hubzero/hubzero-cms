@@ -1660,6 +1660,8 @@ class Publications extends SiteController
 				App::abort(500, $attachment->getError());
 			}
 
+			$sub = 'publication_' . $vid . '_' . $version->get('id');
+
 			if ($attachment->get('type') == 'file')
 			{
 				// Copy the files into the project
@@ -1670,7 +1672,7 @@ class Publications extends SiteController
 				if ($pid)
 				{
 					//array_unshift($path, 'publication_' . $vid);
-					$attachment->set('path', 'publication_' . $vid . '_' . $version->get('id') . '/' . $attachment->get('path'));
+					$attachment->set('path', $sub . '/' . $attachment->get('path'));
 					$attachment->save();
 				}
 				$path = implode('/', $path);
@@ -1716,7 +1718,7 @@ class Publications extends SiteController
 				$dest = array();
 				$dest['main'] = $filenew;
 				$dest['hash'] = $filenew . '.hash';
-				$dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png');
+				$dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png'); // thumbnails aren't in sub?
 
 				if (!is_dir($toProj))
 				{
@@ -1789,17 +1791,44 @@ class Publications extends SiteController
 					}
 
 					// Make sure directory exist in publication space
-					if (!is_dir($toPub))
+					$to = $toPub;
+					if ($type == 'hash' || $type == 'main')
 					{
-						Filesystem::makeDirectory($toPub, 0755, true, true);
+						$to .= ($pid && in_array($type, array('hash', 'main')) ? $sub . '/' : '');
 					}
 
-					// Copy to the publication space
-					if (!Filesystem::copy($from . $filename, $toPub . $dest[$type]))
+					if (!is_dir($to))
 					{
-						App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $toPub . $dest[$type] . '"'));
+						Filesystem::makeDirectory($to, 0755, true, true);
+					}
+
+					$to .= $dest[$type];
+
+					// Copy to the publication space
+					if (!Filesystem::copy($from . $filename, $to))
+					{
+						App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $to . '"'));
 					}
 				}
+			}
+		}
+
+		// Copy publication thumbnail
+		$files = array('master.png', 'thumb.gif');
+		$from  = dirname($pubfilespace);
+		$to    = dirname($newpubfilespace);
+
+		foreach ($files as $filename)
+		{
+			if (!file_exists($from . $filename))
+			{
+				continue;
+			}
+
+			// Copy to the publication space
+			if (!Filesystem::copy($from . $filename, $to . $filename))
+			{
+				App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $to . $filename . '"'));
 			}
 		}
 
