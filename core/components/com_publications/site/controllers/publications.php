@@ -1387,9 +1387,6 @@ class Publications extends SiteController
 			return;
 		}
 
-		//echo 'not yet';
-		//return;
-
 		// Load language file
 		Lang::load('com_projects') ||
 		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
@@ -1409,12 +1406,12 @@ class Publications extends SiteController
 		}
 
 		// Get project model
-		$project = new \Components\Projects\Models\Project();
+		$project = new \Components\Projects\Models\Project($pid);
 
 		// Get project information
 		if ($pid)
 		{
-			$project->loadProvisioned($pid);
+			//$project->loadProvisioned($pid);
 
 			if (!$project->exists())
 			{
@@ -1430,13 +1427,13 @@ class Publications extends SiteController
 			}
 
 			// Redirect to project if not provisioned
-			if (!$project->isProvisioned())
+			/*if (!$project->isProvisioned())
 			{
 				App::redirect(
 					Route::url($project->link('publications'))
 				);
 				return;
-			}
+			}*/
 		}
 		else
 		{
@@ -1491,9 +1488,8 @@ class Publications extends SiteController
 				App::abort(500, $objO->getError());
 			}
 
-			/*
 			// Create and initialize local repo
-			if (!$project->repo()->iniLocal())
+			/*if (!$project->repo()->iniLocal())
 			{
 				App::abort(500, Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 			}*/
@@ -1508,8 +1504,10 @@ class Publications extends SiteController
 		// Load the version
 		$version = Models\Orm\Version::oneOrFail($vid);
 
+		$repoPath = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias') . '/files';
+
 		$pubfilespace = $version->filespace();
-		$prjfilespace = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias') . '/files' . ($vid ? '/publication_' . $vid : '');
+		$prjfilespace = $repoPath . ($pid ? '/publication_' . $vid : '');
 
 		// We're going to need the original ID later
 		$pub_id = $version->get('publication_id');
@@ -1570,6 +1568,7 @@ class Publications extends SiteController
 			App::abort(500, $version->getError());
 		}
 
+		$prjfilespace .= ($pid ? '_' . $version->get('id') : '');
 		$newpubfilespace = $version->filespace();
 
 		// Copy tags
@@ -1603,6 +1602,10 @@ class Publications extends SiteController
 		}
 
 		// Copy authors
+		if (!isset($objO))
+		{
+			$objO = $project->table('Owner');
+		}
 		foreach ($authors as $author)
 		{
 			$owner_id = $author->get('project_owner_id');
@@ -1661,9 +1664,18 @@ class Publications extends SiteController
 			{
 				// Copy the files into the project
 				$path = explode('/', $attachment->get('path'));
-				$file = array_pop($path);
+				$orig = array_pop($path);
+				// If copying to a project, files are placed in a sub-directory
+				// So, update the path info on the attachment record to reflect
+				if ($pid)
+				{
+					//array_unshift($path, 'publication_' . $vid);
+					$attachment->set('path', 'publication_' . $vid . '_' . $version->get('id') . '/' . $attachment->get('path'));
+					$attachment->save();
+				}
 				$path = implode('/', $path);
-				$filenew = $file;
+				$file = $orig;
+				$filenew = $orig;
 
 				$file2 = Filesystem::name($file) . '-' . $oldid . '.' . Filesystem::extension($file);
 				$file2new = Filesystem::name($file) . '-' . $attachment->get('id') . '.' . Filesystem::extension($file);
@@ -1709,31 +1721,71 @@ class Publications extends SiteController
 				if (!is_dir($toProj))
 				{
 					Filesystem::makeDirectory($toProj, 0755, true, true);
-				}
 
-				/*$fileInfo = pathinfo($from);
-				$filename = $fileInfo['filename'];
-				$ext      = $fileInfo['extension'];
+					if ($pid)
+					{
+						// Commit to GIT
+						$fileObj = new \Components\Projects\Models\File(
+							substr($toProj, (strlen($repoPath) + 1)),
+							$repoPath
+						);
+						$fileObj->set('type', 'folder');
+						$fileObj->clear('ext');
 
-				while (file_exists($toProj . '/' . $filename . '.' . $ext))
-				{
-					$filename .= rand(10, 99);
+						$committed = $project->repo()->call('makeDirectory', array(
+							'file'    => $fileObj,
+							'replace' => false
+						));
+						if (!$committed)
+						{
+							App::abort(500, Lang::txt('Error committing directory: %s', $project->repo()->getError()));
+						}
+					}
 				}
-				$filename .= $ext;
-				$filename = \Components\Projects\Helpers\Html::fixFileName($filename, '-' . $attachment->get('id'));*/
 
 				foreach ($source as $type => $filename)
 				{
 					if (!file_exists($from . $filename))
 					{
-						Notify::warning('File does not exist: ' . $from . $filename);
+						if ($type == 'main')
+						{
+							Notify::warning('File does not exist: ' . $from . $filename);
+						}
 						continue;
 					}
 
-					// Copy to the project space
-					if (!Filesystem::copy($from . $filename, $toProj . $dest[$type]))
+					// We only copy the file itself to the project
+					// The hash and thumbnail go only to the publication space
+					if ($type == 'main')
 					{
-						App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $toProj . $dest[$type] . '"'));
+						// Copy to the project space but to its original name
+						// Note: gallery items' filenames will have a suffix with attachment record ID but the database entry
+						// will point to the un-suffixed filename. DB: foo.jpg (in project space) = foo-123.jpg (in publication space)
+						if (!Filesystem::copy($from . $filename, $toProj . $orig)) //$filename
+						{
+							App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $toProj . $orig . '"'));
+						}
+
+						if ($pid)
+						{
+							// Commit to GIT
+							$fileObj = new \Components\Projects\Models\File(
+								substr($toProj . $orig, (strlen($repoPath) + 1)),
+								$repoPath
+							);
+
+							$committed = $project->repo()->call('checkin', array(
+								'file'    => $fileObj,
+								'replace' => false,
+								'message' => Lang::txt('Files forked from publication #%s', $pub_id),
+								'author'  => null,
+								'date'    => null
+							));
+							if (!$committed)
+							{
+								App::abort(500, Lang::txt('Error committing file: %s', $project->repo()->getError()));
+							}
+						}
 					}
 
 					// Make sure directory exist in publication space
