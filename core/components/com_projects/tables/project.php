@@ -109,7 +109,7 @@ class Project extends \JTable
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
-			$query .=  " JOIN #__users as x ON x.id=p.owned_by_user ";
+			$query .=  ($admin ? ' LEFT' : '') . " JOIN #__users as x ON x.id=p.owned_by_user ";
 			$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 		}
 
