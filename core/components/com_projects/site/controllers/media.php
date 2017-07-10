@@ -508,7 +508,11 @@ class Media extends Base
 		$path      = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
 		$masterpic = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
 
-		if (!$masterpic || $masterpic == 'components/com_projects/site/assets/img/project.png')
+		if (!$masterpic
+		 || $masterpic == 'components/com_projects/site/assets/img/project.png'
+		 || $masterpic == 'components/com_projects/assets/img/project.png'
+		 || $masterpic == 'components/com_projects/site/assets/img/projects-large.gif'
+		 || $masterpic == 'components/com_projects/assets/img/projects-large.gif')
 		{
 			$masterpic = 'components/com_projects/site/assets/img/projects-large.gif';
 			$defaultPath = PATH_CORE;
@@ -558,7 +562,10 @@ class Media extends Base
 		if (!$src)
 		{
 			$path = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
-			if ($path == 'components/com_projects/assets/img/project.png')
+			if ($path == 'components/com_projects/assets/img/project.png'
+			 || $path == 'components/com_projects/site/assets/img/project.png'
+			 || $path == 'components/com_projects/site/assets/img/projects-large.gif'
+			 || $path == 'components/com_projects/assets/img/projects-large.gif')
 			{
 				$path = 'components/com_projects/site/assets/img/project.png';
 				$rootPath = PATH_CORE;
