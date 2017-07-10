@@ -150,6 +150,9 @@
 		float: left;
 		text-align: right;
 	}
+	.publication-fork .publication-date {
+		display: block;
+	}
 	.publication-fork .publication-details {
 		margin-left: 12em;
 	}
