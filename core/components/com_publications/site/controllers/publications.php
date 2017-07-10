@@ -1504,6 +1504,17 @@ class Publications extends SiteController
 		// Load the version
 		$version = Models\Orm\Version::oneOrFail($vid);
 
+		// Make sure the license applied allows for derivations
+		if (!$version->license->get('derivatives'))
+		{
+			Notify::warning(Lang::txt('The license applied to this publicaiton does not allow for derivatives.'));
+
+			App::redirect(
+				Route::url('index.php?option=com_publications&id=' . $version->get('publication_id') . '&v=' . $version->get('id'), false)
+			);
+		}
+
+		// Set some paths
 		$repoPath = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias') . '/files';
 
 		$pubfilespace = $version->filespace();

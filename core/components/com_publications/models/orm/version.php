@@ -172,7 +172,7 @@ class Version extends Relational
 	 */
 	public function license()
 	{
-		return $this->oneToOne(__NAMESPACE__ . '\\License', 'license_type');
+		return $this->oneToOne(__NAMESPACE__ . '\\License', 'id', 'license_type');
 	}
 
 	/**

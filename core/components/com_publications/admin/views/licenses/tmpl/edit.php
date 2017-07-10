@@ -160,6 +160,20 @@ function submitbutton(pressbutton)
 						<label for="field-agreement0"><?php echo Lang::txt('JNO'); ?></label>
 					</div>
 				</fieldset>
+
+				<fieldset>
+					<legend><?php echo Lang::txt('Allow Derivatives'); ?></legend>
+
+					<div class="input-wrap" data-hint="<?php echo Lang::txt('Are derivatives allowed under the terms of this license?'); ?>">
+						<span class="hint"><?php echo Lang::txt('Are derivatives allowed under the terms of this license?'); ?></span>
+
+						<input class="option" name="fields[derivatives]" id="field-derivatives1" type="radio" value="1" <?php echo $this->row->derivatives == 1 ? 'checked="checked"' : ''; ?> />
+						<label for="field-derivatives1"><?php echo Lang::txt('JYES'); ?></label>
+						<br />
+						<input class="option" name="fields[derivatives]" id="field-derivatives0" type="radio" value="0" <?php echo $this->row->derivatives == 0 ? 'checked="checked"' : ''; ?> />
+						<label for="field-derivatives0"><?php echo Lang::txt('JNO'); ?></label>
+					</div>
+				</fieldset>
 			</fieldset>
 		</div>
 	</div>
