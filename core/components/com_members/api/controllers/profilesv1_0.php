@@ -581,6 +581,66 @@ class Profilesv1_0 extends ApiController
 	}
 
 	/**
+	 * Get a list of oranizations that have been geolocated
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /members/geolocatedorganizations
+	 * @return    void
+	 */
+	public function geolocatedOrganizationsTask()
+	{
+		$geolocatedOrganizationsQuery = "SELECT resources.id, resources.title, resources.fulltxt,
+							SUBSTRING(resources.introtext, 1, 100) as description
+							FROM (SELECT *
+								FROM #__geosearch_markers
+								WHERE scope = 'organization') as markers
+							LEFT JOIN #__resources as resources
+							ON markers.scope_id = resources.id";
+		$extractLocation = Request::getVar("locations", true);
+		$id = Request::getVar("id", null);
+
+		if ($id)
+		{
+			$geolocatedOrganizationsQuery .= " WHERE resources.id = {$id}";
+		}
+
+		$db = App::get('db');
+		$db->setQuery($geolocatedOrganizationsQuery);
+		$geolocatedOrganizations = $db->LoadObjectList();
+
+		if ($extractLocation)
+		{
+			$geolocatedOrganizations = $this->addLocationToOrganizations($geolocatedOrganizations);
+		}
+
+		$this->send($geolocatedOrganizations);
+	}
+
+	protected function addLocationToOrganizations($organizations)
+	{
+		return array_map(function($organization)
+		{
+			$organization->location = $this->extractLocation($organization);
+			return $organization;
+		}, $organizations);
+	}
+
+	protected function extractLocation($organization)
+	{
+		$locationRegex = "/<nb:bio>(.*)<\/nb:bio>/";
+		$location = "";
+
+		preg_match($locationRegex, $organization->fulltxt, $matches);
+
+		if ($matches[1])
+		{
+			$location = $matches[1];
+		}
+
+		return $location;
+	}
+
+	/**
 	 * Get a resource based on tool name
 	 *
 	 * @param   string  $appname
