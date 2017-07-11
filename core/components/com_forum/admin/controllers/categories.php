@@ -239,8 +239,8 @@ class Categories extends AdminController
 		{
 			$category->set('created_by', User::get('id'));
 			$category->set('section_id', $section->get('id'));
-			$category->set('scope', $section->get('scope'));
-			$category->set('scope_id', $section->get('scope_id'));
+			$category->set('scope', $section->get('scope', 'site'));
+			$category->set('scope_id', $section->get('scope_id', 0));
 		}
 
 		$data = Section::all()
@@ -316,13 +316,18 @@ class Categories extends AdminController
 			$category->assetRules = new \Hubzero\Access\Rules($validData['rules']);
 		}
 
-		if (!$category->get('scope'))
-		{
-			$section = Section::oneOrFail($fields['section_id']);
+		// Make sure the chosen section is valid
+		$section = Section::oneOrFail($category->get('section_id'));
 
-			$category->set('scope', $section->get('scope'));
-			$category->set('scope_id', $section->get('scope_id'));
+		if (!$section->get('id'))
+		{
+			Notify::error(Lang::txt('COM_FORUM_FIELD_INVALID_SECTION'));
+			return $this->editTask($category);
 		}
+
+		// Ensure the category has the same scope as its parent section
+		$category->set('scope', $section->get('scope'));
+		$category->set('scope_id', $section->get('scope_id'));
 
 		// Store new content
 		if (!$category->save())

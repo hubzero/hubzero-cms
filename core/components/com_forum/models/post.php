@@ -147,7 +147,7 @@ class Post extends Relational
 	 */
 	public function automaticScope($data)
 	{
-		if (!isset($data['scope']))
+		if (!isset($data['scope']) || !$data['scope'])
 		{
 			$data['scope'] = 'site';
 		}
