@@ -416,6 +416,8 @@ class Threads extends AdminController
 
 		if ($post->isNew())
 		{
+			$post->set('scope', 'site');
+			$post->set('scope_id', 0);
 			$post->set('parent', $parent);
 			$post->set('created_by', User::get('id'));
 		}
@@ -515,6 +517,18 @@ class Threads extends AdminController
 
 		// Initiate extended database class
 		$post = Post::oneOrNew(intval($fields['id']))->set($fields);
+
+		// Make sure a valid category was selected
+		$category = Category::oneOrNew($post->get('category_id'));
+		if (!$category->get('id'))
+		{
+			Notify::error(Lang::txt('COM_FORUM_FIELD_INVALID_CATEGORY'));
+			return $this->editTask($post);
+		}
+
+		// Ensure the post's scope is the same as its parent category
+		$post->set('scope', $category->get('scope'));
+		$post->set('scope_id', $category->get('scope_id'));
 
 		// Bind the rules.
 		$data = Request::getVar('jform', array(), 'post');
