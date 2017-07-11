@@ -254,7 +254,7 @@ class Ldap extends AdminController
 				}
 				catch (\Exception $e)
 				{
-					$this->addError($row . ': ' . $e->getMessage());
+					$response->errors[] = 'User ID #' . $row . ': ' . $e->getMessage();
 				}
 
 				$response->processed++;

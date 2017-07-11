@@ -81,6 +81,11 @@ jQuery(document).ready(function(jq){
 						$.growl('', '<dl id="system-message"><dt class="error">Error</dt><dd class="error message">There was an error trying to process the records.</dd></dl>');
 					}
 
+					if (typeof data.errors !== 'undefined' && data.errors.length > 0) {
+						$.growl.settings.displayTimeout = 0;
+						$.growl('', '<dl id="system-message"><dt class="error">Error</dt><dd class="error message">' + data.errors.join('<br />') + '</dd></dl>');
+					}
+
 					if (percent >= 100) {
 						self.stopImportProgressChecker();
 
