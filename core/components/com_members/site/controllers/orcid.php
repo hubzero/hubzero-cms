@@ -585,7 +585,7 @@ class Orcid extends SiteController
 		}
 	}
 	/*
-	 * Save orcid to #_user_profiles
+	 * Update or save orcid to #_user_profiles
 	 *
 	 * @param   string   $name, $orcid
 	 * @return  void
@@ -593,22 +593,17 @@ class Orcid extends SiteController
 	public static function saveORCIDToProfile($userID, $orcid)
 	{
 		$row = Profile::oneByKeyAndUser('orcid', $userID);
-		if (($userID == $row->get('user_id')) && ('orcid' == $row->get('profile_key')))
+		
+		// If the record exists, you are just overwriting the existing data.
+		// If the record doesn't exist, your are setting for a new entry.
+		$row->set('user_id', $userID);
+		$row->set('access', $row->get('access', 1));
+		$row->set('profile_key', 'orcid');
+		$row->set('profile_value', $orcid);
+		
+		if (!$row->save())
 		{
-			$db = App::get('db');
-			$update_q = "UPDATE #__user_profiles SET profile_value = " . '"' . $orcid  . '"' . " WHERE user_id = $userID AND profile_key = " . '"orcid"';
-			$db->setQuery($update_q);
-			$db->execute();			
-		}
-		else
-		{
-			$member = Member::oneOrNew($userID);
-			$profile = array('orcid'=>$orcid);
-			$access= array('orcid'=>1);
-			if (!$member->saveProfile($profile, $access))
-			{
-				\Notify::error($member->getError());
-			}
+			\Notify::error($row->getError());
 		}
 	}
 	
