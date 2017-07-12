@@ -550,7 +550,8 @@ class Orcid extends SiteController
 		$srv = $this->config->get('orcid_service', 'members');
 		$clientID = $this->config->get('orcid_' . $srv . '_client_id');
 		$clientSecret = $this->config->get('orcid_' . $srv . '_token');
-		$oauthToken = $this->_oauthToken[$srv];	
+		$oauthToken = $this->_oauthToken[$srv];
+		
 		if (Request::getVar('code'))
 		{
 			//Build request parameter string
@@ -600,7 +601,6 @@ class Orcid extends SiteController
 		$row->set('access', $row->get('access', 1));
 		$row->set('profile_key', 'orcid');
 		$row->set('profile_value', $orcid);
-		
 		if (!$row->save())
 		{
 			\Notify::error($row->getError());
