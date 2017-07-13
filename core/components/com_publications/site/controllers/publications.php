@@ -1507,7 +1507,7 @@ class Publications extends SiteController
 		// Make sure the license applied allows for derivations
 		if (!$version->license->get('derivatives'))
 		{
-			Notify::warning(Lang::txt('The license applied to this publicaiton does not allow for derivatives.'));
+			Notify::warning(Lang::txt('The license applied to this publication does not allow for derivatives.'));
 
 			App::redirect(
 				Route::url('index.php?option=com_publications&id=' . $version->get('publication_id') . '&v=' . $version->get('id'), false)
@@ -1617,24 +1617,38 @@ class Publications extends SiteController
 		{
 			$objO = $project->table('Owner');
 		}
+		$ownrs = $objO->getOwners($project->get('id'));
+		$owners = array();
+		foreach ($ownrs as $owner)
+		{
+			$owners[$owner->userid] = $owner->id;
+		}
 		foreach ($authors as $author)
 		{
 			$owner_id = $author->get('project_owner_id');
 
-			$objO->load($owner_id);
-			$objO->id         = null;
-			$objO->added      = Date::of('now')->toSql();
-			$objO->num_visits = 0;
-			$objO->lastvisit  = null;
-			if ($objO->groupid != $project->get('owned_by_group'))
+			if (!isset($owners[$author->get('user_id')]))
 			{
-				$objO->groupid = 0;
+				$objO->load($owner_id);
+				$objO->projectid  = $project->get('id');
+				$objO->id         = null;
+				$objO->added      = Date::of('now')->toSql();
+				$objO->num_visits = 0;
+				$objO->lastvisit  = null;
+				$objO->status     = 2;
+				$objO->role       = 0;
+				if ($objO->groupid != $project->get('owned_by_group'))
+				{
+					$objO->groupid = 0;
+				}
+				$objO->store();
+
+				$owners[$author->get('user_id')] = $objO->id;
 			}
-			$objO->store();
 
 			$author->set('id', 0);
 			$author->set('publication_version_id', $version->get('id'));
-			$author->set('project_owner_id', $objO->id);
+			$author->set('project_owner_id', $owners[$author->get('user_id')]);
 			$author->set('created', Date::of('now')->toSql());
 			$author->set('created_by', User::get('id'));
 			$author->set('modified', '0000-00-00 00:00:00');
@@ -1805,7 +1819,7 @@ class Publications extends SiteController
 					$to = $toPub;
 					if ($type == 'hash' || $type == 'main')
 					{
-						$to .= ($pid && in_array($type, array('hash', 'main')) ? $sub . '/' : '');
+						$to .= ($pid ? $sub . '/' : '');
 					}
 
 					if (!is_dir($to))
