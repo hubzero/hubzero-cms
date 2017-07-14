@@ -1661,6 +1661,63 @@ class Publications extends SiteController
 		}
 
 		// Copy attachments
+		// Get manifest from either version record (published) or master type
+		$manifest = $version->get('curation', $publication->type->get('curation'));
+		$curation = json_decode($manifest, true);
+		$fileParams = array(
+			'directory'    => '',
+			'dirHierarchy' => 1
+		);
+		$galleryParams = array(
+			'directory'    => 'gallery',
+			'dirHierarchy' => 0
+		);
+		if (isset($curation['blocks']))
+		{
+			foreach ($curation['blocks'] as $block)
+			{
+				if (!isset($block['name']))
+				{
+					continue;
+				}
+				if ($block['name'] == 'content' && isset($block['elements']))
+				{
+					foreach ($block['elements'] as $element)
+					{
+						if (!isset($element['type']))
+						{
+							continue;
+						}
+						if ($element['type'] == 'attachment')
+						{
+							if ($element['params']['type'] == 'file')
+							{
+								$fileParams = $element['params']['typeParams'];
+							}
+						}
+					}
+				}
+				if ($block['name'] == 'extras' && isset($block['elements']))
+				{
+					foreach ($block['elements'] as $element)
+					{
+						if (!isset($element['type']))
+						{
+							continue;
+						}
+						if ($element['type'] == 'attachment')
+						{
+							$params = $element['params']['typeParams'];
+							if ($params['handler'] == 'imageviewer')
+							{
+								$galleryParams = $params;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		if (!is_dir($prjfilespace))
 		{
 			if (!Filesystem::makeDirectory($prjfilespace, 0755, true, true))
@@ -1689,6 +1746,8 @@ class Publications extends SiteController
 
 			if ($attachment->get('type') == 'file')
 			{
+				$dirHierarchy = $fileParams['dirHierarchy'];
+
 				// Copy the files into the project
 				$path = explode('/', $attachment->get('path'));
 				$orig = array_pop($path);
@@ -1715,8 +1774,8 @@ class Publications extends SiteController
 				if (!file_exists($from . $file))
 				{
 					// OK, maybe it's in the gallery
-					$from  = dirname($pubfilespace) . '/gallery/' . ($path ? $path . '/' : '');
-					$toPub = dirname($newpubfilespace) . '/gallery/' . ($path ? $path . '/' : '');
+					$from  = dirname($pubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+					$toPub = dirname($newpubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
 
 					if (!file_exists($from . $file))
 					{
@@ -1729,9 +1788,16 @@ class Publications extends SiteController
 						// Found it
 						else
 						{
+							$dirHierarchy = $galleryParams['dirHierarchy'];
+
 							$file = $file2;
 							$filenew = $file2new;
 						}
+					}
+					// Found it
+					else
+					{
+						$dirHierarchy = $galleryParams['dirHierarchy'];
 					}
 				}
 
@@ -1817,7 +1883,9 @@ class Publications extends SiteController
 
 					// Make sure directory exist in publication space
 					$to = $toPub;
-					if ($type == 'hash' || $type == 'main')
+
+					// Preserve hierarchhy?
+					if ($dirHierarchy == 1)
 					{
 						$to .= ($pid ? $sub . '/' : '');
 					}
