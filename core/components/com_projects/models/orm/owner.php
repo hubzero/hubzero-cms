@@ -32,6 +32,7 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Config\Registry;
 
 /**
  * Projects owner model
@@ -40,6 +41,17 @@ use Hubzero\Database\Relational;
  */
 class Owner extends Relational
 {
+	/**
+	 * Role values
+	 *
+	 * @var  int
+	 **/
+	const ROLE_INVITEE      = 0;
+	const ROLE_MANAGER      = 1;
+	const ROLE_COLLABORATOR = 2;
+	const ROLE_AUTHOR       = 3;
+	const ROLE_REVIEWER     = 5;
+
 	/**
 	 * The table namespace
 	 *
@@ -57,6 +69,13 @@ class Owner extends Relational
 	);
 
 	/**
+	 * Params
+	 *
+	 * @var  object
+	 */
+	protected $params = null;
+
+	/**
 	 * Defines a belongs to one relationship between owner and project
 	 *
 	 * @return  object
@@ -64,6 +83,32 @@ class Owner extends Relational
 	public function project()
 	{
 		return $this->belongsToOne(__NAMESPACE__ . '\\Project', 'projectid');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between owner and user
+	 *
+	 * @return  object
+	 */
+	public function user()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'userid');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between owner and group
+	 *
+	 * @return  object
+	 */
+	public function group()
+	{
+		$group = \Hubzero\User\Group::getInstance($this->get('groupid'));
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group();
+		}
+		return $group;
+		//return $this->belongsToOne('Hubzero\User\Group', 'groupid');
 	}
 
 	/**
@@ -79,5 +124,60 @@ class Owner extends Relational
 			->whereEquals('projectid', $projectid)
 			->whereEquals('userid', $userid)
 			->row();
+	}
+
+	/**
+	 * Is the user a manager of the project?
+	 *
+	 * @return  bool
+	 */
+	public function isManager()
+	{
+		return ($this->get('role') == self::ROLE_MANAGER);
+	}
+
+	/**
+	 * Is the user a collaborator of the project?
+	 *
+	 * @return  bool
+	 */
+	public function isCollaborator()
+	{
+		return ($this->get('role') == self::ROLE_COLLABORATOR);
+	}
+
+	/**
+	 * Is the user a reviewer of the project?
+	 *
+	 * @return  bool
+	 */
+	public function isReviewer()
+	{
+		return ($this->get('role') == self::ROLE_REVIEWER);
+	}
+
+	/**
+	 * Is the user invited to the project?
+	 *
+	 * @return  bool
+	 */
+	public function isInvited()
+	{
+		return ($this->get('role') == self::ROLE_INVITEE);
+	}
+
+	/**
+	 * Get a param value
+	 *
+	 * @return  object
+	 */
+	public function transformParams()
+	{
+		if (!is_object($this->params))
+		{
+			$this->params = new Registry($this->get('params'));
+		}
+
+		return $this->params;
 	}
 }
