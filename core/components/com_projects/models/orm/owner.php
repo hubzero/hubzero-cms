@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,18 +32,152 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Config\Registry;
 
 /**
- * Projects database model
+ * Projects owner model
  *
  * @uses  \Hubzero\Database\Relational
  */
 class Owner extends Relational
 {
-	protected $table = '#__project_owners';
+	/**
+	 * Role values
+	 *
+	 * @var  int
+	 **/
+	const ROLE_INVITEE      = 0;
+	const ROLE_MANAGER      = 1;
+	const ROLE_COLLABORATOR = 2;
+	const ROLE_AUTHOR       = 3;
+	const ROLE_REVIEWER     = 5;
 
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
+	protected $namespace = 'project';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'projectid' => 'positive|nonzero'
+	);
+
+	/**
+	 * Params
+	 *
+	 * @var  object
+	 */
+	protected $params = null;
+
+	/**
+	 * Defines a belongs to one relationship between owner and project
+	 *
+	 * @return  object
+	 */
 	public function project()
 	{
-		return $this->belongsToOne('Project', 'projectid');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Project', 'projectid');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between owner and user
+	 *
+	 * @return  object
+	 */
+	public function user()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'userid');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between owner and group
+	 *
+	 * @return  object
+	 */
+	public function group()
+	{
+		$group = \Hubzero\User\Group::getInstance($this->get('groupid'));
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group();
+		}
+		return $group;
+		//return $this->belongsToOne('Hubzero\User\Group', 'groupid');
+	}
+
+	/**
+	 * Load a single record by project ID and user ID
+	 *
+	 * @param   integer  $projectid
+	 * @param   integer  $userid
+	 * @return  object
+	 */
+	public static function oneByProjectAndUser($projectid, $userid)
+	{
+		return self::all()
+			->whereEquals('projectid', $projectid)
+			->whereEquals('userid', $userid)
+			->row();
+	}
+
+	/**
+	 * Is the user a manager of the project?
+	 *
+	 * @return  bool
+	 */
+	public function isManager()
+	{
+		return ($this->get('role') == self::ROLE_MANAGER);
+	}
+
+	/**
+	 * Is the user a collaborator of the project?
+	 *
+	 * @return  bool
+	 */
+	public function isCollaborator()
+	{
+		return ($this->get('role') == self::ROLE_COLLABORATOR);
+	}
+
+	/**
+	 * Is the user a reviewer of the project?
+	 *
+	 * @return  bool
+	 */
+	public function isReviewer()
+	{
+		return ($this->get('role') == self::ROLE_REVIEWER);
+	}
+
+	/**
+	 * Is the user invited to the project?
+	 *
+	 * @return  bool
+	 */
+	public function isInvited()
+	{
+		return ($this->get('role') == self::ROLE_INVITEE);
+	}
+
+	/**
+	 * Get a param value
+	 *
+	 * @return  object
+	 */
+	public function transformParams()
+	{
+		if (!is_object($this->params))
+		{
+			$this->params = new Registry($this->get('params'));
+		}
+
+		return $this->params;
 	}
 }
