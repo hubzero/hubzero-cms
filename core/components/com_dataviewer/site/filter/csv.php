@@ -57,7 +57,7 @@ function filter($res, &$dd, $ob_mode = false)
 		}
 	}
 	$csv .= $nl;
-
+	$csv .= columnsMetadata($dd);
 	print $csv;
 
 	mysql_data_seek($data, 0);
@@ -84,4 +84,32 @@ function filter($res, &$dd, $ob_mode = false)
 	}
 	return '';
 }
-?>
+
+function columnsMetadata($dd)
+{
+	$w = '"';
+	$s = ",";
+	$columnsMetadata = "";
+
+	foreach ($dd["cols"] as $column => $metadata)
+	{
+		$columnsMetadata .= columnMetadata($metadata) . $w . $s;
+	}
+
+	$columnsMetadata = rtrim($columnsMetadata, ($w . $s));
+	$dataSeparator = "\r\nDATASTART\r\n";
+
+	return $columnsMetadata . '"""'. $dataSeparator;
+}
+
+function columnMetadata($metadata)
+{
+	unset($metadata['label']);
+	unset($metadata['idx']);
+	unset($metadata['styles']);
+
+	$columnMetadata = str_replace('"', '""', json_encode($metadata));
+	$columnMetadata = rtrim(ltrim($columnMetadata, '{'), '}');
+
+	return '"' . $columnMetadata;
+}
