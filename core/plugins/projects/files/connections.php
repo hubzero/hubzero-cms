@@ -1110,7 +1110,7 @@ class connections
 		}
 
 		// Rename
-		$entity  = Entity::fromPath(trim($this->subdir, '/') . '/' . Request::getVar('oldname', ''), $this->connection->adapter());
+		$entity  = Entity::fromPath(Request::getVar('oldname', ''), $this->connection->adapter());
 		$oldName = $entity->getAbsolutePath();
 
 		if ($entity->rename(Request::getVar('newname', '')))
