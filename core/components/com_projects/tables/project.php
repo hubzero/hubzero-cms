@@ -630,16 +630,20 @@ class Project extends \JTable
 			$query .= " AND p.provisioned=0";*/
 			$query  = "SELECT DISTINCT p.id
 					FROM `#__project_owners` AS po
-					INNER JOIN $this->_tbl AS p ON p.id=po.projectid
-					WHERE p.provisioned=0
+					INNER JOIN $this->_tbl AS p ON p.id=po.projectid ";
+			if ($uid)
+			{
+				$query .= " LEFT JOIN `#__project_owners` AS o ON p.id=o.projectid ";
+			}
+			$query .= "WHERE p.provisioned=0
 					AND po.status=1
 					AND po.groupid=" . $this->_db->quote($groupid);
 			if ($uid)
 			{
-				$query .= " AND po.userid=" . $this->_db->quote($uid);
+				$query .= " AND o.userid=" . $this->_db->quote($uid);
 			}
 			$query .= $active == 1
-					? " AND p.state != 2 "
+					? " AND p.state NOT IN (2, 3) "
 					: " AND p.state = 2 ";
 
 			$this->_db->setQuery($query);
