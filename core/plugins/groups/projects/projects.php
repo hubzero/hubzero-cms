@@ -145,8 +145,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$this->model = new Components\Projects\Models\Project();
 
 		$this->_projects = $this->model->table()->getGroupProjectIds(
-			$group->get('gidNumber'),
-			User::get('id')
+			$group->get('gidNumber')//,
+			//User::get('id')
 		);
 
 		// If we want to return content
