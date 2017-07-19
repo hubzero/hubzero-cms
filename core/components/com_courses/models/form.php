@@ -412,7 +412,7 @@ class PdfForm
 				// paintTransparentImage() was deprecated at some point in favor of transparentPaintImage()
 				if (method_exists($im, 'transparentPaintImage'))
 				{
-					$im->transparentPaintImage($im->getImagePixelColor(0, 0), 0.0, 0);
+					$im->transparentPaintImage($im->getImagePixelColor(0, 0), 0.0, 0, false);
 				}
 				else
 				{
