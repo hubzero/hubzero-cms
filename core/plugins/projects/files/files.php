@@ -485,6 +485,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			'showUntracked'        => true,
 			'getPubConnections'    => false,
 			'remoteConnections'    => $remotes,
+			'versionTracking'      => $this->model->params->get('versionTracking', '1'),
 		);
 
 		// Retrieve items
@@ -2675,6 +2676,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->config = $model->config();
 		$view->title  = isset($this->_area['title']) ? $this->_area['title'] : '';
 		$view->params = $this->params;
+		$view->versionTracking = $model->params->get('versionTracking', '1');
 
 		return $view->loadTemplate();
 	}

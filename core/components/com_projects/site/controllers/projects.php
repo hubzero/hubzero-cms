@@ -263,10 +263,10 @@ class Projects extends Base
 		}
 		// We're filtering by a specific state
 		// Do NOT include all projects the user may have access to as some of them may not be of this state
-		if (in_array($this->view->filters['filterby'], array('open', 'public')))
-		{
-			$this->view->filters['uid'] = 0;
-		}
+		//if (in_array($this->view->filters['filterby'], array('open', 'public')))
+		//{
+		//	$this->view->filters['uid'] = 0;
+		//}
 
 		/*if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
 		{

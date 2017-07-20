@@ -334,10 +334,7 @@ class File extends Object
 		}
 
 		// Formatted size
-		if ($this->get('size'))
-		{
-			$this->set('formattedSize', \Hubzero\Utility\Number::formatBytes($this->get('size')));
-		}
+		$this->set('formattedSize', \Hubzero\Utility\Number::formatBytes($this->get('size')));
 
 		return $this->get('size');
 	}
