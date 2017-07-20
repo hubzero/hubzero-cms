@@ -45,6 +45,7 @@ Login to the administrator area. Go to "Extensions > Extensions Manager". Click 
 item "Discover". From that page, click "Discover" in the toolbar. If you see "Partners" show up
 in the resulting list, click the checkbox next to it and click the "Install" button.
 Either SSH into the virtual machine, navigate to the com_partners folder and run the script:
+
 mysql -u root -p example < install.sql
 
 
@@ -61,4 +62,4 @@ only installs sample content.
 
 From the command-line, starting in your hub's root directory, you can run all migrations with:
 
-    $ php muse migration -f
+    php muse migration -f
