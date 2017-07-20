@@ -42,9 +42,11 @@ The install.sql file contains SQL for creating the needed database tables and po
 with sample data. This may be manually added to the database or with muse.
 
 Login to the administrator area. Go to "Extensions > Extensions Manager". Click the sub-menu
-item "Discover". From that page, click "Discover" in the toolbar. If you see "Dr Who" show up
+item "Discover". From that page, click "Discover" in the toolbar. If you see "Partners" show up
 in the resulting list, click the checkbox next to it and click the "Install" button.
-Either SSH into the virtual machine, navigate to the com_partners folder 
+Either SSH into the virtual machine, navigate to the com_partners folder and run the script:
+mysql -u root -p example < install.sql
+
 
 Muse
 ============
