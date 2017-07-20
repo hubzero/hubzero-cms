@@ -85,10 +85,31 @@ if ($this->item->get('remote'))
 $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 ?>
 <tr class="mini faded mline">
-	<?php if ($this->model->access('content')) { ?>
-		<td class="middle_valign">
-			<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; if ($this->item->get('untracked')) { echo ' untracked'; } if ($this->item->get('converted')) { echo ' remote service-google'; } ?>" />
-		</td>
+	<?php 
+	if ($this->model->access('content'))
+	{
+	?>
+	<td>
+		<?php 
+			$checkasset = "";
+			if ($this->item->get('type') == 'folder')
+			{
+				$checkasset = ' dir';
+			}
+			else
+			{
+				if ($this->item->get('untracked'))
+				{
+					$checkasset .= ' untracked';
+				}
+				if ($this->item->get('converted'))
+				{
+					$checkasset .= ' remote service-google';
+				}
+			}
+		?>
+		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $checkasset ?>" />
+	</td>
 	<?php } ?>
 	<td class="middle_valign nobsp is-relative">
 		<?php echo $this->item->drawIcon($ext); ?>

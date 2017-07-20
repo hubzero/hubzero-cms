@@ -1558,7 +1558,6 @@ class Repo extends Object
 						if ($nf && substr($nf[0], 0, 5) != 'fatal')
 						{
 							$out = $git->callGit('log | grep "^commit" | wc -l' );
-	
 							if (is_array($out))
 							{
 								$c =  end($out);
@@ -1570,7 +1569,6 @@ class Repo extends Object
 					{
 						$count = count($git->getFiles());
 						$files = $files + $count;
-	
 						if ($count > 1)
 						{
 							$usage++;
