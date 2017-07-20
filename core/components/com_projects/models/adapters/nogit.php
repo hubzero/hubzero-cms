@@ -140,7 +140,6 @@ class Nogit extends Models\Adapter
 			}
 			// Load basic file metadata
 			$file = new Models\File($item, $this->_path);
-			
 			if ($file->get('name') == '.git')
 			{
 				continue;
@@ -500,7 +499,7 @@ class Nogit extends Models\Adapter
 		// Initialize
 		$this->_nogit->iniGit();
 	}
-	
+
 	/**
 	 * Stub for checking in required for compatibility
 	 *
@@ -510,7 +509,7 @@ class Nogit extends Models\Adapter
 	{
 		return true;
 	}
-	
+
 	/**
 	 * Stub for optimizing, required for compatibility
 	 *

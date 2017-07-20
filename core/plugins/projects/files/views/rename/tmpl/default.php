@@ -41,7 +41,7 @@ $bcEnd = $this->type == 'folder' ? '<span class="folder">' . $this->item . '</sp
 <?php
 // Display error
 if ($this->getError()) {
-	echo ('<p class="witherror">' . $this->getError() . '</p>');
+	echo '<p class="witherror">' . $this->getError() . '</p>';
 }
 else {
 ?>

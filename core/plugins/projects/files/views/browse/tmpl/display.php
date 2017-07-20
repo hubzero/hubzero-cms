@@ -84,7 +84,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 				$lastsync = $this->rSync->get('status') == 'complete' ? date("c") : $this->model->params->get($service . '_sync', '');
 				if ($lastsync)
 				{
-					$lastsync = '<span class="faded">' . Lang::txt('PLG_PROJECTS_FILES_LAST_SYNC') . ' ' . \Components\Projects\Helpers\Html::timeAgo($lastsync, false) . ' ' . Lang::txt('COM_PROJECTS_AGO') . ' </span>' ;
+					$lastsync = '<span class="faded">' . Lang::txt('PLG_PROJECTS_FILES_LAST_SYNC') . ' ' . \Components\Projects\Helpers\Html::timeAgo($lastsync, false) . ' ' . Lang::txt('COM_PROJECTS_AGO') . ' </span>';
 				}
 		?>
 		<input type="hidden" name="service-<?php echo $service; ?>" id="service-<?php echo $service; ?>" value="<?php echo !empty($this->connections) && isset($this->connections[$service]) ? 1 : 0; ?>" />
@@ -197,7 +197,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 	</table>
 	<?php
 	// Show directory as empty
-	if (count($this->items) == 0 ) { ?>
+	if (count($this->items) == 0) { ?>
 		<p class="noresults">
 		<?php echo ($this->subdir) ? Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY') : Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?>
 		</p>
@@ -207,8 +207,6 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 		<span class="leftfloat">
 		<?php
 		// Used disk space and remaining quota
-		
-		
 		if ($this->fileparams->get('project_quota'))
 		{
 			// Report usage only with current files and not with history
