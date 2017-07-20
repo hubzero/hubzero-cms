@@ -36,7 +36,6 @@ $this->css()
 	 ->css('diskspace')
 	 ->js('diskspace')
      ->js();
-
 $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 $sortbyDir = $this->params['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
@@ -50,6 +49,14 @@ $connected = $this->oparams->get('google_token') ? true : false;
 $sharing   = isset($this->sharing) && $this->sharing ? true : false;
 $sync      = isset($this->sync) ? $this->sync : 0;
 
+$versionTracking = 1;
+if (isset($this->params['versionTracking']) && $this->params['versionTracking'] == '0')
+{
+	$versionTracking = 0;
+	$connected = false;
+	$sharing = false;
+	$sync = false;
+}
 ?>
 
 <div id="preview-window"></div>
@@ -86,17 +93,20 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 	} ?>
 	</fieldset>
 	<?php
+		if ($versionTracking == 1)
+		{
 		// Connections to external services
-		$this->view('link', 'connect')
-		     ->set('option', $this->option)
-		     ->set('model', $this->model)
-		     ->set('uid', $this->uid)
-		     ->set('database', $this->database)
-		     ->set('connect', $this->connect)
-		     ->set('oparams', $this->oparams)
-		     ->set('params', $this->fileparams)
-		     ->set('sizelimit', \Hubzero\Utility\Number::formatBytes($this->fileparams->get('maxUpload', '104857600')))
-		     ->display();
+			$this->view('link', 'connect')
+				->set('option', $this->option)
+				->set('model', $this->model)
+				->set('uid', $this->uid)
+				->set('database', $this->database)
+				->set('connect', $this->connect)
+				->set('oparams', $this->oparams)
+				->set('params', $this->fileparams)
+				->set('sizelimit', \Hubzero\Utility\Number::formatBytes($this->fileparams->get('maxUpload', '104857600')))
+				->display();
+		}
 	 ?>
 	<div class="list-editing">
 		<p>
@@ -118,7 +128,7 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 			<noscript>
 				<span class="faded ipadded"><?php echo Lang::txt('Enable JavaScript in your browser for advanced file management.'); ?></span>
 			</noscript>
-			<?php if ($sharing) { ?>
+			<?php if ($sharing && $versionTracking == 1) { ?>
 			<span class="rightfloat">
 				<span id="sync-status"><?php echo $lastsync; ?></span>
 			</span>
@@ -228,7 +238,7 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 		?>
 		</span>
 		<?php } ?>
-		<?php if ($this->model->access('content')) { ?>
+		<?php if ($this->model->access('content') && $versionTracking == 1) { ?>
 		<span class="rightfloat">
 			<a href="<?php echo Route::url($this->model->link('files')) . '?action=trash'; ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_FILES_SHOW_TRASH'); ?></a>
 		</span>

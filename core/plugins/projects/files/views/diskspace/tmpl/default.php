@@ -51,9 +51,16 @@ $working = ($usageGit || $this->by == 'admin') ? $this->totalspace - $this->dirs
 
 $actual  = $working > 0 ? round((($working * 100 )/ $this->quota), 1) : NULL;
 $actual  = $actual > 100 ? 100 : $actual;
-
-$versions = $this->dirsize - $working;
-$versions = ($versions > $minGitSize && ($usageGit || $this->by == 'admin')) ? \Hubzero\Utility\Number::formatBytes($versions) : 0;
+if ($this->versionTracking == '0')
+{
+	$versions = 0;
+	$working = $this->dirsize;
+}
+else
+{
+	$versions = $this->dirsize - $working;
+	$versions = ($versions > $minGitSize && ($usageGit || $this->by == 'admin')) ? \Hubzero\Utility\Number::formatBytes($versions) : 0;
+}
 
 $inuse = ($inuse > 100) ? '> 100' : $inuse;
 

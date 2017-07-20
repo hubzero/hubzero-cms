@@ -118,7 +118,7 @@ class Setup extends Base
 				$this->_showError();
 				return;
 			}
-
+			$this->model->saveParam('versionTracking', '0');
 			$this->model->set('alias', Request::getVar('name', '', 'post'));
 			$this->model->set('title', Request::getVar('title', '', 'post'));
 			$this->model->set('about', trim(Request::getVar('about', '', 'post', 'none', 2)));
@@ -534,6 +534,7 @@ class Setup extends Base
 		// Activate project
 		if (!$active)
 		{
+			$this->model->saveParam('versionTracking', 0);
 			$this->model->set('state', $state);
 			$this->model->set('provisioned', 0); // remove provisioned flag if any
 			$this->model->set('setup_stage', $this->_setupComplete);
