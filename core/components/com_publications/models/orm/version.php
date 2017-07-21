@@ -484,4 +484,26 @@ class Version extends Relational
 
 		return PATH_APP . '/' . trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/') . '/' . $pid . '/' . $vid . '/' . $sec;
 	}
+
+	/**
+	 * Split metadata into parts
+	 *
+	 * @return  array
+	 */
+	public function transformMetadata()
+	{
+		$data = array();
+
+		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata'), $matches, PREG_SET_ORDER);
+
+		if (count($matches) > 0)
+		{
+			foreach ($matches as $match)
+			{
+				$data[$match[1]] = $match[2];
+			}
+		}
+
+		return $data;
+	}
 }
