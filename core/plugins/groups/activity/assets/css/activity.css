@@ -269,6 +269,10 @@
 		opacity: 1;
 	}
 
+	.icon-project:before {
+		content: "\f03f";
+	}
+
 @media (min-width: 40em) {
 	.activity > ul {
 		margin-left: 70px;
