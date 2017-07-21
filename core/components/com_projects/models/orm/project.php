@@ -38,6 +38,7 @@ include_once __DIR__ . '/owner.php';
 include_once __DIR__ . '/description.php';
 include_once __DIR__ . '/connection.php';
 include_once __DIR__ . '/activity.php';
+include_once __DIR__ . '/type.php';
 
 /**
  * Projects database model
@@ -57,7 +58,7 @@ class Project extends Relational
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'title';
 
@@ -197,6 +198,16 @@ class Project extends Relational
 	public function team()
 	{
 		return $this->oneToMany(__NAMESPACE__ . '\\Owner', 'projectid');
+	}
+
+	/**
+	 * Defines a one to one relationship between project and type
+	 *
+	 * @return  \Hubzero\Database\Relationship\OneToOne
+	 **/
+	public function type()
+	{
+		return $this->oneToOne(__NAMESPACE__ . '\\Type', 'id', 'type');
 	}
 
 	/**

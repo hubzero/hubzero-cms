@@ -79,7 +79,7 @@ class Description extends Relational
 	);
 
 	/**
-	 * Get parent member
+	 * Get parent project
 	 *
 	 * @return  object
 	 */

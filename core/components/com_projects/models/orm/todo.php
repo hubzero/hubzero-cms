@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,12 +34,161 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * Projects database model
+ * Projects ToDo model
  *
  * @uses  \Hubzero\Database\Relational
  */
 class Todo extends Relational
 {
-	protected $table = '#__project_todo';
-}
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 **/
+	protected $namespace = 'project';
 
+	/**
+	 * The table name
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__project_todo';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'priority';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'projectid' => 'positive|nonzero',
+		'content'   => 'notempty'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Get parent project
+	 *
+	 * @return  object
+	 */
+	public function project()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Project', 'projectid');
+	}
+
+	/**
+	 * Get creator
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
+
+	/**
+	 * Get user the item is assigned to
+	 *
+	 * @return  object
+	 */
+	public function assignee()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'assigned_to');
+	}
+
+	/**
+	 * Get user that closed the item
+	 *
+	 * @return  object
+	 */
+	public function closer()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'closed_by');
+	}
+
+	/**
+	 * Is the entry due?
+	 *
+	 * @return  bool
+	 */
+	public function isDue()
+	{
+		if ($this->get('duedate') && $this->get('duedate') != '0000-00-00 00:00:00')
+		{
+			if ($this->get('duedate') <= Date::toSql())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get lists
+	 *
+	 * @return  object
+	 */
+	public static function lists()
+	{
+		$lists = self::all()
+			->select('DISTINCT(todolist)')
+			->select('color')
+			->where('todolist', '!=', '')
+			->whereRaw('todolist', 'IS NOT NULL')
+			->rows();
+
+		return $lists;
+	}
+
+	/**
+	 * Get entries by project ID
+	 *
+	 * @param   integer  $projectid
+	 * @return  object
+	 */
+	public static function allByProject($projectid)
+	{
+		return self::all()->whereEquals('projectid', $projectid);
+	}
+
+	/**
+	 * Get list name by project ID and color
+	 *
+	 * @param   integer  $projectid
+	 * @param   string   $color
+	 * @return  string
+	 */
+	public static function listByProjectAndColor($projectid, $color)
+	{
+		$lst = self::all()
+			->select('todolist')
+			->whereEquals('color', $color)
+			->whereEquals('projectid', $projectid)
+			->row();
+
+		return $lst->get('todolist');
+	}
+}
