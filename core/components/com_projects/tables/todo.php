@@ -101,7 +101,7 @@ class Todo extends \JTable
 		$activityid		= isset($filters['activityid']) ? intval($filters['activityid']) : 0;
 
 		$query	= "SELECT ";
-		$query .= $count ? " COUNT(*) " : "*, xp.name AS authorname, xpp.name AS assignedname, xppp.name AS closedbyname, IF (p.duedate ='0000-00-00 00:00:00' OR p.duedate IS NULL, 0, 1 ) as due ";
+		$query .= $count ? " COUNT(*) " : "p.*, xp.name AS authorname, xpp.name AS assignedname, xppp.name AS closedbyname, IF (p.duedate ='0000-00-00 00:00:00' OR p.duedate IS NULL, 0, 1 ) as due ";
 		if (!$count)
 		{
 			$query .= ", (SELECT COUNT(*) FROM #__project_comments as c WHERE c.itemid=p.id AND c.tbl='todo' AND c.state!=2) as comments ";
@@ -109,9 +109,9 @@ class Todo extends \JTable
 		$query .= "FROM $this->_tbl AS p  ";
 		if (!$count)
 		{
-			$query .= "JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
-			$query .= "LEFT JOIN #__xprofiles AS xpp ON xpp.uidNumber=p.assigned_to ";
-			$query .= "LEFT JOIN #__xprofiles AS xppp ON xppp.uidNumber=p.closed_by ";
+			$query .= "JOIN #__users AS xp ON xp.id=p.created_by ";
+			$query .= "LEFT JOIN #__users AS xpp ON xpp.id=p.assigned_to ";
+			$query .= "LEFT JOIN #__users AS xppp ON xppp.id=p.closed_by ";
 		}
 
 		$query	.= " WHERE p.projectid IN ( ";
