@@ -32,6 +32,8 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Date;
+use Lang;
 
 /**
  * Projects ToDo model
@@ -113,7 +115,7 @@ class Todo extends Relational
 	 *
 	 * @return  object
 	 */
-	public function assignee()
+	public function owner()
 	{
 		return $this->belongsToOne('Hubzero\User\User', 'assigned_to');
 	}
@@ -129,21 +131,110 @@ class Todo extends Relational
 	}
 
 	/**
+	 * Get comments
+	 *
+	 * @return  object
+	 */
+	public function comments()
+	{
+		return $this->oneToMany('Hubzero\Activity\Log', 'scope_id', 'id')->whereEquals('scope', 'project.todo');
+	}
+
+	/**
 	 * Is the entry due?
 	 *
 	 * @return  bool
 	 */
-	public function isDue()
+	public function isOverdue()
 	{
 		if ($this->get('duedate') && $this->get('duedate') != '0000-00-00 00:00:00')
 		{
-			if ($this->get('duedate') <= Date::toSql())
+			if ($this->get('duedate') < Date::toSql())
 			{
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * Is the entry complete?
+	 *
+	 * @return  bool
+	 */
+	public function isComplete()
+	{
+		return ($this->get('state') == 1);
+	}
+
+	/**
+	 * Return a formatted created timestamp
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function created($as='')
+	{
+		return $this->_date('created', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function due($as='')
+	{
+		return $this->_date('duedate', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param   string  $as  What data to return
+	 * @return  string
+	 */
+	public function closed($as='')
+	{
+		return $this->_date('closed', $as);
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 *
+	 * @param   string  $key  Field to return
+	 * @param   string  $as   What data to return
+	 * @return  string
+	 */
+	protected function _date($key, $as='')
+	{
+		$dt = $this->get($key);
+
+		if (!$dt || $dt == '0000-00-00 00:00:00')
+		{
+			return '';
+		}
+
+		$as = strtolower($as);
+
+		if ($as == 'date')
+		{
+			$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
+
+		if ($as == 'time')
+		{
+			$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		if ($as)
+		{
+			$dt = Date::of($dt)->toLocal($as);
+		}
+
+		return $dt;
 	}
 
 	/**
