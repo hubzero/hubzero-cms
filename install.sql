@@ -29,8 +29,10 @@ CREATE TABLE `jos_partner_partners` (
   `twitter_handle` varchar(255) NOT NULL DEFAULT ' ',
   `groups_cn` varchar(255) NOT NULL DEFAULT '',
   `logo_img` varchar(255) NOT NULL DEFAULT '',
-  `QUBES_liason` varchar(255) NOT NULL DEFAULT '',
-  `partner_liason` varchar(255) NOT NULL DEFAULT '',
+  `QUBES_liason_primary` varchar(255) NOT NULL DEFAULT '',
+  `QUBES_liason_secondary` varchar(255) NOT NULL DEFAULT '',
+  `partner_liason_primary` varchar(255) NOT NULL DEFAULT '',
+  `partner_liason_secondary` varchar(255) NOT NULL DEFAULT '',
   `activities` mediumtext NOT NULL,
   `state` tinyint(2) NOT NULL DEFAULT '0',  
   `about` mediumtext NOT NULL,
@@ -40,11 +42,11 @@ CREATE TABLE `jos_partner_partners` (
 LOCK TABLES `jos_partner_partners` WRITE;
 /*!40000 ALTER TABLE `jos_partner_partners` DISABLE KEYS */;
 
-INSERT INTO `jos_partner_partners` (`id`, `name`, `date_joined`, `partner_type`,`site_url` , `twitter_handle`, `groups_cn`, `logo_img`, `QUBES_liason`,
-`partner_liason`, `activities`, `state`, `about`)
+INSERT INTO `jos_partner_partners` (`id`, `name`, `date_joined`, `partner_type`,`site_url` , `twitter_handle`, `groups_cn`, `logo_img`, `QUBES_liason_primary`, `QUBES_liason_secondary`,
+`partner_liason_primary`,`partner_liason_secondary`, `activities`, `state`, `about`)
 VALUES
 	(1,'National Science Foundation','2014-09-17',2,'www.nsf.gov','NSF',
-		'nsf', '', 
+		'nsf', '', '','',
     '', '','activites', 1,
     '<!-- {FORMAT:HTML} --><p>The National Science Foundation (NSF) is an independent federal agency created by Congress in 1950 "to promote the
 		 progress of science; to advance the national health, prosperity, and welfare; to secure the national defense…"’\n</p>');

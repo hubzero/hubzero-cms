@@ -44,7 +44,7 @@ with sample data. This may be manually added to the database or with muse.
 Login to the administrator area. Go to "Extensions > Extensions Manager". Click the sub-menu
 item "Discover". From that page, click "Discover" in the toolbar. If you see "Partners" show up
 in the resulting list, click the checkbox next to it and click the "Install" button.
-Either SSH into the virtual machine, navigate to the com_partners folder and run the script:
+Either SSH into the virtual machine, navigate to the com_partners folder and run the script(password: root):
 
 mysql -u root -p example < install.sql
 

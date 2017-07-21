@@ -86,25 +86,49 @@ function submitbutton(pressbutton)
 						<?php } ?>
 					</select>
 				</div>
-			<!--QUBES Liason-->
+			<!--Primary QUBES Liason-->
 				<div class="input-wrap">
-					<label for="fields-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON'); ?></label>
-					<select name="fields[QUBES_liason]" id="fields-QUBES_liason">
-						<?php if ($this->row->get("QUBES_liason") == '') { ?> <option value = "">select</option> <?php }?>
+					<label for="fields-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON_PRIMARY'); ?></label>
+					<select name="fields[QUBES_liason_primary]" id="fields-QUBES_liason_primary">
+						<?php if ($this->row->get("QUBES_liason_primary") == '') { ?> <option value = "">select</option> <?php }?>
 						<?php foreach ($this->member_names as $val) { ?>
-							<option<?php if ($this->row->get('QUBES_liason') == $val->text) { echo ' selected="selected"'; }
+							<option<?php if ($this->row->get('QUBES_liason_primary') == $val->text) { echo ' selected="selected"'; }
 							?> value="<?php echo  $this->escape($val->text); ?>">
 							<?php echo $this->escape($val->text); ?></option>
 						<?php } ?>
 					</select>
 				</div>
-			<!--Partner Liason-->
+				<!-- Secondary QUBES Liason-->
 				<div class="input-wrap">
-					<label for="fields-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON'); ?></label>
-					<select name="fields[partner_liason]" id="fields-QUBES_liason">
-					<?php if ($this->row->get("partner_liason") == '') { ?> <option value = "">select</option> <?php }?>
+					<label for="fields-QUBES_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_QUBES_LIASON_SECONDARY'); ?></label>
+					<select name="fields[QUBES_liason_secondary]" id="fields-QUBES_liason_secondary">
+						<?php if ($this->row->get("QUBES_liason_secondary") == '') { ?> <option value = "">select</option> <?php }?>
 						<?php foreach ($this->member_names as $val) { ?>
-							<option<?php if ($this->row->get('partner_liason') == $val->text) { echo ' selected="selected"'; }
+							<option<?php if ($this->row->get('QUBES_liason_secondary') == $val->text) { echo ' selected="selected"'; }
+							?> value="<?php echo  $this->escape($val->text); ?>">
+							<?php echo $this->escape($val->text); ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			<!--Primary Partner Liason-->
+				<div class="input-wrap">
+					<label for="fields-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON_PRIMARY'); ?></label>
+					<select name="fields[partner_liason_primary]" id="fields-partner_liason_primary">
+					<?php if ($this->row->get("partner_liason_primary") == '') { ?> <option value = "">select</option> <?php }?>
+						<?php foreach ($this->member_names as $val) { ?>
+							<option<?php if ($this->row->get('partner_liason_primary') == $val->text) { echo ' selected="selected"'; }
+							?> value="<?php echo  $this->escape($val->text); ?>">
+							<?php echo $this->escape($val->text); ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			<!-- Secondary Partner Liason-->
+				<div class="input-wrap">
+					<label for="fields-partner_liason"><?php echo Lang::txt('COM_PARTNERS_FIELD_PARTNER_LIASON_SECONDARY'); ?></label>
+					<select name="fields[partner_liason_secondary]" id="fields-partner_liason_secondary">
+					<?php if ($this->row->get("partner_liason_secondary") == '') { ?> <option value = "">select</option> <?php }?>
+						<?php foreach ($this->member_names as $val) { ?>
+							<option<?php if ($this->row->get('partner_liason_secondary') == $val->text) { echo ' selected="selected"'; }
 							?> value="<?php echo  $this->escape($val->text); ?>">
 							<?php echo $this->escape($val->text); ?></option>
 						<?php } ?>

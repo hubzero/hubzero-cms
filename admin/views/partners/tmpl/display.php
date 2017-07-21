@@ -62,8 +62,8 @@ Html::behavior('framework');
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_PARTNER_TYPE', 'partner_type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_QUBES_LIASON', 'QUBES_liason', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_PARTNER_TYPE', 'partner_type_primary', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_QUBES_LIASON_PRIMARY', 'QUBES_liason_primary', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -148,10 +148,10 @@ Html::behavior('framework');
 							
 						</span>
 				</td>
-
+				<!--Primary Secondary Liason -->
 				<td class="priority-4">
 					<span>
-						<?php echo $this->escape($row->get('QUBES_liason')); ?>
+						<?php echo $this->escape($row->get('QUBES_liason_primary')); ?>
 					</span>
 				</td>
 
