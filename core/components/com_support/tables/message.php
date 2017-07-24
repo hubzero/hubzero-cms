@@ -61,7 +61,7 @@ class Message extends \JTable
 		$this->message = trim($this->message);
 		if ($this->message == '')
 		{
-			$this->setError(Lang::txt('SUPPORT_ERROR_BLANK_FIELD'));
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 

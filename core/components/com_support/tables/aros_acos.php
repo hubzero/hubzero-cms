@@ -59,11 +59,11 @@ class AroAco extends \JTable
 	{
 		if (trim($this->aro_id) == '')
 		{
-			$this->setError(Lang::txt('SUPPORT_ERROR_BLANK_FIELD') . ': aro_id');
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_BLANK_FIELD') . ': aro_id');
 		}
 		if (trim($this->aco_id) == '')
 		{
-			$this->setError(Lang::txt('SUPPORT_ERROR_BLANK_FIELD') . ': aco_id');
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_BLANK_FIELD') . ': aco_id');
 		}
 
 		if ($this->getError())

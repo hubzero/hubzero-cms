@@ -59,7 +59,7 @@ class Section extends \JTable
 	{
 		if (trim($this->section) == '')
 		{
-			$this->setError(Lang::txt('SUPPORT_ERROR_BLANK_FIELD'));
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 
