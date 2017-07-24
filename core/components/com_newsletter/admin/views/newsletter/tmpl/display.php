@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 Html::behavior('modal');
 
 //set title
-Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_TITLE') . ': ' . Lang::txt('COM_NEWSLETTER_NEWSLETTERS'), 'newsletter.png');
 
 //add buttons to toolbar
 Toolbar::addNew();
