@@ -315,12 +315,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "v4.5.0"
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
-                "reference": "v4.5.0",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
                 "shasum": ""
             },
             "require": {
@@ -908,12 +908,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/flysystem-github.git",
-                "reference": "212b15cc9bd68b98732d0aeb68ae0548e1ae3b49"
+                "reference": "20f759eabc5f0ad88a27235bffa734694ea6a148"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/flysystem-github/zipball/212b15cc9bd68b98732d0aeb68ae0548e1ae3b49",
-                "reference": "212b15cc9bd68b98732d0aeb68ae0548e1ae3b49",
+                "url": "https://api.github.com/repos/hubzero/flysystem-github/zipball/20f759eabc5f0ad88a27235bffa734694ea6a148",
+                "reference": "20f759eabc5f0ad88a27235bffa734694ea6a148",
                 "shasum": ""
             },
             "require": {
@@ -973,7 +973,7 @@
             "support": {
                 "source": "https://github.com/hubzero/flysystem-github/tree/develop"
             },
-            "time": "2016-06-09 20:18:42"
+            "time": "2017-07-24 19:58:42"
         },
         {
             "name": "hubzero/framework",
@@ -2335,7 +2335,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
