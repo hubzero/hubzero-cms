@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_MAILINGS' ), 'mailing.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_TITLE') . ': ' . Lang::txt('COM_NEWSLETTER_MAILINGS'), 'mailing.png');
 Toolbar::spacer();
 Toolbar::custom('tracking', 'stats', '', 'COM_NEWSLETTER_TOOLBAR_STATS');
 Toolbar::custom('stop', 'trash', '', 'COM_NEWSLETTER_TOOLBAR_STOP');

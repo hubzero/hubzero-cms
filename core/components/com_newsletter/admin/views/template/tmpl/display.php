@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 //set the title
-Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES'), 'template.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_TITLE') . ': ' . Lang::txt('COM_NEWSLETTER_TEMPLATES'), 'template.png');
 
 //add toolbar buttons
 Toolbar::addNew();

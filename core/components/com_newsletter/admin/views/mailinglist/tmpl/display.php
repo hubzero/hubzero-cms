@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_TITLE') . ': ' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS'), 'list.png');
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
