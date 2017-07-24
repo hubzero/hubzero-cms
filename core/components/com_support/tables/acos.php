@@ -59,11 +59,11 @@ class Aco extends \JTable
 	{
 		if (trim($this->model) == '')
 		{
-			$this->setError(Lang::txt('SUPPORT_ERROR_BLANK_FIELD') . ': model');
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_BLANK_FIELD') . ': model');
 		}
 		if (trim($this->foreign_key) == '')
 		{
-			$this->setError(Lang::txt('SUPPORT_ERROR_BLANK_FIELD') . ': foreign_key');
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_BLANK_FIELD') . ': foreign_key');
 		}
 
 		if ($this->getError())
