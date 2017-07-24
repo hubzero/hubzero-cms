@@ -151,24 +151,24 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?>:</th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?>:</th>
 						<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
 					</tr>
 					<?php if ($profile) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?>:</th>
 							<td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?></th>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?>:</th>
 							<td><?php echo $this->escape(stripslashes($profile->get('username'))); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?></th>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?>:</th>
 							<td><?php echo $this->escape(stripslashes($profile->get('email'))); ?></td>
 						</tr>
 					<?php } ?>

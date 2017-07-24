@@ -133,7 +133,7 @@ Joomla.submitbutton = function(pressbutton) {
 					<tr>
 						<th><?php echo Lang::txt('COM_BLOG_FIELD_ID'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('id', 0); ?>
+							<?php echo $this->row->get('id'); ?>
 							<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 							<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />
 						</td>

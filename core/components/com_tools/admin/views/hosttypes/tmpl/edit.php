@@ -84,11 +84,11 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_BIT'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_BIT'); ?>:</th>
 						<td><?php echo $this->escape($this->bit); ?></td>
 					</tr>
 					<tr>
-						<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_REFERENCES'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_REFERENCES'); ?>:</th>
 						<td><?php echo $this->escape($this->refs); ?></td>
 					</tr>
 				</tbody>
