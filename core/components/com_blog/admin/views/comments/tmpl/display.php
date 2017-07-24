@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
-Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS'), 'blog');
+Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_MENU_COMMENTS'), 'blog');
 if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();

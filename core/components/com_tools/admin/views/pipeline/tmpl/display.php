@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_TOOLS' ), 'tools.png');
+Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_PIPELINE'), 'tools.png');
 Toolbar::preferences('com_tools', '550');
 Toolbar::spacer();
 Toolbar::help('tools');
