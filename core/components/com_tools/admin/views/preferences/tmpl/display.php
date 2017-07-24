@@ -33,7 +33,7 @@
 defined('_HZEXEC_') or die();
 
 // Menu
-Toolbar::title(Lang::txt('COM_TOOLS_USER_PREFS'), 'user.png');
+Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_USER_PREFS'), 'user.png');
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DEFAULT');
