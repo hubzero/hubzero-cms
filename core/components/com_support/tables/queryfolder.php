@@ -62,7 +62,7 @@ class QueryFolder extends \JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(Lang::txt('SUPPORT_ERROR_BLANK_FIELD'));
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 

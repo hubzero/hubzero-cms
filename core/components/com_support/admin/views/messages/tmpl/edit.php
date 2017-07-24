@@ -48,12 +48,12 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancelmsg') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
-	if ($('#field-message').val() == '') {
+	if ($('#field-message').value == '') {
 		alert('<?php echo Lang::txt('COM_SUPPORT_MESSAGE_ERROR_NO_TEXT'); ?>');
 	} else {
 		submitform(pressbutton);
