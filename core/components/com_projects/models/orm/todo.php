@@ -43,6 +43,13 @@ use Lang;
 class Todo extends Relational
 {
 	/**
+	 * Completed state
+	 *
+	 * @var  integer
+	 **/
+	const STATE_COMPLETED = 1;
+
+	/**
 	 * The table namespace
 	 *
 	 * @var  string
@@ -137,7 +144,12 @@ class Todo extends Relational
 	 */
 	public function comments()
 	{
-		return $this->oneToMany('Hubzero\Activity\Log', 'scope_id', 'id')->whereEquals('scope', 'project.todo');
+		$activity = \Hubzero\Activity\Log::all()
+			->whereEquals('scope_id', $this->get('id'))
+			->whereEquals('scope', 'project.todo')
+			->row();
+
+		return \Hubzero\Activity\Log::all()->whereEquals('parent', $activity->get('id')); //$this->oneToMany('Hubzero\Activity\Log', 'scope_id', 'id')->whereEquals('scope', 'project.todo.comment');
 	}
 
 	/**
@@ -165,7 +177,7 @@ class Todo extends Relational
 	 */
 	public function isComplete()
 	{
-		return ($this->get('state') == 1);
+		return ($this->get('state') == self::STATE_COMPLETED);
 	}
 
 	/**
@@ -240,15 +252,17 @@ class Todo extends Relational
 	/**
 	 * Get lists
 	 *
+	 * @param   integer  $projectid
 	 * @return  object
 	 */
-	public static function lists()
+	public static function listsByProject($projectid)
 	{
 		$lists = self::all()
 			->select('DISTINCT(todolist)')
 			->select('color')
 			->where('todolist', '!=', '')
-			->whereRaw('todolist', 'IS NOT NULL')
+			->whereEquals('projectid', $projectid)
+			->whereRaw('todolist IS NOT NULL')
 			->rows();
 
 		return $lists;
