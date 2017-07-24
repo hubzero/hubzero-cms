@@ -48,7 +48,7 @@ Toolbar::cancel();
 					<td><input type="text" name="config[adminmail]" size="30" maxlength="50" value="<?php echo $this->config->adminmail; ?>" /></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL'); ?>:</td>
+					<td class="key" title="Who is allowed to post events"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL'); ?>:</td>
 					<td><?php
 					$level[] = Html::select('option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ALL'), 'value', 'text' );
 					$level[] = Html::select('option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SPECIAL'), 'value', 'text' );
@@ -97,7 +97,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT'); ?>:</td>
+					<td class="key" title="Use AM and PM instead of 24hr time"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT'); ?>:</td>
 					<td><?php
 					$stdTime[] = Html::select('option', 'YES', Lang::txt('YES'), 'value', 'text' );
 					$stdTime[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
@@ -116,7 +116,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_NUMEVENTS'); ?>:</td>
+					<td class="key" title="Number of events listed per page for week, month, or year views"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_NUMEVENTS'); ?>:</td>
 					<td><input type="text" size="3" name="config[calEventListRowsPpg]" value="<?php echo $this->config->calEventListRowsPpg; ?>" /></td>
 				</tr>
 			</tbody>
