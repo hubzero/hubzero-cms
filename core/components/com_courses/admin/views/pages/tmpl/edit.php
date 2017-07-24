@@ -105,7 +105,7 @@ Joomla.submitbutton = function(pressbutton) {
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?></th>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?>:</th>
 						<?php if ($this->row->get('course_id')) { ?>
 							<?php if ($this->row->get('offering_id')) { ?>
 								<td><?php echo Lang::txt('COM_COURSES_PAGES_OFFERING'); ?></td>
@@ -118,18 +118,18 @@ Joomla.submitbutton = function(pressbutton) {
 					</tr>
 					<?php if ($this->row->get('course_id')) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?></th>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?>:</th>
 							<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
 						</tr>
 					<?php } ?>
 					<?php if ($this->row->get('offering_id')) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?>:</th>
 							<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
 						</tr>
 					<?php } ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?>:</th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 				</tbody>

@@ -122,15 +122,15 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_ID'); ?></th>
+						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_ID'); ?>:</th>
 						<td><?php echo $this->row->user_id; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USERNAME'); ?></th>
+						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USERNAME'); ?>:</th>
 						<td><?php echo ($user ? $user->username : ''); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_NAME'); ?></th>
+						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_NAME'); ?>:</th>
 						<td><?php echo ($user ? $user->name : ''); ?></td>
 					</tr>
 				</tbody>
