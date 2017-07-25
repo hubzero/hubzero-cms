@@ -97,8 +97,8 @@ class Entries extends AdminController
 		$t = $model->getTableName();
 		$s = Substitute::blank()->getTableName();
 
-		$model
-			->select('DISTINCT ' . $t . '.*');
+		//$model
+		//	->select('DISTINCT ' . $t . '.*');
 
 		if ($filters['search'])
 		{
@@ -122,10 +122,31 @@ class Entries extends AdminController
 			$model->whereEquals($t . '.admin', 0);
 		}
 
+		// The query used for getting a total record count in
+		// the paginated() method has a flaw in that it will return
+		// the number of JOINS from substitutions, rather than the
+		// actual number of tags.
+		//
+		// So, shenanigans happen here:
+		$modelc = $model->copy();
+
+		$modelc
+			->select('COUNT(DISTINCT ' . $t . '.id)', 'count');
+
+		$first = $modelc->rows(false)->first();
+		$total = $first ? (int)$first->count : 0;
+
+		$model
+			->select('DISTINCT ' . $t . '.*');
+
+		$model->pagination = \Hubzero\Database\Pagination::init($model->getModelName(), $total, 'start', 'limit');
+		$model->start($model->pagination->start);
+		$model->limit($model->pagination->limit);
+
 		// Get records
 		$rows = $model
 			->order($t . '.' . $filters['sort'], $filters['sort_Dir'])
-			->paginated('limitstart', 'limit')
+			//->paginated('limitstart', 'limit')
 			->rows();
 
 		// Output the HTML
