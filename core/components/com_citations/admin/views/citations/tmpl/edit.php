@@ -68,7 +68,7 @@ $journal = html_entity_decode($this->row->journal);
 $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 ?>
 
-<script type="text/javascript" src="<?php echo Request::root(); ?>core/components/com_citations/site/assets/js/citations.js"></script>
+<!-- <script type="text/javascript" src="<?php echo Request::root(); ?>core/components/com_citations/site/assets/js/citations.js"></script> -->
 
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -87,6 +87,19 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	//}
 }
+
+function citeaddRow(id) {
+	var tr    = $('#' + id).find('tbody tr:last');
+	var clone = tr.clone(true);
+	var cindex = $('#' + id).find('tbody tr').length;
+	var inputs = clone.find('input,select');
+
+	inputs.val('');
+	inputs.each(function(i, el){
+		$(el).attr('name', $(el).attr('name').replace(/\[\d+\]/, '[' + cindex + ']'));
+	});
+	tr.after(clone);
+};
 </script>
 <?php
 	if ($this->getError())
@@ -329,7 +342,7 @@ function submitbutton(pressbutton)
 					</thead>
 					<tfoot>
 						<tr>
-							<td colspan="2"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
+							<td colspan="2"><a href="#" onclick="citeaddRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
 						</tr>
 					</tfoot>
 					<tbody>
@@ -343,37 +356,31 @@ function submitbutton(pressbutton)
 						}
 						for ($i=0; $i < $n; $i++)
 						{
-							if ($r == 0 || !isset($assocs[$i])) {
+							if ($r == 0 || !isset($assocs[$i]))
+							{
 								$assocs[$i] = new stdClass;
-								$assocs[$i]->id = NULL;
-								$assocs[$i]->cid = NULL;
-								$assocs[$i]->oid = NULL;
-								$assocs[$i]->type = NULL;
-								$assocs[$i]->tbl = NULL;
+								$assocs[$i]->id   = null;
+								$assocs[$i]->cid  = null;
+								$assocs[$i]->oid  = null;
+								$assocs[$i]->type = null;
+								$assocs[$i]->tbl  = null;
 							}
-							echo '  <tr>'."\n";
-							//echo '   <td><input type="text" name="assocs['.$i.'][type]" value="'.$assocs[$i]->type.'" size="5" /></td>'."\n";
-							echo '   <td><select name="assocs['.$i.'][tbl]">'."\n";
-							echo ' <option value=""';
-							echo ($assocs[$i]->tbl == '') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('SELECT').'</option>'."\n";
-							//echo ' <option value="content"';
-							//echo ($assocs[$i]->tbl == 'content') ? ' selected="selected"': '';
-							//echo '>'.Lang::txt('CONTENT').'</option>'."\n";
-							echo ' <option value="resource"';
-							echo ($assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('RESOURCE').'</option>'."\n";
-							echo ' <option value="publication"';
-							echo ($assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('Publication').'</option>'."\n";
-							//echo ' <option value="topic"';
-							//echo ($assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
-							//echo '>'.Lang::txt('TOPIC').'</option>'."\n";
-							echo '</select></td>'."\n";
-							echo '   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$assocs[$i]->oid.'" size="5" />'."\n";
-							echo '<input type="hidden" name="assocs['.$i.'][id]" value="'.$assocs[$i]->id.'" />'."\n";
-							echo '<input type="hidden" name="assocs['.$i.'][cid]" value="'.$assocs[$i]->cid.'" /></td>'."\n";
-							echo '  </tr>'."\n";
+							?>
+							<tr>
+								<td>
+									<select name="assocs[<?php echo $i; ?>][tbl]" class="noUniform">
+										<option value=""<?php echo ($assocs[$i]->tbl == '') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('SELECT'); ?></option>
+										<option value="resource"<?php echo ($assocs[$i]->tbl == 'resource') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('RESOURCE'); ?></option>
+										<option value="publication"<?php echo ($assocs[$i]->tbl == 'publication') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('Publication'); ?></option>
+									</select>
+								</td>
+								<td>
+									<input type="text" name="assocs[<?php echo $i; ?>][oid]" value="<?php echo $this->escape($assocs[$i]->oid); ?>" size="5" />
+									<input type="hidden" name="assocs[<?php echo $i; ?>][id]" value="<?php echo $this->escape($assocs[$i]->id); ?>" />
+									<input type="hidden" name="assocs[<?php echo $i; ?>][cid]" value="<?php echo $this->escape($assocs[$i]->cid); ?>" />
+								</td>
+							</tr>
+							<?php
 						}
 						?>
 					</tbody>
