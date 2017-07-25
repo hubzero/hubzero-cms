@@ -110,7 +110,7 @@ class Nogit extends Models\Adapter
 		if (!$dirsOnly)
 		{
 			// Get a list of files from the git repository
-			$files = empty($files) ? $this->_nogit->getFiles($dirPath, true) : $files;
+			$files = empty($files) ? $this->_nogit->getFiles($dirPath, false) : $files;
 
 		}
 		else
