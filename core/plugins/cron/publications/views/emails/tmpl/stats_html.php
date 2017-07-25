@@ -61,7 +61,14 @@ $append = '?from=' . $this->user->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
 $profileLink = $this->user->link();
-$profileThumb = $this->user->picture();
+$profileThumb = '';
+$thumbpath = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/members/' . Hubzero\Utility\String::pad($this->user->get('id'), 5) . '/thumb.png';
+if (file_exists(PATH_ROOT . $thumbpath))
+{
+	// picture() will return a /file/hash URL that is tied to session
+	// so it doesn't really work in this case
+	$profileThumb = rtrim(Request::root(), '/') . $thumbpath; //$this->user->picture();
+}
 
 // More publications?
 $more = count($this->pubstats) - $this->limit;
@@ -203,7 +210,7 @@ $more = count($this->pubstats) - $this->limit;
 												</td>
 												<td width="40">
 													<?php if ($profileThumb) { ?>
-													<a href="<?php echo $profileLink . DS . 'profile' . $append; ?>">
+													<a href="<?php echo $profileLink . '/profile' . $append; ?>">
 														<img width="30" border="0" src="<?php echo $profileThumb; ?>" alt="" />
 													</a>
 													<?php } ?>
