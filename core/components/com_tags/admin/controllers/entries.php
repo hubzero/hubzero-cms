@@ -202,12 +202,14 @@ class Entries extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		// Permissions check
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 
 		$subs = '';
@@ -217,6 +219,7 @@ class Entries extends AdminController
 			unset($fields['substitutions']);
 		}
 
+		// Bend the data
 		$row = Tag::oneOrNew(intval($fields['id']))->set($fields);
 
 		$row->set('admin', 0);
@@ -225,7 +228,17 @@ class Entries extends AdminController
 			$row->set('admin', 1);
 		}
 
-		// Store new content
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('tags.onTagBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Save content
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
@@ -238,9 +251,13 @@ class Entries extends AdminController
 			return $this->editTask($row);
 		}
 
+		// Trigger after save event
+		Event::trigger('tags.onTagAfterSave', array(&$row, $isNew));
+
+		// Notify of success
 		Notify::success(Lang::txt('COM_TAGS_TAG_SAVED'));
 
-		// Redirect to main listing
+		// Redirect to main listing or go back to edit form
 		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
@@ -259,6 +276,7 @@ class Entries extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		// Permissions check
 		if (!User::authorise('core.delete', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -279,7 +297,7 @@ class Entries extends AdminController
 		{
 			$id = intval($id);
 
-			// Remove references to the tag
+			// Trigger before delete event
 			Event::trigger('tags.onTagDelete', array($id));
 
 			// Remove the tag
@@ -319,6 +337,7 @@ class Entries extends AdminController
 	 */
 	public function mergeTask()
 	{
+		// Permissions check
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))
 		{
@@ -452,6 +471,7 @@ class Entries extends AdminController
 	 */
 	public function pierceTask()
 	{
+		// Permissions check
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))
 		{

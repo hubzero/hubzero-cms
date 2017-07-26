@@ -39,9 +39,10 @@ use Exception;
 use stdClass;
 use Request;
 use Route;
+use Event;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'cloud.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'cloud.php';
 
 /**
  * API controller class for tags
@@ -253,6 +254,16 @@ class Entriesv1_0 extends ApiController
 				$record->set('description', $desc);
 			}
 
+			// Trigger before save event
+			$isNew  = $record->isNew();
+			$result = Event::trigger('tags.onTagBeforeSave', array(&$record, $isNew));
+
+			if (in_array(false, $result, true))
+			{
+				throw new Exception($record->getError(), 500);
+			}
+
+			// Save content
 			if (!$record->save())
 			{
 				throw new Exception($record->getError(), 500);
@@ -262,6 +273,9 @@ class Entriesv1_0 extends ApiController
 			{
 				throw new Exception($record->getError(), 500);
 			}
+
+			// Trigger after save event
+			Event::trigger('tags.onTagAfterSave', array(&$record, $isNew));
 		}
 
 		$this->send($record->toObject());
@@ -371,6 +385,16 @@ class Entriesv1_0 extends ApiController
 		$record->set('tag', $tag);
 		$record->set('description', $desc);
 
+		// Trigger before save event
+		$isNew  = $record->isNew();
+		$result = Event::trigger('tags.onTagBeforeSave', array(&$record, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			throw new Exception($record->getError(), 500);
+		}
+
+		// Save content
 		if (!$record->save())
 		{
 			throw new Exception($record->getError(), 500);
@@ -385,6 +409,9 @@ class Entriesv1_0 extends ApiController
 				throw new Exception($record->getError(), 500);
 			}
 		}
+
+		// Trigger after save event
+		Event::trigger('tags.onTagAfterSave', array(&$record, $isNew));
 
 		$this->send($record->toObject());
 	}
@@ -416,6 +443,9 @@ class Entriesv1_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('Specified tag does not exist.'), 404);
 		}
+
+		// Trigger before delete event
+		Event::trigger('tags.onTagDelete', array($id));
 
 		if (!$tag->destroy())
 		{
