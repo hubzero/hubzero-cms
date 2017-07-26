@@ -38,13 +38,14 @@ use Components\Wiki\Models\Comment;
 use Request;
 use Config;
 use Notify;
+use Event;
 use User;
 use Lang;
 use Date;
 use App;
 
 /**
- * Wiki controller class for entries
+ * Wiki controller class for comments
  */
 class Comments extends AdminController
 {
@@ -64,7 +65,7 @@ class Comments extends AdminController
 	}
 
 	/**
-	 * Display a list of blog entries
+	 * Display a list of entries
 	 *
 	 * @return  void
 	 */
@@ -271,12 +272,25 @@ class Comments extends AdminController
 		// Initiate extended database class
 		$row = Comment::oneOrNew($fields['id'])->set($fields);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('wiki.onWikiAfterBeforeComment', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
+
+		// Trigger after save event
+		Event::trigger('wiki.onWikiAfterSaveComment', array(&$row, $isNew));
 
 		Notify::success(Lang::txt('COM_WIKI_COMMENT_SAVED'));
 
@@ -326,6 +340,9 @@ class Comments extends AdminController
 					continue;
 				}
 
+				// Trigger after delete event
+				Event::trigger('wiki.onWikiAfterDeleteComment', array($id));
+
 				$removed++;
 			}
 		}
@@ -340,7 +357,7 @@ class Comments extends AdminController
 	}
 
 	/**
-	 * Set the status on one or more entries
+	 * Set the state on one or more entries
 	 *
 	 * @return  void
 	 */

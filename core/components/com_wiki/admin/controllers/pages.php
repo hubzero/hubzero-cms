@@ -269,7 +269,17 @@ class Pages extends AdminController
 			$page->set('params', $pparams->toString());
 		}
 
-		// Store new content
+		// Trigger before save event
+		$isNew  = $page->isNew();
+		$result = Event::trigger('wiki.onWikiBeforeSave', array(&$page, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($page->getError());
+			return $this->editTask($page);
+		}
+
+		// Save content
 		if (!$page->save())
 		{
 			Notify::error($page->getError());
@@ -284,6 +294,10 @@ class Pages extends AdminController
 
 		$page->tag($tags);
 
+		// Trigger after save event
+		Event::trigger('wiki.onWikiAfterSave', array(&$page, $isNew));
+
+		// Notify of success
 		Notify::success(Lang::txt('COM_WIKI_PAGE_SAVED'));
 
 		if ($this->getTask() == 'apply')
@@ -369,6 +383,9 @@ class Pages extends AdminController
 							continue;
 						}
 
+						// Trigger after delete event
+						Event::trigger('wiki.onWikiAfterDelete', array($id));
+
 						$i++;
 					}
 				}
@@ -411,9 +428,15 @@ class Pages extends AdminController
 		{
 			switch ($this->getTask())
 			{
-				case 'accesspublic':     $access = 0; break;
-				case 'accessregistered': $access = 1; break;
-				case 'accessspecial':    $access = 2; break;
+				case 'accesspublic':
+					$access = 0;
+					break;
+				case 'accessregistered':
+					$access = 1;
+					break;
+				case 'accessspecial':
+					$access = 2;
+					break;
 			}
 
 			// Load the article
