@@ -228,6 +228,16 @@ class Versions extends AdminController
 			)
 		));
 
+		// Trigger before save event
+		$isNew  = $version->isNew();
+		$result = Event::trigger('wiki.onWikiBeforeSaveVersion', array(&$version, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($version->getError());
+			return $this->editTask($version);
+		}
+
 		// Store new content
 		if (!$version->save())
 		{
@@ -253,6 +263,9 @@ class Versions extends AdminController
 
 			$page->log('revision_approved');
 		}
+
+		// Trigger after save event
+		Event::trigger('wiki.onWikiAfterSaveVersion', array(&$version, $isNew));
 
 		// Set the success message
 		Notify::success(Lang::txt('COM_WIKI_REVISION_SAVED'));
@@ -356,7 +369,11 @@ class Versions extends AdminController
 					if (!$version->destroy())
 					{
 						Notify::error($version->getError());
+						continue;
 					}
+
+					// Trigger after delete event
+					Event::trigger('wiki.onWikiAfterDeleteVersion', array($id));
 
 					$i++;
 				}
@@ -367,9 +384,7 @@ class Versions extends AdminController
 				}
 
 				// Set the redirect
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false)
-				);
+				$this->cancelTask();
 			break;
 		}
 	}

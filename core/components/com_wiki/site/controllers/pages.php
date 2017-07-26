@@ -558,6 +558,16 @@ class Pages extends SiteController
 			return $this->editTask($revision);
 		}
 
+		// Trigger before save event
+		$isNew  = $this->page->isNew();
+		$result = Event::trigger('wiki.onWikiBeforeSave', array(&$this->page, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			$this->setError($this->page->getError());
+			return $this->editTask($revision);
+		}
+
 		// Store new content
 		if (!$this->page->save())
 		{
@@ -654,6 +664,9 @@ class Pages extends SiteController
 
 		// Process tags
 		$this->page->tag(Request::getVar('tags', ''));
+
+		// Trigger after save event
+		Event::trigger('wiki.onWikiAfterSave', array(&$this->page, $isNew));
 
 		// Log activity
 		$recipients = array(
