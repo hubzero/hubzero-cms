@@ -50,7 +50,20 @@
 (function() {
   var BuilderView, EditFieldView, Formbuilder, FormbuilderCollection, FormbuilderModel, ViewFieldView, _ref, _ref1, _ref2, _ref3, _ref4,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { 
+			for (var key in parent) { 
+				if (__hasProp.call(parent, key)) {
+					child[key] = parent[key];
+				}
+			}
+			function ctor() {
+				this.constructor = child;
+			}
+			ctor.prototype = parent.prototype;
+			child.prototype = new ctor();
+			child.__super__ = parent.prototype;
+			return child;
+		};
 
   FormbuilderModel = (function(_super) {
     __extends(FormbuilderModel, _super);
@@ -1074,21 +1087,21 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class=\'fb-edit-section-header\'>Options</div>\n\n';
- if (typeof includeBlank !== 'undefined'){ ;
+ if (typeof includeBlank !== 'undefined'){;
 __p += '\n  <label>\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.INCLUDE_BLANK )) == null ? '' : __t) +
 '\' />\n    Include blank\n  </label>\n';
- } ;
+ };
 __p += '\n\n<div class=\'option\' data-rv-each-option=\'model.' +
 ((__t = ( Formbuilder.options.mappings.OPTIONS )) == null ? '' : __t) +
 '\'>\n  <input type="checkbox" class=\'js-default-updated\' data-rv-checked="option:checked" />\n  <input type="text" data-rv-input="option:label" class=\'option-label-input\' placeholder="Label" />\n  <input type="text" data-rv-input="option:value" class=\'option-value-input\' placeholder="Value (if different than label)" />\n  <input type="text" data-rv-input="option:dependents" class=\'option-dependents-input\' placeholder="Dependent fields" />\n  <a class="js-remove-option ' +
 ((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
 '" title="Remove Option"><i class=\'fa fa-minus-circle\'></i></a>\n</div>\n\n';
- if (typeof includeOther !== 'undefined'){ ;
+ if (typeof includeOther !== 'undefined'){;
 __p += '\n  <label>\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.INCLUDE_OTHER )) == null ? '' : __t) +
 '\' />\n    Include "other"\n  </label>\n';
- } ;
+ };
 __p += '\n\n<div class=\'fb-bottom-add\'>\n  <a class="js-add-option ' +
 ((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
 '">Add option</a>\n</div>\n';
@@ -1139,7 +1152,7 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class=\'fb-tab-pane active\' id=\'addField\'>\n  <div class=\'fb-add-field-types\'>\n    <div class=\'section\'>\n      ';
- _.each(_.sortBy(Formbuilder.inputFields, 'order'), function(f){ ;
+ _.each(_.sortBy(Formbuilder.inputFields, 'order'), function(f){;
 __p += '\n        <a data-field-type="' +
 ((__t = ( f.field_type )) == null ? '' : __t) +
 '" class="' +
@@ -1149,7 +1162,7 @@ __p += '\n        <a data-field-type="' +
 '\n        </a>\n      ';
  }); ;
 __p += '\n    </div>\n\n    <div class=\'section\'>\n      ';
- _.each(_.sortBy(Formbuilder.nonInputFields, 'order'), function(f){ ;
+ _.each(_.sortBy(Formbuilder.nonInputFields, 'order'), function(f){;
 __p += '\n        <a data-field-type="' +
 ((__t = ( f.field_type )) == null ? '' : __t) +
 '" class="' +
