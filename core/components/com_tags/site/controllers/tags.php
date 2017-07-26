@@ -561,7 +561,7 @@ class Tags extends SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
-			include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
+			include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 
 			foreach ($rows as $row)
 			{
@@ -570,7 +570,7 @@ class Tags extends SiteController
 				$title = html_entity_decode($title);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(String::truncate(strip_tags(stripslashes($row->ftext)),300));
+				$description = html_entity_decode(String::truncate(strip_tags(stripslashes($row->ftext)), 300));
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
