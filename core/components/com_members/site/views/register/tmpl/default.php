@@ -143,7 +143,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 						foreach ($authenticators as $a)
 						{
 							$refl = new ReflectionClass('plgauthentication'.$a['name']);
-							if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(NULL)))
+							if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(null)))
 							{
 								echo is_array($html) ? implode("\n", $html) : $html;
 							}
@@ -215,33 +215,33 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							<input name="login" id="login" type="hidden" value="<?php echo $this->escape($this->registration['login']); ?>" />
 						</label>
 					<?php } else if ($this->registrationUsername != Field::STATE_HIDDEN) { ?>
-						<label for="userlogin" <?php echo (!empty($this->xregistration->_invalid['login']) ? 'class="fieldWithErrors"' : ''); ?>>
-							<?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?> <?php echo ($this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''); ?>
+						<label for="userlogin" <?php echo !empty($this->xregistration->_invalid['login']) ? 'class="fieldWithErrors"' : ''; ?>>
+							<?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?> <?php echo $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 							<input name="login" id="userlogin" type="text" maxlength="32" value="<?php echo $this->escape($this->registration['login']); ?>" />
 							<p class="hint" id="usernameHint"><?php echo Lang::txt('COM_MEMBERS_REGISTER_USERNAME_HINT'); ?></p>
-							<?php echo (!empty($this->xregistration->_invalid['login']) ? '<span class="error">' . $this->xregistration->_invalid['login'] . '</span>' : ''); ?>
+							<?php echo !empty($this->xregistration->_invalid['login']) ? '<span class="error">' . $this->xregistration->_invalid['login'] . '</span>' : ''; ?>
 						</label>
 					<?php } ?>
 
 				<?php if ($this->registrationPassword != Field::STATE_HIDDEN) { ?>
 						<div class="grid">
-							<div class="col span<?php echo ($this->registrationConfirmPassword != Field::STATE_HIDDEN ? '6' : '12'); ?>">
-								<label<?php echo (!empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
+							<div class="col span<?php echo $this->registrationConfirmPassword != Field::STATE_HIDDEN ? '6' : '12'; ?>">
+								<label<?php echo !empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
 												? ' class="fieldWithErrors"'
-												: ''); ?>>
+												: ''; ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_PASSWORD'); ?> <?php if ($this->registrationPassword == Field::STATE_REQUIRED) { echo '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'; } ?>
 									<input name="password" id="password" type="password" value="<?php echo $this->escape($this->registration['password']); ?>" autocomplete="off" />
-									<?php echo (!empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
+									<?php echo !empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
 												? '<span class="error">' . $this->xregistration->_invalid['password'] . '</span>'
-												: ''); ?>
+												: ''; ?>
 								</label>
 							</div>
 							<?php if ($this->registrationConfirmPassword != Field::STATE_HIDDEN) { ?>
 								<div class="col span6 omega">
-									<label<?php echo (!empty($this->xregistration->_invalid['confirmPassword']) ? ' class="fieldWithErrors"' : ''); ?>>
+									<label<?php echo !empty($this->xregistration->_invalid['confirmPassword']) ? ' class="fieldWithErrors"' : ''; ?>>
 										<?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD'); ?> <?php if ($this->registrationConfirmPassword == Field::STATE_REQUIRED) { echo '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>'; } ?>
 										<input name="password2" id="password2" type="password" value="<?php echo $this->escape($this->registration['confirmPassword']); ?>" autocomplete="off" />
-										<?php echo (!empty($this->xregistration->_invalid['confirmPassword']) ? '<span class="error">' . $this->xregistration->_invalid['confirmPassword'] . '</span>' : ''); ?>
+										<?php echo !empty($this->xregistration->_invalid['confirmPassword']) ? '<span class="error">' . $this->xregistration->_invalid['confirmPassword'] . '</span>' : ''; ?>
 									</label>
 								</div>
 							<?php } ?>
@@ -341,10 +341,10 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					<div class="grid">
 						<?php if ($this->registrationEmail != Field::STATE_HIDDEN) { ?>
 							<div class="col span6">
-								<label for="email"<?php echo (!empty($this->xregistration->_invalid['email']) ? ' class="fieldWithErrors"' : ''); ?>>
-									<?php echo Lang::txt('COM_MEMBERS_REGISTER_VALID_EMAIL'); ?> <?php echo ($this->registrationEmail == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''); ?>
+								<label for="email"<?php echo !empty($this->xregistration->_invalid['email']) ? ' class="fieldWithErrors"' : ''; ?>>
+									<?php echo Lang::txt('COM_MEMBERS_REGISTER_VALID_EMAIL'); ?> <?php echo $this->registrationEmail == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 									<input name="email" id="email" type="text" value="<?php echo $this->escape($this->registration['email']); ?>" />
-									<?php echo (!empty($this->xregistration->_invalid['email']) ? '<span class="error">' . $this->xregistration->_invalid['email'] . '</span>' : ''); ?>
+									<?php echo !empty($this->xregistration->_invalid['email']) ? '<span class="error">' . $this->xregistration->_invalid['email'] . '</span>' : ''; ?>
 								</label>
 							</div>
 						<?php } ?>
@@ -356,10 +356,10 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 									$this->registration['confirmEmail'] = '';
 								}
 								?>
-								<label for="email2"<?php echo (!empty($this->xregistration->_invalid['confirmEmail']) ? ' class="fieldWithErrors"' : ''); ?>>
+								<label for="email2"<?php echo !empty($this->xregistration->_invalid['confirmEmail']) ? ' class="fieldWithErrors"' : ''; ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_EMAIL'); ?> <?php echo ($this->registrationConfirmEmail == Field::STATE_REQUIRED) ? '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 									<input name="email2" id="email2" type="text" value="<?php echo $this->escape($this->registration['confirmEmail']); ?>" />
-									<?php echo (!empty($this->xregistration->_invalid['confirmEmail']) ? '<span class="error">' . $this->xregistration->_invalid['confirmEmail'] . '</span>' : ''); ?>
+									<?php echo !empty($this->xregistration->_invalid['confirmEmail']) ? '<span class="error">' . $this->xregistration->_invalid['confirmEmail'] . '</span>' : ''; ?>
 								</label>
 							</div>
 						<?php } ?>
@@ -529,7 +529,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 
 					$errors = (!empty($this->xregistration->_invalid[$field->get('name')])) ? '<span class="error">' . $this->xregistration->_invalid[$field->get('name')] . '</span>' : '';
 					?>
-					<div class="input-wrap<?php echo ($errors ? ' fieldWithErrors' : ''); ?>" id="input-<?php echo $field->get('name'); ?>">
+					<div class="input-wrap<?php echo $errors ? ' fieldWithErrors' : ''; ?>" id="input-<?php echo $field->get('name'); ?>">
 						<?php
 						echo $formfield->label;
 						echo $formfield->input;
@@ -590,7 +590,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 			<?php } ?>
 
 			<label id="botcheck-label" for="botcheck">
-				<?php echo Lang::txt('COM_MEMBERS_REGISTER_BOT_CHECK_LABEL'); ?> <?php echo ($this->registrationCAPTCHA == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''); ?>
+				<?php echo Lang::txt('COM_MEMBERS_REGISTER_BOT_CHECK_LABEL'); ?> <?php echo $this->registrationCAPTCHA == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 				<input type="text" name="botcheck" id="botcheck" value="" />
 			</label>
 
