@@ -603,6 +603,7 @@
         MIN: 'field_options.min',
         MAX: 'field_options.max',
         VALUE: 'field_options.value',
+        PLACEHOLDER: 'field_options.placeholder',
         MINLENGTH: 'field_options.minlength',
         MAXLENGTH: 'field_options.maxlength',
         LENGTH_UNITS: 'field_options.min_max_length_units'
@@ -1030,7 +1031,9 @@ this["Formbuilder"]["templates"]["edit/label_description"] = function(obj) {
     ((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
     '\'\n  placeholder=\'Add a longer description to this field\'></textarea>\n<input type=\'text\' data-rv-input=\'model.' +
     ((__t = ( Formbuilder.options.mappings.VALUE )) == null ? '' : __t) +
-    '\'\n  placeholder=\'Enter default value\' />';
+    '\'\n  placeholder=\'Enter default value\' />\n<input type=\'text\' data-rv-input=\'model.' +
+    ((__t = ( Formbuilder.options.mappings.PLACEHOLDER )) == null ? '' : __t) +
+    '\'\n  placeholder=\'Enter default placeholder\' />';
   }
   return __p
 };
