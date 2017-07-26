@@ -40,6 +40,8 @@ defined('_HZEXEC_') or die();
 		<h1><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_THANK_YOU', $this->userName); ?></h1>
 		<br>
 		<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_YOUR_ORCID'); ?><img src="<?php echo Request::root()?>/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="16" height="16" alt="iD"/> <?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_IS'); ?> <?php echo $this->userORCID; ?></p>
+		<br>
+		<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_INDICATION_MESSAGE'); ?></p>
 		<?php } elseif (Request::getVar('error') && Request::getVar('error_description')) { ?>
 		<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_DENY'); ?><a class="btn" href="https://orcid.org/signin" target="_blank"><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_SIGN_IN_OR_REGISTER'); ?></a></p>
 		<?php } ?>
