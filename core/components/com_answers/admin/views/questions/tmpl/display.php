@@ -166,8 +166,8 @@ function submitbutton(pressbutton)
 					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td class="priority-3">
-					<a class="glyph user" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
-						<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
+					<a class="glyph user" href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
+						<?php echo $this->escape($row->creator->get('name')) . ' (' . $row->get('created_by') . ')'; ?>
 					</a>
 					<?php if ($row->get('anonymous')) { ?>
 						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_FIELD_ANONYMOUS'); ?>)</span>

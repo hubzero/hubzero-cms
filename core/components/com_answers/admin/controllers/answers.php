@@ -205,6 +205,16 @@ class Answers extends AdminController
 		$row->set('state', (isset($fields['state']) ? 1 : 0));
 		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onAnswerBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store content
 		if (!$row->save())
 		{
@@ -212,6 +222,10 @@ class Answers extends AdminController
 			return $this->editTask($row);
 		}
 
+		// Trigger after save event
+		Event::trigger('onAnswerAfterSave', array(&$row, $isNew));
+
+		// Display success message
 		Notify::success(Lang::txt('COM_ANSWERS_ANSWER_SAVED'));
 
 		if ($this->getTask() == 'apply')
@@ -242,19 +256,31 @@ class Answers extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Do we have any IDs?
-		if (count($ids) > 0)
+		if (count($ids) <= 0)
 		{
-			// Loop through each ID
-			foreach ($ids as $id)
-			{
-				$ar = Response::oneOrFail(intval($id));
+			return $this->cancelTask();
+		}
 
-				if (!$ar->destroy())
-				{
-					Notify::error($ar->getError());
-				}
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			$ar = Response::oneOrFail(intval($id));
+
+			if (!$ar->destroy())
+			{
+				Notify::error($ar->getError());
+				continue;
 			}
+
+			// Trigger after delete event
+			Event::trigger('onAnswerAfterDelete', array($id));
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_ANSWERS_ITEMS_REMOVED', $success));
 		}
 
 		// Redirect
@@ -347,19 +373,16 @@ class Answers extends AdminController
 		}
 
 		// Set message
-		if ($i)
+		if ($publish == '1')
 		{
-			if ($publish == '1')
-			{
-				$message = Lang::txt('COM_ANSWERS_ANSWER_ACCEPTED');
-			}
-			else if ($publish == '0')
-			{
-				$message = Lang::txt('COM_ANSWERS_ANSWER_REJECTED');
-			}
-
-			Notify::success($message);
+			$message = Lang::txt('COM_ANSWERS_ANSWER_ACCEPTED');
 		}
+		else if ($publish == '0')
+		{
+			$message = Lang::txt('COM_ANSWERS_ANSWER_REJECTED');
+		}
+
+		Notify::success($message);
 
 		$this->cancelTask();
 	}
