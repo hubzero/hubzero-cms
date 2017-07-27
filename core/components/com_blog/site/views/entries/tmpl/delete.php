@@ -44,13 +44,13 @@ Pathway::append(
 	$this->entry->link('delete')
 );
 
-Document::setTitle(Lang::txt('COM_BLOG') . ': ' . Lang::txt('COM_BLOG_DELETE'));
+Document::setTitle(Lang::txt('COM_BLOG') . ': ' . Lang::txt('JACTION_DELETE'));
 
 $this->css()
      ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_BLOG') . ': ' . Lang::txt('COM_BLOG_DELETE'); ?></h2>
+	<h2><?php echo Lang::txt('COM_BLOG') . ': ' . Lang::txt('JACTION_DELETE'); ?></h2>
 
 	<div id="content-header-extra">
 		<p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
@@ -92,9 +92,9 @@ $this->css()
 			<?php echo Html::input('token'); ?>
 
 			<p class="submit">
-				<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>" />
+				<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('JACTION_DELETE'); ?>" />
 				<a class="btn btn-secondary" href="<?php echo $this->entry->link(); ?>">
-					<?php echo Lang::txt('COM_BLOG_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 		</form>

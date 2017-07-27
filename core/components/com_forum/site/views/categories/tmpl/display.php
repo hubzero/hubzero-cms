@@ -202,13 +202,13 @@ $this->category->set('section_alias', $this->filters['section']);
 										<?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 											<td class="entry-options">
 												<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == User::get('id'))) { ?>
-													<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>">
-														<?php echo Lang::txt('COM_FORUM_EDIT'); ?>
+													<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+														<?php echo Lang::txt('JACTION_EDIT'); ?>
 													</a>
 												<?php } ?>
 												<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == User::get('id'))) { ?>
-													<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>">
-														<?php echo Lang::txt('COM_FORUM_DELETE'); ?>
+													<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+														<?php echo Lang::txt('JACTION_DELETE'); ?>
 													</a>
 												<?php } ?>
 											</td>

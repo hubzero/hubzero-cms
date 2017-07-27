@@ -50,7 +50,7 @@ if ($canDo->get('core.edit'))
 if ($canDo->get('core.delete'))
 {
 	Toolbar::spacer();
-	Toolbar::deleteList(Lang::txt('COM_PUBLICATIONS_CONFIRM_DELETE_ITEM'));
+	Toolbar::deleteList('COM_PUBLICATIONS_CONFIRM_DELETE_ITEM');
 }
 
 Html::behavior('tooltip');
@@ -105,11 +105,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th></th>
-				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('@v.'); ?></th>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-2"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_PROJECT', 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
 				<th class="priority-4" colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
 				<th class="priority-5"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>

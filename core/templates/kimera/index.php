@@ -104,7 +104,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 							<nav id="account" class="account-navigation">
 								<ul>
 									<li>
-										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('Search'); ?></a>
+										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?></a>
 										<jdoc:include type="modules" name="search" />
 									</li>
 								<?php if (!User::isGuest()) { ?>

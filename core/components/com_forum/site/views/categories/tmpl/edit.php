@@ -100,10 +100,10 @@ $this->css();
 			<div class="clear"></div>
 
 			<p class="submit">
-				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_FORUM_SUBMIT'); ?>" />
+				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
-					<?php echo Lang::txt('COM_FORUM_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 

@@ -45,8 +45,8 @@ if ($canDo->get('core.admin'))
 }
 if ($canDo->get('core.edit'))
 {
-	Toolbar::custom('resetclientsecret', 'refresh', 'refresh', Lang::txt('COM_DEVELOPER_RESET_CLIENT_SECRET'));
-	Toolbar::custom('removetokens', 'cancel', 'cancel', Lang::txt('COM_DEVELOPER_REVOKE_TOKENS'));
+	Toolbar::custom('resetclientsecret', 'refresh', 'refresh', 'COM_DEVELOPER_RESET_CLIENT_SECRET');
+	Toolbar::custom('removetokens', 'cancel', 'cancel', 'COM_DEVELOPER_REVOKE_TOKENS');
 	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))

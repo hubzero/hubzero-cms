@@ -45,8 +45,8 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.edit.state'))
 {
-	Toolbar::save('makedefault', Lang::txt('COM_PUBLICATIONS_MAKE_DEFAULT'));
-	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
+	Toolbar::save('makedefault', 'COM_PUBLICATIONS_MAKE_DEFAULT');
+	Toolbar::publishList('changestatus', 'COM_PUBLICATIONS_PUBLISH_UNPUBLISH');
 }
 if ($canDo->get('core.delete'))
 {
@@ -58,7 +58,7 @@ $this->css();
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo Lang::txt('Search'); ?>:</label>
+		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PUBLICATIONS_SEARCH'); ?>" />
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>" />
@@ -68,12 +68,12 @@ $this->css();
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-4"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-2"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_STATUS', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DEFAULT'); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ORDER', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -111,7 +111,7 @@ $this->css();
 					</td>
 					<td class="priority-2 centeralign">
 						<span class="state <?php echo $class; ?>">
-							<span><?php echo Lang::txt($class); ?></span>
+							<span><?php echo Lang::txt('j' . $class); ?></span>
 						</span>
 					</td>
 					<td class="priority-2 centeralign">
