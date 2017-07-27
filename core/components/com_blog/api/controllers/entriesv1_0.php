@@ -40,6 +40,7 @@ use Exception;
 use stdClass;
 use Request;
 use Route;
+use Event;
 use User;
 use Lang;
 
@@ -280,6 +281,15 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 500);
 		}
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			throw new Exception($row->getError(), 500);
+		}
+
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
@@ -294,6 +304,9 @@ class Entriesv1_0 extends ApiController
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
 		}
+
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
 
 		$row->set('tags', $tags);
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
@@ -507,6 +520,15 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
 		}
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			throw new Exception($row->getError(), 500);
+		}
+
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
@@ -521,6 +543,9 @@ class Entriesv1_0 extends ApiController
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
 		}
+
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
 
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
@@ -591,6 +616,9 @@ class Entriesv1_0 extends ApiController
 			{
 				throw new Exception($row->getError(), 500);
 			}
+
+			// Trigger before delete event
+			Event::trigger('onBlogAfterDelete', array($id));
 
 			// Log activity
 			$base = rtrim(Request::base(), '/');

@@ -41,6 +41,7 @@ use Exception;
 use Document;
 use Request;
 use Pathway;
+use Event;
 use Lang;
 use Route;
 use User;
@@ -295,8 +296,15 @@ class Entries extends SiteController
 
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
-		// Record if this is a new submission
-		$isNewSubmission = $row->isNew();
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
 
 		// Store new content
 		if (!$row->save())
@@ -311,6 +319,9 @@ class Entries extends SiteController
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
+
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
 
 		// Log activity
 		Event::trigger('system.logActivity', [
@@ -330,7 +341,7 @@ class Entries extends SiteController
 		]);
 
 		// If the new resource is published, set the session flag indicating the new submission
-		if ($isNewSubmission)
+		if ($isNew)
 		{
 			Session::set('newsubmission.blog', true);
 		}
@@ -563,6 +574,16 @@ class Entries extends SiteController
 		// Instantiate a new comment object and pass it the data
 		$comment = Comment::oneOrNew($data['id'])->set($data);
 
+		// Trigger before save event
+		$isNew  = $comment->isNew();
+		$result = Event::trigger('onBlogCommentBeforeSave', array(&$comment, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			$this->setError($comment->getError());
+			return $this->entryTask();
+		}
+
 		// Store new content
 		if (!$comment->save())
 		{
@@ -570,8 +591,11 @@ class Entries extends SiteController
 			return $this->entryTask();
 		}
 
+		// Trigger after save event
+		Event::trigger('onBlogCommentAfterSave', array(&$comment, $isNew));
+
 		// Log the activity
-		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+		$entry = Entry::oneOrFail($comment->get('entry_id'));
 
 		$recipients = array($comment->get('created_by'));
 		if ($comment->get('created_by') != $entry->get('created_by'))
@@ -646,7 +670,7 @@ class Entries extends SiteController
 		$comment->save();
 
 		// Log the activity
-		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+		$entry = Entry::oneOrFail($comment->get('entry_id'));
 
 		$recipients = array($comment->get('created_by'));
 		if ($comment->get('created_by') != $entry->get('created_by'))
@@ -680,7 +704,7 @@ class Entries extends SiteController
 	/**
 	 * Display an RSS feed of comments
 	 *
-	 * @return  string  RSS
+	 * @return  void
 	 */
 	public function commentsTask()
 	{
@@ -743,9 +767,9 @@ class Entries extends SiteController
 	/**
 	 * Recursive method to add comments to a flat RSS feed
 	 *
-	 * @param   object $doc JDocumentFeed
-	 * @param   object $row BlogModelComment
-	 * @return	void
+	 * @param   object  $doc  Document
+	 * @param   object  $row  Comment
+	 * @return  void
 	 */
 	private function _comment(&$doc, $row)
 	{
@@ -792,8 +816,13 @@ class Entries extends SiteController
 	 * Method to check admin access permission
 	 *
 	 * @param   string   $assetType
+<<<<<<< HEAD
 	 * @param   unknown  $assetId
 	 * @return  boolean  True on success
+=======
+	 * @param   integer  $assetId
+	 * @return  void
+>>>>>>> 19bb788... [COM_BLOG] Adding save and delete event triggers, some clean-up, removing Joomla-based code
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{

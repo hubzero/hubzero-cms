@@ -34,6 +34,8 @@ namespace Components\Blog\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
+use Hubzero\Form\Form;
+use Filesystem;
 use Component;
 use Lang;
 use User;
@@ -739,5 +741,30 @@ class Entry extends Relational
 		$data->params = $this->params->toObject();
 
 		return $data;
+	}
+
+	/**
+	 * Get a form
+	 *
+	 * @return  object
+	 */
+	public function getForm()
+	{
+		$file = __DIR__ . '/forms/' . strtolower($this->getModelName()) . '.xml';
+		$file = Filesystem::cleanPath($file);
+
+		$form = new Form('blog', array('control' => 'fields'));
+
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		$data = $this->toArray();
+		$data['params'] = $this->params->toArray();
+
+		$form->bind($data);
+
+		return $form;
 	}
 }
