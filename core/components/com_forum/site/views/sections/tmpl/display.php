@@ -79,7 +79,7 @@ $this->css()
 								<a name="s<?php echo $section->get('id'); ?>"></a>
 								<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
 									<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
-									<input type="submit" value="<?php echo Lang::txt('COM_FORUM_SUBMIT'); ?>" />
+									<input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 									<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
 									<input type="hidden" name="fields[scope]" value="site" />
 									<input type="hidden" name="fields[scope_id]" value="0" />
@@ -95,13 +95,13 @@ $this->css()
 
 							<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
 								<?php if ($this->config->get('access-delete-section')) { ?>
-									<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" title="<?php echo Lang::txt('COM_FORUM_DELETE'); ?>">
-										<span><?php echo Lang::txt('COM_FORUM_DELETE'); ?></span>
+									<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+										<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 									</a>
 								<?php } ?>
 								<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias') && $section->get('id')) { ?>
-									<a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('COM_FORUM_EDIT'); ?>">
-										<span><?php echo Lang::txt('COM_FORUM_EDIT'); ?></span>
+									<a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+										<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 									</a>
 								<?php } ?>
 							<?php } ?>
@@ -160,13 +160,13 @@ $this->css()
 									<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-categort')) { ?>
 										<td class="entry-options">
 											<?php if (($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
-												<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('COM_FORUM_EDIT'); ?>">
-													<span><?php echo Lang::txt('COM_FORUM_EDIT'); ?></span>
+												<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+													<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 												</a>
 											<?php } ?>
 											<?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
-												<a class="icon-delete delete tooltips" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('COM_FORUM_DELETE_CATEGORY'); ?>">
-													<span><?php echo Lang::txt('COM_FORUM_DELETE'); ?></span>
+												<a class="icon-delete delete tooltips" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+													<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 												</a>
 											<?php } ?>
 										</td>
@@ -270,7 +270,7 @@ $this->css()
 								<input type="text" name="fields[title]" id="field-title" value="" />
 							</label>
 							<p class="submit">
-								<input type="submit" value="<?php echo Lang::txt('COM_FORUM_CREATE'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('JACTION_CREATE'); ?>" />
 							</p>
 							<input type="hidden" name="task" value="save" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -303,7 +303,7 @@ $this->css()
 								<input type="text" name="fields[title]" id="field-title" value="" placeholder="<?php echo Lang::txt('COM_FORUM_ENTER_TITLE'); ?>" />
 							</span>
 							<span class="input-cell">
-								<input type="submit" class="btn" value="<?php echo Lang::txt('COM_FORUM_CREATE'); ?>" />
+								<input type="submit" class="btn" value="<?php echo Lang::txt('JACTION_CREATE'); ?>" />
 							</span>
 						</span>
 

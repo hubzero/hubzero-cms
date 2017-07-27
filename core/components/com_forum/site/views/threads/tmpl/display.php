@@ -179,7 +179,7 @@ $now = Date::of('now')->toSql();
 							</label>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo Lang::txt('COM_FORUM_SUBMIT'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 							</p>
 						<?php } else { ?>
 							<p class="warning"><?php echo Lang::txt('COM_FORUM_PERMISSION_DENIED'); ?></p>

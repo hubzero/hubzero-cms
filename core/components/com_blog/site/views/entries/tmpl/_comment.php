@@ -118,22 +118,22 @@ else
 			<p class="comment-options">
 			<?php if ($this->config->get('access-delete-comment')) { ?>
 				<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')); ?>"><!--
-					--><?php echo Lang::txt('COM_BLOG_DELETE'); ?><!--
+					--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
 				--></a>
 			<?php } ?>
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=editcomment&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo Lang::txt('COM_BLOG_EDIT'); ?><!--
+						--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_BLOG_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_BLOG_REPLY'); ?>" href="<?php echo Route::url($this->base); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo Lang::txt('COM_BLOG_CANCEL'); ?><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_BLOG_REPLY'); ?>" href="<?php echo Route::url($this->base); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('JCANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_BLOG_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_BLOG_REPLY'); ?>" href="<?php echo Route::url($this->base . '&reply=' . $this->comment->get('id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_BLOG_REPLY'); ?>" href="<?php echo Route::url($this->base . '&reply=' . $this->comment->get('id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_BLOG_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
@@ -174,7 +174,7 @@ else
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('COM_BLOG_SUBMIT'); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

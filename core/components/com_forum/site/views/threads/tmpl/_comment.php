@@ -137,22 +137,22 @@ defined('_HZEXEC_') or die();
 				<p class="comment-options">
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>
 						<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
-							--><?php echo Lang::txt('COM_FORUM_DELETE'); ?><!--
+							--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
 						--></a>
 					<?php } ?>
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-edit-thread')) || ($this->comment->get('parent') && $this->config->get('access-edit-post'))) { ?>
 						<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
-							--><?php echo Lang::txt('COM_FORUM_EDIT'); ?><!--
+							--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
 						--></a>
 					<?php } ?>
 					<?php if (!$this->comment->isReported()) { ?>
 						<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
 							<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-							<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_FORUM_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-							--><?php echo Lang::txt('COM_FORUM_CANCEL'); ?><!--
+							<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_FORUM_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+							--><?php echo Lang::txt('JCANCEL'); ?><!--
 						--></a>
 							<?php } else { ?>
-							<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_FORUM_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+							<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_FORUM_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 							--><?php echo Lang::txt('COM_FORUM_REPLY'); ?><!--
 						--></a>
 							<?php } ?>
@@ -207,7 +207,7 @@ defined('_HZEXEC_') or die();
 							</label>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo Lang::txt('COM_FORUM_SUBMIT'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 							</p>
 						</fieldset>
 					</form>
