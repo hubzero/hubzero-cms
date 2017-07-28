@@ -33,6 +33,7 @@ namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Database\Value\Raw;
+use Hubzero\Form\Form;
 use Lang;
 use Date;
 
@@ -844,5 +845,34 @@ class Post extends Relational
 			}
 		}
 		return $children;
+	}
+
+	/**
+	 * Get a form
+	 *
+	 * @param   array   $data
+	 * @return  object
+	 */
+	public function getForm($data = array())
+	{
+		$name = strtolower($this->getModelName());
+		$file = __DIR__ . '/forms/' . $name . '.xml';
+		$file = \Filesystem::cleanPath($file);
+
+		$form = new Form('com_forum.' . $name, array('control' => 'data'));
+
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		if (!$data || empty($data))
+		{
+			$data = $this->toArray();
+		}
+
+		$form->bind($data);
+
+		return $form;
 	}
 }

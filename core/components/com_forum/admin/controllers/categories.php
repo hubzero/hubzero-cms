@@ -35,7 +35,6 @@ use Hubzero\Component\AdminController;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
-use Components\Forum\Admin\Models\AdminCategory;
 use Request;
 use Notify;
 use Route;
@@ -268,14 +267,13 @@ class Categories extends AdminController
 			'id'       => $category->get('id'),
 			'asset_id' => $category->get('asset_id')
 		));
-		$m = new AdminCategory();
 
 		// Output the HTML
 		$this->view
 			->set('row', $category)
 			->set('section', $section)
 			->set('sections', $sections)
-			->set('form', $m->getForm())
+			->set('form', $category->getForm())
 			->setLayout('edit')
 			->display();
 	}
@@ -309,11 +307,14 @@ class Categories extends AdminController
 		$data = Request::getVar('jform', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
-			$model = new AdminCategory();
-			$form      = $model->getForm($data, false);
-			$validData = $model->validate($form, $data);
+			$form = $category->getForm($data);
+			$data = $form->filter($data);
+			if (!$form->validate($data))
+			{
+				Notify::error($form->getError());
+			}
 
-			$category->assetRules = new \Hubzero\Access\Rules($validData['rules']);
+			$category->assetRules = new \Hubzero\Access\Rules($data['rules']);
 		}
 
 		// Make sure the chosen section is valid
