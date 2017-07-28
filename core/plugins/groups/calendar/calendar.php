@@ -280,6 +280,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				case 'events':
 					$this->events();
 					break;
+				case 'unregister':
+					$this->unregister();
+					break;
 				default:
 					$arr['html'] = $this->display();
 					break;
@@ -781,11 +784,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//make sure registration email is valid
-		if ($registration && isset($event['email']) && $event['email'] != '' && !filter_var($event['email'], FILTER_VALIDATE_EMAIL))
-		{
-			$this->setError('You must enter a valid email address for the events registration admin email.');
-			$this->event = $eventsModelEvent;
-			return $this->edit();
+		if($registration && isset($event['email']) && $event['email'] != '') {
+			$emailArray = explode(',', $event['email']);
+			if (!filter_var_array($emailArray, FILTER_VALIDATE_EMAIL))
+			{
+				$this->setError('You must enter a valid email address for the events registration admin email.');
+				$this->event = $eventsModelEvent;
+				return $this->edit();
+			}
 		}
 
 		//make sure registration email is valid
@@ -1343,46 +1349,49 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// send a copy to event admin
 		if ($eventsEvent->email != '')
 		{
-			//build message to send to event admin
-			$email = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'groups',
-					'element' => 'calendar',
-					'name'    => 'calendar',
-					'layout'  => 'register_email_admin'
-				)
-			);
-			$email->option     = $this->option;
-			$email->group      = $this->group;
-			$email->params     = $params;
-			$email->event      = $eventsEvent;
-			$email->sitename   = Config::get('sitename');
-			$email->register   = $register;
-			$email->race       = $race;
-			$email->dietary    = $dietary;
-			$email->disability = $disability;
-			$email->arrival    = $arrival;
-			$email->departure  = $departure;
-			$email->dinner     = $dinner;
-			$message           = str_replace("\n", "\r\n", $email->loadTemplate());
+			$emailArray = explode(',', $eventsEvent->email);
+			foreach($emailArray as $emailSingle) {
+				//build message to send to event admin
+				$email = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'groups',
+						'element' => 'calendar',
+						'name'    => 'calendar',
+						'layout'  => 'register_email_admin'
+					)
+				);
+				$email->option     = $this->option;
+				$email->group      = $this->group;
+				$email->params     = $params;
+				$email->event      = $eventsEvent;
+				$email->sitename   = Config::get('sitename');
+				$email->register   = $register;
+				$email->race       = $race;
+				$email->dietary    = $dietary;
+				$email->disability = $disability;
+				$email->arrival    = $arrival;
+				$email->departure  = $departure;
+				$email->dinner     = $dinner;
+				$message           = str_replace("\n", "\r\n", $email->loadTemplate());
 
-			//declare subject
-			$subject = Lang::txt("[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
+				//declare subject
+				$subject = Lang::txt("[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
 
-			//make from array
-			$from = array(
-				'email' => 'group-event-registration@' . $_SERVER['HTTP_HOST'],
-				'name'  => $register['first_name'] . ' ' . $register['last_name']
-			);
+				//make from array
+				$from = array(
+					'email' => 'group-event-registration@' . $_SERVER['HTTP_HOST'],
+					'name'  => $register['first_name'] . ' ' . $register['last_name']
+				);
 
-			// email from person
-			if ($params->get('show_email', 1) == 1)
-			{
-				$from['email'] = $register['email'];
+				// email from person
+				if ($params->get('show_email', 1) == 1)
+				{
+					$from['email'] = $register['email'];
+				}
+
+				//send email
+				$this->_sendEmail($emailSingle, $from, $subject, $message);
 			}
-
-			//send email
-			$this->_sendEmail($eventsEvent->email, $from, $subject, $message);
 		}
 
 		// build message to send to event registerer
@@ -1569,6 +1578,29 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Unregister from an event
+	 *
+	 * $return  void
+	 */
+	private function unregister() {
+		Request::checkToken();
+
+		$db = App::get('db');
+		$event_id = Request::getVar('event_id', array(), 'get');
+		$email = Request::getVar('email', array(), 'get');
+
+		$sql = "DELETE FROM `#__events_respondents` WHERE event_id='$event_id' AND email='$email'";
+		$db->setQuery($sql);
+		$db->query();
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&calendar_id=' . $event_id . '&active=calendar&action=details'),
+			Lang::txt('Unregistered from event'),
+			'passed'
+		);
+	}
+
+	/**
 	 * View Group Calendars
 	 *
 	 * @return  string
@@ -1655,7 +1687,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function saveCalendar()
 	{
-		Request::checkToken();
+		//Request::checkToken();
 
 		//get request vars
 		$calendarInput = Request::getVar('calendar', array());
